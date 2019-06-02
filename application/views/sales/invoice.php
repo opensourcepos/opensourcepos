@@ -14,7 +14,7 @@ $(document).ready(function()
 {
 	var send_email = function()
 	{
-		$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num; ?>',
+		$.get('<?php echo site_url() . "sales/send_pdf/" . $sale_id_num; ?>',
 			function(response)
 			{
 				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
@@ -51,7 +51,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
+				<div id="customer"><?php echo $customer_info ?></div>
 			<?php
 			}
 			?>
@@ -79,7 +79,7 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
+		<div id="company-title"><?php echo $company_info ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
