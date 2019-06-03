@@ -100,7 +100,7 @@ class Customer extends Person
 	{
 		// create a temporary table to contain all the sum and average of items
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
-			' (INDEX(sale_id))
+			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
 				SELECT
 					sales.sale_id AS sale_id,

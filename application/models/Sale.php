@@ -27,7 +27,8 @@ class Sale extends CI_Model
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			'(
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
@@ -57,7 +58,8 @@ class Sale extends CI_Model
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			'(
+			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
+			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
@@ -172,7 +174,7 @@ class Sale extends CI_Model
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			' (INDEX(sale_id), INDEX(item_id))
+			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
@@ -1113,7 +1115,7 @@ class Sale extends CI_Model
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			' (INDEX(sale_id), INDEX(item_id))
+			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
