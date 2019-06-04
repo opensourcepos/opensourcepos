@@ -22,12 +22,12 @@ foreach($definition_values as $definition_id => $definition_value)
             echo form_hidden("attribute_ids[$definition_id]", $definition_value['attribute_id']);
             $attribute_value = $definition_value['attribute_value'];
             
-            if ($definition_value['definition_type'] == DATETIME)
+            if ($definition_value['definition_type'] == DATE)
             {
-	            $value = (empty($attribute_value) || empty($attribute_value->attribute_datetime)) ? DEFAULT_DATETIME : strtotime($attribute_value->attribute_datetime);
+	            $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? DEFAULT_DATE : strtotime($attribute_value->attribute_date);
 	            echo form_input(array(
                     'name' => "attribute_links[$definition_id]",
-                    'value' => to_datetime($value),
+                    'value' => to_date($value),
                     'class' => 'form-control input-sm datetime',
                     'data-definition-id' => $definition_id,
                     'readonly' => 'true'));
@@ -59,7 +59,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
     (function() {
-        <?php $this->load->view('partial/datepicker_locale'); ?>
+        <?php $this->load->view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->item('dateformat') . '"}'))); ?>
 
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {

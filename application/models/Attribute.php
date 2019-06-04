@@ -3,10 +3,10 @@
 define('GROUP', 'GROUP');
 define('DROPDOWN', 'DROPDOWN');
 define('DECIMAL', 'DECIMAL');
-define('DATETIME', 'DATETIME');
+define('DATE', 'DATE');
 define('TEXT', 'TEXT');
 
-const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATETIME];
+const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE];
 
 /**
  * Attribute class
@@ -270,11 +270,11 @@ class Attribute extends CI_Model
 			$this->db->where('definition_id',$definition);
 			$success = TRUE;
 
-			if($to === DATETIME)
+			if($to === DATE)
 			{
 				foreach($this->db->get()->result_array() as $row)
 				{
-					if(valid_datetime($row['attribute_value']) === FALSE)
+					if(valid_date($row['attribute_value']) === FALSE)
 					{
 						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
 						$success = FALSE;
@@ -303,9 +303,9 @@ class Attribute extends CI_Model
 		//From TEXT to DATETIME
 		if($from_type === TEXT)
 		{
-			if($to_type === DATETIME || $to_type === DECIMAL)
+			if($to_type === DATE || $to_type === DECIMAL)
 			{
-				$field = ($to_type === DATETIME ? 'attribute_datetime' : 'attribute_decimal');
+				$field = ($to_type === DATETIME ? 'attribute_date' : 'attribute_decimal');
 
 				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
@@ -454,7 +454,7 @@ class Attribute extends CI_Model
 	{
 		$format = $this->db->escape(dateformat_mysql());
 		$this->db->select("GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values");
-		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_datetime, $format) SEPARATOR ', ') AS attribute_dtvalues");
+		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_date, $format) SEPARATOR ', ') AS attribute_dtvalues");
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
@@ -521,20 +521,17 @@ class Attribute extends CI_Model
 
 	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
 	{
-		$this->db->trans_start();		
+		$this->db->trans_start();
 
 		if(empty($attribute_id) || empty($item_id))
 		{
 			if($definition_type == TEXT || $definition_type == DROPDOWN)
 			{
-				$attribute_id_check = $this->value_exists($attribute_value);
-				if(empty($attribute_id_check))
+				$attribute_id = $this->value_exists($attribute_value);
+
+				if(empty($attribute_id))
 				{
 					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
-				}
-				else
-				{
-					$attribute_id = $attribute_id_check;
 				}
 			}
 			else if($definition_type == DECIMAL)
@@ -543,19 +540,16 @@ class Attribute extends CI_Model
 			}
 			else
 			{
-				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
+				$this->db->insert('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
 			}
 
-			$attribute_id = $this->db->insert_id();
+			$attribute_id = $attribute_id ? $attribute_id : $this->db->insert_id();
 			
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
 		}
-		else
-		{
-			$this->db->where('attribute_id', $attribute_id);
 
 		$this->db->trans_complete();
 

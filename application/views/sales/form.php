@@ -12,7 +12,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array('name'=>'date','value'=>to_datetime(strtotime($sale_info['sale_time'])), 'class'=>'datetime form-control input-sm'));?>
+				<?php echo form_input(array('name'=>'date','value'=>to_date(strtotime($sale_info['sale_time'])), 'class'=>'datetime form-control input-sm'));?>
 			</div>
 		</div>
 

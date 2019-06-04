@@ -82,14 +82,14 @@ $(document).ready(function()
 	{
 		var definition_type = $("#definition_type option:selected").text();
 
-		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new) || definition_type == "DECIMAL")
+		if(definition_type == "DATE" || (definition_type == "GROUP" && !is_new) || definition_type == "DECIMAL")
 		{	 
 			$('#definition_type').prop("disabled",true);	
 		} 
 		else if(definition_type == "DROPDOWN")
 		{
 			$("#definition_type option:contains('GROUP')").hide();
-			$("#definition_type option:contains('DATETIME')").hide();
+			$("#definition_type option:contains('DATE')").hide();
 			$("#definition_type option:contains('DECIMAL')").hide();
 		}
 		else
@@ -183,6 +183,10 @@ $(document).ready(function()
 	$.validator.addMethod('valid_chars', function(value, element) {
         return value.match(/(\||_)/g) == null;
 	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
+
+	$('form').bind('submit', function () {
+		$(this).find(':input').prop('disabled', false);
+	});
 
 	$('#attribute_form').validate($.extend({
 		submitHandler: function(form)

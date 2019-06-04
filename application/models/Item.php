@@ -194,7 +194,7 @@ class Item extends CI_Model
 		{
 			$format = $this->db->escape(dateformat_mysql());
 			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-			$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_datetime, $format)) SEPARATOR '|') AS attribute_dtvalues");
+			$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
 			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 		}
@@ -281,7 +281,7 @@ class Item extends CI_Model
 	{
 		$this->db->select('items.*');
 		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
-		$this->db->select('GROUP_CONCAT(attribute_datetime SEPARATOR \'|\') AS attribute_dtvalues');
+		$this->db->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
 		$this->db->select('suppliers.company_name');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -379,8 +379,8 @@ class Item extends CI_Model
 	{
 		$this->db->select('items.*');
 		$this->db->select('company_name');
-		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_datetime) ORDER BY definition_id SEPARATOR \'|\') AS attribute_dtvalues');
+		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_date) ORDER BY definition_id SEPARATOR \'|\') AS attribute_dtvalues');
 		$this->db->select('quantity');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
