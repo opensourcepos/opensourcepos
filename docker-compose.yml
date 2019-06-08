@@ -3,6 +3,8 @@ version: '2'
 volumes:
     uploads:
         driver: local
+    logs:
+        driver: local
 
 networks:
     app_net:
@@ -29,6 +31,7 @@ services:
           - db_net
         volumes:
           - uploads:/app/public/uploads
+          - logs:/app/application/logs
         environment:
           - FORCE_HTTPS=true
           - PHP_TIMEZONE=UTC

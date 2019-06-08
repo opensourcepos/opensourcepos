@@ -1,6 +1,8 @@
 #!/bin/bash
 
-domains=(${OSPOS_DOMAIN_NAME})
+. ./.env
+
+domains=${OSPOS_DOMAIN_NAME}
 rsa_key_size=4096
 data_path="./data/certbot"
 
