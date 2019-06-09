@@ -834,6 +834,9 @@ class Item extends CI_Model
 			//Search by custom fields
 			if($filters['search_custom'] != FALSE)
 			{
+				// This section is currently never used but custom fields are replaced with attributes
+				// therefore in case this feature is required a proper query needs to written here
+				/*
 				$this->db->from('items');
 				$this->db->group_start();
 				$this->db->where('item_type', ITEM_KIT);
@@ -853,6 +856,7 @@ class Item extends CI_Model
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
+				*/
 			}
 		}
 
