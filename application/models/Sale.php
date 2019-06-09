@@ -31,7 +31,7 @@ class Sale extends CI_Model
 			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
@@ -146,7 +146,7 @@ class Sale extends CI_Model
 			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
@@ -546,7 +546,8 @@ class Sale extends CI_Model
 				$payment_id = $payment['payment_id'];
 				$payment_type = $payment['payment_type'];
 				$payment_amount = $payment['payment_amount'];
-				$payment_user = $payment['payment_user'];
+				$cash_refund = $payment['cash_refund'];
+				$employee_id = $payment['employee_id'];
 
 				if($payment_id == - 1 && $payment_amount > 0)
 				{
@@ -555,7 +556,8 @@ class Sale extends CI_Model
 						'sale_id' => $sale_id,
 						'payment_type' => $payment_type,
 						'payment_amount' => $payment_amount,
-						'payment_user' => $payment_user
+						'cash_refund' => $cash_refund,
+						'employee_id' => $employee_id
 					);
 					$success = $this->db->insert('sales_payments', $sales_payments_data);
 				}
@@ -660,7 +662,8 @@ class Sale extends CI_Model
 				'sale_id'		 => $sale_id,
 				'payment_type'	 => $payment['payment_type'],
 				'payment_amount' => $payment['payment_amount'],
-				'payment_user'	 => $employee_id
+				'cash_refund'    => $payment['cash_refund'],
+				'employee_id'	 => $employee_id
 			);
 
 			$this->db->insert('sales_payments', $sales_payments_data);
@@ -1137,7 +1140,7 @@ class Sale extends CI_Model
 			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id

@@ -385,7 +385,7 @@ class Sale_lib
 		else
 		{
 			//add to existing array
-			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount));
+			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount, 'cash_refund' => 0));
 
 			$payments += $payment;
 		}

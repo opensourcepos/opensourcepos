@@ -51,7 +51,7 @@ class Summary_payments extends Summary_report
 		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
 		$select .= 'SUM(sumpay_items.trans_amount) AS trans_amount, ';
 		$select .= 'IFNULL(SUM(sumpay_payments.total_payments),0) AS trans_payments, ';
-		$select .= 'SUM(CASE WHEN (IFNULL(sumpay_payments.total_payments,0) - sumpay_items.trans_amount) > 0 THEN IFNULL(sumpay_payments.total_payments,0) - sumpay_items.trans_amount ELSE 0 END) AS trans_refunded, ';
+		$select .= 'IFNULL(SUM(sumpay_payments.total_cash_refund),0) AS trans_refunded, ';
 		$select .= 'SUM(CASE WHEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) > 0 THEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) ELSE 0 END) as trans_due ';
 
 		$this->db->select($select);
@@ -78,9 +78,9 @@ class Summary_payments extends Summary_report
 		$select = '\'' . $this->lang->line('reports_trans_payments') . '\' AS trans_group, ';
 		$select .= 'sales_payments.payment_type as trans_type, ';
 		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
-		$select .= 'SUM(payment_amount) AS trans_amount,';
+		$select .= 'SUM(payment_amount - cash_refund) AS trans_amount,';
 		$select .= 'SUM(payment_amount) AS trans_payments,';
-		$select .= '0 AS trans_refunded, ';
+		$select .= 'SUM(cash_refund) AS trans_refunded, ';
 		$select .= '0 AS trans_due ';
 
 		$this->db->select($select);
@@ -92,16 +92,6 @@ class Summary_payments extends Summary_report
 		$this->db->group_by("sales_payments.payment_type");
 
 		$payments = $this->db->get()->result_array();
-
-		// At this point in time refunds are assumed to be cash refunds.
-		foreach($payments as $key => $payment_summary)
-		{
-			if($payment_summary['trans_type'] == $cash_payment)
-			{
-				$payments[$key]['trans_refunded'] = $total_cash_refund;
-				$payments[$key]['trans_amount'] -= $total_cash_refund;
-			}
-		}
 
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
@@ -135,7 +125,6 @@ class Summary_payments extends Summary_report
 			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
 			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') AS trans_amount';
 
-
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_taxes_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
@@ -168,7 +157,8 @@ class Summary_payments extends Summary_report
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
-				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, SUM(sales_payments.payment_amount) AS total_payments
+				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, SUM(sales_payments.payment_amount) AS total_payments,
+				SUM(sales_payments.cash_refund) AS total_cash_refund
 				FROM ' . $this->db->dbprefix('sales') . ' AS sales
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments') . ' AS sales_payments
 					ON sales.sale_id = sales_payments.sale_id
