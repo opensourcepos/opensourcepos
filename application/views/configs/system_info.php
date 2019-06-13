@@ -81,15 +81,6 @@
 					} 
 					clearstatcache();
 				?><br>
-				&#187; [import_items.csv:]
-				<?php 
-					if (is_writable($import)) {
-						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
-					} else {
-						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
-					}
-					clearstatcache();					
-				?><br>
 				&#187; [import_customers.csv:] 
 				<?php 
 					if (is_writable($importcustomers)) {
