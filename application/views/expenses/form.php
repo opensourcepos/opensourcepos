@@ -17,7 +17,7 @@
 					<?php echo form_input(array(
 							'name'=>'date',
 							'class'=>'form-control input-sm datetime',
- 							'value'=>to_datetime(strtotime($expenses_info->date)),
+ 							'value'=>to_date(strtotime($expenses_info->date)),
                             'readonly'=>'readonly')
 							);?>
 				</div>

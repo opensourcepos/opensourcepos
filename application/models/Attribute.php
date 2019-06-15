@@ -3,10 +3,10 @@
 define('GROUP', 'GROUP');
 define('DROPDOWN', 'DROPDOWN');
 define('DECIMAL', 'DECIMAL');
-define('DATETIME', 'DATETIME');
+define('DATE', 'DATE');
 define('TEXT', 'TEXT');
 
-const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATETIME];
+const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE];
 
 /**
  * Attribute class
@@ -105,9 +105,9 @@ class Attribute extends CI_Model
 	 */
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'definition.definition_name', $order = 'asc')
 	{
-		$this->db->select('definition_group.definition_name AS definition_group, definition.*');
+		$this->db->select('parent_definition.definition_name AS definition_group, definition.*');
 		$this->db->from('attribute_definitions AS definition');
-		$this->db->join('attribute_definitions AS definition_group', 'definition_group.definition_id = definition.definition_fk', 'left');
+		$this->db->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
 
 		$this->db->group_start();
 		$this->db->like('definition.definition_name', $search);
@@ -270,11 +270,11 @@ class Attribute extends CI_Model
 			$this->db->where('definition_id',$definition);
 			$success = TRUE;
 
-			if($to === DATETIME)
+			if($to === DATE)
 			{
 				foreach($this->db->get()->result_array() as $row)
 				{
-					if(valid_datetime($row['attribute_value']) === FALSE)
+					if(valid_date($row['attribute_value']) === FALSE)
 					{
 						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
 						$success = FALSE;
@@ -303,9 +303,9 @@ class Attribute extends CI_Model
 		//From TEXT to DATETIME
 		if($from_type === TEXT)
 		{
-			if($to_type === DATETIME || $to_type === DECIMAL)
+			if($to_type === DATE || $to_type === DECIMAL)
 			{
-				$field = ($to_type === DATETIME ? 'attribute_datetime' : 'attribute_decimal');
+				$field = ($to_type === DATETIME ? 'attribute_date' : 'attribute_decimal');
 
 				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
@@ -452,7 +452,9 @@ class Attribute extends CI_Model
 
 	public function get_link_values($item_id, $sale_receiving_fk, $id, $definition_flags)
 	{
-		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ", ") AS attribute_values, GROUP_CONCAT(attribute_datetime SEPARATOR ", ") AS attribute_datetimevalues');
+		$format = $this->db->escape(dateformat_mysql());
+		$this->db->select("GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values");
+		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_date, $format) SEPARATOR ', ') AS attribute_dtvalues");
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
@@ -471,23 +473,7 @@ class Attribute extends CI_Model
 		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
 
-		$results = $this->db->get();
-
-		if ($results->num_rows() > 0)
-		{
-			$row_object = $results->row_object();
-
-			$datetime_values = explode(', ', $row_object->attribute_datetimevalues);
-			$attribute_values = array();
-
-			foreach (array_filter($datetime_values) as $datetime_value)
-			{
-				$attribute_values[] = to_datetime(strtotime($datetime_value));
-			}
-
-			return implode(',', $attribute_values) . $row_object->attribute_values;
-		}
-		return "";
+		return $this->db->get();
 	}
 
 	public function get_attribute_value($item_id, $definition_id)
@@ -541,37 +527,28 @@ class Attribute extends CI_Model
 		{
 			if($definition_type == TEXT || $definition_type == DROPDOWN)
 			{
-				$attribute_id_check = $this->value_exists($attribute_value);
-				if(empty($attribute_id_check))
+				$attribute_id = $this->value_exists($attribute_value);
+
+				if(empty($attribute_id))
 				{
 					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
-					$attribute_id = $this->db->insert_id();
-				}
-				else
-				{
-					$attribute_id = $attribute_id_check;
 				}
 			}
 			else if($definition_type == DECIMAL)
 			{
 				$this->db->insert('attribute_values', array('attribute_decimal' => $attribute_value));
-				$attribute_id = $this->db->insert_id();
 			}
 			else
 			{
-				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
-				$attribute_id = $this->db->insert_id();
+				$this->db->insert('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
 			}
 
+			$attribute_id = $attribute_id ? $attribute_id : $this->db->insert_id();
+			
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
-		}
-		else
-		{
-			$this->db->where('attribute_id', $attribute_id);
-			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
 		}
 
 		$this->db->trans_complete();

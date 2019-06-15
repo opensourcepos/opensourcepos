@@ -1,9 +1,9 @@
 <?php $this->lang->load('calendar'); $this->lang->load('date'); ?>
 
-var pickerconfig = function(start) {
-    return {
-        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-        startDate: start || "<?php echo to_datetime(DEFAULT_DATETIME); ?>",
+var pickerconfig = function(config) {
+    return $.extend({
+        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat'));?>",
+        startDate: "<?php echo to_date(DEFAULT_DATE); ?>",
         <?php
         $t = $this->config->item('timeformat');
         $m = $t[strlen($t)-1];
@@ -26,7 +26,7 @@ var pickerconfig = function(start) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?php echo current_language_code(); ?>"
-    };
+    }, <?php echo isset($config) ? $config : '{}' ?>);
 };
 
 $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {

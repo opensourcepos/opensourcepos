@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once(APPPATH . 'libraries/tokens/Token.php');
+require_once(APPPATH . 'models/tokens/Token.php');
 
 /**
  * Token library

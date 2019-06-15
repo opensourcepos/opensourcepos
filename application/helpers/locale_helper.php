@@ -3,7 +3,7 @@
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
-define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
+define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 
 /**
  * Currency locale helper
@@ -310,11 +310,11 @@ function tax_decimals()
 	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
 }
 
-function to_datetime($datetime)
+function to_date($date)
 {
 	$config = get_instance()->config;
 	
-	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
+	return date($config->item('dateformat'), $date);
 }
 
 function to_currency($number)
@@ -457,6 +457,50 @@ function dateformat_momentjs($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+function dateformat_mysql()
+{
+	$config = get_instance()->config;
+	$php_format = $config->item('dateformat');
+
+	$SYMBOLS_MATCHING = array(
+		// Day
+		'd' => '%d',
+		'D' => '%a',
+		'j' => '%e',
+		'l' => '%W',
+		'N' => '',
+		'S' => '',
+		'w' => '',
+		'z' => '',
+		// Week
+		'W' => '',
+		// Month
+		'F' => '',
+		'm' => '%m',
+		'M' => '%b',
+		'n' => '%c',
+		't' => '',
+		// Year
+		'L' => '',
+		'o' => '',
+		'Y' => '%Y',
+		'y' => '%y',
+		// Time
+		'a' => '',
+		'A' => '%p',
+		'B' => '',
+		'g' => '%l',
+		'G' => '%k',
+		'h' => '%H',
+		'H' => '%k',
+		'i' => '%i',
+		's' => '%S',
+		'u' => '%f'
+	);
+
+	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
 function dateformat_bootstrap($php_format)
 {
 	$SYMBOLS_MATCHING = array(
@@ -496,11 +540,6 @@ function dateformat_bootstrap($php_format)
 	);
 	
 	return strtr($php_format, $SYMBOLS_MATCHING);
-}
-
-function valid_datetime($datetime)
-{
-	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $datetime);
 }
 
 function valid_decimal($decimal)

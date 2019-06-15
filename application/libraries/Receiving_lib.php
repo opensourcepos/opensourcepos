@@ -231,6 +231,8 @@ class Receiving_lib
 			$receiving_quantity = $item_info->receiving_quantity;
 		}
 
+		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->row_object();
+
 		$item = array($insertkey => array(
 				'item_id' => $item_id,
 				'item_location' => $item_location,
@@ -240,7 +242,8 @@ class Receiving_lib
 				'name' => $item_info->name,
 				'description' => $description != NULL ? $description: $item_info->description,
 				'serialnumber' => $serialnumber != NULL ? $serialnumber: '',
-				'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS),
+				'attribute_values' => $attribute_links->attribute_values,
+				'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
 				'allow_alt_description' => $item_info->allow_alt_description,
 				'is_serialized' => $item_info->is_serialized,
 				'quantity' => $quantity,
