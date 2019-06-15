@@ -28,3 +28,5 @@ ALTER TABLE `ospos_receivings` ADD INDEX `receiving_time` (`receiving_time`);
 ALTER TABLE `ospos_sales_payments` ADD INDEX `payment_time` (`payment_time`);
 
 ALTER TABLE `ospos_inventory` ADD INDEX `trans_date` (`trans_date`);
+
+ALTER TABLE `ospos_expenses` ADD INDEX `date` (`date`);
