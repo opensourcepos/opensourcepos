@@ -43,5 +43,8 @@
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
     "wd": "^0.3.3"
+  },
+  "dependencies": {
+    "npm": "^6.9.0"
   }
 }
