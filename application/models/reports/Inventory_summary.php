@@ -30,11 +30,11 @@ class Inventory_summary extends Report
 		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
 		if($inputs['item_count'] == 'zero_and_less')
 		{
-			$this->db->where('item_quantities.quantity <= 0');
+			$this->db->where('item_quantities.quantity <=', 0);
 		}
 		elseif($inputs['item_count'] == 'more_than_zero')
 		{
-			$this->db->where('item_quantities.quantity > 0');
+			$this->db->where('item_quantities.quantity >', 0);
 		}
 
 		if($inputs['location_id'] != 'all')

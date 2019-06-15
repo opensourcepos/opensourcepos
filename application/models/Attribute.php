@@ -336,7 +336,7 @@ class Attribute extends CI_Model
 
 			$this->db->from('ospos_attribute_links');
 			$this->db->where('definition_id',$definition_id);
-			$this->db->where('item_id',NULL);
+			$this->db->where('item_id', NULL);
 			$success = $this->db->delete();
 
 			$this->db->trans_complete();
@@ -371,7 +371,7 @@ class Attribute extends CI_Model
 		{
 			$this->db->select('definition_type, definition_name');
 			$this->db->from('attribute_definitions');
-			$this->db->where('definition_id',$definition_id);
+			$this->db->where('definition_id', $definition_id);
 
 			$row = $this->db->get()->row();
 			$from_definition_type = $row->definition_type;

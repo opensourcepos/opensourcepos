@@ -58,7 +58,7 @@ class Summary_payments extends Summary_report
 		$this->db->from('ospos_sales AS sales');
 		$this->db->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
 		$this->db->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
-		$this->db->where('sales.sale_status = ' . COMPLETED);
+		$this->db->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
 		$this->db->group_by("trans_type");
@@ -86,7 +86,7 @@ class Summary_payments extends Summary_report
 		$this->db->select($select);
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id', 'left outer');
-		$this->db->where('sales.sale_status = ' . COMPLETED);
+		$this->db->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
 		$this->db->group_by("sales_payments.payment_type");

@@ -72,7 +72,7 @@ class Specific_discount extends Report
 		$this->db->from('sales_items_temp');
 		
 		$this->db->where('discount >=', $inputs['discount']);
-		$this->db->where('discount_type',$inputs['discount_type']);
+		$this->db->where('discount_type', $inputs['discount_type']);
 
 		if($inputs['sale_type'] == 'complete')
 		{
@@ -140,7 +140,7 @@ class Specific_discount extends Report
 		$this->db->from('sales_items_temp');
 		
 		$this->db->where('discount >=', $inputs['discount']);
-		$this->db->where('discount_type',$inputs['discount_type']);
+		$this->db->where('discount_type', $inputs['discount_type']);
 
 		if($inputs['sale_type'] == 'complete')
 		{

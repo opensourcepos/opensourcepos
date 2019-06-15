@@ -16,7 +16,7 @@ class Summary_sales_taxes extends Summary_report
 
 	protected function _where(array $inputs)
 	{
-		$this->db->where('sales.sale_status = ' . COMPLETED);
+		$this->db->where('sales.sale_status', COMPLETED);
 
 		if(empty($this->config->item('date_or_time_format')))
 		{

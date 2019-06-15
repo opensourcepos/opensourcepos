@@ -49,9 +49,9 @@ class Module extends CI_Model
 	public function get_all_subpermissions()
 	{
 		$this->db->from('permissions');
-		$this->db->join('modules', 'modules.module_id = permissions.module_id');
+		$this->db->join('modules AS modules', 'modules.module_id = permissions.module_id');
 		// can't quote the parameters correctly when using different operators..
-		$this->db->where($this->db->dbprefix('modules') . '.module_id!=', 'permission_id', FALSE);
+		$this->db->where('modules.module_id != ', 'permission_id', FALSE);
 
 		return $this->db->get();
 	}

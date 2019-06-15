@@ -78,11 +78,11 @@ class Detailed_receivings extends Report
 
 		if($inputs['receiving_type'] == 'receiving')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
@@ -126,15 +126,15 @@ class Detailed_receivings extends Report
 
 		if($inputs['receiving_type'] == 'receiving')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->where('quantity_purchased = 0');
+			$this->db->where('quantity_purchased', 0);
 		}
 
 		return $this->db->get()->row_array();

@@ -1363,7 +1363,7 @@ class Sale extends CI_Model
 			'status' => 0
 		);
 
-		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->where('dinner_table_id', $dinner_table);
 		$this->db->update('dinner_tables', $dinner_table_data);
 
 		$this->update_sale_status($sale_id, CANCELED);
@@ -1386,7 +1386,7 @@ class Sale extends CI_Model
 			'status' => 0
 		);
 
-		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->where('dinner_table_id', $dinner_table);
 		$this->db->update('dinner_tables', $dinner_table_data);
 
 		$this->db->delete('sales_payments', array('sale_id' => $sale_id));

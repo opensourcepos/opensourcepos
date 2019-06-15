@@ -329,7 +329,7 @@ class Item extends CI_Model
 
 		if(!$include_deleted)
 		{
-			$this->db->where("items.deleted = '0'");
+			$this->db->where('items.deleted', 0);
 		}
 
 		// limit to only 1 so there is a result in case two are returned
