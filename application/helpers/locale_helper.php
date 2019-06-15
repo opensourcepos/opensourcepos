@@ -310,11 +310,18 @@ function tax_decimals()
 	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
 }
 
-function to_date($date)
+function to_date($date = DEFAULT_DATE)
 {
 	$config = get_instance()->config;
 	
 	return date($config->item('dateformat'), $date);
+}
+
+function to_datetime($datetime = DEFAULT_DATE)
+{
+	$config = get_instance()->config;
+	
+	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
 }
 
 function to_currency($number)

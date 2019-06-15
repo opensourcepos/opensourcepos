@@ -511,8 +511,8 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 
 		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
-		$data['transaction_date'] = date($this->config->item('dateformat'));
+		$data['transaction_time'] = to_datetime();
+		$data['transaction_date'] = to_date();
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -945,8 +945,8 @@ class Sales extends Secure_Controller
 		$tax_details = $this->tax_lib->get_taxes($data['cart']);
 		$data['taxes'] = $this->Sale->get_sales_taxes($sale_id);
 		$data['discount'] = $this->sale_lib->get_discount();
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
-		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
+		$data['transaction_time'] = to_datetime(strtotime($sale_info['sale_time']));
+		$data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 
 		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');

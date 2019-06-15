@@ -90,7 +90,7 @@ function get_sale_data_row($sale)
 
 	$row = array (
 		'sale_id' => $sale->sale_id,
-		'sale_time' => to_date(strtotime($sale->sale_time)),
+		'sale_time' => to_datetime(strtotime($sale->sale_time)),
 		'customer_name' => $sale->customer_name,
 		'amount_due' => to_currency($sale->amount_due),
 		'amount_tendered' => to_currency($sale->amount_tendered),
@@ -333,7 +333,8 @@ function get_items_manage_table_headers()
 		array('unit_price' => $CI->lang->line('items_unit_price')),
 		array('quantity' => $CI->lang->line('items_quantity'))
 	);
-	if ($CI->config->item('use_destination_based_tax') == '1')
+
+	if($CI->config->item('use_destination_based_tax') == '1')
 	{
 		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_category'), 'sortable' => FALSE);
 	}
@@ -363,9 +364,9 @@ function get_item_data_row($item)
 {
 	$CI =& get_instance();
 
-	if ($CI->config->item('use_destination_based_tax') == '1')
+	if($CI->config->item('use_destination_based_tax') == '1')
 	{
-		if ($item->tax_category_id == NULL)
+		if($item->tax_category_id == NULL)
 		{
 			$tax_percents = '-';
 		}
@@ -411,7 +412,7 @@ function get_item_data_row($item)
 		}
 	}
 
-	if ($CI->config->item('multi_pack_enabled') == '1')
+	if($CI->config->item('multi_pack_enabled') == '1')
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
@@ -531,7 +532,7 @@ function expand_attribute_values($definition_names, $attribute_values)
 	foreach($values as $attribute_value)
 	{
 		$exploded_value = explode('_', $attribute_value);
-		if (sizeof($exploded_value) > 1)
+		if(sizeof($exploded_value) > 1)
 		{
 			$indexed_values[$exploded_value[0]] = $exploded_value[1];
 		}
@@ -540,7 +541,7 @@ function expand_attribute_values($definition_names, $attribute_values)
 	$attribute_values = array();
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		if (isset($indexed_values[$definition_id]))
+		if(isset($indexed_values[$definition_id]))
 		{
 			$attribute_value = $indexed_values[$definition_id];
 			$attribute_values["$definition_id"] = $attribute_value;
@@ -570,11 +571,11 @@ function get_attribute_definition_data_row($attribute)
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
-	if (count($attribute->definition_flags) == 0)
+	if(count($attribute->definition_flags) == 0)
 	{
 		$definition_flags = $CI->lang->line('common_none_selected_text');
 	}
-	else if ($attribute->definition_type == GROUP)
+	else if($attribute->definition_type == GROUP)
 	{
 		$definition_flags = "-";
 	}
@@ -659,7 +660,7 @@ function get_expenses_data_row($expense)
 	$controller_name = strtolower(get_class($CI));
 	return array (
 		'expense_id' => $expense->expense_id,
-		'date' => to_date(strtotime($expense->date)),
+		'date' => to_datetime(strtotime($expense->date)),
 		'supplier_name' => $expense->supplier_name,
 		'supplier_tax_code' => $expense->supplier_tax_code,
 		'amount' => to_currency($expense->amount),
@@ -750,11 +751,11 @@ function get_cash_up_data_row($cash_up)
 	$controller_name = strtolower(get_class($CI));
 	return array (
 		'cashup_id' => $cash_up->cashup_id,
-		'open_date' => to_date(strtotime($cash_up->open_date)),
+		'open_date' => to_datetime(strtotime($cash_up->open_date)),
 		'open_employee_id' => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
 		'open_amount_cash' => to_currency($cash_up->open_amount_cash),
 		'transfer_amount_cash' => to_currency($cash_up->transfer_amount_cash),
-		'close_date' => to_date(strtotime($cash_up->close_date)),
+		'close_date' => to_datetime(strtotime($cash_up->close_date)),
 		'close_employee_id' => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
 		'closed_amount_cash' => to_currency($cash_up->closed_amount_cash),
 		'note' => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',

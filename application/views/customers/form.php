@@ -176,7 +176,7 @@
 									'name'=>'date',
 									'id'=>'datetime',
 									'class'=>'form-control input-sm',
-									'value'=>to_date(strtotime($person_info->date)),
+									'value'=>to_datetime(strtotime($person_info->date)),
 									'readonly'=>'true')
 									); ?>
 						</div>
