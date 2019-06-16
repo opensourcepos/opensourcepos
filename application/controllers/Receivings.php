@@ -202,7 +202,7 @@ class Receivings extends Secure_Controller
 		
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
-		$data['transaction_time'] = to_datetime();
+		$data['transaction_time'] = to_datetime(time());
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();

@@ -511,8 +511,9 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 
 		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
-		$data['transaction_time'] = to_datetime();
-		$data['transaction_date'] = to_date();
+		$__time = time();
+		$data['transaction_time'] = to_datetime($__time);
+		$data['transaction_date'] = to_date($__time);
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
