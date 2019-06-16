@@ -9,32 +9,37 @@ services:
         build:
             context: database/
             dockerfile: Dockerfile
-    php:
+
+    ospos:
         build:
             context: .
             dockerfile: Dockerfile.dev
-        links:
-            - mysql
+        container_name: ospos
+        restart: always
+        depends_on:
+          - mysql
         ports:
-            - "80:80"
+          - "80:80"
         volumes:
-            - .:/app
+          - .:/app
         environment:
-            - PHP_TIMEZONE=UTC
-            - MYSQL_USERNAME=admin
-            - MYSQL_PASSWORD=pointofsale
-            - MYSQL_DB_NAME=ospos
-            - MYSQL_HOST_NAME=mysql
-            - XDEBUG_CONFIG=remote_host=172.17.0.1
+          - PHP_TIMEZONE=UTC
+          - MYSQL_USERNAME=admin
+          - MYSQL_PASSWORD=pointofsale
+          - MYSQL_DB_NAME=ospos
+          - MYSQL_HOST_NAME=mysql
+          - XDEBUG_CONFIG=remote_host=172.17.0.1
 
     mysql:
         image: mariadb:10.1.21
-        environment:
-            - MYSQL_ROOT_PASSWORD=pointofsale
-            - MYSQL_DATABASE=ospos
-            - MYSQL_USER=admin
-            - MYSQL_PASSWORD=pointofsale
+        container_name: mysql
+        restart: always
         ports:
-            - "3306:3306"
+          - "3306:3306"
         volumes_from:
-            - sqlscript
+          - sqlscript
+        environment:
+          - MYSQL_ROOT_PASSWORD=pointofsale
+          - MYSQL_DATABASE=ospos
+          - MYSQL_USER=admin
+          - MYSQL_PASSWORD=pointofsale
