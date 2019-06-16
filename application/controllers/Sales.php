@@ -822,7 +822,7 @@ class Sales extends Secure_Controller
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
 			$filename = sys_get_temp_dir() . '/' . $this->lang->line("sales_" . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
-			if(file_put_contents($filename, pdf_create($html)) !== FALSE)
+			if(file_put_contents($filename, create_pdf($html)) !== FALSE)
 			{
 				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
 			}
@@ -1296,7 +1296,7 @@ class Sales extends Secure_Controller
 			// To maintain tradition we will also delete any payments with 0 amount assuming these are mistakes
 			// introduced at sale time.  This is now done in Sale.php
 
-			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'employee_id' => $employee_id);
+			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0, 'employee_id' => $employee_id);
 		}
 
 		$payment_id = -1;
@@ -1305,7 +1305,7 @@ class Sales extends Secure_Controller
 
 		if($payment_type != PAYMENT_TYPE_UNASSIGNED && $payment_amount <> 0)
 		{
-			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'employee_id' => $employee_id);
+			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0, 'employee_id' => $employee_id);
 		}
 
 		if($this->Sale->update($sale_id, $sale_data, $payments))

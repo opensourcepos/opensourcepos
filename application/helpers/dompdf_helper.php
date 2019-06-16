@@ -4,7 +4,7 @@
  * PDF helper
  */
 
-function pdf_create($html, $filename = '')
+function create_pdf($html, $filename = '')
 {
     // need to enable magic quotes for the
     $magic_quotes_enabled = get_magic_quotes_runtime();
