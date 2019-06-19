@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
 $lang["items_amount_entry"] = "Đầu mục tổng số";
@@ -23,7 +22,7 @@ $lang["items_cost_price_number"] = "Giá bán buôn phải là dạng số.";
 $lang["items_cost_price_required"] = "Trường Giá bán buôn là bắt buộc.";
 $lang["items_count"] = "Cập hàng tồn kho";
 $lang["items_current_quantity"] = "Số lượng hiện tại";
-$lang["items_default_pack_name"] = "";
+$lang["items_default_pack_name"] = "Mỗi";
 $lang["items_description"] = "Mô tả";
 $lang["items_details_count"] = "Chi tiết số lượng tồn kho";
 $lang["items_do_nothing"] = "Không làm gì";
