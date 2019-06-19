@@ -1,31 +1,30 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "Giá trị thuộc tính không thể chứa ':' hay '|'";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "";
-$lang["attributes_definition_group"] = "";
-$lang["attributes_definition_id"] = "";
-$lang["attributes_definition_name"] = "";
-$lang["attributes_definition_name_required"] = "";
-$lang["attributes_definition_one_or_multiple"] = "";
-$lang["attributes_definition_successful_adding"] = "";
-$lang["attributes_definition_successful_deleted"] = "";
+$lang["attributes_definition_group"] = "Nhóm";
+$lang["attributes_definition_id"] = "Mã số";
+$lang["attributes_definition_name"] = "Thêm thuộc tính";
+$lang["attributes_definition_name_required"] = "Tên thuộc tính là trường bắt buộc";
+$lang["attributes_definition_one_or_multiple"] = "thuộc tính";
+$lang["attributes_definition_successful_adding"] = "Bạn vừa mới thêm mục tin thành công";
+$lang["attributes_definition_successful_deleted"] = "Bạn đã xóa thành công";
 $lang["attributes_definition_successful_updating"] = "";
 $lang["attributes_definition_type"] = "";
 $lang["attributes_definition_type_required"] = "";
 $lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "";
-$lang["attributes_new"] = "";
+$lang["attributes_new"] = "Thêm thuộc tính mới";
 $lang["attributes_no_attributes_to_display"] = "";
-$lang["attributes_receipt_visibility"] = "";
+$lang["attributes_receipt_visibility"] = "Biên lai";
 $lang["attributes_show_in_items"] = "";
-$lang["attributes_show_in_items_visibility"] = "";
+$lang["attributes_show_in_items_visibility"] = "Hàng hóa";
 $lang["attributes_show_in_receipt"] = "";
 $lang["attributes_show_in_receivings"] = "";
 $lang["attributes_show_in_receivings_visibility"] = "";
 $lang["attributes_show_in_sales"] = "";
-$lang["attributes_show_in_sales_visibility"] = "";
-$lang["attributes_update"] = "";
+$lang["attributes_show_in_sales_visibility"] = "Bán hàng";
+$lang["attributes_update"] = "Cập nhật thuộc tính";
