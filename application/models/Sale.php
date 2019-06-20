@@ -91,8 +91,8 @@ class Sale extends CI_Model
 				MAX(customer_p.comments) AS comments,
 				' . "
 				IFNULL($sale_total, $sale_subtotal) AS amount_due,
-				MAX(payments.sale_payment_amount) AS amount_tendered,
-				(MAX(payments.sale_payment_amount) - IFNULL($sale_total, $sale_subtotal)) AS change_due,
+				IFNULL(MAX(payments.sale_payment_amount), 0) AS amount_tendered,
+				IFNULL(MAX(payments.sale_payment_amount) - IFNULL($sale_total, $sale_subtotal),0) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');

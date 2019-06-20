@@ -1293,11 +1293,12 @@ class Sales extends Secure_Controller
 			$payment_id = $this->input->post('payment_id_' . $i);
 			$payment_amount = $this->input->post('payment_amount_' . $i);
 			$payment_type = $this->input->post('payment_type_' . $i);
+			$cash_refund = 0.00;
 
 			// To maintain tradition we will also delete any payments with 0 amount assuming these are mistakes
 			// introduced at sale time.  This is now done in Sale.php
 
-			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0, 'employee_id' => $employee_id);
+			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => $cash_refund, 'employee_id' => $employee_id);
 		}
 
 		$payment_id = -1;
@@ -1306,7 +1307,7 @@ class Sales extends Secure_Controller
 
 		if($payment_type != PAYMENT_TYPE_UNASSIGNED && $payment_amount <> 0)
 		{
-			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0, 'employee_id' => $employee_id);
+			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0.00, 'employee_id' => $employee_id);
 		}
 
 		if($this->Sale->update($sale_id, $sale_data, $payments))
