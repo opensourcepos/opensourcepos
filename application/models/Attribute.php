@@ -550,6 +550,11 @@ class Attribute extends CI_Model
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
 		}
+		else
+		{
+			$this->db->where('attribute_id', $attribute_id);
+			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+		}
 
 		$this->db->trans_complete();
 

@@ -450,10 +450,8 @@ function get_item_data_row($item)
 		)
 	);
 
-	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
-	$attribute_values = (property_exists($item, 'attribute_dtvalues')) ? $attribute_values . '|' . $item->attribute_dtvalues : $attribute_values;
+	return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
 
-	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
 }
 
 
@@ -535,9 +533,18 @@ function get_item_kit_data_row($item_kit)
 	);
 }
 
-function expand_attribute_values($definition_names, $attribute_values)
+function concat_attribute_value($columns, $row) {
+	$attribute_values = '';
+	foreach($columns as $column) {
+		$attribute_values .= (isset($row[$column])) ? $row[$column] : '';
+	}
+
+	return explode('|', $attribute_values);
+}
+
+function expand_attribute_values($definition_names, $row)
 {
-	$values = explode('|', $attribute_values);
+	$values = concat_attribute_value(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
 
 	$indexed_values = array();
 	foreach($values as $attribute_value)

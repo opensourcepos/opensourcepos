@@ -1344,9 +1344,7 @@ class Reports extends Secure_Controller
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
 
-				$attribute_values = (isset($drow['attribute_values'])) ? $drow['attribute_values'] : '';
-				$attribute_values = (isset($drow['attribute_dtvalues'])) ? $attribute_values . '|' . $drow['attribute_dtvalues'] : $attribute_values;
-				$attribute_values = expand_attribute_values($definition_names, $attribute_values);
+				$attribute_values = expand_attribute_values($definition_names, $drow);
 
 				$details_data[$row['sale_id']][] = $this->xss_clean(array_merge(array(
 					$drow['name'],
@@ -1462,10 +1460,7 @@ class Reports extends Secure_Controller
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
 
-				$attribute_values = (isset($drow['attribute_values'])) ? $drow['attribute_values'] : '';
-				$attribute_values = (isset($drow['attribute_dtvalues'])) ? $attribute_values . '|' . $drow['attribute_dtvalues'] : $attribute_values;
-
-				$attribute_values = expand_attribute_values($definition_names, $attribute_values);
+				$attribute_values = expand_attribute_values($definition_names, $drow);
 
 				$details_data[$row['receiving_id']][] = $this->xss_clean(array_merge(array(
 					$drow['item_number'],
