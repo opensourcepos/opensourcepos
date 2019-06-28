@@ -1,14 +1,13 @@
-<?php 
-
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
+<?php
+$lang["messages_first_name"] = "名字";
+$lang["messages_last_name"] = "姓氏";
 $lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
-$lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
-$lang["messages_phone"] = "Phone number";
-$lang["messages_phone_number_required"] = "Phone number required";
-$lang["messages_phone_placeholder"] = "Mobile Number(s) here...";
+$lang["messages_message_placeholder"] = "你的訊息.....";
+$lang["messages_message_required"] = "訊息必須填寫";
+$lang["messages_multiple_phones"] = "（如果是多個收件人，請輸入以逗號分隔的手機號碼）";
+$lang["messages_phone"] = "電話號碼";
+$lang["messages_phone_number_required"] = "電話號碼是必須";
+$lang["messages_phone_placeholder"] = "手機號碼在這裡填寫......";
 $lang["messages_sms_send"] = "Send SMS";
-$lang["messages_successfully_sent"] = "Message successfully sent to: ";
-$lang["messages_unsuccessfully_sent"] = "Message unsuccessfully sent to: ";
+$lang["messages_successfully_sent"] = "消息已成功發送至： ";
+$lang["messages_unsuccessfully_sent"] = "消息未成功發送至： ";
