@@ -29,7 +29,9 @@ before_deploy:
 deploy:
   provider: pages
   skip_cleanup: true
-  key: ${GITHUB_API_KEY}
+  target_branch: downloads
+  github_token: ${GITHUB_API_KEY}
+  repo: opensourcepos/opensourcepos
   user: jekkos
   local_dir: dist
   on:
