@@ -27,9 +27,10 @@ after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" 
   && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
 deploy:
   file: deployment.json
-  provider: bintray
+  provider: pages
   skip_cleanup: true
-  key: ${BINTRAY_API_KEY}
+  key: ${GITHUB_API_KEY}
   user: jekkos
+  local_dir: dist
   on:
     all_branches: true
