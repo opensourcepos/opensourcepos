@@ -29,8 +29,8 @@ before_deploy:
 deploy:
   provider: pages
   skip_cleanup: true
-  key: ${GITHUB_API_KEY}
+  github-token: ${GITHUB_API_KEY}
   user: jekkos
-  local_dir: dist
+  local-dir: dist
   on:
     all_branches: true
