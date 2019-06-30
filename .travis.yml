@@ -11,8 +11,6 @@ before_install:
     -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
-    HEAD` && sed -i "s/\$1/\$1.$date.$branch.$rev/g" deployment.json
 script:
   - docker run --rm -v $(pwd):/app composer/composer install
   - docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations
@@ -25,8 +23,10 @@ env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
+before_deploy:
+  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
+    HEAD` && mv dist/opensourcepos.zip "opensourcepos.$date.$branch.$rev.zip" 
 deploy:
-  file: deployment.json
   provider: pages
   skip_cleanup: true
   key: ${GITHUB_API_KEY}
