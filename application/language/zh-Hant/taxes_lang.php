@@ -1,20 +1,19 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
+$lang["taxes_city"] = "城巿";
+$lang["taxes_code"] = "代碼";
 $lang["taxes_confirm_delete"] = "";
 $lang["taxes_confirm_restore"] = "";
-$lang["taxes_default_tax_category"] = "";
+$lang["taxes_default_tax_category"] = "預設稅務類別";
 $lang["taxes_default_tax_rate"] = "";
 $lang["taxes_error_adding_updating"] = "";
 $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
-$lang["taxes_name"] = "";
+$lang["taxes_name"] = "姓名";
 $lang["taxes_new"] = "";
-$lang["taxes_no_taxes_to_display"] = "";
+$lang["taxes_no_taxes_to_display"] = "沒有相關稅務編號";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "";
 $lang["taxes_round_half_even"] = "";
