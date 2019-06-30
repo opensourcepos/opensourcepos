@@ -25,7 +25,7 @@ after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" 
   && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
 before_deploy:
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
-    HEAD` && mv dist/opensourcepos.zip "opensourcepos.$date.$branch.$rev.zip" 
+    HEAD` && mv dist/opensourcepos.zip "dist/opensourcepos.$date.$branch.$rev.zip" 
 deploy:
   provider: pages
   skip_cleanup: true
