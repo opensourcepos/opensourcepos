@@ -533,18 +533,18 @@ function get_item_kit_data_row($item_kit)
 	);
 }
 
-function concat_attribute_value($columns, $row) {
-	$attribute_values = '';
+function parse_attribute_values($columns, $row) {
+	$attribute_values = array();
 	foreach($columns as $column) {
-		$attribute_values .= (isset($row[$column])) ? $row[$column] : '';
+		$attribute_value = explode('|', $row[$column]);
+		$attribute_values = array_merge($attribute_values, $attribute_value);
 	}
-
-	return explode('|', $attribute_values);
+	return $attribute_values;
 }
 
 function expand_attribute_values($definition_names, $row)
 {
-	$values = concat_attribute_value(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
+	$values = parse_attribute_values(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
 
 	$indexed_values = array();
 	foreach($values as $attribute_value)
