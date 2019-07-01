@@ -34,5 +34,6 @@ deploy:
   repo: opensourcepos/opensourcepos
   user: jekkos
   local_dir: dist
+  keep_history: true
   on:
     all_branches: true
