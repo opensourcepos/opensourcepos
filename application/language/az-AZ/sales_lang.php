@@ -173,3 +173,4 @@ $lang["sales_work_order_number"] = "Sifariş nömrəsi";
 $lang["sales_work_order_number_duplicate"] = "İş sifarişinin nömrəsi unikal olmalıdır.";
 $lang["sales_work_order_sent"] = "İş sifarişi göndərildi";
 $lang["sales_work_order_unsent"] = "İş Sifarişi göndərilməmişdi";
+$lang["sales_second_display"] = "Second Display";

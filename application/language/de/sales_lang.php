@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Arbeitsauftragsnummer";
 $lang["sales_work_order_number_duplicate"] = "Arbeitsauftragsnummer muss eindeutig sein.";
 $lang["sales_work_order_sent"] = "Arbeitsauftrag gesendet an";
 $lang["sales_work_order_unsent"] = "Der Arbeitsauftrag konnte nicht gesendet werden an";
+$lang["sales_second_display"] = "Second Display";

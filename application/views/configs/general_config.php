@@ -251,6 +251,17 @@
 						'checked' => $show_office_group)); ?>
 				</div>
 			</div>
+			
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_second_display'), 'second_display_enabled', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'second_display_enabled',
+						'id' => 'second_display_enabled',
+						'value' => 'second_display_enabled',
+						'checked' => $this->config->item('second_display_enabled'))); ?>			
+				</div>
+			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_multi_pack_enabled'), 'multi_pack_enabled', array('class' => 'control-label col-xs-2')); ?>

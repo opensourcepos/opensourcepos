@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Номер Заказа На Работу";
 $lang["sales_work_order_number_duplicate"] = "Номер заказа на работу должен быть уникальным.";
 $lang["sales_work_order_sent"] = "Заказ отправлен";
 $lang["sales_work_order_unsent"] = "Не удалось отправить заказ на работу";
+$lang["sales_second_display"] = "Second Display";

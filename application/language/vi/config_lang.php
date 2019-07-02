@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "Trang thông tin điện tử";
 $lang["config_work_order_enable"] = "Hỗ trợ giao việc";
 $lang["config_work_order_format"] = "Định dạng giấy giao việc";
+$lang["config_second_display"] = "Show Customer Display";

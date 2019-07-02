@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "Zielabhängige Steuer verwenden";
 $lang["config_website"] = "Website";
 $lang["config_work_order_enable"] = "Unterstützung von Arbeitsaufträgen";
 $lang["config_work_order_format"] = "Arbeitsauftragsformat";
+$lang["config_second_display"] = "Show Customer Display";
