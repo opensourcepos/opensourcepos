@@ -75,7 +75,7 @@ class Sales extends Secure_Controller
         $data['stock_location'] = $this->sale_lib->get_sale_location();
         $data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
         $tax_details = $this->tax_lib->get_taxes($data['cart']);
-		$data['taxes'] = $tax_details[0];
+	$data['taxes'] = $tax_details[0];
         $data['discount'] = $this->sale_lib->get_discount();
         $data['payments'] = $this->sale_lib->get_payments();
         // sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return)
