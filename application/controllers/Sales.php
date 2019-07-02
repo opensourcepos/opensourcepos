@@ -57,8 +57,7 @@ class Sales extends Secure_Controller
 
 	public function second_display()
 	{
-
-		$data = array();
+	$data = array();
         $sale_id = $this->session->userdata('sale_id');
         if($sale_id == '')
         {
