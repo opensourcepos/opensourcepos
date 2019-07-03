@@ -57,120 +57,107 @@ class Sales extends Secure_Controller
 
 	public function second_display()
 	{
-	$data = array();
-        $sale_id = $this->session->userdata('sale_id');
-        if($sale_id == '')
-        {
-            $sale_id = -1;
-            $this->session->set_userdata('sale_id', -1);
-        }
-        $data['cart'] = $this->sale_lib->get_cart();
-        $customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
-
-        $data['modes'] = $this->sale_lib->get_register_mode_options();
-        $data['mode'] = $this->sale_lib->get_mode();
-        $data['empty_tables'] = $this->sale_lib->get_empty_tables();
-        $data['selected_table'] = $this->sale_lib->get_dinner_table();
-        $data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
-        $data['stock_location'] = $this->sale_lib->get_sale_location();
-        $data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
-        $tax_details = $this->tax_lib->get_taxes($data['cart']);
-	$data['taxes'] = $tax_details[0];
-        $data['discount'] = $this->sale_lib->get_discount();
-        $data['payments'] = $this->sale_lib->get_payments();
-        // sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return)
-        $sale_type = $this->sale_lib->get_sale_type();
-
-        // Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
-        $totals = $this->sale_lib->get_totals($tax_details[0]);
-        $data['item_count'] = $totals['item_count'];
-        $data['total_units'] = $totals['total_units'];
-        $data['subtotal'] = $totals['subtotal'];
-        $data['total'] = $totals['total'];
-        $data['payments_total'] = $totals['payment_total'];
-        $data['payments_cover_total'] = $totals['payments_cover_total'];
-        $data['cash_rounding'] = $this->session->userdata('cash_rounding');
-        $data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
-        $data['cash_total'] = $totals['cash_total'];
-        $data['non_cash_total'] = $totals['total'];
-        $data['cash_amount_due'] = $totals['cash_amount_due'];
-        $data['non_cash_amount_due'] = $totals['amount_due'];
-
-        if($data['cash_rounding'])
-        {
-            $data['total'] = $totals['cash_total'];
-            $data['amount_due'] = $totals['cash_amount_due'];
-        }
-        else
-        {
-            $data['total'] = $totals['total'];
-            $data['amount_due'] = $totals['amount_due'];
-        }
-        $data['amount_change'] = $data['amount_due'] * -1;
-
-        $data['comment'] = $this->sale_lib->get_comment();
-        $data['email_receipt'] = $this->sale_lib->is_email_receipt();
-        $data['selected_payment_type'] = $this->sale_lib->get_payment_type();
-        if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
-        {
-            $data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
-        }
-        else
-        {
-            $data['payment_options'] = $this->Sale->get_payment_options();
-        }
-
-        $data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
-
-        $invoice_format = $this->config->item('sales_invoice_format');
-        $data['invoice_format'] = $invoice_format;
-
-        $this->set_invoice_number($invoice_format);
-        $data['invoice_number'] = $invoice_format;
-
-        $data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
-        $data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-        $data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
-
-        $data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
-
-        $data['quote_number'] = $this->sale_lib->get_quote_number();
-        $data['work_order_number'] = $this->sale_lib->get_work_order_number();
-
-        if($this->sale_lib->get_mode() == 'sale_invoice')
-        {
-            $data['mode_label'] = $this->lang->line('sales_invoice');
-            $data['customer_required'] = $this->lang->line('sales_customer_required');
-        }
+		$data = array();
+		$sale_id = $this->session->userdata('sale_id');
+		if($sale_id == '')
+		{
+			$sale_id = -1;
+			$this->session->set_userdata('sale_id', -1);
+		}
+		$data['cart'] = $this->sale_lib->get_cart();
+		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
+		$data['modes'] = $this->sale_lib->get_register_mode_options();
+		$data['mode'] = $this->sale_lib->get_mode();
+		$data['empty_tables'] = $this->sale_lib->get_empty_tables();
+		$data['selected_table'] = $this->sale_lib->get_dinner_table();
+		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
+		$data['stock_location'] = $this->sale_lib->get_sale_location();
+		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
+		$tax_details = $this->tax_lib->get_taxes($data['cart']);
+		$data['taxes'] = $tax_details[0];
+		$data['discount'] = $this->sale_lib->get_discount();
+		$data['payments'] = $this->sale_lib->get_payments();
+		// sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return)
+		$sale_type = $this->sale_lib->get_sale_type();
+		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
+		$totals = $this->sale_lib->get_totals($tax_details[0]);
+		$data['item_count'] = $totals['item_count'];
+		$data['total_units'] = $totals['total_units'];
+		$data['subtotal'] = $totals['subtotal'];
+		$data['total'] = $totals['total'];
+		$data['payments_total'] = $totals['payment_total'];
+		$data['payments_cover_total'] = $totals['payments_cover_total'];
+		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
+		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['non_cash_total'] = $totals['total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_amount_due'] = $totals['amount_due'];
+		if($data['cash_rounding'])
+		{
+			$data['total'] = $totals['cash_total'];
+			$data['amount_due'] = $totals['cash_amount_due'];
+		}
+		else
+		{
+			$data['total'] = $totals['total'];
+			$data['amount_due'] = $totals['amount_due'];
+		}
+		$data['amount_change'] = $data['amount_due'] * -1;
+		$data['comment'] = $this->sale_lib->get_comment();
+		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
+		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
+		{
+			$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
+		}
+		else
+		{
+			$data['payment_options'] = $this->Sale->get_payment_options();
+		}
+		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
+		$invoice_format = $this->config->item('sales_invoice_format');
+		$data['invoice_format'] = $invoice_format;
+		$this->set_invoice_number($invoice_format);
+		$data['invoice_number'] = $invoice_format;
+		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
+		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
+		$data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
+		$data['quote_number'] = $this->sale_lib->get_quote_number();
+		$data['work_order_number'] = $this->sale_lib->get_work_order_number();
+		if($this->sale_lib->get_mode() == 'sale_invoice')
+		{
+			$data['mode_label'] = $this->lang->line('sales_invoice');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
+		}
 		elseif($this->sale_lib->get_mode() == 'sale_quote')
-        {
-            $data['mode_label'] = $this->lang->line('sales_quote');
-            $data['customer_required'] = $this->lang->line('sales_customer_required');
-        }
+		{
+			$data['mode_label'] = $this->lang->line('sales_quote');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
+		}
 		elseif($this->sale_lib->get_mode() == 'sale_work_order')
-        {
-            $data['mode_label'] = $this->lang->line('sales_work_order');
-            $data['customer_required'] = $this->lang->line('sales_customer_required');
-        }
+		{
+			$data['mode_label'] = $this->lang->line('sales_work_order');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
+		}
 		elseif($this->sale_lib->get_mode() == 'return')
-        {
-            $data['mode_label'] = $this->lang->line('sales_return');
-            $data['customer_required'] = $this->lang->line('sales_customer_optional');
-        }
-        else
-        {
-            $data['mode_label'] = $this->lang->line('sales_receipt');
-            $data['customer_required'] = $this->lang->line('sales_customer_optional');
-        }
-
-        $data = $this->xss_clean($data);
-
-		$this->load->view('sales/second_display', $data);
+		{
+			$data['mode_label'] = $this->lang->line('sales_return');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
+		}
+		else
+		{
+			$data['mode_label'] = $this->lang->line('sales_receipt');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
+		}
+		$data = $this->xss_clean($data);
+			$this->load->view('sales/second_display', $data);
 	}
-		public function  reloadedMatrix(){
-
+	
+	public function  reloadedMatrix()
+	{
 		$this->second_display();
-
 	}
 
 	public function get_row($row_id)
