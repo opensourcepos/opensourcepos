@@ -28,14 +28,14 @@
 				?>
 			</td>
 			<td id="customer-title">
-				<div id="customer"><?php if(isset($customer)) { echo $customer_info; } ?></div>
+				<div id="customer"><?php if(isset($customer)) { echo nl2br($customer_info); } ?></div>
 			</td>
 		</tr>
 		<tr>
 			<td id="company-title">
 				<div id="company">
 				<?php echo $this->config->item('company'); ?><br/>
-				<?php echo $company_info; ?>
+				<?php echo nl2br($company_info); ?>
 				</div>
 			</td>
 			<td id="meta">
@@ -139,8 +139,8 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->lang->line('sales_comments') . ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></textarea>
+				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
+				<div><?php echo $this->lang->line('sales_comments') . ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></div>
 			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
 		</div>

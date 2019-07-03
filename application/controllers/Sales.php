@@ -520,7 +520,7 @@ class Sales extends Secure_Controller
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
-		$data['company_info'] = implode("<br/>", array(
+		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
@@ -888,7 +888,7 @@ class Sales extends Secure_Controller
 			$data['customer_address'] = $customer_info->address_1;
 			if(!empty($customer_info->zip) || !empty($customer_info->city))
 			{
-				$data['customer_location'] = $customer_info->zip . ' ' . $customer_info->city . ', ' . $customer_info->state;
+				$data['customer_location'] = $customer_info->zip . ' ' . $customer_info->city . "\n" . $customer_info->state;
 			}
 			else
 			{
@@ -913,11 +913,12 @@ class Sales extends Secure_Controller
 				$data['customer_total'] = empty($cust_stats) ? 0 : $cust_stats->total;
 			}
 
-			$data['customer_info'] = implode("<br/>", array(
+			$data['customer_info'] = implode("\n", array(
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location']
 			));
+
 			if($data['customer_account_number'])
 			{
 				$data['customer_info'] .= "\n" . $this->lang->line('sales_account_number') . ": " . $data['customer_account_number'];
@@ -988,7 +989,7 @@ class Sales extends Secure_Controller
 		$data['quote_number'] = $sale_info['quote_number'];
 		$data['sale_status'] = $sale_info['sale_status'];
 
-		$data['company_info'] = implode("<br/>", array(
+		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
