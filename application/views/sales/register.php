@@ -66,9 +66,9 @@ if(isset($success))
 				{
 				?>
 				<li class="pull-right">
-                    <?php echo anchor($controller_name, '<span class="glyphicon glyphicon-blackboard">&nbsp</span>' . $this->lang->line('sales_second_display'),
-                        array('class'=>'btn btn-success btn-sm', 'id'=>'show_second_display', 'title'=>$this->lang->line('sales_second_display'))); ?>
-                </li>
+                  		<?php echo anchor($controller_name, '<span class="glyphicon glyphicon-blackboard">&nbsp</span>' . $this->lang->line('sales_second_display'),
+                    		array('class'=>'btn btn-success btn-sm', 'id'=>'show_second_display', 'title'=>$this->lang->line('sales_second_display'))); ?>
+                		</li>
 				<?php
 				}
 				?>
@@ -671,11 +671,11 @@ if(isset($success))
 $(document).ready(function()
 {
 
-    $('#show_second_display').click(function () {
+   	$('#show_second_display').click(function () {
 
-        myWindow = window.open('sales/second_display', "second_display");
+        	myWindow = window.open('sales/second_display', "second_display");
 
-    });
+   	});
 	
 	$("input[name='item_number']").change(function(){
 		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
