@@ -561,6 +561,11 @@ function dateformat_bootstrap($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+function valid_date($date)
+{
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
+}
+
 function valid_decimal($decimal)
 {
 	return preg_match('/^(\d*\.)?\d+$/', $decimal);
