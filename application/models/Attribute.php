@@ -305,7 +305,7 @@ class Attribute extends CI_Model
 		{
 			if($to_type === DATE || $to_type === DECIMAL)
 			{
-				$field = ($to_type === DATETIME ? 'attribute_date' : 'attribute_decimal');
+				$field = ($to_type === DATE ? 'attribute_date' : 'attribute_decimal');
 
 				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
