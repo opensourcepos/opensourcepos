@@ -1284,9 +1284,9 @@ class Sale_lib
 		return $total;
 	}
 
-	public function get_empty_tables()
+	public function get_empty_tables($current_dinner_table_id)
 	{
-		return $this->CI->Dinner_table->get_empty_tables();
+		return $this->CI->Dinner_table->get_empty_tables($current_dinner_table_id);
 	}
 
 	public function check_for_cash_rounding($total)
