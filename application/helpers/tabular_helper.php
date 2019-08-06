@@ -536,8 +536,11 @@ function get_item_kit_data_row($item_kit)
 function parse_attribute_values($columns, $row) {
 	$attribute_values = array();
 	foreach($columns as $column) {
-		$attribute_value = explode('|', $row[$column]);
-		$attribute_values = array_merge($attribute_values, $attribute_value);
+		if (array_key_exists($column, $row))
+		{
+			$attribute_value = explode('|', $row[$column]);
+			$attribute_values = array_merge($attribute_values, $attribute_value);
+		}
 	}
 	return $attribute_values;
 }
