@@ -155,7 +155,8 @@ class Attributes extends Secure_Controller
 
 		$show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
 		$data['definition_flags'] = $this->_get_attributes($show_all);
-		$data['selected_definition_flags'] = $this->_get_attributes($info->definition_flags);
+		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
+		$data['selected_definition_flags'] = $this->_get_attributes($selected_flags);
 
 		$this->load->view("attributes/form", $data);
 	}
