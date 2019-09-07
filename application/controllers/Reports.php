@@ -1547,6 +1547,7 @@ class Reports extends Secure_Controller
 			$tabular_data[] = $this->xss_clean(array(
 				'item_name' => $row['name'],
 				'item_number' => $row['item_number'],
+				'category' => $row['category'],
 				'quantity' => to_quantity_decimals($row['quantity']),
 				'low_sell_quantity' => to_quantity_decimals($row['low_sell_quantity']),
 				'reorder_level' => to_quantity_decimals($row['reorder_level']),
