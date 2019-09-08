@@ -1046,17 +1046,6 @@ class Sale_lib
 		return $this->CI->session->userdata('sale_id');
 	}
 
-	public function get_cart_reordered($sale_id)
-	{
-		$this->empty_cart();
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
-		}
-
-		return $this->CI->session->userdata('sales_cart');
-	}
-
 	public function clear_all()
 	{
 		$this->CI->session->set_userdata('sale_id', -1);
