@@ -70,7 +70,7 @@ if(isset($error))
 	?>
 
 	<?php	
-	if (!empty($stock_locations) && count($stock_locations) > 2)
+	if (!empty($stock_locations) && count($stock_locations) > 1)
 	{
 	?>
 		<div class="form-group form-group-sm">
