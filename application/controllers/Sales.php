@@ -802,10 +802,6 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-
-				// Reload (sorted) and filter the cart line items for printing purposes
-				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
-
 				$this->load->view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
 			}
