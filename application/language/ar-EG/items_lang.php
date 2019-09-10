@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amount_entry"] = "إدخال القيمة";
@@ -34,7 +33,7 @@ $lang["items_error_adding_updating"] = "خطاء فى إضافة/تحديث صن
 $lang["items_error_updating_multiple"] = "خطاء فى تحديث بيانات أصناف";
 $lang["items_excel_import_failed"] = "فشل الإستيراد من اكسل";
 $lang["items_excel_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
-$lang["items_excel_import_partially_failed"] = "تم استيراد معظم الأصناف. البعض لم يتم استيرادهم ، وهذه هى القائمة:";
+$lang["items_excel_import_partially_failed"] = "يوجد خطأ بنسبة 1% في استيراد الاصناف في السطر: %2. لم يتم استيرادهم.";
 $lang["items_excel_import_success"] = "تم استيراد الأصناف بنجاح.";
 $lang["items_generate_barcodes"] = "توليد أكواد الباركود";
 $lang["items_hsn_code"] = "تسميات النظام المنسق";
@@ -109,3 +108,4 @@ $lang["items_unit_price_required"] = "السعر مطلوب.";
 $lang["items_upc_database"] = "UPC قاعدة بيانات";
 $lang["items_update"] = "تحديث بيانات صنف";
 $lang["items_use_inventory_menu"] = "استخدام تحديث المخزن";
+$lang["items_inventory_CSV_import_quantity"] = "العدد المستورد من ملفات ال CSV";
