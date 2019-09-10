@@ -51,7 +51,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<div id="customer"><?php echo $customer_info ?></div>
+				<div id="customer"><?php echo nl2br($customer_info) ?></div>
 			<?php
 			}
 			?>
@@ -79,7 +79,7 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<div id="company-title"><?php echo $company_info ?></div>
+		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>

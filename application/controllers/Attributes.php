@@ -131,7 +131,7 @@ class Attributes extends Secure_Controller
 		$definition_flag_names = array();
 		foreach (Attribute::get_definition_flags() as $id => $term)
 		{
-			if (empty($definition_flags) || ($id & $definition_flags))
+			if ($id & $definition_flags)
 			{
 				$definition_flag_names[$id] = $this->lang->line('attributes_' . strtolower($term) . '_visibility');
 			}
@@ -153,8 +153,10 @@ class Attributes extends Secure_Controller
 		$data['definition_group'][''] = $this->lang->line('common_none_selected_text');
 		$data['definition_info'] = $info;
 
-		$data['definition_flags'] = $this->_get_attributes();
-		$data['selected_definition_flags'] = $this->_get_attributes($info->definition_flags);
+		$show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
+		$data['definition_flags'] = $this->_get_attributes($show_all);
+		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
+		$data['selected_definition_flags'] = $this->_get_attributes($selected_flags);
 
 		$this->load->view("attributes/form", $data);
 	}

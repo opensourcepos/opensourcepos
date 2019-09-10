@@ -281,11 +281,23 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
+		if($this->config->item('dinner_table_enable') == TRUE)
+		{
+			$occupied_dinner_table = $this->input->post('dinner_table');
+			$released_dinner_table = $this->sale_lib->get_dinner_table();
+			$occupied = $this->Dinner_table->is_occupied($released_dinner_table);
+
+			if($occupied && ($occupied_dinner_table != $released_dinner_table))
+			{
+				$this->Dinner_table->swap_tables($released_dinner_table, $occupied_dinner_table);
+			}
+
+			$this->sale_lib->set_dinner_table($occupied_dinner_table);
+		}
+
 		$stock_location = $this->input->post('stock_location');
 		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
-			$dinner_table = $this->input->post('dinner_table');
-			$this->sale_lib->set_dinner_table($dinner_table);
 
 		}
 		elseif($this->Stock_location->is_allowed_location($stock_location, 'sales'))
@@ -613,6 +625,7 @@ class Sales extends Secure_Controller
 		$sale_type = $this->sale_lib->get_sale_type();
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
+
 		$data['cart'] = $this->sale_lib->get_cart();
 
 		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
@@ -625,7 +638,7 @@ class Sales extends Secure_Controller
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
-		$data['company_info'] = implode("<br/>", array(
+		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
@@ -894,10 +907,6 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-
-				// Reload (sorted) and filter the cart line items for printing purposes
-				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
-
 				$this->load->view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
 			}
@@ -993,7 +1002,7 @@ class Sales extends Secure_Controller
 			$data['customer_address'] = $customer_info->address_1;
 			if(!empty($customer_info->zip) || !empty($customer_info->city))
 			{
-				$data['customer_location'] = $customer_info->zip . ' ' . $customer_info->city . ', ' . $customer_info->state;
+				$data['customer_location'] = $customer_info->zip . ' ' . $customer_info->city . "\n" . $customer_info->state;
 			}
 			else
 			{
@@ -1018,11 +1027,12 @@ class Sales extends Secure_Controller
 				$data['customer_total'] = empty($cust_stats) ? 0 : $cust_stats->total;
 			}
 
-			$data['customer_info'] = implode("<br/>", array(
+			$data['customer_info'] = implode("\n", array(
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location']
 			));
+
 			if($data['customer_account_number'])
 			{
 				$data['customer_info'] .= "\n" . $this->lang->line('sales_account_number') . ": " . $data['customer_account_number'];
@@ -1093,7 +1103,7 @@ class Sales extends Secure_Controller
 		$data['quote_number'] = $sale_info['quote_number'];
 		$data['sale_status'] = $sale_info['sale_status'];
 
-		$data['company_info'] = implode("<br/>", array(
+		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
@@ -1155,8 +1165,8 @@ class Sales extends Secure_Controller
 
 		$data['modes'] = $this->sale_lib->get_register_mode_options();
 		$data['mode'] = $this->sale_lib->get_mode();
-		$data['empty_tables'] = $this->sale_lib->get_empty_tables();
 		$data['selected_table'] = $this->sale_lib->get_dinner_table();
+		$data['empty_tables'] = $this->sale_lib->get_empty_tables($data['selected_table']);
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
 		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
@@ -1436,6 +1446,13 @@ class Sales extends Secure_Controller
 		if($sale_id != -1 && $sale_id != '')
 		{
 			$sale_type = $this->sale_lib->get_sale_type();
+
+			if($this->config->item('dinner_table_enable') == TRUE)
+			{
+				$dinner_table = $this->sale_lib->get_dinner_table();
+				$this->Dinner_table->release($dinner_table);
+			}
+
 			if($sale_type == SALE_TYPE_WORK_ORDER)
 			{
 				$this->Sale->update_sale_status($sale_id, CANCELED);
@@ -1470,18 +1487,15 @@ class Sales extends Secure_Controller
 	 */
 	public function suspend()
 	{
-		$mode = $this->sale_lib->get_mode();
 		$sale_id = $this->sale_lib->get_sale_id();
 		$dinner_table = $this->sale_lib->get_dinner_table();
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$customer_id = $this->sale_lib->get_customer();
-		$customer_info = $this->Customer->get_info($customer_id);
 		$invoice_number = $this->sale_lib->get_invoice_number();
 		$work_order_number = $this->sale_lib->get_work_order_number();
 		$quote_number = $this->sale_lib->get_quote_number();
-		$sale_id = $this->sale_lib->get_sale_id();
 		$sale_type = $this->sale_lib->get_sale_type();
 		if($sale_type == '')
 		{

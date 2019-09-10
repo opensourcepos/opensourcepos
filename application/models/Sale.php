@@ -609,8 +609,6 @@ class Sale extends CI_Model
 			return -1;
 		}
 
-		$table_status = $this->determine_sale_status($sale_status, $dinner_table);
-
 		$sales_data = array(
 			'sale_time'			=> date('Y-m-d H:i:s'),
 			'customer_id'		=> $this->Customer->exists($customer_id) ? $customer_id : NULL,
@@ -738,12 +736,17 @@ class Sale extends CI_Model
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
-		$dinner_table_data = array(
-			'status' => $table_status
-		);
-
-		$this->db->where('dinner_table_id',$dinner_table);
-		$this->db->update('dinner_tables', $dinner_table_data);
+		if($this->config->item('dinner_table_enable') == TRUE)
+		{
+			if($sale_status == COMPLETED)
+			{
+				$this->Dinner_table->release($dinner_table);
+			}
+			else
+			{
+				$this->Dinner_table->occupy($dinner_table);
+			}
+		}
 
 		$this->db->trans_complete();
 
@@ -1358,13 +1361,11 @@ class Sale extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		$dinner_table = $this->get_dinner_table($sale_id);
-		$dinner_table_data = array(
-			'status' => 0
-		);
-
-		$this->db->where('dinner_table_id', $dinner_table);
-		$this->db->update('dinner_tables', $dinner_table_data);
+		if($this->config->item('dinner_table_enable') == TRUE)
+		{
+			$dinner_table = $this->get_dinner_table($sale_id);
+			$this->Dinner_table->release($dinner_table);
+		}
 
 		$this->update_sale_status($sale_id, CANCELED);
 
@@ -1381,13 +1382,12 @@ class Sale extends CI_Model
 	{
 		$this->db->trans_start();
 
-		$dinner_table = $this->get_dinner_table($sale_id);
-		$dinner_table_data = array(
-			'status' => 0
-		);
 
-		$this->db->where('dinner_table_id', $dinner_table);
-		$this->db->update('dinner_tables', $dinner_table_data);
+		if($this->config->item('dinner_table_enable') == TRUE)
+		{
+			$dinner_table = $this->get_dinner_table($sale_id);
+			$this->Dinner_table->release($dinner_table);
+		}
 
 		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
@@ -1438,19 +1438,5 @@ class Sale extends CI_Model
 		}
 	}
 
-	/**
-	 * @param $sale_status
-	 * @param $dinner_table
-	 * @return int
-	 */
-	private function determine_sale_status(&$sale_status, $dinner_table)
-	{
-		if($sale_status == SUSPENDED && $dinner_table > 2)    //not delivery or take away
-		{
-			return SUSPENDED;
-		}
-
-		return COMPLETED;
-	}
 }
 ?>

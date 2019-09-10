@@ -55,24 +55,34 @@ function get_languages()
 		'ar-EG:arabic' => 'Arabic (Egypt)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
+		'cs:czech' => 'Czech',
 		'de:german' => 'German (Germany)',
 		'de-CH:german' => 'German (Swiss)',
+		'el:greek' => 'Greek',
 		'en-GB:english' => 'English (Great Britain)',
 		'en-US:english' => 'English (United States)',
 		'es:spanish' => 'Spanish',
+		'es-MX:spanish' => 'Spanish (Mexico)',
 		'fr:french' => 'French',
+		'he:hebrew' => 'Hebrew',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
 		'hu-HU:hungarian' => 'Hungarian (Hungary)',
 		'id:indonesian' => 'Indonesian',
 		'it:italian' => 'Italian',
 		'km:khmer' => 'Central Khmer (Cambodia)',
 		'lo:lao' => 'Lao (Laos)',
+		'ml:malay' => 'Malay',
+		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
+		'pl:polish' => 'Polish',
 		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'ro:romanian' => 'Romanian',
 		'ru:russian' => 'Russian',
 		'sv:swedish' => 'Swedish',
 		'th:thai' => 'Thai',
+		'tl-PH:talong' => 'Tagalog (Philippines)',
 		'tr:turkish' => 'Turkish',
+		'ur-PK:urdu' => 'Urdu (Islamic Republic of Pakistan)',
 		'vi:vietnamese' => 'Vietnamese',
 		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
 		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
@@ -549,6 +559,11 @@ function dateformat_bootstrap($php_format)
 	);
 
 	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
+function valid_date($date)
+{
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
 }
 
 function valid_decimal($decimal)
