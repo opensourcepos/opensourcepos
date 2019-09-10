@@ -52,7 +52,7 @@ function current_language($load_system_language = FALSE)
 function get_languages()
 {
 	return array(
-		'ar-EG:arabic' => 'Arabic (Egypt)',
+		'ar-LB:arabic' => 'Arabic (Lebanon)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
 		'cs:czech' => 'Czech',
