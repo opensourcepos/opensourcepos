@@ -66,7 +66,12 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_values');
 		$this->db->where('attribute_value', $attribute_value);
 
-		return $this->db->get()->row()->attribute_id;
+		$query = $this->db->get();
+		if ($query->num_rows() > 0)
+		{
+			return $query->row()->attribute_id;
+		}
+		return FALSE;
 	}
 
 	/*
