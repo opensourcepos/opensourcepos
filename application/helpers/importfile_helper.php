@@ -62,9 +62,6 @@ function get_csv_file($file_name)
 	
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
-		//Skip Byte-Order Mark
-		fseek($csv_file, 3);
-		
 		while (($data = fgetcsv($csv_file)) !== FALSE)
 		{
 			$line_array[] = $data;
