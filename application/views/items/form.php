@@ -457,8 +457,6 @@ $(document).ready(function()
 		focus: fill_value
 	});
 
-
-
 	var fill_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='low_sell_item_id']").val(ui.item.value);
@@ -493,136 +491,142 @@ $(document).ready(function()
 		return value.match(/(\||:)/g) == null;
 	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
 
-	$('#item_form').validate($.extend({
-		submitHandler: function(form, event) {
-			$(form).ajaxSubmit({
-				success: function(response) {
-					var stay_open = dialog_support.clicked_id() != 'submit';
-					if(stay_open)
-					{
-						// set action of item_form to url without item id, so a new one can be created
-						$('#item_form').attr('action', "<?php echo site_url('items/save/')?>");
-						// use a whitelist of fields to minimize unintended side effects
-						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
-							'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
-						// de-select any checkboxes, radios and drop-down menus
-						$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
-					}
-					else
-					{
-						dialog_support.hide();
-					}
-					table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
-				},
-				dataType: 'json'
-			});
-		},
+	var init_validation = function() {
+        $('#item_form').validate($.extend({
+            submitHandler: function(form, event) {
+                $(form).ajaxSubmit({
+                    success: function(response) {
+                        var stay_open = dialog_support.clicked_id() != 'submit';
+                        if(stay_open)
+                        {
+                            // set action of item_form to url without item id, so a new one can be created
+                            $('#item_form').attr('action', "<?php echo site_url('items/save/')?>");
+                            // use a whitelist of fields to minimize unintended side effects
+                            $(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
+                                '#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
+                            // de-select any checkboxes, radios and drop-down menus
+                            $(':input', '#item_form').removeAttr('checked').removeAttr('selected');
+                        }
+                        else
+                        {
+                            dialog_support.hide();
+                        }
+                        table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
+                        init_validation();
+                    },
+                    dataType: 'json'
+                });
+            },
 
-		errorLabelContainer: '#error_message_box',
+            errorLabelContainer: '#error_message_box',
 
-		rules:
-		{
-			name: 'required',
-			category: 'required',
-			item_number:
-			{
-				required: false,
-				remote:
-				{
-					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
-					type: 'POST',
-					data: {
-						'item_id' : "<?php echo $item_info->item_id; ?>",
-						'item_number' : function()
-						{
-							return $('#item_number').val();
-						},
-					}
-				}
-			},
-			cost_price:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			unit_price:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			<?php
-			foreach($stock_locations as $key=>$location_detail)
-			{
-			?>
-				<?php echo 'quantity_' . $key ?>:
-				{
-					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-				},
-			<?php
-			}
-			?>
-			receiving_quantity:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			reorder_level:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			tax_percent:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			}
-		},
+            rules:
+                {
+                    name: 'required',
+                    category: 'required',
+                    item_number:
+                        {
+                            required: false,
+                            remote:
+                                {
+                                    url: "<?php echo site_url($controller_name . '/check_item_number')?>",
+                                    type: 'POST',
+                                    data: {
+                                        'item_id' : "<?php echo $item_info->item_id; ?>",
+                                        'item_number' : function()
+                                        {
+                                            return $('#item_number').val();
+                                        },
+                                    }
+                                }
+                        },
+                    cost_price:
+                        {
+                            required: true,
+                            remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+                        },
+                    unit_price:
+                        {
+                            required: true,
+                            remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+                        },
+            <?php
+            foreach($stock_locations as $key=>$location_detail)
+            {
+            ?>
+            <?php echo 'quantity_' . $key ?>:
+            {
+                required: true,
+                    remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+            },
+            <?php
+            }
+            ?>
+            receiving_quantity:
+            {
+                required: true,
+                    remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+            },
+            reorder_level:
+            {
+                required: true,
+                    remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+            },
+            tax_percent:
+            {
+                required: true,
+                    remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+            }
+        },
 
-		messages:
-		{
-			name: "<?php echo $this->lang->line('items_name_required'); ?>",
-			item_number: "<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
-			category: "<?php echo $this->lang->line('items_category_required'); ?>",
-			cost_price:
-			{
-				required: "<?php echo $this->lang->line('items_cost_price_required'); ?>",
-				number: "<?php echo $this->lang->line('items_cost_price_number'); ?>"
-			},
-			unit_price:
-			{
-				required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
-				number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
-			},
-			<?php
-			foreach($stock_locations as $key=>$location_detail)
-			{
-			?>
-				<?php echo 'quantity_' . $key ?>:
-				{
-					required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-					number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
-				},
-			<?php
-			}
-			?>
-			receiving_quantity:
-			{
-				required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
-			},
-			reorder_level:
-			{
-				required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
-				number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
-			},
-			tax_percent:
-			{
-				required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
-				number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-			}
-		}
-	}, form_support.error));
+            messages:
+            {
+                name: "<?php echo $this->lang->line('items_name_required'); ?>",
+                    item_number: "<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
+                category: "<?php echo $this->lang->line('items_category_required'); ?>",
+                cost_price:
+                {
+                    required: "<?php echo $this->lang->line('items_cost_price_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_cost_price_number'); ?>"
+                },
+                unit_price:
+                {
+                    required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
+                },
+                <?php
+                foreach($stock_locations as $key=>$location_detail)
+                {
+                ?>
+                <?php echo 'quantity_' . $key ?>:
+                {
+                    required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+                },
+                <?php
+                }
+                ?>
+                receiving_quantity:
+                {
+                    required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+                },
+                reorder_level:
+                {
+                    required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
+                },
+                tax_percent:
+                {
+                    required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
+                        number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
+                }
+            }
+        }, form_support.error));
+    };
+
+    init_validation();
+
 });
 </script>
 
