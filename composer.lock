@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "3.1.10",
+            "version": "3.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "c576995304fc3609cca0b7b92d1b2cd611ec82f5"
+                "reference": "b73eb19aed66190c10c9cad476da7c36c271d6dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/c576995304fc3609cca0b7b92d1b2cd611ec82f5",
-                "reference": "c576995304fc3609cca0b7b92d1b2cd611ec82f5",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/b73eb19aed66190c10c9cad476da7c36c271d6dc",
+                "reference": "b73eb19aed66190c10c9cad476da7c36c271d6dc",
                 "shasum": ""
             },
             "require": {
@@ -37,7 +37,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2019-01-16T15:49:35+00:00"
+            "time": "2019-09-19T12:08:45+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -219,16 +219,16 @@
         },
         {
             "name": "tamtamchik/namecase",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tamtamchik/namecase.git",
-                "reference": "2053794498cd0fec544ccee91bcbe5b36d33bdd5"
+                "reference": "1f29341b810f75ab4beb4bdcb710dcede9107b46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/2053794498cd0fec544ccee91bcbe5b36d33bdd5",
-                "reference": "2053794498cd0fec544ccee91bcbe5b36d33bdd5",
+                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/1f29341b810f75ab4beb4bdcb710dcede9107b46",
+                "reference": "1f29341b810f75ab4beb4bdcb710dcede9107b46",
                 "shasum": ""
             },
             "require": {
@@ -242,7 +242,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev",
+                    "1.0.x": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -273,7 +274,7 @@
                 "strings",
                 "tamtamchik"
             ],
-            "time": "2019-05-24T10:09:45+00:00"
+            "time": "2019-07-16T17:32:28+00:00"
         }
     ],
     "packages-dev": [
@@ -309,16 +310,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "82ebae02209c21113908c229e9883c419720738a"
+                "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
-                "reference": "82ebae02209c21113908c229e9883c419720738a",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
+                "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
                 "shasum": ""
             },
             "require": {
@@ -330,7 +331,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
@@ -347,12 +348,12 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                },
-                {
                     "name": "Gert de Pagter",
                     "email": "BackEndTea@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -363,7 +364,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2019-08-06T08:03:45+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
