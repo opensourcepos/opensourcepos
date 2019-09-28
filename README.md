@@ -111,7 +111,7 @@ Reporting Bugs
 --------------
 
 If you are taking a release candidate code please make sure you always run the latest database upgrade script and you took the latest code from master.
-Please DO NOT post issues if you have not done those step.
+Please DO NOT post issues if you have not completed this step.
 
 - Versions **≥ 3.3.0**:
 

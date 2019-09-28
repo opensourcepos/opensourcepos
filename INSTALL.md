@@ -56,4 +56,4 @@ From now on ospos can be deployed using Docker on Linux, Mac or Windows. This se
 Cloud install
 -------------
 
-If you choose *DigitalOcean* [through this link](https://m.do.co/c/ac38c262507b), you will get a *$10 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations#cloud-deploy-installation) for further instructions on how to install the necessary components.
+If you choose *DigitalOcean* [through this link](https://m.do.co/c/ac38c262507b), you will get a *$50 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations#cloud-deploy-installation) for further instructions on how to install the necessary components.
