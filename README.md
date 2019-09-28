@@ -11,11 +11,12 @@ Introduction
 
 Open Source Point of Sale is a web based point of sale system.
 The main features are:
-* Stock management (Items and Kits)
-* VAT, customer and multi tiers taxation
+* Stock management (Items and Kits with extensible list of Attributes)
+* VAT, GST, customer and multi tiers taxation
 * Sale register with transactions logging
 * Quotation and invoicing
 * Expenses logging
+* Cashup
 * Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
@@ -118,7 +119,7 @@ Bug reports must follow this schema:
 2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
 3. Web Server name and version (e.g. Apache 2.2, Apache 2.4, Nginx 1.12, Nginx 1.13)
 4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2)
-5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2)
+5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2, 7.3)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
