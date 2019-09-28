@@ -7,6 +7,7 @@ Version 3.3.0
 + India GST Tax support + various Tax support improvements
 + Cashup feature
 + Temporary items feature
++ Fixed Sales Discount
 + Supplier category feature
 + Improved Items import and csv file generation (to contain additional attributes)
 + Improved Docker installation with nginx reverse proxy using Let's encrypt TLS certificate
