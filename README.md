@@ -113,7 +113,13 @@ Reporting Bugs
 If you are taking a release candidate code please make sure you always run the latest database upgrade script and you took the latest code from master.
 Please DO NOT post issues if you have not done those step.
 
-Bug reports must follow this schema:
+- Version **≥ 3.3.0**:
+
+Please **Copy** the info under **System Info tab in configuration section** in order to give us the required details.
+
+- Versions **< 3.2.3**:
+
+Bug reports must follow the below schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
 2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
