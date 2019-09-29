@@ -24,7 +24,7 @@ script:
 env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  && docker push "jekkos/opensourcepos:$TAG"'
+  && docker tag ospos "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
 deploy:
   file: deployment.json
   provider: bintray
