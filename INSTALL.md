@@ -34,24 +34,65 @@ First of all, if you're seeing the message **'system folder missing'** after lau
 Local install using Docker
 --------------------------
 
-From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
+From now onwards OSPOS can be deployed using Docker on Linux and Mac, locally or on a host (server).
+This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile.
+Docker runs natively on Mac and Linux. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
-* To build and run the image, download the latest build from bintray and issue following commands in a terminal with docker installed
+Since OSPOS version 3.3.0 the docker installation offers a reverse proxy based on nginx with a (if local) Self signed certificate termination (aka HTTPS connection).
+Behind the reverse proxy you can access OSPOS using https (port 443) and myPhpAdmin using port 8000.
+Port 80 (standard http) is not available for OSPOS, it's only available for a cert manager service in case of server installation.
+
+* To build and run the image, download the latest build from bintray.
+* Install envsubst from https://github.com/a8m/envsubst on your machine
+* Issue the following commands in a terminal with docker installed:
 
 ```
-    docker-compose build
-    docker-compose up 
+    docker/install-local.sh
 ```
 
-* If you want to run from the latest git source, then use docker and composer to run the build
+* When required to renew a certificate say (y)es.
+* When the script has terminated to run, wait about a minute before connecting to https://127.0.0.1.
+* The web browser will warn you of a self certificate exception, accept and continue
+* If you do https://127.0.0.1:8000 (port 8000) instead, you would be able to access a phpMyAdmin service connected to OSPOS MariaDB
+
+* To stop the docker issue the following command:
 
 ```
-  docker run --rm -v $(pwd):/app composer/composer install
-  docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations develop
-  docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt sh -c "npm install && bower install"
-  docker-compose build
-  docker-compose up
+    docker/uninstall.sh
 ```
+
+
+Host install using Docker
+-------------------------
+
+Since OSPOS version 3.3.0 the docker installation offers a reverse proxy based on nginx with a Letsencrypt TLS certificate termination (aka HTTPS connection).
+Letsencrypt is a free certificate issuer, requiring a special installation that this docker installation would take care for you.
+Any Letsencrypt TLS certificate renewal will be managed automatically for you, therefore there is no need to worry about those details.
+
+Before starting your installation, you would need to edit docker/.env file and configure it to contain the correct MySQL/MariaDB and phpMyAdmin passwords (don't use the defaults!).
+You will also need to register to Letsencrypt and configure your host domain name, Letsencrypt email address in docker/.env file.
+The variable STAGING needs to be set to 0 when you are confident your configuration is correct so that Letsencrypt will issue a final proper TLS certificate.
+
+Follow local install steps, but instead of 
+
+```
+    docker/install-local.sh
+```
+
+use
+
+```
+    docker/install-server.sh
+```
+
+Do not use 
+
+```
+    docker/uninstall.sh
+```
+
+on live deployments unless you want to tear down everything because all your disk content will be wiped out!
+
 
 Cloud install
 -------------

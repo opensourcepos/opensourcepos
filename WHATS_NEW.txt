@@ -15,6 +15,7 @@ Version 3.3.0
 + Added and Updated translations
 + Fixed various reports issues
 + Fixed rounding issues
++ Fixed CSRF issues
 + Fixed database upgrade script issues
 + Various bug fixes
 
