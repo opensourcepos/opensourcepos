@@ -100,6 +100,10 @@ Cloud install
 If you choose *DigitalOcean*:
 [Through this link](https://m.do.co/c/ac38c262507b), you will get a *$50 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations#cloud-deploy-installation) for further instructions on how to install the necessary components.
 
+
+cPanel & SSH Install
+--------------------
+
 If you own on a **VPS**, **Dedicated Server**, or **Shared Hosting** running on **cPanel** with **SSH** access:
 
 You can run our Stand-alone [WS-OSPOS-Installer](https://github.com/WebShells/WS-OSPOS-Installer.git), it will handle:
