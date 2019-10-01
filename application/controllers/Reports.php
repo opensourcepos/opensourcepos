@@ -850,9 +850,9 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary payments report
-	public function graphical_summary_payments($start_date, $end_date, $sale_type)
+	public function graphical_summary_payments($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
