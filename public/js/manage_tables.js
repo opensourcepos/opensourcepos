@@ -139,8 +139,8 @@
 	var highlight_row = function (id, color) {
 		$(rows_selector(id)).each(function(index, element) {
 			var original = $(element).css('backgroundColor');
-			$(element).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
-				.animate({backgroundColor: color || '#e1ffdd'}, 5000)
+			$(element).find("td").animate({backgroundColor: color || '#BEABA6'}, "slow", "linear")
+				.animate({backgroundColor: color || '#BEABA6'}, 300)
 				.animate({backgroundColor: original}, "slow", "linear");
 		});
 	};
