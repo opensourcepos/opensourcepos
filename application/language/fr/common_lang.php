@@ -1,13 +1,12 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Addresse 1";
 $lang["common_address_2"] = "Addresse 2";
 $lang["common_city"] = "Ville";
 $lang["common_close"] = "Fermer";
 $lang["common_comments"] = "Commentaires";
 $lang["common_common"] = "commun";
-$lang["common_confirm_search"] = "Vous avez sélectionné une ou plusieurs lignes, celles-ci ne seront plus sélectionnées après votre recherche.  d'accord ?";
-$lang["common_correct_errors"] = "";
+$lang["common_confirm_search"] = "Vous avez sélectionné une ou plusieurs lignes, celles-ci ne seront plus sélectionnées après votre recherche. Voulez-vous continuer ?";
+$lang["common_correct_errors"] = "Merci de corriger les erreurs identifié avant d'enregistrer";
 $lang["common_country"] = "Pays";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "Effacer";
@@ -39,11 +38,11 @@ $lang["common_last_name_required"] = "Le nom de famille est un champ obligatoire
 $lang["common_last_page"] = "Dernier";
 $lang["common_learn_about_project"] = "pour les dernières informations sur le projet.";
 $lang["common_list_of"] = "Liste de";
-$lang["common_logout"] = "Déconnion";
-$lang["common_migration_needed"] = "";
+$lang["common_logout"] = "Déconnexion";
+$lang["common_migration_needed"] = "Une migration de la base de donnée vers %1 démarrera après le connexion.";
 $lang["common_new"] = "Nouveau";
 $lang["common_no_persons_to_display"] = "Il n'y a personne à afficher.";
-$lang["common_none_selected_text"] = "Aucune sélection.";
+$lang["common_none_selected_text"] = "[Sélectionner]";
 $lang["common_or"] = "OU";
 $lang["common_phone_number"] = "Téléphone";
 $lang["common_phone_number_required"] = "Le numéro de téléphone est requis.";
