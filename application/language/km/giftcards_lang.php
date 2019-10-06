@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "បន្ថែមឬដកស្តុកទំនិញ។";
 $lang["giftcards_allow_alt_description"] = "អនុញ្ញាតអោយមានពិពណ៌នាផ្សេងទៀត";

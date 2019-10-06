@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "បោះបង់";
 $lang["receivings_cannot_be_deleted"] = "លប់ការទទួលមិនបានជោគជ័យ។";

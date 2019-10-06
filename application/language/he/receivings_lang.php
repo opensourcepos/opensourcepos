@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "בטל";
 $lang["receivings_cannot_be_deleted"] = "מחיקת החזרה(ות) נכשלה.";

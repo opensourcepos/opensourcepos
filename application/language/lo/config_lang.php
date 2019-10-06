@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "ທີ່ຢູ່ບໍລິສັດ";
 $lang["config_address_required"] = "ກະລຸນາໃສ່ທີ່ຢູ່ບໍລິສັດ.";

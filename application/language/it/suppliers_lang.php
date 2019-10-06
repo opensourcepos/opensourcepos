@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "Partita IVA";
 $lang["suppliers_agency_name"] = "Nome Agenzia";

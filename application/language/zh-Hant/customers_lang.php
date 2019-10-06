@@ -1,4 +1,5 @@
 <?php
+
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "帳號已存在於數據庫中。";
 $lang["customers_available_points"] = "現有積分";

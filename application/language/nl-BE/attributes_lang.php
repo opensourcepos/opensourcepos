@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["attributes_attribute_value_invalid_chars"] = "Attribuut waarde kan geen ':' of '|' bevatten";
 $lang["attributes_confirm_delete"] = "Bent u zeker dat u de geselecteerde attributen wil verwijderen?";

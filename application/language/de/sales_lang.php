@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_available_points"] = "Verfügbare Punkte";
 $lang["rewards_package"] = "Prämie";
@@ -18,7 +18,7 @@ $lang["sales_check_balance"] = "Scheck-Differenz";
 $lang["sales_check_filter"] = "Scheck";
 $lang["sales_comment"] = "Bemerkung";
 $lang["sales_comments"] = "Bemerkungen";
-$lang["sales_complete_sale"] = "Abschliessen";
+$lang["sales_complete_sale"] = "Abschließen";
 $lang["sales_confirm_cancel_sale"] = "Wollen Sie diesen Verkauf wirklich zurücksetzen? Alle Artikeleinträge werden entfernt.";
 $lang["sales_confirm_delete"] = "Wollen Sie die gewählten Aufträge löschen?";
 $lang["sales_confirm_restore"] = "Sind Sie sicher, dass Sie die ausgewählten Verkäufe wiederherstellen möchten?";

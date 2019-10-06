@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "Tümü";
 $lang["tables_columns"] = "Sütun";

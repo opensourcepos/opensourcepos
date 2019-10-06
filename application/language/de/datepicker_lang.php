@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "Von Beginn weg";
 $lang["datepicker_apply"] = "Ausführen";

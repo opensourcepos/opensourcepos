@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "";
 $lang["customers_account_number_duplicate"] = "";

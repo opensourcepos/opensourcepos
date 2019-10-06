@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Konto-Nr.";
 $lang["customers_account_number_duplicate"] = "Diese Konto-Nr. existiert bereits";

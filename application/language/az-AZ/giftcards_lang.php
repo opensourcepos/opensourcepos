@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Əlavə etmək və ya çıxarmaq üçün inventar.";
 $lang["giftcards_allow_alt_description"] = "Alternativ Təsvirə Icazə Verin";

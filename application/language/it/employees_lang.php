@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Informazioni";
 $lang["employees_cannot_be_deleted"] = "Eliminazione dell'impiegato/i non consentita, uno o più hanno trattato delle vendite o stai cancellando il tuo account.";

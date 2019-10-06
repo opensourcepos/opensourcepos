@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Инвентарь сложения/вычитания.";
 $lang["giftcards_allow_alt_description"] = "Разрешить альтернативные Описание";

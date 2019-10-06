@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["giftcards_allow_alt_description"] = "Permitir Alterar Descrição";

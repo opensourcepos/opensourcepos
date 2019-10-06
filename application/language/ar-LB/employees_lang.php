@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "المعلومات الأساسية للموظف";
 $lang["employees_cannot_be_deleted"] = "لايمكن حذف الموظفين ، واحد أو أكثر من المظفين قام بإجراء مبيعات :).";

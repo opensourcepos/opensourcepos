@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["cashups_amount"] = "";
 $lang["cashups_amount_number"] = "";

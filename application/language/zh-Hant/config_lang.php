@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "公司地址";
 $lang["config_address_required"] = "公司地址為必填";

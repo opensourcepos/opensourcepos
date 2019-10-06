@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Номер счота";
 $lang["customers_account_number_duplicate"] = "Номер счета уже присутствует в базе данных.";

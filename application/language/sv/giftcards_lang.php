@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Förteckning för att lägga till eller subtrahera.";
 $lang["giftcards_allow_alt_description"] = "Tillåt alternativ beskrivning";

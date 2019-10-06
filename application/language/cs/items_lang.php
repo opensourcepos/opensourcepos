@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Změna množství.";
 $lang["items_allow_alt_description"] = "Povolit alternativní popis";

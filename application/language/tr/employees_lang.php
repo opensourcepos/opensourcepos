@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Personel Temel Bilgileri";
 $lang["employees_cannot_be_deleted"] = "Seçili personel silinemedi, personellerin satışları var yada kendinizi silmeye çalışıyorsunuz";

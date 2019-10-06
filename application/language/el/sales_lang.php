@@ -1,4 +1,5 @@
 <?php
+
 $lang["customers_available_points"] = "Διαθέσιμοι Πόντοι";
 $lang["rewards_package"] = "Ανταμοιβές";
 $lang["rewards_remaining_balance"] = "Η αξία των υπολειπόμενων πόντων ανταμοιβής είναι ";

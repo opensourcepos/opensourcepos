@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Számla #";
 $lang["customers_account_number_duplicate"] = "Ez a számlaszám már szerepel az adatbázisban.";

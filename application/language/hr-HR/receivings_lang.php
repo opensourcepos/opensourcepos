@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Otkaži";
 $lang["receivings_cannot_be_deleted"] = "Primka(e) ne mogu biti obrisane";

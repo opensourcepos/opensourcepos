@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
@@ -42,8 +42,8 @@ $lang["config_company_remove_image"] = "Quitar Imagen";
 $lang["config_company_required"] = "Nombre del Comercio es requerido";
 $lang["config_company_select_image"] = "Seleccionar Imagen";
 $lang["config_company_website_url"] = "Sitio Web no es una URL estándar (http://...).";
-$lang["config_country_codes"] = "Codigo de pais";
-$lang["config_country_codes_tooltip"] = "Lista de codigo de paises separado por coma para busqueda de direcciones.";
+$lang["config_country_codes"] = "Código de país";
+$lang["config_country_codes_tooltip"] = "Lista de códigos de países separado por coma para busqueda de direcciones.";
 $lang["config_currency_code"] = "";
 $lang["config_currency_decimals"] = "Decimales de moneda";
 $lang["config_currency_symbol"] = "Símbolo de moneda";
@@ -147,15 +147,15 @@ $lang["config_invoice_email_message"] = "Plantilla de Factura por Email";
 $lang["config_invoice_enable"] = "Activar Facturación";
 $lang["config_invoice_printer"] = "Impresora Facturadora";
 $lang["config_invoice_type"] = "";
-$lang["config_jsprintsetup_required"] = "Advertencia!Esta funcionalidad desactivada solo funciona con el addon jsPrintSetup de FireFox instalado. Guardar de todas formas?";
+$lang["config_jsprintsetup_required"] = "Advertencia! Esta funcionalidad desactivada solo funciona con el addon jsPrintSetup de FireFox instalado. Guardar de todas formas?";
 $lang["config_language"] = "Idioma";
 $lang["config_last_used_invoice_number"] = "Último numero de factura utilizado";
 $lang["config_last_used_quote_number"] = "Último número de presupuesto utilizado";
-$lang["config_last_used_work_order_number"] = "Ultimo usado sin numero";
+$lang["config_last_used_work_order_number"] = "Último usado sin número";
 $lang["config_left"] = "Izquierda";
 $lang["config_license"] = "Licencia";
 $lang["config_license_configuration"] = "Anuncio de Licencia";
-$lang["config_line_sequence"] = "Secuencia de linea";
+$lang["config_line_sequence"] = "Secuencia de línea";
 $lang["config_lines_per_page"] = "Líneas por página";
 $lang["config_lines_per_page_number"] = "Líneas por página debe ser un número.";
 $lang["config_lines_per_page_required"] = "Líneas por página es requerido.";

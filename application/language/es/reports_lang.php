@@ -1,4 +1,5 @@
 <?php
+
 $lang["reports_all"] = "Todo";
 $lang["reports_authority"] = "Autorización";
 $lang["reports_canceled"] = "Cancelado";
@@ -43,8 +44,8 @@ $lang["reports_employees_summary_report"] = "Reporte de Resumen de Empleados";
 $lang["reports_expenses"] = "Gastos";
 $lang["reports_expenses_amount"] = "Monto";
 $lang["reports_expenses_categories"] = "Gastos";
-$lang["reports_expenses_categories_summary_report"] = "Reporte general de Gastos Categorias";
-$lang["reports_expenses_category"] = "Categoria";
+$lang["reports_expenses_categories_summary_report"] = "Reporte general de Gastos Categorías";
+$lang["reports_expenses_category"] = "Categoría";
 $lang["reports_expenses_tax_amount"] = "Imp";
 $lang["reports_expenses_total_amount"] = "Total monto";
 $lang["reports_expenses_total_tax_amount"] = "Total Imp";
@@ -58,7 +59,7 @@ $lang["reports_inventory_summary_report"] = "Reporte de Resumen de Inventario";
 $lang["reports_item"] = "Artículo";
 $lang["reports_item_count"] = "Filtrar Cantidad de Articulos";
 $lang["reports_item_name"] = "Nombre del Artículo";
-$lang["reports_item_number"] = "Codigo";
+$lang["reports_item_number"] = "Código";
 $lang["reports_items"] = "Artículos";
 $lang["reports_items_purchased"] = "Artículos Comprados";
 $lang["reports_items_received"] = "Artículos Recibidos";

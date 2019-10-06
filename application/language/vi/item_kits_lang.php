@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["item_kits_add_item"] = "Thêm Hàng hóa";
 $lang["item_kits_all"] = "Tất cả";

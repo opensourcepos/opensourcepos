@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["messages_first_name"] = "İsim";
 $lang["messages_last_name"] = "Soyisim";

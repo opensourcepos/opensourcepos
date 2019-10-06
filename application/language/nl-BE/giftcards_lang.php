@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Corrigatie hoeveelheid.";
 $lang["giftcards_allow_alt_description"] = "Aanpasbare omschrijving";

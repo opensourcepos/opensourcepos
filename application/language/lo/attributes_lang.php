@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["attributes_attribute_value_invalid_chars"] = "";
 $lang["attributes_confirm_delete"] = "";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "0,5 làm tròn xuống";
 $lang["enum_half_even"] = "0,5 dương làm tròn lên, âm xuống";

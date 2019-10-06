@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["reports_all"] = "Vše";
 $lang["reports_authority"] = "";

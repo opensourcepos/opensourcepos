@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Abbrechen";
 $lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden.";
 $lang["receivings_comments"] = "Kommentare";
-$lang["receivings_complete_receiving"] = "Abschliessen";
+$lang["receivings_complete_receiving"] = "Abschließen";
 $lang["receivings_confirm_cancel_receiving"] = "Wollen Siesen Wareneingang annullieren? Alle Einträge werden gelöscht.";
 $lang["receivings_confirm_delete"] = "Wollen Sie diesen Eingang wirklich löschen? Rückgängig nicht möglich.";
 $lang["receivings_confirm_finish_receiving"] = "Wollen Sie diesen Wareneingang verabeiten? Dieser Schritt kann nicht rückgängig gemacht werden.";

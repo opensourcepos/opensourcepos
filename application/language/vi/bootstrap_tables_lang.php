@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "Tất cả";
 $lang["tables_columns"] = "Các cột";

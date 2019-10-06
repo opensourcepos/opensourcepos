@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Zrušit";
 $lang["receivings_cannot_be_deleted"] = "Příjemku nelze smazat.";

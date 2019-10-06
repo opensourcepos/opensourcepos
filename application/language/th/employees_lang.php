@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "ข้อมูลพื้นฐานของพนักงาน";
 $lang["employees_cannot_be_deleted"] = "ไม่สามารถลบข้อมูลพนักงานที่กำลังปฏิบัติงานอยู่ได้";

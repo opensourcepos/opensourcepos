@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["cashups_amount"] = "Bedrag";
 $lang["cashups_amount_number"] = "Bedrag moet een getal zijn";

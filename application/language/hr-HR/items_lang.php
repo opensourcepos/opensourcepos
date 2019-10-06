@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Dodavanje/skidanje s inventure";
 $lang["items_allow_alt_description"] = "Dozvoli Alt opis";

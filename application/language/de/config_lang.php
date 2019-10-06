@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Adresse";
 $lang["config_address_required"] = "Adresse ist erforderlich.";

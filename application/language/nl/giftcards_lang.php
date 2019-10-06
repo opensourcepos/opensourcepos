@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Corrigatie hoeveelheid";
 $lang["giftcards_allow_alt_description"] = "Aanpasbare omschrijving";
@@ -22,7 +22,7 @@ $lang["giftcards_description"] = "Omschrijving";
 $lang["giftcards_details_count"] = "Stockgegevens";
 $lang["giftcards_do_nothing"] = "Doe niets";
 $lang["giftcards_edit_fields_you_want_to_update"] = "Bewerk de velden die u wil aanpassen voor ALLE geselecteerde cadeaubons";
-$lang["giftcards_edit_multiple_giftcards"] = "Bewerk meedere cadeaubons";
+$lang["giftcards_edit_multiple_giftcards"] = "Bewerk meerdere cadeaubonnen";
 $lang["giftcards_error_adding_updating"] = "Fout bij het bewaren van cadeaubons";
 $lang["giftcards_error_updating_multiple"] = "Fout bij het bewaren van cadeaubons";
 $lang["giftcards_excel_import_failed"] = "Excel import mislukt";

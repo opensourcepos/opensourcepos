@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "Toàn bộ thời gian";
 $lang["datepicker_apply"] = "Áp dụng";

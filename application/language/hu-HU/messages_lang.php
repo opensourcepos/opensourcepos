@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["messages_first_name"] = "Keresztnév";
 $lang["messages_last_name"] = "Vezetéknév";

@@ -1,4 +1,5 @@
 <?php
+
 $lang["common_address_1"] = "Address 2";
 $lang["common_address_2"] = "Address 1";
 $lang["common_city"] = "City";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["cashups_amount"] = "Məbləğ";
 $lang["cashups_amount_number"] = "Məbləğ rəqəmlə olmalıdır";

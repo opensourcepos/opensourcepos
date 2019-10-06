@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["giftcards_allow_alt_description"] = "Cho phép Mô tả thay thế";

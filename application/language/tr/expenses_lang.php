@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["expenses_add_item"] = "Gider ekle";
 $lang["expenses_amount"] = "Miktar";

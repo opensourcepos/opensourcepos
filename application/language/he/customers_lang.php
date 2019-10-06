@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "חשבון מס #";
 $lang["customers_account_number_duplicate"] = "מספר החשבון כבר נמצא במסד הנתונים.";

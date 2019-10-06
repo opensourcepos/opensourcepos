@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Annuleer";
 $lang["receivings_cannot_be_deleted"] = "Order(s) konden niet verwijderd worden";

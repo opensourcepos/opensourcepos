@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "تقريب نصفي";
 $lang["enum_half_even"] = "نصف مزدوج";

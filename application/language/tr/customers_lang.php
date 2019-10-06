@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Hesap No";
 $lang["customers_account_number_duplicate"] = "Bu hesap numarası zaten var";

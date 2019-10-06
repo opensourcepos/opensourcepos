@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_available_points"] = "Các điểm sẵn có";
 $lang["rewards_package"] = "Tiền thưởng";

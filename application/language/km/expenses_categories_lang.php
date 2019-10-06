@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "តំរូវអោយបំពេញឈ្មោះប្រភេទចំណាយ";
 $lang["expenses_categories_add_item"] = "បន្ថែមប្រភេទ";

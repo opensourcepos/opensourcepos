@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "Vše";
 $lang["tables_columns"] = "Sloupce";

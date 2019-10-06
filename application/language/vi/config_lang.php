@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Địa chỉ công ty";
 $lang["config_address_required"] = "Trường địa chỉ công ty là bắt buộc.";

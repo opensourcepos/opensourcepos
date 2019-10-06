@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["messages_first_name"] = "שם פרטי";
 $lang["messages_last_name"] = "שם משפחה";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "Half Omlaag";
 $lang["enum_half_even"] = "Half Even";

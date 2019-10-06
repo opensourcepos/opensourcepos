@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Fiche Employé";
 $lang["employees_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusieurs des employés à éffectué une vente, ou alors vous essayez de vous supprimer vous-meme.";

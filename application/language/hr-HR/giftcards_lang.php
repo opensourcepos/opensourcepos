@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Inventuru dodati/oduzeti";
 $lang["giftcards_allow_alt_description"] = "Dozvoli Alt opis";

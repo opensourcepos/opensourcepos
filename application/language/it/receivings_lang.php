@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Cancella";
 $lang["receivings_cannot_be_deleted"] = "Eliminazione Ricezione(i) fallita.";

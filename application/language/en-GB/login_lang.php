@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["login_gcaptcha"] = "I'm not a robot";
 $lang["login_go"] = "Go";

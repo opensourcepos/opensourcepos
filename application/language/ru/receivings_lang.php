@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Аннулировать";
 $lang["receivings_cannot_be_deleted"] = "Не удалось удалить получатели.";

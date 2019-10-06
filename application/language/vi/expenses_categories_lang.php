@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "Trường tên Thể loại chi phí là bắt buộc";
 $lang["expenses_categories_add_item"] = "Thêm thể loại";

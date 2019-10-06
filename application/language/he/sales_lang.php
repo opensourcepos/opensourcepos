@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_available_points"] = "נקודות זמינות";
 $lang["rewards_package"] = "פרסים";

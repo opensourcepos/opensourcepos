@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "Hozzáadás/levonás";
 $lang["giftcards_allow_alt_description"] = "Alternativ leirás eng.";

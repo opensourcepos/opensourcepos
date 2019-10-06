@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Thông tin";
 $lang["employees_cannot_be_deleted"] = "Không thể xóa các nhân viên đã chọn, một hay nhiều nhân viên đã xử lý bán hàng hoặc bạn đang cố xóa tài khoản của mình.";

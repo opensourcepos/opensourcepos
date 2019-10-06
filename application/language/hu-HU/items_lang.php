@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Mennyiség hozzáadása/elvétele";
 $lang["items_allow_alt_description"] = "Alternativ leirás eng.";

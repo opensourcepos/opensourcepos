@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "שם קטגורית הוצאה נדרש";
 $lang["expenses_categories_add_item"] = "הוסף קטגוריה";

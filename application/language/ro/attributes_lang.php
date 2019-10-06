@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine ':' sau '|'";
 $lang["attributes_confirm_delete"] = "Sigur doriti stergerea atributului/atributelor selectat(e)?";

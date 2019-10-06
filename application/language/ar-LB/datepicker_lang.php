@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "جميع الأوقات";
 $lang["datepicker_apply"] = "تطبيق";

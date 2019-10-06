@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "رقم الحساب";
 $lang["suppliers_agency_name"] = "اسم الوكالة";

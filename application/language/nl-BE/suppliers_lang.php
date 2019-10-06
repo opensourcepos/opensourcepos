@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "Btw nummer";
 $lang["suppliers_agency_name"] = "Agencynaam";

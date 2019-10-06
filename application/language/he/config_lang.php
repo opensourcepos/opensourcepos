@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "כתובת חברה";
 $lang["config_address_required"] = "כתובת החברה הינה שדה חובה.";

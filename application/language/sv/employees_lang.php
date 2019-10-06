@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Information";
 $lang["employees_cannot_be_deleted"] = "Det går inte att radera valda anställda, en eller flera av de behandlade försäljningarna eller du försöker radera ditt konto.";

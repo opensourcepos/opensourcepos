@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "";

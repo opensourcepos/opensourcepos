@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";

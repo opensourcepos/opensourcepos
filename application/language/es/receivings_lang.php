@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Ingreso(s) no se borraron.";
@@ -46,7 +46,7 @@ $lang["receivings_successfully_updated"] = "Recepción exitosamente actualizada"
 $lang["receivings_supplier"] = "Proveedor";
 $lang["receivings_supplier_address"] = "Direccion";
 $lang["receivings_supplier_email"] = "Email";
-$lang["receivings_supplier_location"] = "Ubicacion";
+$lang["receivings_supplier_location"] = "Ubicación";
 $lang["receivings_total"] = "Total";
 $lang["receivings_transaction_failed"] = "La(s) Transaccion(es) de Entrada Fallaron.";
 $lang["receivings_unable_to_add_item"] = "No se pudo agregar el artículo.";

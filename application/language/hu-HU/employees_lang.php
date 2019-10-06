@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Munkavállaló alap információk";
 $lang["employees_cannot_be_deleted"] = "Nem lehet a kiválasztott munkavállaló(ka)t törölni, mert már van lezárt értékesítése vagy saját magát kívánja törölni! :)";

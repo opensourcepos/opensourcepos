@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["item_kits_add_item"] = "إضافة مجموعة";
 $lang["item_kits_all"] = "الكل";

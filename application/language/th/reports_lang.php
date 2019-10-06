@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["reports_all"] = "ทั้งหมด";
 $lang["reports_authority"] = "ผู้ได้รับอนุญาติ";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "IBAN:";
 $lang["customers_account_number_duplicate"] = "Ovaj IBAN već postoji";

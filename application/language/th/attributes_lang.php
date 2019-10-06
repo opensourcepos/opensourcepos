@@ -1,4 +1,5 @@
 <?php
+
 $lang["attributes_attribute_value_invalid_chars"] = "ค่าแอตทริบิวต์ไม่สามารถมี ':' หรือ '|' ได้";
 $lang["attributes_confirm_delete"] = "คุณแน่ใจหรือไม่ว่าต้องการลบแอตทริบิวต์ที่เลือก ?";
 $lang["attributes_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการคืนค่าแอตทริบิวต์ที่เลือก ?";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Adresa společnosti";
 $lang["config_address_required"] = "";

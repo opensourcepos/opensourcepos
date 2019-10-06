@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "Cuenta #";
 $lang["suppliers_agency_name"] = "Nombre de la Agencia";

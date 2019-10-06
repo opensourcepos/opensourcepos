@@ -1,4 +1,5 @@
 <?php
+
 $lang["module_attributes"] = "Atributos";
 $lang["module_attributes_desc"] = "Agregar, Actualizar, Eliminar y Buscar atributos.";
 $lang["module_both"] = "Ambos";
@@ -11,8 +12,8 @@ $lang["module_customers_desc"] = "Agregar, Actualizar, Borrar y Buscar Clientes.
 $lang["module_employees"] = "Empleados";
 $lang["module_employees_desc"] = "Agregar, Actualizar, Borrar y Buscar Empleados.";
 $lang["module_expenses"] = "Gastos";
-$lang["module_expenses_categories"] = "Categorias Gastos";
-$lang["module_expenses_categories_desc"] = "Agregar, Actualizar y Borrar Categorias de Gastos.";
+$lang["module_expenses_categories"] = "Categorías Gastos";
+$lang["module_expenses_categories_desc"] = "Agregar, Actualizar y Borrar Categorías de Gastos.";
 $lang["module_expenses_desc"] = "Agregar, Actualizar, Buscar y Borrar Gastos.";
 $lang["module_giftcards"] = "Tarjetas de Regalo";
 $lang["module_giftcards_desc"] = "Agregar, Actualizar, Borrar y Buscar Tarjetas de Regalo.";

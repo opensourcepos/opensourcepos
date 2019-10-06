@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Bestandsänderung";
 $lang["items_allow_alt_description"] = "Erlaube Alt. Bez.";

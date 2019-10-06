@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["expenses_add_item"] = "Aggiungi Spesa";
 $lang["expenses_amount"] = "Importo";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Informacije";
 $lang["employees_cannot_be_deleted"] = "Ne možete obristi odabranog radnika, jedan ili više radnika ima prodaju ili pokušavate obristi sebe :)";

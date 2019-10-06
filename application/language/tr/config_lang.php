@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Şirket Adresi";
 $lang["config_address_required"] = "Şirket Adresi zorunlu alandır";

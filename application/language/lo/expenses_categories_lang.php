@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "ຊື່ປະເພດຄ່າໃຊ້ຈ່າຍຈຳເປັນຕ້ອງໃສ່";
 $lang["expenses_categories_add_item"] = "ເພີ່ມປະເພດ";

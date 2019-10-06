@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "за все время";
 $lang["datepicker_apply"] = "";

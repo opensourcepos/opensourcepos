@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "Kezdetektől";
 $lang["datepicker_apply"] = "Elfogad";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["giftcards_add_minus"] = "المخزن المضاف أو المطروح منه.";
 $lang["giftcards_allow_alt_description"] = "السماح بوصف بديل";

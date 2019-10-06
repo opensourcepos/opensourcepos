@@ -1,4 +1,5 @@
 <?php
+
 $lang["giftcards_add_minus"] = "Inventory to add or subtract.";
 $lang["giftcards_allow_alt_description"] = "Allow Alternate Description";
 $lang["giftcards_bulk_edit"] = "Bulk Edit";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Cég cím";
 $lang["config_address_required"] = "Cég cím kötelező mező";

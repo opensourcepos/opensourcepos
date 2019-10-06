@@ -1,4 +1,5 @@
 <?php
+
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir códigos de barras duplicados";
@@ -45,7 +46,7 @@ $lang["config_country_codes"] = "Código do país";
 $lang["config_country_codes_tooltip"] = "Vírgula lista de códigos de país separado para pesquisa de endereços pelo nome.";
 $lang["config_currency_code"] = "Código da moeda";
 $lang["config_currency_decimals"] = "Decimais da moeda";
-$lang["config_currency_symbol"] = "Simbolo moeda";
+$lang["config_currency_symbol"] = "Símbolo moeda";
 $lang["config_customer_reward"] = "Recompensa";
 $lang["config_customer_reward_duplicate"] = "Recompensa deve ser única.";
 $lang["config_customer_reward_enable"] = "Ativar recompensas do cliente";
@@ -133,7 +134,7 @@ $lang["config_general"] = "Gerais";
 $lang["config_general_configuration"] = "Configurações Gerais";
 $lang["config_giftcard_number"] = "Número cartão presente";
 $lang["config_giftcard_random"] = "Geração aleaória";
-$lang["config_giftcard_series"] = "Gerado em serie";
+$lang["config_giftcard_series"] = "Gerado em série";
 $lang["config_include_hsn"] = "Incluir suporte para códigos HSN";
 $lang["config_info"] = "Informações";
 $lang["config_info_configuration"] = "Informações da loja";

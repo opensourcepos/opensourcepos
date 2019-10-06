@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "帳號 #";
 $lang["suppliers_agency_name"] = " ";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "Mind";
 $lang["tables_columns"] = "Oszlopok";

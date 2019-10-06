@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "Arredondar para baixo";
 $lang["enum_half_even"] = "Não arredondar";

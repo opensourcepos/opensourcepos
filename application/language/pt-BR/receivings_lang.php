@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Recebimento(s) não pode ser excluído.";

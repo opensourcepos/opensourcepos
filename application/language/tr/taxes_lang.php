@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["taxes_add_exception"] = "İstisna Ekle";
 $lang["taxes_cascade"] = "";

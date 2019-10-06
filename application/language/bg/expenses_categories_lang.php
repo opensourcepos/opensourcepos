@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "Expense Category name required";
 $lang["expenses_categories_add_item"] = "Add Category";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["suppliers_account_number"] = "Račun br.";
 $lang["suppliers_agency_name"] = "Naziv djelatnosti";

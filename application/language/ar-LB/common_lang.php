@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["common_address_1"] = "العنوان 1";
 $lang["common_address_2"] = "العنوان 2";

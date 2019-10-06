@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "Sve";
 $lang["datepicker_apply"] = "Primjeni";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "De naam van dit veld is verplicht";
 $lang["expenses_categories_add_item"] = "Voeg onkostencategorie toe";

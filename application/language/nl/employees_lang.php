@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Informatie";
 $lang["employees_cannot_be_deleted"] = "";

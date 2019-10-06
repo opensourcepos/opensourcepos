@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Mitarbeiter-Information";
 $lang["employees_cannot_be_deleted"] = "Konnte gewählten Mitarbeiter nicht löschen, einer oder mehrere weisen Verkäufe aus.";

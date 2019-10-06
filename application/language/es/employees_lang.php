@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["employees_basic_information"] = "Información Básica de Empleados";
 $lang["employees_cannot_be_deleted"] = "No se pudieron borrar empleados. Uno o más empleados tiene ventas procesadas o estás tratando de borrarte a tí mismo(a).";

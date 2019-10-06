@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["login_gcaptcha"] = "";
 $lang["login_go"] = "Verstuur";

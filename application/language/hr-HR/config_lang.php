@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Adresa tvrtke";
 $lang["config_address_required"] = "Adresu tvrtke je potrebno unijeti";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Abbrechen";
 $lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden";

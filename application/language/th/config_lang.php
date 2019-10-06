@@ -1,4 +1,5 @@
 <?php
+
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_allow_duplicate_barcodes"] = "อนุญาตบาร์โค้ดที่ซ้ำกัน";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "ครึ่งล่าง";
 $lang["enum_half_even"] = "ครึ่งคู่";

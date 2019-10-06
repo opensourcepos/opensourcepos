@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["cashups_amount"] = "Quantidade";
 $lang["cashups_amount_number"] = "O valor deve ser um número";

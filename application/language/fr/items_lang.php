@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l'Inventaire.";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "הכול";
 $lang["tables_columns"] = "עמודות";

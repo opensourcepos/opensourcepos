@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["item_kits_add_item"] = "新增套件";
 $lang["item_kits_all"] = "";

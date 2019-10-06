@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";

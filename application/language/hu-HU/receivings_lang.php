@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Mégsem";
 $lang["receivings_cannot_be_deleted"] = "Átvétel(ek) nem törölhető(ek)";

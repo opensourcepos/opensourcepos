@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Konto #";
 $lang["customers_account_number_duplicate"] = "Kontonummer finns redan i databasen.";

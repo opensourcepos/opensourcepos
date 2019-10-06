@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Адрес Компании";
 $lang["config_address_required"] = "Адрес Компании - обязательный пробел";

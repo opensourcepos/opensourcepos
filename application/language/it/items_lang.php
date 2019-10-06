@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Inventario da aggiungere o sottrarre.";
 $lang["items_allow_alt_description"] = "Permetti Descrizione alternativa";

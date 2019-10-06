@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "Este número de cuenta ya esta en la base de datos.";
@@ -23,7 +23,7 @@ $lang["customers_employee"] = "Empleado";
 $lang["customers_error_adding_updating"] = "Error agregando/actualizando cliente.";
 $lang["customers_excel_import_failed"] = "Falló la importación de Hoja de Cálculo";
 $lang["customers_excel_import_nodata_wrongformat"] = "El archivo subido no tiene informacion o el formato es incorrecto.";
-$lang["customers_excel_import_partially_failed"] = "La mayoria de los clientes se importaron pero algunos no:";
+$lang["customers_excel_import_partially_failed"] = "La mayoría de los clientes se importaron pero algunos no:";
 $lang["customers_excel_import_success"] = "Importacion de Clientes exitosa.";
 $lang["customers_import_items_excel"] = "Importar Clientes desde Excel";
 $lang["customers_mailchimp_activity_click"] = "Email click";

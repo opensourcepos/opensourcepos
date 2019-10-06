@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["taxes_add_exception"] = "Ausnahme hinzufügen";
 $lang["taxes_cascade"] = "";

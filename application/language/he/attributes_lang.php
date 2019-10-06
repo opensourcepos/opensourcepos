@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["attributes_attribute_value_invalid_chars"] = "ערך השדה אינו יכול להכיל ':' או '|'";
 $lang["attributes_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את המאפיינים שנבחרו?";

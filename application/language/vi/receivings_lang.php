@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Thôi";
 $lang["receivings_cannot_be_deleted"] = "Gặp lỗi khi xóa lần nhập hàng.";

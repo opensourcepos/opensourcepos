@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "Tüm Zamanlar";
 $lang["datepicker_apply"] = "Uygula";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["datepicker_all_time"] = "全部";
 $lang["datepicker_apply"] = "Apply";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Företagsadress";
 $lang["config_address_required"] = "Företagsadress är ett obligatoriskt fält.";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_cancel_receiving"] = "Annuler";
 $lang["receivings_cannot_be_deleted"] = "L'arrivage(s) ne peu pas etre effacé.";
@@ -17,7 +17,7 @@ $lang["receivings_edit"] = "Éditer";
 $lang["receivings_edit_sale"] = "Editer l'arrivage";
 $lang["receivings_employee"] = "Employé(e)";
 $lang["receivings_error_editing_item"] = "Erreur d'édition.";
-$lang["receivings_error_requisition"] = "Impossible de déplacer le stock a partir de la même location.";
+$lang["receivings_error_requisition"] = "Impossible de déplacer le stock à partir de la même location.";
 $lang["receivings_find_or_scan_item"] = "Chercher/Scanner Élément";
 $lang["receivings_find_or_scan_item_or_receipt"] = "Chercher Elément OU Reçu";
 $lang["receivings_id"] = "ID Arrivage";

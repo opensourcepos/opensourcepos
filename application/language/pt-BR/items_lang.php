@@ -1,4 +1,5 @@
 <?php
+
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
 $lang["items_amount_entry"] = "Entrada de montante";

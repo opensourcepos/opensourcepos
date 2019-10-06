@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["expenses_add_item"] = "Voeg kosten toe";
 $lang["expenses_amount"] = "Bedrag";

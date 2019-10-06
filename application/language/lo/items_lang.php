@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "ເພີ່ມຫລືຫລຸດປະລິມານສິນຄ້າໃນສາງ";
 $lang["items_allow_alt_description"] = "ອະນຸຍາດໃຫ້ມີລາຍລະອຽດເສີມ";

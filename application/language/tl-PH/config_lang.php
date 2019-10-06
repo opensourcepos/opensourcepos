@@ -1,4 +1,5 @@
 <?php
+
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Phone is a required field.";
 $lang["config_allow_duplicate_barcodes"] = "Allow Duplicate Barcodes";

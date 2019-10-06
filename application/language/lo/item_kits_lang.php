@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["item_kits_add_item"] = "ເພີ່ມລາຍການສິນຄ້າແບບຊຸດ";
 $lang["item_kits_all"] = "ທັງຫມົດ";

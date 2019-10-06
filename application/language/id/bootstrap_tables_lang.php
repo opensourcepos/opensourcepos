@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["tables_all"] = "Semua";
 $lang["tables_columns"] = "Kolom";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["category_name_required"] = "Nom de la catégorie de dépenses requis";
 $lang["expenses_categories_add_item"] = "Ajouter une catégorie";

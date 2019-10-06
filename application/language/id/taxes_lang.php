@@ -1,4 +1,5 @@
 <?php
+
 $lang["taxes_add_exception"] = "Tambah pengecualian";
 $lang["taxes_cascade"] = "Menurunkan";
 $lang["taxes_cascade_sequence"] = "Urutan Penurunan";

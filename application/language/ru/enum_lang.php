@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["enum_half_down"] = "Половина Вниз";
 $lang["enum_half_even"] = "Половина Даже";
