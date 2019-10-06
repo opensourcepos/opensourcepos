@@ -292,7 +292,6 @@ class Item extends CI_Model
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('items.item_id', $item_id);
-		$this->db->group_by('items.item_id');
 
 		$query = $this->db->get();
 
