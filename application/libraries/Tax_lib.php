@@ -55,7 +55,7 @@ class Tax_lib
 	/**
 	 * Compute taxes for all items in the cart
 	 */
-	public function get_taxes($cart)
+	public function get_taxes(&$cart)
 	{
 		$register_mode = $this->CI->sale_lib->get_mode();
 		$tax_decimals = tax_decimals();
@@ -69,6 +69,8 @@ class Tax_lib
 		{
 			foreach($cart as $line => $item)
 			{
+				$taxed = FALSE;
+
 				if(!($this->CI->config->item('use_destination_based_tax')))
 				{
 					// Start of current Base System tax calculations
@@ -100,6 +102,7 @@ class Tax_lib
 							$tax_group_sequence++;
 							$this->update_taxes($taxes, $tax_type, $tax['name'], $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);
 							$tax_group_sequence += 1;
+							$taxed = TRUE;
 						}
 						$items_taxes_detail = array();
 						$items_taxes_detail['item_id'] = $item['item_id'];
@@ -125,12 +128,16 @@ class Tax_lib
 					{
 						$item['tax_category_id'] = $this->CI->config->config['default_tax_category'];
 					}
-					$tax_category = '';
-					$tax_rate = '';
-					$rounding_code = Rounding_mode::HALF_UP;
-					$tax_group_sequence = 0;
-					$tax_code = '';
-					$this->apply_destination_tax($item, $customer_info->city, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
+
+					$taxed = $this->apply_destination_tax($item, $customer_info->city, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
+				}
+				if($taxed)
+				{
+					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_taxed_ind');
+				}
+				else
+				{
+					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_nontaxed_ind');
 				}
 			}
 			$this->round_taxes($taxes);
@@ -292,6 +299,8 @@ class Tax_lib
 	 */
 	public function apply_destination_tax(&$item, $city, $state, $sales_tax_code_id, $register_mode, $sale_id, &$taxes, &$item_taxes, $line)
 	{
+		$taxed = FALSE;
+
 		$tax_code_id = $this->get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code_id);
 
 		// If tax code cannot be determined or the price is zero then skip this item
@@ -337,7 +346,7 @@ class Tax_lib
 
 				if($tax_amount != 0)
 				{
-
+					$taxed = TRUE;
 					$this->update_taxes($taxes, $tax_type, $tax['tax_group'], $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
 				}
 
@@ -357,11 +366,11 @@ class Tax_lib
 
 				$item_taxes[] = $item_taxes_detail;
 			}
-			return;
+			return $taxed;
 		}
 		else
 		{
-			return;
+			return $taxed;
 		}
 	}
 

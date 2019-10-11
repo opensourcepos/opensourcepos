@@ -127,6 +127,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_receipt_show_tax_ind'), 'receipt_show_tax_ind', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'receipt_show_tax_ind',
+						'value' => 'receipt_show_tax_ind',
+						'id' => 'receipt_show_tax_ind',
+						'checked' => $this->config->item('receipt_show_tax_ind'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_total_discount'), 'receipt_show_total_discount', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -303,7 +314,7 @@ $(document).ready(function()
 			$(printers).each(function(key, value)
 			{
 				 $this.append($('<option>', { value : value }).text(value));
-  	 		});
+			});
 			$("option[value='" + localStorage[$(this).attr('id')] + "']", this).prop('selected', true);
 			$(this).change(function()
 			{
@@ -369,7 +380,7 @@ $(document).ready(function()
 				required:true,
 				number:true
 			}
-   		},
+		},
 
 		messages:
 		{

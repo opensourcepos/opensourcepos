@@ -750,7 +750,8 @@ class Config extends Secure_Controller
 			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
 			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
-			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
+			'receipt_show_taxes' => ($this->input->post('receipt_show_taxes') != NULL),
+            'receipt_show_tax_ind' => ($this->input->post('receipt_show_tax_ind') != NULL),
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
 			'receipt_show_description' => $this->input->post('receipt_show_description') != NULL,
 			'receipt_show_serialnumber' => $this->input->post('receipt_show_serialnumber') != NULL,
@@ -762,7 +763,7 @@ class Config extends Secure_Controller
 			'print_bottom_margin' => $this->input->post('print_bottom_margin'),
 			'print_right_margin' => $this->input->post('print_right_margin')
 		);
-		
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 		
