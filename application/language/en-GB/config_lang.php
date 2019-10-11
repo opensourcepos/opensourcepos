@@ -231,6 +231,7 @@ $lang["config_receipt_short"] = "Short";
 $lang["config_receipt_show_company_name"] = "Show Company Name";
 $lang["config_receipt_show_description"] = "Show Description";
 $lang["config_receipt_show_serialnumber"] = "Show Serial Number";
+$lang["config_receipt_show_tax_ind"] = "Show Tax Indicator";
 $lang["config_receipt_show_taxes"] = "Show Taxes";
 $lang["config_receipt_show_total_discount"] = "Show Total Discount";
 $lang["config_receipt_template"] = "Receipt Template";
