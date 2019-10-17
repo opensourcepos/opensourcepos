@@ -305,33 +305,30 @@ class Config extends Secure_Controller
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
-	
+
 	public function ajax_check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
 		$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
-		
+
 		if($this->input->post('thousands_separator') == 'false')
 		{
 			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}
-		
+
 		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
-		$fmt->setTextAttribute(\NumberFormatter::CURRENCY_CODE, $currency_code);
-		
 		$number_local_example = $fmt->format(1234567890.12300);
-		
+
 		echo json_encode(array(
 			'success' => $number_local_example != FALSE,
 			'number_locale_example' => $number_local_example,
 			'currency_symbol' => $currency_symbol,
 			'currency_code' => $currency_code,
-			'thousands_separator' => $fmt->getAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL) != ''
 		));
 	}
-	
+
 	public function save_locale()
 	{
 		$exploded = explode(":", $this->input->post('language'));
@@ -343,7 +340,7 @@ class Config extends Secure_Controller
 			'timezone' => $this->input->post('timezone'),
 			'dateformat' => $this->input->post('dateformat'),
 			'timeformat' => $this->input->post('timeformat'),
-			'thousands_separator' => $this->input->post('thousands_separator'),
+			'thousands_separator' => !empty($this->input->post('thousands_separator')),
 			'number_locale' => $this->input->post('number_locale'),
 			'currency_decimals' => $this->input->post('currency_decimals'),
 			'tax_decimals' => $this->input->post('tax_decimals'),
@@ -751,7 +748,7 @@ class Config extends Secure_Controller
 			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
 			'receipt_show_taxes' => ($this->input->post('receipt_show_taxes') != NULL),
-            'receipt_show_tax_ind' => ($this->input->post('receipt_show_tax_ind') != NULL),
+			'receipt_show_tax_ind' => ($this->input->post('receipt_show_tax_ind') != NULL),
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
 			'receipt_show_description' => $this->input->post('receipt_show_description') != NULL,
 			'receipt_show_serialnumber' => $this->input->post('receipt_show_serialnumber') != NULL,
