@@ -209,6 +209,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->Module->get_show_office_group();
+		$data['currency_code'] = $this->config->item('currency_code');
 		
 		$data = $this->xss_clean($data);
 		
@@ -309,9 +310,20 @@ class Config extends Secure_Controller
 	public function ajax_check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
+		$save_number_locale = $this->input->post('save_number_locale');
+
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
-		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
-		$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
+		if($number_locale != $save_number_locale)
+		{
+			$currency_symbol = $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+			$currency_code = $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE);
+			$save_number_locale = $number_locale;
+		}
+		else
+		{
+			$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
+			$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
+		}
 
 		if($this->input->post('thousands_separator') == 'false')
 		{
@@ -323,6 +335,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $number_local_example != FALSE,
+			'save_number_locale' => $save_number_locale,
 			'number_locale_example' => $number_local_example,
 			'currency_symbol' => $currency_symbol,
 			'currency_code' => $currency_code,
