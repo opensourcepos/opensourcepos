@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -1514,7 +1514,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
-	function search_cart_for_item_id($id, $array)
+	public function search_cart_for_item_id($id, $array)
 	{
 		foreach($array as $key => $val)
 		{
@@ -1523,6 +1523,7 @@ class Sales extends Secure_Controller
 				return $key;
 			}
 		}
+
 		return NULL;
 	}
 }
