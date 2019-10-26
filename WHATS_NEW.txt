@@ -1,3 +1,7 @@
+Version 3.3.1
+-------------
++ Various bug fixes (please disable `only_full_group_by` option from MySQL/MariaDB to avoid issues)
+
 Version 3.3.0
 -------------
 + New logo
