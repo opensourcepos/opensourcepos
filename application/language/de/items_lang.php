@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Bestandsänderung.";
 $lang["items_allow_alt_description"] = "Alternative Beschreibung zulassen";
 $lang["items_amount_entry"] = "Anzahl Eingang";
@@ -34,7 +33,7 @@ $lang["items_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";
 $lang["items_error_updating_multiple"] = "Fehler beim Ändern";
 $lang["items_excel_import_failed"] = "Excel Import fehlgeschlagen";
 $lang["items_excel_import_nodata_wrongformat"] = "Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.";
-$lang["items_excel_import_partially_failed"] = "Der Import von Artikeln ist mit einigen Fehlern erfolgreich:";
+$lang["items_excel_import_partially_failed"] = "%1 Artikel-Import Fehler in Zeile: %2. Keine Reihen wurden importiert.";
 $lang["items_excel_import_success"] = "Artikelimport erfolgreich.";
 $lang["items_generate_barcodes"] = "Generiere Barcodes";
 $lang["items_hsn_code"] = "Harmonisierte System Nomenklatur";
@@ -109,3 +108,4 @@ $lang["items_unit_price_required"] = "Der Verkaufspreis ist ein Pflichtfeld.";
 $lang["items_upc_database"] = "Barcode Datenbank";
 $lang["items_update"] = "Ändere Artikel";
 $lang["items_use_inventory_menu"] = "Verwende Bestandesmenu";
+$lang["items_inventory_CSV_import_quantity"] = "Anzahl der Importe aus CSV";
