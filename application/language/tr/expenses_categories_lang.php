@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["category_name_required"] = "Gider Kategorisi adı gerekli";
 $lang["expenses_categories_add_item"] = "Kategori ekleyin";
 $lang["expenses_categories_cannot_be_deleted"] = "Gider kategorisi silinemez";
 $lang["expenses_categories_category_id"] = "No";
 $lang["expenses_categories_confirm_delete"] = "Seçili Gider Kategorisini silmek istediğinizden emin misiniz?";
-$lang["expenses_categories_confirm_restore"] = "";
+$lang["expenses_categories_confirm_restore"] = "Seçili Gider Kategorisini geri yüklemek istediğinize emin misiniz?";
 $lang["expenses_categories_description"] = "Kategori Tanımı";
 $lang["expenses_categories_error_adding_updating"] = "Gider Kategorisi ekleme/güncelleme hatası";
 $lang["expenses_categories_info"] = "Giderler Kategorisi Bilgisi";

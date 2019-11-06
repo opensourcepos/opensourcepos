@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Gider ekle";
 $lang["expenses_amount"] = "Miktar";
 $lang["expenses_amount_number"] = "Miktar değeri sayı olmalı";
@@ -18,7 +17,7 @@ $lang["expenses_credit"] = "Kredi Kartı";
 $lang["expenses_credit_filter"] = "Kredi Kartı";
 $lang["expenses_date"] = "Tarih";
 $lang["expenses_date_number"] = "Tarih değeri sayı olmalı";
-$lang["expenses_date_required"] = "Tarih bilgisi gereklidir.";
+$lang["expenses_date_required"] = "Tarih bilgisi gereklidir";
 $lang["expenses_debit"] = "Debit Kart";
 $lang["expenses_debit_filter"] = "Debit Kart";
 $lang["expenses_description"] = "Tanım";
@@ -36,7 +35,7 @@ $lang["expenses_no_expenses_to_display"] = "Gösterilecek Gider Bilgisi yoktur";
 $lang["expenses_none_selected"] = "Seçili Gider yok";
 $lang["expenses_one_or_multiple"] = "Gider(ler)";
 $lang["expenses_payment"] = "Ödeme Tipi";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Tedarikçinin adını yazmaya başlayın ...";
 $lang["expenses_successful_adding"] = "Gider eklendi";
 $lang["expenses_successful_deleted"] = "Gider silindi";
 $lang["expenses_successful_updating"] = "Gider güncellendi";

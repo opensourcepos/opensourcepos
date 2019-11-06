@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Dirección 1";
 $lang["common_address_2"] = "Dirección 2";
 $lang["common_city"] = "Ciudad";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Cerrar";
 $lang["common_comments"] = "Comentarios";
 $lang["common_common"] = "común";
 $lang["common_confirm_search"] = "Ha seleccionado algunos registros que no estarán seleccionados después de la búsqueda. ¿Está segura(o) de enviar su búsqueda?";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Por favor verifique que no hay errores antes de guardar";
 $lang["common_country"] = "País";
 $lang["common_date"] = "Fecha";
 $lang["common_delete"] = "Eliminar";
