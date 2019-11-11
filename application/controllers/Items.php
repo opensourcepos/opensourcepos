@@ -193,7 +193,7 @@ class Items extends Secure_Controller
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
-		$data['item_type_disabled'] = !$this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['item_kit_disabled'] = !$this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
 		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id);
 		$data['definition_names'] = $this->Attribute->get_definition_names();
 
@@ -249,6 +249,10 @@ class Items extends Secure_Controller
 				$item_info->tax_category_id = $this->config->item('default_tax_category');
 			}
 		}
+
+		$data['standard_item_locked'] = ($data['item_kit_disabled'] && $item_info->item_type == ITEM_KIT
+										&& !$data['allow_temp_item']
+										&& !($this->config->item('derive_sale_quantity') == '1'));
 
 		$data['item_info'] = $item_info;
 
