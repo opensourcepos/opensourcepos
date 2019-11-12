@@ -36,7 +36,7 @@ form
 	padding:6% 4%;
 }
 
-input[name="text"], input[type="password"]
+input[type="text"], input[type="password"]
 {
 	width:100%;
 	margin-bottom:4%;
