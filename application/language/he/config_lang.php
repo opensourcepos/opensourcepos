@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "השתמש במס מבוסס יעד
 $lang["config_website"] = "אתר";
 $lang["config_work_order_enable"] = "תמיכה בהזמנת עבודה";
 $lang["config_work_order_format"] = "פורמט הזמנת עבודה";
+$lang["config_second_display"] = "Show Customer Display";

@@ -61,7 +61,17 @@ if(isset($success))
 						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
 					</button>
 				</li>
-
+				<?php
+				if($this->config->item('second_display_enabled') == TRUE)
+				{
+				?>
+				<li class="pull-right">
+                  		<?php echo anchor($controller_name, '<span class="glyphicon glyphicon-blackboard">&nbsp</span>' . $this->lang->line('sales_second_display'),
+                    		array('class'=>'btn btn-success btn-sm', 'id'=>'show_second_display', 'title'=>$this->lang->line('sales_second_display'))); ?>
+                		</li>
+				<?php
+				}
+				?>
 				<?php
 				if($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 				{
@@ -660,6 +670,13 @@ if(isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+
+   	$('#show_second_display').click(function () {
+
+        	myWindow = window.open('sales/second_display', "second_display");
+
+   	});
+	
 	$("input[name='item_number']").change(function(){
 		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
 		var item_number = $(this).val();

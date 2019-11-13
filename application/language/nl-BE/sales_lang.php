@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Werkorder Nummer";
 $lang["sales_work_order_number_duplicate"] = "Werkorder Nummer moet uniek zijn.";
 $lang["sales_work_order_sent"] = "Werkorder verzonder naar";
 $lang["sales_work_order_unsent"] = "Werkorder kon niet verzonden worden naar";
+$lang["sales_second_display"] = "Second Display";

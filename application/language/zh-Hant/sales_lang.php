@@ -173,3 +173,4 @@ $lang["sales_work_order_number"] = "工作指示編號";
 $lang["sales_work_order_number_duplicate"] = "工作編號重複.";
 $lang["sales_work_order_sent"] = "發送工作指示";
 $lang["sales_work_order_unsent"] = "工作指示發送失敗";
+$lang["sales_second_display"] = "Second Display";

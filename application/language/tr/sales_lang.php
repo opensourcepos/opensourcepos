@@ -173,3 +173,4 @@ $lang["sales_work_order_number"] = "İş Emri Numarası";
 $lang["sales_work_order_number_duplicate"] = "İş Emri Numarası diğerinden farklı olmalı.";
 $lang["sales_work_order_sent"] = "İş Emri Gönderildi =>";
 $lang["sales_work_order_unsent"] = "İş Emri gönderilemedi";
+$lang["sales_second_display"] = "Second Display";

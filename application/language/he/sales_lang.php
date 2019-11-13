@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "מספר הזמנת עבודה";
 $lang["sales_work_order_number_duplicate"] = "מספר הזמנת עבודה חייב להיות ייחודי.";
 $lang["sales_work_order_sent"] = "הזמנת עבודה נשלחה אל";
 $lang["sales_work_order_unsent"] = "הזמנת עבודה לא נשלחה אל";
+$lang["sales_second_display"] = "Second Display";

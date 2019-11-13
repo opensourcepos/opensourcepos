@@ -287,6 +287,7 @@ class Config extends Secure_Controller
 			'gcaptcha_enable' => $this->input->post('gcaptcha_enable') != NULL,
 			'gcaptcha_secret_key' => $this->input->post('gcaptcha_secret_key'),
 			'gcaptcha_site_key' => $this->input->post('gcaptcha_site_key'),
+			'second_display_enabled' => $this->input->post('second_display_enabled') != NULL,
 			'suggestions_first_column' => $this->input->post('suggestions_first_column'),
 			'suggestions_second_column' => $this->input->post('suggestions_second_column'),
 			'suggestions_third_column' => $this->input->post('suggestions_third_column'),

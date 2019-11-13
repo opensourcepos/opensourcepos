@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "Hedef Bazlı Vergiyi Kullan";
 $lang["config_website"] = "Web site";
 $lang["config_work_order_enable"] = "İş Emri Aktif";
 $lang["config_work_order_format"] = "İş Emri Biçimi";
+$lang["config_second_display"] = "Show Customer Display";

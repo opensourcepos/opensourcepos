@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "Activeer 'Destination Based Tax'";
 $lang["config_website"] = "Website";
 $lang["config_work_order_enable"] = "Werk Order Ondersteuning";
 $lang["config_work_order_format"] = "Werk Order Formaat";
+$lang["config_second_display"] = "Show Customer Display";

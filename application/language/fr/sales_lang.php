@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Numéro de commande";
 $lang["sales_work_order_number_duplicate"] = "Le numéro de bon de travail doit être unique.";
 $lang["sales_work_order_sent"] = "Ordre de travail envoyé à";
 $lang["sales_work_order_unsent"] = "L'ordre de travail n'a pas pu être envoyé à";
+$lang["sales_second_display"] = "Second Display";

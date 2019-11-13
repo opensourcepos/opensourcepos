@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "رقم طلب العمل";
 $lang["sales_work_order_number_duplicate"] = "رقم طلب العمل يجب ان يكون فريد.";
 $lang["sales_work_order_sent"] = "تم ارسال طلب العمل الى";
 $lang["sales_work_order_unsent"] = "فشل في ارسال طلب العمل الى";
+$lang["sales_second_display"] = "Second Display";

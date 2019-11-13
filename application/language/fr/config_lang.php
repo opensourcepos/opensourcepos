@@ -279,3 +279,4 @@ $lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "Site Internet";
 $lang["config_work_order_enable"] = "Support de commande de travail";
 $lang["config_work_order_format"] = "Format de bon de travail";
+$lang["config_second_display"] = "Show Customer Display";

@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "";
 $lang["sales_work_order_number_duplicate"] = "";
 $lang["sales_work_order_sent"] = "";
 $lang["sales_work_order_unsent"] = "";
+$lang["sales_second_display"] = "Second Display";

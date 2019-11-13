@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Номер работна поръчка";
 $lang["sales_work_order_number_duplicate"] = "Номерът на работната поръчка трябва да е уникален.";
 $lang["sales_work_order_sent"] = "Работната поръчка е изпратена до";
 $lang["sales_work_order_unsent"] = "Работната поръчка не бе изпратена до";
+$lang["sales_second_display"] = "Second Display";

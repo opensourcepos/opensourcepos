@@ -174,3 +174,4 @@ $lang["sales_work_order_number"] = "Arbetsorder nummer";
 $lang["sales_work_order_number_duplicate"] = "Arbetsorder nummer måste vara unikt.";
 $lang["sales_work_order_sent"] = "Arbetsorder skickad till";
 $lang["sales_work_order_unsent"] = "Arbetsorder gick ej att skicka till";
+$lang["sales_second_display"] = "Second Display";

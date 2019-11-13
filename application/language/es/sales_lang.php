@@ -173,3 +173,4 @@ $lang["sales_work_order_number"] = "Numero Orden Trabajo";
 $lang["sales_work_order_number_duplicate"] = "El numero de orden de trabajo debe ser unico.";
 $lang["sales_work_order_sent"] = "Orden de trabajo enviada a";
 $lang["sales_work_order_unsent"] = "Orden de trabajo fallida al enviar a";
+$lang["sales_second_display"] = "Second Display";

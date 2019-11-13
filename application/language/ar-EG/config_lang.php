@@ -278,3 +278,4 @@ $lang["config_use_destination_based_tax"] = "استخدام الضريبة ال�
 $lang["config_website"] = "موقع الشركة";
 $lang["config_work_order_enable"] = "تفعيل طلبات العمل";
 $lang["config_work_order_format"] = "شكل طلبات العمل";
+$lang["config_second_display"] = "Show Customer Display";

@@ -173,3 +173,4 @@ $lang["sales_work_order_number"] = "Αριθμός Παραγγελίας Εργ
 $lang["sales_work_order_number_duplicate"] = "Ο Αριθμός της Παραγγελίας Εργασίας πρέπει να είναι μοναδικός.";
 $lang["sales_work_order_sent"] = "Εντολή Εργασίας απεστάλη σε";
 $lang["sales_work_order_unsent"] = "Ανεπιτυχής αποστολή Εντολής Εργασίας";
+$lang["sales_second_display"] = "Second Display";
