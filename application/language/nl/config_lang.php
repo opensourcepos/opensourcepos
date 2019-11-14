@@ -1,8 +1,8 @@
 <?php
 $lang["config_address"] = "Bedrijfsadres";
-$lang["config_address_required"] = "";
-$lang["config_allow_duplicate_barcodes"] = "";
-$lang["config_apostrophe"] = "";
+$lang["config_address_required"] = "Bedrijfsadres is een verplichte veld.";
+$lang["config_allow_duplicate_barcodes"] = "Accepteer dezelfde barcodes";
+$lang["config_apostrophe"] = "Apostrof";
 $lang["config_backup_button"] = "Backup";
 $lang["config_backup_database"] = "Backup Database";
 $lang["config_barcode"] = "Barcode";
