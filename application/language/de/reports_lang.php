@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Alle";
 $lang["reports_authority"] = "Behörde";
 $lang["reports_canceled"] = "Storniert";
@@ -126,14 +125,14 @@ $lang["reports_total_inventory_value"] = "Total Inventarwert";
 $lang["reports_total_low_sell_quantity"] = "Anzahl der niedrigen Verkaufsmengen insgesamt";
 $lang["reports_total_quantity"] = "Gesamtmenge";
 $lang["reports_total_retail"] = "Gesamtwert Einzelhandelsinventar";
-$lang["reports_trans_amount"] = "";
-$lang["reports_trans_due"] = "";
-$lang["reports_trans_group"] = "";
-$lang["reports_trans_nopay_sales"] = "";
-$lang["reports_trans_payments"] = "";
-$lang["reports_trans_refunded"] = "";
-$lang["reports_trans_sales"] = "";
-$lang["reports_trans_type"] = "";
+$lang["reports_trans_amount"] = "Transaktionshöhe";
+$lang["reports_trans_due"] = "Fällig";
+$lang["reports_trans_group"] = "Transaktionsgruppe";
+$lang["reports_trans_nopay_sales"] = "Zahlungslose Verkäufe";
+$lang["reports_trans_payments"] = "Zahlungen";
+$lang["reports_trans_refunded"] = "Erstattet";
+$lang["reports_trans_sales"] = "Verkäufe";
+$lang["reports_trans_type"] = "Transaktionstyp";
 $lang["reports_type"] = "Typ";
 $lang["reports_unit_price"] = "Verkaufspreis";
 $lang["reports_used"] = "Punkte eingelöst";

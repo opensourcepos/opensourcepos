@@ -1,17 +1,16 @@
-<?php 
-
-$lang["config_address"] = "";
-$lang["config_address_required"] = "";
-$lang["config_allow_duplicate_barcodes"] = "";
-$lang["config_apostrophe"] = "";
-$lang["config_backup_button"] = "";
-$lang["config_backup_database"] = "";
-$lang["config_barcode"] = "";
-$lang["config_barcode_company"] = "";
-$lang["config_barcode_configuration"] = "";
+<?php
+$lang["config_address"] = "Bedrijfsadres";
+$lang["config_address_required"] = "Bedrijfsadres is een verplichte veld.";
+$lang["config_allow_duplicate_barcodes"] = "Accepteer dezelfde barcodes";
+$lang["config_apostrophe"] = "Apostrof";
+$lang["config_backup_button"] = "Backup";
+$lang["config_backup_database"] = "Backup Database";
+$lang["config_barcode"] = "Barcode";
+$lang["config_barcode_company"] = "Bedrijfsnaam";
+$lang["config_barcode_configuration"] = "Barcode Configuratie";
 $lang["config_barcode_content"] = "";
-$lang["config_barcode_first_row"] = "";
-$lang["config_barcode_font"] = "";
+$lang["config_barcode_first_row"] = "Regel 1";
+$lang["config_barcode_font"] = "Lettertype";
 $lang["config_barcode_formats"] = "";
 $lang["config_barcode_generate_if_empty"] = "";
 $lang["config_barcode_height"] = "";
