@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Close";
 $lang["common_comments"] = "評論";
 $lang["common_common"] = "一般";
 $lang["common_confirm_search"] = "您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "信息有误，请修正后保存";
 $lang["common_country"] = "國家";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "刪除";
@@ -40,10 +39,10 @@ $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "了解系統開展進度";
 $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "登录后，数据库将会迁移到%1。";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示";
-$lang["common_none_selected_text"] = "Nothing selected";
+$lang["common_none_selected_text"] = "请选择";
 $lang["common_or"] = "或";
 $lang["common_phone_number"] = "電話";
 $lang["common_phone_number_required"] = "";
@@ -53,15 +52,15 @@ $lang["common_price"] = "價值";
 $lang["common_print"] = "Print";
 $lang["common_remove"] = "移除";
 $lang["common_required"] = "Required";
-$lang["common_restore"] = "";
+$lang["common_restore"] = "恢复";
 $lang["common_return_policy"] = "退貨政策";
 $lang["common_search"] = "搜尋";
 $lang["common_search_options"] = "Search options";
 $lang["common_searched_for"] = "查找";
 $lang["common_state"] = "州";
 $lang["common_submit"] = "送出";
-$lang["common_total_spent"] = "";
-$lang["common_unknown"] = "";
+$lang["common_total_spent"] = "总支出";
+$lang["common_unknown"] = "未知";
 $lang["common_view_recent_sales"] = "最新的消售資訊";
 $lang["common_website"] = "網站";
 $lang["common_welcome"] = "歡迎";
