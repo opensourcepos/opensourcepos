@@ -785,9 +785,9 @@ class Items extends Secure_Controller
 	}
 
 	/*
-	 Items import from excel spreadsheet
+	 Items import from csv spreadsheet
 	 */
-	public function excel()
+	public function csv()
 	{
 		$name = 'import_items.csv';
 		$allowed_locations = $this->Stock_location->get_allowed_locations();
@@ -796,19 +796,19 @@ class Items extends Secure_Controller
 		force_download($name, $data, TRUE);
 	}
 
-	public function excel_import()
+	public function csv_import()
 	{
-		$this->load->view('items/form_excel_import', NULL);
+		$this->load->view('items/form_csv_import', NULL);
 	}
 
 	/**
 	 * Imports items from CSV formatted file.
 	 */
-	public function do_excel_import()
+	public function do_csv_import()
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_failed')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_csv_import_failed')));
 		}
 		else
 		{
@@ -876,19 +876,19 @@ class Items extends Secure_Controller
 
 				if(count($failCodes) > 0)
 				{
-					$message = $this->lang->line('items_excel_import_partially_failed', count($failCodes), implode(', ', $failCodes));
+					$message = $this->lang->line('items_csv_import_partially_failed', count($failCodes), implode(', ', $failCodes));
 					$this->db->trans_rollback();
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
 					$this->db->trans_commit();
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_csv_import_success')));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_nodata_wrongformat')));
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_csv_import_nodata_wrongformat')));
 			}
 		}
 	}
@@ -1035,7 +1035,7 @@ class Items extends Secure_Controller
 				'location_id' => $location_id
 			);
 
-			$excel_data = array(
+			$csv_data = array(
 				'trans_items' => $item_data['item_id'],
 				'trans_user' => $employee_id,
 				'trans_comment' => $comment,
@@ -1047,16 +1047,16 @@ class Items extends Secure_Controller
 				$item_quantity_data['quantity'] = $line['location_' . $location_name];
 				$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);
 
-				$excel_data['trans_inventory'] = $line['location_' . $location_name];
-				$this->Inventory->insert($excel_data);
+				$csv_data['trans_inventory'] = $line['location_' . $location_name];
+				$this->Inventory->insert($csv_data);
 			}
 			else
 			{
 				$item_quantity_data['quantity'] = 0;
 				$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $line[$col]);
 
-				$excel_data['trans_inventory'] = 0;
-				$this->Inventory->insert($excel_data);
+				$csv_data['trans_inventory'] = 0;
+				$this->Inventory->insert($csv_data);
 			}
 		}
 	}
