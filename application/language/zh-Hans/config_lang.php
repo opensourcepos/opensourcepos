@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["config_address"] = "公司地址";
 $lang["config_address_required"] = "公司地址為必填";
-$lang["config_allow_duplicate_barcodes"] = "";
+$lang["config_allow_duplicate_barcodes"] = "允许重复条形码";
 $lang["config_apostrophe"] = "apostrophe";
 $lang["config_backup_button"] = "Backup";
 $lang["config_backup_database"] = "Backup Database";
@@ -12,7 +11,7 @@ $lang["config_barcode_configuration"] = "Barcode Configuration";
 $lang["config_barcode_content"] = "Barcode Content";
 $lang["config_barcode_first_row"] = "Row 1";
 $lang["config_barcode_font"] = "Font";
-$lang["config_barcode_formats"] = "";
+$lang["config_barcode_formats"] = "输入格式";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_barcode_height"] = "Height (px)";
 $lang["config_barcode_id"] = "Item Id/Name";
@@ -26,7 +25,7 @@ $lang["config_barcode_page_width"] = "Display page width";
 $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_second_row"] = "Row 4";
 $lang["config_barcode_third_row"] = "Row 5";
-$lang["config_barcode_tooltip"] = "";
+$lang["config_barcode_tooltip"] = "警告：此功能可能导致重复项被导入或创建。 如果您不想重复的条形码，请不要使用。";
 $lang["config_barcode_type"] = "Barcode Type";
 $lang["config_barcode_width"] = "Width (px)";
 $lang["config_bottom"] = "Bottom";
