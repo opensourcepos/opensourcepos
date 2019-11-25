@@ -347,25 +347,25 @@ class Customers extends Persons
 	}
 
 	/*
-	Customers import from excel spreadsheet
+	Customers import from csv spreadsheet
 	*/
-	public function excel()
+	public function csv()
 	{
 		$name = 'import_customers.csv';
 		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
 
-	public function excel_import()
+	public function csv_import()
 	{
-		$this->load->view('customers/form_excel_import', NULL);
+		$this->load->view('customers/form_csv_import', NULL);
 	}
 
-	public function do_excel_import()
+	public function do_csv_import()
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_failed')));
 		}
 		else
 		{
@@ -446,18 +446,18 @@ class Customers extends Persons
 
 				if(count($failCodes) > 0)
 				{
-					$message = $this->lang->line('customers_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = $this->lang->line('customers_csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_excel_import_success')));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_csv_import_success')));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_nodata_wrongformat')));
 			}
 		}
 	}
