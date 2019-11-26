@@ -33,9 +33,9 @@ $(document).ready(function()
 	if ($controller_name == 'customers')
 	{
 	?>
-		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/excel_import"); ?>'
-				title='<?php echo $this->lang->line('customers_import_items_excel'); ?>'>
-			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_excel'); ?>
+		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/csv_import"); ?>'
+				title='<?php echo $this->lang->line('customers_import_items_csv'); ?>'>
+			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_csv'); ?>
 		</button>
 	<?php
 	}

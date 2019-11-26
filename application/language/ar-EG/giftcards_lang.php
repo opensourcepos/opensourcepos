@@ -25,7 +25,7 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "قم بتحديث الحق�
 $lang["giftcards_edit_multiple_giftcards"] = "تحرير مجموعة من بطاقات الهدايا.";
 $lang["giftcards_error_adding_updating"] = "خطاء فى إضافة/تحديث بطاقة هدية.";
 $lang["giftcards_error_updating_multiple"] = "خطاء فى تحديث بيانات بطاقات الهدايا.";
-$lang["giftcards_excel_import_failed"] = "فشل الإستيراد من اكسل.";
+$lang["giftcards_csv_import_failed"] = "فشل الإستيراد من اكسل.";
 $lang["giftcards_generate_barcodes"] = "توليد أكواد الباركود";
 $lang["giftcards_giftcard"] = "بطاقة هدية";
 $lang["giftcards_giftcard_number"] = "رقم بطاقة الهدية";

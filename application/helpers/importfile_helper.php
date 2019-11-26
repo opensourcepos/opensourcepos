@@ -62,6 +62,12 @@ function get_csv_file($file_name)
 	
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
+		//Skip Byte-Order Mark
+		if(bom_exists($csv_file) === TRUE)
+		{
+			fseek($csv_file, 3);
+		}
+		
 		while (($data = fgetcsv($csv_file)) !== FALSE)
 		{
 			$line_array[] = $data;
@@ -73,5 +79,28 @@ function get_csv_file($file_name)
 	}
 	
 	return $line_array;
+}
+
+/**
+ * Checks the first three characters of a file for the Byte-Order Mark then returns the file position to the first character.
+ *
+ * @param	object $file_handle	File handle to check
+ * @return	bool				Returns TRUE if the BOM exists and FALSE otherwise.
+ */
+function bom_exists(&$file_handle)
+{
+	$str = fread($file_handle,3);
+	rewind($file_handle);
+	
+	$bom = pack("CCC", 0xef, 0xbb, 0xbf);
+	
+	if (0 === strncmp($str, $bom, 3))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 ?>
