@@ -16,6 +16,8 @@ class Sales extends Secure_Controller
 		$this->load->library('barcode_lib');
 		$this->load->library('email_lib');
 		$this->load->library('token_lib');
+		$this->load->library('events');
+		$this->load->event('integrations');
 	}
 
 	public function index()
@@ -804,6 +806,13 @@ class Sales extends Secure_Controller
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 				$this->load->view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
+
+				$event_failures &= Events::Trigger('event_update',$data,'string');
+				
+				if($event_failures)
+				{
+					log_message("ERROR","Third-Party Integration failed during item sale: $event_failures");
+				}
 			}
 		}
 	}
