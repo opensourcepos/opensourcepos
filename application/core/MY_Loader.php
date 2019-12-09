@@ -10,7 +10,6 @@ class MY_Loader extends CI_Loader {
         parent::__construct();
 
         $this->_ci_events_paths = array(APPPATH);
-        log_message('debug', "MY_Loader Class Initialized");
     }
 
     /** Load a events module * */

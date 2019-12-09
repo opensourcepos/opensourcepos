@@ -625,16 +625,16 @@ class Items extends Secure_Controller
 			//Event triggers for Third-Party Integrations
 				if($new_item)
 				{
-					$event_failures &= Events::Trigger('event_create',$item_data,'string');
+				    $event_failures = Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
 				}
 				else
 				{
-					$event_failures &= Events::Trigger('event_update',$item_data,'string');
+				    $event_failures = Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
 				}
 				
 				if($event_failures)
 				{
-					log_message("ERROR","Third-Party Integration failed during item save: $event_failures");
+				    log_message("ERROR","Third-Party Integration failed during item save: $event_failures");
 				}
 			}
 			else
@@ -796,7 +796,7 @@ class Items extends Secure_Controller
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 			
 			//Event triggers for Third-Party Integrations
-			$event_failures &= Events::Trigger('event_delete',$items_to_delete,'string');
+			$event_failures = Events::Trigger('event_delete', array("type"=> "ITEMS", "data" => $items_to_delete), 'string');
 			
 			if($event_failures)
 			{
@@ -891,19 +891,19 @@ class Items extends Secure_Controller
 						$this->save_inventory_quantities($line, $item_data);
 						$this->save_attribute_data($line, $item_data);
 						
-						//Event triggers for Third-Party Integrations
+					//Event triggers for Third-Party Integrations
 						if($this->Item->item_number_exists($item_number))
 						{
-							$event_failures &= Events::Trigger('event_update',$item_data,'string');
+						    $event_failures = Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
 						}
 						else
 						{
-							$event_failures &= Events::Trigger('event_create',$item_data,'string');
+						    $event_failures = Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
 						}
 						
 						if($event_failures)
 						{
-							log_message("ERROR","Third-Party Integration failed during CSV Import: $event_failures");
+						    log_message("ERROR","Third-Party Integration failed during CSV Import: $event_failures");
 						}
 					}
 					else //insert or update item failure

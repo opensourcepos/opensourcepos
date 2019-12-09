@@ -7,6 +7,9 @@ class Suppliers extends Persons
 	public function __construct()
 	{
 		parent::__construct('suppliers');
+		
+		$this->load->library('events');
+		$this->load->event('integrations');
 	}
 
 	public function index()
@@ -123,28 +126,37 @@ class Suppliers extends Persons
 		if($this->Supplier->save_supplier($person_data, $supplier_data, $supplier_id))
 		{
 			$supplier_data = $this->xss_clean($supplier_data);
-
-			//New supplier
+			
+		//New supplier
 			if($supplier_id == -1)
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_data['person_id']));
+			    echo json_encode(array('success' => TRUE,
+			        'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
+			        'id' => $supplier_data['person_id']));
+			    $event_failures = Events::Trigger('event_create', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
 			}
-			else //Existing supplier
+		//Existing supplier
+			else
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_id));
+			    echo json_encode(array('success' => TRUE,
+			        'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
+			        'id' => $supplier_id));
+			    $event_failures = Events::Trigger('event_update', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
+			}
+			
+			if($event_failures)
+			{
+			    log_message("ERROR","Third-Party Integration failed during Supplier create or update: $event_failures");
 			}
 		}
-		else//failure
+	//Failure
+		else
 		{
-			$supplier_data = $this->xss_clean($supplier_data);
-
-			echo json_encode(array('success' => FALSE,
-							'message' => $this->lang->line('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
-							'id' => -1));
+		    $supplier_data = $this->xss_clean($supplier_data);
+		    
+		    echo json_encode(array('success' => FALSE,
+		        'message' => $this->lang->line('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
+		        'id' => -1));
 		}
 	}
 	
@@ -159,6 +171,14 @@ class Suppliers extends Persons
 		{
 			echo json_encode(array('success' => TRUE,'message' => $this->lang->line('suppliers_successful_deleted').' '.
 							count($suppliers_to_delete).' '.$this->lang->line('suppliers_one_or_multiple')));
+
+		//Event triggers for Third-Party Integrations
+			$event_failures = Events::Trigger('event_delete', array("type"=> "SUPPLIERS", "data" => $suppliers_to_delete), 'string');
+			
+			if($event_failures)
+			{
+			    log_message("ERROR","Third-Party Integration failed during Customer delete: $event_failures");
+			}
 		}
 		else
 		{

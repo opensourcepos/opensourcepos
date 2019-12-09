@@ -49,7 +49,6 @@ class Events
 	{
 		$key = get_class($callback[0]).'::'.$callback[1];
 		self::$_listeners[$event][$key] = $callback;
-		log_message('debug', 'Events::register() - Registered "'.$key.' with event "'.$event.'"');
 	}
 	
 	/**
@@ -71,8 +70,6 @@ class Events
 	 */
 	public static function trigger($event, $data = '', $return_type = 'string')
 	{
-		log_message('debug', 'Events::trigger() - Triggering event "'.$event.'"');
-		
 		$calls = array();
 		
 		if (self::has_listeners($event))
@@ -101,8 +98,6 @@ class Events
 	 */
 	protected static function _format_return(array $calls, $return_type)
 	{
-		log_message('debug', 'Events::_format_return() - Formating calls in type "'.$return_type.'"');
-		
 		switch ($return_type)
 		{
 			case 'json':
@@ -138,72 +133,10 @@ class Events
 	 */
 	public static function has_listeners($event)
 	{
-		log_message('debug', 'Events::has_listeners() - Checking if event "'.$event.'" has listeners.');
-		
 		if (isset(self::$_listeners[$event]) AND count(self::$_listeners[$event]) > 0)
 		{
 			return TRUE;
 		}
 		return FALSE;
-	}
-	
-	/**
-	 * Event trigger for integrations on Create CRUD operation
-	 *
-	 * @param	array		$data	Data to be made available to Third Party Integrations
-	 * @return	string|NULL			NULL is returned on a successful completion of integration tasks or the integration and failure message
-	 */
-	public function integrations_create($data)
-	{
-		$negative_results = NULL;
-		log_message("ERROR","event created for integrations create: ". var_dump($data));
-		//calls to create functions for the different Integrations
-		
-		return $negative_results;
-	}
-	
-	/**
-	 * Event trigger for integrations on Read CRUD operation
-	 *
-	 * @param 	array		$data	Data to be made available to Third Party Integrations
-	 * @return	string|NULL			NULL is returned on a successful completion of integration tasks or the integration and failure message
-	 */
-	public function integrations_read($data)
-	{
-		$negative_results = NULL;
-		log_message("ERROR","event created for integrations read: ". var_dump($data));
-		//calls to read functions for the different Integrations
-		
-		return $negative_results;
-	}
-	
-	/**
-	 * Event trigger for integrations on Create CRUD operation
-	 *
-	 * @param 	array		$data	Data to be made available to Third Party Integrations
-	 * @return	string|NULL			NULL is returned on a successful completion of integration tasks or the integration and failure message
-	 */
-	public function integrations_update($data)
-	{
-		$negative_results = NULL;
-		log_message("ERROR","event created for integrations update: ". var_dump($data));
-		//calls to update functions for the different Integrations
-		$negative_results = "CLCdesq API failed to update item.  Error Code 1232";
-		return $negative_results;
-	}
-	
-	/**
-	 * Event trigger for integrations on Create CRUD operation
-	 *
-	 * @param 	array		$data	Data to be made available to Third Party Integrations
-	 * @return	string|NULL			NULL is returned on a successful completion of integration tasks or the integration and failure message
-	 */
-	public function integrations_delete($data)
-	{
-		$negative_results = NULL;
-		log_message("ERROR","event created for integrations delete: ". var_dump($data));
-		//calls to delete functions for the different Integrations
-		
-		return $negative_results;
 	}
 }

@@ -807,7 +807,7 @@ class Sales extends Secure_Controller
 				$this->load->view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
 
-				$event_failures &= Events::Trigger('event_update',$data,'string');
+				$event_failures = Events::Trigger('event_update', array("type"=> "SALES", "data" => $data), 'string');
 				
 				if($event_failures)
 				{

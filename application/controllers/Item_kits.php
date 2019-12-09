@@ -7,6 +7,9 @@ class Item_kits extends Secure_Controller
 	public function __construct()
 	{
 		parent::__construct('item_kits');
+
+		$this->load->library('events');
+		$this->load->event('integrations');
 	}
 	
 	/*
@@ -169,16 +172,24 @@ class Item_kits extends Secure_Controller
 
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
+		//Event triggers for Third-Party Integrations and Toast notifications
 			if($new_item)
 			{
 				echo json_encode(array('success' => $success,
 					'message' => $this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+				$event_failures = Events::Trigger('event_create', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
 
 			}
 			else
 			{
 				echo json_encode(array('success' => $success,
 					'message' => $this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+				$event_failures = Events::Trigger('event_update', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
+			}
+
+			if($event_failures)
+			{
+			    log_message("ERROR","Third-Party Integration failed during create or import: $event_failures");
 			}
 		}
 		else//failure
@@ -198,6 +209,14 @@ class Item_kits extends Secure_Controller
 		{
 			echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('item_kits_successful_deleted').' '.count($item_kits_to_delete).' '.$this->lang->line('item_kits_one_or_multiple')));
+
+		//Event triggers for Third-Party Integrations
+			$event_failures = Events::Trigger('event_delete', array("type"=> "ITEM_KITS", "data" => $item_kits_to_delete), 'string');
+			
+			if($event_failures)
+			{
+			    log_message("ERROR","Third-Party Integration failed during Item Kit delete: $event_failures");
+			}
 		}
 		else
 		{
