@@ -28,7 +28,7 @@
 /**
  * Events Library
  */
-class Events 
+class Events
 {
 	/**
 	 * @var	array	An array of listeners
