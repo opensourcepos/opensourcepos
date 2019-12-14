@@ -10,6 +10,6 @@ fi
 
 . ./.env
 
-docker-compose build
+docker-compose -f ../docker-compose.yml build
 
 /bin/bash ./init-selfcert.sh
