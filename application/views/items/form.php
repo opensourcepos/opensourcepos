@@ -160,6 +160,7 @@
 							'name'=>'cost_price',
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm',
+							'onClick'=>'this.select();',
 							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
 					<?php if (currency_side()): ?>
@@ -180,6 +181,7 @@
 							'name'=>'unit_price',
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm',
+							'onClick'=>'this.select();',
 							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
 					<?php if (currency_side()): ?>
@@ -284,6 +286,7 @@
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
 							'class'=>'required quantity form-control',
+							'onClick'=>'this.select();',
 							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
 							);?>
 				</div>
