@@ -635,11 +635,13 @@ class Config extends Secure_Controller
 	public function save_tax()
 	{
 		$this->db->trans_start();
-		
+
+		$decimals = $this->config->item('tax_decimals');
+
 		$batch_save_data = array(
-			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
+			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate'), $decimals),
 			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
-			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
+			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate'), $decimals),
 			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
 			'use_destination_based_tax' => $this->input->post('use_destination_based_tax') != NULL,
@@ -648,9 +650,9 @@ class Config extends Secure_Controller
 			'default_tax_jurisdiction' => $this->input->post('default_tax_jurisdiction'),
 			'tax_id' => $this->input->post('tax_id')
 		);
-		
+
 		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
-		
+
 		$this->db->trans_complete();
 		
 		$success &= $this->db->trans_status();

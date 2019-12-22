@@ -400,18 +400,25 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 	return $fmt->format($number);
 }
 
-function parse_decimals($number)
+function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
+
 	if(empty($number))
 	{
 		return $number;
 	}
 
 	$config = get_instance()->config;
+
+	if($decimals == NULL)
+	{
+		$decimals = $config->item('currency_decimals');
+	}
+
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
 
-	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $config->item('currency_decimals'));
+	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $decimals);
 
 	if(empty($config->item('thousands_separator')))
 	{

@@ -479,7 +479,7 @@ class Items extends Secure_Controller
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
 
-		$receiving_quantity = parse_decimals($this->input->post('receiving_quantity'));
+		$receiving_quantity = parse_decimals($this->input->post('receiving_quantity'), $this->config->item('quantity_decimals'));
 		$item_type = $this->input->post('item_type') == NULL ? ITEM : $this->input->post('item_type');
 
 		if($receiving_quantity == '0' && $item_type!= ITEM_TEMP)
@@ -499,7 +499,7 @@ class Items extends Secure_Controller
 			'item_number' => $this->input->post('item_number') == '' ? NULL : $this->input->post('item_number'),
 			'cost_price' => parse_decimals($this->input->post('cost_price')),
 			'unit_price' => parse_decimals($this->input->post('unit_price')),
-			'reorder_level' => parse_decimals($this->input->post('reorder_level')),
+			'reorder_level' => parse_decimals($this->input->post('reorder_level'), $this->config->item('quantity_decimals')),
 			'receiving_quantity' => $receiving_quantity,
 			'allow_alt_description' => $this->input->post('allow_alt_description') != NULL,
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
@@ -559,7 +559,7 @@ class Items extends Secure_Controller
 				$count = count($tax_percents);
 				for ($k = 0; $k < $count; ++$k)
 				{
-					$tax_percentage = parse_decimals($tax_percents[$k]);
+					$tax_percentage = parse_decimals($tax_percents[$k], $this->config->item('tax_decimals'));
 					if(is_numeric($tax_percentage))
 					{
 						$items_taxes_data[] = array('name' => $tax_names[$k], 'percent' => $tax_percentage);
@@ -572,7 +572,7 @@ class Items extends Secure_Controller
 			$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
 			foreach($stock_locations as $location)
 			{
-				$updated_quantity = parse_decimals($this->input->post('quantity_' . $location['location_id']));
+				$updated_quantity = parse_decimals($this->input->post('quantity_' . $location['location_id']), $this->config->item('quantity_decimals'));
 				if($item_data['item_type'] == ITEM_TEMP)
 				{
 					$updated_quantity = 0;
@@ -693,7 +693,7 @@ class Items extends Secure_Controller
 			'trans_user' => $employee_id,
 			'trans_location' => $location_id,
 			'trans_comment' => $this->input->post('trans_comment'),
-			'trans_inventory' => parse_decimals($this->input->post('newquantity'))
+			'trans_inventory' => parse_decimals($this->input->post('newquantity'), $this->config->item('quantity_decimals'))
 		);
 
 		$this->Inventory->insert($inv_data);
@@ -703,7 +703,7 @@ class Items extends Secure_Controller
 		$item_quantity_data = array(
 			'item_id' => $item_id,
 			'location_id' => $location_id,
-			'quantity' => $item_quantity->quantity + parse_decimals($this->input->post('newquantity'))
+			'quantity' => $item_quantity->quantity + parse_decimals($this->input->post('newquantity'), $this->config->item('quantity_decimals'))
 		);
 
 		if($this->Item_quantity->save($item_quantity_data, $item_id, $location_id))
