@@ -18,7 +18,7 @@
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
 		"php": "^5.6 || ^7.0",
-		"codeigniter/framework": "^3.1",
+		"codeigniter/framework": "^3.1.11",
 		"dompdf/dompdf": "^0.7",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0"
