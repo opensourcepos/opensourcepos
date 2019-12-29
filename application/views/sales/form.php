@@ -126,8 +126,7 @@ $(document).ready(function()
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
 				$.get("<?php echo site_url($controller_name . '/send_pdf/' . $sale_info['sale_id']); ?>",
 					function(response) {
-						dialog_support.hide();
-						table_support.handle_submit("<?php echo site_url('sales'); ?>", response);
+						BootstrapDialog.closeAll();
 						$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 					}, 'json'
 				);	
