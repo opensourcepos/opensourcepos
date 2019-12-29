@@ -3,7 +3,7 @@
 	var btn_id, dialog_ref;
 
 	var hide = function() {
-		dialog_ref.close();
+		dialog_ref && dialog_ref.close();
 	};
 
 	var clicked_id = function() {
