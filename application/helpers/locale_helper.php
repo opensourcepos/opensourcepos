@@ -76,7 +76,7 @@ function get_languages()
 		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
 		'pl:polish' => 'Polish',
-		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'pt-BR:portuguese' => 'Portuguese (Brazil)',
 		'ro:romanian' => 'Romanian',
 		'ru:russian' => 'Russian',
 		'sv:swedish' => 'Swedish',
