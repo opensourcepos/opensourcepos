@@ -400,6 +400,16 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 	return $fmt->format($number);
 }
 
+function parse_quantity($number)
+{
+	return parse_decimals($number, quantity_decimals());
+}
+
+function parse_tax($number)
+{
+	return parse_decimals($number, tax_decimals());
+}
+
 function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return

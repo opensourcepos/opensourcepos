@@ -123,7 +123,7 @@ class Receivings extends Secure_Controller
 		$description = $this->input->post('description');
 		$serialnumber = $this->input->post('serialnumber');
 		$price = parse_decimals($this->input->post('price'));
-		$quantity = parse_decimals($this->input->post('quantity'), $this->config->item('quantity_decimals'));
+		$quantity = parse_quantity($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
 		$discount_type = $this->input->post('discount_type');
 		$item_location = $this->input->post('location');

@@ -354,7 +354,7 @@ class Taxes extends Secure_Controller
 	public function save($tax_rate_id = -1)
 	{
 		$tax_category_id = $this->input->post('rate_tax_category_id');
-		$tax_rate = parse_decimals($this->input->post('tax_rate'), $this->config->item('tax_decimals'));
+		$tax_rate = parse_tax($this->input->post('tax_rate'));
 
 		if ($tax_rate == 0) {
 			$tax_category_info = $this->Tax_category->get_info($tax_category_id);
