@@ -115,7 +115,7 @@ class Item extends CI_Model
 		}
 		else
 		{
-			$this->db->select('items.item_id AS item_id');
+			$this->db->select('MAX(items.item_id) AS item_id');
 			$this->db->select('MAX(items.name) AS name');
 			$this->db->select('MAX(items.category) AS category');
 			$this->db->select('MAX(items.supplier_id) AS supplier_id');
