@@ -1,6 +1,5 @@
-<?php 
-
-$lang["config_address"] = "Addresse";
+<?php
+$lang["config_address"] = "Addresse de l'entreprise";
 $lang["config_address_required"] = "L'adresse de l'entreprise est un champ obligatoire.";
 $lang["config_allow_duplicate_barcodes"] = "Autoriser les codes à barres en double";
 $lang["config_apostrophe"] = "Apostrophe";
@@ -16,22 +15,22 @@ $lang["config_barcode_formats"] = "Formats d'entrée";
 $lang["config_barcode_generate_if_empty"] = "Générer si vide.";
 $lang["config_barcode_height"] = "Hauteur (px)";
 $lang["config_barcode_id"] = "Id/Nom Article";
-$lang["config_barcode_info"] = "Configuration des Informations du Code à barre";
-$lang["config_barcode_layout"] = "Disposition du Code à barre";
+$lang["config_barcode_info"] = "Configuration des informations du code à barre";
+$lang["config_barcode_layout"] = "Disposition du code à barre";
 $lang["config_barcode_name"] = "Nom";
-$lang["config_barcode_number"] = "UPC/EAN/ISBN";
-$lang["config_barcode_number_in_row"] = "Nombre dans la ligne";
+$lang["config_barcode_number"] = "Code à barre";
+$lang["config_barcode_number_in_row"] = "Numéro dans la ligne";
 $lang["config_barcode_page_cellspacing"] = "Afficher le cellpacing de la page.";
 $lang["config_barcode_page_width"] = "Afficher la largeur de la page";
 $lang["config_barcode_price"] = "Prix";
-$lang["config_barcode_second_row"] = "Row 3";
-$lang["config_barcode_third_row"] = "Row 4";
+$lang["config_barcode_second_row"] = "Ligne 2";
+$lang["config_barcode_third_row"] = "Ligne 3";
 $lang["config_barcode_tooltip"] = "Avertissement: cette fonctionnalité peut entraîner l'importation ou la création d'éléments en double. Ne pas utiliser si vous ne voulez pas de codes à barres en double.";
 $lang["config_barcode_type"] = "Type de Code à barre";
 $lang["config_barcode_width"] = "Largeur (px)";
 $lang["config_bottom"] = "Pied de page";
 $lang["config_cash_decimals"] = "Décimales";
-$lang["config_cash_decimals_tooltip"] = "Si les décimales et les décimales sont les mêmes, aucun arrondi ne sera effectué.";
+$lang["config_cash_decimals_tooltip"] = "Si les décimales et les décimales monétaires sont les mêmes, aucun arrondi ne sera effectué.";
 $lang["config_cash_rounding"] = "Arrondis de trésorerie";
 $lang["config_center"] = "Centre";
 $lang["config_comma"] = "virgule";
