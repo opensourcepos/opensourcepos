@@ -60,7 +60,7 @@ class Item extends CI_Model
 	public function item_number_exists($item_number, $item_id = '')
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
-		{			
+		{
 			return FALSE;
 		}
 
@@ -500,7 +500,7 @@ class Item extends CI_Model
 		{
 			$seed .= ',' . $this->config->item('suggestions_second_column');
 		}
-			
+
 		if($this->config->item('suggestions_third_column') !== '')
 		{
 			$seed .= ',' . $this->config->item('suggestions_third_column');
@@ -508,7 +508,7 @@ class Item extends CI_Model
 
 		return $seed;
 	}
-	
+
 	function get_search_suggestion_label($result_row)
 	{
 		$label = '';
@@ -569,7 +569,7 @@ class Item extends CI_Model
 			}
 		}
 	}
-	
+
 	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();

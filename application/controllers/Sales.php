@@ -428,7 +428,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -451,7 +451,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
