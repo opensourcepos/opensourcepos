@@ -1,6 +1,6 @@
 {
     "name": "OpenSourcePOS",
-    "version": "3.4.0",
+    "version": "3.3.2",
     "license": [
         "MIT"
     ],
@@ -54,7 +54,7 @@
             ]
         },
         "symfony/polyfill-ctype": {
-             "version": "v1.12.0",
+             "version": "v1.13.1",
              "license": [
                  "MIT"
              ]

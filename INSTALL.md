@@ -3,7 +3,7 @@ Server Requirements
 
 * PHP version 5.6 to 7.3 are supported. Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` and `php-curl` installed and enabled.
 
-* MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance. However you need to disable `only_full_group_by` option, see issue [#2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
+* MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement 10.x is supported and apparently offering better performance.
 
 * Apache 2.2 and 2.4 are supported. Also Nginx has been proven to work fine, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
 

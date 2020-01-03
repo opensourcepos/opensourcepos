@@ -1,3 +1,9 @@
+Version 3.3.2
+-------------
++ Fixed `only_full_group_by` issue with MySQL/MariaDB
++ Fixed POS transaction return failure if items are deleted
++ Various bug fixes
+
 Version 3.3.1
 -------------
 + Various bug fixes (please disable `only_full_group_by` option from MySQL/MariaDB to avoid issues)
