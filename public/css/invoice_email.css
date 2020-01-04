@@ -5,11 +5,11 @@
 */
 #menubar, #footer { display: none; }
 * { margin: 0; padding: 0; }
-body { font-family: Helvetica; font-size: 13px; }
+body { font-family: DejaVu Sans, Helvetica, Sans-Serif; font-size: 13px; }
 #page-wrap { width: 750px; margin: 0 auto; }
-pre { font-family: Helvetica; font-size: 13px; }
+pre { font-family: DejaVu Sans, Helvetica, Sans-Serif; font-size: 13px; }
 
-#page-wrap { font-family: Helvetica; }
+#page-wrap { font-family: DejaVu Sans, Helvetica, Sans-Serif; }
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table#items td { padding: 10px; }
 #page-wrap #meta table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
@@ -39,7 +39,7 @@ pre { font-family: Helvetica; font-size: 13px; }
 #items { width: 100%;  border: 1px solid black; }
 #items th { background: #eee; }
 #items tr.item-row td { border: 0; vertical-align: top; }
-#items td { font-family: DejaVu Sans; }
+#items td { font-family: DejaVu Sans, Helvetica, Sans-Serif; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
 #items td.total-line { text-align: right; border-width: 1px 0 1px 1px; border-style: solid; }
@@ -49,7 +49,7 @@ pre { font-family: Helvetica; font-size: 13px; }
 #items td.blank { border: 0; }
 
 #terms { text-align: center; margin: 20px 0; }
-#terms h5 { border-bottom: 1px solid black; font: 13px Helvetica, Sans-Serif; padding: 8px 0; margin: 8px 0; line-height: 1.3em; }
+#terms h5 { border-bottom: 1px solid black; font: 13px DejaVu Sans, Helvetica, Sans-Serif; padding: 8px 0; margin: 8px 0; line-height: 1.3em; }
 
 .delete-wpr { position: relative; }
 .delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: bold; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; }

@@ -134,6 +134,47 @@
 			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
 		</tr>
+
+		<?php
+		$only_sale_check = FALSE;
+		$show_giftcard_remainder = FALSE;
+		foreach($payments as $payment_id=>$payment)
+		{
+			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$splitpayment = explode(':', $payment['payment_type']);
+			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
+		?>
+			<tr>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
+				<td colspan="2" class="total-line"><?php echo $splitpayment[0]; ?></td>
+				<td class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
+			</tr>
+		<?php
+		}
+
+		if(isset($cur_giftcard_value) && $show_giftcard_remainder)
+		{
+		?>
+			<tr>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
+			</tr>
+			<?php
+		}
+		?>
+		<?php
+		if(!empty($payments))
+		{
+		?>
+		<tr>
+			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
+			<td class="total-value"><?php echo to_currency($amount_change); ?></td>
+		</tr>
+		<?php
+		}
+		?>
 	</table>
 
 	<div id="terms">
