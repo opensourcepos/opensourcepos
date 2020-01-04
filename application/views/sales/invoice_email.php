@@ -6,12 +6,13 @@
 </head>
 
 <body>
+
 <?php
-	if(isset($error_message))
-	{
-		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
-		exit;
-	}
+if(isset($error_message))
+{
+	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	exit;
+}
 ?>
 
 <div id="page-wrap">
@@ -76,9 +77,9 @@
 			if($discount > 0)
 			{
 				$invoice_columns = $invoice_columns + 1;
-				?>
+			?>
 				<th><?php echo $this->lang->line('sales_customer_discount'); ?></th>
-				<?php
+			<?php
 			}
 			?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
@@ -89,19 +90,19 @@
 		{
 			if($item['print_option'] == PRINT_YES)
 			{
-			?>
-			<tr class="item-row">
-				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><?php echo $item['name']; ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></td>
-				<?php if ($item['discount'] > 0): ?>
-					<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
-				<?php endif; ?>
-				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
-			</tr>
-			<?php
+		?>
+				<tr class="item-row">
+					<td><?php echo $item['item_number']; ?></td>
+					<td class="item-name"><?php echo $item['name']; ?></td>
+					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></td>
+					<?php if ($item['discount'] > 0): ?>
+						<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
+					<?php endif; ?>
+					<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
+				</tr>
+		<?php
 			}
 		}
 		?>
@@ -138,6 +139,7 @@
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
+
 		foreach($payments as $payment_id=>$payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
@@ -147,11 +149,13 @@
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><?php echo $splitpayment[0]; ?></td>
-				<td class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
+				<td class="total-value"><?php echo to_currency(-$payment['payment_amount']); ?></td>
 			</tr>
 		<?php
 		}
+		?>
 
+		<?php
 		if(isset($cur_giftcard_value) && $show_giftcard_remainder)
 		{
 		?>
@@ -160,18 +164,19 @@
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
 			</tr>
-			<?php
+		<?php
 		}
 		?>
+
 		<?php
 		if(!empty($payments))
 		{
 		?>
-		<tr>
-			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
-			<td class="total-value"><?php echo to_currency($amount_change); ?></td>
-		</tr>
+			<tr>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
+				<td colspan="2" class="total-line"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
+				<td class="total-value"><?php echo to_currency($amount_change); ?></td>
+			</tr>
 		<?php
 		}
 		?>
