@@ -278,3 +278,4 @@ $lang["config_use_destination_based_tax"] = "Gunakan Pajak Berdasarkan Tujuan";
 $lang["config_website"] = "Situs Perusahaan";
 $lang["config_work_order_enable"] = "Dukungan Work Order";
 $lang["config_work_order_format"] = "Format Work Order";
+$lang["config_receipt_show_tax_ind"] = "Tampilkan Indikator Pajak";
