@@ -173,3 +173,5 @@ $lang["sales_work_order_number"] = "Nomor Perintah Kerja";
 $lang["sales_work_order_number_duplicate"] = "Nomor Perintah Kerja tidak boleh sama.";
 $lang["sales_work_order_sent"] = "Perintah Kerja dikirim ke";
 $lang["sales_work_order_unsent"] = "Perintah Kerja gagal dikirim ke";
+$lang["sales_nontaxed_ind"] = " . ";
+$lang["sales_taxed_ind"] = "T";
