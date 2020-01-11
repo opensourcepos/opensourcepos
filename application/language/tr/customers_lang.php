@@ -1,7 +1,7 @@
 <?php
 $lang["customers_account_number"] = "Hesap No";
 $lang["customers_account_number_duplicate"] = "Bu hesap numarası zaten var.";
-$lang["customers_available_points"] = "Mevcut Puanlar";
+$lang["customers_available_points"] = "Var Olan Puanlar";
 $lang["customers_average"] = "Harcanan ortalama";
 $lang["customers_avg_discount"] = "Ortalama indirim";
 $lang["customers_basic_information"] = "Bilgi";
