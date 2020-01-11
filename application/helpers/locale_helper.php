@@ -3,7 +3,7 @@
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
-define('NOW', mktime());
+define('NOW', time());
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
