@@ -3,7 +3,6 @@
 var pickerconfig = function(config) {
     return $.extend({
         format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-        startDate: "<?php echo to_date(); ?>",
         <?php
         $t = $this->config->item('timeformat');
         $m = $t[strlen($t)-1];

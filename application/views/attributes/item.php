@@ -24,7 +24,7 @@ foreach($definition_values as $definition_id => $definition_value)
             
             if ($definition_value['definition_type'] == DATE)
             {
-	            $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? DEFAULT_DATE : strtotime($attribute_value->attribute_date);
+	            $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
 	            echo form_input(array(
                     'name' => "attribute_links[$definition_id]",
                     'value' => to_date($value),
