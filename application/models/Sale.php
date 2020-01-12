@@ -1194,12 +1194,12 @@ class Sale extends CI_Model
 	{
 		if($customer_id == -1)
 		{
-			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
+			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment from "
 				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
-			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
+			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment from "
 				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 

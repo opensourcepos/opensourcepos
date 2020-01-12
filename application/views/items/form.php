@@ -293,6 +293,7 @@
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
 						'class'=>'required form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
 						);?>
 			</div>
@@ -305,6 +306,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
 						);?>
 			</div>
