@@ -1624,7 +1624,7 @@ class Reports extends Secure_Controller
 			'subtitle' => '',
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
-			'summary_data' => $this->xss_clean($model->getSummaryData($report_data))
+			'summary_data' => $this->xss_clean($model->getSummaryData($inputs))
 		);
 
 		$this->load->view('reports/tabular', $data);
