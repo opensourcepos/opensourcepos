@@ -61,7 +61,7 @@ class Summary_payments extends Summary_report
 		$this->db->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
-		$this->db->group_by("trans_type");
+		$this->db->group_by('trans_type');
 
 		$sales = $this->db->get()->result_array();
 
@@ -89,7 +89,7 @@ class Summary_payments extends Summary_report
 		$this->db->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
-		$this->db->group_by("sales_payments.payment_type");
+		$this->db->group_by('sales_payments.payment_type');
 
 		$payments = $this->db->get()->result_array();
 
