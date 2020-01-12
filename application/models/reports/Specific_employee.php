@@ -68,6 +68,7 @@ class Specific_employee extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
+
 		$this->db->where('employee_id', $inputs['employee_id']);
 
 		if($inputs['sale_type'] == 'complete')
@@ -134,6 +135,7 @@ class Specific_employee extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
+
 		$this->db->where('employee_id', $inputs['employee_id']);
 
 		if($inputs['sale_type'] == 'complete')

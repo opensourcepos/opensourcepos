@@ -70,7 +70,7 @@ class Specific_discount extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
-		
+
 		$this->db->where('discount >=', $inputs['discount']);
 		$this->db->where('discount_type', $inputs['discount_type']);
 
@@ -138,7 +138,7 @@ class Specific_discount extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		
+
 		$this->db->where('discount >=', $inputs['discount']);
 		$this->db->where('discount_type', $inputs['discount_type']);
 
