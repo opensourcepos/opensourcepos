@@ -1,20 +1,19 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Thêm ngoại lệ";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
-$lang["taxes_confirm_delete"] = "Bạn có thực sự muốn xóa Mã thuế này không? Hành động này không thể hoàn lại được.";
+$lang["taxes_city"] = "Thành phố";
+$lang["taxes_code"] = "Mã";
+$lang["taxes_confirm_delete"] = "Bạn có thực sự muốn xóa Mã thuế này không? Hành động này không thể hoàn lại được";
 $lang["taxes_confirm_restore"] = "Bạn có thực sự muốn hoàn lại Mã thuế đã chọn không?";
 $lang["taxes_default_tax_category"] = "Thể loại mã thuế mặc định";
-$lang["taxes_default_tax_rate"] = "";
-$lang["taxes_error_adding_updating"] = "Gặp lỗi khi thêm hay cập nhật Mã thuế.";
+$lang["taxes_default_tax_rate"] = "Thuế suất mặc định";
+$lang["taxes_error_adding_updating"] = "Gặp lỗi khi thêm hay cập nhật Mã thuế";
 $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
-$lang["taxes_name"] = "";
+$lang["taxes_name"] = "Tên";
 $lang["taxes_new"] = "Mã thuế mới";
-$lang["taxes_no_taxes_to_display"] = "Không sẵn có Mã thuế nào để mà hiển thị.";
+$lang["taxes_no_taxes_to_display"] = "Không sẵn có Mã thuế nào để mà hiển thị";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "0,5 làm tròn xuống";
 $lang["taxes_round_half_even"] = "0,5 làm tròn lên";
@@ -24,10 +23,10 @@ $lang["taxes_rounding_code"] = "Mã làm tròn";
 $lang["taxes_sales_tax"] = "Thuế bán hàng";
 $lang["taxes_sales_tax_by_invoice"] = "Thuế bán hàng theo Hóa đơn";
 $lang["taxes_sequence"] = "";
-$lang["taxes_state"] = "";
+$lang["taxes_state"] = "Tỉnh";
 $lang["taxes_successful_deleted"] = "Bạn đã xóa thành công";
-$lang["taxes_tax_categories"] = "";
-$lang["taxes_tax_categories_configuration"] = "";
+$lang["taxes_tax_categories"] = "Thể loại thuế";
+$lang["taxes_tax_categories_configuration"] = "Cấu hình thể loại thuế";
 $lang["taxes_tax_categories_saved_successfully"] = "";
 $lang["taxes_tax_categories_saved_unsuccessfully"] = "";
 $lang["taxes_tax_category"] = "Thể loại thuế";
