@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["category_name_required"] = "Trường tên Thể loại chi phí là bắt buộc";
 $lang["expenses_categories_add_item"] = "Thêm thể loại";
 $lang["expenses_categories_cannot_be_deleted"] = "Không thể xóa Thể loại Chi phí";
 $lang["expenses_categories_category_id"] = "Mã số";
 $lang["expenses_categories_confirm_delete"] = "Bạn chắc chắn muốn xóa các Thể loại chi phí được chọn không?";
-$lang["expenses_categories_confirm_restore"] = "";
+$lang["expenses_categories_confirm_restore"] = "Bạn có thực sự muốn hoàn nguyên lại thể loại phí đã chọn không?";
 $lang["expenses_categories_description"] = "Mô tả Thể loại";
 $lang["expenses_categories_error_adding_updating"] = "Lỗi khi thêm/cập nhật Thể loại chi phí";
 $lang["expenses_categories_info"] = "Thông tin Thể loại chi phí";
