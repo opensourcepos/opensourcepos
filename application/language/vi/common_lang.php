@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_city"] = "Thành phố";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Đóng";
 $lang["common_comments"] = "Chú thích";
 $lang["common_common"] = "chung";
 $lang["common_confirm_search"] = "Bạn đã chọn một hay nhiều dòng, ở nơi đây sẽ không còn gì để chọn sau khi tìm kiếm. Bạn có chắc muốn gửi yêu cầu tìm kiếm này?";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Vui lòng sửa các lỗi trước khi lưu";
 $lang["common_country"] = "Quốc gia";
 $lang["common_date"] = "Ngày";
 $lang["common_delete"] = "Xóa";
@@ -40,10 +39,10 @@ $lang["common_last_page"] = "Cuối";
 $lang["common_learn_about_project"] = "để biết thông tin mới nhất về dự án.";
 $lang["common_list_of"] = "Danh sách của";
 $lang["common_logout"] = "Đăng xuất";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Nâng cấp cơ sở dữ liệu lên %1 sẽ bắt đầu sau khi đăng nhập.";
 $lang["common_new"] = "Mới";
 $lang["common_no_persons_to_display"] = "Ở đây không có ai để mà hiển thị.";
-$lang["common_none_selected_text"] = "Chưa chọn gì.";
+$lang["common_none_selected_text"] = "[Chọn]";
 $lang["common_or"] = "HOẶC";
 $lang["common_phone_number"] = "Số điện thoại";
 $lang["common_phone_number_required"] = "";
