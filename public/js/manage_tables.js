@@ -50,7 +50,7 @@
 						id: btn_name,
 						label: value,
 						cssClass: button_class[btn_name],
-						hotkey: is_submit ? 13 : undefined, // Enter.
+						hotkey: is_enter ? 13 : undefined, // Enter.
 						action: submit(btn_name)
 					});
 				}
