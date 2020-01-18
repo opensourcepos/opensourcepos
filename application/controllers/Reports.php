@@ -972,7 +972,7 @@ class Reports extends Secure_Controller
 				$details_data[$row['sale_id']][] = $this->xss_clean(array(
 					$drow['name'],
 					$drow['category'],
-					$drow['serialnumber'],
+					$drow['item_number'],
 					$drow['description'],
 					to_quantity_decimals($drow['quantity_purchased']),
 					to_currency($drow['subtotal']),
@@ -1084,7 +1084,7 @@ class Reports extends Secure_Controller
 				$details_data[$row['sale_id']][] = $this->xss_clean(array(
 					$drow['name'],
 					$drow['category'],
-					$drow['serialnumber'],
+					$drow['item_number'],
 					$drow['description'],
 					to_quantity_decimals($drow['quantity_purchased']),
 					to_currency($drow['subtotal']),
@@ -1193,7 +1193,7 @@ class Reports extends Secure_Controller
 				$details_data[$row['sale_id']][] = $this->xss_clean(array(
 					$drow['name'],
 					$drow['category'],
-					$drow['serialnumber'],
+					$drow['item_number'],
 					$drow['description'],
 					to_quantity_decimals($drow['quantity_purchased']),
 					to_currency($drow['subtotal']),
@@ -1414,7 +1414,7 @@ class Reports extends Secure_Controller
 				$details_data[$row['sale_id']][] = $this->xss_clean(array_merge(array(
 					$drow['name'],
 					$drow['category'],
-					$drow['serialnumber'],
+					$drow['item_number'],
 					$drow['description'],
 					$quantity_purchased,
 					to_currency($drow['subtotal']),
