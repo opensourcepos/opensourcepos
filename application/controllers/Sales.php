@@ -1215,10 +1215,10 @@ class Sales extends Secure_Controller
 		$data['balance_due'] = $balance_due != 0;
 
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
-		$data['payment_options'] = $this->xss_clean($this->Sale->get_payment_options(FALSE));
+		$new_payment_options = $this->xss_clean($this->Sale->get_payment_options(FALSE));
+		$data['payment_options'] = $new_payment_options;
 
 		// Set up a slightly modified list of payment types for new payment entry
-		$new_payment_options = $this->Sale->get_payment_options(FALSE);
 		$new_payment_options["--"] = $this->lang->line('common_none_selected_text');
 		$data['new_payment_options'] = $this->xss_clean($new_payment_options);
 
@@ -1301,12 +1301,27 @@ class Sales extends Secure_Controller
 		for($i = 0; $i < $number_of_payments; ++$i)
 		{
 			$payment_id = $this->input->post('payment_id_' . $i);
-			$payment_amount = $this->input->post('payment_amount_' . $i);
 			$payment_type = $this->input->post('payment_type_' . $i);
-			$cash_refund = 0.00;
+			$payment_amount = $this->input->post('payment_amount_' . $i);
+			$refund_type = $this->input->post('refund_type_' . $i);
+			$cash_refund = $this->input->post('refund_amount_' . $i);
 
-			// To maintain tradition we will also delete any payments with 0 amount assuming these are mistakes
-			// introduced at sale time.  This is now done in Sale.php
+			// if the refund is not cash ...
+			if(empty(strstr($refund_type, $this->lang->line('sales_cash'))))
+			{
+				// ... and it's positive ...
+				if($cash_refund > 0)
+				{
+					// ... change it to be a new negative payment (a "non-cash refund")
+					$payment_type = $refund_type;
+					$payment_amount = $payment_amount - $cash_refund;
+					$cash_refund = 0.00;
+				}
+			}
+
+			// To maintain tradition we will also delete any payments with 0 amount
+			// assuming these are mistakes introduced at sale time.
+			// This is now done in models/Sale.php
 
 			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => $cash_refund, 'employee_id' => $employee_id);
 		}

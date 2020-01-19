@@ -121,6 +121,7 @@ $lang["sales_receipt_no_email"] = "This customer does not have a valid email add
 $lang["sales_receipt_number"] = "Sale #";
 $lang["sales_receipt_sent"] = "Receipt sent to";
 $lang["sales_receipt_unsent"] = "Receipt failed to be sent to";
+$lang["sales_refund"] = "Refund Type";
 $lang["sales_register"] = "Sales Register";
 $lang["sales_remove_customer"] = "Remove Customer";
 $lang["sales_return"] = "Return";

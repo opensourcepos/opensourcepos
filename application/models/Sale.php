@@ -549,7 +549,7 @@ class Sale extends CI_Model
 				$cash_refund = $payment['cash_refund'];
 				$employee_id = $payment['employee_id'];
 
-				if($payment_id == - 1 && $payment_amount > 0)
+				if($payment_id == -1 && $payment_amount != 0)
 				{
 					// Add a new payment transaction
 					$sales_payments_data = array(
@@ -561,21 +561,22 @@ class Sale extends CI_Model
 					);
 					$success = $this->db->insert('sales_payments', $sales_payments_data);
 				}
-
-				if($payment_id != - 1)
+				elseif($payment_id != -1)
 				{
-					if($payment_amount > 0)
+					if($payment_amount != 0)
 					{
 						// Update existing payment transactions (payment_type only)
 						$sales_payments_data = array(
-							'payment_type' => $payment_type
+							'payment_type' => $payment_type,
+							'payment_amount' => $payment_amount,
+							'cash_refund' => $cash_refund
 						);
-						$this->db->where('payment_id',$payment_id);
+						$this->db->where('payment_id', $payment_id);
 						$success = $this->db->update('sales_payments', $sales_payments_data);
 					}
 					else
 					{
-						// Remove existing payment transactions  with a payment amount of zero
+						// Remove existing payment transactions with a payment amount of zero
 						$success = $this->db->delete('sales_payments', array('payment_id' => $payment_id));
 					}
 				}
@@ -588,7 +589,6 @@ class Sale extends CI_Model
 
 		return $success;
 	}
-
 
 	/**
 	 * Save the sale information after the sales is complete but before the final document is printed
@@ -640,17 +640,15 @@ class Sale extends CI_Model
 		$total_amount_used = 0;
 		foreach($payments as $payment_id=>$payment)
 		{
-			if( substr( $payment['payment_type'], 0, strlen( $this->lang->line('sales_giftcard') ) ) == $this->lang->line('sales_giftcard') )
+			if(!empty(strstr($payment['payment_type'], $this->lang->line('sales_giftcard'))))
 			{
 				// We have a gift card and we have to deduct the used value from the total value of the card.
 				$splitpayment = explode( ':', $payment['payment_type'] );
 				$cur_giftcard_value = $this->Giftcard->get_giftcard_value( $splitpayment[1] );
 				$this->Giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
-
-			if( substr( $payment['payment_type'], 0, strlen( $this->lang->line('sales_rewards') ) ) == $this->lang->line('sales_rewards') )
+			elseif(!empty(strstr($payment['payment_type'], $this->lang->line('sales_rewards'))))
 			{
-
 				$cur_rewards_value = $this->Customer->get_info($customer_id)->points;
 				$this->Customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
 				$total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
@@ -1398,6 +1396,7 @@ class Sale extends CI_Model
 
 		return $this->db->trans_status();
 	}
+
 	/**
 	 * Gets suspended sale info
 	 */
