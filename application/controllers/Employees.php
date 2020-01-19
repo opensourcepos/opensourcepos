@@ -35,6 +35,13 @@ class Employees extends Persons
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
+	public function suggest()
+	{
+		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->input->post('term'), TRUE));
+
+		echo json_encode($suggestions);
+	}
+
 	public function suggest_search()
 	{
 		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->input->post('term')));

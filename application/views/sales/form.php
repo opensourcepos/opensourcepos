@@ -124,11 +124,12 @@
 				<?php echo form_hidden('customer_id', $selected_customer_id);?>
 			</div>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
+				<?php echo form_input(array('name'=>'employee_name', 'value'=>$selected_employee_name, 'id'=>'employee_name', 'class'=>'form-control input-sm'));?>
+				<?php echo form_hidden('employee_id', $selected_employee_id);?>
 			</div>
 		</div>
 		
@@ -159,7 +160,7 @@ $(document).ready(function()
 	
 	<?php $this->load->view('partial/datepicker_locale'); ?>
 
-	var fill_value =  function(event, ui) {
+	var fill_value_customer =  function(event, ui) {
 		event.preventDefault();
 		$("input[name='customer_id']").val(ui.item.value);
 		$("input[name='customer_name']").val(ui.item.label);
@@ -172,8 +173,25 @@ $(document).ready(function()
 		delay: 15, 
 		cacheLength: 1,
 		appendTo: '.modal-content',
-		select: fill_value,
-		focus: fill_value
+		select: fill_value_customer,
+		focus: fill_value_customer
+	});
+
+	var fill_value_employee =  function(event, ui) {
+		event.preventDefault();
+		$("input[name='employee_id']").val(ui.item.value);
+		$("input[name='employee_name']").val(ui.item.label);
+	};
+
+	$('#employee_name').autocomplete(
+	{
+		source: "<?php echo site_url('employees/suggest'); ?>",
+		minChars: 0,
+		delay: 15, 
+		cacheLength: 1,
+		appendTo: '.modal-content',
+		select: fill_value_employee,
+		focus: fill_value_employee
 	});
 
 	$('button#delete').click(function() {

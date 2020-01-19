@@ -1178,20 +1178,12 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 
-		$data['employees'] = array();
-		foreach($this->Employee->get_all()->result() as $employee)
-		{
-			foreach(get_object_vars($employee) as $property => $value)
-			{
-				$employee->$property = $this->xss_clean($value);
-			}
-
-			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
-		}
-
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());
-		$data['selected_customer_name'] = $sale_info['customer_name'];
 		$data['selected_customer_id'] = $sale_info['customer_id'];
+		$data['selected_customer_name'] = $sale_info['customer_name'];
+		$employee_info = $this->Employee->get_info($sale_info['employee_id']);
+		$data['selected_employee_id'] = $sale_info['employee_id'];
+		$data['selected_employee_name'] = $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name);
 		$data['sale_info'] = $sale_info;
 		$balance_due = $sale_info['amount_due'] - $sale_info['amount_tendered'];
 		if($balance_due < 0)
@@ -1220,7 +1212,7 @@ class Sales extends Secure_Controller
 
 		// Set up a slightly modified list of payment types for new payment entry
 		$new_payment_options["--"] = $this->lang->line('common_none_selected_text');
-		$data['new_payment_options'] = $this->xss_clean($new_payment_options);
+		$data['new_payment_options'] = $new_payment_options;
 
 		$this->load->view('sales/form', $data);
 	}
@@ -1290,7 +1282,7 @@ class Sales extends Secure_Controller
 		$sale_data = array(
 			'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
-			'employee_id' => $this->input->post('employee_id'),
+			'employee_id' => $this->input->post('employee_id') != '' ? $this->input->post('employee_id') : NULL,
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
 		);
