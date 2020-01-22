@@ -866,7 +866,7 @@ class Reports extends Secure_Controller
 		{
 			$row = $this->xss_clean($row);
 
-			if($row['trans_group'] == $this->lang->line('reports_trans_payments'))
+			if($row['trans_group'] == $this->lang->line('reports_trans_payments') && !empty($row['trans_amount']))
 			{
 				$labels[] = $row['trans_type'];
 				$series[] = array('meta' => $row['trans_type'] . ' ' . round($row['trans_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['trans_amount']);
