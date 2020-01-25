@@ -164,7 +164,7 @@ if(isset($success))
 							}
 							?>
 							<?php
-							if($items_module_allowed)
+							if($items_module_allowed && $change_price)
 							{
 							?>
 								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));?></td>

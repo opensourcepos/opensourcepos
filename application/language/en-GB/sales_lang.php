@@ -13,6 +13,7 @@ $lang["sales_cash"] = "Cash";
 $lang["sales_cash_deposit"] = "Cash Deposit";
 $lang["sales_cash_filter"] = "Cash";
 $lang["sales_change_due"] = "Change Due";
+$lang["sales_change_price"] = "Change Selling Price";
 $lang["sales_check"] = "Cheque";
 $lang["sales_check_balance"] = "Cheque remainder";
 $lang["sales_check_filter"] = "Cheque";

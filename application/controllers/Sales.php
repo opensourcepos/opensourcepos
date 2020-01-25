@@ -1112,6 +1112,7 @@ class Sales extends Secure_Controller
 		}
 
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['change_price'] = $this->Employee->has_grant('sales_change_price', $this->Employee->get_logged_in_employee_info()->person_id);
 
 		$invoice_format = $this->config->item('sales_invoice_format');
 		$data['invoice_format'] = $invoice_format;
