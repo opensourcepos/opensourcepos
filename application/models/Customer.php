@@ -257,7 +257,6 @@ class Customer extends Person
 					'discount_type'		=> 0,
 					'package_id'		=> NULL,
 					'points'			=> NULL,
-					'sales_tax_code'	=> 1,
 					'deleted'			=> 1
 				));
 		}
