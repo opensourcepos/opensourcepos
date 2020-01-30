@@ -79,7 +79,7 @@ class Receiving_lib
 	{
 		if(!$this->CI->session->userdata('recv_stock_source'))
 		{
-			$this->set_stock_source($this->CI->Stock_location->get_default_location_id());
+			$this->set_stock_source($this->CI->Stock_location->get_default_location_id('receivings'));
 		}
 
 		return $this->CI->session->userdata('recv_stock_source');
@@ -143,7 +143,7 @@ class Receiving_lib
 	{
 		if(!$this->CI->session->userdata('recv_stock_destination'))
 		{
-			$this->set_stock_destination($this->CI->Stock_location->get_default_location_id());
+			$this->set_stock_destination($this->CI->Stock_location->get_default_location_id('receivings'));
 		}
 
 		return $this->CI->session->userdata('recv_stock_destination');
