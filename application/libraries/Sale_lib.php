@@ -653,7 +653,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_location'))
 		{
-			$this->set_sale_location($this->CI->Stock_location->get_default_location_id());
+			$this->set_sale_location($this->CI->Stock_location->get_default_location_id('sales'));
 		}
 
 		return $this->CI->session->userdata('sales_location');
