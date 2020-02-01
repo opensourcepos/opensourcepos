@@ -175,3 +175,4 @@ $lang["sales_work_order_sent"] = "İş Emri gönderildi:";
 $lang["sales_work_order_unsent"] = "İş Emri gönderilemedi:";
 $lang["sales_nontaxed_ind"] = " ";
 $lang["sales_taxed_ind"] = "T";
+$lang["sales_refund"] = "Geri Ödeme Türü";
