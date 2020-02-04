@@ -9,7 +9,7 @@ class Migration_IndiaGST extends CI_Migration
 
 	public function up()
 	{
-		if (!$this->db->field_exists('sales_tax_code', 'customers'))
+		if(!$this->db->field_exists('sales_tax_code', 'customers'))
 		{
 			return;
 		}

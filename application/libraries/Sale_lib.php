@@ -545,7 +545,6 @@ class Sale_lib
 		return $totals;
 	}
 
-
 	// Multiple Payments
 	public function get_amount_due()
 	{
@@ -910,16 +909,16 @@ class Sale_lib
 	public function get_quantity_already_added($item_id, $item_location)
 	{
 		$items = $this->get_cart();
-		$quanity_already_added = 0;
+		$quantity_already_added = 0;
 		foreach($items as $item)
 		{
 			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)
 			{
-				$quanity_already_added+=$item['quantity'];
+				$quantity_already_added += $item['quantity'];
 			}
 		}
 
-		return $quanity_already_added;
+		return $quantity_already_added;
 	}
 
 	public function get_item_id($line_to_get)
@@ -1209,8 +1208,7 @@ class Sale_lib
 		$total = bcmul($quantity, $price);
 		if($discount_type == PERCENT)
 		{
-			$discount_fraction = bcdiv($discount, 100);
-			$discount=bcmul($total,$discount_fraction);
+			$discount = bcmul($total, bcdiv($discount, 100));
 		}
 
 		return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);
@@ -1219,14 +1217,15 @@ class Sale_lib
 	public function get_item_tax($quantity, $price, $discount, $discount_type, $tax_percentage)
 	{
 		$price = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+
 		if($this->CI->config->item('tax_included'))
 		{
-			$tax_fraction = bcadd(100, $tax_percentage);
-			$tax_fraction = bcdiv($tax_fraction, 100);
+			$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
 			$price_tax_excl = bcdiv($price, $tax_fraction);
 
 			return bcsub($price, $price_tax_excl);
 		}
+
 		$tax_fraction = bcdiv($tax_percentage, 100);
 
 		return bcmul($price, $tax_fraction);
