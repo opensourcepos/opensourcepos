@@ -1,24 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "056be8f6f16ffaf669d0c02563435c06",
-    "content-hash": "785d1198446c034f8ab3482fbfeac2e2",
+    "content-hash": "3322819f98ab53e62fc89cb8b1e4cb8a",
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "3.1.9",
+            "version": "3.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "30e2eafa86c4c7b6b39cea3e7089a90df9f603fb"
+                "reference": "b73eb19aed66190c10c9cad476da7c36c271d6dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/30e2eafa86c4c7b6b39cea3e7089a90df9f603fb",
-                "reference": "30e2eafa86c4c7b6b39cea3e7089a90df9f603fb",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/b73eb19aed66190c10c9cad476da7c36c271d6dc",
+                "reference": "b73eb19aed66190c10c9cad476da7c36c271d6dc",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +37,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2018-06-12 13:45:46"
+            "time": "2019-09-19T12:08:45+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -99,20 +98,20 @@
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2016-05-11 00:36:29"
+            "time": "2016-05-11T00:36:29+00:00"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.17",
+            "version": "v2.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
-                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +147,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-07-04 16:31:37"
+            "time": "2019-01-03T20:59:08+00:00"
         },
         {
             "name": "phenx/php-font-lib",
@@ -182,7 +181,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2015-05-06 20:02:39"
+            "time": "2015-05-06T20:02:39+00:00"
         },
         {
             "name": "phenx/php-svg-lib",
@@ -216,23 +215,24 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2015-05-06 18:49:49"
+            "time": "2015-05-06T18:49:49+00:00"
         },
         {
             "name": "tamtamchik/namecase",
-            "version": "1.0.3",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tamtamchik/namecase.git",
-                "reference": "a0d83e8c39141fc27898993c9339cfc4cf4680de"
+                "reference": "1f29341b810f75ab4beb4bdcb710dcede9107b46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/a0d83e8c39141fc27898993c9339cfc4cf4680de",
-                "reference": "a0d83e8c39141fc27898993c9339cfc4cf4680de",
+                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/1f29341b810f75ab4beb4bdcb710dcede9107b46",
+                "reference": "1f29341b810f75ab4beb4bdcb710dcede9107b46",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -242,7 +242,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev",
+                    "1.0.x": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -273,7 +274,7 @@
                 "strings",
                 "tamtamchik"
             ],
-            "time": "2018-09-12 10:40:55"
+            "time": "2019-07-16T17:32:28+00:00"
         }
     ],
     "packages-dev": [
@@ -282,12 +283,12 @@
             "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mikey179/vfsStream.git",
+                "url": "https://github.com/bovigo/vfsStream.git",
                 "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
                 "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
                 "shasum": ""
             },
@@ -305,24 +306,83 @@
                 "BSD"
             ],
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2012-08-25 12:49:29"
+            "time": "2012-08-25T12:49:29+00:00"
         },
         {
-            "name": "vlucas/phpdotenv",
-            "version": "v2.5.1",
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e"
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e",
-                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2019-11-27T13:56:44+00:00"
+        },
+        {
+            "name": "vlucas/phpdotenv",
+            "version": "v2.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vlucas/phpdotenv.git",
+                "reference": "2a7dcf7e3e02dc5e701004e51a6f304b713107d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2a7dcf7e3e02dc5e701004e51a6f304b713107d5",
+                "reference": "2a7dcf7e3e02dc5e701004e51a6f304b713107d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/polyfill-ctype": "^1.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8.35 || ^5.0"
@@ -330,7 +390,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -355,7 +415,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2018-07-29 20:33:41"
+            "time": "2019-01-29T11:11:52+00:00"
         }
     ],
     "aliases": [],

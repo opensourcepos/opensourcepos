@@ -2,6 +2,7 @@
   <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^public$
+    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
     RewriteRule "^(.*)$" "/public/" [R=301,L]
   </IfModule>
 

@@ -5,32 +5,38 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.test
+
     sqlscript:
         build:
             context: database/
             dockerfile: Dockerfile
-    php:
+
+    ospos:
         build:
             context: .
             dockerfile: Dockerfile
-        links:
-            - mysql
+        container_name: ospos
+        restart: always
+        depends_on:
+          - mysql
         ports:
-            - "80:80"
+          - "80:80"
         environment:
-            - MYSQL_USERNAME=admin
-            - MYSQL_PASSWORD=pointofsale
-            - MYSQL_DB_NAME=ospos
-            - MYSQL_HOST_NAME=mysql
+          - MYSQL_USERNAME=admin
+          - MYSQL_PASSWORD=pointofsale
+          - MYSQL_DB_NAME=ospos
+          - MYSQL_HOST_NAME=mysql
 
     mysql:
         image: mysql:5.7
-        environment:
-            - MYSQL_ROOT_PASSWORD=pointofsale
-            - MYSQL_DATABASE=ospos
-            - MYSQL_USER=admin
-            - MYSQL_PASSWORD=pointofsale
+        container_name: mysql
+        restart: always
         ports:
-            - "3306:3306"
+          - "3306:3306"
         volumes:
-            - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+        environment:
+          - MYSQL_ROOT_PASSWORD=pointofsale
+          - MYSQL_DATABASE=ospos
+          - MYSQL_USER=admin
+          - MYSQL_PASSWORD=pointofsale

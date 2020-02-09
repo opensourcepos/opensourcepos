@@ -1,0 +1,69 @@
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+
+	error_log /etc/nginx/error_log.log warn;
+
+	server {
+		listen               80;
+		server_name          ${WEB_DOMAIN};
+		server_tokens        off;
+
+		location /.well-known/acme-challenge/ {
+			root /var/www/certbot;
+		}
+
+		location / {
+			return 301 https://${ESC}host${ESC}request_uri;
+		}
+	}
+
+	server {
+		listen               443 ssl;
+		server_name          ${WEB_DOMAIN};
+		server_tokens        off;
+		
+		client_max_body_size 10M;
+
+		ssl_certificate /etc/letsencrypt/live/ospos.ospos/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/ospos.ospos/privkey.pem;
+		include /etc/letsencrypt/options-ssl-nginx.conf;
+		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+		location / {
+			proxy_pass          http://ospos:80;
+			proxy_redirect      off;
+			proxy_set_header    Host                ${ESC}host;
+			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
+			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
+			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
+			proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
+		}
+	}
+
+	server {
+		listen               8000 ssl;
+		server_name          ${WEB_DOMAIN};
+		server_tokens        off;
+
+		ssl_certificate /etc/letsencrypt/live/ospos.ospos/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/ospos.ospos/privkey.pem;
+		include /etc/letsencrypt/options-ssl-nginx.conf;
+		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+		location / {
+			proxy_pass          http://phpmyadmin:80;
+			proxy_redirect      off;
+			proxy_set_header    Host                ${ESC}host;
+			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
+			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
+			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
+			proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
+		}
+	}
+
+}

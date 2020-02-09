@@ -1,12 +1,12 @@
 {
     "name": "OpenSourcePOS",
-    "version": "3.3.0",
+    "version": "3.3.2",
     "license": [
         "MIT"
     ],
     "dependencies": {
         "codeigniter/framework": {
-            "version": "3.1.9",
+            "version": "3.1.11",
             "license": [
                 "MIT"
             ]
@@ -24,7 +24,7 @@
             ]
         },
         "paragonie/random_compat": {
-            "version": "2.0.15",
+            "version": "2.0.18",
             "license": [
                 "MIT"
             ]
@@ -42,16 +42,22 @@
             ]
         },
         "tamtamchik/namecase": {
-            "version": "1.0.2",
+            "version": "1.0.5",
             "license": [
                 "MIT"
             ]
         },
         "vlucas/phpdotenv": {
-            "version": "2.4.0",
+            "version": "2.6.1",
             "license": [
                 "BSD-3-Clause-Attribution"
             ]
+        },
+        "symfony/polyfill-ctype": {
+             "version": "v1.13.1",
+             "license": [
+                 "MIT"
+             ]
         }
     }
 }
