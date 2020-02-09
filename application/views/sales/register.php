@@ -947,4 +947,48 @@ function check_payment_type()
 }
 </script>
 
+<script>
+// Keyboard events
+$(document).keydown(function(event)
+{	
+	var mycode = event.keyCode;
+	
+	//F2
+	if (mycode == 113)
+	{
+		$("#item").focus();
+		$("#item").select();
+		return;
+	}
+
+	//F7
+	if (mycode == 118)
+	{
+		event.preventDefault();
+		$("#amount_tendered").focus();
+		$("#amount_tendered").select();
+		return;
+	}
+
+	//F8
+	if (mycode == 119)
+	{
+		event.preventDefault();
+		$("#add_payment_button").click();
+		$("#finish_sale_button").click();
+		return;
+	}
+
+	//ESC
+	if (mycode == 27)
+	{
+		event.preventDefault();
+		$("#cancel_sale_button").click();
+		return;
+	}
+	
+});
+
+</script>
+
 <?php $this->load->view("partial/footer"); ?>
