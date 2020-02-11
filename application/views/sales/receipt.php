@@ -44,4 +44,14 @@ if (isset($error_message))
 
 <?php $this->load->view("sales/" . $this->config->item('receipt_template')); ?>
 
+<script>
+document.body.onkeyup = function(e){
+    switch(event.keyCode) {
+        case 120:
+            window.location.href = "sales";
+            break;
+    }
+}
+</script>
+
 <?php $this->load->view("partial/footer"); ?>
