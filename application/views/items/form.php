@@ -125,7 +125,8 @@
 				}
 				?>
 				<?php
-				if($allow_temp_item == 1) {
+				if($allow_temp_item == 1)
+				{
 				?>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
@@ -191,54 +192,58 @@
 			</div>
 		</div>
 
-		<?php if(!$use_destination_based_tax) { ?>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_1',
-						'class'=>'form-control input-sm',
-						'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
-						);?>
-			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+		<?php
+		if(!$use_destination_based_tax)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
-							'id'=>'tax_percent_name_1',
+							'name'=>'tax_names[]',
+							'id'=>'tax_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
+							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
 							);?>
-					<span class="input-group-addon input-sm"><b>%</b></span>
+				</div>
+				<div class="col-xs-4">
+					<div class="input-group input-group-sm">
+						<?php echo form_input(array(
+								'name'=>'tax_percents[]',
+								'id'=>'tax_percent_name_1',
+								'class'=>'form-control input-sm',
+								'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
+								);?>
+						<span class="input-group-addon input-sm"><b>%</b></span>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_2',
-						'class'=>'form-control input-sm',
-						'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
-						);?>
-			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
+							'name'=>'tax_names[]',
+							'id'=>'tax_name_2',
 							'class'=>'form-control input-sm',
-							'id'=>'tax_percent_name_2',
-							'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
+							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
 							);?>
-					<span class="input-group-addon input-sm"><b>%</b></span>
+				</div>
+				<div class="col-xs-4">
+					<div class="input-group input-group-sm">
+						<?php echo form_input(array(
+								'name'=>'tax_percents[]',
+								'class'=>'form-control input-sm',
+								'id'=>'tax_percent_name_2',
+								'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
+								);?>
+						<span class="input-group-addon input-sm"><b>%</b></span>
+					</div>
 				</div>
 			</div>
-		</div>
-
-		<?php } ?>
+		<?php
+		}
+		?>
 
 		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
@@ -259,7 +264,6 @@
 		<?php endif; ?>
 
 		<?php if($include_hsn): ?>
-
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('items_hsn_code'), 'category', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
@@ -302,6 +306,7 @@
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
 						'class'=>'required form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
 						);?>
 			</div>
@@ -314,6 +319,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
 						);?>
 			</div>
