@@ -144,7 +144,21 @@ class Detailed_sales extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, item_location, item_number, description, subtotal, tax, total, cost, profit, discount, discount_type, sale_status');
+			$this->db->select('
+				MAX(name) AS name, 
+				category, 
+				quantity_purchased, 
+				item_location, 
+				item_number, 
+				description, 
+				subtotal, 
+				tax, 
+				total, 
+				cost, 
+				profit, 
+				discount, 
+				discount_type, 
+				sale_status');
 			$this->db->from('sales_items_temp');
 			if(count($inputs['definition_ids']) > 0)
 			{

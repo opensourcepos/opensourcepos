@@ -845,7 +845,7 @@ class Item extends CI_Model
 			if($filters['search_custom'] != FALSE)
 			{
 				// This section is currently never used but custom fields are replaced with attributes
-				// therefore in case this feature is required a proper query needs to written here
+				// therefore in case this feature is required a proper query needs to be written here
 				/*
 				$this->db->from('items');
 				$this->db->group_start();
