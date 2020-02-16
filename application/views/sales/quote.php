@@ -50,7 +50,7 @@ if (isset($error_message))
 			<?php
 			if(isset($customer))
 			{
-				?>
+			?>
 				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
 			<?php
 			}
@@ -108,9 +108,9 @@ if (isset($error_message))
 			if($discount > 0)
 			{
 				$quote_columns = $quote_columns + 1;
-				?>
+			?>
 				<th><?php echo $this->lang->line('sales_customer_discount'); ?></th>
-				<?php
+			<?php
 			}
 			?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>

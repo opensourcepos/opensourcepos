@@ -1427,14 +1427,13 @@ class Sales extends Secure_Controller
 	 */
 	public function suspended()
 	{
-		$customer_id = $this->sale_lib->get_customer();
 		$data = array();
+		$customer_id = $this->sale_lib->get_customer();
 		$data['suspended_sales'] = $this->xss_clean($this->Sale->get_all_suspended($customer_id));
-		$data['dinner_table_enable'] = $this->config->item('dinner_table_enable');
 		$this->load->view('sales/suspended', $data);
 	}
 
-	/*
+	/**
 	 * Unsuspended sales are now left in the tables and are only removed
 	 * when they are intentionally cancelled.
 	 */
