@@ -14,7 +14,7 @@ before_install:
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
     HEAD` && sed -i "s/\$1/\$1.$date.$branch.$rev/g" deployment.json
 script:
-  - docker run --rm -v $(pwd):/app composer install
+  - docker run --rm -v $(pwd):/app composer install --no-dev
   - docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations
     develop
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
