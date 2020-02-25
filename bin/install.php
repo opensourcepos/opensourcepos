@@ -253,7 +253,7 @@ class Installer
         
         foreach ($iterator as $file) {
             if ($file->isDir()) {
-                @mkdir($dst . '/' . $iterator->getSubPathName(), 0777, TRUE);
+                @mkdir($dst . '/' . $iterator->getSubPathName(), 0775, TRUE);
             } else {
 
                 $success = copy($file, $dst . '/' . $iterator->getSubPathName());
