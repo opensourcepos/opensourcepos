@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @backupGlobals disabled
+ */
 class Barcode_lib_test extends UnitTestCase
 {
 	public function setUp()
