@@ -19,7 +19,7 @@ services:
           - "80:80"
 
     mysql:
-        image: mysql:5.7
+        image: mariadb:10.3
         container_name: mysql
         restart: always
         ports:

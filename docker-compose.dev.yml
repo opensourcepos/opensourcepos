@@ -27,7 +27,7 @@ services:
           - XDEBUG_CONFIG=remote_host=172.17.0.1
 
     mysql:
-        image: mariadb:10.1.21
+        image: mariadb:10.3
         container_name: mysql
         restart: always
         ports:
