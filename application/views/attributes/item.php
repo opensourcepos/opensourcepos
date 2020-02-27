@@ -48,6 +48,15 @@ foreach($definition_values as $definition_id => $definition_value)
 	            else if ($definition_value['definition_type'] == CHECKBOX)
 	            {
 	            	$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
+
+				//Sends 0 if the box is unchecked instead of not sending anything.
+	            	echo form_input(array(
+		            	'type' => 'hidden',
+						'name' => "attribute_links[$definition_id]",
+		            	'id' => "attribute_links[$definition_id]",
+		            	'value' => 0,
+		            	'data-definition-id' => $definition_id
+		            	));
 	            	echo form_checkbox(array(
 	            		'name' => "attribute_links[$definition_id]",
 	            		'id' => "attribute_links[$definition_id]",
@@ -68,7 +77,7 @@ foreach($definition_values as $definition_id => $definition_value)
 ?>
 
 <script type="text/javascript">
-    (function() {
+(function() {
         <?php $this->load->view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->item('dateformat') . '"}'))); ?>
 
         var enable_delete = function() {
