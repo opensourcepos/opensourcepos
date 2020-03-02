@@ -306,9 +306,10 @@ class Attribute extends CI_Model
 	{
 		$success = FALSE;
 		
-		//From TEXT to DATETIME
+		//From TEXT
 		if($from_type === TEXT)
 		{
+			//To DATETIME or DECIMAL
 			if(in_array($to_type, [DATE, DECIMAL], TRUE))
 			{
 				$field = ($to_type === DATE ? 'attribute_date' : 'attribute_decimal');
@@ -328,33 +329,88 @@ class Attribute extends CI_Model
 					$this->db->trans_complete();
 				}
 			}
-			else if(in_array($to_type, [DROPDOWN, CHECKBOX], TRUE))
+			//To DROPDOWN or CHECKBOX
+			else if($to_type === DROPDOWN)
 			{
 				$success = TRUE;
 			}
+			else if($to_type === CHECKBOX)
+			{
+				$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+				
+				$this->db->trans_start();
+				
+				$query = 'UPDATE ospos_attribute_values a ';
+				$query .= 'INNER JOIN ospos_attribute_links b ';
+				$query .= 'ON a.attribute_id = b.attribute_id ';
+				$query .= "SET b.attribute_id = IF((a.attribute_value IN('FALSE','0','') OR (a.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+				$success = $this->db->query($query);
+				
+				$this->db->trans_complete();
+			}
 		}
 		
-		//From DROPDOWN to TEXT
+		//From DROPDOWN
 		else if($from_type === DROPDOWN)
 		{
-			//From DROPDOWN to TEXT
-			$this->db->trans_start();
-			
-			$this->db->from('ospos_attribute_links');
-			$this->db->where('definition_id',$definition_id);
-			$this->db->where('item_id', NULL);
-			$success = $this->db->delete();
-			
-			$this->db->trans_complete();
+			//To TEXT
+			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))
+			{
+				$this->db->trans_start();
+				
+				$this->db->from('ospos_attribute_links');
+				$this->db->where('definition_id',$definition_id);
+				$this->db->where('item_id', NULL);
+				$success = $this->db->delete();
+				
+				$this->db->trans_complete();
+				
+				//To CHECKBOX
+				if($to_type === CHECKBOX)
+				{
+					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+					
+					$this->db->trans_start();
+					
+					$query = 'UPDATE ospos_attribute_values a ';
+					$query .= 'INNER JOIN ospos_attribute_links b ';
+					$query .= 'ON a.attribute_id = b.attribute_id ';
+					$query .= "SET b.attribute_id = IF((a.attribute_value IN('FALSE','0','') OR (a.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+					$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+					$success = $this->db->query($query);
+					
+					$this->db->trans_complete();
+				}
+				
+			}
 		}
 		
-		//Any other allowed conversion does not get checked here
+		//From any other type
 		else
 		{
 			$success = TRUE;
 		}
 		
 		return $success;
+	}
+	
+	private function checkbox_attribute_values($definition_id)
+	{
+		$zero_attribute_id = $this->value_exists('0');
+		$one_attribute_id = $this->value_exists('1');
+		
+		if($zero_attribute_id === FALSE)
+		{
+			$zero_attribute_id = $this->save_value('0', $definition_id, FALSE, FALSE, CHECKBOX);
+		}
+		
+		if($one_attribute_id === FALSE)
+		{
+			$one_attribute_id = $this->save_value('1', $definition_id, FALSE, FALSE, CHECKBOX);
+		}
+		
+		return array($zero_attribute_id, $one_attribute_id);
 	}
 	
 	/*
@@ -527,7 +583,6 @@ class Attribute extends CI_Model
 	
 	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
 	{
-		//TODO: Right now when you uncheck the checkbox type it should be sending 0 but that's being interpreted funny and erasing the attribute_link altogether for that item.
 		$this->db->trans_start();
 		
 		//New Attribute
