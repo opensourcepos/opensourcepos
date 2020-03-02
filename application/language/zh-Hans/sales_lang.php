@@ -1,6 +1,5 @@
-<?php 
-
-$lang["customers_available_points"] = "";
+<?php
+$lang["customers_available_points"] = "可用积分";
 $lang["rewards_package"] = "";
 $lang["rewards_remaining_balance"] = "";
 $lang["sales_account_number"] = "";

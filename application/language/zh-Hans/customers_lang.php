@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "可用积分";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
-$lang["customers_basic_information"] = "";
+$lang["customers_basic_information"] = "个人信息";
 $lang["customers_cannot_be_deleted"] = "無法刪除選定的客戶，選定的客戶存有銷售紀錄。";
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "你確定要刪除選定的客戶？";
@@ -13,13 +12,13 @@ $lang["customers_confirm_restore"] = "";
 $lang["customers_consent"] = "";
 $lang["customers_consent_required"] = "";
 $lang["customers_customer"] = "客戶";
-$lang["customers_date"] = "";
+$lang["customers_date"] = "日期";
 $lang["customers_discount"] = "折扣";
 $lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
-$lang["customers_email_duplicate"] = "";
-$lang["customers_employee"] = "";
+$lang["customers_discount_percent"] = "折扣率";
+$lang["customers_discount_type"] = "优惠类型";
+$lang["customers_email_duplicate"] = "email地址已被使用";
+$lang["customers_employee"] = "员工";
 $lang["customers_error_adding_updating"] = "添加/更新客戶錯誤";
 $lang["customers_csv_import_failed"] = "CSV匯入失敗";
 $lang["customers_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
