@@ -7,8 +7,7 @@ branches:
 services:
   - docker
 before_install:
-  - curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname
-    -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
@@ -21,6 +20,7 @@ script:
     sh -c "npm install && bower install && grunt package"
   - docker-compose -f docker-compose.test.yml up
 env:
+  - DOCKER_COMPOSE_VERSION=1.21.1
   - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   && docker tag "opensourcepos_ospos:latest" "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
