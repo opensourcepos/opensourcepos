@@ -20,7 +20,9 @@ script:
     sh -c "npm install && bower install && grunt package"
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 env:
-  - DOCKER_COMPOSE_VERSION=1.21.1 TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
+  global:
+    - DOCKER_COMPOSE_VERSION=1.21.1 
+    - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 fter_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   && docker tag "opensourcepos_ospos:latest" "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
 deploy:
