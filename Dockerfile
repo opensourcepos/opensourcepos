@@ -20,10 +20,13 @@ FROM ospos AS ospos_test
  
 COPY --from=composer /usr/bin/composer /usr/bin/composer
  
+RUN apt-get install -y libzip-dev wget
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /bin/wait-for-it.sh && chmod +x /bin/wait-for-it.sh
+RUN docker-php-ext-install zip
 RUN composer install -d/app 
 RUN php /app/vendor/kenjis/ci-phpunit-test/install.php -a /app/application -p /app/vendor/codeigniter/framework
 RUN sed -i 's/backupGlobals="true"/backupGlobals="false"/g' /app/application/tests/phpunit.xml
- 
+RUN sed -i '13,17d' /app/application/tests/controllers/Welcome_test.php 
 WORKDIR /app/application/tests
  
 CMD ["/app/vendor/phpunit/phpunit/phpunit"]
