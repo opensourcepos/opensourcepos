@@ -16,8 +16,6 @@ services:
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
         command: ["/bin/wait-for-it.sh", "mysql:3306", "--", "/app/vendor/phpunit/phpunit/phpunit"]
-        volumes:
-          - ./bin/wait-for-it.sh:/bin/wait-for-it.sh
         ports:
           - "80:80"
 
