@@ -66,7 +66,6 @@ function get_languages()
 		'es:spanish' => 'Spanish',
 		'es-MX:spanish' => 'Spanish (Mexico)',
 		'fr:french' => 'French',
-		'he:hebrew' => 'Hebrew',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
 		'hu-HU:hungarian' => 'Hungarian (Hungary)',
 		'id:indonesian' => 'Indonesian',
