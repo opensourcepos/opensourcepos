@@ -18,6 +18,7 @@ script:
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
   - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt
     sh -c "npm install && bower install && grunt package"
+  - docker-compose build
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 env:
   global:
