@@ -98,7 +98,7 @@ Cloud install
 -------------
 
 If you choose *DigitalOcean*:
-[Through this link](https://m.do.co/c/ac38c262507b), you will get a *$100 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations#cloud-deploy-installation) for further instructions on how to install the necessary components.
+[Through this link](https://m.do.co/c/ac38c262507b), you will get a *$100 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) for further instructions on how to install the necessary components.
 
 
 cPanel & SSH Install
