@@ -398,7 +398,7 @@ class Sales extends Secure_Controller
 		}
 
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$this->barcode_lib->parse_barcode_fields($quantity, $item_id_or_number_or_item_kit_or_receipt);
+		$this->barcode_lib->parse_barcode_fields($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$mode = $this->sale_lib->get_mode();
 		$quantity = ($mode == 'return') ? -$quantity : $quantity;
 		$item_location = $this->sale_lib->get_sale_location();
@@ -423,7 +423,6 @@ class Sales extends Secure_Controller
 				$discount_type = $item_kit_info->kit_discount_type;
 			}
 
-			$price = NULL;
 			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))
