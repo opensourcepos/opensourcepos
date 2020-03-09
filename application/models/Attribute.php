@@ -530,7 +530,7 @@ class Attribute extends CI_Model
 
 		if(empty($attribute_id) || empty($item_id))
 		{
-			if($definition_type == TEXT || $definition_type == DROPDOWN)
+			if(in_array($definition_type, [TEXT, DROPDOWN], TRUE))
 			{
 				$attribute_id = $this->value_exists($attribute_value);
 
@@ -558,7 +558,19 @@ class Attribute extends CI_Model
 		else
 		{
 			$this->db->where('attribute_id', $attribute_id);
-			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+
+			if(in_array($definition_type, [TEXT, DROPDOWN], TRUE))
+			{
+				$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+			}
+			else if($definition_type == DECIMAL)
+			{
+				$this->db->update('attribute_values', array('attribute_decimal' => $attribute_value));
+			}
+			else
+			{
+				$this->db->update('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
+			}
 		}
 
 		$this->db->trans_complete();
