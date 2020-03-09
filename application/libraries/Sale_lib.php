@@ -718,7 +718,6 @@ class Sale_lib
 			return FALSE;
 		}
 
-		$price = 0.00;
 		$cost_price = 0.00;
 		$item_id = $item_info->item_id;
 		$item_type = $item_info->item_type;

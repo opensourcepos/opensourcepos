@@ -8,6 +8,9 @@ require_once(APPPATH . 'models/tokens/Token_quote_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_work_order_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_suspended_invoice_count.php');
 require_once(APPPATH . 'models/tokens/Token_year_invoice_count.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_price.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_weight.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_ean.php');
 
 /**
  * Token class

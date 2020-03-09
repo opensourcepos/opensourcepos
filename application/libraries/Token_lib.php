@@ -78,6 +78,24 @@ class Token_lib
 		return $token_tree;
 	}
 
+	public function parse_barcode(&$quantity, &$price,  &$item_id_or_number_or_item_kit_or_receipt)
+	{
+		$barcode_formats = json_decode($this->CI->config->item('barcode_formats'));
+		$barcode_tokens = Token::get_barcode_tokens();
+
+		if(!empty($barcode_formats))
+		{
+			foreach($barcode_formats as $barcode_format)
+			{
+				$parsed_results = $this->parse($item_id_or_number_or_item_kit_or_receipt, $barcode_format, $barcode_tokens);
+				$quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
+				$item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
+					$parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
+				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;
+			}
+		}
+	}
+
 	public function parse($string, $pattern, $tokens = array())
 	{
 		$token_tree = $this->scan($pattern);
