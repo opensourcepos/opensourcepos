@@ -354,7 +354,7 @@ function get_items_manage_table_headers()
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$headers[] = array($definition_id => $definition_name);
+		$headers[] = array($definition_id => $definition_name, 'sortable' => FALSE);
 	}
 
 	$headers[] = array('inventory' => '');
