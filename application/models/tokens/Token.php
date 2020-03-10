@@ -27,7 +27,7 @@ abstract class Token
 
 	static function get_barcode_tokens()
 	{
-		return array(new Token_barcode_price(), new Token_barcode_weight(), new Token_barcode_ean());
+		return array();
 	}
 
 	static function get_tokens()

@@ -90,7 +90,7 @@ class Receivings extends Secure_Controller
 
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$this->barcode_lib->parse_barcode_fields($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
+		$this->barcode_lib->parse_barcode_fields($quantity, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
 		$discount = $this->config->item('default_receivings_discount');
@@ -104,7 +104,7 @@ class Receivings extends Secure_Controller
 		{
 			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type);
 		}
-		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type, $price))
+		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type))
 		{
 			$data['error'] = $this->lang->line('receivings_unable_to_add_item');
 		}
