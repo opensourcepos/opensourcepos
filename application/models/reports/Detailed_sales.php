@@ -30,7 +30,7 @@ class Detailed_sales extends Report
 			'details' => array(
 				$this->lang->line('reports_name'),
 				$this->lang->line('reports_category'),
-				$this->lang->line('reports_serial_number'),
+				$this->lang->line('reports_item_number'),
 				$this->lang->line('reports_description'),
 				$this->lang->line('reports_quantity'),
 				$this->lang->line('reports_subtotal'),
@@ -144,11 +144,28 @@ class Detailed_sales extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount, discount_type, sale_status');
+			$this->db->select('
+				name, 
+				category, 
+				quantity_purchased, 
+				item_location, 
+				item_number, 
+				description, 
+				subtotal, 
+				tax, 
+				total, 
+				cost, 
+				profit, 
+				discount, 
+				discount_type, 
+				sale_status');
 			$this->db->from('sales_items_temp');
-			if (count($inputs['definition_ids']) > 0)
+			if(count($inputs['definition_ids']) > 0)
 			{
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$format = $this->db->escape(dateformat_mysql());
+				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
+				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
 				$this->db->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 				$this->db->group_by('sales_items_temp.sale_id, sales_items_temp.item_id');

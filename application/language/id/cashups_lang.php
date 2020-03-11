@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Jumlah";
 $lang["cashups_amount_number"] = "Jumlah harus berupa angka";
 $lang["cashups_amount_required"] = "Jumlah adalah Bidang yang Diperlukan.";
@@ -21,18 +20,18 @@ $lang["cashups_error_adding_updating"] = "Ada kesalahan menambahkan/memperbarui 
 $lang["cashups_id"] = "ID";
 $lang["cashups_info"] = "Info";
 $lang["cashups_is_deleted"] = "Dihapus";
-$lang["cashups_new"] = "";
-$lang["cashups_no_cashups_to_display"] = "";
-$lang["cashups_none_selected"] = "";
-$lang["cashups_note"] = "";
-$lang["cashups_one_or_multiple"] = "";
-$lang["cashups_open_amount_cash"] = "";
-$lang["cashups_open_date"] = "";
-$lang["cashups_open_employee"] = "";
-$lang["cashups_opened_date"] = "";
-$lang["cashups_successful_adding"] = "";
-$lang["cashups_successful_deleted"] = "";
-$lang["cashups_successful_updating"] = "";
-$lang["cashups_total"] = "";
-$lang["cashups_transfer_amount_cash"] = "";
-$lang["cashups_update"] = "";
+$lang["cashups_new"] = "Uang tunai baru";
+$lang["cashups_no_cashups_to_display"] = "Tidak ada uang tunai yang ditampilkan";
+$lang["cashups_none_selected"] = "Anda tidak dapat memilih uang tunai manapun";
+$lang["cashups_note"] = "Catatan";
+$lang["cashups_one_or_multiple"] = "Uang tunai";
+$lang["cashups_open_amount_cash"] = "Uang tunai terbuka";
+$lang["cashups_open_date"] = "Tanggal Buka";
+$lang["cashups_open_employee"] = "Dibuka oleh";
+$lang["cashups_opened_date"] = "Tanggal Dibuka";
+$lang["cashups_successful_adding"] = "Uang tunai berhasil ditambahkan";
+$lang["cashups_successful_deleted"] = "Uang tunai berhasil dihapus";
+$lang["cashups_successful_updating"] = "Uang tunai berhasil diperbaharui";
+$lang["cashups_total"] = "Jumlah";
+$lang["cashups_transfer_amount_cash"] = "Uang tunai yang keluar/masuk";
+$lang["cashups_update"] = "Memperbaharui uang tunai";

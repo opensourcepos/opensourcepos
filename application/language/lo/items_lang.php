@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "ເພີ່ມຫລືຫລຸດປະລິມານສິນຄ້າໃນສາງ";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "ອະນຸຍາດໃຫ້ມີລາຍລະອຽດເສີມ";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "ແກ້ໄຂເປັນກຸ່ມ";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Editing Multiple Items";
 $lang["items_empty_upc_items"] = "Empty Barcode Items";
 $lang["items_error_adding_updating"] = "Error adding/updating item";
 $lang["items_error_updating_multiple"] = "Error updating items";
-$lang["items_excel_import_failed"] = "Excel import failed";
-$lang["items_excel_import_nodata_wrongformat"] = "The uploaded file has no data or is formatted incorrectly.";
-$lang["items_excel_import_partially_failed"] = "Item import successful with some failures:";
-$lang["items_excel_import_success"] = "Item import successful.";
+$lang["items_csv_import_failed"] = "CSV import failed";
+$lang["items_csv_import_nodata_wrongformat"] = "The uploaded file has no data or is formatted incorrectly.";
+$lang["items_csv_import_partially_failed"] = "Item import successful with some failures:";
+$lang["items_csv_import_success"] = "Item import successful.";
 $lang["items_generate_barcodes"] = "Generate Barcodes";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Item Import from Excel";
+$lang["items_import_items_csv"] = "Item Import from CSV";
 $lang["items_info_provided_by"] = "Information provided by";
 $lang["items_inventory"] = "Inventory";
 $lang["items_inventory_comments"] = "Comments";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Retrive Item Info";
 $lang["items_sales_tax_1"] = "Sales Tax";
 $lang["items_sales_tax_2"] = "Sales Tax 2";
 $lang["items_search_attributes"] = "Search Attributes";
-$lang["items_search_custom_items"] = "Search Custom Items";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "Serialized Items";
 $lang["items_standard"] = "Standard";

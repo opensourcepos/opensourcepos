@@ -1,36 +1,32 @@
-version: '2'
+version: '3.4'
   
 services:
     test: 
         build:
             context: .
-            dockerfile: Dockerfile.test
-    sqlscript:
-        build:
-            context: database/
-            dockerfile: Dockerfile
-    php:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        links:
-            - mysql
-        ports:
-            - "80:80"
+            target: ospos_test
+        depends_on: 
+          - mysql
+        container_name: ospos_test
         environment:
-            - MYSQL_USERNAME=admin
-            - MYSQL_PASSWORD=pointofsale
-            - MYSQL_DB_NAME=ospos
-            - MYSQL_HOST_NAME=mysql
+          - CI_ENV=testing
+          - ENCRYPTION_KEY=
+          - MYSQL_HOST_NAME=mysql
+          - MYSQL_DATABASE=ospos
+          - MYSQL_USERNAME=admin
+          - MYSQL_PASSWORD=pointofsale
+        command: ["/bin/wait-for-it.sh", "mysql:3306", "--", "/app/vendor/phpunit/phpunit/phpunit"]
+        ports:
+          - "80:80"
 
     mysql:
-        image: mysql:5.7
-        environment:
-            - MYSQL_ROOT_PASSWORD=pointofsale
-            - MYSQL_DATABASE=ospos
-            - MYSQL_USER=admin
-            - MYSQL_PASSWORD=pointofsale
-        ports:
-            - "3306:3306"
+        image: mariadb:10.3
+        container_name: mysql
+        restart: always
         volumes:
-            - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+        environment:
+          - MYSQL_ROOT_PASSWORD=pointofsale
+          - MYSQL_DATABASE=ospos
+          - MYSQL_USER=admin
+          - MYSQL_PASSWORD=pointofsale

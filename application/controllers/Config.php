@@ -209,6 +209,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->Module->get_show_office_group();
+		$data['currency_code'] = $this->config->item('currency_code');
 
 		$use_alternate_currency = $this->config->item('use_alternate_currency');
 		$number_locale_alt = $this->config->item('number_locale_alt');
@@ -311,13 +312,24 @@ class Config extends Secure_Controller
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
-	
+
 	public function ajax_check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
+		$save_number_locale = $this->input->post('save_number_locale');
+
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
-		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
-		$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
+		if($number_locale != $save_number_locale)
+		{
+			$currency_symbol = $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+			$currency_code = $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE);
+			$save_number_locale = $number_locale;
+		}
+		else
+		{
+			$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
+			$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
+		}
 
 		if($this->input->post('thousands_separator') == 'false')
 		{
@@ -346,16 +358,15 @@ class Config extends Secure_Controller
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 
-		$fmt->setTextAttribute(\NumberFormatter::CURRENCY_CODE, $currency_code);
 
 		$number_local_example = $fmt->format(1234567890.12300);
 
 		echo json_encode(array(
 			'success' => $number_local_example != FALSE,
+			'save_number_locale' => $save_number_locale,
 			'number_locale_example' => $number_local_example,
 			'currency_symbol' => $currency_symbol,
 			'currency_code' => $currency_code,
-			'thousands_separator' => $fmt->getAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL) != ''
 		));
 	}
 
@@ -675,11 +686,11 @@ class Config extends Secure_Controller
 	public function save_tax()
 	{
 		$this->db->trans_start();
-		
+
 		$batch_save_data = array(
-			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
+			'default_tax_1_rate' => parse_tax($this->input->post('default_tax_1_rate')),
 			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
-			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
+			'default_tax_2_rate' => parse_tax($this->input->post('default_tax_2_rate')),
 			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
 			'use_destination_based_tax' => $this->input->post('use_destination_based_tax') != NULL,
@@ -688,9 +699,9 @@ class Config extends Secure_Controller
 			'default_tax_jurisdiction' => $this->input->post('default_tax_jurisdiction'),
 			'tax_id' => $this->input->post('tax_id')
 		);
-		
+
 		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
-		
+
 		$this->db->trans_complete();
 		
 		$success &= $this->db->trans_status();
@@ -800,7 +811,8 @@ class Config extends Secure_Controller
 			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
 			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
-			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
+			'receipt_show_taxes' => ($this->input->post('receipt_show_taxes') != NULL),
+			'receipt_show_tax_ind' => ($this->input->post('receipt_show_tax_ind') != NULL),
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
 			'receipt_show_description' => $this->input->post('receipt_show_description') != NULL,
 			'receipt_show_serialnumber' => $this->input->post('receipt_show_serialnumber') != NULL,
@@ -812,7 +824,7 @@ class Config extends Secure_Controller
 			'print_bottom_margin' => $this->input->post('print_bottom_margin'),
 			'print_right_margin' => $this->input->post('print_right_margin')
 		);
-		
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 		

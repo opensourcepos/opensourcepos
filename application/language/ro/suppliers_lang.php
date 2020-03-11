@@ -1,11 +1,10 @@
-<?php 
-
-$lang["suppliers_account_number"] = "";
-$lang["suppliers_agency_name"] = "";
-$lang["suppliers_cannot_be_deleted"] = "";
-$lang["suppliers_category"] = "";
-$lang["suppliers_company_name"] = "";
-$lang["suppliers_company_name_required"] = "";
+<?php
+$lang["suppliers_account_number"] = "Număr cont";
+$lang["suppliers_agency_name"] = "Nume Agenție";
+$lang["suppliers_cannot_be_deleted"] = "Nu pot șterge Funrizorul/Furnizorii selectat/selectați. Unul sau mai mulți au Vânzări.";
+$lang["suppliers_category"] = "Categorie";
+$lang["suppliers_company_name"] = "Nume Companie";
+$lang["suppliers_company_name_required"] = "Este obligatoriu câmpul Nume Companie.";
 $lang["suppliers_confirm_delete"] = "";
 $lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_cost"] = "";

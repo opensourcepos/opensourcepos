@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Inventario da aggiungere o sottrarre.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Permetti Descrizione alternativa";
 $lang["items_amount_entry"] = "Importo Inserito";
 $lang["items_bulk_edit"] = "Modifica collettiva";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Modifica multi-Articoli";
 $lang["items_empty_upc_items"] = "Svuota Codice a Barre Articoli";
 $lang["items_error_adding_updating"] = "Errore aggiunta/aggiornamento Articoli";
 $lang["items_error_updating_multiple"] = "Errore aggiornamento Articoli";
-$lang["items_excel_import_failed"] = "Importazione Excel fallita";
-$lang["items_excel_import_nodata_wrongformat"] = "L'upload del file non ha dati o non è formattato correttamente.";
-$lang["items_excel_import_partially_failed"] = "L'importazione di articoli è avvenuta con successo con alcuni fallimenti:";
-$lang["items_excel_import_success"] = "Importazione degli Articoli riuscita.";
+$lang["items_csv_import_failed"] = "Importazione CSV fallita";
+$lang["items_csv_import_nodata_wrongformat"] = "L'upload del file non ha dati o non è formattato correttamente.";
+$lang["items_csv_import_partially_failed"] = "L'importazione di articoli è avvenuta con successo con alcuni fallimenti:";
+$lang["items_csv_import_success"] = "Importazione degli Articoli riuscita.";
 $lang["items_generate_barcodes"] = "Genera Codice a Barre";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Importazione Articoli da Excel";
+$lang["items_import_items_csv"] = "Importazione Articoli da CSV";
 $lang["items_info_provided_by"] = "Informazioni fornite da";
 $lang["items_inventory"] = "Inventario";
 $lang["items_inventory_comments"] = "Commenti";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Ottieni Info Articolo";
 $lang["items_sales_tax_1"] = "Imposte di vendita";
 $lang["items_sales_tax_2"] = "Imposta di Vendita 2";
 $lang["items_search_attributes"] = "Attributi di ricerca";
-$lang["items_search_custom_items"] = "Ricerca Articoli personalizzati";
 $lang["items_select_image"] = "Seleziona Immagine";
 $lang["items_serialized_items"] = "Articoli Serializzati";
 $lang["items_standard"] = "Standard";

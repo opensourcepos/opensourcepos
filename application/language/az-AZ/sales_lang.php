@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Mövcud ballar";
 $lang["rewards_package"] = "Mükafatlar";
 $lang["rewards_remaining_balance"] = "Mükafatın yerdə qalan bal dəyəri ";
@@ -30,7 +29,7 @@ $lang["sales_customer_discount"] = "Endirim";
 $lang["sales_customer_email"] = "E-poçt";
 $lang["sales_customer_location"] = "Yer";
 $lang["sales_customer_mailchimp_status"] = "Mailchimp Statusu";
-$lang["sales_customer_optional"] = "(Vacib deyil)";
+$lang["sales_customer_optional"] = "(Ödənişlər üçün tələb olunur)";
 $lang["sales_customer_required"] = "(Vacib)";
 $lang["sales_customer_total"] = "Cəmi";
 $lang["sales_date"] = "Satış Tarixi";

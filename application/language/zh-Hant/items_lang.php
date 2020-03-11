@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "增/減庫存";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "允許ALT描述";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "批次編輯";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "編輯多項產品";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_error_adding_updating"] = "新增/更新產品錯誤";
 $lang["items_error_updating_multiple"] = "更新產品錯誤";
-$lang["items_excel_import_failed"] = "Excel匯入失敗";
-$lang["items_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["items_excel_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
-$lang["items_excel_import_success"] = "Import of Items successful";
+$lang["items_csv_import_failed"] = "CSV匯入失敗";
+$lang["items_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["items_csv_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
+$lang["items_csv_import_success"] = "Import of Items successful";
 $lang["items_generate_barcodes"] = "產生條碼";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Import items from Excel sheet";
+$lang["items_import_items_csv"] = "Import items from CSV sheet";
 $lang["items_info_provided_by"] = "訊息提供者";
 $lang["items_inventory"] = "庫存";
 $lang["items_inventory_comments"] = "評論";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "檢索產品訊息";
 $lang["items_sales_tax_1"] = "營業稅";
 $lang["items_sales_tax_2"] = "營業稅 2";
 $lang["items_search_attributes"] = "Search Custom Fields";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "序列化產品";
 $lang["items_standard"] = "";

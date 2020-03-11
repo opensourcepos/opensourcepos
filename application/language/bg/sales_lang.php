@@ -1,13 +1,12 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Налични точки";
 $lang["rewards_package"] = "Награди";
 $lang["rewards_remaining_balance"] = "Оставащата стойност на точките за награда е ";
-$lang["sales_account_number"] = "";
+$lang["sales_account_number"] = "Номер на акаунт";
 $lang["sales_add_payment"] = "Добавяне на плащане";
 $lang["sales_amount_due"] = "Дължима сума";
 $lang["sales_amount_tendered"] = "Предоставена сума";
-$lang["sales_authorized_signature"] = "";
+$lang["sales_authorized_signature"] = "Оторизиран подпис";
 $lang["sales_cancel_sale"] = "Отказ";
 $lang["sales_cash"] = "В брой";
 $lang["sales_cash_deposit"] = "Депозит в брой";
@@ -76,10 +75,10 @@ $lang["sales_invoice_no_email"] = "Този клиент няма валиден
 $lang["sales_invoice_number"] = "Фактура #";
 $lang["sales_invoice_number_duplicate"] = "Номерът на фактурите трябва да е уникален.";
 $lang["sales_invoice_sent"] = "Фактура, изпратена до";
-$lang["sales_invoice_total"] = "";
-$lang["sales_invoice_type_custom_invoice"] = "";
+$lang["sales_invoice_total"] = "Фактура общо";
+$lang["sales_invoice_type_custom_invoice"] = "Ръчна фактура";
 $lang["sales_invoice_type_custom_tax_invoice"] = "";
-$lang["sales_invoice_type_invoice"] = "";
+$lang["sales_invoice_type_invoice"] = "Фактура";
 $lang["sales_invoice_type_tax_invoice"] = "";
 $lang["sales_invoice_unsent"] = "Фактурата не можа да бъде изпратена до";
 $lang["sales_invoice_update"] = "Преизчисляване";

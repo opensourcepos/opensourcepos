@@ -106,22 +106,25 @@ class Cashups extends Secure_Controller
 
 			foreach($reports_data as $row)
 			{
-				if($row['payment_type'] == $this->lang->line('sales_cash'))
+				if($row['trans_group'] == $this->lang->line('reports_trans_payments'))
 				{
-					$cash_ups_info->closed_amount_cash += $this->xss_clean($row['payment_amount']);
-				}
-				elseif($row['payment_type'] == $this->lang->line('sales_due'))
-				{
-					$cash_ups_info->closed_amount_due += $this->xss_clean($row['payment_amount']);
-				}
-				elseif($row['payment_type'] == $this->lang->line('sales_debit') || 
-						$row['payment_type'] == $this->lang->line('sales_credit'))
-				{
-					$cash_ups_info->closed_amount_card += $this->xss_clean($row['payment_amount']);
-				}
-				elseif($row['payment_type'] == $this->lang->line('sales_check'))
-				{
-					$cash_ups_info->closed_amount_check += $this->xss_clean($row['payment_amount']);
+					if($row['trans_type'] == $this->lang->line('sales_cash'))
+					{
+						$cash_ups_info->closed_amount_cash += $this->xss_clean($row['trans_amount']);
+					}
+					elseif($row['trans_type'] == $this->lang->line('sales_due'))
+					{
+						$cash_ups_info->closed_amount_due += $this->xss_clean($row['trans_amount']);
+					}
+					elseif($row['trans_type'] == $this->lang->line('sales_debit') ||
+						$row['trans_type'] == $this->lang->line('sales_credit'))
+					{
+						$cash_ups_info->closed_amount_card += $this->xss_clean($row['trans_amount']);
+					}
+					elseif($row['trans_type'] == $this->lang->line('sales_check'))
+					{
+						$cash_ups_info->closed_amount_check += $this->xss_clean($row['trans_amount']);
+					}
 				}
 			}
 

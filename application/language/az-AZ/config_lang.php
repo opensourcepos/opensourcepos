@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Şirkət Adresi";
 $lang["config_address_required"] = "Şirkətin adı olan boşluq  sahəsi doldurulmalıdı.";
 $lang["config_allow_duplicate_barcodes"] = "Dublikat Barkodlarına icazə verin";
@@ -44,7 +43,7 @@ $lang["config_company_select_image"] = "Şəkil Seç";
 $lang["config_company_website_url"] = "Şirkətin web saytı düzgün URL deyil.";
 $lang["config_country_codes"] = "Ölkə Kodları";
 $lang["config_country_codes_tooltip"] = "Vergüllə ayrılmış ölkə kodları üçün nominantim adres axtarışı.";
-$lang["config_currency_code"] = "";
+$lang["config_currency_code"] = "Valyuta Kodu";
 $lang["config_currency_decimals"] = "Məzənnə Rəqəmləri";
 $lang["config_currency_symbol"] = "Valyuta Simvolu";
 $lang["config_customer_reward"] = "Mükafat";
@@ -139,7 +138,7 @@ $lang["config_include_hsn"] = "HSN Kodlarına dəstək verin";
 $lang["config_info"] = "Məlumat";
 $lang["config_info_configuration"] = "Dükan İnformasiyası";
 $lang["config_integrations"] = "İnteqrasiya";
-$lang["config_integrations_configuration"] = "";
+$lang["config_integrations_configuration"] = "Üçüncü tərəf inteqrasiya";
 $lang["config_invoice"] = "Faktura";
 $lang["config_invoice_configuration"] = "Faktura Çap Parametrləri";
 $lang["config_invoice_default_comments"] = "Standart Faktura Şərhləri";
@@ -191,7 +190,7 @@ $lang["config_number_locale"] = "Yerləşdirmə";
 $lang["config_number_locale_invalid"] = "Kompaniyanın tel.";
 $lang["config_number_locale_required"] = "Şirkət telefonu olan sahə boş qalma bilməz.";
 $lang["config_number_locale_tooltip"] = "Bu link vasitəsilə uyğun bir yer tapın.";
-$lang["config_ospos_info"] = "";
+$lang["config_ospos_info"] = "OSPOS quraşdırılması məlumatı";
 $lang["config_payment_options_order"] = "Sifariş üçün Ödəmə Şərtləri";
 $lang["config_phone"] = "Şirkətin Telefon Nömrəsi";
 $lang["config_phone_required"] = "Şirkət Telefonu tələb olunan bir sahədir.";
@@ -245,7 +244,7 @@ $lang["config_sales_invoice_format"] = "Satış Fatura Formatı";
 $lang["config_sales_quote_format"] = "Satış Sitat Formati";
 $lang["config_saved_successfully"] = "Konfiqurasiya uğurla saxlanıldı.";
 $lang["config_saved_unsuccessfully"] = "Konfiqurasiyanı saxlamq mümkün olmadı.";
-$lang["config_server_notice"] = "Please use the below info for issue reporting.";
+$lang["config_server_notice"] = "Xahiş edirik, hesabatın təqdim edilməsi üçün aşağıdakı məlumatı istifadə edin.";
 $lang["config_show_office_group"] = "Ofis İşarəsini Göstər";
 $lang["config_statistics"] = "Statistikalari Göndər";
 $lang["config_statistics_tooltip"] = "İnkişaf və xüsusiyyət təkmilləşdirilməsi məqsədi ilə statistika göndərin.";

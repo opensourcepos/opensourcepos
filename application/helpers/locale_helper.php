@@ -3,6 +3,8 @@
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
+define('NOW', time());
+define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
 /**
@@ -12,26 +14,27 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 function current_language_code($load_system_language = FALSE)
 {
 	$employee = get_instance()->Employee;
-	
+
 	// Returns the language code of the employee if set or system language code if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
-		
+
 		if(property_exists($employee_info, 'language_code') && !empty($employee_info->language_code))
 		{
 			return $employee_info->language_code;
 		}
 	}
-	
+
 	$language_code = get_instance()->config->item('language_code');
+
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
 function current_language($load_system_language = FALSE)
 {
 	$employee = get_instance()->Employee;
-	
+
 	// Returns the language of the employee if set or system language if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)
 	{
@@ -41,8 +44,9 @@ function current_language($load_system_language = FALSE)
 			return $employee_info->language;
 		}
 	}
-	
+
 	$language = get_instance()->config->item('language');
+
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
 
@@ -50,13 +54,17 @@ function get_languages()
 {
 	return array(
 		'ar-EG:arabic' => 'Arabic (Egypt)',
+		'ar-LB:arabic' => 'Arabic (Lebanon)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
+		'cs:czech' => 'Czech',
 		'de:german' => 'German (Germany)',
 		'de-CH:german' => 'German (Swiss)',
+		'el:greek' => 'Greek',
 		'en-GB:english' => 'English (Great Britain)',
 		'en-US:english' => 'English (United States)',
 		'es:spanish' => 'Spanish',
+		'es-MX:spanish' => 'Spanish (Mexico)',
 		'fr:french' => 'French',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
 		'hu-HU:hungarian' => 'Hungarian (Hungary)',
@@ -64,12 +72,18 @@ function get_languages()
 		'it:italian' => 'Italian',
 		'km:khmer' => 'Central Khmer (Cambodia)',
 		'lo:lao' => 'Lao (Laos)',
+		'ml:malay' => 'Malay',
+		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
-		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'pl:polish' => 'Polish',
+		'pt-BR:portuguese' => 'Portuguese (Brazil)',
+		'ro:romanian' => 'Romanian',
 		'ru:russian' => 'Russian',
 		'sv:swedish' => 'Swedish',
 		'th:thai' => 'Thai',
+		'tl-PH:talong' => 'Tagalog (Philippines)',
 		'tr:turkish' => 'Turkish',
+		'ur-PK:urdu' => 'Urdu (Islamic Republic of Pakistan)',
 		'vi:vietnamese' => 'Vietnamese',
 		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
 		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
@@ -79,7 +93,7 @@ function get_languages()
 function load_language($load_system_language = FALSE, array $lang_array)
 {
 	$lang = get_instance()->lang;
-	
+
 	if($load_system_language = TRUE)
 	{
 		foreach($lang_array as $language_file)
@@ -224,10 +238,10 @@ function get_payment_options()
 {
 	$config = get_instance()->config;
 	$lang = get_instance()->lang;
-	
+
 	$payments = array();
-	
-	
+
+
 	if($config->item('payment_options_order') == 'debitcreditcash')
 	{
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
@@ -258,62 +272,68 @@ function get_payment_options()
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
 		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
 	}
-	
+
 	$payments[$lang->line('sales_due')] = $lang->line('sales_due');
 	$payments[$lang->line('sales_check')] = $lang->line('sales_check');
-	
+
 	// If India (list of country codes include India) then include Unified Payment Interface
 	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false)
 	{
 		$payments[$lang->line('sales_upi')] = $lang->line('sales_upi');
 	}
-	
-	
+
 	return $payments;
 }
 
 function currency_side()
 {
 	$config = get_instance()->config;
-	
+
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::CURRENCY);
 	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
-	
+
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
 
 function quantity_decimals()
 {
 	$config = get_instance()->config;
-	
+
 	return $config->item('quantity_decimals') ? $config->item('quantity_decimals') : 0;
 }
 
 function totals_decimals()
 {
 	$config = get_instance()->config;
-	
+
 	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
 }
 
 function cash_decimals()
 {
 	$config = get_instance()->config;
-	
+
 	return $config->item('cash_decimals') ? $config->item('cash_decimals') : 0;
 }
 
 function tax_decimals()
 {
 	$config = get_instance()->config;
-	
+
 	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
 }
 
-function to_datetime($datetime)
+function to_date($date = DEFAULT_DATE)
 {
 	$config = get_instance()->config;
-	
+
+	return date($config->item('dateformat'), $date);
+}
+
+function to_datetime($datetime = DEFAULT_DATETIME)
+{
+	$config = get_instance()->config;
+
 	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
 }
 
@@ -330,7 +350,7 @@ function to_currency_no_money($number)
 function to_currency_tax($number)
 {
 	$config = get_instance()->config;
-	
+
 	if($config->item('tax_included') == '1')
 	{
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
@@ -349,7 +369,7 @@ function to_tax_decimals($number)
 	{
 		return $number;
 	}
-	
+
 	return to_decimals($number, 'tax_decimals');
 }
 
@@ -366,7 +386,7 @@ function to_decimals($number, $decimal_type, $type=\NumberFormatter::DECIMAL)
 	{
 		return $number;
 	}
-	
+
 	$config = get_instance()->config;
 
 	$decimals = $config->item($decimal_type);
@@ -400,24 +420,41 @@ function to_decimals($number, $decimal_type, $type=\NumberFormatter::DECIMAL)
 	return $fmt->format($number);
 }
 
-function parse_decimals($number)
+function parse_quantity($number)
+{
+	return parse_decimals($number, quantity_decimals());
+}
+
+function parse_tax($number)
+{
+	return parse_decimals($number, tax_decimals());
+}
+
+function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
+
 	if(empty($number))
 	{
 		return $number;
 	}
-	
+
 	$config = get_instance()->config;
+
+	if($decimals == NULL)
+	{
+		$decimals = $config->item('currency_decimals');
+	}
+
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
-	
-	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $config->item('currency_decimals'));
-	
+
+	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $decimals);
+
 	if(empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	
+
 	try
 	{
 		return $fmt->parse($number);
@@ -473,7 +510,51 @@ function dateformat_momentjs($php_format)
 		'r' => '', // no equivalent
 		'U' => 'X'
 	);
-	
+
+	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
+function dateformat_mysql()
+{
+	$config = get_instance()->config;
+	$php_format = $config->item('dateformat');
+
+	$SYMBOLS_MATCHING = array(
+		// Day
+		'd' => '%d',
+		'D' => '%a',
+		'j' => '%e',
+		'l' => '%W',
+		'N' => '',
+		'S' => '',
+		'w' => '',
+		'z' => '',
+		// Week
+		'W' => '',
+		// Month
+		'F' => '',
+		'm' => '%m',
+		'M' => '%b',
+		'n' => '%c',
+		't' => '',
+		// Year
+		'L' => '',
+		'o' => '',
+		'Y' => '%Y',
+		'y' => '%y',
+		// Time
+		'a' => '',
+		'A' => '%p',
+		'B' => '',
+		'g' => '%l',
+		'G' => '%k',
+		'h' => '%H',
+		'H' => '%k',
+		'i' => '%i',
+		's' => '%S',
+		'u' => '%f'
+	);
+
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
@@ -514,13 +595,13 @@ function dateformat_bootstrap($php_format)
 		's' => 'ss',
 		'u' => ''
 	);
-	
+
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-function valid_datetime($datetime)
+function valid_date($date)
 {
-	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $datetime);
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
 }
 
 function valid_decimal($decimal)

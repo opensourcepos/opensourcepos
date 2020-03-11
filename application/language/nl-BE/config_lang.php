@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Adres";
 $lang["config_address_required"] = "Het adres van het bedrijf moet ingevuld worden.";
 $lang["config_allow_duplicate_barcodes"] = "Sta gedupliceerde barcodes toe";
@@ -44,7 +43,7 @@ $lang["config_company_select_image"] = "Selecteer Afbeelding";
 $lang["config_company_website_url"] = "De website van het bedrijf is geen geldige URL (http://...).";
 $lang["config_country_codes"] = "Land Codes";
 $lang["config_country_codes_tooltip"] = "Komma's gescheiden lijst van landencodes voor het op naam opzoeken van het adres opzoeken.";
-$lang["config_currency_code"] = "";
+$lang["config_currency_code"] = "Munteenheid";
 $lang["config_currency_decimals"] = "Valuta decimalen";
 $lang["config_currency_symbol"] = "Valuta";
 $lang["config_customer_reward"] = "Punten";
@@ -138,8 +137,8 @@ $lang["config_giftcard_series"] = "Genereer in volgorde";
 $lang["config_include_hsn"] = "Ondersteuning voor HSN Codes";
 $lang["config_info"] = "Instellingen";
 $lang["config_info_configuration"] = "Instellingen";
-$lang["config_integrations"] = "";
-$lang["config_integrations_configuration"] = "";
+$lang["config_integrations"] = "Integraties";
+$lang["config_integrations_configuration"] = "Integraties";
 $lang["config_invoice"] = "Factuur";
 $lang["config_invoice_configuration"] = "Print Instellingen";
 $lang["config_invoice_default_comments"] = "Factuur Mededeling";
@@ -191,7 +190,7 @@ $lang["config_number_locale"] = "Localisation";
 $lang["config_number_locale_invalid"] = "De ingevoerde locatie is ongeldig. Controleer de link in de tooltip om een geldige waarde te vinden.";
 $lang["config_number_locale_required"] = "Nummer formaat is een verplicht veld.";
 $lang["config_number_locale_tooltip"] = "Vind een geldig formaat via deze link.";
-$lang["config_ospos_info"] = "";
+$lang["config_ospos_info"] = "OSPOS Installatiegegevens";
 $lang["config_payment_options_order"] = "Betaal opties volgorde";
 $lang["config_phone"] = "Telefoon";
 $lang["config_phone_required"] = "De telefoonnummer van het bedrijf is een verplicht veld.";
@@ -279,3 +278,4 @@ $lang["config_use_destination_based_tax"] = "Activeer 'Destination Based Tax'";
 $lang["config_website"] = "Website";
 $lang["config_work_order_enable"] = "Werk Order Ondersteuning";
 $lang["config_work_order_format"] = "Werk Order Formaat";
+$lang["config_receipt_show_tax_ind"] = "Toon Tax Indicator";

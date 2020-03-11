@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Corrigatie hoeveelheid";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "Bewerk Selectie";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Meerdere Producten Bewerken";
 $lang["items_empty_upc_items"] = "Zonder barcode";
 $lang["items_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van een product";
 $lang["items_error_updating_multiple"] = "Fout bij het bewaren van producten";
-$lang["items_excel_import_failed"] = "Excel import mislukt";
-$lang["items_excel_import_nodata_wrongformat"] = "Je geüploade bestand heeft geen gegevens of een verkeerd formaat";
-$lang["items_excel_import_partially_failed"] = "Meesten Artikelen geïmporteerd. Maar niet alles, Hier is een lijst";
-$lang["items_excel_import_success"] = "Import van Artikelen met succes afgerond";
+$lang["items_csv_import_failed"] = "CSV import mislukt";
+$lang["items_csv_import_nodata_wrongformat"] = "Je geüploade bestand heeft geen gegevens of een verkeerd formaat";
+$lang["items_csv_import_partially_failed"] = "Meesten Artikelen geïmporteerd. Maar niet alles, Hier is een lijst";
+$lang["items_csv_import_success"] = "Import van Artikelen met succes afgerond";
 $lang["items_generate_barcodes"] = "Genereer Barcodes";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Afbeelding";
-$lang["items_import_items_excel"] = "Importeer artikelen van een Excel sheet";
+$lang["items_import_items_csv"] = "Importeer artikelen van een CSV sheet";
 $lang["items_info_provided_by"] = "Info afgeleverd door";
 $lang["items_inventory"] = "Stock";
 $lang["items_inventory_comments"] = "Commentaar";
@@ -83,8 +82,7 @@ $lang["items_reorder_level_required"] = "Reorder level moet ingevuld worden";
 $lang["items_retrive_item_info"] = "Haal productinformatie op";
 $lang["items_sales_tax_1"] = "VAT";
 $lang["items_sales_tax_2"] = "VAT 2";
-$lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "Doorzoek Tags";
+$lang["items_search_attributes"] = "Doorzoek Tags";
 $lang["items_select_image"] = "Selecteer Afbeelding";
 $lang["items_serialized_items"] = "Artikelen met serienummer";
 $lang["items_standard"] = "";

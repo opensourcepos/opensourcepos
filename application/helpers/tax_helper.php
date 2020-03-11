@@ -27,7 +27,8 @@ Get the html data row for the tax
 function get_tax_code_data_row($tax_code_row)
 {
 	$CI =& get_instance();
-	$controller_name='tax_codes';
+
+	$controller_name = 'tax_codes';
 
 	return array (
 		'tax_code' => $tax_code_row->tax_code,
@@ -37,7 +38,8 @@ function get_tax_code_data_row($tax_code_row)
 		'state' => $tax_code_row->state,
 		'edit' => anchor($controller_name."/view_tax_codes/$tax_code_row->tax_code", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update_tax_codes'))
-		));
+		)
+	);
 }
 
 /*
@@ -62,7 +64,8 @@ Get the html data row for the tax
 function get_tax_categories_data_row($tax_categories_row)
 {
 	$CI =& get_instance();
-	$controller_name='tax_categories';
+
+	$controller_name = 'tax_categories';
 
 	return array (
 		'tax_category_id' => $tax_categories_row->tax_category_id,
@@ -71,7 +74,8 @@ function get_tax_categories_data_row($tax_categories_row)
 		'tax_group_sequence' => $tax_categories_row->tax_group_sequence,
 		'edit' => anchor($controller_name."/view/$tax_categories_row->tax_category_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 /*
@@ -104,7 +108,8 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row)
 		'reporting_authority' => $tax_jurisdiction_row->reporting_authority,
 		'edit' => anchor($controller_name."/view/$tax_jurisdiction_row->jurisdiction_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 /*
@@ -132,7 +137,8 @@ Get the html data row for the tax
 function get_tax_rates_data_row($tax_rates_row)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'tax_rate_id' => $tax_rates_row->tax_rate_id,
@@ -145,7 +151,8 @@ function get_tax_rates_data_row($tax_rates_row)
 		'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code),
 		'edit' => anchor($controller_name."/view/$tax_rates_row->tax_rate_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 ?>

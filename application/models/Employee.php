@@ -195,7 +195,7 @@ class Employee extends Person
 	/*
 	Get search suggestions to find employees
 	*/
-	public function get_search_suggestions($search, $limit = 5)
+	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5)
 	{
 		$suggestions = array();
 
@@ -206,7 +206,10 @@ class Employee extends Person
 			$this->db->or_like('last_name', $search);
 			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
 		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		if($include_deleted == FALSE)
+		{
+			$this->db->where('deleted', 0);
+		}
 		$this->db->order_by('last_name', 'asc');
 		foreach($this->db->get()->result() as $row)
 		{
@@ -215,7 +218,10 @@ class Employee extends Person
 
 		$this->db->from('employees');
 		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->where('deleted', 0);
+		if($include_deleted == FALSE)
+		{
+			$this->db->where('deleted', 0);
+		}
 		$this->db->like('email', $search);
 		$this->db->order_by('email', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -225,7 +231,10 @@ class Employee extends Person
 
 		$this->db->from('employees');
 		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->where('deleted', 0);
+		if($include_deleted == FALSE)
+		{
+			$this->db->where('deleted', 0);
+		}
 		$this->db->like('username', $search);
 		$this->db->order_by('username', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -235,7 +244,10 @@ class Employee extends Person
 
 		$this->db->from('employees');
 		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->where('deleted', 0);
+		if($include_deleted == FALSE)
+		{
+			$this->db->where('deleted', 0);
+		}
 		$this->db->like('phone_number', $search);
 		$this->db->order_by('phone_number', 'asc');
 		foreach($this->db->get()->result() as $row)

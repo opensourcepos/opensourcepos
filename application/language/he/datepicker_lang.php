@@ -14,7 +14,6 @@ $lang["datepicker_same_month_last_year"] = "אותו חודש בשנה שעבר�
 $lang["datepicker_same_month_to_same_day_last_year"] = "אותו חודש לאותו יום בשנה שעברה";
 $lang["datepicker_this_financial_year"] = "שנת הכספים הנוכחית";
 $lang["datepicker_this_month"] = "החודש נוכחי";
-$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "השנה הנוכחית";
 $lang["datepicker_to"] = "ל";
 $lang["datepicker_today"] = "היום";

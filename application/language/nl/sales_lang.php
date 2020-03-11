@@ -1,7 +1,6 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Beschikbare Punten";
-$lang["rewards_package"] = "";
+$lang["rewards_package"] = "Spaarpunten";
 $lang["rewards_remaining_balance"] = "";
 $lang["sales_account_number"] = "";
 $lang["sales_add_payment"] = "Betaal";

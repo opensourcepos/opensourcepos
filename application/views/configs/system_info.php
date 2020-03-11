@@ -42,10 +42,10 @@
 			?><br>
 
 				.Server Software: <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
-				.PHP Version: <?php echo PHP_VERSION; ?> <br>
+				.PHP Version: <?php echo PHP_VERSION; ?><br>
+				.DB Version: <?php echo mysqli_get_server_info($this->db->conn_id); ?><br>
 				.Server Port: <?php echo $_SERVER['SERVER_PORT']; ?><br>
-				.DB Version: <?php print mysqli_get_client_info(); ?><br>
-				.OS: <?php echo php_uname();	?><br><br></td>
+				.OS: <?php echo php_uname();?><br><br></td>
 		</tr>
 		<tr>
 		  <th>File Permissions:<br></th>
@@ -80,15 +80,6 @@
 						echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 					} 
 					clearstatcache();
-				?><br>
-				&#187; [import_items.csv:]
-				<?php 
-					if (is_writable($import)) {
-						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
-					} else {
-						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
-					}
-					clearstatcache();					
 				?><br>
 				&#187; [import_customers.csv:] 
 				<?php 

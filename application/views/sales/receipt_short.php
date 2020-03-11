@@ -92,13 +92,13 @@
 					if($item['discount_type'] == FIXED)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . $this->lang->line("sales_discount") ?></td>
+						<td colspan="2" class="discount"><?php echo to_currency($item['discount']) . " " . $this->lang->line("sales_discount") ?></td>
 					<?php
 					}
 					elseif($item['discount_type'] == PERCENT)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
+						<td colspan="2" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
 					<?php
 					}	
 					?>

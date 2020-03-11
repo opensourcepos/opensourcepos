@@ -156,7 +156,7 @@ if(isset($success))
 							?>
 								<td><?php echo $item['item_number']; ?></td>
 								<td style="align: center;">
-									<?php echo $item['name'] . ' ' . $item['attribute_values']; ?>
+									<?php echo $item['name'] . ' '. implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?>
 									<br/>
 									<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 								</td>
@@ -164,7 +164,7 @@ if(isset($success))
 							}
 							?>
 							<?php
-							if($items_module_allowed)
+							if($items_module_allowed && $change_price)
 							{
 							?>
 								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));?></td>

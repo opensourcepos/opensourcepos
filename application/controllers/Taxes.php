@@ -354,7 +354,7 @@ class Taxes extends Secure_Controller
 	public function save($tax_rate_id = -1)
 	{
 		$tax_category_id = $this->input->post('rate_tax_category_id');
-		$tax_rate = parse_decimals($this->input->post('tax_rate'));
+		$tax_rate = parse_tax($this->input->post('tax_rate'));
 
 		if ($tax_rate == 0) {
 			$tax_category_info = $this->Tax_category->get_info($tax_category_id);
@@ -443,6 +443,8 @@ class Taxes extends Secure_Controller
 
 		$array_save = array();
 
+		$unique_tax_groups = [];
+
 		foreach($jurisdiction_id as $key => $val)
 		{
 			$array_save[] = array(
@@ -453,6 +455,19 @@ class Taxes extends Secure_Controller
 				'reporting_authority'=>$this->xss_clean($reporting_authority[$key]),
 				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]),
 				'cascade_sequence'=>$this->xss_clean($cascade_sequence[$key]));
+
+			if (array_search($tax_group[$key], $unique_tax_groups) !== false)
+			{
+				echo json_encode(array(
+					'success' => FALSE,
+					'message' => $this->lang->line('taxes_tax_group_not_unique', $tax_group[$key])
+				));
+				return;
+			}
+			else
+			{
+				$unique_tax_groups[] = $tax_group[$key];
+			}
 		}
 
 		$success = $this->Tax_jurisdiction->save_jurisdictions($array_save);

@@ -14,7 +14,6 @@ $lang["datepicker_same_month_last_year"] = "Ötən il eyni ay";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Ötən ilin eyni ayindan";
 $lang["datepicker_this_financial_year"] = "Cari maliyyə ili";
 $lang["datepicker_this_month"] = "Bu ay";
-$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Bu il";
 $lang["datepicker_to"] = "Buna";
 $lang["datepicker_today"] = "Bugün";

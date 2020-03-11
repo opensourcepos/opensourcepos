@@ -71,12 +71,13 @@ class Stock_location extends CI_Model
 		return ($this->db->get()->num_rows() == 1);
 	}
 
-	public function get_default_location_id()
+	public function get_default_location_id($module_id = 'items')
 	{
 		$this->db->from('stock_locations');
 		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
 		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$this->db->like('permissions.permission_id', $module_id, 'after');
 		$this->db->where('deleted', 0);
 		$this->db->limit(1);
 
@@ -109,27 +110,27 @@ class Stock_location extends CI_Model
 		{
 			$this->db->trans_start();
 
-   			$this->db->insert('stock_locations', $location_data_to_save);
-   			$location_id = $this->db->insert_id();
+			$this->db->insert('stock_locations', $location_data_to_save);
+			$location_id = $this->db->insert_id();
 
-   			$this->_insert_new_permission('items', $location_id, $location_name);
-   			$this->_insert_new_permission('sales', $location_id, $location_name);
-   			$this->_insert_new_permission('receivings', $location_id, $location_name);
+			$this->_insert_new_permission('items', $location_id, $location_name);
+			$this->_insert_new_permission('sales', $location_id, $location_name);
+			$this->_insert_new_permission('receivings', $location_id, $location_name);
 
-   			// insert quantities for existing items
-   			$items = $this->Item->get_all();
-   			foreach($items->result_array() as $item)
-   			{
-   				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
-   				$this->db->insert('item_quantities', $quantity_data);
-   			}
+			// insert quantities for existing items
+			$items = $this->Item->get_all();
+			foreach($items->result_array() as $item)
+			{
+				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
+				$this->db->insert('item_quantities', $quantity_data);
+			}
 
-   			$this->db->trans_complete();
+			$this->db->trans_complete();
 
 			return $this->db->trans_status();
-   		}
+		}
 
-   		$original_location_name = $this->get_location_name($location_id);
+		$original_location_name = $this->get_location_name($location_id);
 
 		if($original_location_name != $location_name)
 		{
@@ -167,7 +168,7 @@ class Stock_location extends CI_Model
 
 	/*
 	 Deletes one item
-	*/
+	 */
 	public function delete($location_id)
 	{
 		$this->db->trans_start();

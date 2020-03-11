@@ -1,9 +1,8 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain ':' or '|'";
-$lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
-$lang["attributes_confirm_restore"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "وصف کے اندراج میں ':' یا '|' ممنوع ہیں";
+$lang["attributes_confirm_delete"] = "کیا آپ منتخب شدہ کو حذف کرنا چاہتے ہیں ؟";
+$lang["attributes_confirm_restore"] = "کیا آپ منتخب شدہ کو بحال کرنا چاہتے ہیں ؟";
+$lang["attributes_definition_cannot_be_deleted"] = "منتخب شدہ کو حذف نہیں کیا جا سکتا";
 $lang["attributes_definition_error_adding_updating"] = "Attribute %1 could not be added or updated. Please check the error log.";
 $lang["attributes_definition_flags"] = "Attribute Visibility";
 $lang["attributes_definition_group"] = "Group";

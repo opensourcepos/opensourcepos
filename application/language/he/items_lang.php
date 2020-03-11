@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "הוספה או החסרה של מלאי.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "אפשר תיאור חלופי";
 $lang["items_amount_entry"] = "ערך כניסה";
 $lang["items_bulk_edit"] = "עריכה גורפת";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "עריכת פריטים מרובים";
 $lang["items_empty_upc_items"] = "הסר ברקוד לפריטים";
 $lang["items_error_adding_updating"] = "שגיאה בהוספה / עדכון של פריט";
 $lang["items_error_updating_multiple"] = "שגיאה בעדכון פריטים";
-$lang["items_excel_import_failed"] = "ייבוא אקסל נכשל";
-$lang["items_excel_import_nodata_wrongformat"] = "בקובץ שהועלה אין נתונים או פורמט שגוי.";
-$lang["items_excel_import_partially_failed"] = "ייבוא פריט הצליח עם מספר שגיאות:";
-$lang["items_excel_import_success"] = "ייבוא הפריט הצליח.";
+$lang["items_csv_import_failed"] = "ייבוא אקסל נכשל";
+$lang["items_csv_import_nodata_wrongformat"] = "בקובץ שהועלה אין נתונים או פורמט שגוי.";
+$lang["items_csv_import_partially_failed"] = "ייבוא פריט הצליח עם מספר שגיאות:";
+$lang["items_csv_import_success"] = "ייבוא הפריט הצליח.";
 $lang["items_generate_barcodes"] = "צור ברקודים";
 $lang["items_hsn_code"] = "מערכת מינוח מתואמת";
 $lang["items_image"] = "אווטר";
-$lang["items_import_items_excel"] = "ייבוא פריט מאקסל";
+$lang["items_import_items_csv"] = "ייבוא פריט מאקסל";
 $lang["items_info_provided_by"] = "מידע סופק על ידי";
 $lang["items_inventory"] = "מלאי";
 $lang["items_inventory_comments"] = "הערות";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "אחזר פרטי פריט";
 $lang["items_sales_tax_1"] = "מס מכירה";
 $lang["items_sales_tax_2"] = "מס מכירה 2";
 $lang["items_search_attributes"] = "חיפוש במאפיינים";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "בחר תמונה";
 $lang["items_serialized_items"] = "סדר פריטים";
 $lang["items_standard"] = "רגיל";

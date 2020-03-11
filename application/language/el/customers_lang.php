@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "";
 $lang["customers_account_number_duplicate"] = "";
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "Διαθέσιμοι Πόντοι";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";
@@ -21,11 +20,11 @@ $lang["customers_discount_type"] = "";
 $lang["customers_email_duplicate"] = "";
 $lang["customers_employee"] = "";
 $lang["customers_error_adding_updating"] = "";
-$lang["customers_excel_import_failed"] = "";
-$lang["customers_excel_import_nodata_wrongformat"] = "";
-$lang["customers_excel_import_partially_failed"] = "";
-$lang["customers_excel_import_success"] = "";
-$lang["customers_import_items_excel"] = "";
+$lang["customers_csv_import_failed"] = "";
+$lang["customers_csv_import_nodata_wrongformat"] = "";
+$lang["customers_csv_import_partially_failed"] = "";
+$lang["customers_csv_import_success"] = "";
+$lang["customers_import_items_csv"] = "";
 $lang["customers_mailchimp_activity_click"] = "";
 $lang["customers_mailchimp_activity_lastopen"] = "";
 $lang["customers_mailchimp_activity_open"] = "";

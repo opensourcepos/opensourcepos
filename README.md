@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.2.3) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.2.3/link)
+[![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.3.2) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.3.2/link)
 [![Build Status](https://travis-ci.org/opensourcepos/opensourcepos.svg?branch=master)](https://travis-ci.org/opensourcepos/opensourcepos)
 [![Join the chat at https://gitter.im/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![devDependency Status](https://david-dm.org/jekkos/opensourcepos/dev-status.svg)](https://david-dm.org/jekkos/opensourcepos#info=dev)
@@ -11,11 +11,12 @@ Introduction
 
 Open Source Point of Sale is a web based point of sale system.
 The main features are:
-* Stock management (Items and Kits)
-* VAT, customer and multi tiers taxation
+* Stock management (Items and Kits with extensible list of Attributes)
+* VAT, GST, customer and multi tiers taxation
 * Sale register with transactions logging
 * Quotation and invoicing
 * Expenses logging
+* Cashup
 * Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
@@ -53,7 +54,7 @@ LOGIN using
 Installation
 ------------
 
-Please **refrain from creating issues** about installation issues **before reading the FAQ and going through existing github issues**. We have a build pipeline that checks the sanity of our latest repository commit and in case the application itself is broken then our build will be as well.
+Please **refrain from creating issues** about installation problems **before having read the FAQ and went through existing github issues**. We have a build pipeline that checks the sanity of our latest repository commit and in case the application itself is broken then our build will be as well.
 
 This application **can be setup in many different ways** and we only **support the ones described in the INSTALL file linked below**.
 
@@ -110,15 +111,21 @@ Reporting Bugs
 --------------
 
 If you are taking a release candidate code please make sure you always run the latest database upgrade script and you took the latest code from master.
-Please DO NOT post issues if you have not done those step.
+Please DO NOT post issues if you have not completed this step.
 
-Bug reports must follow this schema:
+- Versions **≥ 3.3.0**:
+
+Please **Copy** the info under **System Info tab in configuration section** in order to give us the required details.
+
+- Versions **< 3.2.3**:
+
+Bug reports must follow the below schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
 2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
 3. Web Server name and version (e.g. Apache 2.2, Apache 2.4, Nginx 1.12, Nginx 1.13)
-4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2)
-5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2)
+4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2, MariaDB 10.3)
+5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2, 7.3)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
@@ -144,6 +151,8 @@ FAQ
 * If you install ospos in docker behind a proxy that performs ssloffloading, you can enable the url generated to be https instead of http, by activating the environment variable FORCE_HTTPS = 1.
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
+
+* If you see the item edit dialog box empty starting with version 3.3.0, please disable `only_full_group_by` option from MySQL/MariaDB. See issue [#2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
 
 Credits
 -------

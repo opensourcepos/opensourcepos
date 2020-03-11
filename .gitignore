@@ -31,3 +31,8 @@ vendor/
 *.~
 *.log
 .env
+package-lock.json
+!/docker/.env
+/docker/data/database/db/*
+/docker/data/certbot/conf/*
+/docker/data/ospos/app/*

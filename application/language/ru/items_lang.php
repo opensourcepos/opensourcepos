@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Добавить/убрать товар.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Разрешить альтернативные описания";
 $lang["items_amount_entry"] = "Ввод количества";
 $lang["items_bulk_edit"] = "Массовое редактирование";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Редактирование нескол�
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_error_adding_updating"] = "Ошибка при добавлении/обновлении товара";
 $lang["items_error_updating_multiple"] = "Ошибка при обновлении товаров";
-$lang["items_excel_import_failed"] = "Ошибка импорта Excel";
-$lang["items_excel_import_nodata_wrongformat"] = "Загружаемый файл пуст или отформатирован неправильно.";
-$lang["items_excel_import_partially_failed"] = "Часть товаров успешно имортирована, однако имеются ошибки:";
-$lang["items_excel_import_success"] = "Товар успешно импортирован.";
+$lang["items_csv_import_failed"] = "Ошибка импорта CSV";
+$lang["items_csv_import_nodata_wrongformat"] = "Загружаемый файл пуст или отформатирован неправильно.";
+$lang["items_csv_import_partially_failed"] = "Часть товаров успешно имортирована, однако имеются ошибки:";
+$lang["items_csv_import_success"] = "Товар успешно импортирован.";
 $lang["items_generate_barcodes"] = "Создание ценников для распечатки";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Изображение";
-$lang["items_import_items_excel"] = "Импорт товара из файла Excel";
+$lang["items_import_items_csv"] = "Импорт товара из файла CSV";
 $lang["items_info_provided_by"] = "Информация предоставлена";
 $lang["items_inventory"] = "инвентаризация";
 $lang["items_inventory_comments"] = "Комментарии";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Получить Детальная инфо
 $lang["items_sales_tax_1"] = "Налог на покупку";
 $lang["items_sales_tax_2"] = "Налог на покупку 2";
 $lang["items_search_attributes"] = "Искать в дополнительных товарях";
-$lang["items_search_custom_items"] = "Искать в дополнительных товарях";
 $lang["items_select_image"] = "";
 $lang["items_serialized_items"] = "Сериализованные товары";
 $lang["items_standard"] = "типичный";

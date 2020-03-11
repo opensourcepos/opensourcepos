@@ -21,7 +21,7 @@ class Summary_customers extends Summary_report
 		parent::_select($inputs);
 
 		$this->db->select('
-				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer,
+				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 	}

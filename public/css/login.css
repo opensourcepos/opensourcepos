@@ -22,7 +22,7 @@
 
 #login h1
 {
-	background:#3399cc;
+	background:#1071b9;
 	padding:20px 0;
 	font-size:140%;
 	font-weight:300;
@@ -36,7 +36,7 @@ form
 	padding:6% 4%;
 }
 
-input[type="username"], input[type="password"]
+input[type="text"], input[type="password"]
 {
 	width:100%;
 	margin-bottom:4%;
@@ -46,7 +46,7 @@ input[type="username"], input[type="password"]
 input[type="submit"]
 {
 	width:100%;
-	background:#3399cc;
+	background:#1071b9;
 	margin-top:4%;
 	border:0;
 	padding:4%;

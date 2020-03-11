@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Attributwert darf nicht ':' oder '|' enthalten";
 $lang["attributes_confirm_delete"] = "Sind Sie sicher, dass Sie die ausgewählten Attribute löschen möchten?";
-$lang["attributes_confirm_restore"] = "";
+$lang["attributes_confirm_restore"] = "Sind Sie sicher, dass Sie die ausgewählten Attribute wiederherstellen möchten?";
 $lang["attributes_definition_cannot_be_deleted"] = "Ausgewählte Attribute konnten nicht gelöscht werden";
-$lang["attributes_definition_error_adding_updating"] = "";
+$lang["attributes_definition_error_adding_updating"] = "Das Attribut %1 konnte nicht hinzugefügt oder aktualisiert werden. Bitte überprüfen Sie den Error-Log.";
 $lang["attributes_definition_flags"] = "Attribut Sichtbarkeit";
 $lang["attributes_definition_group"] = "Gruppe";
 $lang["attributes_definition_id"] = "ID";
@@ -16,7 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "Löschung erfolgreich";
 $lang["attributes_definition_successful_updating"] = "Sie haben das Attributerfolgreich aktualisiert";
 $lang["attributes_definition_type"] = "Attribut Typ";
 $lang["attributes_definition_type_required"] = "Attribut ist ein Pflichtfeld";
-$lang["attributes_definition_unit"] = "";
+$lang["attributes_definition_unit"] = "Maßeinheit";
 $lang["attributes_definition_values"] = "Attribut Werte";
 $lang["attributes_new"] = "Neues Attribut";
 $lang["attributes_no_attributes_to_display"] = "Keine Elemente zum Anzeigen";

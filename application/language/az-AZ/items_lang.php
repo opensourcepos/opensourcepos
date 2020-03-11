@@ -1,7 +1,5 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "İnventar + Topla və ya - Çıx.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Alternativ təsvirə icazə verin";
 $lang["items_amount_entry"] = "Məbləğ Əlavəsi";
 $lang["items_bulk_edit"] = "Kütləvi Redaktə";
@@ -33,14 +31,14 @@ $lang["items_edit_multiple_items"] = "bir neçə malın redaktəsi";
 $lang["items_empty_upc_items"] = "Boş Barkod Malları";
 $lang["items_error_adding_updating"] = "mal əlavə etməkdə və ya yeniləməkdə səhv var";
 $lang["items_error_updating_multiple"] = "malların yenilənməsində səhv var";
-$lang["items_excel_import_failed"] = "səhv excel import";
-$lang["items_excel_import_nodata_wrongformat"] = "Yüklənmiş faylda məlumat yoxdur və ya düzgün formatlanmır.";
-$lang["items_excel_import_partially_failed"] = "Bəzi uğursuzluqlarla idxal idarəsi müvəffəq olub:";
-$lang["items_excel_import_success"] = "Malların İdxalı Uğurla Həyata Keçdi.";
+$lang["items_csv_import_failed"] = "səhv csv import";
+$lang["items_csv_import_nodata_wrongformat"] = "Yüklənmiş faylda məlumat yoxdur və ya düzgün formatlanmır.";
+$lang["items_csv_import_partially_failed"] = "Xətlərdə %1 element idxalı uğursuzluq (lar) var: %2. Heç bir sıra idxal edilmədi.";
+$lang["items_csv_import_success"] = "Malların İdxalı Uğurla Həyata Keçdi.";
 $lang["items_generate_barcodes"] = "şifrə yarat";
 $lang["items_hsn_code"] = "Harmonize Sistem Nomenklaturası";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Exceldən Malları İdxal Et";
+$lang["items_import_items_csv"] = "CSVdən Malları İdxal Et";
 $lang["items_info_provided_by"] = "Məlumat təqdim olundu";
 $lang["items_inventory"] = "inventor";
 $lang["items_inventory_comments"] = "komentariyalar";
@@ -84,7 +82,6 @@ $lang["items_retrive_item_info"] = "Mal Haqqında Məlumat";
 $lang["items_sales_tax_1"] = "Satış Vergisi";
 $lang["items_sales_tax_2"] = "Satış Vergisi 2";
 $lang["items_search_attributes"] = "Atributları Axtar";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Şəkil Seç";
 $lang["items_serialized_items"] = "Seriyalı Mallar";
 $lang["items_standard"] = "Standart";
@@ -111,3 +108,4 @@ $lang["items_unit_price_required"] = "Pərakəndə qiymət - vacib sahədir.";
 $lang["items_upc_database"] = "Barkod Məlumat Bazası";
 $lang["items_update"] = "Malı Yenilə";
 $lang["items_use_inventory_menu"] = "İnvertizasiya Menyusundan İstifadə Et";
+$lang["items_inventory_CSV_import_quantity"] = "Miqdarı CSV-dən idxal olunur";

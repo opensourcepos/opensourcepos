@@ -219,9 +219,9 @@ class Tax_jurisdiction extends CI_Model
 			'tax_group' => '',
 			'tax_type' => '1',
 			'reporting_authority' => '',
-			'tax_group_sequence' => 0,
-			'cascade_sequence' => 0,
-			'deleted' => 0));
+			'tax_group_sequence' => '',
+			'cascade_sequence' => '',
+			'deleted' => ''));
 	}
 
 }

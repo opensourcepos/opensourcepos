@@ -16,7 +16,7 @@
 		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
 	}});
 
-	var cookie_name = "<?php echo $this->config->item('csrf_cookie_name'); ?>";
+	var cookie_name = "<?php echo $this->config->item('cookie_prefix').$this->config->item('csrf_cookie_name'); ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);
