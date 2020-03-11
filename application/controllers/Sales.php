@@ -1467,16 +1467,16 @@ class Sales extends Secure_Controller
 		$work_order_number = $this->sale_lib->get_work_order_number();
 		$quote_number = $this->sale_lib->get_quote_number();
 		$sale_type = $this->sale_lib->get_sale_type();
+		$exchange_rate = $this->input->post('exchange_rate');
 		if($sale_type == '')
 		{
 			$sale_type = SALE_TYPE_POS;
 		}
 		$comment = $this->sale_lib->get_comment();
-		$sale_status = SUSPENDED;
-
+		$sale_status = SUSPENDED;		
 		$data = array();
 		$sales_taxes = array(array(), array());
-		if($this->Sale->save($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes) == '-1')
+		if($this->Sale->save($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes, $exchange_rate) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
