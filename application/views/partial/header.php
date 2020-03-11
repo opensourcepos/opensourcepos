@@ -24,13 +24,14 @@
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>		
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
 		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
-		<link rel="stylesheet" type="text/css" href="css/register.css"/>
+		<!--<link rel="stylesheet" type="text/css" href="css/register.css"/>-->
 		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
+		
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -61,11 +62,11 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-		<script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+		<link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
-		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<!--<script type="text/javascript" src="js/manage_tables.js"></script>-->
 		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
@@ -74,10 +75,14 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=d3e2737f39"/>
-		<!-- end mincss template tags -->
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=84371241b2"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>		
+		<!-- end mincss template tags -->		
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=467b50c37c"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a429d1fc17"></script>
+		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -88,11 +93,13 @@
 		html {
 			overflow: auto;
 		}
+		
 	</style>
 </head>
 
 <body>
 	<div class="wrapper">
+	<div class="header">
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
@@ -100,6 +107,7 @@
 				</div>
 
 				<div class="navbar-right" style="margin:0">
+				<!--<?php echo $user_info->first_name . ' ' . $user_info->last_name . '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') : ''); ?>-->
 					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('employees_change_password'))); ?>
 					<?php echo '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') . '  |  ' : ''); ?>
 					<?php echo anchor('home/logout', $this->lang->line('common_logout')); ?>
@@ -120,16 +128,15 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-
+			
 					<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
 				</div>
 
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav text-center" style="padding-top:5px;">
 						<?php foreach($allowed_modules as $module): ?>
 							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : ''; ?>">
-								<a href="<?php echo site_url("$module->module_id"); ?>" title="<?php echo $this->lang->line("module_" . $module->module_id); ?>" class="menu-icon">
-									<img src="<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png'; ?>" border="0" alt="Module Icon"/><br/>
+								<a class="btn btn-secondary" href="<?php echo site_url("$module->module_id"); ?>" title="<?php echo $this->lang->line("module_" . $module->module_id); ?> ">
 									<?php echo $this->lang->line("module_" . $module->module_id) ?>
 								</a>
 							</li>
@@ -138,7 +145,9 @@
 				</div>
 			</div>
 		</div>
-
+</div>
 		<div class="container">
-			<div class="row">
-
+		  <div class="page__content-container">
+		    <div class="row">
+	 
+</div>
