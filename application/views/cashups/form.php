@@ -18,7 +18,7 @@
 							'name'=>'open_date',
 							'id'=>'open_date',
 							'class'=>'form-control input-sm datepicker',
-							'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($cash_ups_info->open_date)))
+							'value'=>to_datetime(strtotime($cash_ups_info->open_date)))
 							);?>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 							'name'=>'close_date',
 							'id'=>'close_date',
 							'class'=>'form-control input-sm datepicker',
-							'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($cash_ups_info->close_date)))
+							'value'=>to_datetime(strtotime($cash_ups_info->close_date)))
 							);?>
 				</div>
 			</div>

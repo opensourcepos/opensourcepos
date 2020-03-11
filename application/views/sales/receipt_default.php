@@ -57,6 +57,14 @@
 			<th style="width:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
 			<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th style="width:20%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
+			<?php
+			if($this->config->item('receipt_show_tax_ind'))
+			{
+			?>
+				<th style="width:20%;"></th>
+			<?php
+			}
+			?>
 		</tr>
 		<?php
 		foreach($cart as $line=>$item)
@@ -69,6 +77,14 @@
 					<td><?php echo to_currency($item['price']); ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 					<td class="total-value"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
+					<?php
+					if($this->config->item('receipt_show_tax_ind'))
+					{
+					?>
+						<td><?php echo $item['taxed_flag'] ?></td>
+					<?php
+					}
+					?>
 				</tr>
 				<tr>
 					<?php
@@ -143,7 +159,7 @@
 			{
 			?>
 				<tr>
-					<td colspan="3" class="total-value"><?php echo $tax['tax_group']; ?>:</td>
+					<td colspan="3" class="total-value"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?>:</td>
 					<td class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php

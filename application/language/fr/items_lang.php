@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l'Inventaire.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";
 $lang["items_amount_entry"] = "Montant Entrée";
 $lang["items_bulk_edit"] = "Édition en groupe";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Édition multiple d'articles";
 $lang["items_empty_upc_items"] = "Articles avec UPC vide";
 $lang["items_error_adding_updating"] = "Erreur d'ajout/éditionn";
 $lang["items_error_updating_multiple"] = "Erreur d'édition";
-$lang["items_excel_import_failed"] = "Echec d'import Excel";
-$lang["items_excel_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
-$lang["items_excel_import_partially_failed"] = "Importation d'élément réussie avec quelques échecs :";
-$lang["items_excel_import_success"] = "Import des articles réussi.";
+$lang["items_csv_import_failed"] = "Echec d'import CSV";
+$lang["items_csv_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
+$lang["items_csv_import_partially_failed"] = "Importation d'élément réussie avec quelques échecs :";
+$lang["items_csv_import_success"] = "Import des articles réussi.";
 $lang["items_generate_barcodes"] = "Générer des codes à barres";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Importation d'éléments à partir d'Excel";
+$lang["items_import_items_csv"] = "Importation d'éléments à partir d'CSV";
 $lang["items_info_provided_by"] = "Information fournie par";
 $lang["items_inventory"] = "Inventaire";
 $lang["items_inventory_comments"] = "Commentaires";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Récupérer l'informations";
 $lang["items_sales_tax_1"] = "Taxe vente";
 $lang["items_sales_tax_2"] = "Taxe vente 2";
 $lang["items_search_attributes"] = "Rechercher dans les Champs Choisis";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Sélectionner l'image";
 $lang["items_serialized_items"] = "Articles avec N° de série";
 $lang["items_standard"] = "La norme";

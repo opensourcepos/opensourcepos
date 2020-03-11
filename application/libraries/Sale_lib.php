@@ -385,7 +385,7 @@ class Sale_lib
 		else
 		{
 			//add to existing array
-			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount));
+			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount, 'cash_refund' => 0));
 
 			$payments += $payment;
 		}
@@ -485,15 +485,18 @@ class Sale_lib
 		$totals['prediscount_subtotal'] = $prediscount_subtotal;
 		$totals['total_discount'] = $total_discount;
 		$totals['subtotal'] = $subtotal;
+		$sales_tax = 0;
 
 		foreach($taxes as $tax_excluded)
 		{
 			if($tax_excluded['tax_type'] == Tax_lib::TAX_TYPE_EXCLUDED)
 			{
 				$total = bcadd($total, $tax_excluded['sale_tax_amount']);
+				$sales_tax = bcadd($sales_tax, $tax_excluded['sale_tax_amount']);
 			}
 		}
 		$totals['total'] = $total;
+		$totals['tax_total'] = $sales_tax;
 
 		if($cash_rounding)
 		{
@@ -541,7 +544,6 @@ class Sale_lib
 
 		return $totals;
 	}
-
 
 	// Multiple Payments
 	public function get_amount_due()
@@ -650,7 +652,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_location'))
 		{
-			$this->set_sale_location($this->CI->Stock_location->get_default_location_id());
+			$this->set_sale_location($this->CI->Stock_location->get_default_location_id('sales'));
 		}
 
 		return $this->CI->session->userdata('sales_location');
@@ -706,7 +708,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL )
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id, $include_deleted);
 		//make sure item exists
@@ -716,6 +718,8 @@ class Sale_lib
 			return FALSE;
 		}
 
+		$price = 0.00;
+		$cost_price = 0.00;
 		$item_id = $item_info->item_id;
 		$item_type = $item_info->item_type;
 		$stock_type = $item_info->stock_type;
@@ -742,16 +746,6 @@ class Sale_lib
 				$price = $item_info->unit_price;
 				$cost_price = $item_info->cost_price;
 			}
-			else
-			{
-				$price = 0.00;
-				$cost_price = 0.00;
-			}
-		}
-		else
-		{
-			$price= 0.00;
-			$cost_price = 0.00;
 		}
 
 		if($price_override != NULL)
@@ -837,8 +831,9 @@ class Sale_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
+		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->row_object();
 
-	//Item already exists and is not serialized, add to quantity
+		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
 			$item = array($insertkey => array(
@@ -848,7 +843,8 @@ class Sale_lib
 					'line' => $insertkey,
 					'name' => $item_info->name,
 					'item_number' => $item_info->item_number,
-					'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES),
+					'attribute_values' => $attribute_links->attribute_values,
+					'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
 					'description' => $description != NULL ? $description : $item_info->description,
 					'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
 					'allow_alt_description' => $item_info->allow_alt_description,
@@ -889,7 +885,7 @@ class Sale_lib
 		//make sure item exists
 		if($item_id != -1)
 		{
-			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id, TRUE);
+			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
 			if($item_info->stock_type == HAS_STOCK)
 			{
@@ -913,16 +909,16 @@ class Sale_lib
 	public function get_quantity_already_added($item_id, $item_location)
 	{
 		$items = $this->get_cart();
-		$quanity_already_added = 0;
+		$quantity_already_added = 0;
 		foreach($items as $item)
 		{
 			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)
 			{
-				$quanity_already_added+=$item['quantity'];
+				$quantity_already_added += $item['quantity'];
 			}
 		}
 
-		return $quanity_already_added;
+		return $quantity_already_added;
 	}
 
 	public function get_item_id($line_to_get)
@@ -992,7 +988,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
 		}
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
@@ -1007,7 +1003,7 @@ class Sale_lib
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, NULL, NULL, NULL, FALSE);
+			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
 
 			if($stock_warning == NULL)
 			{
@@ -1046,17 +1042,6 @@ class Sale_lib
 	public function get_sale_id()
 	{
 		return $this->CI->session->userdata('sale_id');
-	}
-
-	public function get_cart_reordered($sale_id)
-	{
-		$this->empty_cart();
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
-		}
-
-		return $this->CI->session->userdata('sales_cart');
 	}
 
 	public function clear_all()
@@ -1223,24 +1208,24 @@ class Sale_lib
 		$total = bcmul($quantity, $price);
 		if($discount_type == PERCENT)
 		{
-			$discount_fraction = bcdiv($discount, 100);
-			$discount=bcmul($total,$discount_fraction);
+			$discount = bcmul($total, bcdiv($discount, 100));
 		}
-		
+
 		return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);
 	}
 
 	public function get_item_tax($quantity, $price, $discount, $discount_type, $tax_percentage)
 	{
 		$price = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+
 		if($this->CI->config->item('tax_included'))
 		{
-			$tax_fraction = bcadd(100, $tax_percentage);
-			$tax_fraction = bcdiv($tax_fraction, 100);
+			$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
 			$price_tax_excl = bcdiv($price, $tax_fraction);
 
 			return bcsub($price, $price_tax_excl);
 		}
+
 		$tax_fraction = bcdiv($tax_percentage, 100);
 
 		return bcmul($price, $tax_fraction);
@@ -1272,7 +1257,8 @@ class Sale_lib
 
 		if(!$this->CI->config->item('tax_included'))
 		{
-			foreach($this->CI->tax_lib->get_taxes($this->get_cart())[0] as $tax)
+			$cart = $this->get_cart();
+			foreach($this->CI->tax_lib->get_taxes($cart)[0] as $tax)
 			{
 				$total = bcadd($total, $tax['sale_tax_amount']);
 			}
@@ -1286,9 +1272,9 @@ class Sale_lib
 		return $total;
 	}
 
-	public function get_empty_tables()
+	public function get_empty_tables($current_dinner_table_id)
 	{
-		return $this->CI->Dinner_table->get_empty_tables();
+		return $this->CI->Dinner_table->get_empty_tables($current_dinner_table_id);
 	}
 
 	public function check_for_cash_rounding($total)

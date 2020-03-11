@@ -1,6 +1,5 @@
-<?php 
-
-$lang["tables_all"] = "All";
+<?php
+$lang["tables_all"] = "所有";
 $lang["tables_columns"] = "列";
 $lang["tables_hide_show_pagination"] = "隐藏/显示分页";
 $lang["tables_loading"] = "正在努力地加载数据中，请稍候……";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "";
 $lang["items_empty_upc_items"] = "";
 $lang["items_error_adding_updating"] = "";
 $lang["items_error_updating_multiple"] = "";
-$lang["items_excel_import_failed"] = "";
-$lang["items_excel_import_nodata_wrongformat"] = "";
-$lang["items_excel_import_partially_failed"] = "";
-$lang["items_excel_import_success"] = "";
+$lang["items_csv_import_failed"] = "";
+$lang["items_csv_import_nodata_wrongformat"] = "";
+$lang["items_csv_import_partially_failed"] = "";
+$lang["items_csv_import_success"] = "";
 $lang["items_generate_barcodes"] = "";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "";
-$lang["items_import_items_excel"] = "";
+$lang["items_import_items_csv"] = "";
 $lang["items_info_provided_by"] = "";
 $lang["items_inventory"] = "";
 $lang["items_inventory_comments"] = "";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "";
 $lang["items_sales_tax_1"] = "";
 $lang["items_sales_tax_2"] = "";
 $lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "";
 $lang["items_serialized_items"] = "";
 $lang["items_standard"] = "";

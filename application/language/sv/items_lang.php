@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Lager att lägga till eller ta bort.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Tillåt alternativ beskrivning";
 $lang["items_amount_entry"] = "Belopp";
 $lang["items_bulk_edit"] = "Massändra";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Redigering av flera artiklar";
 $lang["items_empty_upc_items"] = "Tomma streckkodsposter";
 $lang["items_error_adding_updating"] = "Det gick inte att lägga till / uppdatera artiklar";
 $lang["items_error_updating_multiple"] = "Ett fel uppstod vid uppdatering av artiklar";
-$lang["items_excel_import_failed"] = "Excel-import misslyckades";
-$lang["items_excel_import_nodata_wrongformat"] = "Den uppladdade filen har ingen data eller är formaterad felaktigt.";
-$lang["items_excel_import_partially_failed"] = "Artikelimporten lyckades med några misslyckanden:";
-$lang["items_excel_import_success"] = "Artikelimporten lyckades.";
+$lang["items_csv_import_failed"] = "CSV-import misslyckades";
+$lang["items_csv_import_nodata_wrongformat"] = "Den uppladdade filen har ingen data eller är formaterad felaktigt.";
+$lang["items_csv_import_partially_failed"] = "Artikelimporten lyckades med några misslyckanden:";
+$lang["items_csv_import_success"] = "Artikelimporten lyckades.";
 $lang["items_generate_barcodes"] = "Generera streckkoder";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Artikelimport från Excel";
+$lang["items_import_items_csv"] = "Artikelimport från CSV";
 $lang["items_info_provided_by"] = "Information tillhandahållen av";
 $lang["items_inventory"] = "Lager";
 $lang["items_inventory_comments"] = "Kommentarer";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Återställ artikelinfo";
 $lang["items_sales_tax_1"] = "Moms";
 $lang["items_sales_tax_2"] = "Moms 2";
 $lang["items_search_attributes"] = "Sök attribut";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Välj Bild";
 $lang["items_serialized_items"] = "Serialiserade artiklar";
 $lang["items_standard"] = "Standard";

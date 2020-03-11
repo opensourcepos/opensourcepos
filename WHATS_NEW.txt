@@ -1,3 +1,34 @@
+Version 3.3.2
+-------------
++ Fixed `only_full_group_by` issue with MySQL/MariaDB
++ Fixed POS transaction return failure if items are deleted
++ Various bug fixes
+
+Version 3.3.1
+-------------
++ Various bug fixes (please disable `only_full_group_by` option from MySQL/MariaDB to avoid issues)
+
+Version 3.3.0
+-------------
++ New logo
++ Code Igniter 3.1.11 upgrade
++ PHP 7.3 support
++ Attributes feature (allows extensibility of Items replacing old custom fields)
++ India GST Tax support + various Tax support improvements
++ Cashup feature
++ Temporary items feature
++ Fixed Sales Discount
++ Supplier category feature
++ Improved Items import and csv file generation (to contain additional attributes)
++ Improved Docker installation with nginx reverse proxy using Let's encrypt TLS certificate
++ Database performance improvements
++ Added and Updated translations
++ Fixed various reports issues
++ Fixed rounding issues
++ Fixed CSRF issues
++ Fixed database upgrade script issues
++ Various bug fixes
+
 Version 3.2.3
 -------------
 + Further revert of CSRF change causing regression

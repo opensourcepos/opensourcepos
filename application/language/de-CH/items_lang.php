@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Bestandsänderung";
-$lang["items_allow_alt_desciption"] = "Erlaube Alt. Bez.";
 $lang["items_allow_alt_description"] = "Erlaube Alt. Bez.";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "Sammeländerung";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Sammeländerung";
 $lang["items_empty_upc_items"] = "Leere UPC Artikel";
 $lang["items_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";
 $lang["items_error_updating_multiple"] = "Fehler beim Ändern";
-$lang["items_excel_import_failed"] = "Excel Import fehlerhaft";
-$lang["items_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["items_excel_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
-$lang["items_excel_import_success"] = "Import of Items successful";
+$lang["items_csv_import_failed"] = "CSV Import fehlerhaft";
+$lang["items_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["items_csv_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
+$lang["items_csv_import_success"] = "Import of Items successful";
 $lang["items_generate_barcodes"] = "Generiere Barcodes";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Bild";
-$lang["items_import_items_excel"] = "Importiere Artikel mit Excel Datei";
+$lang["items_import_items_csv"] = "Importiere Artikel mit CSV Datei";
 $lang["items_info_provided_by"] = "Info provided by";
 $lang["items_inventory"] = "Lagerbestand";
 $lang["items_inventory_comments"] = "Bemerkungen";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Artikelinformation";
 $lang["items_sales_tax_1"] = "Umsatzsteuer 1";
 $lang["items_sales_tax_2"] = "Umsatzsteuer 2";
 $lang["items_search_attributes"] = "Suche in Zusatzfeldern";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "Serialisierte Artikel";
 $lang["items_standard"] = "";

@@ -1,8 +1,9 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "";
-$lang["attributes_confirm_delete"] = "";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "屬性設定值中不可含有「:」或「|」";
+$lang["attributes_confirm_delete"] = "您確定要刪除此屬性?";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
+$lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "";
 $lang["attributes_definition_group"] = "";
 $lang["attributes_definition_id"] = "";
@@ -14,6 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "";
 $lang["attributes_definition_successful_updating"] = "";
 $lang["attributes_definition_type"] = "";
 $lang["attributes_definition_type_required"] = "";
+$lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "";
 $lang["attributes_new"] = "";
 $lang["attributes_no_attributes_to_display"] = "";

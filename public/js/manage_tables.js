@@ -3,7 +3,7 @@
 	var btn_id, dialog_ref;
 
 	var hide = function() {
-		dialog_ref.close();
+		dialog_ref && dialog_ref.close();
 	};
 
 	var clicked_id = function() {
@@ -50,7 +50,7 @@
 						id: btn_name,
 						label: value,
 						cssClass: button_class[btn_name],
-						hotkey: is_submit ? 13 : undefined, // Enter.
+						hotkey: is_enter ? 13 : undefined, // Enter.
 						action: submit(btn_name)
 					});
 				}

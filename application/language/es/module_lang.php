@@ -1,10 +1,9 @@
-<?php 
-
-$lang["module_attributes"] = "";
-$lang["module_attributes_desc"] = "";
+<?php
+$lang["module_attributes"] = "Atributos";
+$lang["module_attributes_desc"] = "Agregar, Actualizar, Eliminar y Buscar atributos.";
 $lang["module_both"] = "Ambos";
-$lang["module_cashups"] = "";
-$lang["module_cashups_desc"] = "";
+$lang["module_cashups"] = "Turnos";
+$lang["module_cashups_desc"] = "Agregar, Actualizar, Borrar y Buscar Turnos.";
 $lang["module_config"] = "Configuración de la Tienda";
 $lang["module_config_desc"] = "Cambiar la configuración de OSPOS.";
 $lang["module_customers"] = "Clientes";

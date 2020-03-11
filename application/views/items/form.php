@@ -52,7 +52,6 @@
 			</script>
 		</div>
 
-		<?php if ($item_kits_enabled == '1'): ?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_stock_type'), 'stock_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
@@ -81,22 +80,33 @@
 			<?php echo form_label($this->lang->line('items_type'), 'item_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php
+						$radio_button = array(
 							'name'=>'item_type',
 							'type'=>'radio',
 							'id'=>'item_type',
 							'value'=>0,
-							'checked'=>$item_info->item_type == ITEM)
-					); ?> <?php echo $this->lang->line('items_standard'); ?>
+							'checked'=>$item_info->item_type == ITEM);
+						if($standard_item_locked)
+						{
+							$radio_button['disabled'] = TRUE;
+						}
+						echo form_radio($radio_button); ?> <?php echo $this->lang->line('items_standard'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php
+						$radio_button = array(
 							'name'=>'item_type',
 							'type'=>'radio',
 							'id'=>'item_type',
 							'value'=>1,
-							'checked'=>$item_info->item_type == ITEM_KIT)
-					); ?> <?php echo $this->lang->line('items_kit'); ?>
+							'checked'=>$item_info->item_type == ITEM_KIT);
+						if($item_kit_disabled)
+						{
+							$radio_button['disabled'] = TRUE;
+						}
+						echo form_radio($radio_button); ?> <?php echo $this->lang->line('items_kit');
+					?>
 				</label>
 				<?php
 				if($this->config->item('derive_sale_quantity') == '1')
@@ -115,7 +125,8 @@
 				}
 				?>
 				<?php
-				if($allow_temp_item == 1) {
+				if($allow_temp_item == 1)
+				{
 				?>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
@@ -131,7 +142,6 @@
 				?>
 			</div>
 		</div>
-		<?php endif; ?>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
@@ -151,6 +161,7 @@
 							'name'=>'cost_price',
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm',
+							'onClick'=>'this.select();',
 							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
 					<?php if (currency_side()): ?>
@@ -171,6 +182,7 @@
 							'name'=>'unit_price',
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm',
+							'onClick'=>'this.select();',
 							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
 					<?php if (currency_side()): ?>
@@ -180,54 +192,58 @@
 			</div>
 		</div>
 
-		<?php if(!$use_destination_based_tax) { ?>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_1',
-						'class'=>'form-control input-sm',
-						'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
-						);?>
-			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+		<?php
+		if(!$use_destination_based_tax)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
-							'id'=>'tax_percent_name_1',
+							'name'=>'tax_names[]',
+							'id'=>'tax_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
+							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
 							);?>
-					<span class="input-group-addon input-sm"><b>%</b></span>
+				</div>
+				<div class="col-xs-4">
+					<div class="input-group input-group-sm">
+						<?php echo form_input(array(
+								'name'=>'tax_percents[]',
+								'id'=>'tax_percent_name_1',
+								'class'=>'form-control input-sm',
+								'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
+								);?>
+						<span class="input-group-addon input-sm"><b>%</b></span>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-4'>
-				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_2',
-						'class'=>'form-control input-sm',
-						'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
-						);?>
-			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
+							'name'=>'tax_names[]',
+							'id'=>'tax_name_2',
 							'class'=>'form-control input-sm',
-							'id'=>'tax_percent_name_2',
-							'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
+							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
 							);?>
-					<span class="input-group-addon input-sm"><b>%</b></span>
+				</div>
+				<div class="col-xs-4">
+					<div class="input-group input-group-sm">
+						<?php echo form_input(array(
+								'name'=>'tax_percents[]',
+								'class'=>'form-control input-sm',
+								'id'=>'tax_percent_name_2',
+								'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
+								);?>
+						<span class="input-group-addon input-sm"><b>%</b></span>
+					</div>
 				</div>
 			</div>
-		</div>
-
-		<?php } ?>
+		<?php
+		}
+		?>
 
 		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
@@ -248,7 +264,6 @@
 		<?php endif; ?>
 
 		<?php if($include_hsn): ?>
-
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('items_hsn_code'), 'category', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
@@ -275,6 +290,7 @@
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
 							'class'=>'required quantity form-control',
+							'onClick'=>'this.select();',
 							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
 							);?>
 				</div>
@@ -290,6 +306,7 @@
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
 						'class'=>'required form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
 						);?>
 			</div>
@@ -302,6 +319,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
+						'onClick'=>'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
 						);?>
 			</div>
@@ -430,7 +448,7 @@ $(document).ready(function()
 {
 	$('#new').click(function() {
 		stay_open = true;
-		$("#item_form").submit();
+		$('#item_form').submit();
 	});
 
 	$('#submit').click(function() {
@@ -457,8 +475,6 @@ $(document).ready(function()
 		focus: fill_value
 	});
 
-
-
 	var fill_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='low_sell_item_id']").val(ui.item.value);
@@ -475,7 +491,7 @@ $(document).ready(function()
 		focus: fill_value
 	});
 
-	$("#category").autocomplete({
+	$('#category').autocomplete({
 		source: "<?php echo site_url('items/suggest_category');?>",
 		delay: 10,
 		appendTo: '.modal-content'
@@ -493,136 +509,141 @@ $(document).ready(function()
 		return value.match(/(\||:)/g) == null;
 	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
 
-	$('#item_form').validate($.extend({
-		submitHandler: function(form, event) {
-			$(form).ajaxSubmit({
-				success: function(response) {
-					var stay_open = dialog_support.clicked_id() != 'submit';
-					if(stay_open)
-					{
-						// set action of item_form to url without item id, so a new one can be created
-						$('#item_form').attr('action', "<?php echo site_url('items/save/')?>");
-						// use a whitelist of fields to minimize unintended side effects
-						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
-							'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
-						// de-select any checkboxes, radios and drop-down menus
-						$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
-					}
-					else
-					{
-						dialog_support.hide();
-					}
-					table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
-				},
-				dataType: 'json'
-			});
-		},
-
-		errorLabelContainer: '#error_message_box',
-
-		rules:
-		{
-			name: 'required',
-			category: 'required',
-			item_number:
-			{
-				required: false,
-				remote:
-				{
-					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
-					type: 'POST',
-					data: {
-						'item_id' : "<?php echo $item_info->item_id; ?>",
-						'item_number' : function()
+	var init_validation = function() {
+		$('#item_form').validate($.extend({
+			submitHandler: function(form, event) {
+				$(form).ajaxSubmit({
+					success: function(response) {
+						var stay_open = dialog_support.clicked_id() != 'submit';
+						if(stay_open)
 						{
-							return $('#item_number').val();
-						},
+							// set action of item_form to url without item id, so a new one can be created
+							$('#item_form').attr('action', "<?php echo site_url('items/save/')?>");
+							// use a whitelist of fields to minimize unintended side effects
+							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
+								'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
+							// de-select any checkboxes, radios and drop-down menus
+							$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
+						}
+						else
+						{
+							dialog_support.hide();
+						}
+						table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
+						init_validation();
+					},
+					dataType: 'json'
+				});
+			},
+
+			errorLabelContainer: '#error_message_box',
+
+			rules:
+			{
+				name: 'required',
+				category: 'required',
+				item_number:
+				{
+					required: false,
+					remote:
+					{
+						url: "<?php echo site_url($controller_name . '/check_item_number')?>",
+						type: 'POST',
+						data: {
+							'item_id' : "<?php echo $item_info->item_id; ?>",
+							'item_number' : function()
+							{
+								return $('#item_number').val();
+							},
+						}
 					}
-				}
-			},
-			cost_price:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			unit_price:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			<?php
-			foreach($stock_locations as $key=>$location_detail)
-			{
-			?>
-				<?php echo 'quantity_' . $key ?>:
+				},
+				cost_price:
 				{
 					required: true,
 					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
-			<?php
-			}
-			?>
-			receiving_quantity:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			reorder_level:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			tax_percent:
-			{
-				required: true,
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			}
-		},
-
-		messages:
-		{
-			name: "<?php echo $this->lang->line('items_name_required'); ?>",
-			item_number: "<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
-			category: "<?php echo $this->lang->line('items_category_required'); ?>",
-			cost_price:
-			{
-				required: "<?php echo $this->lang->line('items_cost_price_required'); ?>",
-				number: "<?php echo $this->lang->line('items_cost_price_number'); ?>"
-			},
-			unit_price:
-			{
-				required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
-				number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
-			},
-			<?php
-			foreach($stock_locations as $key=>$location_detail)
-			{
-			?>
+				unit_price:
+				{
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				},
+				<?php
+				foreach($stock_locations as $key=>$location_detail)
+				{
+				?>
 				<?php echo 'quantity_' . $key ?>:
+					{
+						required: true,
+						remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+					},
+				<?php
+				}
+				?>
+				receiving_quantity:
+				{
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				},
+				reorder_level:
+				{
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				},
+				tax_percent:
+				{
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				}
+			},
+
+			messages:
+			{
+				name: "<?php echo $this->lang->line('items_name_required'); ?>",
+				item_number: "<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
+				category: "<?php echo $this->lang->line('items_category_required'); ?>",
+				cost_price:
+				{
+					required: "<?php echo $this->lang->line('items_cost_price_required'); ?>",
+					number: "<?php echo $this->lang->line('items_cost_price_number'); ?>"
+				},
+				unit_price:
+				{
+					required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
+					number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
+				},
+				<?php
+				foreach($stock_locations as $key=>$location_detail)
+				{
+				?>
+				<?php echo 'quantity_' . $key ?>:
+					{
+						required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
+						number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+					},
+				<?php
+				}
+				?>
+				receiving_quantity:
 				{
 					required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
 					number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
 				},
-			<?php
+				reorder_level:
+				{
+					required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
+					number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
+				},
+				tax_percent:
+				{
+					required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
+					number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
+				}
 			}
-			?>
-			receiving_quantity:
-			{
-				required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
-			},
-			reorder_level:
-			{
-				required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
-				number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
-			},
-			tax_percent:
-			{
-				required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
-				number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-			}
-		}
-	}, form_support.error));
+		}, form_support.error));
+	};
+
+	init_validation();
 });
 </script>
 

@@ -71,10 +71,10 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_jurisdictions` (
 	`cascade_sequence` tinyint(2) NOT NULL DEFAULT 0,
 	`deleted` int(1) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`jurisdiction_id`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 ALTER TABLE `ospos_suppliers`
-	ADD COLUMN `tax_id` varchar(32) NOT NULL DEFAULT '' AFTER `account_number`;
+	ADD COLUMN `tax_id` varchar(32) DEFAULT NULL AFTER `account_number`;
 
 ALTER TABLE `ospos_tax_categories`
 	ADD COLUMN `deleted` int(1) NOT NULL DEFAULT 0 AFTER `tax_group_sequence`;

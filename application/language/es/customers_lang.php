@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "Este número de cuenta ya esta en la base de datos.";
 $lang["customers_available_points"] = "Puntos disponibles";
@@ -21,11 +20,11 @@ $lang["customers_discount_type"] = "Tipo de Descuento";
 $lang["customers_email_duplicate"] = "La dirección de correo electrónico ya existe en la base de datos.";
 $lang["customers_employee"] = "Empleado";
 $lang["customers_error_adding_updating"] = "Error agregando/actualizando cliente.";
-$lang["customers_excel_import_failed"] = "Falló la importación de Hoja de Cálculo";
-$lang["customers_excel_import_nodata_wrongformat"] = "El archivo subido no tiene informacion o el formato es incorrecto.";
-$lang["customers_excel_import_partially_failed"] = "La mayoria de los clientes se importaron pero algunos no:";
-$lang["customers_excel_import_success"] = "Importacion de Clientes exitosa.";
-$lang["customers_import_items_excel"] = "Importar Clientes desde Excel";
+$lang["customers_csv_import_failed"] = "Falló la importación de Hoja de Cálculo";
+$lang["customers_csv_import_nodata_wrongformat"] = "El archivo subido no tiene informacion o el formato es incorrecto.";
+$lang["customers_csv_import_partially_failed"] = "La mayoria de los clientes se importaron pero algunos no:";
+$lang["customers_csv_import_success"] = "Importacion de Clientes exitosa.";
+$lang["customers_import_items_csv"] = "Importar Clientes desde CSV";
 $lang["customers_mailchimp_activity_click"] = "Email click";
 $lang["customers_mailchimp_activity_lastopen"] = "Último correo abierto";
 $lang["customers_mailchimp_activity_open"] = "Correo abierto";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Has agregado satisfactoriamente el clien
 $lang["customers_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["customers_successful_updating"] = "No se ha podido agregar el cliente";
 $lang["customers_tax_code"] = "Código de impuesto";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "Identificador del Impuesto";
 $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";

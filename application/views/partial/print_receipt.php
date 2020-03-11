@@ -76,6 +76,7 @@ if($print_after_sale)
 				window.location.href = "<?php echo site_url('sales'); ?>";
 			}, <?php echo $this->config->item('print_delay_autoreturn') * 1000; ?>);
 	});
+
 <?php
 }
 ?>

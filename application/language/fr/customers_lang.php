@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "# Compte";
 $lang["customers_account_number_duplicate"] = "Ce numéro de compte est déjà utilisé dans la base de données.";
-$lang["customers_available_points"] = "Points disponibles";
+$lang["customers_available_points"] = "Points Disponibles";
 $lang["customers_average"] = "Moyenne dépensée";
 $lang["customers_avg_discount"] = "Remise moyenne";
 $lang["customers_basic_information"] = "Information";
@@ -21,11 +20,11 @@ $lang["customers_discount_type"] = "";
 $lang["customers_email_duplicate"] = "L'adresse e-mail est déjà présente dans la base de données.";
 $lang["customers_employee"] = "Employé";
 $lang["customers_error_adding_updating"] = "Érreur lors de l'ajout/suppression de client.";
-$lang["customers_excel_import_failed"] = "Echec Import d'Excel";
-$lang["customers_excel_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
-$lang["customers_excel_import_partially_failed"] = "Importation client réussie avec quelques échecs :";
-$lang["customers_excel_import_success"] = "L'importation des clients est un succès.";
-$lang["customers_import_items_excel"] = "Importer une liste de client à partir d'une feuille Excel";
+$lang["customers_csv_import_failed"] = "Echec Import d'CSV";
+$lang["customers_csv_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
+$lang["customers_csv_import_partially_failed"] = "Importation client réussie avec quelques échecs :";
+$lang["customers_csv_import_success"] = "L'importation des clients est un succès.";
+$lang["customers_import_items_csv"] = "Importer une liste de client à partir d'une feuille CSV";
 $lang["customers_mailchimp_activity_click"] = "Email cliquez";
 $lang["customers_mailchimp_activity_lastopen"] = "Dernier email ouvert";
 $lang["customers_mailchimp_activity_open"] = "Email ouvert";

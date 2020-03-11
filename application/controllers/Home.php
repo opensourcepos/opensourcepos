@@ -4,7 +4,7 @@ require_once("Secure_Controller.php");
 
 class Home extends Secure_Controller 
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct(NULL, NULL, 'home');
 	}
@@ -20,7 +20,7 @@ class Home extends Secure_Controller
 	}
 
 	/*
-	Loads the change employee password form
+	Load "change employee password" form
 	*/
 	public function change_password($employee_id = -1)
 	{

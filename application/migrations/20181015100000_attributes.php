@@ -9,7 +9,7 @@ class Migration_Attributes extends CI_Migration
 
 	public function up()
 	{
-		execute_script(APPPATH . 'migrations/sqlscripts/attributes.sql');
+		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_attributes.sql');
 	}
 
 	public function down()

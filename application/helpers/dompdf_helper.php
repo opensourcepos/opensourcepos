@@ -4,7 +4,7 @@
  * PDF helper
  */
 
-function pdf_create($html, $filename = '')
+function create_pdf($html, $filename = '')
 {
     // need to enable magic quotes for the
     $magic_quotes_enabled = get_magic_quotes_runtime();
@@ -15,7 +15,7 @@ function pdf_create($html, $filename = '')
     }
 
     $dompdf = new Dompdf\Dompdf();
-    $dompdf->loadHtml($html);
+    $dompdf->loadHtml(str_replace(array("\n", "\r"), '', $html));
     $dompdf->render();
 
     if(!$magic_quotes_enabled)

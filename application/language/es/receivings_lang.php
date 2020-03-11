@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Ingreso(s) no se borraron.";
 $lang["receivings_comments"] = "Comentarios";
@@ -35,7 +34,7 @@ $lang["receivings_register"] = "Entrada de Artículos";
 $lang["receivings_requisition"] = "Requisición";
 $lang["receivings_return"] = "Devolver";
 $lang["receivings_select_supplier"] = "Seleccionar Proveedor (Opcional)";
-$lang["receivings_ship_pack"] = "";
+$lang["receivings_ship_pack"] = "Paquete de Envío";
 $lang["receivings_start_typing_supplier_name"] = "Empieza a escribir el nombre del proveedor...";
 $lang["receivings_stock"] = "Inventario";
 $lang["receivings_stock_destination"] = "Inventario de Destino";

@@ -1,0 +1,35 @@
+<?php 
+
+$lang["item_kits_add_item"] = "הוסף פריט";
+$lang["item_kits_all"] = "הכול";
+$lang["item_kits_cannot_be_deleted"] = "מחיקת ערכת הפריטים נכשלה.";
+$lang["item_kits_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את ערכת הפריטים שנבחרה?";
+$lang["item_kits_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את ערכת הפריטים שנבחרה?";
+$lang["item_kits_description"] = "תיאור ערכת פריט";
+$lang["item_kits_discount"] = "הנחה";
+$lang["item_kits_discount_fixed"] = "הנחה קבועה";
+$lang["item_kits_discount_percent"] = "אחוז הנחה";
+$lang["item_kits_discount_type"] = "סוג הנחה";
+$lang["item_kits_error_adding_updating"] = "הוספה או עדכון של ערכת הפריט נכשלה.";
+$lang["item_kits_find_kit_item"] = "ערכת פריט";
+$lang["item_kits_info"] = "מידע על ערכת פריט";
+$lang["item_kits_item"] = "פריט";
+$lang["item_kits_items"] = "פריטים";
+$lang["item_kits_kit"] = "מזהה ערכה";
+$lang["item_kits_kit_and_components"] = "ערכה ורכיבים";
+$lang["item_kits_kit_and_stock"] = "ערכה ומלאי";
+$lang["item_kits_kit_only"] = "ערכה בלבד";
+$lang["item_kits_name"] = "שם ערכת פריט";
+$lang["item_kits_new"] = "יצירת ערכת פריט חדשה";
+$lang["item_kits_no_item_kits_to_display"] = "אין ערכות פריטים להצגה.";
+$lang["item_kits_none_selected"] = "לא בחרת ערכות פריט.";
+$lang["item_kits_one_or_multiple"] = "ערכת פריט(ים)";
+$lang["item_kits_price_option"] = "אפשרויות מחיר";
+$lang["item_kits_priced_only"] = "מחיר בלבד";
+$lang["item_kits_print_option"] = "אפשרויות הדפסה";
+$lang["item_kits_quantity"] = "כמות";
+$lang["item_kits_sequence"] = "רצף";
+$lang["item_kits_successful_adding"] = "הוספת בהצלחה את ערכת הפריט";
+$lang["item_kits_successful_deleted"] = "נמחק בהצלחה";
+$lang["item_kits_successful_updating"] = "עדכנת בהצלחה את ערכת הפריט";
+$lang["item_kits_update"] = "עדכן ערכת פריט";

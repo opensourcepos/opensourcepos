@@ -14,7 +14,7 @@ $(document).ready(function()
 {
 	var send_email = function()
 	{
-		$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num; ?>',
+		$.get('<?php echo site_url() . "sales/send_pdf/" . $sale_id_num; ?>',
 			function(response)
 			{
 				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
@@ -51,7 +51,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
+				<div id="customer"><?php echo nl2br($customer_info) ?></div>
 			<?php
 			}
 			?>
@@ -79,7 +79,7 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
+		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
@@ -180,7 +180,7 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $tax['tax_group']; ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php

@@ -8,7 +8,7 @@
 | 
 | 
 */ 
-$config['application_version'] = '3.3.0';
+$config['application_version'] = '3.3.2';
 
 /* 
 |-------------------------------------------------------------------------- 
@@ -66,7 +66,7 @@ $config['db_log_enabled'] = FALSE;
 |
 */
 $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true')) ? 'https' : 'http';
-$config['base_url'] .= '://' . $_SERVER['HTTP_HOST'];
+$config['base_url'] .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
 /*
@@ -294,7 +294,7 @@ $config['log_file_extension'] = '';
 | IMPORTANT: This MUST be an integer (no quotes) and you MUST use octal
 |            integer notation (i.e. 0700, 0644, etc.)
 */
-$config['log_file_permissions'] = 0644;
+$config['log_file_permissions'] = 0640;
 
 /*
 |--------------------------------------------------------------------------

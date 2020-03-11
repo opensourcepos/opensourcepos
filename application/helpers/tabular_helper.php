@@ -86,11 +86,12 @@ Get the html data row for the sales
 function get_sale_data_row($sale)
 {
 	$CI =& get_instance();
+
 	$controller_name = $CI->uri->segment(1);
 
 	$row = array (
 		'sale_id' => $sale->sale_id,
-		'sale_time' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time)),
+		'sale_time' => to_datetime(strtotime($sale->sale_time)),
 		'customer_name' => $sale->customer_name,
 		'amount_due' => to_currency($sale->amount_due),
 		'amount_tendered' => to_currency($sale->amount_tendered),
@@ -122,6 +123,7 @@ Get the html data last row for the sales
 function get_sale_data_last_row($sales)
 {
 	$CI =& get_instance();
+
 	$sum_amount_due = 0;
 	$sum_amount_tendered = 0;
 	$sum_change_due = 0;
@@ -148,6 +150,7 @@ Get the sales payments summary
 function get_sales_manage_payments_summary($payments, $sales)
 {
 	$CI =& get_instance();
+
 	$table = '<div id="report_summary">';
 
 	foreach($payments as $key=>$payment)
@@ -156,7 +159,7 @@ function get_sales_manage_payments_summary($payments, $sales)
 
 		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
 		// therefore we remove from the total cash amount any change due
-		if( $payment['payment_type'] == $CI->lang->line('sales_cash') )
+		if($payment['payment_type'] == $CI->lang->line('sales_cash'))
 		{
 			foreach($sales->result_array() as $key=>$sale)
 			{
@@ -212,7 +215,8 @@ function get_person_data_row($person)
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-	));
+		)
+	);
 }
 
 
@@ -246,6 +250,7 @@ Get the html data row for the customer
 function get_customer_data_row($person, $stats)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
 
 	return array (
@@ -295,6 +300,7 @@ Get the html data row for the supplier
 function get_supplier_data_row($supplier)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
 
 	return array (
@@ -310,7 +316,7 @@ function get_supplier_data_row($supplier)
 			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update')))
-		);
+	);
 }
 
 
@@ -333,7 +339,8 @@ function get_items_manage_table_headers()
 		array('unit_price' => $CI->lang->line('items_unit_price')),
 		array('quantity' => $CI->lang->line('items_quantity'))
 	);
-	if ($CI->config->item('use_destination_based_tax') == '1')
+
+	if($CI->config->item('use_destination_based_tax') == '1')
 	{
 		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_category'), 'sortable' => FALSE);
 	}
@@ -347,7 +354,7 @@ function get_items_manage_table_headers()
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$headers[] = array($definition_id => $definition_name);
+		$headers[] = array($definition_id => $definition_name, 'sortable' => FALSE);
 	}
 
 	$headers[] = array('inventory' => '');
@@ -363,9 +370,9 @@ function get_item_data_row($item)
 {
 	$CI =& get_instance();
 
-	if ($CI->config->item('use_destination_based_tax') == '1')
+	if($CI->config->item('use_destination_based_tax') == '1')
 	{
-		if ($item->tax_category_id == NULL)
+		if($item->tax_category_id == NULL)
 		{
 			$tax_percents = '-';
 		}
@@ -411,7 +418,7 @@ function get_item_data_row($item)
 		}
 	}
 
-	if ($CI->config->item('multi_pack_enabled') == '1')
+	if($CI->config->item('multi_pack_enabled') == '1')
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
@@ -443,8 +450,8 @@ function get_item_data_row($item)
 		)
 	);
 
-	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
-	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
+	return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
+
 }
 
 
@@ -472,6 +479,7 @@ Get the html data row for the giftcard
 function get_giftcard_data_row($giftcard)
 {
 	$CI =& get_instance();
+
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
@@ -482,7 +490,8 @@ function get_giftcard_data_row($giftcard)
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 /*
@@ -509,6 +518,7 @@ Get the html data row for the item kit
 function get_item_kit_data_row($item_kit)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
 
 	return array (
@@ -519,26 +529,46 @@ function get_item_kit_data_row($item_kit)
 		'total_unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
-function expand_attribute_values($definition_names, $attribute_values)
+function parse_attribute_values($columns, $row) {
+	$attribute_values = array();
+	foreach($columns as $column) {
+		if (array_key_exists($column, $row))
+		{
+			$attribute_value = explode('|', $row[$column]);
+			$attribute_values = array_merge($attribute_values, $attribute_value);
+		}
+	}
+	return $attribute_values;
+}
+
+function expand_attribute_values($definition_names, $row)
 {
-	$values = explode('|', $attribute_values);
+	$values = parse_attribute_values(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
 
 	$indexed_values = array();
 	foreach($values as $attribute_value)
 	{
-		$exploded_value = explode(':', $attribute_value);
-		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
+		$exploded_value = explode('_', $attribute_value);
+		if(sizeof($exploded_value) > 1)
+		{
+			$indexed_values[$exploded_value[0]] = $exploded_value[1];
+		}
 	}
 
 	$attribute_values = array();
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$attribute_value = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '-';
-		$attribute_values["$definition_id"] = $attribute_value;
+		if(isset($indexed_values[$definition_id]))
+		{
+			$attribute_value = $indexed_values[$definition_id];
+			$attribute_values["$definition_id"] = $attribute_value;
+		}
 	}
+
 	return $attribute_values;
 }
 
@@ -560,13 +590,14 @@ function get_attribute_definition_manage_table_headers()
 function get_attribute_definition_data_row($attribute)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
 
-	if (count($attribute->definition_flags) == 0)
+	$controller_name = strtolower(get_class($CI));
+
+	if(count($attribute->definition_flags) == 0)
 	{
 		$definition_flags = $CI->lang->line('common_none_selected_text');
 	}
-	else if ($attribute->definition_type == GROUP)
+	else if($attribute->definition_type == GROUP)
 	{
 		$definition_flags = "-";
 	}
@@ -583,7 +614,8 @@ function get_attribute_definition_data_row($attribute)
 		'definition_flags' => $definition_flags,
 		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 /*
@@ -608,6 +640,7 @@ Gets the html data row for the expenses category
 function get_expense_category_data_row($expense_category)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
 
 	return array (
@@ -616,7 +649,8 @@ function get_expense_category_data_row($expense_category)
 		'category_description' => $expense_category->category_description,
 		'edit' => anchor($controller_name."/view/$expense_category->expense_category_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 
@@ -626,6 +660,7 @@ Get the header for the expenses tabular view
 function get_expenses_manage_table_headers()
 {
 	$CI =& get_instance();
+
 	$headers = array(
 		array('expense_id' => $CI->lang->line('expenses_expense_id')),
 		array('date' => $CI->lang->line('expenses_date')),
@@ -648,10 +683,12 @@ Gets the html data row for the expenses
 function get_expenses_data_row($expense)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
+
 	return array (
 		'expense_id' => $expense->expense_id,
-		'date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($expense->date)),
+		'date' => to_datetime(strtotime($expense->date)),
 		'supplier_name' => $expense->supplier_name,
 		'supplier_tax_code' => $expense->supplier_tax_code,
 		'amount' => to_currency($expense->amount),
@@ -662,7 +699,8 @@ function get_expenses_data_row($expense)
 		'created_by' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 
 /*
@@ -671,6 +709,7 @@ Get the html data last row for the expenses
 function get_expenses_data_last_row($expense)
 {
 	$CI =& get_instance();
+
 	$table_data_rows = '';
 	$sum_amount_expense = 0;
 	$sum_tax_amount_expense = 0;
@@ -695,6 +734,7 @@ Get the expenses payments summary
 function get_expenses_manage_payments_summary($payments, $expenses)
 {
 	$CI =& get_instance();
+
 	$table = '<div id="report_summary">';
 
 	foreach($payments as $key=>$payment)
@@ -702,6 +742,7 @@ function get_expenses_manage_payments_summary($payments, $expenses)
 		$amount = $payment['amount'];
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
+
 	$table .= '</div>';
 
 	return $table;
@@ -714,6 +755,7 @@ Get the header for the cashup tabular view
 function get_cashups_manage_table_headers()
 {
 	$CI =& get_instance();
+
 	$headers = array(
 		array('cashup_id' => $CI->lang->line('cashups_id')),
 		array('open_date' => $CI->lang->line('cashups_opened_date')),
@@ -739,14 +781,16 @@ Gets the html data row for the cashups
 function get_cash_up_data_row($cash_up)
 {
 	$CI =& get_instance();
+
 	$controller_name = strtolower(get_class($CI));
+
 	return array (
 		'cashup_id' => $cash_up->cashup_id,
-		'open_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->open_date)),
+		'open_date' => to_datetime(strtotime($cash_up->open_date)),
 		'open_employee_id' => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
 		'open_amount_cash' => to_currency($cash_up->open_amount_cash),
 		'transfer_amount_cash' => to_currency($cash_up->transfer_amount_cash),
-		'close_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->close_date)),
+		'close_date' => to_datetime(strtotime($cash_up->close_date)),
 		'close_employee_id' => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
 		'closed_amount_cash' => to_currency($cash_up->closed_amount_cash),
 		'note' => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',
@@ -756,6 +800,7 @@ function get_cash_up_data_row($cash_up)
 		'closed_amount_total' => to_currency($cash_up->closed_amount_total),
 		'edit' => anchor($controller_name."/view/$cash_up->cashup_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
 }
 ?>

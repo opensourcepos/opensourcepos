@@ -31,6 +31,8 @@ if (isset($error_message))
 	</script>
 <?php endif; ?>
 
+<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
+
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
@@ -48,7 +50,7 @@ if (isset($error_message))
 			<?php
 			if(isset($customer))
 			{
-				?>
+			?>
 				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
 			<?php
 			}
@@ -106,9 +108,9 @@ if (isset($error_message))
 			if($discount > 0)
 			{
 				$quote_columns = $quote_columns + 1;
-				?>
+			?>
 				<th><?php echo $this->lang->line('sales_customer_discount'); ?></th>
-				<?php
+			<?php
 			}
 			?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
@@ -168,7 +170,7 @@ if (isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $tax['tax_group']; ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php

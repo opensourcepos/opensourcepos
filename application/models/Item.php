@@ -60,7 +60,7 @@ class Item extends CI_Model
 	public function item_number_exists($item_number, $item_id = '')
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
-		{			
+		{
 			return FALSE;
 		}
 
@@ -115,7 +115,7 @@ class Item extends CI_Model
 		}
 		else
 		{
-			$this->db->select('items.item_id AS item_id');
+			$this->db->select('MAX(items.item_id) AS item_id');
 			$this->db->select('MAX(items.name) AS name');
 			$this->db->select('MAX(items.category) AS category');
 			$this->db->select('MAX(items.supplier_id) AS supplier_id');
@@ -186,13 +186,18 @@ class Item extends CI_Model
 				if ($filters['search_custom'] && $attributes_enabled)
 				{
 					$this->db->or_like('attribute_value', $search);
+					$this->db->or_like('attribute_date', $search);
+					$this->db->or_like('attribute_decimal', $search);
 				}
 			$this->db->group_end();
 		}
 
-		if ($attributes_enabled)
+		if($attributes_enabled)
 		{
-			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+			$format = $this->db->escape(dateformat_mysql());
+			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+			$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
+			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
 			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 		}
@@ -279,12 +284,15 @@ class Item extends CI_Model
 	{
 		$this->db->select('items.*');
 		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
-		$this->db->select('suppliers.company_name');
+		$this->db->select('GROUP_CONCAT(attribute_decimal SEPARATOR \'|\') AS attribute_dvalues');
+		$this->db->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
+		$this->db->select("MAX(". $this->db->dbprefix('suppliers') .".company_name) AS company_name");
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('items.item_id', $item_id);
+		$this->db->group_by('items.item_id');
 
 		$query = $this->db->get();
 
@@ -329,7 +337,7 @@ class Item extends CI_Model
 
 		if(!$include_deleted)
 		{
-			$this->db->where("items.deleted = '0'");
+			$this->db->where('items.deleted', 0);
 		}
 
 		// limit to only 1 so there is a result in case two are returned
@@ -374,11 +382,13 @@ class Item extends CI_Model
 	*/
 	public function get_multiple_info($item_ids, $location_id)
 	{
+		$format = $this->db->escape(dateformat_mysql());
 		$this->db->select('items.*');
-		$this->db->select('company_name');
-		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-		$this->db->select('items.category');
-		$this->db->select('quantity');
+		$this->db->select('MAX(company_name) AS company_name');
+		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+		$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) ORDER BY definition_id SEPARATOR '|') AS attribute_dtvalues");
+		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) ORDER BY definition_id SEPARATOR \'|\') AS attribute_dvalues');
+		$this->db->select('MAX(quantity) as quantity');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
@@ -490,7 +500,7 @@ class Item extends CI_Model
 		{
 			$seed .= ',' . $this->config->item('suggestions_second_column');
 		}
-			
+
 		if($this->config->item('suggestions_third_column') !== '')
 		{
 			$seed .= ',' . $this->config->item('suggestions_third_column');
@@ -498,7 +508,7 @@ class Item extends CI_Model
 
 		return $seed;
 	}
-	
+
 	function get_search_suggestion_label($result_row)
 	{
 		$label = '';
@@ -559,7 +569,7 @@ class Item extends CI_Model
 			}
 		}
 	}
-	
+
 	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
@@ -834,6 +844,9 @@ class Item extends CI_Model
 			//Search by custom fields
 			if($filters['search_custom'] != FALSE)
 			{
+				// This section is currently never used but custom fields are replaced with attributes
+				// therefore in case this feature is required a proper query needs to be written here
+				/*
 				$this->db->from('items');
 				$this->db->group_start();
 				$this->db->where('item_type', ITEM_KIT);
@@ -853,6 +866,7 @@ class Item extends CI_Model
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
+				*/
 			}
 		}
 

@@ -156,7 +156,7 @@ if(isset($success))
 							?>
 								<td><?php echo $item['item_number']; ?></td>
 								<td style="align: center;">
-									<?php echo $item['name'] . ' ' . $item['attribute_values']; ?>
+									<?php echo $item['name'] . ' '. implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?>
 									<br/>
 									<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 								</td>
@@ -164,7 +164,7 @@ if(isset($success))
 							}
 							?>
 							<?php
-							if($items_module_allowed)
+							if($items_module_allowed && $change_price)
 							{
 							?>
 								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));?></td>
@@ -197,7 +197,7 @@ if(isset($success))
 
 							<td>
 								<div class="input-group">
-									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
+									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount'], 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
 									<span class="input-group-btn">
 										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
 									</span>
@@ -422,7 +422,7 @@ if(isset($success))
 			{
 			?>
 				<tr>
-					<th style='width: 55%;'><?php echo $tax['tax_group']; ?></th>
+					<th style='width: 55%;'><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></th>
 				</tr>
 			<?php
@@ -474,11 +474,21 @@ if(isset($success))
 						</table>
 					<?php echo form_close(); ?>
 						<?php
+						$payment_type = $this->input->post('payment_type');							
 						// Only show this part if the payment cover the total and in sale or return mode
-						if($pos_mode == '1')
+
+						if($pos_mode == '1' && $payment_type != $this->lang->line('sales_due') && !isset($customer))
 						{
 						?>
 						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php
+						}
+						?>
+						<?php							
+						if($pos_mode == '1' && $payment_type = $this->lang->line('sales_due') && isset($customer))
+						{
+						?>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button'  tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
 						?>
@@ -909,7 +919,7 @@ $(document).ready(function()
 		var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked'))?1:0);
 		$('#cart_'+ $(this).attr('data-line')).append($(input));
 		$('#cart_'+ $(this).attr('data-line')).submit();
-    });
+	});
 });
 
 function check_payment_type()

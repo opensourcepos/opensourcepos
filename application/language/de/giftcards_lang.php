@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Bestandsänderung.";
 $lang["giftcards_allow_alt_description"] = "Erlaube Alternative Bezeichnung";
 $lang["giftcards_bulk_edit"] = "Sammeländerung";
@@ -24,7 +25,7 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "Felder für ausgewählte Gu
 $lang["giftcards_edit_multiple_giftcards"] = "Sammeländerung.";
 $lang["giftcards_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern.";
 $lang["giftcards_error_updating_multiple"] = "Fehler beim Ändern.";
-$lang["giftcards_excel_import_failed"] = "Excel Import fehlerhaft.";
+$lang["giftcards_csv_import_failed"] = "CSV Import fehlerhaft.";
 $lang["giftcards_generate_barcodes"] = "Generiere Barcodes";
 $lang["giftcards_giftcard"] = "Gutschein";
 $lang["giftcards_giftcard_number"] = "Gutscheinnummer";

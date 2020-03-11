@@ -3,6 +3,8 @@
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
+define('NOW', time());
+define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
 /**
@@ -25,6 +27,7 @@ function current_language_code($load_system_language = FALSE)
 	}
 
 	$language_code = get_instance()->config->item('language_code');
+
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
@@ -43,6 +46,7 @@ function current_language($load_system_language = FALSE)
 	}
 
 	$language = get_instance()->config->item('language');
+
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
 
@@ -50,13 +54,17 @@ function get_languages()
 {
 	return array(
 		'ar-EG:arabic' => 'Arabic (Egypt)',
+		'ar-LB:arabic' => 'Arabic (Lebanon)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
+		'cs:czech' => 'Czech',
 		'de:german' => 'German (Germany)',
 		'de-CH:german' => 'German (Swiss)',
+		'el:greek' => 'Greek',
 		'en-GB:english' => 'English (Great Britain)',
 		'en-US:english' => 'English (United States)',
 		'es:spanish' => 'Spanish',
+		'es-MX:spanish' => 'Spanish (Mexico)',
 		'fr:french' => 'French',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
 		'hu-HU:hungarian' => 'Hungarian (Hungary)',
@@ -64,12 +72,18 @@ function get_languages()
 		'it:italian' => 'Italian',
 		'km:khmer' => 'Central Khmer (Cambodia)',
 		'lo:lao' => 'Lao (Laos)',
+		'ml:malay' => 'Malay',
+		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
-		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'pl:polish' => 'Polish',
+		'pt-BR:portuguese' => 'Portuguese (Brazil)',
+		'ro:romanian' => 'Romanian',
 		'ru:russian' => 'Russian',
 		'sv:swedish' => 'Swedish',
 		'th:thai' => 'Thai',
+		'tl-PH:talong' => 'Tagalog (Philippines)',
 		'tr:turkish' => 'Turkish',
+		'ur-PK:urdu' => 'Urdu (Islamic Republic of Pakistan)',
 		'vi:vietnamese' => 'Vietnamese',
 		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
 		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
@@ -112,10 +126,11 @@ function get_timezones()
 		'America/Chihuahua' => '(GMT-07:00) Chihuahua, La Paz, Mazatlan',
 		'America/Dawson_Creek' => '(GMT-07:00) Arizona',
 		'America/Belize' => '(GMT-06:00) Saskatchewan, Central America',
-		'America/Cancun' => '(GMT-06:00) Guadalajara, Mexico City, Monterrey',
+		'America/Mexico_City' => '(GMT-06:00) Guadalajara, Mexico City, Monterrey',
 		'Chile/EasterIsland' => '(GMT-06:00) Easter Island',
 		'America/Chicago' => '(GMT-06:00) Central Time (US & Canada)',
 		'America/New_York' => '(GMT-05:00) Eastern Time (US & Canada)',
+		'America/Cancun' => '(GMT-05:00) Cancun',
 		'America/Havana' => '(GMT-05:00) Cuba',
 		'America/Bogota' => '(GMT-05:00) Bogota, Lima, Quito, Rio Branco',
 		'America/Caracas' => '(GMT-04:30) Caracas',
@@ -217,8 +232,8 @@ function get_timeformats()
 
 
 /*
-Gets the payment options
-*/
+ Gets the payment options
+ */
 function get_payment_options()
 {
 	$config = get_instance()->config;
@@ -267,7 +282,6 @@ function get_payment_options()
 		$payments[$lang->line('sales_upi')] = $lang->line('sales_upi');
 	}
 
-
 	return $payments;
 }
 
@@ -309,7 +323,14 @@ function tax_decimals()
 	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
 }
 
-function to_datetime($datetime)
+function to_date($date = DEFAULT_DATE)
+{
+	$config = get_instance()->config;
+
+	return date($config->item('dateformat'), $date);
+}
+
+function to_datetime($datetime = DEFAULT_DATETIME)
 {
 	$config = get_instance()->config;
 
@@ -379,18 +400,35 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 	return $fmt->format($number);
 }
 
-function parse_decimals($number)
+function parse_quantity($number)
+{
+	return parse_decimals($number, quantity_decimals());
+}
+
+function parse_tax($number)
+{
+	return parse_decimals($number, tax_decimals());
+}
+
+function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
+
 	if(empty($number))
 	{
 		return $number;
 	}
 
 	$config = get_instance()->config;
+
+	if($decimals == NULL)
+	{
+		$decimals = $config->item('currency_decimals');
+	}
+
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
 
-	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $config->item('currency_decimals'));
+	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $decimals);
 
 	if(empty($config->item('thousands_separator')))
 	{
@@ -456,6 +494,50 @@ function dateformat_momentjs($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+function dateformat_mysql()
+{
+	$config = get_instance()->config;
+	$php_format = $config->item('dateformat');
+
+	$SYMBOLS_MATCHING = array(
+		// Day
+		'd' => '%d',
+		'D' => '%a',
+		'j' => '%e',
+		'l' => '%W',
+		'N' => '',
+		'S' => '',
+		'w' => '',
+		'z' => '',
+		// Week
+		'W' => '',
+		// Month
+		'F' => '',
+		'm' => '%m',
+		'M' => '%b',
+		'n' => '%c',
+		't' => '',
+		// Year
+		'L' => '',
+		'o' => '',
+		'Y' => '%Y',
+		'y' => '%y',
+		// Time
+		'a' => '',
+		'A' => '%p',
+		'B' => '',
+		'g' => '%l',
+		'G' => '%k',
+		'h' => '%H',
+		'H' => '%k',
+		'i' => '%i',
+		's' => '%S',
+		'u' => '%f'
+	);
+
+	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
 function dateformat_bootstrap($php_format)
 {
 	$SYMBOLS_MATCHING = array(
@@ -495,6 +577,16 @@ function dateformat_bootstrap($php_format)
 	);
 
 	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
+function valid_date($date)
+{
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
+}
+
+function valid_decimal($decimal)
+{
+	return preg_match('/^(\d*\.)?\d+$/', $decimal);
 }
 
 ?>

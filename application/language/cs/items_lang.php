@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Změna množství.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Povolit alternativní popis";
 $lang["items_amount_entry"] = "Množství";
 $lang["items_bulk_edit"] = "Hromadná editace";
@@ -33,14 +32,14 @@ $lang["items_edit_multiple_items"] = "Úpravy více položek";
 $lang["items_empty_upc_items"] = "Položky bez čárového kódu";
 $lang["items_error_adding_updating"] = "Chyba při přidávání či úpravě položek";
 $lang["items_error_updating_multiple"] = "Chyba při úpravě položek";
-$lang["items_excel_import_failed"] = "Import z Excelu se nepovedl";
-$lang["items_excel_import_nodata_wrongformat"] = "Nahraný soubor neobsahuje žádná data nebo má špatný formát.";
-$lang["items_excel_import_partially_failed"] = "Při importu položek došlo k několika chybám:";
-$lang["items_excel_import_success"] = "Import položek proběhl bez chyby.";
+$lang["items_csv_import_failed"] = "Import z CSVu se nepovedl";
+$lang["items_csv_import_nodata_wrongformat"] = "Nahraný soubor neobsahuje žádná data nebo má špatný formát.";
+$lang["items_csv_import_partially_failed"] = "Při importu položek došlo k několika chybám:";
+$lang["items_csv_import_success"] = "Import položek proběhl bez chyby.";
 $lang["items_generate_barcodes"] = "Vytvořit čárový kód";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
-$lang["items_import_items_excel"] = "Import položek z Excelu";
+$lang["items_import_items_csv"] = "Import položek z CSVu";
 $lang["items_info_provided_by"] = "";
 $lang["items_inventory"] = "";
 $lang["items_inventory_comments"] = "Komentář";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Získat informace o položce";
 $lang["items_sales_tax_1"] = "DPH";
 $lang["items_sales_tax_2"] = "DPH 2";
 $lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Vybrat obrázek";
 $lang["items_serialized_items"] = "Položky se sériovým číslem";
 $lang["items_standard"] = "Běžná";

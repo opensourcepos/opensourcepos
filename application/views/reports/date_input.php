@@ -70,7 +70,7 @@ if(isset($error))
 	?>
 
 	<?php	
-	if (!empty($stock_locations) && count($stock_locations) > 1)
+	if (!empty($stock_locations) && count($stock_locations) > 2)
 	{
 	?>
 		<div class="form-group form-group-sm">
@@ -102,7 +102,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{		
-		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val(), $("#discount_type_id").val() || 0 ].join("/");
+		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val() || 'all', $("#discount_type_id").val() || 0 ].join("/");
 	});
 });
 </script>
