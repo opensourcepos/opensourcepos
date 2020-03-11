@@ -1,9 +1,9 @@
 <?php
-$lang["tables_all"] = "All";
-$lang["tables_columns"] = "Columns";
-$lang["tables_hide_show_pagination"] = "Hide/Show pagination";
-$lang["tables_loading"] = "Loading, please wait...";
-$lang["tables_page_from_to"] = "Showing {0} to {1} of {2} rows";
-$lang["tables_refresh"] = "Refresh";
-$lang["tables_rows_per_page"] = "{0} rows per page";
-$lang["tables_toggle"] = "Toggle";
+$lang["tables_all"] = "Alle";
+$lang["tables_columns"] = "Kolonner";
+$lang["tables_hide_show_pagination"] = "Gem/Vis sideinddeling";
+$lang["tables_loading"] = "Indlæser, vent venligst...";
+$lang["tables_page_from_to"] = "Viser {0} to {1} af {2} rækker";
+$lang["tables_refresh"] = "Opdater";
+$lang["tables_rows_per_page"] = "{0} rækker per side";
+$lang["tables_toggle"] = "Skift";
