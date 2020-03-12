@@ -303,7 +303,31 @@ if(isset($success))
 <!-- Overall Sale -->
 
 <div id="overall_sale" class="panel panel-default">
-	<div class="panel-body">
+	<?php if($alt_currency_enabled)
+			{
+			?>					
+				<div class="container-fluid">
+					<div class="row">
+						<div class="form-group form-group-sm">
+							<div class="col-xs-6 pull-right">
+								<label for="apply_exchange_rate" class="control-label checkbox">
+									<?php echo form_checkbox(array('name'=>'apply_exchange_rate', 'id'=>'apply_exchange_rate', 'value'=>1, 'checked'=>$apply_exchange_rate)); ?>
+									<?php echo $this->lang->line('sales_apply_exchange_rate');?>
+								</label>
+							</div>
+							<div class="col-xs-6">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon input-sm">×</span>
+									<?php echo form_input(array('name'=>'exchange_rate', 'id'=>'exchange_rate', 'class'=>'form-control input-sm', 'value'=>$exchange_rate));?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php
+			}
+			?>
+	<div class="panel-body">		
 		<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
 			<?php
 			if(isset($customer))
@@ -651,32 +675,7 @@ if(isset($success))
 			<?php
 			}
 			?>
-			<?php
-			if($alt_currency_enabled)
-			{
-			?>
-				<hr/>
-				<div class="container-fluid">
-					<div class="row">
-						<div class="form-group form-group-sm">
-							<div class="col-xs-6">
-								<label for="apply_exchange_rate" class="control-label checkbox">
-									<?php echo form_checkbox(array('name'=>'apply_exchange_rate', 'id'=>'apply_exchange_rate', 'value'=>1, 'checked'=>$apply_exchange_rate)); ?>
-									<?php echo $this->lang->line('sales_apply_exchange_rate');?>
-								</label>
-							</div>
-							<div class="col-xs-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon input-sm">×</span>
-									<?php echo form_input(array('name'=>'exchange_rate', 'id'=>'exchange_rate', 'class'=>'form-control input-sm', 'value'=>$exchange_rate));?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			<?php
-			}
-			?>
+			
 		<?php
 		}
 		?>
