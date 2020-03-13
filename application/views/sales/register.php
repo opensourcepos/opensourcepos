@@ -158,7 +158,19 @@ if(isset($success))
 								<td style="align: center;">
 									<?php echo $item['name'] . ' ' . $item['attribute_values']; ?>
 									<br/>
-									<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
+									<?php if($apply_exchange_rate)
+									{
+									?>
+										<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock'] / $exchange_rate) . ' in ' . $item['stock_name'] . ']'; endif; ?>
+									<?php
+									}
+									else
+									{
+									?>
+										<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
+									<?php
+									}
+									?>
 								</td>
 							<?php
 							}
@@ -189,8 +201,15 @@ if(isset($success))
 									echo form_hidden('quantity', $item['quantity']);
 								}
 								else
-								{
-									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+								{									
+									if($apply_exchange_rate)
+									{
+										echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity'] / $exchange_rate), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+									}
+									else
+									{
+										echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+									}
 								}
 								?>
 							</td>
