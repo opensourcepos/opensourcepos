@@ -137,7 +137,7 @@ $(document).ready(function()
 	{
 		var is_event = typeof(value) !== 'string';
 
-        if ($("#definition_value").val().match(/(\|)/g) != null)
+        if ($("#definition_value").val().match(/(\||_)/g) != null)
         {
             return;
         }
