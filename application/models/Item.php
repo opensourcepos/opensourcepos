@@ -177,19 +177,22 @@ class Item extends CI_Model
 
 		if(!empty($search))
 		{
-			$this->db->group_start();
-				$this->db->like('name', $search);
-				$this->db->or_like('item_number', $search);
-				$this->db->or_like('items.item_id', $search);
-				$this->db->or_like('company_name', $search);
-				$this->db->or_like('items.category', $search);
-				if ($filters['search_custom'] && $attributes_enabled)
-				{
-					$this->db->or_like('attribute_value', $search);
-					$this->db->or_like('attribute_date', $search);
-					$this->db->or_like('attribute_decimal', $search);
-				}
-			$this->db->group_end();
+			if ($attributes_enabled && $filters['search_custom'])
+			{
+				$this->db->having("attribute_values LIKE '%$search%'");
+				$this->db->or_having("attribute_dtvalues LIKE '%$search%'");
+				$this->db->or_having("attribute_dvalues LIKE '%$search%'");
+			}
+			else
+			{
+				$this->db->group_start();
+					$this->db->like('name', $search);
+					$this->db->or_like('item_number', $search);
+					$this->db->or_like('items.item_id', $search);
+					$this->db->or_like('company_name', $search);
+					$this->db->or_like('items.category', $search);
+				$this->db->group_end();
+			}
 		}
 
 		if($attributes_enabled)
