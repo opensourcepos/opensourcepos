@@ -9,7 +9,6 @@ class Barcode_lib_test extends UnitTestCase
 		$this->resetInstance();
 
 		$this->obj = $this->newLibrary('Barcode_lib');
-
 	}
 
 	public function test_barcode_weight_first()
@@ -21,8 +20,8 @@ class Barcode_lib_test extends UnitTestCase
 		$this->obj->parse_barcode_fields($quantity, $item_number);
 
 		echo $quantity;
-		$this->assertEquals($quantity, 123.456);
-		$this->assertEquals($item_number, "50000");
+		$this->assertEquals(123.456, $quantity);
+		$this->assertEquals("50000", $item_number);
 	}
 
 	public function test_barcode_weight_last()
@@ -33,7 +32,7 @@ class Barcode_lib_test extends UnitTestCase
 		$quantity = 0;
 		$this->obj->parse_barcode_fields($quantity, $item_number);
 
-		$this->assertEquals($quantity, 50.001);
-		$this->assertEquals($item_number, 123456);
+		$this->assertEquals(50.001, $quantity);
+		$this->assertEquals(123456, $item_number);
 	}
 }
