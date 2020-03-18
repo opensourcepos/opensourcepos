@@ -76,3 +76,4 @@ $lang["taxes_tax_rounding"] = "Redondeo de Impuestos";
 $lang["taxes_tax_type"] = "Tipo de Impuesto";
 $lang["taxes_update"] = "Actualizar Tasa de Impuesto";
 $lang["taxes_vat_tax"] = "IVA";
+$lang["taxes_tax_group_not_unique"] = "El grupo de impuestos %1 no es único";

@@ -160,14 +160,13 @@ $(document).ready(function()
 	
 	<?php $this->load->view('partial/datepicker_locale'); ?>
 
-	var fill_value_customer =  function(event, ui) {
+	var fill_value_customer = function(event, ui) {
 		event.preventDefault();
 		$("input[name='customer_id']").val(ui.item.value);
 		$("input[name='customer_name']").val(ui.item.label);
 	};
 
-	$('#customer_name').autocomplete(
-	{
+	$('#customer_name').autocomplete( {
 		source: "<?php echo site_url('customers/suggest'); ?>",
 		minChars: 0,
 		delay: 15, 
@@ -177,14 +176,13 @@ $(document).ready(function()
 		focus: fill_value_customer
 	});
 
-	var fill_value_employee =  function(event, ui) {
+	var fill_value_employee = function(event, ui) {
 		event.preventDefault();
 		$("input[name='employee_id']").val(ui.item.value);
 		$("input[name='employee_name']").val(ui.item.label);
 	};
 
-	$('#employee_name').autocomplete(
-	{
+	$('#employee_name').autocomplete( {
 		source: "<?php echo site_url('employees/suggest'); ?>",
 		minChars: 0,
 		delay: 15, 
@@ -204,8 +202,7 @@ $(document).ready(function()
 		table_support.do_restore("<?php echo site_url($controller_name); ?>", <?php echo $sale_info['sale_id']; ?>);
 	});
 
-	$('#sales_edit_form').validate($.extend(
-	{
+	$('#sales_edit_form').validate($.extend( {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)

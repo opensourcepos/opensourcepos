@@ -78,12 +78,46 @@ class Token_lib
 		return $token_tree;
 	}
 
+	public function parse($string, $pattern, $tokens = array())
+	{
+		$token_tree = $this->scan($pattern);
+
+		$found_tokens = array();
+		foreach ($token_tree as $token_id => $token_length)
+		{
+			foreach ($tokens as $token)
+			{
+				if ($token->token_id() == $token_id)
+				{
+					$found_tokens[] = $token;
+					$keys = array_keys($token_length);
+					$length = array_shift($keys);
+					$pattern = str_replace(array_shift($token_length), "({$token->get_value()}{".$length."})", $pattern);
+				}
+			}
+		}
+
+		$results = array();
+
+		if (preg_match("/$pattern/", $string, $matches))
+		{
+			foreach($found_tokens as $token)
+			{
+				$index = array_search($token, $found_tokens);
+				$match = $matches[$index+1];
+				$results[$token->token_id()] = $match;
+			}
+		}
+
+		return $results;
+	}
+
 	public function generate($used_tokens, &$tokens_to_replace, &$token_values, $tokens)
 	{
 		foreach($used_tokens as $token_code => $token_info)
 		{
 			// Generate value here based on the key value
-			$token_value = $this->resolveToken($token_code);
+			$token_value = $this->resolve_token($token_code);
 
 			foreach($token_info as $length => $token_spec)
 			{
@@ -102,7 +136,7 @@ class Token_lib
 		return $token_values;
 	}
 
-	private function resolveToken($token_code, $tokens = array())
+	private function resolve_token($token_code, $tokens = array())
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{

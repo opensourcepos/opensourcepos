@@ -1,20 +1,16 @@
-version: '2'
+version: '3.4'
 
 volumes:
     uploads:
         driver: local
   
 services:
-    sqlscript:
-        build:
-            context: database/
-            dockerfile: Dockerfile
 
     ospos:
         build:
             context: .
-            dockerfile: Dockerfile.dev
-        container_name: ospos
+            target: ospos_dev
+        container_name: ospos_dev
         restart: always
         depends_on:
           - mysql
@@ -31,13 +27,13 @@ services:
           - XDEBUG_CONFIG=remote_host=172.17.0.1
 
     mysql:
-        image: mariadb:10.1.21
+        image: mariadb:10.3
         container_name: mysql
         restart: always
         ports:
           - "3306:3306"
-        volumes_from:
-          - sqlscript
+        volumes:
+          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale
           - MYSQL_DATABASE=ospos

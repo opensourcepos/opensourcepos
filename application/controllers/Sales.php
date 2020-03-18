@@ -423,7 +423,6 @@ class Sales extends Secure_Controller
 				$discount_type = $item_kit_info->kit_discount_type;
 			}
 
-			$price = NULL;
 			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))

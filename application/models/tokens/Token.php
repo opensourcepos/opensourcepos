@@ -25,6 +25,11 @@ abstract class Token
 		$this->value = $value;
 	}
 
+	static function get_barcode_tokens()
+	{
+		return array();
+	}
+
 	static function get_tokens()
 	{
 		return array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),

@@ -128,7 +128,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$.post('<?php echo site_url($controller_name . "/delete_attribute_value/");?>' + value, {definition_id: definition_id});
+			$.post('<?php echo site_url($controller_name . "/delete_attribute_value/");?>' + escape(value), {definition_id: definition_id});
 		}
 		$(this).parents("li").remove();
 	};
@@ -137,7 +137,7 @@ $(document).ready(function()
 	{
 		var is_event = typeof(value) !== 'string';
 
-        if ($("#definition_value").val().match(/(\||:)/g) != null)
+        if ($("#definition_value").val().match(/(\||_)/g) != null)
         {
             return;
         }
@@ -157,7 +157,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo site_url("attributes/save_attribute_value/");?>' + value, {definition_id: definition_id});
+				$.post('<?php echo site_url("attributes/save_attribute_value/");?>' + escape(value), {definition_id: definition_id});
 			}
 		}
 

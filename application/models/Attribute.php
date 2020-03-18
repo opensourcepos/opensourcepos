@@ -618,7 +618,19 @@ class Attribute extends CI_Model
 		else
 		{
 			$this->db->where('attribute_id', $attribute_id);
-			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+
+			if(in_array($definition_type, [TEXT, DROPDOWN], TRUE))
+			{
+				$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+			}
+			else if($definition_type == DECIMAL)
+			{
+				$this->db->update('attribute_values', array('attribute_decimal' => $attribute_value));
+			}
+			else
+			{
+				$this->db->update('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
+			}
 		}
 		
 		$this->db->trans_complete();
