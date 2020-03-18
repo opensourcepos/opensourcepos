@@ -822,41 +822,35 @@ class Items extends Secure_Controller
 				for($i = 1; $i < count($line_array); $i++)
 				{
 					$invalidated	= FALSE;
-					$line 			= array_combine($keys,$this->xss_clean($line_array[$i]));	//Build a XSS-cleaned associative array with the row to use to assign values
 					
-					if(!empty($line))
+					$line = array_combine($keys,$this->xss_clean($line_array[$i]));	//Build a XSS-cleaned associative array with the row to use to assign values
+					
+					$item_data = array(
+						'name'					=> $line['Item Name'],
+						'description'			=> $line['Description'],
+						'category'				=> $line['Category'],
+						'cost_price'			=> $line['Cost Price'],
+						'unit_price'			=> $line['Unit Price'],
+						'reorder_level'			=> $line['Reorder Level'],
+						'supplier_id'			=> $this->Supplier->exists($line['Supplier ID']) ? $line['Supplier ID'] : NULL,
+						'allow_alt_description'	=> empty($line['Allow Alt Description'])? '0' : '1',
+						'is_serialized'			=> empty($line['Item has Serial Number'])? '0' : '1',
+						'hsn_code'				=> $line['HSN'],
+						'pic_filename'			=> $line['item_image']
+					);
+					
+					$item_number 				= $line['Barcode'];
+					
+					if(!empty($item_number))
 					{
-						$item_data = array(
-							'name'					=> $line['Item Name'],
-							'description'			=> $line['Description'],
-							'category'				=> $line['Category'],
-							'cost_price'			=> $line['Cost Price'],
-							'unit_price'			=> $line['Unit Price'],
-							'reorder_level'			=> $line['Reorder Level'],
-							'supplier_id'			=> $this->Supplier->exists($line['Supplier ID']) ? $line['Supplier ID'] : NULL,
-							'allow_alt_description'	=> $line['Allow Alt Description'] != '' ? '1' : '0',
-							'is_serialized'			=> $line['Item has Serial Number'] != '' ? '1' : '0',
-							'hsn_code'				=> $line['HSN'],
-							'pic_filename'			=> $line['item_image']
-						);
-						
-						$item_number 				= $line['Barcode'];
-						
-						if($item_number != '')
-						{
-							$item_data['item_number'] = $item_number;
-							$invalidated = $this->Item->item_number_exists($item_number);
-						}
-						
-						//Sanity check of data
-						if(!$invalidated)
-						{
-							$invalidated = $this->data_error_check($line, $item_data);
-						}
+						$item_data['item_number'] = $item_number;
+						$invalidated = $this->Item->item_number_exists($item_number);
 					}
-					else
+					
+					//Sanity check of data
+					if(!$invalidated)
 					{
-						$invalidated = TRUE;
+						$invalidated = $this->data_error_check($line, $item_data);
 					}
 					
 					//Save to database
@@ -866,7 +860,8 @@ class Items extends Secure_Controller
 						$this->save_inventory_quantities($line, $item_data);
 						$this->save_attribute_data($line, $item_data);
 					}
-					else //insert or update item failure
+					//Insert or update item failure
+					else
 					{
 						$failed_row = $i+1;
 						$failCodes[] = $failed_row;
@@ -907,15 +902,19 @@ class Items extends Secure_Controller
 		$check_for_empty = array(
 			$item_data['name'],
 			$item_data['category'],
-			$item_data['cost_price'],
 			$item_data['unit_price']
 		);
 		
-		if(in_array('',$check_for_empty,true))
+		foreach($check_for_empty as $key => $val)
 		{
-			log_message("ERROR","Empty required value");
-			return TRUE;	//Return fail on empty required fields
+			if (empty($val))
+			{
+				log_message("ERROR","Empty required value");
+				return TRUE;	//Return fail on empty required fields
+			}
 		}
+		
+		$item_data['cost_price'] = empty($item_data['cost_price']) ? 0 : 1;	//Allow for zero wholesale price
 		
 		//Build array of fields to check for numerics
 		$check_for_numeric_values = array(
@@ -947,6 +946,7 @@ class Items extends Secure_Controller
 		
 		//Check Attribute Data
 		$definition_names = $this->Attribute->get_definition_names();
+		unset($definition_names[-1]);
 		
 		foreach($definition_names as $definition_name)
 		{
@@ -961,7 +961,7 @@ class Items extends Secure_Controller
 					$dropdown_values 	= $this->Attribute->get_definition_values($attribute_data['definition_id']);
 					$dropdown_values[] 	= '';
 					
-					if(in_array($attribute_value, $dropdown_values) === FALSE)
+					if(in_array($attribute_value, $dropdown_values) === FALSE && !empty($attribute_value))
 					{
 						log_message("ERROR","Value: '$attribute_value' is not an acceptable DROPDOWN value");
 						return TRUE;
@@ -969,17 +969,17 @@ class Items extends Secure_Controller
 				}
 				else if($attribute_type == 'DECIMAL')
 				{
-					if(!is_numeric($attribute_value) && $attribute_value != '')
+					if(!is_numeric($attribute_value) && !empty($attribute_value))
 					{
-						log_message("ERROR","Decimal required: '$attribute_value' is not an acceptable DECIMAL value");
+						log_message("ERROR","'$attribute_value' is not an acceptable DECIMAL value");
 						return TRUE;
 					}
 				}
 				else if($attribute_type == 'DATETIME')
 				{
-					if(strtotime($attribute_value) === FALSE)
+					if(strtotime($attribute_value) === FALSE && !empty($attribute_value))
 					{
-						log_message("ERROR","Datetime required: '$attribute_value' is not an acceptable DATETIME value");
+						log_message("ERROR","'$attribute_value' is not an acceptable DATETIME value.");
 						return TRUE;
 					}
 				}
@@ -988,7 +988,7 @@ class Items extends Secure_Controller
 		
 		return FALSE;
 	}
-	//TODO: Figure out if I need to have line 1003 be isset or empty.  If zero is a possible answer, then empty will return false negatives.
+	
 	/**
 	 * Saves attribute data found in the CSV import.
 	 *
@@ -999,14 +999,35 @@ class Items extends Secure_Controller
 	private function save_attribute_data($line, $item_data)
 	{
 		$definition_names = $this->Attribute->get_definition_names();
+		unset($definition_names[-1]);
 		
 		foreach($definition_names as $definition_name)
 		{
-			if(!isset($line['attribute_' . $definition_name]))
+			//Create attribute value
+			if(!empty($line['attribute_' . $definition_name]) || $line['attribute_' . $definition_name] == '0')
 			{
-				//Create attribute value
 				$attribute_data = $this->Attribute->get_definition_by_name($definition_name)[0];
-				$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], FALSE, $attribute_data['definition_type']);
+				
+				//CHECKBOX Attribute types (zero value creates attribute and marks it as unchecked)
+				if($attribute_data['definition_type'] == 'CHECKBOX')
+				{
+					//FALSE and '0' value creates checkbox and marks it as unchecked.
+					if(strcasecmp($line['attribute_' . $definition_name],'FALSE') == 0 || $line['attribute_' . $definition_name] == '0')
+					{
+						$line['attribute_' . $definition_name] = '0';
+					}
+					else
+					{
+						$line['attribute_' . $definition_name] = '1';
+					}
+					
+					$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], FALSE, $attribute_data['definition_type']);
+				}
+				//All other Attribute types (0 value means attribute not created)
+				elseif(!empty($line['attribute_' . $definition_name]))
+				{
+					$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], FALSE, $attribute_data['definition_type']);
+				}
 				
 				if($status === FALSE)
 				{

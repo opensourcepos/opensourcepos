@@ -70,7 +70,11 @@ function get_csv_file($file_name)
 		
 		while (($data = fgetcsv($csv_file)) !== FALSE)
 		{
-			$line_array[] = $data;
+		//Skip empty lines
+			if(array(null) !== $data)
+			{
+				$line_array[] = $data;
+			}
 		}
 	}
 	else
