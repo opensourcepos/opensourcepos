@@ -217,7 +217,7 @@ class Attribute extends CI_Model
 
 		return $definition_name + $this->_to_array($results, 'definition_id', 'definition_name');
 	}
-	
+
 	public function get_definition_values($definition_id)
 	{
 		$attribute_values = [];
@@ -549,7 +549,7 @@ class Attribute extends CI_Model
 
 		return $this->db->get()->row_object();
 	}
-	
+
 	public function copy_attribute_links($item_id, $sale_receiving_fk, $id)
 	{
 		$this->db->query(
@@ -657,7 +657,7 @@ class Attribute extends CI_Model
 
 		return $this->db->update('attribute_definitions', array('deleted' => 1));
 	}
-	
+
 	public function delete_definition_list($definition_ids)
 	{
 		$this->db->where_in('definition_id', $definition_ids);

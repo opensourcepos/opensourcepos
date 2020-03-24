@@ -7,14 +7,14 @@ class Items extends Secure_Controller
 	public function __construct()
 	{
 		parent::__construct('items');
-		
+
 		$this->load->library('item_lib');
 	}
 
 	public function index()
 	{
 		$this->session->set_userdata('allow_temp_items', 0);
-		
+
 		$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers());
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
 		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
@@ -452,7 +452,7 @@ class Items extends Secure_Controller
 
 		$this->load->view('attributes/item', $data);
 	}
-	
+
 	public function bulk_edit()
 	{
 		$suppliers = array('' => $this->lang->line('items_none'));
