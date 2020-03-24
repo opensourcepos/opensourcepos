@@ -340,10 +340,10 @@ class Attribute extends CI_Model
 
 				$this->db->trans_start();
 
-				$query = 'UPDATE ospos_attribute_values a ';
-				$query .= 'INNER JOIN ospos_attribute_links b ';
-				$query .= 'ON a.attribute_id = b.attribute_id ';
-				$query .= "SET b.attribute_id = IF((a.attribute_value IN('FALSE','0','') OR (a.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+				$query = 'UPDATE ospos_attribute_values values ';
+				$query .= 'INNER JOIN ospos_attribute_links links ';
+				$query .= 'ON values.attribute_id = links.attribute_id ';
+				$query .= "SET links.attribute_id = IF((values.attribute_value IN('FALSE','0','') OR (values.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
 				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
 				$success = $this->db->query($query);
 
@@ -373,10 +373,10 @@ class Attribute extends CI_Model
 
 					$this->db->trans_start();
 
-					$query = 'UPDATE ospos_attribute_values a ';
-					$query .= 'INNER JOIN ospos_attribute_links b ';
-					$query .= 'ON a.attribute_id = b.attribute_id ';
-					$query .= "SET b.attribute_id = IF((a.attribute_value IN('FALSE','0','') OR (a.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+					$query = 'UPDATE ospos_attribute_values values ';
+					$query .= 'INNER JOIN ospos_attribute_links links ';
+					$query .= 'ON values.attribute_id = links.attribute_id ';
+					$query .= "SET links.attribute_id = IF((values.attribute_value IN('FALSE','0','') OR (values.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
 					$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
 					$success = $this->db->query($query);
 
