@@ -16,8 +16,8 @@ class Attributes extends Secure_Controller
 		$this->load->view('attributes/manage', $data);
 	}
 
-	/*
-	 Returns customer table data rows. This will be called with AJAX.
+	/**
+	 * Returns customer table data rows. This will be called with AJAX.
 	 */
 	public function search()
 	{
