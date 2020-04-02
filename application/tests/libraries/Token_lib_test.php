@@ -10,6 +10,9 @@ class Token_lib_test extends UnitTestCase
         $this->resetInstance();
 
         $this->obj = $this->newLibrary('Token_lib');
+        $this->CI->config->set_item('currency_decimals', 3);
+        $this->CI->config->set_item('quantity_decimals', 3);
+
     }
 
     public function test_token_parser()
@@ -46,7 +49,7 @@ class Token_lib_test extends UnitTestCase
         $this->obj->parse_barcode($quantity, $price, $item_number);
 
 
-        $this->assertEquals($price, 10);
+        $this->assertEquals($price, 0.10);
         $this->assertEquals($item_number, 123456);
         $this->assertEquals($quantity, 50.001);
     }
