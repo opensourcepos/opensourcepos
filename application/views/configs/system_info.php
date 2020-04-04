@@ -7,7 +7,7 @@
 }
 </style>
 </style>
-<script type="text/javascript" src="dist/clipboard.min.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
 	<?php echo $this->lang->line('config_server_notice'); ?>
 	<div class="container">
