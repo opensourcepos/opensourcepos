@@ -632,16 +632,11 @@ class Items extends Secure_Controller
 			//Event triggers for Third-Party Integrations
 				if($new_item)
 				{
-				    $event_failures = Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
+				    Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
 				}
 				else
 				{
-				    $event_failures = Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
-				}
-
-				if($event_failures)
-				{
-				    log_message("ERROR","Third-Party Integration failed during item save: $event_failures");
+				    Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
 				}
 			}
 			else
@@ -804,12 +799,7 @@ class Items extends Secure_Controller
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 
 		//Event triggers for Third-Party Integrations
-			$event_failures = Events::Trigger('event_delete', array("type"=> "ITEMS", "data" => $items_to_delete), 'string');
-
-			if($event_failures)
-			{
-				log_message("ERROR","Third-Party Integration failed during item delete: $event_failures");
-			}
+			Events::Trigger('event_delete', array("type"=> "ITEMS", "data" => $items_to_delete), 'string');
 		}
 		else
 		{
@@ -902,16 +892,11 @@ class Items extends Secure_Controller
 					//Event triggers for Third-Party Integrations
 						if($this->Item->item_number_exists($item_number))
 						{
-						    $event_failures = Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
+						    Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $item_data), 'string');
 						}
 						else
 						{
-						    $event_failures = Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
-						}
-
-						if($event_failures)
-						{
-						    log_message("ERROR","Third-Party Integration failed during CSV Import: $event_failures");
+						    Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $item_data), 'string');
 						}
 					}
 					else //insert or update item failure

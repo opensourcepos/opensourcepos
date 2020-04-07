@@ -113,21 +113,16 @@ class Giftcards extends Secure_Controller
 			//New giftcard
 			if($giftcard_id == -1)
 			{
-			    echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_adding') . ' ' .
-			        $giftcard_data['giftcard_number'], 'id' => $giftcard_data['giftcard_id']));
-			    $event_failures = Events::Trigger('event_create', array("type"=> "GIFTCARDS", "data" => $giftcard_data), 'string');
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_adding') . ' ' .
+					$giftcard_data['giftcard_number'], 'id' => $giftcard_data['giftcard_id']));
+				Events::Trigger('event_create', array("type"=> "GIFTCARDS", "data" => $giftcard_data), 'string');
 			}
 			//Existing giftcard
 			else
 			{
-			    echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_updating') . ' ' .
-			        $giftcard_data['giftcard_number'], 'id' => $giftcard_id));
-			    $event_failures = Events::Trigger('event_update', array("type"=> "GIFTCARDS", "data" => $giftcard_data), 'string');
-			}
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during CSV Import: $event_failures");
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_updating') . ' ' .
+					$giftcard_data['giftcard_number'], 'id' => $giftcard_id));
+				Events::Trigger('event_update', array("type"=> "GIFTCARDS", "data" => $giftcard_data), 'string');
 			}
 		}
 	//failure
@@ -155,12 +150,7 @@ class Giftcards extends Secure_Controller
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_deleted') . ' ' .
 							count($giftcards_to_delete).' '.$this->lang->line('giftcards_one_or_multiple')));
 			
-			$event_failures = Events::Trigger('event_delete', array("type"=> "GIFTCARDS", "data" => $giftcards_to_delete), 'string');
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during giftcard(s) delete: $event_failures");
-			}
+			Events::Trigger('event_delete', array("type"=> "GIFTCARDS", "data" => $giftcards_to_delete), 'string');
 		}
 		else
 		{

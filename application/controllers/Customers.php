@@ -280,7 +280,7 @@ class Customers extends Persons
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $this->xss_clean($customer_data['person_id'])));
-				$event_failures = Events::Trigger('event_create', array("type"=> "CUSTOMERS", "data" => $customer_data), 'string');
+				Events::Trigger('event_create', array("type"=> "CUSTOMERS", "data" => $customer_data), 'string');
 			}
 		//Existing customer
 			else
@@ -288,12 +288,7 @@ class Customers extends Persons
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $customer_id));
-				$event_failures = Events::Trigger('event_update', array("type"=> "CUSTOMERS", "data" => $customer_data), 'string');
-			}
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during Customer create or update: $event_failures");
+				Events::Trigger('event_update', array("type"=> "CUSTOMERS", "data" => $customer_data), 'string');
 			}
 		}
 	//Failure
@@ -343,17 +338,12 @@ class Customers extends Persons
 				$this->mailchimp_lib->removeMember($this->_list_id, $info->email);
 
 			//Event triggers for Third-Party Integrations
-				$event_failures = Events::Trigger('event_delete', array("type"=> "CUSTOMERS", "data" => $customers_to_delete), 'string');
+				Events::Trigger('event_delete', array("type"=> "CUSTOMERS", "data" => $customers_to_delete), 'string');
 				
 				$count++;
 			}
 		}
-		
-		if($event_failures)
-		{
-		    log_message("ERROR","Third-Party Integration failed during Customer delete: $event_failures");
-		}
-		
+
 		if($count == count($customers_to_delete))
 		{
 			echo json_encode(array('success' => TRUE,

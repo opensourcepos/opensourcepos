@@ -233,7 +233,7 @@ class Receivings extends Secure_Controller
 			$data['supplier_address'] = $supplier_info->address_1;
 			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
 			{
-				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;				
+				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
 			}
 			else
 			{
@@ -252,14 +252,9 @@ class Receivings extends Secure_Controller
 		}
 		else
 		{
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);				
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 			
-			$event_failures = Events::Trigger('event_update', array("type"=> "RECEIVINGS", "data" => $data), 'string');
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during Receiving: $event_failures");
-			}
+			Events::Trigger('event_update', array("type"=> "RECEIVINGS", "data" => $data), 'string');
 		}
 
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();

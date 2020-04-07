@@ -133,7 +133,7 @@ class Suppliers extends Persons
 			    echo json_encode(array('success' => TRUE,
 			        'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
 			        'id' => $supplier_data['person_id']));
-			    $event_failures = Events::Trigger('event_create', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
+			    Events::Trigger('event_create', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
 			}
 		//Existing supplier
 			else
@@ -141,12 +141,7 @@ class Suppliers extends Persons
 			    echo json_encode(array('success' => TRUE,
 			        'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
 			        'id' => $supplier_id));
-			    $event_failures = Events::Trigger('event_update', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
-			}
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during Supplier create or update: $event_failures");
+			    Events::Trigger('event_update', array("type"=> "SUPPLIERS", "data" => $supplier_data), 'string');
 			}
 		}
 	//Failure
@@ -173,12 +168,7 @@ class Suppliers extends Persons
 							count($suppliers_to_delete).' '.$this->lang->line('suppliers_one_or_multiple')));
 
 		//Event triggers for Third-Party Integrations
-			$event_failures = Events::Trigger('event_delete', array("type"=> "SUPPLIERS", "data" => $suppliers_to_delete), 'string');
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during Customer delete: $event_failures");
-			}
+			Events::Trigger('event_delete', array("type"=> "SUPPLIERS", "data" => $suppliers_to_delete), 'string');
 		}
 		else
 		{

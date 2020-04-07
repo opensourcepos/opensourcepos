@@ -177,19 +177,14 @@ class Item_kits extends Secure_Controller
 			{
 				echo json_encode(array('success' => $success,
 					'message' => $this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
-				$event_failures = Events::Trigger('event_create', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
+				Events::Trigger('event_create', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
 
 			}
 			else
 			{
 				echo json_encode(array('success' => $success,
 					'message' => $this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
-				$event_failures = Events::Trigger('event_update', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
-			}
-
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during create or import: $event_failures");
+				Events::Trigger('event_update', array("type"=> "ITEM_KITS", "data" => $item_kit_data), 'string');
 			}
 		}
 		else//failure
@@ -211,12 +206,7 @@ class Item_kits extends Secure_Controller
 								'message' => $this->lang->line('item_kits_successful_deleted').' '.count($item_kits_to_delete).' '.$this->lang->line('item_kits_one_or_multiple')));
 
 		//Event triggers for Third-Party Integrations
-			$event_failures = Events::Trigger('event_delete', array("type"=> "ITEM_KITS", "data" => $item_kits_to_delete), 'string');
-			
-			if($event_failures)
-			{
-			    log_message("ERROR","Third-Party Integration failed during Item Kit delete: $event_failures");
-			}
+			Events::Trigger('event_delete', array("type"=> "ITEM_KITS", "data" => $item_kits_to_delete), 'string');
 		}
 		else
 		{
