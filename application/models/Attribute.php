@@ -5,8 +5,9 @@ define('DROPDOWN', 'DROPDOWN');
 define('DECIMAL', 'DECIMAL');
 define('DATE', 'DATE');
 define('TEXT', 'TEXT');
+define('CHECKBOX', 'CHECKBOX');
 
-const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE];
+const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
 
 /**
  * Attribute class
@@ -50,8 +51,8 @@ class Attribute extends CI_Model
 		else
 		{
 			$this->db->where('definition_id', $definition_id);
-
 		}
+
 		$this->db->where('item_id', $item_id);
 
 		return ($this->db->get()->num_rows() > 0);
@@ -92,10 +93,10 @@ class Attribute extends CI_Model
 		}
 		else
 		{
-			//Get empty base parent object, as $item_id is NOT an item
+		//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
-			//Get all the fields from items table
+		//Get all the fields from items table
 			foreach($this->db->list_fields('attribute_definitions') as $field)
 			{
 				$item_obj->$field = '';
@@ -193,7 +194,6 @@ class Attribute extends CI_Model
 
 		return $this->_to_array($results, 'definition_id', 'definition_name');
 	}
-
 
 	/**
 	 * Returns an array of attribute definition names and IDs
@@ -305,10 +305,11 @@ class Attribute extends CI_Model
 	{
 		$success = FALSE;
 
-		//From TEXT to DATETIME
+	//From TEXT
 		if($from_type === TEXT)
 		{
-			if($to_type === DATE || $to_type === DECIMAL)
+		//To DATETIME or DECIMAL
+			if(in_array($to_type, [DATE, DECIMAL], TRUE))
 			{
 				$field = ($to_type === DATE ? 'attribute_date' : 'attribute_decimal');
 
@@ -327,27 +328,64 @@ class Attribute extends CI_Model
 					$this->db->trans_complete();
 				}
 			}
+		
+		//To DROPDOWN or CHECKBOX
 			else if($to_type === DROPDOWN)
 			{
 				$success = TRUE;
 			}
+			else if($to_type === CHECKBOX)
+			{
+				$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+
+				$this->db->trans_start();
+
+				$query = 'UPDATE ospos_attribute_values values ';
+				$query .= 'INNER JOIN ospos_attribute_links links ';
+				$query .= 'ON values.attribute_id = links.attribute_id ';
+				$query .= "SET links.attribute_id = IF((values.attribute_value IN('FALSE','0','') OR (values.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+				$success = $this->db->query($query);
+
+				$this->db->trans_complete();
+			}
 		}
 
-		//From DROPDOWN to TEXT
+	//From DROPDOWN
 		else if($from_type === DROPDOWN)
 		{
-			//From DROPDOWN to TEXT
-			$this->db->trans_start();
+		//To TEXT
+			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))
+			{
+				$this->db->trans_start();
 
-			$this->db->from('ospos_attribute_links');
-			$this->db->where('definition_id',$definition_id);
-			$this->db->where('item_id', NULL);
-			$success = $this->db->delete();
+				$this->db->from('ospos_attribute_links');
+				$this->db->where('definition_id',$definition_id);
+				$this->db->where('item_id', NULL);
+				$success = $this->db->delete();
 
-			$this->db->trans_complete();
+				$this->db->trans_complete();
+
+			//To CHECKBOX
+				if($to_type === CHECKBOX)
+				{
+					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
+
+					$this->db->trans_start();
+
+					$query = 'UPDATE ospos_attribute_values values ';
+					$query .= 'INNER JOIN ospos_attribute_links links ';
+					$query .= 'ON values.attribute_id = links.attribute_id ';
+					$query .= "SET links.attribute_id = IF((values.attribute_value IN('FALSE','0','') OR (values.attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+					$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+					$success = $this->db->query($query);
+
+					$this->db->trans_complete();
+				}
+			}
 		}
 
-		//Any other allowed conversion does not get checked here
+	//From any other type
 		else
 		{
 			$success = TRUE;
@@ -356,22 +394,40 @@ class Attribute extends CI_Model
 		return $success;
 	}
 
+	private function checkbox_attribute_values($definition_id)
+	{
+		$zero_attribute_id = $this->value_exists('0');
+		$one_attribute_id = $this->value_exists('1');
+
+		if($zero_attribute_id === FALSE)
+		{
+			$zero_attribute_id = $this->save_value('0', $definition_id, FALSE, FALSE, CHECKBOX);
+		}
+
+		if($one_attribute_id === FALSE)
+		{
+			$one_attribute_id = $this->save_value('1', $definition_id, FALSE, FALSE, CHECKBOX);
+		}
+
+		return array($zero_attribute_id, $one_attribute_id);
+	}
+
 	/*
 	 Inserts or updates a definition
 	 */
 	public function save_definition(&$definition_data, $definition_id = -1)
 	{
-		//Run these queries as a transaction, we want to make sure we do all or nothing
+	//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		//Definition doesn't exist
+	//Definition doesn't exist
 		if($definition_id === -1 || !$this->exists($definition_id))
 		{
 			$success = $this->db->insert('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $this->db->insert_id();
 		}
 
-		//Definition already exists
+	//Definition already exists
 		else
 		{
 			$this->db->select('definition_type, definition_name');
@@ -475,6 +531,7 @@ class Attribute extends CI_Model
 			$this->db->where('sale_id');
 			$this->db->where('receiving_id');
 		}
+
 		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
 
@@ -515,6 +572,7 @@ class Attribute extends CI_Model
 		$this->db->where('deleted', 0);
 		$this->db->where('definition.definition_id', $definition_id);
 		$this->db->order_by('attribute_value');
+
 		foreach($this->db->get()->result() as $row)
 		{
 			$row_array = (array) $row;
@@ -528,9 +586,10 @@ class Attribute extends CI_Model
 	{
 		$this->db->trans_start();
 
+	//New Attribute
 		if(empty($attribute_id) || empty($item_id))
 		{
-			if(in_array($definition_type, [TEXT, DROPDOWN], TRUE))
+			if(in_array($definition_type, [TEXT, DROPDOWN, CHECKBOX], TRUE))
 			{
 				$attribute_id = $this->value_exists($attribute_value);
 
@@ -549,12 +608,14 @@ class Attribute extends CI_Model
 			}
 
 			$attribute_id = $attribute_id ? $attribute_id : $this->db->insert_id();
-			
+
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
 		}
+
+	//Existing Attribute
 		else
 		{
 			$this->db->where('attribute_id', $attribute_id);
