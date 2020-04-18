@@ -1,7 +1,7 @@
 <style type="text/css">
- a:hover {
-  cursor:pointer;
- }
+	 a:hover {
+	  cursor:pointer;
+}
 </style>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
@@ -84,8 +84,7 @@
 						} else {
 							echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 						}
-						clearstatcache(); ?>
-			<br><br>
+						clearstatcache(); ?><br><br>
 		</div>
 	</div>
 	</div>
@@ -93,14 +92,14 @@
 <div align="center">
 		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>		
 		<script>
-		var clipboard = new ClipboardJS('.copy');
+			var clipboard = new ClipboardJS('.copy');
 
-		clipboard.on('success', function(e) {
-			console.log(e);
-		});
+			clipboard.on('success', function(e) {
+				console.log(e);
+			});
 
-		clipboard.on('error', function(e) {
-			console.log(e);
-		});
+			clipboard.on('error', function(e) {
+				console.log(e);
+			});
 		</script>
 </div>
