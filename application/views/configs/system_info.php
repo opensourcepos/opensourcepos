@@ -1,7 +1,7 @@
 <style type="text/css">
 	 a:hover {
 	  cursor:pointer;
-	 }
+}
 </style>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
