@@ -1,7 +1,7 @@
 <style type="text/css">
 	 a:hover {
 	  cursor:pointer;
-}
+	 }
 </style>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
@@ -58,7 +58,8 @@
 							echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="red">	Not Writable &#x2717 </font>';						
 						}
 						clearstatcache();
-					?><br>
+					?>
+					<br>
 					&#187; [public/uploads:]
 					<?php
 						if (is_writable($uploads)) {
@@ -67,7 +68,8 @@
 							echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 						}
 						clearstatcache();
-					?><br>
+					?>
+					<br>
 					&#187; [public/uploads/item_pics:]	
 					<?php 
 						if (is_writable($images)) {
@@ -76,7 +78,8 @@
 							echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<font color="red"> Not Writable &#x2717 </font>';
 						} 
 						clearstatcache();
-					?><br>
+					?>
+					<br>
 					&#187; [import_customers.csv:]
 					<?php 
 						if (is_writable($importcustomers)) {
@@ -84,7 +87,42 @@
 						} else {
 							echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 						}
-						clearstatcache(); ?><br><br>
+						clearstatcache(); 
+					?><br>
+					<?php
+				    if((substr(decoct(fileperms($logs)), -4) <= 750 && substr(decoct(fileperms($logs)), -4) >= 700)  
+						&& (substr(decoct(fileperms($uploads)), -4) <= 750  && substr(decoct(fileperms($uploads)), -4) >= 700) 
+						&& (substr(decoct(fileperms($images)), -4) <= 750  && substr(decoct(fileperms($images)), -4) >= 700) 
+						&& (substr(decoct(fileperms($importcustomers)), -4) < 750  && substr(decoct(fileperms($importcustomers)), -4) >= 700)) {
+						echo '<br><font color="green">All file permissions are set correctly!';
+					} 
+					else { 
+					    echo '<br><font color="red">There are problems with file permissions please fix and reload this page.<br>';
+					}
+					if(substr(decoct(fileperms($logs)), -4) >= 751 
+						OR substr(decoct(fileperms($uploads)), -4) >= 751 
+						OR substr(decoct(fileperms($images)), -4) >= 751 
+						OR substr(decoct(fileperms($importcustomers)), -4) >= 751) {
+						echo '<br><font color="red"><strong>Security Vulnerability Warning </strong> <br>Permissions higher than 750 leaves this software at risk.<br>';
+					} 
+					else { 
+					    echo '<br><font color="green">No security/vulnerability risks.';
+					}
+					if(substr(decoct(fileperms($logs)), -4) > 750) {
+						echo '<br><font color="red"> => [application/logs:] is writable, but the permissions are higher than 750.</font>';						
+					}
+					if(substr(decoct(fileperms($uploads)), -4) > 750) {
+						echo '<br><font color="red"> => [public/uploads:] is writable, but the permissions are higher than 750.</font>';						
+					}
+					if(substr(decoct(fileperms($images)), -4) > 750) {
+						echo '<br><font color="red"> => [public/uploads/item_pics:] is writable, but the permissions are higher than 750.</font>';						
+					}
+					if(substr(decoct(fileperms($importcustomers)), -4) > 750) {
+						echo '<br><font color="red"> => [import_customers.csv:] is writable, but the permissions are higher than 750.</font>';						
+					}
+					?>
+					<br>
+			<br><br>
 		</div>
 	</div>
 	</div>
