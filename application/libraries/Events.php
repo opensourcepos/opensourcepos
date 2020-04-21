@@ -133,10 +133,6 @@ class Events
 	 */
 	public static function has_listeners($event)
 	{
-		if (isset(self::$_listeners[$event]) AND count(self::$_listeners[$event]) > 0)
-		{
-			return TRUE;
-		}
-		return FALSE;
+		return isset(self::$_listeners[$event]) AND count(self::$_listeners[$event]) > 0;
 	}
 }
