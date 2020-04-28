@@ -1,9 +1,9 @@
 <style type="text/css">
 	 a:hover {
-	 cursor:pointer;
+	  cursor:pointer;
 }
 </style>
-<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript" src="dist/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
 	<?php echo $this->lang->line('config_server_notice'); ?>
 	<div class="container">
@@ -43,9 +43,9 @@
 				.PHP Version: <?php echo PHP_VERSION; ?><br>
 				.DB Version: <?php echo mysqli_get_server_info($this->db->conn_id); ?><br>
 				.Server Port: <?php echo $_SERVER['SERVER_PORT']; ?><br>
-				.OS: <?php echo php_uname();?><br><br>
+				.OS: <?php echo php_uname('s') .' '. php_uname('r');?><br><br>
 				File Permissions:<br>
-					&#187; [application/logs:]
+						&#187; [application/logs:]
 						<?php $logs = '../application/logs/'; 
 							$uploads = '../public/uploads/'; 
 							$images = '../public/uploads/item_pics/'; 
@@ -58,6 +58,12 @@
 								echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="red">	Not Writable &#x2717 </font>';						
 							}
 							clearstatcache();
+							if (is_writable($logs) && substr(decoct(fileperms($logs)), -4) >= 751  ) {
+								echo ' | <font color="red">Vulnerable &#x2717</font>';
+							} else {
+								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
+							}	
+							clearstatcache();
 						?>
 						<br>
 						&#187; [public/uploads:]
@@ -67,6 +73,12 @@
 							} else {
 								echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 							}
+							clearstatcache();
+							if (is_writable($uploads) && substr(decoct(fileperms($uploads)), -4) >= 751  ) {
+								echo ' | <font color="red">Vulnerable &#x2717</font>';
+							} else {
+								echo ' |  <font color="green">Security Check Passed &#x2713 </font>';						
+							}	
 							clearstatcache();
 						?>
 						<br>
@@ -78,16 +90,28 @@
 								echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<font color="red"> Not Writable &#x2717 </font>';
 							} 
 							clearstatcache();
+							if (is_writable($images) && substr(decoct(fileperms($images)), -4) >= 751  ) {
+								echo ' | <font color="red">Vulnerable &#x2717</font>';
+							} else {
+								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
+							}	
+							clearstatcache();
 						?>
 						<br>
 						&#187; [import_customers.csv:]
 						<?php 
-							if (is_writable($importcustomers)) {
-								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="green">	 Writable &#x2713 </font>';
+							if (is_readable($importcustomers)) {
+								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="green">	 Readable &#x2713 </font>';
 							} else {
-								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
+								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Readable &#x2717 </font>';
 							}
 							clearstatcache(); 
+							if (is_writable($importcustomers) && substr(decoct(fileperms($importcustomers)), -4) >= 751  ) {
+								echo ' | <font color="red">Vulnerable &#x2717</font>';
+							} else {
+								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
+							}	
+							clearstatcache();
 						?><br>
 						<?php
 						if((substr(decoct(fileperms($logs)), -4) <= 750 && substr(decoct(fileperms($logs)), -4) >= 700)  
@@ -128,16 +152,23 @@
 	</div>
 </div>
 <div align="center">
-<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>		
-<script>
-	var clipboard = new ClipboardJS('.copy');
+		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>		
+		<script>
+			var clipboard = new ClipboardJS('.copy');
 
-	clipboard.on('success', function(e) {
-		console.log(e);
-	});
+			clipboard.on('success', function(e) {
+				console.log(e);
+			});
 
-	clipboard.on('error', function(e) {
-		console.log(e);
-	});
-</script>
+			clipboard.on('error', function(e) {
+				console.log(e);
+			});
+
+			function clearSelection() {
+				window.getSelection().removeAllRanges();
+			}
+			document.onmouseup = function() {
+				window.setTimeout(clearSelection, 100);
+			};
+		</script>
 </div>
