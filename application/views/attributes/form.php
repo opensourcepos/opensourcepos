@@ -175,7 +175,7 @@ $(document).ready(function()
 		}
 	});
 
-	var definition_values = <?php echo json_encode($definition_values) ?>;
+	var definition_values = <?php echo json_encode(array_values($definition_values)) ?>;
 	$.each(definition_values, function(index, element) {
 		add_attribute_value(element);
 	});
