@@ -138,7 +138,8 @@ class Attribute extends CI_Model
 		$this->db->where('receiving_id');
 		$this->db->where('sale_id');
 		$this->db->where('deleted', 0);
-
+		$this->db->order_by('definition_name','ASC');
+		
 		$results = $this->db->get()->result_array();
 
 		return $this->_to_array($results, 'definition_id');
@@ -205,7 +206,8 @@ class Attribute extends CI_Model
 	{
 		$this->db->from('attribute_definitions');
 		$this->db->where('deleted', 0);
-
+		$this->db->order_by('definition_name','ASC');
+		
 		if($groups === FALSE)
 		{
 			$this->db->where_not_in('definition_type',GROUP);
@@ -228,6 +230,7 @@ class Attribute extends CI_Model
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 			$this->db->where('definition_id', $definition_id);
 			$this->db->where('item_id');
+			$this->db->order_by('attribute_value','ASC');
 
 			$results = $this->db->get()->result_array();
 
@@ -571,7 +574,7 @@ class Attribute extends CI_Model
 		$this->db->like('attribute_value', $term);
 		$this->db->where('deleted', 0);
 		$this->db->where('definition.definition_id', $definition_id);
-		$this->db->order_by('attribute_value');
+		$this->db->order_by('attribute_value','ASC');
 
 		foreach($this->db->get()->result() as $row)
 		{
