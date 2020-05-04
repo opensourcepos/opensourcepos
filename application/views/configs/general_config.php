@@ -275,6 +275,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_category_dropdown'), 'category_dropdown', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'category_dropdown',
+						'id' => 'category_dropdown',
+						'value' => 'category_dropdown',
+						'checked' => $this->config->item('category_dropdown'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<div id="backup_db" class="btn btn-default btn-sm">

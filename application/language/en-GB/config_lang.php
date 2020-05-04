@@ -33,6 +33,7 @@ $lang["config_bottom"] = "Bottom";
 $lang["config_cash_decimals"] = "Cash Decimals";
 $lang["config_cash_decimals_tooltip"] = "If cash decimals and currency decimals are the same then no cash rounding will take place.";
 $lang["config_cash_rounding"] = "Cash Rounding";
+$lang["config_category_dropdown"] = "Show Category as a dropdown";
 $lang["config_center"] = "Centre";
 $lang["config_comma"] = "comma";
 $lang["config_company"] = "Company Name";
