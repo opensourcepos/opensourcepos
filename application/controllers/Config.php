@@ -7,7 +7,7 @@ class Config extends Secure_Controller
 	public function __construct()
 	{
 		parent::__construct('config');
-		
+
 		$this->load->library('barcode_lib');
 		$this->load->library('sale_lib');
 	}
@@ -21,7 +21,7 @@ class Config extends Secure_Controller
 		$bower = FALSE;
 		$composer = FALSE;
 		$license = array();
-		
+
 		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
 
 		if(file_exists('license/LICENSE'))
