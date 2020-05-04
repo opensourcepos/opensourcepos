@@ -418,16 +418,23 @@ class Attribute extends CI_Model
 	/*
 	 Inserts or updates a definition
 	 */
-	public function save_definition(&$definition_data, $definition_id = -1)
+	public function save_definition(&$definition_data, $definition_id = 0)
 	{
 	//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
 	//Definition doesn't exist
-		if($definition_id === -1 || !$this->exists($definition_id))
+		if($definition_id === 0 || !$this->exists($definition_id))
 		{
-			$success = $this->db->insert('attribute_definitions', $definition_data);
-			$definition_data['definition_id'] = $this->db->insert_id();
+			if($this->exists($definition_id,TRUE))
+			{
+				$success = $this->undelete($definition_id);
+			}
+			else
+			{
+				$success = $this->db->insert('attribute_definitions', $definition_data);
+				$definition_data['definition_id'] = $this->db->insert_id();
+			}
 		}
 
 	//Definition already exists
@@ -666,5 +673,15 @@ class Attribute extends CI_Model
 		$this->db->where_in('definition_id', $definition_ids);
 
 		return $this->db->update('attribute_definitions', array('deleted' => 1));
+	}
+
+	/*
+	Undeletes one attribute definition
+	*/
+	public function undelete($definition_id)
+	{
+		$this->db->where('definition_id', $definition_id);
+
+		return $this->db->update('attribute_definitions', array('deleted'=>0));
 	}
 }

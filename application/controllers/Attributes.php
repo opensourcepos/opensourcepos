@@ -56,7 +56,7 @@ class Attributes extends Secure_Controller
 		echo json_encode(array('success' => $success));
 	}
 
-	public function save_definition($definition_id = -1)
+	public function save_definition($definition_id = 0)
 	{
 		$definition_flags = 0;
 

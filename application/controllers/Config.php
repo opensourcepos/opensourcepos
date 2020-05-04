@@ -299,7 +299,22 @@ class Config extends Secure_Controller
 		);
 
 		$this->Module->set_show_office_group($this->input->post('show_office_group') != NULL);
-		
+
+		if($batch_save_data['category_dropdown'] == 1)
+		{
+			$definition_data['definition_name'] = 'ospos_category';
+			$definition_data['definition_flags'] = 0;
+			$definition_data['definition_type'] = 'DROPDOWN';
+			$definition_data['definition_id'] = -1;
+			$definition_data['deleted'] = 0;
+
+			$this->Attribute->save_definition($definition_data, -1);
+		}
+		else if($batch_save_data['category_dropdown'] == 0)
+		{
+			$this->Attribute->delete_definition(-1);
+		}
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
