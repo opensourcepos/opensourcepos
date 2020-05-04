@@ -85,7 +85,7 @@ class Attributes extends Secure_Controller
 		if($this->Attribute->save_definition($definition_data, $definition_id))
 		{
 		//New definition
-			if($definition_id == -1)
+			if($definition_id == 0)
 			{
 				$definition_values = json_decode($this->input->post('definition_values'));
 
@@ -140,7 +140,7 @@ class Attributes extends Secure_Controller
 		return $definition_flag_names;
 	}
 
-	public function view($definition_id = -1)
+	public function view($definition_id = 0)
 	{
 		$info = $this->Attribute->get_info($definition_id);
 		foreach(get_object_vars($info) as $property => $value)

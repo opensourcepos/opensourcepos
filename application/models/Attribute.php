@@ -167,7 +167,7 @@ class Attribute extends CI_Model
 		return array();
 	}
 
-	public function get_definitions_by_type($attribute_type, $definition_id = -1)
+	public function get_definitions_by_type($attribute_type, $definition_id = 0)
 	{
 		$this->db->from('attribute_definitions');
 		$this->db->where('definition_type', $attribute_type);
