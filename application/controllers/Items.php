@@ -227,7 +227,7 @@ class Items extends Secure_Controller
 
 		$use_destination_based_tax = (boolean)$this->config->item('use_destination_based_tax');
 		$data['include_hsn'] = $this->config->item('include_hsn') == '1';
-		$data['category_dropdown'] = $this->config->item('category_dropdown') == 0;
+		$data['category_dropdown'] = $this->config->item('category_dropdown');
 
 		if($data['category_dropdown'] == 1)
 		{
