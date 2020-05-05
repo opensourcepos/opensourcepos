@@ -227,6 +227,17 @@ class Items extends Secure_Controller
 
 		$use_destination_based_tax = (boolean)$this->config->item('use_destination_based_tax');
 		$data['include_hsn'] = $this->config->item('include_hsn') == '1';
+		$data['category_dropdown'] = $this->config->item('category_dropdown') == 0;
+
+		if($data['category_dropdown'] == 1)
+		{
+			$categories 		= array('' => $this->lang->line('items_none'));
+			$category_options 	= $this->Attribute->get_definition_values(-1);
+			$category_options	= array_combine($category_options,$category_options);	//Overwrite indexes with values for saving in items table instead of attributes
+			$data['categories'] = array_merge($categories,$category_options);
+
+			$data['selected_category'] = $item_info->category;
+		}
 
 		if($item_id == -1)
 		{
@@ -256,7 +267,7 @@ class Items extends Secure_Controller
 		$data['item_info'] = $item_info;
 
 		$suppliers = array('' => $this->lang->line('items_none'));
-		
+
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
 			$suppliers[$this->xss_clean($row['person_id'])] = $this->xss_clean($row['company_name']);
@@ -301,7 +312,7 @@ class Items extends Secure_Controller
 
 		$data['logo_exists'] = $item_info->pic_filename != '';
 		$ext = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
-		
+
 		if($ext == '')
 		{
 		//If file extension is not found guess it (legacy)
@@ -545,7 +556,7 @@ class Items extends Secure_Controller
 		{
 			$success = TRUE;
 			$new_item = FALSE;
-		
+
 		//New item
 			if($item_id == -1)
 			{
@@ -831,7 +842,7 @@ class Items extends Secure_Controller
 					$invalidated	= FALSE;
 
 					$line = array_combine($keys,$this->xss_clean($line_array[$i]));	//Build a XSS-cleaned associative array with the row to use to assign values
-					
+
 					$item_data = array(
 						'name'					=> $line['Item Name'],
 						'description'			=> $line['Description'],
@@ -847,7 +858,7 @@ class Items extends Secure_Controller
 					);
 
 					$item_number 				= $line['Barcode'];
-					
+
 					if(!empty($item_number))
 					{
 						$item_data['item_number'] = $item_number;
@@ -867,7 +878,7 @@ class Items extends Secure_Controller
 						$this->save_inventory_quantities($line, $item_data);
 						$this->save_attribute_data($line, $item_data);
 					}
-				
+
 				//Insert or update item failure
 					else
 					{
@@ -1031,7 +1042,7 @@ class Items extends Secure_Controller
 
 					$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], FALSE, $attribute_data['definition_type']);
 				}
-			
+
 			//All other Attribute types (0 value means attribute not created)
 				elseif(!empty($line['attribute_' . $definition_name]))
 				{

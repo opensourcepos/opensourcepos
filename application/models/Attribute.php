@@ -207,7 +207,7 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_definitions');
 		$this->db->where('deleted', 0);
 		$this->db->order_by('definition_name','ASC');
-		
+
 		if($groups === FALSE)
 		{
 			$this->db->where_not_in('definition_type',GROUP);
@@ -224,7 +224,7 @@ class Attribute extends CI_Model
 	{
 		$attribute_values = [];
 
-		if($definition_id > -1)
+		if($definition_id > 0 || $definition_id == -1)
 		{
 			$this->db->from('attribute_links');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');

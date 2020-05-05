@@ -36,12 +36,21 @@
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-					<?php echo form_input(array(
-							'name'=>'category',
-							'id'=>'category',
-							'class'=>'form-control input-sm',
-							'value'=>$item_info->category)
-							);?>
+					<?php
+						if($this->Appconfig->get('category_dropdown'))
+						{
+							echo form_dropdown('category', $categories, $selected_category, array('class'=>'form-control'));
+						}
+						else
+						{
+							echo form_input(array(
+								'name'=>'category',
+								'id'=>'category',
+								'class'=>'form-control input-sm',
+								'value'=>$item_info->category)
+								);
+						}
+					?>
 				</div>
 			</div>
 		</div>
