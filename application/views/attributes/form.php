@@ -10,6 +10,7 @@
 		<div class='col-xs-8'>
 			<?php echo form_input(array(
 					'name'=>'definition_name',
+					'id' => 'definition_name',
 					'class'=>'form-control input-sm',
 					'value'=>$definition_info->definition_name)
 			);?>
@@ -99,15 +100,33 @@ $(document).ready(function()
 	}
 	disable_definition_types();
 
+	var disable_category_dropdown = function()
+	{
+		if(definition_id == -1)
+		{
+			$('#definition_name').prop("disabled",true);
+			$('#definition_type').prop("disabled",true);
+			$('#definition_group').parents('.form-group').toggleClass("hidden", true);
+			$('#definition_flags').parents('.form-group').toggleClass('hidden', true);
+		}
+	}
+	disable_category_dropdown();
+
 	var show_hide_fields = function(event)
 	{
 	    var is_dropdown = $('#definition_type').val() !== '1';
 	    var is_decimal = $('#definition_type').val() !== '2';
 	    var is_no_group = $('#definition_type').val() !== '0';
+	    var is_category_dropdown = definition_id == -1;
 
 		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
 		$('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
-		$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
+
+	//Appropriately show definition flags if not category_dropdown
+		if(definition_id != -1)
+		{
+			$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
+		}
 	};
 
 	$('#definition_type').change(show_hide_fields);
