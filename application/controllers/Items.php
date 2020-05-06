@@ -1076,6 +1076,8 @@ class Items extends Secure_Controller
 				{
 					return FALSE;
 				}
+
+				return $this->Attribute->save_link($item_data['item_id'], $attribute_data['definition_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]));
 			}
 		}
 	}
