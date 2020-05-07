@@ -995,10 +995,10 @@ class Items extends Secure_Controller
 			if(!empty($line['attribute_' . $definition_name]))
 			{
 				$attribute_data 	= $this->Attribute->get_definition_by_name($definition_name)[0];
-				$attribute_type		= $attribute_data['definition_type'];
+				$definition_type	= $attribute_data['definition_type'];
 				$attribute_value 	= $line['attribute_' . $definition_name];
 
-				if($attribute_type == 'DROPDOWN')
+				if($definition_type == 'DROPDOWN')
 				{
 					$dropdown_values 	= $this->Attribute->get_definition_values($attribute_data['definition_id']);
 					$dropdown_values[] 	= '';
@@ -1009,7 +1009,7 @@ class Items extends Secure_Controller
 						return TRUE;
 					}
 				}
-				else if($attribute_type == 'DECIMAL')
+				else if($definition_type == 'DECIMAL')
 				{
 					if(!is_numeric($attribute_value) && !empty($attribute_value))
 					{
@@ -1017,11 +1017,11 @@ class Items extends Secure_Controller
 						return TRUE;
 					}
 				}
-				else if($attribute_type == 'DATETIME')
+				else if($definition_type == 'DATE')
 				{
 					if(strtotime($attribute_value) === FALSE && !empty($attribute_value))
 					{
-						log_message("ERROR","'$attribute_value' is not an acceptable DATETIME value.");
+						log_message("ERROR","'$attribute_value' is not an acceptable DATE value.");
 						return TRUE;
 					}
 				}
@@ -1063,21 +1063,28 @@ class Items extends Secure_Controller
 						$line['attribute_' . $definition_name] = '1';
 					}
 
-					$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]), $attribute_data['definition_type']);
+					$attribute_id = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]), $attribute_data['definition_type']);
 				}
 
 			//All other Attribute types (0 value means attribute not created)
 				elseif(!empty($line['attribute_' . $definition_name]))
 				{
-					$status = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]), $attribute_data['definition_type']);
+					$attribute_id = $this->Attribute->save_value($line['attribute_' . $definition_name], $attribute_data['definition_id'], $item_data['item_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]), $attribute_data['definition_type']);
 				}
-
-				if($status === FALSE)
+				else
 				{
 					return FALSE;
 				}
 
-				return $this->Attribute->save_link($item_data['item_id'], $attribute_data['definition_id'], $this->Attribute->value_exists($line['attribute_' . $definition_name]));
+				if($attribute_id === FALSE)
+				{
+					return TRUE;
+				}
+
+				if($this->Attribute->save_link($item_data['item_id'], $attribute_data['definition_id'], $attribute_id) === FALSE)
+				{
+					return TRUE;
+				}
 			}
 		}
 	}

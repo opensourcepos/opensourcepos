@@ -589,6 +589,7 @@ class Attribute extends CI_Model
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
 		{
+		//Update attribute_value
 			if(in_array($definition_type, [TEXT, DROPDOWN, CHECKBOX], TRUE))
 			{
 				$attribute_id = $this->value_exists($attribute_value);
@@ -607,6 +608,7 @@ class Attribute extends CI_Model
 				$this->db->insert('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
 			}
 
+		//Update attribute_link
 			$attribute_id = $attribute_id ? $attribute_id : $this->db->insert_id();
 
 			$this->db->insert('attribute_links', array(
@@ -618,6 +620,7 @@ class Attribute extends CI_Model
 		//Existing Attribute
 		else
 		{
+		//Update attribute_value
 			$this->db->where('attribute_id', $attribute_id);
 
 			if(in_array($definition_type, [TEXT, DROPDOWN, CHECKBOX], TRUE))
