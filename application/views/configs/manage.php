@@ -30,25 +30,13 @@
 		<a data-toggle="tab" href="#invoice_tab" title="<?php echo $this->lang->line('config_invoice_configuration'); ?>"><?php echo $this->lang->line('config_invoice'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#email_tab" title="<?php echo $this->lang->line('config_email_configuration'); ?>"><?php echo $this->lang->line('config_email'); ?></a>
-	</li>
-	<li role="presentation">
 		<a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
 	</li>
 	<li role="presentation">
 		<a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#message_tab" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
-	</li>
-	<li role="presentation">
-		<a data-toggle="tab" href="#integrations_tab" title="<?php echo $this->lang->line('config_integrations_configuration'); ?>"><?php echo $this->lang->line('config_integrations'); ?></a>
-	</li>
-	<li role="presentation">
-		<a data-toggle="tab" href="#license_tab" title="<?php echo $this->lang->line('config_license_configuration'); ?>"><?php echo $this->lang->line('config_license'); ?></a>
-	</li>
-	<li role="presentation">
-		<a data-toggle="tab" href="#system_info" title="<?php echo $this->lang->line('config_system_info'); ?>"><?php echo $this->lang->line('config_system_info'); ?></a>
+		<a data-toggle="tab" href="#system_tab" title="<?php echo $this->lang->line('config_system_conf'); ?>"><?php echo $this->lang->line('config_system_conf'); ?></a>
 	</li>
 </ul>
 
@@ -77,26 +65,14 @@
 	<div class="tab-pane" id="invoice_tab">
 		<?php $this->load->view("configs/invoice_config"); ?>
 	</div>
-	<div class="tab-pane" id="email_tab">
-		<?php $this->load->view("configs/email_config"); ?>
-	</div>
 	<div class="tab-pane" id="reward_tab">
 		<?php $this->load->view("configs/reward_config"); ?>
 	</div>
 	<div class="tab-pane" id="table_tab">
 		<?php $this->load->view("configs/table_config"); ?>
 	</div>
-	<div class="tab-pane" id="message_tab">
-		<?php $this->load->view("configs/message_config"); ?>
-	</div>
-	<div class="tab-pane" id="integrations_tab">
-		<?php $this->load->view("configs/integrations_config"); ?>
-	</div>
-	<div class="tab-pane" id="license_tab">
-		<?php $this->load->view("configs/license_config"); ?>
-	</div>
-	<div class="tab-pane" id="system_info">
-		<?php $this->load->view("configs/system_info"); ?>
+	<div class="tab-pane" id="system_tab">
+		<?php $this->load->view("configs/system_config"); ?>
 	</div>
 </div>
 
