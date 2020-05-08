@@ -49,32 +49,6 @@ class Barcode_lib
 		return $data;
 	}
 
-	public function parse_barcode_fields(&$quantity, &$item_id_or_number_or_item_kit_or_receipt)
-	{
-		$barcode_formats = json_decode($this->CI->config->item('barcode_formats'));
-
-		if(!empty($barcode_formats))
-		{
-			foreach($barcode_formats as $barcode_format)
-			{
-				if(preg_match("/$barcode_format/", $item_id_or_number_or_item_kit_or_receipt, $matches) && sizeof($matches) > 1)
-				{
-					$qtyfirst = strpos('d', $barcode_format) - strpos('w', $barcode_format) < 0;
-					$quantity = $matches[$qtyfirst ? 1 : 2];
-					if(strstr($barcode_format, '02'))
-					{
-						$quantity = $quantity / 1000;
-					}
-					$item_id_or_number_or_item_kit_or_receipt = $matches[$qtyfirst ? 2  : 1];
-
-					return;
-				}
-			}
-		}
-
-		$quantity = 1;
-	}
-
 	public function validate_barcode($barcode)
 	{
 		$barcode_type = $this->CI->config->item('barcode_type');

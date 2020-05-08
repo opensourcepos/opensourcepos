@@ -8,6 +8,9 @@ require_once(APPPATH . 'models/tokens/Token_quote_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_work_order_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_suspended_invoice_count.php');
 require_once(APPPATH . 'models/tokens/Token_year_invoice_count.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_price.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_weight.php');
+require_once(APPPATH . 'models/tokens/Token_barcode_ean.php');
 
 /**
  * Token class
@@ -27,7 +30,7 @@ abstract class Token
 
 	static function get_barcode_tokens()
 	{
-		return array();
+		return array(new Token_barcode_price(), new Token_barcode_weight(), new Token_barcode_ean());
 	}
 
 	static function get_tokens()

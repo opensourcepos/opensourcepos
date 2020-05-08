@@ -9,6 +9,7 @@ class Receivings extends Secure_Controller
 		parent::__construct('receivings');
 
 		$this->load->library('receiving_lib');
+		$this->load->library('token_lib');
 		$this->load->library('barcode_lib');
 	}
 
@@ -90,7 +91,7 @@ class Receivings extends Secure_Controller
 
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$this->barcode_lib->parse_barcode_fields($quantity, $item_id_or_number_or_item_kit_or_receipt);
+		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
 		$discount = $this->config->item('default_receivings_discount');

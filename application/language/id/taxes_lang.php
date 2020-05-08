@@ -76,3 +76,4 @@ $lang["taxes_tax_rounding"] = "Pembulatan Pajak";
 $lang["taxes_tax_type"] = "Jenis Pajak";
 $lang["taxes_update"] = "Perbaharui Tarif Pajak";
 $lang["taxes_vat_tax"] = "PPN";
+$lang["taxes_tax_group_not_unique"] = "Grup Pajak %1 tidak unik";
