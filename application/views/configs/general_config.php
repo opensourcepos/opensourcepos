@@ -143,7 +143,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => $this->config->item('max_image_width'),
+									'value' => $this->config->item('image_max_width'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => $this->lang->line('config_image_max_width_tooltip')));
@@ -160,7 +160,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => $this->config->item('max_image_height'),
+									'value' => $this->config->item('image_max_height'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => $this->lang->line('config_image_max_height_tooltip')));
@@ -177,7 +177,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 2048,
-									'value' => $this->config->item('max_image_size'),
+									'value' => $this->config->item('image_max_size'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => $this->lang->line('config_image_max_size_tooltip')));
