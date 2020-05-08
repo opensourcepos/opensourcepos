@@ -226,7 +226,6 @@ class Config extends Secure_Controller
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= array();
-		$data['clcdesq']	= array();
 
 		if($this->_check_encryption())
 		{
