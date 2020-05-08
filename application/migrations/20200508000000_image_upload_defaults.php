@@ -12,7 +12,7 @@ class Migration_image_upload_defaults extends CI_Migration
 		$image_values = array(
 			array('key' => 'image_allowed_types', 'value' => 'gif|jpg|png'),
 			array('key' => 'image_max_height', 'value' => '480'),
-			array('key' => 'image_max_size', 'value' => '100'),
+			array('key' => 'image_max_size', 'value' => '128'),
 			array('key' => 'image_max_width', 'value' => '640'));
 
 		$this->db->insert_batch('app_config', $image_values);

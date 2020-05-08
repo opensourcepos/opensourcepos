@@ -137,8 +137,8 @@
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-horizontal"></span></span>
 								<?php echo form_input(array(
-									'name' => 'max_image_width',
-									'id' => 'max_image_width',
+									'name' => 'image_max_width',
+									'id' => 'image_max_width',
 									'class' => 'form-control input-sm required',
 									'type' => 'number',
 									'min' => 128,
@@ -154,8 +154,8 @@
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-vertical"></span></span>
 								<?php echo form_input(array(
-									'name' => 'max_image_height',
-									'id' => 'max_image_height',
+									'name' => 'image_max_height',
+									'id' => 'image_max_height',
 									'class' => 'form-control input-sm required',
 									'type' => 'number',
 									'min' => 128,
@@ -171,8 +171,8 @@
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-hdd"></span></span>
 								<?php echo form_input(array(
-									'name' => 'max_image_size',
-									'id' => 'max_image_size',
+									'name' => 'image_max_size',
+									'id' => 'image_max_size',
 									'class' => 'form-control input-sm required',
 									'type' => 'number',
 									'min' => 128,
@@ -187,7 +187,7 @@
 						<div class='col-sm-4'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_image_allowed_file_types');?></span>
-								<?php echo form_multiselect('image_allowed_types[]', array('jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'), array_keys($selected_image_allowed_types), array(
+								<?php echo form_multiselect('image_allowed_types[]', $image_allowed_types, $selected_image_allowed_types, array(
 									'id'=>'image_allowed_types',
 									'class'=>'selectpicker show-menu-arrow',
 									'data-none-selected-text'=>$this->lang->line('common_none_selected_text'),
