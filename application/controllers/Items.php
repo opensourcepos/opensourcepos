@@ -669,10 +669,10 @@ class Items extends Secure_Controller
 	{
 	//Load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
-			'image_allowed_types' => $this->config->item('image_allowed_types'),
-			'image_max_size' => $this->config->item('image_max_size'),
-			'image_max_width' => $this->config->item('image_max_width'),
-			'image_max_height' => $this->config->item('image_max_height'));
+			'allowed_types' => $this->config->item('image_allowed_types'),
+			'max_size' => $this->config->item('image_max_size'),
+			'max_width' => $this->config->item('image_max_width'),
+			'max_height' => $this->config->item('image_max_height'));
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');
 
