@@ -241,8 +241,6 @@ class Config extends Secure_Controller
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$data['mailchimp']['lists'] = $this->_mailchimp();
 
-		$data['selected_image_allowed_types'] = explode('|',$this->config->item('image_allowed_types'));
-
 		$this->load->view("configs/manage", $data);
 	}
 
