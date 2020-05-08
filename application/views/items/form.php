@@ -500,7 +500,7 @@ $(document).ready(function()
 	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: "<?php echo site_url('$controller_name/remove_logo/$item_info->item_id'); ?>",
+			url: '<?php echo site_url("$controller_name/remove_logo/$item_info->item_id"); ?>',
 			dataType: 'json'
 		})
 	});

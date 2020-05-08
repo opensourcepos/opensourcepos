@@ -301,7 +301,7 @@ class Items extends Secure_Controller
 
 		$data['logo_exists'] = $item_info->pic_filename != '';
 		$ext = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
-		
+
 		if($ext == '')
 		{
 		//If file extension is not found guess it (legacy)
@@ -669,12 +669,10 @@ class Items extends Secure_Controller
 	{
 	//Load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
-			'allowed_types' => 'gif|jpg|png',
-			'max_size' => '100',
-			'max_width' => '640',
-			'max_height' => '480'
-		);
-
+			'allowed_types' => $this->config->item('image_allowed_types'),
+			'max_size' => $this->config->item('image_max_size'),
+			'max_width' => $this->config->item('image_max_width'),
+			'max_height' => $this->config->item('image_max_height'));
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');
 
