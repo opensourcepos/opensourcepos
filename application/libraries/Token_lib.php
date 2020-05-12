@@ -94,6 +94,8 @@ class Token_lib
 				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;
 			}
 		}
+
+		$quantity = 1;
 	}
 
 	public function parse($string, $pattern, $tokens = array())
