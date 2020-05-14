@@ -80,7 +80,7 @@
 							'id'=>'stock_type',
 							'value'=>1,
 							'checked'=>$item_info->stock_type == HAS_NO_STOCK)
-					); ?> <?php echo $this->lang->line('items_nonstock'); ?>
+					); ?><?php echo $this->lang->line('items_nonstock'); ?>
 				</label>
 			</div>
 		</div>
