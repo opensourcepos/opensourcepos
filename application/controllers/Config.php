@@ -178,6 +178,7 @@ class Config extends Secure_Controller
 		$themes = array();
 
 	// read all themes in the dist folder
+
 		$dir = new DirectoryIterator('dist/bootswatch');
 
 		foreach($dir as $dirinfo)
@@ -214,12 +215,21 @@ class Config extends Secure_Controller
 		$data = $this->xss_clean($data);
 
 	// load all the license statements, they are already XSS cleaned in the private function
+
 		$data['licenses'] = $this->_licenses();
 
 	// load all the themes, already XSS cleaned in the private function
 		$data['themes'] = $this->_themes();
 
-		$data['mailchimp'] = array();
+		//Load General related fields
+		$image_allowed_types 		= array('jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff');
+		$data['image_allowed_types']	= array_combine($image_allowed_types,$image_allowed_types);
+
+		$data['selected_image_allowed_types'] 	= explode('|',$this->config->item('image_allowed_types'));
+
+		//Load Integrations Related fields
+		$data['mailchimp']	= array();
+
 		if($this->_check_encryption())
 		{
 			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->item('mailchimp_api_key'));
@@ -285,6 +295,10 @@ class Config extends Secure_Controller
 			'lines_per_page' => $this->input->post('lines_per_page'),
 			'notify_horizontal_position' => $this->input->post('notify_horizontal_position'),
 			'notify_vertical_position' => $this->input->post('notify_vertical_position'),
+			'image_max_width' => $this->input->post('image_max_width'),
+			'image_max_height' => $this->input->post('image_max_height'),
+			'image_max_size' => $this->input->post('image_max_size'),
+			'image_allowed_types' => implode('|', $this->input->post('image_allowed_types')),
 			'gcaptcha_enable' => $this->input->post('gcaptcha_enable') != NULL,
 			'gcaptcha_secret_key' => $this->input->post('gcaptcha_secret_key'),
 			'gcaptcha_site_key' => $this->input->post('gcaptcha_site_key'),
@@ -872,7 +886,7 @@ class Config extends Secure_Controller
 	{
 		$encryption_key = $this->config->item('encryption_key');
 
-	// check if the encryption_key config item is the default one
+  // check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
 		{
 		// Config path
@@ -891,6 +905,7 @@ class Config extends Secure_Controller
 			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
 
 			$result = FALSE;
+
 
 		// Chmod the file
 			@chmod($config_path, 0777);
@@ -937,7 +952,7 @@ class Config extends Secure_Controller
 			{
 				ob_end_clean();
 			}
-			
+
 			force_download($file_name, $backup);
 		}
 		else
