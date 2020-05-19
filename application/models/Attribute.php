@@ -6,6 +6,9 @@ define('DECIMAL', 'DECIMAL');
 define('DATE', 'DATE');
 define('TEXT', 'TEXT');
 define('CHECKBOX', 'CHECKBOX');
+define(NO_DEFINITION_ID,0);
+define(CATEGORY_DEFINITION_ID,-1);
+
 
 const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
 
@@ -167,13 +170,13 @@ class Attribute extends CI_Model
 		return array();
 	}
 
-	public function get_definitions_by_type($attribute_type, $definition_id = 0)
+	public function get_definitions_by_type($attribute_type, $definition_id = NO_DEFINITION_ID)
 	{
 		$this->db->from('attribute_definitions');
 		$this->db->where('definition_type', $attribute_type);
 		$this->db->where('deleted', 0);
 
-		if($definition_id != -1)
+		if($definition_id != CATEGORY_DEFINITION_ID)
 		{
 			$this->db->where('definition_id != ', $definition_id);
 		}
@@ -224,7 +227,7 @@ class Attribute extends CI_Model
 	{
 		$attribute_values = [];
 
-		if($definition_id > 0 || $definition_id == -1)
+		if($definition_id > 0 || $definition_id == CATEGORY_DEFINITION_ID)
 		{
 			$this->db->from('attribute_links');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
@@ -418,13 +421,13 @@ class Attribute extends CI_Model
 	/*
 	 Inserts or updates a definition
 	 */
-	public function save_definition(&$definition_data, $definition_id = 0)
+	public function save_definition(&$definition_data, $definition_id = NO_DEFINITION_ID)
 	{
 	//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
 	//Definition doesn't exist
-		if($definition_id === 0 || !$this->exists($definition_id))
+		if($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id))
 		{
 			if($this->exists($definition_id,TRUE))
 			{

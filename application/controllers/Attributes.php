@@ -56,7 +56,7 @@ class Attributes extends Secure_Controller
 		echo json_encode(array('success' => $success));
 	}
 
-	public function save_definition($definition_id = 0)
+	public function save_definition($definition_id = NO_DEFINITION_ID)
 	{
 		$definition_flags = 0;
 
@@ -140,7 +140,7 @@ class Attributes extends Secure_Controller
 		return $definition_flag_names;
 	}
 
-	public function view($definition_id = 0)
+	public function view($definition_id = NO_DEFINITION_ID)
 	{
 		$info = $this->Attribute->get_info($definition_id);
 		foreach(get_object_vars($info) as $property => $value)
