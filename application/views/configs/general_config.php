@@ -25,14 +25,14 @@
 							'value' => $this->config->item('default_sales_discount'))); ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox(array(
-								'id' => 'default_sales_discount_type', 
-								'name' => 'default_sales_discount_type', 
-								'value' => 1, 
+								'id' => 'default_sales_discount_type',
+								'name' => 'default_sales_discount_type',
+								'value' => 1,
 								'data-toggle' => 'toggle',
-								'data-size' => 'normal', 
-								'data-onstyle' => 'success', 
-								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>', 
-								'data-off' => '<b>%</b>', 
+								'data-size' => 'normal',
+								'data-onstyle' => 'success',
+								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>',
+								'data-off' => '<b>%</b>',
 								'checked' => $this->config->item('default_sales_discount_type'))); ?>
 						</span>
 					</div>
@@ -122,9 +122,80 @@
 							<?php echo form_dropdown('notify_horizontal_position', array(
 									'left' => $this->lang->line('config_left'),
 									'center' => $this->lang->line('config_center'),
-									'right' => $this->lang->line('config_right')
-								),
-								$this->config->item('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
+									'right' => $this->lang->line('config_right')),
+									$this->config->item('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_image_restrictions'), 'image_restrictions', array('class' => 'control-label col-xs-2')); ?>
+				<div class="col-sm-10">
+					<div class="form-group form-group-sm row">
+						<div class='col-sm-2'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-horizontal"></span></span>
+								<?php echo form_input(array(
+									'name' => 'image_max_width',
+									'id' => 'image_max_width',
+									'class' => 'form-control input-sm required',
+									'type' => 'number',
+									'min' => 128,
+									'max' => 3840,
+									'value' => $this->config->item('image_max_width'),
+									'data-toggle' => 'tooltip',
+									'data-placement' => 'top',
+									'title' => $this->lang->line('config_image_max_width_tooltip')));
+								?>
+							</div>
+						</div>
+						<div class='col-sm-2'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-vertical"></span></span>
+								<?php echo form_input(array(
+									'name' => 'image_max_height',
+									'id' => 'image_max_height',
+									'class' => 'form-control input-sm required',
+									'type' => 'number',
+									'min' => 128,
+									'max' => 3840,
+									'value' => $this->config->item('image_max_height'),
+									'data-toggle' => 'tooltip',
+									'data-placement' => 'top',
+									'title' => $this->lang->line('config_image_max_height_tooltip')));
+								?>
+							</div>
+						</div>
+						<div class='col-sm-2'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-hdd"></span></span>
+								<?php echo form_input(array(
+									'name' => 'image_max_size',
+									'id' => 'image_max_size',
+									'class' => 'form-control input-sm required',
+									'type' => 'number',
+									'min' => 128,
+									'max' => 2048,
+									'value' => $this->config->item('image_max_size'),
+									'data-toggle' => 'tooltip',
+									'data-placement' => 'top',
+									'title' => $this->lang->line('config_image_max_size_tooltip')));
+								?>
+							</div>
+						</div>
+						<div class='col-sm-4'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_image_allowed_file_types');?></span>
+								<?php echo form_multiselect('image_allowed_types[]', $image_allowed_types, $selected_image_allowed_types, array(
+									'id'=>'image_allowed_types',
+									'class'=>'selectpicker show-menu-arrow',
+									'data-none-selected-text'=>$this->lang->line('common_none_selected_text'),
+									'data-selected-text-format'=>'count > 1',
+									'data-style'=>'btn-default btn-sm',
+									'data-width'=>'100%'));
+								?>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -138,7 +209,7 @@
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
 						'checked' => $this->config->item('gcaptcha_enable'))); ?>
-					&nbsp
+					&nbsp;
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
 							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_gcaptcha_tooltip'); ?>"></span>
@@ -173,34 +244,37 @@
 				<?php echo form_label($this->lang->line('config_suggestions_layout'), 'suggestions_layout', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
-						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_first_column').' '; ?></label>
-						<div class='col-sm-2'>
-							<?php echo form_dropdown('suggestions_first_column', array(
-								'name' => $this->lang->line('items_name'),
-								'item_number' => $this->lang->line('items_number_information'),
-								'unit_price' => $this->lang->line('items_unit_price')
-							),
-							$this->config->item('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
+						<div class='col-sm-3'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_first_column'); ?></span>
+								<?php echo form_dropdown('suggestions_first_column', array(
+									'name' => $this->lang->line('items_name'),
+									'item_number' => $this->lang->line('items_number_information'),
+									'unit_price' => $this->lang->line('items_unit_price')),
+									$this->config->item('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
+							</div>
 						</div>
-						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_second_column').' '; ?></label>
-						<div class='col-sm-2'>
-							<?php echo form_dropdown('suggestions_second_column', array(
+						<div class='col-sm-3'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_second_column'); ?></span>
+								<?php echo form_dropdown('suggestions_second_column', array(
 									'' => $this->lang->line('config_none'),
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
-									'unit_price' => $this->lang->line('items_unit_price')
-							),
-							$this->config->item('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
+									'unit_price' => $this->lang->line('items_unit_price')),
+									$this->config->item('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
+							</div>
 						</div>
-						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_third_column').' '; ?></label>
-						<div class='col-sm-2'>
-							<?php echo form_dropdown('suggestions_third_column', array(
+						<div class='col-sm-3'>
+							<div class='input-group'>
+								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_second_column'); ?></span>
+								<?php echo form_dropdown('suggestions_third_column', array(
 									'' => $this->lang->line('config_none'),
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
-									'unit_price' => $this->lang->line('items_unit_price')
-						),
-							$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
+									'unit_price' => $this->lang->line('items_unit_price')),
+									$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -271,6 +345,17 @@
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
 						'checked' => $this->config->item('include_hsn'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_category_dropdown'), 'category_dropdown', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'category_dropdown',
+						'id' => 'category_dropdown',
+						'value' => 'category_dropdown',
+						'checked' => $this->config->item('category_dropdown'))); ?>
 				</div>
 			</div>
 

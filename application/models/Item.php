@@ -177,19 +177,22 @@ class Item extends CI_Model
 
 		if(!empty($search))
 		{
-			$this->db->group_start();
-				$this->db->like('name', $search);
-				$this->db->or_like('item_number', $search);
-				$this->db->or_like('items.item_id', $search);
-				$this->db->or_like('company_name', $search);
-				$this->db->or_like('items.category', $search);
-				if ($filters['search_custom'] && $attributes_enabled)
-				{
-					$this->db->or_like('attribute_value', $search);
-					$this->db->or_like('attribute_date', $search);
-					$this->db->or_like('attribute_decimal', $search);
-				}
-			$this->db->group_end();
+			if ($attributes_enabled && $filters['search_custom'])
+			{
+				$this->db->having("attribute_values LIKE '%$search%'");
+				$this->db->or_having("attribute_dtvalues LIKE '%$search%'");
+				$this->db->or_having("attribute_dvalues LIKE '%$search%'");
+			}
+			else
+			{
+				$this->db->group_start();
+					$this->db->like('name', $search);
+					$this->db->or_like('item_number', $search);
+					$this->db->or_like('items.item_id', $search);
+					$this->db->or_like('company_name', $search);
+					$this->db->or_like('items.category', $search);
+				$this->db->group_end();
+			}
 		}
 
 		if($attributes_enabled)
@@ -256,7 +259,6 @@ class Item extends CI_Model
 	public function get_all($stock_location_id = -1, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('items');
-		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 
 		if($stock_location_id > -1)
 		{
@@ -286,9 +288,7 @@ class Item extends CI_Model
 		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
 		$this->db->select('GROUP_CONCAT(attribute_decimal SEPARATOR \'|\') AS attribute_dvalues');
 		$this->db->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
-		$this->db->select("MAX(". $this->db->dbprefix('suppliers') .".company_name) AS company_name");
 		$this->db->from('items');
-		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('items.item_id', $item_id);

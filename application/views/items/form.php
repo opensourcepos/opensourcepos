@@ -36,12 +36,21 @@
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-					<?php echo form_input(array(
-							'name'=>'category',
-							'id'=>'category',
-							'class'=>'form-control input-sm',
-							'value'=>$item_info->category)
-							);?>
+					<?php
+						if($this->Appconfig->get('category_dropdown'))
+						{
+							echo form_dropdown('category', $categories, $selected_category, array('class'=>'form-control'));
+						}
+						else
+						{
+							echo form_input(array(
+								'name'=>'category',
+								'id'=>'category',
+								'class'=>'form-control input-sm',
+								'value'=>$item_info->category)
+								);
+						}
+					?>
 				</div>
 			</div>
 		</div>
@@ -71,7 +80,7 @@
 							'id'=>'stock_type',
 							'value'=>1,
 							'checked'=>$item_info->stock_type == HAS_NO_STOCK)
-					); ?> <?php echo $this->lang->line('items_nonstock'); ?>
+					); ?><?php echo $this->lang->line('items_nonstock'); ?>
 				</label>
 			</div>
 		</div>
@@ -500,7 +509,7 @@ $(document).ready(function()
 	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: "<?php echo site_url('$controller_name/remove_logo/$item_info->item_id'); ?>",
+			url: '<?php echo site_url("$controller_name/remove_logo/$item_info->item_id"); ?>',
 			dataType: 'json'
 		})
 	});
