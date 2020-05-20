@@ -6,8 +6,8 @@ define('DECIMAL', 'DECIMAL');
 define('DATE', 'DATE');
 define('TEXT', 'TEXT');
 define('CHECKBOX', 'CHECKBOX');
-define(NO_DEFINITION_ID,0);
-define(CATEGORY_DEFINITION_ID,-1);
+define(NO_DEFINITION_ID, 0);
+define(CATEGORY_DEFINITION_ID, -1);
 
 
 const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
@@ -96,10 +96,10 @@ class Attribute extends CI_Model
 		}
 		else
 		{
-		//Get empty base parent object, as $item_id is NOT an item
+			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
 
-		//Get all the fields from items table
+			//Get all the fields from items table
 			foreach($this->db->list_fields('attribute_definitions') as $field)
 			{
 				$item_obj->$field = '';
@@ -360,7 +360,7 @@ class Attribute extends CI_Model
 	//From DROPDOWN
 		else if($from_type === DROPDOWN)
 		{
-		//To TEXT
+			//To TEXT
 			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))
 			{
 				$this->db->trans_start();
@@ -372,7 +372,7 @@ class Attribute extends CI_Model
 
 				$this->db->trans_complete();
 
-			//To CHECKBOX
+				//To CHECKBOX
 				if($to_type === CHECKBOX)
 				{
 					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
@@ -391,7 +391,7 @@ class Attribute extends CI_Model
 			}
 		}
 
-	//From any other type
+		//From any other type
 		else
 		{
 			$success = TRUE;
@@ -423,10 +423,10 @@ class Attribute extends CI_Model
 	 */
 	public function save_definition(&$definition_data, $definition_id = NO_DEFINITION_ID)
 	{
-	//Run these queries as a transaction, we want to make sure we do all or nothing
+		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-	//Definition doesn't exist
+		//Definition doesn't exist
 		if($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id))
 		{
 			if($this->exists($definition_id,TRUE))
@@ -440,7 +440,7 @@ class Attribute extends CI_Model
 			}
 		}
 
-	//Definition already exists
+		//Definition already exists
 		else
 		{
 			$this->db->select('definition_type, definition_name');
@@ -599,7 +599,7 @@ class Attribute extends CI_Model
 	{
 		$this->db->trans_start();
 
-	//New Attribute
+		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
 		{
 			if(in_array($definition_type, [TEXT, DROPDOWN, CHECKBOX], TRUE))
@@ -628,7 +628,7 @@ class Attribute extends CI_Model
 				'definition_id' => $definition_id));
 		}
 
-	//Existing Attribute
+		//Existing Attribute
 		else
 		{
 			$this->db->where('attribute_id', $attribute_id);
