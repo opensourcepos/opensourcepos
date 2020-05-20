@@ -454,19 +454,29 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
+	public function get_invoice_number_for_year($year = '', $start_from = 0)
+	{
+		return $this->_get_number_for_year('invoice_number', $year, $start_from);
+	}
+
+	public function get_quote_number_for_year($year = '', $start_from = 0)
+	{
+		return $this->_get_number_for_year('quote_number', $year, $start_from);
+	}
+
 	/**
 	 * Gets invoice number by year
 	 */
-	public function get_invoice_number_for_year($year = '', $start_from = 0)
+	public function _get_number_for_year($field, $year = '', $start_from = 0)
 	{
 		$year = $year == '' ? date('Y') : $year;
-		$this->db->select('COUNT( 1 ) AS invoice_number_year');
+		$this->db->select('COUNT( 1 ) AS number_year');
 		$this->db->from('sales');
 		$this->db->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
-		$this->db->where('invoice_number IS NOT NULL');
+		$this->db->where("$field IS NOT NULL");
 		$result = $this->db->get()->row_array();
 
-		return ($start_from + $result['invoice_number_year']);
+		return ($start_from + $result['number_year']);
 	}
 
 	/**
