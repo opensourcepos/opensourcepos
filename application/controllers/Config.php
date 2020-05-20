@@ -33,8 +33,7 @@ class Config extends Secure_Controller
 			$license[$i]['text'] = 'LICENSE file must be in OSPOS license directory. You are not allowed to use OSPOS application until the distribution copy of LICENSE file is present.';
 		}
 
-		// read all the files in the dir license
-		$dir = new DirectoryIterator('license');
+		$dir = new DirectoryIterator('license');	// read all the files in the dir license
 
 		foreach($dir as $fileinfo)
 		{
