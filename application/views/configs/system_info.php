@@ -24,12 +24,12 @@
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>
 					<?php 
-						echo "&#187; GD: ", extension_loaded('gd') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
-						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
-						echo "&#187; INTL: ", extension_loaded('intl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
-						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
-						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br> <br>';		
+						echo "&#187; GD: ", extension_loaded('gd') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
+						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
+						echo "&#187; INTL: ", extension_loaded('intl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
+						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
+						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
+						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br> <br>';		
 					?>
 				User Configuration:<br>
 				.Browser:
