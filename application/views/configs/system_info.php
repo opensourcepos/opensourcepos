@@ -22,16 +22,18 @@
 				<?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
 				Language Code: <?php echo current_language_code(); ?><br><br>
 				<div id="TimeError"></div>
-				Extensions & Modules:<br> <?php 
-						echo "&#187; GD: ", extension_loaded('gd') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-						echo "&#187; BC Math: ", extension_loaded('bcmath') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-						echo "&#187; INTL: ", extension_loaded('intl') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-						echo "&#187; MBString: ", extension_loaded('mbstring') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br> <br>';		
+				Extensions & Modules:<br>
+					<?php 
+						echo "&#187; GD: ", extension_loaded('gd') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
+						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
+						echo "&#187; INTL: ", extension_loaded('intl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
+						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
+						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br>';
+						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : 'MISSING &#x2717', '<br> <br>';		
 					?>
 				User Configuration:<br>
-				.Browser: <?php
+				.Browser:
+					<?php
 						function get_browser_name($user_agent)
 						{
 							if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
@@ -117,7 +119,8 @@
 								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
 							}	
 							clearstatcache();
-						?><br>
+						?>
+						<br>
 						<?php
 						if((substr(decoct(fileperms($logs)), -4) <= 750 && substr(decoct(fileperms($logs)), -4) >= 700)  
 							&& (substr(decoct(fileperms($uploads)), -4) <= 750  && substr(decoct(fileperms($uploads)), -4) >= 700) 
