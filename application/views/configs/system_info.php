@@ -185,6 +185,6 @@
 			});
 							
 			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<font color="red"><?php echo $this->lang->line('config_timezone_e'); ?></font><br><br><?php echo $this->lang->line('config_timezone'); ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo $this->lang->line('config_timezone_os'); ?><div id="ostimezoneE" style="font-weight:600;"><?php echo $this->config->item('timezone'); ?></div><br>';
+			document.getElementById("TimeError").innerHTML = '<font color="red"><?php echo $this->lang->line('config_timezone_error'); ?></font><br><br><?php echo $this->lang->line('config_user_timezone'); ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo $this->lang->line('config_os_timezone'); ?><div id="ostimezoneE" style="font-weight:600;"><?php echo $this->config->item('timezone'); ?></div><br>';
 		</script>
 </div>
