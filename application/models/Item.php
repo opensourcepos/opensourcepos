@@ -1,31 +1,4 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
-define('HAS_STOCK', 0);
-define('HAS_NO_STOCK', 1);
-
-define('ITEM', 0);
-define('ITEM_KIT', 1);
-define('ITEM_AMOUNT_ENTRY', 2);
-define('ITEM_TEMP', 3);
-
-define('PRINT_ALL', 0);
-define('PRINT_PRICED', 1);
-define('PRINT_KIT', 2);
-
-define('PRINT_YES', 0);
-define('PRINT_NO', 1);
-
-define('PRICE_ALL', 0);
-define('PRICE_KIT', 1);
-define('PRICE_KIT_ITEMS', 2);
-
-define('PRICE_OPTION_ALL', 0);
-define('PRICE_OPTION_KIT', 1);
-define('PRICE_OPTION_KIT_STOCK', 2);
-
-define('NAME_SEPARATOR', ' | ');
-
-
 /**
  * Item class
  */
