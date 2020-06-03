@@ -83,3 +83,64 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/*
+ | Attribute Related Constants.
+ */
+define('GROUP', 'GROUP');
+define('DROPDOWN', 'DROPDOWN');
+define('DECIMAL', 'DECIMAL');
+define('DATE', 'DATE');
+define('TEXT', 'TEXT');
+define('CHECKBOX', 'CHECKBOX');
+define(NO_DEFINITION_ID, 0);
+define(CATEGORY_DEFINITION_ID, -1);
+
+
+const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
+
+
+/*
+ | Item Related Constants.
+ */
+define('HAS_STOCK', 0);
+define('HAS_NO_STOCK', 1);
+
+define('ITEM', 0);
+define('ITEM_KIT', 1);
+define('ITEM_AMOUNT_ENTRY', 2);
+define('ITEM_TEMP', 3);
+
+define('PRINT_ALL', 0);
+define('PRINT_PRICED', 1);
+define('PRINT_KIT', 2);
+
+define('PRINT_YES', 0);
+define('PRINT_NO', 1);
+
+define('PRICE_ALL', 0);
+define('PRICE_KIT', 1);
+define('PRICE_KIT_ITEMS', 2);
+
+define('PRICE_OPTION_ALL', 0);
+define('PRICE_OPTION_KIT', 1);
+define('PRICE_OPTION_KIT_STOCK', 2);
+
+define('NAME_SEPARATOR', ' | ');
+
+/*
+ | Sale Related Constants.
+ */
+define('COMPLETED', 0);
+define('SUSPENDED', 1);
+define('CANCELED', 2);
+
+
+define('SALE_TYPE_POS', 0);
+define('SALE_TYPE_INVOICE', 1);
+define('SALE_TYPE_WORK_ORDER', 2);
+define('SALE_TYPE_QUOTE', 3);
+define('SALE_TYPE_RETURN', 4);
+
+define('PERCENT', 0);
+define('FIXED', 1);

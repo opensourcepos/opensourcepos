@@ -1,17 +1,4 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
-define('GROUP', 'GROUP');
-define('DROPDOWN', 'DROPDOWN');
-define('DECIMAL', 'DECIMAL');
-define('DATE', 'DATE');
-define('TEXT', 'TEXT');
-define('CHECKBOX', 'CHECKBOX');
-define(NO_DEFINITION_ID, 0);
-define(CATEGORY_DEFINITION_ID, -1);
-
-
-const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
-
 /**
  * Attribute class
  */
