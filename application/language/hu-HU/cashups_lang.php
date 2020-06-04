@@ -1,30 +1,29 @@
-<?php 
-
-$lang["cashups_amount"] = "";
-$lang["cashups_amount_number"] = "";
-$lang["cashups_amount_required"] = "";
-$lang["cashups_cannot_be_deleted"] = "";
-$lang["cashups_close_date"] = "";
+<?php
+$lang["cashups_amount"] = "Összeg";
+$lang["cashups_amount_number"] = "Az összeg csak szám lehet";
+$lang["cashups_amount_required"] = "Az összeg kitöltése kötelező.";
+$lang["cashups_cannot_be_deleted"] = "Bevétel elszámolást nem lehet törölni";
+$lang["cashups_close_date"] = "Zárás időpontja";
 $lang["cashups_close_employee"] = "";
 $lang["cashups_closed_amount_card"] = "";
-$lang["cashups_closed_amount_cash"] = "";
+$lang["cashups_closed_amount_cash"] = "Záró pénzösszeg";
 $lang["cashups_closed_amount_check"] = "";
 $lang["cashups_closed_amount_due"] = "";
-$lang["cashups_closed_amount_total"] = "";
+$lang["cashups_closed_amount_total"] = "Teljes";
 $lang["cashups_closed_date"] = "";
 $lang["cashups_confirm_delete"] = "";
 $lang["cashups_confirm_restore"] = "";
 $lang["cashups_date_number"] = "";
 $lang["cashups_date_required"] = "";
-$lang["cashups_description"] = "";
+$lang["cashups_description"] = "Leírás";
 $lang["cashups_error_adding_updating"] = "";
 $lang["cashups_id"] = "";
 $lang["cashups_info"] = "";
-$lang["cashups_is_deleted"] = "";
+$lang["cashups_is_deleted"] = "Törölt";
 $lang["cashups_new"] = "";
 $lang["cashups_no_cashups_to_display"] = "";
 $lang["cashups_none_selected"] = "";
-$lang["cashups_note"] = "";
+$lang["cashups_note"] = "Megjegyzés";
 $lang["cashups_one_or_multiple"] = "";
 $lang["cashups_open_amount_cash"] = "";
 $lang["cashups_open_date"] = "";
