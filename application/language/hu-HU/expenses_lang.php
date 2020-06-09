@@ -1,22 +1,21 @@
-<?php 
-
-$lang["expenses_add_item"] = "";
-$lang["expenses_amount"] = "";
-$lang["expenses_amount_number"] = "";
-$lang["expenses_amount_required"] = "";
-$lang["expenses_by_category"] = "";
-$lang["expenses_cannot_be_deleted"] = "";
-$lang["expenses_cash"] = "";
-$lang["expenses_cash_filter"] = "";
-$lang["expenses_categories_name"] = "";
-$lang["expenses_category_required"] = "";
+<?php
+$lang["expenses_add_item"] = "Költség hozzáadása";
+$lang["expenses_amount"] = "Összeg";
+$lang["expenses_amount_number"] = "Az összeg csak számot tartalmazhat";
+$lang["expenses_amount_required"] = "A költség megadása kötelező";
+$lang["expenses_by_category"] = "Kategória";
+$lang["expenses_cannot_be_deleted"] = "Költség kategória nem törölhető";
+$lang["expenses_cash"] = "Készpénz";
+$lang["expenses_cash_filter"] = "Készpénz";
+$lang["expenses_categories_name"] = "Kategória";
+$lang["expenses_category_required"] = "Kategória kitöltése kötelező";
 $lang["expenses_check"] = "";
 $lang["expenses_check_filter"] = "";
 $lang["expenses_confirm_delete"] = "";
 $lang["expenses_confirm_restore"] = "";
-$lang["expenses_credit"] = "";
-$lang["expenses_credit_filter"] = "";
-$lang["expenses_date"] = "";
+$lang["expenses_credit"] = "Hitelkártya";
+$lang["expenses_credit_filter"] = "Hitelkártya";
+$lang["expenses_date"] = "Dátum";
 $lang["expenses_date_number"] = "";
 $lang["expenses_date_required"] = "";
 $lang["expenses_debit"] = "";
