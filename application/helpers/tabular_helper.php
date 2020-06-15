@@ -9,7 +9,7 @@ Basic tabular headers function
 */
 function transform_headers_readonly($array)
 {
-	$result = array();
+	$result = [];
 
 	foreach($array as $key => $value)
 	{
@@ -24,7 +24,7 @@ Basic tabular headers function
 */
 function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 {
-	$result = array();
+	$result = [];
 
 	if(!$readonly)
 	{
@@ -128,7 +128,7 @@ function get_sale_data_last_row($sales)
 	$sum_amount_tendered = 0;
 	$sum_change_due = 0;
 
-	foreach($sales->result() as $key=>$sale)
+	foreach($sales->result() as $sale)
 	{
 		$sum_amount_due += $sale->amount_due;
 		$sum_amount_tendered += $sale->amount_tendered;
@@ -153,7 +153,7 @@ function get_sales_manage_payments_summary($payments, $sales)
 
 	$table = '<div id="report_summary">';
 
-	foreach($payments as $key=>$payment)
+	foreach($payments as $payment)
 	{
 		$amount = $payment['payment_amount'];
 
@@ -161,7 +161,7 @@ function get_sales_manage_payments_summary($payments, $sales)
 		// therefore we remove from the total cash amount any change due
 		if($payment['payment_type'] == $CI->lang->line('sales_cash'))
 		{
-			foreach($sales->result_array() as $key=>$sale)
+			foreach($sales->result_array() as $sale)
 			{
 				$amount -= $sale['change_due'];
 			}
@@ -533,8 +533,9 @@ function get_item_kit_data_row($item_kit)
 	);
 }
 
+//TODO: This needs to be reworked along with Item->search() to get rid of the concatenated attribute results.  Probably instead replace them with an associative array of definition_id/value pairs
 function parse_attribute_values($columns, $row) {
-	$attribute_values = array();
+	$attribute_values = [];
 	foreach($columns as $column) {
 		if (array_key_exists($column, $row))
 		{
@@ -549,7 +550,7 @@ function expand_attribute_values($definition_names, $row)
 {
 	$values = parse_attribute_values(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
 
-	$indexed_values = array();
+	$indexed_values = [];
 	foreach($values as $attribute_value)
 	{
 		$exploded_value = explode('_', $attribute_value);
@@ -559,13 +560,14 @@ function expand_attribute_values($definition_names, $row)
 		}
 	}
 
-	$attribute_values = array();
+	$attribute_values = [];
+
 	foreach($definition_names as $definition_id => $definition_name)
 	{
 		if(isset($indexed_values[$definition_id]))
 		{
 			$attribute_value = $indexed_values[$definition_id];
-			$attribute_values["$definition_id"] = $attribute_value;
+			$attribute_values[$definition_id] = $attribute_value;
 		}
 	}
 
@@ -710,21 +712,20 @@ function get_expenses_data_last_row($expense)
 {
 	$CI =& get_instance();
 
-	$table_data_rows = '';
-	$sum_amount_expense = 0;
-	$sum_tax_amount_expense = 0;
+	$sum_amount_expense		= 0;
+	$sum_tax_amount_expense	= 0;
 
-	foreach($expense->result() as $key=>$expense)
+	foreach($expense->result() as $expense)
 	{
-		$sum_amount_expense += $expense->amount;
-		$sum_tax_amount_expense += $expense->tax_amount;
+		$sum_amount_expense		+= $expense->amount;
+		$sum_tax_amount_expense	+= $expense->tax_amount;
 	}
 
 	return array(
-		'expense_id' => '-',
-		'date' => '<b>'.$CI->lang->line('sales_total').'</b>',
-		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
-		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
+		'expense_id'	=> '-',
+		'date'			=> '<b>'. $CI->lang->line('sales_total').'</b>',
+		'amount'		=> '<b>'. to_currency($sum_amount_expense).'</b>',
+		'tax_amount'	=> '<b>'. to_currency($sum_tax_amount_expense).'</b>'
 	);
 }
 
@@ -733,11 +734,9 @@ Get the expenses payments summary
 */
 function get_expenses_manage_payments_summary($payments, $expenses)
 {
-	$CI =& get_instance();
-
 	$table = '<div id="report_summary">';
 
-	foreach($payments as $key=>$payment)
+	foreach($payments as $payment)
 	{
 		$amount = $payment['amount'];
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';

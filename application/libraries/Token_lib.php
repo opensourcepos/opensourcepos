@@ -20,7 +20,7 @@ class Token_lib
 	/**
 	 * Expands all of the tokens found in a given text string and returns the results.
 	 */
-	public function render($tokened_text, $tokens = array())
+	public function render($tokened_text, $tokens = [])
 	{
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
@@ -43,8 +43,8 @@ class Token_lib
 			}
 		}
 
-		$token_values = array();
-		$tokens_to_replace = array();
+		$token_values = [];
+		$tokens_to_replace = [];
 		$this->generate($token_tree, $tokens_to_replace, $token_values, $tokens);
 
 		return str_replace($tokens_to_replace, $token_values, $tokened_text);
@@ -55,6 +55,9 @@ class Token_lib
 	 */
 	public function scan($text)
 	{
+		$matches	= [];
+		$token_tree	= [];
+
 		// Matches tokens with the following pattern: [$token:$length]
 		preg_match_all('/
 				\{             # [ - pattern start
@@ -66,10 +69,9 @@ class Token_lib
 				\}             # ] - pattern end
 				/x', $text, $matches);
 
-		$tokens = $matches[1];
-		$lengths = $matches[2];
+		$tokens		= $matches[1];
+		$lengths	= $matches[2];
 
-		$token_tree = array();
 		for($i = 0; $i < count($tokens); $i++)
 		{
 			$token_tree[$tokens[$i]][$lengths[$i]] = $matches[0][$i];
@@ -88,24 +90,25 @@ class Token_lib
 			foreach($barcode_formats as $barcode_format)
 			{
 				$parsed_results = $this->parse($item_id_or_number_or_item_kit_or_receipt, $barcode_format, $barcode_tokens);
-				$quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
+				$quantity = (isset($parsed_results['W'])) ? intval($parsed_results['W']) / 1000 : 1;
 				$item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
 					$parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
 				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;
 			}
 		}
-		else 
+		else
 		{
 			$quantity = 1;
 		}
-	
+
 	}
 
-	public function parse($string, $pattern, $tokens = array())
+	public function parse($string, $pattern, $tokens = [])
 	{
-		$token_tree = $this->scan($pattern);
+		$token_tree		= $this->scan($pattern);
+		$matches		= [];
+		$found_tokens	= [];
 
-		$found_tokens = array();
 		foreach ($token_tree as $token_id => $token_length)
 		{
 			foreach ($tokens as $token)
@@ -120,7 +123,7 @@ class Token_lib
 			}
 		}
 
-		$results = array();
+		$results = [];
 
 		if (preg_match("/$pattern/", $string, $matches))
 		{
@@ -159,7 +162,7 @@ class Token_lib
 		return $token_values;
 	}
 
-	private function resolve_token($token_code, $tokens = array())
+	private function resolve_token($token_code, $tokens = [])
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{

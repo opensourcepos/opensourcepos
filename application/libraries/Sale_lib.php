@@ -28,7 +28,7 @@ class Sale_lib
 
 	public function get_register_mode_options()
 	{
-		$register_modes = array();
+		$register_modes = [];
 		if($this->CI->config->item('invoice_enable') == '0')
 		{
 			$register_modes['sale'] = $this->CI->lang->line('sales_sale');
@@ -49,7 +49,7 @@ class Sale_lib
 
 	public function get_invoice_type_options()
 	{
-		$invoice_types = array();
+		$invoice_types = [];
 		$invoice_types['invoice'] = $this->CI->lang->line('sales_invoice_type_invoice');
 		$invoice_types['tax_invoice'] = $this->CI->lang->line('sales_invoice_type_tax_invoice');
 		$invoice_types['custom_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_invoice');
@@ -61,7 +61,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_cart'))
 		{
-			$this->set_cart(array());
+			$this->set_cart([]);
 		}
 
 		return $this->CI->session->userdata('sales_cart');
@@ -74,7 +74,7 @@ class Sale_lib
 			return $cart;
 		}
 
-		$filtered_cart = array();
+		$filtered_cart = [];
 
 		foreach($cart as $k => $v)
 		{
@@ -91,7 +91,7 @@ class Sale_lib
 		// Entry sequence (this will render kits in the expected sequence)
 		if($this->CI->config->item('line_sequence') == '0')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
@@ -101,7 +101,7 @@ class Sale_lib
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
 		elseif($this->CI->config->item('line_sequence') == '1')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['stock_type'][$k] = $v['stock_type'];
@@ -113,7 +113,7 @@ class Sale_lib
 		// Group by Item Category
 		elseif($this->CI->config->item('line_sequence') == '2')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['category'][$k] = $v['stock_type'];
@@ -125,7 +125,7 @@ class Sale_lib
 		// Group by entry sequence in descending sequence (the Standard)
 		else
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
@@ -150,7 +150,7 @@ class Sale_lib
 	{
 		// Loop through the cart items and delete temporary items specific to this sale
 		$cart = $this->get_cart();
-		foreach($cart as $line=>$item)
+		foreach($cart as $item)
 		{
 			if($item['item_type'] == ITEM_TEMP)
 			{
@@ -354,7 +354,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_payments'))
 		{
-			$this->set_payments(array());
+			$this->set_payments([]);
 		}
 
 		return $this->CI->session->userdata('sales_payments');
@@ -441,7 +441,7 @@ class Sale_lib
 	{
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
 
-		$totals = array();
+		$totals = [];
 
 		$prediscount_subtotal = 0.0;
 		$subtotal = 0.0;

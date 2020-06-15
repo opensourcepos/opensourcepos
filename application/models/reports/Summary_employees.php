@@ -4,7 +4,7 @@ require_once("Summary_report.php");
 
 class Summary_employees extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function get_data_columns()
 	{
 		return array(
 			array('employee_name' => $this->lang->line('reports_employee')),
@@ -17,9 +17,9 @@ class Summary_employees extends Summary_report
 			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
 	}
 
-	protected function _select(array $inputs)
+	protected function select(array $inputs)
 	{
-		parent::_select($inputs);
+		parent::select($inputs);
 
 		$this->db->select('
 				MAX(CONCAT(employee_p.first_name, " ", employee_p.last_name)) AS employee,
@@ -28,14 +28,14 @@ class Summary_employees extends Summary_report
 		');
 	}
 
-	protected function _from()
+	protected function from()
 	{
-		parent::_from();
+		parent::from();
 
 		$this->db->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
 	}
 
-	protected function _group_order()
+	protected function group_order()
 	{
 		$this->db->group_by('sales.employee_id');
 		$this->db->order_by('employee_p.last_name');

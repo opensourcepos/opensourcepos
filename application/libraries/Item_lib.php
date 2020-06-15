@@ -35,6 +35,24 @@ class Item_lib
 	{
 		$this->CI->session->unset_userdata('item_location');
 	}
-}
 
+	/**
+	 * Filters out unacceptable values (NULL and '') from Array
+	 *
+	 * @param	array|string	$input	The array or array value to analize
+	 * @return	array|string			The resulting array element or array
+	 */
+	public function custom_array_filter($input)
+	{
+		foreach($input as $key => $value)
+		{
+			if(in_array($value, array(NULL, '')) && $value !== 0)
+			{
+				unset($input[$key]);
+			}
+		}
+
+		return $input;
+	}
+}
 ?>

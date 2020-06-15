@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-echo "\nERROR: ",
+echo '\nERROR: ',
 	$heading,
-	"\n\n",
+	'\n\n',
 	$message,
-	"\n\n";
+	'\n\n';

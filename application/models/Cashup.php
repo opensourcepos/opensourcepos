@@ -22,19 +22,17 @@ class Cashup extends CI_Model
 	*/
 	public function get_employee($cashup_id)
 	{
-		$this->db->from('cash_up');
 		$this->db->where('cashup_id', $cashup_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		return $this->Employee->get_info($this->db->get('cash_up')->row()->employee_id);
 	}
 
 	public function get_multiple_info($cash_up_ids)
 	{
-		$this->db->from('cash_up');
-		$this->db->where_in('cashup_id', $cashup_ids);
+		$this->db->where_in('cashup_id', $cash_up_ids);
 		$this->db->order_by('cashup_id', 'asc');
 
-		return $this->db->get();
+		return $this->db->get('cash_up');
 	}
 
 	/*

@@ -1,34 +1,36 @@
 <?php echo form_open('config/save_rewards/', array('id' => 'reward_config_form', 'class' => 'form-horizontal')); ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-            <ul id="reward_error_message_box" class="error_message_box"></ul>
+    <div id='config_wrapper'>
+        <fieldset id='config_info'>
+            <div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+            <ul id='reward_error_message_box' class='error_message_box'></ul>
 
-			<div class="form-group form-group-sm">	
+			<div class='form-group form-group-sm'>
 				<?php echo form_label($this->lang->line('config_customer_reward_enable'), 'customer_reward_enable', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
-						'name' => 'customer_reward_enable',
-						'value' => 'customer_reward_enable',
-						'id' => 'customer_reward_enable',
-						'checked' => $this->config->item('customer_reward_enable')));?>
+							'name'		=> 'customer_reward_enable',
+							'value'		=> 'customer_reward_enable',
+							'id'		=> 'customer_reward_enable',
+							'checked'	=> $this->config->item('customer_reward_enable')));
+					?>
 				</div>
 			</div>
 
-            <div id="customer_rewards">
+            <div id='customer_rewards'>
 				<?php $this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards)); ?>
 			</div>
-            
+
             <?php echo form_submit(array(
-                'name' => 'submit_reward',
-                'id' => 'submit_reward',
-                'value' => $this->lang->line('common_submit'),
-                'class' => 'btn btn-primary btn-sm pull-right')); ?>
+	                'name'	=> 'submit_reward',
+	                'id'	=> 'submit_reward',
+	                'value'	=> $this->lang->line('common_submit'),
+	                'class'	=> 'btn btn-primary btn-sm pull-right'));
+            ?>
         </fieldset>
     </div>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 //validation and submit handling
 $(document).ready(function()
 {
@@ -43,7 +45,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$(".add_customer_reward, .remove_customer_reward").hide();	
+			$(".add_customer_reward, .remove_customer_reward").hide();
 		}
 		return arguments.callee;
 	})();
@@ -56,7 +58,7 @@ $(document).ready(function()
 		if ($("input[name*='customer_rewards']:enabled").length > 1)
 		{
 			$(".remove_customer_rewards").show();
-		} 
+		}
 		else
 		{
 			$(".remove_customer_rewards").hide();
@@ -97,7 +99,7 @@ $(document).ready(function()
 	$.validator.addMethod('customer_reward' , function(value, element) {
 		var value_count = 0;
 		$("input[name*='customer_reward']:not(input[name=customer_reward_enable])").each(function() {
-			value_count = $(this).val() == value ? value_count + 1 : value_count; 
+			value_count = $(this).val() == value ? value_count + 1 : value_count;
 		});
 		return value_count < 2;
     }, "<?php echo $this->lang->line('config_customer_reward_duplicate'); ?>");
@@ -105,17 +107,17 @@ $(document).ready(function()
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
     }, "<?php echo $this->lang->line('config_customer_reward_invalid_chars'); ?>");
-	
+
 	$('#reward_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("input[name*='customer_reward']:not(input[name=customer_reward_enable])").prop("disabled", false); 
+					$("input[name*='customer_reward']:not(input[name=customer_reward_enable])").prop("disabled", false);
 					return true;
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#customer_rewards").load('<?php echo site_url("config/ajax_customer_rewards"); ?>', init_add_remove_tables);
+					$("#customer_rewards").load('<?php echo site_url('config/ajax_customer_rewards'); ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});
@@ -126,10 +128,10 @@ $(document).ready(function()
 		rules:
 		{
 			<?php
-			$i = 0;
+				$i = 0;
 
-			foreach($customer_rewards as $customer_reward=>$table)
-			{
+				foreach($customer_rewards as $customer_reward=>$table)
+				{
 			?>
 				<?php echo 'customer_reward_' . ++$i ?>:
 				{
@@ -138,21 +140,21 @@ $(document).ready(function()
 					valid_chars: true
 				},
 			<?php
-			}
+				}
 			?>
    		},
 
-		messages: 
+		messages:
 		{
 			<?php
-			$i = 0;
+				$i = 0;
 
-			foreach($customer_rewards as $customer_reward=>$table)
-			{
+				foreach($customer_rewards as $customer_reward => $table)
+				{
 			?>
-				<?php echo 'customer_reward_' . ++$i ?>: "<?php echo $this->lang->line('config_customer_reward_required'); ?>",
+				<?php echo 'customer_reward_' . ++$i ?>: '<?php echo $this->lang->line('config_customer_reward_required'); ?>',
 			<?php
-			}
+				}
 			?>
 		}
 	}));

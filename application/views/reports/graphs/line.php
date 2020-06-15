@@ -65,7 +65,7 @@
 					else
 					{
 					?>
-						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;
 				<?php
 					}
 				}
@@ -118,7 +118,7 @@
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;
 					<?php
 						}
 					}
@@ -131,7 +131,7 @@
 					?>
 				}
 			}),
-			
+
 			Chartist.plugins.tooltip({
 				pointClass: 'ct-tooltip-point',
 				transformTooltipTextFnc: function(value) {
@@ -147,7 +147,7 @@
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;
 					<?php
 						}
 					}
@@ -162,7 +162,7 @@
 			})
 		]
 	};
-	
+
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',
@@ -178,7 +178,7 @@
 	];
 
 	chart = new Chartist.Line('#chart1', data, options, responsiveOptions);
-	
+
 	chart.on('draw', function(data) {
 		// If the draw event was triggered from drawing a point on the line chart
 		if(data.type === 'point') {
@@ -186,7 +186,7 @@
 			var circle = new Chartist.Svg('circle', {
 				cx: [data.x],
 				cy: [data.y],
-				r: [5], 
+				r: [5],
 				'ct:value': data.value.y,
 				'ct:meta': data.meta,
 				class: 'ct-tooltip-point',

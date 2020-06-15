@@ -7,9 +7,9 @@
 	}
 }
 </style>
-<table id="suspended_sales_table" class="table table-striped table-hover">
+<table id='suspended_sales_table' class='table table-striped table-hover'>
 	<thead>
-		<tr bgcolor="#CCC">
+		<tr bgcolor='#CCC'>
 			<th><?php echo $this->lang->line('sales_suspended_doc_id'); ?></th>
 			<th><?php echo $this->lang->line('sales_date'); ?></th>
 			<?php
@@ -47,7 +47,7 @@
 					if(isset($suspended_sale['customer_id']))
 					{
 						$customer = $this->Customer->get_info($suspended_sale['customer_id']);
-						echo $customer->first_name . ' ' . $customer->last_name;
+						echo "$customer->first_name $customer->last_name";
 					}
 					else
 					{
@@ -62,7 +62,7 @@
 					if(isset($suspended_sale['employee_id']))
 					{
 						$employee = $this->Employee->get_info($suspended_sale['employee_id']);
-						echo $employee->first_name . ' ' . $employee->last_name;
+						echo "$employee->first_name $employee->last_name";
 					}
 					else
 					{
@@ -76,7 +76,7 @@
 				<td>
 					<?php echo form_open('sales/unsuspend'); ?>
 						<?php echo form_hidden('suspended_sale_id', $suspended_sale['sale_id']); ?>
-						<input type="submit" name="submit" value="<?php echo $this->lang->line('sales_unsuspend'); ?>" id="submit" class="btn btn-primary btn-xs pull-right">
+						<input type='submit' name='submit' value='<?php echo $this->lang->line('sales_unsuspend'); ?>' id='submit' class='btn btn-primary btn-xs pull-right'>
 					<?php echo form_close(); ?>
 				</td>
 			</tr>

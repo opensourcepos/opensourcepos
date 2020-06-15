@@ -4,7 +4,7 @@ require_once("Summary_report.php");
 
 class Summary_payments extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function get_data_columns()
 	{
 		return array(
 			array('trans_group' => $this->lang->line('reports_trans_group')),
@@ -59,7 +59,7 @@ class Summary_payments extends Summary_report
 		$this->db->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
 		$this->db->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
 		$this->db->where('sales.sale_status', COMPLETED);
-		$this->_where($inputs);
+		$this->where($inputs);
 
 		$this->db->group_by('trans_type');
 
@@ -67,6 +67,7 @@ class Summary_payments extends Summary_report
 
 		// At this point in time refunds are assumed to be cash refunds.
 		$total_cash_refund = 0;
+
 		foreach($sales as $key => $sale_summary)
 		{
 			if($sale_summary['trans_refunded'] <> 0)
@@ -87,7 +88,7 @@ class Summary_payments extends Summary_report
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id', 'left outer');
 		$this->db->where('sales.sale_status', COMPLETED);
-		$this->_where($inputs);
+		$this->where($inputs);
 
 		$this->db->group_by('sales_payments.payment_type');
 

@@ -19,7 +19,7 @@ class Receiving_lib
 	{
 		if(!$this->CI->session->userdata('recv_cart'))
 		{
-			$this->set_cart(array());
+			$this->set_cart([]);
 		}
 
 		return $this->CI->session->userdata('recv_cart');
@@ -69,7 +69,7 @@ class Receiving_lib
 	{
 		$this->CI->session->set_userdata('recv_mode', $mode);
 	}
-	
+
 	public function clear_mode()
 	{
 		$this->CI->session->unset_userdata('recv_mode');
@@ -84,7 +84,7 @@ class Receiving_lib
 
 		return $this->CI->session->userdata('recv_stock_source');
 	}
-	
+
 	public function get_comment()
 	{
 		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
@@ -92,53 +92,53 @@ class Receiving_lib
 
 		return empty($comment) ? '' : $comment;
 	}
-	
+
 	public function set_comment($comment)
 	{
 		$this->CI->session->set_userdata('recv_comment', $comment);
 	}
-	
+
 	public function clear_comment()
 	{
 		$this->CI->session->unset_userdata('recv_comment');
 	}
-   
+
 	public function get_reference()
 	{
 		return $this->CI->session->userdata('recv_reference');
 	}
-	
+
 	public function set_reference($reference)
 	{
 		$this->CI->session->set_userdata('recv_reference', $reference);
 	}
-	
+
 	public function clear_reference()
 	{
 		$this->CI->session->unset_userdata('recv_reference');
 	}
-	
+
 	public function is_print_after_sale()
 	{
 		return $this->CI->session->userdata('recv_print_after_sale') == 'true' ||
 				$this->CI->session->userdata('recv_print_after_sale') == '1';
 	}
-	
+
 	public function set_print_after_sale($print_after_sale)
 	{
 		return $this->CI->session->set_userdata('recv_print_after_sale', $print_after_sale);
 	}
-	
+
 	public function set_stock_source($stock_source)
 	{
 		$this->CI->session->set_userdata('recv_stock_source', $stock_source);
 	}
-	
+
 	public function clear_stock_source()
 	{
 		$this->CI->session->unset_userdata('recv_stock_source');
 	}
-	
+
 	public function get_stock_destination()
 	{
 		if(!$this->CI->session->userdata('recv_stock_destination'))
@@ -153,7 +153,7 @@ class Receiving_lib
 	{
 		$this->CI->session->set_userdata('recv_stock_destination', $stock_destination);
 	}
-	
+
 	public function clear_stock_destination()
 	{
 		$this->CI->session->unset_userdata('recv_stock_destination');
@@ -311,8 +311,8 @@ class Receiving_lib
 		if(preg_match("/(RECV|KIT)/", $pieces[0]))
 		{
 			$receiving_id = $pieces[1];
-		} 
-		else 
+		}
+		else
 		{
 			$receiving_id = $this->CI->Receiving->get_receiving_by_reference($receipt_receiving_id)->row()->receiving_id;
 		}
@@ -334,7 +334,7 @@ class Receiving_lib
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
 		$item_kit_id = $pieces[1];
-		
+
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type);
@@ -385,7 +385,7 @@ class Receiving_lib
 		{
 			$total = bcadd($total, $this->get_item_total(($item['quantity']), $item['price'], $item['discount'], $item['discount_type'], $item['receiving_quantity']));
 		}
-		
+
 		return $total;
 	}
 }

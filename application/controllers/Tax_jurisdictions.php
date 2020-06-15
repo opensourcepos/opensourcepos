@@ -31,7 +31,7 @@ class Tax_jurisdictions extends Secure_Controller
 		$tax_jurisdictions = $this->Tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Tax_jurisdiction->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_jurisdictions->result() as $tax_jurisdiction)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_jurisdiction_data_row($tax_jurisdiction));

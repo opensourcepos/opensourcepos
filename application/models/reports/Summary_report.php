@@ -8,7 +8,7 @@ abstract class Summary_report extends Report
 	 * Private interface implementing the core basic functionality for all reports
 	 */
 
-	private function __common_select(array $inputs)
+	private function common_select(array $inputs)
 	{
 		$where = '';
 
@@ -65,7 +65,7 @@ abstract class Summary_report extends Report
 		");
 	}
 
-	private function __common_from()
+	private function common_from()
 	{
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
@@ -74,7 +74,7 @@ abstract class Summary_report extends Report
 			'left outer');
 	}
 
-	private function __common_where(array $inputs)
+	private function common_where(array $inputs)
 	{
 		if(empty($this->config->item('date_or_time_format')))
 		{
@@ -132,44 +132,44 @@ abstract class Summary_report extends Report
 	 * Protected class interface implemented by derived classes where required
 	 */
 
-	abstract protected function _get_data_columns();
+	abstract protected function get_data_columns();
 
-	protected function _select(array $inputs)	{ $this->__common_select($inputs); }
-	protected function _from()					{ $this->__common_from(); }
-	protected function _where(array $inputs)	{ $this->__common_where($inputs); }
-	protected function _group_order()			{}
+	protected function select(array $inputs)	{ $this->common_select($inputs); }
+	protected function from()					{ $this->common_from(); }
+	protected function where(array $inputs)	{ $this->common_where($inputs); }
+	protected function group_order()			{}
 
 	/**
-	 * Public interface implementing the base abstract class, 
-	 * in general it should not be extended unless there is a valid reason 
+	 * Public interface implementing the base abstract class,
+	 * in general it should not be extended unless there is a valid reason
 	 * like a non sale report (e.g. expenses)
 	 */
 
 	public function getDataColumns()
 	{
-		return $this->_get_data_columns();
+		return $this->get_data_columns();
 	}
 
 	public function getData(array $inputs)
 	{
-		$this->_select($inputs);
+		$this->select($inputs);
 
-		$this->_from();
+		$this->from();
 
-		$this->_where($inputs);
+		$this->where($inputs);
 
-		$this->_group_order();
+		$this->group_order();
 
 		return $this->db->get()->result_array();
 	}
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->__common_select($inputs);
+		$this->common_select($inputs);
 
-		$this->__common_from();
+		$this->common_from();
 
-		$this->_where($inputs);
+		$this->where($inputs);
 
 		return $this->db->get()->row_array();
 	}

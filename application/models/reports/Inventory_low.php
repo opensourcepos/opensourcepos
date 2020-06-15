@@ -16,10 +16,10 @@ class Inventory_low extends Report
 
 	public function getData(array $inputs)
 	{
-		$query = $this->db->query("SELECT " . $this->Item->get_item_name('name') . ", 
+		$query = $this->db->query("SELECT " . $this->Item->get_item_name('name') . ",
 			items.item_number,
-			item_quantities.quantity, 
-			items.reorder_level, 
+			item_quantities.quantity,
+			items.reorder_level,
 			stock_locations.location_name
 			FROM " . $this->db->dbprefix('items') . " AS items
 			JOIN " . $this->db->dbprefix('item_quantities') . " AS item_quantities ON items.item_id = item_quantities.item_id
@@ -35,7 +35,7 @@ class Inventory_low extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		return array();
+		return [];
 	}
 }
 ?>

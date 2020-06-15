@@ -103,7 +103,7 @@ class Code39 extends BarcodeBase
 	/*
 	 * Draw the image
 	 *
-	 * Based on the implentation PHP Barcode Image Generator v1.0 
+	 * Based on the implentation PHP Barcode Image Generator v1.0
 	 * by Charles J. Scheffold - cs@sid6581.net
 	 * It was released into the Public Domain by its creator.
 	 *
@@ -113,15 +113,15 @@ class Code39 extends BarcodeBase
 	{
 		// I know, lots of junk.
 		$data = '*' . strtoupper(ltrim(rtrim(trim($this->data), '*'), '*')) . '*';
-	
+
 		//                Length of data  X   [ 6 narrow bars       +     3 wide bars      + A single Quiet stop ] - a single quiet stop
 		$pxPerChar = (strlen($data) * ((6 * self::NARROW_BAR) + (3 * self::WIDE_BAR) + self::QUIET_BAR)) - self::QUIET_BAR;
 		$widthQuotient = $this->x / $pxPerChar;
-		
+
 		// Lengths per type
-		$narrowBar	= (int) (self::NARROW_BAR * $widthQuotient);
-		$wideBar	= (int) (self::WIDE_BAR * $widthQuotient);
-		$quietBar	= (int) (self::QUIET_BAR * $widthQuotient);
+		$narrowBar	= intval(self::NARROW_BAR * $widthQuotient);
+		$wideBar	= intval(self::WIDE_BAR * $widthQuotient);
+		$quietBar	= intval(self::QUIET_BAR * $widthQuotient);
 
 		$imageWidth = (strlen($data) * ((6 * $narrowBar) + (3 * $wideBar) + $quietBar)) - $quietBar;
 
@@ -131,8 +131,8 @@ class Code39 extends BarcodeBase
 			throw new \OverflowException("You need to specify a bigger width to properly display this barcode");
 		}
 
-		$currentBarX = (int)(($this->x - $imageWidth) / 2);
-		$charAry = str_split($data);
+		$currentBarX	= intval(($this->x - $imageWidth) / 2);
+		$character_array		= str_split($data);
 
 		$this->img = @imagecreate($this->x, $this->y);
 
@@ -140,18 +140,18 @@ class Code39 extends BarcodeBase
 		{
 			throw new \RuntimeException("Code39: Image failed to initialize");
 		}
-		
+
 		// Grab our colors
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 		$color = $black;
 
-		foreach($charAry as $_k => $char)
+		foreach($character_array as $key => $character)
 		{
-			$code = str_split($this->getMap($char));
-			$color = $black; 
+			$code = str_split($this->getMap($character));
+			$color = $black;
 
-			foreach($code as $k => $bit)
+			foreach($code as $bit)
 			{
 				// Narrow bar
 				if ($bit == '0')
@@ -169,8 +169,8 @@ class Code39 extends BarcodeBase
 				$color = ($color == $black) ? $white : $black;
 			}
 
-			// Skip the spacer on the last run 
-			if ($_k == (sizeof($charAry) - 1))
+			// Skip the spacer on the last run
+			if ($key == (sizeof($character_array) - 1))
 			{
 				break;
 			}

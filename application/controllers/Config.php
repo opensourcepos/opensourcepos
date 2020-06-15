@@ -15,12 +15,12 @@ class Config extends Secure_Controller
 	/*
 	 * This function loads all the licenses starting with the first one being OSPOS one
 	 */
-	private function _licenses()
+	private function licenses()
 	{
 		$i = 0;
 		$bower = FALSE;
 		$composer = FALSE;
-		$license = array();
+		$license = [];
 
 		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
 
@@ -98,7 +98,7 @@ class Config extends Secure_Controller
 								{
 									$license[$i]['text'] .= $key2 . ': ';
 
-									foreach($val2 as $key3 => $val3)
+									foreach($val2 as $val3)
 									{
 										$license[$i]['text'] .= $val3 . ' ';
 									}
@@ -172,9 +172,9 @@ class Config extends Secure_Controller
 	/*
 	 * This function loads all the available themes in the dist/bootswatch directory
 	 */
-	private function _themes()
+	private function themes()
 	{
-		$themes = array();
+		$themes = [];
 
 		// read all themes in the dist folder
 		$dir = new DirectoryIterator('dist/bootswatch');
@@ -213,10 +213,10 @@ class Config extends Secure_Controller
 		$data = $this->xss_clean($data);
 
 		// load all the license statements, they are already XSS cleaned in the private function
-		$data['licenses'] = $this->_licenses();
+		$data['licenses'] = $this->licenses();
 
 		// load all the themes, already XSS cleaned in the private function
-		$data['themes'] = $this->_themes();
+		$data['themes'] = $this->themes();
 
 		//Load General related fields
 		$image_allowed_types 		= array('jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff');
@@ -225,9 +225,9 @@ class Config extends Secure_Controller
 		$data['selected_image_allowed_types'] 	= explode('|',$this->config->item('image_allowed_types'));
 
 		//Load Integrations Related fields
-		$data['mailchimp']	= array();
+		$data['mailchimp']	= [];
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->item('mailchimp_api_key'));
 			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->item('mailchimp_list_id'));
@@ -238,15 +238,14 @@ class Config extends Secure_Controller
 			$data['mailchimp']['list_id'] = '';
 		}
 
-		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
-		$data['mailchimp']['lists'] = $this->_mailchimp();
+		$data['mailchimp']['lists'] = $this->mailchimp();
 
 		$this->load->view("configs/manage", $data);
 	}
 
 	public function save_info()
 	{
-		$upload_success = $this->_handle_logo_upload();
+		$upload_success = $this->handle_logo_upload();
 		$upload_data = $this->upload->data();
 
 		$batch_save_data = array(
@@ -407,7 +406,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$password = $this->encryption->encrypt($this->input->post('smtp_pass'));
 		}
@@ -436,7 +435,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$password = $this->encryption->encrypt($this->input->post('msg_pwd'));
 		}
@@ -460,11 +459,11 @@ class Config extends Secure_Controller
 	/*
 	 * This function fetches all the available lists from Mailchimp for the given API key
 	 */
-	private function _mailchimp($api_key = '')
+	private function mailchimp($api_key = '')
 	{
 		$this->load->library('mailchimp_lib', array('api_key' => $api_key));
 
-		$result = array();
+		$result = [];
 
 		if(($lists = $this->mailchimp_lib->getLists()) !== FALSE)
 		{
@@ -487,7 +486,7 @@ class Config extends Secure_Controller
 	public function ajax_check_mailchimp_api_key()
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
-		$lists = $this->_mailchimp($this->input->post('mailchimp_api_key'));
+		$lists = $this->mailchimp($this->input->post('mailchimp_api_key'));
 		$success = count($lists) > 0 ? TRUE : FALSE;
 
 		echo json_encode(array(
@@ -502,7 +501,7 @@ class Config extends Secure_Controller
 		$api_key = '';
 		$list_id = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$api_key = $this->encryption->encrypt($this->input->post('mailchimp_api_key'));
 			$list_id = $this->encryption->encrypt($this->input->post('mailchimp_list_id'));
@@ -558,7 +557,7 @@ class Config extends Secure_Controller
 		$this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards));
 	}
 
-	private function _clear_session_state()
+	private function clear_session_state()
 	{
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_table();
@@ -573,7 +572,7 @@ class Config extends Secure_Controller
 	{
 		$this->db->trans_start();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 		foreach($this->input->post() as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
@@ -595,7 +594,7 @@ class Config extends Secure_Controller
 		// all locations not available in post will be deleted now
 		$deleted_locations = $this->Stock_location->get_all()->result_array();
 
-		foreach($deleted_locations as $location => $location_data)
+		foreach($deleted_locations as $location_data)
 		{
 			if(!in_array($location_data['location_id'], $not_to_delete))
 			{
@@ -623,7 +622,7 @@ class Config extends Secure_Controller
 
 		if($dinner_table_enable)
 		{
-			$not_to_delete = array();
+			$not_to_delete = [];
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
@@ -635,7 +634,7 @@ class Config extends Secure_Controller
 					$table_data = array('name' => $value);
 					if($this->Dinner_table->save($table_data, $dinner_table_id))
 					{
-						$this->_clear_session_state();
+						$this->clear_session_state();
 					}
 				}
 			}
@@ -643,7 +642,7 @@ class Config extends Secure_Controller
 			// all tables not available in post will be deleted now
 			$deleted_tables = $this->Dinner_table->get_all()->result_array();
 
-			foreach($deleted_tables as $dinner_tables => $table)
+			foreach($deleted_tables as $table)
 			{
 				if(!in_array($table['dinner_table_id'], $not_to_delete))
 				{
@@ -703,8 +702,8 @@ class Config extends Secure_Controller
 
 		if($customer_reward_enable)
 		{
-			$not_to_delete = array();
-			$array_save = array();
+			$not_to_delete = [];
+			$array_save = [];
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
@@ -733,7 +732,7 @@ class Config extends Secure_Controller
 			// all packages not available in post will be deleted now
 			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
 
-			foreach($deleted_packages as $customer_rewards => $reward_category)
+			foreach($deleted_packages as $reward_category)
 			{
 				if(!in_array($reward_category['package_id'], $not_to_delete))
 				{
@@ -863,24 +862,25 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $result));
 	}
 
-	private function _handle_logo_upload()
+	private function handle_logo_upload()
 	{
 		$this->load->helper('directory');
 
 		// load upload library
-		$config = array('upload_path' => './uploads/',
-			'allowed_types' => 'gif|jpg|png',
-			'max_size' => '1024',
-			'max_width' => '800',
-			'max_height' => '680',
-			'file_name' => 'company_logo');
+		$config = array(
+			'upload_path'	=> './uploads/',
+			'allowed_types'	=> 'gif|jpg|png',
+			'max_size'		=> '1024',
+			'max_width'		=> '800',
+			'max_height'	=> '680',
+			'file_name'		=> 'company_logo');
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('company_logo');
 
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
 
-	private function _check_encryption()
+	private function check_encryption()
 	{
 		$encryption_key = $this->config->item('encryption_key');
 
@@ -943,14 +943,16 @@ class Config extends Secure_Controller
 			$backup = $this->dbutil->backup($prefs);
 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
-			$save = 'uploads/' . $file_name;
+			$save = "uploads/$file_name";
+
 			$this->load->helper('download');
+
 			while(ob_get_level())
 			{
 				ob_end_clean();
 			}
 
-			force_download($file_name, $backup);
+			force_download($save, $backup);
 		}
 		else
 		{

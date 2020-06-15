@@ -96,9 +96,7 @@ define('CHECKBOX', 'CHECKBOX');
 define('NO_DEFINITION_ID', 0);
 define('CATEGORY_DEFINITION_ID', -1);
 
-
 const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
-
 
 /*
  | Item Related Constants.
@@ -110,6 +108,7 @@ define('ITEM', 0);
 define('ITEM_KIT', 1);
 define('ITEM_AMOUNT_ENTRY', 2);
 define('ITEM_TEMP', 3);
+define('NEW_ITEM', -1);
 
 define('PRINT_ALL', 0);
 define('PRINT_PRICED', 1);

@@ -8,17 +8,17 @@ class Item_kits extends Secure_Controller
 	{
 		parent::__construct('item_kits');
 	}
-	
+
 	/*
 	Add the total cost and retail price to a passed items kit retrieving the data from each singular item part of the kit
 	*/
-	private function _add_totals_to_item_kit($item_kit)
+	private function add_totals_to_item_kit($item_kit)
 	{
 		$kit_item_info = $this->Item->get_info(isset($item_kit->kit_item_id) ? $item_kit->kit_item_id : $item_kit->item_id);
 
-		$item_kit->total_cost_price = 0;
-		$item_kit->total_unit_price = (float)$kit_item_info->unit_price;
-		$total_quantity = 0;
+		$item_kit->total_cost_price	= 0;
+		$item_kit->total_unit_price	= (float)$kit_item_info->unit_price;
+		$total_quantity				= 0;
 
 		foreach($this->Item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
 		{
@@ -43,7 +43,7 @@ class Item_kits extends Secure_Controller
 
 		return $item_kit;
 	}
-	
+
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_item_kits_manage_table_headers());
@@ -65,11 +65,11 @@ class Item_kits extends Secure_Controller
 		$item_kits = $this->Item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item_kit->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($item_kits->result() as $item_kit)
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
-			$item_kit = $this->_add_totals_to_item_kit($item_kit);
+			$item_kit = $this->add_totals_to_item_kit($item_kit);
 			$data_rows[] = $this->xss_clean(get_item_kit_data_row($item_kit));
 		}
 
@@ -86,11 +86,11 @@ class Item_kits extends Secure_Controller
 	public function get_row($row_id)
 	{
 		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
-		$item_kit = $this->_add_totals_to_item_kit($this->Item_kit->get_info($row_id));
+		$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($row_id));
 
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
-	
+
 	public function view($item_kit_id = -1)
 	{
 		$info = $this->Item_kit->get_info($item_kit_id);
@@ -108,7 +108,7 @@ class Item_kits extends Secure_Controller
 
 		$data['item_kit_info']  = $info;
 
-		$items = array();
+		$items = [];
 		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
@@ -126,7 +126,7 @@ class Item_kits extends Secure_Controller
 
 		$this->load->view("item_kits/form", $data);
 	}
-	
+
 	public function save($item_kit_id = -1)
 	{
 		$item_kit_data = array(
@@ -138,7 +138,7 @@ class Item_kits extends Secure_Controller
 			'print_option' => $this->input->post('print_option'),
 			'description' => $this->input->post('description')
 		);
-		
+
 		if($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
 			$success = TRUE;
@@ -152,7 +152,7 @@ class Item_kits extends Secure_Controller
 
 			if($this->input->post('item_kit_qty') != NULL)
 			{
-				$item_kit_items = array();
+				$item_kit_items = [];
 				foreach($this->input->post('item_kit_qty') as $item_id => $quantity)
 				{
 					$seq = $this->input->post('item_kit_seq[' . $item_id . ']');
@@ -185,11 +185,11 @@ class Item_kits extends Secure_Controller
 		{
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
-			echo json_encode(array('success' => FALSE, 
+			echo json_encode(array('success' => FALSE,
 								'message' => $this->lang->line('item_kits_error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
 		}
 	}
-	
+
 	public function delete()
 	{
 		$item_kits_to_delete = $this->xss_clean($this->input->post('ids'));
@@ -205,18 +205,18 @@ class Item_kits extends Secure_Controller
 								'message' => $this->lang->line('item_kits_cannot_be_deleted')));
 		}
 	}
-	
+
 	public function generate_barcodes($item_kit_ids)
 	{
 		$this->load->library('barcode_lib');
-		$result = array();
+		$result = [];
 
 		$item_kit_ids = explode(':', $item_kit_ids);
 		foreach($item_kit_ids as $item_kid_id)
-		{		
+		{
 			// calculate the total cost and retail price of the Kit so it can be added to the barcode text at the bottom
-			$item_kit = $this->_add_totals_to_item_kit($this->Item_kit->get_info($item_kid_id));
-			
+			$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($item_kid_id));
+
 			$item_kid_id = 'KIT '. urldecode($item_kid_id);
 
 			$result[] = array('name' => $item_kit->name, 'item_id' => $item_kid_id, 'item_number' => $item_kid_id,
