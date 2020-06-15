@@ -8,7 +8,7 @@
 function generate_import_items_csv($stock_locations,$attributes)
 {
 	$csv_headers = pack("CCC",0xef,0xbb,0xbf);	//Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
-	$csv_headers .= 'Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",item_image,HSN';
+	$csv_headers .= 'item_id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",item_image,HSN';
 	$csv_headers .= generate_stock_location_headers($stock_locations);
 	$csv_headers .= generate_attribute_headers($attributes);
 

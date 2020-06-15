@@ -620,7 +620,7 @@ class Attribute extends CI_Model
 		{
 			$this->db->where('attribute_id', $attribute_id);
 
-			if(in_array($definition_type, [TEXT, DROPDOWN], TRUE))
+			if(in_array($definition_type, [TEXT, DROPDOWN, CHECKBOX], TRUE))
 			{
 				$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
 			}
