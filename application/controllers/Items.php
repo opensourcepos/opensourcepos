@@ -207,7 +207,7 @@ class Items extends Secure_Controller
 			$item_info->$property = $this->xss_clean($value);
 		}
 
-		if($data['allow_temp_item'] === 1)
+		if($data['allow_temp_item'] == 1)
 		{
 			if($item_id !== -1)
 			{
@@ -229,7 +229,7 @@ class Items extends Secure_Controller
 		$data['include_hsn'] = $this->config->item('include_hsn') == '1';
 		$data['category_dropdown'] = $this->config->item('category_dropdown');
 
-		if($data['category_dropdown'] === 1)
+		if($data['category_dropdown'] == 1)
 		{
 			$categories 		= array('' => $this->lang->line('items_none'));
 			$category_options 	= $this->Attribute->get_definition_values(-1);
