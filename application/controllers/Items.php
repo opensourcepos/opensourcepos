@@ -912,7 +912,7 @@ class Items extends Secure_Controller
 					{
 						$this->save_tax_data($line, $item_data);
 						$this->save_inventory_quantities($line, $item_data, $allowed_stock_locations, $employee_id);
-						$invalidated = $this->save_attribute_data($line, $item_data, $attribute_definition_names);
+						$invalidated = $this->save_attribute_data($line, $item_data, $attribute_data);
 					}
 					else
 					{
@@ -1046,31 +1046,32 @@ class Items extends Secure_Controller
 	 * @param failCodes
 	 * @param attribute_data
 	 */
-	private function save_attribute_data($line, $item_data, $definition_names)
+	private function save_attribute_data($line, $item_data, $definitions)
 	{
-		foreach($definition_names as $definition_name)
+		foreach($definitions as $definition)
 		{
-		//Create attribute value
-			if(!empty($line['attribute_' . $definition_name]) || $line['attribute_' . $definition_name] === '0')
-			{
-				$attribute_data = $this->Attribute->get_definition_by_name($definition_name)[0];
+			$attribute_name = $definition['definition_name'];
+			$attribute_value = $line['attribute_' . $attribute_name];
 
-				if($attribute_data['definition_type'] === CHECKBOX)
+			//Create attribute value
+			if(!empty($attribute_value) || $attribute_value === '0')
+			{
+				if($definition['definition_type'] === CHECKBOX)
 				{
-					if(strcasecmp($line['attribute_' . $definition_name],'FALSE') === 0 || $line['attribute_' . $definition_name] === '0')
+					if(strcasecmp($attribute_value,'FALSE') === 0 || $attribute_value === '0')
 					{
-						$line['attribute_' . $definition_name] = '0';
+						$attribute_value = '0';
 					}
 					else
 					{
-						$line['attribute_' . $definition_name] = '1';
+						$attribute_value = '1';
 					}
 
-					$attribute_id = $this->store_attribute_value($line['attribute_' . $definition_name], $attribute_data, $item_data['item_id']);
+					$attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
 				}
-				elseif(!empty($line['attribute_' . $definition_name]))
+				elseif(!empty($attribute_value))
 				{
-					$attribute_id = $this->store_attribute_value($line['attribute_' . $definition_name], $attribute_data, $item_data['item_id']);
+					$attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
 				}
 				else
 				{
