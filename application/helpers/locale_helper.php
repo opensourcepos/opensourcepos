@@ -581,12 +581,12 @@ function dateformat_bootstrap($php_format)
 
 function valid_date($date)
 {
-	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
+	return (preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date) === 1);
 }
 
 function valid_decimal($decimal)
 {
-	return preg_match('/^(\d*\.)?\d+$/', $decimal);
+	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
 
 ?>
