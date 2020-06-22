@@ -397,7 +397,7 @@ class Sale extends CI_Model
 	 */
 	public function get_search_suggestions($search, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		if(!$this->is_valid_receipt($search))
 		{

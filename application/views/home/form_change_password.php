@@ -6,7 +6,7 @@
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="employee_login_info">
 			<fieldset>
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -22,9 +22,9 @@
 					</div>
 				</div>
 
-				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
+				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : []; ?>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('employees_current_password'), 'current_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -52,7 +52,7 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -79,7 +79,7 @@ $(document).ready(function()
 	$.validator.addMethod("notEqualTo", function(value, element, param) {
 		return this.optional(element) || value != $(param).val();
 	}, '<?php echo $this->lang->line('employees_password_not_must_match'); ?>');
-	
+
 	$('#employee_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -104,14 +104,14 @@ $(document).ready(function()
 				required:true,
 				minlength: 8,
 				notEqualTo: "#current_password"
-			},	
+			},
 			repeat_password:
 			{
  				equalTo: "#password"
 			}
    		},
 
-		messages: 
+		messages:
 		{
 			password:
 			{

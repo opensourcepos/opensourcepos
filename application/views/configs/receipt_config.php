@@ -206,21 +206,21 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_printer'), 'config_receipt_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('receipt_printer',	array(), ' ', 'id="receipt_printer" class="form-control"'); ?>
+					<?php echo form_dropdown('receipt_printer', [], ' ', 'id="receipt_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_invoice_printer'), 'config_invoice_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('invoice_printer', array(), ' ', 'id="invoice_printer" class="form-control"'); ?>
+					<?php echo form_dropdown('invoice_printer', [], ' ', 'id="invoice_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_takings_printer'), 'config_takings_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('takings_printer', array(), ' ', 'id="takings_printer" class="form-control"'); ?>
+					<?php echo form_dropdown('takings_printer', [], ' ', 'id="takings_printer" class="form-control"'); ?>
 				</div>
 			</div>
 

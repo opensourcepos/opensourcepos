@@ -91,22 +91,22 @@ class Detailed_receivings extends Report
 		$this->db->group_by('receiving_id', 'receiving_date');
 		$this->db->order_by('receiving_id');
 
-		$data = array();
+		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
+		$data['details'] = [];
 
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('
-				MAX(name) AS name, 
-				item_number, 
-				category, 
-				quantity_purchased, 
-				serialnumber, 
-				total, 
-				discount, 
-				discount_type, 
-				item_location, 
+				MAX(name) AS name,
+				item_number,
+				category,
+				quantity_purchased,
+				serialnumber,
+				total,
+				discount,
+				discount_type,
+				item_location,
 				receivings_items_temp.receiving_quantity');
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');

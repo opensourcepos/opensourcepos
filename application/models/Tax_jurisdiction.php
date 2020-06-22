@@ -117,7 +117,7 @@ class Tax_jurisdiction extends CI_Model
 	{
 		$this->db->trans_start();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
 		foreach($array_save as $key => $value)
 		{

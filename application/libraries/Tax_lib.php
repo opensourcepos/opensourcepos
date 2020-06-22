@@ -58,8 +58,8 @@ class Tax_lib
 		$tax_decimals = tax_decimals();
 		$customer_id = $this->CI->sale_lib->get_customer();
 		$customer_info = $this->CI->Customer->get_info($customer_id);
-		$taxes = array();
-		$item_taxes = array();
+		$taxes = [];
+		$item_taxes = [];
 
 		// Charge sales tax if customer is not selected (walk-in) or customer is flagged as taxable
 		if($customer_id == -1 || $customer_info->taxable)
@@ -101,7 +101,7 @@ class Tax_lib
 							$tax_group_sequence += 1;
 							$taxed = TRUE;
 						}
-						$items_taxes_detail = array();
+						$items_taxes_detail = [];
 						$items_taxes_detail['item_id'] = $item['item_id'];
 						$items_taxes_detail['line'] = $item['line'];
 						$items_taxes_detail['name'] = $tax['name'];
@@ -141,7 +141,7 @@ class Tax_lib
 			$this->round_taxes($taxes);
 		}
 
-		$tax_details = array();
+		$tax_details = [];
 		$tax_details[0] = $taxes;
 		$tax_details[1] = $item_taxes;
 
@@ -202,7 +202,7 @@ class Tax_lib
 	{
 		if(!empty($taxes))
 		{
-			$sort = array();
+			$sort = [];
 			foreach($taxes as $k => $v)
 			{
 				$sort['print_sequence'][$k] = $v['print_sequence'];
@@ -225,7 +225,7 @@ class Tax_lib
 	{
 		if(!empty($taxes))
 		{
-			$sort = array();
+			$sort = [];
 			foreach($taxes as $k => $v)
 			{
 				$sort['print_sequence'][$k] = $v['print_sequence'];
@@ -341,7 +341,7 @@ class Tax_lib
 					$this->update_taxes($taxes, $tax_type, $tax['tax_group'], $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
 				}
 
-				$item_taxes_detail = array();
+				$item_taxes_detail = [];
 				$item_taxes_detail['line'] = $line;
 				$item_taxes_detail['item_id'] = $item['item_id'];
 				$item_taxes_detail['name'] = $tax['tax_group'];
@@ -394,7 +394,7 @@ class Tax_lib
 	public function get_tax_code_options()
 	{
 		$tax_codes = $this->CI->Tax_code->get_all()->result_array();
-		$tax_code_options = array();
+		$tax_code_options = [];
 		$tax_code_options[''] = '';
 		foreach($tax_codes as $tax_code)
 		{
@@ -409,7 +409,7 @@ class Tax_lib
 	public function get_tax_jurisdiction_options()
 	{
 		$tax_jurisdictions = $this->CI->Tax_jurisdiction->get_all()->result_array();
-		$tax_jurisdiction_options = array();
+		$tax_jurisdiction_options = [];
 		$tax_jurisdiction_options[0] = '';
 		foreach($tax_jurisdictions as $tax_jurisdiction)
 		{
@@ -424,7 +424,7 @@ class Tax_lib
 	public function get_tax_category_options()
 	{
 		$tax_categories = $this->CI->Tax_category->get_all()->result_array();
-		$tax_category_options = array();
+		$tax_category_options = [];
 		$tax_category_options[0] = '';
 		foreach($tax_categories as $tax_category)
 		{

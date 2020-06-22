@@ -4,9 +4,9 @@
  */
 class Attribute extends CI_Model
 {
-	const SHOW_IN_ITEMS = 1;
-	const SHOW_IN_SALES = 2;
-	const SHOW_IN_RECEIVINGS = 4;
+	const SHOW_IN_ITEMS			= 1;
+	const SHOW_IN_SALES			= 2;
+	const SHOW_IN_RECEIVINGS	= 4;
 
 	public static function get_definition_flags()
 	{
@@ -164,7 +164,7 @@ class Attribute extends CI_Model
 			return $this->_to_array($results, 'definition_id');
 		}
 
-		return array();
+		return [];
 	}
 
 	public function get_definitions_by_type($attribute_type, $definition_id = NO_DEFINITION_ID)
@@ -210,9 +210,8 @@ class Attribute extends CI_Model
 			$this->db->where_not_in('definition_type',GROUP);
 		}
 
-		$results = $this->db->get('attribute_definitions')->result_array();
-
-		$definition_name = array(-1 => $this->lang->line('common_none_selected_text'));
+		$results 			= $this->db->get('attribute_definitions')->result_array();
+		$definition_name	= array(-1 => $this->lang->line('common_none_selected_text'));
 
 		return $definition_name + $this->_to_array($results, 'definition_id', 'definition_name');
 	}
@@ -562,7 +561,7 @@ class Attribute extends CI_Model
 
 	public function get_suggestions($definition_id, $term)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$this->db->distinct();
 		$this->db->select('attribute_value, attribute_values.attribute_id');
 		$this->db->from('attribute_definitions AS definition');

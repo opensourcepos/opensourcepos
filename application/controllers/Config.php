@@ -20,7 +20,7 @@ class Config extends Secure_Controller
 		$i = 0;
 		$bower = FALSE;
 		$composer = FALSE;
-		$license = array();
+		$license = [];
 
 		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
 
@@ -174,7 +174,7 @@ class Config extends Secure_Controller
 	 */
 	private function _themes()
 	{
-		$themes = array();
+		$themes = [];
 
 		// read all themes in the dist folder
 		$dir = new DirectoryIterator('dist/bootswatch');
@@ -225,7 +225,7 @@ class Config extends Secure_Controller
 		$data['selected_image_allowed_types'] 	= explode('|',$this->config->item('image_allowed_types'));
 
 		//Load Integrations Related fields
-		$data['mailchimp']	= array();
+		$data['mailchimp']	= [];
 
 		if($this->_check_encryption())
 		{
@@ -464,7 +464,7 @@ class Config extends Secure_Controller
 	{
 		$this->load->library('mailchimp_lib', array('api_key' => $api_key));
 
-		$result = array();
+		$result = [];
 
 		if(($lists = $this->mailchimp_lib->getLists()) !== FALSE)
 		{
@@ -573,7 +573,7 @@ class Config extends Secure_Controller
 	{
 		$this->db->trans_start();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 		foreach($this->input->post() as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
@@ -622,7 +622,7 @@ class Config extends Secure_Controller
 
 		if($dinner_table_enable)
 		{
-			$not_to_delete = array();
+			$not_to_delete = [];
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
@@ -702,8 +702,8 @@ class Config extends Secure_Controller
 
 		if($customer_reward_enable)
 		{
-			$not_to_delete = array();
-			$array_save = array();
+			$not_to_delete = [];
+			$array_save = [];
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')

@@ -24,7 +24,7 @@
 
 		<div class="tab-pane" id="employee_login_info">
 			<fieldset>
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -39,9 +39,9 @@
 					</div>
 				</div>
 
-				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
+				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : []; ?>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -73,19 +73,19 @@
 					<?php echo form_label($this->lang->line('employees_language'), 'language', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<?php 
+							<?php
 								$languages = get_languages();
 								$languages[':'] = $this->lang->line('employees_system_language');
 								$language_code = current_language_code();
 								$language = current_language();
-								
+
 								// If No language is set then it will display "System Language"
 								if($language_code === current_language_code(TRUE))
 								{
 									$language_code = '';
 									$language = '';
 								}
-								
+
 								echo form_dropdown(
 									'language',
 									$languages,
@@ -108,7 +108,7 @@
 					foreach($all_modules as $module)
 					{
 					?>
-						<li>	
+						<li>
 							<?php echo form_checkbox("grant_".$module->module_id, $module->module_id, $module->grant, "class='module'"); ?>
 							<?php echo form_dropdown("menu_group_".$module->module_id, array(
 								'home' => $this->lang->line('module_home'),
@@ -188,7 +188,7 @@ $(document).ready(function()
 			updateInputs($this.is(':checked'));
 		});
 	});
-	
+
 	$('#employee_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -223,7 +223,7 @@ $(document).ready(function()
 				}
 				?>
 				minlength: 8
-			},	
+			},
 			repeat_password:
 			{
 				equalTo: '#password'
@@ -231,7 +231,7 @@ $(document).ready(function()
 			email: 'email'
 		},
 
-		messages: 
+		messages:
 		{
 			first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
 			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",

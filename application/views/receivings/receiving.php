@@ -31,7 +31,7 @@ if (isset($success))
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 
-				<?php 
+				<?php
 				if ($show_stock_locations)
 				{
 				?>
@@ -41,7 +41,7 @@ if (isset($success))
 					<li class="pull-left">
 						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
-					
+
 					<?php
 					if($mode=='requisition')
 					{
@@ -78,7 +78,7 @@ if (isset($success))
 							<?php echo $this->lang->line('receivings_find_or_scan_item_or_receipt'); ?>
 						<?php
 						}
-						?>			
+						?>
 					</label>
 				</li>
 				<li class="pull-left">
@@ -96,7 +96,7 @@ if (isset($success))
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
-	
+
 <!-- Receiving Items List -->
 
 	<table class="sales_table_100" id="register">
@@ -140,7 +140,7 @@ if (isset($success))
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
-							<?php 
+							<?php
 							if ($items_module_allowed && $mode !='requisition')
 							{
 							?>
@@ -157,11 +157,11 @@ if (isset($success))
 							<?php
 							}
 							?>
-							
+
 							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']),'onClick'=>'this.select();')); ?></td>
 							<td><?php echo form_dropdown('receiving_quantity', $item['receiving_quantity_choices'], $item['receiving_quantity'], array('class'=>'form-control input-sm'));?></td>
 
-							<?php       
+							<?php
 							if ($items_module_allowed && $mode!='requisition')
 							{
 							?>
@@ -171,7 +171,7 @@ if (isset($success))
 									<span class="input-group-btn">
 										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
 									</span>
-								</div> 
+								</div>
 							</td>
 							<?php
 							}
@@ -184,17 +184,17 @@ if (isset($success))
 							}
 							?>
 							<td>
-							<?php echo to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']); ?></td> 
+							<?php echo to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']); ?></td>
 							<td><a href="javascript:$('#<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
-							<?php 
+							<?php
 							if($item['allow_alt_description']==1)
 							{
 							?>
 								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-							<?php 
-							} 
+							<?php
+							}
 							?>
 							<td colspan='2' style="text-align: left;">
 								<?php
@@ -275,7 +275,7 @@ if (isset($success))
 				}
 				?>
 			</table>
-			
+
 			<?php echo anchor($controller_name."/remove_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
 								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'))); ?>
 		<?php
@@ -307,14 +307,14 @@ if (isset($success))
 				?>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_total'); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($total); ?></th>
-				<?php 
+				<?php
 				}
 				else
 				{
 				?>
 					<th style="width: 55%;"></th>
 					<th style="width: 45%; text-align: right;"></th>
-				<?php 
+				<?php
 				}
 				?>
 			</tr>
@@ -335,7 +335,7 @@ if (isset($success))
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4')); ?>
 
 							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('receivings_cancel_receiving'); ?></div>
-							
+
 							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('receivings_complete_receiving'); ?></div>
 						</div>
 					<?php echo form_close(); ?>
@@ -372,7 +372,7 @@ if (isset($success))
 									<tr>
 										<td><?php echo $this->lang->line('sales_payment'); ?></td>
 										<td>
-											<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
+											<?php echo form_dropdown('payment_type', $payment_options, [], array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
 										</td>
 									</tr>
 									<tr>
@@ -385,7 +385,7 @@ if (isset($success))
 							</div>
 
 							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('receivings_cancel_receiving') ?></div>
-							
+
 							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('receivings_complete_receiving') ?></div>
 						</div>
 					<?php echo form_close(); ?>
@@ -429,12 +429,12 @@ $(document).ready(function()
 		$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
 	});
 
-	$('#comment').keyup(function() 
+	$('#comment').keyup(function()
 	{
 		$.post('<?php echo site_url($controller_name."/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#recv_reference').keyup(function() 
+	$('#recv_reference').keyup(function()
 	{
 		$.post('<?php echo site_url($controller_name."/set_reference");?>', {recv_reference: $('#recv_reference').val()});
 	});

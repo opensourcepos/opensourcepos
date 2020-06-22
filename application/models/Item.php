@@ -546,7 +546,7 @@ class Item extends CI_Model
 
 	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -645,7 +645,7 @@ class Item extends CI_Model
 
 	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -746,7 +746,7 @@ class Item extends CI_Model
 
 	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select('item_id, name');
@@ -855,7 +855,7 @@ class Item extends CI_Model
 
 	public function get_low_sell_suggestions($search)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$this->db->select($this->get_search_suggestion_format('item_id, pack_name'));
 		$this->db->from('items');
@@ -873,7 +873,7 @@ class Item extends CI_Model
 
 	public function get_category_suggestions($search)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$this->db->distinct();
 		$this->db->select('category');
 		$this->db->from('items');
@@ -890,7 +890,7 @@ class Item extends CI_Model
 
 	public function get_location_suggestions($search)
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$this->db->distinct();
 		$this->db->select('location');
 		$this->db->from('items');

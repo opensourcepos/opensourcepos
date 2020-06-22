@@ -30,7 +30,7 @@ class Giftcards extends Secure_Controller
 		$giftcards = $this->Giftcard->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Giftcard->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($giftcards->result() as $giftcard)
 		{
 			$data_rows[] = $this->xss_clean(get_giftcard_data_row($giftcard));
@@ -122,7 +122,7 @@ class Giftcards extends Secure_Controller
 		else //failure
 		{
 			$giftcard_data = $this->xss_clean($giftcard_data);
-			
+
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('giftcards_error_adding_updating') . ' ' .
 							$giftcard_data['giftcard_number'], 'id' => -1));
 		}

@@ -64,7 +64,7 @@ class Customers extends Persons
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($customers->result() as $person)
 		{
 			// retrieve the total amount the customer spent so far together with min, max and average values
@@ -375,7 +375,7 @@ class Customers extends Persons
 				fgetcsv($handle);
 				$i = 1;
 
-				$failCodes = array();
+				$failCodes = [];
 
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{

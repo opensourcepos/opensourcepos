@@ -86,7 +86,7 @@
 		*/
 
 		$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->result_array();
-		$employee_name = array();
+		$employee_name = [];
 
 		foreach($inventory_array as $row)
 		{

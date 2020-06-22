@@ -239,7 +239,7 @@ function get_payment_options()
 	$config = get_instance()->config;
 	$lang = get_instance()->lang;
 
-	$payments = array();
+	$payments = [];
 
 
 	if($config->item('payment_options_order') == 'debitcreditcash')

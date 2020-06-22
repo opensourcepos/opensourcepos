@@ -164,7 +164,7 @@ class Giftcard extends CI_Model
 	*/
 	public function get_search_suggestions($search, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$this->db->from('giftcards');
 		$this->db->like('giftcard_number', $search);

@@ -9,7 +9,7 @@ Basic tabular headers function
 */
 function transform_headers_readonly($array)
 {
-	$result = array();
+	$result = [];
 
 	foreach($array as $key => $value)
 	{
@@ -24,7 +24,7 @@ Basic tabular headers function
 */
 function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 {
-	$result = array();
+	$result = [];
 
 	if(!$readonly)
 	{
@@ -534,7 +534,7 @@ function get_item_kit_data_row($item_kit)
 }
 
 function parse_attribute_values($columns, $row) {
-	$attribute_values = array();
+	$attribute_values = [];
 	foreach($columns as $column) {
 		if (array_key_exists($column, $row))
 		{
@@ -549,7 +549,7 @@ function expand_attribute_values($definition_names, $row)
 {
 	$values = parse_attribute_values(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
 
-	$indexed_values = array();
+	$indexed_values = [];
 	foreach($values as $attribute_value)
 	{
 		$exploded_value = explode('_', $attribute_value);
@@ -559,7 +559,7 @@ function expand_attribute_values($definition_names, $row)
 		}
 	}
 
-	$attribute_values = array();
+	$attribute_values = [];
 	foreach($definition_names as $definition_id => $definition_name)
 	{
 		if(isset($indexed_values[$definition_id]))

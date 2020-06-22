@@ -137,20 +137,7 @@ class Person extends CI_Model
 	 */
 	public function get_search_suggestions($search, $limit = 25)
 	{
-		$suggestions = array();
-
-//		$this->db->select('person_id');
-//		$this->db->from('people');
-//		$this->db->where('deleted', 0);
-//		$this->db->where('person_id', $search);
-//		$this->db->group_start();
-//			$this->db->like('first_name', $search);
-//			$this->db->or_like('last_name', $search);
-//			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-//			$this->db->or_like('email', $search);
-//			$this->db->or_like('phone_number', $search);
-//			$this->db->group_end();
-//		$this->db->order_by('last_name', 'asc');
+		$suggestions = [];
 
 		foreach($this->db->get()->result() as $row)
 		{

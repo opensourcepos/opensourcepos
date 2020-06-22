@@ -90,7 +90,7 @@ class Sales extends Secure_Controller
 		$payments = $this->Sale->get_payments_summary($search, $filters);
 		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales));
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($sales->result() as $sale)
 		{
 			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
@@ -106,7 +106,7 @@ class Sales extends Secure_Controller
 
 	public function item_search()
 	{
-		$suggestions = array();
+		$suggestions = [];
 		$receipt = $search = $this->input->get('term') != '' ? $this->input->get('term') : NULL;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->Sale->is_valid_receipt($receipt))
@@ -265,7 +265,7 @@ class Sales extends Secure_Controller
 	// Multiple Payments
 	public function add_payment()
 	{
-		$data = array();
+		$data = [];
 
 		$payment_type = $this->input->post('payment_type');
 		if($payment_type != $this->lang->line('sales_giftcard'))
@@ -373,7 +373,7 @@ class Sales extends Secure_Controller
 
 	public function add()
 	{
-		$data = array();
+		$data = [];
 
 		$discount = $this->config->item('default_sales_discount');
 		$discount_type = $this->config->item('default_sales_discount_type');
@@ -459,7 +459,7 @@ class Sales extends Secure_Controller
 
 	public function edit_item($item_id)
 	{
-		$data = array();
+		$data = [];
 
 		$this->form_validation->set_rules('price', 'lang:sales_price', 'required|callback_numeric');
 		$this->form_validation->set_rules('quantity', 'lang:sales_quantity', 'required|callback_numeric');
@@ -512,7 +512,7 @@ class Sales extends Secure_Controller
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		$sale_type = $this->sale_lib->get_sale_type();
-		$data = array();
+		$data = [];
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 
 		$data['cart'] = $this->sale_lib->get_cart();
@@ -905,7 +905,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->reset_cash_flags();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
-		$data = array();
+		$data = [];
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
@@ -1004,7 +1004,7 @@ class Sales extends Secure_Controller
 		return $this->xss_clean($data);
 	}
 
-	private function _reload($data = array())
+	private function _reload($data = [])
 	{
 		$sale_id = $this->session->userdata('sale_id');
 		if($sale_id == '')
@@ -1133,7 +1133,7 @@ class Sales extends Secure_Controller
 
 	public function edit($sale_id)
 	{
-		$data = array();
+		$data = [];
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());
 		$data['selected_customer_id'] = $sale_info['customer_id'];
@@ -1148,7 +1148,7 @@ class Sales extends Secure_Controller
 			$balance_due = 0;
 		}
 
-		$data['payments'] = array();
+		$data['payments'] = [];
 		foreach($this->Sale->get_sale_payments($sale_id)->result() as $payment)
 		{
 			foreach(get_object_vars($payment) as $property => $value)
@@ -1245,7 +1245,7 @@ class Sales extends Secure_Controller
 		);
 
 		// In order to maintain tradition the only element that can change on prior payments is the payment type
-		$payments = array();
+		$payments = [];
 		$number_of_payments = $this->input->post('number_of_payments');
 		for($i = 0; $i < $number_of_payments; ++$i)
 		{
@@ -1363,8 +1363,8 @@ class Sales extends Secure_Controller
 		$comment = $this->sale_lib->get_comment();
 		$sale_status = SUSPENDED;
 
-		$data = array();
-		$sales_taxes = array(array(), array());
+		$data = [];
+		$sales_taxes = array([], []);
 		if($this->Sale->save($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
@@ -1383,7 +1383,7 @@ class Sales extends Secure_Controller
 	 */
 	public function suspended()
 	{
-		$data = array();
+		$data = [];
 		$customer_id = $this->sale_lib->get_customer();
 		$data['suspended_sales'] = $this->xss_clean($this->Sale->get_all_suspended($customer_id));
 		$this->load->view('sales/suspended', $data);
@@ -1419,7 +1419,7 @@ class Sales extends Secure_Controller
 
 	public function get_filtered($cart)
 	{
-		$filtered_cart = array();
+		$filtered_cart = [];
 		foreach($cart as $id => $item)
 		{
 			if($item['print_option'] == PRINT_ALL) // always include

@@ -286,7 +286,7 @@ class Customer extends Person
 	*/
 	public function get_search_suggestions($search, $unique = TRUE, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');

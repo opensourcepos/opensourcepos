@@ -60,7 +60,7 @@ class MailchimpConnector
 	 * @param  array  $args     An array of arguments to pass to the method. Will be json-encoded for you.
 	 * @return array            Associative array of json decoded API response.
 	 */
-	public function call($httpVerb = 'POST', $method, $args = array())
+	public function call($httpVerb = 'POST', $method, $args = [])
 	{
 		if(!empty($this->_api_key))
 		{
@@ -77,7 +77,7 @@ class MailchimpConnector
 	 * @param  array  $args     Assoc array of parameters to be passed
 	 * @return string           Request URL
 	 */
-	private function _build_request_url($httpVerb = 'POST', $method, $args = array())
+	private function _build_request_url($httpVerb = 'POST', $method, $args = [])
 	{
 		if($httpVerb == 'GET')
 		{
@@ -94,7 +94,7 @@ class MailchimpConnector
 	 * @param  array  $args     Assoc array of parameters to be passed
 	 * @return array            Assoc array of decoded result
 	 */
-	private function _request($httpVerb, $method, $args = array())
+	private function _request($httpVerb, $method, $args = [])
 	{
 		$result = FALSE;
 
@@ -133,7 +133,7 @@ class Mailchimp_lib
 {
 	private $_connector;
 
-	public function __construct(array $params = array())
+	public function __construct(array $params = [])
 	{
 		$api_key = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';
 		$this->_connector = new MailchimpConnector($api_key);
@@ -228,7 +228,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	*/
-	public function getMemberInfo($list_id, $email, $parameters = array())
+	public function getMemberInfo($list_id, $email, $parameters = [])
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
@@ -247,7 +247,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
 	*/
-	public function getMemberActivity($list_id, $email, $parameters = array())
+	public function getMemberActivity($list_id, $email, $parameters = [])
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);
 	}
@@ -266,7 +266,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
 	*/
-	public function addMember($list_id, $email, $first_name, $last_name, $parameters = array())
+	public function addMember($list_id, $email, $first_name, $last_name, $parameters = [])
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -311,7 +311,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
 	*/
-	public function updateMember($list_id, $email, $first_name, $last_name, $parameters = array())
+	public function updateMember($list_id, $email, $first_name, $last_name, $parameters = [])
 	{
 		$parameters += [
 			'status' => 'subscribed',
@@ -338,7 +338,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
 	*/
-	public function addOrUpdateMember($list_id, $email, $first_name, $last_name, $status, $parameters = array())
+	public function addOrUpdateMember($list_id, $email, $first_name, $last_name, $status, $parameters = [])
 	{
 		$parameters += [
 			'email_address' => $email,

@@ -30,7 +30,7 @@ class Expenses_categories extends Secure_Controller
 		$expense_categories = $this->Expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Expense_category->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($expense_categories->result() as $expense_category)
 		{
 			$data_rows[] = $this->xss_clean(get_expense_category_data_row($expense_category));

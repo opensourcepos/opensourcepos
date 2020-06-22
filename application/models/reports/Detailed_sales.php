@@ -68,9 +68,9 @@ class Detailed_sales extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, 
+		$this->db->select('sale_id,
 			MAX(CASE
-			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_pos') . '\'			
+			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_invoice') . '\'
 			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_work_order') . '\'
 			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_quote') . '\'
@@ -137,27 +137,27 @@ class Detailed_sales extends Report
 		$this->db->group_by('sale_id');
 		$this->db->order_by('MAX(sale_date)');
 
-		$data = array();
+		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
-		$data['rewards'] = array();
+		$data['details'] = [];
+		$data['rewards'] = [];
 
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('
-				name, 
-				category, 
-				quantity_purchased, 
-				item_location, 
-				item_number, 
-				description, 
-				subtotal, 
-				tax, 
-				total, 
-				cost, 
-				profit, 
-				discount, 
-				discount_type, 
+				name,
+				category,
+				quantity_purchased,
+				item_location,
+				item_number,
+				description,
+				subtotal,
+				tax,
+				total,
+				cost,
+				profit,
+				discount,
+				discount_type,
 				sale_status');
 			$this->db->from('sales_items_temp');
 			if(count($inputs['definition_ids']) > 0)

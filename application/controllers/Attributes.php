@@ -30,7 +30,7 @@ class Attributes extends Secure_Controller
 		$attributes = $this->Attribute->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Attribute->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($attributes->result() as $attribute)
 		{
 			$attribute->definition_flags = $this->_get_attributes($attribute->definition_flags);
@@ -60,7 +60,7 @@ class Attributes extends Secure_Controller
 	{
 		$definition_flags = 0;
 
-		$flags = (empty($this->input->post('definition_flags'))) ? array() : $this->input->post('definition_flags');
+		$flags = (empty($this->input->post('definition_flags'))) ? [] : $this->input->post('definition_flags');
 
 		foreach($flags as $flag)
 		{
@@ -129,7 +129,7 @@ class Attributes extends Secure_Controller
 
 	private function _get_attributes($definition_flags = 0)
 	{
-		$definition_flag_names = array();
+		$definition_flag_names = [];
 		foreach (Attribute::get_definition_flags() as $id => $term)
 		{
 			if ($id & $definition_flags)
