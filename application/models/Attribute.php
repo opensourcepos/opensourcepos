@@ -34,19 +34,19 @@ class Attribute extends CI_Model
 	 */
 	public function link_exists($item_id, $definition_id = FALSE)
 	{
-		$this->db->where('sale_id');
-		$this->db->where('receiving_id');
-		$this->db->where('item_id', $item_id);
-
 		if(empty($definition_id))
 		{
-			$this->db->where('definition_id <>');
 			$this->db->where('attribute_id');
+			$this->db->where('definition_id <>');
 		}
 		else
 		{
 			$this->db->where('definition_id', $definition_id);
 		}
+
+		$this->db->where('item_id', $item_id);
+		$this->db->where('sale_id');
+		$this->db->where('receiving_id');
 
 		return ($this->db->get('attribute_links')->num_rows() > 0);
 	}
@@ -138,8 +138,8 @@ class Attribute extends CI_Model
 	{
 		$this->db->join('attribute_links', 'attribute_links.definition_id = attribute_definitions.definition_id');
 		$this->db->where('item_id', $item_id);
-		$this->db->where('receiving_id');
 		$this->db->where('sale_id');
+		$this->db->where('receiving_id');
 		$this->db->where('deleted', 0);
 		$this->db->order_by('definition_name','ASC');
 
@@ -504,8 +504,8 @@ class Attribute extends CI_Model
 
 	public function get_link_value($item_id, $definition_id)
 	{
-		$this->db->where('item_id', $item_id);
 		$this->db->where('definition_id', $definition_id);
+		$this->db->where('item_id', $item_id);
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
 
@@ -521,6 +521,7 @@ class Attribute extends CI_Model
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$this->db->where('definition_type <>', GROUP);
 		$this->db->where('deleted', 0);
+		$this->db->where('item_id', (int) $item_id);
 
 		if(!empty($id))
 		{
@@ -532,7 +533,6 @@ class Attribute extends CI_Model
 			$this->db->where('receiving_id');
 		}
 
-		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
 
 		return $this->db->get('attribute_links');
@@ -542,9 +542,9 @@ class Attribute extends CI_Model
 	{
 		$this->db->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
 		$this->db->where('definition_id', $definition_id);
+		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
-		$this->db->where('item_id', (int) $item_id);
 
 		return $this->db->get('attribute_values')->row_object();
 	}
