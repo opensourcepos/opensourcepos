@@ -1110,7 +1110,7 @@ class Items extends Secure_Controller
 	 */
 	private function store_attribute_value($value, $attribute_data, $item_id)
 	{
-		$attribute_id = $this->Attribute->value_exists($value);
+		$attribute_id = $this->Attribute->value_exists($value, $attribute_data['definition_type']);
 
 		if($attribute_id === FALSE)
 		{
@@ -1134,7 +1134,7 @@ class Items extends Secure_Controller
 	{
 	//Quantities & Inventory Section
 		$comment			= $this->lang->line('items_inventory_CSV_import_quantity');
-		$is_update			= !empty($line['item_id']);
+		$is_update			= $line['Id'] ? TRUE : FALSE;
 
 		foreach($allowed_locations as $location_id => $location_name)
 		{

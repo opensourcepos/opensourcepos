@@ -579,6 +579,11 @@ function dateformat_bootstrap($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+/**
+ * Checks a date to make sure it matches MySQL valid format YYYY-MM-DD with HH:MM:SS optional
+ * @param unknown $date
+ * @return boolean
+ */
 function valid_date($date)
 {
 	return (preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date) === 1);

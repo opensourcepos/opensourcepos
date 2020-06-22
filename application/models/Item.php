@@ -14,14 +14,13 @@ class Item extends CI_Model
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
-			$this->db->from('items');
 			$this->db->where('item_id', (int) $item_id);
-			if($ignore_deleted == FALSE)
+			if($ignore_deleted === FALSE)
 			{
 				$this->db->where('deleted', $deleted);
 			}
 
-			return ($this->db->get()->num_rows() == 1);
+			return ($this->db->get('items')->num_rows() === 1);
 		}
 
 		return FALSE;
