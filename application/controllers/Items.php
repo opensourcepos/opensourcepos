@@ -869,11 +869,11 @@ class Items extends Secure_Controller
 
 				$this->db->trans_begin();
 
-				for($i = 1; $i < count($line_array); $i++)
+				for($row_number = 1; $row_number < count($line_array); $row_number++)
 				{
 					$invalidated	= FALSE;
 
-					$line = array_combine($keys,$this->xss_clean($line_array[$i]));	//Build a XSS-cleaned associative array with the row to use to assign values
+					$line = array_combine($keys,$this->xss_clean($line_array[$row_number]));
 
 					$item_id	= $line['Id'];
 					$item_data	= array(
@@ -927,8 +927,8 @@ class Items extends Secure_Controller
 					}
 					else
 					{
-						$failed_row = $i+1;
-						$failCodes[] = $failed_row;
+						$failed_row		= $row_number+1;
+						$failCodes[]	= $failed_row;
 						log_message('ERROR',"CSV Item import failed on line $failed_row. This item was not imported.");
 					}
 				}
@@ -962,19 +962,20 @@ class Items extends Secure_Controller
 	 */
 	private function data_error_check($line, $item_data, $allowed_locations, $definition_names, $attribute_data)
 	{
-		$is_update = $item_data['item_id'] ? TRUE : FALSE;
+		$item_id	= $line['Id'];
+		$is_update	= $item_id ? TRUE : FALSE;
 
 	//Check for empty required fields
 		$check_for_empty = array(
-			$item_data['name'],
-			$item_data['category'],
-			$item_data['unit_price']);
+			'name'			=> $item_data['name'],
+			'category'		=> $item_data['category'],
+			'unit_price'	=> $item_data['unit_price']);
 
 		foreach($check_for_empty as $key => $val)
 		{
 			if (empty($val) && !$is_update)
 			{
-				log_message('ERROR',"Empty required value in $key");
+				log_message('Error',"Empty required value in $key");
 				return TRUE;
 			}
 		}
@@ -982,6 +983,14 @@ class Items extends Secure_Controller
 		if(!$is_update)
 		{
 			$item_data['cost_price'] = empty($item_data['cost_price']) ? 0 : $item_data['cost_price'];	//Allow for zero wholesale price
+		}
+		else
+		{
+			if(!$this->Item->exists($item_id))
+			{
+				log_message('Error',"non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
+				return TRUE;
+			}
 		}
 
 	//Build array of fields to check for numerics
@@ -1003,7 +1012,7 @@ class Items extends Secure_Controller
 		{
 			if(!is_numeric($value) && $value != '')
 			{
-				log_message('ERROR',"non-numeric: '$value' when numeric is required");
+				log_message('Error',"non-numeric: '$value' when numeric is required");
 				return TRUE;
 			}
 		}
@@ -1024,21 +1033,21 @@ class Items extends Secure_Controller
 
 						if(!empty($attribute_value) && in_array($attribute_value, $dropdown_values) === FALSE)
 						{
-							log_message('ERROR',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
+							log_message('Error',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
 							return TRUE;
 						}
 						break;
 					case DECIMAL:
 						if(!is_numeric($attribute_value) && !empty($attribute_value))
 						{
-							log_message('ERROR',"'$attribute_value' is not an acceptable DECIMAL value");
+							log_message('Error',"'$attribute_value' is not an acceptable DECIMAL value");
 							return TRUE;
 						}
 						break;
 					case DATE:
-						if(strtotime($attribute_value) === FALSE && !empty($attribute_value))
+						if(valid_date($attribute_value) === FALSE && !empty($attribute_value))
 						{
-							log_message('ERROR',"'$attribute_value' is not an acceptable DATE value.");
+							log_message('Error',"'$attribute_value' is not an acceptable DATE value. Requires YYYY-MM-DD format with optional HH:MM:SS.");
 							return TRUE;
 						}
 						break;
