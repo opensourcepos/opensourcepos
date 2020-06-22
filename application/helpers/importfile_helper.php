@@ -62,19 +62,31 @@ function get_csv_file($file_name)
 
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
+		$csv_rows = [];
+
 		//Skip Byte-Order Mark
 		if(bom_exists($csv_file) === TRUE)
 		{
 			fseek($csv_file, 3);
 		}
 
-		while (($data = fgetcsv($csv_file)) !== FALSE)
+		while(($data = fgetcsv($csv_file)) !== FALSE)
 		{
-		//Skip empty lines
+			//Skip empty lines
 			if(array(null) !== $data)
 			{
-				$line_array[] = $data;
+				$csv_rows[] = $data;
 			}
+		}
+
+		$CI =& get_instance();
+		$CI->load->helper('security');
+
+		$keys	= array_shift($csv_rows);
+
+		foreach($csv_rows as &$row)
+		{
+			$row = array_combine($keys,$CI->security->xss_clean($row));
 		}
 	}
 	else
@@ -82,7 +94,7 @@ function get_csv_file($file_name)
 		return FALSE;
 	}
 
-	return $line_array;
+	return $csv_rows;
 }
 
 /**
