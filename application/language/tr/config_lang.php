@@ -293,3 +293,4 @@ $lang["config_image_max_height_tooltip"] = "Görüntü yüklemelerinde piksel (p
 $lang["config_image_max_size_tooltip"] = "Görüntü yüklemelerinde kilobayt (kb) türünde izin verilen azami dosya boyutu.";
 $lang["config_image_max_width_tooltip"] = "Görüntü yüklemelerinde piksel (px) türünde izin verilen azami genişlik.";
 $lang["config_image_restrictions"] = "Görsel Yükleme Kısıtları";
+$lang["config_category_dropdown"] = "Kategoriyi açılır liste olarak göster";
