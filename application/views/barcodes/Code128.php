@@ -248,7 +248,7 @@ class Code128 extends BarcodeBase
 		// Bars is in reference to a single, 1-level bar
 		$numBarsRequired = ($this->type != self::TYPE_C) ? (sizeof($charAry) * 11) + 35 : ((sizeof($charAry)/2) * 11) + 35;
 		$this->x  = ($this->x == 0) ? $numBarsRequired : $this->x;
-		$pxPerBar = intval($this->x / $numBarsRequired));
+		$pxPerBar = intval($this->x / $numBarsRequired);
 		$currentX = ($this->x - ($numBarsRequired  * $pxPerBar)) / 2;
 
 		if ($pxPerBar < 1)
