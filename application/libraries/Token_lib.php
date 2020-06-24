@@ -88,7 +88,7 @@ class Token_lib
 			foreach($barcode_formats as $barcode_format)
 			{
 				$parsed_results = $this->parse($item_id_or_number_or_item_kit_or_receipt, $barcode_format, $barcode_tokens);
-				$quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
+				$quantity = (isset($parsed_results['W'])) ? intval($parsed_results['W']) / 1000 : 1;
 				$item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
 					$parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
 				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;

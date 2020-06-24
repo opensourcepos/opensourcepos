@@ -139,7 +139,19 @@ class Person extends CI_Model
 	{
 		$suggestions = [];
 
-		foreach($this->db->get()->result() as $row)
+		$this->db->select('person_id');
+		$this->db->where('deleted', 0);
+		$this->db->where('person_id', $search);
+		$this->db->group_start();
+			$this->db->like('first_name', $search);
+			$this->db->or_like('last_name', $search);
+			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
+			$this->db->or_like('email', $search);
+			$this->db->or_like('phone_number', $search);
+		$this->db->group_end();
+		$this->db->order_by('last_name', 'asc');
+
+		foreach($this->db->get('people')->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->person_id);
 		}

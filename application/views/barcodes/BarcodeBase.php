@@ -31,7 +31,7 @@ abstract class BarcodeBase
 	 * @var data - to be set
 	 */
 	protected $data = '';
-	
+
 	/*
 	 * @var int x (width)
 	 */
@@ -112,20 +112,20 @@ abstract class BarcodeBase
 	 */
 	public function setDimensions($x, $y)
 	{
-		$this->x = (int) $x;
-		$this->y = (int) $y;
+		$this->x = intval($x);
+		$this->y = intval($y);
 
 		return $this;
 	}
 
 	/*
 	 * Set Quality
-	 * @param int q - jpeg quality 
+	 * @param int q - jpeg quality
 	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
 	public function setQuality($q)
 	{
-		$this->jpgQuality = (int) $q;
+		$this->jpgQuality = intval($q);
 
 		return $this;
 	}
@@ -170,11 +170,11 @@ abstract class BarcodeBase
 	/*
 	 * Save Image
 	 *
-	 * @param string filename - File to write to (needs to have .png, .gif, or 
+	 * @param string filename - File to write to (needs to have .png, .gif, or
 	 *	.jpg extension)
 	 * @return void
-	 * @throws \RuntimeException - If the file could not be written or some 
-	 *	other I/O error. 
+	 * @throws \RuntimeException - If the file could not be written or some
+	 *	other I/O error.
 	 */
 	public function save($filename)
 	{
@@ -202,7 +202,7 @@ abstract class BarcodeBase
 	}
 
 	/*
-	 * Base64 Encoded 
+	 * Base64 Encoded
 	 * For ouput in-page
 	 * @return void
 	 */

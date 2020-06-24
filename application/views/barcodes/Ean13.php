@@ -8,7 +8,7 @@
  *
  * Minimum Requirement: PHP 5.3.0
  */
- 
+
 /**
  * Image_Barcode2_Driver_Ean13 class
  *
@@ -44,7 +44,7 @@ class Ean13 extends BarcodeBase
 {
 	/*
 	 * Coding map
-	 * @var array 
+	 * @var array
 	 */
 	private $_codingmap = array(
 		'0' => array(
@@ -101,7 +101,7 @@ class Ean13 extends BarcodeBase
 
 	/*
 	 * Coding map left
-	 * @var array 
+	 * @var array
 	 */
 	private $_codingmapleft = array(
 		'0' => array('A','A','A','A','A','A'),
@@ -145,7 +145,7 @@ class Ean13 extends BarcodeBase
 		// will work for codes of different lengths.
 		for ($i = strlen($number) - 1; $i >= 0; --$i)
 		{
-			$sum += (int)$number[$i] * ($weightflag?3:1);
+			$sum += intval($number[$i]) * ($weightflag?3:1);
 			$weightflag = !$weightflag;
 		}
 		$number .= (10 - ($sum % 10)) % 10;
@@ -201,26 +201,26 @@ class Ean13 extends BarcodeBase
 	{
 		// Bars is in reference to a single, 1-level bar
 		$pxPerBar = 2;
-		
+
 		// Calculate the barcode width
-		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar) 
+		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar)
 			+ 3 * $pxPerBar  // left
 			+ 5 * $pxPerBar  // center
 			+ 3 * $pxPerBar  // right
 			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
-			
+
 		$this->img = @imagecreate($this->x, $this->y);
-		
+
 		if (!$this->img)
 		{
 			throw new \RuntimeException("Ean13: Image failed to initialize");
 		}
-		
+
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
-		
+
 		// Fill image with white color
 		imagefill($this->img, 0, 0, $white);
 
@@ -229,7 +229,7 @@ class Ean13 extends BarcodeBase
 
 		// Initiate x position centering the bar
 		$xpos = ($this->x - $barcodewidth) / 2;
- 
+
 		// Draws the left guard pattern (bar-space-bar)
 		// bar
 		imagefilledrectangle(
@@ -237,7 +237,7 @@ class Ean13 extends BarcodeBase
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
-			$this->y, 
+			$this->y,
 			$black
 		);
 

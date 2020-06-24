@@ -416,7 +416,7 @@ class Attribute extends CI_Model
 		{
 			if($this->exists($definition_id,TRUE))
 			{
-				$success = $this->undelete($definition_id);
+				$success = $this->undelete_definition($definition_id);
 			}
 			else
 			{
@@ -498,8 +498,11 @@ class Attribute extends CI_Model
 	{
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
+		$success = $this->db->delete('attribute_links', array('item_id' => $item_id));
 
-		return $this->db->delete('attribute_links', array('item_id' => $item_id));
+		$this->delete_orphaned_values();
+
+		return $success;
 	}
 
 	public function get_link_value($item_id, $definition_id)
@@ -521,7 +524,7 @@ class Attribute extends CI_Model
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$this->db->where('definition_type <>', GROUP);
 		$this->db->where('deleted', 0);
-		$this->db->where('item_id', (int) $item_id);
+		$this->db->where('item_id', intval($item_id));
 
 		if(!empty($id))
 		{
@@ -542,7 +545,7 @@ class Attribute extends CI_Model
 	{
 		$this->db->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
 		$this->db->where('definition_id', $definition_id);
-		$this->db->where('item_id', (int) $item_id);
+		$this->db->where('item_id', intval($item_id));
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
 
@@ -666,7 +669,8 @@ class Attribute extends CI_Model
 	}
 
 	/**
-	 * Deletes any orphaned links for a definition
+	 * Deletes any attribute_links for a specific definition that do not have an item_id associated with them and are not DROPDOWN types
+	 *
 	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */

@@ -267,12 +267,12 @@ class Tax_lib
 			}
 			elseif($rounding_code == Rounding_mode::ROUND_UP)
 			{
-				$fig = (int)str_pad('1', $decimals, '0');
+				$fig = intval(str_pad('1', $decimals, '0'));
 				$rounded_tax_amount = ceil($tax_amount * $fig) / $fig;
 			}
 			elseif($rounding_code == Rounding_mode::ROUND_DOWN)
 			{
-				$fig = (int)str_pad('1', $decimals, '0');
+				$fig = intval(str_pad('1', $decimals, '0'));
 				$rounded_tax_amount = floor($tax_amount * $fig) / $fig;
 			}
 			elseif($rounding_code == Rounding_mode::HALF_FIVE)
