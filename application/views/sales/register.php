@@ -58,7 +58,7 @@ if(isset($success))
 				<li class="pull-right">
 					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo site_url($controller_name."/suspended"); ?>"
 							title="<?php echo $this->lang->line('sales_suspended_sales'); ?>">
-						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
+						<span class="glyphicon glyphicon-align-justify">&nbsp;</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
 					</button>
 				</li>
 
@@ -67,7 +67,7 @@ if(isset($success))
 				{
 				?>
 					<li class="pull-right">
-						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
+						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp;</span>' . $this->lang->line('sales_takings'),
 									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
 					</li>
 				<?php
@@ -92,7 +92,7 @@ if(isset($success))
 				<li class="pull-right">
 					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new="<?php echo $this->lang->line('common_new') ?>" data-btn-submit="<?php echo $this->lang->line('common_submit')?>" data-href="<?php echo site_url("items/view"); ?>"
 							title="<?php echo $this->lang->line($controller_name . '_new_item'); ?>">
-						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
+						<span class="glyphicon glyphicon-tag">&nbsp;</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
 					</button>
 				</li>
 			</ul>
@@ -201,7 +201,7 @@ if(isset($success))
 									<span class="input-group-btn">
 										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
 									</span>
-								</div> 
+								</div>
 							</td>
 
 							<td>
@@ -216,7 +216,7 @@ if(isset($success))
 								}
 								?>
 							</td>
-							
+
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 							</tr>
 							<tr>
@@ -385,7 +385,7 @@ if(isset($success))
 					?>
 				</table>
 
-				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
+				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
 								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
 			<?php
 			}
@@ -398,7 +398,7 @@ if(isset($success))
 
 					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo $this->lang->line('common_submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
 							title="<?php echo $this->lang->line($controller_name. '_new_customer'); ?>">
-						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+						<span class="glyphicon glyphicon-user">&nbsp;</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
 					</button>
 
 				</div>
@@ -474,21 +474,21 @@ if(isset($success))
 						</table>
 					<?php echo form_close(); ?>
 						<?php
-						$payment_type = $this->input->post('payment_type');							
+						$payment_type = $this->input->post('payment_type');
 						// Only show this part if the payment cover the total and in sale or return mode
 
 						if($pos_mode == '1' && $payment_type != $this->lang->line('sales_due') && !isset($customer))
 						{
 						?>
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
 						?>
-						<?php							
+						<?php
 						if($pos_mode == '1' && $payment_type = $this->lang->line('sales_due') && isset($customer))
 						{
 						?>
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button'  tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button'  tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
 						?>
@@ -515,7 +515,7 @@ if(isset($success))
 						</table>
 					<?php echo form_close(); ?>
 
-					<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
+					<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-credit-card">&nbsp;</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
 				<?php
 				}
 				?>
@@ -556,18 +556,18 @@ if(isset($success))
 
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				<div class="form-group" id="buttons_sale">
-					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp;</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 					<?php
 					// Only show this part if the payment covers the total
 					if(!$pos_mode && isset($customer))
 					{
 					?>
-						<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
+						<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $mode_label; ?></div>
 					<?php
 					}
 					?>
 
-					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
+					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp;</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
 			<?php echo form_close(); ?>
 

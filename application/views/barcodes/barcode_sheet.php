@@ -8,9 +8,8 @@
 	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/barcode_font.css" />
 </head>
 
-<body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 
-      style="font-size:<?php echo $barcode_config['barcode_font_size']; ?>px">
-	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing']; ?> width='<?php echo $barcode_config['barcode_page_width']."%"; ?>' >
+<body class=<?php echo "font_". $this->barcode_lib->get_font_name($barcode_config['barcode_font']);?> style='font-size:<?php echo $barcode_config['barcode_font_size']; ?>px'>
+	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing'];?> width='<?php echo $barcode_config['barcode_page_width']."%"; ?>'>
 		<tr>
 			<?php
 			$count = 0;

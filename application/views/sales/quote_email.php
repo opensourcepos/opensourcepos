@@ -142,7 +142,7 @@
 				<textarea rows="5" cols="6"><?php echo $this->config->item('quote_default_comments'); ?></textarea>
 			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
-		</div>
+		</textarea>
 		<div id='barcode'>
 			<?php echo $quote_number; ?>
 		</div>

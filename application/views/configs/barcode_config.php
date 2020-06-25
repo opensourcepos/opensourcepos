@@ -68,7 +68,7 @@
 						'id' => 'allow_duplicate_barcodes',
 						'value' => 'allow_duplicate_barcodes',
 						'checked' => $this->config->item('allow_duplicate_barcodes'))); ?>
-					&nbsp
+					&nbsp;
 					<label class="control-label">
 						<span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_barcode_tooltip'); ?>"></span>
 					</label>
@@ -92,8 +92,8 @@
 							'checked'=>$this->config->item('barcode_content') === "number")); ?>
 						<?php echo $this->lang->line('config_barcode_number'); ?>
 					</label>
-					&nbsp
-					&nbsp
+					&nbsp;
+					&nbsp;
 					<label class="checkbox-inline">
 						<?php echo form_checkbox(array(
 							'name' => 'barcode_generate_if_empty',

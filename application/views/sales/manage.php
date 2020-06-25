@@ -7,7 +7,7 @@ $(document).ready(function()
 	$('#filters').on('hidden.bs.select', function(e) {
 		table_support.refresh();
 	});
-	
+
 	// load the preset datarange picker
 	<?php $this->load->view('partial/daterangepicker'); ?>
 
@@ -48,15 +48,15 @@ $(document).ready(function()
 
 <div id="title_bar" class="print_hide btn-toolbar">
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
-		<span class="glyphicon glyphicon-print">&nbsp</span><?php echo $this->lang->line('common_print'); ?>
+		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo $this->lang->line('common_print'); ?>
 	</button>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm pull-right', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp;</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm pull-right', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
 		<button id="delete" class="btn btn-default btn-sm print_hide">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
+			<span class="glyphicon glyphicon-trash">&nbsp;</span><?php echo $this->lang->line("common_delete");?>
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>

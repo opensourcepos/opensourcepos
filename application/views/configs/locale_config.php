@@ -17,7 +17,7 @@
 								<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_number_locale_tooltip'); ?>"></span>
 							</a>
 							<span id="number_locale_example">
-								&nbsp&nbsp<?php echo to_currency(1234567890.12300); ?>
+								&nbsp;&nbsp;<?php echo to_currency(1234567890.12300); ?>
 							</span>
 						</label>
 					</div>
@@ -56,7 +56,7 @@
 						'value'=>$currency_code)); ?>
 				</div>
 			</div>
-			
+
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_currency_decimals'), 'currency_decimals', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>

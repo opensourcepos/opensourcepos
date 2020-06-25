@@ -17,7 +17,7 @@
 			</div>
 		</div>
 
-		<?php 
+		<?php
 		$class = '';
 		if($this->config->item('giftcard_number') == 'series')
 		{
@@ -50,7 +50,7 @@
 							'value'=>to_currency_no_money($giftcard_value))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -65,7 +65,7 @@ $(document).ready(function()
 	$("input[name='person_name']").change(function() {
 		!$(this).val() && $(this).val('');
 	});
-	
+
 	var fill_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='person_id']").val(ui.item.value);
@@ -75,13 +75,13 @@ $(document).ready(function()
 	$('#person_name').autocomplete({
 		source: "<?php echo site_url('customers/suggest'); ?>",
 		minChars: 0,
-		delay: 15, 
+		delay: 15,
 	   	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
 		focus: fill_value
 	});
-	
+
 	$('#giftcard_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -90,7 +90,7 @@ $(document).ready(function()
 					dialog_support.hide();
 					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 				},
-				error: function(jqXHR, textStatus, errorThrown) 
+				error: function(jqXHR, textStatus, errorThrown)
 				{
 					table_support.handle_submit("<?php echo site_url($controller_name); ?>", {message: errorThrown});
 				},

@@ -75,7 +75,7 @@
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
 						'checked' => $this->config->item('enforce_privacy'))); ?>
-					&nbsp
+					&nbsp;
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_enforce_privacy_tooltip'); ?>"></span>
 					</label>
@@ -308,7 +308,7 @@
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
 					'checked' => $this->config->item('derive_sale_quantity'))); ?>
-					&nbsp
+					&nbsp;
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></span>
 					</label>

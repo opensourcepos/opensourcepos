@@ -7,7 +7,7 @@ $(document).ready(function()
 	$('#filters').on('hidden.bs.select', function(e) {
 		table_support.refresh();
 	});
-	
+
 	// load the preset datarange picker
 	<?php $this->load->view('partial/daterangepicker'); ?>
 
@@ -47,14 +47,14 @@ $(document).ready(function()
 	</button>
 	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
 			title='<?php echo $this->lang->line($controller_name.'_new'); ?>'>
-		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo $this->lang->line($controller_name . '_new'); ?>
+		<span class="glyphicon glyphicon-tags">&nbsp;</span><?php echo $this->lang->line($controller_name . '_new'); ?>
 	</button>
 </div>
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
 		<button id="delete" class="btn btn-default btn-sm print_hide">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
+			<span class="glyphicon glyphicon-trash">&nbsp;</span><?php echo $this->lang->line("common_delete");?>
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>

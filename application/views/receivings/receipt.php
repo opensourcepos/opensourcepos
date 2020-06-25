@@ -7,20 +7,20 @@
 		exit;
 	}
 
-	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
+	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer'));
 
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp;</span>' . $this->lang->line('common_print'); ?></div></a>
+	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp;</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
-		if ($this->config->item('company_logo') != '') 
-		{ 
+		if ($this->config->item('company_logo') != '')
+		{
 		?>
 			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
 		<?php
@@ -28,8 +28,8 @@
 		?>
 
 		<?php
-		if ($this->config->item('receipt_show_company_name')) 
-		{ 
+		if ($this->config->item('receipt_show_company_name'))
+		{
 		?>
 			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
 		<?php
@@ -52,12 +52,12 @@
 		}
 		?>
 		<div id="sale_id"><?php echo $this->lang->line('receivings_id').": ".$receiving_id; ?></div>
-		<?php 
+		<?php
 		if (!empty($reference))
 		{
 		?>
-			<div id="reference"><?php echo $this->lang->line('receivings_reference').": ".$reference; ?></div>	
-		<?php 
+			<div id="reference"><?php echo $this->lang->line('receivings_reference').": ".$reference; ?></div>
+		<?php
 		}
 		?>
 		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
@@ -78,7 +78,7 @@
 			<tr>
 				<td><?php echo $item['name'] . ' ' . $item['attribute_values']; ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
+				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : "");
 				?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1; ?></td>
 				<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
 			</tr>
@@ -102,7 +102,7 @@
 					?>
 						<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
 					<?php
-					}	
+					}
 					?>
 				</tr>
 			<?php
@@ -110,12 +110,12 @@
 			?>
 		<?php
 		}
-		?>	
+		?>
 		<tr>
 			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_total'); ?></td>
 			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total); ?></div></td>
 		</tr>
-		<?php 
+		<?php
 		if($mode!='requisition')
 		{
 		?>
@@ -139,7 +139,7 @@
 			<?php
 			}
 			?>
-		<?php 
+		<?php
 		}
 		?>
 	</table>

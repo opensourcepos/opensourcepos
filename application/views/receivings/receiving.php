@@ -64,7 +64,7 @@ if (isset($success))
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label for="item", class='control-label'>
+					<label for="item" class='control-label'>
 						<?php
 						if($mode=='receive' or $mode=='requisition')
 						{
@@ -90,7 +90,7 @@ if (isset($success))
 						data-btn-new='<?php echo $this->lang->line('common_new') ?>'
 						data-href='<?php echo site_url("items/view"); ?>'
 						title='<?php echo $this->lang->line('sales_new_item'); ?>'>
-						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line('sales_new_item'); ?>
+						<span class="glyphicon glyphicon-tag">&nbsp;</span><?php echo $this->lang->line('sales_new_item'); ?>
 					</button>
 				</li>
 			</ul>
@@ -276,7 +276,7 @@ if (isset($success))
 				?>
 			</table>
 
-			<?php echo anchor($controller_name."/remove_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
+			<?php echo anchor($controller_name."/remove_supplier", '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
 								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'))); ?>
 		<?php
 		}
@@ -290,7 +290,7 @@ if (isset($success))
 
 					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url("suppliers/view"); ?>'
 							title='<?php echo $this->lang->line('receivings_new_supplier'); ?>'>
-						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line('receivings_new_supplier'); ?>
+						<span class="glyphicon glyphicon-user">&nbsp;</span><?php echo $this->lang->line('receivings_new_supplier'); ?>
 					</button>
 
 				</div>
@@ -334,9 +334,9 @@ if (isset($success))
 							<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4')); ?>
 
-							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('receivings_cancel_receiving'); ?></div>
+							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp;</span><?php echo $this->lang->line('receivings_cancel_receiving'); ?></div>
 
-							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('receivings_complete_receiving'); ?></div>
+							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $this->lang->line('receivings_complete_receiving'); ?></div>
 						</div>
 					<?php echo form_close(); ?>
 				<?php
@@ -384,9 +384,9 @@ if (isset($success))
 								</table>
 							</div>
 
-							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('receivings_cancel_receiving') ?></div>
+							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp;</span><?php echo $this->lang->line('receivings_cancel_receiving') ?></div>
 
-							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('receivings_complete_receiving') ?></div>
+							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp;</span><?php echo $this->lang->line('receivings_complete_receiving') ?></div>
 						</div>
 					<?php echo form_close(); ?>
 				<?php
