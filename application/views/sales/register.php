@@ -624,7 +624,7 @@ if(isset($success))
 						</div>
 					</div>
 				<?php
-				if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
+				if(($mode == "sale_invoice") && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
