@@ -8,8 +8,8 @@
 
 class Tax_lib
 {
-	const TAX_TYPE_EXCLUDED = 1;
-	const TAX_TYPE_INCLUDED = 0;
+	const TAX_TYPE_EXCLUDED = '1';
+	const TAX_TYPE_INCLUDED = '0';
 
 	private $CI;
 
@@ -150,9 +150,10 @@ class Tax_lib
 
 	public function get_included_tax($quantity, $price, $discount_percentage, $discount_type, $tax_percentage, $tax_decimal, $rounding_code)
 	{
-		$tax_amount = $this->CI->sale_lib->get_item_tax($quantity, $price, $discount_percentage, $discount_type, $tax_percentage);
-
-		return Rounding_mode::round_number($rounding_code, $tax_amount, $tax_decimal);
+		$item_total = $this->CI->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, TRUE);
+		$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
+		$price_tax_excl = bcdiv($item_total, $tax_fraction);
+		return bcsub($item_total, $price_tax_excl);
 	}
 
 	/*
@@ -443,11 +444,11 @@ class Tax_lib
 		$s1 = '';
 		$s2 = '';
 
-		if($selected_tax_type == Tax_lib::TAX_TYPE_EXCLUDED)
+		if($selected_tax_type === Tax_lib::TAX_TYPE_EXCLUDED)
 		{
 			$s1 = $selected;
 		}
-		else if($selected_tax_type == Tax_lib::TAX_TYPE_INCLUDED)
+		else if($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED)
 		{
 			$s2 = $selected;
 		}
