@@ -608,7 +608,7 @@ class Sale extends CI_Model
 		}
 		$total_amount = 0;
 		$total_amount_used = 0;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment)
 		{
 			if(!empty(strstr($payment['payment_type'], $this->lang->line('sales_giftcard'))))
 			{
@@ -641,7 +641,7 @@ class Sale extends CI_Model
 
 		$customer = $this->Customer->get_info($customer_id);
 
-		foreach($items as $line=>$item)
+		foreach($items as $item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 
@@ -731,7 +731,7 @@ class Sale extends CI_Model
 	 */
 	public function save_sales_tax($sale_id, $sales_taxes)
 	{
-		foreach($sales_taxes as $line=>$sales_tax)
+		foreach($sales_taxes as $sales_tax)
 		{
 			$sales_tax['sale_id'] = $sale_id;
 			$this->db->insert('sales_taxes', $sales_tax);
@@ -747,7 +747,7 @@ class Sale extends CI_Model
 	 */
 	public function save_sales_items_taxes($sale_id, $sales_item_taxes)
 	{
-		foreach($sales_item_taxes as $line => $tax_item)
+		foreach($sales_item_taxes as $tax_item)
 		{
 			$sales_items_taxes = array(
 				'sale_id' => $sale_id,

@@ -55,6 +55,9 @@ class Token_lib
 	 */
 	public function scan($text)
 	{
+		$matches	= [];
+		$token_tree	= [];
+
 		// Matches tokens with the following pattern: [$token:$length]
 		preg_match_all('/
 				\{             # [ - pattern start
@@ -66,10 +69,9 @@ class Token_lib
 				\}             # ] - pattern end
 				/x', $text, $matches);
 
-		$tokens = $matches[1];
-		$lengths = $matches[2];
+		$tokens		= $matches[1];
+		$lengths	= $matches[2];
 
-		$token_tree = [];
 		for($i = 0; $i < count($tokens); $i++)
 		{
 			$token_tree[$tokens[$i]][$lengths[$i]] = $matches[0][$i];
@@ -103,9 +105,10 @@ class Token_lib
 
 	public function parse($string, $pattern, $tokens = [])
 	{
-		$token_tree = $this->scan($pattern);
+		$token_tree		= $this->scan($pattern);
+		$matches		= [];
+		$found_tokens	= [];
 
-		$found_tokens = [];
 		foreach ($token_tree as $token_id => $token_length)
 		{
 			foreach ($tokens as $token)

@@ -67,6 +67,7 @@ class Summary_payments extends Summary_report
 
 		// At this point in time refunds are assumed to be cash refunds.
 		$total_cash_refund = 0;
+
 		foreach($sales as $key => $sale_summary)
 		{
 			if($sale_summary['trans_refunded'] <> 0)

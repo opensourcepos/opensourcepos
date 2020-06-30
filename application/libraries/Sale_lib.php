@@ -150,7 +150,7 @@ class Sale_lib
 	{
 		// Loop through the cart items and delete temporary items specific to this sale
 		$cart = $this->get_cart();
-		foreach($cart as $line=>$item)
+		foreach($cart as $item)
 		{
 			if($item['item_type'] == ITEM_TEMP)
 			{

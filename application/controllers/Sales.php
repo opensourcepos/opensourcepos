@@ -325,6 +325,7 @@ class Sales extends Secure_Controller
 			{
 				$customer_id = $this->sale_lib->get_customer();
 				$package_id = $this->Customer->get_info($customer_id)->package_id;
+
 				if(!empty($package_id))
 				{
 					$package_name = $this->Customer_rewards->get_name($package_id);
@@ -373,10 +374,11 @@ class Sales extends Secure_Controller
 
 	public function add()
 	{
-		$data = [];
-
-		$discount = $this->config->item('default_sales_discount');
-		$discount_type = $this->config->item('default_sales_discount_type');
+		$data			= [];
+		$quantity		= 0.00;
+		$price			= 0.00;
+		$discount		= $this->config->item('default_sales_discount');
+		$discount_type	= $this->config->item('default_sales_discount_type');
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
@@ -393,10 +395,12 @@ class Sales extends Secure_Controller
 		}
 
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
-		$mode = $this->sale_lib->get_mode();
-		$quantity = ($mode == 'return') ? -$quantity : $quantity;
-		$item_location = $this->sale_lib->get_sale_location();
+
+		$mode			= $this->sale_lib->get_mode();
+		$quantity		= ($mode == 'return') ? -$quantity : $quantity;
+		$item_location	= $this->sale_lib->get_sale_location();
 
 		if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -405,24 +409,23 @@ class Sales extends Secure_Controller
 		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			// Add kit item to order if one is assigned
-			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
-			$item_kit_id = $pieces[1];
-			$item_kit_info = $this->Item_kit->get_info($item_kit_id);
-			$kit_item_id = $item_kit_info->kit_item_id;
-			$kit_price_option = $item_kit_info->price_option;
-			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
+			$pieces				= explode(' ', $item_id_or_number_or_item_kit_or_receipt);
+			$item_kit_id		= $pieces[1];
+			$item_kit_info		= $this->Item_kit->get_info($item_kit_id);
+			$kit_item_id		= $item_kit_info->kit_item_id;
+			$kit_price_option	= $item_kit_info->price_option;
+			$kit_print_option	= $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
+			$print_option 		= PRINT_ALL;
 
 			if($item_kit_info->kit_discount != 0 && $item_kit_info->kit_discount > $discount)
 			{
-				$discount = $item_kit_info->kit_discount;
-				$discount_type = $item_kit_info->kit_discount_type;
+				$discount		= $item_kit_info->kit_discount;
+				$discount_type	= $item_kit_info->kit_discount_type;
 			}
-
-			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price, NULL, NULL, NULL, NULL, $print_option))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -434,6 +437,7 @@ class Sales extends Secure_Controller
 
 			// Add item kit items to order
 			$stock_warning = NULL;
+
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');

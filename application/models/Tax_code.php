@@ -117,7 +117,7 @@ class Tax_code extends CI_Model
 
 		$not_to_delete = [];
 
-		foreach($array_save as $key => $value)
+		foreach($array_save as $value)
 		{
 			// save or update
 			$tax_code_data = array('tax_code' => $value['tax_code'], 'tax_code_name' => $value['tax_code_name'], 'city' => $value['city'], 'state' => $value['state'], 'deleted' => '0');
@@ -128,7 +128,7 @@ class Tax_code extends CI_Model
 		// all entries not available in post will be deleted now
 		$deleted_tax_codes = $this->get_all()->result_array();
 
-		foreach($deleted_tax_codes as $key => $tax_code_data)
+		foreach($deleted_tax_codes as $tax_code_data)
 		{
 			if(!in_array($tax_code_data['tax_code'], $not_to_delete))
 			{

@@ -87,10 +87,12 @@ class Receivings extends Secure_Controller
 
 	public function add()
 	{
-		$data = [];
-
-		$mode = $this->receiving_lib->get_mode();
+		$data 		= [];
+		$mode		= $this->receiving_lib->get_mode();
+		$quantity	= 0.00;
+		$price		= 0.00;
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
@@ -122,7 +124,7 @@ class Receivings extends Secure_Controller
 		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|callback_numeric');
 
 		$description = $this->input->post('description');
-		$serialnumber = $this->input->post('serialnumber');
+		$serial_number = $this->input->post('serialnumber');
 		$price = parse_decimals($this->input->post('price'));
 		$quantity = parse_quantity($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
@@ -132,7 +134,7 @@ class Receivings extends Secure_Controller
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity);
+			$this->receiving_lib->edit_item($item_id, $description, $serial_number, $quantity, $discount, $discount_type, $price, $receiving_quantity);
 		}
 		else
 		{

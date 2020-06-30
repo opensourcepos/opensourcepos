@@ -98,7 +98,7 @@ class Config extends Secure_Controller
 								{
 									$license[$i]['text'] .= $key2 . ': ';
 
-									foreach($val2 as $key3 => $val3)
+									foreach($val2 as $val3)
 									{
 										$license[$i]['text'] .= $val3 . ' ';
 									}
@@ -594,7 +594,7 @@ class Config extends Secure_Controller
 		// all locations not available in post will be deleted now
 		$deleted_locations = $this->Stock_location->get_all()->result_array();
 
-		foreach($deleted_locations as $location => $location_data)
+		foreach($deleted_locations as $location_data)
 		{
 			if(!in_array($location_data['location_id'], $not_to_delete))
 			{
@@ -642,7 +642,7 @@ class Config extends Secure_Controller
 			// all tables not available in post will be deleted now
 			$deleted_tables = $this->Dinner_table->get_all()->result_array();
 
-			foreach($deleted_tables as $dinner_tables => $table)
+			foreach($deleted_tables as $table)
 			{
 				if(!in_array($table['dinner_table_id'], $not_to_delete))
 				{
@@ -732,7 +732,7 @@ class Config extends Secure_Controller
 			// all packages not available in post will be deleted now
 			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
 
-			foreach($deleted_packages as $customer_rewards => $reward_category)
+			foreach($deleted_packages as $reward_category)
 			{
 				if(!in_array($reward_category['package_id'], $not_to_delete))
 				{
@@ -949,7 +949,7 @@ class Config extends Secure_Controller
 				ob_end_clean();
 			}
 
-			force_download($file_name, $backup);
+			force_download($save, $backup);
 		}
 		else
 		{

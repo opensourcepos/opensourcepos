@@ -101,11 +101,9 @@ class Person extends CI_Model
 	/**
 	 * Inserts or updates a person
 	 *
-	 * @param array $person_data array containing person information
-	 *
-	 * @param var $person_id identifier of the person to update the information
-	 *
-	 * @return boolean TRUE if the save was successful, FALSE if not
+	 * @param array $person_data		array containing person information
+	 * @param int|boolean	$person_id	identifier of the person to update the information
+	 * @return boolean 					TRUE if the save was successful, FALSE if not
 	 */
 	public function save(&$person_data, $person_id = FALSE)
 	{

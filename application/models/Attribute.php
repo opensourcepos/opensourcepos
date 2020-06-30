@@ -28,9 +28,9 @@ class Attribute extends CI_Model
 
 	/**
 	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
-	 * @param unknown $item_id
-	 * @param boolean $definition_id
-	 * @return boolean TRUE if at least one attribute_link exists or FALSE if no attributes exist.
+	 * @param	int		$item_id
+	 * @param	boolean	$definition_id
+	 * @return	boolean					TRUE if at least one attribute_link exists or FALSE if no attributes exist.
 	 */
 	public function link_exists($item_id, $definition_id = FALSE)
 	{
@@ -430,20 +430,20 @@ class Attribute extends CI_Model
 		{
 			$this->db->select('definition_type, definition_name');
 			$this->db->where('definition_id', $definition_id);
-			$row = $this->db->get('attribute_definitions')->row();
 
-			$from_definition_type = $row->definition_type;
-			$from_definition_name = $row->definition_name;
-			$to_definition_type = $definition_data['definition_type'];
+			$row					= $this->db->get('attribute_definitions')->row();
+			$from_definition_type	= $row->definition_type;
+			$to_definition_type		= $definition_data['definition_type'];
 
 			//Update the definition values
 			$this->db->where('definition_id', $definition_id);
-			$success = $this->db->update('attribute_definitions', $definition_data);
-			$definition_data['definition_id'] = $definition_id;
+
+			$success							= $this->db->update('attribute_definitions', $definition_data);
+			$definition_data['definition_id']	= $definition_id;
 
 			if($from_definition_type !== $to_definition_type)
 			{
-				if($this->convert_definition_data($definition_id,$from_definition_type,$to_definition_type) === FALSE)
+				if($this->convert_definition_data($definition_id, $from_definition_type, $to_definition_type) === FALSE)
 				{
 					return FALSE;
 				}
@@ -651,7 +651,7 @@ class Attribute extends CI_Model
 	/**
 	 * Deletes an Attribute definition from the database and associated column in the items_import.csv
 	 *
-	 * @param	unknown	$definition_id	Attribute definition ID to remove.
+	 * @param	int	$definition_id	Attribute definition ID to remove.
 	 * @return 	boolean					TRUE if successful and FALSE if there is a failure
 	 */
 	public function delete_definition($definition_id)

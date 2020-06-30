@@ -5,7 +5,12 @@
 </script>
 
 <div class='jumbotron' style='max-width: 60%; margin:auto;'>
-	<?php echo form_open('messages/send/', array('id'=>'send_sms_form', 'enctype'=>'multipart/form-data', 'method'=>'post', 'class'=>'form-horizontal')); ?>
+	<?php echo form_open('messages/send/', array(
+			'id'		=> 'send_sms_form',
+			'enctype'	=> 'multipart/form-data',
+			'method'	=> 'post',
+			'class'		=> 'form-horizontal'));
+	?>
 		<fieldset>
 			<legend style='text-align: center;'><?php echo $this->lang->line('messages_sms_send'); ?></legend>
 			<div class='form-group form-group-sm'>
@@ -24,10 +29,11 @@
 			</div>
 
 			<?php echo form_submit(array(
-				'name'=>'submit_form',
-				'id'=>'submit_form',
-				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'));?>
+					'name'	=> 'submit_form',
+					'id'	=> 'submit_form',
+					'value'	=> $this->lang->line('common_submit'),
+					'class'	=> 'btn btn-primary btn-sm pull-right'));
+			?>
 		</fieldset>
 	<?php echo form_close(); ?>
 </div>

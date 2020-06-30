@@ -581,8 +581,8 @@ function dateformat_bootstrap($php_format)
 
 /**
  * Checks a date to make sure it matches MySQL valid format YYYY-MM-DD with HH:MM:SS optional
- * @param unknown $date
- * @return boolean
+ * @param	object 	$date
+ * @return	boolean
  */
 function valid_date($date)
 {

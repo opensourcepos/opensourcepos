@@ -151,7 +151,7 @@ class Code39 extends BarcodeBase
 			$code = str_split($this->getMap($char));
 			$color = $black;
 
-			foreach($code as $k => $bit)
+			foreach($code as $bit)
 			{
 				// Narrow bar
 				if ($bit == '0')

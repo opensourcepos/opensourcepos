@@ -4,8 +4,8 @@
 	<meta http-equiv='content-type' content='text/html; charset=utf-8' />
 	<base href='<?php echo base_url();?>' />
 	<title><?php echo $this->config->item('company') . ' | ' . $this->lang->line('common_powered_by') . ' OSPOS ' . $this->config->item('application_version') ?></title>
-	<link rel='shortcut icon' type='image/x-icon' href='images/favicon.ico' />
-	<link rel='stylesheet' type='text/css' href='<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>' />
+	<link rel='shortcut icon' type='image/x-icon' href='images/favicon.ico'>
+	<link rel='stylesheet' type='text/css' href='<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>'/>
 
 	<?php if ($this->input->cookie('debug') == 'true' || $this->input->get('debug') == 'true') : ?>
 		<!-- bower:css -->
@@ -101,7 +101,7 @@
 				</div>
 
 				<div class='navbar-right' style='margin:0'>
-					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('employees_change_password'))); ?>
+					<?php echo anchor("home/change_password/$user_info->person_id", "$user_info->first_name $user_info->last_name", array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('employees_change_password'))); ?>
 					<?php echo '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') . '  |  ' : ''); ?>
 					<?php echo anchor('home/logout', $this->lang->line('common_logout')); ?>
 				</div>
@@ -129,9 +129,9 @@
 					<ul class='nav navbar-nav navbar-right'>
 						<?php foreach($allowed_modules as $module): ?>
 							<li class='<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : ''; ?>'>
-								<a href='<?php echo site_url('$module->module_id'); ?>' title='<?php echo $this->lang->line('module_' . $module->module_id); ?>' class='menu-icon'>
-									<img src='<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png'; ?>' border='0' alt='Module Icon'/><br/>
-									<?php echo $this->lang->line('module_' . $module->module_id) ?>
+								<a href='<?php echo site_url($module->module_id); ?>' title='<?php echo $this->lang->line("module_$module->module_id"); ?>' class='menu-icon'>
+									<img src='<?php echo base_url() . "images/menubar/$module->module_id.png"; ?>' border='0' alt='Module Icon'/><br/>
+									<?php echo $this->lang->line("module_$module->module_id") ?>
 								</a>
 							</li>
 						<?php endforeach; ?>

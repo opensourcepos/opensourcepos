@@ -304,8 +304,6 @@ class Tax_lib
 			// The tax basis should be returned at the currency scale
 			$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 
-			$row = 0;
-
 			$last_cascade_sequence = 0;
 			$cascade_tax_amount = 0.0;
 

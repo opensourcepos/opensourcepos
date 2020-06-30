@@ -39,7 +39,7 @@ class Item_quantity extends CI_Model
             //Get empty base parent object, as $item_id is NOT an item
             $result = new stdClass();
 
-            //Get all the fields from items table (TODO to be reviewed)
+            //Get all the fields from items table
             foreach($this->db->list_fields('item_quantities') as $field)
             {
                 $result->$field = '';

@@ -20,7 +20,8 @@ class Items extends Secure_Controller
 		$data['stock_locations']	= $this->xss_clean($this->Stock_location->get_allowed_locations());
 
 	//Filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
+		$data['filters'] = array(
+			'empty_upc' 	=> $this->lang->line('items_empty_upc_items'),
 			'low_inventory'	=> $this->lang->line('items_low_inventory_items'),
 			'is_serialized'	=> $this->lang->line('items_serialized_items'),
 			'no_description'=> $this->lang->line('items_no_description_items'),
@@ -32,7 +33,7 @@ class Items extends Secure_Controller
 	}
 
 	/*
-	 Returns Items table data rows. This will be called with AJAX.
+	 * Returns Items table data rows. This will be called with AJAX.
 	 */
 	public function search()
 	{
@@ -69,7 +70,7 @@ class Items extends Secure_Controller
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item));
 
-			if($item->pic_filename!='')
+			if($item->pic_filename != '')
 			{
 				$this->_update_pic_filename($item);
 			}
@@ -105,8 +106,8 @@ class Items extends Secure_Controller
 				$config['height']			= 32;
 
 				$this->image_lib->initialize($config);
+				$this->image_lib->resize();
 
-				$image		= $this->image_lib->resize();
 				$thumb_path	= $this->image_lib->full_dst_path;
 			}
 			$this->output->set_content_type(get_mime_by_extension($thumb_path));
@@ -993,9 +994,9 @@ class Items extends Secure_Controller
 			$row['Tax 1 Percent'],
 			$row['Tax 2 Percent']);
 
-		foreach($allowed_locations as $location_id => $location_name)
+		foreach($allowed_locations as $location_name)
 		{
-			$check_for_numeric_values[] = $row['location_'. $location_name];
+			$check_for_numeric_values[] = $row["location_$location_name"];
 		}
 
 	//Check for non-numeric values which require numeric
@@ -1139,7 +1140,7 @@ class Items extends Secure_Controller
 				'trans_comment' => $comment,
 				'trans_location' => $location_id);
 
-			if(!empty($row['location_' . $location_name]))
+			if(!empty($row["location_$location_name"]))
 			{
 				$item_quantity_data['quantity'] = $row["location_$location_name"];
 				$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);

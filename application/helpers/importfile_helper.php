@@ -24,7 +24,7 @@ function generate_stock_location_headers($locations)
 {
 	$location_headers = "";
 
-	foreach($locations as $location_id => $location_name)
+	foreach($locations as $location_name)
 	{
 		$location_headers .= ',"location_' . $location_name . '"';
 	}

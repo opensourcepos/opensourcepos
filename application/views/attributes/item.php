@@ -1,5 +1,5 @@
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line("attributes_definition_name"), "definition_name_label", array('class' => 'control-label col-xs-3')); ?>
+<div class='form-group form-group-sm'>
+	<?php echo form_label($this->lang->line('attributes_definition_name'), 'definition_name_label', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
 		<?php echo form_dropdown('definition_name', $definition_names, -1, array('id' => 'definition_name', 'class' => 'form-control')); ?>
 	</div>
@@ -11,15 +11,15 @@ foreach($definition_values as $definition_id => $definition_value)
 {
 ?>
 
-<div class="form-group form-group-sm">
+<div class='form-group form-group-sm'>
 	<?php echo form_label($definition_value['definition_name'], $definition_value['definition_name'], array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<div class="input-group">
+		<div class='input-group'>
 			<?php
 				echo form_hidden("attribute_ids[$definition_id]", $definition_value['attribute_id']);
 				$attribute_value = $definition_value['attribute_value'];
 
-				if ($definition_value['definition_type'] == DATE)
+				if ($definition_value['definition_type'] === DATE)
 				{
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
 					echo form_input(array(
@@ -29,22 +29,22 @@ foreach($definition_values as $definition_id => $definition_value)
 						'data-definition-id' => $definition_id,
 						'readonly' => 'true'));
 				}
-				else if ($definition_value['definition_type'] == DROPDOWN)
+				else if ($definition_value['definition_type'] === DROPDOWN)
 				{
 					$selected_value = $definition_value['selected_value'];
 					echo form_dropdown("attribute_links[$definition_id]", $definition_value['values'], $selected_value, "class='form-control' data-definition-id='$definition_id'");
 				}
-				else if ($definition_value['definition_type'] == TEXT)
+				else if ($definition_value['definition_type'] === TEXT)
 				{
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
 					echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
 				}
-				else if ($definition_value['definition_type'] == DECIMAL)
+				else if ($definition_value['definition_type'] === DECIMAL)
 				{
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
 					echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
 				}
-				else if ($definition_value['definition_type'] == CHECKBOX)
+				else if ($definition_value['definition_type'] === CHECKBOX)
 				{
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
 
@@ -54,19 +54,18 @@ foreach($definition_values as $definition_id => $definition_value)
 						'name' => "attribute_links[$definition_id]",
 						'id' => "attribute_links[$definition_id]",
 						'value' => 0,
-						'data-definition-id' => $definition_id
-					));
+						'data-definition-id' => $definition_id));
+
 					echo form_checkbox(array(
 						'name' => "attribute_links[$definition_id]",
 						'id' => "attribute_links[$definition_id]",
 						'value' => 1,
 						'checked' => ($value ? 1 : 0),
 						'class' => 'checkbox-inline',
-						'data-definition-id' => $definition_id
-					));
+						'data-definition-id' => $definition_id));
 				}
 			?>
-			<span class="input-group-addon input-sm btn btn-default remove_attribute_btn"><span class="glyphicon glyphicon-trash"></span></span>
+			<span class='input-group-addon input-sm btn btn-default remove_attribute_btn'><span class='glyphicon glyphicon-trash'></span></span>
 		</div>
 	</div>
 </div>
@@ -75,7 +74,7 @@ foreach($definition_values as $definition_id => $definition_value)
 }
 ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 (function() {
 		<?php $this->load->view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->item('dateformat') . '"}'))); ?>
 

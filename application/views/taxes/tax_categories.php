@@ -1,23 +1,23 @@
 <?php echo form_open('taxes/save_tax_categories/', array('id' => 'tax_categories_form', 'class' => 'form-horizontal')); ?>
-<div id="config_wrapper">
-	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-		<ul id="tax_categories_error_message_box" class="error_message_box"></ul>
+<div id='config_wrapper'>
+	<fieldset id='config_info'>
+		<div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<ul id='tax_categories_error_message_box' class='error_message_box'></ul>
 
-		<div id="tax_categories">
+		<div id='tax_categories'>
 			<?php $this->load->view('partial/tax_categories'); ?>
 		</div>
 
 		<?php echo form_submit(array(
-			'name' => 'submit_tax_categories',
-			'id' => 'submit_tax_categories',
-			'value' => $this->lang->line('common_submit'),
-			'class' => 'btn btn-primary btn-sm pull-right')); ?>
+			'name'	=> 'submit_tax_categories',
+			'id'	=> 'submit_tax_categories',
+			'value'	=> $this->lang->line('common_submit'),
+			'class'	=> 'btn btn-primary btn-sm pull-right')); ?>
 	</fieldset>
 </div>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 	//validation and submit handling
 	$(document).ready(function()
 	{
@@ -99,7 +99,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_categories").load('<?php echo site_url("taxes/ajax_tax_categories"); ?>', init_add_remove_tax_categories);
+						$("#tax_categories").load('<?php echo site_url('taxes/ajax_tax_categories'); ?>', init_add_remove_tax_categories);
 					},
 					dataType: 'json'
 				});
@@ -112,7 +112,7 @@
 
 		<?php
 		$i = 0;
-		foreach($tax_categories as $tax_category=>$tax_category_data)
+		foreach($tax_categories as $tax_category_data)
 		{
 		?>
 		$('<?php echo '#tax_category_' . ++$i ?>').rules( "add", {

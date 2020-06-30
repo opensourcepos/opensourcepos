@@ -1,10 +1,10 @@
 <?php echo form_open('taxes/save_tax_jurisdictions/', array('id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal')); ?>
-<div id="config_wrapper">
-	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-		<ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
+<div id='config_wrapper'>
+	<fieldset id='config_info'>
+		<div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<ul id='tax_jurisdictions_error_message_box' class='error_message_box'></ul>
 
-		<div id="tax_jurisdictions">
+		<div id='tax_jurisdictions'>
 			<?php $this->load->view('partial/tax_jurisdictions'); ?>
 		</div>
 
@@ -17,7 +17,7 @@
 </div>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 	//validation and submit handling
 	$(document).ready(function()
 	{
@@ -102,7 +102,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_jurisdictions").load('<?php echo site_url("taxes/ajax_tax_jurisdictions"); ?>', init_add_remove_tax_jurisdiction);
+						$("#tax_jurisdictions").load('<?php echo site_url('taxes/ajax_tax_jurisdictions'); ?>', init_add_remove_tax_jurisdiction);
 					},
 					dataType: 'json'
 				});
@@ -115,7 +115,7 @@
 
 		<?php
 		$i = 0;
-		foreach($tax_jurisdictions as $tax_jurisdiction=>$tax_jurisdiction_data)
+		foreach($tax_jurisdictions as $tax_jurisdiction_data)
 		{
 		?>
 		$('<?php echo '#jurisdiction_name_' . ++$i ?>').rules( "add", {

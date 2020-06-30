@@ -75,13 +75,14 @@ class Item extends CI_Model
 		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
+//TODO: This needs to be reworked to remove the group_concat.  Likely need to refactor out the "count" function so that this function is just doing one thing.
 	/*
 	Perform a search on items
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc', $count_only = FALSE)
 	{
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only === TRUE)
 		{
 			$this->db->select('COUNT(DISTINCT items.item_id) AS count');
 		}
@@ -207,7 +208,7 @@ class Item extends CI_Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only === TRUE)
 		{
 			return $this->db->get()->row()->count;
 		}
@@ -616,16 +617,16 @@ class Item extends CI_Model
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
+			if($filters['search_custom'] !== FALSE)
 			{
-				$this->db->from('attribute_links');
-				$this->db->join('attribute_links.attribute_id = attribute_values.attribute_id');
+				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
 				$this->db->where('definition_type', TEXT);
 				$this->db->where('deleted', $filters['is_deleted']);
 				$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-				foreach($this->db->get()->result() as $row)
+
+				foreach($this->db->get('attribute_links')->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => get_search_suggestion_label($row));
 				}
@@ -718,16 +719,16 @@ class Item extends CI_Model
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
+			if($filters['search_custom'] !== FALSE)
 			{
-				$this->db->from('attribute_links');
-				$this->db->join('attribute_links.attribute_id = attribute_values.attribute_id');
+				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
 				$this->db->where('definition_type', TEXT);
 				$this->db->where('stock_type', '0'); // stocked items only
 				$this->db->where('deleted', $filters['is_deleted']);
-				foreach($this->db->get()->result() as $row)
+
+				foreach($this->db->get('attribute_links')->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
@@ -746,15 +747,13 @@ class Item extends CI_Model
 	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = [];
-		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select('item_id, name');
-		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where('item_type', ITEM_KIT);
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
+		foreach($this->db->get('items')->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 		}
@@ -815,31 +814,19 @@ class Item extends CI_Model
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] != FALSE)
+			if($filters['search_custom'] !== FALSE)
 			{
-				// This section is currently never used but custom fields are replaced with attributes
-				// therefore in case this feature is required a proper query needs to be written here
-				/*
-				$this->db->from('items');
-				$this->db->group_start();
-				$this->db->where('item_type', ITEM_KIT);
-				$this->db->like('custom1', $search);
-				$this->db->or_like('custom2', $search);
-				$this->db->or_like('custom3', $search);
-				$this->db->or_like('custom4', $search);
-				$this->db->or_like('custom5', $search);
-				$this->db->or_like('custom6', $search);
-				$this->db->or_like('custom7', $search);
-				$this->db->or_like('custom8', $search);
-				$this->db->or_like('custom9', $search);
-				$this->db->or_like('custom10', $search);
-				$this->db->group_end();
+				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
+				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
+				$this->db->like('attribute_value', $search);
+				$this->db->where('definition_type', TEXT);
+				$this->db->where('stock_type', '0'); // stocked items only
 				$this->db->where('deleted', $filters['is_deleted']);
-				foreach($this->db->get()->result() as $row)
+
+				foreach($this->db->get('attribute_links')->result() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
-				*/
 			}
 		}
 

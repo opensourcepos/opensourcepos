@@ -1,25 +1,25 @@
-<?php $this->load->view("partial/header"); ?>
+<?php $this->load->view('partial/header'); ?>
 
-<div id="page_title"><?php echo $title ?></div>
+<div id='page_title'><?php echo $title ?></div>
 
-<div id="page_subtitle"><?php echo $subtitle ?></div>
+<div id='page_subtitle'><?php echo $subtitle ?></div>
 
-<div id="table_holder">
-	<table id="table"></table>
+<div id='table_holder'>
+	<table id='table'></table>
 </div>
 
-<div id="report_summary">
+<div id='report_summary'>
 	<?php
 	foreach($overall_summary_data as $name=>$value)
 	{
 	?>
-		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
+		<div class='summary_row'><?php echo $this->lang->line("reports_$name"). ': ' .to_currency($value); ?></div>
 	<?php
 	}
 	?>
 </div>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 	$(document).ready(function()
 	{
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
@@ -38,7 +38,7 @@
 			if(isset($editable))
 			{
 			?>
-				table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
+				table_support.submit_handler('<?php echo site_url("reports/get_detailed_$editable" . '_row')?>');
 				dialog_support.init("a.modal-dlg");
 			<?php
 			}
@@ -90,4 +90,4 @@
 	});
 </script>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php $this->load->view('partial/footer'); ?>

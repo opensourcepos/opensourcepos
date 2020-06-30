@@ -1,34 +1,36 @@
 <?php echo form_open('config/save_tables/', array('id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-            <ul id="table_error_message_box" class="error_message_box"></ul>
+    <div id='config_wrapper'>
+        <fieldset id='config_info'>
+            <div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+            <ul id='table_error_message_box' class='error_message_box'></ul>
 
-			<div class="form-group form-group-sm">	
+			<div class='form-group form-group-sm'>
 				<?php echo form_label($this->lang->line('config_dinner_table_enable'), 'dinner_table_enable', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
-						'name' => 'dinner_table_enable',
-						'value' => 'dinner_table_enable',
-						'id' => 'dinner_table_enable',
-						'checked' => $this->config->item('dinner_table_enable')));?>
+							'name'		=> 'dinner_table_enable',
+							'value'		=> 'dinner_table_enable',
+							'id'		=> 'dinner_table_enable',
+							'checked'	=> $this->config->item('dinner_table_enable')));
+					?>
 				</div>
 			</div>
 
-            <div id="dinner_tables">
+            <div id='dinner_tables'>
 				<?php $this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables)); ?>
 			</div>
-            
+
             <?php echo form_submit(array(
-                'name' => 'submit_table',
-                'id' => 'submit_table',
-                'value' => $this->lang->line('common_submit'),
-                'class' => 'btn btn-primary btn-sm pull-right')); ?>
+	                'name'	=> 'submit_table',
+	                'id'	=> 'submit_table',
+	                'value'	=> $this->lang->line('common_submit'),
+	                'class'	=> 'btn btn-primary btn-sm pull-right'));
+            ?>
         </fieldset>
     </div>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 //validation and submit handling
 $(document).ready(function()
 {
@@ -42,7 +44,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$(".add_dinner_table, .remove_dinner_table").hide();	
+			$(".add_dinner_table, .remove_dinner_table").hide();
 		}
 		return arguments.callee;
 	})();
@@ -55,7 +57,7 @@ $(document).ready(function()
 		if ($("input[name*='dinner_tables']:enabled").length > 1)
 		{
 			$(".remove_dinner_tables").show();
-		} 
+		}
 		else
 		{
 			$(".remove_dinner_tables").hide();
@@ -92,7 +94,7 @@ $(document).ready(function()
 	$.validator.addMethod('dinner_table' , function(value, element) {
 		var value_count = 0;
 		$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").each(function() {
-			value_count = $(this).val() == value ? value_count + 1 : value_count; 
+			value_count = $(this).val() == value ? value_count + 1 : value_count;
 		});
 		return value_count < 2;
     }, "<?php echo $this->lang->line('config_dinner_table_duplicate'); ?>");
@@ -100,17 +102,17 @@ $(document).ready(function()
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
     }, "<?php echo $this->lang->line('config_dinner_table_invalid_chars'); ?>");
-	
+
 	$('#table_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").prop("disabled", false); 
+					$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").prop("disabled", false);
 					return true;
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#dinner_tables").load('<?php echo site_url("config/ajax_dinner_tables"); ?>', init_add_remove_tables);
+					$("#dinner_tables").load('<?php echo site_url('config/ajax_dinner_tables'); ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});
@@ -137,7 +139,7 @@ $(document).ready(function()
 			?>
    		},
 
-		messages: 
+		messages:
 		{
 			<?php
 			$i = 0;

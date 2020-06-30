@@ -1,18 +1,18 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 
-<ul id="error_message_box" class="error_message_box"></ul>
+<ul id='error_message_box' class='error_message_box'></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="giftcard_basic_info">
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_person_id'), 'person_name', array('class'=>'control-label col-xs-3')); ?>
+<?php echo form_open("giftcards/save/$giftcard_id", array('id' => 'giftcard_form', 'class' => 'form-horizontal')); ?>
+	<fieldset id='giftcard_basic_info'>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('giftcards_person_id'), 'person_name', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
-						'name'=>'person_name',
-						'id'=>'person_name',
-						'class'=>'form-control input-sm',
-						'value'=>$selected_person_name)
-						);?>
+						'name'	=> 'person_name',
+						'id'	=> 'person_name',
+						'class'	=> 'form-control input-sm',
+						'value'	=> $selected_person_name));
+				?>
 				<?php echo form_hidden('person_id', $selected_person_id);?>
 			</div>
 		</div>
@@ -24,33 +24,33 @@
 			$class = ' required';
 		}
 		?>
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'giftcard_number', array('class'=>'control-label col-xs-3'.$class)); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-3'.$class)); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
-						'name'=>'giftcard_number',
-						'id'=>'giftcard_number',
-						'class'=>'form-control input-sm',
-						'value'=>$giftcard_number)
-						);?>
+						'name'	=> 'giftcard_number',
+						'id'	=> 'giftcard_number',
+						'class'	=> 'form-control input-sm',
+						'value'	=> $giftcard_number));
+				?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_card_value'), 'giftcard_amount', array('class'=>'required control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('giftcards_card_value'), 'giftcard_amount', array('class' => 'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<div class="input-group input-group-sm">
+				<div class='input-group input-group-sm'>
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><?php echo $this->config->item('currency_symbol'); ?></span>
+						<span class='input-group-addon input-sm'><?php echo $this->config->item('currency_symbol'); ?></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
-							'name'=>'giftcard_amount',
-							'id'=>'giftcard_amount',
-							'class'=>'form-control input-sm',
-							'value'=>to_currency_no_money($giftcard_value))
-							);?>
+							'name'	=> 'giftcard_amount',
+							'id'	=> 'giftcard_amount',
+							'class'	=> 'form-control input-sm',
+							'value'	=> to_currency_no_money($giftcard_value)));
+					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class='input-group-addon input-sm'><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -58,7 +58,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 //validation and submit handling
 $(document).ready(function()
 {
@@ -119,7 +119,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
+					url: "<?php echo site_url("$controller_name/ajax_check_number_giftcard")?>",
 					type: 'POST',
 					data: {
 						'amount': $('#giftcard_amount').val()

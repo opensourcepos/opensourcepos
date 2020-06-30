@@ -4,7 +4,7 @@
 		labels: <?php echo json_encode($labels_1); ?>,
 		series: <?php echo json_encode($series_data_1); ?>
 	};
-	
+
 	// We are setting a few options for our chart and override the defaults
 	var options = {
 
@@ -20,11 +20,11 @@
 			bottom: 100
 		},
 
-		// This option can be set to 'inside', 'outside' or 'center'. 
+		// This option can be set to 'inside', 'outside' or 'center'.
 		// show the labels on the border with the pie chart
 		labelPosition: 'outside',
 		labelDirection: 'explode',
-		
+
 		plugins: [
 			Chartist.plugins.tooltip({
 				transformTooltipTextFnc: function(value) {
@@ -40,7 +40,7 @@
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;
 					<?php
 						}
 					}
@@ -55,7 +55,7 @@
 			})
 		]
 	};
-	
+
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',

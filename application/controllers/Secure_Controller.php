@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Secure_Controller extends CI_Controller 
+class Secure_Controller extends CI_Controller
 {
 	/*
 	* Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
@@ -9,9 +9,11 @@ class Secure_Controller extends CI_Controller
 	public function __construct($module_id = NULL, $submodule_id = NULL, $menu_group = NULL)
 	{
 		parent::__construct();
-		
+
 		$this->load->model('Employee');
-		$model = $this->Employee;
+
+		$model	= $this->Employee;
+		$data	= [];
 
 		if(!$model->is_logged_in())
 		{
@@ -19,7 +21,7 @@ class Secure_Controller extends CI_Controller
 		}
 
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
-		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
+		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) ||
 			(isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
 		{
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
@@ -56,7 +58,7 @@ class Secure_Controller extends CI_Controller
 
 		$this->load->vars($data);
 	}
-	
+
 	/*
 	* Internal method to do XSS clean in the derived classes
 	*/
