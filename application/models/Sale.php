@@ -76,9 +76,9 @@ class Sale extends CI_Model
 				MAX(customer_p.email) AS email,
 				MAX(customer_p.comments) AS comments,
 				' . "
-				MAX($sale_total) AS amount_due,
-				IFNULL(MAX(payments.sale_payment_amount), 0) AS amount_tendered,
-				IFNULL(MAX(payments.sale_payment_amount) - MAX($sale_total),0) AS change_due,
+				$sale_total AS amount_due,
+				MAX(IFNULL(payments.sale_payment_amount, 0)) AS amount_tendered,
+				MAX(IFNULL(payments.sale_payment_amount,0)) - $sale_total AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
@@ -94,8 +94,8 @@ class Sale extends CI_Model
 
 		$this->db->where('sales.sale_id', $sale_id);
 
-		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_time', 'asc');
+		$this->db->group_by('sales.sale_id');
+		$this->db->order_by('sales.sale_time', 'asc');
 
 		return $this->db->get();
 	}
