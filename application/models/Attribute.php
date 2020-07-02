@@ -23,7 +23,7 @@ class Attribute extends CI_Model
 		$this->db->where('definition_id', $definition_id);
 		$this->db->where('deleted', $deleted);
 
-		return ($this->db->get('attribute_definitions')->num_rows() === 1);
+		return ($this->db->get('attribute_definitions')->num_rows() == 1);
 	}
 
 	/**
@@ -63,6 +63,8 @@ class Attribute extends CI_Model
 				break;
 			case DATE:
 				$attribute_value_data_column = 'attribute_date';
+				$attribute_value = DateTime::createFromFormat($this->Appconfig->get('dateformat'), $attribute_value);
+				$attribute_value = $attribute_value->format('Y-m-d');
 				break;
 			default:
 				$attribute_value_data_column = 'attribute_value';
@@ -92,7 +94,7 @@ class Attribute extends CI_Model
 
 		$query = $this->db->get();
 
-		if($query->num_rows() === 1)
+		if($query->num_rows() == 1)
 		{
 			return $query->row();
 		}
@@ -173,7 +175,7 @@ class Attribute extends CI_Model
 		$this->db->where('deleted', 0);
 		$this->db->where('definition_fk');
 
-		if($definition_id !== CATEGORY_DEFINITION_ID)
+		if($definition_id != CATEGORY_DEFINITION_ID)
 		{
 			$this->db->where('definition_id <>', $definition_id);
 		}
@@ -220,7 +222,7 @@ class Attribute extends CI_Model
 	{
 		$attribute_values = [];
 
-		if($definition_id > 0 || $definition_id === CATEGORY_DEFINITION_ID)
+		if($definition_id > 0 || $definition_id == CATEGORY_DEFINITION_ID)
 		{
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 			$this->db->where('definition_id', $definition_id);
@@ -484,9 +486,9 @@ class Attribute extends CI_Model
 		else
 		{
 			$this->db->insert('attribute_links', array(
-				'attribute_id' => $attribute_id,
-				'item_id' => $item_id,
-				'definition_id' => $definition_id));
+					'attribute_id'	=> $attribute_id,
+					'item_id'		=> $item_id,
+					'definition_id'	=> $definition_id));
 		}
 
 		$this->db->trans_complete();
@@ -499,8 +501,6 @@ class Attribute extends CI_Model
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
 		$success = $this->db->delete('attribute_links', array('item_id' => $item_id));
-
-		$this->delete_orphaned_values();
 
 		return $success;
 	}
@@ -593,7 +593,7 @@ class Attribute extends CI_Model
 		//Update attribute_value
 			$attribute_id = $this->value_exists($attribute_value, $definition_type);
 
-			if($attribute_id === FALSE)
+			if($attribute_id == FALSE)
 			{
 				switch($definition_type)
 				{
@@ -680,7 +680,7 @@ class Attribute extends CI_Model
 		$this->db->where('definition_id', $definition_id);
 		$definition = $this->db->get('attribute_definitions')->row();
 
-		if($definition->definition_type !== DROPDOWN)
+		if($definition->definition_type != DROPDOWN)
 		{
 			$this->db->trans_start();
 
@@ -739,7 +739,7 @@ class Attribute extends CI_Model
 		{
 			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, FALSE, $attribute['attribute_id'], $definition_type);
 
-			if($this->save_link($attribute['item_id'], $definition_id, $new_attribute_id) === FALSE)
+			if($this->save_link($attribute['item_id'], $definition_id, $new_attribute_id) == FALSE)
 			{
 				log_message('Error', 'Transaction failed');
 				$this->db->trans_rollback();
