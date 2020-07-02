@@ -10,7 +10,7 @@
 		<div class='row'>
 			<div class='col-sm-2' align='left'><br>
 			<strong>
-				<p style='min-height:15.9em;'>General Info</p>
+				<p style='min-height:14.7em;'>General Info</p>
 				<p style='min-height:9.9em;'>User Setup</p>
 				<p>Permissions</p>
 			</strong>
@@ -199,7 +199,7 @@
 		</div>
 	</div>
 </div>
-<div align="center">
+<div align='center'>
 		<a class='copy' data-clipboard-action='copy' data-clipboard-target='#issuetemplate'>Copy Info</a> | <a href='https://github.com/opensourcepos/opensourcepos/issues/new' target='_blank'> Report An issue </a>
 		<script>
 			var clipboard = new ClipboardJS('.copy');
