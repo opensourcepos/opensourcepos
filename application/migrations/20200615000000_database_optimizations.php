@@ -49,7 +49,9 @@ class Migration_database_optimizations extends CI_Migration
 						$field = 'attribute_decimal';
 						break;
 					case DATE:
-						$field = 'attribute_date';
+						$field 						= 'attribute_date';
+						$attribute_value[$field]	= DateTime::createFromFormat('Y-m-d', $attribute_value[$field]);
+						$attribute_value[$field]	= $attribute_value[$field]->format($CI->Appconfig->get('dateformat'));
 						break;
 					default:
 						$field = 'attribute_value';
