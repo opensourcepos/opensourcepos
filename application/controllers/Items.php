@@ -777,9 +777,9 @@ class Items extends Secure_Controller
 		//Item data could be empty if tax information is being updated
 		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
 		{
-			$items_tax_data	= [];
-			$tax_names		= $this->input->post('tax_names');
-			$tax_percents	= $this->input->post('tax_percents');
+			$items_taxes_data	= [];
+			$tax_names			= $this->input->post('tax_names');
+			$tax_percents		= $this->input->post('tax_percents');
 
 			foreach($tax_percents as $tax_percent)
 			{
