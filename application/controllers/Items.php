@@ -1041,9 +1041,9 @@ class Items extends Secure_Controller
 						}
 						break;
 					case DATE:
-						if(valid_date($attribute_value) == FALSE && !empty($attribute_value))
+						if(valid_date($attribute_value) === FALSE && !empty($attribute_value))
 						{
-							log_message('Error',"'$attribute_value' is not an acceptable DATE value. Requires YYYY-MM-DD format with optional HH:MM:SS.");
+							log_message('Error',"'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
 							return TRUE;
 						}
 						break;
