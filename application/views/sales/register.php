@@ -624,14 +624,13 @@ if(isset($success))
 						</div>
 					</div>
 				<?php
-				if(($mode == "sale_invoice") && $this->config->item('invoice_enable') == TRUE)
+				if(($mode == 'sale_invoice') && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
 						<div class="form-group form-group-sm">
 							<div class="col-xs-6">
-								<label for="sales_invoice_enable" class="control-label checkbox">
-									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
+								<label for="sales_invoice_number" class="control-label checkbox">
 									<?php echo $this->lang->line('sales_invoice_enable');?>
 								</label>
 							</div>
@@ -790,20 +789,6 @@ $(document).ready(function()
 			$.post("<?php echo site_url($controller_name."/set_invoice_number");?>", {sales_invoice_number: $('#sales_invoice_number').val()});
 		});
 
-		var enable_invoice_number = function()
-		{
-			var enabled = $("#sales_invoice_enable").is(":checked");
-			$("#sales_invoice_number").prop("disabled", !enabled).parents('tr').show();
-			return enabled;
-		}
-
-		enable_invoice_number();
-
-		$("#sales_invoice_enable").change(function()
-		{
-			var enabled = enable_invoice_number();
-			$.post("<?php echo site_url($controller_name."/set_invoice_number_enabled");?>", {sales_invoice_number_enabled: enabled});
-		});
 	<?php
 	}
 	?>
