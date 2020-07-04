@@ -241,11 +241,6 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_invoice_number($this->input->post('sales_invoice_number'));
 	}
 
-	public function set_invoice_number_enabled()
-	{
-		$this->sale_lib->set_invoice_number_enabled($this->input->post('sales_invoice_number_enabled'));
-	}
-
 	public function set_payment_type()
 	{
 		$this->sale_lib->set_payment_type($this->input->post('selected_payment_type'));
@@ -552,7 +547,6 @@ class Sales extends Secure_Controller
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
-		$invoice_number_enabled = $this->sale_lib->get_invoice_number_enabled();
 		$invoice_number = $this->sale_lib->get_invoice_number();
 		$data["invoice_number"] = $invoice_number;
 		$work_order_number = $this->sale_lib->get_work_order_number();
@@ -612,56 +606,20 @@ class Sales extends Secure_Controller
 
 		$data['print_price_info'] = TRUE;
 
-		$override_invoice_number = NULL;
-
-		if($this->sale_lib->is_sale_by_receipt_mode() && $invoice_number_enabled )
+		if($this->sale_lib->is_invoice_mode())
 		{
-			$pos_invoice = TRUE;
-			$candidate_invoice_number = $invoice_number;
-			if($candidate_invoice_number != NULL && strlen($candidate_invoice_number) > 3)
-			{
-				if(strpos($candidate_invoice_number, '{') == FALSE)
-				{
-					$override_invoice_number = $candidate_invoice_number;
-				}
-			}
-		}
-		else
-		{
-			$pos_invoice = FALSE;
-		}
-
-		if($this->sale_lib->is_invoice_mode() || $pos_invoice)
-		{
+			$invoice_format = $this->config->item('sales_invoice_format');
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
-			if($pos_invoice)
+			if(!empty($invoice_format) && $invoice_number == NULL)
 			{
 				// The user can retain the default encoded format or can manually override it.  It still passes through the rendering step.
-				$this->sale_lib->set_invoice_number($this->input->post('invoice_number'), $keep_custom = TRUE);
-				$invoice_format = $this->sale_lib->get_invoice_number();
-				// If the user blanks out the invoice number and doesn't put anything in there then revert back to the default format encoding
-				if(empty($invoice_format))
-				{
-					$invoice_format = $this->config->item('sales_invoice_format');
-				}
-			}
-			else
-			{
-				$invoice_format = $this->config->item('sales_invoice_format');
-			}
-
-			if($override_invoice_number == NULL)
-			{
 				$invoice_number = $this->token_lib->render($invoice_format);
 			}
-			else
-			{
-				$invoice_number = $override_invoice_number;
-			}
+
 
 			if($sale_id == -1 && $this->Sale->check_invoice_number_exists($invoice_number))
 			{
-				$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
+				$data['error'] = $this->lang->line('sales_invoice_number_duplicate', $invoice_number);
 				$this->_reload($data);
 			}
 			else
@@ -1068,9 +1026,6 @@ class Sales extends Secure_Controller
 		$data['taxes'] = $tax_details[0];
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['payments'] = $this->sale_lib->get_payments();
-		// sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return)
-		$sale_type = $this->sale_lib->get_sale_type();
-
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals($tax_details[0]);
 		$data['item_count'] = $totals['item_count'];
@@ -1113,13 +1068,15 @@ class Sales extends Secure_Controller
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 		$data['change_price'] = $this->Employee->has_grant('sales_change_price', $this->Employee->get_logged_in_employee_info()->person_id);
 
-		$invoice_format = $this->config->item('sales_invoice_format');
-		$data['invoice_format'] = $invoice_format;
+		$invoice_number = $this->sale_lib->get_invoice_number();
 
-		$this->set_invoice_number($invoice_format);
-		$data['invoice_number'] = $invoice_format;
+		if ($this->sale_lib->get_invoice_number() == NULL)
+		{
+			$invoice_number = $this->config->item('sales_invoice_format');
+		}
 
-		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
+		$data['invoice_number'] = $invoice_number;
+
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 

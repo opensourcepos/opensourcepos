@@ -260,9 +260,7 @@ class Sale_lib
 
 	public function is_invoice_mode()
 	{
-		return ($this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
-				$this->CI->session->userdata('sales_mode') == 'sale_invoice' ||
-				($this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
+		return ($this->CI->session->userdata('sales_mode') == 'sale_invoice' &&
 					$this->CI->config->item('invoice_enable') == TRUE);
 	}
 
@@ -284,16 +282,6 @@ class Sale_lib
 	public function is_work_order_mode()
 	{
 		return ($this->CI->session->userdata('sales_mode') == 'sale_work_order');
-	}
-
-	public function set_invoice_number_enabled($invoice_number_enabled)
-	{
-		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
-	}
-
-	public function get_invoice_number_enabled()
-	{
-		return $this->CI->session->userdata('sales_invoice_number_enabled');
 	}
 
 	public function set_price_work_orders($price_work_orders)
@@ -1044,7 +1032,6 @@ class Sale_lib
 	public function clear_all()
 	{
 		$this->CI->session->set_userdata('sale_id', -1);
-		$this->set_invoice_number_enabled(FALSE);
 		$this->clear_table();
 		$this->empty_cart();
 		$this->clear_comment();
