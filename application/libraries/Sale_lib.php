@@ -243,6 +243,11 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_quote_number');
 	}
 
+	public function clear_work_order_number()
+	{
+		$this->CI->session->unset_userdata('sales_work_order_number');
+	}
+
 	public function clear_sale_type()
 	{
 		$this->CI->session->unset_userdata('sale_type');
@@ -1038,6 +1043,7 @@ class Sale_lib
 		$this->clear_email_receipt();
 		$this->clear_invoice_number();
 		$this->clear_quote_number();
+		$this->clear_work_order_number();
 		$this->clear_sale_type();
 		$this->clear_giftcard_remainder();
 		$this->empty_payments();
