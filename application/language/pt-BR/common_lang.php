@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Endereço";
 $lang["common_address_2"] = "Complemento";
 $lang["common_city"] = "Cidade";
@@ -63,8 +62,9 @@ $lang["common_submit"] = "Enviar";
 $lang["common_total_spent"] = "Total gasto";
 $lang["common_unknown"] = "Desconhecido";
 $lang["common_view_recent_sales"] = "Ver Vendas Recentes";
-$lang["common_website"] = "OSPOS";
+$lang["common_website"] = "opensourcepos.org";
 $lang["common_welcome"] = "Bem-vindo";
 $lang["common_welcome_message"] = "Bem-vindo.";
 $lang["common_you_are_using_ospos"] = "Você está usando Open Source Point Of Sale Versão";
 $lang["common_zip"] = "CEP";
+$lang["common_copryrights"] = "© 2010 - %1";
