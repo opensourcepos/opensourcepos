@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Adicione exceção";
 $lang["taxes_cascade"] = "Cascata";
 $lang["taxes_cascade_sequence"] = "Sequência em cascata";
@@ -77,3 +76,4 @@ $lang["taxes_tax_rounding"] = "Arredondamento Fiscal";
 $lang["taxes_tax_type"] = "Tipo de imposto";
 $lang["taxes_update"] = "Atualizar taxa de imposto";
 $lang["taxes_vat_tax"] = "Imposto IVA";
+$lang["taxes_tax_group_not_unique"] = "Grupo de impostos %1 não é único";
