@@ -173,13 +173,6 @@
 			clipboard.on('error', function(e) {
 				console.log(e);
 			});
-
-			function clearSelection() {
-				window.getSelection().removeAllRanges();
-			}
-			document.onmouseup = function() {
-				window.setTimeout(clearSelection, 100);
-			};
 			
 			document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;	
 					
