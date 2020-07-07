@@ -29,6 +29,7 @@ class Migration_database_optimizations extends CI_Migration
 		$this->db->group_end();
 		$attribute_values = $this->db->get('attribute_values');
 
+		$this->db->trans_start();
 		//Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
 		foreach($attribute_values->result_array() as $attribute_value)
 		{
@@ -46,21 +47,21 @@ class Migration_database_optimizations extends CI_Migration
 				switch($attribute_link['definition_type'])
 				{
 					case DECIMAL:
-						$field = 'attribute_decimal';
+						$value = $attribute_value['attribute_decimal'];
 						break;
 					case DATE:
-						$field 						= 'attribute_date';
-						$attribute_value[$field]	= DateTime::createFromFormat('Y-m-d', $attribute_value[$field]);
-						$attribute_value[$field]	= $attribute_value[$field]->format($CI->Appconfig->get('dateformat'));
+						$attribute_date	= DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
+						$value			= $attribute_date->format($CI->Appconfig->get('dateformat'));
 						break;
 					default:
-						$field = 'attribute_value';
+						$value = $attribute_value['attribute_value'];
 						break;
 				}
 
-				$CI->Attribute->save_value($attribute_value[$field], $attribute_link['definition_id'], $attribute_link['item_id'], FALSE, $attribute_link['definition_type']);
+				$CI->Attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], FALSE, $attribute_link['definition_type']);
 			}
 		}
+		$this->db->trans_complete();
 
 		execute_script(APPPATH . 'migrations/sqlscripts/3.4.0_database_optimizations.sql');
 		error_log('Migrating database_optimizations completed');
