@@ -294,3 +294,6 @@ $lang["config_image_max_size_tooltip"] = "Görüntü yüklemelerinde kilobayt (k
 $lang["config_image_max_width_tooltip"] = "Görüntü yüklemelerinde piksel (px) türünde izin verilen azami genişlik.";
 $lang["config_image_restrictions"] = "Görsel Yükleme Kısıtları";
 $lang["config_category_dropdown"] = "Kategoriyi açılır liste olarak göster";
+$lang["config_timezone_error"] = "OSPOS Saat Dilimi, yerel Saat Diliminizden farklı.";
+$lang["config_user_timezone"] = "Yerel Saat Dilimi:";
+$lang["config_os_timezone"] = "OSPOS Saat Dilimi:";
