@@ -413,15 +413,14 @@ function parse_tax($number)
 function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
-
-	if(empty($number))
+	if($number === '')
 	{
 		return $number;
 	}
 
 	$config = get_instance()->config;
 
-	if($decimals == NULL)
+	if($decimals === NULL)
 	{
 		$decimals = $config->item('currency_decimals');
 	}
@@ -580,13 +579,14 @@ function dateformat_bootstrap($php_format)
 }
 
 /**
- * Checks a date to make sure it matches MySQL valid format YYYY-MM-DD with HH:MM:SS optional
- * @param	object 	$date
+ * Checks a date to make sure it matches valid date format for the set date locale
+ * @param	string 	$date
  * @return	boolean
  */
 function valid_date($date)
 {
-	return (preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date) === 1);
+	$config = get_instance()->Appconfig;
+	return (DateTime::createFromFormat($config->get('dateformat'), $date));
 }
 
 function valid_decimal($decimal)

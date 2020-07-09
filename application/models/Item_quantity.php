@@ -30,11 +30,11 @@ class Item_quantity extends CI_Model
 
     public function get_item_quantity($item_id, $location_id)
     {
-        $this->db->from('item_quantities');
         $this->db->where('item_id', $item_id);
         $this->db->where('location_id', $location_id);
-        $result = $this->db->get()->row();
-        if(empty($result) == TRUE)
+        $result = $this->db->get('item_quantities')->row();
+
+        if(empty($result))
         {
             //Get empty base parent object, as $item_id is NOT an item
             $result = new stdClass();

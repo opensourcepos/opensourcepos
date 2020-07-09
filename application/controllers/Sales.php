@@ -13,9 +13,9 @@ class Sales extends Secure_Controller
 		parent::__construct('sales');
 
 		$this->load->library('sale_lib');
+		$this->load->library('barcode_lib');
 		$this->load->library('email_lib');
 		$this->load->library('token_lib');
-		$this->load->library('barcode_lib');
 	}
 
 	public function index()

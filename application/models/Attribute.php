@@ -52,7 +52,7 @@ class Attribute extends CI_Model
 	}
 
 	/*
-	 Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
+	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 */
 	public function value_exists($attribute_value, $definition_type = TEXT)
 	{
@@ -463,7 +463,7 @@ class Attribute extends CI_Model
 	{
 		$this->db->where('definition_name', $definition_name);
 
-		if($definition_type !== FALSE)
+		if($definition_type != FALSE)
 		{
 			$this->db->where('definition_type', $definition_type);
 		}

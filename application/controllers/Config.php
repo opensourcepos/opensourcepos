@@ -942,8 +942,10 @@ class Config extends Secure_Controller
 			$backup = $this->dbutil->backup($prefs);
 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
-			$save = 'uploads/' . $file_name;
+			$save = "uploads/$file_name";
+
 			$this->load->helper('download');
+
 			while(ob_get_level())
 			{
 				ob_end_clean();

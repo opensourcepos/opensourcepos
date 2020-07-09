@@ -1067,7 +1067,6 @@ class Sale extends CI_Model
 
 		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
-
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
 		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';

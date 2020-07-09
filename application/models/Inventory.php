@@ -13,7 +13,6 @@ class Inventory extends CI_Model
 
 	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
 	{
-		$this->db->from('inventory');
 		$this->db->where('trans_items', $item_id);
         if($location_id != FALSE)
         {
@@ -21,7 +20,7 @@ class Inventory extends CI_Model
         }
 		$this->db->order_by('trans_date', 'desc');
 
-		return $this->db->get();
+		return $this->db->get('inventory');
 	}
 
 	public function reset_quantity($item_id)

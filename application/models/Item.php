@@ -262,13 +262,12 @@ class Item extends CI_Model
 		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
 		$this->db->select('GROUP_CONCAT(attribute_decimal SEPARATOR \'|\') AS attribute_dvalues');
 		$this->db->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
-		$this->db->from('items');
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('items.item_id', $item_id);
 		$this->db->group_by('items.item_id');
 
-		$query = $this->db->get();
+		$query = $this->db->get('items');
 
 		if($query->num_rows() == 1)
 		{
@@ -294,10 +293,7 @@ class Item extends CI_Model
 	*/
 	public function get_info_by_id_or_number($item_id, $include_deleted = TRUE)
 	{
-		$this->db->from('items');
-
 		$this->db->group_start();
-
 		$this->db->where('items.item_number', $item_id);
 
 		// check if $item_id is a number and not a string starting with 0
@@ -318,7 +314,7 @@ class Item extends CI_Model
 		// due to barcode and item_id clash
 		$this->db->limit(1);
 
-		$query = $this->db->get();
+		$query = $this->db->get('items');
 
 		if($query->num_rows() == 1)
 		{
@@ -393,6 +389,10 @@ class Item extends CI_Model
 				return TRUE;
 			}
 			return FALSE;
+		}
+		else
+		{
+			$item_data['item_id'] = $item_id;
 		}
 
 		$this->db->where('item_id', $item_id);
