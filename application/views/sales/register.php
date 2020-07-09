@@ -29,10 +29,10 @@ if(isset($success))
 				</li>
 				<li class='pull-left'>
 					<?php echo form_dropdown('mode', $modes, $mode, array(
-						'onchange' => "$('#mode_form').submit();",
-						'class' => 'selectpicker show-menu-arrow',
-						'data-style' => 'btn-default btn-sm',
-						'data-width' => 'fit'));
+						'onchange'		=> "$('#mode_form').submit();",
+						'class'			=> 'selectpicker show-menu-arrow',
+						'data-style'	=> 'btn-default btn-sm',
+						'data-width'	=> 'fit'));
 					?>
 				</li>
 				<?php
@@ -44,10 +44,10 @@ if(isset($success))
 					</li>
 					<li class='pull-left'>
 						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table, array(
-							'onchange' => "$('#mode_form').submit();",
-							'class' => 'selectpicker show-menu-arrow',
-							'data-style' => 'btn-default btn-sm',
-							'data-width' => 'fit'));
+							'onchange'		=> "$('#mode_form').submit();",
+							'class'			=> 'selectpicker show-menu-arrow',
+							'data-style'	=> 'btn-default btn-sm',
+							'data-width'	=> 'fit'));
 						?>
 					</li>
 				<?php
@@ -60,10 +60,10 @@ if(isset($success))
 					</li>
 					<li class='pull-left'>
 						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array(
-							'onchange' => "$('#mode_form').submit();",
-							'class' => 'selectpicker show-menu-arrow',
-							'data-style' => 'btn-default btn-sm',
-							'data-width' => 'fit'));
+							'onchange'		=> "$('#mode_form').submit();",
+							'class'			=> 'selectpicker show-menu-arrow',
+							'data-style'	=> 'btn-default btn-sm',
+							'data-width'	=> 'fit'));
 						?>
 					</li>
 				<?php
@@ -84,9 +84,9 @@ if(isset($success))
 					<li class='pull-right'>
 						<?php echo anchor("$controller_name/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp;</span>' . $this->lang->line('sales_takings'),
 									array(
-										'class' => 'btn btn-primary btn-sm',
-										'id' => 'sales_takings_button',
-										'title' => $this->lang->line('sales_takings')));
+										'class'	=> 'btn btn-primary btn-sm',
+										'id'	=> 'sales_takings_button',
+										'title'	=> $this->lang->line('sales_takings')));
 									?>
 					</li>
 				<?php
@@ -106,11 +106,11 @@ if(isset($success))
 				</li>
 				<li class='pull-left'>
 					<?php echo form_input(array(
-						'name' => 'item',
-						'id' => 'item',
-						'class' => 'form-control input-sm',
-						'size' => '50',
-						'tabindex' => ++$tabindex));
+						'name'		=> 'item',
+						'id'		=> 'item',
+						'class'		=> 'form-control input-sm',
+						'size'		=> '50',
+						'tabindex'	=> ++$tabindex));
 					?>
 					<span class='ui-helper-hidden-accessible' role='status'></span>
 				</li>
@@ -165,9 +165,9 @@ if(isset($success))
 								<?php echo anchor("$controller_name/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>'); ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 								<?php echo form_input(array(
-									'type' => 'hidden',
-									'name' => 'item_id',
-									'value' => $item['item_id']));
+									'type'	=> 'hidden',
+									'name'	=> 'item_id',
+									'value'	=> $item['item_id']));
 								?>
 							</td>
 							<?php
@@ -176,20 +176,20 @@ if(isset($success))
 							?>
 								<td>
 									<?php echo form_input(array(
-											'name' => 'item_number',
-											'id' => 'item_number',
-											'class' => 'form-control input-sm',
-											'value' => $item['item_number'],
-											'tabindex' => ++$tabindex));
+											'name'		=> 'item_number',
+											'id'		=> 'item_number',
+											'class'		=> 'form-control input-sm',
+											'value'		=> $item['item_number'],
+											'tabindex'	=> ++$tabindex));
 									?>
 								</td>
 								<td style='align: center;'>
 									<?php echo form_input(array(
-										'name' => 'name',
-										'id' => 'name',
-										'class' => 'form-control input-sm',
-										'value' => $item['name'],
-										'tabindex' => ++$tabindex));
+										'name'		=> 'name',
+										'id'		=> 'name',
+										'class'		=> 'form-control input-sm',
+										'value'		=> $item['name'],
+										'tabindex'	=> ++$tabindex));
 									?>
 								</td>
 							<?php
@@ -212,11 +212,11 @@ if(isset($success))
 							?>
 								<td>
 									<?php echo form_input(array(
-										'name' => 'price',
-										'class' => 'form-control input-sm',
-										'value' => to_currency_no_money($item['price']),
-										'tabindex' => ++$tabindex,
-										'onClick' => 'this.select();'));
+										'name'		=> 'price',
+										'class'		=> 'form-control input-sm',
+										'value'		=> to_currency_no_money($item['price']),
+										'tabindex'	=> ++$tabindex,
+										'onClick'	=> 'this.select();'));
 									?>
 								</td>
 							<?php
@@ -242,11 +242,11 @@ if(isset($success))
 								else
 								{
 									echo form_input(array(
-										'name' => 'quantity',
-										'class' => 'form-control input-sm',
-										'value' => to_quantity_decimals($item['quantity']),
-										'tabindex' => ++$tabindex,
-										'onClick' => 'this.select();'));
+										'name'		=> 'quantity',
+										'class'		=> 'form-control input-sm',
+										'value'		=> to_quantity_decimals($item['quantity']),
+										'tabindex'	=> ++$tabindex,
+										'onClick'	=> 'this.select();'));
 								}
 								?>
 							</td>
@@ -412,9 +412,9 @@ if(isset($success))
 						<th style='width: 55%;'><?php echo $this->lang->line('sales_customer'); ?></th>
 						<th style='width: 45%; text-align: right;'>
 							<?php echo anchor("customers/view/$customer_id", $customer, array(
-								'class' => 'modal-dlg',
-								'data-btn-submit' => $this->lang->line('common_submit'),
-								'title' => $this->lang->line('customers_update')));
+								'class'				=> 'modal-dlg',
+								'data-btn-submit'	=> $this->lang->line('common_submit'),
+								'title'				=> $this->lang->line('customers_update')));
 							?>
 						</th>
 					</tr>
@@ -491,9 +491,9 @@ if(isset($success))
 
 				<?php echo anchor("$controller_name/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . $this->lang->line('common_remove') . ' ' . $this->lang->line('customers_customer'),
 								array(
-									'class' => 'btn btn-danger btn-sm',
-									'id' => 'remove_customer_button',
-									'title' => $this->lang->line('common_remove') . ' ' . $this->lang->line('customers_customer')));
+									'class'	=> 'btn btn-danger btn-sm',
+									'id'	=> 'remove_customer_button',
+									'title'	=> $this->lang->line('common_remove') . ' ' . $this->lang->line('customers_customer')));
 								?>
 			<?php
 			}

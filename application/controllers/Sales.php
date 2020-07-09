@@ -620,7 +620,6 @@ class Sales extends Secure_Controller
 				$invoice_number = $this->token_lib->render($invoice_format);
 			}
 
-
 			if($sale_id == -1 && $this->Sale->check_invoice_number_exists($invoice_number))
 			{
 				$data['error'] = $this->lang->line('sales_invoice_number_duplicate', $invoice_number);
@@ -1080,7 +1079,6 @@ class Sales extends Secure_Controller
 		}
 
 		$data['invoice_number'] = $invoice_number;
-
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 
