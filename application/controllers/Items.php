@@ -84,11 +84,9 @@ class Items extends Secure_Controller
 		$this->load->helper('file');
 		$this->load->library('image_lib');
 
-	//In this context, $pic_filename always has .ext
 		$file_extension	= pathinfo($pic_filename, PATHINFO_EXTENSION);
 		$images			= glob("./uploads/item_pics/$pic_filename");
 
-	//Make sure we pick only the file name, without extension
 		$base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 
 		if(sizeof($images) > 0)
@@ -96,7 +94,7 @@ class Items extends Secure_Controller
 			$image_path = $images[0];
 			$thumb_path = $base_path . $this->image_lib->thumb_marker . '.' . $file_extension;
 
-			if(sizeof($images) < 2)
+			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
 				$config['image_library']	= 'gd2';
 				$config['source_image']		= $image_path;
