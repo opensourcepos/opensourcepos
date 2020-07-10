@@ -52,6 +52,7 @@ $lang["sales_discount"] = "Disc";
 $lang["sales_discount_included"] = "% Discount";
 $lang["sales_discount_short"] = "%";
 $lang["sales_due"] = "Due";
+$lang["sales_due_local"] = "Due Local Currency";
 $lang["sales_due_filter"] = "Due";
 $lang["sales_edit"] = "Edit";
 $lang["sales_edit_item"] = "Edit Item";

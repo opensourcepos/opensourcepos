@@ -467,7 +467,16 @@ if(isset($success))
 				<tr>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due');?></th>
 					<th style="width: 45%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
-				</tr>
+				</tr>				
+			<?php
+			if($apply_exchange_rate)
+			{
+			?>
+				<th style="width: 55%;"><?php echo $this->lang->line('sales_due_local');?></th>
+				<th class="total-value"><?php echo $this->config->item('currency_symbol') .$amount_change; ?></th>
+			<?php
+			}
+			?>			
 			</table>
 
 			<div id="payment_details">
