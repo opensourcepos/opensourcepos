@@ -1,10 +1,10 @@
 <?php
-$lang["attributes_attribute_value_invalid_chars"] = "ค่าแอตทริบิวต์ไม่สามารถมี ':' หรือ '|' ได้";
-$lang["attributes_confirm_delete"] = "ต้องการลบแอตทริบิวต์ที่เลือกหรือไม่ ?";
-$lang["attributes_confirm_restore"] = "ต้องการคืนค่าแอตทริบิวต์ที่เลือกหรือไม่ ?";
-$lang["attributes_definition_cannot_be_deleted"] = "ไม่สามารถลบแอตทริบิวต์ที่เลือก";
-$lang["attributes_definition_error_adding_updating"] = "ไม่สามารถเพิ่มหรือแก้ไขแอตทริบิวต์ %1, โปรดตรวจสอบ Error Log";
-$lang["attributes_definition_flags"] = "การมองเห็นแอตทริบิวต์";
+$lang["attributes_attribute_value_invalid_chars"] = "คุณลักษณะไม่สามารถมี ':' หรือ '|' ได้";
+$lang["attributes_confirm_delete"] = "ต้องการลบคุณลักษณะที่เลือกหรือไม่ ?";
+$lang["attributes_confirm_restore"] = "ต้องการคืนค่าคุณลักษณะที่เลือกหรือไม่ ?";
+$lang["attributes_definition_cannot_be_deleted"] = "ไม่สามารถลบคุณลักษณะที่เลือก";
+$lang["attributes_definition_error_adding_updating"] = "ไม่สามารถเพิ่มหรือแก้ไขคุณลักษณะ %1, โปรดตรวจสอบความผิดพลาดในบันทึก";
+$lang["attributes_definition_flags"] = "การมองเห็นคุณลักษณะ";
 $lang["attributes_definition_group"] = "กลุ่ม";
 $lang["attributes_definition_id"] = "ID";
 $lang["attributes_definition_name"] = "เพิ่มแอตทริบิวต์";
