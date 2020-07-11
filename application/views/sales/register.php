@@ -425,6 +425,18 @@ if(isset($success))
 			}
 			?>
 		<?php echo form_close(); ?>
+		<!-- Currency Converter Script - EXCHANGERATEWIDGET.COM -->
+		<?php
+			if($apply_exchange_rate)
+			{
+		?>
+			<div  class="pull-center" style="width:100%;border:1px solid #55A516;"><div style="text-align:center;background-color:#4d88ff;width:100%;font-size:13px;font-weight:bold;height:18px;padding-top:2px;"><a href="https://www.exchangeratewidget.com/" style="color:#FFFFFF;text-decoration:none;" rel="nofollow">Currency Converter</a></div>
+			<script type="text/javascript" src="//www.exchangeratewidget.com/converter.php?l=en&f=USD&t=EUR&a=1&d=F0F0F0&n=FFFFFF&o=000000&v=1"></script>
+<!-- End of Currency Converter Script -->
+		<?php
+			}
+		?>
+
 
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
@@ -1018,6 +1030,7 @@ function check_payment_type()
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
 	}
+	
 }
 </script>
 
