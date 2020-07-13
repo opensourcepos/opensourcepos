@@ -171,7 +171,7 @@
 					"<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat'),mktime(23,59,59,$this->config->item('financial_year'),0,date('Y')));?>"
 				],
 				"<?php echo $this->lang->line('datepicker_all_time'); ?>": [
-					"<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat'),mktime(0,0,0,1,1,2010));?>,
+					"<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat'),mktime(0,0,0,1,1,2010));?>,"
 					"<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat'),mktime(23,59,59,date('m'),date('d'),date('Y')));?>"
 				],
 			},
