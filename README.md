@@ -60,6 +60,7 @@ This application **can be setup in many different ways** and we only **support t
 
 Read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
 
+[Check our wiki](https://github.com/opensourcepos/opensourcepos/wiki/Supported-hardware-datasheet) for info and recommendations on supported receipt printers and barcode scanners.
 
 License
 -------
