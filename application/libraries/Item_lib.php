@@ -37,16 +37,16 @@ class Item_lib
 	}
 
 	/**
-	 * Recursively filters out unacceptable values (NULL and '') from Array
+	 * Filters out unacceptable values (NULL and '') from Array
 	 *
 	 * @param	array|string	$input	The array or array value to analize
 	 * @return	array|string			The resulting array element or array
 	 */
 	public function custom_array_filter($input)
 	{
-		foreach($input as $key => &$value)
+		foreach($input as $key => $value)
 		{
-			if(in_array($value,array(NULL,'')) && $value !== 0)
+			if(in_array($value, array(NULL, '')) && $value !== 0)
 			{
 				unset($input[$key]);
 			}

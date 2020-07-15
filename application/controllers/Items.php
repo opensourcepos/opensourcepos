@@ -246,15 +246,14 @@ class Items extends Secure_Controller
 			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
 			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
 
-			$item_info->receiving_quantity = 1;
-			$item_info->reorder_level = 1;
-			$item_info->item_type = ITEM;	//Standard
-			$item_info->item_id = $item_id;
-			$item_info->stock_type = HAS_STOCK;
-			$item_info->tax_category_id = NULL;
-			$item_info->qty_per_pack = 1;
-			$item_info->pack_name = $this->lang->line('items_default_pack_name');
-			$data['hsn_code'] = '';
+			$item_info->receiving_quantity	= 1;
+			$item_info->reorder_level		= 1;
+			$item_info->item_type			= ITEM;	//Standard
+			$item_info->stock_type 			= HAS_STOCK;
+			$item_info->tax_category_id		= NULL;
+			$item_info->qty_per_pack 		= 1;
+			$item_info->pack_name 			= $this->lang->line('items_default_pack_name');
+			$data['hsn_code'] 				= '';
 
 			if($use_destination_based_tax)
 			{
@@ -436,7 +435,7 @@ class Items extends Secure_Controller
 		$this->load->view('barcodes/barcode_sheet', $data);
 	}
 
-	public function attributes($item_id)
+	public function attributes($item_id = NEW_ITEM)
 	{
 		$data['item_id']			= $item_id;
 		$definition_ids				= json_decode($this->input->post('definition_ids'), TRUE);
@@ -507,7 +506,7 @@ class Items extends Secure_Controller
 
 		$default_pack_name = $this->lang->line('items_default_pack_name');
 
-	//Save item data
+		//Save item data
 		$item_data = array(
 			'name'					=> $this->input->post('name'),
 			'description'			=> $this->input->post('description'),
@@ -549,7 +548,7 @@ class Items extends Secure_Controller
 
 		if(!empty($upload_data['orig_name']))
 		{
-		// XSS file image sanity check
+			// XSS file image sanity check
 			if($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
 			{
 				$item_data['pic_filename'] = $upload_data['raw_name'];
@@ -593,7 +592,7 @@ class Items extends Secure_Controller
 				$success &= $this->Item_taxes->save($items_taxes_data, $item_id);
 			}
 
-		//Save item quantity
+			//Save item quantity
 			$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
 			foreach($stock_locations as $location)
 			{
@@ -627,7 +626,7 @@ class Items extends Secure_Controller
 				}
 			}
 
-		// Save item attributes
+			// Save item attributes
 			$attribute_links	= $this->input->post('attribute_links') !== NULL ? $this->input->post('attribute_links') : [];
 			$attribute_ids		= $this->input->post('attribute_ids');
 
@@ -847,9 +846,9 @@ class Items extends Secure_Controller
 			{
 				set_time_limit(240);
 
-				$csv_rows					= get_csv_file($_FILES['file_path']['tmp_name']);
 				$failCodes					= [];
 				$third_party_data			= [];
+				$csv_rows					= get_csv_file($_FILES['file_path']['tmp_name']);
 				$employee_id				= $this->Employee->get_logged_in_employee_info()->person_id;
 				$allowed_stock_locations	= $this->Stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->Attribute->get_definition_names();
@@ -864,12 +863,14 @@ class Items extends Secure_Controller
 						$attribute_data[$definition_name]['dropdown_values'] = $this->Attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
 					}
 				}
+
 				$this->db->trans_begin();
 
 				foreach($csv_rows as $key => $row)
 				{
-					$invalidated	= FALSE;
+					$is_failed_row	= FALSE;
 					$item_id		= $row['Id'];
+					$is_update 		= !empty($item_id);
 					$item_data		= array(
 						'item_id'				=> $item_id,
 						'name'					=> $row['Item Name'],
@@ -886,11 +887,10 @@ class Items extends Secure_Controller
 						$item_data['supplier_id'] = $this->Supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : NULL;
 					}
 
-				//Allow for empty fields on update import
-					if(!empty($item_id))
+					if($is_update)
 					{
-						$item_data['allow_alt_description']	= $row['Allow Alt Description'];
-						$item_data['is_serialized']			= $row['Item has Serial Number'];
+						$item_data['allow_alt_description']	= empty($row['Allow Alt Description']) ? NULL : $row['Allow Alt Description'];
+						$item_data['is_serialized']			= empty($row['Item has Serial Number']) ? NULL : $row['Item has Serial Number'];
 					}
 					else
 					{
@@ -901,23 +901,23 @@ class Items extends Secure_Controller
 					if(!empty($row['Barcode']))
 					{
 						$item_data['item_number'] = $row['Barcode'];
-						$invalidated = $this->Item->item_number_exists($item_data['item_number']);
+						$is_failed_row = $this->Item->item_number_exists($item_data['item_number']);
 					}
 
-				//Sanity check of data
-					if(!$invalidated)
+					if(!$is_failed_row)
 					{
-						$invalidated = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
+						$is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
 					}
 
-				//Save to database
 					$item_data = $this->item_lib->custom_array_filter($item_data);
 
-					if(!$invalidated && $this->Item->save($item_data, $item_id))
+					if(!$is_failed_row && $this->Item->save($item_data, $item_id))
 					{
 						$this->save_tax_data($row, $item_data);
 						$this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-						$invalidated = $this->save_attribute_data($row, $item_data, $attribute_data);
+						$is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);
+
+						$item_data = array_merge($item_data, get_object_vars($this->Item->get_info_by_id_or_number($item_id)));
 					}
 					else
 					{
@@ -925,7 +925,11 @@ class Items extends Secure_Controller
 						$failCodes[]	= $failed_row;
 						log_message('ERROR',"CSV Item import failed on line $failed_row. This item was not imported.");
 					}
+
+					unset($csv_rows[$key]);
 				}
+
+				$csv_rows = NULL;
 
 				if(count($failCodes) > 0)
 				{
@@ -1193,7 +1197,7 @@ class Items extends Secure_Controller
 	/**
 	 * Guess whether file extension is not in the table field, if it isn't, then it's an old-format (formerly pic_id) field, so we guess the right filename and update the table
 	 *
-	 * @param $item the item to update
+	 * @param $item int item to update
 	 */
 	private function _update_pic_filename($item)
 	{

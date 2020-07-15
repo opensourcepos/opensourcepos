@@ -386,6 +386,7 @@ class Item extends CI_Model
 					$this->db->where('item_id', $item_data['item_id']);
 					$this->db->update('items', array('low_sell_item_id'=>$item_data['item_id']));
 				}
+
 				return TRUE;
 			}
 			return FALSE;

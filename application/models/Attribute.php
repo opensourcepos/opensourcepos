@@ -58,27 +58,28 @@ class Attribute extends CI_Model
 	{
 		switch($definition_type)
 		{
-			case DECIMAL:
-				$attribute_value_data_column = 'attribute_decimal';
-				break;
 			case DATE:
-				$attribute_value_data_column = 'attribute_date';
-				$attribute_value = DateTime::createFromFormat($this->Appconfig->get('dateformat'), $attribute_value);
-				$attribute_value = $attribute_value->format('Y-m-d');
+				$data_type				= 'date';
+				$attribute_date_value	= DateTime::createFromFormat($this->Appconfig->get('dateformat'), $attribute_value);
+				$attribute_value		= $attribute_date_value->format('Y-m-d');
+				break;
+			case DECIMAL:
+				$data_type = 'decimal';
 				break;
 			default:
-				$attribute_value_data_column = 'attribute_value';
+				$data_type = 'value';
 				break;
 		}
 
 		$this->db->select('attribute_id');
-		$this->db->where($attribute_value_data_column, $attribute_value);
+		$this->db->where("attribute_$data_type", $attribute_value);
 		$query = $this->db->get('attribute_values');
 
 		if($query->num_rows() > 0)
 		{
 			return $query->row()->attribute_id;
 		}
+
 		return FALSE;
 	}
 
@@ -588,53 +589,60 @@ class Attribute extends CI_Model
 	{
 		$this->db->trans_start();
 
+		$locale_date_format = $this->Appconfig->get('dateformat');
+
 		if(empty($attribute_id) || empty($item_id))
 		{
 		//Update attribute_value
 			$attribute_id = $this->value_exists($attribute_value, $definition_type);
 
-			if($attribute_id == FALSE)
+			if($attribute_id === FALSE)
 			{
 				switch($definition_type)
 				{
-					case DECIMAL:
-						$this->db->insert('attribute_values', array('attribute_decimal' => $attribute_value));
-						break;
 					case DATE:
-						$this->db->insert('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
+						$data_type				= 'date';
+						$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
+						$attribute_value		= $attribute_date_value->format('Y-m-d');
+						break;
+					case DECIMAL:
+						$data_type	= 'decimal';
 						break;
 					default:
-						$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
+						$data_type	= 'value';
 						break;
 				}
+
+				$this->db->insert('attribute_values', array("attribute_$data_type" => $attribute_value));
 			}
 
 		//Update attribute_link
 			$attribute_id = $attribute_id ? $attribute_id : $this->db->insert_id();
 
 			$this->db->insert('attribute_links', array(
-				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
-				'item_id' => empty($item_id) ? NULL : $item_id,
-				'definition_id' => $definition_id));
+				'attribute_id'	=> empty($attribute_id) ? NULL : $attribute_id,
+				'item_id'		=> empty($item_id) ? NULL : $item_id,
+				'definition_id'	=> $definition_id));
 		}
-
-		//Existing Attribute
 		else
 		{
-			$this->db->where('attribute_id', $attribute_id);
-
 			switch($definition_type)
 			{
-				case DECIMAL:
-					$this->db->update('attribute_values', array('attribute_decimal' => $attribute_value));
-					break;
 				case DATE:
-					$this->db->update('attribute_values', array('attribute_date' => date('Y-m-d', strtotime($attribute_value))));
+					$data_type				= 'date';
+					$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
+					$attribute_value		= $attribute_date_value->format('Y-m-d');
+					break;
+				case DECIMAL:
+					$data_type	= 'decimal';
 					break;
 				default:
-					$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
+					$data_type	= 'value';
 					break;
 			}
+
+				$this->db->where('attribute_id', $attribute_id);
+				$this->db->update('attribute_values', array("attribute_$data_type" => $attribute_value));
 		}
 
 		$this->db->trans_complete();
