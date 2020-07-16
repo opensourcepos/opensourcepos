@@ -8,6 +8,9 @@ ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_name`);
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_type`);
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`deleted`); 
 
+#opsos_attribute_links table
+ALTER TABLE `ospos_attribute_links` ADD UNIQUE INDEX `attribute_links_uq2` (`item_id`, `receiving_id`, `sale_id`, `definition_id`, `attribute_id`);
+
 #ospos_cash_up table
 ALTER TABLE `ospos_cash_up` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 
@@ -55,6 +58,8 @@ ALTER TABLE `ospos_items` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_items` MODIFY `stock_type` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_items` MODIFY `item_type` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_items` ADD INDEX(`deleted`);
+ALTER TABLE `ospos_items` ADD INDEX(`item_type`);
+ALTER TABLE `ospos_items` ADD UNIQUE INDEX `items_uq1` (`supplier_id`, `item_id`, `deleted`, `item_type`);
 
 #ospos_item_kits table
 ALTER TABLE `ospos_item_kits` MODIFY `kit_discount_type` tinyint(1) DEFAULT 0 NOT NULL;
