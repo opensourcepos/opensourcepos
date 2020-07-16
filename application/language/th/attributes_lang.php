@@ -1,5 +1,5 @@
 <?php
-$lang["attributes_attribute_value_invalid_chars"] = "คุณลักษณะไม่สามารถมี ':' หรือ '|' ได้";
+$lang["attributes_attribute_value_invalid_chars"] = "คุณลักษณะไม่สามารถมีเครื่องหมาย ':' หรือเครื่องหมาย '|' ได้";
 $lang["attributes_confirm_delete"] = "ต้องการลบคุณลักษณะที่เลือกหรือไม่ ?";
 $lang["attributes_confirm_restore"] = "ต้องการคืนค่าคุณลักษณะที่เลือกหรือไม่ ?";
 $lang["attributes_definition_cannot_be_deleted"] = "ไม่สามารถลบคุณลักษณะที่เลือก";
