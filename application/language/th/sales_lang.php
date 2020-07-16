@@ -1,7 +1,7 @@
 <?php
 $lang["customers_available_points"] = "คะแนนที่มี";
 $lang["rewards_package"] = "คะแนนสะสม";
-$lang["rewards_remaining_balance"] = "คะแนนสะสมคงเหลือ คือ ";
+$lang["rewards_remaining_balance"] = "คะแนนสะสมคงเหลือ ";
 $lang["sales_account_number"] = "บัญชี #";
 $lang["sales_add_payment"] = "เพิ่มบิล";
 $lang["sales_amount_due"] = "ยอดต้องชำระ";
@@ -69,11 +69,11 @@ $lang["sales_id"] = "เลขที่ขาย";
 $lang["sales_include_prices"] = "รวมในราคา?";
 $lang["sales_invoice"] = "ใบแจ้งหนี้";
 $lang["sales_invoice_confirm"] = "ใบแจ้งหนี้นี้จะถูกส่งไปที่";
-$lang["sales_invoice_enable"] = "ออกใบแจ้งหนี้";
+$lang["sales_invoice_enable"] = "เลขที่ใบแจ้งหนี้";
 $lang["sales_invoice_filter"] = "ใบแจ้งหนี้";
 $lang["sales_invoice_no_email"] = "ลูกค้ารายนี้ไม่มีที่อยู่อีเมล";
 $lang["sales_invoice_number"] = "เลขใบแจ้งหนี้ #";
-$lang["sales_invoice_number_duplicate"] = "หมายเลขใบแจ้งหนี้จะต้องไม่ซ้ำกัน";
+$lang["sales_invoice_number_duplicate"] = "ใบแจ้งหนี้หมายเลข %1 จะต้องไม่ซ้ำกัน";
 $lang["sales_invoice_sent"] = "ส่งใบแจ้งหนี้ไปที่";
 $lang["sales_invoice_total"] = "ยอดรวมในใบแจ้งหนี้";
 $lang["sales_invoice_type_custom_invoice"] = "ใบแจ้งหนี้ที่กำหนดเอง (custom_invoice.php)";
