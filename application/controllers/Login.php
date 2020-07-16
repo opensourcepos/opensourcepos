@@ -36,7 +36,7 @@ class Login extends CI_Controller
 	{
 		$password = $this->input->post('password');
 
-		if(!$this->_installation_check())
+		if(!$this->installation_check())
 		{
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_installation'));
 
@@ -83,13 +83,13 @@ class Login extends CI_Controller
 		return TRUE;
 	}
 
-	private function _installation_check()
+	private function installation_check()
 	{
 		// get PHP extensions and check that the required ones are installed
 		$extensions = implode(', ', get_loaded_extensions());
 		$keys = array('bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl');
 		$pattern = '/';
-		foreach($keys as $key) 
+		foreach($keys as $key)
 		{
 			$pattern .= '(?=.*\b' . preg_quote($key, '/') . '\b)';
 		}

@@ -24,7 +24,7 @@ class MailchimpConnector
 	 *
 	 * @var	string[]
 	 */
-	private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
+	private $api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
 
 	/**
 	 * Constructor
@@ -48,7 +48,7 @@ class MailchimpConnector
 			$strings = explode('-', $this->_api_key);
 			if(is_array($strings) && !empty($strings[1]))
 			{
-				$this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);
+				$this->api_endpoint = str_replace('<dc>', $strings[1], $this->api_endpoint);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ class MailchimpConnector
 	{
 		if(!empty($this->_api_key))
 		{
-			return $this->_request($httpVerb, $method, $args);
+			return $this->request($httpVerb, $method, $args);
 		}
 
 		return FALSE;
@@ -77,14 +77,14 @@ class MailchimpConnector
 	 * @param  array  $args     Assoc array of parameters to be passed
 	 * @return string           Request URL
 	 */
-	private function _build_request_url($httpVerb = 'POST', $method, $args = [])
+	private function build_request_url($httpVerb = 'POST', $method, $args = [])
 	{
 		if($httpVerb == 'GET')
 		{
-			return $this->_api_endpoint . $method . '?' . http_build_query($args);
+			return $this->api_endpoint . $method . '?' . http_build_query($args);
 		}
 
-		return $this->_api_endpoint . $method;
+		return $this->api_endpoint . $method;
 	}
 
 	/**
@@ -94,13 +94,13 @@ class MailchimpConnector
 	 * @param  array  $args     Assoc array of parameters to be passed
 	 * @return array            Assoc array of decoded result
 	 */
-	private function _request($httpVerb, $method, $args = [])
+	private function request($httpVerb, $method, $args = [])
 	{
 		$result = FALSE;
 
 		if(($ch = curl_init()) !== FALSE)
 		{
-			curl_setopt($ch, CURLOPT_URL, $this->_build_request_url($httpVerb, $method, $args));
+			curl_setopt($ch, CURLOPT_URL, $this->build_request_url($httpVerb, $method, $args));
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 			curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->_api_key);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'PHP-MCAPI/3.0');
@@ -131,12 +131,12 @@ class MailchimpConnector
 
 class Mailchimp_lib
 {
-	private $_connector;
+	private $connector;
 
 	public function __construct(array $params = [])
 	{
 		$api_key = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';
-		$this->_connector = new MailchimpConnector($api_key);
+		$this->connector = new MailchimpConnector($api_key);
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Mailchimp_lib
 	*/
 	public function getLists(array $parameters = array('fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'))
 	{
-		return $this->_connector->call('GET', '/lists', $parameters);
+		return $this->connector->call('GET', '/lists', $parameters);
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Mailchimp_lib
 	*/
 	public function getList($list_id, $parameters = array('fields' => 'id,name,stats.member_count,stats.merge_field_count'))
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id, $parameters);
+		return $this->connector->call('GET', '/lists/' . $list_id, $parameters);
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Mailchimp_lib
 			'offset' => $offset
 		];
 
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members', $parameters);
+		return $this->connector->call('GET', '/lists/' . $list_id . '/members', $parameters);
 	}
 
 	/**
@@ -211,7 +211,7 @@ class Mailchimp_lib
 	*/
 	public function getMemberInfoById($list_id, $md5id, $parameters = array('fields' => 'email_address,status,merge_fields'))
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);
+		return $this->connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Mailchimp_lib
 	*/
 	public function getMemberInfo($list_id, $email, $parameters = [])
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
+		return $this->connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
 
 	/**
@@ -249,7 +249,7 @@ class Mailchimp_lib
 	*/
 	public function getMemberActivity($list_id, $email, $parameters = [])
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);
+		return $this->connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);
 	}
 
 	/**
@@ -277,7 +277,7 @@ class Mailchimp_lib
 			)
 		];
 
-		return $this->_connector->call('POST', '/lists/' . $list_id . '/members/', $parameters);
+		return $this->connector->call('POST', '/lists/' . $list_id . '/members/', $parameters);
 	}
 
 	/**
@@ -294,7 +294,7 @@ class Mailchimp_lib
 	*/
 	public function removeMember($list_id, $email)
 	{
-		return $this->_connector->call('DELETE', '/lists/' . $list_id . '/members/' . md5(strtolower($email)));
+		return $this->connector->call('DELETE', '/lists/' . $list_id . '/members/' . md5(strtolower($email)));
 	}
 
 	/**
@@ -321,7 +321,7 @@ class Mailchimp_lib
 			)
 		];
 
-		return $this->_connector->call('PATCH', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
+		return $this->connector->call('PATCH', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
 
 	/**
@@ -350,7 +350,7 @@ class Mailchimp_lib
 			)
 		];
 
-		return $this->_connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
+		return $this->connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
 }
 

@@ -30,7 +30,8 @@
 				<div class='col-xs-4'>
 					<div class='input-group'>
 						<span class='input-group-addon input-sm'><span class='glyphicon glyphicon-user'></span></span>
-						<?php echo form_dropdown('mailchimp_list_id',
+						<?php echo form_dropdown(
+								'mailchimp_list_id',
 								$mailchimp['lists'],
 								$mailchimp['list_id'],
 								array('id' => 'mailchimp_list_id', 'class' => 'form-control input-sm'));

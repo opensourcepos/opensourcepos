@@ -46,7 +46,7 @@ class Ean13 extends BarcodeBase
 	 * Coding map
 	 * @var array
 	 */
-	private $_codingmap = array(
+	private $codingmap = array(
 		'0' => array(
 			'A' => array(0,0,0,1,1,0,1),
 			'B' => array(0,1,0,0,1,1,1),
@@ -103,7 +103,7 @@ class Ean13 extends BarcodeBase
 	 * Coding map left
 	 * @var array
 	 */
-	private $_codingmapleft = array(
+	private $codingmapleft = array(
 		'0' => array('A','A','A','A','A','A'),
 		'1' => array('A','A','B','A','B','B'),
 		'2' => array('A','A','B','B','A','B'),
@@ -259,13 +259,13 @@ class Ean13 extends BarcodeBase
 		$xpos += $pxPerBar;
 
 		// Draw left $this->data contents
-		$set_array = $this->_codingmapleft[$key];
+		$set_array = $this->codingmapleft[$key];
 
 		for ($idx = 1; $idx < 7; ++$idx)
 		{
 			$value = substr($this->data, $idx, 1);
 
-			foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
+			foreach ($this->codingmap[$value][$set_array[$idx - 1]] as $bar)
 			{
 				if ($bar)
 				{
@@ -322,7 +322,7 @@ class Ean13 extends BarcodeBase
 		{
 			$value = substr($this->data, $idx, 1);
 
-			foreach ($this->_codingmap[$value]['C'] as $bar)
+			foreach ($this->codingmap[$value]['C'] as $bar)
 			{
 				if ($bar)
 				{

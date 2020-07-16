@@ -72,7 +72,7 @@ class Items extends Secure_Controller
 
 			if($item->pic_filename !== NULL)
 			{
-				$this->_update_pic_filename($item);
+				$this->update_pic_filename($item);
 			}
 		}
 
@@ -494,7 +494,7 @@ class Items extends Secure_Controller
 
 	public function save($item_id = NEW_ITEM)
 	{
-		$upload_success		= $this->_handle_image_upload();
+		$upload_success		= $this->handle_image_upload();
 		$upload_data 		= $this->upload->data();
 		$receiving_quantity	= parse_quantity($this->input->post('receiving_quantity'));
 		$item_type			= $this->input->post('item_type') === NULL ? ITEM : intval($this->input->post('item_type'));
@@ -690,7 +690,7 @@ class Items extends Secure_Controller
 	/*
 	 * Let files be uploaded with their original name
 	 */
-	private function _handle_image_upload()
+	private function handle_image_upload()
 	{
 	//Load upload library
 		$config = array(
@@ -1199,7 +1199,7 @@ class Items extends Secure_Controller
 	 *
 	 * @param $item int item to update
 	 */
-	private function _update_pic_filename($item)
+	private function update_pic_filename($item)
 	{
 		$filename = pathinfo($item->pic_filename, PATHINFO_FILENAME);
 

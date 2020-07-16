@@ -113,7 +113,8 @@ class Giftcards extends Secure_Controller
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_adding') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_data['giftcard_id']));
 			}
-			else //Existing giftcard
+			//Existing giftcard
+			else
 			{
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_updating') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_id));

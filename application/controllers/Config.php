@@ -15,7 +15,7 @@ class Config extends Secure_Controller
 	/*
 	 * This function loads all the licenses starting with the first one being OSPOS one
 	 */
-	private function _licenses()
+	private function licenses()
 	{
 		$i = 0;
 		$bower = FALSE;
@@ -172,7 +172,7 @@ class Config extends Secure_Controller
 	/*
 	 * This function loads all the available themes in the dist/bootswatch directory
 	 */
-	private function _themes()
+	private function themes()
 	{
 		$themes = [];
 
@@ -213,10 +213,10 @@ class Config extends Secure_Controller
 		$data = $this->xss_clean($data);
 
 		// load all the license statements, they are already XSS cleaned in the private function
-		$data['licenses'] = $this->_licenses();
+		$data['licenses'] = $this->licenses();
 
 		// load all the themes, already XSS cleaned in the private function
-		$data['themes'] = $this->_themes();
+		$data['themes'] = $this->themes();
 
 		//Load General related fields
 		$image_allowed_types 		= array('jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff');
@@ -227,7 +227,7 @@ class Config extends Secure_Controller
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->item('mailchimp_api_key'));
 			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->item('mailchimp_list_id'));
@@ -238,15 +238,14 @@ class Config extends Secure_Controller
 			$data['mailchimp']['list_id'] = '';
 		}
 
-		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
-		$data['mailchimp']['lists'] = $this->_mailchimp();
+		$data['mailchimp']['lists'] = $this->mailchimp();
 
 		$this->load->view("configs/manage", $data);
 	}
 
 	public function save_info()
 	{
-		$upload_success = $this->_handle_logo_upload();
+		$upload_success = $this->handle_logo_upload();
 		$upload_data = $this->upload->data();
 
 		$batch_save_data = array(
@@ -407,7 +406,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$password = $this->encryption->encrypt($this->input->post('smtp_pass'));
 		}
@@ -436,7 +435,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$password = $this->encryption->encrypt($this->input->post('msg_pwd'));
 		}
@@ -460,7 +459,7 @@ class Config extends Secure_Controller
 	/*
 	 * This function fetches all the available lists from Mailchimp for the given API key
 	 */
-	private function _mailchimp($api_key = '')
+	private function mailchimp($api_key = '')
 	{
 		$this->load->library('mailchimp_lib', array('api_key' => $api_key));
 
@@ -487,7 +486,7 @@ class Config extends Secure_Controller
 	public function ajax_check_mailchimp_api_key()
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
-		$lists = $this->_mailchimp($this->input->post('mailchimp_api_key'));
+		$lists = $this->mailchimp($this->input->post('mailchimp_api_key'));
 		$success = count($lists) > 0 ? TRUE : FALSE;
 
 		echo json_encode(array(
@@ -502,7 +501,7 @@ class Config extends Secure_Controller
 		$api_key = '';
 		$list_id = '';
 
-		if($this->_check_encryption())
+		if($this->check_encryption())
 		{
 			$api_key = $this->encryption->encrypt($this->input->post('mailchimp_api_key'));
 			$list_id = $this->encryption->encrypt($this->input->post('mailchimp_list_id'));
@@ -558,7 +557,7 @@ class Config extends Secure_Controller
 		$this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards));
 	}
 
-	private function _clear_session_state()
+	private function clear_session_state()
 	{
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_table();
@@ -586,7 +585,7 @@ class Config extends Secure_Controller
 				{
 					$location_id = $this->Stock_location->get_location_id($value);
 					$not_to_delete[] = $location_id;
-					$this->_clear_session_state();
+					$this->clear_session_state();
 				}
 			}
 		}
@@ -634,7 +633,7 @@ class Config extends Secure_Controller
 					$table_data = array('name' => $value);
 					if($this->Dinner_table->save($table_data, $dinner_table_id))
 					{
-						$this->_clear_session_state();
+						$this->clear_session_state();
 					}
 				}
 			}
@@ -862,7 +861,7 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $result));
 	}
 
-	private function _handle_logo_upload()
+	private function handle_logo_upload()
 	{
 		$this->load->helper('directory');
 
@@ -880,7 +879,7 @@ class Config extends Secure_Controller
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
 
-	private function _check_encryption()
+	private function check_encryption()
 	{
 		$encryption_key = $this->config->item('encryption_key');
 

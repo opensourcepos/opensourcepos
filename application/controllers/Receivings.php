@@ -15,7 +15,7 @@ class Receivings extends Secure_Controller
 
 	public function index()
 	{
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function item_search()
@@ -46,7 +46,7 @@ class Receivings extends Secure_Controller
 			$this->receiving_lib->set_supplier($supplier_id);
 		}
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function change_mode()
@@ -67,7 +67,7 @@ class Receivings extends Secure_Controller
 			$this->receiving_lib->set_stock_destination($stock_destination);
 		}
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function set_comment()
@@ -112,7 +112,7 @@ class Receivings extends Secure_Controller
 			$data['error'] = $this->lang->line('receivings_unable_to_add_item');
 		}
 
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	public function edit_item($item_id)
@@ -141,7 +141,7 @@ class Receivings extends Secure_Controller
 			$data['error']=$this->lang->line('receivings_error_editing_item');
 		}
 
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	public function edit($receiving_id)
@@ -172,7 +172,7 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->delete_item($item_number);
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function delete($receiving_id = -1, $update_inventory = TRUE)
@@ -196,7 +196,7 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_reference();
 		$this->receiving_lib->remove_supplier();
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function complete()
@@ -280,7 +280,7 @@ class Receivings extends Secure_Controller
 		{
 			$data['error'] = $this->lang->line('receivings_error_requisition');
 
-			$this->_reload($data);
+			$this->reload($data);
 		}
 	}
 
@@ -328,7 +328,7 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	private function _reload($data = [])
+	private function reload($data = [])
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['modes'] = array('receive' => $this->lang->line('receivings_receiving'), 'return' => $this->lang->line('receivings_return'));
@@ -403,7 +403,7 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->clear_all();
 
-		$this->_reload();
+		$this->reload();
 	}
 }
 ?>

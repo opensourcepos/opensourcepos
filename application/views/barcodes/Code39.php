@@ -132,7 +132,7 @@ class Code39 extends BarcodeBase
 		}
 
 		$currentBarX	= intval(($this->x - $imageWidth) / 2);
-		$charAry		= str_split($data);
+		$character_array		= str_split($data);
 
 		$this->img = @imagecreate($this->x, $this->y);
 
@@ -146,9 +146,9 @@ class Code39 extends BarcodeBase
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 		$color = $black;
 
-		foreach($charAry as $_k => $char)
+		foreach($character_array as $key => $character)
 		{
-			$code = str_split($this->getMap($char));
+			$code = str_split($this->getMap($character));
 			$color = $black;
 
 			foreach($code as $bit)
@@ -170,7 +170,7 @@ class Code39 extends BarcodeBase
 			}
 
 			// Skip the spacer on the last run
-			if ($_k == (sizeof($charAry) - 1))
+			if ($key == (sizeof($character_array) - 1))
 			{
 				break;
 			}

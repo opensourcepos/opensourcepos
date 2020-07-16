@@ -21,7 +21,7 @@ class Sales extends Secure_Controller
 	public function index()
 	{
 		$this->session->set_userdata('allow_temp_items', 1);
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function manage()
@@ -147,7 +147,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function change_mode()
@@ -200,7 +200,7 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_location($stock_location);
 		}
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function change_register_mode($sale_type)
@@ -244,7 +244,7 @@ class Sales extends Secure_Controller
 	public function set_payment_type()
 	{
 		$this->sale_lib->set_payment_type($this->input->post('selected_payment_type'));
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function set_print_after_sale()
@@ -361,7 +361,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	// Multiple Payments
@@ -369,7 +369,7 @@ class Sales extends Secure_Controller
 	{
 		$this->sale_lib->delete_payment($payment_id);
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function add()
@@ -458,7 +458,7 @@ class Sales extends Secure_Controller
 				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
 			}
 		}
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	public function edit_item($item_id)
@@ -490,14 +490,14 @@ class Sales extends Secure_Controller
 
 		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($item_id), $item_location);
 
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	public function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function remove_customer()
@@ -509,7 +509,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_quote_number();
 		$this->sale_lib->remove_customer();
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function complete()
@@ -522,26 +522,26 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 
 		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
-		$__time = time();
-		$data['transaction_time'] = to_datetime($__time);
-		$data['transaction_date'] = to_date($__time);
+		$time = time();
+		$data['transaction_time'] = to_datetime($time);
+		$data['transaction_date'] = to_date($time);
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
-		$data['company_info'] = implode("\n", array(
+		$data['company_info'] = implode('\n', array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
 		if($this->config->item('account_number'))
 		{
-			$data['company_info'] .= "\n" . $this->lang->line('sales_account_number') . ": " . $this->config->item('account_number');
+			$data['company_info'] .= '\n' . $this->lang->line('sales_account_number') . ': ' . $this->config->item('account_number');
 		}
 		if($this->config->item('tax_id') != '')
 		{
-			$data['company_info'] .= "\n" . $this->lang->line('sales_tax_id') . ": " . $this->config->item('tax_id');
+			$data['company_info'] .= '\n' . $this->lang->line('sales_tax_id') . ': ' . $this->config->item('tax_id');
 		}
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
@@ -557,7 +557,7 @@ class Sales extends Secure_Controller
 		$data["work_order_number"] = $work_order_number;
 		$quote_number = $this->sale_lib->get_quote_number();
 		$data["quote_number"] = $quote_number;
-		$customer_info = $this->_load_customer_data($customer_id, $data);
+		$customer_info = $this->load_customer_data($customer_id, $data);
 		if($customer_info != NULL)
 		{
 			$data["customer_comments"] = $customer_info->comments;
@@ -623,7 +623,7 @@ class Sales extends Secure_Controller
 			if($sale_id == -1 && $this->Sale->check_invoice_number_exists($invoice_number))
 			{
 				$data['error'] = $this->lang->line('sales_invoice_number_duplicate', $invoice_number);
-				$this->_reload($data);
+				$this->reload($data);
 			}
 			else
 			{
@@ -676,7 +676,7 @@ class Sales extends Secure_Controller
 			if($sale_id == -1 && $this->Sale->check_work_order_number_exists($work_order_number))
 			{
 				$data['error'] = $this->lang->line('sales_work_order_number_duplicate');
-				$this->_reload($data);
+				$this->reload($data);
 			}
 			else
 			{
@@ -713,7 +713,7 @@ class Sales extends Secure_Controller
 			if($sale_id == -1 && $this->Sale->check_quote_number_exists($quote_number))
 			{
 				$data['error'] = $this->lang->line('sales_quote_number_duplicate');
-				$this->_reload($data);
+				$this->reload($data);
 			}
 			else
 			{
@@ -770,7 +770,7 @@ class Sales extends Secure_Controller
 
 	public function send_pdf($sale_id, $type = 'invoice')
 	{
-		$sale_data = $this->_load_sale_data($sale_id);
+		$sale_data = $this->load_sale_data($sale_id);
 
 		$result = FALSE;
 		$message = $this->lang->line('sales_invoice_no_email');
@@ -809,7 +809,7 @@ class Sales extends Secure_Controller
 
 	public function send_receipt($sale_id)
 	{
-		$sale_data = $this->_load_sale_data($sale_id);
+		$sale_data = $this->load_sale_data($sale_id);
 
 		$result = FALSE;
 		$message = $this->lang->line('sales_receipt_no_email');
@@ -835,7 +835,7 @@ class Sales extends Secure_Controller
 		return $result;
 	}
 
-	private function _load_customer_data($customer_id, &$data, $stats = FALSE)
+	private function load_customer_data($customer_id, &$data, $stats = FALSE)
 	{
 		$customer_info = '';
 
@@ -902,7 +902,7 @@ class Sales extends Secure_Controller
 		return $customer_info;
 	}
 
-	private function _load_sale_data($sale_id)
+	private function load_sale_data($sale_id)
 	{
 		$this->sale_lib->clear_all();
 		$this->sale_lib->reset_cash_flags();
@@ -949,7 +949,7 @@ class Sales extends Secure_Controller
 
 		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
-		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
+		$this->load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;
 		$data['sale_id'] = 'POS ' . $sale_id;
@@ -1007,7 +1007,7 @@ class Sales extends Secure_Controller
 		return $this->xss_clean($data);
 	}
 
-	private function _reload($data = [])
+	private function reload($data = [])
 	{
 		$sale_id = $this->session->userdata('sale_id');
 		if($sale_id == '')
@@ -1016,7 +1016,7 @@ class Sales extends Secure_Controller
 			$this->session->set_userdata('sale_id', -1);
 		}
 		$data['cart'] = $this->sale_lib->get_cart();
-		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
+		$customer_info = $this->load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
 		$data['modes'] = $this->sale_lib->get_register_mode_options();
 		$data['mode'] = $this->sale_lib->get_mode();
@@ -1120,14 +1120,14 @@ class Sales extends Secure_Controller
 
 	public function receipt($sale_id)
 	{
-		$data = $this->_load_sale_data($sale_id);
+		$data = $this->load_sale_data($sale_id);
 		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 
 	public function invoice($sale_id)
 	{
-		$data = $this->_load_sale_data($sale_id);
+		$data = $this->load_sale_data($sale_id);
 
 		$this->load->view('sales/'.$data['invoice_view'], $data);
 		$this->sale_lib->clear_all();
@@ -1330,7 +1330,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->sale_lib->clear_all();
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function discard_suspended_sale()
@@ -1338,7 +1338,7 @@ class Sales extends Secure_Controller
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
 		$this->Sale->delete_suspended_sale($suspended_id);
-		$this->_reload();
+		$this->reload();
 	}
 
 	/**
@@ -1377,7 +1377,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->sale_lib->clear_all();
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	/**
@@ -1408,7 +1408,7 @@ class Sales extends Secure_Controller
 		// Set current register mode to reflect that of unsuspended order type
 		$this->change_register_mode($this->sale_lib->get_sale_type());
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function check_invoice_number()

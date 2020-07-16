@@ -148,7 +148,7 @@ class Attribute extends CI_Model
 
 		$results = $this->db->get('attribute_definitions')->result_array();
 
-		return $this->_to_array($results, 'definition_id');
+		return $this->to_array($results, 'definition_id');
 	}
 
 	public function get_values_by_definitions($definition_ids)
@@ -164,7 +164,7 @@ class Attribute extends CI_Model
 
 			$results = $this->db->get('attribute_definitions')->result_array();
 
-			return $this->_to_array($results, 'definition_id');
+			return $this->to_array($results, 'definition_id');
 		}
 
 		return [];
@@ -183,7 +183,7 @@ class Attribute extends CI_Model
 
 		$results = $this->db->get('attribute_definitions')->result_array();
 
-		return $this->_to_array($results, 'definition_id', 'definition_name');
+		return $this->to_array($results, 'definition_id', 'definition_name');
 	}
 
 	public function get_definitions_by_flags($definition_flags)
@@ -194,7 +194,7 @@ class Attribute extends CI_Model
 		$this->db->order_by('definition_id');
 		$results = $this->db->get('attribute_definitions')->result_array();
 
-		return $this->_to_array($results, 'definition_id', 'definition_name');
+		return $this->to_array($results, 'definition_id', 'definition_name');
 	}
 
 	/**
@@ -216,7 +216,7 @@ class Attribute extends CI_Model
 		$results 			= $this->db->get('attribute_definitions')->result_array();
 		$definition_name	= array(-1 => $this->lang->line('common_none_selected_text'));
 
-		return $definition_name + $this->_to_array($results, 'definition_id', 'definition_name');
+		return $definition_name + $this->to_array($results, 'definition_id', 'definition_name');
 	}
 
 	public function get_definition_values($definition_id)
@@ -231,13 +231,13 @@ class Attribute extends CI_Model
 			$this->db->order_by('attribute_value','ASC');
 			$results = $this->db->get('attribute_links')->result_array();
 
-			return $this->_to_array($results, 'attribute_id', 'attribute_value');
+			return $this->to_array($results, 'attribute_id', 'attribute_value');
 		}
 
 		return $attribute_values;
 	}
 
-	private function _to_array($results, $key, $value = '')
+	private function to_array($results, $key, $value = '')
 	{
 		return array_column(array_map(function($result) use ($key, $value){
 			return [$result[$key], empty($value) ? $result : $result[$value]];

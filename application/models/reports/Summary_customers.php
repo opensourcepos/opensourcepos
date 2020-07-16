@@ -4,7 +4,7 @@ require_once("Summary_report.php");
 
 class Summary_customers extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function get_data_columns()
 	{
 		return array(
 			array('customer_name' => $this->lang->line('reports_customer')),
@@ -16,9 +16,9 @@ class Summary_customers extends Summary_report
 			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
 	}
 
-	protected function _select(array $inputs)
+	protected function select(array $inputs)
 	{
-		parent::_select($inputs);
+		parent::select($inputs);
 
 		$this->db->select('
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
@@ -26,14 +26,14 @@ class Summary_customers extends Summary_report
 		');
 	}
 
-	protected function _from()
+	protected function from()
 	{
-		parent::_from();
+		parent::from();
 
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
-	protected function _group_order()
+	protected function group_order()
 	{
 		$this->db->group_by('sales.customer_id');
 		$this->db->order_by('customer_p.last_name');

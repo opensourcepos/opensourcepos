@@ -4,7 +4,7 @@ require_once("Summary_report.php");
 
 class Summary_expenses_categories extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function get_data_columns()
 	{
 		return array(
 			array('category_name' => $this->lang->line('reports_expenses_category')),
