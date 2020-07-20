@@ -548,10 +548,9 @@ class Items extends Secure_Controller
 
 		if(!empty($upload_data['orig_name']))
 		{
-			// XSS file image sanity check
-			if($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			if($this->xss_clean($upload_data['orig_name'], TRUE) === TRUE)
 			{
-				$item_data['pic_filename'] = $upload_data['raw_name'];
+				$item_data['pic_filename'] = $upload_data['orig_name'];
 			}
 		}
 
@@ -813,10 +812,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	/*
-	 * Generates Items import Comma Separated Values (CSV) and forces the download
-	 */
-	public function csv()
+	public function generate_csv_file()
 	{
 		$name				= 'import_items.csv';
 		$allowed_locations	= $this->Stock_location->get_allowed_locations();
@@ -834,7 +830,7 @@ class Items extends Secure_Controller
 	/**
 	 * Imports items from CSV formatted file.
 	 */
-	public function do_csv_import()
+	public function import_csv_file()
 	{
 		if($_FILES['file_path']['error'] !== UPLOAD_ERR_OK)
 		{
@@ -852,6 +848,7 @@ class Items extends Secure_Controller
 				$employee_id				= $this->Employee->get_logged_in_employee_info()->person_id;
 				$allowed_stock_locations	= $this->Stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->Attribute->get_definition_names();
+
 				unset($attribute_definition_names[-1]);
 
 				foreach($attribute_definition_names as $definition_name)
