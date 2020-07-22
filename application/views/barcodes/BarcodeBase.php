@@ -77,8 +77,8 @@ abstract class BarcodeBase
 
 	/**
 	 * Validate the given barcode.
-	 * @param $barcode The barcode to validate
-	 * @return bool true if it complies with the barcode formatting
+	 * @param	string	$barcode	The barcode to validate
+	 * @return	bool				TRUE if it complies with the barcode formatting
 	 */
 	public function validate($barcode)
 	{
@@ -88,8 +88,8 @@ abstract class BarcodeBase
 	/**
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
-	 * @param $number The seed to generate a barcode for
-	 * @return mixed The generated barcode
+	 * @param	string	$number The seed to generate a barcode for
+	 * @return	string			The generated barcode
 	 */
 	public function generate($number)
 	{

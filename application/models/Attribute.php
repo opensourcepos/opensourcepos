@@ -319,10 +319,10 @@ class Attribute extends CI_Model
 
 	/**
 	 * Converts data in attribute_values and attribute_links tables associated with the conversion of one attribute type to another.
-	 * @param int $definition_id
-	 * @param const $from_type
-	 * @param const $to_type
-	 * @return boolean
+	 * @param 	int		$definition_id
+	 * @param 	string	$from_type
+	 * @param 	string	$to_type
+	 * @return	boolean
 	 */
 	private function convert_definition_data($definition_id, $from_type, $to_type)
 	{
@@ -736,8 +736,8 @@ class Attribute extends CI_Model
 	/**
 	 *
 	 * @param array attributes attributes that need to be fixed
-	 * @param int definition_id
-	 * @param const $definition_type This dictates what column should be populated in any new attribute_values that are created
+	 * @param int 		$definition_id
+	 * @param string	$definition_type	This dictates what column should be populated in any new attribute_values that are created
 	 */
 	 public function attribute_cleanup($attributes, $definition_id, $definition_type)
 	{
