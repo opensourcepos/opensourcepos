@@ -648,16 +648,6 @@ class Items extends Secure_Controller
 				$message = $this->xss_clean($this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name']);
 
 				echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $item_id));
-
-				//Event triggers for Third-Party Integrations
-				if($new_item)
-				{
-					Events::Trigger('event_create', array("type"=> "ITEMS", "data" => array($item_data)), 'string');
-				}
-				else
-				{
-					Events::Trigger('event_update', array("type"=> "ITEMS", "data" => array($item_data)), 'string');
-				}
 			}
 			else
 			{
