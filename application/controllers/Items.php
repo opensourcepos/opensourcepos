@@ -9,8 +9,6 @@ class Items extends Secure_Controller
 		parent::__construct('items');
 
 		$this->load->library('item_lib');
-		$this->load->library('events');
-		$this->load->event('integrations');
 	}
 
 	public function index()
@@ -818,8 +816,6 @@ class Items extends Secure_Controller
 			$message = $this->lang->line('items_successful_deleted') . ' ' . count($items_to_delete) . ' ' . $this->lang->line('items_one_or_multiple');
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 
-			//Event triggers for Third-Party Integrations
-			Events::Trigger('event_delete', array("type"=> "ITEMS", "data" => $items_to_delete), 'string');
 		}
 		else
 		{
@@ -925,13 +921,9 @@ class Items extends Secure_Controller
 
 					if(!$is_failed_row && $this->Item->save($item_data, $item_id))
 					{
-						$this->save_tax_data($row, $item_data);
-						$this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-						$is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);
-
-						$item_data = array_merge($item_data, get_object_vars($this->Item->get_info_by_id_or_number($item_id)));
-
-						$third_party_data[] = $item_data;
+						$this->save_tax_data($line, $item_data);
+						$this->save_inventory_quantities($line, $item_data, $allowed_stock_locations, $employee_id);
+						$invalidated = $this->save_attribute_data($line, $item_data, $attribute_definition_names);
 					}
 					else
 					{
@@ -953,23 +945,10 @@ class Items extends Secure_Controller
 				}
 				else
 				{
-//TODO: The problem with having is that the import file will be a mixture of updates and creates. in the event that a mixture gets submitted, the event_update will get triggered.
-					//Event triggers for Third-Party Integrations
-					if($is_update)
-					{
-						Events::Trigger('event_update', array("type"=> "ITEMS", "data" => $third_party_data, 'string'));
-					}
-					else
-					{
-						Events::Trigger('event_create', array("type"=> "ITEMS", "data" => $third_party_data, 'string'));
-					}
-
 					$this->db->trans_commit();
 
 					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_csv_import_success')));
 				}
-
-				$third_party_data = NULL;
 			}
 			else
 			{
