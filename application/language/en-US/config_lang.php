@@ -296,3 +296,4 @@ $lang["config_no_risk"] = "No security/vulnerability risks.";
 $lang["config_timezone_error"] = "OSPOS Timezone is Different from your Local Timezone.";
 $lang["config_user_timezone"] = "Local Timezone:";
 $lang["config_os_timezone"] = "OSPOS Timezone:";
+$lang["config_report_an_issue"] = "Report an issue";

@@ -162,21 +162,17 @@
 	</div>
 </div>
 <div align="center">
-		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>		
+		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= $this->lang->line('config_report_an_issue'); ?></a>
 		<script>
 			var clipboard = new ClipboardJS('.copy');
 
 			clipboard.on('success', function(e) {
-				console.log(e);
-			});
-
-			clipboard.on('error', function(e) {
-				console.log(e);
+				document.getSelection().removeAllRanges();
 			});
 			
 			document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;	
 					
-			$(function(){
+			$(function() {
 				$('#timezone').clone().appendTo('#timezoneE');
 			});
 							
