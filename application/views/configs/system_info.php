@@ -125,7 +125,7 @@
 						if((substr(decoct(fileperms($logs)), -4) <= 750 && substr(decoct(fileperms($logs)), -4) >= 700)  
 							&& (substr(decoct(fileperms($uploads)), -4) <= 750  && substr(decoct(fileperms($uploads)), -4) >= 700) 
 							&& (substr(decoct(fileperms($images)), -4) <= 750  && substr(decoct(fileperms($images)), -4) >= 700) 
-							&& (substr(decoct(fileperms($importcustomers)), -4) < 750  && substr(decoct(fileperms($importcustomers)), -4) >= 700)) {
+							&& (substr(decoct(fileperms($importcustomers)), -4) <= 660  && substr(decoct(fileperms($importcustomers)), -4) >= 400)) {
 							echo '<br><font color="green">' . $this->lang->line('config_all_set') . ' </font>';
 						} 
 						else { 
