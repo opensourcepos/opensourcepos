@@ -60,6 +60,7 @@ This application **can be setup in many different ways** and we only **support t
 
 Read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
 
+[Check our wiki](https://github.com/opensourcepos/opensourcepos/wiki/Supported-hardware-datasheet) for info and recommendations on supported receipt printers and barcode scanners.
 
 License
 -------
@@ -96,6 +97,7 @@ If you like the project, and you are making money out of it in some form, then c
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
+If you choose to deploy OSPOS in the cloud, you can contribute to the project by using our referral link. [You will get an initial $100 credits](https://m.do.co/c/ac38c262507b) for running OSPOS on a cloud instance with DigitalOcean. 
 
 Language Translations
 ---------------------
