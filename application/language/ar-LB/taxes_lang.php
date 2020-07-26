@@ -54,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "تم حفظ تغييرات قان
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "لم يتم حفظ تغييرات قانون الضريبة";
 $lang["taxes_tax_excluded"] = "لا تشمل الضرائب";
 $lang["taxes_tax_group"] = "المجموعة الضريبية";
+$lang["taxes_tax_group_not_unique"] = "";
 $lang["taxes_tax_group_sequence"] = "تسلسل مجموعة الضرائب";
 $lang["taxes_tax_included"] = "الضريبة مشمولة";
 $lang["taxes_tax_jurisdiction"] = "الاختصاص الضريبي";

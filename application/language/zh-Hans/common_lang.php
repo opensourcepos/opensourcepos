@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
@@ -6,6 +7,7 @@ $lang["common_close"] = "关闭";
 $lang["common_comments"] = "备注";
 $lang["common_common"] = "一般";
 $lang["common_confirm_search"] = "你已经选择了 一行或多行，之后的搜索结果不再被选取。你确定要提交本次搜索吗？";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "信息有误，请修正后保存";
 $lang["common_country"] = "国家";
 $lang["common_date"] = "日期";

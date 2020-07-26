@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Költség hozzáadása";
 $lang["expenses_amount"] = "Összeg";
 $lang["expenses_amount_number"] = "Az összeg csak számot tartalmazhat";

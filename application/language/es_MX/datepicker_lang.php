@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["datepicker_all_time"] = "Todo";
 $lang["datepicker_apply"] = "Aplicar";
 $lang["datepicker_cancel"] = "Cancelar";

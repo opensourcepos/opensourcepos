@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Διεύθυνση 1";
 $lang["common_address_2"] = "Διεύθυνση 2";
 $lang["common_city"] = "Πόλη";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Κλείσιμο";
 $lang["common_comments"] = "Σχόλια";
 $lang["common_common"] = "κοινά";
 $lang["common_confirm_search"] = "Έχετε διαλέξει μία ή περισσότερες σειρές, οι οποίες δε θα είναι επιλέξιμες μετά την αναζήτηση σας. Είστε σίγουροι ότι θέλετε να υποβάλετε την αναζήτηση?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "Παρακαλώ διορθώστε τα αναγνωρισμένα σφάλματα πριν συνεχίσετε";
 $lang["common_country"] = "Χώρα";
 $lang["common_date"] = "Ημερομηνία";

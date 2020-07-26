@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Număr cont";
 $lang["suppliers_agency_name"] = "Nume Agenție";
 $lang["suppliers_cannot_be_deleted"] = "Nu pot șterge Funrizorul/Furnizorii selectat/selectați. Unul sau mai mulți au Vânzări.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Nomor Akun Pemasok";
 $lang["suppliers_agency_name"] = "Nama";
 $lang["suppliers_cannot_be_deleted"] = "Tidak bisa dihapus pemasok yang dipilih, satu atau lebih dari pemasok yang dipilih memiliki penjualan.";

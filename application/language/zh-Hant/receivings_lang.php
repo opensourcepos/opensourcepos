@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "取消";
 $lang["receivings_cannot_be_deleted"] = "進貨刪除失敗.";
 $lang["receivings_comments"] = "備註";

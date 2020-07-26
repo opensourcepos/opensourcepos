@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Giá trị thuộc tính không thể chứa ':' hay '|'";
 $lang["attributes_confirm_delete"] = "Bạn có chắc chắn muốn xóa (các) thuộc tính đã chọn không?";
 $lang["attributes_confirm_restore"] = "Bạn có chắc chắn muốn khôi phục (các) thuộc tính đã chọn không?";

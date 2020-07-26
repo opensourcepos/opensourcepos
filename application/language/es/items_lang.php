@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Inventario a agregar/substraer.";
 $lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["items_amount_entry"] = "Monto entrada";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Precio de Compra";
 $lang["items_cost_price_number"] = "Precio de Compra debe ser número.";
 $lang["items_cost_price_required"] = "Precio de Compra es requerido.";
 $lang["items_count"] = "Actualizar Inventario";
+$lang["items_csv_import_failed"] = "Falló la importación de Hoja de Cálculo";
+$lang["items_csv_import_nodata_wrongformat"] = "El archivo subido no tiene datos o el formato es incorrecto.";
+$lang["items_csv_import_partially_failed"] = "Hubo %1 falla(s) en la importación de producto(s) en la(s) línea(s): %2. Ninguna fila ha sido importada.";
+$lang["items_csv_import_success"] = "Se importaron los articulos exitosamente.";
 $lang["items_current_quantity"] = "Cantidad Actual";
 $lang["items_default_pack_name"] = "Cada";
 $lang["items_description"] = "Descripción";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Editando Artículos Múltiples";
 $lang["items_empty_upc_items"] = "Items con UPC Vacio";
 $lang["items_error_adding_updating"] = "Error agregando/actualizando artículo";
 $lang["items_error_updating_multiple"] = "Error actualizando artículos";
-$lang["items_csv_import_failed"] = "Falló la importación de Hoja de Cálculo";
-$lang["items_csv_import_nodata_wrongformat"] = "El archivo subido no tiene datos o el formato es incorrecto.";
-$lang["items_csv_import_partially_failed"] = "Hubo %1 falla(s) en la importación de producto(s) en la(s) línea(s): %2. Ninguna fila ha sido importada.";
-$lang["items_csv_import_success"] = "Se importaron los articulos exitosamente.";
 $lang["items_generate_barcodes"] = "Generar Códigos de Barras";
 $lang["items_hsn_code"] = "Nomenclatura de Sistemas Harmonizados";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "Importar Artículos desde CSV";
 $lang["items_info_provided_by"] = "Info provista por";
 $lang["items_inventory"] = "Inventario";
+$lang["items_inventory_CSV_import_quantity"] = "Catidad Importada desde CSV";
 $lang["items_inventory_comments"] = "Comentarios";
 $lang["items_inventory_data_tracking"] = "Seguimiento de datos de inventario";
 $lang["items_inventory_date"] = "Fecha";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Precio de Venta es requerido.";
 $lang["items_upc_database"] = "Base de datos UPC";
 $lang["items_update"] = "Actualizar Artículo";
 $lang["items_use_inventory_menu"] = "Usar Menú de Inventario";
-$lang["items_inventory_CSV_import_quantity"] = "Catidad Importada desde CSV";

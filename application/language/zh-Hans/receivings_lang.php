@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "取消";
 $lang["receivings_cannot_be_deleted"] = "收获记录删除失败。";
 $lang["receivings_comments"] = "备注";

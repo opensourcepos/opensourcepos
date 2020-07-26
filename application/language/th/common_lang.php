@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
@@ -6,6 +7,7 @@ $lang["common_close"] = "ปิด";
 $lang["common_comments"] = "หมายเหตุ";
 $lang["common_common"] = "ธรรมดา";
 $lang["common_confirm_search"] = "คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?";
+$lang["common_copryrights"] = "© 2553 - %1";
 $lang["common_correct_errors"] = "โปรดแก้ไขข้อผิดพลาดที่ระบุ ก่อนบันทึกข้อมูล";
 $lang["common_country"] = "ประเทศ";
 $lang["common_date"] = "วันที่";
@@ -67,4 +69,3 @@ $lang["common_welcome"] = "ยินดีต้อนรับ";
 $lang["common_welcome_message"] = "ยินดีต้อนรับสู่ OSPOS, กรุณาเลือกโมดูลด้านล่างที่ต้องการทำงาน";
 $lang["common_you_are_using_ospos"] = "คุณกำลังใช้ โอเพนซอร์ส พีโอเอส รุ่น";
 $lang["common_zip"] = "รหัสไปรษณีย์";
-$lang["common_copryrights"] = "© 2553 - %1";

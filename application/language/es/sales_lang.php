@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Puntos disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Efectivo";
 $lang["sales_cash_deposit"] = "Deposito Efectivo";
 $lang["sales_cash_filter"] = "Efectivo";
 $lang["sales_change_due"] = "Cambio";
+$lang["sales_change_price"] = "Cambiar el precio de venta";
 $lang["sales_check"] = "Comprobación de ventas";
 $lang["sales_check_balance"] = "Balance de Cheque";
 $lang["sales_check_filter"] = "Comprobar";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Todos";
 $lang["sales_no_items_in_cart"] = "No hay artículos en el carrito.";
 $lang["sales_no_sales_to_display"] = "No hay ventas que mostrar.";
 $lang["sales_none_selected"] = "No has seleccionado venta para borrar.";
+$lang["sales_nontaxed_ind"] = " Ventas no gravadas ";
 $lang["sales_not_authorized"] = "Esta accion no esta autorizada.";
 $lang["sales_one_or_multiple"] = "venta(s)";
 $lang["sales_payment"] = "Tipo de Pago";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Este cliente no tiene una dirección de corre
 $lang["sales_receipt_number"] = "Venta #";
 $lang["sales_receipt_sent"] = "Recibo enviada a";
 $lang["sales_receipt_unsent"] = "Fallo el envio del recibo a";
+$lang["sales_refund"] = "Tipo de reembolso";
 $lang["sales_register"] = "Registro de Ventas";
 $lang["sales_remove_customer"] = "Borrar Cliente";
 $lang["sales_return"] = "Devolución";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Imp";
 $lang["sales_tax_id"] = "Identificador del Impuesto";
 $lang["sales_tax_invoice"] = "Impuesto de la Factura";
 $lang["sales_tax_percent"] = "% de Imp";
+$lang["sales_taxed_ind"] = "Ventas gravadas";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Sin impuesto";
 $lang["sales_transaction_failed"] = "La transacción de venta falló.";
@@ -173,7 +178,3 @@ $lang["sales_work_order_number"] = "Numero Orden Trabajo";
 $lang["sales_work_order_number_duplicate"] = "El numero de orden de trabajo debe ser unico.";
 $lang["sales_work_order_sent"] = "Orden de trabajo enviada a";
 $lang["sales_work_order_unsent"] = "Orden de trabajo fallida al enviar a";
-$lang["sales_change_price"] = "Cambiar el precio de venta";
-$lang["sales_nontaxed_ind"] = " Ventas no gravadas ";
-$lang["sales_refund"] = "Tipo de reembolso";
-$lang["sales_taxed_ind"] = "Ventas gravadas";

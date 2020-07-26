@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Atribut dəyəri bu ':' və ya '|' olmaz";
 $lang["attributes_confirm_delete"] = "Seçilmiş Atributları silmək istədiyinizdən əminsinizmi?";
 $lang["attributes_confirm_restore"] = "Seçilmiş atributları bərpa etmək istədiyinizə əminsinizmi?";

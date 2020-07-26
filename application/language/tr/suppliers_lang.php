@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Hesap No";
 $lang["suppliers_agency_name"] = "Ajans Adı";
 $lang["suppliers_cannot_be_deleted"] = "Sağlayıcı silinemedi, bazı sağlayıcıların satışı var.";

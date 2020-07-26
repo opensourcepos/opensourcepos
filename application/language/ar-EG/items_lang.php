@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amount_entry"] = "إدخال القيمة";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "سعر التكلفة";
 $lang["items_cost_price_number"] = "سعر التكلفة يجب أن يكون رقم.";
 $lang["items_cost_price_required"] = "سعر التكلفة مطلوب.";
 $lang["items_count"] = "تحديث المخزون";
+$lang["items_csv_import_failed"] = "فشل الإستيراد من اكسل";
+$lang["items_csv_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
+$lang["items_csv_import_partially_failed"] = "يوجد خطأ بنسبة 1% في استيراد الاصناف في السطر: %2. لم يتم استيرادهم.";
+$lang["items_csv_import_success"] = "تم استيراد الأصناف بنجاح.";
 $lang["items_current_quantity"] = "الكمية الحالية";
 $lang["items_default_pack_name"] = "كل";
 $lang["items_description"] = "الوصف";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "تحريد مجموعة اصناف";
 $lang["items_empty_upc_items"] = "تفريغ اصناف UPC";
 $lang["items_error_adding_updating"] = "خطاء فى إضافة/تحديث صنف";
 $lang["items_error_updating_multiple"] = "خطاء فى تحديث بيانات أصناف";
-$lang["items_csv_import_failed"] = "فشل الإستيراد من اكسل";
-$lang["items_csv_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
-$lang["items_csv_import_partially_failed"] = "يوجد خطأ بنسبة 1% في استيراد الاصناف في السطر: %2. لم يتم استيرادهم.";
-$lang["items_csv_import_success"] = "تم استيراد الأصناف بنجاح.";
 $lang["items_generate_barcodes"] = "توليد أكواد الباركود";
 $lang["items_hsn_code"] = "تسميات النظام المنسق";
 $lang["items_image"] = "صورة";
 $lang["items_import_items_csv"] = "استيراد من اكسل";
 $lang["items_info_provided_by"] = "المعلومات مقدمة بواسطة";
 $lang["items_inventory"] = "المخزن";
+$lang["items_inventory_CSV_import_quantity"] = "العدد المستورد من ملفات ال CSV";
 $lang["items_inventory_comments"] = "تعليقات";
 $lang["items_inventory_data_tracking"] = "تتبع بيانات المخزون";
 $lang["items_inventory_date"] = "التاريخ";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "السعر مطلوب.";
 $lang["items_upc_database"] = "UPC قاعدة بيانات";
 $lang["items_update"] = "تحديث بيانات صنف";
 $lang["items_use_inventory_menu"] = "استخدام تحديث المخزن";
-$lang["items_inventory_CSV_import_quantity"] = "العدد المستورد من ملفات ال CSV";

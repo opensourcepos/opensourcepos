@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Poin yg tersedia";
 $lang["rewards_package"] = "Penghargaan";
 $lang["rewards_remaining_balance"] = "Poin penghargaan tersisa ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Tunai";
 $lang["sales_cash_deposit"] = "Deposit Tunai";
 $lang["sales_cash_filter"] = "Kontan";
 $lang["sales_change_due"] = "Kembalian Uang";
+$lang["sales_change_price"] = "Ubah Harga Jual";
 $lang["sales_check"] = "Cek";
 $lang["sales_check_balance"] = "Aktifkan pengingat";
 $lang["sales_check_filter"] = "Cek";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Semua";
 $lang["sales_no_items_in_cart"] = "Tidak ada Item dalam Keranjang Belanja.";
 $lang["sales_no_sales_to_display"] = "Tidak ada penjualan yang ditampilkan.";
 $lang["sales_none_selected"] = "Anda belum memilih Penjualan untuk dihapus.";
+$lang["sales_nontaxed_ind"] = " . ";
 $lang["sales_not_authorized"] = "Aksi ini tidak resmi.";
 $lang["sales_one_or_multiple"] = "Penjualan";
 $lang["sales_payment"] = "Type Pembayaran";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Pembeli ini tidak memiliki surel yang valid."
 $lang["sales_receipt_number"] = "POS #";
 $lang["sales_receipt_sent"] = "Nota dikirim ke";
 $lang["sales_receipt_unsent"] = "Noto gagal dikirim kepada";
+$lang["sales_refund"] = "Tipe Pengembalian Dana";
 $lang["sales_register"] = "Transaksi Penjualan";
 $lang["sales_remove_customer"] = "Hapus Pelanggan";
 $lang["sales_return"] = "Retur";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Pajak";
 $lang["sales_tax_id"] = "ID Pajak";
 $lang["sales_tax_invoice"] = "Faktur Pajak";
 $lang["sales_tax_percent"] = "Pajak %";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Tidak termasuk pajak";
 $lang["sales_transaction_failed"] = "Transaksi Penjualan gagal.";
@@ -173,7 +178,3 @@ $lang["sales_work_order_number"] = "Nomor Perintah Kerja";
 $lang["sales_work_order_number_duplicate"] = "Nomor Perintah Kerja tidak boleh sama.";
 $lang["sales_work_order_sent"] = "Perintah Kerja dikirim ke";
 $lang["sales_work_order_unsent"] = "Perintah Kerja gagal dikirim ke";
-$lang["sales_nontaxed_ind"] = " . ";
-$lang["sales_taxed_ind"] = "T";
-$lang["sales_change_price"] = "Ubah Harga Jual";
-$lang["sales_refund"] = "Tipe Pengembalian Dana";

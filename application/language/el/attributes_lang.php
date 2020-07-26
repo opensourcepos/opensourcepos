@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Η τιμή του χαρακτηριστικού δεν μπορεί να περιέχει ':' ή '|'";
 $lang["attributes_confirm_delete"] = "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα χαρακτηριστικά;";
 $lang["attributes_confirm_restore"] = "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τα επιλεγμένα χαρακτηριστικά;";

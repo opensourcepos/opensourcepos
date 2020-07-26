@@ -7,6 +7,7 @@ $lang["common_close"] = "إغلاق";
 $lang["common_comments"] = "تعليقات";
 $lang["common_common"] = "عام";
 $lang["common_confirm_search"] = "لقد قمت اختيار أكتر من سجل، سوف تفقد هذه الاختيارات عند إرسال البحث، موافق؟";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "يرجى تصحيح الأخطاء المحددة قبل الحفظ";
 $lang["common_country"] = "البلد";
 $lang["common_date"] = "التاريخ";

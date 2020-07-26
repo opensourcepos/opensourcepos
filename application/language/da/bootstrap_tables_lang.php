@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "Alle";
 $lang["tables_columns"] = "Kolonner";
 $lang["tables_hide_show_pagination"] = "Gem/Vis sideinddeling";

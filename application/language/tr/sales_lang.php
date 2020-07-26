@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Var Olan Puanlar";
 $lang["rewards_package"] = "Ödüller";
 $lang["rewards_remaining_balance"] = "Ödül Puanı kalan değeri ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Nakit";
 $lang["sales_cash_deposit"] = "Nakit Depozito";
 $lang["sales_cash_filter"] = "Nakit";
 $lang["sales_change_due"] = "Para Üstü";
+$lang["sales_change_price"] = "Satış Fiyatını Değiştir";
 $lang["sales_check"] = "Çek";
 $lang["sales_check_balance"] = "Çek bakiyesi";
 $lang["sales_check_filter"] = "Çek";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Tümü";
 $lang["sales_no_items_in_cart"] = "Sepette ürün yok.";
 $lang["sales_no_sales_to_display"] = "Gösterilecek satış yok.";
 $lang["sales_none_selected"] = "Silinecek satış seçmediniz.";
+$lang["sales_nontaxed_ind"] = " ";
 $lang["sales_not_authorized"] = "Bu işlem için yetkisiz.";
 $lang["sales_one_or_multiple"] = "Satış(lar)";
 $lang["sales_payment"] = "Ödeme Türü";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Müşteriye ait geçerli e-posta adresi yok."
 $lang["sales_receipt_number"] = "Fiş #";
 $lang["sales_receipt_sent"] = "Fiş gönderildi:";
 $lang["sales_receipt_unsent"] = "Fiş gönderilemedi:";
+$lang["sales_refund"] = "Geri Ödeme Türü";
 $lang["sales_register"] = "Satış Kaydı";
 $lang["sales_remove_customer"] = "Müşteriyi Kaldır";
 $lang["sales_return"] = "İade";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Vergi";
 $lang["sales_tax_id"] = "Vergi Numarası";
 $lang["sales_tax_invoice"] = "Vergi Faturası";
 $lang["sales_tax_percent"] = "Vergi %";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "Toplam";
 $lang["sales_total_tax_exclusive"] = "Vergi hariç";
 $lang["sales_transaction_failed"] = "Satış işlemi hatası.";
@@ -173,7 +178,3 @@ $lang["sales_work_order_number"] = "İş Emri Numarası";
 $lang["sales_work_order_number_duplicate"] = "İş Emri Numarası diğerinden farklı olmalı.";
 $lang["sales_work_order_sent"] = "İş Emri gönderildi:";
 $lang["sales_work_order_unsent"] = "İş Emri gönderilemedi:";
-$lang["sales_nontaxed_ind"] = " ";
-$lang["sales_taxed_ind"] = "T";
-$lang["sales_refund"] = "Geri Ödeme Türü";
-$lang["sales_change_price"] = "Satış Fiyatını Değiştir";

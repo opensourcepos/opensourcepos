@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Beløb";
 $lang["cashups_amount_number"] = "Beløbet skal være et tal";
 $lang["cashups_amount_required"] = "Beløb er et obligatorisk felt.";

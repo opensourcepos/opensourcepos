@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Ακύρωση";
 $lang["receivings_cannot_be_deleted"] = "Αποτυχία διαγραφής Παραλαβής/ων.";
 $lang["receivings_comments"] = "Σχόλια";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Thên chi phí";
 $lang["expenses_amount"] = "Tổng số";
 $lang["expenses_amount_number"] = "Tổng số phải là dạng số";

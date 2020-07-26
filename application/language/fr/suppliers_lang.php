@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Numéro de Compte";
 $lang["suppliers_agency_name"] = "Nom de l'Agence";
 $lang["suppliers_cannot_be_deleted"] = "Impossible de supprimer le(s) Fournisseur(s) sélectionné(s). Un ou plusieurs ont des Ventes.";

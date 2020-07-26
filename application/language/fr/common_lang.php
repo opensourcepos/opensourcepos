@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Addresse 1";
 $lang["common_address_2"] = "Addresse 2";
 $lang["common_city"] = "Ville";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Fermer";
 $lang["common_comments"] = "Commentaires";
 $lang["common_common"] = "commun";
 $lang["common_confirm_search"] = "Vous avez sélectionné une ou plusieurs lignes, celles-ci ne seront plus sélectionnées après votre recherche. Voulez-vous continuer ?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "Merci de corriger les erreurs identifié avant d'enregistrer";
 $lang["common_country"] = "Pays";
 $lang["common_date"] = "Date";

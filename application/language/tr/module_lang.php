@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Öznitelikler";
 $lang["module_attributes_desc"] = "Ekleme, Güncelleme, Silme ve Arama özellikleri.";
 $lang["module_both"] = "Her ikisi de";

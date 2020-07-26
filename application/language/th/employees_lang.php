@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "ข้อมูลพื้นฐานของพนักงาน";
 $lang["employees_cannot_be_deleted"] = "ไม่สามารถลบพนักงานที่เลือกไว้ได้ เนื่องจากมีการทำรายการขายหรือคุณกำลังพยายามที่จะลบบัญชีของคุณเอง";
 $lang["employees_change_password"] = "เปลี่ยนรหัสผ่าน";

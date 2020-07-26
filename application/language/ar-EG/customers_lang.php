@@ -12,6 +12,10 @@ $lang["customers_confirm_delete"] = "هل تريد حذف هؤلاء العمل�
 $lang["customers_confirm_restore"] = "هل انت متأكد من إستعادة قاعدة بيانات الزبائن ؟";
 $lang["customers_consent"] = "موافقة التسجيل";
 $lang["customers_consent_required"] = "موافقة التسجيل هي خانة اجبارية.";
+$lang["customers_csv_import_failed"] = "فشل الإستيراد من اكسل";
+$lang["customers_csv_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
+$lang["customers_csv_import_partially_failed"] = "تم استيراد معظم العملاء. البعض لم يتم استيرادهم ، وهذه هى القائمة:";
+$lang["customers_csv_import_success"] = "تم استيراد العملاء بنجاح.";
 $lang["customers_customer"] = "العميل";
 $lang["customers_date"] = "التاريخ";
 $lang["customers_discount"] = "نسبة الخصم";
@@ -21,10 +25,6 @@ $lang["customers_discount_type"] = "نوع الحسم";
 $lang["customers_email_duplicate"] = "البريد الالكتروني مكرر.";
 $lang["customers_employee"] = "الموظف";
 $lang["customers_error_adding_updating"] = "خطاء فى إضافة أو تحديث العميل.";
-$lang["customers_csv_import_failed"] = "فشل الإستيراد من اكسل";
-$lang["customers_csv_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
-$lang["customers_csv_import_partially_failed"] = "تم استيراد معظم العملاء. البعض لم يتم استيرادهم ، وهذه هى القائمة:";
-$lang["customers_csv_import_success"] = "تم استيراد العملاء بنجاح.";
 $lang["customers_import_items_csv"] = "استيراد العملا ء من ورقة عمل اكسل";
 $lang["customers_mailchimp_activity_click"] = "النقر على البريد الإلكتروني";
 $lang["customers_mailchimp_activity_lastopen"] = "آخر رسالة إلكترونية مفتوحة";

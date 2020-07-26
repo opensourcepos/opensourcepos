@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Inventario para agregar o restar.";
 $lang["giftcards_allow_alt_description"] = "Permitir Descripción Alterna";
 $lang["giftcards_bulk_edit"] = "Editor Masivo";
@@ -16,6 +17,7 @@ $lang["giftcards_confirm_delete"] = "¿Estas seguro que deseas borrar las Tarjet
 $lang["giftcards_confirm_restore"] = "¿Estas seguro que deseas restaurar las Tarjeta(s) de regalo seleccionadas?";
 $lang["giftcards_cost_price"] = "Precio de Mayoreo";
 $lang["giftcards_count"] = "Actualizar Inventario";
+$lang["giftcards_csv_import_failed"] = "Fallo en la importación de CSV.";
 $lang["giftcards_current_quantity"] = "Cantidad Actual";
 $lang["giftcards_description"] = "Descripción";
 $lang["giftcards_details_count"] = "Detalles del Inventario";
@@ -24,7 +26,6 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "Editar campos para las Tarj
 $lang["giftcards_edit_multiple_giftcards"] = "Editar Multiples Tarjetas de regalo.";
 $lang["giftcards_error_adding_updating"] = "Error al agregar o actualizar la Tarjeta de Regalo.";
 $lang["giftcards_error_updating_multiple"] = "Fallo en la actualización de la(s) Tarjeta(s) de regalo.";
-$lang["giftcards_csv_import_failed"] = "Fallo en la importación de CSV.";
 $lang["giftcards_generate_barcodes"] = "Generar Códigos de Barra";
 $lang["giftcards_giftcard"] = "Tarjeta de Regalo";
 $lang["giftcards_giftcard_number"] = "Numero de la Tarjeta de Regalo";

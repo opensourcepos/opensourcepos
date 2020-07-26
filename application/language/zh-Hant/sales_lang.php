@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "現有積分";
 $lang["rewards_package"] = "獎賞";
 $lang["rewards_remaining_balance"] = "剩餘獎賞積分 ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "現金";
 $lang["sales_cash_deposit"] = "已預付金額";
 $lang["sales_cash_filter"] = "現金";
 $lang["sales_change_due"] = "更改到期日";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "支票";
 $lang["sales_check_balance"] = "查看餘額";
 $lang["sales_check_filter"] = "查看選項";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "全部";
 $lang["sales_no_items_in_cart"] = "購物車中沒有任何產品.";
 $lang["sales_no_sales_to_display"] = "沒有任何紀錄.";
 $lang["sales_none_selected"] = "您還沒有選擇任何產品進行編輯.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "此操作未經授權.";
 $lang["sales_one_or_multiple"] = "銷售";
 $lang["sales_payment"] = "付款方式";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "此客戶沒有有效的電子郵件地址.";
 $lang["sales_receipt_number"] = "銷售收據編號";
 $lang["sales_receipt_sent"] = "發送收據";
 $lang["sales_receipt_unsent"] = "收據未能發送";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "銷售登記";
 $lang["sales_remove_customer"] = "移除客戶";
 $lang["sales_return"] = "退貨";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "稅額";
 $lang["sales_tax_id"] = "稅務編號";
 $lang["sales_tax_invoice"] = "稅務發票";
 $lang["sales_tax_percent"] = "稅率 %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "總計";
 $lang["sales_total_tax_exclusive"] = "不含稅";
 $lang["sales_transaction_failed"] = "銷售交易失敗.";
