@@ -134,7 +134,7 @@
 						if(substr(decoct(fileperms($logs)), -4) >= 751 
 							OR substr(decoct(fileperms($uploads)), -4) >= 751 
 							OR substr(decoct(fileperms($images)), -4) >= 751 
-							OR substr(decoct(fileperms($importcustomers)), -4) >= 751) {
+							OR substr(decoct(fileperms($importcustomers)), -4) > 660) {
 							echo '<br><font color="red"><strong>' . $this->lang->line('config_security_issue') . '</strong> <br>' . $this->lang->line('config_perm_risk') . '</font><br>';
 						} 
 						else { 
@@ -149,8 +149,8 @@
 						if(substr(decoct(fileperms($images)), -4) > 750) {
 							echo '<br><font color="red"> &#187; [public/uploads/item_pics:] ' . $this->lang->line('config_is_writable') . '</font>';						
 						}
-						if(substr(decoct(fileperms($importcustomers)), -4) > 750) {
-							echo '<br><font color="red"> &#187; [import_customers.csv:] ' . $this->lang->line('config_is_writable') . '</font>';						
+						if(substr(decoct(fileperms($importcustomers)), -4) > 660) {
+							echo '<br><font color="red"> &#187; [import_customers.csv:] ' . $this->lang->line('config_is_readable') . '</font>';
 						}
 						?>
 						<br>
