@@ -1134,16 +1134,16 @@ class Items extends Secure_Controller
 		foreach($allowed_locations as $location_id => $location_name)
 		{
 			$item_quantity_data = array(
-				'item_id' => $item_data['item_id'],
-				'location_id' => $location_id);
+				'item_id' 		=> $item_data['item_id'],
+				'location_id'	=> $location_id);
 
 			$csv_data = array(
-				'trans_items' => $item_data['item_id'],
-				'trans_user' => $employee_id,
-				'trans_comment' => $comment,
-				'trans_location' => $location_id);
-
-			if(!empty($row["location_$location_name"]))
+				'trans_items'		=> $item_data['item_id'],
+				'trans_user'		=> $employee_id,
+				'trans_comment'		=> $comment,
+				'trans_location'	=> $location_id);
+				
+			if(!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0')
 			{
 				$item_quantity_data['quantity'] = $row["location_$location_name"];
 				$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);
