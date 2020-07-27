@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Şirket Adresi";
 $lang["config_address_required"] = "Şirket Adresi zorunlu alandır.";
 $lang["config_all_set"] = "Tüm dosya izinleri düzgün belirlendi!";
@@ -46,7 +45,7 @@ $lang["config_company_select_image"] = "Görüntü Seç";
 $lang["config_company_website_url"] = "Şirket web sitesi geçerli bir URL değil (http: // ...).";
 $lang["config_country_codes"] = "Ülke Kodları";
 $lang["config_country_codes_tooltip"] = "Nominatim adres araması için ülke kodlarının virgülle ayrılmış listesi.";
-$lang["config_currency_code"] = "";
+$lang["config_currency_code"] = "Para Birimi Kodu";
 $lang["config_currency_decimals"] = "Para Birimi Ondalık";
 $lang["config_currency_symbol"] = "Para Birimi";
 $lang["config_customer_reward"] = "Ödül";
@@ -155,9 +154,9 @@ $lang["config_invoice_email_message"] = "Fatura E-Posta Şablonu";
 $lang["config_invoice_enable"] = "Faturalandırmayı Etkinleştir";
 $lang["config_invoice_printer"] = "Fatura Yazıcısı";
 $lang["config_invoice_type"] = "Fatura türü";
-$lang["config_is_readable"] = "";
+$lang["config_is_readable"] = "okunabilirdir ama izinleri 660'dan yüksektir.";
 $lang["config_is_writable"] = "yazılabilirdir ama izinleri 750'den yüksektir.";
-$lang["config_jsprintsetup_required"] = "Uyarı! Bu devre dışı işlev yalnızca FireFox jsPrintSetup eklentisi yüklü ise çalışacaktır. Yine de kaydet?";
+$lang["config_jsprintsetup_required"] = "Uyarı: Bu işlev yalnızca FireFox jsPrintSetup eklentisi kuruluysa çalışacaktır. Yine de kaydedilsin mi?";
 $lang["config_language"] = "Dil";
 $lang["config_last_used_invoice_number"] = "Son kullanılan Fatura Numarası";
 $lang["config_last_used_quote_number"] = "Son kullanılan Teknif Numarası";
@@ -251,7 +250,7 @@ $lang["config_receipt_template"] = "Fiş Şablonu";
 $lang["config_receiving_calculate_average_price"] = "Ortalama Fiyatı Hesapla (Alım)";
 $lang["config_recv_invoice_format"] = "Kabul Fatura Biçimi";
 $lang["config_register_mode_default"] = "Standart Kayıt Modu";
-$lang["config_report_an_issue"] = "";
+$lang["config_report_an_issue"] = "Sorun bildir";
 $lang["config_return_policy_required"] = "İade Politikası zorunlu alandır.";
 $lang["config_reward"] = "Ödül";
 $lang["config_reward_configuration"] = "Ödül Ayarları";
