@@ -7,6 +7,7 @@ $lang["common_close"] = "Закрыть";
 $lang["common_comments"] = "Комментарии";
 $lang["common_common"] = "общественно";
 $lang["common_confirm_search"] = "Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Страна";
 $lang["common_date"] = "дата";

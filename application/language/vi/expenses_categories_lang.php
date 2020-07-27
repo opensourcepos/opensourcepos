@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Trường tên Thể loại chi phí là bắt buộc";
 $lang["expenses_categories_add_item"] = "Thêm thể loại";
 $lang["expenses_categories_cannot_be_deleted"] = "Không thể xóa Thể loại Chi phí";

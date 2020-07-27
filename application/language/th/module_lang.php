@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "คุณลักษณะ";
 $lang["module_attributes_desc"] = "เพิ่ม, ปรับปรุง, ลบ และการค้นหา คุณลักษณะ";
 $lang["module_both"] = "ทั้งคู่";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Αριθμός Λογαριασμού";
 $lang["suppliers_agency_name"] = "Όνομα Πρακτορείου";
 $lang["suppliers_cannot_be_deleted"] = "Αδυναμία διαγραφής Προμηθευτή/ων. Ένας οι περισσότεροι έχουν Πωλήσεις.";

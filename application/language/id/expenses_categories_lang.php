@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Nama Kategori Biaya harus diisi";
 $lang["expenses_categories_add_item"] = "Tambah Kategori";
 $lang["expenses_categories_cannot_be_deleted"] = "Tidak dapat menghapus Kategori Biaya";

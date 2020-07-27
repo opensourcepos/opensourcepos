@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Pontos Disponíveis";
 $lang["rewards_package"] = "Recompensa";
 $lang["rewards_remaining_balance"] = "O valor restante dos pontos de recompensa é ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Dinheiro";
 $lang["sales_cash_deposit"] = "Depósito em dinheiro";
 $lang["sales_cash_filter"] = "Dinheiro";
 $lang["sales_change_due"] = "Troco";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Cheque";
 $lang["sales_check_balance"] = "Cheque restante";
 $lang["sales_check_filter"] = "Cheque";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Todos";
 $lang["sales_no_items_in_cart"] = "Não há itens na cesta.";
 $lang["sales_no_sales_to_display"] = "Sem vendas para mostrar.";
 $lang["sales_none_selected"] = "Você não selecionou nenhuma venda para apagar.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Esta ação não é autorizada.";
 $lang["sales_one_or_multiple"] = "venda(s)";
 $lang["sales_payment"] = "Forma de pagamento";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Este cliente não possui um endereço de emai
 $lang["sales_receipt_number"] = "Venda nº";
 $lang["sales_receipt_sent"] = "Enviar recibo para";
 $lang["sales_receipt_unsent"] = "Recibo não devem ser enviados para";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Registar Venda";
 $lang["sales_remove_customer"] = "Remover Cliente";
 $lang["sales_return"] = "Devolução";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Taxa";
 $lang["sales_tax_id"] = "Id imposto";
 $lang["sales_tax_invoice"] = "Fatura de imposto";
 $lang["sales_tax_percent"] = "Taxa %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "taxas excluídas";
 $lang["sales_transaction_failed"] = "Falha na transação Vendas.";

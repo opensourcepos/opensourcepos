@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Διαθέσιμοι Πόντοι";
 $lang["rewards_package"] = "Ανταμοιβές";
 $lang["rewards_remaining_balance"] = "Η αξία των υπολειπόμενων πόντων ανταμοιβής είναι ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Μετρητά";
 $lang["sales_cash_deposit"] = "Προκαταβολή Μετρητών";
 $lang["sales_cash_filter"] = "Μετρητά";
 $lang["sales_change_due"] = "Ποσό Επιστροφής";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Επιταγή";
 $lang["sales_check_balance"] = "Υπόλοιπο Επιταγής";
 $lang["sales_check_filter"] = "Επιταγή";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Όλα";
 $lang["sales_no_items_in_cart"] = "Δεν υπάρχουν είδη στο καλάθι.";
 $lang["sales_no_sales_to_display"] = "Δεν υπάρχουν Πωλήσεις προς προβολή.";
 $lang["sales_none_selected"] = "Δεν έχετε επιλέξει Πώληση/σεις για διαγραφή.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Αυτή η ενέργεια δεν είναι εξουσιοδοτημένη.";
 $lang["sales_one_or_multiple"] = "Πώληση/εις";
 $lang["sales_payment"] = "Τύπος Πληρωμής";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Ο πελάτης δεν έχει έγκυρ�
 $lang["sales_receipt_number"] = "Πώληση #";
 $lang["sales_receipt_sent"] = "Η Απόδειξη εστάλη σε";
 $lang["sales_receipt_unsent"] = "Αποτυχία αποστολής Απόδειξης σε";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Μητρώο Πωλήσεων";
 $lang["sales_remove_customer"] = "Αφαίρεση Πελάτη";
 $lang["sales_return"] = "Επιστροφή";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Φόρος";
 $lang["sales_tax_id"] = "Id Φόρου";
 $lang["sales_tax_invoice"] = "Φόρος τιμολογίου";
 $lang["sales_tax_percent"] = "% Φόρου";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Σύνολο";
 $lang["sales_total_tax_exclusive"] = "Εξαιρουμένου Φόρου";
 $lang["sales_transaction_failed"] = "Συναλλαγή Πώλησης απέτυχε.";

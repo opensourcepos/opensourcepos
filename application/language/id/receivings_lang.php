@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Batal";
 $lang["receivings_cannot_be_deleted"] = "Tidak bisa dihapus.";
 $lang["receivings_comments"] = "Keterangan";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "وصف کے اندراج میں ':' یا '|' ممنوع ہیں";
 $lang["attributes_confirm_delete"] = "کیا آپ منتخب شدہ کو حذف کرنا چاہتے ہیں ؟";
 $lang["attributes_confirm_restore"] = "کیا آپ منتخب شدہ کو بحال کرنا چاہتے ہیں ؟";

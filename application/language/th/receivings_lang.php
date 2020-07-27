@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "ยกเลิก";
 $lang["receivings_cannot_be_deleted"] = "ไม่สามารถลบใบรับสินค้าได้";
 $lang["receivings_comments"] = "ความคิดเห็น";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Nitelik değeri ':' ve ya '|' karakterlerini bulunduramaz";
 $lang["attributes_confirm_delete"] = "Seçili niteliği ya da nitelikleri silmek istediğinize emin misiniz?";
 $lang["attributes_confirm_restore"] = "Seçili nitelik ya da nitelikleri kurtarmak istediğinize emin misiniz?";

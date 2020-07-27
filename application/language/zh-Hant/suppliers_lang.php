@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "帳號 #";
 $lang["suppliers_agency_name"] = " ";
 $lang["suppliers_cannot_be_deleted"] = "無法刪除所選擇的供應商，選定的供應商中至少有一家已有銷售紀錄。";

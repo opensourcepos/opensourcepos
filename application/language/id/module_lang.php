@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Atribut";
 $lang["module_attributes_desc"] = "Tambah, Perbaharui, Hapus dan Cari atribut.";
 $lang["module_both"] = "Keduanya";

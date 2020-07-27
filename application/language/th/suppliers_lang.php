@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "เลขที่บัญชี";
 $lang["suppliers_agency_name"] = "ชื่อตัวแทน";
 $lang["suppliers_cannot_be_deleted"] = "ลบผู้ผลิตที่ถูกเลือกไม่ได้, ผู้ผลิตบางรายยังคงมีการขายสินค้า";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "เพิ่มข้อยกเว้น";
 $lang["taxes_cascade"] = "ภาษีแบบซ้ำซ้อน";
 $lang["taxes_cascade_sequence"] = "ลำดับภาษีแบบซ้ำซ้อน";
@@ -53,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "บันทึกการเป
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "ไม่สามารถบันทึกการเปลี่ยนแปลงรหัสภาษีได้";
 $lang["taxes_tax_excluded"] = "ไม่รวมภาษี";
 $lang["taxes_tax_group"] = "กลุ่มภาษี";
+$lang["taxes_tax_group_not_unique"] = "กลุ่มภาษี %1 ต้องไม่ซ้ำกัน";
 $lang["taxes_tax_group_sequence"] = "ลำดับกลุ่มภาษี";
 $lang["taxes_tax_included"] = "รวมภาษี";
 $lang["taxes_tax_jurisdiction"] = "เขตอำนาจศาลภาษี";
@@ -76,4 +78,3 @@ $lang["taxes_tax_rounding"] = "การปัดเศษภาษี";
 $lang["taxes_tax_type"] = "ประเภทภาษี";
 $lang["taxes_update"] = "ปรับปรุงอัตราภาษี";
 $lang["taxes_vat_tax"] = "ภาษีมูลค่าเพิ่ม";
-$lang["taxes_tax_group_not_unique"] = "กลุ่มภาษี %1 ต้องไม่ซ้ำกัน";

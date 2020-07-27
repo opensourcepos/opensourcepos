@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "帳號已存在於數據庫中。";
 $lang["customers_available_points"] = "現有積分";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "你確定要刪除選定的客戶？";
 $lang["customers_confirm_restore"] = "您確定要還原所選客戶嗎？";
 $lang["customers_consent"] = "註冊同意";
 $lang["customers_consent_required"] = "註冊同意是必須的.";
+$lang["customers_csv_import_failed"] = "CSV匯入失敗";
+$lang["customers_csv_import_nodata_wrongformat"] = "上傳的文件沒有數據或格式不正確.";
+$lang["customers_csv_import_partially_failed"] = "大部份客戶導入成功但有些失敗:";
+$lang["customers_csv_import_success"] = "成功導入客戶.";
 $lang["customers_customer"] = "客戶";
 $lang["customers_date"] = "日期";
 $lang["customers_discount"] = "折扣";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "折扣種類";
 $lang["customers_email_duplicate"] = "電子郵件地址重複.";
 $lang["customers_employee"] = "僱員";
 $lang["customers_error_adding_updating"] = "添加/更新客戶錯誤.";
-$lang["customers_csv_import_failed"] = "CSV匯入失敗";
-$lang["customers_csv_import_nodata_wrongformat"] = "上傳的文件沒有數據或格式不正確.";
-$lang["customers_csv_import_partially_failed"] = "大部份客戶導入成功但有些失敗:";
-$lang["customers_csv_import_success"] = "成功導入客戶.";
 $lang["customers_import_items_csv"] = "Import customers from CSV sheet";
 $lang["customers_mailchimp_activity_click"] = "激活";
 $lang["customers_mailchimp_activity_lastopen"] = "最後打開";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Points Disponibles";
 $lang["rewards_package"] = "Récompenses";
 $lang["rewards_remaining_balance"] = "Vos points fidélité restants ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Espèce";
 $lang["sales_cash_deposit"] = "Dépôt d'Espèce";
 $lang["sales_cash_filter"] = "Espèce";
 $lang["sales_change_due"] = "Monnaie Rendu";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Chèque";
 $lang["sales_check_balance"] = "Rappel de chèque";
 $lang["sales_check_filter"] = "Chèque";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Tous";
 $lang["sales_no_items_in_cart"] = "Il n'y a rien dans votre panier.";
 $lang["sales_no_sales_to_display"] = "Aucune vente à afficher.";
 $lang["sales_none_selected"] = "Vous n'avez sélectionné aucun élément.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Cette action n'est pas autorisée.";
 $lang["sales_one_or_multiple"] = "Vente(s)";
 $lang["sales_payment"] = "Type Paiement";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Ce client n'a pas d'adresse e-mail valide.";
 $lang["sales_receipt_number"] = "# Caisse";
 $lang["sales_receipt_sent"] = "Reçu envoyé à";
 $lang["sales_receipt_unsent"] = "Reçu NON envoyé à";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Registre des Ventes";
 $lang["sales_remove_customer"] = "Enlever Client";
 $lang["sales_return"] = "Reprise";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Taxe";
 $lang["sales_tax_id"] = "Id Taxe";
 $lang["sales_tax_invoice"] = "Facture Fiscale";
 $lang["sales_tax_percent"] = "% Taxe";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Taxe exclus";
 $lang["sales_transaction_failed"] = "Échec de Transaction de vente.";

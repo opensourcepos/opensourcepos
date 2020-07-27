@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "可用积分";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "你確定要刪除選定的客戶？";
 $lang["customers_confirm_restore"] = "";
 $lang["customers_consent"] = "";
 $lang["customers_consent_required"] = "";
+$lang["customers_csv_import_failed"] = "CSV匯入失敗";
+$lang["customers_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_csv_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
+$lang["customers_csv_import_success"] = "Import of Customers successful";
 $lang["customers_customer"] = "客戶";
 $lang["customers_date"] = "日期";
 $lang["customers_discount"] = "折扣";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "优惠类型";
 $lang["customers_email_duplicate"] = "email地址已被使用";
 $lang["customers_employee"] = "员工";
 $lang["customers_error_adding_updating"] = "添加/更新客戶錯誤";
-$lang["customers_csv_import_failed"] = "CSV匯入失敗";
-$lang["customers_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["customers_csv_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
-$lang["customers_csv_import_success"] = "Import of Customers successful";
 $lang["customers_import_items_csv"] = "Import customers from CSV sheet";
 $lang["customers_mailchimp_activity_click"] = "";
 $lang["customers_mailchimp_activity_lastopen"] = "";

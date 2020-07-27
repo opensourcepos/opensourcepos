@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Összeg";
 $lang["cashups_amount_number"] = "Az összeg csak szám lehet";
 $lang["cashups_amount_required"] = "Az összeg kitöltése kötelező.";

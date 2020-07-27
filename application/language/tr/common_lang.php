@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Şehir";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Kapat";
 $lang["common_comments"] = "Yorumlar";
 $lang["common_common"] = "genel";
 $lang["common_confirm_search"] = "Birden çok satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?";
+$lang["common_copryrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "Lütfen kaydetmeden önce tanımlanmış hataları düzeltin";
 $lang["common_country"] = "Ülke";
 $lang["common_date"] = "Tarih";
@@ -67,4 +69,3 @@ $lang["common_welcome"] = "Hoş Geldiniz";
 $lang["common_welcome_message"] = "OSPOS'a hoş geldiniz, başlamak için modüle tıklayın.";
 $lang["common_you_are_using_ospos"] = "Kullandığınız Open Source Point Of Sale sürümü";
 $lang["common_zip"] = "Şehir Kodu";
-$lang["common_copryrights"] = "© 2010 - %1";

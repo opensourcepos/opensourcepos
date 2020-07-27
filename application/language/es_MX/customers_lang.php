@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "El Número de Cuenta ya se encuentra en la base de datos.";
 $lang["customers_available_points"] = "Puntos Disponibles";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "¿Está seguro que quiere borrar los Client
 $lang["customers_confirm_restore"] = "¿Está seguro que quiere restaurar los clientes seleccionados?";
 $lang["customers_consent"] = "Consentimiento de registro";
 $lang["customers_consent_required"] = "Consentimiento de registro es un campo requerido.";
+$lang["customers_csv_import_failed"] = "Fallo al importar a CSV";
+$lang["customers_csv_import_nodata_wrongformat"] = "El archivo subido no contiene datos o no está formado correctamente.";
+$lang["customers_csv_import_partially_failed"] = "La importación del Cliente fue exitosa pero con algunos errores:";
+$lang["customers_csv_import_success"] = "Cliente importado exitosamente.";
 $lang["customers_customer"] = "Cliente";
 $lang["customers_date"] = "Fecha";
 $lang["customers_discount"] = "Descuento";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "Tipo de Descuento";
 $lang["customers_email_duplicate"] = "El correo electrónico ya se encuentra en la base de datos.";
 $lang["customers_employee"] = "Empleado";
 $lang["customers_error_adding_updating"] = "Fallo al agregar o actualizar el Cliente.";
-$lang["customers_csv_import_failed"] = "Fallo al importar a CSV";
-$lang["customers_csv_import_nodata_wrongformat"] = "El archivo subido no contiene datos o no está formado correctamente.";
-$lang["customers_csv_import_partially_failed"] = "La importación del Cliente fue exitosa pero con algunos errores:";
-$lang["customers_csv_import_success"] = "Cliente importado exitosamente.";
 $lang["customers_import_items_csv"] = "Importar Cliente desde CSV";
 $lang["customers_mailchimp_activity_click"] = "Click Correo Electrónico";
 $lang["customers_mailchimp_activity_lastopen"] = "Último correo electrónico abierto";

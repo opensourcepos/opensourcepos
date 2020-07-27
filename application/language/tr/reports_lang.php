@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Hepsi";
 $lang["reports_authority"] = "Yetki";
 $lang["reports_canceled"] = "İptal edildi";
