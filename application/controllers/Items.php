@@ -1109,6 +1109,8 @@ class Items extends Secure_Controller
 
 		if($attribute_id === FALSE)
 		{
+			$this->Attribute->delete_link($item_id, $attribute_data['definition_id']);
+
 			$attribute_id = $this->Attribute->save_value($value, $attribute_data['definition_id'], $item_id, FALSE, $attribute_data['definition_type']);
 		}
 		else if($this->Attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id) === FALSE)

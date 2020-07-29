@@ -497,11 +497,19 @@ class Attribute extends CI_Model
 		return $this->db->trans_status();
 	}
 
-	public function delete_link($item_id)
+	public function delete_link($item_id, $definition_id = FALSE)
 	{
+		$delete_data = array('item_id' => $item_id);
+
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
-		$success = $this->db->delete('attribute_links', array('item_id' => $item_id));
+
+		if(!empty($definition_id))
+		{
+			$delete_data += ['definition_id' => $definition_id];
+		}
+
+		$success = $this->db->delete('attribute_links', $delete_data);
 
 		return $success;
 	}
