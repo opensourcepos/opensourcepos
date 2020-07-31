@@ -877,6 +877,7 @@ class Items extends Secure_Controller
 						'cost_price'			=> $row['Cost Price'],
 						'unit_price'			=> $row['Unit Price'],
 						'reorder_level'			=> $row['Reorder Level'],
+						'deleted'				=> FALSE,
 						'hsn_code'				=> $row['HSN'],
 						'pic_filename'			=> $row['Image']);
 
