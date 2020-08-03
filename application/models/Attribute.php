@@ -26,12 +26,6 @@ class Attribute extends CI_Model
 		return ($this->db->get('attribute_definitions')->num_rows() == 1);
 	}
 
-	/**
-	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
-	 * @param	int		$item_id
-	 * @param	boolean	$definition_id
-	 * @return	boolean					TRUE if at least one attribute_link exists or FALSE if no attributes exist.
-	 */
 	public function link_exists($item_id, $definition_id = FALSE)
 	{
 		if(empty($definition_id))
