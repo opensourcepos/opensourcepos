@@ -1,7 +1,7 @@
 Server Requirements
 -------------------
 
-* PHP version 5.6 to 7.3 are supported. Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` and `php-curl` installed and enabled.
+* PHP version 5.6 to 7.4 are supported. Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` and `php-curl` installed and enabled.
 
 * MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement 10.x is supported and apparently offering better performance.
 
