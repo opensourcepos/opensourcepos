@@ -1,0 +1,35 @@
+<?php 
+
+$lang["item_kits_add_item"] ="این مورد را اضافه کنید";
+$lang["item_kits_all"] ="همه";
+$lang["item_kits_cannot_be_deleted"] ="حذف کیت آیتم انجام نشد.";
+$lang["item_kits_confirm_delete"] ="آیا مطمئن هستید که می خواهید کیت (های) آیتم انتخاب شده را حذف کنید؟";
+$lang["item_kits_confirm_restore"] ="آیا مطمئن هستید که می خواهید کیت (های) آیتم انتخاب شده را بازیابی کنید؟";
+$lang["item_kits_description"] ="توضیحات کیت مورد";
+$lang["item_kits_discount"] ="تخفیف";
+$lang["item_kits_discount_fixed"] ="تخفیف ثابت";
+$lang["item_kits_discount_percent"] ="درصد تخفیف";
+$lang["item_kits_discount_type"] ="نوع تخفیف";
+$lang["item_kits_error_adding_updating"] ="افزودن یا به روزرسانی کیت موردی انجام نشد.";
+$lang["item_kits_find_kit_item"] ="مورد کیت";
+$lang["item_kits_info"] ="اطلاعات کیت مورد";
+$lang["item_kits_item"] ="مورد";
+$lang["item_kits_items"] ="موارد";
+$lang["item_kits_kit"] ="شناسه کیت";
+$lang["item_kits_kit_and_components"] ="کیت و قطعات";
+$lang["item_kits_kit_and_stock"] ="کیت و سهام";
+$lang["item_kits_kit_only"] ="فقط کیت";
+$lang["item_kits_name"] ="نام کیت مورد";
+$lang["item_kits_new"] ="کیت مورد جدید";
+$lang["item_kits_no_item_kits_to_display"] ="هیچ کیت موردی برای نمایش ندارد.";
+$lang["item_kits_none_selected"] ="شما هیچ کیت مورد را انتخاب نکرده اید.";
+$lang["item_kits_one_or_multiple"] ="کیت اقلام (ها)";
+$lang["item_kits_price_option"] ="گزینه قیمت";
+$lang["item_kits_priced_only"] ="فقط قیمت";
+$lang["item_kits_print_option"] ="گزینه چاپ";
+$lang["item_kits_quantity"] ="تعداد";
+$lang["item_kits_sequence"] ="توالی";
+$lang["item_kits_successful_adding"] ="شما کیت مورد را با موفقیت اضافه کردید";
+$lang["item_kits_successful_deleted"] ="شما با موفقیت حذف شده اید";
+$lang["item_kits_successful_updating"] ="شما کیت مورد را با موفقیت به روز کردید";
+$lang["item_kits_update"] ="به روزرسانی کیت مورد";
