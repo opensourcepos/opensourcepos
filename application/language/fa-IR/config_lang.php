@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] ="آدرس شرکت";
 $lang["config_address_required"] ="آدرس شرکت یک زمینه ضروری است.";
@@ -27,8 +27,8 @@ $lang["config_barcode_page_width"] ="نمایش عرض صفحه";
 $lang["config_barcode_price"] ="قیمت";
 $lang["config_barcode_second_row"] ="ردیف 2";
 $lang["config_barcode_third_row"] ="ردیف 3";
-$lang["config_barcode_tooltip"] ="اخطار: این ویژگی می تواند باعث وارد شدن یا ایجاد موارد تکراری شود. اگر نمی خواهید بارکد های تکراری داشته باشید ، از آنها استفاده نکنید.";
-$lang["config_barcode_type"] =;
+$lang["config_barcode_tooltip"] = "اخطار: این ویژگی می تواند باعث وارد شدن یا ایجاد موارد تکراری شود. اگر نمی خواهید بارکد های تکراری داشته باشید ، از آنها استفاده نکنید.";
+$lang["config_barcode_type"] = "";
 $lang["config_barcode_width"] ="عرض به پیکسل";
 $lang["config_bottom"] ="پایین";
 $lang["config_cash_decimals"] ="اعشار نقدی";
