@@ -66,7 +66,7 @@ class Rounding_mode
 		}
 		elseif($rounding_mode == Rounding_mode::HALF_FIVE)
 		{
-			$rounded_total = round($amount / 5) * 5;
+			$rounded_total = round($amount / 5, $decimals, Rounding_mode::HALF_EVEN) * 5;
 		}
 		else
 		{
