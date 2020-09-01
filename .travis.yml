@@ -24,7 +24,7 @@ env:
     - DOCKER_COMPOSE_VERSION=1.21.1 
     - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success: 
-  - 'docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "opensourcepos_ospos:latest" "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
+  - 'docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag -f "opensourcepos_ospos:latest" "jekkos/opensourcepos:$TAG" && docker push -f "jekkos/opensourcepos:$TAG"'
 deploy:
   file: deployment.json
   provider: bintray
