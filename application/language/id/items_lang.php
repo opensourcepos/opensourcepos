@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Menambah atau mengurangi Inventori.";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amount_entry"] = "Jumlah entri";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Harga Pokok";
 $lang["items_cost_price_number"] = "Harga beli harus berupa angka.";
 $lang["items_cost_price_required"] = "Harga beli harus diisi.";
 $lang["items_count"] = "Mutasi/Penyesuaian Inventori";
+$lang["items_csv_import_failed"] = "Impor dari CSV tidak berhasil dilakukan";
+$lang["items_csv_import_nodata_wrongformat"] = "Berkas unggahan tidak berisi data atau format salah.";
+$lang["items_csv_import_partially_failed"] = "Terdapat %1 item yang gagal diimpor pada baris: %2. Tidak ada kolom yang diimpor.";
+$lang["items_csv_import_success"] = "Impor item berhasil.";
 $lang["items_current_quantity"] = "Jumlah Saat ini";
 $lang["items_default_pack_name"] = "Setiap";
 $lang["items_description"] = "Deskripsi";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Ubah Beberapa Item";
 $lang["items_empty_upc_items"] = "UPC Items Kosong";
 $lang["items_error_adding_updating"] = "Kesalahan ketika menambahkan/memperbarui item";
 $lang["items_error_updating_multiple"] = "Kesalahan ketika memperbarui item";
-$lang["items_csv_import_failed"] = "Impor dari CSV tidak berhasil dilakukan";
-$lang["items_csv_import_nodata_wrongformat"] = "Berkas unggahan tidak berisi data atau format salah.";
-$lang["items_csv_import_partially_failed"] = "Terdapat %1 item yang gagal diimpor pada baris: %2. Tidak ada kolom yang diimpor.";
-$lang["items_csv_import_success"] = "Impor item berhasil.";
 $lang["items_generate_barcodes"] = "Buat Barcode";
 $lang["items_hsn_code"] = "Kode HSN";
 $lang["items_image"] = "Gambar";
 $lang["items_import_items_csv"] = "Impor item dari CSV sheet";
 $lang["items_info_provided_by"] = "Info disediakan oleh";
 $lang["items_inventory"] = "Inventori";
+$lang["items_inventory_CSV_import_quantity"] = "Jumlah telah diimpor dari CSV";
 $lang["items_inventory_comments"] = "Keterangan";
 $lang["items_inventory_data_tracking"] = "Pelacakan Data Inventaris";
 $lang["items_inventory_date"] = "Tanggal";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Harga Jual wajib diisi.";
 $lang["items_upc_database"] = "Database UPC";
 $lang["items_update"] = "Ubah";
 $lang["items_use_inventory_menu"] = "Gunakan Inv. Menu";
-$lang["items_inventory_CSV_import_quantity"] = "Jumlah telah diimpor dari CSV";

@@ -54,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "שינויי קוד המס נשמ
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "שינויי קוד המס לא נשמרו";
 $lang["taxes_tax_excluded"] = "לא כולל מס";
 $lang["taxes_tax_group"] = "קבוצת מס";
+$lang["taxes_tax_group_not_unique"] = "";
 $lang["taxes_tax_group_sequence"] = "רצף קבוצת מסים";
 $lang["taxes_tax_included"] = "כולל מס";
 $lang["taxes_tax_jurisdiction"] = "תחום שיפוט מס (מיסוי)";

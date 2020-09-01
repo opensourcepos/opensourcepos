@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "ยืนยันลบข้อมูล�
 $lang["customers_confirm_restore"] = "คุณแน่ใจใช่ไหมว่าต้องการกู้คืนลูกค้าที่เลือก";
 $lang["customers_consent"] = "ความยินยอมในการลงทะเบียน";
 $lang["customers_consent_required"] = "ความยินยอมในการลงทะเบียนต้องระบุข้อมูล";
+$lang["customers_csv_import_failed"] = "นำเข้าข้อมูล CSV ล้มเหลว";
+$lang["customers_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_csv_import_partially_failed"] = "นำเข้าลูกค้าประสบความสำเร็จแต่มีข้อผิดพลาดบางอย่าง :";
+$lang["customers_csv_import_success"] = "Import of Customers successful";
 $lang["customers_customer"] = "ลูกค้า";
 $lang["customers_date"] = "วันที่";
 $lang["customers_discount"] = "ส่วนลด";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "ประเภทส่วนลด";
 $lang["customers_email_duplicate"] = "มีที่อยู่อีเมลนี้ในฐานข้อมูลแล้ว";
 $lang["customers_employee"] = "พนักงาน";
 $lang["customers_error_adding_updating"] = "แก้ไขข้อมูลลูกค้าผิดพลาด";
-$lang["customers_csv_import_failed"] = "นำเข้าข้อมูล CSV ล้มเหลว";
-$lang["customers_csv_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["customers_csv_import_partially_failed"] = "นำเข้าลูกค้าประสบความสำเร็จแต่มีข้อผิดพลาดบางอย่าง :";
-$lang["customers_csv_import_success"] = "Import of Customers successful";
 $lang["customers_import_items_csv"] = "Import customers from CSV sheet";
 $lang["customers_mailchimp_activity_click"] = "คลิ๊กอีเมล";
 $lang["customers_mailchimp_activity_lastopen"] = "อีเมลที่เปิดล่าสุด";

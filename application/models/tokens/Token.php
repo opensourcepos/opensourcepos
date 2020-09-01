@@ -5,6 +5,7 @@ require_once(APPPATH . 'models/tokens/Token_customer.php');
 require_once(APPPATH . 'models/tokens/Token_invoice_count.php');
 require_once(APPPATH . 'models/tokens/Token_invoice_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_quote_sequence.php');
+require_once(APPPATH . 'models/tokens/Token_year_quote_count.php');
 require_once(APPPATH . 'models/tokens/Token_work_order_sequence.php');
 require_once(APPPATH . 'models/tokens/Token_suspended_invoice_count.php');
 require_once(APPPATH . 'models/tokens/Token_year_invoice_count.php');
@@ -37,7 +38,7 @@ abstract class Token
 	{
 		return array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
 			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(),
-			new Token_work_order_sequence(), new Token_year_invoice_count());
+			new Token_work_order_sequence(), new Token_year_invoice_count(), new Token_year_quote_count());
 	}
 
 	abstract public function token_id();

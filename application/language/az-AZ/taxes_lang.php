@@ -54,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "Vergi kodu dəyişikliyi saxlanı
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Vergi kodu dəyişikliyi saxlanılmadı";
 $lang["taxes_tax_excluded"] = "Vergi istisna olunur";
 $lang["taxes_tax_group"] = "Vergi qurupu";
+$lang["taxes_tax_group_not_unique"] = "";
 $lang["taxes_tax_group_sequence"] = "Vergi Qrupu Sırası";
 $lang["taxes_tax_included"] = "Vergi daxildir";
 $lang["taxes_tax_jurisdiction"] = "Vergi Yurisdiksiya";

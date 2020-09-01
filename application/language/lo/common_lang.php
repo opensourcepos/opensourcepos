@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "ທີ່ຢູ່ 1";
 $lang["common_address_2"] = "ທີ່ຢູ່ 2";
 $lang["common_city"] = "ເມືອງ";
@@ -6,6 +7,7 @@ $lang["common_close"] = "ປິດ";
 $lang["common_comments"] = "ຄວາມຄິດເຫັນ";
 $lang["common_common"] = "ຮ່ວມກັນ";
 $lang["common_confirm_search"] = "ທ່ານໄດ້ເລືອກໜຶ່ງແຖວຂຶ້ນໄປຊຶ່ງຈະບໍ່ຖືກເລືອກຫຼັງຈາກການຄົ້ນຫາຂອງທ່ານ ທ່ານແນ່ໃຈຫຼືບໍ່ວ່າຕ້ອງການສົ່ງການຄົ້ນຫານີ້?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "ກະລູນາແກ້ໄຂຂໍ້ພິດຜາດກ່ອນບັນທຶກ";
 $lang["common_country"] = "ປະເທດ";
 $lang["common_date"] = "ວັນທີ";

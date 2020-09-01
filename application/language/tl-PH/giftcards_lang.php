@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Inventory to add or subtract.";
 $lang["giftcards_allow_alt_description"] = "Allow Alternate Description";
 $lang["giftcards_bulk_edit"] = "Bulk Edit";
@@ -16,6 +17,7 @@ $lang["giftcards_confirm_delete"] = "Are you sure you want to delete the selecte
 $lang["giftcards_confirm_restore"] = "Are you sure you want to delete the selected Gift Card(s)?";
 $lang["giftcards_cost_price"] = "Wholesale Price";
 $lang["giftcards_count"] = "Update Inventory";
+$lang["giftcards_csv_import_failed"] = "CSV import failed";
 $lang["giftcards_current_quantity"] = "Current Quantity";
 $lang["giftcards_description"] = "Description";
 $lang["giftcards_details_count"] = "Inventory Count Details";
@@ -24,7 +26,6 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "Edit desired fields for sel
 $lang["giftcards_edit_multiple_giftcards"] = "Edit Multiple Gift Cards.";
 $lang["giftcards_error_adding_updating"] = "Gift Card add or update failed.";
 $lang["giftcards_error_updating_multiple"] = "Gift Card(s) update failed.";
-$lang["giftcards_csv_import_failed"] = "CSV import failed";
 $lang["giftcards_generate_barcodes"] = "Generate Barcodes";
 $lang["giftcards_giftcard"] = "Gift Card";
 $lang["giftcards_giftcard_number"] = "Gift Card Number";

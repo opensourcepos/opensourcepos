@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Plaats";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Sluiten";
 $lang["common_comments"] = "Opmerkingen";
 $lang["common_common"] = "";
 $lang["common_confirm_search"] = "";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";

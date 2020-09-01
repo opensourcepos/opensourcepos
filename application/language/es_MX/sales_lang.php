@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Puntos Disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "Puntos de recompensa sobrante son: ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Efectivo";
 $lang["sales_cash_deposit"] = "Deposito en Efectivo";
 $lang["sales_cash_filter"] = "Efectivo";
 $lang["sales_change_due"] = "Cambio";
+$lang["sales_change_price"] = "Cambiar precio de venta";
 $lang["sales_check"] = "Cheque";
 $lang["sales_check_balance"] = "Balance de Cheque";
 $lang["sales_check_filter"] = "Comprobar";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Todos";
 $lang["sales_no_items_in_cart"] = "No hay artículos en el carrito.";
 $lang["sales_no_sales_to_display"] = "No hay ventas que mostrar.";
 $lang["sales_none_selected"] = "No has seleccionado alguna venta para borrar.";
+$lang["sales_nontaxed_ind"] = " ' ";
 $lang["sales_not_authorized"] = "Esta acción no esta autorizada.";
 $lang["sales_one_or_multiple"] = "Venta(s)";
 $lang["sales_payment"] = "Tipo de pago";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Este cliente no tiene una dirección de corre
 $lang["sales_receipt_number"] = "Venta #";
 $lang["sales_receipt_sent"] = "Recibo enviado a";
 $lang["sales_receipt_unsent"] = "Falló el envío del recibo a";
+$lang["sales_refund"] = "Modo de Reembolso";
 $lang["sales_register"] = "Registro de ventas";
 $lang["sales_remove_customer"] = "Borrar cliente";
 $lang["sales_return"] = "Devolución";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Impuestos";
 $lang["sales_tax_id"] = "ID Impuesto";
 $lang["sales_tax_invoice"] = "Impuesto de la factura";
 $lang["sales_tax_percent"] = "Impuesto %";
+$lang["sales_taxed_ind"] = "Ventas con impuestos";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Sin impuesto";
 $lang["sales_transaction_failed"] = "Ha fallado la venta.";
@@ -173,7 +178,3 @@ $lang["sales_work_order_number"] = "Número de orden de trabajo";
 $lang["sales_work_order_number_duplicate"] = "El número de orden de trabajo debe ser único.";
 $lang["sales_work_order_sent"] = "Orden de trabajo enviada a";
 $lang["sales_work_order_unsent"] = "Fallo al enviar la orden de trabajo  a";
-$lang["sales_nontaxed_ind"] = " ' ";
-$lang["sales_change_price"] = "Cambiar precio de venta";
-$lang["sales_refund"] = "Modo de Reembolso";
-$lang["sales_taxed_ind"] = "Ventas con impuestos";

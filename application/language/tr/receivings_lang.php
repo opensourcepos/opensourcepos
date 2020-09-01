@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "İptal";
 $lang["receivings_cannot_be_deleted"] = "Alma (lar) silinemedi.";
 $lang["receivings_comments"] = "Yorumlar";

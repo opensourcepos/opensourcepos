@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
 $lang["items_amount_entry"] = "Đầu mục tổng số";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Giá bán buôn";
 $lang["items_cost_price_number"] = "Giá bán buôn phải là dạng số.";
 $lang["items_cost_price_required"] = "Trường Giá bán buôn là bắt buộc.";
 $lang["items_count"] = "Cập hàng tồn kho";
+$lang["items_csv_import_failed"] = "Gặp lỗi khi nhập từ CSV";
+$lang["items_csv_import_nodata_wrongformat"] = "Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.";
+$lang["items_csv_import_partially_failed"] = "Nhập hàng hóa thành công với một số lỗi:";
+$lang["items_csv_import_success"] = "Nhập hàng hóa thành công.";
 $lang["items_current_quantity"] = "Số lượng hiện tại";
 $lang["items_default_pack_name"] = "Mỗi";
 $lang["items_description"] = "Mô tả";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Sửa nhiều hàng hóa cùng lúc";
 $lang["items_empty_upc_items"] = "Mã vạch hàng hóa để trống";
 $lang["items_error_adding_updating"] = "Lỗi thêm/cập nhật hàng hóa";
 $lang["items_error_updating_multiple"] = "Có lỗi khi cập nhật hàng hóa";
-$lang["items_csv_import_failed"] = "Gặp lỗi khi nhập từ CSV";
-$lang["items_csv_import_nodata_wrongformat"] = "Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.";
-$lang["items_csv_import_partially_failed"] = "Nhập hàng hóa thành công với một số lỗi:";
-$lang["items_csv_import_success"] = "Nhập hàng hóa thành công.";
 $lang["items_generate_barcodes"] = "Tạo mã vạch";
 $lang["items_hsn_code"] = "";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "Nhập hàng hóa từ CSV";
 $lang["items_info_provided_by"] = "Thông tin được cung cấp bởi";
 $lang["items_inventory"] = "Tồn kho";
+$lang["items_inventory_CSV_import_quantity"] = "Số lượng đã được nhập từ CSV";
 $lang["items_inventory_comments"] = "Ghi chú";
 $lang["items_inventory_data_tracking"] = "Theo dõi dữ liệu tồn kho";
 $lang["items_inventory_date"] = "Ngày tháng";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Trường giá bán lẻ là bắt buộc.
 $lang["items_upc_database"] = "Cơ sở dữ liệu mã vạch";
 $lang["items_update"] = "Cập nhật Hàng hóa";
 $lang["items_use_inventory_menu"] = "Dùng trình đơn Tồn kho";
-$lang["items_inventory_CSV_import_quantity"] = "Số lượng đã được nhập từ CSV";

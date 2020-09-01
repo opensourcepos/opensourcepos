@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Todo";
 $lang["reports_authority"] = "Autorización";
 $lang["reports_canceled"] = "Cancelado";

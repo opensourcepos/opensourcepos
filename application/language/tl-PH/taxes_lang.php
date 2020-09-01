@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Add Exception";
 $lang["taxes_cascade"] = "Cascade";
 $lang["taxes_cascade_sequence"] = "Cascade Sequence";
@@ -53,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "Tax Code changes not saved";
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Tax Code changes saved";
 $lang["taxes_tax_excluded"] = "Tax excluded";
 $lang["taxes_tax_group"] = "Tax Group";
+$lang["taxes_tax_group_not_unique"] = "";
 $lang["taxes_tax_group_sequence"] = "Tax Group Sequence";
 $lang["taxes_tax_included"] = "Tax included";
 $lang["taxes_tax_jurisdiction"] = "Tax Jurisdiction";

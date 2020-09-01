@@ -14,7 +14,7 @@ RUN echo -e “$(hostname -i)\t$(hostname) $(hostname).localhost” >> /etc/host
 WORKDIR /app
 COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod 755 /app/public/uploads && chown -R www-data:www-data /app/public /app/application
+RUN chmod -R 750 /app/public/uploads /app/application/logs && chown -R www-data:www-data /app/public /app/application
 
 FROM ospos AS ospos_test
  

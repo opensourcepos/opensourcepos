@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Налични точки";
 $lang["rewards_package"] = "Награди";
 $lang["rewards_remaining_balance"] = "Оставащата стойност на точките за награда е ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "В брой";
 $lang["sales_cash_deposit"] = "Депозит в брой";
 $lang["sales_cash_filter"] = "В брой";
 $lang["sales_change_due"] = "Промяна на дължимото";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Проверка";
 $lang["sales_check_balance"] = "Проверете остатъка";
 $lang["sales_check_filter"] = "Проверка";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Всичко";
 $lang["sales_no_items_in_cart"] = "В количката няма продукти.";
 $lang["sales_no_sales_to_display"] = "Няма продажби за показване .";
 $lang["sales_none_selected"] = "Не сте избрали каквито и да е Продажби за изтриване.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Това действие не е разрешено.";
 $lang["sales_one_or_multiple"] = "Продажба (и)";
 $lang["sales_payment"] = "Вид плащане";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Този клиент няма валиден
 $lang["sales_receipt_number"] = "Продажба #";
 $lang["sales_receipt_sent"] = "Разписката  е изпратена до";
 $lang["sales_receipt_unsent"] = "Разписката  не бе изпратена до";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Регистър на продажбите";
 $lang["sales_remove_customer"] = "Премахване на клиент";
 $lang["sales_return"] = "Връщане";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Данък";
 $lang["sales_tax_id"] = "";
 $lang["sales_tax_invoice"] = "";
 $lang["sales_tax_percent"] = "Данък %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Обща сума";
 $lang["sales_total_tax_exclusive"] = "Без данък";
 $lang["sales_transaction_failed"] = "Продажната транзакция е неуспешна.";

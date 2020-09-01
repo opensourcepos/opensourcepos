@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain ':' or '|'";
 $lang["attributes_confirm_delete"] = "Are you sure you want to restore the selected attribute(s)?";
 $lang["attributes_confirm_restore"] = "Are you sure you want to delete the selected attribute(s)?";

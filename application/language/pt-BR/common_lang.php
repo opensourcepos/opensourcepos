@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Endereço";
 $lang["common_address_2"] = "Complemento";
 $lang["common_city"] = "Cidade";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Fechar";
 $lang["common_comments"] = "Comentários";
 $lang["common_common"] = "comum";
 $lang["common_confirm_search"] = "Você selecionou uma ou mais linhas,  estes não serão mais selecionados após a sua pesquisa. Tem certeza de que deseja enviar esta pesquisa?";
+$lang["common_copryrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "Por favor, corrija os erros identificados antes de salvar";
 $lang["common_country"] = "País";
 $lang["common_date"] = "Data";
@@ -67,4 +69,3 @@ $lang["common_welcome"] = "Bem-vindo";
 $lang["common_welcome_message"] = "Bem-vindo.";
 $lang["common_you_are_using_ospos"] = "Você está usando Open Source Point Of Sale Versão";
 $lang["common_zip"] = "CEP";
-$lang["common_copryrights"] = "© 2010 - %1";

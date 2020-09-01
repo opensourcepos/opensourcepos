@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Egenskabens værdi kan ikke indeholde ':' or '|'";
 $lang["attributes_confirm_delete"] = "Er du sikker på, at du vil slette de valgte egenskaber?";
 $lang["attributes_confirm_restore"] = "Er du sikker på, at du vil gendanne de valgte egenskaber?";

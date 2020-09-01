@@ -80,7 +80,7 @@ class Tax_lib
 					foreach($tax_info as $tax)
 					{
 						// This computes tax for each line item and adds it to the tax type total
-						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
+						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = 0.0;
 
 						if($this->CI->config->item('tax_included'))

@@ -7,6 +7,7 @@ $lang["common_close"] = "Close";
 $lang["common_comments"] = "Komentari";
 $lang["common_common"] = "Zajedničko";
 $lang["common_confirm_search"] = "Odabrali ste jedan ili više redova koji neće biti odabrani nakon pretrage. Jeste li ste sigurni da želite pretragu?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Država";
 $lang["common_date"] = "Datum";

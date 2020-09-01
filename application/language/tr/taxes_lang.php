@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "İstisna Ekle";
 $lang["taxes_cascade"] = "Kademeli";
 $lang["taxes_cascade_sequence"] = "Kademeli Sıra";
@@ -53,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "Vergi Kodu değişiklikleri kayde
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Vergi Kodu değişiklikleri kaydedilmedi";
 $lang["taxes_tax_excluded"] = "Vergi hariç";
 $lang["taxes_tax_group"] = "Vergi Kümesi";
+$lang["taxes_tax_group_not_unique"] = "%1 Vergi Kümesi eşsiz değil";
 $lang["taxes_tax_group_sequence"] = "Vergi Kümesi Sırası";
 $lang["taxes_tax_included"] = "Vergi dahil";
 $lang["taxes_tax_jurisdiction"] = "Vergi Yargı Yetkisi";
@@ -76,4 +78,3 @@ $lang["taxes_tax_rounding"] = "Vergi Yuvarlama";
 $lang["taxes_tax_type"] = "Tür";
 $lang["taxes_update"] = "Vergi Oranını Güncelle";
 $lang["taxes_vat_tax"] = "KDV Vergisi";
-$lang["taxes_tax_group_not_unique"] = "%1 Vergi Kümesi eşsiz değil";

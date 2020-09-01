@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "属性特征不能包含':' or '|'";
 $lang["attributes_confirm_delete"] = "确定要删除所选属性吗";
 $lang["attributes_confirm_restore"] = "您确定要还原所选属性吗？";

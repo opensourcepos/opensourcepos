@@ -7,6 +7,7 @@ $lang["common_close"] = "Stäng";
 $lang["common_comments"] = "Kommentarer";
 $lang["common_common"] = "allmänt";
 $lang["common_confirm_search"] = "Du har valt en eller flera rader, dessa kommer inte längre att väljas efter din sökning. Är du säker på att du vill skicka in den här sökningen?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";

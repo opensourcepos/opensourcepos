@@ -7,6 +7,7 @@ $lang["common_close"] = "סגור";
 $lang["common_comments"] = "הערות";
 $lang["common_common"] = "משותף";
 $lang["common_confirm_search"] = "בחרת שורה אחת או יותר, הן לא ייבחרו עוד לאחר החיפוש שלך. האם אתה בטוח שברצונך לשלוח חיפוש זה?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "תקן שגיאות שזוהו לפני שמירה";
 $lang["common_country"] = "ארץ";
 $lang["common_date"] = "תאריך";

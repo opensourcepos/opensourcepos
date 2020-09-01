@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Ingreso(s) no se borraron.";
 $lang["receivings_comments"] = "Comentarios";

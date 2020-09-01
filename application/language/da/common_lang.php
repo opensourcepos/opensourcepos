@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adresse 1";
 $lang["common_address_2"] = "Adresse 2";
 $lang["common_city"] = "By";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Luk";
 $lang["common_comments"] = "Kommentarer";
 $lang["common_common"] = "Almindelig(e)";
 $lang["common_confirm_search"] = "Du har valgt en eller flere rækker. Disse vil ikke længere være valgt efter din søgning. Er du sikker på, at du vil foretage søgningen?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "Ret venligst identificeret fejl før du gemmer";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Dato";

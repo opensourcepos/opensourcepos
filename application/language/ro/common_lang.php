@@ -7,6 +7,7 @@ $lang["common_close"] = "Închide";
 $lang["common_comments"] = "Comnetarii";
 $lang["common_common"] = "comun";
 $lang["common_confirm_search"] = "Ați selectat unul sau mai multe rânduri, acestea nu vor mai fi selectate după căutarea dvs. Sigur doriți să trimiteți această căutare?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "Corectati va rog erorile identificate inainte de salvare";
 $lang["common_country"] = "Țară";
 $lang["common_date"] = "Dată";

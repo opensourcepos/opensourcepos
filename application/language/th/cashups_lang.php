@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "ยอดรวม";
 $lang["cashups_amount_number"] = "ยอดรวม ต้องเป็นตัวเลข";
 $lang["cashups_amount_required"] = "ยอดรวม จำเป็นต้องป้อน";

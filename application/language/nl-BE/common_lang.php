@@ -7,6 +7,7 @@ $lang["common_close"] = "Sluit";
 $lang["common_comments"] = "Commentaar";
 $lang["common_common"] = "algemeen";
 $lang["common_confirm_search"] = "U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";

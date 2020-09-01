@@ -7,6 +7,7 @@ $lang["common_close"] = "";
 $lang["common_comments"] = "";
 $lang["common_common"] = "";
 $lang["common_confirm_search"] = "";
+$lang["common_copryrights"] = "";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "";
 $lang["common_date"] = "";

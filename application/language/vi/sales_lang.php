@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Các điểm sẵn có";
 $lang["rewards_package"] = "Tiền thưởng";
 $lang["rewards_remaining_balance"] = "Giá trị còn lại của điểm thưởng là ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Tiền mặt";
 $lang["sales_cash_deposit"] = "Số dư tiền mặt";
 $lang["sales_cash_filter"] = "Tiền mặt";
 $lang["sales_change_due"] = "Thay đổi nợ";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Séc";
 $lang["sales_check_balance"] = "Phần còn lại séc";
 $lang["sales_check_filter"] = "Séc";
@@ -96,6 +98,7 @@ $lang["sales_no_filter"] = "Tất cả";
 $lang["sales_no_items_in_cart"] = "Không có Hàng hóa trong rổ hàng.";
 $lang["sales_no_sales_to_display"] = "Không có lần bán hàng để hiển thị.";
 $lang["sales_none_selected"] = "Bạn chưa chọn bất kỳ một lần bán hàng nào để mà xóa.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Thao tác này không được phép.";
 $lang["sales_one_or_multiple"] = "Bán hàng";
 $lang["sales_payment"] = "Kiểu thanh toán";
@@ -119,6 +122,7 @@ $lang["sales_receipt_no_email"] = "Khách hàng này có địa chỉ thư đi�
 $lang["sales_receipt_number"] = "Bán hàng #";
 $lang["sales_receipt_sent"] = "Biên lai gửi đến";
 $lang["sales_receipt_unsent"] = "Gặp lỗi khi gửi biên lai cho";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Đăng ký các lần bán hàng";
 $lang["sales_remove_customer"] = "Xóa bỏ khách hàng";
 $lang["sales_return"] = "Trả hàng";
@@ -156,6 +160,7 @@ $lang["sales_tax"] = "Thuế";
 $lang["sales_tax_id"] = "Mã số thuế";
 $lang["sales_tax_invoice"] = "Hóa đơn thuế";
 $lang["sales_tax_percent"] = "Thuế %";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "Tổng";
 $lang["sales_total_tax_exclusive"] = "Gồm thuế";
 $lang["sales_transaction_failed"] = "Gặp lỗi khi giao dịch bán hàng.";
@@ -173,4 +178,3 @@ $lang["sales_work_order_number"] = "Số giấy giao việc";
 $lang["sales_work_order_number_duplicate"] = "Số giấy giao việc phải là duy nhất.";
 $lang["sales_work_order_sent"] = "Gửi Giấy giao việc cho";
 $lang["sales_work_order_unsent"] = "Gặp lỗi khi gửi Giấy giao việc cho";
-$lang["sales_taxed_ind"] = "T";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "ເພີ່ມຂໍ້ຜິດພາດ";
 $lang["taxes_cascade"] = "Cascade";
 $lang["taxes_cascade_sequence"] = "";
@@ -53,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "";
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "";
 $lang["taxes_tax_excluded"] = "";
 $lang["taxes_tax_group"] = "";
+$lang["taxes_tax_group_not_unique"] = "";
 $lang["taxes_tax_group_sequence"] = "";
 $lang["taxes_tax_included"] = "";
 $lang["taxes_tax_jurisdiction"] = "";

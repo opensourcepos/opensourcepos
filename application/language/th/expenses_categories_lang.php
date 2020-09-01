@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "จำเป็นต้องระบุชื่อหมวดค่าใช้จ่าย";
 $lang["expenses_categories_add_item"] = "เพิ่มหมวดหมู่";
 $lang["expenses_categories_cannot_be_deleted"] = "ไม่สามารถลบหมวดหมู่ค่าใช้จ่าย";
