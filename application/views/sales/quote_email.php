@@ -33,11 +33,13 @@
 		</tr>
 		<tr>
 			<td id="company-title">
-				<pre><?php echo $this->config->item('company'); ?></pre>
-				<pre><?php echo $company_info; ?></pre>
+				<div id="company">
+					<?php echo $this->config->item('company'); ?>
+					<?php echo nl2br($company_info); ?>
+				</div>
 			</td>
 			<td id="meta">
-				<table align="right">
+				<table id="meta-content"  align="right">
 					<tr>
 						<td class="meta-head"><?php echo $this->lang->line('sales_quote_number');?> </td>
 						<td><div><?php echo $quote_number; ?></div></td>
@@ -135,11 +137,10 @@
 	</table>
 
 	<div id="terms">
-		<textarea id="sale_return_policy">
+		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
-				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->config->item('quote_default_comments'); ?></textarea>
+				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
+				<div><?php echo $this->lang->line('sales_comments') . ': ' . (empty($comments) ? $this->config->item('quote_default_comments') : $comments); ?></div>
 			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
 		</div>

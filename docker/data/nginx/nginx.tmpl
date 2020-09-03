@@ -29,8 +29,8 @@ http {
 		
 		client_max_body_size 10M;
 
-		ssl_certificate /etc/letsencrypt/live/ospos.ospos/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/ospos.ospos/privkey.pem;
+		ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
 		include /etc/letsencrypt/options-ssl-nginx.conf;
 		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
@@ -50,8 +50,8 @@ http {
 		server_name          ${WEB_DOMAIN};
 		server_tokens        off;
 
-		ssl_certificate /etc/letsencrypt/live/ospos.ospos/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/ospos.ospos/privkey.pem;
+		ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
 		include /etc/letsencrypt/options-ssl-nginx.conf;
 		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
