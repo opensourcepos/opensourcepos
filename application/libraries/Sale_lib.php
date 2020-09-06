@@ -1147,7 +1147,9 @@ class Sale_lib
 		}
 		$this->CI->session->set_userdata('cash_mode', $cash_mode);
 
-		if(cash_decimals() < totals_decimals())
+		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
+
+		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)
 		{
 			$cash_rounding = 1;
 		}
@@ -1348,7 +1350,6 @@ class Sale_lib
 	{
 		$cash_decimals = cash_decimals();
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
-		$rounded_total = $total;
 
 		return Rounding_mode::round_number($cash_rounding_code, $total, $cash_decimals);
 	}
