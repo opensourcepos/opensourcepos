@@ -807,6 +807,20 @@ class Sale extends CI_Model
 	}
 
 	/**
+	 * Return the taxes applied to a sale for a particular item
+	 */
+	public function get_sales_item_taxes($sale_id, $item_id)
+	{
+		$this->db->select('item_id, name, percent');
+		$this->db->from('sales_items_taxes');
+		$this->db->where('sale_id',$sale_id);
+		$this->db->where('item_id',$item_id);
+
+		//return an array of taxes for an item
+		return $this->db->get()->result_array();
+	}
+
+	/**
 	 * Deletes list of sales
 	 */
 	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
