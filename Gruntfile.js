@@ -244,6 +244,7 @@ module.exports = function(grunt) {
 							'*.md',
 							'LICENSE',
 							'docker*',
+							'docker/',
 							'Dockerfile',
 							'**/.htaccess',
 							'*.csv'
