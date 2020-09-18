@@ -113,7 +113,7 @@
 								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Readable &#x2717 </font>';
 							}
 							clearstatcache(); 
-							if (is_writable($importcustomers) && substr(decoct(fileperms($importcustomers)), -4) >= 660  ) {
+							if (is_writable($importcustomers) && substr(decoct(fileperms($importcustomers)), -4) > 660  ) {
 								echo ' | <font color="red">Vulnerable &#x2717</font>';
 							} else {
 								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
