@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "İnventar + Topla və ya - Çıx.";
 $lang["items_allow_alt_description"] = "Alternativ təsvirə icazə verin";
 $lang["items_amount_entry"] = "Məbləğ Əlavəsi";
@@ -18,7 +17,7 @@ $lang["items_confirm_bulk_edit"] = "Siz əminsinizmi ki işarələnmiş butun ma
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "Bütün Vergi haqqında olan Məlumatların  yerləri  dəyişəcək.";
 $lang["items_confirm_delete"] = "siz əminsiniz ki seçilmiş malları silmək istəyirsiniz?";
 $lang["items_confirm_restore"] = "Seçilmiş element (lər) bərpa etmək istədiyinizə əminsinizmi?";
-$lang["items_cost_price"] = "topdan satış qiyməti";
+$lang["items_cost_price"] = "Alış qiyməti";
 $lang["items_cost_price_number"] = "Topdan satış rəqəmlə olmalıdır.";
 $lang["items_cost_price_required"] = "Topdan satiış - yazılması vacib sahə.";
 $lang["items_count"] = "inventorun yenilənməsi";
