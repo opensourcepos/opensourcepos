@@ -1,7 +1,6 @@
 [![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.3.2) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.3.2/link)
 [![Build Status](https://travis-ci.org/opensourcepos/opensourcepos.svg?branch=master)](https://travis-ci.org/opensourcepos/opensourcepos)
 [![Join the chat at https://gitter.im/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![devDependency Status](https://david-dm.org/jekkos/opensourcepos/dev-status.svg)](https://david-dm.org/jekkos/opensourcepos#info=dev)
 [![GitHub version](https://badge.fury.io/gh/jekkos%2Fopensourcepos.svg)](https://badge.fury.io/gh/jekkos%2Fopensourcepos)
 [![Translation status](http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg)](http://weblate.jpeelaer.net/engage/ospos/?utm_source=widget)
 
