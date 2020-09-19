@@ -1,7 +1,6 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Alle";
-$lang["reports_authority"] = "";
+$lang["reports_authority"] = "Autoriteit";
 $lang["reports_canceled"] = "Geannuleerd";
 $lang["reports_categories"] = "Categorieën";
 $lang["reports_categories_summary_report"] = "Rapport Overzicht Categorieën";
