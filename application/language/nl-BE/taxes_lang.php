@@ -1,7 +1,6 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Voeg uitzondering toe";
-$lang["taxes_cascade"] = "";
+$lang["taxes_cascade"] = "Cascade";
 $lang["taxes_cascade_sequence"] = "";
 $lang["taxes_city"] = "";
 $lang["taxes_code"] = "";
