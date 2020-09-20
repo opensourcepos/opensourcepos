@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Mal Əlavə Etmək";
 $lang["item_kits_all"] = "Hamısı";
 $lang["item_kits_cannot_be_deleted"] = "Dəst Mal (lar) silinə bilməz.";
-$lang["item_kits_confirm_delete"] = "Siz əminsiniz ki seçilmiş mallar dəstlərini  silmək istəyirsiniz?";
+$lang["item_kits_confirm_delete"] = "Seçilmiş mallar dəstlərini silmək istəyinizə əminsiniz?";
 $lang["item_kits_confirm_restore"] = "Seçilən Mal dəstini (lər) bərpa etmək istədiyinizə əminsiniz?";
 $lang["item_kits_description"] = "Mal Dəstinin Təsviri";
 $lang["item_kits_discount"] = "Endirim";
