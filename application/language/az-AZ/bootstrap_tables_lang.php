@@ -1,6 +1,5 @@
-<?php 
-
-$lang["tables_all"] = "Hamısı";
+<?php
+$lang["tables_all"] = "hamısı";
 $lang["tables_columns"] = "Sütunlar";
 $lang["tables_hide_show_pagination"] = "Gizlət/Göstər səhifənin nömrələnməsin";
 $lang["tables_loading"] = "Lütfən gözləyin, səhifə yüklənir...";
