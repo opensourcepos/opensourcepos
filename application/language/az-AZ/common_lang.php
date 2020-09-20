@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Ünvan 1";
 $lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Bağlı";
 $lang["common_comments"] = "Rəylər";
 $lang["common_common"] = "ortaq";
 $lang["common_confirm_search"] = "Bir və ya bir neçə sətir seçdiniz, bunlar axtarışınızdan sonra artıq seçilməyəcək. Bu axtarışı göndərmək istədiyinizə əminsinizmi?";
-$lang["common_copryrights"] = "";
+$lang["common_copryrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "Xahiş edirik təsdiqlə-dən əvvəl səhvləri düzəldin";
 $lang["common_country"] = "Ölkə";
 $lang["common_date"] = "Təqvim";
