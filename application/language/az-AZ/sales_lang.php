@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Mövcud ballar";
 $lang["rewards_package"] = "Mükafatlar";
 $lang["rewards_remaining_balance"] = "Mükafatın yerdə qalan bal dəyəri ";
@@ -13,7 +12,7 @@ $lang["sales_cash"] = "Nəğd pullar";
 $lang["sales_cash_deposit"] = "Nağd depozit";
 $lang["sales_cash_filter"] = "Nəğd Pul";
 $lang["sales_change_due"] = "Dəyişikliyə görə";
-$lang["sales_change_price"] = "";
+$lang["sales_change_price"] = "Satış qiymətini dəyiş";
 $lang["sales_check"] = "Çek";
 $lang["sales_check_balance"] = "Çek Xatırladan";
 $lang["sales_check_filter"] = "Çek";
@@ -98,7 +97,7 @@ $lang["sales_no_filter"] = "Hamısı";
 $lang["sales_no_items_in_cart"] = "Səbətdə heç bir mal yoxdur.";
 $lang["sales_no_sales_to_display"] = "Satış yoxdur.";
 $lang["sales_none_selected"] = "Silmək üçün hər hansı bir Satış (lar) seçmədiniz.";
-$lang["sales_nontaxed_ind"] = "";
+$lang["sales_nontaxed_ind"] = " . ";
 $lang["sales_not_authorized"] = "Bu hərəkət səlahiyyətli deyil.";
 $lang["sales_one_or_multiple"] = "Satış (lar)";
 $lang["sales_payment"] = "Ödəniş Növü";
@@ -122,7 +121,7 @@ $lang["sales_receipt_no_email"] = "Bu müştərinin etibarlı bir e-poçt ünvan
 $lang["sales_receipt_number"] = "Satış №";
 $lang["sales_receipt_sent"] = "Çek Göndərildi";
 $lang["sales_receipt_unsent"] = "Çek göndərilə Bilmədi";
-$lang["sales_refund"] = "";
+$lang["sales_refund"] = "Qaytarılma növü";
 $lang["sales_register"] = "jurnal satışı";
 $lang["sales_remove_customer"] = "müştəriləri silmək";
 $lang["sales_return"] = "qaytarmaq";
@@ -160,7 +159,7 @@ $lang["sales_tax"] = "vergi";
 $lang["sales_tax_id"] = "Vergi İD";
 $lang["sales_tax_invoice"] = "Vergi Qaimə";
 $lang["sales_tax_percent"] = "vergi %";
-$lang["sales_taxed_ind"] = "";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "cəm";
 $lang["sales_total_tax_exclusive"] = "Vergi Xaric";
 $lang["sales_transaction_failed"] = "Satış əməliyyatı uğursuz oldu.";
