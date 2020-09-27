@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "hamısı";
 $lang["reports_authority"] = "Səlahiyyət";
 $lang["reports_canceled"] = "Ləğv Edilmiş";
-$lang["reports_categories"] = "kateqoriyalar";
+$lang["reports_categories"] = "Kateqoriyalar";
 $lang["reports_categories_summary_report"] = "komentariyalar";
 $lang["reports_category"] = "Kategoriya";
 $lang["reports_code_canceled"] = "CNL";
@@ -22,7 +21,7 @@ $lang["reports_cost"] = "hesab";
 $lang["reports_cost_price"] = "müştəri";
 $lang["reports_count"] = "müştərilər";
 $lang["reports_customer"] = "müştərilərin hesabatı";
-$lang["reports_customers"] = "gun";
+$lang["reports_customers"] = "Müştərilər";
 $lang["reports_customers_summary_report"] = "gün";
 $lang["reports_date"] = "təsvir";
 $lang["reports_date_range"] = "detallı göndərilən hesabatlar";
@@ -39,7 +38,7 @@ $lang["reports_discounts"] = "Endirimlər";
 $lang["reports_discounts_summary_report"] = "əməkdaş";
 $lang["reports_earned"] = "əməkdaş";
 $lang["reports_employee"] = "əməkdaşın hesabatı";
-$lang["reports_employees"] = "qrafik hesabatlar";
+$lang["reports_employees"] = "İşçilər";
 $lang["reports_employees_summary_report"] = "İşçilərin Xülasəsi Hesabatı";
 $lang["reports_expenses"] = "Xərclər";
 $lang["reports_expenses_amount"] = "Məbləğ";
