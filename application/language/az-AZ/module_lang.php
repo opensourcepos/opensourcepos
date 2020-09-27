@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Atributlar";
 $lang["module_attributes_desc"] = "Atributları əlavə et, yenilə, sil və ya axtar.";
 $lang["module_both"] = "Hər ikizi";
@@ -35,7 +34,7 @@ $lang["module_reports"] = "Hesabatlar";
 $lang["module_reports_desc"] = "Hesabatları Yarat və Göstər.";
 $lang["module_sales"] = "Satışlar";
 $lang["module_sales_desc"] = "Satış prosesləri və Qaytarılanlar.";
-$lang["module_suppliers"] = "Təchizatcılar";
+$lang["module_suppliers"] = "Təchizatçılar";
 $lang["module_suppliers_desc"] = "Əlavə et,Yenilə,Sil və Təchizatçıları Axtar.";
 $lang["module_taxes"] = "Vergi";
 $lang["module_taxes_desc"] = "Satış üçün Vergiləri Ayarla.";
