@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "İmtina";
 $lang["receivings_cannot_be_deleted"] = "Qəbul olunanlar silinmədi.";
 $lang["receivings_comments"] = "Rəylər";
@@ -18,7 +17,7 @@ $lang["receivings_edit_sale"] = "malın redaktəsi səhvdir";
 $lang["receivings_employee"] = "Əməkdaş";
 $lang["receivings_error_editing_item"] = "Mal redaktə edilmədi.";
 $lang["receivings_error_requisition"] = "İnventarın yerdəyişməsi və ya yerinə qoyulması mümkün olmadı.";
-$lang["receivings_find_or_scan_item"] = "alış id";
+$lang["receivings_find_or_scan_item"] = "Məhsulu tap və ya skan et";
 $lang["receivings_find_or_scan_item_or_receipt"] = "malın adı";
 $lang["receivings_id"] = "alınma rejimi";
 $lang["receivings_item_name"] = "yeni tədarükçü";
