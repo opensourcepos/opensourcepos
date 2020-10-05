@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Mövcud ballar";
 $lang["rewards_package"] = "Mükafatlar";
 $lang["rewards_remaining_balance"] = "Mükafatın yerdə qalan bal dəyəri ";

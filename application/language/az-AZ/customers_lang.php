@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Hesab nömrəsi";
 $lang["customers_account_number_duplicate"] = "Hesab nömrəsi artıq verilənlər bazasında mövcuddur.";
 $lang["customers_available_points"] = "Mövcud ballar";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "İnventar + Topla və ya - Çıx.";
 $lang["items_allow_alt_description"] = "Alternativ təsvirə icazə verin";
 $lang["items_amount_entry"] = "Məbləğ Əlavəsi";

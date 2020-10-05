@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "all";
 $lang["tables_columns"] = "Columns";
 $lang["tables_hide_show_pagination"] = "Hide/Show pagination";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Məlumat";
 $lang["employees_cannot_be_deleted"] = "Seçilmiş əməkdaş (lar) silinə bilməz, bir və ya birdən çox əməkdaş satışlar edib, əks halda siz öz heasabınızı silməyə çalışırsınız.";
 $lang["employees_change_password"] = "Şifrəni Dəyiş";

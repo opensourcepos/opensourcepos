@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Ünvan 1";
 $lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";

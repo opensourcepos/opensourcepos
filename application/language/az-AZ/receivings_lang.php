@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "İmtina";
 $lang["receivings_cannot_be_deleted"] = "Qəbul olunanlar silinmədi.";
 $lang["receivings_comments"] = "Rəylər";

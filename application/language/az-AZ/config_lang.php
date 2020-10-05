@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Şirkət Adresi";
 $lang["config_address_required"] = "Şirkətin adı olan boşluq sahəsi doldurulmalıdı.";
 $lang["config_all_set"] = "Bütün fayl icazələri düzgün qurulub!";

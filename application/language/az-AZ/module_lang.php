@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Atributlar";
 $lang["module_attributes_desc"] = "Atributları əlavə et, yenilə, sil və ya axtar.";
 $lang["module_both"] = "Hər ikizi";
