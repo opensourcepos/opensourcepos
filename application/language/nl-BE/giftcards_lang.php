@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "Corrigatie hoeveelheid.";
 $lang["giftcards_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["giftcards_bulk_edit"] = "Bewerk Selectie";
 $lang["giftcards_cannot_be_deleted"] = "De cadeaubons konden niet worden verwijderd.";
 $lang["giftcards_cannot_find_giftcard"] = "Kan cadeaubon niet vinden.";
-$lang["giftcards_cannot_use"] = "Cadeaubon %1 kan niet gebruikt worden voor deze aankoop. Ongeldige klant!";
+$lang["giftcards_cannot_use"] = "Cadeaubon %1 kan niet gebruikt worden voor deze aankoop: ongeldige klant.";
 $lang["giftcards_card_value"] = "Waarde";
 $lang["giftcards_category"] = "Categorie";
 $lang["giftcards_change_all_to_allow_alt_desc"] = "Aanpasb. omschrijvingen.";
