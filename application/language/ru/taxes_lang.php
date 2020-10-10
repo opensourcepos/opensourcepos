@@ -1,20 +1,19 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Добавить Исключение";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
-$lang["taxes_confirm_delete"] = "Вы действительно хотите удалить этот Налоговый Код? Это действие не может быть отменено.";
-$lang["taxes_confirm_restore"] = "";
+$lang["taxes_city"] = "Город";
+$lang["taxes_code"] = "Код";
+$lang["taxes_confirm_delete"] = "Вы действительно хотите удалить этот Налоговый Код? Это действие не может быть отменено";
+$lang["taxes_confirm_restore"] = "Вы действительно хотите восстановить выбранный Налоговый Код (Налоговые Коды)?";
 $lang["taxes_default_tax_category"] = "Категория Налога по Умолчанию";
 $lang["taxes_default_tax_rate"] = "";
-$lang["taxes_error_adding_updating"] = "Не удалось добавить или обновить Налоговый Код.";
+$lang["taxes_error_adding_updating"] = "Не удалось добавить или обновить Налоговый Код";
 $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
 $lang["taxes_name"] = "";
 $lang["taxes_new"] = "Новый Налоговый Код";
-$lang["taxes_no_taxes_to_display"] = "Нет Кода Налога для отображения.";
+$lang["taxes_no_taxes_to_display"] = "Нет Кода Налога для отображения";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "Наполовину Вниз";
 $lang["taxes_round_half_even"] = "Половина Даже";

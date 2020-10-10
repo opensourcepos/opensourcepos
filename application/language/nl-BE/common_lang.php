@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Stad";
@@ -7,8 +6,8 @@ $lang["common_close"] = "Sluit";
 $lang["common_comments"] = "Commentaar";
 $lang["common_common"] = "algemeen";
 $lang["common_confirm_search"] = "U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?";
-$lang["common_copryrights"] = "";
-$lang["common_correct_errors"] = "";
+$lang["common_copryrights"] = "© 2010 - %1";
+$lang["common_correct_errors"] = "Los aub de aangegeven fouten op voor u bewaart";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";
 $lang["common_delete"] = "Verwijder";
@@ -41,7 +40,7 @@ $lang["common_last_page"] = "Laatste";
 $lang["common_learn_about_project"] = "om de laatste informatie te verkrijgen over het project.";
 $lang["common_list_of"] = "Lijst van";
 $lang["common_logout"] = "Logout";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Een database migratie naar %1 zal starten na de login.";
 $lang["common_new"] = "Nieuw";
 $lang["common_no_persons_to_display"] = "Er werden geen personen gevonden.";
 $lang["common_none_selected_text"] = "Geen selectie.";

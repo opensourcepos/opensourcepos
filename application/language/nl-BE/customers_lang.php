@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Btwnummer";
 $lang["customers_account_number_duplicate"] = "Deze VAT nummer is reeds aanwezig in de database.";
 $lang["customers_available_points"] = "Beschikbare Punten";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Klant succesvol aangemaakt";
 $lang["customers_successful_deleted"] = "Er werd(en)";
 $lang["customers_successful_updating"] = "Wijzigingen klantgegevens bewaard voor";
 $lang["customers_tax_code"] = "VAT code";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "BtwNr";
 $lang["customers_taxable"] = "Belastbaar";
 $lang["customers_total"] = "Totaal";
 $lang["customers_update"] = "Bewerk Klant";
