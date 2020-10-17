@@ -111,7 +111,7 @@ class Stock_location extends CI_Model
 			$this->db->trans_start();
 
 			$this->db->insert('stock_locations', $location_data_to_save);
-			$location_id = $this->db->insert_id();
+ 			$location_id = $this->db->insert_id();
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
 			$this->_insert_new_permission('sales', $location_id, $location_name);
