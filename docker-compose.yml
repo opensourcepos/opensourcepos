@@ -37,7 +37,7 @@ services:
           - MYSQL_HOST_NAME=mysql
 
     mysql:
-        image: mariadb:10.3
+        image: mariadb:10.5
         container_name: mysql
         restart: always
         expose:
@@ -69,7 +69,7 @@ services:
           - PMA_HOST=mysql
 
     nginx:
-        image: nginx:1.15-alpine
+        image: nginx:1.19-alpine
         container_name: nginx
         restart: always
         depends_on:
