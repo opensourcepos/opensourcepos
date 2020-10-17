@@ -24,6 +24,7 @@ Copyright (c) 2018 Erasto Marroquin (aka Erastus)
 Copyright (c) 2018 Nathan Sas (aka nathanzky)
 Copyright (c) 2018 Emilio Silva (aka emi-silva)
 Copyright (c) 2019 Loyd Jayme (aka loydjayme25)
+Copyright (c) 2020 Andriux1990
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -37,7 +38,26 @@ copies or substantial portions of the Software.
 
 You cannot claim copyright or ownership of the Software.
 
-Footer signatures "You are using Open Source Point Of Sale" and/or "Open Source Point Of Sale"
+Versions ≥ 3.3.2:
+
+Footer signatures "© 2010 - 2020 · opensourcepos.org · 3.3.2 - 6909c8" 
+In the format of: "© 2010 - Current Year · opensourcepos.org · Version - Commit"
+
+and/or 
+
+"· opensourcepos.org ·"
+
+with version, hash and URL link to the official website of the project MUST BE RETAINED, 
+MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
+
+Versions < 3.3.2:
+
+Footer signatures "You are using Open Source Point Of Sale" 
+
+and/or 
+
+"Open Source Point Of Sale"
+
 with version, hash and URL link to the original distribution of the code MUST BE RETAINED, 
 MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
 
