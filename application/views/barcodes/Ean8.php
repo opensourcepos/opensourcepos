@@ -112,7 +112,7 @@ class Ean8 extends BarcodeBase
 			$sum_a = 0;
 			for ($i = 1; $i < $data_len; $i += 2)
 			{
-				$sum_a += $barcode{$i};
+				$sum_a += $barcode[$i];
 			}
 
 			if ($len > 12)
@@ -123,7 +123,7 @@ class Ean8 extends BarcodeBase
 			$sum_b = 0;
 			for ($i = 0; $i < $data_len; $i += 2)
 			{
-				$sum_b += ($barcode{$i});
+				$sum_b += ($barcode[$i]);
 			}
 
 			if ($len < 13)
@@ -143,7 +143,7 @@ class Ean8 extends BarcodeBase
 				// add check digit
 				$barcode .= $r;
 			}
-			elseif ($r !== intval($barcode{$data_len}))
+			elseif ($r !== intval($barcode[$data_len]))
 			{
 				// wrong checkdigit
 				$barcode = null;
@@ -164,7 +164,7 @@ class Ean8 extends BarcodeBase
 		}
 
 		$weights = array(3,1,3,1,3,1,3);    // weights
-		$chk = $ean{7};     // 8. digit
+		$chk = $ean[7];     // 8. digit
 
 		$i       = 0;
 		$sum     = 0;
@@ -172,7 +172,7 @@ class Ean8 extends BarcodeBase
 		// sum or weight *  digit
 		foreach($weights as $num) {
 
-			$sum += $num * $ean{$i};
+			$sum += $num * $ean[$i];
 			++$i;
 		}
 
