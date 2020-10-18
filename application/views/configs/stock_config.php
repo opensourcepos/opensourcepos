@@ -35,11 +35,9 @@ $(document).ready(function()
 	};
 
 	var add_stock_location = function() {
-		var id = $(this).parent().find('input').attr('id');
-		id = id.replace(/.*?_(\d+)$/g, "$1");
 		var block = $(this).parent().clone(true);
 		var new_block = block.insertAfter($(this).parent());
-		var new_block_id = 'stock_location_' + ++id;
+		var new_block_id = 'stock_location[]';
 		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();

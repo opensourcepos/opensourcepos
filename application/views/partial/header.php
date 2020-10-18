@@ -65,6 +65,7 @@
 		<link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
 		<!-- endbower -->
 		<!-- start js template tags -->
+		<script type="text/javascript" src="js/clipboard.min.js"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
 		<!--<script type="text/javascript" src="js/manage_tables.js"></script>-->
 		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
@@ -79,7 +80,7 @@
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>		
 		<!-- end mincss template tags -->		
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a429d1fc17"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1ca975c3b9"></script>
 		<script type="text/javascript" src="js/manage_tables.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>

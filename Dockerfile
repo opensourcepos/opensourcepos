@@ -1,4 +1,4 @@
-FROM php:7.3-apache AS ospos
+FROM php:7.4-apache AS ospos
 MAINTAINER jekkos
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
