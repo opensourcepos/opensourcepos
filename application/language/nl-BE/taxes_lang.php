@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Voeg uitzondering toe";
 $lang["taxes_cascade"] = "Cascade";
-$lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
+$lang["taxes_cascade_sequence"] = "Cascade Sequentie";
+$lang["taxes_city"] = "Stad";
+$lang["taxes_code"] = "Code";
 $lang["taxes_confirm_delete"] = "Bent u zeker dat u deze code wil verwijderen? Dit kan niet ongedaan gemaakt worden.";
 $lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "Standaard Tax Categorie";
