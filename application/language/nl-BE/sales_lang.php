@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Beschikbare Punten";
 $lang["rewards_package"] = "Spaarpunten";
 $lang["rewards_remaining_balance"] = "Saldo Spaarpunten is ";
@@ -13,7 +12,7 @@ $lang["sales_cash"] = "Contant";
 $lang["sales_cash_deposit"] = "Cash";
 $lang["sales_cash_filter"] = "Contant";
 $lang["sales_change_due"] = "Wisselgeld terug";
-$lang["sales_change_price"] = "";
+$lang["sales_change_price"] = "Wijzig Verkoopprijs";
 $lang["sales_check"] = "Waardebon";
 $lang["sales_check_balance"] = "Waardebon terug";
 $lang["sales_check_filter"] = "Waardebon";
