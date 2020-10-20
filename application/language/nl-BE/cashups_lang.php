@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Bedrag";
 $lang["cashups_amount_number"] = "Bedrag moet een getal zijn";
 $lang["cashups_amount_required"] = "Een bedrag moet worden ingevuld.";
@@ -26,7 +25,7 @@ $lang["cashups_no_cashups_to_display"] = "Er zijn geen cashups weer te geven";
 $lang["cashups_none_selected"] = "U hebt geen cashups geselecteerd";
 $lang["cashups_note"] = "Notities";
 $lang["cashups_one_or_multiple"] = "Cashup(s)";
-$lang["cashups_open_amount_cash"] = "Open Cash";
+$lang["cashups_open_amount_cash"] = "Startbedrag";
 $lang["cashups_open_date"] = "Open Datum";
 $lang["cashups_open_employee"] = "Geopend door";
 $lang["cashups_opened_date"] = "Datum geopend";
