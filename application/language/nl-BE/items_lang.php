@@ -1,26 +1,25 @@
-<?php 
-
-$lang["items_add_minus"] = "Corrigatie hoeveelheid";
+<?php
+$lang["items_add_minus"] = "Correctie hoeveelheid.";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amount_entry"] = "Hoeveelheid";
 $lang["items_bulk_edit"] = "Bewerk Selectie";
-$lang["items_buy_price_required"] = "Buy price is a required field";
+$lang["items_buy_price_required"] = "Inkoopprijs is een verplicht veld.";
 $lang["items_cannot_be_deleted"] = "De geselecteerde producten konden niet worden verwijderd.";
-$lang["items_cannot_find_item"] = "Er werd geen informatie gevonden omtrent product";
+$lang["items_cannot_find_item"] = "Product niet gevonden.";
 $lang["items_category"] = "Categorie";
-$lang["items_category_required"] = "Categorie moet ingevuld worden";
-$lang["items_change_all_to_allow_alt_desc"] = "Aanpasb. omschrijvingen";
-$lang["items_change_all_to_not_allow_allow_desc"] = "Vaste omschrijvingen";
+$lang["items_category_required"] = "Categorie moet ingevuld worden.";
+$lang["items_change_all_to_allow_alt_desc"] = "Aanpasb. omschrijvingen voor alles.";
+$lang["items_change_all_to_not_allow_allow_desc"] = "Vaste omschrijvingen voor alles.";
 $lang["items_change_all_to_serialized"] = "Genummerd";
 $lang["items_change_all_to_unserialized"] = "Niet genummerd";
 $lang["items_change_image"] = "Selecteer Afbeelding";
 $lang["items_confirm_bulk_edit"] = "Bent u zeker dat u de geselecteerde producten wil aanpassen?";
-$lang["items_confirm_bulk_edit_wipe_taxes"] = "Alle taxgegevens zullen overschreven worden!";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Alle taxgegevens zullen overschreven worden.";
 $lang["items_confirm_delete"] = "Bent u zeker dat u de geselecteerde producten wil verwijderen?";
 $lang["items_confirm_restore"] = "Bent u zeker dat u de geselecteerde product(en) wil herstellen?";
 $lang["items_cost_price"] = "Aankoopprijs";
-$lang["items_cost_price_number"] = "Kostprijs moet een cijfer zijn";
-$lang["items_cost_price_required"] = "Aankoopprijs moet ingevuld worden";
+$lang["items_cost_price_number"] = "Kostprijs moet een cijfer zijn.";
+$lang["items_cost_price_required"] = "Kostprijs moet ingevuld worden.";
 $lang["items_count"] = "Update Stock";
 $lang["items_csv_import_failed"] = "CSV import mislukt";
 $lang["items_csv_import_nodata_wrongformat"] = "Je geüploade bestand heeft geen gegevens of een verkeerd formaat";
