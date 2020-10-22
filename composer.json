@@ -16,12 +16,6 @@
 		"POS"
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/kenjis/ci-phpunit-test"
-		}
-	],
 	"require": {
 		"php": "^5.6 || ^7.0",
 		"codeigniter/framework": "^3.1.11",
@@ -33,6 +27,6 @@
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",
 		"phpunit/phpunit": "7.5.6",
-		"kenjis/ci-phpunit-test": "dev-master"
+		"kenjis/ci-phpunit-test": "0.18.0"
 	}
 }

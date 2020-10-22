@@ -870,7 +870,7 @@ $(document).ready(function()
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
-		$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+		$.notify( { response.message }, { type: response.success ? 'success' : 'danger'} );
 
 		if(response.success)
 		{

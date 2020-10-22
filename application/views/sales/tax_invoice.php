@@ -17,7 +17,7 @@ $(document).ready(function()
 		$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num; ?>',
 			function(response)
 			{
-				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+				$.notify( { response.message }, { type: response.success ? 'success' : 'danger'} );
 			}, 'json'
 		);
 	};
