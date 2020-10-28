@@ -125,9 +125,6 @@
 					
 						if(!((substr(decoct(fileperms($logs)), -4) == 750) && (substr(decoct(fileperms($uploads)), -4) == 750) && (substr(decoct(fileperms($images)), -4) == 750) 
                              && ((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660)))) {
-//							OR substr(decoct(fileperms($uploads)), -4) != 750 
-	//						OR substr(decoct(fileperms($images)), -4) != 750 
-		//					OR substr(decoct(fileperms($importcustomers)), -4) != 660) {
 							echo '<br><font color="red"><strong>' . $this->lang->line('config_security_issue') . '</strong> <br>' . $this->lang->line('config_perm_risk') . '</font><br>';
 						} 
 						else { 
