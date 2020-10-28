@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Är du säker på att du vill radera de valda f
 $lang["sales_confirm_restore"] = "Är du säker på att du vill återställa den valda försäljningen?";
 $lang["sales_credit"] = "Kreditkort";
 $lang["sales_credit_deposit"] = "Kreditkort";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Namn";
 $lang["sales_customer_address"] = "Adress";
 $lang["sales_customer_discount"] = "Rabatt";

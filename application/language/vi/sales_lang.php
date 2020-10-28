@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Bạn chắc chắn muốn xóa các lần bán
 $lang["sales_confirm_restore"] = "Bạn chắc chắn muốn hoàn lại các lần bán hàng được chọn không?";
 $lang["sales_credit"] = "Thẻ tín dụng";
 $lang["sales_credit_deposit"] = "Số dư tiền gửi";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Tên";
 $lang["sales_customer_address"] = "Địa chỉ";
 $lang["sales_customer_discount"] = "Giảm giá";

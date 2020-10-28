@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "tüm";
 $lang["tables_columns"] = "Sütun";
 $lang["tables_hide_show_pagination"] = "Sayfalandırmayı Gizle/Göster";

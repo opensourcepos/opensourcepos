@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Are you sure you want to delete the selected Sa
 $lang["sales_confirm_restore"] = "Are you sure you want to restore the selected Sale(s)?";
 $lang["sales_credit"] = "Credit Card";
 $lang["sales_credit_deposit"] = "Credit Deposit";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Name";
 $lang["sales_customer_address"] = "Address";
 $lang["sales_customer_discount"] = "Discount";

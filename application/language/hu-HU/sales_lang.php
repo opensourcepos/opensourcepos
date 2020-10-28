@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Biztos, hogy törli a kijelölt értékesitése
 $lang["sales_confirm_restore"] = "";
 $lang["sales_credit"] = "Hitelkártya";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Vevő";
 $lang["sales_customer_address"] = "Vevő cím";
 $lang["sales_customer_discount"] = "Discount";

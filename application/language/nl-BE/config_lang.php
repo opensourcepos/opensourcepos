@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Adres";
 $lang["config_address_required"] = "Het adres van het bedrijf moet ingevuld worden.";
 $lang["config_all_set"] = "All permissies zijn correct ingesteld!";

@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "آیا مطمئن هستید که می خواه
 $lang["sales_confirm_restore"] = "آیا مطمئن هستید که می خواهید فروش (های) انتخابی را بازیابی کنید؟";
 $lang["sales_credit"] = "کارت اعتباری";
 $lang["sales_credit_deposit"] = "سپرده اعتباری";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "مشتری";
 $lang["sales_customer_address"] = "نشانی";
 $lang["sales_customer_discount"] = "تخفیف";

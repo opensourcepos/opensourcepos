@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Correctie hoeveelheid.";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amount_entry"] = "Hoeveelheid";

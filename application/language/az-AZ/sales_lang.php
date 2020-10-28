@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Siz əminsiniz ki seçilmiş satışı (lar) si
 $lang["sales_confirm_restore"] = "Seçilmiş Satışları bərpa etmək istədiyinizə əminsinizmi?";
 $lang["sales_credit"] = "Kredit kartı";
 $lang["sales_credit_deposit"] = "Kredit Depoziti";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Ad";
 $lang["sales_customer_address"] = "Ünvan";
 $lang["sales_customer_discount"] = "Endirim";

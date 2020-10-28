@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Sigur doriti stergerea Vanzarii/Vanzarilor sele
 $lang["sales_confirm_restore"] = "Sigur doriti restabilirea Vanzarii/Vanzarilor selectate?";
 $lang["sales_credit"] = "Card Credit";
 $lang["sales_credit_deposit"] = "Depozit Credit";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Nume";
 $lang["sales_customer_address"] = "Adresa";
 $lang["sales_customer_discount"] = "Reducere";

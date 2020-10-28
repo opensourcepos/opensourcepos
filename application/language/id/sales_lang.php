@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Anda yakin akan menghapus penjualan terpilih?";
 $lang["sales_confirm_restore"] = "Anda yakin akan mengembalikan penjualan terpilih?";
 $lang["sales_credit"] = "Kartu Credit";
 $lang["sales_credit_deposit"] = "Deposit Kredit";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Pelanggan";
 $lang["sales_customer_address"] = "Alamat";
 $lang["sales_customer_discount"] = "Diskon";
