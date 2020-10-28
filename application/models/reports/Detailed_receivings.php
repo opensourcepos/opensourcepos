@@ -99,15 +99,15 @@ class Detailed_receivings extends Report
 		{
 			$this->db->select('
 				MAX(name) AS name, 
-				item_number, 
-				category, 
-				quantity_purchased, 
-				serialnumber, 
-				total, 
-				discount, 
-				discount_type, 
-				item_location, 
-				receivings_items_temp.receiving_quantity');
+				MAX(item_number) AS item_number, 
+				MAX(category) AS category, 
+				MAX(quantity_purchased) AS quantity_purchased, 
+				MAX(serialnumber) AS serialnumber, 
+				MAX(total) AS total, 
+				MAX(discount) AS discount, 
+				MAX(discount_type) AS discount_type, 
+				MAX(item_location) AS item_location, 
+				MAX(item_receiving_quantity) AS receiving_quantity');
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
 			if(count($inputs['definition_ids']) > 0)
