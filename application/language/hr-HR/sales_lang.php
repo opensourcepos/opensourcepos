@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Želite li obrisati odabranu prodaju?";
 $lang["sales_confirm_restore"] = "";
 $lang["sales_credit"] = "Kreditna kartica";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Kupac";
 $lang["sales_customer_address"] = "Adresa kupca";
 $lang["sales_customer_discount"] = "Discount";

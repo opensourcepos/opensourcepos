@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "هل تريد حذف عمليات البيع ا
 $lang["sales_confirm_restore"] = "هل انت متاكد من استعادة عملية البيع؟";
 $lang["sales_credit"] = "بطاقة إئتمانية";
 $lang["sales_credit_deposit"] = "ايداع ببطاقة ائتمان";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "العميل";
 $lang["sales_customer_address"] = "العنوان";
 $lang["sales_customer_discount"] = "الخصم";
