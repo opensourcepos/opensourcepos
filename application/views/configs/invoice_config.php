@@ -209,7 +209,7 @@ $(document).ready(function()
 					return true;
 				},
 				success: function(response) {
-					$.notify( { response.message }, { type: response.success ? 'success' : 'danger'} );
+					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 					// set back disabled state
 					enable_disable_invoice_enable();
 					enable_disable_work_order_enable();

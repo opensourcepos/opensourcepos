@@ -17,7 +17,7 @@ if (isset($error_message))
 			$.get('<?php echo site_url() . "/sales/send_receipt/" . $sale_id_num; ?>',
 				function(response)
 				{
-					$.notify( { response.message }, { type: response.success ? 'success' : 'danger'} );
+					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 				}, 'json'
 			);
 		};
