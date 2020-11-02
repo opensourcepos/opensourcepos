@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "¿Está seguro que desea borrar todas las venta
 $lang["sales_confirm_restore"] = "¿Está seguro de desear restaurar las ventas seleccionadas?";
 $lang["sales_credit"] = "Tarjeta de Crédito";
 $lang["sales_credit_deposit"] = "Deposito de crédito";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Cliente";
 $lang["sales_customer_address"] = "Dirección";
 $lang["sales_customer_discount"] = "Descuento";

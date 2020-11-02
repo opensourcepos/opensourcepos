@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "你確定要清除此銷售產品？";
 $lang["sales_confirm_restore"] = "";
 $lang["sales_credit"] = "信用卡";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "客戶";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "折扣";

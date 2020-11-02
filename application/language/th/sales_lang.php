@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "โปรดยืนยันการลบ�
 $lang["sales_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการขายที่เลือกไว้?";
 $lang["sales_credit"] = "เครดิตการ์ด";
 $lang["sales_credit_deposit"] = "เงินฝากเครดิต";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "ลูกค้า";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "ส่วนลด";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Beschikbare Punten";
 $lang["rewards_package"] = "Spaarpunten";
 $lang["rewards_remaining_balance"] = "Saldo Spaarpunten is ";
@@ -24,6 +25,7 @@ $lang["sales_confirm_delete"] = "Bent u zeker dat u de geselecteerde aankopen wi
 $lang["sales_confirm_restore"] = "Bent u zeker dat u de geselecteerde aankopen wil verwijderen?";
 $lang["sales_credit"] = "Kredietkaart";
 $lang["sales_credit_deposit"] = "Credit";
+$lang["sales_credit_filter"] = "Kredietkaart";
 $lang["sales_customer"] = "Klant";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "Korting";

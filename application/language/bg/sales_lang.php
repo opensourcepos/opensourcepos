@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Наистина ли искате да изт�
 $lang["sales_confirm_restore"] = "Наистина ли искате да възстановите избраната Продажба (и)?";
 $lang["sales_credit"] = "Кредитна карта";
 $lang["sales_credit_deposit"] = "Кредитен депозит";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Име";
 $lang["sales_customer_address"] = "Адрес";
 $lang["sales_customer_discount"] = "Намаление";
