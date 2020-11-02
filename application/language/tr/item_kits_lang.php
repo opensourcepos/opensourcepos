@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Ürün Ekle";
 $lang["item_kits_all"] = "Hepsi";
 $lang["item_kits_cannot_be_deleted"] = "Ürün seti silinemedi.";

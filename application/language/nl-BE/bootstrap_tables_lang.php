@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["tables_all"] = "alle";
 $lang["tables_columns"] = "Kolommen";
 $lang["tables_hide_show_pagination"] = "Toon %s record(s)";
