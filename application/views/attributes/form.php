@@ -130,6 +130,8 @@ $(document).ready(function()
 
 	var show_hide_fields = function(event)
 	{
+		var is_category_dropdown = definition_id == -1;
+		var is_no_group = $('#definition_type').val() !== '0';
 	    var is_dropdown = $('#definition_type').val() !== '1';
 	    var is_decimal = $('#definition_type').val() !== '2';
 	    var is_no_group = $('#definition_type').val() !== '0';
@@ -138,8 +140,7 @@ $(document).ready(function()
 		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
 		$('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
 
-	//Appropriately show definition flags if not category_dropdown
-		if(definition_id != -1)
+		if(!is_category_dropdown)
 		{
 			$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
 		}

@@ -26,6 +26,12 @@ class Attribute extends CI_Model
 		return ($this->db->get('attribute_definitions')->num_rows() == 1);
 	}
 
+	/**
+	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
+	 * @param	int		$item_id
+	 * @param	boolean	$definition_id
+	 * @return	boolean					TRUE if at least one attribute_link exists or FALSE if no attributes exist.
+	 */
 	public function link_exists($item_id, $definition_id = FALSE)
 	{
 		if(empty($definition_id))
@@ -555,6 +561,18 @@ class Attribute extends CI_Model
 		return $this->db->get('attribute_values')->row_object();
 	}
 
+	public function get_attribute_values($item_id)
+	{
+		$this->db->select('attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
+		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
+		$this->db->where('item_id', intval($item_id));
+
+		$results = $this->db->get('attribute_links')->result_array();
+
+		return $this->to_array($results, 'definition_id');
+	}
+
+
 	public function copy_attribute_links($item_id, $sale_receiving_fk, $id)
 	{
 		$this->db->query(
@@ -694,7 +712,7 @@ class Attribute extends CI_Model
 		{
 			$this->db->trans_start();
 
-			$this->db->where('item_id', NULL);
+			$this->db->where('item_id');  //NOTE: Do we need to add ", NULL" as an optional 2nd parameter?
 			$this->db->where('definition_id', $definition_id);
 			$this->db->delete('attribute_links');
 
