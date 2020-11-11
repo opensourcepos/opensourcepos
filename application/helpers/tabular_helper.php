@@ -503,6 +503,7 @@ function get_item_kits_manage_table_headers()
 
 	$headers = array(
 		array('item_kit_id' => $CI->lang->line('item_kits_kit')),
+		array('item_kit_number' => $CI->lang->line('item_kits_item_kit_number')),
 		array('name' => $CI->lang->line('item_kits_name')),
 		array('description' => $CI->lang->line('item_kits_description')),
 		array('total_cost_price' => $CI->lang->line('items_cost_price'), 'sortable' => FALSE),
@@ -523,6 +524,7 @@ function get_item_kit_data_row($item_kit)
 
 	return array (
 		'item_kit_id' => $item_kit->item_kit_id,
+		'item_kit_number' => $item_kit->item_kit_number,
 		'name' => $item_kit->name,
 		'description' => $item_kit->description,
 		'total_cost_price' => to_currency($item_kit->total_cost_price),

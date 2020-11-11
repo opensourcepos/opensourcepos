@@ -1032,7 +1032,7 @@ class Sale_lib
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
-		$item_kit_id = $pieces[1];
+		$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $external_item_kit_id;
 		$result = TRUE;
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)

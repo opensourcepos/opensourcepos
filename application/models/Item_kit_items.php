@@ -11,10 +11,12 @@ class Item_kit_items extends CI_Model
 	*/
 	public function get_info($item_kit_id)
 	{
-		$this->db->select('item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
+		$this->db->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
 		$this->db->from('item_kit_items as item_kit_items');
 		$this->db->join('items as items', 'item_kit_items.item_id = items.item_id');
-		$this->db->where('item_kit_id', $item_kit_id);
+		$this->db->join('item_kits as item_kits', 'item_kits.item_kit_id = item_kit_items.item_kit_id');
+		$this->db->where('item_kits.item_kit_id', $item_kit_id);
+		$this->db->or_where('item_kit_number', $item_kit_id);
 		$this->db->order_by('kit_sequence', 'asc');
 
 		//return an array of item kit items for an item
