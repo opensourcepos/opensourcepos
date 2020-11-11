@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "ទឹកប្រាក់";
 $lang["cashups_amount_number"] = "ចំនួនទឹកប្រាក់ត្រូវតែជាលេខ";
 $lang["cashups_amount_required"] = "ត្រង់ទឹកប្រាក់​ ត្រូវការបំពេញ";

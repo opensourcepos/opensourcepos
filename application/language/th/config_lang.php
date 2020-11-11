@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_all_set"] = "การตั้งค่าอนุญาตไฟล์ทั้งหมดถูกต้อง!";
