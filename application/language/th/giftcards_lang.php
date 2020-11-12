@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "คำอธิบายสำรอง";
 $lang["giftcards_bulk_edit"] = "แก้ไขเป็นกลุ่ม";
 $lang["giftcards_cannot_be_deleted"] = "ไม่สามารถลบข้อมูลบัตรของขวัญที่เลือก, หรือบัตรของขวัญได้มีการใช้ไปแล้ว";
 $lang["giftcards_cannot_find_giftcard"] = "ไม่พบข้อมูลเกี่ยวกับบัตรของขวัญนี้";
-$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";
+$lang["giftcards_cannot_use"] = "บัตรของขวัญ %1 ไม่สามารถใช้งานกับรายการขายนี้ได้ เนื่องจากรายการลูกค้าไม่ถูกต้อง";
 $lang["giftcards_card_value"] = "มูลค่า";
 $lang["giftcards_category"] = "ประเภท";
 $lang["giftcards_change_all_to_allow_alt_desc"] = "คำอธิบายสำรองสำหรับทั้งหมด";
