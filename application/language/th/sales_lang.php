@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "คะแนนที่มี";
 $lang["rewards_package"] = "คะแนนสะสม";
 $lang["rewards_remaining_balance"] = "คะแนนสะสมคงเหลือ ";
@@ -21,11 +20,11 @@ $lang["sales_comment"] = "หมายเหตุ";
 $lang["sales_comments"] = "หมายเหตุ";
 $lang["sales_complete_sale"] = "จบการขาย";
 $lang["sales_confirm_cancel_sale"] = "แน่ใจหรือไม่ที่จะล้างการขายนี้? ทุกรายการจะถูกลบทั้งหมด";
-$lang["sales_confirm_delete"] = "โปรดยืนยันการลบรายการขายที่เลือกไว้";
+$lang["sales_confirm_delete"] = "โปรดยืนยันการลบรายการขายที่เลือกไว้ ?";
 $lang["sales_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการขายที่เลือกไว้?";
 $lang["sales_credit"] = "เครดิตการ์ด";
 $lang["sales_credit_deposit"] = "เงินฝากเครดิต";
-$lang["sales_credit_filter"] = "";
+$lang["sales_credit_filter"] = "บัตรเครติด";
 $lang["sales_customer"] = "ลูกค้า";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "ส่วนลด";
