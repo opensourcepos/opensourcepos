@@ -1,0 +1,33 @@
+/* Since flatly is the default theme, all css design should use flatly as the starting point. */
+/* Any css color attributes that need to be overridden for a particular theme */
+/* should be included in a css file file named. */
+
+.fixed-table-container tbody .selected td {
+	background-color:#757575
+}
+
+/* Receivings & Sales */
+
+#register td {
+	background-color:#757575;
+}
+
+#add_item_form,#overall_sale {
+	background-color:#757575
+}
+
+#mode_form,#payment_details {
+	background-color:#757575
+}
+
+/* Reports > Graphical Reports */
+
+.ct-label {
+	fill:#eee;
+	color:#eee;
+}
+
+text.ct-axis-title{
+	fill:#eee;
+	color:#eee;
+}
