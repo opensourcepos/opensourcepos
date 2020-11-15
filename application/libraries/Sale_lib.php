@@ -366,8 +366,14 @@ class Sale_lib
 		$this->CI->session->set_userdata('sales_payments', $payments_data);
 	}
 
-	// Multiple Payments
-	public function add_payment($payment_id, $payment_amount)
+	/**
+	 * Adds a new payment to the payments array or updates an existing one.
+	 * It will also disable cash_mode if an non-qualifying payment type is added.
+	 * @param $payment_id
+	 * @param $payment_amount
+	 * @param int $cash_adjustment
+	 */
+	public function add_payment($payment_id, $payment_amount, $cash_adjustment = CASH_ADJUSTMENT_FALSE)
 	{
 		$payments = $this->get_payments();
 		if(isset($payments[$payment_id]))
@@ -378,9 +384,18 @@ class Sale_lib
 		else
 		{
 			//add to existing array
-			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount, 'cash_refund' => 0));
+			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount,
+				'cash_refund' => 0, 'cash_adjustment' => $cash_adjustment));
 
 			$payments += $payment;
+		}
+
+		if($this->CI->session->userdata('cash_mode'))
+		{
+			if($this->CI->session->userdata('cash_rounding') && $payment_id != $this->CI->lang->line('sales_cash') && $payment_id != $this->CI->lang->line('sales_cash_adjustment'))
+			{
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+			}
 		}
 
 		$this->set_payments($payments);
@@ -402,11 +417,28 @@ class Sale_lib
 		return FALSE;
 	}
 
-	// Multiple Payments
+	/**
+	 * Delete the selected payment from the payment array and if cash rounding is enabled
+	 * and the payment type is one of the cash types then automatically delete the other
+	 * @param $payment_id
+	 */
 	public function delete_payment($payment_id)
 	{
 		$payments = $this->get_payments();
-		unset($payments[urldecode($payment_id)]);
+		$decoded_payment_id = urldecode($payment_id);
+		unset($payments[$decoded_payment_id]);
+		$cash_rounding = $this->reset_cash_rounding();
+		if($cash_rounding)
+		{
+			if($decoded_payment_id == $this->CI->lang->line('sales_cash'))
+			{
+				unset($payments[$this->CI->lang->line('sales_cash_adjustment')]);
+			}
+			if($decoded_payment_id == $this->CI->lang->line('sales_cash_adjustment'))
+			{
+				unset($payments[$this->CI->lang->line('sales_cash')]);
+			}
+		}
 		$this->set_payments($payments);
 	}
 
@@ -416,18 +448,30 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_payments');
 	}
 
-	// Multiple Payments
+	/**
+	 * Retrieve the total payments made, excluding any cash adjustments
+	 * and establish if cash_mode is in play
+	 */
 	public function get_payments_total()
 	{
 		$subtotal = 0.0;
-		$this->reset_cash_flags();
+		$cash_mode_eligible = CASH_MODE_TRUE;
+
 		foreach($this->get_payments() as $payments)
 		{
-			$subtotal = bcadd($payments['payment_amount'], $subtotal);
-			if($this->CI->session->userdata('cash_rounding') && $this->CI->lang->line('sales_cash') != $payments['payment_type'])
+			if(!$payments['cash_adjustment'])
 			{
-				$this->CI->session->set_userdata('cash_rounding', 0);
+				$subtotal = bcadd($payments['payment_amount'], $subtotal);
 			}
+			if($this->CI->lang->line('sales_cash') != $payments['payment_type'] && $this->CI->lang->line('sales_cash_adjustment') != $payments['payment_type'])
+			{
+				$cash_mode_eligible = CASH_MODE_FALSE;
+			}
+		}
+
+		if($cash_mode_eligible && $this->CI->session->userdata('cash_rounding'))
+		{
+			$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
 		}
 
 		return $subtotal;
@@ -435,12 +479,10 @@ class Sale_lib
 
 	/**
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
-	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units'
+	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units', 'cash_adjustment_amount'
 	 */
 	public function get_totals($taxes)
 	{
-		$cash_rounding = $this->CI->session->userdata('cash_rounding');
-
 		$totals = array();
 
 		$prediscount_subtotal = 0.0;
@@ -489,6 +531,11 @@ class Sale_lib
 		$totals['total'] = $total;
 		$totals['tax_total'] = $sales_tax;
 
+		$payment_total = $this->get_payments_total();
+		$totals['payment_total'] = $payment_total;
+		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+		$cash_mode = $this->CI->session->userdata('cash_mode');
+
 		if($cash_rounding)
 		{
 			$cash_total = $this->check_for_cash_rounding($total);
@@ -500,16 +547,13 @@ class Sale_lib
 			$totals['cash_total'] = $cash_total;
 		}
 
-		$payment_total = $this->get_payments_total();
-		$totals['payment_total'] = $payment_total;
-
 		$amount_due = bcsub($total, $payment_total);
 		$totals['amount_due'] = $amount_due;
 
 		$cash_amount_due = bcsub($cash_total, $payment_total);
 		$totals['cash_amount_due'] = $cash_amount_due;
 
-		if($cash_rounding)
+		if($cash_mode)
 		{
 			$current_due = $cash_amount_due;
 		}
@@ -532,6 +576,14 @@ class Sale_lib
 
 		$totals['item_count'] = $item_count;
 		$totals['total_units'] = $total_units;
+		$totals['cash_adjustment_amount'] = 0;
+
+		if($totals['payments_cover_total'])
+		{
+			$totals['cash_adjustment_amount'] = round($cash_total - $totals['total'], totals_decimals(), PHP_ROUND_HALF_UP);
+		}
+
+		$cash_mode = $this->CI->session->userdata('cash_mode');
 
 		return $totals;
 	}
@@ -1006,9 +1058,34 @@ class Sale_lib
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
 		}
 
+		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+
+		// Establish cash_mode for this sale by inspecting the payments
+		if($this->CI->session->userdata('cash_rounding'))
+		{
+			$cash_types_only = true;
+			foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
+			{
+				if($row->payment_type != $this->CI->lang->line('sales_cash') && $row->payment_type != $this->CI->lang->line('sales_cash_adjustment'))
+				{
+					$cash_types_only = FALSE;
+				}
+
+			}
+			if($cash_types_only)
+			{
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
+			}
+			else
+			{
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+			}
+		}
+
+		// Now load payments
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
+			$this->add_payment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
 		}
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
@@ -1051,18 +1128,13 @@ class Sale_lib
 		$this->CI->session->unset_userdata('payment_type');
 	}
 
-	public function reset_cash_flags()
+	/**
+	 * Determines if cash rounding should be a consideration for this site
+	 * It also set resets the cash mode to disabled which will then be re-evaluated when
+	 * retrieving payments.
+	 */
+	public function reset_cash_rounding()
 	{
-		if($this->CI->config->item('payment_options_order') != 'cashdebitcredit')
-		{
-			$cash_mode = 1;
-		}
-		else
-		{
-			$cash_mode = 0;
-		}
-		$this->CI->session->set_userdata('cash_mode', $cash_mode);
-
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 
 		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)
@@ -1074,6 +1146,9 @@ class Sale_lib
 			$cash_rounding = 0;
 		}
 		$this->CI->session->set_userdata('cash_rounding', $cash_rounding);
+		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+
+		return $cash_rounding;
 	}
 
 	public function is_customer_taxable()
@@ -1234,11 +1309,16 @@ class Sale_lib
 		return $subtotal;
 	}
 
-	public function get_total()
+	/**
+	 * Calculates the total sales amount with the default option to include cash rounding
+	 * @param bool $include_cash_rounding
+	 * @return float|int|string
+	 */
+	public function get_total($include_cash_rounding = TRUE)
 	{
 		$total = $this->calculate_subtotal(TRUE);
 
-		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+		$cash_mode = $this->CI->session->userdata('cash_mode');
 
 		if(!$this->CI->config->item('tax_included'))
 		{
@@ -1249,7 +1329,7 @@ class Sale_lib
 			}
 		}
 
-		if($cash_rounding)
+		if($include_cash_rounding && $cash_mode)
 		{
 			$total = $this->check_for_cash_rounding($total);
 		}

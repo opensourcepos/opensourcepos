@@ -144,3 +144,13 @@ define('SALE_TYPE_RETURN', 4);
 
 define('PERCENT', 0);
 define('FIXED', 1);
+
+define('PRICE_MODE_STANDARD', 0);
+define('PRICE_MODE_KIT', 1);
+
+define('PAYMENT_TYPE_UNASSIGNED', '--');
+
+define('CASH_ADJUSTMENT_TRUE', 1);
+define('CASH_ADJUSTMENT_FALSE', 0);
+define('CASH_MODE_TRUE', 1);
+define('CASH_MODE_FALSE', 0);
