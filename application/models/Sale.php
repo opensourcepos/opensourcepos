@@ -368,6 +368,11 @@ class Sale extends CI_Model
 			$this->db->like('payment_type', $this->lang->line('sales_check'));
 		}
 
+		if($filters['only_creditcard'] != FALSE)
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_credit'));
+		}
+
 		$this->db->group_by('payment_type');
 
 		$payments = $this->db->get()->result_array();
