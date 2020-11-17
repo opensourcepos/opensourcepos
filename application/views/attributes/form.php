@@ -134,8 +134,6 @@ $(document).ready(function()
 		var is_no_group = $('#definition_type').val() !== '0';
 	    var is_dropdown = $('#definition_type').val() !== '1';
 	    var is_decimal = $('#definition_type').val() !== '2';
-	    var is_no_group = $('#definition_type').val() !== '0';
-	    var is_category_dropdown = definition_id == -1;
 
 		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
 		$('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
