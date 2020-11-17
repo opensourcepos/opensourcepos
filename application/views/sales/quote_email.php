@@ -135,7 +135,6 @@
 			<td id='total' class='total-value'><?php echo to_currency($total); ?></td>
 		</tr>
 	</table>
-
 	<div id='terms'>
 		<div id='sale_return_policy'>
 			<h5>

@@ -433,10 +433,9 @@ class Sale extends CI_Model
 	 */
 	public function get_invoice_count()
 	{
-		$this->db->from('sales');
 		$this->db->where('invoice_number IS NOT NULL');
 
-		return $this->db->count_all_results();
+		return $this->db->count_all_results('sales');
 	}
 
 	/**
@@ -444,10 +443,9 @@ class Sale extends CI_Model
 	 */
 	public function get_sale_by_invoice_number($invoice_number)
 	{
-		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
 
-		return $this->db->get();
+		return $this->db->get('sales');
 	}
 
 	public function get_invoice_number_for_year($year = '', $start_from = 0)
@@ -466,6 +464,7 @@ class Sale extends CI_Model
 	private function get_number_for_year($field, $year = '', $start_from = 0)
 	{
 		$year = $year == '' ? date('Y') : $year;
+
 		$this->db->select('COUNT( 1 ) AS number_year');
 		$this->db->from('sales');
 		$this->db->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
@@ -511,7 +510,7 @@ class Sale extends CI_Model
 	{
 		$this->db->where('sale_id', $sale_id);
 
-		return ($this->db->get('sales')->num_rows()==1);
+		return ($this->db->get('sales')->num_rows() === 1);
 	}
 
 	/**
@@ -792,11 +791,10 @@ class Sale extends CI_Model
 	 */
 	public function get_sales_taxes($sale_id)
 	{
-		$this->db->from('sales_taxes');
 		$this->db->where('sale_id', $sale_id);
 		$this->db->order_by('print_sequence', 'asc');
 
-		$query = $this->db->get();
+		$query = $this->db->get('sales_taxes');
 
 		return $query->result_array();
 	}
@@ -897,10 +895,9 @@ class Sale extends CI_Model
 	 */
 	public function get_sale_items($sale_id)
 	{
-		$this->db->from('sales_items');
 		$this->db->where('sale_id', $sale_id);
 
-		return $this->db->get();
+		return $this->db->get('sales_items');
 	}
 
 	/**
@@ -964,10 +961,9 @@ class Sale extends CI_Model
 	 */
 	public function get_sale_payments($sale_id)
 	{
-		$this->db->from('sales_payments');
 		$this->db->where('sale_id', $sale_id);
 
-		return $this->db->get();
+		return $this->db->get('sales_payments');
 	}
 
 	/**
