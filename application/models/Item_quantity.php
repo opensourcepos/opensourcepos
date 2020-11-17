@@ -59,7 +59,7 @@ class Item_quantity extends CI_Model
 	public function change_quantity($item_id, $location_id, $quantity_change)
 	{
 		$quantity_old = $this->get_item_quantity($item_id, $location_id);
-		$quantity_new = $quantity_old->quantity + intval($quantity_change);
+		$quantity_new = $quantity_old->quantity + $quantity_change;
 		$location_detail = array('item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new);
 
 		return $this->save($location_detail, $item_id, $location_id);

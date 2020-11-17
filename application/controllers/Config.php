@@ -577,15 +577,16 @@ class Config extends Secure_Controller
 		{
 			if(strstr($key, 'stock_location'))
 			{
-				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-
 				// save or update
-				$location_data = array('location_name' => $value);
-				if($this->Stock_location->save($location_data, $location_id))
+				foreach ($value as $location_id => $location_name)
 				{
-					$location_id = $this->Stock_location->get_location_id($value);
-					$not_to_delete[] = $location_id;
-					$this->clear_session_state();
+					$location_data = array('location_name' => $location_name);
+					if($this->Stock_location->save($location_data, $location_id))
+					{
+						$location_id = $this->Stock_location->get_location_id($location_name);
+						$not_to_delete[] = $location_id;
+						$this->_clear_session_state();
+					}
 				}
 			}
 		}
@@ -904,7 +905,7 @@ class Config extends Secure_Controller
 			$result = FALSE;
 
 			// Chmod the file
-			@chmod($config_path, 0777);
+			@chmod($config_path, 0770);
 
 			// Verify file permissions
 			if(is_writable($config_path))
@@ -919,7 +920,7 @@ class Config extends Secure_Controller
 			}
 
 			// Chmod the file
-			@chmod($config_path, 0444);
+			@chmod($config_path, 0440);
 
 			return $result;
 		}

@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";
@@ -9,7 +8,7 @@ $lang["customers_basic_information"] = "ข้อมูล";
 $lang["customers_cannot_be_deleted"] = "ไม่สามารลบลูกค้าที่ถูกเลือก, ลูกค้าที่ถูกเลือกถูขายไปแล้ว.";
 $lang["customers_company_name"] = "บริษัท";
 $lang["customers_confirm_delete"] = "ยืนยันลบข้อมูลลูกค้า?";
-$lang["customers_confirm_restore"] = "คุณแน่ใจใช่ไหมว่าต้องการกู้คืนลูกค้าที่เลือก";
+$lang["customers_confirm_restore"] = "คุณแน่ใจใช่ไหมว่าต้องการกู้คืนลูกค้าที่เลือก ?";
 $lang["customers_consent"] = "ความยินยอมในการลงทะเบียน";
 $lang["customers_consent_required"] = "ความยินยอมในการลงทะเบียนต้องระบุข้อมูล";
 $lang["customers_csv_import_failed"] = "นำเข้าข้อมูล CSV ล้มเหลว";

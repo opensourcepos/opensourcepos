@@ -52,7 +52,7 @@ class Tax_lib
 	/**
 	 * Compute taxes for all items in the cart
 	 */
-	public function get_taxes(&$cart)
+	public function get_taxes(&$cart, $sale_id = -1)
 	{
 		$register_mode = $this->CI->sale_lib->get_mode();
 		$tax_decimals = tax_decimals();
@@ -72,7 +72,15 @@ class Tax_lib
 				{
 					// Start of current Base System tax calculations
 
-					$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+					if($sale_id == -1)
+					{
+						$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+					}
+					else
+					{
+						$tax_info = $this->CI->Sale->get_sales_item_taxes($sale_id, $item['item_id']);
+
+					}
 					$tax_group_sequence = 0;
 					$cascade_level = 0;
 					$cascade_basis_level = 0;

@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /*
-|--------------------------------------------------------------------------
-| Code Version
-|--------------------------------------------------------------------------
-|
-| This is the version of Open Source Point of Sale you're running
-|
-|
-*/
-$config['application_version'] = '3.3.2';
+|-------------------------------------------------------------------------- 
+| Code Version 
+|-------------------------------------------------------------------------- 
+| 
+| This is the version of Open Source Point of Sale you're running 
+| 
+| 
+*/ 
+$config['application_version'] = '3.3.3';
 
 /*
 |--------------------------------------------------------------------------

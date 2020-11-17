@@ -8,7 +8,8 @@ class Summary_employees extends Summary_report
 	{
 		return array(
 			array('employee_name' => $this->lang->line('reports_employee')),
-			array('quantity' => $this->lang->line('reports_quantity')),
+			array('sales' => $this->lang->line('reports_sales'), 'sorter' => 'number_sorter'),
+			array('quantity' => $this->lang->line('reports_quantity'), 'sorter' => 'number_sorter'),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
@@ -22,7 +23,8 @@ class Summary_employees extends Summary_report
 
 		$this->db->select('
 				MAX(CONCAT(employee_p.first_name, " ", employee_p.last_name)) AS employee,
-				SUM(sales_items.quantity_purchased) AS quantity_purchased
+				SUM(sales_items.quantity_purchased) AS quantity_purchased,
+				COUNT(DISTINCT sales.sale_id) AS sales
 		');
 	}
 

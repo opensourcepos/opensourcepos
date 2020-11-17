@@ -32,6 +32,7 @@ vendor/
 *.log
 .env
 package-lock.json
+auth.json
 !/docker/.env
 /docker/data/database/db/*
 /docker/data/certbot/conf/*

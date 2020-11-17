@@ -136,7 +136,7 @@ class Ean13 extends BarcodeBase
 	 */
 	public function generate($number)
 	{
-		$number = '200' . str_pad($number, 9, '0');
+		$number = '200' . str_pad($number, 9, '0', STR_PAD_LEFT);
 		$weightflag = true;
 		$sum = 0;
 

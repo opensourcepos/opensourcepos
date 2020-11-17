@@ -20,7 +20,7 @@ services:
           - "80:80"
 
     mysql:
-        image: mariadb:10.3
+        image: mariadb:10.5
         container_name: mysql
         restart: always
         volumes:

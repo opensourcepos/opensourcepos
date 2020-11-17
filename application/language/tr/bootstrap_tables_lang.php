@@ -1,6 +1,6 @@
 <?php 
 
-$lang["tables_all"] = "Tümü";
+$lang["tables_all"] = "tüm";
 $lang["tables_columns"] = "Sütun";
 $lang["tables_hide_show_pagination"] = "Sayfalandırmayı Gizle/Göster";
 $lang["tables_loading"] = "Yükleniyor, lütfen bekleyin...";

@@ -11,10 +11,10 @@ foreach($stock_locations as $location_data)
 		<?php echo form_label($this->lang->line('config_stock_location') . " $i", "stock_location_$i", array('class' => 'required control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
-					'name'	=> "stock_location_$location_id",
-					'id'	=> "stock_location_$location_id",
-					'class'	=> 'stock_location valid_chars form-control input-sm required',
-					'value'	=> $location_name
+					'name'=> "stock_location[$location_id]",
+					'id'=> "stock_location[$location_id]",
+					'class'=> 'stock_location valid_chars form-control input-sm required',
+					'value'=> $location_name
 				);
 				$location_data['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);

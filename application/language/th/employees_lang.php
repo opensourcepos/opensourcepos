@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["employees_basic_information"] = "ข้อมูลพื้นฐานของพนักงาน";
 $lang["employees_cannot_be_deleted"] = "ไม่สามารถลบพนักงานที่เลือกไว้ได้ เนื่องจากมีการทำรายการขายหรือคุณกำลังพยายามที่จะลบบัญชีของคุณเอง";
 $lang["employees_change_password"] = "เปลี่ยนรหัสผ่าน";
-$lang["employees_confirm_delete"] = "ยืนยันการลบข้อมูลพนักงาน";
+$lang["employees_confirm_delete"] = "คุณยืนยันการลบข้อมูลพนักงานที่เลือกไว้?";
 $lang["employees_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการกู้คืนพนักงานที่เลือกไว้?";
 $lang["employees_current_password"] = "รหัสผ่านปัจจุบัน";
 $lang["employees_current_password_invalid"] = "รหัสผ่านปัจจุบันไม่ถูกต้อง";

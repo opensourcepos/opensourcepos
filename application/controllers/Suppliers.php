@@ -22,6 +22,7 @@ class Suppliers extends Persons
 	public function get_row($row_id)
 	{
 		$data_row = $this->xss_clean(get_supplier_data_row($this->Supplier->get_info($row_id)));
+		$data_row['category'] = $this->Supplier->get_category_name($data_row['category']);
 
 		echo json_encode($data_row);
 	}

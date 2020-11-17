@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Wollen Sie die gewählten Aufträge löschen?";
 $lang["sales_confirm_restore"] = "";
 $lang["sales_credit"] = "Kreditkarte";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Kunde";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "Discount";

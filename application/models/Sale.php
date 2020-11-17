@@ -250,6 +250,11 @@ class Sale extends CI_Model
 			$this->db->group_end();
 		}
 
+		if($filters['only_creditcard'] != FALSE)
+		{
+			$this->db->like('payments.payment_type', $this->lang->line('sales_credit'));
+		}
+
 		if($filters['only_due'] != FALSE)
 		{
 			$this->db->like('payments.payment_type', $this->lang->line('sales_due'));
@@ -792,6 +797,20 @@ class Sale extends CI_Model
 		$query = $this->db->get('sales_taxes');
 
 		return $query->result_array();
+	}
+
+	/**
+	 * Return the taxes applied to a sale for a particular item
+	 */
+	public function get_sales_item_taxes($sale_id, $item_id)
+	{
+		$this->db->select('item_id, name, percent');
+		$this->db->from('sales_items_taxes');
+		$this->db->where('sale_id',$sale_id);
+		$this->db->where('item_id',$item_id);
+
+		//return an array of taxes for an item
+		return $this->db->get()->result_array();
 	}
 
 	/**

@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Είστε σίγουροι πως θέλετε
 $lang["sales_confirm_restore"] = "Είστε σίγουροι πως θέλετε να επαναφέρετε την/τις επιλεγμένες Πωλήσεις?";
 $lang["sales_credit"] = "Πιστωτική Κάρτα";
 $lang["sales_credit_deposit"] = "Ποσό Πίστωσης";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Όνομα";
 $lang["sales_customer_address"] = "Διεύθυνση";
 $lang["sales_customer_discount"] = "Έκπτωση";

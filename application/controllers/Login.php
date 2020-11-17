@@ -45,7 +45,7 @@ class Login extends CI_Controller
 
 		if (!$this->migration->is_latest())
 		{
-			set_time_limit(1200);
+			set_time_limit(3600);
 			// trigger any required upgrade before starting the application
 			$this->migration->latest();
 		}

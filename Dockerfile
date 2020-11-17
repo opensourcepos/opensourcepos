@@ -1,10 +1,11 @@
-FROM php:7.3-apache AS ospos
+FROM php:7.4-apache AS ospos
 MAINTAINER jekkos
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libicu-dev \
     libgd-dev \
     openssl
+
 
 RUN a2enmod rewrite
 RUN docker-php-ext-install mysqli bcmath intl gd
@@ -20,7 +21,7 @@ FROM ospos AS ospos_test
  
 COPY --from=composer /usr/bin/composer /usr/bin/composer
  
-RUN apt-get install -y libzip-dev wget
+RUN apt-get install -y libzip-dev wget git
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /bin/wait-for-it.sh && chmod +x /bin/wait-for-it.sh
 RUN docker-php-ext-install zip
 RUN composer install -d/app 

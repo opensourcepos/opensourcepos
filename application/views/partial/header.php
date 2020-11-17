@@ -64,10 +64,10 @@
 		<script src='bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js'></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type='text/javascript' src='js/clipboard.min.js'></script>
-		<script type='text/javascript' src='js/imgpreview.full.jquery.js'></script>
-		<script type='text/javascript' src='js/manage_tables.js'></script>
-		<script type='text/javascript' src='js/nominatim.autocomplete.js'></script>
+		<script type="text/javascript" src="js/clipboard.min.js"></script>
+		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
@@ -77,8 +77,14 @@
 		<link rel='stylesheet' type='text/css' href='dist/jquery-ui/jquery-ui.min.css'/>
 		<link rel='stylesheet' type='text/css' href='dist/opensourcepos.min.css?rel=397f582d3d'/>
 		<!-- end mincss template tags -->
+
+		<!-- Tweaks to the UI for a particular theme should drop here  -->
+	<?php if ($this->config->item('theme') != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . $this->config->item('theme') . '.css')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . $this->config->item('theme') . '.css' ?>"/>
+	<?php } ?>
+
 		<!-- start minjs template tags -->
-		<script type='text/javascript' src='dist/opensourcepos.min.js?rel=9739507783'></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1ca975c3b9"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
