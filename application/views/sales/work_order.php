@@ -51,7 +51,7 @@ if(isset($error_message))
 			if(isset($customer))
 			{
 			?>
-				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
+				<div id="customer"><?php echo nl2br($customer_info) ?></div>
 			<?php
 			}
 			?>
@@ -79,7 +79,7 @@ if(isset($error_message))
 	</div>
 
 	<div id="block2">
-		<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
+		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $work_order_number_label;?> </td>
@@ -120,7 +120,7 @@ if(isset($error_message))
 			?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
-					<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
+					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 					<td><textarea rows="4" cols="6"><?php if($print_price_info) echo to_currency($item['price']); ?></textarea></td>
 					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea></td>
