@@ -181,13 +181,13 @@ class Receiving extends CI_Model
 					'trans_user' => $employee_id,
 					'trans_comment' => 'Deleting receiving ' . $receiving_id,
 					'trans_location' => $item['item_location'],
-					'trans_inventory' => $item['quantity_purchased'] * -1
+					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				);
 				// update inventory
 				$this->Inventory->insert($inv_data);
 
 				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * -1);
+				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
 			}
 		}
 
