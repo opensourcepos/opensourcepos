@@ -161,8 +161,8 @@ if(isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
+				<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_giftcard_balance'); ?></div></td>
+				<td class="total-value"><div id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></div></td>
 			</tr>
 		<?php
 		}

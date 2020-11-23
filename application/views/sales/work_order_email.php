@@ -125,7 +125,7 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></div>
 			</h5>
 		</div>
 	</div>

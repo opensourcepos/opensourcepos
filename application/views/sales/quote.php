@@ -83,15 +83,15 @@ if (isset($error_message))
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_quote_number');?> </td>
-				<td><textarea rows="5" cols="6"><?php echo $quote_number; ?></textarea></td>
+				<td><div><?php echo $quote_number; ?></div></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-				<td><textarea rows="5" cols="6"><?php echo $transaction_date; ?></textarea></td>
+				<td><div><?php echo $transaction_date; ?></div></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_total'); ?></td>
-				<td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
+				<td><div><?php echo to_currency($total); ?></div></td>
 			</tr>
 		</table>
 	</div>
@@ -125,13 +125,13 @@ if (isset($error_message))
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
 					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
-					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
-					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea></td>
+					<td style='text-align:center;'><div><?php echo to_quantity_decimals($item['quantity']); ?></div></td>
+					<td><div><?php echo to_currency($item['price']); ?></div></td>
+					<td style='text-align:center;'><div><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></div></td>
 					<?php if($discount > 0): ?>
-						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea></td>
+						<td style='text-align:center;'><div><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></div></td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
+					<td style='border-right: solid 1px; text-align:right;'><div><?php echo to_currency($item['discounted_total']); ?></div></td>
 				</tr>
 
 				<?php if($item['is_serialized'])
@@ -139,7 +139,7 @@ if (isset($error_message))
 				?>
 					<tr class="item-row">
 						<td class="item-name" colspan="<?php echo $quote_columns-1; ?>"></td>
-						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
+						<td style='text-align:center;'><div><?php echo $item['serialnumber']; ?></div></td>
 					</tr>
 				<?php
 				}
@@ -153,8 +153,8 @@ if (isset($error_message))
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank-bottom"> </td>
-			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
+			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_sub_total'); ?></div></td>
+			<td class="total-value"><div id="subtotal"><?php echo to_currency($subtotal); ?></div></td>
 		</tr>
 
 		<?php
@@ -163,8 +163,8 @@ if (isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
+				<td colspan="2" class="total-line"><div><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></div></td>
+				<td class="total-value"><div id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></div></td>
 			</tr>
 		<?php
 		}
@@ -172,8 +172,8 @@ if (isset($error_message))
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
+			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_total'); ?></div></td>
+			<td class="total-value"><div id="total"><?php echo to_currency($total); ?></div></td>
 		</tr>
 
 		<?php
@@ -187,8 +187,8 @@ if (isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] ); ?></textarea></td>
+				<td colspan="2" class="total-line"><div><?php echo $splitpayment[0]; ?></div></td>
+				<td class="total-value"><div id="paid"><?php echo to_currency( $payment['payment_amount'] ); ?></div></td>
 			</tr>
 		<?php
 		}
@@ -197,8 +197,8 @@ if (isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->config->item('quote_default_comments'); ?></textarea>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></div>
+				<div style='padding:4%;'><?php echo $this->config->item('quote_default_comments'); ?></div>
 			</h5>
 		</div>
 	</div>
