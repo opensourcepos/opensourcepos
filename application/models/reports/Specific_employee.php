@@ -111,10 +111,10 @@ class Specific_employee extends Report
 		$this->db->group_by('sale_id');
 		$this->db->order_by('MAX(sale_date)');
 
-		$data = array();
+		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
-		$data['rewards'] = array();
+		$data['details'] = [];
+		$data['rewards'] = [];
 
 		foreach($data['summary'] as $key=>$value)
 		{

@@ -119,9 +119,9 @@ class Tax_category extends CI_Model
 	{
 		$this->db->trans_start();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
-		foreach($array_save as $key => $value)
+		foreach($array_save as $value)
 		{
 			// save or update
 			$tax_category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence'], 'deleted' => '0');
@@ -139,7 +139,7 @@ class Tax_category extends CI_Model
 		// all entries not available in post will be deleted now
 		$deleted_tax_categories = $this->get_all()->result_array();
 
-		foreach($deleted_tax_categories as $key => $tax_category_data)
+		foreach($deleted_tax_categories as $tax_category_data)
 		{
 			if(!in_array($tax_category_data['tax_category_id'], $not_to_delete))
 			{
@@ -212,7 +212,7 @@ class Tax_category extends CI_Model
 
 	public function get_tax_category_suggestions($search)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$this->db->from('tax_categories');
 		$this->db->where('deleted', 0);

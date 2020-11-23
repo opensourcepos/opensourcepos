@@ -49,7 +49,7 @@ class Expenses extends Secure_Controller
 		$total_rows = $this->Expense->get_found_rows($search, $filters);
 		$payments = $this->Expense->get_payments_summary($search, $filters);
 		$payment_summary = get_expenses_manage_payments_summary($payments, $expenses);
-		$data_rows = array();
+		$data_rows = [];
 		foreach($expenses->result() as $expense)
 		{
 			$data_rows[] = $this->xss_clean(get_expenses_data_row($expense));
@@ -65,9 +65,9 @@ class Expenses extends Secure_Controller
 
 	public function view($expense_id = -1)
 	{
-		$data = array();
+		$data = [];
 
-		$data['employees'] = array();
+		$data['employees'] = [];
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
@@ -80,7 +80,7 @@ class Expenses extends Secure_Controller
 
 		$data['expenses_info'] = $this->Expense->get_info($expense_id);
 
-		$expense_categories = array();
+		$expense_categories = [];
 		foreach($this->Expense_category->get_all(0, 0, TRUE)->result_array() as $row)
 		{
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
@@ -95,7 +95,7 @@ class Expenses extends Secure_Controller
 			$data['expenses_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		}
 
-		$data['payments'] = array();
+		$data['payments'] = [];
 		foreach($this->Expense->get_expense_payment($expense_id)->result() as $payment)
 		{
 			foreach(get_object_vars($payment) as $property => $value)

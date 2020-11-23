@@ -117,9 +117,9 @@ class Tax_jurisdiction extends CI_Model
 	{
 		$this->db->trans_start();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
-		foreach($array_save as $key => $value)
+		foreach($array_save as $value)
 		{
 			// save or update
 			$tax_jurisdiction_data = array('jurisdiction_name' => $value['jurisdiction_name'], 'tax_group' => $value['tax_group'], 'tax_type' => $value['tax_type'], 'reporting_authority' => $value['reporting_authority'], 'tax_group_sequence' => $value['tax_group_sequence'], 'cascade_sequence' => $value['cascade_sequence'], 'deleted' => '0');
@@ -137,7 +137,7 @@ class Tax_jurisdiction extends CI_Model
 		// all entries not available in post will be deleted now
 		$deleted_tax_jurisdictions = $this->get_all()->result_array();
 
-		foreach($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data)
+		foreach($deleted_tax_jurisdictions as $tax_jurisdiction_data)
 		{
 			if(!in_array($tax_jurisdiction_data['jurisdiction_id'], $not_to_delete))
 			{

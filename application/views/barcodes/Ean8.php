@@ -8,7 +8,7 @@
  *
  * Minimum Requirement: PHP 5.3.0
  */
- 
+
 /**
  * Image_Barcode2_Driver_Ean8 class
  *
@@ -44,9 +44,9 @@ class Ean8 extends BarcodeBase
 {
 	/*
 	 * Coding map
-	 * @var array 
+	 * @var array
 	 */
-	private $_codingmap = array(
+	private $codingmap = array(
 		'0' => array(
 			'A' => array(0,0,0,1,1,0,1),
 			'C' => array(1,1,1,0,0,1,0)
@@ -203,7 +203,7 @@ class Ean8 extends BarcodeBase
 	{
 		// Bars is in reference to a single, 1-level bar
 		$pxPerBar = 2;
-		
+
 		// Calculate the barcode width
 		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar)
 			+ 3 * $pxPerBar  // left
@@ -212,17 +212,17 @@ class Ean8 extends BarcodeBase
 			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
-			
+
 		$this->img = @imagecreate($this->x, $this->y);
-		
+
 		if (!$this->img)
 		{
 			throw new \RuntimeException("Ean8: Image failed to initialize");
 		}
-		
+
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
-		
+
 		// Fill image with white color
 		imagefill($this->img, 0, 0, $white);
 
@@ -231,7 +231,7 @@ class Ean8 extends BarcodeBase
 
 		// Initiate x position centering the bar
 		$xpos = ($this->x - $barcodewidth) / 2;
- 
+
 		// Draws the left guard pattern (bar-space-bar)
 		// bar
 		imagefilledrectangle(
@@ -239,7 +239,7 @@ class Ean8 extends BarcodeBase
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
-			$this->y, 
+			$this->y,
 			$black
 		);
 
@@ -264,7 +264,7 @@ class Ean8 extends BarcodeBase
 		{
 			$value = substr($this->data, $idx, 1);
 
-			foreach ($this->_codingmap[$value]['A'] as $bar)
+			foreach ($this->codingmap[$value]['A'] as $bar)
 			{
 				if ($bar)
 				{
@@ -321,7 +321,7 @@ class Ean8 extends BarcodeBase
 		{
 			$value = substr($this->data, $idx, 1);
 
-			foreach ($this->_codingmap[$value]['C'] as $bar)
+			foreach ($this->codingmap[$value]['C'] as $bar)
 			{
 				if ($bar)
 				{

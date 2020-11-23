@@ -91,9 +91,9 @@ class Detailed_receivings extends Report
 		$this->db->group_by('receiving_id', 'receiving_date');
 		$this->db->order_by('receiving_id');
 
-		$data = array();
+		$data = [];
 		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
+		$data['details'] = [];
 
 		foreach($data['summary'] as $key=>$value)
 		{

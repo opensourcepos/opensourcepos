@@ -207,7 +207,7 @@ class Barcode_lib
 
 	public function listfonts($folder)
 	{
-		$array = array();
+		$array = [];
 
 		if(($handle = opendir($folder)) !== FALSE)
 		{

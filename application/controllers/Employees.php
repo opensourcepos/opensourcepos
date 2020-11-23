@@ -23,7 +23,7 @@ class Employees extends Persons
 		$employees = $this->Employee->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Employee->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($employees->result() as $person)
 		{
 			$data_rows[] = $this->xss_clean(get_person_data_row($person));
@@ -61,7 +61,7 @@ class Employees extends Persons
 		}
 		$data['person_info'] = $person_info;
 
-		$modules = array();
+		$modules = [];
 		foreach($this->Module->get_all_modules()->result() as $module)
 		{
 			$module->module_id = $this->xss_clean($module->module_id);
@@ -72,7 +72,7 @@ class Employees extends Persons
 		}
 		$data['all_modules'] = $modules;
 
-		$permissions = array();
+		$permissions = [];
 		foreach($this->Module->get_all_subpermissions()->result() as $permission)
 		{
 			$permission->module_id = $this->xss_clean($permission->module_id);
@@ -114,10 +114,10 @@ class Employees extends Persons
 			'comments' => $this->input->post('comments'),
 		);
 
-		$grants_array = array();
+		$grants_array = [];
 		foreach($this->Module->get_all_permissions()->result() as $permission)
 		{
-			$grants = array();
+			$grants = [];
 			$grant = $this->input->post('grant_'.$permission->permission_id) != NULL ? $this->input->post('grant_'.$permission->permission_id) : '';
 			if($grant == $permission->permission_id)
 			{

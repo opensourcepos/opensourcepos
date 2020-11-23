@@ -40,7 +40,7 @@ class Dinner_table extends CI_Model
 
 		$empty_tables = $this->db->get()->result_array();
 
-		$empty_tables_array = array();
+		$empty_tables_array = [];
 		foreach($empty_tables as $empty_table)
 		{
 			$empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];

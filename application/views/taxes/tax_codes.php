@@ -1,23 +1,24 @@
 <?php echo form_open('taxes/save_tax_codes/', array('id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
-<div id="config_wrapper">
-	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
+<div id='config_wrapper'>
+	<fieldset id='config_info'>
+		<div id='required_fields_message'><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<ul id='tax_codes_error_message_box' class='error_message_box'></ul>
 
-		<div id="tax_codes">
+		<div id='tax_codes'>
 			<?php $this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes)); ?>
 		</div>
 
 		<?php echo form_submit(array(
-			'name' => 'submit_tax_codes',
-			'id' => 'submit_tax_codes',
-			'value' => $this->lang->line('common_submit'),
-			'class' => 'btn btn-primary btn-sm pull-right')); ?>
+				'name'	=> 'submit_tax_codes',
+				'id'	=> 'submit_tax_codes',
+				'value'	=> $this->lang->line('common_submit'),
+				'class'	=> 'btn btn-primary btn-sm pull-right'));
+		?>
 	</fieldset>
 </div>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 	//validation and submit handling
 	$(document).ready(function()
 	{
@@ -99,7 +100,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_codes").load('<?php echo site_url("taxes/ajax_tax_codes"); ?>', init_add_remove_tax_codes);
+						$("#tax_codes").load('<?php echo site_url('taxes/ajax_tax_codes'); ?>', init_add_remove_tax_codes);
 					},
 					dataType: 'json'
 				});
@@ -112,7 +113,7 @@
 
 		<?php
 		$i = 0;
-		foreach($tax_codes as $tax_code=>$tax_code_data)
+		foreach($tax_codes as $tax_code_data)
 		{
 		?>
 		$('<?php echo '#tax_code_' . ++$i ?>').rules( "add", {

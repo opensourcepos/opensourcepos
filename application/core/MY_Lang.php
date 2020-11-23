@@ -9,15 +9,15 @@ class MY_Lang extends CI_Lang
         {
             $CI->config->set_item('language', $idiom);
             $loaded = $this->is_loaded;
-            $this->is_loaded = array();
-                
+            $this->is_loaded = [];
+
             foreach($loaded as $file)
             {
                 $this->load(strtr($file, '', '_lang.php'));
             }
         }
     }
-    
+
 	/**
      * Fetch a single line of text from the language array. Takes variable number
      * of arguments and supports wildcards in the form of '%1', '%2', etc.
@@ -30,23 +30,23 @@ class MY_Lang extends CI_Lang
     {
         //get the arguments passed to the function
         $args = func_get_args();
-        
+
         //count the number of arguments
         $c = count($args);
-        
+
         //if one or more arguments, perform the necessary processing
         if($c)
         {
             //first argument should be the actual language line key
             //so remove it from the array (pop from front)
             $line = array_shift($args);
-            
+
             //check to make sure the key is valid and load the line
             if($line == '')
             {
             	$line = FALSE;
             }
-            else 
+            else
             {
             	if(isset($this->language[$line]) && $this->language[$line] != '')
             	{
@@ -76,10 +76,10 @@ class MY_Lang extends CI_Lang
             //if no arguments given, no language line available
             $line = FALSE;
         }
-        
+
         return $line;
     }
-    
+
     public function line_tbd($line = '')
     {
     	return $line . ' (TBD)';

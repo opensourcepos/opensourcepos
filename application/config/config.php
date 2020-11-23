@@ -10,27 +10,27 @@
 */ 
 $config['application_version'] = '3.3.3';
 
-/* 
-|-------------------------------------------------------------------------- 
-| Commit sha1 
-|-------------------------------------------------------------------------- 
-| 
-| This is the commit hash for the version you are currently using 
-| 
-| 
-*/ 
+/*
+|--------------------------------------------------------------------------
+| Commit sha1
+|--------------------------------------------------------------------------
+|
+| This is the commit hash for the version you are currently using
+|
+|
+*/
 $config['commit_sha1'] = 'dev';
- 
-/* 
-|-------------------------------------------------------------------------- 
-| Internal to OSPOS XSS Clean 
-|-------------------------------------------------------------------------- 
-| 
-| This is to indicated whether we want XSS clean to be performed or not 
-| By default it's enabled as it's assumed the installation has Internet access and needs to be protected, 
-| however intranet only installations may not need this so they can set FALSE to improve performance 
-| 
-*/ 
+
+/*
+|--------------------------------------------------------------------------
+| Internal to OSPOS XSS Clean
+|--------------------------------------------------------------------------
+|
+| This is to indicated whether we want XSS clean to be performed or not
+| By default it's enabled as it's assumed the installation has Internet access and needs to be protected,
+| however intranet only installations may not need this so they can set FALSE to improve performance
+|
+*/
 $config['ospos_xss_clean'] = TRUE;
 
 /*
@@ -43,8 +43,8 @@ $config['ospos_xss_clean'] = TRUE;
 */
 $config['db_log_enabled'] = FALSE;
 
-/* 
-|-------------------------------------------------------------------------- 
+/*
+|--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
 |
