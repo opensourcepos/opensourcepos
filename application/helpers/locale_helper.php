@@ -4,6 +4,7 @@ const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
 define('NOW', time());
+define('MAX_PRECISION', 1e14);
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
@@ -422,6 +423,11 @@ function parse_decimals($number, $decimals = NULL)
 	if(empty($number))
 	{
 		return $number;
+	}
+
+	if ($number > MAX_PRECISION)
+	{
+		return FALSE;
 	}
 
 	if ($number > 1.e14)
