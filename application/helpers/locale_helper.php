@@ -424,6 +424,11 @@ function parse_decimals($number, $decimals = NULL)
 		return $number;
 	}
 
+	if ($number > 1.e14)
+	{
+		return FALSE;
+	}
+
 	$config = get_instance()->config;
 
 	if($decimals == NULL)
