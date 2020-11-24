@@ -12,7 +12,13 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('receivings_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm'));?>
+				<?php echo form_input(array(
+						'name'	=> 'date',
+						'value'	=> to_datetime(strtotime($receiving_info['receiving_time'])),
+						'id'	=> 'datetime',
+						'class'	=> 'datetime form-control input-sm',
+        					'readonly' => 'readonly'));
+				?>
 			</div>
 		</div>
 		
