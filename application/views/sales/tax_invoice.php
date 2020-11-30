@@ -83,15 +83,15 @@ $(document).ready(function()
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
-				<td><div><?php echo $invoice_number; ?></div></td>
+				<td><?php echo $invoice_number; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-				<td><div><?php echo $transaction_date; ?></div></td>
+				<td><?php echo $transaction_date; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-				<td><div><?php echo to_currency($total); ?></div></td>
+				<td><?php echo to_currency($total); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -134,21 +134,16 @@ $(document).ready(function()
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
 					<?php if($include_hsn): ?>
-						<td style='text-align:center;'><div><?php echo $item['hsn_code']; ?></div>
-						</td>
+						<td style='text-align:center;'><?php echo $item['hsn_code']; ?></td>
 					<?php endif; ?>
-					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
-					<td style='text-align:center;'><div><?php echo to_quantity_decimals($item['quantity']); ?></div>
-					</td>
-					<td><div><?php echo to_currency($item['price']); ?></div></td>
-					<td style='text-align:center;'><div><?php echo $item['discount'] . '%'; ?></div>
-					</td>
+					<td class="item-name"><?php echo $item['name']; ?></td>
+					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td style='text-align:center;'><?php echo $item['discount'] . '%'; ?></td>
 					<?php if($discount > 0): ?>
-						<td style='text-align:center;'><div><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></div>
-						</td>
+						<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><div><?php echo to_currency($item['discounted_total']); ?></div>
-					</td>
+					<td style='border-right: solid 1px; text-align:right;'><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 				<?php
 				if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
@@ -157,9 +152,9 @@ $(document).ready(function()
 					<tr class="item-row">
 						<td><?php echo $item['hsn_code']; ?></td>
 						<td class="item-description" colspan="<?php echo $invoice_columns-2; ?>">
-							<div><?php echo $item['description']; ?></div>
+							<?php echo $item['description']; ?>
 						</td>
-						<td style='text-align:center;'><div><?php echo $item['serialnumber']; ?></div></td>
+						<td style='text-align:center;'><?php echo $item['serialnumber']; ?></td>
 					</tr>
 				<?php
 				}
@@ -173,8 +168,8 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank-bottom"> </td>
-			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_sub_total'); ?></div></td>
-			<td class="total-value"><div id="subtotal"><?php echo to_currency($subtotal); ?></div></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
+			<td class="total-value" id="subtotal"><?php echo to_currency($subtotal); ?></td>
 		</tr>
 
 		<?php
@@ -183,8 +178,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></div></td>
-				<td class="total-value"><div id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></td>
+				<td class="total-value" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php
 		}
@@ -192,8 +187,8 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_total'); ?></div></td>
-			<td class="total-value"><div id="total"><?php echo to_currency($total); ?></div></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
+			<td class="total-value" id="total"><?php echo to_currency($total); ?></td>
 		</tr>
 
 		<?php
@@ -207,8 +202,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo $splitpayment[0]; ?></div></td>
-				<td class="total-value"><div id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo $splitpayment[0]; ?></td>
+				<td class="total-value" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
 			</tr>
 		<?php
 		}
@@ -218,8 +213,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_giftcard_balance'); ?></div></td>
-				<td class="total-value"><div id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_giftcard_balance'); ?>/td>
+				<td class="total-value" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></td>
 			</tr>
 			<?php
 		}
@@ -229,8 +224,8 @@ $(document).ready(function()
 		?>
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" ><?php echo $this->lang->line('sales_authorized_signature');?>:</td>
-			<td colspan="2" class="total-line"><div><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></div></td>
-			<td class="total-value"><div id="change"><?php echo to_currency($amount_change); ?></div></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
+			<td class="total-value" id="change"><?php echo to_currency($amount_change); ?></td>
 		</tr>
 		<?php
 		}
