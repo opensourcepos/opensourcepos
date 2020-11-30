@@ -82,16 +82,16 @@ if (isset($error_message))
 		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
-				<td class="meta-head"><?php echo $this->lang->line('sales_quote_number');?> </td>
-				<td><div><?php echo $quote_number; ?></div></td>
+				<td class="meta-head"><?php echo $this->lang->line('sales_quote_number');?></td>
+				<td><?php echo $quote_number; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-				<td><div><?php echo $transaction_date; ?></div></td>
+				<td><?php echo $transaction_date; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_total'); ?></td>
-				<td><div><?php echo to_currency($total); ?></div></td>
+				<td><?php echo to_currency($total); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -124,14 +124,14 @@ if (isset($error_message))
 			?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
-					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
-					<td style='text-align:center;'><div><?php echo to_quantity_decimals($item['quantity']); ?></div></td>
-					<td><div><?php echo to_currency($item['price']); ?></div></td>
-					<td style='text-align:center;'><div><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></div></td>
+					<td class="item-name"><?php echo $item['name']; ?></td>
+					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td style='text-align:center;'><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></td>
 					<?php if($discount > 0): ?>
-						<td style='text-align:center;'><div><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></div></td>
+						<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><div><?php echo to_currency($item['discounted_total']); ?></div></td>
+					<td style='border-right: solid 1px; text-align:right;'><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 
 				<?php if($item['is_serialized'])
@@ -139,7 +139,7 @@ if (isset($error_message))
 				?>
 					<tr class="item-row">
 						<td class="item-name" colspan="<?php echo $quote_columns-1; ?>"></td>
-						<td style='text-align:center;'><div><?php echo $item['serialnumber']; ?></div></td>
+						<td style='text-align:center;'><?php echo $item['serialnumber']; ?></td>
 					</tr>
 				<?php
 				}
@@ -153,8 +153,8 @@ if (isset($error_message))
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank-bottom"> </td>
-			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_sub_total'); ?></div></td>
-			<td class="total-value"><div id="subtotal"><?php echo to_currency($subtotal); ?></div></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
+			<td class="total-value" id="subtotal"><?php echo to_currency($subtotal); ?></td>
 		</tr>
 
 		<?php
@@ -163,8 +163,8 @@ if (isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></div></td>
-				<td class="total-value"><div id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></td>
+				<td class="total-value" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php
 		}
@@ -172,8 +172,8 @@ if (isset($error_message))
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_total'); ?></div></td>
-			<td class="total-value"><div id="total"><?php echo to_currency($total); ?></div></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
+			<td class="total-value" id="total"><?php echo to_currency($total); ?></td>
 		</tr>
 
 		<?php
@@ -187,8 +187,8 @@ if (isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo $splitpayment[0]; ?></div></td>
-				<td class="total-value"><div id="paid"><?php echo to_currency( $payment['payment_amount'] ); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo $splitpayment[0]; ?></td>
+				<td class="total-value" id="paid"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
 			</tr>
 		<?php
 		}

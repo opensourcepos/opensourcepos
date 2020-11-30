@@ -41,11 +41,11 @@
 				<table align="right">
 					<tr>
 						<td class="meta-head"><?php echo $this->lang->line('sales_work_order_number');?> </td>
-						<td><div><?php echo $work_order_number; ?></div></td>
+						<td><?php echo $work_order_number; ?></td>
 					</tr>
 					<tr>
 						<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-						<td><div><?php echo $transaction_date; ?></div></td>
+						<td><?php echo $transaction_date; ?></td>
 					</tr>
 					<?php
 					if($amount_due > 0)
@@ -53,7 +53,7 @@
 					?>
 						<tr>
 							<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-							<td><div class="due"><?php echo to_currency($total); ?></div></td>
+							<td class="due"><?php echo to_currency($total); ?></td>
 						</tr>
 					<?php
 					}

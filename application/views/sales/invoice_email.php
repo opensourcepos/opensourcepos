@@ -28,26 +28,22 @@ if(isset($error_message))
 				}
 				?>
 			</td>
-			<td id="customer-title">
-				<div id="customer"><?php if(isset($customer)) { echo nl2br($customer_info); } ?></div>
-			</td>
+			<td id="customer-title" id="customer"><?php if(isset($customer)) { echo nl2br($customer_info); } ?></td>
 		</tr>
 		<tr>
-			<td id="company-title">
-				<div id="company">
+			<td id="company-title" id="company">
 				<?php echo $this->config->item('company'); ?><br/>
 				<?php echo nl2br($company_info); ?>
-				</div>
 			</td>
 			<td id="meta">
 				<table id="meta-content"  align="right">
 				<tr>
-					<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
-					<td><div><?php echo $invoice_number; ?></div></td>
+					<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?></td>
+					<td><?php echo $invoice_number; ?></td>
 				</tr>
 				<tr>
 					<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-					<td><div><?php echo $transaction_date; ?></div></td>
+					<td><?php echo $transaction_date; ?></td>
 				</tr>
 				<?php
 				if($amount_due > 0)
@@ -55,7 +51,7 @@ if(isset($error_message))
 				?>
 					<tr>
 						<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-						<td><div class="due"><?php echo to_currency($total); ?></div></td>
+						<td class="due"><?php echo to_currency($total); ?></td>
 					</tr>
 				<?php
 				}
@@ -161,8 +157,8 @@ if(isset($error_message))
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><div><?php echo $this->lang->line('sales_giftcard_balance'); ?></div></td>
-				<td class="total-value"><div id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></div></td>
+				<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
+				<td class="total-value" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></td>
 			</tr>
 		<?php
 		}
