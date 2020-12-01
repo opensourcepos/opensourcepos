@@ -908,8 +908,8 @@ class Items extends Secure_Controller
 						$is_failed_row = $this->data_error_check($row, $item_data, $allowed_stock_locations, $attribute_definition_names, $attribute_data);
 					}
 
-                    //Remove FALSE, NULL, '' and empty strings but keep 0
-                    $item_data = array_filter($item_data, 'strlen');
+					//Remove FALSE, NULL, '' and empty strings but keep 0
+					$item_data = array_filter($item_data, 'strlen');
 
 					if(!$is_failed_row && $this->Item->save($item_data, $item_id))
 					{
