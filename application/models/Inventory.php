@@ -11,6 +11,12 @@ class Inventory extends CI_Model
 		return $this->db->insert('inventory', $inventory_data);
 	}
 
+	public function update($comment, $inventory_data)
+	{
+		$this->db->where('trans_comment', $comment);
+		return $this->db->update('inventory', $inventory_data);
+	}
+
 	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
 	{
 		$this->db->from('inventory');

@@ -1227,9 +1227,10 @@ class Sales extends Secure_Controller
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$sale_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$sale_data = array(
-			'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
+			'sale_time' => $sale_time,
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id') != '' ? $this->input->post('employee_id') : NULL,
 			'comment' => $this->input->post('comment'),
@@ -1276,6 +1277,7 @@ class Sales extends Secure_Controller
 			$payments[] = array('payment_id' => $payment_id, 'payment_type' => $payment_type, 'payment_amount' => $payment_amount, 'cash_refund' => 0.00, 'employee_id' => $employee_id);
 		}
 
+		$this->Inventory->update('POS '.$sale_id, ['trans_date' => $sale_time]);
 		if($this->Sale->update($sale_id, $sale_data, $payments))
 		{
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_updated'), 'id' => $sale_id));

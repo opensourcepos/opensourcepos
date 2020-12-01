@@ -378,15 +378,17 @@ class Receivings extends Secure_Controller
 		$newdate = $this->input->post('date');
 		
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = array(
-			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
+			'receiving_time' => $receiving_time,
 			'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'reference' => $this->input->post('reference') != '' ? $this->input->post('reference') : NULL
 		);
-	
+
+		$this->Inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);
 		if($this->Receiving->update($receiving_data, $receiving_id))
 		{
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('receivings_successfully_updated'), 'id' => $receiving_id));
