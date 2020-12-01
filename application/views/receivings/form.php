@@ -17,7 +17,7 @@
 						'value'	=> to_datetime(strtotime($receiving_info['receiving_time'])),
 						'id'	=> 'datetime',
 						'class'	=> 'datetime form-control input-sm',
-						'readonly' => 'readonly'));
+        					'readonly' => 'readonly'));
 				?>
 			</div>
 		</div>
