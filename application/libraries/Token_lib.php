@@ -55,8 +55,8 @@ class Token_lib
 	 */
 	public function scan($text)
 	{
-		$matches	= [];
-		$token_tree	= [];
+		$matches = [];
+		$token_tree = [];
 
 		// Matches tokens with the following pattern: [$token:$length]
 		preg_match_all('/
@@ -69,8 +69,8 @@ class Token_lib
 				\}             # ] - pattern end
 				/x', $text, $matches);
 
-		$tokens		= $matches[1];
-		$lengths	= $matches[2];
+		$tokens = $matches[1];
+		$lengths = $matches[2];
 
 		for($i = 0; $i < count($tokens); $i++)
 		{

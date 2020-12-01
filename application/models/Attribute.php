@@ -4,9 +4,9 @@
  */
 class Attribute extends CI_Model
 {
-	const SHOW_IN_ITEMS			= 1;
-	const SHOW_IN_SALES			= 2;
-	const SHOW_IN_RECEIVINGS	= 4;
+	const SHOW_IN_ITEMS = 1;
+	const SHOW_IN_SALES = 2;
+	const SHOW_IN_RECEIVINGS = 4;
 
 	public static function get_definition_flags()
 	{
@@ -213,8 +213,8 @@ class Attribute extends CI_Model
 			$this->db->where_not_in('definition_type',GROUP);
 		}
 
-		$results 			= $this->db->get('attribute_definitions')->result_array();
-		$definition_name	= array(-1 => $this->lang->line('common_none_selected_text'));
+		$results = $this->db->get('attribute_definitions')->result_array();
+		$definition_name = array(-1 => $this->lang->line('common_none_selected_text'));
 
 		return $definition_name + $this->to_array($results, 'definition_id', 'definition_name');
 	}

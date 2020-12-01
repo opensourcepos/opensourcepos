@@ -6,9 +6,9 @@ class MY_Migration extends CI_Migration
 {
 	public function is_latest()
 	{
-		$last_migration		= $this->get_last_migration();
-		$last_version		= $this->_get_migration_number($last_migration);
-		$current_version	= $this->_get_version();
+		$last_migration = $this->get_last_migration();
+		$last_version = $this->_get_migration_number($last_migration);
+		$current_version = $this->_get_version();
 
 		return $last_version == $current_version;
 	}

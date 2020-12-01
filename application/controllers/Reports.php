@@ -8,9 +8,9 @@ class Reports extends Secure_Controller
 	{
 		parent::__construct('reports');
 
-		$method_name	= $this->uri->segment(2);
-		$exploder		= explode('_', $method_name);
-		$matches		= [];
+		$method_name = $this->uri->segment(2);
+		$exploder = explode('_', $method_name);
+		$matches = [];
 
 		if(sizeof($exploder) > 1)
 		{

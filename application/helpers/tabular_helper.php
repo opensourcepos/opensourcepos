@@ -724,10 +724,10 @@ function get_expenses_data_last_row($expense)
 	}
 
 	return array(
-		'expense_id'	=> '-',
-		'date'			=> '<b>'. $CI->lang->line('sales_total').'</b>',
-		'amount'		=> '<b>'. to_currency($sum_amount_expense).'</b>',
-		'tax_amount'	=> '<b>'. to_currency($sum_tax_amount_expense).'</b>'
+		'expense_id' => '-',
+		'date' => '<b>'. $CI->lang->line('sales_total').'</b>',
+		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
+		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
 	);
 }
 
