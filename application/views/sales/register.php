@@ -430,8 +430,8 @@ if(isset($success))
 			?>
 
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?></th>
-				<th style="width: 45%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
+				<th style='width: 55%; font-size: 150%'><?php echo $this->lang->line('sales_total'); ?></th>
+				<th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
 			</tr>
 		</table>
 
@@ -446,8 +446,8 @@ if(isset($success))
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
 				</tr>
 				<tr>
-					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due');?></th>
-					<th style="width: 45%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
+					<th style="width: 55%; font-size: 120%"><?php echo $this->lang->line('sales_amount_due');?></th>
+					<th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
 				</tr>
 			</table>
 
