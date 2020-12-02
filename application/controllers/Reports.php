@@ -422,7 +422,7 @@ class Reports extends Secure_Controller
 				$tabular_data[] = array(
 					'trans_group' => '--',
 					'trans_type' => '--',
-					'trans_count' => '--',
+					'trans_sales' => '--',
 					'trans_amount' => '--',
 					'trans_payments' => '--',
 					'trans_refunded' => '--',
@@ -439,7 +439,7 @@ class Reports extends Secure_Controller
 				$tabular_data[] = $this->xss_clean(array(
 					'trans_group' => $row['trans_group'],
 					'trans_type' => $row['trans_type'],
-					'trans_count' => $row['trans_count'],
+					'trans_sales' => $row['trans_sales'],
 					'trans_amount' => to_currency($row['trans_amount']),
 					'trans_payments' => to_currency($row['trans_payments']),
 					'trans_refunded' => to_currency($row['trans_refunded']),
