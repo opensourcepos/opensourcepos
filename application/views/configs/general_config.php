@@ -269,7 +269,7 @@
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
-								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_second_column'); ?></span>
+								<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_third_column'); ?></span>
 								<?php echo form_dropdown('suggestions_third_column', array(
 									'' => $this->lang->line('config_none'),
 									'name' => $this->lang->line('items_name'),
