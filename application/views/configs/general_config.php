@@ -250,7 +250,8 @@
 								<?php echo form_dropdown('suggestions_first_column', array(
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
-									'unit_price' => $this->lang->line('items_unit_price')),
+									'unit_price' => $this->lang->line('items_unit_price'),
+									'cost_price' => $this->lang->line('items_cost_price')),
 									$this->config->item('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
@@ -261,7 +262,8 @@
 									'' => $this->lang->line('config_none'),
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
-									'unit_price' => $this->lang->line('items_unit_price')),
+									'unit_price' => $this->lang->line('items_unit_price'),
+									'cost_price' => $this->lang->line('items_cost_price')),
 									$this->config->item('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
@@ -272,7 +274,8 @@
 									'' => $this->lang->line('config_none'),
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
-									'unit_price' => $this->lang->line('items_unit_price')),
+									'unit_price' => $this->lang->line('items_unit_price'),
+									'cost_price' => $this->lang->line('items_cost_price')),
 									$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
