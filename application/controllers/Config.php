@@ -817,7 +817,6 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array (
 			'invoice_enable' => $this->input->post('invoice_enable') != NULL,
-			'default_register_mode' => $this->input->post('default_register_mode'),
 			'sales_invoice_format' => $this->input->post('sales_invoice_format'),
 			'sales_quote_format' => $this->input->post('sales_quote_format'),
 			'recv_invoice_format' => $this->input->post('recv_invoice_format'),

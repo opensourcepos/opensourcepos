@@ -591,18 +591,10 @@ class Sale_lib
 
 	public function get_mode()
 	{
-		if(!$this->CI->session->userdata('sales_mode'))
-		{
-			if($this->CI->config->item('invoice_enable') == '1')
-			{
-				$this->set_mode($this->CI->config->item('default_register_mode'));
-			}
-			else
-			{
-				$this->set_mode('sale');
-			}
-		}
-
+		if(!$this->CI->session->userdata('sales_mode'))                                                                                                                                                                                                                     
+		{                                                                                                                                                                                                                                                                   
+			$this->set_mode('sale');                                                                                                                                                                                                                            
+		}      
 		return $this->CI->session->userdata('sales_mode');
 	}
 
@@ -1037,6 +1029,7 @@ class Sale_lib
 	public function clear_all()
 	{
 		$this->CI->session->set_userdata('sale_id', -1);
+		$this->clear_mode();
 		$this->clear_table();
 		$this->empty_cart();
 		$this->clear_comment();
