@@ -470,6 +470,8 @@ class Sales extends Secure_Controller
 		if($this->form_validation->run() != FALSE)
 		{
 			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+			
+			$this->sale_lib->empty_payments();
 		}
 		else
 		{
