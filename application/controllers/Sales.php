@@ -192,6 +192,8 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_location($stock_location);
 		}
 
+		$this->sale_lib->empty_payments();
+
 		$this->_reload();
 	}
 
@@ -446,6 +448,7 @@ class Sales extends Secure_Controller
 				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
 			}
 		}
+
 		$this->_reload($data);
 	}
 
@@ -486,6 +489,8 @@ class Sales extends Secure_Controller
 	public function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
+
+		$this->sale_lib->empty_payments();		
 
 		$this->_reload();
 	}
@@ -993,8 +998,8 @@ class Sales extends Secure_Controller
 		}
 
 		$invoice_type = $this->config->item('invoice_type');
-
 		$data['invoice_view'] = $invoice_type;
+
 		return $this->xss_clean($data);
 	}
 
@@ -1371,6 +1376,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->sale_lib->clear_all();
+
 		$this->_reload($data);
 	}
 
