@@ -10,11 +10,17 @@
 		return btn_id;
 	};
 
+	var reset = function() {
+		btn_id = undefined;
+		dialog_ref = undefined;
+	}
+
 	var submit = function(button_id) {
 		return function(dlog_ref) {
+			var new_sbmt = !btn_id
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			if (button_id == 'submit') {
+			if (button_id == 'submit' && (new_sbmt && btn_id != "btnNew")) {
 				$('form', dlog_ref.$modalBody).first().submit();
 			}
 			return false;
@@ -92,6 +98,7 @@
 
 	$.extend(dialog_support, {
 		init: init,
+		reset: reset,
 		submit: submit,
 		hide: hide,
 		clicked_id: clicked_id
@@ -299,6 +306,7 @@
 				}
 				$.notify(message, {type: 'success' });
 			}
+			dialog_support.reset();
 			return false;
 		};
 	};
