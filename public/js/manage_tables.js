@@ -4,6 +4,7 @@
 
 	var hide = function() {
 		dialog_ref && dialog_ref.close();
+		this.reset();
 	};
 
 	var clicked_id = function() {
