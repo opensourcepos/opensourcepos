@@ -19,19 +19,29 @@ class MY_Security extends CI_Security
             return FALSE;
         }
 
+        $path = config_item('cookie_path');
+
         if (PHP_VERSION_ID < 70300) {
+
+            if (is_https())
+            {
+                $path .= '; samesite=strict';
+            }
+
             setcookie($this->_csrf_cookie_name,
                 $this->_csrf_hash, $expire,
-                config_item('cookie_path'). '; samesite=strict',
+                $path,
                 config_item('cookie_domain'),
                 $secure_cookie,
                 FALSE);
         }
         else
         {
+            $samesite = is_https() ? 'None' : 'Strict';
+
             setcookie($this->_csrf_cookie_name,
                 $this->_csrf_hash,
-                ['samesite' => 'Strict',
+                ['samesite' => $samesite,
                     'secure' => $secure_cookie,
                     'expires' => $expire,
                     'path' => config_item('cookie_path'),
