@@ -19,14 +19,26 @@ class MY_Security extends CI_Security
             return FALSE;
         }
 
-        setcookie($this->_csrf_cookie_name,
-            $this->_csrf_hash,
-            ['samesite' => 'Strict',
-                'secure' => $secure_cookie,
-                'expires' => $expire,
-                'path' => config_item('cookie_path'),
-                'domain' => config_item('cookie_domain'),
-                'httponly' => FALSE]);
+        if (PHP_VERSION_ID < 70300) {
+            setcookie($this->_csrf_cookie_name,
+                $this->_csrf_hash, $expire,
+                config_item('cookie_path'). '; samesite=strict',
+                config_item('cookie_domain'),
+                $secure_cookie,
+                FALSE);
+        }
+        else
+        {
+            setcookie($this->_csrf_cookie_name,
+                $this->_csrf_hash,
+                ['samesite' => 'Strict',
+                    'secure' => $secure_cookie,
+                    'expires' => $expire,
+                    'path' => config_item('cookie_path'),
+                    'domain' => config_item('cookie_domain'),
+                    'httponly' => FALSE]);
+        }
+
 
         log_message('info', 'CSRF cookie sent');
 
