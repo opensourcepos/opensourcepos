@@ -63,6 +63,11 @@
         "tableExport.js"
       ]
     },
+    "chartist-axis-plugin": {
+        "main": [
+            "dist/chartist-plugin-axistitle.js"
+        ]
+    },
     "bootstrap-table": {
       "main": [
         "dist/bootstrap-table.js",
