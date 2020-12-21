@@ -37,21 +37,23 @@
 	{
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
-		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers($headers, TRUE, FALSE); ?>,
-			stickyHeader: true,
-			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
-			striped: true,
-			sortable: true,
-			showExport: true,
-			exportDataType: 'all',
-			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-			pagination: true,
-			showColumns: true,
-			data: <?php echo json_encode($data); ?>,
-			iconSize: 'sm',
-			paginationVAlign: 'bottom',
-			escape: false
+		$('#table')
+			.addClass("table-striped")
+			.addClass("table-bordered")
+			.bootstrapTable({
+				columns: <?php echo transform_headers($headers, TRUE, FALSE); ?>,
+				stickyHeader: true,
+				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+				sortable: true,
+				showExport: true,
+				exportDataType: 'all',
+				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+				pagination: true,
+				showColumns: true,
+				data: <?php echo json_encode($data); ?>,
+				iconSize: 'sm',
+				paginationVAlign: 'bottom',
+				escape: false
 		});
 
 	});

@@ -45,45 +45,47 @@
 			?>
 		};
 
-		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
-			stickyHeader: true,
-			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
-			striped: true,
-			pagination: true,
-			sortable: true,
-			showColumns: true,
-			uniqueId: 'id',
-			showExport: true,
-			exportDataType: 'all',
-			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-			data: <?php echo json_encode($summary_data); ?>,
-			iconSize: 'sm',
-			paginationVAlign: 'bottom',
-			detailView: true,
-			escape: false,
-			onPageChange: init_dialog,
-			onPostBody: function() {
-				dialog_support.init("a.modal-dlg");
-			},
-			onExpandRow: function (index, row, $detail) {
-				$detail.html('<table></table>').find("table").bootstrapTable({
-					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
-				});
-
-				<?php
-				if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
-				{
-				?>
-					$detail.append('<table></table>').find("table").bootstrapTable({
-						columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
-						data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+		$('#table')
+			.addClass("table-striped")
+			.addClass("table-bordered")
+			.bootstrapTable({
+				columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
+				stickyHeader: true,
+				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+				pagination: true,
+				sortable: true,
+				showColumns: true,
+				uniqueId: 'id',
+				showExport: true,
+				exportDataType: 'all',
+				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+				data: <?php echo json_encode($summary_data); ?>,
+				iconSize: 'sm',
+				paginationVAlign: 'bottom',
+				detailView: true,
+				escape: false,
+				onPageChange: init_dialog,
+				onPostBody: function() {
+					dialog_support.init("a.modal-dlg");
+				},
+				onExpandRow: function (index, row, $detail) {
+					$detail.html('<table></table>').find("table").bootstrapTable({
+						columns: <?php echo transform_headers_readonly($headers['details']); ?>,
+						data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 					});
-				<?php
+
+					<?php
+					if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
+					{
+					?>
+						$detail.append('<table></table>').find("table").bootstrapTable({
+							columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
+							data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+						});
+					<?php
+					}
+					?>
 				}
-				?>
-			}
 		});
 
 		init_dialog();

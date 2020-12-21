@@ -208,13 +208,15 @@
 		options = _options;
 		enable_actions = enable_actions(options.enableActions);
 		load_success = load_success(options.onLoadSuccess);
-		$('#table').bootstrapTable($.extend(options, {
+		$('#table')
+			.addClass("table-striped")
+			.addClass("table-bordered")
+			.bootstrapTable($.extend(options, {
 			columns: options.headers,
 			stickyHeader: true,
 			url: options.resource + '/search',
 			sidePagination: 'server',
 			pageSize: options.pageSize,
-			striped: true,
 			pagination: true,
 			search: options.resource || false,
 			showColumns: true,
