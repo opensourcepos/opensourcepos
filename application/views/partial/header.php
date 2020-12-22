@@ -42,10 +42,10 @@
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-		<script src="bower_components/bootstrap-table/dist/bootstrap-table.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js"></script>
+		<script src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<script src="bower_components/es6-promise/es6-promise.js"></script>
@@ -84,7 +84,7 @@
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f4ddaa235e"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2982efc631"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
