@@ -51,6 +51,8 @@
 			.bootstrapTable({
 				columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
 				stickyHeader: true,
+				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 				pagination: true,
 				sortable: true,
@@ -89,6 +91,7 @@
 		});
 
 		init_dialog();
+		table_support.init_resize();
 	});
 </script>
 

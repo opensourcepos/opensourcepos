@@ -214,6 +214,8 @@
 			.bootstrapTable($.extend(options, {
 			columns: options.headers,
 			stickyHeader: true,
+			stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
 			pageSize: options.pageSize,
@@ -259,9 +261,19 @@
 		enable_actions();
 		init_delete();
 		init_restore();
+		init_resize();
 		toggle_column_visibility();
 		dialog_support.init("button.modal-dlg");
 	};
+
+	var init_resize = function() {
+		$(window).resize(function () {
+			$('#table').bootstrapTable('refreshOptions', {
+				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+				stickyHeaderOffsetRight: $('#table').offset().left + 'px',
+			})
+		})
+	}
 
 	var init_delete = function (confirmMessage) {
 		$("#delete").click(function(event) {
@@ -321,6 +333,7 @@
 		},
 		handle_submit: handle_submit,
 		init: init,
+		init_resize: init_resize,
 		do_delete: do_action("delete"),
 		do_restore: do_action("restore"),
 		refresh : refresh,
