@@ -215,7 +215,7 @@
 			columns: options.headers,
 			stickyHeader: true,
 			stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
+			stickyHeaderOffsetRight: $('#table').offset().left + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
 			pageSize: options.pageSize,
