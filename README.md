@@ -35,10 +35,8 @@ The main features are:
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
 The latest 3.x version is a complete overhaul of the original software.
-It is now based on Bootstrap 3 using Bootswatch themes, and still uses CodeIgniter 3 as framework.
+It is now based on Bootstrap 3 using Bootswatch themes, and uses CodeIgniter version 3 as framework.
 It also has improved functionality and security.
-
-Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
 DEMO
 ----
@@ -123,10 +121,10 @@ Please **Copy** the info under **System Info tab in configuration section** in o
 Bug reports must follow the below schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
-3. Web Server name and version (e.g. Apache 2.2, Apache 2.4, Nginx 1.12, Nginx 1.13)
-4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2, MariaDB 10.3)
-5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2, 7.3)
+2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 20, Windows 10)
+3. Web Server name and version (e.g. Apache 2.4, Nginx 1.12, Nginx 1.13)
+4. Database name and version (e.g. MySQL 5.6, MySQL 5.7, MariaDB 10.2, MariaDB 10.3)
+5. PHP version (e.g. 7.2, 7.3, 7.4)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
@@ -153,7 +151,11 @@ FAQ
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
-* If you see the item edit dialog box empty starting with version 3.3.0, please disable `only_full_group_by` option from MySQL/MariaDB. See issue [#2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
+* If you see the item edit dialog box empty starting with version 3.3.0, please disable `only_full_group_by` option from MySQL/MariaDB. See [issue #2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
+
+* PHP 8.0 is not currently supported, see [issue #3051](https://github.com/opensourcepos/opensourcepos/issues/3051).
+
+* PHP 5.6 is no longer support as deprecated and not safe to use from security perspective.
 
 Credits
 -------
