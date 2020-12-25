@@ -111,6 +111,7 @@
 	var enable_actions = function(callback) {
 		return function() {
 			var selection_empty = selected_rows().length == 0;
+			$("#table").data('bootstrap.table').options.exportDataType = selection_empty ? 'all' : 'selected';
 			$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
 			typeof callback == 'function' && callback();
 		}
@@ -214,8 +215,8 @@
 			.bootstrapTable($.extend(options, {
 			columns: options.headers,
 			stickyHeader: true,
-			stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-			stickyHeaderOffsetRight: $('#table').offset().left + 'px',
+			stickyHeaderOffsetLeft: $('#table').offset().right + 'px',
+			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
 			pageSize: options.pageSize,
@@ -270,7 +271,7 @@
 		$(window).resize(function () {
 			$('#table').bootstrapTable('refreshOptions', {
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-				stickyHeaderOffsetRight: $('#table').offset().left + 'px',
+				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			})
 		})
 	}
