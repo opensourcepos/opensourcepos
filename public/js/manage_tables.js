@@ -111,7 +111,7 @@
 	var enable_actions = function(callback) {
 		return function() {
 			var selection_empty = selected_rows().length == 0;
-			$("#table").data('bootstrap.table').options.exportDataType = selection_empty ? 'all' : 'selected';
+			$("#table").data('bootstrap.table').options.exportDataType = selection_empty ? 'basic' : 'selected';
 			$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
 			typeof callback == 'function' && callback();
 		}
@@ -225,7 +225,7 @@
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
-			exportDataType: 'all',
+			exportDataType: 'basic',
 			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 			exportOptions: {
 				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
