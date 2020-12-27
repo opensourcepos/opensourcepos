@@ -111,7 +111,6 @@
 	var enable_actions = function(callback) {
 		return function() {
 			var selection_empty = selected_rows().length == 0;
-			$("#table").data('bootstrap.table').options.exportDataType = selection_empty ? 'basic' : 'selected';
 			$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
 			typeof callback == 'function' && callback();
 		}
@@ -219,6 +218,7 @@
 			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
+			selectItemName: 'btSelectItem',
 			pageSize: options.pageSize,
 			pagination: true,
 			search: options.resource || false,
