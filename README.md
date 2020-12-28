@@ -38,8 +38,8 @@ The latest 3.x version is a complete overhaul of the original software.
 It is now based on Bootstrap 3 using Bootswatch themes, and uses CodeIgniter version 3 as framework.
 It also has improved functionality and security.
 
-DEMO
-----
+DEMO / DEV
+----------
 
 A demo version of the latest master version can be found on our [Demo server](https://demo.opensourcepos.org). This is a containerized install which will be reinitialized when new functionality is added to the code repository.
 
@@ -47,8 +47,9 @@ LOGIN using
 * username: admin
 * password: pointofsale
 
-In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
+Beside this we also have a [Dev server](https://dev.opensourcepos.org) that runs the build that was triggered with the last repository's commit.
 
+In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
 
 Installation
 ------------
