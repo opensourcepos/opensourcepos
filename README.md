@@ -47,6 +47,8 @@ LOGIN using
 * username: admin
 * password: pointofsale
 
+In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
+
 
 Installation
 ------------
