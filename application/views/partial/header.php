@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
 		<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
-		<link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-table/dist/bootstrap-table.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
 		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css" />
@@ -42,19 +42,19 @@
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js"></script>
+		<script src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<script src="bower_components/file-saver.js/FileSaver.js"></script>
+		<script src="bower_components/es6-promise/es6-promise.js"></script>
+		<script src="bower_components/file-saver/dist/FileSaver.min.js"></script>
 		<script src="bower_components/html2canvas/build/html2canvas.js"></script>
-		<script src="bower_components/jspdf/dist/jspdf.min.js"></script>
+		<script src="bower_components/jspdf/dist/jspdf.debug.js"></script>
 		<script src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
-		<script src="bower_components/tableExport.jquery.plugin/tableExport.min.js"></script>
+		<script src="bower_components/tableExport.jquery.plugin/tableExport.js"></script>
 		<script src="bower_components/chartist/dist/chartist.min.js"></script>
-		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
 		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
 		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
 		<script src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
@@ -75,7 +75,7 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b332f7b2a9"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=afbb40b305"/>
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -84,7 +84,7 @@
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=17ddd92837"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2982efc631"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

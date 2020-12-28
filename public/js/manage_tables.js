@@ -204,19 +204,24 @@
 		options = _options;
 		enable_actions = enable_actions(options.enableActions);
 		load_success = load_success(options.onLoadSuccess);
-		$('#table').bootstrapTable($.extend(options, {
+		$('#table')
+			.addClass("table-striped")
+			.addClass("table-bordered")
+			.bootstrapTable($.extend(options, {
 			columns: options.headers,
 			stickyHeader: true,
+			stickyHeaderOffsetLeft: $('#table').offset().right + 'px',
+			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
+			selectItemName: 'btSelectItem',
 			pageSize: options.pageSize,
-			striped: true,
 			pagination: true,
 			search: options.resource || false,
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
-			exportDataType: 'all',
+			exportDataType: 'basic',
 			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 			exportOptions: {
 				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
@@ -253,9 +258,19 @@
 		enable_actions();
 		init_delete();
 		init_restore();
+		init_resize();
 		toggle_column_visibility();
 		dialog_support.init("button.modal-dlg");
 	};
+
+	var init_resize = function() {
+		$(window).resize(function () {
+			$('#table').bootstrapTable('refreshOptions', {
+				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
+				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
+			})
+		})
+	}
 
 	var init_delete = function (confirmMessage) {
 		$("#delete").click(function(event) {
@@ -314,6 +329,7 @@
 		},
 		handle_submit: handle_submit,
 		init: init,
+		init_resize: init_resize,
 		do_delete: do_action("delete"),
 		do_restore: do_action("restore"),
 		refresh : refresh,
