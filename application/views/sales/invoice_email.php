@@ -23,7 +23,7 @@ if(isset($error_message))
 				<?php if($this->config->item('company_logo') != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />
+					<img id="image" src="data:<?=$mimetype?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . $this->config->item('company_logo'))); ?>" alt="company_logo" />
 				<?php
 				}
 				?>
