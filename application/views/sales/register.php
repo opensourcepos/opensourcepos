@@ -133,13 +133,14 @@ if(isset($success))
 				foreach(array_reverse($cart, TRUE) as $line=>$item)
 				{
 			?>
-
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td>
-								<?php echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>'); ?>
-								<?php echo form_hidden('location', $item['item_location']); ?>
-								<?php echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id'])); ?>
+								<?php
+								echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');
+								echo form_hidden('location', $item['item_location']);
+								echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id']));
+								?>
 							</td>
 							<?php
 							if($item['item_type'] == ITEM_TEMP)
@@ -163,27 +164,24 @@ if(isset($success))
 							<?php
 							}
 							?>
-							<?php
-							if($items_module_allowed && $change_price)
-							{
-							?>
-								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?></td>
-							<?php
-							}
-							else
-							{
-							?>
-								<td>
-									<?php echo to_currency($item['price']); ?>
-									<?php echo form_hidden('price', to_currency_no_money($item['price'])); ?>
-								</td>
-							<?php
-							}
-							?>
 
 							<td>
 								<?php
-								if($item['is_serialized']==1)
+								if($items_module_allowed && $change_price)
+								{
+									echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+								}
+								else
+								{
+									echo to_currency($item['price']);
+									echo form_hidden('price', to_currency_no_money($item['price']));
+								}
+								?>
+							</td>
+
+							<td>
+								<?php
+								if($item['is_serialized'])
 								{
 									echo to_quantity_decimals($item['quantity']);
 									echo form_hidden('quantity', $item['quantity']);
@@ -218,8 +216,8 @@ if(isset($success))
 							</td>
 
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
-							</tr>
-							<tr>
+						</tr>
+						<tr>
 							<?php
 							if($item['item_type'] == ITEM_TEMP)
 							{
@@ -236,23 +234,23 @@ if(isset($success))
 							?>
 								<td> </td>
 								<?php
-								if($item['allow_alt_description']==1)
+								if($item['allow_alt_description'])
 								{
-									?>
+								?>
 									<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv'); ?></td>
-									<?php
+								<?php
 								}
 								?>
 
 								<td colspan='2' style="text-align: left;">
 									<?php
-									if($item['allow_alt_description']==1)
+									if($item['allow_alt_description'])
 									{
 										echo form_input(array('name'=>'description', 'class'=>'form-control input-sm', 'value'=>$item['description'], 'onClick'=>'this.select();'));
 									}
 									else
 									{
-										if($item['description']!='')
+										if($item['description'] != '')
 										{
 											echo $item['description'];
 											echo form_hidden('description', $item['description']);
@@ -268,7 +266,7 @@ if(isset($success))
 								<td>&nbsp;</td>
 								<td style="color: #2F4F4F;">
 									<?php
-									if($item['is_serialized']==1)
+									if($item['is_serialized'])
 									{
 										echo $this->lang->line('sales_serial');
 									}
@@ -276,7 +274,7 @@ if(isset($success))
 								</td>
 								<td colspan='4' style="text-align: left;">
 									<?php
-									if($item['is_serialized']==1)
+									if($item['is_serialized'])
 									{
 										echo form_input(array('name'=>'serialnumber', 'class'=>'form-control input-sm', 'value'=>$item['serialnumber'], 'onClick'=>'this.select();'));
 									}
@@ -461,7 +459,7 @@ if(isset($success))
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment'); ?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
+									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit', 'disabled'=>'disabled')); ?>
 								</td>
 							</tr>
 							<tr>
