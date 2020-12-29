@@ -12,6 +12,7 @@ class Sales extends Secure_Controller
 	{
 		parent::__construct('sales');
 
+		$this->load->helper('file');
 		$this->load->library('sale_lib');
 		$this->load->library('email_lib');
 		$this->load->library('token_lib');
@@ -782,6 +783,7 @@ class Sales extends Secure_Controller
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
 				new Token_customer((object)$sale_data));
 			$text = $this->token_lib->render($text, $tokens);
+			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->item('company_logo'));
 
 			// generate email attachment: invoice in pdf format
 			$html = $this->load->view("sales/" . $type . "_email", $sale_data, TRUE);
