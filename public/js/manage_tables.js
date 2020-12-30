@@ -258,19 +258,9 @@
 		enable_actions();
 		init_delete();
 		init_restore();
-		init_resize();
 		toggle_column_visibility();
 		dialog_support.init("button.modal-dlg");
 	};
-
-	var init_resize = function() {
-		$(window).resize(function () {
-			$('#table').bootstrapTable('refreshOptions', {
-				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-			})
-		})
-	}
 
 	var init_delete = function (confirmMessage) {
 		$("#delete").click(function(event) {

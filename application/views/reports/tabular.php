@@ -58,7 +58,6 @@
 				escape: false
 		});
 
-		table_support.init_resize();
 
 	});
 </script>
