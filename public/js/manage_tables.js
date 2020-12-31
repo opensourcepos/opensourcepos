@@ -319,7 +319,6 @@
 		},
 		handle_submit: handle_submit,
 		init: init,
-		init_resize: init_resize,
 		do_delete: do_action("delete"),
 		do_restore: do_action("restore"),
 		refresh : refresh,
