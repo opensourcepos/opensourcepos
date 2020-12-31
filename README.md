@@ -154,11 +154,9 @@ FAQ
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
-* If you see the item edit dialog box empty starting with version 3.3.0, please disable `only_full_group_by` option from MySQL/MariaDB. See [issue #2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
-
 * PHP 8.0 is not currently supported, see [issue #3051](https://github.com/opensourcepos/opensourcepos/issues/3051).
 
-* PHP 5.6 is no longer support as deprecated and not safe to use from security perspective.
+* PHP 5.5 and 5.6 are no longer supported due to the fact that they have been deprecated and not safe to use from security point of view.
 
 Credits
 -------
