@@ -91,7 +91,6 @@
 		});
 
 		init_dialog();
-		table_support.init_resize();
 	});
 </script>
 
