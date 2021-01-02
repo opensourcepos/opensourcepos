@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "Opravdu chcete smazat vybranou účtenku?";
 $lang["sales_confirm_restore"] = "Opravdu chcete obnovit vybranou účtenku?";
 $lang["sales_credit"] = "Kreditní karta";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Jméno";
 $lang["sales_customer_address"] = "Adresa";
 $lang["sales_customer_discount"] = "Sleva";

@@ -36,20 +36,11 @@ class Sales extends Secure_Controller
 		{
 			$data['table_headers'] = get_sales_manage_table_headers();
 
-			// filters that will be loaded in the multiselect dropdown
-			if($this->config->item('invoice_enable') == TRUE)
-			{
-				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
-					'only_due' => $this->lang->line('sales_due_filter'),
-					'only_check' => $this->lang->line('sales_check_filter'),
-					'only_invoices' => $this->lang->line('sales_invoice_filter'));
-			}
-			else
-			{
-				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
-					'only_due' => $this->lang->line('sales_due_filter'),
-					'only_check' => $this->lang->line('sales_check_filter'));
-			}
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+				'only_due' => $this->lang->line('sales_due_filter'),
+				'only_check' => $this->lang->line('sales_check_filter'),
+				'only_creditcard' => $this->lang->line('sales_credit_filter'),
+				'only_invoices' => $this->lang->line('sales_invoice_filter'));
 
 			$this->load->view('sales/manage', $data);
 		}
@@ -78,6 +69,7 @@ class Sales extends Secure_Controller
 						 'only_cash' => FALSE,
 						 'only_due' => FALSE,
 						 'only_check' => FALSE,
+						 'only_creditcard' => FALSE,
 						 'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
 						 'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
 

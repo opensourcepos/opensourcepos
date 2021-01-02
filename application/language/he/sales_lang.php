@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "האם אתה בטוח שברצונך למחו�
 $lang["sales_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את המכירות שנבחרו?";
 $lang["sales_credit"] = "כרטיס אשראי";
 $lang["sales_credit_deposit"] = "הפקדת אשראי";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "שם";
 $lang["sales_customer_address"] = "כתובת";
 $lang["sales_customer_discount"] = "הנחה";

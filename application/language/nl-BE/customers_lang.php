@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Btwnummer";
 $lang["customers_account_number_duplicate"] = "Deze VAT nummer is reeds aanwezig in de database.";
 $lang["customers_available_points"] = "Beschikbare Punten";

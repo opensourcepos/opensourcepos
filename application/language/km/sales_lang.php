@@ -25,6 +25,7 @@ $lang["sales_confirm_delete"] = "";
 $lang["sales_confirm_restore"] = "";
 $lang["sales_credit"] = "";
 $lang["sales_credit_deposit"] = "";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "";
 $lang["sales_customer_address"] = "";
 $lang["sales_customer_discount"] = "";
