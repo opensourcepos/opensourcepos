@@ -461,8 +461,8 @@ if(isset($success))
 			?>
 
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?></th>
-				<th style="width: 45%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
+				<th style='width: 55%; font-size: 150%'><?php echo $this->lang->line('sales_total'); ?></th>
+				<th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
 			</tr>
 		</table>
 
@@ -477,8 +477,8 @@ if(isset($success))
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
 				</tr>
 				<tr>
-					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due');?></th>
-					<th style="width: 45%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
+					<th style="width: 55%; font-size: 120%"><?php echo $this->lang->line('sales_amount_due');?></th>
+					<th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
 				</tr>				
 			<?php
 			if($apply_exchange_rate)
@@ -985,7 +985,7 @@ $(document).ready(function()
 
 function check_payment_type()
 {
-	var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
+	var cash_mode = <?php echo json_encode($cash_mode); ?>;
 
 	if($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
 	{
@@ -997,9 +997,9 @@ function check_payment_type()
 		$(".non-giftcard-input").attr('disabled', true);
 		$(".giftcard-input:enabled").val('').focus();
 	}
-	else if($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
+	else if(($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_mode == '1'))
 	{
-		$("#sale_total").html("<?php echo to_currency($cash_total); ?>");
+		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
 		$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
 		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($cash_amount_due); ?>");
@@ -1009,9 +1009,9 @@ function check_payment_type()
 	else
 	{
 		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
-		$("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
+		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($non_cash_amount_due); ?>");
+		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($amount_due); ?>");
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
 	}

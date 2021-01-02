@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_all_set"] = "การตั้งค่าอนุญาตไฟล์ทั้งหมดถูกต้อง!";
@@ -155,8 +154,8 @@ $lang["config_invoice_email_message"] = "ต้นแบบใบแจ้งห
 $lang["config_invoice_enable"] = "เปิดการออกใบแจ้งหนี้";
 $lang["config_invoice_printer"] = "เครื่องพิมพ์สำหรับการออกใบแจ้งหนี้";
 $lang["config_invoice_type"] = "ชนิดของใบแจ้งหนี้";
-$lang["config_is_readable"] = "";
-$lang["config_is_writable"] = "ต้องเขียนข้อมูลได้ แต่สิทธิ์อนุญาตต้องสูงกว่าค่า 750";
+$lang["config_is_readable"] = "สามารถอ่านได้ แต่สิทธิ์ไม่ถูกต้อง กรุณาตั้งค่าเป็น 640 หรือ 660 แล้วโหลดใหม่อีกครั้ง";
+$lang["config_is_writable"] = "สามารถเขียนข้อมูลได้ แต่สิทธิ์ไม่ถูกต้อง ต้องสูงกว่าค่า 750 กรุณาตั้งค่าเป็น 750 แล้วโหลดใหม่อีกครั้ง";
 $lang["config_jsprintsetup_required"] = "คำเตือน! ฟังก์ชันการทำงานที่ถูกปิดอยู่ จะสามารถใช้งานได้เมื่อติดตั้ง FireFox jsPrintSetup แล้วเท่านั้น, จะบันทึกข้อมูลหรือไม่?";
 $lang["config_language"] = "ภาษา";
 $lang["config_last_used_invoice_number"] = "หมายเลขใบแจ้งหนี้ฉบับล่าสุด";
@@ -205,7 +204,7 @@ $lang["config_number_locale_tooltip"] = "Find a suitable locale through this lin
 $lang["config_os_timezone"] = "เขตเวลาของระบบ OSPOS:";
 $lang["config_ospos_info"] = "ข้อมูลการติดตั้งระบบ OSPOS";
 $lang["config_payment_options_order"] = "ตัวเลือกการชำระเงิน";
-$lang["config_perm_risk"] = "การอนุญาตที่มีค่าสูงกว่า 750 ทำให้ซอฟต์แวร์นี้มีความเสี่ยงด้านความปลอดภัย";
+$lang["config_perm_risk"] = "การอนุญาตที่ไม่ถูกต้องทำให้ซอฟต์แวร์นี้ตกอยู่ในความเสี่ยง";
 $lang["config_phone"] = "เบอร์โทรศัพท์";
 $lang["config_phone_required"] = "เบอร์โทรต้องกรอก";
 $lang["config_print_bottom_margin"] = "ขอบล่าง";
@@ -251,7 +250,7 @@ $lang["config_receipt_template"] = "ต้นแบบใบเสร็จ";
 $lang["config_receiving_calculate_average_price"] = "คำนวณราคาเฉลี่ย (รับมา)";
 $lang["config_recv_invoice_format"] = "ใบส่งของ";
 $lang["config_register_mode_default"] = "ค่าปริยายรูปแบบการลงทะเบียน";
-$lang["config_report_an_issue"] = "";
+$lang["config_report_an_issue"] = "รายงานปัญหา";
 $lang["config_return_policy_required"] = "ต้องกรอกเงื่อนไขการคืนสินค้า";
 $lang["config_reward"] = "คะแนนสะสม";
 $lang["config_reward_configuration"] = "การตั้งค่าคะแนนสะสม";

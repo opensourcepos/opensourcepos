@@ -15,7 +15,9 @@ class Sale extends CI_Model
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
-					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
+					SUM(payments.cash_refund) AS sale_cash_refund,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
@@ -31,15 +33,20 @@ class Sale extends CI_Model
 
 		$sales_tax = 'ROUND(IFNULL(SUM(sales_items_taxes.sales_tax), 0), ' . $decimals . ')';
 		$internal_tax = 'ROUND(IFNULL(SUM(sales_items_taxes.internal_tax), 0), ' . $decimals . ')';
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $cash_adjustment;
+			$sale_subtotal = $sale_total . ' - ' . $internal_tax;
 		}
 		else
 		{
-			$sale_total = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ') + ' . $sales_tax;
+			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') - ' . $internal_tax . ' - ' . $cash_adjustment;
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $sales_tax . ' + ' . $cash_adjustment;
 		}
+
+
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
@@ -76,10 +83,12 @@ class Sale extends CI_Model
 				MAX(customer_p.last_name) AS last_name,
 				MAX(customer_p.email) AS email,
 				MAX(customer_p.comments) AS comments,
+				MAX(IFNULL(payments.sale_cash_adjustment, 0)) AS cash_adjustment,
+				MAX(IFNULL(payments.sale_cash_refund, 0)) AS cash_refund,
 				' . "
 				$sale_total AS amount_due,
 				MAX(IFNULL(payments.sale_payment_amount, 0)) AS amount_tendered,
-				MAX(IFNULL(payments.sale_payment_amount,0)) - $sale_total AS change_due,
+				(MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
@@ -132,7 +141,8 @@ class Sale extends CI_Model
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
-					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
@@ -150,9 +160,10 @@ class Sale extends CI_Model
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
 		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 		$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') - ' . $internal_tax;
-		$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $sales_tax;
+		$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $sales_tax . ' + ' . $cash_adjustment;
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
@@ -199,7 +210,7 @@ class Sale extends CI_Model
 					($sale_total - $sale_cost) AS profit,
 					$sale_total AS amount_due,
 					MAX(payments.sale_payment_amount) AS amount_tendered,
-					(MAX(payments.sale_payment_amount) - ($sale_total)) AS change_due,
+					(MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
 					" . '
 					MAX(payments.payment_type) AS payment_type
 			');
@@ -368,6 +379,11 @@ class Sale extends CI_Model
 		if($filters['only_check'] != FALSE)
 		{
 			$this->db->like('payment_type', $this->lang->line('sales_check'));
+		}
+
+		if($filters['only_creditcard'] != FALSE)
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_credit'));
 		}
 
 		$this->db->group_by('payment_type');
@@ -547,17 +563,19 @@ class Sale extends CI_Model
 				$payment_type = $payment['payment_type'];
 				$payment_amount = $payment['payment_amount'];
 				$cash_refund = $payment['cash_refund'];
+				$cash_adjustment = $payment['cash_adjustment'];
 				$employee_id = $payment['employee_id'];
 
 				if($payment_id == -1 && $payment_amount != 0)
 				{
 					// Add a new payment transaction
 					$sales_payments_data = array(
-						'sale_id' => $sale_id,
-						'payment_type' => $payment_type,
-						'payment_amount' => $payment_amount,
-						'cash_refund' => $cash_refund,
-						'employee_id' => $employee_id
+						'sale_id'		  => $sale_id,
+						'payment_type'	  => $payment_type,
+						'payment_amount'  => $payment_amount,
+						'cash_refund'	  => $cash_refund,
+						'cash_adjustment' => $cash_adjustment,
+						'employee_id'	  => $employee_id
 					);
 					$success = $this->db->insert('sales_payments', $sales_payments_data);
 				}
@@ -569,7 +587,8 @@ class Sale extends CI_Model
 						$sales_payments_data = array(
 							'payment_type' => $payment_type,
 							'payment_amount' => $payment_amount,
-							'cash_refund' => $cash_refund
+							'cash_refund' => $cash_refund,
+							'cash_adjustment' => $cash_adjustment
 						);
 						$this->db->where('payment_id', $payment_id);
 						$success = $this->db->update('sales_payments', $sales_payments_data);
@@ -586,7 +605,6 @@ class Sale extends CI_Model
 
 			$success &= $this->db->trans_status();
 		}
-
 		return $success;
 	}
 
@@ -663,11 +681,12 @@ class Sale extends CI_Model
 			}
 
 			$sales_payments_data = array(
-				'sale_id'		 => $sale_id,
-				'payment_type'	 => $payment['payment_type'],
-				'payment_amount' => $payment['payment_amount'],
-				'cash_refund'    => $payment['cash_refund'],
-				'employee_id'	 => $employee_id
+				'sale_id'		  => $sale_id,
+				'payment_type'	  => $payment['payment_type'],
+				'payment_amount'  => $payment['payment_amount'],
+				'cash_refund'     => $payment['cash_refund'],
+				'cash_adjustment' => $payment['cash_adjustment'],
+				'employee_id'	  => $employee_id
 			);
 
 			$this->db->insert('sales_payments', $sales_payments_data);
@@ -1131,15 +1150,17 @@ class Sale extends CI_Model
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
 		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
 
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
+
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ')';
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $cash_adjustment;
 			$sale_subtotal = $sale_total . ' - ' . $internal_tax;
 		}
 		else
 		{
-			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') - ' . $internal_tax;
-			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $sales_tax;
+			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') - ' . $internal_tax . ' + ' . $cash_adjustment;
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ') + ' . $sales_tax . ' + ' . $cash_adjustment;
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
@@ -1167,7 +1188,8 @@ class Sale extends CI_Model
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
-					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
+					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
