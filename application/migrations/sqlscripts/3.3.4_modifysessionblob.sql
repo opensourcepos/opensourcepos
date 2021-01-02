@@ -1,0 +1,2 @@
+ALTER TABLE `ospos_sessions`
+  MODIFY COLUMN `data` LONGBLOB NOT NULL;
