@@ -95,8 +95,8 @@ class Specific_supplier extends Report
 			$this->db->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		$this->db->group_by('sale_id');
-		$this->db->order_by('MAX(sale_date)');
+		$this->db->group_by('item_id');
+		$this->db->order_by('sale_id');
 
 		return $this->db->get()->result_array();
 	}
