@@ -5,7 +5,7 @@
   "main": "index.php",
   "license": "MIT",
   "authors": [
-    "jekkos <jeroen.peelaerts - at - gmail.com>",
+    "jekkos <jekkos - at - opensourcepos.org>",
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
   "scripts": {
