@@ -891,8 +891,9 @@ $(document).ready(function()
 	});
 });
 
-function check_payment_type() {
-	var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
+function check_payment_type()
+{
+	var cash_mode = <?php echo json_encode($cash_mode); ?>;
 
 	if($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
 	{
@@ -904,9 +905,9 @@ function check_payment_type() {
 		$(".non-giftcard-input").attr('disabled', true);
 		$(".giftcard-input:enabled").val('').focus();
 	}
-	else if($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
+	else if(($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_mode == '1'))
 	{
-		$("#sale_total").html("<?php echo to_currency($cash_total); ?>");
+		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
 		$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
 		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($cash_amount_due); ?>");
@@ -916,9 +917,9 @@ function check_payment_type() {
 	else
 	{
 		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
-		$("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
+		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($non_cash_amount_due); ?>");
+		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($amount_due); ?>");
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
 	}
