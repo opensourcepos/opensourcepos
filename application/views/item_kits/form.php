@@ -133,7 +133,6 @@
 							'name'=>'print_option',
 							'type'=>'radio',
 							'value'=>1,
-							'value'=>1,
 							'checked'=>$item_kit_info->print_option == PRINT_PRICED)
 					); ?> <?php echo $this->lang->line('item_kits_priced_only'); ?>
 				</label>
@@ -296,7 +295,7 @@ $(document).ready(function()
 			name: "<?php echo $this->lang->line('items_name_required'); ?>",
 			category: "<?php echo $this->lang->line('items_category_required'); ?>",
 			item_kit_number: "<?php echo $this->lang->line('item_kits_item_number_duplicate'); ?>"
-        }
+		}
 	}, form_support.error));
 });
 
