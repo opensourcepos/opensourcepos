@@ -117,7 +117,6 @@ class Item_kits extends Secure_Controller
 			$item['item_id'] = $this->xss_clean($item_kit_item['item_id']);
 			$item['quantity'] = $this->xss_clean($item_kit_item['quantity']);
 
-
 			$items[] = $item;
 		}
 

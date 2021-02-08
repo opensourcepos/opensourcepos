@@ -412,7 +412,7 @@ class Sales extends Secure_Controller
 			// Add kit item to order if one is assigned
 			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
 
-			$item_kit_id = (count($pieces) > 1)	? $pieces[1] : $item_id_or_number_or_item_kit_or_receipt;
+			$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $item_id_or_number_or_item_kit_or_receipt;
 			$item_kit_info = $this->Item_kit->get_info($item_kit_id);
 			$kit_item_id = $item_kit_info->kit_item_id;
 			$kit_price_option = $item_kit_info->price_option;
