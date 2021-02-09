@@ -317,6 +317,8 @@ $(document).ready(function()
 
 	var submit_form = function()
 	{
+		$('#submit').prop('disabled',true).css('opacity',0.5);
+
 		$(this).ajaxSubmit(
 		{
 			success: function(response)
