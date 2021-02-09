@@ -456,12 +456,12 @@
 $(document).ready(function()
 {
 	$('#new').click(function() {
-		stay_open = true;
+	    stay_open = true;
 		$('#item_form').submit();
 	});
 
 	$('#submit').click(function() {
-		stay_open = false;
+	    stay_open = false;
 	});
 
 	$("input[name='tax_category']").change(function() {
@@ -521,7 +521,9 @@ $(document).ready(function()
 	var init_validation = function() {
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
-				$(form).ajaxSubmit({
+                $('#submit').prop('disabled',true).css('opacity',0.5);
+
+			    $(form).ajaxSubmit({
 					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
 						if(stay_open)
@@ -533,6 +535,7 @@ $(document).ready(function()
 								'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
 							// de-select any checkboxes, radios and drop-down menus
 							$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
+                            $('#submit').prop('disabled',false).css('opacity',1);
 						}
 						else
 						{

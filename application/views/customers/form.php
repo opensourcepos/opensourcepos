@@ -450,6 +450,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
+
 	$("input[name='sales_tax_code_name']").change(function() {
 		if( ! $("input[name='sales_tax_code_name']").val() ) {
 			$("input[name='sales_tax_code_id']").val('');
@@ -474,6 +475,8 @@ $(document).ready(function()
 
 	$('#customer_form').validate($.extend({
 		submitHandler: function(form) {
+			$('#submit').prop('disabled',true).css('opacity',0.5);
+
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
