@@ -27,7 +27,6 @@ services:
         volumes:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
-          - ./vendor:/app/vendor:ro
         environment:
           - CI_ENV=${OSPOS_CI_ENV}
           - FORCE_HTTPS=true
