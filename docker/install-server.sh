@@ -10,6 +10,8 @@ fi
 
 . ./.env
 
+/bin/bash ./build_assets.sh
+
 docker-compose -f ../docker-compose.yml build
 
 /bin/bash ./init-letsencrypt.sh
