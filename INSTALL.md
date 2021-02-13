@@ -38,31 +38,16 @@ From now onwards OSPOS can be deployed using Docker on Linux and Mac, locally or
 This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile.
 Docker runs natively on Mac and Linux. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
-Since OSPOS version 3.3.0 the docker installation offers a reverse proxy based on nginx with a (if local) Self signed certificate termination (aka HTTPS connection).
-Behind the reverse proxy you can access OSPOS using https (port 443) and myPhpAdmin using port 8000.
-Port 80 (standard http) is not available for OSPOS, it's only available for a cert manager service in case of server installation.
+***Be aware that this setup is not suited for production usage. Change the default passwords in the compose file before exposing the containers publicly.***
 
-* To build and run the image, download the latest build from bintray.
-* Install envsubst from https://github.com/a8m/envsubst on your machine
-* Issue the following commands in a terminal with docker installed:
+Start the containers using following command
 
 ```
-    docker/install-local.sh
-```
-
-* When required to renew a certificate say (y)es.
-* When the script has terminated to run, wait about a minute before connecting to https://127.0.0.1.
-* The web browser will warn you of a self certificate exception, accept and continue
-* If you do https://127.0.0.1:8000 (port 8000) instead, you would be able to access a phpMyAdmin service connected to OSPOS MariaDB
-
-* To stop the docker issue the following command:
-
-```
-    docker/uninstall.sh
+    docker-compose up
 ```
 
 
-Host install using Docker
+Nginx install using Docker
 -------------------------
 
 Since OSPOS version 3.3.0 the docker installation offers a reverse proxy based on nginx with a Letsencrypt TLS certificate termination (aka HTTPS connection).
@@ -76,13 +61,7 @@ The variable STAGING needs to be set to 0 when you are confident your configurat
 Follow local install steps, but instead of 
 
 ```
-    docker/install-local.sh
-```
-
-use
-
-```
-    docker/install-server.sh
+    docker/install-nginx.sh
 ```
 
 Do not use 
