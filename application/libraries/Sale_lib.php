@@ -1270,6 +1270,10 @@ class Sale_lib
 		{
 			$discount = bcmul($total, bcdiv($discount, 100));
 		}
+		else
+		{
+			$discount = bcmul($quantity, $discount);
+		}
 
 		return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);
 	}
