@@ -12,10 +12,7 @@ networks:
 
 services:
     ospos:
-        build:
-            context: .
-            target: ospos
-        container_name: ospos
+        image: jekkos/opensourcepos:3.3.3
         restart: always
         depends_on:
           - mysql
@@ -53,53 +50,3 @@ services:
           - MYSQL_USER=${OSPOS_MYSQL_USERNAME}
           - MYSQL_PASSWORD=${OSPOS_MYSQL_PASSWORD}
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin
-        restart: always
-        depends_on:
-          - mysql
-        expose:
-          - "80"
-        networks:
-          - app_net
-          - db_net
-        environment:
-          - MYSQL_USERNAME=${OSPOS_MYSQL_USERNAME}
-          - MYSQL_ROOT_PASSWORD=${OSPOS_MYSQL_ROOT_PASSWORD}
-          - PMA_HOST=mysql
-
-    nginx:
-        image: nginx:1.19-alpine
-        container_name: nginx
-        restart: always
-        depends_on:
-          - ospos
-          - phpmyadmin
-          - certbot
-        volumes:
-          - ./docker/data/nginx/nginx.tmpl:/etc/nginx/nginx.tmpl:ro
-          - ./docker/data/nginx/error_log.log:/etc/nginx/error_log.log
-          - ./docker/data/certbot/conf:/etc/letsencrypt:ro
-          - ./docker/data/certbot/www:/var/www/certbot:ro
-        ports:
-          - "80:80"
-          - "443:443"
-          - "8000:8000"
-        networks:
-          - app_net
-        environment:
-          - WEB_DOMAIN=${OSPOS_DOMAIN_NAME}
-          - ESC=$$
-        command: "/bin/sh -c 'envsubst < /etc/nginx/nginx.tmpl > /etc/nginx/nginx.conf & while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-
-    certbot:
-        image: certbot/certbot
-        container_name: certbot
-        restart: always
-        volumes:
-          - ./docker/data/certbot/conf:/etc/letsencrypt
-          - ./docker/data/certbot/www:/var/www/certbot
-        networks:
-          - app_net
-        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
