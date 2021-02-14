@@ -43,6 +43,7 @@ services:
           - db_net
         volumes:
           - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+          - database:/var/lib/mysql:rw
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale
           - MYSQL_DATABASE=ospos
