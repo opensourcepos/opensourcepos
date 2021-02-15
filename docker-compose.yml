@@ -5,6 +5,8 @@ volumes:
         driver: local
     logs:
         driver: local
+    mysql:
+        driver: local
 
 networks:
     app_net:
@@ -25,7 +27,7 @@ services:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
         environment:
-          - CI_ENV=${OSPOS_CI_ENV}
+          - CI_ENV=production
           - FORCE_HTTPS=true
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
@@ -43,7 +45,7 @@ services:
           - db_net
         volumes:
           - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
-          - database:/var/lib/mysql:rw
+          - mysql:/var/lib/mysql:rw
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale
           - MYSQL_DATABASE=ospos
