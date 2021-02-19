@@ -15,8 +15,15 @@
 			const form = $('form', dlog_ref.$modalBody).first();
 			const validator = form.data('validator');
 			const submitted = validator && validator.formSubmitted;
+			const is_valid = !$.isEmptyObject(validator.invalid)
+
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
+
+			if (button_id == 'submit' && is_valid){
+				$('#submit').prop('disabled', true).css('opacity', 0.5);
+			}
+
 			if (button_id == 'submit' && (!submitted && btn_id != "btnNew")) {
 				form.submit();
 			}

@@ -521,8 +521,6 @@ $(document).ready(function()
 	var init_validation = function() {
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
-                $('#submit').prop('disabled',true).css('opacity',0.5);
-
 			    $(form).ajaxSubmit({
 					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
@@ -535,7 +533,6 @@ $(document).ready(function()
 								'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
 							// de-select any checkboxes, radios and drop-down menus
 							$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
-                            $('#submit').prop('disabled',false).css('opacity',1);
 						}
 						else
 						{

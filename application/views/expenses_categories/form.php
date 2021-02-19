@@ -37,8 +37,6 @@ $(document).ready(function()
 {
 	$('#expense_category_edit_form').validate($.extend({
 		submitHandler: function(form) {
-			$('#submit').prop('disabled',true).css('opacity',0.5);
-
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
