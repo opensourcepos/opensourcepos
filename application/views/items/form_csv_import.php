@@ -26,7 +26,7 @@ $(document).ready(function()
 {
 	$('#csv_form').validate($.extend({
 		submitHandler: function(form) {
-		    $(form).ajaxSubmit({
+			$(form).ajaxSubmit({
 				success:function(response)
 				{
 					dialog_support.hide();

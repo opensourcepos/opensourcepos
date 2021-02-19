@@ -456,12 +456,12 @@
 $(document).ready(function()
 {
 	$('#new').click(function() {
-	    stay_open = true;
+		stay_open = true;
 		$('#item_form').submit();
 	});
 
 	$('#submit').click(function() {
-	    stay_open = false;
+		stay_open = false;
 	});
 
 	$("input[name='tax_category']").change(function() {
@@ -521,7 +521,7 @@ $(document).ready(function()
 	var init_validation = function() {
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
-			    $(form).ajaxSubmit({
+				$(form).ajaxSubmit({
 					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
 						if(stay_open)

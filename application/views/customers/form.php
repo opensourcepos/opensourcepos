@@ -450,7 +450,6 @@
 //validation and submit handling
 $(document).ready(function()
 {
-
 	$("input[name='sales_tax_code_name']").change(function() {
 		if( ! $("input[name='sales_tax_code_name']").val() ) {
 			$("input[name='sales_tax_code_id']").val('');
