@@ -24,7 +24,7 @@ abstract class Summary_report extends Report
 		$decimals = totals_decimals();
 
 		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
-			. " THEN ROUND(sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.item_unit_price * sales_items.discount / 100), $decimals) "
+			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
