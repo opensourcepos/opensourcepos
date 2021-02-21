@@ -1,0 +1,35 @@
+<?php 
+
+$lang["item_kits_add_item"] = "Додати товар";
+$lang["item_kits_all"] = "Все";
+$lang["item_kits_cannot_be_deleted"] = "Не можливо видалити товар(и).";
+$lang["item_kits_confirm_delete"] = "Ви впевнені, що хочете видалити вибрані набори товарів?";
+$lang["item_kits_confirm_restore"] = "Ви впевнені, що хочете відновити вибрані набори товарів?";
+$lang["item_kits_description"] = "Опис комплекту товарів";
+$lang["item_kits_discount"] = "Знижка";
+$lang["item_kits_discount_fixed"] = "Фіксована знижка";
+$lang["item_kits_discount_percent"] = "Відсоткова знижки";
+$lang["item_kits_discount_type"] = "Тип знижки";
+$lang["item_kits_error_adding_updating"] = "При додаванні/оновленні комплекту товарів виникла помилка.";
+$lang["item_kits_find_kit_item"] = "Комплект товару";
+$lang["item_kits_info"] = "Інформація про комплект товару";
+$lang["item_kits_item"] = "Товар";
+$lang["item_kits_items"] = "Товари";
+$lang["item_kits_kit"] = "ІН комплекту";
+$lang["item_kits_kit_and_components"] = "Комплект та комплектуючі";
+$lang["item_kits_kit_and_stock"] = "Комплект та запас(склад)";
+$lang["item_kits_kit_only"] = "Тільки комплект";
+$lang["item_kits_name"] = "Найменування комплекту товару";
+$lang["item_kits_new"] = "Новий комплект товару";
+$lang["item_kits_no_item_kits_to_display"] = "Немає товару для відображення.";
+$lang["item_kits_none_selected"] = "Ви не обрали жодного товару.";
+$lang["item_kits_one_or_multiple"] = "Комплект товару(ів)";
+$lang["item_kits_price_option"] = "Варіант ціни";
+$lang["item_kits_priced_only"] = "Тільки за ціною";
+$lang["item_kits_print_option"] = "Параметр друку";
+$lang["item_kits_quantity"] = "Кількість";
+$lang["item_kits_sequence"] = "Послідовність";
+$lang["item_kits_successful_adding"] = "Комплект товару успішно додано.";
+$lang["item_kits_successful_deleted"] = "Комплект товару успішно видалено.";
+$lang["item_kits_successful_updating"] = "Комплект товару успішно оновлено.";
+$lang["item_kits_update"] = "Оновити комплект товару";

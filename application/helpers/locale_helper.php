@@ -89,6 +89,7 @@ function get_languages()
 		'th:thai' => 'Thai',
 		'tl-PH:talong' => 'Tagalog (Philippines)',
 		'tr:turkish' => 'Turkish',
+		'uk-UA:ukrainian' => 'Ukrainian',
 		'ur-PK:urdu' => 'Urdu (Islamic Republic of Pakistan)',
 		'vi:vietnamese' => 'Vietnamese',
 		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
