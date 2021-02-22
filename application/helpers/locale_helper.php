@@ -58,6 +58,7 @@ function get_languages()
 		'ar-LB:arabic' => 'Arabic (Lebanon)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
+		'bs:bosnian' => 'Bosnian',
 		'cs:czech' => 'Czech',
 		'da:danish' => 'Danish',
 		'de:german' => 'German (Germany)',
