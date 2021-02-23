@@ -20,7 +20,7 @@
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
 
-			if (button_id == 'submit' && is_valid){
+			if (button_id == 'submit' && is_valid && button_id != "btnNew"){
 				$('#submit').prop('disabled', true).css('opacity', 0.5);
 			}
 
