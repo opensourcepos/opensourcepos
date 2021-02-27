@@ -98,6 +98,7 @@ class Customer extends Person
 	*/
 	public function get_stats($customer_id)
 	{
+		// TODO Rework this
 		// create a temporary table to contain all the sum and average of items
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
@@ -255,6 +256,7 @@ class Customer extends Person
 					'taxable'			=> 0,
 					'discount'			=> 0.00,
 					'discount_type'		=> 0,
+					'credit_limit'		=> 0,
 					'package_id'		=> NULL,
 					'points'			=> NULL,
 					'sales_tax_code_id'	=> NULL,

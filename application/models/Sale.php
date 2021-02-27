@@ -1115,7 +1115,7 @@ class Sale extends CI_Model
 	}
 
 	/**
-	 * Creates sales temporary dimentional table
+	 * Creates sales temporary dimensional table
 	 * We create a temp table that allows us to do easy report/sales queries
 	 */
 	public function create_temp_table(array $inputs)

@@ -12,6 +12,7 @@ $lang["customers_confirm_delete"] = "Are you sure you want to delete the selecte
 $lang["customers_confirm_restore"] = "Are you sure you want to restore selected customers(s)?";
 $lang["customers_consent"] = "Registration consent";
 $lang["customers_consent_required"] = "Registration consent is a required field.";
+$lang["customers_credit_limit"] = "Credit Limit";
 $lang["customers_csv_import_failed"] = "CSV import failed";
 $lang["customers_csv_import_nodata_wrongformat"] = "The uploaded file has no data or is incorrectly formatted.";
 $lang["customers_csv_import_partially_failed"] = "Customer import successful with some failures:";

@@ -86,6 +86,7 @@ class Detailed_sales extends Report
 			SUM(subtotal) AS subtotal,
 			SUM(tax) AS tax,
 			SUM(total) AS total,
+			SUM(CASE WHEN (total - sale_payment_amount) > 0 THEN (total - sale_payment_amount) ELSE 0 END) AS due,
 			SUM(cost) AS cost,
 			SUM(profit) AS profit,
 			MAX(payment_type) AS payment_type,
@@ -114,6 +115,14 @@ class Detailed_sales extends Report
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
+		elseif($inputs['sale_type'] == 'due')
+		{
+			$this->db->where('sale_status', COMPLETED);
+			$this->db->group_start();
+			$this->db->where('sale_type', SALE_TYPE_POS);
+			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$this->db->group_end();
+		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
 			$this->db->where('sale_status', SUSPENDED);
@@ -135,6 +144,10 @@ class Detailed_sales extends Report
 		}
 
 		$this->db->group_by('sale_id');
+		if($inputs['sale_type'] == 'due')
+		{
+			$this->db->having('due > 0');
+		}
 		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();

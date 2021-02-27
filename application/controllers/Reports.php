@@ -1347,6 +1347,7 @@ class Reports extends Secure_Controller
 		}
 		$sale_type_options['canceled'] = $this->lang->line('reports_canceled');
 		$sale_type_options['returns'] = $this->lang->line('reports_returns');
+		$sale_type_options['due'] = $this->lang->line('reports_balance_due');
 		return $sale_type_options;
 	}
 
@@ -1387,6 +1388,16 @@ class Reports extends Secure_Controller
 				$button_label = $this->lang->line('common_delete');
 			}
 
+			$payments = $row['payment_type'];
+			if($row['due'] > 0)
+			{
+				if($row['payment_type'] != "")
+				{
+					$payments .= ', ';
+				}
+				$payments .= 'Balance ' . to_currency($row['due']);
+			}
+
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
@@ -1399,7 +1410,7 @@ class Reports extends Secure_Controller
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
-				'payment_type' => $row['payment_type'],
+				'payment_type' => $payments,
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'.$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
 					array('class' => 'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))

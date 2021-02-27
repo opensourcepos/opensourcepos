@@ -81,6 +81,21 @@
 				</div>
 
 				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_credit_limit'), 'credit_limit', array('class' => 'control-label col-xs-3')); ?>
+					<div class='col-xs-4'>
+						<div class="input-group input-group-sm">
+							<?php echo form_input(array(
+									'name'=>'credit_limit',
+									'id'=>'credit_limit',
+									'class'=>'form-control input-sm',
+									'onClick'=>'this.select();',
+									'value'=>$person_info->credit_limit)
+							); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<?php echo form_input(array(
@@ -227,7 +242,28 @@
 							</div>
 						</div>
 					</div>
-					
+
+					<div class="form-group form-group-sm">
+						<?php echo form_label($this->lang->line('customers_balance_due'), 'total', array('class' => 'control-label col-xs-3')); ?>
+						<div class="col-xs-4">
+							<div class="input-group input-group-sm">
+								<?php if (!currency_side()): ?>
+									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+								<?php endif; ?>
+								<?php echo form_input(array(
+										'name'=>'balance_due',
+										'id'=>'balance_due',
+										'class'=>'form-control input-sm',
+										'value'=>to_currency_no_money($stats->balance_due),
+										'disabled'=>'')
+								); ?>
+								<?php if (currency_side()): ?>
+									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+
 					<div class="form-group form-group-sm">
 						<?php echo form_label($this->lang->line('customers_max'), 'max', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">

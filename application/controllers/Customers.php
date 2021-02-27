@@ -38,6 +38,7 @@ class Customers extends Persons
 			//create object with empty properties.
 			$stats = new stdClass;
 			$stats->total = 0;
+			$stats->balance_due = 0;
 			$stats->min = 0;
 			$stats->max = 0;
 			$stats->average = 0;
@@ -74,6 +75,7 @@ class Customers extends Persons
 				//create object with empty properties.
 				$stats = new stdClass;
 				$stats->total = 0;
+				$stats->balance_due = 0;
 				$stats->min = 0;
 				$stats->max = 0;
 				$stats->average = 0;
@@ -260,6 +262,7 @@ class Customers extends Persons
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount' => $this->input->post('discount') == '' ? 0.00 : $this->input->post('discount'),
 			'discount_type' => $this->input->post('discount_type') == NULL ? PERCENT : $this->input->post('discount_type'),
+			'credit_limit' => $this->input->post('credit_limit') == '' ? 0.00 : $this->input->post('credit_limit'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
 			'taxable' => $this->input->post('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
