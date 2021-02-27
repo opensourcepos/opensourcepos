@@ -227,6 +227,8 @@ function get_customer_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Tag->get_definitions_by_flags(Tag::SHOW_IN_CUSTOMERS);
+
 	$headers = array(
 		array('people.person_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
@@ -239,6 +241,11 @@ function get_customer_manage_table_headers()
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
 		$headers[] = array('messages' => '', 'sortable' => FALSE);
+	}
+
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_id => $definition_name, 'sortable' => TRUE);
 	}
 
 	return transform_headers($headers);
