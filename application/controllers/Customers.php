@@ -61,6 +61,8 @@ class Customers extends Persons
 		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
 
+		$definition_names = $this->Tag->get_definitions_by_flags(Tag::SHOW_IN_CUSTOMERS);
+
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
 
@@ -626,9 +628,9 @@ class Customers extends Persons
 							$invalidated &= $this->Customer->check_account_number_exists($account_number);
 						}
 					}
-					else
+					if(!$invalidated)
 					{
-						$invalidated = TRUE;
+						$invalidated = $this->data_error_check($line, $person_data);
 					}
 
 				//Save to database
@@ -639,12 +641,12 @@ class Customers extends Persons
 						// save customer to Mailchimp selected list
 						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
 					}
-				//Insert or update item failure
+				//Insert or update customer failure
 					else
 					{
 						$failed_row = $i+1;
 						$failCodes[] = $failed_row;
-						log_message("ERROR","CSV Item import failed on line ". $failed_row .". This item was not imported.");
+						log_message("ERROR","CSV Item import failed on line ". $failed_row .". This customer was not imported.");
 					}
 				}
 
@@ -671,7 +673,7 @@ class Customers extends Persons
 	 * Checks the entire line of data in an import file for errors
 	 *
 	 * @param	array	$line
-	 * @param 	array	$customer_data
+	 * @param 	array	$person_data
 	 *
 	 * @return	bool	Returns FALSE if all data checks out and TRUE when there is an error in the data
 	 */
