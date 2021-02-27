@@ -92,6 +92,12 @@
 					</div>
 				</div>
 
+				<div id="tags">
+					<script type="text/javascript">
+						$('#tags').load('<?php echo site_url("customers/tags/$person_info->person_id");?>');
+					</script>
+				</div>
+
 				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-4'>
