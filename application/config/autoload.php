@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('form', 'url', 'tabular', 'text', 'locale', 'html', 'download', 'directory', 'migration', 'importfile');
+$autoload['helper'] = array('form', 'url', 'tabular', 'text', 'locale', 'html', 'download', 'directory', 'migration', 'importfile', 'importcustomer');
 
 /*
 | -------------------------------------------------------------------
@@ -159,5 +159,6 @@ $autoload['model'] = array(
 	'Tax',
 	'Tax_category',
 	'Tax_code',
-	'Tax_jurisdiction'
+	'Tax_jurisdiction',
+	'Tag'
 );
