@@ -267,6 +267,95 @@ function get_customer_data_row($person, $stats)
 	));
 }
 
+/*
+Get html data row for tags
+*/
+function parse_tag_values($columns, $row) {
+	$tag_values = array();
+
+	foreach($columns as $column) {	
+		if (array_key_exists($column, $row))
+		{			
+			$tag_value = explode('|', $row[$column]);
+			$tag_values = array_merge($tag_values, $tag_value);
+		}
+	}
+	return $tag_values;
+}
+
+function expand_tag_values($definition_names, $row)
+{
+	$values = parse_tag_values(array('tag_values', 'tag_dtvalues', 'tag_dvalues'), $row);
+
+	$indexed_values = array();
+	foreach($values as $tag_value)
+	{
+		$exploded_value = explode('_', $tag_value);
+		if(sizeof($exploded_value) > 1)
+		{
+			$indexed_values[$exploded_value[0]] = $exploded_value[1];
+		}
+	}
+
+	$tag_values = array();
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		if(isset($indexed_values[$definition_id]))
+		{
+			$tag_value = $indexed_values[$definition_id];
+			$tag_values["$definition_id"] = $tag_value;
+		}
+	}
+
+	return $tag_values;
+}
+
+function get_tag_definition_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('definition_id' => $CI->lang->line('tags_definition_id')),
+		array('definition_name' => $CI->lang->line('tags_definition_name')),
+		array('definition_type' => $CI->lang->line('tags_definition_type')),
+		array('definition_flags' => $CI->lang->line('tags_definition_flags')),
+		array('definition_group' => $CI->lang->line('tags_definition_group')),
+	);
+
+	return transform_headers($headers);
+}
+
+function get_tag_definition_data_row($tag)
+{
+	$CI =& get_instance();
+
+	$controller_name = strtolower(get_class($CI));
+
+	if(count($tag->definition_flags) == 0)
+	{
+		$definition_flags = $CI->lang->line('common_none_selected_text');
+	}
+	else if($tag->definition_type == GROUP)
+	{
+		$definition_flags = "-";
+	}
+	else
+	{
+		$definition_flags = implode(', ', $tag->definition_flags);
+	}
+
+	return array (
+		'definition_id' => $tag->definition_id,
+		'definition_name' => $tag->definition_name,
+		'definition_type' => $tag->definition_type,
+		'definition_group' => $tag->definition_group,
+		'definition_flags' => $definition_flags,
+		'edit' => anchor("$controller_name/view/$tag->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		)
+	);
+} 
+
 
 /*
 Get the header for the suppliers tabular view
