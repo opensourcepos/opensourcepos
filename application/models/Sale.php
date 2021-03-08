@@ -33,18 +33,15 @@ class Sale extends CI_Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		$sales_tax = "ROUND(IFNULL(SUM(sales_items_taxes.sales_tax), 0), $decimals)";
-		$internal_tax = "ROUND(IFNULL(SUM(sales_items_taxes.internal_tax), 0), $decimals)";
+		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
-//			$sale_subtotal = "$sale_total - $internal_tax";
 		}
 		else
 		{
-//			$sale_subtotal = "ROUND(SUM($sale_price), $decimals) - $internal_tax - $cash_adjustment";
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 		}
 
@@ -57,8 +54,8 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS internal_tax, 
-					SUM(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS sales_tax
+					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ') AS internal_tax, 
+					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END), ' . $decimals . ' AS sales_tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -1055,7 +1052,6 @@ class Sale extends CI_Model
 	/**
 	 * Checks if quote number exists
 	 */
-	// TODO change to use new quote_number field
 	public function check_quote_number_exists($quote_number, $sale_id = '')
 	{
 		$this->db->from('sales');
@@ -1168,9 +1164,9 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) AS tax,
-					SUM(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS internal_tax,
-					SUM(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS sales_tax
+					SUM(ROUND(sales_items_taxes.item_tax_amount, ' . $decimals . ')) AS tax,
+					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS internal_tax,
+					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS sales_tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
