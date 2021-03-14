@@ -40,19 +40,28 @@ class Summary_taxes extends Summary_report
 		{
 			$where .= 'AND sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
+		$decimals = totals_decimals();
 
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END)';
-			$sale_subtotal = '(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END * (100 / (100 + sales_items_taxes.percent)))';
+			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT
+				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"
+				. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END)';
+
+			$sale_subtotal = '(CASE WHEN sales_items.discount_type = ' . PERCENT
+				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
+				. 'ELSE sales_items.quantity_purchased * sales_items.item_unit_price - sales_items.discount END * (100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
-			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END * (1 + (sales_items_taxes.percent / 100)))';
-			$sale_subtotal = '(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END)';
-		}
+			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT
+				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"
+				. ' ELSE sales_items.quantity_purchased * sales_items.item_unit_price - sales_items.discount END * (1 + (sales_items_taxes.percent / 100)))';
 
-		$decimals = totals_decimals();
+			$sale_subtotal = '(CASE WHEN sales_items.discount_type = ' . PERCENT
+				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"
+				. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END)';
+		}
 
 		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
 			FROM (
