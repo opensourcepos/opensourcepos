@@ -148,6 +148,11 @@
 				);?>
 	</div>
 </div>
+	<div id="person_attributes">
+		<script type="text/javascript">
+			$('#person_attributes').load('<?php echo site_url($controller_name . "/person_attributes/$person_info->person_id");?>');
+		</script>
+	</div>
 
 <div class="form-group form-group-sm">	
 	<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label col-xs-3')); ?>
