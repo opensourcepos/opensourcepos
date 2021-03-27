@@ -1,10 +1,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open_multipart('customers/do_csv_import/', array('id'=>'csv_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open_multipart('customers/import_csv_file/', array('id'=>'csv_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?php echo site_url('customers/csv'); ?>"><?php echo $this->lang->line('common_download_import_template'); ?></a>
+				<a href="<?php echo site_url('customers/generate_csv_file'); ?>"><?php echo $this->lang->line('common_download_import_template'); ?></a>
 			</div>
 		</div>
 
