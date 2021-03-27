@@ -6,6 +6,7 @@
 class Person_attribute extends CI_Model
 {
 	const SHOW_IN_CUSTOMERS = 1;
+	const SHOW_IN_EMPLOYEES = 2;
 
 	public static function get_definition_flags()
 	{
