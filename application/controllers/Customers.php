@@ -61,7 +61,7 @@ class Customers extends Persons
 		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
 
-		$definition_names = $this->Tag->get_definitions_by_flags(Tag::SHOW_IN_CUSTOMERS);
+		$definition_names = $this->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_CUSTOMERS);
 
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
@@ -226,10 +226,10 @@ class Customers extends Persons
 	}
 
 	/*
-	Adds Tags to customer controller
+	Adds Person_attributes to customer controller
 	*/
 
-	public function tags($customer_id = -1)
+	public function person_attributes($customer_id = -1)
 	{
 		$data['person_id'] = $customer_id;
 
@@ -237,30 +237,30 @@ class Customers extends Persons
 		$definition_ids = json_decode($this->input->post('definition_ids'), TRUE);
 
 
-		$data['definition_values'] = $this->Tag->get_tags_by_customer($customer_id) + $this->Tag->get_values_by_definitions($definition_ids);
+		$data['definition_values'] = $this->Person_attribute->get_person_attributes_by_person($customer_id) + $this->Person_attribute->get_values_by_definitions($definition_ids);
 
 
-		$data['definition_names'] = $this->Tag->get_definition_names();
+		$data['definition_names'] = $this->Person_attribute->get_definition_names();
 
 
 
 		foreach($data['definition_values'] as $definition_id => $definition_value)
 		{
-			$tag_value = $this->Tag->get_tag_value($customer_id, $definition_id);
+			$person_attribute_value = $this->Person_attribute->get_person_attribute_value($customer_id, $definition_id);
 
 
-			$tag_id = (empty($tag_value) || empty($tag_value->tag_id)) ? NULL : $tag_value->tag_id;
+			$person_attribute_id = (empty($person_attribute_value) || empty($person_attribute_value->person_attribute_id)) ? NULL : $person_attribute_value->person_attribute_id;
 	
 			$values = &$data['definition_values'][$definition_id];
-			$values['tag_id'] = $tag_id;
-			$values['tag_value'] = $tag_value;
+			$values['person_attribute_id'] = $person_attribute_id;
+			$values['person_attribute_value'] = $person_attribute_value;
 			$values['selected_value'] = '';
 
 			if ($definition_value['definition_type'] == DROPDOWN)
 			{
-				$values['values'] = $this->Tag->get_definition_values($definition_id);
-				$link_value = $this->Tag->get_link_value($customer_id, $definition_id);
-				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->tag_id;
+				$values['values'] = $this->Person_attribute->get_definition_values($definition_id);
+				$link_value = $this->Person_attribute->get_link_value($customer_id, $definition_id);
+				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->person_attribute_id;
 			}
 
 			if (!empty($definition_ids[$definition_id]))
@@ -271,7 +271,7 @@ class Customers extends Persons
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$this->load->view('tags/item', $data);
+		$this->load->view('person_attributes/item', $data);
 	}
 
 	/*
@@ -327,25 +327,25 @@ class Customers extends Persons
 			if($customer_id == -1)
 			{
 
-			// Save tags for new customer
+			// Save person_attributes for new customer
 				/*
 				change default new customer creation ID to the ID in the customer data to be sent to database 
 				*/
 
-			$customer_id = $customer_data['person_id'];
+			$customer_id = $person_data['person_id'];
 
-			$tag_links = $this->input->post('tag_links') != NULL ? $this->input->post('tag_links') : array();
-			$tag_ids = $this->input->post('tag_ids');
-			$this->Tag->delete_link($customer_id);
+			$person_attribute_links = $this->input->post('person_attribute_links') != NULL ? $this->input->post('person_attribute_links') : array();
+			$person_attribute_ids = $this->input->post('person_attribute_ids');
+			$this->Person_attribute->delete_link($customer_id);
 
-			foreach($tag_links as $definition_id => $tag_id)
+			foreach($person_attribute_links as $definition_id => $person_attribute_id)
 			{
-				$definition_type = $this->Tag->get_info($definition_id)->definition_type;
+				$definition_type = $this->Person_attribute->get_info($definition_id)->definition_type;
 				if($definition_type != DROPDOWN)
 				{
-					$tag_id = $this->Tag->save_value($tag_id, $definition_id, $customer_id, $tag_ids[$definition_id], $definition_type);
+					$person_attribute_id = $this->Person_attribute->save_value($person_attribute_id, $definition_id, $customer_id, $person_attribute_ids[$definition_id], $definition_type);
 				}
-				$this->Tag->save_link($customer_id, $definition_id, $tag_id);
+				$this->Person_attribute->save_link($customer_id, $definition_id, $person_attribute_id);
 			}
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
@@ -353,20 +353,20 @@ class Customers extends Persons
 			}
 			else // Existing customer
 			{
-				// Update Tags for existing Customer
+				// Update Person_attributes for existing Customer
 			
-			$tag_links = $this->input->post('tag_links') != NULL ? $this->input->post('tag_links') : array();
-			$tag_ids = $this->input->post('tag_ids');
-			$this->Tag->delete_link($customer_id);
+			$person_attribute_links = $this->input->post('person_attribute_links') != NULL ? $this->input->post('person_attribute_links') : array();
+			$person_attribute_ids = $this->input->post('person_attribute_ids');
+			$this->Person_attribute->delete_link($customer_id);
 
-			foreach($tag_links as $definition_id => $tag_id)
+			foreach($person_attribute_links as $definition_id => $person_attribute_id)
 			{
-				$definition_type = $this->Tag->get_info($definition_id)->definition_type;
+				$definition_type = $this->Person_attribute->get_info($definition_id)->definition_type;
 				if($definition_type != DROPDOWN)
 				{
-					$tag_id = $this->Tag->save_value($tag_id, $definition_id, $customer_id, $tag_ids[$definition_id], $definition_type);
+					$person_attribute_id = $this->Person_attribute->save_value($person_attribute_id, $definition_id, $customer_id, $person_attribute_ids[$definition_id], $definition_type);
 				}
-				$this->Tag->save_link($customer_id, $definition_id, $tag_id);
+				$this->Person_attribute->save_link($customer_id, $definition_id, $person_attribute_id);
 			}
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
@@ -555,8 +555,8 @@ class Customers extends Persons
 	public function csv()
 	{
 		$name = 'import_customers.csv';
-		$allowed_tags = $this->Tag->get_definition_names(FALSE);
-		$data = generate_import_customers_csv($allowed_tags);
+		$allowed_person_attributes = $this->Person_attribute->get_definition_names(FALSE);
+		$data = generate_import_customers_csv($allowed_person_attributes);
 		force_download($name, $data, TRUE);
 	}
 
@@ -636,8 +636,8 @@ class Customers extends Persons
 				//Save to database
 					if(!$invalidated && $this->Customer->save_customer($person_data, $customer_data))
 					{
-						// save tags to customer
-						$this->save_tag_data($line, $customer_data);
+						// save person_attributes to customer
+						$this->save_person_attribute_data($line, $customer_data);
 						// save customer to Mailchimp selected list
 						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
 					}
@@ -712,42 +712,42 @@ class Customers extends Persons
 			}
 		}
 
-	//Check Tag Data
-		$definition_names = $this->Tag->get_definition_names();
+	//Check Person_attribute Data
+		$definition_names = $this->Person_attribute->get_definition_names();
 		unset($definition_names[-1]);
 
 		foreach($definition_names as $definition_name)
 		{
-			if(!empty($line['tag_' . $definition_name]))
+			if(!empty($line['person_attribute_' . $definition_name]))
 			{
-				$tag_data 	= $this->Tag->get_definition_by_name($definition_name)[0];
-				$tag_type		= $tag_data['definition_type'];
-				$tag_value 	= $line['tag_' . $definition_name];
+				$person_attribute_data 	= $this->Person_attribute->get_definition_by_name($definition_name)[0];
+				$person_attribute_type		= $person_attribute_data['definition_type'];
+				$person_attribute_value 	= $line['person_attribute_' . $definition_name];
 
-				if($tag_type == 'DROPDOWN')
+				if($person_attribute_type == 'DROPDOWN')
 				{
-					$dropdown_values 	= $this->Tag->get_definition_values($tag_data['definition_id']);
+					$dropdown_values 	= $this->Person_attribute->get_definition_values($person_attribute_data['definition_id']);
 					$dropdown_values[] 	= '';
 
-					if(in_array($tag_value, $dropdown_values) === FALSE && !empty($tag_value))
+					if(in_array($person_attribute_value, $dropdown_values) === FALSE && !empty($person_attribute_value))
 					{
-						log_message("ERROR","Value: '$tag_value' is not an acceptable DROPDOWN value");
+						log_message("ERROR","Value: '$person_attribute_value' is not an acceptable DROPDOWN value");
 						return TRUE;
 					}
 				}
-				else if($tag_type == 'DECIMAL')
+				else if($person_attribute_type == 'DECIMAL')
 				{
-					if(!is_numeric($tag_value) && !empty($tag_value))
+					if(!is_numeric($person_attribute_value) && !empty($person_attribute_value))
 					{
-						log_message("ERROR","'$tag_value' is not an acceptable DECIMAL value");
+						log_message("ERROR","'$person_attribute_value' is not an acceptable DECIMAL value");
 						return TRUE;
 					}
 				}
-				else if($tag_type == 'DATETIME')
+				else if($person_attribute_type == 'DATETIME')
 				{
-					if(strtotime($tag_value) === FALSE && !empty($tag_value))
+					if(strtotime($person_attribute_value) === FALSE && !empty($person_attribute_value))
 					{
-						log_message("ERROR","'$tag_value' is not an acceptable DATETIME value.");
+						log_message("ERROR","'$person_attribute_value' is not an acceptable DATETIME value.");
 						return TRUE;
 					}
 				}
@@ -757,44 +757,44 @@ class Customers extends Persons
 		return FALSE;
 	}
 			/**
-	 * Saves tag data found in the CSV import.
+	 * Saves person_attribute data found in the CSV import.
 	 *
 	 * @param line
 	 * @param failCodes
-	 * @param tag_data
+	 * @param person_attribute_data
 	 */
-	private function save_tag_data($line, $customer_data )
+	private function save_person_attribute_data($line, $customer_data )
 	{
-		$definition_names = $this->Tag->get_definition_names();
+		$definition_names = $this->Person_attribute->get_definition_names();
 		unset($definition_names[-1]);
 
 		foreach($definition_names as $definition_name)
 		{
-		//Create tag value
-			if(!empty($line['tag_' . $definition_name]) || $line['tag_' . $definition_name] == '0')
+		//Create person_attribute value
+			if(!empty($line['person_attribute_' . $definition_name]) || $line['person_attribute_' . $definition_name] == '0')
 			{
-				$tag_data = $this->Tag->get_definition_by_name($definition_name)[0];
+				$person_attribute_data = $this->Person_attribute->get_definition_by_name($definition_name)[0];
 
-			//CHECKBOX Tag types (zero value creates tag and marks it as unchecked)
-				if($tag_data['definition_type'] == 'CHECKBOX')
+			//CHECKBOX Person_attribute types (zero value creates person_attribute and marks it as unchecked)
+				if($person_attribute_data['definition_type'] == 'CHECKBOX')
 				{
 				//FALSE and '0' value creates checkbox and marks it as unchecked.
-					if(strcasecmp($line['tag_' . $definition_name],'FALSE') == 0 || $line['tag_' . $definition_name] == '0')
+					if(strcasecmp($line['person_attribute_' . $definition_name],'FALSE') == 0 || $line['person_attribute_' . $definition_name] == '0')
 					{
-						$line['tag_' . $definition_name] = '0';
+						$line['person_attribute_' . $definition_name] = '0';
 					}
 					else
 					{
-						$line['tag_' . $definition_name] = '1';
+						$line['person_attribute_' . $definition_name] = '1';
 					}
 
-					$status = $this->Tag->save_value($line['tag_' . $definition_name], $tag_data['definition_id'], $customer_data['person_id'], FALSE, $tag_data['definition_type']);
+					$status = $this->Person_attribute->save_value($line['person_attribute_' . $definition_name], $person_attribute_data['definition_id'], $customer_data['person_id'], FALSE, $person_attribute_data['definition_type']);
 				}
 
-			//All other Tag types (0 value means tag not created)
-				elseif(!empty($line['tag_' . $definition_name]))
+			//All other Person_attribute types (0 value means person_attribute not created)
+				elseif(!empty($line['person_attribute_' . $definition_name]))
 				{
-					$status = $this->Tag->save_value($line['tag_' . $definition_name], $tag_data['definition_id'], $customer_data['person_id'], FALSE, $tag_data['definition_type']);
+					$status = $this->Person_attribute->save_value($line['person_attribute_' . $definition_name], $person_attribute_data['definition_id'], $customer_data['person_id'], FALSE, $person_attribute_data['definition_type']);
 				}
 
 				if($status === FALSE)
