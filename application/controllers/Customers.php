@@ -433,126 +433,11 @@ class Customers extends Persons
 		}
 	}
 
-	// /*
-	// Customers import from csv spreadsheet
-	// */
-	// public function csv()
-	// {
-	// 	$name = 'import_customers.csv';
-	// 	$data = file_get_contents('../' . $name);
-	// 	force_download($name, $data);
-	// }
-
-	// public function csv_import()
-	// {
-	// 	$this->load->view('customers/form_csv_import', NULL);
-	// }
-
-	// public function do_csv_import()
-	// {
-	// 	if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
-	// 	{
-	// 		echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_failed')));
-	// 	}
-	// 	else
-	// 	{
-	// 		if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
-	// 		{
-	// 			// Skip the first row as it's the table description
-	// 			fgetcsv($handle);
-	// 			$i = 1;
-
-	// 			$failCodes = array();
-
-	// 			while(($data = fgetcsv($handle)) !== FALSE)
-	// 			{
-	// 				// XSS file data sanity check
-	// 				$data = $this->xss_clean($data);
-
-	// 				$consent = $data[3] == '' ? 0 : 1;
-
-	// 				if(sizeof($data) >= 16 && $consent)
-	// 				{
-	// 					$email = strtolower($data[4]);
-	// 					$person_data = array(
-	// 						'first_name'	=> $data[0],
-	// 						'last_name'		=> $data[1],
-	// 						'gender'		=> $data[2],
-	// 						'email'			=> $email,
-	// 						'phone_number'	=> $data[5],
-	// 						'address_1'		=> $data[6],
-	// 						'address_2'		=> $data[7],
-	// 						'city'			=> $data[8],
-	// 						'state'			=> $data[9],
-	// 						'zip'			=> $data[10],
-	// 						'country'		=> $data[11],
-	// 						'comments'		=> $data[12]
-	// 					);
-
-	// 					$customer_data = array(
-	// 						'consent'			=> $consent,
-	// 						'company_name'		=> $data[13],
-	// 						'discount'			=> $data[15],
-	// 						'discount_type'		=> $data[16],
-	// 						'taxable'			=> $data[17] == '' ? 0 : 1,
-	// 						'date'				=> date('Y-m-d H:i:s'),
-	// 						'employee_id'		=> $this->Employee->get_logged_in_employee_info()->person_id
-	// 					);
-	// 					$account_number = $data[14];
-
-	// 					// don't duplicate people with same email
-	// 					$invalidated = $this->Customer->check_email_exists($email);
-
-	// 					if($account_number != '')
-	// 					{
-	// 						$customer_data['account_number'] = $account_number;
-	// 						$invalidated &= $this->Customer->check_account_number_exists($account_number);
-	// 					}
-	// 				}
-	// 				else
-	// 				{
-	// 					$invalidated = TRUE;
-	// 				}
-
-	// 				if($invalidated)
-	// 				{
-	// 					$failCodes[] = $i;
-	// 				}
-	// 				elseif($this->Customer->save_customer($person_data, $customer_data))
-	// 				{
-	// 					// save customer to Mailchimp selected list
-	// 					$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
-	// 				}
-	// 				else
-	// 				{
-	// 					$failCodes[] = $i;
-	// 				}
-
-	// 				++$i;
-	// 			}
-
-	// 			if(count($failCodes) > 0)
-	// 			{
-	// 				$message = $this->lang->line('customers_csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-
-	// 				echo json_encode(array('success' => FALSE, 'message' => $message));
-	// 			}
-	// 			else
-	// 			{
-	// 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_csv_import_success')));
-	// 			}
-	// 		}
-	// 		else
-	// 		{
-	// 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_nodata_wrongformat')));
-	// 		}
-	// 	}
-	// }
 
 	/*
 	Customers import from csv spreadsheet
 	*/
-	public function csv()
+	public function generate_csv_file()
 	{
 		$name = 'import_customers.csv';
 		$allowed_person_attributes = $this->Person_attribute->get_definition_names(FALSE);
@@ -565,7 +450,7 @@ class Customers extends Persons
 		$this->load->view('customers/form_csv_import', NULL);
 	}
 
-	public function do_csv_import()
+	public function import_csv_file()
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
