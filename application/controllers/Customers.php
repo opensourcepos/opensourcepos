@@ -271,7 +271,7 @@ class Customers extends Persons
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$this->load->view('person_attributes/item', $data);
+		$this->load->view('person_attributes/person', $data);
 	}
 
 	/*
