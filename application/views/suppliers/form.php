@@ -36,7 +36,12 @@
 		</div>
 
 		<?php $this->load->view("people/form_basic_info"); ?>
-
+		
+		<div id="person_attributes">
+			<script type="text/javascript">
+				$('#person_attributes').load('<?php echo site_url($controller_name . "/person_attributes/$person_info->person_id");?>');
+			</script>
+		</div>
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('suppliers_account_number'), 'account_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>

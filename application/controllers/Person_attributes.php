@@ -154,7 +154,7 @@ class Person_attributes extends Secure_Controller
 		$data['definition_group'][''] = $this->lang->line('common_none_selected_text');
 		$data['definition_info'] = $info;
 
-		$show_all = Person_attribute::SHOW_IN_CUSTOMERS | Person_attribute::SHOW_IN_EMPLOYEES;
+		$show_all = Person_attribute::SHOW_IN_CUSTOMERS | Person_attribute::SHOW_IN_EMPLOYEES | Person_attribute::SHOW_IN_SUPPLIERS;
 		$data['definition_flags'] = $this->_get_person_attributes($show_all);
 		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
 		$data['selected_definition_flags'] = $this->_get_person_attributes($selected_flags);
