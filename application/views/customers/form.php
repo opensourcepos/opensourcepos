@@ -92,9 +92,9 @@
 					</div>
 				</div>
 
-				<div id="tags">
+				<div id="person_attributes">
 					<script type="text/javascript">
-						$('#tags').load('<?php echo site_url("customers/tags/$person_info->person_id");?>');
+						$('#person_attributes').load('<?php echo site_url($controller_name . "/person_attributes/$person_info->person_id");?>');
 					</script>
 				</div>
 
