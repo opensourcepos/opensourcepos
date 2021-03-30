@@ -1,21 +1,20 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Thêm Hàng hóa";
 $lang["item_kits_all"] = "Tất cả";
 $lang["item_kits_cannot_be_deleted"] = "Gặp lỗi khi xóa Gói hàng hóa.";
 $lang["item_kits_confirm_delete"] = "Bạn có thực sự muốn xóa Gói hàng hóa đã chọn?";
 $lang["item_kits_confirm_restore"] = "Bạn có thực sự muốn hoàn lại Gói hàng hóa đã chọn?";
 $lang["item_kits_description"] = "Mô tả Gói hàng hóa";
-$lang["item_kits_discount"] = "";
-$lang["item_kits_discount_fixed"] = "";
+$lang["item_kits_discount"] = "Giảm giá";
+$lang["item_kits_discount_fixed"] = "Giảm giá cố định";
 $lang["item_kits_discount_percent"] = "Phần trăm giảm giá";
-$lang["item_kits_discount_type"] = "";
+$lang["item_kits_discount_type"] = "Kiểu giảm giá";
 $lang["item_kits_error_adding_updating"] = "Gặp lỗi khi thêm hay cập nhật Gói hàng hóa.";
 $lang["item_kits_find_kit_item"] = "Gói hàng hóa";
 $lang["item_kits_info"] = "Thông tin Gói hàng hóa";
 $lang["item_kits_item"] = "Hàng hóa";
-$lang["item_kits_item_kit_number"] = "";
-$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_kit_number"] = "Mã vạch";
+$lang["item_kits_item_kit_number_duplicate"] = "Số kít mục tin đã sẵn có trong cơ sở dữ liệu.";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "Hàng hóa";
 $lang["item_kits_kit"] = "Mã gói";
