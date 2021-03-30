@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Tài khoản #";
 $lang["customers_account_number_duplicate"] = "Số tài khoản đã sẵn có trong cơ sở dữ liệu rồi.";
 $lang["customers_available_points"] = "Các điểm sẵn có";
@@ -19,9 +18,9 @@ $lang["customers_csv_import_success"] = "Nhập khách hàng thành công.";
 $lang["customers_customer"] = "Khách hàng";
 $lang["customers_date"] = "Ngày";
 $lang["customers_discount"] = "Giảm giá";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "Giảm giá cố định";
+$lang["customers_discount_percent"] = "Phần trăm giảm giá";
+$lang["customers_discount_type"] = "Kiểu giảm giá";
 $lang["customers_email_duplicate"] = "Địa chỉ thư điện tử đã sẵn có trong cơ sở dữ liệu rồi.";
 $lang["customers_employee"] = "Nhân viên";
 $lang["customers_error_adding_updating"] = "Gặp lỗi khi cập nhật hay thêm khách hàng.";
