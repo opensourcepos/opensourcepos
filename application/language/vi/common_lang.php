@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_city"] = "Thành phố";
@@ -66,7 +65,7 @@ $lang["common_submit"] = "Gửi";
 $lang["common_total_spent"] = "Trả tổng cộng";
 $lang["common_unknown"] = "Chưa biết";
 $lang["common_view_recent_sales"] = "Hiển thị những Bán hàng mới đây";
-$lang["common_website"] = "trang thông tin điện tử";
+$lang["common_website"] = "Trang thông tin điện tử";
 $lang["common_welcome"] = "Chào mừng";
 $lang["common_welcome_message"] = "Chào mừng bạn đến với OSPOS, bấm chọn mô đun phía dưới để bắt đầu.";
 $lang["common_yes"] = "";
