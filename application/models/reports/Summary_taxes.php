@@ -8,7 +8,7 @@ class Summary_taxes extends Summary_report
 	{
 		return array(
 			array('tax_percent' => $this->lang->line('reports_tax_percent'), 'sorter' => 'number_sorter'),
-			array('report_count' => $this->lang->line('reports_count')),
+			array('report_count' => $this->lang->line('reports_sales')),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
@@ -63,10 +63,11 @@ class Summary_taxes extends Summary_report
 				. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END)';
 		}
 
-		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
+		$query = $this->db->query("SELECT percent, COUNT(DISTINCT sale_id) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
 			FROM (
 				SELECT
 					CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent,
+					sales.sale_id AS sale_id,
 					$sale_subtotal AS subtotal,
 					IFNULL(sales_items_taxes.item_tax_amount, 0) AS tax,
 					IFNULL($sale_total, $sale_subtotal) AS total
