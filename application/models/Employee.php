@@ -197,7 +197,7 @@ class Employee extends Person
 	*/
 	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$this->db->from('employees');
 		$this->db->join('people', 'employees.person_id = people.person_id');

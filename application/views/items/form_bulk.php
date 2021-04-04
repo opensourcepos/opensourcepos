@@ -1,164 +1,164 @@
-<div id="required_fields_message"><?php echo $this->lang->line('items_edit_fields_you_want_to_update'); ?></div>
+<div id='required_fields_message'><?php echo $this->lang->line('items_edit_fields_you_want_to_update'); ?></div>
 
-<ul id="error_message_box" class="error_message_box"></ul>
+<ul id='error_message_box' class='error_message_box'></ul>
 
-<?php echo form_open('items/bulk_update/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="bulk_item_basic_info">
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+<?php echo form_open('items/bulk_update/', array('id' => 'item_form', 'class' => 'form-horizontal')); ?>
+	<fieldset id='bulk_item_basic_info'>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_name'), 'name', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
-						'name'=>'name',
-						'id'=>'name',
-						'class'=>'form-control input-sm')
-						);?>
+						'name'	=> 'name',
+						'id'	=> 'name',
+						'class'	=> 'form-control input-sm'));
+				?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_category'), 'category', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
+				<div class='input-group'>
+					<span class='input-group-addon input-sm'><span class='glyphicon glyphicon-tag'></span></span>
 					<?php echo form_input(array(
-							'name'=>'category',
-							'id'=>'category',
-							'class'=>'form-control input-sm')
-							);?>
+							'name'	=> 'category',
+							'id'	=> 'category',
+							'class'	=> 'form-control input-sm'));
+					?>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class' => 'form-control'));?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<div class="input-group input-group-sm">
+				<div class='input-group input-group-sm'>
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class='input-group-addon input-sm'><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
-							'name'=>'cost_price',
-							'id'=>'cost_price',
-							'class'=>'form-control input-sm')
-							);?>
+							'name'	=> 'cost_price',
+							'id'	=> 'cost_price',
+							'class'	=> 'form-control input-sm'));
+					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class='input-group-addon input-sm'><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group">
-			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group'>
+			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<div class="input-group input-group-sm">
+				<div class='input-group input-group-sm'>
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class='input-group-addon input-sm'><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
-							'name'=>'unit_price',
-							'id'=>'unit_price',
-							'class'=>'form-control input-sm')
-							);?>
+							'name'	=> 'unit_price',
+							'id'	=> 'unit_price',
+							'class'	=> 'form-control input-sm'));
+					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class='input-group-addon input-sm'><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_1',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('default_tax_1_name'))
-						);?>
+						'name'	=> 'tax_names[]',
+						'id'	=> 'tax_name_1',
+						'class'	=> 'form-control input-sm',
+						'value'	=> $this->config->item('default_tax_1_name')));
+				?>
 			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+			<div class='col-xs-4'>
+				<div class='input-group input-group-sm'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
-							'id'=>'tax_percent_name_1',
-							'class'=>'form-control input-sm',
-							'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))
-							);?>
-					<span class="input-group input-group-addon"><b>%</b></span>
+							'name'	=> 'tax_percents[]',
+							'id'	=> 'tax_percent_name_1',
+							'class'	=> 'form-control input-sm',
+							'value'	=> to_tax_decimals($this->config->item('default_tax_1_rate'))));
+					?>
+					<span class='input-group input-group-addon'><b>%</b></span>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
-						'name'=>'tax_names[]',
-						'id'=>'tax_name_2',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name'))
-						);?>
+						'name'	=> 'tax_names[]',
+						'id'	=> 'tax_name_2',
+						'class'	=> 'form-control input-sm',
+						'value'	=> $this->config->item('default_tax_2_name')));
+				?>
 			</div>
-			<div class="col-xs-4">
-				<div class="input-group input-group-sm">
+			<div class='col-xs-4'>
+				<div class='input-group input-group-sm'>
 					<?php echo form_input(array(
-							'name'=>'tax_percents[]',
-							'id'=>'tax_percent_name_2',
-							'class'=>'form-control input-sm',
-							'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))
-							);?>
-					<span class="input-group input-group-addon"><b>%</b></span>
+							'name'	=> 'tax_percents[]',
+							'id'	=> 'tax_percent_name_2',
+							'class'	=> 'form-control input-sm',
+							'value'	=> to_tax_decimals($this->config->item('default_tax_2_rate'))));
+					?>
+					<span class='input-group input-group-addon'><b>%</b></span>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
-						'name'=>'reorder_level',
-						'id'=>'reorder_level',
-						'class'=>'form-control input-sm')
-						);?>
+						'name'	=> 'reorder_level',
+						'id'	=> 'reorder_level',
+						'class'	=> 'form-control input-sm'));
+				?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_description'), 'description', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
-						'name'=>'description',
-						'id'=>'description',
-						'class'=>'form-control input-sm')
-						);?>
+						'name'	=> 'description',
+						'id'	=> 'description',
+						'class'	=> 'form-control input-sm'));
+				?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', array('class' => 'form-control'));?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class' => 'form-control'));?>
 			</div>
 		</div>
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 //validation and submit handling
 $(document).ready(function()
 {

@@ -1,103 +1,103 @@
-<?php echo form_open('items', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="count_item_basic_info">
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
-			<div class="col-xs-8">
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+<?php echo form_open('items', array('id' => 'item_form', 'class' => 'form-horizontal')); ?>
+	<fieldset id='count_item_basic_info'>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_item_number'), 'name', array('class' => 'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<div class='input-group'>
+					<span class='input-group-addon input-sm'><span class='glyphicon glyphicon-barcode'></span></span>
 					<?php echo form_input(array(
-							'name'=>'item_number',
-							'id'=>'item_number',
-							'class'=>'form-control input-sm',
-							'disabled'=>'',
-							'value'=>$item_info->item_number)
-							);?>
+							'name'		=> 'item_number',
+							'id'		=> 'item_number',
+							'class'		=> 'form-control input-sm',
+							'disabled'	=> '',
+							'value'		=> $item_info->item_number));
+					?>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_name'), 'name', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
-						'name'=>'name',
-						'id'=>'name',
-						'class'=>'form-control input-sm',
-						'disabled'=>'',
-						'value'=>$item_info->name)
-						); ?>
+						'name'		=> 'name',
+						'id'		=> 'name',
+						'class'		=> 'form-control input-sm',
+						'disabled'	=> '',
+						'value'		=> $item_info->name));
+				?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_category'), 'category', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
+				<div class='input-group'>
+					<span class='input-group-addon input-sm'><span class='glyphicon glyphicon-tag'></span></span>
 					<?php echo form_input(array(
-							'name'=>'category',
-							'id'=>'category',
-							'class'=>'form-control input-sm',
-							'disabled'=>'',
-							'value'=>$item_info->category)
-							);?>
+							'name'		=> 'category',
+							'id'		=> 'category',
+							'class'		=> 'form-control input-sm',
+							'disabled'	=> '',
+							'value'		=> $item_info->category));
+					?>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_stock_location'), 'stock_location', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange'=>'display_stock(this.value);', 'class'=>'form-control'));	?>
+				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange' => 'display_stock(this.value);', 'class' => 'form-control'));	?>
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
+		<div class='form-group form-group-sm'>
+			<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
-						'name'=>'quantity',
-						'id'=>'quantity',
-						'class'=>'form-control input-sm',
-						'disabled'=>'',
-						'value'=>to_quantity_decimals(current($item_quantities)))
-						); ?>
+						'name'		=> 'quantity',
+						'id'		=> 'quantity',
+						'class'		=> 'form-control input-sm',
+						'disabled'	=> '',
+						'value'		=> to_quantity_decimals(current($item_quantities))));
+				?>
 			</div>
 		</div>
 	</fieldset>
 <?php echo form_close(); ?>
 
-<table id="items_count_details" class="table table-striped table-hover">
+<table id='items_count_details' class='table table-striped table-hover'>
 	<thead>
-		<tr style="background-color: #999 !important;">
-			<th colspan="4"><?php echo $this->lang->line('items_inventory_data_tracking'); ?></th>
+		<tr style='background-color: #999 !important;'>
+			<th colspan='4'><?php echo $this->lang->line('items_inventory_data_tracking'); ?></th>
 		</tr>
 		<tr>
-			<th width="30%"><?php echo $this->lang->line('items_inventory_date'); ?></th>
-			<th width="20%"><?php echo $this->lang->line('items_inventory_employee'); ?></th>
-			<th width="20%"><?php echo $this->lang->line('items_inventory_in_out_quantity'); ?></th>
-			<th width="30%"><?php echo $this->lang->line('items_inventory_remarks'); ?></th>
+			<th width='30%'><?php echo $this->lang->line('items_inventory_date'); ?></th>
+			<th width='20%'><?php echo $this->lang->line('items_inventory_employee'); ?></th>
+			<th width='20%'><?php echo $this->lang->line('items_inventory_in_out_quantity'); ?></th>
+			<th width='30%'><?php echo $this->lang->line('items_inventory_remarks'); ?></th>
 		</tr>
 	</thead>
-	<tbody id="inventory_result">
+	<tbody id='inventory_result'>
 		<?php
 		/*
 		 * the tbody content of the table will be filled in by the javascript (see bottom of page)
 		*/
 
-		$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->result_array();
-		$employee_name = array();
+		$inventory_array	= $this->Inventory->get_inventory_data_for_item($item_info->item_id)->result_array();
+		$employee_name		= [];
 
 		foreach($inventory_array as $row)
 		{
-			$employee = $this->Employee->get_info($row['trans_user']);
-			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);
+			$employee			= $this->Employee->get_info($row['trans_user']);
+			$employee_name[]	= "$employee->first_name $employee->last_name";
 		}
 		?>
 	</tbody>
 </table>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 $(document).ready(function()
 {
     display_stock(<?php echo json_encode(key($stock_locations)); ?>);

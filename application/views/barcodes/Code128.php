@@ -28,9 +28,9 @@ class Code128 extends BarcodeBase
 	private $type = self::TYPE_AUTO;
 
 	/*
-	 * This map maps the bar code to the common index. We use the built-in 
-	 * index that PHP gives us to produce the common index. 
-	 * @var static array 
+	 * This map maps the bar code to the common index. We use the built-in
+	 * index that PHP gives us to produce the common index.
+	 * @var static array
 	 */
 	private static $barMap = array(
 		11011001100, 11001101100, 11001100110, 10010011000, 10010001100, // 4 (end)
@@ -60,7 +60,7 @@ class Code128 extends BarcodeBase
 	/*
 	 * This map takes the charset from subtype A and PHP will index the array
 	 * natively to the matching code from the barMap.
-	 * @var static array 
+	 * @var static array
 	 */
 	private static $mapA = array(
 		' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', // 9 (end)
@@ -70,7 +70,7 @@ class Code128 extends BarcodeBase
 		'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', // 49
 		'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', // 59
 		'\\', ']', '^', '_', // 63 (We're going into the weird bytes next)
-		
+
 		// Hex is a little more concise in this context
 		"\x00", "\x01", "\x02", "\x03", "\x04", "\x05", // 69
 		"\x06", "\x07", "\x08", "\x09", "\x0A", "\x0B", // 75
@@ -78,7 +78,7 @@ class Code128 extends BarcodeBase
 		"\x12", "\x13", "\x14", "\x15", "\x16", "\x17", // 87
 		"\x18", "\x19", "\x1A", "\x1B", "\x1C", "\x1D", // 93
 		"\x1E", "\x1F", // 95
-		
+
 		// Now for system codes
 		'FNC_3', 'FNC_2', 'SHIFT_B', 'CODE_C', 'CODE_B', // 100
 		'FNC_4', 'FNC_1', 'START_A', 'START_B', 'START_C', // 105
@@ -100,7 +100,7 @@ class Code128 extends BarcodeBase
 		'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', // 79
 		'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', // 89
 		'z', '{', '|', '}', '~', "\x7F", // 95
-		
+
 		// Now for system codes
 		'FNC_3', 'FNC_2', 'SHIFT_A', 'CODE_C', 'FNC_4', // 100
 		'CODE_A', 'FNC_1', 'START_A', 'START_B', 'START_C', // 105
@@ -109,12 +109,12 @@ class Code128 extends BarcodeBase
 
 	/*
 	 * Map C works a little different. The index is the value when the mapping
-	 * occors. 
+	 * occors.
 	 * @var static array
 	 */
 	private static $mapC = array(
-		100 => 
-		'CODE_B', 'CODE_A', 'FNC_1', 'START_A', 'START_B', 
+		100 =>
+		'CODE_B', 'CODE_A', 'FNC_1', 'START_A', 'START_B',
 		'START_C', 'STOP', // 106
 	);
 
@@ -145,7 +145,7 @@ class Code128 extends BarcodeBase
 	 */
 	public function setSubType($type)
 	{
-		$this->type = ($type < 1 || $type > 3) ? self::TYPE_AUTO : (int) $type;
+		$this->type = ($type < 1 || $type > 3) ? self::TYPE_AUTO : intval($type);
 	}
 
 	/*
@@ -161,11 +161,11 @@ class Code128 extends BarcodeBase
 			break;
 
 			case self::TYPE_B:
-				return array_search($char, self::$mapB);			
+				return array_search($char, self::$mapB);
 			break;
 
 			case self::TYPE_C:
-				$charInt = (int) $char;
+				$charInt = intval($char);
 				if (strlen($char) == 2 && $charInt <= 99 && $charInt >= 0)
 				{
 					return $charInt;
@@ -173,7 +173,7 @@ class Code128 extends BarcodeBase
 
 				return array_search($char, self::$mapC);
 			break;
-	
+
 			default:
 				$this->resolveSubtype();
 				return $this->getKey($char); // recursion!
@@ -193,7 +193,7 @@ class Code128 extends BarcodeBase
 	}
 
 	/*
-	 * Resolve subtype 
+	 * Resolve subtype
 	 * @todo - Do some better charset checking and enforcement
 	 * @return void
 	 */
@@ -248,7 +248,7 @@ class Code128 extends BarcodeBase
 		// Bars is in reference to a single, 1-level bar
 		$numBarsRequired = ($this->type != self::TYPE_C) ? (sizeof($charAry) * 11) + 35 : ((sizeof($charAry)/2) * 11) + 35;
 		$this->x  = ($this->x == 0) ? $numBarsRequired : $this->x;
-		$pxPerBar = (int) ($this->x / $numBarsRequired);
+		$pxPerBar = intval($this->x / $numBarsRequired);
 		$currentX = ($this->x - ($numBarsRequired  * $pxPerBar)) / 2;
 
 		if ($pxPerBar < 1)
@@ -264,7 +264,7 @@ class Code128 extends BarcodeBase
 			}
 
 			$pairs = '';
-			$newAry = array();
+			$newAry = [];
 			foreach($charAry as $k => $char)
 			{
 				if (($k % 2) == 0 && $k != 0)
@@ -287,12 +287,12 @@ class Code128 extends BarcodeBase
 		$checkSumCollector = $this->getKey($this->getStartChar());
 
 		$this->img = @imagecreate($this->x, $this->y);
-		
+
 		if (!$this->img)
 		{
 			throw new \RuntimeException("Code128: Image failed to initialize");
 		}
-		
+
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 

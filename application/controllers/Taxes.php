@@ -64,7 +64,7 @@ class Taxes extends Secure_Controller
 
 		$total_rows = $this->Tax->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_rates->result() as $tax_rate_row)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
@@ -153,10 +153,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -260,10 +260,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -329,10 +329,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -415,7 +415,7 @@ class Taxes extends Secure_Controller
 		$city = $this->input->post('city');
 		$state = $this->input->post('state');
 
-		$array_save = array();
+		$array_save = [];
 		foreach($tax_code_id as $key=>$val)
 		{
 			$array_save[] = array('tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
@@ -441,7 +441,7 @@ class Taxes extends Secure_Controller
 		$tax_group_sequence = $this->input->post('tax_group_sequence');
 		$cascade_sequence = $this->input->post('cascade_sequence');
 
-		$array_save = array();
+		$array_save = [];
 
 		$unique_tax_groups = [];
 
@@ -484,7 +484,7 @@ class Taxes extends Secure_Controller
 		$tax_category = $this->input->post('tax_category');
 		$tax_group_sequence = $this->input->post('tax_group_sequence');
 
-		$array_save= array();
+		$array_save = [];
 
 		foreach($tax_category_id as $key => $val)
 		{

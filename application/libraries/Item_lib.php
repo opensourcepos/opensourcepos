@@ -36,5 +36,4 @@ class Item_lib
 		$this->CI->session->unset_userdata('item_location');
 	}
 }
-
 ?>

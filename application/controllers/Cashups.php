@@ -37,7 +37,7 @@ class Cashups extends Secure_Controller
 		$filters = array_merge($filters, $filledup);
 		$cash_ups = $this->Cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Cashup->get_found_rows($search, $filters);
-		$data_rows = array();
+		$data_rows = [];
 		foreach($cash_ups->result() as $cash_up)
 		{
 			$data_rows[] = $this->xss_clean(get_cash_up_data_row($cash_up));
@@ -48,9 +48,9 @@ class Cashups extends Secure_Controller
 
 	public function view($cashup_id = -1)
 	{
-		$data = array();
+		$data = [];
 
-		$data['employees'] = array();
+		$data['employees'] = [];
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
@@ -143,7 +143,7 @@ class Cashups extends Secure_Controller
 				$cash_ups_info->closed_amount_cash -= $this->xss_clean($row['amount']);
 			}
 
-			$cash_ups_info->closed_amount_total = $this->_calculate_total($cash_ups_info->open_amount_cash, $cash_ups_info->transfer_amount_cash, $cash_ups_info->closed_amount_cash, $cash_ups_info->closed_amount_due, $cash_ups_info->closed_amount_card, $cash_ups_info->closed_amount_check);
+			$cash_ups_info->closed_amount_total = $this->calculate_total($cash_ups_info->open_amount_cash, $cash_ups_info->transfer_amount_cash, $cash_ups_info->closed_amount_cash, $cash_ups_info->closed_amount_due, $cash_ups_info->closed_amount_card, $cash_ups_info->closed_amount_check);
 		}
 
 		$data['cash_ups_info'] = $cash_ups_info;
@@ -230,7 +230,7 @@ class Cashups extends Secure_Controller
 		$closed_amount_card = parse_decimals($this->input->post('closed_amount_card'));
 		$closed_amount_check = parse_decimals($this->input->post('closed_amount_check'));
 
-		$total = $this->_calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check);
+		$total = $this->calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check);
 
 		echo json_encode(array('total' => to_currency_no_money($total)));
 	}
@@ -238,7 +238,7 @@ class Cashups extends Secure_Controller
 	/*
 	Calculate total
 	*/
-	private function _calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check)
+	private function calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check)
 	{
 		return ($closed_amount_cash - $open_amount_cash - $transfer_amount_cash + $closed_amount_due + $closed_amount_card + $closed_amount_check);
 	}

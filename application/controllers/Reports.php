@@ -10,6 +10,7 @@ class Reports extends Secure_Controller
 
 		$method_name = $this->uri->segment(2);
 		$exploder = explode('_', $method_name);
+		$matches = [];
 
 		if(sizeof($exploder) > 1)
 		{
@@ -46,7 +47,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -63,7 +64,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_sales_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -83,7 +84,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -99,7 +100,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_categories_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -119,7 +120,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -132,7 +133,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_expenses_categories_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -152,7 +153,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -169,7 +170,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_customers_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -189,7 +190,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -205,7 +206,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_suppliers_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -225,7 +226,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -242,7 +243,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_items_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -262,7 +263,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -279,7 +280,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_employees_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -299,7 +300,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -313,7 +314,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_taxes_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -333,7 +334,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -347,7 +348,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_sales_taxes_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -358,7 +359,7 @@ class Reports extends Secure_Controller
 
 	public function summary_discounts_input()
 	{
-		$data = array();
+		$data = [];
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
 		$stock_locations['all'] = $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -382,7 +383,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -394,7 +395,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_discounts_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -414,7 +415,7 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			if($row['trans_group'] == '<HR>')
@@ -450,7 +451,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_payments_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $summary
@@ -462,7 +463,7 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input()
 	{
-		$data = array();
+		$data = [];
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
 		$stock_locations['all'] = $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -475,7 +476,7 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_only()
 	{
-		$data = array();
+		$data = [];
 
 		$this->load->view('reports/date_input', $data);
 	}
@@ -483,7 +484,7 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_sales()
 	{
-		$data = array();
+		$data = [];
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -495,7 +496,7 @@ class Reports extends Secure_Controller
 
 	public function date_input_recv()
 	{
-		$data = array();
+		$data = [];
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('receivings'));
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -515,8 +516,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -527,7 +528,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_expenses_categories_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -549,8 +550,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -562,7 +563,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_sales_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/line',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -586,8 +587,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -598,7 +599,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_items_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -622,8 +623,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -634,7 +635,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_categories_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -656,8 +657,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -668,7 +669,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_suppliers_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -690,8 +691,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -702,7 +703,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_employees_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -724,8 +725,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -736,7 +737,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_taxes_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -758,8 +759,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -770,7 +771,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_sales_taxes_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -792,8 +793,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -804,7 +805,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_customers_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -828,8 +829,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -840,7 +841,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_discounts_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/bar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -864,8 +865,8 @@ class Reports extends Secure_Controller
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
-		$labels = array();
-		$series = array();
+		$labels = [];
+		$series = [];
 		foreach($report_data as $row)
 		{
 			$row = $this->xss_clean($row);
@@ -879,7 +880,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_payments_summary_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -892,9 +893,9 @@ class Reports extends Secure_Controller
 
 	public function specific_customer_input()
 	{
-		$data = array();
+		$data = [];
 		$data['specific_input_name'] = $this->lang->line('reports_customer');
-		$customers = array();
+		$customers = [];
 		foreach($this->Customer->get_all()->result() as $customer)
 		{
 			if(isset($customer->company_name))
@@ -937,9 +938,9 @@ class Reports extends Secure_Controller
 		$headers = $this->xss_clean($model->getDataColumns());
 		$report_data = $model->getData($inputs);
 
-		$summary_data = array();
-		$details_data = array();
-		$details_data_rewards = array();
+		$summary_data = [];
+		$details_data = [];
+		$details_data_rewards = [];
 
 		foreach($report_data['summary'] as $key => $row)
 		{
@@ -1009,7 +1010,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
 			'summary_data' => $summary_data,
@@ -1023,10 +1024,10 @@ class Reports extends Secure_Controller
 
 	public function specific_employee_input()
 	{
-		$data = array();
+		$data = [];
 		$data['specific_input_name'] = $this->lang->line('reports_employee');
 
-		$employees = array();
+		$employees = [];
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			$employees[$employee->person_id] = $this->xss_clean($employee->first_name . ' ' . $employee->last_name);
@@ -1049,9 +1050,9 @@ class Reports extends Secure_Controller
 		$headers = $this->xss_clean($model->getDataColumns());
 		$report_data = $model->getData($inputs);
 
-		$summary_data = array();
-		$details_data = array();
-		$details_data_rewards = array();
+		$summary_data = [];
+		$details_data = [];
+		$details_data_rewards = [];
 
 		foreach($report_data['summary'] as $key => $row)
 		{
@@ -1112,7 +1113,7 @@ class Reports extends Secure_Controller
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data = array(
 			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
 			'summary_data' => $summary_data,
@@ -1126,10 +1127,10 @@ class Reports extends Secure_Controller
 
 	public function specific_discount_input()
 	{
-		$data = array();
+		$data = [];
 		$data['specific_input_name'] = $this->lang->line('reports_discount');
 
-		$discounts = array();
+		$discounts = [];
 		for($i = 0; $i <= 100; $i += 10)
 		{
 			$discounts[$i] = $i . '%';
@@ -1157,9 +1158,9 @@ class Reports extends Secure_Controller
 		$headers = $this->xss_clean($model->getDataColumns());
 		$report_data = $model->getData($inputs);
 
-		$summary_data = array();
-		$details_data = array();
-		$details_data_rewards = array();
+		$summary_data = [];
+		$details_data = [];
+		$details_data_rewards = [];
 
 		foreach($report_data['summary'] as $key => $row)
 		{
@@ -1220,7 +1221,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $discount . '% ' . $this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
@@ -1275,10 +1276,10 @@ class Reports extends Secure_Controller
 
 	public function specific_supplier_input()
 	{
-		$data = array();
+		$data = [];
 		$data['specific_input_name'] = $this->lang->line('reports_supplier');
 
-		$supplier = array();
+		$supplier = [];
 		foreach($this->Supplier->get_all()->result() as $supplier)
 		{
 			$suppliers[$supplier->person_id] = $this->xss_clean($supplier->company_name . ' (' . $supplier->first_name . ' ' . $supplier->last_name . ')');
@@ -1300,7 +1301,7 @@ class Reports extends Secure_Controller
 
 		$report_data = $model->getData($inputs);
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -1316,14 +1317,14 @@ class Reports extends Secure_Controller
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
-				'discount' => ($row['discount_type'] == PERCENT)? $row['discount'].'%':to_currency($row['discount'])				
+				'discount' => ($row['discount_type'] == PERCENT)? $row['discount'].'%':to_currency($row['discount'])
 			));
 		}
 
 		$supplier_info = $this->Supplier->get_info($supplier_id);
 		$data = array(
 			'title' => $this->xss_clean($supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . $this->lang->line('reports_report')),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData($inputs))
@@ -1334,7 +1335,7 @@ class Reports extends Secure_Controller
 
 	public function get_sale_type_options()
 	{
-		$sale_type_options = array();
+		$sale_type_options = [];
 		$sale_type_options['complete'] = $this->lang->line('reports_complete');
 		$sale_type_options['sales'] = $this->lang->line('reports_completed_sales');
 		if($this->config->item('invoice_enable') == '1')
@@ -1368,9 +1369,9 @@ class Reports extends Secure_Controller
 
 		$report_data = $model->getData($inputs);
 
-		$summary_data = array();
-		$details_data = array();
-		$details_data_rewards = array();
+		$summary_data = [];
+		$details_data = [];
+		$details_data_rewards = [];
 
 		$show_locations = $this->xss_clean($this->Stock_location->multiple_locations());
 
@@ -1440,7 +1441,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_detailed_sales_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
 			'summary_data' => $summary_data,
@@ -1497,8 +1498,8 @@ class Reports extends Secure_Controller
 		$headers = $this->xss_clean($columns);
 		$report_data = $model->getData($inputs);
 
-		$summary_data = array();
-		$details_data = array();
+		$summary_data = [];
+		$details_data = [];
 
 		$show_locations = $this->xss_clean($this->Stock_location->multiple_locations());
 
@@ -1542,7 +1543,7 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_detailed_receivings_report'),
-			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'subtitle' => $this->get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'receivings',
 			'summary_data' => $summary_data,
@@ -1555,14 +1556,14 @@ class Reports extends Secure_Controller
 
 	public function inventory_low()
 	{
-		$inputs = array();
+		$inputs = [];
 
 		$this->load->model('reports/Inventory_low');
 		$model = $this->Inventory_low;
 
 		$report_data = $model->getData($inputs);
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -1590,7 +1591,7 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
 
-		$data = array();
+		$data = [];
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
 		$stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
@@ -1609,7 +1610,7 @@ class Reports extends Secure_Controller
 
 		$report_data = $model->getData($inputs);
 
-		$tabular_data = array();
+		$tabular_data = [];
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
@@ -1638,7 +1639,7 @@ class Reports extends Secure_Controller
 	}
 
 	//	Returns subtitle for the reports
-	private function _get_subtitle_report($inputs)
+	private function get_subtitle_report($inputs)
 	{
 		$subtitle = '';
 

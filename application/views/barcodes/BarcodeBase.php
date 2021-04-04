@@ -31,7 +31,7 @@ abstract class BarcodeBase
 	 * @var data - to be set
 	 */
 	protected $data = '';
-	
+
 	/*
 	 * @var int x (width)
 	 */
@@ -77,8 +77,8 @@ abstract class BarcodeBase
 
 	/**
 	 * Validate the given barcode.
-	 * @param $barcode The barcode to validate
-	 * @return bool true if it complies with the barcode formatting
+	 * @param	string	$barcode	The barcode to validate
+	 * @return	bool				TRUE if it complies with the barcode formatting
 	 */
 	public function validate($barcode)
 	{
@@ -88,8 +88,8 @@ abstract class BarcodeBase
 	/**
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
-	 * @param $number The seed to generate a barcode for
-	 * @return mixed The generated barcode
+	 * @param	string	$number The seed to generate a barcode for
+	 * @return	string			The generated barcode
 	 */
 	public function generate($number)
 	{
@@ -112,20 +112,20 @@ abstract class BarcodeBase
 	 */
 	public function setDimensions($x, $y)
 	{
-		$this->x = (int) $x;
-		$this->y = (int) $y;
+		$this->x = intval($x);
+		$this->y = intval($y);
 
 		return $this;
 	}
 
 	/*
 	 * Set Quality
-	 * @param int q - jpeg quality 
+	 * @param int q - jpeg quality
 	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
 	public function setQuality($q)
 	{
-		$this->jpgQuality = (int) $q;
+		$this->jpgQuality = intval($q);
 
 		return $this;
 	}
@@ -170,11 +170,11 @@ abstract class BarcodeBase
 	/*
 	 * Save Image
 	 *
-	 * @param string filename - File to write to (needs to have .png, .gif, or 
+	 * @param string filename - File to write to (needs to have .png, .gif, or
 	 *	.jpg extension)
 	 * @return void
-	 * @throws \RuntimeException - If the file could not be written or some 
-	 *	other I/O error. 
+	 * @throws \RuntimeException - If the file could not be written or some
+	 *	other I/O error.
 	 */
 	public function save($filename)
 	{
@@ -202,7 +202,7 @@ abstract class BarcodeBase
 	}
 
 	/*
-	 * Base64 Encoded 
+	 * Base64 Encoded
 	 * For ouput in-page
 	 * @return void
 	 */

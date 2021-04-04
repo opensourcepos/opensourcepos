@@ -49,7 +49,7 @@ class Stock_location extends CI_Model
 	public function get_allowed_locations($module_id = 'items')
 	{
 		$stock = $this->get_undeleted_all($module_id)->result_array();
-		$stock_locations = array();
+		$stock_locations = [];
 		foreach($stock as $location_data)
 		{
 			$stock_locations[$location_data['location_id']] = $location_data['location_name'];
@@ -113,9 +113,9 @@ class Stock_location extends CI_Model
 			$this->db->insert('stock_locations', $location_data_to_save);
  			$location_id = $this->db->insert_id();
 
-			$this->_insert_new_permission('items', $location_id, $location_name);
-			$this->_insert_new_permission('sales', $location_id, $location_name);
-			$this->_insert_new_permission('receivings', $location_id, $location_name);
+			$this->insert_new_permission('items', $location_id, $location_name);
+			$this->insert_new_permission('sales', $location_id, $location_name);
+			$this->insert_new_permission('receivings', $location_id, $location_name);
 
 			// insert quantities for existing items
 			$items = $this->Item->get_all();
@@ -137,9 +137,9 @@ class Stock_location extends CI_Model
 			$this->db->where('location_id', $location_id);
 			$this->db->delete('permissions');
 
-			$this->_insert_new_permission('items', $location_id, $location_name);
-			$this->_insert_new_permission('sales', $location_id, $location_name);
-			$this->_insert_new_permission('receivings', $location_id, $location_name);
+			$this->insert_new_permission('items', $location_id, $location_name);
+			$this->insert_new_permission('sales', $location_id, $location_name);
+			$this->insert_new_permission('receivings', $location_id, $location_name);
 		}
 
 		$this->db->where('location_id', $location_id);
@@ -147,7 +147,7 @@ class Stock_location extends CI_Model
 		return $this->db->update('stock_locations', $location_data_to_save);
 	}
 
-	private function _insert_new_permission($module, $location_id, $location_name)
+	private function insert_new_permission($module, $location_id, $location_name)
 	{
 		// insert new permission for stock location
 		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);

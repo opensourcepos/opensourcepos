@@ -4,7 +4,7 @@ require_once("Persons.php");
 
 class Customers extends Persons
 {
-	private $_list_id;
+	private $list_id;
 
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class Customers extends Persons
 
 		$CI =& get_instance();
 
-		$this->_list_id = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_list_id'));
+		$this->list_id = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_list_id'));
 	}
 
 	public function index()
@@ -64,7 +64,7 @@ class Customers extends Persons
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($customers->result() as $person)
 		{
 			// retrieve the total amount the customer spent so far together with min, max and average values
@@ -169,12 +169,12 @@ class Customers extends Persons
 		if(!empty($info->email))
 		{
 			// collect mailchimp customer info
-			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE)
+			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->list_id, $info->email)) !== FALSE)
 			{
 				$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
 
 				// collect customer mailchimp emails activities (stats)
-				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE)
+				if(($activities = $this->mailchimp_lib->getMemberActivity($this->list_id, $info->email)) !== FALSE)
 				{
 					if(array_key_exists('activity', $activities))
 					{
@@ -270,7 +270,7 @@ class Customers extends Persons
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{
 			// save customer to Mailchimp selected list
-			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
+			$this->mailchimp_lib->addOrUpdateMember($this->list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
 
 			// New customer
 			if($customer_id == -1)
@@ -329,7 +329,7 @@ class Customers extends Persons
 			if($this->Customer->delete($info->person_id))
 			{
 				// remove customer from Mailchimp selected list
-				$this->mailchimp_lib->removeMember($this->_list_id, $info->email);
+				$this->mailchimp_lib->removeMember($this->list_id, $info->email);
 
 				$count++;
 			}
@@ -375,7 +375,7 @@ class Customers extends Persons
 				fgetcsv($handle);
 				$i = 1;
 
-				$failCodes = array();
+				$failCodes = [];
 
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{
@@ -434,7 +434,7 @@ class Customers extends Persons
 					elseif($this->Customer->save_customer($person_data, $customer_data))
 					{
 						// save customer to Mailchimp selected list
-						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+						$this->mailchimp_lib->addOrUpdateMember($this->list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
 					}
 					else
 					{

@@ -46,7 +46,7 @@
 					else
 					{
 					?>
-						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;
 				<?php
 					}
 				}
@@ -97,7 +97,7 @@
 			})
 		]
 	};
-	
+
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',

@@ -101,11 +101,9 @@ class Person extends CI_Model
 	/**
 	 * Inserts or updates a person
 	 *
-	 * @param array $person_data array containing person information
-	 *
-	 * @param var $person_id identifier of the person to update the information
-	 *
-	 * @return boolean TRUE if the save was successful, FALSE if not
+	 * @param array $person_data		array containing person information
+	 * @param int|boolean	$person_id	identifier of the person to update the information
+	 * @return boolean 					TRUE if the save was successful, FALSE if not
 	 */
 	public function save(&$person_data, $person_id = FALSE)
 	{
@@ -137,22 +135,21 @@ class Person extends CI_Model
 	 */
 	public function get_search_suggestions($search, $limit = 25)
 	{
-		$suggestions = array();
+		$suggestions = [];
 
-//		$this->db->select('person_id');
-//		$this->db->from('people');
-//		$this->db->where('deleted', 0);
-//		$this->db->where('person_id', $search);
-//		$this->db->group_start();
-//			$this->db->like('first_name', $search);
-//			$this->db->or_like('last_name', $search);
-//			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-//			$this->db->or_like('email', $search);
-//			$this->db->or_like('phone_number', $search);
-//			$this->db->group_end();
-//		$this->db->order_by('last_name', 'asc');
+		$this->db->select('person_id');
+		$this->db->where('deleted', 0);
+		$this->db->where('person_id', $search);
+		$this->db->group_start();
+			$this->db->like('first_name', $search);
+			$this->db->or_like('last_name', $search);
+			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
+			$this->db->or_like('email', $search);
+			$this->db->or_like('phone_number', $search);
+		$this->db->group_end();
+		$this->db->order_by('last_name', 'asc');
 
-		foreach($this->db->get()->result() as $row)
+		foreach($this->db->get('people')->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->person_id);
 		}

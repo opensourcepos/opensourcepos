@@ -81,7 +81,7 @@ class Receiving extends CI_Model
 		$this->db->insert('receivings', $receivings_data);
 		$receiving_id = $this->db->insert_id();
 
-		foreach($items as $line=>$item)
+		foreach($items as $item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 
@@ -198,7 +198,7 @@ class Receiving extends CI_Model
 
 		// execute transaction
 		$this->db->trans_complete();
-	
+
 		return $this->db->trans_status();
 	}
 
@@ -209,7 +209,7 @@ class Receiving extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_supplier($receiving_id)
 	{
 		$this->db->from('receivings');
@@ -253,7 +253,7 @@ class Receiving extends CI_Model
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') .
 			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
-				SELECT 
+				SELECT
 					MAX(DATE(receiving_time)) AS receiving_date,
 					MAX(receiving_time) AS receiving_time,
 					receivings_items.receiving_id AS receiving_id,

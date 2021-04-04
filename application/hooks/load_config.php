@@ -14,7 +14,7 @@ function load_config()
     }
 
     foreach($CI->Appconfig->get_all()->result() as $app_config)
-    {	
+    {
         $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
     }
 
@@ -26,8 +26,8 @@ function load_config()
         $CI->config->set_item('language_code', 'en-US');
     }
 
-    _load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language());
-    _load_language_files($CI, '../application/language', current_language_code());
+    load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language());
+    load_language_files($CI, '../application/language', current_language_code());
 
     //Set timezone from config database
     if($CI->config->item('timezone'))
@@ -47,7 +47,7 @@ function load_config()
  * @param $path
  * @param $language
  */
-function _load_language_files($CI, $path, $language)
+function load_language_files($CI, $path, $language)
 {
     $map = directory_map($path . DIRECTORY_SEPARATOR . $language);
 

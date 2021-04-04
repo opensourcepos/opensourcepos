@@ -4,7 +4,7 @@ require_once("Summary_report.php");
 
 class Summary_sales_taxes extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function get_data_columns()
 	{
 		return array(
 			array('reporting_authority' => $this->lang->line('reports_authority')),
@@ -14,7 +14,7 @@ class Summary_sales_taxes extends Summary_report
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'));
 	}
 
-	protected function _where(array $inputs)
+	protected function where(array $inputs)
 	{
 		$this->db->where('sales.sale_status', COMPLETED);
 
