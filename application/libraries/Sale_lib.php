@@ -1133,7 +1133,7 @@ class Sale_lib
 	 * It also set resets the cash mode to disabled which will then be re-evaluated when
 	 * retrieving payments.
 	 */
-	public function reset_cash_rounding()
+	public function reset_cash_rounding(): int
 	{
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 

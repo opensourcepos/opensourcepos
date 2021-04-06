@@ -191,7 +191,7 @@ class Sales extends Secure_Controller
 
 		$this->sale_lib->empty_payments();
 
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function change_register_mode($sale_type)
@@ -464,7 +464,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	public function edit_item($item_id)
@@ -505,7 +505,7 @@ class Sales extends Secure_Controller
 	{
 		$this->sale_lib->delete_item($item_number);
 		$this->sale_lib->empty_payments();
-		$this->_reload();
+		$this->reload();
 	}
 
 	public function remove_customer()
@@ -1443,7 +1443,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->sale_lib->clear_all();
-		$this->_reload($data);
+		$this->reload($data);
 	}
 
 	/**
