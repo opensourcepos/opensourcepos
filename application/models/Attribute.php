@@ -561,6 +561,19 @@ class Attribute extends CI_Model
 		return $this->db->get('attribute_values')->row_object();
 	}
 
+    public function get_attribute_values($item_id)
+    {
+        $this->db->select('attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
+        $this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
+        $this->db->where('item_id', intval($item_id));
+        $this->db->where('sale_id');
+        $this->db->where('receiving_id');
+
+        $results = $this->db->get('attribute_links')->result_array();
+
+        return $this->to_array($results, 'definition_id');
+    }
+
 	public function copy_attribute_links($item_id, $sale_receiving_fk, $id)
 	{
 		$this->db->query(
