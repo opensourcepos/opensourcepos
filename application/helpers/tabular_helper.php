@@ -149,13 +149,18 @@ Get the sales payments summary
 */
 function get_sales_manage_payments_summary($payments)
 {
+	$CI =& get_instance();
+
 	$table = '<div id="report_summary">';
+	$total = 0;
 
 	foreach($payments as $key=>$payment)
 	{
 		$amount = $payment['payment_amount'];
+		$total = bcadd($total, $amount);
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
+	$table .= '<div class="summary_row">' . $CI->lang->line('sales_total') . ': ' . to_currency($total) . '</div>';
 	$table .= '</div>';
 
 	return $table;
