@@ -9,32 +9,14 @@ class Sale extends CI_Model
 	 */
 	public function get_info($sale_id)
 	{
-		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
-		// create a temporary table to contain all the payments per sale
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			' (PRIMARY KEY(sale_id), INDEX(sale_id))
-			(
-				SELECT payments.sale_id AS sale_id,
-					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
-					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
-					SUM(payments.cash_refund) AS sale_cash_refund,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
-					ON sales.sale_id = payments.sale_id
-				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
-				GROUP BY sale_id
-			)'
-		);
+		$this->create_temp_table(array('sale_id' => $sale_id));
 
 		$decimals = totals_decimals();
-
+		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
-
-		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
-		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 		if($this->config->item('tax_included'))
 		{
@@ -44,25 +26,6 @@ class Sale extends CI_Model
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 		}
-
-		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			' (INDEX(sale_id, item_id, line)) ENGINE=MEMORY
-			(
-				SELECT sales_items_taxes.sale_id AS sale_id,
-					sales_items_taxes.item_id AS item_id,
-					sales_items_taxes.line AS line,
-					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS internal_tax, 
-					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS sales_tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
-					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
-					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
-				GROUP BY sale_id, item_id, line
-			)'
-		);
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
@@ -131,12 +94,12 @@ class Sale extends CI_Model
 			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
 		}
 
-		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
+		// NOTE: temporary tables are created to speed up searches due to the fact that they are orthogonal to the main query
 		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
-				SELECT payments.sale_id AS sale_id,
+				SELECT payments.sale_id,
 					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
@@ -144,7 +107,7 @@ class Sale extends CI_Model
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
-				GROUP BY sale_id
+				GROUP BY payments.sale_id
 			)'
 		);
 
@@ -305,7 +268,7 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount) AS payment_amount');
+		$this->db->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
@@ -1109,7 +1072,7 @@ class Sale extends CI_Model
 	}
 
 	/**
-	 * Creates sales temporary dimentional table
+	 * Creates sales temporary dimensional table
 	 * We create a temp table that allows us to do easy report/sales queries
 	 */
 	public function create_temp_table(array $inputs)
@@ -1182,6 +1145,7 @@ class Sale extends CI_Model
 				SELECT payments.sale_id AS sale_id,
 					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
+					SUM(payments.cash_refund) AS sale_cash_refund,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
@@ -1256,10 +1220,6 @@ class Sale extends CI_Model
 				GROUP BY sale_id, item_id, line
 			)'
 		);
-
-		// drop the temporary table to contain memory consumption as it's no longer required
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp'));
 	}
 
 	/**

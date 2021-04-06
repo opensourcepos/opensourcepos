@@ -147,25 +147,13 @@ function get_sale_data_last_row($sales)
 /*
 Get the sales payments summary
 */
-function get_sales_manage_payments_summary($payments, $sales)
+function get_sales_manage_payments_summary($payments)
 {
-	$CI =& get_instance();
-
 	$table = '<div id="report_summary">';
 
 	foreach($payments as $key=>$payment)
 	{
 		$amount = $payment['payment_amount'];
-
-		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
-		// therefore we remove from the total cash amount any change due
-		if($payment['payment_type'] == $CI->lang->line('sales_cash'))
-		{
-			foreach($sales->result_array() as $key=>$sale)
-			{
-				$amount -= $sale['change_due'];
-			}
-		}
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
 	$table .= '</div>';
