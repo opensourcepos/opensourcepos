@@ -476,8 +476,8 @@ class Sales extends Secure_Controller
 		$serialnumber = $this->input->post('serialnumber');
 		$price = parse_decimals($this->input->post('price'));
 		$quantity = parse_quantity($this->input->post('quantity'));
-		$discount = parse_decimals($this->input->post('discount'));
 		$discount_type = $this->input->post('discount_type');
+		$discount = $discount_type ? parse_quantity($this->input->post('discount')) : parse_decimals($this->input->post('discount'));
 
 		$item_location = $this->input->post('location');
 		$discounted_total = $this->input->post('discounted_total') != '' ? $this->input->post('discounted_total') : NULL;
