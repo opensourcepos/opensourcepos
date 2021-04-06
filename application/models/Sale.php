@@ -134,7 +134,7 @@ class Sale extends CI_Model
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			' (PRIMARY KEY(sale_id))
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
 					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
