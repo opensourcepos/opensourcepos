@@ -5,6 +5,7 @@ const DEFAULT_LANGUAGE_CODE = 'en-US';
 
 define('NOW', time());
 define('MAX_PRECISION', 1e14);
+define('DEFAULT_PRECISION', 2);
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
@@ -386,7 +387,7 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimals=NULL, $type=\NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -397,8 +398,9 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 
 	$config = get_instance()->config;
 	$fmt = new \NumberFormatter($config->item('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 0);
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
+
 	if(empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
@@ -445,8 +447,6 @@ function parse_decimals($number, $decimals = NULL)
 	}
 
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
-
-	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $decimals);
 
 	if(empty($config->item('thousands_separator')))
 	{

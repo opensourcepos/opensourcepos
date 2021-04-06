@@ -98,7 +98,7 @@
 					elseif($item['discount_type'] == PERCENT)
 					{
 					?>
-						<td colspan="2" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
+						<td colspan="2" class="discount"><?php echo to_decimals($item['discount']) . " " . $this->lang->line("sales_discount_included") ?></td>
 					<?php
 					}	
 					?>

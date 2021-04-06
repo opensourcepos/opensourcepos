@@ -139,7 +139,7 @@ $(document).ready(function()
 					<td class="item-name"><?php echo $item['name']; ?></td>
 					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']); ?></td>
 					<td><?php echo to_currency($item['price']); ?></td>
-					<td style='text-align:center;'><?php echo $item['discount'] . '%'; ?></td>
+					<td style='text-align:center;'><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):to_decimals($item['discount']) . '%';?></td>
 					<?php if($discount > 0): ?>
 						<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 					<?php endif; ?>
