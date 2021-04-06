@@ -403,9 +403,9 @@ class Sales extends Secure_Controller
 
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 
-		$mode			= $this->sale_lib->get_mode();
-		$quantity		= ($mode == 'return') ? -$quantity : $quantity;
-		$item_location	= $this->sale_lib->get_sale_location();
+		$mode = $this->sale_lib->get_mode();
+		$quantity = ($mode == 'return') ? -$quantity : $quantity;
+		$item_location = $this->sale_lib->get_sale_location();
 
 		if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -424,13 +424,15 @@ class Sales extends Secure_Controller
 
 			if($item_kit_info->kit_discount != 0 && $item_kit_info->kit_discount > $discount)
 			{
-				$discount		= $item_kit_info->kit_discount;
-				$discount_type	= $item_kit_info->kit_discount_type;
+				$discount = $item_kit_info->kit_discount;
+				$discount_type = $item_kit_info->kit_discount_type;
 			}
+
+			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price, NULL, NULL, NULL, NULL, $print_option))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -504,7 +506,9 @@ class Sales extends Secure_Controller
 	public function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
+
 		$this->sale_lib->empty_payments();
+
 		$this->reload();
 	}
 
