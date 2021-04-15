@@ -84,6 +84,55 @@ class Suppliers extends Persons
 
 		$this->load->view("suppliers/form", $data);
 	}
+
+	/*
+	Adds Person_attributes to supplier controller
+	*/
+
+	public function person_attributes($supplier_id = -1)
+	{
+		$data['person_id'] = $supplier_id;
+
+
+		$definition_ids = json_decode($this->input->post('definition_ids'), TRUE);
+
+
+		$data['definition_values'] = $this->Person_attribute->get_person_attributes_by_person($supplier_id) + $this->Person_attribute->get_values_by_definitions($definition_ids);
+
+
+		$data['definition_names'] = $this->Person_attribute->get_definition_names();
+
+
+
+		foreach($data['definition_values'] as $definition_id => $definition_value)
+		{
+			$person_attribute_value = $this->Person_attribute->get_person_attribute_value($supplier_id, $definition_id);
+
+
+			$person_attribute_id = (empty($person_attribute_value) || empty($person_attribute_value->person_attribute_id)) ? NULL : $person_attribute_value->person_attribute_id;
+	
+			$values = &$data['definition_values'][$definition_id];
+			$values['person_attribute_id'] = $person_attribute_id;
+			$values['person_attribute_value'] = $person_attribute_value;
+			$values['selected_value'] = '';
+
+			if ($definition_value['definition_type'] == DROPDOWN)
+			{
+				$values['values'] = $this->Person_attribute->get_definition_values($definition_id);
+				$link_value = $this->Person_attribute->get_link_value($supplier_id, $definition_id);
+				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->person_attribute_id;
+			}
+
+			if (!empty($definition_ids[$definition_id]))
+			{
+				$values['selected_value'] = $definition_ids[$definition_id];
+			}
+
+			unset($data['definition_names'][$definition_id]);
+		}
+
+		$this->load->view('person_attributes/person', $data);
+	}
 	
 	/*
 	Inserts/updates a supplier
@@ -128,12 +177,46 @@ class Suppliers extends Persons
 			//New supplier
 			if($supplier_id == -1)
 			{
+
+				// Save person attributes for new supplier
+
+			$supplier_id = $person_data['person_id'];
+
+			$person_attribute_links = $this->input->post('person_attribute_links') != NULL ? $this->input->post('person_attribute_links') : array();
+			$person_attribute_ids = $this->input->post('person_attribute_ids');
+			$this->Person_attribute->delete_link($supplier_id);
+
+			foreach($person_attribute_links as $definition_id => $person_attribute_id)
+			{
+				$definition_type = $this->Person_attribute->get_info($definition_id)->definition_type;
+				if($definition_type != DROPDOWN)
+				{
+					$person_attribute_id = $this->Person_attribute->save_value($person_attribute_id, $definition_id, $supplier_id, $person_attribute_ids[$definition_id], $definition_type);
+				}
+				$this->Person_attribute->save_link($supplier_id, $definition_id, $person_attribute_id);
+			}
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
 								'id' => $supplier_data['person_id']));
 			}
 			else //Existing supplier
 			{
+
+				// Update person attributes for existing supplier
+			
+			$person_attribute_links = $this->input->post('person_attribute_links') != NULL ? $this->input->post('person_attribute_links') : array();
+			$person_attribute_ids = $this->input->post('person_attribute_ids');
+			$this->Person_attribute->delete_link($supplier_id);
+
+			foreach($person_attribute_links as $definition_id => $person_attribute_id)
+			{
+				$definition_type = $this->Person_attribute->get_info($definition_id)->definition_type;
+				if($definition_type != DROPDOWN)
+				{
+					$person_attribute_id = $this->Person_attribute->save_value($person_attribute_id, $definition_id, $supplier_id, $person_attribute_ids[$definition_id], $definition_type);
+				}
+				$this->Person_attribute->save_link($supplier_id, $definition_id, $person_attribute_id);
+			}
 				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
 								'id' => $supplier_id));

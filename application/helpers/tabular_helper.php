@@ -279,6 +279,8 @@ function get_suppliers_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_SUPPLIERS);
+
 	$headers = array(
 		array('people.person_id' => $CI->lang->line('common_id')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
@@ -295,6 +297,11 @@ function get_suppliers_manage_table_headers()
 		$headers[] = array('messages' => '');
 	}
 
+		foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_id => $definition_name, 'sortable' => TRUE);
+	}
+
 	return transform_headers($headers);
 }
 
@@ -307,7 +314,9 @@ function get_supplier_data_row($supplier)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_SUPPLIERS);
+
+	$columns = array (
 		'people.person_id' => $supplier->person_id,
 		'company_name' => $supplier->company_name,
 		'agency_name' => $supplier->agency_name,
@@ -321,6 +330,8 @@ function get_supplier_data_row($supplier)
 		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update')))
 	);
+	
+	return $columns + expand_person_attribute_values($definition_names, (array) $supplier);
 }
 
 
