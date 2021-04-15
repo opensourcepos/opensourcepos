@@ -174,6 +174,8 @@ function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_EMPLOYEES);
+
 	$headers = array(
 		array('people.person_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
@@ -187,6 +189,11 @@ function get_people_manage_table_headers()
 		$headers[] = array('messages' => '', 'sortable' => FALSE);
 	}
 
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_id => $definition_name, 'sortable' => TRUE);
+	}
+
 	return transform_headers($headers);
 }
 
@@ -197,8 +204,9 @@ function get_person_data_row($person)
 {
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_EMPLOYEES);
 
-	return array (
+	$columns = array (
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
 		'first_name' => $person->first_name,
@@ -210,6 +218,8 @@ function get_person_data_row($person)
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		)
 	);
+
+	return $columns + expand_person_attribute_values($definition_names, (array) $person);
 }
 
 
