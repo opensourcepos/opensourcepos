@@ -437,7 +437,7 @@ function get_supplier_data_row($supplier)
 			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update')))
 	);
 
-	return $columns + expand_person_attribute_values($definition_names, (array) $person);
+	return $columns + expand_person_attribute_values($definition_names, (array) $supplier);
 }
 
 
