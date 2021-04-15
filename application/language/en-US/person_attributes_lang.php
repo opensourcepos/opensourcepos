@@ -1,0 +1,30 @@
+<?php 
+
+$lang["person_attributes_person_attribute_value_invalid_chars"] = "Person Attribute value cannot contain '_' or '|'";
+$lang["person_attributes_confirm_delete"] = "Are you sure you want to delete the selected person_attribute(s)?";
+$lang["person_attributes_confirm_restore"] = "Are you sure you want to restore the selected person attribute(s)?";
+$lang["person_attributes_definition_cannot_be_deleted"] = "Could not delete selected person attribute(s)";
+$lang["person_attributes_definition_error_adding_updating"] = "Person Attribute %1 could not be added or updated. Please check the error log.";
+$lang["person_attributes_definition_flags"] = "Person Attribute Visibility";
+$lang["person_attributes_definition_group"] = "Group";
+$lang["person_attributes_definition_id"] = "Id";
+$lang["person_attributes_definition_name"] = "Add Person Attribute";
+$lang["person_attributes_definition_name_required"] = "Person Attribute name is a required field";
+$lang["person_attributes_definition_one_or_multiple"] = "person_attribute(s)";
+$lang["person_attributes_definition_successful_adding"] = "You have successfully added item";
+$lang["person_attributes_definition_successful_deleted"] = "You have successfully deleted";
+$lang["person_attributes_definition_successful_updating"] = "You have successfully updated person attribute";
+$lang["person_attributes_definition_type"] = "Person Attribute Type";
+$lang["person_attributes_definition_type_required"] = "Person Attribute type is a required field";
+$lang["person_attributes_definition_unit"] = "Measurement Unit";
+$lang["person_attributes_definition_values"] = "Person Attribute Values";
+$lang["person_attributes_new"] = "New Person Attribute";
+$lang["person_attributes_no_person_attributes_to_display"] = "No Items to display";
+$lang["person_attributes_receipt_visibility"] = "Receipt";
+$lang["person_attributes_show_in_customers"] = "Show in customers";
+$lang["person_attributes_show_in_customers_visibility"] = "Customers";
+$lang["person_attributes_show_in_employees"] = "Show in employees";
+$lang["person_attributes_show_in_employees_visibility"] = "Employees";
+$lang["person_attributes_show_in_suppliers"] = "Show in suppliers";
+$lang["person_attributes_show_in_suppliers_visibility"] = "Suppliers";
+$lang["person_attributes_update"] = "Update Person Attribute";
