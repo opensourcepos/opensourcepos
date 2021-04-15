@@ -51,6 +51,38 @@ function generate_attribute_headers($attribute_names)
 }
 
 /**
+ * Generates the header content for the import_customers.csv file
+ *
+ * @return	string						Comma separated headers for the CSV file
+ */
+function generate_import_customers_csv($person_attributes)
+{
+	$csv_headers = pack("CCC",0xef,0xbb,0xbf);	//Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
+	$csv_headers .= '"First Name","Last Name",Gender,Consent,Email,"Phone Number","Address 1",Address2,City,State,Zip,Country,Comments,Company,"Account Number",Discount,Discount_Type,Taxable';
+	$csv_headers .= generate_person_attribute_headers($person_attributes);
+
+	return $csv_headers;
+}
+
+/**
+ * Generates a list of person attribute names as a string
+ *
+ * @return string					Comma-separated list of person_attribute names
+ */
+function generate_person_attribute_headers($person_attribute_names)
+{
+	$person_attribute_headers = "";
+	unset($person_attribute_names[-1]);
+
+	foreach($person_attribute_names as $person_attribute_name)
+	{
+		$person_attribute_headers .= ',"person_attribute_' . $person_attribute_name . '"';
+	}
+
+	return $person_attribute_headers;
+}
+
+/**
  * Read the contents of a given CSV formatted file into a two-dimensional array
  *
  * @param	string				$file_name	Name of the file to read.

@@ -220,6 +220,8 @@ function get_customer_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_CUSTOMERS);
+
 	$headers = array(
 		array('people.person_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
@@ -234,6 +236,11 @@ function get_customer_manage_table_headers()
 		$headers[] = array('messages' => '', 'sortable' => FALSE);
 	}
 
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_id => $definition_name, 'sortable' => TRUE);
+	}
+
 	return transform_headers($headers);
 }
 
@@ -246,7 +253,9 @@ function get_customer_data_row($person, $stats)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	$definition_names = $CI->Person_attribute->get_definitions_by_flags(Person_attribute::SHOW_IN_CUSTOMERS);
+
+	$columns = array (
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
 		'first_name' => $person->first_name,
@@ -258,6 +267,8 @@ function get_customer_data_row($person, $stats)
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 	));
+
+	return $columns + expand_person_attribute_values($definition_names, (array) $person);
 }
 
 
@@ -612,6 +623,95 @@ function get_attribute_definition_data_row($attribute)
 		)
 	);
 }
+
+/*
+Get html data row for person_attributes
+*/
+function parse_person_attribute_values($columns, $row) {
+	$person_attribute_values = array();
+
+	foreach($columns as $column) {	
+		if (array_key_exists($column, $row))
+		{			
+			$person_attribute_value = explode('|', $row[$column]);
+			$person_attribute_values = array_merge($person_attribute_values, $person_attribute_value);
+		}
+	}
+	return $person_attribute_values;
+}
+
+function expand_person_attribute_values($definition_names, $row)
+{
+	$values = parse_person_attribute_values(array('person_attribute_values', 'person_attribute_dtvalues', 'person_attribute_dvalues'), $row);
+
+	$indexed_values = array();
+	foreach($values as $person_attribute_value)
+	{
+		$exploded_value = explode('_', $person_attribute_value);
+		if(sizeof($exploded_value) > 1)
+		{
+			$indexed_values[$exploded_value[0]] = $exploded_value[1];
+		}
+	}
+
+	$person_attribute_values = array();
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		if(isset($indexed_values[$definition_id]))
+		{
+			$person_attribute_value = $indexed_values[$definition_id];
+			$person_attribute_values["$definition_id"] = $person_attribute_value;
+		}
+	}
+
+	return $person_attribute_values;
+}
+
+function get_person_attribute_definition_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('definition_id' => $CI->lang->line('person_attributes_definition_id')),
+		array('definition_name' => $CI->lang->line('person_attributes_definition_name')),
+		array('definition_type' => $CI->lang->line('person_attributes_definition_type')),
+		array('definition_flags' => $CI->lang->line('person_attributes_definition_flags')),
+		array('definition_group' => $CI->lang->line('person_attributes_definition_group')),
+	);
+
+	return transform_headers($headers);
+}
+
+function get_person_attribute_definition_data_row($person_attribute)
+{
+	$CI =& get_instance();
+
+	$controller_name = strtolower(get_class($CI));
+
+	if(count($person_attribute->definition_flags) == 0)
+	{
+		$definition_flags = $CI->lang->line('common_none_selected_text');
+	}
+	else if($person_attribute->definition_type == GROUP)
+	{
+		$definition_flags = "-";
+	}
+	else
+	{
+		$definition_flags = implode(', ', $person_attribute->definition_flags);
+	}
+
+	return array (
+		'definition_id' => $person_attribute->definition_id,
+		'definition_name' => $person_attribute->definition_name,
+		'definition_type' => $person_attribute->definition_type,
+		'definition_group' => $person_attribute->definition_group,
+		'definition_flags' => $definition_flags,
+		'edit' => anchor("$controller_name/view/$person_attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		)
+	);
+} 
 
 /*
 Get the header for the expense categories tabular view
