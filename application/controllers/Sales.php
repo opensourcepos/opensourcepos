@@ -958,7 +958,7 @@ class Sales extends Secure_Controller
 		$exchange_rate_set = array('apply_exchange_rate' => $data['apply_exchange_rate'], 'exchange_rate' => $data['exchange_rate'],
 			'number_locale_alt' => $number_locale_alt, 'currency_symbol_alt' => $currency_symbol_alt);
 		$this->session->set_flashdata('exchange_rate_set', $exchange_rate_set);
-
+		$tax_details = $this->tax_lib->get_taxes($data['cart'], $sale_id);
 		$data['taxes'] = $this->Sale->get_sales_taxes($sale_id);
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['transaction_time'] = to_datetime(strtotime($sale_info['sale_time']));
