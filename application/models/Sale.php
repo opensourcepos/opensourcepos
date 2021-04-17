@@ -9,10 +9,21 @@ class Sale extends CI_Model
 	 */
 	public function get_info($sale_id)
 	{
-		$this->create_temp_table(array('sale_id' => $sale_id));
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+			(
+				SELECT payments.sale_id AS sale_id,
 					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					SUM(payments.cash_refund) AS sale_cash_refund,
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
+				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = payments.sale_id
+				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
+				GROUP BY sale_id
+			)'
+		);
 
 		$decimals = totals_decimals();
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';

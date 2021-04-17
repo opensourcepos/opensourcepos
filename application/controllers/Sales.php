@@ -2,8 +2,8 @@
 
 require_once("Secure_Controller.php");
 
-define('CASH_ADJUSTMENT_TRUE', 1);
-define('CASH_ADJUSTMENT_FALSE', 0);
+//define('CASH_ADJUSTMENT_TRUE', 1);
+//define('CASH_ADJUSTMENT_FALSE', 0);
 class Sales extends Secure_Controller
 {
 	public function __construct()
