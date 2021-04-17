@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "เหิ่มสินคัา";
 $lang["item_kits_all"] = "ทั้งหมด";
 $lang["item_kits_cannot_be_deleted"] = "ไม่สามารถลบได้";
@@ -13,6 +14,9 @@ $lang["item_kits_error_adding_updating"] = "เพิ่ม/ปรับปร�
 $lang["item_kits_find_kit_item"] = "ชุดรายการ";
 $lang["item_kits_info"] = "ข้อมูลสินค้าหมู่";
 $lang["item_kits_item"] = "สินค้า";
+$lang["item_kits_item_kit_number"] = "";
+$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "สินค้า";
 $lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_kit_and_components"] = "ชุดและส่วนประกอบ";

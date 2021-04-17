@@ -965,7 +965,8 @@ $(document).ready(function()
 	});
 });
 
-function check_payment_type() {
+function check_payment_type()
+{
 	var cash_mode = <?php echo json_encode($cash_mode); ?>;
 
 	if($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")

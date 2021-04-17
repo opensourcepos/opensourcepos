@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "คำอธิบายสำรอง";
 $lang["giftcards_bulk_edit"] = "แก้ไขเป็นกลุ่ม";

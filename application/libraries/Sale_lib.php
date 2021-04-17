@@ -394,7 +394,7 @@ class Sale_lib
 		{
 			if($this->CI->session->userdata('cash_rounding') && $payment_id != $this->CI->lang->line('sales_cash') && $payment_id != $this->CI->lang->line('sales_cash_adjustment'))
 			{
-				$this->CI->session->set_userdata('cash_mode', 0);
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 			}
 		}
 
@@ -455,7 +455,7 @@ class Sale_lib
 	public function get_payments_total()
 	{
 		$subtotal = 0.0;
-		$cash_mode_eligible = 1;
+		$cash_mode_eligible = CASH_MODE_TRUE;
 
 		foreach($this->get_payments() as $payments)
 		{
@@ -465,13 +465,13 @@ class Sale_lib
 			}
 			if($this->CI->lang->line('sales_cash') != $payments['payment_type'] && $this->CI->lang->line('sales_cash_adjustment') != $payments['payment_type'])
 			{
-				$cash_mode_eligible = 0;
+				$cash_mode_eligible = CASH_MODE_FALSE;
 			}
 		}
 
 		if($cash_mode_eligible && $this->CI->session->userdata('cash_rounding'))
 		{
-			$this->CI->session->set_userdata('cash_mode', 1);
+			$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
 		}
 
 		return $subtotal;
@@ -1099,7 +1099,7 @@ class Sale_lib
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
-		$item_kit_id = $pieces[1];
+		$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $external_item_kit_id;
 		$result = TRUE;
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
@@ -1125,7 +1125,7 @@ class Sale_lib
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
 		}
 
-		$this->CI->session->set_userdata('cash_mode', 0);
+		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 
 		// Establish cash_mode for this sale by inspecting the payments
 		if($this->CI->session->userdata('cash_rounding'))
@@ -1141,11 +1141,11 @@ class Sale_lib
 			}
 			if($cash_types_only)
 			{
-				$this->CI->session->set_userdata('cash_mode', 1);
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
 			}
 			else
 			{
-				$this->CI->session->set_userdata('cash_mode', 0);
+				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 			}
 		}
 
@@ -1223,7 +1223,7 @@ class Sale_lib
 			$cash_rounding = 0;
 		}
 		$this->CI->session->set_userdata('cash_rounding', $cash_rounding);
-		$this->CI->session->set_userdata('cash_mode', 0);
+		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 
 		return $cash_rounding;
 	}
@@ -1347,6 +1347,10 @@ class Sale_lib
 		{
 			$discount = bcmul($total, bcdiv($discount, 100));
 		}
+		else
+		{
+			$discount = bcmul($quantity, $discount);
+		}
 
 		return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);
 	}
@@ -1406,7 +1410,7 @@ class Sale_lib
 			}
 		}
 
-		if($include_cash_rounding)
+		if($include_cash_rounding && $cash_mode)
 		{
 			if($cash_mode)
 			{

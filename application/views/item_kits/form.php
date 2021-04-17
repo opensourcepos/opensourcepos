@@ -4,6 +4,21 @@
 
 <?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_kit_basic_info">
+        <div class="form-group form-group-sm">
+            <?php echo form_label($this->lang->line('item_kits_item_kit_number'), 'item_kit_number', array('class'=>'control-label col-xs-3')); ?>
+            <div class='col-xs-8'>
+                <div class="input-group">
+                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+                    <?php echo form_input(array(
+                            'name'=>'item_kit_number',
+                            'id'=>'item_kit_number',
+                            'class'=>'form-control input-sm',
+                            'value'=>$item_kit_info->item_kit_number)
+                    );?>
+                </div>
+            </div>
+        </div>
+
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('item_kits_name'), 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
@@ -40,7 +55,6 @@
 					<?php echo form_radio(array(
 							'name'=>'kit_discount_type',
 							'type'=>'radio',
-							'id'=>'kit_discount_type',
 							'value'=>0,
 							'checked'=>$item_kit_info->kit_discount_type == PERCENT)
 					); ?> <?php echo $this->lang->line('item_kits_discount_percent'); ?>
@@ -49,7 +63,6 @@
 					<?php echo form_radio(array(
 							'name'=>'kit_discount_type',
 							'type'=>'radio',
-							'id'=>'kit_discount_type',
 							'value'=>1,
 							'checked'=>$item_kit_info->kit_discount_type == FIXED)
 					); ?> <?php echo $this->lang->line('item_kits_discount_fixed'); ?>
@@ -80,7 +93,6 @@
 					<?php echo form_radio(array(
 							'name'=>'price_option',
 							'type'=>'radio',
-							'id'=>'price_option',
 							'value'=>0,
 							'checked'=>$item_kit_info->price_option == PRICE_ALL)
 					); ?> <?php echo $this->lang->line('item_kits_kit_and_components'); ?>
@@ -89,7 +101,6 @@
 					<?php echo form_radio(array(
 							'name'=>'price_option',
 							'type'=>'radio',
-							'id'=>'price_option',
 							'value'=>1,
 							'checked'=>$item_kit_info->price_option == PRICE_KIT)
 					); ?> <?php echo $this->lang->line('item_kits_kit_only'); ?>
@@ -98,7 +109,6 @@
 					<?php echo form_radio(array(
 							'name'=>'price_option',
 							'type'=>'radio',
-							'id'=>'price_option',
 							'value'=>2,
 							'checked'=>$item_kit_info->price_option == PRICE_KIT_ITEMS)
 					); ?> <?php echo $this->lang->line('item_kits_kit_and_stock'); ?>
@@ -114,7 +124,6 @@
 					<?php echo form_radio(array(
 							'name'=>'print_option',
 							'type'=>'radio',
-							'id'=>'print_option',
 							'value'=>0,
 							'checked'=>$item_kit_info->print_option == PRINT_ALL)
 					); ?> <?php echo $this->lang->line('item_kits_all'); ?>
@@ -123,7 +132,6 @@
 					<?php echo form_radio(array(
 							'name'=>'print_option',
 							'type'=>'radio',
-							'id'=>'print_option',
 							'value'=>1,
 							'checked'=>$item_kit_info->print_option == PRINT_PRICED)
 					); ?> <?php echo $this->lang->line('item_kits_priced_only'); ?>
@@ -132,7 +140,6 @@
 					<?php echo form_radio(array(
 							'name'=>'print_option',
 							'type'=>'radio',
-							'id'=>'print_option',
 							'value'=>2,
 							'checked'=>$item_kit_info->print_option == PRINT_KIT)
 					); ?> <?php echo $this->lang->line('item_kits_kit_only'); ?>
@@ -263,13 +270,31 @@ $(document).ready(function()
 		rules:
 		{
 			name: 'required',
-			category: 'required'
+			category: 'required',
+			item_kit_number:
+			{
+				required: false,
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
+					type: 'POST',
+					data: 
+					{
+						'item_kit_id' : "<?php echo $item_kit_info->item_kit_id; ?>",
+						'item_kit_number' : function()
+						{
+							return $('#item_kit_number').val();
+						}
+					}
+				}
+			}
 		},
 
 		messages:
 		{
 			name: "<?php echo $this->lang->line('items_name_required'); ?>",
-			category: "<?php echo $this->lang->line('items_category_required'); ?>"
+			category: "<?php echo $this->lang->line('items_category_required'); ?>",
+			item_kit_number: "<?php echo $this->lang->line('item_kits_item_number_duplicate'); ?>"
 		}
 	}, form_support.error));
 });

@@ -49,7 +49,7 @@ LOGIN using
 
 Beside this we also have a [Dev server](https://dev.opensourcepos.org) that runs the build that was triggered with the last repository's commit.
 
-In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
+In case of any issues, check our status page at [status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
 
 Installation
 ------------

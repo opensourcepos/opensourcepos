@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
@@ -26,6 +27,7 @@ $lang["common_first_page"] = "第一頁";
 $lang["common_gender"] = "性別";
 $lang["common_gender_female"] = "女";
 $lang["common_gender_male"] = "男";
+$lang["common_gender_undefined"] = "";
 $lang["common_id"] = "Id";
 $lang["common_import"] = "匯入";
 $lang["common_import_change_file"] = "變更";
@@ -42,6 +44,7 @@ $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
 $lang["common_migration_needed"] = "登錄後將啟動到％1的數據庫遷移.";
 $lang["common_new"] = "新";
+$lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示.";
 $lang["common_none_selected_text"] = "[選擇]";
 $lang["common_or"] = "或";
@@ -66,5 +69,6 @@ $lang["common_view_recent_sales"] = "最新的消售資訊";
 $lang["common_website"] = "網站";
 $lang["common_welcome"] = "歡迎";
 $lang["common_welcome_message"] = "歡迎使用OSPOS，請點擊下面的模組以開始使用.";
+$lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "您正在使用 Open Source Point Of Sale 版本";
 $lang["common_zip"] = "郵遞區號";

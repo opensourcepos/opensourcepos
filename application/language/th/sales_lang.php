@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "คะแนนที่มี";
 $lang["rewards_package"] = "คะแนนสะสม";
 $lang["rewards_remaining_balance"] = "คะแนนสะสมคงเหลือ ";

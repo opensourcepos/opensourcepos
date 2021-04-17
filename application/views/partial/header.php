@@ -86,7 +86,7 @@
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=0b307c7ae1"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=32a09a5d0e"></script>
 		<script type="text/javascript" src="js/manage_tables.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
 		<link rel="stylesheet" type="text/css" href="css/style.css"/>

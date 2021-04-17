@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
 $lang["items_allow_alt_description"] = "แสดงข้อมูลเพิ่มเติม";
 $lang["items_amount_entry"] = "จำนวนเงิน";

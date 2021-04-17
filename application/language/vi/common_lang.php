@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_city"] = "Thành phố";
@@ -27,6 +26,7 @@ $lang["common_first_page"] = "Đầu";
 $lang["common_gender"] = "Giới tính";
 $lang["common_gender_female"] = "Nữ";
 $lang["common_gender_male"] = "Nam";
+$lang["common_gender_undefined"] = "";
 $lang["common_id"] = "Mã số";
 $lang["common_import"] = "Nhập";
 $lang["common_import_change_file"] = "Thay đổi";
@@ -43,6 +43,7 @@ $lang["common_list_of"] = "Danh sách của";
 $lang["common_logout"] = "Đăng xuất";
 $lang["common_migration_needed"] = "Nâng cấp cơ sở dữ liệu lên %1 sẽ bắt đầu sau khi đăng nhập.";
 $lang["common_new"] = "Mới";
+$lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "Ở đây không có ai để mà hiển thị.";
 $lang["common_none_selected_text"] = "[Chọn]";
 $lang["common_or"] = "HOẶC";
@@ -64,8 +65,9 @@ $lang["common_submit"] = "Gửi";
 $lang["common_total_spent"] = "Trả tổng cộng";
 $lang["common_unknown"] = "Chưa biết";
 $lang["common_view_recent_sales"] = "Hiển thị những Bán hàng mới đây";
-$lang["common_website"] = "trang thông tin điện tử";
+$lang["common_website"] = "Trang thông tin điện tử";
 $lang["common_welcome"] = "Chào mừng";
 $lang["common_welcome_message"] = "Chào mừng bạn đến với OSPOS, bấm chọn mô đun phía dưới để bắt đầu.";
+$lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "Bạn đang sử dụng Open Source Point Of Sale phiên bản";
 $lang["common_zip"] = "Mã bưu điện";

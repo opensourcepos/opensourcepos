@@ -11,7 +11,14 @@ module.exports = function(grunt) {
 		bower_concat: {
 			all: {
 				mainFiles: {
-					'bootstrap-table': [ "dist/bootstrap-table.min.js", "dist/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.min.js", "dist/extensions/mobile/bootstrap-table-mobile.min.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.css"],
+					'bootstrap-table': [ 
+						"dist/bootstrap-table.min.js", 
+						"dist/bootstrap-table.css", 
+						"dist/extensions/export/bootstrap-table-export.min.js", 
+						"dist/extensions/mobile/bootstrap-table-mobile.min.js", 
+						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js", 
+						"dist/extensions/sticky-header/bootstrap-table-sticky-header.css"
+					],
 					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
 				},
 				dest: {

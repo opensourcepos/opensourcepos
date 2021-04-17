@@ -1,7 +1,6 @@
-<?php 
-
-$lang["cashups_amount"] = "";
-$lang["cashups_amount_number"] = "";
+<?php
+$lang["cashups_amount"] = "Tổng số";
+$lang["cashups_amount_number"] = "Tổng số phải là dạng số";
 $lang["cashups_amount_required"] = "";
 $lang["cashups_cannot_be_deleted"] = "";
 $lang["cashups_close_date"] = "";

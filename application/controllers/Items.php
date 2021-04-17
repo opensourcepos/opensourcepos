@@ -501,7 +501,7 @@ class Items extends Secure_Controller
 		}
 		$default_pack_name = $this->lang->line('items_default_pack_name');
 
-	//Save item data
+		//Save item data
 		$item_data = array(
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),

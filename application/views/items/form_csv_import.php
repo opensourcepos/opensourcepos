@@ -23,7 +23,7 @@
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
-{	
+{
 	$('#csv_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
