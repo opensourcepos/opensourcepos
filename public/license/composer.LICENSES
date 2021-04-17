@@ -1,6 +1,6 @@
 {
     "name": "OpenSourcePOS",
-    "version": "3.3.2",
+    "version": "3.3.3",
     "license": [
         "MIT"
     ],
@@ -12,7 +12,7 @@
             ]
         },
         "dompdf/dompdf": {
-            "version": "v0.7.0",
+            "version": "v0.8.6",
             "license": [
                 "LGPL-2.1"
             ]
@@ -24,37 +24,37 @@
             ]
         },
         "paragonie/random_compat": {
-            "version": "2.0.18",
+            "version": "2.0.19",
             "license": [
                 "MIT"
             ]
         },
         "phenx/php-font-lib": {
-            "version": "0.4",
+            "version": "0.5.2",
             "license": [
                 "LGPL-3.0"
             ]
         },
         "phenx/php-svg-lib": {
-            "version": "0.1",
+            "version": "0.3.3",
             "license": [
                 "LGPL-3.0"
             ]
         },
         "tamtamchik/namecase": {
-            "version": "1.0.5",
+            "version": "1.0.6",
             "license": [
                 "MIT"
             ]
         },
         "vlucas/phpdotenv": {
-            "version": "2.6.1",
+            "version": "2.6.6",
             "license": [
                 "BSD-3-Clause-Attribution"
             ]
         },
         "symfony/polyfill-ctype": {
-             "version": "v1.13.1",
+             "version": "v1.20.0",
              "license": [
                  "MIT"
              ]

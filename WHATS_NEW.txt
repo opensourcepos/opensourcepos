@@ -1,3 +1,13 @@
+Version 3.3.3
+-------------
++ PHP 7.4 support
++ Set PHP 7.2 to be the minimum level due to older version deprecations
++ Added email CC and BCC (see config/email.php)
++ Cash rounding to nearest 5 cents
++ Updated composer packages and js plugins
++ Improved security (CSRF protection)
++ Various small improvements and bug fixes
+
 Version 3.3.2
 -------------
 + Fixed `only_full_group_by` issue with MySQL/MariaDB

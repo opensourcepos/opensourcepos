@@ -14,6 +14,7 @@ class Sales extends Secure_Controller
 	{
 		parent::__construct('sales');
 
+		$this->load->helper('file');
 		$this->load->library('sale_lib');
 		$this->load->library('email_lib');
 		$this->load->library('token_lib');
@@ -193,6 +194,8 @@ class Sales extends Secure_Controller
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
+
+		$this->sale_lib->empty_payments();
 
 		$this->_reload();
 	}
@@ -472,6 +475,7 @@ class Sales extends Secure_Controller
 				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
 			}
 		}
+
 		$this->_reload($data);
 	}
 
@@ -496,6 +500,8 @@ class Sales extends Secure_Controller
 		if($this->form_validation->run() != FALSE)
 		{
 			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+			
+			$this->sale_lib->empty_payments();
 		}
 		else
 		{
@@ -510,6 +516,8 @@ class Sales extends Secure_Controller
 	public function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
+
+		$this->sale_lib->empty_payments();		
 
 		$this->_reload();
 	}
@@ -817,6 +825,7 @@ class Sales extends Secure_Controller
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
 				new Token_customer((object)$sale_data));
 			$text = $this->token_lib->render($text, $tokens);
+			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->item('company_logo'));
 
 			// generate email attachment: invoice in pdf format
 			$html = $this->load->view("sales/" . $type . "_email", $sale_data, TRUE);
@@ -1048,7 +1057,6 @@ class Sales extends Secure_Controller
 		}
 
 		$invoice_type = $this->config->item('invoice_type');
-
 		$data['invoice_view'] = $invoice_type;
 
 		return $this->xss_clean($data);
@@ -1501,6 +1509,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->sale_lib->clear_all();
+
 		$this->_reload($data);
 	}
 

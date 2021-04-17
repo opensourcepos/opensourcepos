@@ -1,4 +1,4 @@
-[![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.3.2) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.3.2/link)
+[![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.3.3) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.3.3/link)
 [![Build Status](https://travis-ci.org/opensourcepos/opensourcepos.svg?branch=master)](https://travis-ci.org/opensourcepos/opensourcepos)
 [![Join the chat at https://gitter.im/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![GitHub version](https://badge.fury.io/gh/jekkos%2Fopensourcepos.svg)](https://badge.fury.io/gh/jekkos%2Fopensourcepos)
@@ -35,13 +35,11 @@ The main features are:
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
 The latest 3.x version is a complete overhaul of the original software.
-It is now based on Bootstrap 3 using Bootswatch themes, and still uses CodeIgniter 3 as framework.
+It is now based on Bootstrap 3 using Bootswatch themes, and uses CodeIgniter version 3 as framework.
 It also has improved functionality and security.
 
-Deployed to a Cloud it's a SaaS (Software as a Service) solution.
-
-DEMO
-----
+DEMO / DEV
+----------
 
 A demo version of the latest master version can be found on our [Demo server](https://demo.opensourcepos.org). This is a containerized install which will be reinitialized when new functionality is added to the code repository.
 
@@ -49,6 +47,9 @@ LOGIN using
 * username: admin
 * password: pointofsale
 
+Beside this we also have a [Dev server](https://dev.opensourcepos.org) that runs the build that was triggered with the last repository's commit.
+
+In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
 
 Installation
 ------------
@@ -123,10 +124,10 @@ Please **Copy** the info under **System Info tab in configuration section** in o
 Bug reports must follow the below schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
-3. Web Server name and version (e.g. Apache 2.2, Apache 2.4, Nginx 1.12, Nginx 1.13)
-4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2, MariaDB 10.3)
-5. PHP version (e.g. 5.6, 7.0, 7.1, 7.2, 7.3)
+2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 20, Windows 10)
+3. Web Server name and version (e.g. Apache 2.4, Nginx 1.12, Nginx 1.13)
+4. Database name and version (e.g. MySQL 5.6, MySQL 5.7, MariaDB 10.2, MariaDB 10.3)
+5. PHP version (e.g. 7.2, 7.3, 7.4)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
@@ -153,7 +154,9 @@ FAQ
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
-* If you see the item edit dialog box empty starting with version 3.3.0, please disable `only_full_group_by` option from MySQL/MariaDB. See issue [#2538](https://github.com/opensourcepos/opensourcepos/issues/2538).
+* PHP 8.0 is not currently supported, see [issue #3051](https://github.com/opensourcepos/opensourcepos/issues/3051).
+
+* PHP 5.5 and 5.6 are no longer supported due to the fact that they have been deprecated and not safe to use from security point of view.
 
 Credits
 -------
