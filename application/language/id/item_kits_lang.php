@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Tambah Item Barang";
 $lang["item_kits_all"] = "Semua";
 $lang["item_kits_cannot_be_deleted"] = "Item Paket tidak dapat dihapus.";
@@ -14,8 +13,8 @@ $lang["item_kits_error_adding_updating"] = "Tambah/Ubah Item Paket tidak berhasi
 $lang["item_kits_find_kit_item"] = "Paket Item";
 $lang["item_kits_info"] = "Item Paket Info";
 $lang["item_kits_item"] = "Item Barang";
-$lang["item_kits_item_kit_number"] = "";
-$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_kit_number"] = "Kode bar";
+$lang["item_kits_item_kit_number_duplicate"] = "Nomor Paket Item telah ada di basis data.";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "Item Barang";
 $lang["item_kits_kit"] = "ID Paket";
