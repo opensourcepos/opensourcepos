@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Poin yg tersedia";
 $lang["rewards_package"] = "Penghargaan";
 $lang["rewards_remaining_balance"] = "Poin penghargaan tersisa ";
@@ -20,12 +19,12 @@ $lang["sales_check_filter"] = "Cek";
 $lang["sales_comment"] = "Catatan";
 $lang["sales_comments"] = "Keterangan";
 $lang["sales_complete_sale"] = "Selesai";
-$lang["sales_confirm_cancel_sale"] = "Anda yakin ingin menghapus transaksi penjualan ini?  Semua item akan dihapus.";
+$lang["sales_confirm_cancel_sale"] = "Anda yakin ingin menghapus transaksi penjualan ini? Semua item akan dihapus.";
 $lang["sales_confirm_delete"] = "Anda yakin akan menghapus penjualan terpilih?";
 $lang["sales_confirm_restore"] = "Anda yakin akan mengembalikan penjualan terpilih?";
 $lang["sales_credit"] = "Kartu Credit";
 $lang["sales_credit_deposit"] = "Deposit Kredit";
-$lang["sales_credit_filter"] = "";
+$lang["sales_credit_filter"] = "Kartu Kredit";
 $lang["sales_customer"] = "Pelanggan";
 $lang["sales_customer_address"] = "Alamat";
 $lang["sales_customer_discount"] = "Diskon";
@@ -179,3 +178,4 @@ $lang["sales_work_order_number"] = "Nomor Perintah Kerja";
 $lang["sales_work_order_number_duplicate"] = "Nomor Perintah Kerja tidak boleh sama.";
 $lang["sales_work_order_sent"] = "Perintah Kerja dikirim ke";
 $lang["sales_work_order_unsent"] = "Perintah Kerja gagal dikirim ke";
+$lang["sales_cash_adjustment"] = "Penyesuaian Kas";
