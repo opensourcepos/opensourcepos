@@ -88,6 +88,7 @@ function get_languages()
 		'ro:romanian' => 'Romanian',
 		'ru:russian' => 'Russian',
 		'sv:swedish' => 'Swedish',
+		'ta:tamil' => 'Tamil',
 		'th:thai' => 'Thai',
 		'tl-PH:talong' => 'Tagalog (Philippines)',
 		'tr:turkish' => 'Turkish',
