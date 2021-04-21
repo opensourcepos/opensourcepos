@@ -14,12 +14,12 @@ networks:
 
 services:
     ospos:
-        image: jekkos/opensourcepos:3.3.3
+        image: jekkos/opensourcepos:3.3.4
         restart: always
         depends_on:
           - mysql
-        expose:
-          - "80"
+        ports:
+          - "80:80"
         networks:
           - app_net
           - db_net
