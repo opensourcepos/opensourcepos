@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Адрес 1";
 $lang["common_address_2"] = "Адрес 2";
 $lang["common_city"] = "Град";
@@ -8,7 +7,7 @@ $lang["common_comments"] = "Коментари";
 $lang["common_common"] = "Често срещани";
 $lang["common_confirm_search"] = "Избрали сте един или повече редове, след търсене няма да бъдат избрани. Наистина ли искате да подадете това търсене?";
 $lang["common_copyrights"] = "© 2010 - %1";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Моля, коригирайте установените грешки преди записване";
 $lang["common_country"] = "Държава";
 $lang["common_date"] = "Дата";
 $lang["common_delete"] = "Изтриване";
@@ -42,11 +41,11 @@ $lang["common_last_page"] = "Последна";
 $lang["common_learn_about_project"] = "за да научите най-новата информация за проекта.";
 $lang["common_list_of"] = "Списък с";
 $lang["common_logout"] = "Излизане от профила";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Мигриране на база данни ще започне след влизане.";
 $lang["common_new"] = "Нов";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "Няма хора за показване.";
-$lang["common_none_selected_text"] = "Нищо не е избрано.";
+$lang["common_none_selected_text"] = "Нищо не е избрано";
 $lang["common_or"] = "Или";
 $lang["common_phone_number"] = "Телефонен номер";
 $lang["common_phone_number_required"] = "";
