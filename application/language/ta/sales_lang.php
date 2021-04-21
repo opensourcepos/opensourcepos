@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
@@ -162,7 +161,7 @@ $lang["sales_tax"] = "Tax";
 $lang["sales_tax_id"] = "Tax Id";
 $lang["sales_tax_invoice"] = "Tax Invoice";
 $lang["sales_tax_percent"] = "Tax %";
-$lang["sales_taxed_ind"] = "T";
+$lang["sales_taxed_ind"] = "விற்பனை வரி குறியீடு";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_transaction_failed"] = "Sales Transaction failed.";
