@@ -79,37 +79,3 @@ Cloud install
 If you choose *DigitalOcean*:
 [Through this link](https://m.do.co/c/ac38c262507b), you will get a *$100 credit* for a first month. [Check the wiki](https://github.com/opensourcepos/opensourcepos/wiki/Getting-Started-installations) for further instructions on how to install the necessary components.
 
-
-cPanel & SSH Install
---------------------
-
-If you own on a **VPS**, **Dedicated Server**, or **Shared Hosting** running on **cPanel** with **SSH** access:
-
-You can run our Stand-alone [WS-OSPOS-Installer](https://github.com/WebShells/WS-OSPOS-Installer.git), it will handle:
-
-
-. Database.php config files generation.
-
-. Creation of db User & Password depending on user's input of Dbname, Username, Password, & Hostname ( No need for phpmyadmin )
-
-. Imports default Db SQL files in order to run the project.
-
-Usage in **(SSH)**:
-
-git clone https://github.com/WebShells/WS-OSPOS-Installer.git
-
-chmod +x WS-OSPOS-Installer/Get-POS 
-
-./WS-OSPOS-Installer/Get-POS 
-
-or
-
-wget https://github.com/WebShells/WS-OSPOS-Installer/archive/master.zip
-
-unzip -qq master.zip
-
-chmod +x WS-OSPOS-Installer-master/Get-POS
-
-./WS-OSPOS-Installer-master/Get-POS
-
-Answer **DB required questions** and you are ready to run the project on http://localhost/OSPOS/public (localhost to be replaced by the hostname provided during setup).
