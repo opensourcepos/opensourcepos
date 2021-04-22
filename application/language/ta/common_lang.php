@@ -1,24 +1,23 @@
-<?php 
-
-$lang["common_address_1"] = "Address 1";
-$lang["common_address_2"] = "Address 2";
-$lang["common_city"] = "City";
-$lang["common_close"] = "Close";
-$lang["common_comments"] = "Comments";
-$lang["common_common"] = "common";
-$lang["common_confirm_search"] = "You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?";
+<?php
+$lang["common_address_1"] = "முகவரி 1";
+$lang["common_address_2"] = "முகவரி 2";
+$lang["common_city"] = "நகரம்";
+$lang["common_close"] = "மூடவும்";
+$lang["common_comments"] = "குறிப்பு";
+$lang["common_common"] = "பொது";
+$lang["common_confirm_search"] = "நீங்கள் ஒன்று அல்லது அதற்கு மேற்பட்ட வரிசைகளைத் தேர்ந்தெடுத்துள்ளீர்கள், இவை உங்கள் தேடலுக்குப் பிறகு தேர்ந்தெடுக்கப்படாது. இந்த தேடலை நீங்கள் சமர்ப்பிக்க விரும்புகிறீர்களா?";
 $lang["common_copyrights"] = "© 2010 - %1";
-$lang["common_correct_errors"] = "Please correct identified errors before saving";
-$lang["common_country"] = "Country";
-$lang["common_date"] = "Date";
-$lang["common_delete"] = "Delete";
-$lang["common_det"] = "details";
-$lang["common_download_import_template"] = "Download Import CSV Template (CSV)";
-$lang["common_edit"] = "edit";
-$lang["common_email"] = "Email";
-$lang["common_email_invalid_format"] = "The email address is not in the correct format.";
-$lang["common_export_csv"] = "CSV Export";
-$lang["common_export_csv_no"] = "No";
+$lang["common_correct_errors"] = "சேமிப்பதற்கு முன் அடையாளம் காணப்பட்ட பிழைகளை சரிசெய்யவும்";
+$lang["common_country"] = "நாடு";
+$lang["common_date"] = "தேதி";
+$lang["common_delete"] = "நீக்கு";
+$lang["common_det"] = "விவரங்கள்";
+$lang["common_download_import_template"] = "CSV மாதிரியை இறக்குமதி செய்க (CSV)";
+$lang["common_edit"] = "திருத்து";
+$lang["common_email"] = "மின்னஞ்சல்";
+$lang["common_email_invalid_format"] = "மின்னஞ்சல் முகவரி சரியான வடிவத்தில் இல்லை.";
+$lang["common_export_csv"] = "CSV முறையில் வெளியீடு";
+$lang["common_export_csv_no"] = "இல்லை";
 $lang["common_export_csv_yes"] = "Yes";
 $lang["common_fields_required_message"] = "Fields in red are required";
 $lang["common_first_name"] = "First Name";
