@@ -399,7 +399,7 @@ function to_decimals($number, $decimals=NULL, $type=\NumberFormatter::DECIMAL)
 
 	$config = get_instance()->config;
 	$fmt = new \NumberFormatter($config->item('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 0);
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
 	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
 
 	if(empty($config->item('thousands_separator')))
