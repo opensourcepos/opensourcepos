@@ -1,10 +1,9 @@
-<?php 
-
-$lang["items_add_minus"] = "Inventory to add or subtract.";
-$lang["items_allow_alt_description"] = "Allow Alternate Description";
-$lang["items_amount_entry"] = "Amount Entry";
-$lang["items_bulk_edit"] = "Bulk Edit";
-$lang["items_buy_price_required"] = "Purchase Price is a required field.";
+<?php
+$lang["items_add_minus"] = "கையிருப்பு பொருட்களை கூட்டு அல்லது கழி";
+$lang["items_allow_alt_description"] = "மாற்று விளக்கத்தை அனுமதி";
+$lang["items_amount_entry"] = "தொகை உள்ளிடு";
+$lang["items_bulk_edit"] = "மொத்த திருத்தம்";
+$lang["items_buy_price_required"] = "கொள்முதல் விலை அவசியம்.";
 $lang["items_cannot_be_deleted"] = "Could not delete selected Item(s), one or more of the selected Items have sales.";
 $lang["items_cannot_find_item"] = "Item not found.";
 $lang["items_category"] = "Category";
