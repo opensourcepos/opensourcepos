@@ -19,7 +19,7 @@ services:
         depends_on:
           - mysql
         ports:
-          - "80:80"
+          - "127.0.0.1:80:80"
         networks:
           - app_net
           - db_net
@@ -28,7 +28,7 @@ services:
           - logs:/app/application/logs
         environment:
           - CI_ENV=production
-          - FORCE_HTTPS=true
+          - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
