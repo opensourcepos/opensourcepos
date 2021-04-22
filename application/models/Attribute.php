@@ -665,6 +665,27 @@ class Attribute extends CI_Model
 		return $this->db->update('attribute_definitions', array('deleted' => 1));
 	}
 
+	/**
+	 * Deletes any orphaned values that do not have associated links
+	 * @param int $definition_id
+	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
+	 */
+	public function delete_orphaned_values()
+	{
+		$this->db->distinct();
+		$this->db->select('attribute_id');
+		$attribute_ids = $this->db->get_compiled_select('attribute_links');
+
+		$this->db->trans_start();
+
+		$this->db->where_not_in('attribute_id', $attribute_ids, FALSE);
+		$this->db->delete('attribute_values');
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
+	}
+
 	/*
 	Undeletes one attribute definition
 	*/
