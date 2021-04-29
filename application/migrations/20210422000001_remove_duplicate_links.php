@@ -41,7 +41,6 @@ class Migration_remove_duplicate_links extends CI_Migration
 			$this->db->where('receiving_id');
 			$this->db->where('item_id', $duplicated_link['item_id']);
 			$this->db->where('definition_id', $duplicated_link['definition_id']);
-			$this->db->where('item_id', $duplicated_link['item_id']);
 			$this->db->delete('attribute_links');
 
 			$CI->Attribute->save_link($duplicated_link['item_id'], $duplicated_link['definition_id'], $duplicated_link['attribute_id']);
