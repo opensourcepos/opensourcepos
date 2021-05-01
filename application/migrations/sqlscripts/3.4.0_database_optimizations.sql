@@ -6,7 +6,6 @@ ALTER TABLE `ospos_attribute_values` ADD UNIQUE(`attribute_decimal`);
 ALTER TABLE `ospos_attribute_definitions` MODIFY `definition_flags` tinyint(1) NOT NULL;
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_name`); 
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_type`);
-ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`deleted`); 
 
 #opsos_attribute_links table
 ALTER TABLE `ospos_attribute_links` ADD UNIQUE INDEX `attribute_links_uq2` (`item_id`, `receiving_id`, `sale_id`, `definition_id`, `attribute_id`);
@@ -20,7 +19,6 @@ ALTER TABLE `ospos_customers` MODIFY `taxable` tinyint(1) DEFAULT 1 NOT NULL;
 ALTER TABLE `ospos_customers` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_customers` MODIFY `discount_type` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_customers` ADD PRIMARY KEY(`person_id`);
-ALTER TABLE `ospos_customers` ADD INDEX(`deleted`); 
 ALTER TABLE `ospos_customers` ADD INDEX(`company_name`);
 
 #ospos_customers_packages table
@@ -40,18 +38,15 @@ ALTER TABLE `ospos_employees` ADD PRIMARY KEY(`person_id`);
 
 #ospos_expenses table
 ALTER TABLE `ospos_expenses` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_expenses` ADD INDEX(`deleted`);
 ALTER TABLE `ospos_expenses` ADD INDEX(`payment_type`);
 ALTER TABLE `ospos_expenses` ADD INDEX(`amount`);
 
 #ospos_expenses_categories table
 ALTER TABLE `ospos_expense_categories` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_expense_categories` ADD INDEX(`category_description`);
-ALTER TABLE `ospos_expense_categories` ADD INDEX(`deleted`);
 
 #ospos_giftcards table
 ALTER TABLE `ospos_giftcards` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_giftcards` ADD INDEX(`deleted`); 
 
 #ospos_items table
 ALTER TABLE `ospos_items` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
@@ -96,7 +91,6 @@ ALTER TABLE `ospos_sessions` ADD INDEX(`ip_address`);
 
 #ospos_stock_locations table
 ALTER TABLE `ospos_stock_locations` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_stock_locations` ADD INDEX(`deleted`);
 
 #ospos_suppliers table
 DROP INDEX `person_id` ON `ospos_suppliers`;
@@ -104,22 +98,18 @@ ALTER TABLE `ospos_suppliers` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_suppliers` MODIFY `category` tinyint(1) NOT NULL;
 ALTER TABLE `ospos_suppliers` ADD PRIMARY KEY(`person_id`);
 ALTER TABLE `ospos_suppliers` ADD INDEX(`category`); 
-ALTER TABLE `ospos_suppliers` ADD INDEX(`deleted`);
 
 #ospos_tax_categories table
 ALTER TABLE `ospos_tax_categories` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_tax_categories` MODIFY `tax_group_sequence` tinyint(1) NOT NULL;
-ALTER TABLE `ospos_tax_categories` ADD INDEX(`deleted`); 
 
 #ospos_tax_codes table
 ALTER TABLE `ospos_tax_codes` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_tax_codes` ADD INDEX(`deleted`);
 
 #ospos_tax_jurisdictions table
 ALTER TABLE `ospos_tax_jurisdictions` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_tax_jurisdictions` MODIFY `tax_group_sequence` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_tax_jurisdictions` MODIFY `cascade_sequence` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_tax_jurisdictions` ADD INDEX(`deleted`);  
 
 #ospos_tax_rates table
 ALTER TABLE `ospos_tax_rates` MODIFY `tax_rounding_code` tinyint(1) DEFAULT 0 NOT NULL;
