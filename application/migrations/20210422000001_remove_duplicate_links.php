@@ -25,8 +25,8 @@ class Migration_remove_duplicate_links extends CI_Migration
 	//Remove duplicate attribute links
 		$this->db->trans_start();
 
-		$this->db->where('sale_id');
-		$this->db->where('receiving_id');
+		$this->db->where('sale_id', NULL);
+		$this->db->where('receiving_id', NULL);
 		$this->db->group_by('item_id');
 		$this->db->group_by('definition_id');
 		$this->db->group_by('attribute_id');
@@ -37,8 +37,8 @@ class Migration_remove_duplicate_links extends CI_Migration
 
 		foreach($duplicated_links->result_array() as $duplicated_link)
 		{
-			$this->db->where('sale_id');
-			$this->db->where('receiving_id');
+			$this->db->where('sale_id', NULL);
+			$this->db->where('receiving_id', NULL);
 			$this->db->where('item_id', $duplicated_link['item_id']);
 			$this->db->where('definition_id', $duplicated_link['definition_id']);
 			$this->db->delete('attribute_links');
