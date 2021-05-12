@@ -1,15 +1,15 @@
 <?php
-$lang["customers_account_number"] = "Account #";
-$lang["customers_account_number_duplicate"] = "Account Number is already present in the database.";
+$lang["customers_account_number"] = "கணக்கு #";
+$lang["customers_account_number_duplicate"] = "இன்த கணக்கு எண் முன்பே டேய்ட்டாபேய்ஸ்இல்  உள்ளது";
 $lang["customers_available_points"] = "இருப்பு புள்ளிகள்";
-$lang["customers_average"] = "Average spent";
-$lang["customers_avg_discount"] = "Average discount";
-$lang["customers_basic_information"] = "Information";
-$lang["customers_cannot_be_deleted"] = "Could not delete selected customers, one or more of the selected customers has sales.";
-$lang["customers_company_name"] = "Company";
-$lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customer(s)?";
-$lang["customers_confirm_restore"] = "Are you sure you want to restore selected customers(s)?";
-$lang["customers_consent"] = "Registration consent";
+$lang["customers_average"] = "சராசரி செலவிடபட்டது";
+$lang["customers_avg_discount"] = "சராசரி தள்ளுபடி";
+$lang["customers_basic_information"] = "தகவல்";
+$lang["customers_cannot_be_deleted"] = "தேர்ந்தெடுக்கப்பட்ட வாடிக்கையாளர்களை நீக்க முடியவில்லை, தேர்ந்தெடுக்கப்பட்ட ஒன்று அல்லது அதற்கு மேற்பட்ட வாடிக்கையாளர்களுக்கு விற்பனை உள்ளது..";
+$lang["customers_company_name"] = "நிறுவனம்";
+$lang["customers_confirm_delete"] = "தேர்ந்தெடுக்கப்பட்ட வாடிக்கையாளர் (களை) நீக்க விரும்புகிறீர்களா?";
+$lang["customers_confirm_restore"] = "தேர்ந்தெடுக்கப்பட்ட வாடிக்கையாளர்களை (களை) மீட்டெடுக்க விரும்புகிறீர்களா?";
+$lang["customers_consent"] = "பதிவு ஒப்புதல்";
 $lang["customers_consent_required"] = "Registration consent is a required field.";
 $lang["customers_csv_import_failed"] = "CSV import failed";
 $lang["customers_csv_import_nodata_wrongformat"] = "The uploaded file has no data or is incorrectly formatted.";
