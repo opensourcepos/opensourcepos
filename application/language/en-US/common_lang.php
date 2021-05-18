@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Address 1";
 $lang["common_address_2"] = "Address 2";
 $lang["common_city"] = "City";
@@ -32,7 +31,7 @@ $lang["common_id"] = "Id";
 $lang["common_import"] = "Import";
 $lang["common_import_change_file"] = "Change";
 $lang["common_import_csv"] = "CSV Import";
-$lang["common_import_full_path"] = "Full path to csv file required";
+$lang["common_import_full_path"] = "Full path to CSV file required";
 $lang["common_import_remove_file"] = "Remove";
 $lang["common_import_select_file"] = "Select file";
 $lang["common_inv"] = "inv";
