@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Plaats";
@@ -11,10 +10,10 @@ $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";
-$lang["common_delete"] = "Verwijder";
+$lang["common_delete"] = "Verwijderen";
 $lang["common_det"] = "details";
 $lang["common_download_import_template"] = "Download Import CSV Template (CSV)";
-$lang["common_edit"] = "Wijzig";
+$lang["common_edit"] = "bewerken";
 $lang["common_email"] = "E-mail";
 $lang["common_email_invalid_format"] = "";
 $lang["common_export_csv"] = "CSV Export";
