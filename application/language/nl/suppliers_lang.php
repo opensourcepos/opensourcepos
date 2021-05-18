@@ -1,23 +1,22 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Btw nummer";
-$lang["suppliers_agency_name"] = "Agencynaam";
-$lang["suppliers_cannot_be_deleted"] = "De geselecteeerde leveranciers konden niet worden verwijderd. Eén of meerdere leveranciers hebben ordergegevens in de database zitten.";
-$lang["suppliers_category"] = "";
-$lang["suppliers_company_name"] = "Leverancier";
-$lang["suppliers_company_name_required"] = "Bedrijfsnaam moet ingevuld worden";
-$lang["suppliers_confirm_delete"] = "Bent u zeker dat u de geselecteerde leveranciers wil verwijderen?";
-$lang["suppliers_confirm_restore"] = "";
+<?php
+$lang["suppliers_account_number"] = "Accountnummer";
+$lang["suppliers_agency_name"] = "Agentschapnaam";
+$lang["suppliers_cannot_be_deleted"] = "Kan geselecteerde leverancier(s) niet verwijderen. Eén of meer bevatten verkopen.";
+$lang["suppliers_category"] = "Categorie";
+$lang["suppliers_company_name"] = "Bedrijfsnaam";
+$lang["suppliers_company_name_required"] = "Bedrijfsnaam is een vereist veld.";
+$lang["suppliers_confirm_delete"] = "Weet u zeker dat u de geselecteerde leverancier(s) wilt verwijderen?";
+$lang["suppliers_confirm_restore"] = "Weet u zeker dat u de geselecteerde leverancier(s) wilt herstellen?";
 $lang["suppliers_cost"] = "";
-$lang["suppliers_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van een leverancier";
+$lang["suppliers_error_adding_updating"] = "Leverancier bijwerken of toevoegen mislukt.";
 $lang["suppliers_goods"] = "";
-$lang["suppliers_new"] = "N. Leverancier";
-$lang["suppliers_none_selected"] = "U hebt geen leveranciers geselecteerd";
-$lang["suppliers_one_or_multiple"] = "leverancier(s) verwijderd";
-$lang["suppliers_successful_adding"] = "Leverancier succesvol toegevoegd";
-$lang["suppliers_successful_deleted"] = "Er werd(en)";
-$lang["suppliers_successful_updating"] = "Wijzigingen leveranciersgegevens bewaard";
+$lang["suppliers_new"] = "Nieuwe leverancier";
+$lang["suppliers_none_selected"] = "Er zijn geen leverancier(s) geselecteerd om te verwijderen.";
+$lang["suppliers_one_or_multiple"] = "Leverancier(s)";
+$lang["suppliers_successful_adding"] = "Leverancier toegevoegd";
+$lang["suppliers_successful_deleted"] = "U heeft verwijderd";
+$lang["suppliers_successful_updating"] = "Leverancier bijgewerkt";
 $lang["suppliers_supplier"] = "Leverancier";
 $lang["suppliers_supplier_id"] = "Id";
-$lang["suppliers_tax_id"] = "";
-$lang["suppliers_update"] = "Bewerk Leverancier";
+$lang["suppliers_tax_id"] = "Belasting ID";
+$lang["suppliers_update"] = "Leverancier bijwerken";
