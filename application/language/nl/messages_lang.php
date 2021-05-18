@@ -9,5 +9,5 @@ $lang["messages_phone"] = "Telefoonnummer";
 $lang["messages_phone_number_required"] = "Telefoonnummer verplicht";
 $lang["messages_phone_placeholder"] = "Mobiele nummer(s) hier...";
 $lang["messages_sms_send"] = "SMS verzenden";
-$lang["messages_successfully_sent"] = "Bericht succesvol verzonden naar: ";
+$lang["messages_successfully_sent"] = "Bericht verzonden naar: ";
 $lang["messages_unsuccessfully_sent"] = "Bericht niet verzonden naar: ";
