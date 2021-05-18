@@ -1,7 +1,6 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Bedrijfsadres";
-$lang["config_address_required"] = "Bedrijfsadres is een verplichte veld.";
+$lang["config_address_required"] = "Bedrijfsadres is een vereist veld.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
 $lang["config_allow_duplicate_barcodes"] = "Accepteer dezelfde barcodes";
 $lang["config_apostrophe"] = "Apostrof";
