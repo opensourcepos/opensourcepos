@@ -2,8 +2,8 @@
 $lang["module_attributes"] = "Kenmerken";
 $lang["module_attributes_desc"] = "Kenmerken toevoegen, bijwerken, verwijderen en zoeken.";
 $lang["module_both"] = "Beide";
-$lang["module_cashups"] = "";
-$lang["module_cashups_desc"] = "";
+$lang["module_cashups"] = "Kasopmaak";
+$lang["module_cashups_desc"] = "Kasopmaak toevoegen, bijwerken, verwijderen en zoeken.";
 $lang["module_config"] = "Configuratie";
 $lang["module_config_desc"] = "OSPOS's configuratie wijzigen.";
 $lang["module_customers"] = "Klanten";
