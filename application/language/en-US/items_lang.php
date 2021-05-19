@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventory to add or subtract.";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
 $lang["items_amount_entry"] = "Amount Entry";
@@ -80,7 +79,7 @@ $lang["items_remove_image"] = "Remove Image";
 $lang["items_reorder_level"] = "Reorder Level";
 $lang["items_reorder_level_number"] = "Reorder Level must be a number.";
 $lang["items_reorder_level_required"] = "Reorder Level is a required field.";
-$lang["items_retrive_item_info"] = "Retrive Item Info";
+$lang["items_retrive_item_info"] = "Retrieve Item Info";
 $lang["items_sales_tax_1"] = "Sales Tax";
 $lang["items_sales_tax_2"] = "Sales Tax 2";
 $lang["items_search_attributes"] = "Search Attributes";
