@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Додати витрати";
 $lang["expenses_amount"] = "Сума";
 $lang["expenses_amount_number"] = "Сума повинна бути числом";
@@ -36,7 +35,7 @@ $lang["expenses_no_expenses_to_display"] = "Немає жодних витрат
 $lang["expenses_none_selected"] = "Ви не обрали жодних витрат";
 $lang["expenses_one_or_multiple"] = "Витрати";
 $lang["expenses_payment"] = "Тип оплати";
-$lang["expenses_start_typing_supplier_name"] = "Введіть ім’я постачальника";
+$lang["expenses_start_typing_supplier_name"] = "Введіть ім’я постачальника...";
 $lang["expenses_successful_adding"] = "Витрати успішно додано";
 $lang["expenses_successful_deleted"] = "Витрати успішно видалено";
 $lang["expenses_successful_updating"] = "Витрати успішно оновлено";
