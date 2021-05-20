@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Номер рахунку";
 $lang["customers_account_number_duplicate"] = "Такий номер рахунку вже є в базі данних.";
 $lang["customers_available_points"] = "Доступні бали";
@@ -32,7 +31,7 @@ $lang["customers_mailchimp_activity_open"] = "Лист прочитано";
 $lang["customers_mailchimp_activity_total"] = "Відправлено електронною поштою";
 $lang["customers_mailchimp_activity_unopen"] = "Лист непрочитано";
 $lang["customers_mailchimp_email_client"] = "Поштовий клієнт";
-$lang["customers_mailchimp_info"] = "Електронна пошта";
+$lang["customers_mailchimp_info"] = "MailChimp";
 $lang["customers_mailchimp_member_rating"] = "Рейтинг";
 $lang["customers_mailchimp_status"] = "Статус";
 $lang["customers_mailchimp_vip"] = "VIP";
