@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Bestandsänderung.";
 $lang["items_allow_alt_description"] = "Alternative Beschreibung zulassen";
 $lang["items_amount_entry"] = "Anzahl Eingang";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Großhandelspreis";
 $lang["items_cost_price_number"] = "Großhandelspreis muss eine Nummer sein.";
 $lang["items_cost_price_required"] = "Der Großhandelspreis ist ein Pflichtfeld.";
 $lang["items_count"] = "Ändere Bestand";
+$lang["items_csv_import_failed"] = "CSV Import fehlgeschlagen";
+$lang["items_csv_import_nodata_wrongformat"] = "Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.";
+$lang["items_csv_import_partially_failed"] = "%1 Artikel-Import Fehler in Zeile: %2. Keine Reihen wurden importiert.";
+$lang["items_csv_import_success"] = "Artikelimport erfolgreich.";
 $lang["items_current_quantity"] = "Aktuelle Menge";
 $lang["items_default_pack_name"] = "Jedes";
 $lang["items_description"] = "Beschreibung";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Mehrere Artikel bearbeiten";
 $lang["items_empty_upc_items"] = "Artikel ohne Barcode";
 $lang["items_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";
 $lang["items_error_updating_multiple"] = "Fehler beim Ändern";
-$lang["items_csv_import_failed"] = "CSV Import fehlgeschlagen";
-$lang["items_csv_import_nodata_wrongformat"] = "Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.";
-$lang["items_csv_import_partially_failed"] = "%1 Artikel-Import Fehler in Zeile: %2. Keine Reihen wurden importiert.";
-$lang["items_csv_import_success"] = "Artikelimport erfolgreich.";
 $lang["items_generate_barcodes"] = "Generiere Barcodes";
 $lang["items_hsn_code"] = "Harmonisierte System Nomenklatur";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "Importiere Artikel mit CSV Datei";
 $lang["items_info_provided_by"] = "Informationen bereitgestellt von";
 $lang["items_inventory"] = "Lagerbestand";
+$lang["items_inventory_CSV_import_quantity"] = "Anzahl der Importe aus CSV";
 $lang["items_inventory_comments"] = "Bemerkungen";
 $lang["items_inventory_data_tracking"] = "Bestandsdatenverfolgung";
 $lang["items_inventory_date"] = "Datum";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Der Verkaufspreis ist ein Pflichtfeld.";
 $lang["items_upc_database"] = "Barcode Datenbank";
 $lang["items_update"] = "Ändere Artikel";
 $lang["items_use_inventory_menu"] = "Verwende Bestandesmenu";
-$lang["items_inventory_CSV_import_quantity"] = "Anzahl der Importe aus CSV";

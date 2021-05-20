@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Gider ekle";
 $lang["expenses_amount"] = "Miktar";
 $lang["expenses_amount_number"] = "Miktar değeri sayı olmalı";

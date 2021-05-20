@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Miktar";
 $lang["cashups_amount_number"] = "Tutar bir sayı olmalıdır";
 $lang["cashups_amount_required"] = "Tutar, Zorunlu Bir Alandır.";

@@ -142,7 +142,7 @@ $(document).ready(function()
 					return true;
 				},
 				success: function(response) {
-					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 					// set back disabled state
 					check_protocol();
 				},

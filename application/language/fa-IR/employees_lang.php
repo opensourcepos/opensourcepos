@@ -1,0 +1,37 @@
+<?php 
+
+$lang["employees_basic_information"] = "اطلاعات";
+$lang["employees_cannot_be_deleted"] = "حذف کارمند (های) انتخابی امکان پذیر نیست ، یک یا چند مورد از فروش پردازش شده استفاده کرده یا می خواهید حساب خود را حذف کنید.";
+$lang["employees_change_password"] = "تغییر رمز عبور";
+$lang["employees_confirm_delete"] = "آیا مطمئن هستید که می خواهید کارمند (های) انتخاب شده را حذف کنید؟";
+$lang["employees_confirm_restore"] = "آیا مطمئن هستید که می خواهید کارمندان (های) انتخاب شده را بازیابی کنید؟";
+$lang["employees_current_password"] = "گذرواژه فعلی";
+$lang["employees_current_password_invalid"] = "گذرواژه فعلی نامعتبر است.";
+$lang["employees_employee"] = "کارمند";
+$lang["employees_error_adding_updating"] = "افزودن یا به روزرسانی کارکنان انجام نشد.";
+$lang["employees_error_deleting_demo_admin"] = "شما نمی توانید کاربر مدیر نسخه ی نمایشی را حذف کنید.";
+$lang["employees_error_updating_demo_admin"] = "شما نمی توانید کاربر مدیر نسخه ی نمایشی را تغییر دهید.";
+$lang["employees_language"] = "زبان";
+$lang["employees_login_info"] = "وارد شدن";
+$lang["employees_new"] = "کارمند جدید";
+$lang["employees_none_selected"] = "شما هیچ کارمندی را برای حذف انتخاب نکرده اید.";
+$lang["employees_one_or_multiple"] = "کارمند (ها)";
+$lang["employees_password"] = "کلمه عبور";
+$lang["employees_password_minlength"] = "گذرواژه باید حداقل 8 نویسه داشته باشد.";
+$lang["employees_password_must_match"] = "رمزهای ورود مطابقت ندارند.";
+$lang["employees_password_not_must_match"] = "گذرواژه فعلی و رمز جدید باید بی نظیر باشند.";
+$lang["employees_password_required"] = "رمز عبور مورد نیاز است.";
+$lang["employees_permission_desc"] = "کادرهای زیر را برای دسترسی به ماژولها بررسی کنید.";
+$lang["employees_permission_info"] = "مجوزها";
+$lang["employees_repeat_password"] = "رمز عبور دوباره";
+$lang["employees_subpermission_required"] = "برای هر ماژول حداقل یک کمک هزینه اضافه کنید.";
+$lang["employees_successful_adding"] = "کارمندان موفق شدند.";
+$lang["employees_successful_change_password"] = "تغییر رمز عبور موفقیت آمیز است.";
+$lang["employees_successful_deleted"] = "شما با موفقیت حذف شده اید";
+$lang["employees_successful_updating"] = "شما با موفقیت کارمند را به روز کردید";
+$lang["employees_system_language"] = "زبان سیستم";
+$lang["employees_unsuccessful_change_password"] = "تغییر رمز انجام نشد.";
+$lang["employees_update"] = "به روزرسانی کارمند";
+$lang["employees_username"] = "نام کاربری";
+$lang["employees_username_minlength"] = "نام کاربری باید حداقل 5 کاراکتر داشته باشد.";
+$lang["employees_username_required"] = "نام کاربری فیلد مورد نیاز است.";

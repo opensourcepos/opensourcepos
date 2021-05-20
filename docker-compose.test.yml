@@ -1,38 +1,28 @@
-version: '2'
+version: '3.4'
   
 services:
     test: 
         build:
             context: .
-            dockerfile: Dockerfile.test
-
-    sqlscript:
-        build:
-            context: database/
-            dockerfile: Dockerfile
-
-    ospos:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: ospos
-        restart: always
-        depends_on:
+            target: ospos_test
+        depends_on: 
           - mysql
-        ports:
-          - "80:80"
+        container_name: ospos_test
         environment:
+          - CI_ENV=testing
+          - ENCRYPTION_KEY=
+          - MYSQL_HOST_NAME=mysql
+          - MYSQL_DATABASE=ospos
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
-          - MYSQL_DB_NAME=ospos
-          - MYSQL_HOST_NAME=mysql
+        command: ["/bin/wait-for-it.sh", "mysql:3306", "--", "/app/vendor/phpunit/phpunit/phpunit"]
+        ports:
+          - "80:80"
 
     mysql:
-        image: mysql:5.7
+        image: mariadb:10.5
         container_name: mysql
         restart: always
-        ports:
-          - "3306:3306"
         volumes:
           - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
         environment:

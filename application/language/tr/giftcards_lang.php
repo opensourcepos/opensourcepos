@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["giftcards_allow_alt_description"] = "Dip Nota izin ver";
 $lang["giftcards_bulk_edit"] = "Çoklu Düzenleme";
@@ -16,6 +17,7 @@ $lang["giftcards_confirm_delete"] = "Seçili Hediye Çeklerini silmek istediğin
 $lang["giftcards_confirm_restore"] = "Seçili Hediye Çeklerini onarmak istediğinizden emin misiniz?";
 $lang["giftcards_cost_price"] = "Maliyet Fiyatı";
 $lang["giftcards_count"] = "Stoğu Güncelle";
+$lang["giftcards_csv_import_failed"] = "CSV içe aktarma başarısız.";
 $lang["giftcards_current_quantity"] = "Mevcut Miktar";
 $lang["giftcards_description"] = "Açıklama";
 $lang["giftcards_details_count"] = "Stok Sayım Ayrıntıları";
@@ -24,7 +26,6 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "TÜM seçili hediye çekler
 $lang["giftcards_edit_multiple_giftcards"] = "Çoklu Hediye Çeki Düzenleme.";
 $lang["giftcards_error_adding_updating"] = "Hediye çeki ekleme/güncelleme hatası.";
 $lang["giftcards_error_updating_multiple"] = "Hediye çeki güncellemesinde hata.";
-$lang["giftcards_csv_import_failed"] = "CSV içe aktarma başarısız.";
 $lang["giftcards_generate_barcodes"] = "Barkod Oluştur";
 $lang["giftcards_giftcard"] = "Hediye Çeki";
 $lang["giftcards_giftcard_number"] = "Hediye Çeki Numarası";

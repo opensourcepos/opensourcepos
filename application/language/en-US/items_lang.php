@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 $lang["items_add_minus"] = "Inventory to add or subtract.";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
@@ -22,6 +22,10 @@ $lang["items_cost_price"] = "Wholesale Price";
 $lang["items_cost_price_number"] = "Wholesale Price must be a number.";
 $lang["items_cost_price_required"] = "Wholesale Price is a required field.";
 $lang["items_count"] = "Update Inventory";
+$lang["items_csv_import_failed"] = "CSV import failed";
+$lang["items_csv_import_nodata_wrongformat"] = "The uploaded CSV file has no data or is formatted incorrectly.";
+$lang["items_csv_import_partially_failed"] = "There were %1 item import failure(s) on line(s): %2. No rows were imported.";
+$lang["items_csv_import_success"] = "Item CSV import successful.";
 $lang["items_current_quantity"] = "Current Quantity";
 $lang["items_default_pack_name"] = "Each";
 $lang["items_description"] = "Description";
@@ -32,18 +36,14 @@ $lang["items_edit_multiple_items"] = "Editing Multiple Items";
 $lang["items_empty_upc_items"] = "Empty Barcode Items";
 $lang["items_error_adding_updating"] = "Error adding/updating item";
 $lang["items_error_updating_multiple"] = "Error updating items";
-$lang["items_csv_import_failed"] = "CSV import failed";
-$lang["items_csv_import_nodata_wrongformat"] = "The uploaded CSV file has no data or is formatted incorrectly.";
-$lang["items_csv_import_partially_failed"] = "There were %1 item import failure(s) on line(s): %2. No rows were imported.";
-$lang["items_csv_import_success"] = "Item CSV import successful.";
 $lang["items_generate_barcodes"] = "Generate Barcodes";
 $lang["items_hsn_code"] = "Harmonized System Nomenclature";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "Item Import from CSV";
 $lang["items_info_provided_by"] = "Information provided by";
 $lang["items_inventory"] = "Inventory";
-$lang["items_inventory_comments"] = "Comments";
 $lang["items_inventory_CSV_import_quantity"] = "Quantity Imported from CSV";
+$lang["items_inventory_comments"] = "Comments";
 $lang["items_inventory_data_tracking"] = "Inventory Data Tracking";
 $lang["items_inventory_date"] = "Date";
 $lang["items_inventory_employee"] = "Employee";

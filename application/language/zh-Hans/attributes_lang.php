@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "属性特征不能包含':' or '|'";
 $lang["attributes_confirm_delete"] = "确定要删除所选属性吗";
 $lang["attributes_confirm_restore"] = "您确定要还原所选属性吗？";
@@ -24,7 +25,7 @@ $lang["attributes_show_in_items"] = "在项目中显示";
 $lang["attributes_show_in_items_visibility"] = "物品";
 $lang["attributes_show_in_receipt"] = "在收据中显示";
 $lang["attributes_show_in_receivings"] = "在收据中显示";
-$lang["attributes_show_in_receivings_visibility"] = "";
+$lang["attributes_show_in_receivings_visibility"] = "收据";
 $lang["attributes_show_in_sales"] = "在销售中显示";
 $lang["attributes_show_in_sales_visibility"] = "销售";
 $lang["attributes_update"] = "更新属性";

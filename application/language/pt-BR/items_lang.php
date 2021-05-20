@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
 $lang["items_amount_entry"] = "Entrada de montante";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Preço de Custo";
 $lang["items_cost_price_number"] = "Preço de custo deve ser um número.";
 $lang["items_cost_price_required"] = "Preço de custo é um campo obrigatório.";
 $lang["items_count"] = "Acrescentar ao Inventário";
+$lang["items_csv_import_failed"] = "Importação do CSV falhou";
+$lang["items_csv_import_nodata_wrongformat"] = "Seu arquivo enviado não contém dados ou formato errado.";
+$lang["items_csv_import_partially_failed"] = "Houve %1 falha na importação de itens na(s) linha(s): %2. Nenhuma linha foi importada.";
+$lang["items_csv_import_success"] = "Importação de Itens com sucesso.";
 $lang["items_current_quantity"] = "Quantidade Atual";
 $lang["items_default_pack_name"] = "Cada";
 $lang["items_description"] = "Descrição";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Editando Múltiplos Itens";
 $lang["items_empty_upc_items"] = "Vazio UPC Itens";
 $lang["items_error_adding_updating"] = "Erro ao adicionar/atualizar item";
 $lang["items_error_updating_multiple"] = "Erro na atualização de itens";
-$lang["items_csv_import_failed"] = "Importação do CSV falhou";
-$lang["items_csv_import_nodata_wrongformat"] = "Seu arquivo enviado não contém dados ou formato errado.";
-$lang["items_csv_import_partially_failed"] = "Houve %1 falha na importação de itens na(s) linha(s): %2. Nenhuma linha foi importada.";
-$lang["items_csv_import_success"] = "Importação de Itens com sucesso.";
 $lang["items_generate_barcodes"] = "Gerar Códigos de Barras";
 $lang["items_hsn_code"] = "Nomenclatura do Sistema Harmonizado";
 $lang["items_image"] = "Imagem";
 $lang["items_import_items_csv"] = "Importar planilha de produtos do CSV";
 $lang["items_info_provided_by"] = "Informação fornecida por";
 $lang["items_inventory"] = "Inventário";
+$lang["items_inventory_CSV_import_quantity"] = "Quantidade importada do CSV";
 $lang["items_inventory_comments"] = "Comentário";
 $lang["items_inventory_data_tracking"] = "Acompanhamento de dados de inventário";
 $lang["items_inventory_date"] = "Data";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Preço de varejo é um campo obrigatório.
 $lang["items_upc_database"] = "Base de dados UPC";
 $lang["items_update"] = "Atualizar Item";
 $lang["items_use_inventory_menu"] = "Usar Menu Inventário";
-$lang["items_inventory_CSV_import_quantity"] = "Quantidade importada do CSV";

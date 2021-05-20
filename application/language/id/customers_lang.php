@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "Apakah Anda yakin ingin menghapus pelanggan
 $lang["customers_confirm_restore"] = "Anda yakin akan mengembalikan pelanggan terpilih?";
 $lang["customers_consent"] = "Persetujuan pendaftaran";
 $lang["customers_consent_required"] = "Persetujuan pendaftaran adalah bidang yang harus diisi.";
+$lang["customers_csv_import_failed"] = "Impor dari CSV tidak berhasil dilakukan";
+$lang["customers_csv_import_nodata_wrongformat"] = "Berkas yang Anda unggah tidak berisi data atau salah format.";
+$lang["customers_csv_import_partially_failed"] = "Impor pelanggan berhasil dwngan beberapa kesalahan:";
+$lang["customers_csv_import_success"] = "Impor pelanggan berhasil.";
 $lang["customers_customer"] = "Pelanggan";
 $lang["customers_date"] = "Tanggal";
 $lang["customers_discount"] = "Diskon";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "Jenis Diskon";
 $lang["customers_email_duplicate"] = "Alamat email telah digunakan.";
 $lang["customers_employee"] = "Karyawan";
 $lang["customers_error_adding_updating"] = "Kesalahan ketika menambah atau memperbaharui pelanggan.";
-$lang["customers_csv_import_failed"] = "Impor dari CSV tidak berhasil dilakukan";
-$lang["customers_csv_import_nodata_wrongformat"] = "Berkas yang Anda unggah tidak berisi data atau salah format.";
-$lang["customers_csv_import_partially_failed"] = "Impor pelanggan berhasil dwngan beberapa kesalahan:";
-$lang["customers_csv_import_success"] = "Impor pelanggan berhasil.";
 $lang["customers_import_items_csv"] = "Impor pelanggan dari CSV";
 $lang["customers_mailchimp_activity_click"] = "Klik Email";
 $lang["customers_mailchimp_activity_lastopen"] = "Email yang terakhir dibuka";

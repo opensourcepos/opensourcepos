@@ -1,0 +1,31 @@
+<?php 
+
+$lang["attributes_attribute_value_invalid_chars"] = "مقدار ویژگی نمی تواند حاوی | یا ـ باشد";
+$lang["attributes_confirm_delete"] = "آیا مطمئن هستید که می خواهید ویژگی (های) انتخاب شده را حذف کنید؟";
+$lang["attributes_confirm_restore"] = "آیا مطمئن هستید که می خواهید ویژگی (های) انتخاب شده را بازیابی کنید؟";
+$lang["attributes_definition_cannot_be_deleted"] = "نمی توان ویژگی (های) انتخابی را حذف کرد";
+$lang["attributes_definition_error_adding_updating"] = "ویژگی٪ 1 اضافه نشد یا به روز نمی شود. لطفا گزارش خطا را بررسی کنید.";
+$lang["attributes_definition_flags"] = "قابلیت مشاهده ویژگی";
+$lang["attributes_definition_group"] = "گروه";
+$lang["attributes_definition_id"] = "شناسه";
+$lang["attributes_definition_name"] = "افزودن ویژگی";
+$lang["attributes_definition_name_required"] = "نام ویژگی یک فیلد ضروری است";
+$lang["attributes_definition_one_or_multiple"] = "(ویژگی(ها";
+$lang["attributes_definition_successful_adding"] = "شما مورد را با موفقیت اضافه کردید";
+$lang["attributes_definition_successful_deleted"] = "شما با موفقیت حذف شده اید";
+$lang["attributes_definition_successful_updating"] = "شما ویژگی را با موفقیت به روز کردید";
+$lang["attributes_definition_type"] = "نوع ویژگی";
+$lang["attributes_definition_type_required"] = "نوع ویژگی یک فیلد ضروری است";
+$lang["attributes_definition_unit"] = "واحد اندازه گیری";
+$lang["attributes_definition_values"] = "مقادیر مشخصه";
+$lang["attributes_new"] = "ویژگی جدید";
+$lang["attributes_no_attributes_to_display"] = "هیچ موردی برای نمایش";
+$lang["attributes_receipt_visibility"] = "اعلام وصول";
+$lang["attributes_show_in_items"] = "نمایش در موارد";
+$lang["attributes_show_in_items_visibility"] = "موارد";
+$lang["attributes_show_in_receipt"] = "نمایش در رسید";
+$lang["attributes_show_in_receivings"] = "نمایش در دریافت ها";
+$lang["attributes_show_in_receivings_visibility"] = "دریافت";
+$lang["attributes_show_in_sales"] = "نمایش در فروش";
+$lang["attributes_show_in_sales_visibility"] = "حراجی";
+$lang["attributes_update"] = "به روز کردن ویژگی";

@@ -181,13 +181,13 @@ class Receiving extends CI_Model
 					'trans_user' => $employee_id,
 					'trans_comment' => 'Deleting receiving ' . $receiving_id,
 					'trans_location' => $item['item_location'],
-					'trans_inventory' => $item['quantity_purchased'] * -1
+					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				);
 				// update inventory
 				$this->Inventory->insert($inv_data);
 
 				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * -1);
+				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
 			}
 		}
 
@@ -256,21 +256,21 @@ class Receiving extends CI_Model
 				SELECT 
 					MAX(DATE(receiving_time)) AS receiving_date,
 					MAX(receiving_time) AS receiving_time,
-					receivings_items.receiving_id,
+					receivings_items.receiving_id AS receiving_id,
 					MAX(comment) AS comment,
 					MAX(item_location) AS item_location,
 					MAX(reference) AS reference,
 					MAX(payment_type) AS payment_type,
 					MAX(employee_id) AS employee_id, 
-					items.item_id,
+					items.item_id AS item_id,
 					MAX(receivings.supplier_id) AS supplier_id,
 					MAX(quantity_purchased) AS quantity_purchased,
-					MAX(receivings_items.receiving_quantity) AS receiving_quantity,
+					MAX(receivings_items.receiving_quantity) AS item_receiving_quantity,
 					MAX(item_cost_price) AS item_cost_price,
 					MAX(item_unit_price) AS item_unit_price,
 					MAX(discount) AS discount,
-					discount_type as discount_type,
-					receivings_items.line,
+					MAX(discount_type) AS discount_type,
+					receivings_items.line AS line,
 					MAX(serialnumber) AS serialnumber,
 					MAX(receivings_items.description) AS description,
 					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS subtotal,

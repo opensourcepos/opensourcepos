@@ -54,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "Alterações no Código Fiscal sa
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Alterações no Código Tributário não salvas";
 $lang["taxes_tax_excluded"] = "Imposto excluído";
 $lang["taxes_tax_group"] = "Grupo de impostos";
+$lang["taxes_tax_group_not_unique"] = "Grupo de impostos %1 não é único";
 $lang["taxes_tax_group_sequence"] = "Sequência do Grupo Fiscal";
 $lang["taxes_tax_included"] = "Imposto incluído";
 $lang["taxes_tax_jurisdiction"] = "Jurisdição Fiscal";

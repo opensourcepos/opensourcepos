@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Cash";
 $lang["sales_cash_deposit"] = "Cash Deposit";
 $lang["sales_cash_filter"] = "Cash";
 $lang["sales_change_due"] = "Change Due";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Check";
 $lang["sales_check_balance"] = "Check remainder";
 $lang["sales_check_filter"] = "Check";
@@ -23,6 +25,7 @@ $lang["sales_confirm_delete"] = "Are you sure you want to delete the selected Sa
 $lang["sales_confirm_restore"] = "Are you sure you want to restore the selected Sale(s)?";
 $lang["sales_credit"] = "Credit Card";
 $lang["sales_credit_deposit"] = "Credit Deposit";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Name";
 $lang["sales_customer_address"] = "Address";
 $lang["sales_customer_discount"] = "Discount";
@@ -96,6 +99,7 @@ $lang["sales_no_filter"] = "All";
 $lang["sales_no_items_in_cart"] = "There are no Items in the cart.";
 $lang["sales_no_sales_to_display"] = "No Sales to display.";
 $lang["sales_none_selected"] = "You have not selected any Sale(s) to delete.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "This action is not authorized.";
 $lang["sales_one_or_multiple"] = "Sale(s)";
 $lang["sales_payment"] = "Payment Type";
@@ -119,6 +123,7 @@ $lang["sales_receipt_no_email"] = "This customer does not have a valid email add
 $lang["sales_receipt_number"] = "Sale #";
 $lang["sales_receipt_sent"] = "Receipt sent to";
 $lang["sales_receipt_unsent"] = "Receipt failed to be sent to";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Sales Register";
 $lang["sales_remove_customer"] = "Remove Customer";
 $lang["sales_return"] = "Return";
@@ -156,6 +161,7 @@ $lang["sales_tax"] = "Tax";
 $lang["sales_tax_id"] = "Tax Id";
 $lang["sales_tax_invoice"] = "Tax Invoice";
 $lang["sales_tax_percent"] = "Tax %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_transaction_failed"] = "Sales Transaction failed.";

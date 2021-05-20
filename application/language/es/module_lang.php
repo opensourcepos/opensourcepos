@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Atributos";
 $lang["module_attributes_desc"] = "Agregar, Actualizar, Eliminar y Buscar atributos.";
 $lang["module_both"] = "Ambos";

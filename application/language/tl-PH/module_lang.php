@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Attributes";
 $lang["module_attributes_desc"] = "Add, Update, Delete, and Search Cashups.";
 $lang["module_both"] = "Both";

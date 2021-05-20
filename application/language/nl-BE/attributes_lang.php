@@ -2,9 +2,9 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "Attribuut waarde kan geen ':' of '|' bevatten";
 $lang["attributes_confirm_delete"] = "Bent u zeker dat u de geselecteerde attributen wil verwijderen?";
-$lang["attributes_confirm_restore"] = "";
+$lang["attributes_confirm_restore"] = "Bent u zeker dat u de geselecteerde attributen wil herstellen?";
 $lang["attributes_definition_cannot_be_deleted"] = "De geselecteerde attributen konden niet verwijderd worden";
-$lang["attributes_definition_error_adding_updating"] = "";
+$lang["attributes_definition_error_adding_updating"] = "Attribuut %1 kon niet toegevoegd of gewijzigd worden. Kijk de error logs na.";
 $lang["attributes_definition_flags"] = "Zichtbaarheid";
 $lang["attributes_definition_group"] = "Groep";
 $lang["attributes_definition_id"] = "Id";
@@ -16,8 +16,8 @@ $lang["attributes_definition_successful_deleted"] = "Attribu(u)t(en) succesvol v
 $lang["attributes_definition_successful_updating"] = "Wijzigingen bewaard voor";
 $lang["attributes_definition_type"] = "Type";
 $lang["attributes_definition_type_required"] = "Attribuut type is een verplicht veld";
-$lang["attributes_definition_unit"] = "";
-$lang["attributes_definition_values"] = "Waarden";
+$lang["attributes_definition_unit"] = "Meeteenheid";
+$lang["attributes_definition_values"] = "Attribuut waardes";
 $lang["attributes_new"] = "Nieuw Attribuut";
 $lang["attributes_no_attributes_to_display"] = "Er werden geen attributen gevonden";
 $lang["attributes_receipt_visibility"] = "Verkoop";

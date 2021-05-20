@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Cantidad";
 $lang["cashups_amount_number"] = "Cantidad debe ser un numero";
 $lang["cashups_amount_required"] = "Cantidad es un campo obligatorio.";

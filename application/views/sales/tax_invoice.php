@@ -17,7 +17,7 @@ $(document).ready(function()
 		$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num; ?>',
 			function(response)
 			{
-				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+				$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 			}, 'json'
 		);
 	};
@@ -51,7 +51,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
+				<div id="customer"><?php echo nl2br($customer_info) ?></div>
 			<?php
 			}
 			?>
@@ -79,19 +79,19 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
+		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
-				<td><textarea rows="5" cols="6"><?php echo $invoice_number; ?></textarea></td>
+				<td><?php echo $invoice_number; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-				<td><textarea rows="5" cols="6"><?php echo $transaction_date; ?></textarea></td>
+				<td><?php echo $transaction_date; ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-				<td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
+				<td><?php echo to_currency($total); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -134,21 +134,16 @@ $(document).ready(function()
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
 					<?php if($include_hsn): ?>
-						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['hsn_code']; ?></textarea>
-						</td>
+						<td style='text-align:center;'><?php echo $item['hsn_code']; ?></td>
 					<?php endif; ?>
-					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
-					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
-					</td>
-					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea>
-					</td>
+					<td class="item-name"><?php echo $item['name']; ?></td>
+					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td style='text-align:center;'><?php echo $item['discount'] . '%'; ?></td>
 					<?php if($discount > 0): ?>
-						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
-						</td>
+						<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
-					</td>
+					<td style='border-right: solid 1px; text-align:right;'><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 				<?php
 				if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
@@ -157,9 +152,9 @@ $(document).ready(function()
 					<tr class="item-row">
 						<td><?php echo $item['hsn_code']; ?></td>
 						<td class="item-description" colspan="<?php echo $invoice_columns-2; ?>">
-							<div><?php echo $item['description']; ?></div>
+							<?php echo $item['description']; ?>
 						</td>
-						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
+						<td style='text-align:center;'><?php echo $item['serialnumber']; ?></td>
 					</tr>
 				<?php
 				}
@@ -173,8 +168,8 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank-bottom"> </td>
-			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
+			<td class="total-value" id="subtotal"><?php echo to_currency($subtotal); ?></td>
 		</tr>
 
 		<?php
@@ -183,8 +178,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
+				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></td>
+				<td class="total-value" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php
 		}
@@ -192,8 +187,8 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
+			<td class="total-value" id="total"><?php echo to_currency($total); ?></td>
 		</tr>
 
 		<?php
@@ -207,8 +202,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></textarea></td>
+				<td colspan="2" class="total-line"><?php echo $splitpayment[0]; ?></td>
+				<td class="total-value" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
 			</tr>
 		<?php
 		}
@@ -218,8 +213,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
+				<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_giftcard_balance'); ?>/td>
+				<td class="total-value" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></td>
 			</tr>
 			<?php
 		}
@@ -229,8 +224,8 @@ $(document).ready(function()
 		?>
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" ><?php echo $this->lang->line('sales_authorized_signature');?>:</td>
-			<td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
+			<td class="total-value" id="change"><?php echo to_currency($amount_change); ?></td>
 		</tr>
 		<?php
 		}
@@ -240,14 +235,14 @@ $(document).ready(function()
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
-				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->config->item('invoice_default_comments'); ?></textarea>
+				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></div>
+				<div style='padding:4%;'><?php echo $this->config->item('invoice_default_comments'); ?></div>
 			</h5>
-			<?php echo nl2br($this->config->item('return_policy')); ?>
+			<div style='padding:2%;'><?php echo nl2br($this->config->item('return_policy')); ?></div>
 		</div>
 		<div id='barcode'>
-			<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
+			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
 			<?php echo $sale_id; ?>
 		</div>
 	</div>

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Annuler";
 $lang["receivings_cannot_be_deleted"] = "L'arrivage(s) ne peu pas etre effacé.";
 $lang["receivings_comments"] = "Commentaires";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amount_entry"] = "Miktar Girişi";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Maliyet Fiyatı";
 $lang["items_cost_price_number"] = "Fiyat sayı olmalıdır (9.90).";
 $lang["items_cost_price_required"] = "Maliyet Fiyatı zorunlu alandır.";
 $lang["items_count"] = "Stoğu Güncelle";
+$lang["items_csv_import_failed"] = "CSV aktarım hatası";
+$lang["items_csv_import_nodata_wrongformat"] = "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.";
+$lang["items_csv_import_partially_failed"] = "Bazı ürünler aktarılamadı. Aktarılamayanlar listesi.";
+$lang["items_csv_import_success"] = "Ürün aktarımı başarılı.";
 $lang["items_current_quantity"] = "Mevcut Adet";
 $lang["items_default_pack_name"] = "Her biri";
 $lang["items_description"] = "Tanım";
@@ -31,16 +36,13 @@ $lang["items_edit_multiple_items"] = "Çoklu Ürün Güncelleme";
 $lang["items_empty_upc_items"] = "Ürün kodu olmayan ürünler";
 $lang["items_error_adding_updating"] = "Ürün ekleme/düzenleme hatası";
 $lang["items_error_updating_multiple"] = "Ürün düzenleme hatası";
-$lang["items_csv_import_failed"] = "CSV aktarım hatası";
-$lang["items_csv_import_nodata_wrongformat"] = "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.";
-$lang["items_csv_import_partially_failed"] = "Bazı ürünler aktarılamadı. Aktarılamayanlar listesi.";
-$lang["items_csv_import_success"] = "Ürün aktarımı başarılı.";
 $lang["items_generate_barcodes"] = "Barkod Üret";
 $lang["items_hsn_code"] = "Harmonize Sistem İsimlendirme";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "CSV dosyasından ürün aktar";
 $lang["items_info_provided_by"] = "Bilgi sağlayan";
 $lang["items_inventory"] = "Stok";
+$lang["items_inventory_CSV_import_quantity"] = "CSV'den Alınan Miktar";
 $lang["items_inventory_comments"] = "Yorumlar";
 $lang["items_inventory_data_tracking"] = "Stok Takibi";
 $lang["items_inventory_date"] = "Tarih";
@@ -108,4 +110,3 @@ $lang["items_unit_price_required"] = "Satış Fiyatı zorunlu alandır.";
 $lang["items_upc_database"] = "UPC Veritabanı";
 $lang["items_update"] = "Ürün Güncelle";
 $lang["items_use_inventory_menu"] = "Stok Menüsünü Kullan";
-$lang["items_inventory_CSV_import_quantity"] = "CSV'den Alınan Miktar";

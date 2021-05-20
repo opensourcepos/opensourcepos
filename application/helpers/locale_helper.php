@@ -4,6 +4,7 @@ const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
 define('NOW', time());
+define('MAX_PRECISION', 1e14);
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
@@ -58,6 +59,7 @@ function get_languages()
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
 		'bg:bulgarian' => 'Bulgarian',
 		'cs:czech' => 'Czech',
+		'da:danish' => 'Danish',
 		'de:german' => 'German (Germany)',
 		'de-CH:german' => 'German (Swiss)',
 		'el:greek' => 'Greek',
@@ -66,14 +68,17 @@ function get_languages()
 		'es:spanish' => 'Spanish',
 		'es-MX:spanish' => 'Spanish (Mexico)',
 		'fr:french' => 'French',
-		'he:hebrew' => 'Hebrew',
+		'fa-IR:persian' => 'Farsi (Iran)',
+		'he:english' => 'Hebrew',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
 		'hu-HU:hungarian' => 'Hungarian (Hungary)',
+		'hy:armenian' => 'Armenian',
 		'id:indonesian' => 'Indonesian',
 		'it:italian' => 'Italian',
 		'km:khmer' => 'Central Khmer (Cambodia)',
 		'lo:lao' => 'Lao (Laos)',
 		'ml:malay' => 'Malay',
+		'nb:norwegian' => 'Norwegian',
 		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
 		'pl:polish' => 'Polish',
@@ -418,6 +423,16 @@ function parse_decimals($number, $decimals = NULL)
 	if(empty($number))
 	{
 		return $number;
+	}
+
+	if ($number > MAX_PRECISION)
+	{
+		return FALSE;
+	}
+
+	if ($number > 1.e14)
+	{
+		return FALSE;
 	}
 
 	$config = get_instance()->config;

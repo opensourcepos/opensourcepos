@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Verfügbare Punkte";
 $lang["rewards_package"] = "Prämie";
 $lang["rewards_remaining_balance"] = "Verbleibende Prämienpunkte ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Bar";
 $lang["sales_cash_deposit"] = "Bareinzahlung";
 $lang["sales_cash_filter"] = "Bar";
 $lang["sales_change_due"] = "Wechselgeld";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Scheck";
 $lang["sales_check_balance"] = "Scheck-Differenz";
 $lang["sales_check_filter"] = "Scheck";
@@ -23,6 +25,7 @@ $lang["sales_confirm_delete"] = "Wollen Sie die gewählten Aufträge löschen?";
 $lang["sales_confirm_restore"] = "Sind Sie sicher, dass Sie die ausgewählten Verkäufe wiederherstellen möchten?";
 $lang["sales_credit"] = "Kreditkarte";
 $lang["sales_credit_deposit"] = "Krediteinlage";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Kunde";
 $lang["sales_customer_address"] = "Kundenadresse";
 $lang["sales_customer_discount"] = "Rabatt";
@@ -96,6 +99,7 @@ $lang["sales_no_filter"] = "Alle";
 $lang["sales_no_items_in_cart"] = "Warenkorb ist leer.";
 $lang["sales_no_sales_to_display"] = "Keine Artikel zum Anzeigen.";
 $lang["sales_none_selected"] = "Sie haben keinen Auftrag zum Löschen ausgewählt.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Diese Aktion ist nicht erlaubt.";
 $lang["sales_one_or_multiple"] = "Verkäufe";
 $lang["sales_payment"] = "Zahlungsart";
@@ -119,6 +123,7 @@ $lang["sales_receipt_no_email"] = "Der Kunde hat keine gültige E-Mail Adresse."
 $lang["sales_receipt_number"] = "Quittungsnummer";
 $lang["sales_receipt_sent"] = "Quittung gesendet an";
 $lang["sales_receipt_unsent"] = "Quittung nicht gesendet";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Kasse";
 $lang["sales_remove_customer"] = "Entferne Kunde";
 $lang["sales_return"] = "Retoure";
@@ -156,6 +161,7 @@ $lang["sales_tax"] = "Steuer";
 $lang["sales_tax_id"] = "Steuer ID";
 $lang["sales_tax_invoice"] = "Steuerrechnung";
 $lang["sales_tax_percent"] = "Steuer %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Gesamtbetrag";
 $lang["sales_total_tax_exclusive"] = "exkl. Steuer";
 $lang["sales_transaction_failed"] = "Verarbeitung fehlerhaft.";

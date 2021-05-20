@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "# Compte";
 $lang["customers_account_number_duplicate"] = "Ce numéro de compte est déjà utilisé dans la base de données.";
 $lang["customers_available_points"] = "Points Disponibles";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer le (s)
 $lang["customers_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer les clients sélectionnés ?";
 $lang["customers_consent"] = "Le consentement d'enregistrement";
 $lang["customers_consent_required"] = "Le consentement d'enregistrement est un champ obligatoire.";
+$lang["customers_csv_import_failed"] = "Echec Import d'CSV";
+$lang["customers_csv_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
+$lang["customers_csv_import_partially_failed"] = "Importation client réussie avec quelques échecs :";
+$lang["customers_csv_import_success"] = "L'importation des clients est un succès.";
 $lang["customers_customer"] = "Client";
 $lang["customers_date"] = "Date";
 $lang["customers_discount"] = "Rabais";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "";
 $lang["customers_email_duplicate"] = "L'adresse e-mail est déjà présente dans la base de données.";
 $lang["customers_employee"] = "Employé";
 $lang["customers_error_adding_updating"] = "Érreur lors de l'ajout/suppression de client.";
-$lang["customers_csv_import_failed"] = "Echec Import d'CSV";
-$lang["customers_csv_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
-$lang["customers_csv_import_partially_failed"] = "Importation client réussie avec quelques échecs :";
-$lang["customers_csv_import_success"] = "L'importation des clients est un succès.";
 $lang["customers_import_items_csv"] = "Importer une liste de client à partir d'une feuille CSV";
 $lang["customers_mailchimp_activity_click"] = "Email cliquez";
 $lang["customers_mailchimp_activity_lastopen"] = "Dernier email ouvert";

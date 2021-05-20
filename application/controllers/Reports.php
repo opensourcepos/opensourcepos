@@ -51,6 +51,7 @@ class Reports extends Secure_Controller
 		{
 			$tabular_data[] = $this->xss_clean(array(
 				'sale_date' => to_date(strtotime($row['sale_date'])),
+				'sales' => to_quantity_decimals($row['sales']),
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency_tax($row['tax']),
@@ -156,6 +157,7 @@ class Reports extends Secure_Controller
 		{
 			$tabular_data[] = $this->xss_clean(array(
 				'customer_name' => $row['customer'],
+				'sales' => to_quantity_decimals($row['sales']),
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency_tax($row['tax']),
@@ -228,6 +230,7 @@ class Reports extends Secure_Controller
 		{
 			$tabular_data[] = $this->xss_clean(array(
 				'item_name' => $row['name'],
+				'unit_price' => $row['unit_price'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
 				'tax'  => to_currency_tax($row['tax']),
@@ -264,6 +267,7 @@ class Reports extends Secure_Controller
 		{
 			$tabular_data[] = $this->xss_clean(array(
 				'employee_name' => $row['employee'],
+				'sales' => to_quantity_decimals($row['sales']),
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency_tax($row['tax']),
@@ -418,7 +422,7 @@ class Reports extends Secure_Controller
 				$tabular_data[] = array(
 					'trans_group' => '--',
 					'trans_type' => '--',
-					'trans_count' => '--',
+					'trans_sales' => '--',
 					'trans_amount' => '--',
 					'trans_payments' => '--',
 					'trans_refunded' => '--',
@@ -435,7 +439,7 @@ class Reports extends Secure_Controller
 				$tabular_data[] = $this->xss_clean(array(
 					'trans_group' => $row['trans_group'],
 					'trans_type' => $row['trans_type'],
-					'trans_count' => $row['trans_count'],
+					'trans_sales' => $row['trans_sales'],
 					'trans_amount' => to_currency($row['trans_amount']),
 					'trans_payments' => to_currency($row['trans_payments']),
 					'trans_refunded' => to_currency($row['trans_refunded']),

@@ -55,7 +55,7 @@ $(document).ready(function()
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {
-				$.notify(response.message, {type: response.success ? 'success' : 'danger'} );
+				$.notify({message: response.message}, {type: response.success ? 'success' : 'danger'} );
 				$('#mailchimp_list_id').empty();
 				$.each(response.mailchimp_lists, function(val, text) {
 					$('#mailchimp_list_id').append(new Option(text, val));
@@ -70,7 +70,7 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response) {
-					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 				},
 				dataType: 'json'
 			});

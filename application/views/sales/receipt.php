@@ -17,7 +17,7 @@ if (isset($error_message))
 			$.get('<?php echo site_url() . "/sales/send_receipt/" . $sale_id_num; ?>',
 				function(response)
 				{
-					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 				}, 'json'
 			);
 		};
@@ -39,7 +39,9 @@ if (isset($error_message))
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_receipt'); ?></div></a>
 	<?php endif; ?>
 	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
+	<?php if($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id'))): ?>
+		<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
+	<?php endif; ?>
 </div>
 
 <?php $this->load->view("sales/" . $this->config->item('receipt_template')); ?>

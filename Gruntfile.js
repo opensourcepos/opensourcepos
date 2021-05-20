@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-    grunt.initConfig({
+	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		wiredep: {
 			task: {
@@ -11,7 +11,8 @@ module.exports = function(grunt) {
 		bower_concat: {
 			all: {
 				mainFiles: {
-					'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js", "dist/extensions/mobile/bootstrap-table-mobile.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.css"]
+					'bootstrap-table': [ "dist/bootstrap-table.min.js", "dist/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.min.js", "dist/extensions/mobile/bootstrap-table-mobile.min.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.css"],
+					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
 				},
 				dest: {
 					'js': 'tmp/opensourcepos_bower.js',
@@ -53,7 +54,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'public/dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css']
+					'public/dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/darkly.css']
 				}
 			}
 		},
@@ -106,7 +107,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end css template tags -->',
 					ignorePath: '../../../public/'
 				},
-				src: ['public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css'],
+				src: ['public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/darkly.css'],
 				dest: 'application/views/partial/header.php',
 			},
 			mincss_header: {
@@ -125,7 +126,7 @@ module.exports = function(grunt) {
 					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
 					openTag: '<!-- start css template tags -->',
 					closeTag: '<!-- end css template tags -->',
-                    ignorePath: '../../public/'
+					ignorePath: '../../public/'
 				},
 				src: ['public/css/login.css'],
 				dest: 'application/views/login.php'
@@ -145,7 +146,7 @@ module.exports = function(grunt) {
 					scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
 					openTag: '<!-- start minjs template tags -->',
 					closeTag: '<!-- end minjs template tags -->',
-                    ignorePath: '../../../public/'
+					ignorePath: '../../../public/'
 				},
 				src: ['public/dist/*min.js'],
 				dest: 'application/views/partial/header.php'
@@ -230,23 +231,42 @@ module.exports = function(grunt) {
 					archive: 'dist/opensourcepos.zip'
 				},
 				files: [
-					{src: ['public/**', 'vendor/**', 'application/**', '!/public/images/menubar/png/', '!/public/dist/bootswatch/', '/public/dist/bootswatch/*/*.css', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '**/.htaccess', '*.csv']}
+					{
+						src: [
+							'public/**',
+							'vendor/**',
+							'application/**',
+							'!/application/tests',
+							'!/public/images/menubar/png/',
+							'!/public/dist/bootswatch/',
+							'/public/dist/bootswatch/*/*.css',
+							'database/**',
+							'*.txt',
+							'*.md',
+							'LICENSE',
+							'docker*',
+							'docker/**',
+							'Dockerfile',
+							'**/.htaccess',
+							'*.csv'
+						]
+					}
 				]
 			}
 		}
 	});
 
-    require('load-grunt-tasks')(grunt);
-    grunt.loadNpmTasks('grunt-mocha-webdriver');
+	require('load-grunt-tasks')(grunt);
+	grunt.loadNpmTasks('grunt-mocha-webdriver');
 	grunt.loadNpmTasks('grunt-composer');
 	grunt.loadNpmTasks('grunt-apigen');
-    grunt.loadNpmTasks('grunt-contrib-compress');
-    
-    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
-    grunt.registerTask('update', ['composer:update', 'bower:update']);
-    grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
-    grunt.registerTask('package', ['default', 'compress']);
-    grunt.registerTask('packages', ['composer:update']);
-    grunt.registerTask('gendocs', ['apigen:generate']);
+	grunt.loadNpmTasks('grunt-contrib-compress');
+
+	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
+	grunt.registerTask('update', ['composer:update', 'bower:update']);
+	grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
+	grunt.registerTask('package', ['default', 'compress']);
+	grunt.registerTask('packages', ['composer:update']);
+	grunt.registerTask('gendocs', ['apigen:generate']);
 
 };

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "İstisna Ekle";
 $lang["taxes_cascade"] = "Kademeli";
 $lang["taxes_cascade_sequence"] = "Kademeli Sıra";
@@ -6,8 +7,8 @@ $lang["taxes_city"] = "Şehir";
 $lang["taxes_code"] = "Kod";
 $lang["taxes_confirm_delete"] = "Bu Vergi Kodunu silmek istediğinize emin misiniz? Bu eylem geri alınamaz";
 $lang["taxes_confirm_restore"] = "Seçili Vergi Kodlarını geri yüklemek istediğinizden emin misiniz?";
-$lang["taxes_default_tax_category"] = "Varsayılan Vergi Kategorisi";
-$lang["taxes_default_tax_rate"] = "Varsayılan Vergi Oranı";
+$lang["taxes_default_tax_category"] = "Öntanımlı Vergi Kategorisi";
+$lang["taxes_default_tax_rate"] = "Öntanımlı Vergi Oranı";
 $lang["taxes_error_adding_updating"] = "Vergi Kodu ekleme ya da güncelleme başarısız oldu";
 $lang["taxes_group_seq"] = "Küme Sırası";
 $lang["taxes_jurisdiction_name"] = "Yetki Adı";
@@ -52,7 +53,8 @@ $lang["taxes_tax_codes_configuration"] = "Vergi Kodları Yapılandırması";
 $lang["taxes_tax_codes_saved_successfully"] = "Vergi Kodu değişiklikleri kaydedildi";
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Vergi Kodu değişiklikleri kaydedilmedi";
 $lang["taxes_tax_excluded"] = "Vergi hariç";
-$lang["taxes_tax_group"] = "Vergi Grubu";
+$lang["taxes_tax_group"] = "Vergi Kümesi";
+$lang["taxes_tax_group_not_unique"] = "%1 Vergi Kümesi eşsiz değil";
 $lang["taxes_tax_group_sequence"] = "Vergi Kümesi Sırası";
 $lang["taxes_tax_included"] = "Vergi dahil";
 $lang["taxes_tax_jurisdiction"] = "Vergi Yargı Yetkisi";

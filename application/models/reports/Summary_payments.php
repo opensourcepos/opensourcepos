@@ -9,7 +9,7 @@ class Summary_payments extends Summary_report
 		return array(
 			array('trans_group' => $this->lang->line('reports_trans_group')),
 			array('trans_type' => $this->lang->line('reports_trans_type')),
-			array('trans_count' => $this->lang->line('reports_count')),
+			array('trans_sales' => $this->lang->line('reports_sales')),
 			array('trans_amount' => $this->lang->line('reports_trans_amount')),
 			array('trans_payments' => $this->lang->line('reports_trans_payments')),
 			array('trans_refunded' => $this->lang->line('reports_trans_refunded')),
@@ -23,7 +23,7 @@ class Summary_payments extends Summary_report
 		$separator[] = array(
 			'trans_group' => '<HR>',
 			'trans_type' => '',
-			'trans_count' => '',
+			'trans_sales' => '',
 			'trans_amount' => '',
 			'trans_payments' => '',
 			'trans_refunded' => '',
@@ -48,7 +48,7 @@ class Summary_payments extends Summary_report
 			. '\' WHEN ' . SALE_TYPE_INVOICE . ' THEN \'' . $this->lang->line('sales_invoice')
 			. '\' WHEN ' . SALE_TYPE_RETURN . ' THEN \'' . $this->lang->line('sales_return')
 			. '\' END) AS trans_type, ';
-		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
+		$select .= 'COUNT(sales.sale_id) AS trans_sales, ';
 		$select .= 'SUM(sumpay_items.trans_amount) AS trans_amount, ';
 		$select .= 'IFNULL(SUM(sumpay_payments.total_payments),0) AS trans_payments, ';
 		$select .= 'IFNULL(SUM(sumpay_payments.total_cash_refund),0) AS trans_refunded, ';
@@ -77,7 +77,7 @@ class Summary_payments extends Summary_report
 
 		$select = '\'' . $this->lang->line('reports_trans_payments') . '\' AS trans_group, ';
 		$select .= 'sales_payments.payment_type as trans_type, ';
-		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
+		$select .= 'COUNT(sales.sale_id) AS trans_sales, ';
 		$select .= 'SUM(payment_amount - cash_refund) AS trans_amount,';
 		$select .= 'SUM(payment_amount) AS trans_payments,';
 		$select .= 'SUM(cash_refund) AS trans_refunded, ';
@@ -100,7 +100,7 @@ class Summary_payments extends Summary_report
 		{
 			if(strstr($payment['trans_type'], $this->lang->line('sales_giftcard')) !== FALSE)
 			{
-				$gift_card_count  += $payment['trans_count'];
+				$gift_card_count  += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
 
 				// Remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
@@ -110,7 +110,7 @@ class Summary_payments extends Summary_report
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('trans_group' => $this->lang->line('reports_trans_payments'), 'trans_type' => $this->lang->line('sales_giftcard'), 'trans_count' => $gift_card_count,
+			$payments[] = array('trans_group' => $this->lang->line('reports_trans_payments'), 'trans_type' => $this->lang->line('sales_giftcard'), 'trans_sales' => $gift_card_count,
 				'trans_amount' => $gift_card_amount, 'trans_payments' => $gift_card_amount, 'trans_refunded' => 0, 'trans_due' => 0);
 		}
 

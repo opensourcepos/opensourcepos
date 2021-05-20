@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Account Number";
 $lang["suppliers_agency_name"] = "Agency Name";
 $lang["suppliers_cannot_be_deleted"] = "Could not delete selected Supplier(s). One or more have Sales.";

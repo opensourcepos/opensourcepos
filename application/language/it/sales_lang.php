@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Punti Disponibili";
 $lang["rewards_package"] = "Punti Fedeltà";
 $lang["rewards_remaining_balance"] = "Valore Punti Rimanenti è ";
@@ -12,6 +13,7 @@ $lang["sales_cash"] = "Contanti";
 $lang["sales_cash_deposit"] = "Deposito Contanti";
 $lang["sales_cash_filter"] = "Contanti";
 $lang["sales_change_due"] = "Resto Dovuto";
+$lang["sales_change_price"] = "";
 $lang["sales_check"] = "Assegno";
 $lang["sales_check_balance"] = "Promemoria Assegno";
 $lang["sales_check_filter"] = "Assegno";
@@ -23,6 +25,7 @@ $lang["sales_confirm_delete"] = "Sei sicuro di voler eliminare la vendita selezi
 $lang["sales_confirm_restore"] = "Sei sicuro di voler ripristinare la vendita selezionata?";
 $lang["sales_credit"] = "Carta di Credito";
 $lang["sales_credit_deposit"] = "Deposito Credito";
+$lang["sales_credit_filter"] = "";
 $lang["sales_customer"] = "Nome";
 $lang["sales_customer_address"] = "Indirizzo";
 $lang["sales_customer_discount"] = "Sconto";
@@ -96,6 +99,7 @@ $lang["sales_no_filter"] = "Tutti";
 $lang["sales_no_items_in_cart"] = "Non ci sono Articoli nel carrello.";
 $lang["sales_no_sales_to_display"] = "Nessuna Vendita da mostrare.";
 $lang["sales_none_selected"] = "Non hai selezionato alcuna vendita da cancellare.";
+$lang["sales_nontaxed_ind"] = "";
 $lang["sales_not_authorized"] = "Questa azione non può essere autorizzata.";
 $lang["sales_one_or_multiple"] = "Vendita/e";
 $lang["sales_payment"] = "Tipo di pagamento";
@@ -119,6 +123,7 @@ $lang["sales_receipt_no_email"] = "Questo cliente non ha un'email valida.";
 $lang["sales_receipt_number"] = "Vendita #";
 $lang["sales_receipt_sent"] = "Scontrino inviato a";
 $lang["sales_receipt_unsent"] = "Scontrino fallito da inviare a";
+$lang["sales_refund"] = "";
 $lang["sales_register"] = "Registrazione Vendita";
 $lang["sales_remove_customer"] = "Rimuovi Cliente";
 $lang["sales_return"] = "Reso";
@@ -156,6 +161,7 @@ $lang["sales_tax"] = "Imposte";
 $lang["sales_tax_id"] = "ID Imposta";
 $lang["sales_tax_invoice"] = "Fattura d'Imposta";
 $lang["sales_tax_percent"] = "Imposte %";
+$lang["sales_taxed_ind"] = "";
 $lang["sales_total"] = "Totale";
 $lang["sales_total_tax_exclusive"] = "Imposte escluse";
 $lang["sales_transaction_failed"] = "Transazione di Vendita fallita.";

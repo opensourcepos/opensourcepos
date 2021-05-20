@@ -8,8 +8,8 @@
 
 class Tax_lib
 {
-	const TAX_TYPE_EXCLUDED = 1;
-	const TAX_TYPE_INCLUDED = 0;
+	const TAX_TYPE_EXCLUDED = '1';
+	const TAX_TYPE_INCLUDED = '0';
 
 	private $CI;
 
@@ -52,7 +52,7 @@ class Tax_lib
 	/**
 	 * Compute taxes for all items in the cart
 	 */
-	public function get_taxes(&$cart)
+	public function get_taxes(&$cart, $sale_id = -1)
 	{
 		$register_mode = $this->CI->sale_lib->get_mode();
 		$tax_decimals = tax_decimals();
@@ -72,7 +72,15 @@ class Tax_lib
 				{
 					// Start of current Base System tax calculations
 
-					$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+					if($sale_id == -1)
+					{
+						$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+					}
+					else
+					{
+						$tax_info = $this->CI->Sale->get_sales_item_taxes($sale_id, $item['item_id']);
+
+					}
 					$tax_group_sequence = 0;
 					$cascade_level = 0;
 					$cascade_basis_level = 0;
@@ -80,7 +88,7 @@ class Tax_lib
 					foreach($tax_info as $tax)
 					{
 						// This computes tax for each line item and adds it to the tax type total
-						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
+						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = 0.0;
 
 						if($this->CI->config->item('tax_included'))
@@ -150,9 +158,10 @@ class Tax_lib
 
 	public function get_included_tax($quantity, $price, $discount_percentage, $discount_type, $tax_percentage, $tax_decimal, $rounding_code)
 	{
-		$tax_amount = $this->CI->sale_lib->get_item_tax($quantity, $price, $discount_percentage, $discount_type, $tax_percentage);
-
-		return Rounding_mode::round_number($rounding_code, $tax_amount, $tax_decimal);
+		$item_total = $this->CI->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, TRUE);
+		$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
+		$price_tax_excl = bcdiv($item_total, $tax_fraction);
+		return bcsub($item_total, $price_tax_excl);
 	}
 
 	/*
@@ -443,11 +452,11 @@ class Tax_lib
 		$s1 = '';
 		$s2 = '';
 
-		if($selected_tax_type == Tax_lib::TAX_TYPE_EXCLUDED)
+		if($selected_tax_type === Tax_lib::TAX_TYPE_EXCLUDED)
 		{
 			$s1 = $selected;
 		}
-		else if($selected_tax_type == Tax_lib::TAX_TYPE_INCLUDED)
+		else if($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED)
 		{
 			$s2 = $selected;
 		}
