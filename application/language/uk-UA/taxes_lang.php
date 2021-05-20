@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Додати виняток";
 $lang["taxes_cascade"] = "Каскад";
 $lang["taxes_cascade_sequence"] = "Послідовність каскаду";
@@ -77,3 +76,4 @@ $lang["taxes_tax_rounding"] = "Податкове округлення";
 $lang["taxes_tax_type"] = "Вид податку";
 $lang["taxes_update"] = "Оновіть категорію податку з продаж";
 $lang["taxes_vat_tax"] = "НДС податок";
+$lang["taxes_tax_group_not_unique"] = "Податкова група % 1 не є унікальною";
