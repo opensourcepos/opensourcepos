@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Сума";
 $lang["cashups_amount_number"] = "Сума повинна бути числом";
-$lang["cashups_amount_required"] = "Сума - обов'язкове поле";
+$lang["cashups_amount_required"] = "Сума - обов'язкове поле.";
 $lang["cashups_cannot_be_deleted"] = "Суму неможливо видалити";
 $lang["cashups_close_date"] = "Дата";
 $lang["cashups_close_employee"] = "Каса закрита працівником";
