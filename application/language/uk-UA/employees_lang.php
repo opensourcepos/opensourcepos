@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["employees_basic_information"] = "Інформація про працівників";
-$lang["employees_cannot_be_deleted"] = "Неможливо видалити вибраних працівників, одного або декількох із оброблених продажів або ви намагаєтесь видалити свій обліковий запис.";
+$lang["employees_cannot_be_deleted"] = "Неможливо видалити вибраних працівника(ів), які вже здійснили продажі або ви намагаєтесь видалити свій обліковий запис.";
 $lang["employees_change_password"] = "Змінити пароль";
-$lang["employees_confirm_delete"] = "Ви впевнені, що хочете видалити обраних працівників?";
-$lang["employees_confirm_restore"] = "Ви впевнені, що хочете відновити обраних працівників?";
+$lang["employees_confirm_delete"] = "Ви впевнені, що хочете видалити обраного(их) працівника(ів)?";
+$lang["employees_confirm_restore"] = "Ви впевнені, що хочете відновити обраного(их) працівника(ів)?";
 $lang["employees_current_password"] = "Поточний пароль";
 $lang["employees_current_password_invalid"] = "Поточний пароль невірний.";
 $lang["employees_employee"] = "Працівник";
@@ -12,9 +11,9 @@ $lang["employees_error_adding_updating"] = "Помилка при додаван
 $lang["employees_error_deleting_demo_admin"] = "Ви не можете видалити аккаунт користувача.";
 $lang["employees_error_updating_demo_admin"] = "Ви не можете змінити аккаунт користувача.";
 $lang["employees_language"] = "Мова";
-$lang["employees_login_info"] = "Інформація для працівників";
+$lang["employees_login_info"] = "Вхід";
 $lang["employees_new"] = "Новий працівник";
-$lang["employees_none_selected"] = "Ви не вибрали працівників для видалення.";
+$lang["employees_none_selected"] = "Ви не вибрали працівника(ів) для видалення.";
 $lang["employees_one_or_multiple"] = "Працівник(и)";
 $lang["employees_password"] = "Пароль";
 $lang["employees_password_minlength"] = "Пароль повинен містити не менше 8 символів.";
@@ -26,12 +25,12 @@ $lang["employees_permission_info"] = "Дозволи";
 $lang["employees_repeat_password"] = "Повторіть пароль";
 $lang["employees_subpermission_required"] = "Додайте принаймні один грант для кожного модуля.";
 $lang["employees_successful_adding"] = "Ви успішно додали працівника.";
-$lang["employees_successful_change_password"] = "Пароль успішно змінено";
+$lang["employees_successful_change_password"] = "Пароль успішно змінено.";
 $lang["employees_successful_deleted"] = "Працівника успішно видалено";
-$lang["employees_successful_updating"] = "Працівника успішно оновлено ";
+$lang["employees_successful_updating"] = "Працівника успішно оновлено";
 $lang["employees_system_language"] = "Мова системи";
 $lang["employees_unsuccessful_change_password"] = "Не вдалось змінити пароль.";
-$lang["employees_update"] = "Оновити правцівника";
+$lang["employees_update"] = "Оновити працівника";
 $lang["employees_username"] = "Ім'я користувача";
 $lang["employees_username_minlength"] = "Ім'я користувача повинно бути не менше 5 символів.";
 $lang["employees_username_required"] = "Ім'я користувача - обов'язкове поле.";
