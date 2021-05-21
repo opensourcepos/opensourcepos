@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Mal Əlavə Etmək";
 $lang["item_kits_all"] = "Hamısı";
 $lang["item_kits_cannot_be_deleted"] = "Dəst Mal (lar) silinə bilməz.";
@@ -14,7 +13,7 @@ $lang["item_kits_error_adding_updating"] = "Malı yeniləməkdə və ya əlavə 
 $lang["item_kits_find_kit_item"] = "Mal Dəsti";
 $lang["item_kits_info"] = "Mal Dəsti haqqında informasiya";
 $lang["item_kits_item"] = "Maddə";
-$lang["item_kits_item_kit_number"] = "";
+$lang["item_kits_item_kit_number"] = "Barkod";
 $lang["item_kits_item_kit_number_duplicate"] = "";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "Mallar";
