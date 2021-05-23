@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
 $lang["config_all_set"] = "¡Todos los permisos de archivo están configurados correctamente!";
@@ -27,7 +26,7 @@ $lang["config_barcode_page_width"] = "Mostrar ancho de página";
 $lang["config_barcode_price"] = "Precio";
 $lang["config_barcode_second_row"] = "Fila 2";
 $lang["config_barcode_third_row"] = "Fila 3";
-$lang["config_barcode_tooltip"] = "Cuidado: esta característica puede causar duplicados ser importados o creados, No lo use si no quiere códigos de barras duplicadas.";
+$lang["config_barcode_tooltip"] = "Cuidado: esta característica puede causar duplicados ser importados o creados. No lo use si no quiere códigos de barras duplicadas.";
 $lang["config_barcode_type"] = "Tipo de Código de Barra";
 $lang["config_barcode_width"] = "Ancho (px)";
 $lang["config_bottom"] = "Abajo";
