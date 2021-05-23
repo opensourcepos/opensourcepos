@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -155,8 +154,8 @@ $lang["config_invoice_email_message"] = "Modelo de e-mail Fatura";
 $lang["config_invoice_enable"] = "Habilitar faturamento";
 $lang["config_invoice_printer"] = "Imprimir fatura";
 $lang["config_invoice_type"] = "Tipo Fatura";
-$lang["config_is_readable"] = "";
-$lang["config_is_writable"] = "is writable, but the permissions are higher than 750.";
+$lang["config_is_readable"] = "É readable, mas as permissões estão incorretas. Por favor defina para 640 ou 660 e recarregue.";
+$lang["config_is_writable"] = "É writable, mas as permissões estão incorretas. Por favor defina para 750 e recarrege.";
 $lang["config_jsprintsetup_required"] = "Aviso! Esta funcionalidade só irá funcionar se você tem o addon FireFox jsPrintSetup instalado. Salvar de qualquer maneira?";
 $lang["config_language"] = "Linguagem";
 $lang["config_last_used_invoice_number"] = "Último número de fatura usado";
@@ -181,7 +180,7 @@ $lang["config_mailchimp_api_key"] = "Mailchimp chave API";
 $lang["config_mailchimp_configuration"] = "Configuração Mailchimp";
 $lang["config_mailchimp_key_successfully"] = "API chave válida.";
 $lang["config_mailchimp_key_unsuccessfully"] = "API chave inválida.";
-$lang["config_mailchimp_lists"] = "Lista Mailchimp";
+$lang["config_mailchimp_lists"] = "Lista(s) Mailchimp";
 $lang["config_mailchimp_tooltip"] = "Clique no ícone de uma chave de API.";
 $lang["config_message"] = "Mensagem";
 $lang["config_message_configuration"] = "Configuração de Mensagens";
@@ -205,7 +204,7 @@ $lang["config_number_locale_tooltip"] = "Encontrar um local adequado através de
 $lang["config_os_timezone"] = "Fuso horário do OSPOS:";
 $lang["config_ospos_info"] = "Informações de instalação do OSPOS";
 $lang["config_payment_options_order"] = "Opções da ordem de pagamento";
-$lang["config_perm_risk"] = "Permissions higher than 750 leaves this software at risk.";
+$lang["config_perm_risk"] = "Permissões incorretas deixam este software em risco.";
 $lang["config_phone"] = "Telefone";
 $lang["config_phone_required"] = "Telefone da Empresa é requerido.";
 $lang["config_print_bottom_margin"] = "Margem inferior";
@@ -251,7 +250,7 @@ $lang["config_receipt_template"] = "Modelo de recibo";
 $lang["config_receiving_calculate_average_price"] = "Calc Médio de Preço (Recebimento)";
 $lang["config_recv_invoice_format"] = "Formato da fatura de recebimento";
 $lang["config_register_mode_default"] = "Modo de registro padrão";
-$lang["config_report_an_issue"] = "";
+$lang["config_report_an_issue"] = "Reporte um problema";
 $lang["config_return_policy_required"] = "A política de devolução é um campo obrigatório.";
 $lang["config_reward"] = "Recompensa";
 $lang["config_reward_configuration"] = "Configuração de recompensa";
