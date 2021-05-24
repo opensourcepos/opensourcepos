@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Puntos Disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "Puntos de recompensa sobrante son: ";
@@ -25,13 +24,13 @@ $lang["sales_confirm_delete"] = "¿Está seguro que desea borrar todas las venta
 $lang["sales_confirm_restore"] = "¿Está seguro de desear restaurar las ventas seleccionadas?";
 $lang["sales_credit"] = "Tarjeta de Crédito";
 $lang["sales_credit_deposit"] = "Deposito de crédito";
-$lang["sales_credit_filter"] = "";
+$lang["sales_credit_filter"] = "Tarjeta de crédito";
 $lang["sales_customer"] = "Cliente";
 $lang["sales_customer_address"] = "Dirección";
 $lang["sales_customer_discount"] = "Descuento";
 $lang["sales_customer_email"] = "Correo electrónico";
 $lang["sales_customer_location"] = "Ubicación";
-$lang["sales_customer_mailchimp_status"] = "Estado de Mailchimp";
+$lang["sales_customer_mailchimp_status"] = "Estado de MailChimp";
 $lang["sales_customer_optional"] = "(Obligatorio para pagos vencidos)";
 $lang["sales_customer_required"] = "(Obligatorio)";
 $lang["sales_customer_total"] = "Total";
@@ -161,7 +160,7 @@ $lang["sales_tax"] = "Impuestos";
 $lang["sales_tax_id"] = "ID Impuesto";
 $lang["sales_tax_invoice"] = "Impuesto de la factura";
 $lang["sales_tax_percent"] = "Impuesto %";
-$lang["sales_taxed_ind"] = "I";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Sin impuesto";
 $lang["sales_transaction_failed"] = "Ha fallado la venta.";
@@ -179,3 +178,4 @@ $lang["sales_work_order_number"] = "Número de orden de trabajo";
 $lang["sales_work_order_number_duplicate"] = "El número de orden de trabajo debe ser único.";
 $lang["sales_work_order_sent"] = "Orden de trabajo enviada a";
 $lang["sales_work_order_unsent"] = "Fallo al enviar la orden de trabajo  a";
+$lang["sales_cash_adjustment"] = "Ajuste de efectivo";
