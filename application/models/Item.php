@@ -46,7 +46,7 @@ class Item extends CI_Model
 			$this->db->where('item_id !=', (int) $item_id);
 		}
 
-		return ($this->db->get()->num_rows() >= 1);
+		return $this->db->get()->num_rows() >= 1;
 	}
 
 	/*
@@ -577,7 +577,6 @@ class Item extends CI_Model
 			$this->db->select('category');
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
@@ -592,7 +591,6 @@ class Item extends CI_Model
 			$this->db->like('company_name', $search);
 			// restrict to non deleted companies only if is_deleted is FALSE
 			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 			$this->db->distinct();
 			$this->db->order_by('company_name', 'asc');
 			foreach($this->db->get()->result() as $row)
@@ -604,7 +602,6 @@ class Item extends CI_Model
 			$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
 			foreach($this->db->get()->result() as $row)
@@ -620,15 +617,15 @@ class Item extends CI_Model
 			if($filters['search_custom'] != FALSE)
 			{
 				$this->db->from('attribute_links');
-				$this->db->join('attribute_links.attribute_id = attribute_values.attribute_id');
+				$this->db->join('attribute_values','attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
 				$this->db->where('definition_type', TEXT);
 				$this->db->where('deleted', $filters['is_deleted']);
-				$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
+
 				foreach($this->db->get()->result() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => get_search_suggestion_label($row));
+					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
 			}
 		}
