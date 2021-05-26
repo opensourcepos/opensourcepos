@@ -1,4 +1,5 @@
 sudo: required
+if: tag IS blank
 
 branches:
   except:
@@ -9,8 +10,7 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6
-    HEAD` && sed -i "s/\$1/\$1.$date.$branch.$rev/g" deployment.json
+
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker run --rm -v $(pwd):/app jekkos/composer composer install
@@ -22,15 +22,27 @@ script:
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 env:
   global:
-    - DOCKER_COMPOSE_VERSION=1.21.1 
-    - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
-after_success: 
-  - 'docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest" "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
+  - DOCKER_COMPOSE_VERSION=1.21.1
+  - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
+    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
+before_deploy:
+  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
+  - TRAVIS_TAG=$(echo $branch)
+  - git tag -f "$branch"
+  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$date.$branch.$rev.zip"
 deploy:
-  file: deployment.json
-  provider: bintray
+  provider: releases
+  file: "dist/opensourcepos.$date.$branch.$rev.zip"
+  name: "$TAG"
+  release_notes_file: WHATS_NEW.txt
+  prerelease: true
   skip_cleanup: true
-  key: ${BINTRAY_API_KEY}
+
   user: jekkos
+  overwrite: true
+  api_key:
+    secure: Ax25mMRDfHVf/HjRwqxYJe2oMnWC4sc2aKIiUxAOviVJJSCl4GMWhcFlUNnFsDcKIg2ofEGMVD6b9cTBuOwPDvymUDFnLNCCgDWve+vRDdWaTkTipn77Qk4c9UO9VvuzlPSKopChefPHlQ0n1rEmAMiKIXuqjUlNGqybW4FLP4E=
   on:
     all_branches: true
