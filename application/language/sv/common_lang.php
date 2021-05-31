@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adress 1";
 $lang["common_address_2"] = "Adress 2";
 $lang["common_city"] = "Stad";
@@ -8,7 +7,7 @@ $lang["common_comments"] = "Kommentarer";
 $lang["common_common"] = "allmänt";
 $lang["common_confirm_search"] = "Du har valt en eller flera rader, dessa kommer inte längre att väljas efter din sökning. Är du säker på att du vill skicka in den här sökningen?";
 $lang["common_copyrights"] = "© 2010 - %1";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Rätta identifierat fel innan du sparar";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";
 $lang["common_delete"] = "Radera";
@@ -42,7 +41,7 @@ $lang["common_last_page"] = "Sista";
 $lang["common_learn_about_project"] = "för att lära sig den senaste informationen om projektet.";
 $lang["common_list_of"] = "Lista av";
 $lang["common_logout"] = "Logga ut";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Migration av databasen %1 kommer att påbörjas efter login.";
 $lang["common_new"] = "Ny";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "Det finns inga personer att visa.";
