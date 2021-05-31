@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Lägg till kostnad";
 $lang["expenses_amount"] = "Belopp";
 $lang["expenses_amount_number"] = "Beloppet måste vara ett nummer";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Kategori";
 $lang["expenses_category_required"] = "kategori är ett obligatoriskt fält";
 $lang["expenses_check"] = "Check";
 $lang["expenses_check_filter"] = "Check";
-$lang["expenses_confirm_delete"] = "Är du säker på att du vill radera den valda utgiften?";
-$lang["expenses_confirm_restore"] = "Är du säker på att du vill återställa valda utgifter?";
+$lang["expenses_confirm_delete"] = "Är du säker på att du vill radera den valda utgiften(erna)?";
+$lang["expenses_confirm_restore"] = "Är du säker på att du vill återställa valda utgifter(erna)?";
 $lang["expenses_credit"] = "Kreditkort";
 $lang["expenses_credit_filter"] = "Kreditkort";
 $lang["expenses_date"] = "Datum";
@@ -36,7 +35,7 @@ $lang["expenses_no_expenses_to_display"] = "Det finns inga utgifter att visa";
 $lang["expenses_none_selected"] = "Du har inte valt någon kostnad";
 $lang["expenses_one_or_multiple"] = "Utgifter";
 $lang["expenses_payment"] = "Betalningstyp";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Börja skriva leverantörens namn ...";
 $lang["expenses_successful_adding"] = "Kostnaden tillagd";
 $lang["expenses_successful_deleted"] = "Kostnaden raderas";
 $lang["expenses_successful_updating"] = "Kostnaden uppdaterades";
