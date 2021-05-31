@@ -1,7 +1,6 @@
-<?php 
-
-$lang["enum_half_down"] = "";
-$lang["enum_half_even"] = "";
+<?php
+$lang["enum_half_down"] = "Halv ner";
+$lang["enum_half_even"] = "Halv ojämn";
 $lang["enum_half_five"] = "";
 $lang["enum_half_odd"] = "";
 $lang["enum_half_up"] = "";
