@@ -30,10 +30,10 @@ class Attributes extends Secure_Controller
 		$attributes = $this->Attribute->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Attribute->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($attributes->result() as $attribute)
 		{
-			$attribute->definition_flags = $this->_get_attributes($attribute->definition_flags);
+			$attribute->definition_flags = $this->get_attributes($attribute->definition_flags);
 			$data_rows[] = get_attribute_definition_data_row($attribute, $this);
 		}
 
@@ -60,7 +60,7 @@ class Attributes extends Secure_Controller
 	{
 		$definition_flags = 0;
 
-		$flags = (empty($this->input->post('definition_flags'))) ? array() : $this->input->post('definition_flags');
+		$flags = (empty($this->input->post('definition_flags'))) ? [] : $this->input->post('definition_flags');
 
 		foreach($flags as $flag)
 		{
@@ -121,15 +121,15 @@ class Attributes extends Secure_Controller
 	public function get_row($row_id)
 	{
 		$attribute_definition_info = $this->Attribute->get_info($row_id);
-		$attribute_definition_info->definition_flags = $this->_get_attributes($attribute_definition_info->definition_flags);
+		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);
 		$data_row = $this->xss_clean(get_attribute_definition_data_row($attribute_definition_info));
 
 		echo json_encode($data_row);
 	}
 
-	private function _get_attributes($definition_flags = 0)
+	private function get_attributes($definition_flags = 0)
 	{
-		$definition_flag_names = array();
+		$definition_flag_names = [];
 		foreach (Attribute::get_definition_flags() as $id => $term)
 		{
 			if ($id & $definition_flags)
@@ -155,9 +155,9 @@ class Attributes extends Secure_Controller
 		$data['definition_info'] = $info;
 
 		$show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
-		$data['definition_flags'] = $this->_get_attributes($show_all);
+		$data['definition_flags'] = $this->get_attributes($show_all);
 		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
-		$data['selected_definition_flags'] = $this->_get_attributes($selected_flags);
+		$data['selected_definition_flags'] = $this->get_attributes($selected_flags);
 
 		$this->load->view("attributes/form", $data);
 	}
