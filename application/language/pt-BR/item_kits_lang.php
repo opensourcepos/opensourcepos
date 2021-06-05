@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Adicionar Item";
 $lang["item_kits_all"] = "Todos";
 $lang["item_kits_cannot_be_deleted"] = "Não foi possível eliminar conjunto de itens.";
@@ -14,8 +13,8 @@ $lang["item_kits_error_adding_updating"] = "Erro ao adicionar/atualizar conjunto
 $lang["item_kits_find_kit_item"] = "Item do Conjunto";
 $lang["item_kits_info"] = "Informação do conjunto de Itens";
 $lang["item_kits_item"] = "Produto";
-$lang["item_kits_item_kit_number"] = "";
-$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_kit_number"] = "Código de Barras";
+$lang["item_kits_item_kit_number_duplicate"] = "O número do kit já se encontra na base de dados.";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "Itens";
 $lang["item_kits_kit"] = "Conjunto Id";

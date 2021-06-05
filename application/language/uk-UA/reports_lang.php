@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Все";
 $lang["reports_authority"] = "Управління";
 $lang["reports_canceled"] = "Скасовано";
@@ -112,7 +111,7 @@ $lang["reports_sub_total_value"] = "Підсумкове значення";
 $lang["reports_subtotal"] = "Проміжна сума";
 $lang["reports_summary_reports"] = "Підсумкові звіти";
 $lang["reports_supplied_by"] = "Постачається (ким)";
-$lang["reports_supplier"] = " Постачальник";
+$lang["reports_supplier"] = "Постачальник";
 $lang["reports_suppliers"] = "Постачальники";
 $lang["reports_suppliers_summary_report"] = "Підсумковий звіт про постачальників";
 $lang["reports_tax"] = "Податок";

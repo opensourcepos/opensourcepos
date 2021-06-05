@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Адреса 1";
 $lang["common_address_2"] = "Адреса 2";
 $lang["common_city"] = "Місто";
@@ -15,7 +14,7 @@ $lang["common_det"] = "Деталі";
 $lang["common_download_import_template"] = "Завантажити імпорт шаблону CSV(CSV)";
 $lang["common_edit"] = "Редагувати";
 $lang["common_email"] = "Електронна пошта";
-$lang["common_email_invalid_format"] = "Невірний формат адреси електронної пошти";
+$lang["common_email_invalid_format"] = "Невірний формат адреси електронної пошти.";
 $lang["common_export_csv"] = "Експорт CSV";
 $lang["common_export_csv_no"] = "Ні";
 $lang["common_export_csv_yes"] = "Так";
@@ -30,7 +29,7 @@ $lang["common_id"] = "Ідентифікація";
 $lang["common_import"] = "Імпорт";
 $lang["common_import_change_file"] = "Змінити";
 $lang["common_import_csv"] = "Імпорт CSV";
-$lang["common_import_full_path"] = "Необхідний повний шлях до файлу CSV";
+$lang["common_import_full_path"] = "Потрібний повний шлях до файлу CSV";
 $lang["common_import_remove_file"] = "Видалити";
 $lang["common_import_select_file"] = "Оберіть файл";
 $lang["common_inv"] = "inv (фактура)";
@@ -68,3 +67,4 @@ $lang["common_welcome"] = "Ласкаво просимо";
 $lang["common_welcome_message"] = "Ласкаво просимо в OSPOS, натисніть нижче щоб розпочати.";
 $lang["common_you_are_using_ospos"] = "Ви використовуєте Open Source Point Of Sale";
 $lang["common_zip"] = "Поштовий індекс";
+$lang["common_copyrights"] = "© 2010 - %1";

@@ -418,7 +418,14 @@ class Sales extends Secure_Controller
 			$kit_price_option = $item_kit_info->price_option;
 			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
-			if($item_kit_info->kit_discount != 0 && $item_kit_info->kit_discount > $discount)
+			if($discount_type == $item_kit_info->kit_discount_type)
+			{
+				if($item_kit_info->kit_discount > $discount)
+				{
+					$discount = $item_kit_info->kit_discount;
+				}
+			}
+			else
 			{
 				$discount = $item_kit_info->kit_discount;
 				$discount_type = $item_kit_info->kit_discount_type;
@@ -428,7 +435,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}

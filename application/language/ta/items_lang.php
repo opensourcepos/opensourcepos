@@ -1,19 +1,18 @@
-<?php 
-
-$lang["items_add_minus"] = "Inventory to add or subtract.";
-$lang["items_allow_alt_description"] = "Allow Alternate Description";
-$lang["items_amount_entry"] = "Amount Entry";
-$lang["items_bulk_edit"] = "Bulk Edit";
-$lang["items_buy_price_required"] = "Purchase Price is a required field.";
-$lang["items_cannot_be_deleted"] = "Could not delete selected Item(s), one or more of the selected Items have sales.";
-$lang["items_cannot_find_item"] = "Item not found.";
-$lang["items_category"] = "Category";
-$lang["items_category_required"] = "Category is a required field.";
-$lang["items_change_all_to_allow_alt_desc"] = "Allow Alternate Description for all.";
-$lang["items_change_all_to_not_allow_allow_desc"] = "Do not allow Alternate Description for all.";
-$lang["items_change_all_to_serialized"] = "Change all to Serialized";
-$lang["items_change_all_to_unserialized"] = "Change all to Unserialized";
-$lang["items_change_image"] = "Change Image";
+<?php
+$lang["items_add_minus"] = "கையிருப்பு பொருட்களை கூட்டு அல்லது கழி";
+$lang["items_allow_alt_description"] = "மாற்று விளக்கத்தை அனுமதி";
+$lang["items_amount_entry"] = "தொகை உள்ளிடு";
+$lang["items_bulk_edit"] = "மொத்த திருத்தம்";
+$lang["items_buy_price_required"] = "கொள்முதல் விலை அவசியம்.";
+$lang["items_cannot_be_deleted"] = "தேர்ந்தெடுக்கப்பட்ட உருப்படி (களை) நீக்க முடியவில்லை, தேர்ந்தெடுக்கப்பட்ட ஒன்று அல்லது அதற்கு மேற்பட்ட உருப்படிகள் விற்பனையைக் கொண்டுள்ளன.";
+$lang["items_cannot_find_item"] = "பொருள் கிடைக்கவில்லை.";
+$lang["items_category"] = "வகை";
+$lang["items_category_required"] = "வகை என்பது தேவையான புலம்.";
+$lang["items_change_all_to_allow_alt_desc"] = "அனைவரும் மாற்று விளக்கத்தை அனுமதிக்கவும்.";
+$lang["items_change_all_to_not_allow_allow_desc"] = "அனைவருக்கும் மாற்று விளக்கத்தை அனுமதிக்க வேண்டாம்.";
+$lang["items_change_all_to_serialized"] = "அனைத்தையும் தொடர்களாக மாற்றவும்";
+$lang["items_change_all_to_unserialized"] = "அனைத்தையும் தொடர்களாக மாற்றவும்";
+$lang["items_change_image"] = "படத்தை மாற்று";
 $lang["items_confirm_bulk_edit"] = "Are you sure you want to edit selected Item(s)?";
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "All Item Tax information will be replaced.";
 $lang["items_confirm_delete"] = "Are you sure you want to delete selected item(s)?";

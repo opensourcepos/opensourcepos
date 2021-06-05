@@ -732,7 +732,7 @@ class Attribute extends CI_Model
 	}
 
 	/**
-	 * Deletes any orphaned values that do not have associated links
+   * Deletes any orphaned values that do not have associated links
 	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */

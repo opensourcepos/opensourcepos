@@ -1,6 +1,5 @@
-<?php 
-
-$lang["giftcards_add_minus"] = "Інвентар для додавання або віднімання";
+<?php
+$lang["giftcards_add_minus"] = "Інвентар для додавання або віднімання.";
 $lang["giftcards_allow_alt_description"] = "Дозволити альтернативний опис";
 $lang["giftcards_bulk_edit"] = "Масове редагування";
 $lang["giftcards_cannot_be_deleted"] = "Не вдалося видалити вибрані подарункові картки, одна чи кілька вибраних подарункових карток мають продажі.";

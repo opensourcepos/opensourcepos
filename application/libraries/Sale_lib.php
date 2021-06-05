@@ -743,7 +743,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL)
+	public function add_item(&$item_id, $quantity = 1, $item_location, &$discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id, $include_deleted);
 		//make sure item exists
@@ -753,38 +753,45 @@ class Sale_lib
 			return FALSE;
 		}
 
-		$cost_price = 0.00;
+		$applied_discount = $discount;
 		$item_id = $item_info->item_id;
 		$item_type = $item_info->item_type;
 		$stock_type = $item_info->stock_type;
 
-		if($price_mode == PRICE_MODE_STANDARD)
-		{
-			$price = $item_info->unit_price;
-			$cost_price = $item_info->cost_price;
-		}
-		elseif($price_mode == PRICE_MODE_KIT)
-		{
-			if($kit_price_option == PRICE_OPTION_ALL)
-			{
-				$price = $item_info->unit_price;
-				$cost_price = $item_info->cost_price;
-			}
-			elseif($kit_price_option == PRICE_OPTION_KIT  && $item_type == ITEM_KIT)
-			{
-				$price = $item_info->unit_price;
-				$cost_price = $item_info->cost_price;
-			}
-			elseif($kit_price_option == PRICE_OPTION_KIT_STOCK && $stock_type == HAS_STOCK)
-			{
-				$price = $item_info->unit_price;
-				$cost_price = $item_info->cost_price;
-			}
-		}
-
+		$price = $item_info->unit_price;
+		$cost_price = $item_info->cost_price;
 		if($price_override != NULL)
 		{
 			$price = $price_override;
+		}
+
+		if($price_mode == PRICE_MODE_KIT)
+		{
+			if(!($kit_price_option == PRICE_OPTION_ALL
+				|| $kit_price_option == PRICE_OPTION_KIT  && $item_type == ITEM_KIT
+				|| $kit_price_option == PRICE_OPTION_KIT_STOCK && $stock_type == HAS_STOCK))
+			{
+				$price = 0.00;
+				$applied_discount = 0.00;
+			}
+			// If price is zero do not include a discount regardless of type
+			if($price == 0.00)
+			{
+				$applied_discount = 0.00;
+			}
+			// If fixed discount then apply no more than the item price
+			if($discount_type == FIXED)
+			{
+				if($applied_discount > $price)
+				{
+					$applied_discount = $price;
+					$discount -= $applied_discount;
+				}
+				else
+				{
+					$discount = 0;
+				}
+			}
 		}
 
 		// Serialization and Description
@@ -857,8 +864,8 @@ class Sale_lib
 			}
 		}
 
-		$total = $this->get_item_total($quantity, $price, $discount, $discount_type);
-		$discounted_total = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+		$total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type);
+		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, TRUE);
 
 		if($this->CI->config->item('multi_pack_enabled') == '1')
 		{
@@ -884,7 +891,7 @@ class Sale_lib
 					'allow_alt_description' => $item_info->allow_alt_description,
 					'is_serialized' => $item_info->is_serialized,
 					'quantity' => $quantity,
-					'discount' => $discount,
+					'discount' => $applied_discount,
 					'discount_type' => $discount_type,
 					'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 					'price' => $price,
@@ -1034,6 +1041,7 @@ class Sale_lib
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $external_item_kit_id;
 		$result = TRUE;
+		$applied_discount = $discount;
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
