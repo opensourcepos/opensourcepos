@@ -110,6 +110,7 @@ define('ITEM', 0);
 define('ITEM_KIT', 1);
 define('ITEM_AMOUNT_ENTRY', 2);
 define('ITEM_TEMP', 3);
+define('NEW_ITEM', -1);
 
 define('PRINT_ALL', 0);
 define('PRINT_PRICED', 1);
