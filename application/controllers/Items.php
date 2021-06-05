@@ -191,7 +191,7 @@ class Items extends Secure_Controller
 			$data = [];
 		}
 
-	//allow_temp_items is set in the index function of items.php or sales.php
+		//allow_temp_items is set in the index function of items.php or sales.php
 		$data['allow_temp_item'] = $this->session->userdata('allow_temp_items');
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
@@ -982,7 +982,7 @@ class Items extends Secure_Controller
 		{
 			if (empty($val) && !$is_update)
 			{
-				log_message('Error',"Empty required value in $key");
+				log_message('Error',"Empty required value in $key.");
 				return TRUE;
 			}
 		}
@@ -1084,14 +1084,8 @@ class Items extends Secure_Controller
 			{
 				if($definition['definition_type'] === CHECKBOX)
 				{
-					if(strcasecmp($attribute_value,'FALSE') === 0 || $attribute_value === '0')
-					{
-						$attribute_value = '0';
-					}
-					else
-					{
-						$attribute_value = '1';
-					}
+					$checkbox_is_unchecked = (strcasecmp($attribute_value,'FALSE') === 0 || $attribute_value === '0');
+					$attribute_value = $checkbox_is_unchecked ? '0' : '1';
 
 					$attribute_id = $this->store_attribute_value($attribute_value, $definition, $item_data['item_id']);
 				}
