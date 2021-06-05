@@ -315,7 +315,7 @@ class Attribute extends CI_Model
 	private function get_items_by_value($attribute_value, $definition_id)
 	{
 		$this->db->select('item_id');
-		$this->db->join('attribute_values', "attribute_values.attribute_id = attribute_links.attribute_id");
+		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->where('definition_id', $definition_id);
 		$this->db->where('attribute_value', $attribute_value);
 		return $this->db->get('attribute_links')->result_array();
@@ -680,8 +680,8 @@ class Attribute extends CI_Model
 
 	public function delete_value($attribute_value, $definition_id)
 	{
-		return $this->db->query("DELETE atrv, atrl FROM " . $this->db->dbprefix('attribute_values') . " atrv, " . $this->db->dbprefix('attribute_links') .  " atrl " .
-			"WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = " . $this->db->escape($attribute_value) . " AND atrl.definition_id = " . $this->db->escape($definition_id));
+		return $this->db->query('DELETE atrv, atrl FROM ' . $this->db->dbprefix('attribute_values') . ' atrv, ' . $this->db->dbprefix('attribute_links') .  ' atrl ' .
+			'WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = ' . $this->db->escape($attribute_value) . ' AND atrl.definition_id = ' . $this->db->escape($definition_id));
 	}
 
 	/**
