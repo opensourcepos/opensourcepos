@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once("Secure_Controller.php");
+require_once('Secure_Controller.php');
 
 class Attributes extends Secure_Controller
 {
@@ -159,7 +159,7 @@ class Attributes extends Secure_Controller
 		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
 		$data['selected_definition_flags'] = $this->get_attributes($selected_flags);
 
-		$this->load->view("attributes/form", $data);
+		$this->load->view('attributes/form', $data);
 	}
 
 	public function delete_value($attribute_id)
