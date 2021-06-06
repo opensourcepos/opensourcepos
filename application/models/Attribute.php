@@ -76,7 +76,7 @@ class Attribute extends CI_Model
 		$this->db->where("attribute_$data_type", $attribute_value);
 		$query = $this->db->get('attribute_values');
 
-		if ($query->num_rows() > 0)
+		if($query->num_rows() > 0)
 		{
 			return $query->row()->attribute_id;
 		}
@@ -178,13 +178,13 @@ class Attribute extends CI_Model
 	{
 		$this->db->where('definition_type', $attribute_type);
 		$this->db->where('deleted', 0);
+		$this->db->where('definition_fk');
 
 		if($definition_id != CATEGORY_DEFINITION_ID)
 		{
 			$this->db->where('definition_id <>', $definition_id);
 		}
 
-		$this->db->where('definition_fk');
 		$results = $this->db->get('attribute_definitions')->result_array();
 
 		return $this->to_array($results, 'definition_id', 'definition_name');
@@ -244,7 +244,7 @@ class Attribute extends CI_Model
 
 	private function to_array($results, $key, $value = '')
 	{
-		return array_column(array_map(function($result) use ($key, $value) {
+		return array_column(array_map(function($result) use ($key, $value){
 			return [$result[$key], empty($value) ? $result : $result[$value]];
 		}, $results), 1, 0);
 	}
@@ -731,8 +731,8 @@ class Attribute extends CI_Model
 		}
 	}
 
-	/**
-   * Deletes any orphaned values that do not have associated links
+	/*
+	 * Deletes any orphaned values that do not have associated links
 	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */
