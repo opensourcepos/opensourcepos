@@ -17,7 +17,7 @@ $(document).ready(function()
         table_support.refresh();
     });
 
-	// load the preset datarange picker
+	// load the preset daterange picker
 	<?php $this->load->view('partial/daterangepicker'); ?>
     // set the beginning of time as starting date
     $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>");
