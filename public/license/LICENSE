@@ -1,37 +1,37 @@
 The MIT License (MIT)
 
-Copyright (c) 2012-2014 pappastech
-Copyright (c) 2012 Alain
-Copyright (c) 2013 Rob Garrison
-Copyright (c) 2013 Parq
-Copyright (c) 2013 Ramel
 Copyright (c) 2013-2021 jekkos
 Copyright (c) 2015-2021 FrancescoUK (aka daN4cat)
-Copyright (c) 2015 Aamir Shahzad (aka asakpke), RoshanTech.com
-Copyright (c) 2015 Toni Haryanto (aka yllumi)
-Copyright (c) 2016-2017 Ramkrishna Mondal (aka RamkrishnaMondal)
-Copyright (c) 2016 Rinaldy@dbarber (aka rnld26)
-Copyright (c) 2016-2017 Jorge Colmenarez (aka jlctmaster), frontuari.com
 Copyright (c) 2017-2021 Steve Ireland
 Copyright (c) 2017-2021 objecttothis
 Copyright (c) 2017-2021 odiea
-Copyright (c) 2017-2021 WebShells / Shady Sh
+Copyright (c) 2017-2021 WebShells
+Copyright (c) 2020-2021 Andriux1990
+Copyright (c) 2019 Loyd Jayme (aka loydjayme25)
+Copyright (c) 2018 Erasto Marroquin (aka Erastus)
+Copyright (c) 2018 Nathan Sas (aka nathanzky)
+Copyright (c) 2018 Emilio Silva (aka emi-silva)
 Copyright (c) 2017 Jesus Guerrero Botella (aka i92guboj)
 Copyright (c) 2017 Deep Shah (aka deepshah)
 Copyright (c) 2017 Joshua Fernandez (aka joshua1234511)
 Copyright (c) 2017 asadjaved63
-Copyright (c) 2018 Erasto Marroquin (aka Erastus)
-Copyright (c) 2018 Nathan Sas (aka nathanzky)
-Copyright (c) 2018 Emilio Silva (aka emi-silva)
-Copyright (c) 2019 Loyd Jayme (aka loydjayme25)
-Copyright (c) 2020 Andriux1990
+Copyright (c) 2016-2017 Ramkrishna Mondal (aka RamkrishnaMondal)
+Copyright (c) 2016-2017 Jorge Colmenarez (aka jlctmaster), frontuari.com
+Copyright (c) 2016 Rinaldy@dbarber (aka rnld26)
+Copyright (c) 2015 Aamir Shahzad (aka asakpke), RoshanTech.com
+Copyright (c) 2015 Toni Haryanto (aka yllumi)
+Copyright (c) 2013 Rob Garrison
+Copyright (c) 2013 Parq
+Copyright (c) 2013 Ramel
+Copyright (c) 2012-2014 pappastech
+Copyright (c) 2012 Alain
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
@@ -40,13 +40,12 @@ You cannot claim copyright or ownership of the Software.
 
 Versions ≥ 3.3.2:
 
-Footer signatures "© 2010 - 2021 · opensourcepos.org · 3.3.3 - 6909c8" 
+Footer signatures "© 2010 - 2021 · opensourcepos.org · 3.3.3 - 6909c8"
 In the format of: "© 2010 - Current Year · opensourcepos.org · Version - Commit"
 
 and/or 
 
 "· opensourcepos.org ·"
-
 with version, hash and URL link to the official website of the project MUST BE RETAINED, 
 MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
 
@@ -61,9 +60,10 @@ and/or
 with version, hash and URL link to the original distribution of the code MUST BE RETAINED, 
 MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+OR OTHER DEALINGS IN THE SOFTWARE.

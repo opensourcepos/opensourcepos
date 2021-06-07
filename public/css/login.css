@@ -1,60 +1,131 @@
-*
-{
-	margin:0;
-	padding:0;
+/* Standard Dekstop Styling */
+html {
+  height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
 }
 
-#logo
-{
-	margin-top:2%;
-	margin-bottom:2%;
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
 }
 
-#login
-{
-	width:400px;
-	margin:0 auto;
-	margin-top:2%;
-	margin-bottom:2%;
-	transition:opacity 1s;
-	-webkit-transition:opacity 1s;
+.container-login, .footer {
+  max-width: 720px;
 }
 
-#login h1
-{
-	background:#1071b9;
-	padding:20px 0;
-	font-size:140%;
-	font-weight:300;
-	text-align:center;
-	color:#fff;
+.container-login {
+  min-height: 405px;
 }
 
-form
-{
-	background:#f0f0f0;
-	padding:6% 4%;
+.box-logo {
+  width: 40%;
 }
 
-input[type="text"], input[type="password"]
-{
-	width:100%;
-	margin-bottom:4%;
-	padding:4%;
+.logo {
+  object-fit: contain; /* Logo contains aspect ratio */
+  max-width: 405px; /* Prevent horizontal logo going too big on large mobile screens */
+  max-height: calc(405px - 3rem); /* Container height minus container padding */
 }
 
-input[type="submit"]
-{
-	width:100%;
-	background:#1071b9;
-	margin-top:4%;
-	border:0;
-	padding:4%;
-	transition:background .3s;
-	-webkit-transition:background .3s;
+img.logo {
+  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.87)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.87)) drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.87)) drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.87)); /* White border around Company Logo for correct display on darker themes */
 }
 
-input[type="submit"]:hover
-{
-	background:#2288bb;
+.box-login {
+  width: 60%;
+}
+
+.box-login form {
+  width: 100%; /* Login box content full width */
+}
+
+.box-login .form-floating:focus-within,
+.box-login .input-group:focus-within {
+  z-index: 2;
+}
+
+.box-login input[name="username"],
+.box-login span[id="input-username"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.box-login input[name="password"],
+.box-login span[id="input-password"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.alert div:not(:first-child) {
+  margin-top: 1rem; /* Space between multiple validation errors */
+}
+
+.bi {
+  height: 1em;
+}
+
+footer a:not(:hover) {
+  text-decoration: none;
+}
+
+/* Mobile Styling */
+@media (max-width: 767.98px) {
+  .container-login {
+    min-height: auto;
+  }
+
+  .box-logo, .box-login {
+    width: 100%;
+  }
+
+  .box-logo {
+    border-right: none !important;
+  }
+
+  .logo {
+    max-height: 150px;
+  }
+
+  .footer {
+    max-width: 100%;
+    border-radius: 0 !important;
+  }
+}
+
+/* QHD Styling */
+@media (min-width: 2560px) {
+  .container-login, .footer {
+    max-width: 960px;
+  }
+
+  .container-login {
+    min-height: 540px;
+  }
+
+  .logo {
+    max-height: calc(540px - 3rem);
+  }
+}
+
+/* 4K Styling */
+@media (min-width: 3840px) {
+  .container-login, .footer {
+    max-width: 1140px;
+  }
+
+  .container-login {
+    min-height: 641.25px;
+  }
+
+  .logo {
+    max-height: calc(641.25px - 3rem);
+  }
+}
+
+/* Specific Styling */
+@media (max-width: 359.98px) {
+  .g-recaptcha {
+    overflow-x: auto; /* Makes sure reCAPTCHA is usable on the smallest screens */
+    min-height: 86px;
+  }
 }
