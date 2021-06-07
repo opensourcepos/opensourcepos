@@ -13,6 +13,7 @@ generate_langauges.php
 dist/
 docs/
 public/bower_components
+npm_modules
 *.patch
 patches/
 translations/
