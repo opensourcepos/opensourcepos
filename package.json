@@ -31,6 +31,7 @@
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-compress": "^1.4.1",
     "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify-es": "github:opensourcepos/grunt-contrib-uglify#harmony",
@@ -45,6 +46,10 @@
     "wd": "^0.3.3"
   },
   "dependencies": {
+    "bootstrap": "^3.4.1",
+    "bootstrap-5": "npm:bootstrap@^5.0.1",
+    "bootswatch": "^3.4.1",
+    "bootswatch-5": "npm:bootswatch@^5.0.1",
     "npm": "^6.14.9"
   }
 }
