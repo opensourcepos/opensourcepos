@@ -184,7 +184,7 @@ class Config extends Secure_Controller
 			if($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts')
 			{
 				$file = $this->xss_clean($dirinfo->getFileName());
-				$themes[$file] = $file;
+				$themes[$file] = ucfirst($file);
 			}
 		}
 
@@ -283,6 +283,7 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
+			'login_form' => $this->input->post('login_form'),
 			'default_sales_discount_type' => $this->input->post('default_sales_discount_type') != NULL,
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
 			'default_receivings_discount_type' => $this->input->post('default_receivings_discount_type') != NULL,
