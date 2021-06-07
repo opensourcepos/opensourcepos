@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";
@@ -32,7 +31,7 @@ $lang["customers_mailchimp_activity_open"] = "เปิดอีเมล";
 $lang["customers_mailchimp_activity_total"] = "ส่งอีเมล";
 $lang["customers_mailchimp_activity_unopen"] = "ไม่เปิดอีเมล";
 $lang["customers_mailchimp_email_client"] = "โปรแกรมรับส่งเมล";
-$lang["customers_mailchimp_info"] = "ระบบเมล์ชิม";
+$lang["customers_mailchimp_info"] = "ระบบส่งอีเมล์ชิม";
 $lang["customers_mailchimp_member_rating"] = "ระดับ";
 $lang["customers_mailchimp_status"] = "สถานะ";
 $lang["customers_mailchimp_vip"] = "วีไอพี";
