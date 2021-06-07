@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "คะแนนที่มี";
 $lang["rewards_package"] = "คะแนนสะสม";
 $lang["rewards_remaining_balance"] = "คะแนนสะสมคงเหลือ ";
@@ -31,7 +30,7 @@ $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "ส่วนลด";
 $lang["sales_customer_email"] = "Customer Email";
 $lang["sales_customer_location"] = "Customer Location";
-$lang["sales_customer_mailchimp_status"] = "สถานะของโปรแกรมเมล์ชิม";
+$lang["sales_customer_mailchimp_status"] = "สถานะของระบบส่งเมล์เมล์ชิม";
 $lang["sales_customer_optional"] = "(ต้องระบุวันที่ชำระเงิน)";
 $lang["sales_customer_required"] = "(ต้องระบุ)";
 $lang["sales_customer_total"] = "Total";
@@ -179,3 +178,4 @@ $lang["sales_work_order_number"] = "หมายเลขคำสั่งง�
 $lang["sales_work_order_number_duplicate"] = "หมายเลขคำสั่งงานต้องไม่ซ้ำกัน";
 $lang["sales_work_order_sent"] = "คำสั่งงานส่งถึง";
 $lang["sales_work_order_unsent"] = "คำสั่งงานส่งถึงล้มเหลว";
+$lang["sales_cash_adjustment"] = "การปรับเงินสดขาย";
