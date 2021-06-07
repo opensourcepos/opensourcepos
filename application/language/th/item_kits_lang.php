@@ -1,6 +1,5 @@
-<?php 
-
-$lang["item_kits_add_item"] = "เหิ่มสินคัา";
+<?php
+$lang["item_kits_add_item"] = "เพิ่มสินคัา";
 $lang["item_kits_all"] = "ทั้งหมด";
 $lang["item_kits_cannot_be_deleted"] = "ไม่สามารถลบได้";
 $lang["item_kits_confirm_delete"] = "แน่ใจหรือไม่ที่จะลบสินค้าหมู่ที่ถูกเลือก?";
@@ -14,8 +13,8 @@ $lang["item_kits_error_adding_updating"] = "เพิ่ม/ปรับปร�
 $lang["item_kits_find_kit_item"] = "ชุดรายการ";
 $lang["item_kits_info"] = "ข้อมูลสินค้าหมู่";
 $lang["item_kits_item"] = "สินค้า";
-$lang["item_kits_item_kit_number"] = "";
-$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_kit_number"] = "บาร์โค๊ด";
+$lang["item_kits_item_kit_number_duplicate"] = "หมายเลขนี้มีอยู่แล้วในฐานข้อมูล";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "สินค้า";
 $lang["item_kits_kit"] = "Kit Id";
