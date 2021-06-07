@@ -6,8 +6,28 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_theme'), 'theme', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-sm-10'>
+					<div class="form-group form-group-sm row">
+						<div class='col-sm-3'>
+							<?php echo form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm', 'id' => 'theme-change')); ?>
+						</div>
+						<div class="col-sm-7">
+							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap'==($this->config->item('theme')) ? 'default' : $this->config->item('theme')); ?>" target="_blank" rel=”noopener”>
+								<span><?php echo $this->lang->line('config_theme_preview') . ' ' . ucfirst($this->config->item('theme')) . ' '; ?></span><span class="glyphicon glyphicon-new-window"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_login_form'), 'login_form', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('login_form', array(
+							'floating_labels' => $this->lang->line('config_floating_labels'),
+							'input_groups' => $this->lang->line('config_input_groups')
+						),
+						$this->config->item('login_form'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 

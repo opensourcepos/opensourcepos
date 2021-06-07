@@ -37,7 +37,6 @@
 		<script src="bower_components/jquery-form/src/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
@@ -64,6 +63,7 @@
 		<script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
+		<script type="text/javascript" src="dist/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/clipboard.min.js"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
 		<script type="text/javascript" src="js/manage_tables.js"></script>
@@ -75,7 +75,7 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=afbb40b305"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=d0bbe25210"/>
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -84,7 +84,7 @@
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=32a09a5d0e"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=aafc294e12"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -109,7 +109,7 @@
 				<div class="navbar-right" style="margin:0">
 					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('employees_change_password'))); ?>
 					<?php echo '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') . '  |  ' : ''); ?>
-					<?php echo anchor('home/logout', $this->lang->line('common_logout')); ?>
+					<?php echo anchor('home/logout', $this->lang->line('login_logout')); ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
@@ -148,4 +148,3 @@
 
 		<div class="container">
 			<div class="row">
-
