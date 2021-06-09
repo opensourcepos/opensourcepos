@@ -17,7 +17,7 @@ Local install
 
 First of all, if you're seeing the message **'system folder missing'** after launching your browser, then that means you have cloned the repository and have not built the project properly.
 
-1. Dowload the latest [stable release](https://github.com/opensourcepos/opensourcepos/releases) from github or [unstable build](https://bintray.com/jekkos/opensourcepos/opensourcepos/view/files?sort=updated&order=asc#files) from bintray. A regular repository clone will not work unless you are brave enough to build the whole project!
+1. Dowload the latest stable or prerelease for a specific branch [from github](https://github.com/opensourcepos/opensourcepos/releases). A regular repository clone will not work unless you are brave enough to build the whole project!
 2. Create/locate a new mysql database to install open source point of sale into
 3. Execute the file database/database.sql to create the tables needed
 4. unzip and upload Open Source Point of Sale files to web server
