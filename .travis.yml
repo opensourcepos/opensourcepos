@@ -28,14 +28,15 @@ after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
 before_deploy:
+  - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
-  - TRAVIS_TAG=$(echo $branch)
-  - git tag -f "$branch"
-  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$branch.zip"
+  - TRAVIS_TAG=$(echo $branch.$version)
+  - git tag -f "$branch.$version"
+  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$branch.$version.zip"
 deploy:
   provider: releases
-  file: "dist/opensourcepos.$branch.zip"
-  name: "$TAG"
+  file: "dist/opensourcepos.$branch.$version.zip"
+  name: "OpensourcePos $version"
   release_notes_file: WHATS_NEW.txt
   prerelease: true
   skip_cleanup: true
