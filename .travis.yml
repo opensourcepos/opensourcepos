@@ -31,10 +31,10 @@ before_deploy:
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
   - TRAVIS_TAG=$(echo $branch)
   - git tag -f "$branch"
-  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$date.$branch.$rev.zip"
+  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$branch.zip"
 deploy:
   provider: releases
-  file: "dist/opensourcepos.$date.$branch.$rev.zip"
+  file: "dist/opensourcepos.$branch.zip"
   name: "$TAG"
   release_notes_file: WHATS_NEW.txt
   prerelease: true
