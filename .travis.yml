@@ -16,7 +16,7 @@ script:
   - docker run --rm -v $(pwd):/app jekkos/composer composer install
   - docker run --rm -v $(pwd):/app jekkos/composer php bin/install.php translations develop
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
-  - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt
+  - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
     sh -c "npm install && bower install && grunt package"
   - docker build . --target ospos -t ospos
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
@@ -24,12 +24,12 @@ env:
   global:
   - DOCKER_COMPOSE_VERSION=1.21.1
   - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
+  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
 before_deploy:
   - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
-  - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
   - TRAVIS_TAG=$(echo $branch.$version)
   - git tag -f "$branch.$version"
   - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$branch.$version.zip"
