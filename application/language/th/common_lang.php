@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
@@ -27,11 +26,12 @@ $lang["common_first_page"] = "ลำดับแรก";
 $lang["common_gender"] = "เพศ";
 $lang["common_gender_female"] = "หญิง";
 $lang["common_gender_male"] = "ชาย";
+$lang["common_gender_undefined"] = "";
 $lang["common_id"] = "ID";
 $lang["common_import"] = "นำเข้า";
 $lang["common_import_change_file"] = "เปลี่ยน";
 $lang["common_import_csv"] = "นำเข้าไฟล์ CSV";
-$lang["common_import_full_path"] = "ตำแหน่งของไฟล์ CSV จำเป็นต้องป้อน";
+$lang["common_import_full_path"] = "ตำแหน่งของไฟล์ CSV จำเป็นต้องระบุ";
 $lang["common_import_remove_file"] = "ลบออก";
 $lang["common_import_select_file"] = "เลือกไฟล์";
 $lang["common_inv"] = "ยอด inv";
@@ -43,6 +43,7 @@ $lang["common_list_of"] = "รายการ";
 $lang["common_logout"] = "ออกจากระบบ";
 $lang["common_migration_needed"] = "การย้ายฐานข้อมูลไปยัง %1 จะเริ่มขึ้นหลังจากเข้าสู่ระบบ";
 $lang["common_new"] = "สร้างใหม่";
+$lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
 $lang["common_none_selected_text"] = "กรุณาเลือก";
 $lang["common_or"] = "หรือ";
@@ -67,5 +68,6 @@ $lang["common_view_recent_sales"] = "การขายล่าสุด";
 $lang["common_website"] = "เว็บไซต์ opensourcepos.org";
 $lang["common_welcome"] = "ยินดีต้อนรับ";
 $lang["common_welcome_message"] = "ยินดีต้อนรับสู่ OSPOS, กรุณาเลือกโมดูลด้านล่างที่ต้องการทำงาน";
+$lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "คุณกำลังใช้ โอเพนซอร์ส พีโอเอส รุ่น";
 $lang["common_zip"] = "รหัสไปรษณีย์";

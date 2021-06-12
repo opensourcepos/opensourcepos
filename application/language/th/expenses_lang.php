@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "เพิ่มรายจ่าย";
 $lang["expenses_amount"] = "จำนวน";
 $lang["expenses_amount_number"] = "ยอดจำนวนต้องเป็นตัวเลข";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "หมวดหมู่";
 $lang["expenses_category_required"] = "จำเป็นต้องระบุหมวดหมู่";
 $lang["expenses_check"] = "ตรวจสอบ";
 $lang["expenses_check_filter"] = "เช็ค";
-$lang["expenses_confirm_delete"] = "คุณแน่ใจหรือว่าต้องการลบค่าใช้จ่ายที่เลือก?";
-$lang["expenses_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการคืนค่าใช้จ่ายที่เลือก?";
+$lang["expenses_confirm_delete"] = "คุณแน่ใจหรือว่าต้องการลบค่าใช้จ่ายที่เลือกทั้งหมด?";
+$lang["expenses_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการคืนค่าใช้จ่ายที่เลือกทั้งหมด?";
 $lang["expenses_credit"] = "บัตรเครดิต";
 $lang["expenses_credit_filter"] = "บัตรเครติด";
 $lang["expenses_date"] = "วันที่";

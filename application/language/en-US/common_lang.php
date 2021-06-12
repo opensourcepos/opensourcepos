@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Address 1";
 $lang["common_address_2"] = "Address 2";
 $lang["common_city"] = "City";
@@ -27,11 +26,12 @@ $lang["common_first_page"] = "First";
 $lang["common_gender"] = "Gender";
 $lang["common_gender_female"] = "F";
 $lang["common_gender_male"] = "M";
+$lang["common_gender_undefined"] = "";
 $lang["common_id"] = "Id";
 $lang["common_import"] = "Import";
 $lang["common_import_change_file"] = "Change";
 $lang["common_import_csv"] = "CSV Import";
-$lang["common_import_full_path"] = "Full path to csv file required";
+$lang["common_import_full_path"] = "Full path to CSV file required";
 $lang["common_import_remove_file"] = "Remove";
 $lang["common_import_select_file"] = "Select file";
 $lang["common_inv"] = "inv";
@@ -43,6 +43,7 @@ $lang["common_list_of"] = "List of";
 $lang["common_logout"] = "Logout";
 $lang["common_migration_needed"] = "A database migration to %1 will start after login.";
 $lang["common_new"] = "New";
+$lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "There are no people to display.";
 $lang["common_none_selected_text"] = "[Select]";
 $lang["common_or"] = "OR";
@@ -67,5 +68,6 @@ $lang["common_view_recent_sales"] = "View Recent Sales";
 $lang["common_website"] = "opensourcepos.org";
 $lang["common_welcome"] = "Welcome";
 $lang["common_welcome_message"] = "Welcome to OSPOS, click a module below to get started.";
+$lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "";
 $lang["common_zip"] = "Postal Code";

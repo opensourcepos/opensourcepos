@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Adicionar Despesa";
 $lang["expenses_amount"] = "Total";
 $lang["expenses_amount_number"] = "O valor deve ser um número";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Categoria";
 $lang["expenses_category_required"] = "categoria é um campo obrigatório";
 $lang["expenses_check"] = "Cheque";
 $lang["expenses_check_filter"] = "Cheque";
-$lang["expenses_confirm_delete"] = "Tem certeza de que deseja excluir a despesa selecionada?";
-$lang["expenses_confirm_restore"] = "Tem certeza de que deseja restaurar as despesas selecionadas?";
+$lang["expenses_confirm_delete"] = "Tem certeza de que deseja excluir a(s) despesa(s) selecionada?";
+$lang["expenses_confirm_restore"] = "Tem certeza de que deseja restaurar a(s) despesa(s) selecionada(s)?";
 $lang["expenses_credit"] = "Cartão de Crédito";
 $lang["expenses_credit_filter"] = "Cartão de Crédito";
 $lang["expenses_date"] = "Data";

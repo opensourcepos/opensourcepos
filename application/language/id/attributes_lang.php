@@ -1,10 +1,9 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Nilai Atribut tidak boleh mengandung karakter ':' atau '|'";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "Nilai Atribut tidak boleh mengandung karakter '_' atau '|'";
 $lang["attributes_confirm_delete"] = "Apakah Anda yakin ingin menghapus atribut tersebut?";
 $lang["attributes_confirm_restore"] = "Apakah Anda yakin ingin mengembalikan atribut tersebut?";
 $lang["attributes_definition_cannot_be_deleted"] = "Tidak bisa menghapus atribut terpilih";
-$lang["attributes_definition_error_adding_updating"] = "Atribut %1 tidak dapat ditambahkan atau diperbaharui. Silahkan periksa log kesalahan.";
+$lang["attributes_definition_error_adding_updating"] = "Atribut %1 tidak dapat ditambah atau diperbaharui. Silahkan periksa log kesalahan.";
 $lang["attributes_definition_flags"] = "Visibilitas Atribut";
 $lang["attributes_definition_group"] = "Grup";
 $lang["attributes_definition_id"] = "Nomor";
@@ -15,7 +14,7 @@ $lang["attributes_definition_successful_adding"] = "Anda telah berhasil menambah
 $lang["attributes_definition_successful_deleted"] = "Anda berhasil menghapus";
 $lang["attributes_definition_successful_updating"] = "Anda berhasil memperbaharui atribut";
 $lang["attributes_definition_type"] = "Tipe Atribut";
-$lang["attributes_definition_type_required"] = "Tipe atribut wajib diisi";
+$lang["attributes_definition_type_required"] = "Tipe Atribut harus diisi";
 $lang["attributes_definition_unit"] = "Satuan Ukuran";
 $lang["attributes_definition_values"] = "Nilai Atribut";
 $lang["attributes_new"] = "Atribut baru";

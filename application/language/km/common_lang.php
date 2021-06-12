@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "អាសយដ្ឋាន ១";
 $lang["common_address_2"] = "អាសយដ្ឋាន ២";
 $lang["common_city"] = "ទីក្រុង";
@@ -26,6 +27,7 @@ $lang["common_first_page"] = "ដំបូង";
 $lang["common_gender"] = "ភេទ";
 $lang["common_gender_female"] = "ស";
 $lang["common_gender_male"] = "ប";
+$lang["common_gender_undefined"] = "";
 $lang["common_id"] = "លេខសម្គាល់";
 $lang["common_import"] = "នាំចូល";
 $lang["common_import_change_file"] = "ផ្លាស់ប្តូរ";
@@ -42,6 +44,7 @@ $lang["common_list_of"] = "បញ្ជី​នៃ";
 $lang["common_logout"] = "ចាកចេញ";
 $lang["common_migration_needed"] = "ការ​ប្ដូរមូលដ្ឋានទិន្នន័យទៅ %1 នឹងចាប់ផ្តើមបន្ទាប់ពីចូល";
 $lang["common_new"] = "ថ្មី";
+$lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "មិនមានមនុស្សដើម្បីបង្ហាញទេ";
 $lang["common_none_selected_text"] = "[ជ្រើសរើស]";
 $lang["common_or"] = "ឬ";
@@ -66,5 +69,6 @@ $lang["common_view_recent_sales"] = "មើលការលក់ថ្មីៗ"
 $lang["common_website"] = "opensourcepos.org";
 $lang["common_welcome"] = "សូមស្វាគមន៍";
 $lang["common_welcome_message"] = "សូមស្វាគមន៍មកកាន់ OSPOS, សូមចុចលើម៉ូឌុលខាងក្រោមដើម្បីចាប់ផ្តើម";
+$lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "";
 $lang["common_zip"] = "កូដប្រៃសណីយ៍";

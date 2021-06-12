@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Cantidad";
 $lang["cashups_amount_number"] = "Cantidad debe ser un numero";
 $lang["cashups_amount_required"] = "Cantidad es un campo obligatorio.";
@@ -9,7 +8,7 @@ $lang["cashups_close_employee"] = "Cerrado por";
 $lang["cashups_closed_amount_card"] = "Tarjetas";
 $lang["cashups_closed_amount_cash"] = "Efectivo Final";
 $lang["cashups_closed_amount_check"] = "Cheques";
-$lang["cashups_closed_amount_due"] = "Cuotas";
+$lang["cashups_closed_amount_due"] = "Deudado";
 $lang["cashups_closed_amount_total"] = "Total";
 $lang["cashups_closed_date"] = "Fecha de Cierre";
 $lang["cashups_confirm_delete"] = "¿Estás seguro de que quieres borrar el Turno seleccionado?";
@@ -24,7 +23,7 @@ $lang["cashups_is_deleted"] = "Borrado";
 $lang["cashups_new"] = "Nuevo Turno";
 $lang["cashups_no_cashups_to_display"] = "No hay Turnos para mostrar";
 $lang["cashups_none_selected"] = "No ha seleccionado ningún Turno";
-$lang["cashups_note"] = "Billetes";
+$lang["cashups_note"] = "Notas";
 $lang["cashups_one_or_multiple"] = "Turno(s)";
 $lang["cashups_open_amount_cash"] = "Efectivo Inicial";
 $lang["cashups_open_date"] = "Fecha de Apertura";
@@ -34,5 +33,5 @@ $lang["cashups_successful_adding"] = "Turno agregado con éxito";
 $lang["cashups_successful_deleted"] = "Turno borrado con éxito";
 $lang["cashups_successful_updating"] = "Turno actualizado con éxito";
 $lang["cashups_total"] = "Total";
-$lang["cashups_transfer_amount_cash"] = "Entrad/Salida de Efectivo";
+$lang["cashups_transfer_amount_cash"] = "Entrada/Salida de Efectivo";
 $lang["cashups_update"] = "Actualizar Turno";

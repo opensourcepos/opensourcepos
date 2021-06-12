@@ -1,16 +1,15 @@
-<?php 
-
-$lang["reports_all"] = "";
-$lang["reports_authority"] = "";
-$lang["reports_canceled"] = "";
-$lang["reports_categories"] = "";
-$lang["reports_categories_summary_report"] = "";
-$lang["reports_category"] = "";
-$lang["reports_code_canceled"] = "";
-$lang["reports_code_invoice"] = "";
-$lang["reports_code_pos"] = "";
-$lang["reports_code_quote"] = "";
-$lang["reports_code_return"] = "";
+<?php
+$lang["reports_all"] = "Todas";
+$lang["reports_authority"] = "Autoridad";
+$lang["reports_canceled"] = "Cancelado";
+$lang["reports_categories"] = "Categorías";
+$lang["reports_categories_summary_report"] = "Informe resumido de categorías";
+$lang["reports_category"] = "Categoría";
+$lang["reports_code_canceled"] = "CNL";
+$lang["reports_code_invoice"] = "INV";
+$lang["reports_code_pos"] = "POS";
+$lang["reports_code_quote"] = "Q";
+$lang["reports_code_return"] = "RET";
 $lang["reports_code_type"] = "";
 $lang["reports_code_work_order"] = "";
 $lang["reports_comments"] = "";

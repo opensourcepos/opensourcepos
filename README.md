@@ -1,8 +1,7 @@
-[![Download](https://api.bintray.com/packages/jekkos/opensourcepos/opensourcepos/images/download.svg?version=3.3.3) ](https://bintray.com/jekkos/opensourcepos/opensourcepos/3.3.3/link)
-[![Build Status](https://travis-ci.org/opensourcepos/opensourcepos.svg?branch=master)](https://travis-ci.org/opensourcepos/opensourcepos)
+[![Build Status](https://travis-ci.com/opensourcepos/opensourcepos.svg?branch=master)](https://travis-ci.org/opensourcepos/opensourcepos)
 [![Join the chat at https://gitter.im/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![GitHub version](https://badge.fury.io/gh/jekkos%2Fopensourcepos.svg)](https://badge.fury.io/gh/jekkos%2Fopensourcepos)
-[![Translation status](http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg)](http://weblate.jpeelaer.net/engage/ospos/?utm_source=widget)
+[![Translation status](http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg)](http://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget)
 
 
 Introduction
@@ -49,7 +48,7 @@ LOGIN using
 
 Beside this we also have a [Dev server](https://dev.opensourcepos.org) that runs the build that was triggered with the last repository's commit.
 
-In case of any issues, check our status page at [https://status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
+In case of any issues, check our status page at [status.opensourcepos.org](https://status.opensourcepos.org) to confirm whether there is a sever outage.
 
 Installation
 ------------
@@ -140,7 +139,7 @@ If missing information is not provided within a week we will close your issue.
 FAQ
 ---
 
-* If you are seeing the message **system folder missing**, then you have cloned the source using git and you need to run a build *first*. Check [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) for instructions or download latest zip file from [bintray](https://bintray.com/jekkos/opensourcepos/opensourcepos/view/files?sort=updated&order=desc#files) instead.
+* If you are seeing the message **system folder missing**, then you have cloned the source using git and you need to run a build *first*. Check [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) for instructions or download latest zip file from [PLACEHOLDER](https://NEWURL) instead.
 
 * If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong and make sure you read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md). To know how to enable error_log, please read the comment in [issue 1770](https://github.com/opensourcepos/opensourcepos/issues/1770#issuecomment-355177943).
 

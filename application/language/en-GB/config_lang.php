@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -176,12 +175,12 @@ $lang["config_location"] = "Stock";
 $lang["config_location_configuration"] = "Stock Locations";
 $lang["config_location_info"] = "Location Configuration Information";
 $lang["config_logout"] = "Don't you want to make a backup before logging out? Click [OK] to backup, [Cancel] to logout";
-$lang["config_mailchimp"] = "Mailchimp";
-$lang["config_mailchimp_api_key"] = "Mailchimp API Key";
-$lang["config_mailchimp_configuration"] = "Mailchimp Configuration";
+$lang["config_mailchimp"] = "MailChimp";
+$lang["config_mailchimp_api_key"] = "MailChimp API Key";
+$lang["config_mailchimp_configuration"] = "MailChimp Configuration";
 $lang["config_mailchimp_key_successfully"] = "Valid API Key";
 $lang["config_mailchimp_key_unsuccessfully"] = "Invalid API Key";
-$lang["config_mailchimp_lists"] = "Mailchimp List(s)";
+$lang["config_mailchimp_lists"] = "MailChimp List(s)";
 $lang["config_mailchimp_tooltip"] = "Click the icon for an API key";
 $lang["config_message"] = "Message";
 $lang["config_message_configuration"] = "Message Configuration";

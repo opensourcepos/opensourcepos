@@ -125,9 +125,9 @@ class Receivings extends Secure_Controller
 		$serialnumber = $this->input->post('serialnumber');
 		$price = parse_decimals($this->input->post('price'));
 		$quantity = parse_quantity($this->input->post('quantity'));
-		$discount = parse_decimals($this->input->post('discount'));
 		$discount_type = $this->input->post('discount_type');
-		$item_location = $this->input->post('location');
+		$discount = $discount_type ? parse_quantity($this->input->post('discount')) : parse_decimals($this->input->post('discount'));
+
 		$receiving_quantity = $this->input->post('receiving_quantity');
 
 		if($this->form_validation->run() != FALSE)

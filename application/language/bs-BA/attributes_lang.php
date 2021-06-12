@@ -1,0 +1,31 @@
+<?php 
+
+$lang["attributes_attribute_value_invalid_chars"] = "Vrijednost atributa ne može sadržavati ':' ili '|'";
+$lang["attributes_confirm_delete"] = "Da li ste sigurni da želite da izbrišete izabrani atribut?";
+$lang["attributes_confirm_restore"] = "Da li ste sigurni da želite vratiti izabrane atribute?";
+$lang["attributes_definition_cannot_be_deleted"] = "Nije moguće izbrisati izabrane atribut";
+$lang["attributes_definition_error_adding_updating"] = "Atribut %1 nije moguće dodati ili ažurirati. Molimo provjerite dnevnik grešaka.";
+$lang["attributes_definition_flags"] = "Vidljivost atributa";
+$lang["attributes_definition_group"] = "Grupa";
+$lang["attributes_definition_id"] = "Id";
+$lang["attributes_definition_name"] = "Dodaj Atribut";
+$lang["attributes_definition_name_required"] = "Ime atributa je obavezno polje";
+$lang["attributes_definition_one_or_multiple"] = "atributi";
+$lang["attributes_definition_successful_adding"] = "Uspješno ste dodali stavku";
+$lang["attributes_definition_successful_deleted"] = "Uspješno ste izbrisali";
+$lang["attributes_definition_successful_updating"] = "Uspješno ste ažurirali atribute";
+$lang["attributes_definition_type"] = "Tip atributa";
+$lang["attributes_definition_type_required"] = "Tip atributa je obavezno polje";
+$lang["attributes_definition_unit"] = "Jedinice mjere";
+$lang["attributes_definition_values"] = "Vrijednosti atributa";
+$lang["attributes_new"] = "Novi atribut";
+$lang["attributes_no_attributes_to_display"] = "Nema stavki za prikaz";
+$lang["attributes_receipt_visibility"] = "Račun";
+$lang["attributes_show_in_items"] = "Prikaži u stavkama";
+$lang["attributes_show_in_items_visibility"] = "Stavka";
+$lang["attributes_show_in_receipt"] = "Prikaži u računu";
+$lang["attributes_show_in_receivings"] = "Prikaži na ulazima";
+$lang["attributes_show_in_receivings_visibility"] = "Ulazi";
+$lang["attributes_show_in_sales"] = "Prikaži u prodaji";
+$lang["attributes_show_in_sales_visibility"] = "Prodaja";
+$lang["attributes_update"] = "Ažuriraj atribut";

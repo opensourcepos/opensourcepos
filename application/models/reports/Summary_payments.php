@@ -121,9 +121,9 @@ class Summary_payments extends Summary_report
 	{
 		$decimals = totals_decimals();
 
-		$trans_amount = 'ROUND(SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
-			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
-			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') AS trans_amount';
+		$trans_amount = 'SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
+			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
+			. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END) AS trans_amount';
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_taxes_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
@@ -157,7 +157,9 @@ class Summary_payments extends Summary_report
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
-				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, SUM(sales_payments.payment_amount) AS total_payments,
+				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments,
+				SUM(CASE WHEN sales_payments.cash_adjustment = 0 THEN sales_payments.payment_amount ELSE 0 END) AS total_payments,
+				SUM(CASE WHEN sales_payments.cash_adjustment = 1 THEN sales_payments.payment_amount ELSE 0 END) AS total_cash_adjustment,
 				SUM(sales_payments.cash_refund) AS total_cash_refund
 				FROM ' . $this->db->dbprefix('sales') . ' AS sales
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments') . ' AS sales_payments

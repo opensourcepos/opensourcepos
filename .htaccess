@@ -8,7 +8,7 @@
 
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
-Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+Options +SymLinksIfOwnerMatch -Indexes
 
 # prevent folder listing
 IndexIgnore *
