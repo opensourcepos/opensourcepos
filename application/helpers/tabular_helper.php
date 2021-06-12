@@ -147,27 +147,20 @@ function get_sale_data_last_row($sales)
 /*
 Get the sales payments summary
 */
-function get_sales_manage_payments_summary($payments, $sales)
+function get_sales_manage_payments_summary($payments)
 {
 	$CI =& get_instance();
 
 	$table = '<div id="report_summary">';
+	$total = 0;
 
 	foreach($payments as $key=>$payment)
 	{
 		$amount = $payment['payment_amount'];
-
-		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
-		// therefore we remove from the total cash amount any change due
-		if($payment['payment_type'] == $CI->lang->line('sales_cash'))
-		{
-			foreach($sales->result_array() as $key=>$sale)
-			{
-				$amount -= $sale['change_due'];
-			}
-		}
+		$total = bcadd($total, $amount);
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
+	$table .= '<div class="summary_row">' . $CI->lang->line('sales_total') . ': ' . to_currency($total) . '</div>';
 	$table .= '</div>';
 
 	return $table;
@@ -503,6 +496,7 @@ function get_item_kits_manage_table_headers()
 
 	$headers = array(
 		array('item_kit_id' => $CI->lang->line('item_kits_kit')),
+		array('item_kit_number' => $CI->lang->line('item_kits_item_kit_number')),
 		array('name' => $CI->lang->line('item_kits_name')),
 		array('description' => $CI->lang->line('item_kits_description')),
 		array('total_cost_price' => $CI->lang->line('items_cost_price'), 'sortable' => FALSE),
@@ -523,6 +517,7 @@ function get_item_kit_data_row($item_kit)
 
 	return array (
 		'item_kit_id' => $item_kit->item_kit_id,
+		'item_kit_number' => $item_kit->item_kit_number,
 		'name' => $item_kit->name,
 		'description' => $item_kit->description,
 		'total_cost_price' => to_currency($item_kit->total_cost_price),

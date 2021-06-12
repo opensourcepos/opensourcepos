@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Сметка #";
 $lang["customers_account_number_duplicate"] = "Номерът на сметката вече е в базата данни.";
 $lang["customers_available_points"] = "Налични точки";
@@ -19,9 +18,9 @@ $lang["customers_csv_import_success"] = "Вносът на клиенти е у�
 $lang["customers_customer"] = "Клиент";
 $lang["customers_date"] = "Дата";
 $lang["customers_discount"] = "Отстъпка";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "Фиксирана отстъпка";
+$lang["customers_discount_percent"] = "Процент отстъпка";
+$lang["customers_discount_type"] = "Вид отстъпка";
 $lang["customers_email_duplicate"] = "Имейл адресът вече е в базата данни.";
 $lang["customers_employee"] = "Служител";
 $lang["customers_error_adding_updating"] = "Добавянето или актуализирането на клиента е неуспешно.";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Успешно добавихте кли
 $lang["customers_successful_deleted"] = "Вие успешно сте изтрили";
 $lang["customers_successful_updating"] = "Актуализирахте успешно клиента си";
 $lang["customers_tax_code"] = "Данъчен код";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "Данъчен номер";
 $lang["customers_taxable"] = "Облагаем";
 $lang["customers_total"] = "Общо изразходвани средства";
 $lang["customers_update"] = "Актуализиране на клиента";

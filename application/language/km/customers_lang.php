@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "លេខ​គណនី";
 $lang["customers_account_number_duplicate"] = "លេខគណនី មានវត្តមាននៅក្នុងមូលដ្ឋានទិន្នន័យរួចទៅហើយ";
 $lang["customers_available_points"] = "ពិន្ទុដែលប្រើប្រាស់បាន";

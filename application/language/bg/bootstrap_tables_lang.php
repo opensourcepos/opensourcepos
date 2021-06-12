@@ -1,6 +1,5 @@
-<?php 
-
-$lang["tables_all"] = "Всичко";
+<?php
+$lang["tables_all"] = "Всичко/и";
 $lang["tables_columns"] = "Колони";
 $lang["tables_hide_show_pagination"] = "Скриване / Показване на страници";
 $lang["tables_loading"] = "Зареждане, моля изчакайте...";

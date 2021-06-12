@@ -15,10 +15,14 @@
 			const form = $('form', dlog_ref.$modalBody).first();
 			const validator = form.data('validator');
 			const submitted = validator && validator.formSubmitted;
+
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
+
 			if (button_id == 'submit' && (!submitted && btn_id != "btnNew")) {
 				form.submit();
+
+				validator.valid() && $('#submit').prop('disabled', true).css('opacity', 0.5);
 			}
 			return false;
 		}

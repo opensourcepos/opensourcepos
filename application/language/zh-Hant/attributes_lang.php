@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "屬性設定值中不可含有「_」或「|」";
 $lang["attributes_confirm_delete"] = "您確定要刪除此屬性?";
 $lang["attributes_confirm_restore"] = "您確定要還原所選屬性嗎？";

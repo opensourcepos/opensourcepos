@@ -100,6 +100,7 @@ class Item_kits extends Secure_Controller
 			$info->price_option = '0';
 			$info->print_option = PRINT_ALL;
 			$info->kit_item_id = 0;
+			$info->item_number = '';
 		}
 		foreach(get_object_vars($info) as $property => $value)
 		{
@@ -131,6 +132,7 @@ class Item_kits extends Secure_Controller
 	{
 		$item_kit_data = array(
 			'name' => $this->input->post('name'),
+			'item_kit_number' => $this->input->post('item_kit_number'),
 			'item_id' => $this->input->post('kit_item_id'),
 			'kit_discount' => $this->input->post('kit_discount'),
 			'kit_discount_type' => $this->input->post('kit_discount_type') == NULL ? PERCENT : $this->input->post('kit_discount_type'),
@@ -141,7 +143,6 @@ class Item_kits extends Secure_Controller
 		
 		if($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
-			$success = TRUE;
 			$new_item = FALSE;
 			//New item kit
 			if($item_kit_id == -1)
@@ -204,6 +205,12 @@ class Item_kits extends Secure_Controller
 			echo json_encode(array('success' => FALSE,
 								'message' => $this->lang->line('item_kits_cannot_be_deleted')));
 		}
+	}
+
+	public function check_item_number()
+	{
+		$exists = $this->Item_kit->item_number_exists($this->input->post('item_kit_number'), $this->input->post('item_kit_id'));
+		echo !$exists ? 'true' : 'false';
 	}
 	
 	public function generate_barcodes($item_kit_ids)

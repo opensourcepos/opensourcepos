@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
@@ -10,6 +9,7 @@ $lang["sales_amount_tendered"] = "Amount Tendered";
 $lang["sales_authorized_signature"] = "Authorized Signature";
 $lang["sales_cancel_sale"] = "Cancel";
 $lang["sales_cash"] = "Cash";
+$lang["sales_cash_adjustment"] = "Cash Adjustment";
 $lang["sales_cash_deposit"] = "Cash Deposit";
 $lang["sales_cash_filter"] = "Cash";
 $lang["sales_change_due"] = "Change Due";
@@ -31,7 +31,7 @@ $lang["sales_customer_address"] = "Address";
 $lang["sales_customer_discount"] = "Discount";
 $lang["sales_customer_email"] = "Email";
 $lang["sales_customer_location"] = "Location";
-$lang["sales_customer_mailchimp_status"] = "Mailchimp status";
+$lang["sales_customer_mailchimp_status"] = "MailChimp status";
 $lang["sales_customer_optional"] = "(Required for Due Payments)";
 $lang["sales_customer_required"] = "(Required)";
 $lang["sales_customer_total"] = "Total";

@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
 $lang["items_amount_entry"] = "Đầu mục tổng số";
@@ -24,7 +23,7 @@ $lang["items_cost_price_required"] = "Trường Giá bán buôn là bắt buộc
 $lang["items_count"] = "Cập hàng tồn kho";
 $lang["items_csv_import_failed"] = "Gặp lỗi khi nhập từ CSV";
 $lang["items_csv_import_nodata_wrongformat"] = "Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.";
-$lang["items_csv_import_partially_failed"] = "Nhập hàng hóa thành công với một số lỗi:";
+$lang["items_csv_import_partially_failed"] = "Có %1 mục tin gặp lỗi khi nhập trên dòng: %2. Không có hàng nào được nhập vào.";
 $lang["items_csv_import_success"] = "Nhập hàng hóa thành công.";
 $lang["items_current_quantity"] = "Số lượng hiện tại";
 $lang["items_default_pack_name"] = "Mỗi";
@@ -37,7 +36,7 @@ $lang["items_empty_upc_items"] = "Mã vạch hàng hóa để trống";
 $lang["items_error_adding_updating"] = "Lỗi thêm/cập nhật hàng hóa";
 $lang["items_error_updating_multiple"] = "Có lỗi khi cập nhật hàng hóa";
 $lang["items_generate_barcodes"] = "Tạo mã vạch";
-$lang["items_hsn_code"] = "";
+$lang["items_hsn_code"] = "Tuân theo hệ thống hài hòa";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_csv"] = "Nhập hàng hóa từ CSV";
 $lang["items_info_provided_by"] = "Thông tin được cung cấp bởi";
@@ -54,7 +53,7 @@ $lang["items_is_serialized"] = "Hàng hóa có số sêri";
 $lang["items_item"] = "Hàng hóa";
 $lang["items_item_number"] = "Mã vạch";
 $lang["items_item_number_duplicate"] = "Số hàng hóa đã sẵn có trong cơ sở dữ liệu rồi.";
-$lang["items_kit"] = "Kit";
+$lang["items_kit"] = "Kít";
 $lang["items_location"] = "Vị trí";
 $lang["items_low_inventory_items"] = "Hàng hóa hết hàng trong kho";
 $lang["items_low_sell_item"] = "Hàng hóa bán kém";

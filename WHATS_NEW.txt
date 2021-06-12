@@ -1,3 +1,18 @@
+Version 3.3.4
+-------------
++ Translation updates (Hungarian, Indonesian, Bosnian, Ukranian, Vietnamese, Spanish)
++ Prevent data wipeout when calling GET directly on save endpoint
++ Cleanup .htaccess
++ Docker compose usability improvements
++ Cookie secure flag fix for Chrome (you can enable csrf protection again now)
++ Use longblob for session storage. This should fix issues preventing a user from adding a large number of items to register
++ Cashrounding bugfixes
++ Fix daily overview cash sale totals
++ Show sale count in transaction report
++ Button disable to prevent double submission
++ Add barcode field to item kits
++ Fix discount register parsing in some specific locales
+
 Version 3.3.3
 -------------
 + PHP 7.4 support
