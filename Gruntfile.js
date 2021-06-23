@@ -341,7 +341,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-apigen');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 
-	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'copy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
+	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'copy', 'tags', 'cachebreaker']);
 	grunt.registerTask('update', ['composer:update', 'bower:update']);
 	grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
 	grunt.registerTask('package', ['default', 'compress']);
