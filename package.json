@@ -20,7 +20,6 @@
     "POS"
   ],
   "devDependencies": {
-    "bootstrap-icons": "^1.5.0",
     "grunt": "~0.4.5",
     "grunt-apigen": "^0.1.3",
     "grunt-bower": "^0.21.0",
@@ -49,8 +48,9 @@
   "dependencies": {
     "bootstrap": "^3.4.1",
     "bootstrap-5": "npm:bootstrap@^5.0.1",
+    "bootstrap-icons": "^1.5.0",
     "bootswatch": "^3.4.1",
     "bootswatch-5": "npm:bootswatch@^5.0.1",
-    "npm": "^6.14.9"
+    "npm": "^7.18.1"
   }
 }
