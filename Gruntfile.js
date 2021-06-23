@@ -209,7 +209,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end js template tags -->',
 					ignorePath: '../../../public/'
 				},
-				src: ['public/js/jquery*', 'public/js/*.js'],
+				src: ['public/dist/bootstrap/js/*.min.js', 'public/js/jquery*', 'public/js/*.js'],
 				dest: 'application/views/partial/header.php'
 			},
 			minjs: {
