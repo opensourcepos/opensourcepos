@@ -20,13 +20,13 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "~1.4.0",
-    "grunt-apigen": "^0.1.3",
+    "grunt": "^1.4.1",
     "grunt-bower": "^0.21.0",
     "grunt-bower-concat": "^1.0.0",
     "grunt-bower-licensechecker": "^0.1.2",
     "grunt-bowercopy": "^1.2.5",
     "grunt-cache-breaker": "^2.0.1",
+    "grunt-cli": "^1.4.3",
     "grunt-composer": "^0.4.5",
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-compress": "^1.4.1",
@@ -34,21 +34,15 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-uglify-es": "github:opensourcepos/grunt-contrib-uglify#harmony",
+    "grunt-contrib-uglify": "~5.0.1",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-license-bower": "~1.0.1",
-    "grunt-mocha-webdriver": "^1.2.2",
     "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
     "grunt-wiredep": "^2.0.0",
-    "load-grunt-tasks": "^3.4.0",
-    "mocha": "^2.2.1",
-    "phantomjs": "~1.9.2",
-    "wd": "^0.3.3"
+    "load-grunt-tasks": "^3.4.0"
   },
   "dependencies": {
-    "bootstrap": "^3.4.1",
     "bootstrap-5": "npm:bootstrap@^5.0.1",
-    "bootswatch": "^3.4.1",
     "bootswatch-5": "npm:bootswatch@^5.0.1",
     "npm": "^6.14.9"
   }
