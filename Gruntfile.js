@@ -12,11 +12,11 @@ module.exports = function(grunt) {
 			all: {
 				mainFiles: {
 					'bootstrap-table': [ 
-						"dist/bootstrap-table.min.js", 
-						"dist/bootstrap-table.css", 
-						"dist/extensions/export/bootstrap-table-export.min.js", 
-						"dist/extensions/mobile/bootstrap-table-mobile.min.js", 
-						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js", 
+						"dist/bootstrap-table.min.js",
+						"dist/bootstrap-table.css",
+						"dist/extensions/export/bootstrap-table-export.min.js",
+						"dist/extensions/mobile/bootstrap-table-mobile.min.js",
+						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js",
 						"dist/extensions/sticky-header/bootstrap-table-sticky-header.css"
 					],
 					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
@@ -62,12 +62,6 @@ module.exports = function(grunt) {
 					cwd: 'node_modules/bootstrap-5/dist/css',
 					src: ['bootstrap.css', 'bootstrap.min.css'],
 					dest: 'public/dist/bootswatch-5/bootstrap/',
-					filter: 'isFile'},
-					{
-					expand: true,
-					cwd: 'node_modules/bootstrap/dist/js',
-					src: ['bootstrap.js', 'bootstrap.min.js'],
-					dest: 'public/dist/bootstrap/js/',
 					filter: 'isFile'},
 					{
 					expand: true,
@@ -215,7 +209,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end js template tags -->',
 					ignorePath: '../../../public/'
 				},
-				src: ['public/dist/bootstrap/js/*.min.js', 'public/js/jquery*', 'public/js/*.js'],
+				src: ['public/js/jquery*', 'public/js/*.js'],
 				dest: 'application/views/partial/header.php'
 			},
 			minjs: {
@@ -264,9 +258,9 @@ module.exports = function(grunt) {
 		},
 		license: {
 			all: {
-				// Target-specific file lists and/or options go here. 
+				// Target-specific file lists and/or options go here.
 				options: {
-					// Target-specific options go here. 
+					// Target-specific options go here.
 					directory: 'public/bower_components',
 					output: 'public/license/bower.LICENSES'
 				}
