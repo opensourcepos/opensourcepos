@@ -33,12 +33,12 @@
 				<?php echo form_open('login'); ?>
         <h3 class="text-center m-0"><?php echo $this->lang->line('login_welcome', $this->lang->line('common_software_short')); ?></h3>
         <?php if (validation_errors()): ?>
-        <div class="alert alert-warning mt-3">
+        <div class="alert alert-danger mt-3">
           <?php echo validation_errors(); ?>
         </div>
         <?php endif; ?>
 				<?php if (!$this->migration->is_latest()): ?>
-        <div class="alert alert-danger mt-3">
+        <div class="alert alert-info mt-3">
 					<?php echo $this->lang->line('login_migration_needed', $this->config->item('application_version')); ?>
 				</div>
 				<?php endif; ?>

@@ -40,6 +40,15 @@ module.exports = function(grunt) {
 					'jquery-ui': 'themes/base/jquery-ui.min.css'
 				}
 			},
+			targetdistbootswatch: {
+				options: {
+					srcPrefix: 'public/bower_components/bootswatch',
+					destPrefix: 'public/dist'
+				},
+				files: {
+					bootswatch: '*/'
+				}
+			},
 			targetlicense: {
 				options: {
 					srcPrefix: './'
@@ -51,36 +60,21 @@ module.exports = function(grunt) {
 		},
 		copy: {
 			themes: {
-				files: [{
-					expand: true,
-					cwd: 'node_modules/bootstrap/dist/css',
-					src: ['bootstrap.css', 'bootstrap.min.css'],
-					dest: 'public/dist/bootswatch/bootstrap/',
-					filter: 'isFile'},
+				files: [
 					{
-					expand: true,
-					cwd: 'node_modules/bootstrap-5/dist/css',
-					src: ['bootstrap.css', 'bootstrap.min.css'],
-					dest: 'public/dist/bootswatch-5/bootstrap/',
-					filter: 'isFile'},
+						expand: true,
+						cwd: 'node_modules/bootstrap-5/dist/css',
+						src: ['bootstrap.css', 'bootstrap.min.css'],
+						dest: 'public/dist/bootswatch-5/bootstrap/',
+						filter: 'isFile'
+					},
 					{
-					expand: true,
-					cwd: 'node_modules/bootstrap/dist/js',
-					src: ['bootstrap.js', 'bootstrap.min.js'],
-					dest: 'public/dist/bootstrap/js/',
-					filter: 'isFile'},
-					{
-					expand: true,
-					cwd: 'node_modules/bootswatch',
-					src: ['**/bootstrap.css', '**/bootstrap.min.css'],
-					dest: 'public/dist/bootswatch/',
-					filter: 'isFile'},
-					{
-					expand: true,
-					cwd: 'node_modules/bootswatch-5/dist',
-					src: ['**/bootstrap.css', '**/bootstrap.min.css'],
-					dest: 'public/dist/bootswatch-5/',
-					filter: 'isFile'},
+						expand: true,
+						cwd: 'node_modules/bootswatch-5/dist',
+						src: ['**/bootstrap.css', '**/bootstrap.min.css'],
+						dest: 'public/dist/bootswatch-5/',
+						filter: 'isFile'
+					}
 				],
 			},
 			licenses: {
@@ -90,40 +84,21 @@ module.exports = function(grunt) {
 					dest: 'public/license/',
 					filter: 'isFile',},
 					{
-					expand: true,
-					cwd: 'node_modules/bootstrap-5',
-					src: 'LICENSE',
-					dest: 'public/license/',
-					rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootstrap-5.license'); },
-					filter: 'isFile',},
+						expand: true,
+						cwd: 'node_modules/bootstrap-5',
+						src: 'LICENSE',
+						dest: 'public/license/',
+						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootstrap-5.license'); },
+						filter: 'isFile'
+					},
 					{
-					expand: true,
-					cwd: 'node_modules/bootstrap',
-					src: 'LICENSE',
-					dest: 'public/license/',
-					rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootstrap.license'); },
-					filter: 'isFile',},
-					{
-					expand: true,
-					cwd: 'node_modules/bootstrap-icons',
-					src: 'LICENSE.md',
-					dest: 'public/license/',
-					rename: function(dest, src) { return dest + src.replace('LICENSE.md', 'bootstrap-icons.license'); },
-					filter: 'isFile',},
-					{
-					expand: true,
-					cwd: 'node_modules/bootswatch',
-					src: 'LICENSE',
-					dest: 'public/license/',
-					rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootswatch.license'); },
-					filter: 'isFile',},
-					{
-					expand: true,
-					cwd: 'node_modules/bootswatch-5',
-					src: 'LICENSE',
-					dest: 'public/license/',
-					rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootswatch-5.license'); },
-					filter: 'isFile',},
+						expand: true,
+						cwd: 'node_modules/bootswatch-5',
+						src: 'LICENSE',
+						dest: 'public/license/',
+						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootswatch-5.license'); },
+						filter: 'isFile'
+					},
 				],
 			},
 		},
@@ -141,7 +116,7 @@ module.exports = function(grunt) {
 					separator: ';'
 				},
 				files: {
-					'tmp/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'public/js/jquery*', 'public/js/*.js']
+					'tmp/<%= pkg.name %>.js': ['public/dist/jquery/jquery.js', 'tmp/opensourcepos_bower.js', 'public/js/*.js']
 				}
 			},
 			sql: {
@@ -229,18 +204,6 @@ module.exports = function(grunt) {
 				dest: 'application/views/partial/header.php'
 			}
 		},
-		mochaWebdriver: {
-			options: {
-				timeout: 1000 * 60 * 3
-			},
-			test : {
-				options: {
-					usePhantom: true,
-					usePromises: true
-				},
-				src: ['test/**/*.js']
-			}
-		},
 		watch: {
 			files: ['<%= jshint.files %>'],
 			tasks: ['jshint']
@@ -292,15 +255,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		apigen: {
-			generate:{
-				options: {
-					apigenPath: 'vendor/bin/',
-					source: 'application',
-					destination: 'docs'
-				}
-			}
-		},
 		compress: {
 			main: {
 				options: {
@@ -336,9 +290,7 @@ module.exports = function(grunt) {
 	});
 
 	require('load-grunt-tasks')(grunt);
-	grunt.loadNpmTasks('grunt-mocha-webdriver');
 	grunt.loadNpmTasks('grunt-composer');
-	grunt.loadNpmTasks('grunt-apigen');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 
 	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'copy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
@@ -346,6 +298,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
 	grunt.registerTask('package', ['default', 'compress']);
 	grunt.registerTask('packages', ['composer:update']);
-	grunt.registerTask('gendocs', ['apigen:generate']);
 
 };

@@ -25,8 +25,8 @@
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
-		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
@@ -37,6 +37,7 @@
 		<script src="bower_components/jquery-form/src/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
@@ -75,7 +76,7 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=d0bbe25210"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=88e63d8098"/>
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -84,7 +85,7 @@
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=aafc294e12"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=64a537c419"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
