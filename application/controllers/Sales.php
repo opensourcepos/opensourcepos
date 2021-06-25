@@ -456,15 +456,17 @@ class Sales extends Secure_Controller
 				$data['warning'] = $stock_warning;
 			}
 		}
-		else
-		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
+		else {
+			$out_of_stock = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+			if ($out_of_stock == '')
 			{
-				$data['error'] = $this->lang->line('sales_unable_to_add_item');
+				if (!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price)) {
+					$data['error'] = $this->lang->line('sales_unable_to_add_item');
+				}
 			}
 			else
 			{
-				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+				$data['warning'] = $out_of_stock;
 			}
 		}
 
