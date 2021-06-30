@@ -71,8 +71,14 @@ module.exports = function(grunt) {
 					filter: 'isFile'},
 					{
 					expand: true,
+					cwd: 'node_modules/bootswatch/fonts',
+					src: '**',
+					dest: 'public/dist/bootswatch/fonts/',
+					filter: 'isFile'},
+					{
+					expand: true,
 					cwd: 'node_modules/bootswatch',
-					src: ['**/bootstrap.css', '**/bootstrap.min.css'],
+					src: ['**/bootstrap.css', '**/bootstrap.min.css', '!docs/**'],
 					dest: 'public/dist/bootswatch/',
 					filter: 'isFile'},
 					{
