@@ -60,7 +60,24 @@ module.exports = function(grunt) {
 		},
 		copy: {
 			themes: {
-				files: [
+				files: [{
+					expand: true,
+					cwd: 'node_modules/bootstrap/dist/css',
+					src: ['bootstrap.css', 'bootstrap.min.css'],
+					dest: 'public/dist/bootswatch/bootstrap/',
+					filter: 'isFile'},
+					{
+					expand: true,
+					cwd: 'node_modules/bootstrap-5/dist/css',
+					src: ['bootstrap.css', 'bootstrap.min.css'],
+					dest: 'public/dist/bootswatch-5/bootstrap/',
+					filter: 'isFile'},
+					{
+					expand: true,
+					cwd: 'node_modules/bootstrap-5/dist/js',
+					src: ['bootstrap.js', 'bootstrap.min.js'],
+					dest: 'public/dist/bootstrap/js/',
+					filter: 'isFile'},
 					{
 					expand: true,
 					cwd: 'node_modules/bootswatch/fonts',

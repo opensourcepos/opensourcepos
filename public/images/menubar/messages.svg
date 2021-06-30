@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#E0995E;}
+	.st1{opacity:0.2;}
+	.st2{fill:#231F20;}
+	.st3{fill:#4F5D73;}
+	.st4{fill:#FFFFFF;}
+	.st5{fill:#E0E0D1;}
+</style>
+<g id="Layer_1">
+	<g>
+		<circle class="st0" cx="32" cy="32" r="32"/>
+	</g>
+	<g class="st1">
+		<g>
+			<path class="st2" d="M44,48c0,2.2-1.8,4-4,4H24c-2.2,0-4-1.8-4-4V16c0-2.2,1.8-4,4-4h16c2.2,0,4,1.8,4,4V48z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="st3" d="M24,48.5c-1.4,0-2.5-1.1-2.5-2.5V14c0-1.4,1.1-2.5,2.5-2.5h16c1.4,0,2.5,1.1,2.5,2.5v32
+				c0,1.4-1.1,2.5-2.5,2.5H24z"/>
+		</g>
+		<g>
+			<path class="st4" d="M40,13c0.6,0,1,0.4,1,1v32c0,0.6-0.4,1-1,1H24c-0.6,0-1-0.4-1-1V14c0-0.6,0.4-1,1-1H40 M40,10H24
+				c-2.2,0-4,1.8-4,4v32c0,2.2,1.8,4,4,4h16c2.2,0,4-1.8,4-4V14C44,11.8,42.2,10,40,10L40,10z"/>
+		</g>
+	</g>
+	<g class="st1">
+		<polygon class="st4" points="26.2,11.5 42,49.6 42,11.5 		"/>
+	</g>
+	<g>
+		<polygon class="st4" points="40,50 24,50 20,42 44,42 		"/>
+	</g>
+	<g>
+		<circle class="st5" cx="32" cy="46" r="2"/>
+	</g>
+</g>
+<g id="Layer_2">
+</g>
+</svg>

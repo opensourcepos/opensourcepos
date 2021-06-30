@@ -1,23 +1,14 @@
 <?php $this->load->view("partial/header"); ?>
 
-<script type="text/javascript">
-	dialog_support.init("a.modal-dlg");
-</script>
+<h3 class="text-center pb-3"><?php echo $this->lang->line('common_welcome_message'); ?></h3>
 
-<h3 class="text-center"><?php echo $this->lang->line('common_welcome_message'); ?></h3>
-
-<div id="office_module_list">
-	<?php
-	foreach($allowed_modules as $module)
-	{
-	?>
-		<div class="module_item" title="<?php echo $this->lang->line('module_'.$module->module_id.'_desc');?>">
-			<a href="<?php echo site_url("$module->module_id");?>"><img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Menubar Image" /></a>
-			<a href="<?php echo site_url("$module->module_id");?>"><?php echo $this->lang->line("module_".$module->module_id) ?></a>
-		</div>
-	<?php
-	}
-	?>
-</div>
+<section class="container-fluid d-flex flex-wrap justify-content-center gap-3 p-0">
+	<?php foreach($allowed_modules as $module) { ?>
+	<div class="border border-primary rounded shadow-sm bg-light text-center d-block" title="<?php echo $this->lang->line('module_'.$module->module_id.'_desc');?>">
+		<a href="<?php echo site_url("$module->module_id");?>"><img class="d-block mx-auto p-2" src="<?php echo base_url().'images/menubar/'.$module->module_id.'.svg';?>" alt="Menubar Image" /></a>
+		<a href="<?php echo site_url("$module->module_id");?>"><div class="tile-text rounded-bottom d-block bg-primary text-light fw-bold p-2"><span><?php echo $this->lang->line("module_".$module->module_id) ?></span></div></a>
+	</div>
+	<?php } ?>
+</section>
 
 <?php $this->load->view("partial/footer"); ?>
