@@ -62,12 +62,17 @@ module.exports = function(grunt) {
 			themes: {
 				files: [
 					{
-						expand: true,
-						cwd: 'node_modules/bootstrap-5/dist/css',
-						src: ['bootstrap.css', 'bootstrap.min.css'],
-						dest: 'public/dist/bootswatch-5/bootstrap/',
-						filter: 'isFile'
-					},
+					expand: true,
+					cwd: 'node_modules/bootswatch/fonts',
+					src: '**',
+					dest: 'public/dist/bootswatch/fonts/',
+					filter: 'isFile'},
+					{
+					expand: true,
+					cwd: 'node_modules/bootswatch',
+					src: ['**/bootstrap.css', '**/bootstrap.min.css', '!docs/**'],
+					dest: 'public/dist/bootswatch/',
+					filter: 'isFile'},
 					{
 						expand: true,
 						cwd: 'node_modules/bootswatch-5/dist',
