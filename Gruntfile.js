@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 					filter: 'isFile'},
 					{
 					expand: true,
-					cwd: 'node_modules/bootstrap/dist/js',
+					cwd: 'node_modules/bootstrap-5/dist/js',
 					src: ['bootstrap.js', 'bootstrap.min.js'],
 					dest: 'public/dist/bootstrap/js/',
 					filter: 'isFile'},

@@ -20,7 +20,7 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "~1.4.0",
+    "grunt": "^0.4.5",
     "grunt-apigen": "^0.1.3",
     "grunt-bower": "^0.21.0",
     "grunt-bower-concat": "^1.0.0",
@@ -40,16 +40,14 @@
     "grunt-mocha-webdriver": "^1.2.2",
     "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
     "grunt-wiredep": "^2.0.0",
-    "load-grunt-tasks": "^3.4.0",
-    "mocha": "^2.2.1",
-    "phantomjs": "~1.9.2",
-    "wd": "^0.3.3"
+    "load-grunt-tasks": "^3.4.0"
   },
   "dependencies": {
     "bootstrap": "^3.4.1",
     "bootstrap-5": "npm:bootstrap@^5.0.1",
     "bootswatch": "^3.4.1",
     "bootswatch-5": "npm:bootswatch@^5.0.1",
-    "npm": "^6.14.9"
+    "elegant-circles": "github:BudsieBuds/elegant-circles",
+    "npm": "^7.19.0"
   }
 }
