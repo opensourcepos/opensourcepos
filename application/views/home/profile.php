@@ -44,7 +44,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 				<a type="button" id="modal-button-logout" class="btn btn-danger" href="home/logout"><?php echo $this->lang->line('login_logout'); ?></a>
-				<button type="button" id="modal-button-save" class="btn btn-primary d-none">Save</button>
+				<button type="button" id="modal-button-save" class="btn btn-success d-none">Save</button>
 			</div>
 		</div>
 	</div>

@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 					{
 					expand: true,
 					cwd: 'node_modules/bootstrap-5/dist/js',
-					src: ['bootstrap.js', 'bootstrap.min.js'],
+					src: ['bootstrap.bundle.js', 'bootstrap.bundle.min.js'],
 					dest: 'public/dist/bootstrap/js/',
 					filter: 'isFile'},
 					{
@@ -235,18 +235,6 @@ module.exports = function(grunt) {
 				dest: 'application/views/partial/header.php'
 			}
 		},
-		mochaWebdriver: {
-			options: {
-				timeout: 1000 * 60 * 3
-			},
-			test : {
-				options: {
-					usePhantom: true,
-					usePromises: true
-				},
-				src: ['test/**/*.js']
-			}
-		},
 		watch: {
 			files: ['<%= jshint.files %>'],
 			tasks: ['jshint']
@@ -346,6 +334,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-composer');
 	grunt.loadNpmTasks('grunt-apigen');
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'copy', 'tags', 'cachebreaker']);
 	grunt.registerTask('update', ['composer:update', 'bower:update']);
