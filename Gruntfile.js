@@ -75,7 +75,7 @@ module.exports = function(grunt) {
 					{
 					expand: true,
 					cwd: 'node_modules/bootstrap-5/dist/js',
-					src: ['bootstrap.js', 'bootstrap.min.js'],
+					src: ['bootstrap.bundle.js', 'bootstrap.bundle.min.js'],
 					dest: 'public/dist/bootstrap/js/',
 					filter: 'isFile'},
 					{
@@ -314,6 +314,7 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 	grunt.loadNpmTasks('grunt-composer');
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'copy', 'tags', 'cachebreaker']);
 	grunt.registerTask('update', ['composer:update', 'bower:update']);
