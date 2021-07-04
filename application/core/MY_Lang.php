@@ -10,10 +10,17 @@ class MY_Lang extends CI_Lang
             $CI->config->set_item('language', $idiom);
             $loaded = $this->is_loaded;
             $this->is_loaded = array();
-                
+
             foreach($loaded as $file)
             {
-                $this->load(strtr($file, '', '_lang.php'));
+                $filename = strtr($file, '', '_lang.php');
+                $this->load($filename, 'english');
+                $array = $this->load($filename, $idiom, TRUE);
+                foreach($array as $lang_key => $lang_value) {
+                    if ($lang_value != '') {
+                        $this->language[$lang_key] = $lang_value;
+                    }
+                }
             }
         }
     }
