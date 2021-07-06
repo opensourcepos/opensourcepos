@@ -293,7 +293,8 @@ class Attribute extends CI_Model
 
 				if($success === FALSE)
 				{
-					foreach($this->get_items_by_value($attribute->attribute_value, $definition_id) as $affected_item)
+					$affected_items = $this->get_items_by_value($attribute->attribute_value, $definition_id);
+					foreach($affected_items as $affected_item)
 					{
 						$affected_items[] = $affected_item['item_id'];
 					}
@@ -339,8 +340,8 @@ class Attribute extends CI_Model
 			{
 				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
-					$attributes_to_convert	= $this->get_attributes_by_definition($definition_id);
-					$success				= $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
+					$attributes_to_convert = $this->get_attributes_by_definition($definition_id);
+					$success = $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
 				}
 			}
 			else if($to_type === DROPDOWN)
