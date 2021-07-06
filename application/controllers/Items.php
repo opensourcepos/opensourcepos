@@ -19,7 +19,7 @@ class Items extends Secure_Controller
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
 		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
 
-	//Filters that will be loaded in the multiselect dropdown
+		//Filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array(
 			'empty_upc' => $this->lang->line('items_empty_upc_items'),
 			'low_inventory' => $this->lang->line('items_low_inventory_items'),
@@ -608,9 +608,9 @@ class Items extends Secure_Controller
 				}
 
 				$location_detail = array(
-						'item_id'		=> $item_id,
-						'location_id'	=> $location['location_id'],
-						'quantity'		=> $updated_quantity);
+						'item_id' => $item_id,
+						'location_id' => $location['location_id'],
+						'quantity' => $updated_quantity);
 
 				$item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location['location_id']);
 
