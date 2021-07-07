@@ -1,7 +1,6 @@
-<?php 
-
-$lang["module_attributes"] = "";
-$lang["module_attributes_desc"] = "";
+<?php
+$lang["module_attributes"] = "屬性";
+$lang["module_attributes_desc"] = "新增、修改、刪除、搜尋 屬性";
 $lang["module_both"] = "";
 $lang["module_cashups"] = "";
 $lang["module_cashups_desc"] = "";
@@ -11,10 +10,10 @@ $lang["module_customers"] = "客戶";
 $lang["module_customers_desc"] = "添加，更新，刪除，搜索客戶";
 $lang["module_employees"] = "員工";
 $lang["module_employees_desc"] = "添加，更新，刪除，搜索員工";
-$lang["module_expenses"] = "";
-$lang["module_expenses_categories"] = "";
-$lang["module_expenses_categories_desc"] = "";
-$lang["module_expenses_desc"] = "";
+$lang["module_expenses"] = "費用";
+$lang["module_expenses_categories"] = "費用類別";
+$lang["module_expenses_categories_desc"] = "新增、修改、刪除、搜尋 費用類別";
+$lang["module_expenses_desc"] = "新增、修改、刪除、搜尋 費用";
 $lang["module_giftcards"] = "禮金券";
 $lang["module_giftcards_desc"] = "添加，更新，刪除，搜索禮金券";
 $lang["module_home"] = "首頁";
