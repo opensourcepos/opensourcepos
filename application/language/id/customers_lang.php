@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";
@@ -32,7 +31,7 @@ $lang["customers_mailchimp_activity_open"] = "Buka email";
 $lang["customers_mailchimp_activity_total"] = "Email terkirim";
 $lang["customers_mailchimp_activity_unopen"] = "Email belum dibuka";
 $lang["customers_mailchimp_email_client"] = "Klien email";
-$lang["customers_mailchimp_info"] = "Mailchimp Info";
+$lang["customers_mailchimp_info"] = "Mailchimp";
 $lang["customers_mailchimp_member_rating"] = "Peringkat";
 $lang["customers_mailchimp_status"] = "Status";
 $lang["customers_mailchimp_vip"] = "VIP";
