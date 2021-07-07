@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Menambah atau mengurangi Inventori.";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amount_entry"] = "Jumlah entri";
@@ -61,11 +60,11 @@ $lang["items_low_sell_item"] = "Produk dengan Penjualan yang Rendah";
 $lang["items_manually_editing_of_quantity"] = "Perubahan jumlah Stok secara manual";
 $lang["items_name"] = "Nama Barang";
 $lang["items_name_required"] = "Nama item wajib diisi.";
-$lang["items_new"] = "Buat Item Baru";
+$lang["items_new"] = "Buat Barang Baru";
 $lang["items_no_description_items"] = "Produk/Item tidak ada deskripsi";
 $lang["items_no_items_to_display"] = "Tidak ada item untuk ditampilkan.";
 $lang["items_none"] = "Tidak Ada";
-$lang["items_none_selected"] = "Anda belum memilih item untuk diubah";
+$lang["items_none_selected"] = "Anda belum memilih Barang untuk diubah";
 $lang["items_nonstock"] = "Tidak ada stok";
 $lang["items_number_information"] = "Nomor Barang";
 $lang["items_number_required"] = "Barcode harus diisi.";
@@ -80,7 +79,7 @@ $lang["items_remove_image"] = "Hapus gambar";
 $lang["items_reorder_level"] = "Batas pesan ulang";
 $lang["items_reorder_level_number"] = "Batas pesan ulang harus berupa angka.";
 $lang["items_reorder_level_required"] = "Batas pesan ulang wajib diisi.";
-$lang["items_retrive_item_info"] = "Dapatkan Info Item Barang";
+$lang["items_retrive_item_info"] = "Dapatkan Info Barang";
 $lang["items_sales_tax_1"] = "Pajak Penjualan1";
 $lang["items_sales_tax_2"] = "Pajak Penjualan2";
 $lang["items_search_attributes"] = "Cari secara manual";
