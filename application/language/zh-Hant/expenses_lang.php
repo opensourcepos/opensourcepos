@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Add Expense";
 $lang["expenses_amount"] = "Amount";
 $lang["expenses_amount_number"] = "Amount must be a number";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Category";
 $lang["expenses_category_required"] = "category is a required field";
 $lang["expenses_check"] = "Check";
 $lang["expenses_check_filter"] = "Check";
-$lang["expenses_confirm_delete"] = "Are you sure you want to delete the selected Expense?";
-$lang["expenses_confirm_restore"] = "";
+$lang["expenses_confirm_delete"] = "你確定要刪除選擇的費用嗎？";
+$lang["expenses_confirm_restore"] = "你確定要還原選擇的費用嗎？";
 $lang["expenses_credit"] = "Credit Card";
 $lang["expenses_credit_filter"] = "Credit Card";
 $lang["expenses_date"] = "Date";
@@ -36,7 +35,7 @@ $lang["expenses_no_expenses_to_display"] = "There are no Expenses to display";
 $lang["expenses_none_selected"] = "You have not selected any Expense";
 $lang["expenses_one_or_multiple"] = "Expense(s)";
 $lang["expenses_payment"] = "Payment Type";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "開始輸入供應商名稱...";
 $lang["expenses_successful_adding"] = "Expense add successful";
 $lang["expenses_successful_deleted"] = "Expense delete successful";
 $lang["expenses_successful_updating"] = "Expense update successful";
