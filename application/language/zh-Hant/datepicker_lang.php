@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["datepicker_all_time"] = "全部";
-$lang["datepicker_apply"] = "Apply";
+$lang["datepicker_apply"] = "申請";
 $lang["datepicker_cancel"] = "取消銷售";
-$lang["datepicker_custom"] = "Custom";
-$lang["datepicker_from"] = "From";
+$lang["datepicker_custom"] = "定制";
+$lang["datepicker_from"] = "從";
 $lang["datepicker_last_30"] = "過去七天";
 $lang["datepicker_last_7"] = "過去七天";
 $lang["datepicker_last_financial_year"] = "";
