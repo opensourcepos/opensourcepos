@@ -1,16 +1,15 @@
-<?php 
-
-$lang["items_add_minus"] = "增/減庫存";
+<?php
+$lang["items_add_minus"] = "增/減庫存.";
 $lang["items_allow_alt_description"] = "允許ALT描述";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "批次編輯";
-$lang["items_buy_price_required"] = "進貨價為必填欄位";
+$lang["items_buy_price_required"] = "進貨價為必填欄位.";
 $lang["items_cannot_be_deleted"] = "無法刪除選定產品，所選產品中的一個或多個有銷售紀綠。";
-$lang["items_cannot_find_item"] = "無法找到任何有關的產品";
+$lang["items_cannot_find_item"] = "無法找到任何有關的產品.";
 $lang["items_category"] = "類別";
-$lang["items_category_required"] = "類別為必填欄位";
-$lang["items_change_all_to_allow_alt_desc"] = " 充許全部ALT倒序";
-$lang["items_change_all_to_not_allow_allow_desc"] = "不允許全部ALT倒序";
+$lang["items_category_required"] = "類別為必填欄位.";
+$lang["items_change_all_to_allow_alt_desc"] = "充許全部ALT倒序.";
+$lang["items_change_all_to_not_allow_allow_desc"] = "不允許全部ALT倒序.";
 $lang["items_change_all_to_serialized"] = "全部更改序號至序列化";
 $lang["items_change_all_to_unserialized"] = "全部更改序號至非序列化";
 $lang["items_change_image"] = "Change Image";
