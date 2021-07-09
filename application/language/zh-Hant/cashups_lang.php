@@ -1,26 +1,25 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "金額";
 $lang["cashups_amount_number"] = "金額必須是數字";
 $lang["cashups_amount_required"] = "金額必需填寫。";
-$lang["cashups_cannot_be_deleted"] = "";
-$lang["cashups_close_date"] = "";
-$lang["cashups_close_employee"] = "";
-$lang["cashups_closed_amount_card"] = "";
-$lang["cashups_closed_amount_cash"] = "";
-$lang["cashups_closed_amount_check"] = "";
-$lang["cashups_closed_amount_due"] = "";
-$lang["cashups_closed_amount_total"] = "";
-$lang["cashups_closed_date"] = "";
-$lang["cashups_confirm_delete"] = "";
-$lang["cashups_confirm_restore"] = "";
-$lang["cashups_date_number"] = "";
-$lang["cashups_date_required"] = "";
-$lang["cashups_description"] = "";
-$lang["cashups_error_adding_updating"] = "";
-$lang["cashups_id"] = "";
-$lang["cashups_info"] = "";
-$lang["cashups_is_deleted"] = "";
+$lang["cashups_cannot_be_deleted"] = "提現不能刪除";
+$lang["cashups_close_date"] = "截止日期";
+$lang["cashups_close_employee"] = "關閉時間";
+$lang["cashups_closed_amount_card"] = "牌";
+$lang["cashups_closed_amount_cash"] = "現金封閉";
+$lang["cashups_closed_amount_check"] = "檢查";
+$lang["cashups_closed_amount_due"] = "金額";
+$lang["cashups_closed_amount_total"] = "總額";
+$lang["cashups_closed_date"] = "關閉日期";
+$lang["cashups_confirm_delete"] = "您確定要刪除選定的 Cashup 嗎？";
+$lang["cashups_confirm_restore"] = "您確定要恢復選定的 Cashup(s) 嗎？";
+$lang["cashups_date_number"] = "日期必須是數字";
+$lang["cashups_date_required"] = "日期必須是數字";
+$lang["cashups_description"] = "描述";
+$lang["cashups_error_adding_updating"] = "添加/更新 Cashup 時出錯";
+$lang["cashups_id"] = "ID";
+$lang["cashups_info"] = "提現信息";
+$lang["cashups_is_deleted"] = "已刪除";
 $lang["cashups_new"] = "";
 $lang["cashups_no_cashups_to_display"] = "";
 $lang["cashups_none_selected"] = "";
