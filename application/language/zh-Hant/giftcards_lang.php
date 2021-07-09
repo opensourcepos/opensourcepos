@@ -1,10 +1,9 @@
-<?php 
-
-$lang["giftcards_add_minus"] = "加/減庫存";
+<?php
+$lang["giftcards_add_minus"] = "加/減庫存.";
 $lang["giftcards_allow_alt_description"] = "允許使用ALT描述";
 $lang["giftcards_bulk_edit"] = "批量編輯";
 $lang["giftcards_cannot_be_deleted"] = "無法刪除選定的禮金券，一個或多個所選擇的禮金券已經使用。";
-$lang["giftcards_cannot_find_giftcard"] = "找不到禮金券的訊息";
+$lang["giftcards_cannot_find_giftcard"] = "找不到禮金券的訊息.";
 $lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";
 $lang["giftcards_card_value"] = "金額";
 $lang["giftcards_category"] = "類別";
