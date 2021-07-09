@@ -1,9 +1,9 @@
 <?php
 $lang["config_address"] = "公司地址";
-$lang["config_address_required"] = "公司地址為必填";
-$lang["config_all_set"] = "All file permissions are set correctly!";
+$lang["config_address_required"] = "公司地址為必填.";
+$lang["config_all_set"] = "所有文件權限設置正確！";
 $lang["config_allow_duplicate_barcodes"] = "允許重複的條碼";
-$lang["config_apostrophe"] = "apostrophe";
+$lang["config_apostrophe"] = "撇號";
 $lang["config_backup_button"] = "Backup";
 $lang["config_backup_database"] = "Backup Database";
 $lang["config_barcode"] = "Barcode";
