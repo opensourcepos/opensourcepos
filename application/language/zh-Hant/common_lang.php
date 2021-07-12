@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
@@ -32,7 +31,7 @@ $lang["common_id"] = "Id";
 $lang["common_import"] = "匯入";
 $lang["common_import_change_file"] = "變更";
 $lang["common_import_csv"] = "CSV匯入";
-$lang["common_import_full_path"] = "需要CSV文件的完整路徑";
+$lang["common_import_full_path"] = "需要 CSV 文件的完整路";
 $lang["common_import_remove_file"] = "移除";
 $lang["common_import_select_file"] = "選擇檔案";
 $lang["common_inv"] = "庫存";
