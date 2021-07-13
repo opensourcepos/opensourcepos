@@ -1,6 +1,5 @@
-<?php 
-
-$lang["employees_basic_information"] = "";
+<?php
+$lang["employees_basic_information"] = "Informacje";
 $lang["employees_cannot_be_deleted"] = "";
 $lang["employees_change_password"] = "";
 $lang["employees_confirm_delete"] = "";
