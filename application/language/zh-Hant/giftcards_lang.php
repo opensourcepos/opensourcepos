@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "加/減庫存.";
 $lang["giftcards_allow_alt_description"] = "允許使用ALT描述";
 $lang["giftcards_bulk_edit"] = "批量編輯";

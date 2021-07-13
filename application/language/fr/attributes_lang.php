@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "La valeur de l'attribut ne doit pas contenir '_' ou '|'";
 $lang["attributes_confirm_delete"] = "Êtes-vous certain que vous voulez supprimer le(s) attribut(s) sélectionné(s)?";
 $lang["attributes_confirm_restore"] = "Êtes-vous certain que vous voulez restaurer le(s) attribut(s) sélectionné(s)?";

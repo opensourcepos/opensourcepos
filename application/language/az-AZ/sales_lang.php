@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Ödənilən məbləğ";
 $lang["sales_authorized_signature"] = "Səlahiyyətli İmza";
 $lang["sales_cancel_sale"] = "İmtina";
 $lang["sales_cash"] = "Nəğd pullar";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Nağd depozit";
 $lang["sales_cash_filter"] = "Nəğd Pul";
 $lang["sales_change_due"] = "Qalıq";

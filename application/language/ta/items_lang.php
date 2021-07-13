@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "கையிருப்பு பொருட்களை கூட்டு அல்லது கழி";
 $lang["items_allow_alt_description"] = "மாற்று விளக்கத்தை அனுமதி";
 $lang["items_amount_entry"] = "தொகை உள்ளிடு";

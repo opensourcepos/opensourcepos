@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "இருப்பு புள்ளிகள்";
 $lang["rewards_package"] = "வெகுமதிகள்";
 $lang["rewards_remaining_balance"] = "வெகுமதி புள்ளிகள் மீதமுள்ள மதிப்பு ";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Адрес 1";
 $lang["common_address_2"] = "Адрес 2";
 $lang["common_city"] = "Град";
@@ -27,6 +28,7 @@ $lang["common_gender"] = "Пол";
 $lang["common_gender_female"] = "Ж";
 $lang["common_gender_male"] = "М";
 $lang["common_gender_undefined"] = "";
+$lang["common_icon"] = "";
 $lang["common_id"] = "Номер";
 $lang["common_import"] = "Внос";
 $lang["common_import_change_file"] = "Промяна";
@@ -40,6 +42,8 @@ $lang["common_last_name_required"] = "Фамилия е задължително
 $lang["common_last_page"] = "Последна";
 $lang["common_learn_about_project"] = "за да научите най-новата информация за проекта.";
 $lang["common_list_of"] = "Списък с";
+$lang["common_logo"] = "";
+$lang["common_logo_mark"] = "";
 $lang["common_logout"] = "Излизане от профила";
 $lang["common_migration_needed"] = "Мигриране на база данни ще започне след влизане.";
 $lang["common_new"] = "Нов";
@@ -60,6 +64,8 @@ $lang["common_return_policy"] = "Условия за връщане";
 $lang["common_search"] = "Търсене";
 $lang["common_search_options"] = "Опции за търсене";
 $lang["common_searched_for"] = "Търсене за";
+$lang["common_software_short"] = "";
+$lang["common_software_title"] = "";
 $lang["common_state"] = "Щат";
 $lang["common_submit"] = "Изпращане";
 $lang["common_total_spent"] = "Общо изразходвани";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "新增稅務例外";
 $lang["taxes_cascade"] = "級聯";
 $lang["taxes_cascade_sequence"] = "級聯序列";

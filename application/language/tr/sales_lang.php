@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Ödenen Tutar";
 $lang["sales_authorized_signature"] = "Yetkili İmza";
 $lang["sales_cancel_sale"] = "İptal Et";
 $lang["sales_cash"] = "Nakit";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Nakit Depozito";
 $lang["sales_cash_filter"] = "Nakit";
 $lang["sales_change_due"] = "Para Üstü";

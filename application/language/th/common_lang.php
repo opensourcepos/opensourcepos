@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
@@ -27,6 +28,7 @@ $lang["common_gender"] = "เพศ";
 $lang["common_gender_female"] = "หญิง";
 $lang["common_gender_male"] = "ชาย";
 $lang["common_gender_undefined"] = "";
+$lang["common_icon"] = "";
 $lang["common_id"] = "ID";
 $lang["common_import"] = "นำเข้า";
 $lang["common_import_change_file"] = "เปลี่ยน";
@@ -40,6 +42,8 @@ $lang["common_last_name_required"] = "นามสกุล จำเป็น�
 $lang["common_last_page"] = "ลำดับสุดท้าย";
 $lang["common_learn_about_project"] = "เพื่อศึกษาข้อมูลล่าสุดของโครงการ";
 $lang["common_list_of"] = "รายการ";
+$lang["common_logo"] = "";
+$lang["common_logo_mark"] = "";
 $lang["common_logout"] = "ออกจากระบบ";
 $lang["common_migration_needed"] = "การย้ายฐานข้อมูลไปยัง %1 จะเริ่มขึ้นหลังจากเข้าสู่ระบบ";
 $lang["common_new"] = "สร้างใหม่";
@@ -60,6 +64,8 @@ $lang["common_return_policy"] = "นโยบายคืนสินค้า";
 $lang["common_search"] = "ค้นหา";
 $lang["common_search_options"] = "ตัวเลือกการค้นหา";
 $lang["common_searched_for"] = "การค้นหา";
+$lang["common_software_short"] = "";
+$lang["common_software_title"] = "";
 $lang["common_state"] = "จังหวัด";
 $lang["common_submit"] = "ส่งข้อมูล";
 $lang["common_total_spent"] = "ยอดสั่งซื้อทั้งหมด";

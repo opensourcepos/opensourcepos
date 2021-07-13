@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Inventory to add or subtract.";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
 $lang["items_amount_entry"] = "Amount Entry";

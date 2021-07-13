@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Attribut";
 $lang["module_attributes_desc"] = "Lägg till, uppdatera, ta bort och sök attribut.";
 $lang["module_both"] = "Båda";

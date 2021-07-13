@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";

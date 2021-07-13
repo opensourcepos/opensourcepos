@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Ponuđeni iznos";
 $lang["sales_authorized_signature"] = "Ovlašćeni potpis";
 $lang["sales_cancel_sale"] = "Otkaži";
 $lang["sales_cash"] = "Gotovina";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Polog gotovine";
 $lang["sales_cash_filter"] = "Gotovina";
 $lang["sales_change_due"] = "Kusur";

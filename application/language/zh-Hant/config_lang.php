@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "公司地址";
 $lang["config_address_required"] = "公司地址為必填.";
 $lang["config_all_set"] = "所有文件權限設置正確！";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "5月1日";
 $lang["config_financial_year_nov"] = "11月1日";
 $lang["config_financial_year_oct"] = "10月1日";
 $lang["config_financial_year_sep"] = "9月1日";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "登入檢核碼(reCAPTCHA)";
 $lang["config_gcaptcha_secret_key"] = "";
 $lang["config_gcaptcha_secret_key_required"] = "";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "上傳圖檔限制";
 $lang["config_include_hsn"] = "";
 $lang["config_info"] = "儲存組態";
 $lang["config_info_configuration"] = "儲存組態";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "整合";
 $lang["config_integrations_configuration"] = "第三方整合";
 $lang["config_invoice"] = "發票";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Localisation Configuration Information";
 $lang["config_location"] = "庫存";
 $lang["config_location_configuration"] = "庫存位置";
 $lang["config_location_info"] = "位置配置信息";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "是否要在註銷前進行備份？點擊【確定】進行備份，點擊【取消】退出。";
 $lang["config_mailchimp"] = "";
 $lang["config_mailchimp_api_key"] = "";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "稅收小數";
 $lang["config_tax_id"] = "";
 $lang["config_tax_included"] = "含稅";
 $lang["config_theme"] = "Theme";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "千位分隔符";
 $lang["config_timezone"] = "時區";
 $lang["config_timezone_error"] = "";

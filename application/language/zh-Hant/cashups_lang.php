@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "金額";
 $lang["cashups_amount_number"] = "金額必須是數字";
 $lang["cashups_amount_required"] = "金額必需填寫。";

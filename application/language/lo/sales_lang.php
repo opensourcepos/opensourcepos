@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Amount Tendered";
 $lang["sales_authorized_signature"] = "";
 $lang["sales_cancel_sale"] = "Cancel";
 $lang["sales_cash"] = "Cash";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Cash Deposit";
 $lang["sales_cash_filter"] = "Cash";
 $lang["sales_change_due"] = "Change Due";

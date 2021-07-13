@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Thêm Hàng hóa";
 $lang["item_kits_all"] = "Tất cả";
 $lang["item_kits_cannot_be_deleted"] = "Gặp lỗi khi xóa Gói hàng hóa.";

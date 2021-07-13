@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "مبلغ مناقصه";
 $lang["sales_authorized_signature"] = "امضای مجاز";
 $lang["sales_cancel_sale"] = "لغو";
 $lang["sales_cash"] = "نقدی";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "سپرده نقدی";
 $lang["sales_cash_filter"] = "نقدی";
 $lang["sales_change_due"] = "تغییر بدهی";

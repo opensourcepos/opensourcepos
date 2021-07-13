@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "全部";
 $lang["reports_authority"] = "機關";
 $lang["reports_canceled"] = "取消";

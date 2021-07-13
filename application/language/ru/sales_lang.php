@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "предложенная сумма";
 $lang["sales_authorized_signature"] = "";
 $lang["sales_cancel_sale"] = "Отменить продажу";
 $lang["sales_cash"] = "наличные деньги";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "наличный депозит";
 $lang["sales_cash_filter"] = "Наличные";
 $lang["sales_change_due"] = "сдача должное";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "முகவரி 1";
 $lang["common_address_2"] = "முகவரி 2";
 $lang["common_city"] = "நகரம்";
@@ -27,6 +28,7 @@ $lang["common_gender"] = "பாலினம்";
 $lang["common_gender_female"] = "பெண்";
 $lang["common_gender_male"] = "ஆண்";
 $lang["common_gender_undefined"] = "";
+$lang["common_icon"] = "";
 $lang["common_id"] = "இலக்கம்";
 $lang["common_import"] = "தரவேற்று";
 $lang["common_import_change_file"] = "மாற்று";
@@ -40,6 +42,8 @@ $lang["common_last_name_required"] = "குடும்ப பெயர் அ�
 $lang["common_last_page"] = "கடை";
 $lang["common_learn_about_project"] = "திட்டத்தைப் பற்றிய சமீபத்திய தகவல்களை அறிய.";
 $lang["common_list_of"] = "பட்டியல்";
+$lang["common_logo"] = "";
+$lang["common_logo_mark"] = "";
 $lang["common_logout"] = "வெளியேறு";
 $lang["common_migration_needed"] = "% 1 க்கு தரவுத்தள மாற்றம் உள்நுழைந்த பிறகு தொடங்கும்.";
 $lang["common_new"] = "புதியது";
@@ -60,6 +64,8 @@ $lang["common_return_policy"] = "திரும்ப பெரும் கொ
 $lang["common_search"] = "தேடல்";
 $lang["common_search_options"] = "தேடல் விருப்பங்கள்";
 $lang["common_searched_for"] = "தேடியது";
+$lang["common_software_short"] = "";
+$lang["common_software_title"] = "";
 $lang["common_state"] = "மாநிலம்";
 $lang["common_submit"] = "சமர்ப்பிக்கவும்";
 $lang["common_total_spent"] = "மொத்த செலவு";

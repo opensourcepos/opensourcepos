@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "現有積分";
 $lang["rewards_package"] = "獎賞";
 $lang["rewards_remaining_balance"] = "剩餘獎賞積分 ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "已收帳款";
 $lang["sales_authorized_signature"] = "授權簽名";
 $lang["sales_cancel_sale"] = "取消銷售";
 $lang["sales_cash"] = "現金";
+$lang["sales_cash_adjustment"] = "現金調整";
 $lang["sales_cash_deposit"] = "已預付金額";
 $lang["sales_cash_filter"] = "現金";
 $lang["sales_change_due"] = "更改到期日";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "工作指示編號";
 $lang["sales_work_order_number_duplicate"] = "工作編號重複.";
 $lang["sales_work_order_sent"] = "發送工作指示";
 $lang["sales_work_order_unsent"] = "工作指示發送失敗";
-$lang["sales_cash_adjustment"] = "現金調整";

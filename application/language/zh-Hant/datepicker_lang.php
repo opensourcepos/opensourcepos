@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["datepicker_all_time"] = "全部";
 $lang["datepicker_apply"] = "申請";
 $lang["datepicker_cancel"] = "取消銷售";

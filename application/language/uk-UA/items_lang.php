@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Додати/видалити товар.";
 $lang["items_allow_alt_description"] = "Дозволити альтернативний опис";
 $lang["items_amount_entry"] = "Введення кількості";
@@ -21,6 +22,10 @@ $lang["items_cost_price"] = "Оптова ціна";
 $lang["items_cost_price_number"] = "Оптова ціна повинна бути числом.";
 $lang["items_cost_price_required"] = "Оптова ціна - обов'язкове поле.";
 $lang["items_count"] = "Оновити інвентар";
+$lang["items_csv_import_failed"] = "Помилка імпорту CSV";
+$lang["items_csv_import_nodata_wrongformat"] = "Завандажений файл порожній або відформатований неправильно.";
+$lang["items_csv_import_partially_failed"] = "У рядках виявлено %1 помилки імпортування елементів: %2. Не було імпортовано жодних рядків.";
+$lang["items_csv_import_success"] = "Імпорт товару CSV успішний.";
 $lang["items_current_quantity"] = "Поточна кількість";
 $lang["items_default_pack_name"] = "Кожен";
 $lang["items_description"] = "Опис";
@@ -31,18 +36,14 @@ $lang["items_edit_multiple_items"] = "Редагування декількох 
 $lang["items_empty_upc_items"] = "Відсутній штрих-код товарів";
 $lang["items_error_adding_updating"] = "Помилка при додаванні/оновленні товару";
 $lang["items_error_updating_multiple"] = "Помилка при оновленні товарів";
-$lang["items_csv_import_failed"] = "Помилка імпорту CSV";
-$lang["items_csv_import_nodata_wrongformat"] = "Завандажений файл порожній або відформатований неправильно.";
-$lang["items_csv_import_partially_failed"] = "У рядках виявлено %1 помилки імпортування елементів: %2. Не було імпортовано жодних рядків.";
-$lang["items_csv_import_success"] = "Імпорт товару CSV успішний.";
 $lang["items_generate_barcodes"] = "Згенерувати штрих-коди";
 $lang["items_hsn_code"] = "Узгоджена номенклатура системи";
 $lang["items_image"] = "Зображення";
 $lang["items_import_items_csv"] = "Імпорт товару з CSV";
 $lang["items_info_provided_by"] = "Інформація надана (ким)";
 $lang["items_inventory"] = "Інвентаризація";
-$lang["items_inventory_comments"] = "Коментарі";
 $lang["items_inventory_CSV_import_quantity"] = "Кількість, імпортована з CSV";
+$lang["items_inventory_comments"] = "Коментарі";
 $lang["items_inventory_data_tracking"] = "Відстеження даних інвентаря";
 $lang["items_inventory_date"] = "Дата";
 $lang["items_inventory_employee"] = "Працівник";

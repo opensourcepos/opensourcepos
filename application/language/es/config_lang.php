@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
 $lang["config_all_set"] = "¡Todos los permisos de archivo están configurados correctamente!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1º de Mayo";
 $lang["config_financial_year_nov"] = "1º de Noviembre";
 $lang["config_financial_year_oct"] = "1º de Octubre";
 $lang["config_financial_year_sep"] = "1º de Septiembre";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "Inicio de sesión con reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "Llave secreta reCAPTCHA";
 $lang["config_gcaptcha_secret_key_required"] = "reCAPTCHA Secret Key es requerida si se usa";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Restricciones de carga de imágenes";
 $lang["config_include_hsn"] = "Incluir Soporte para Códigos HSN";
 $lang["config_info"] = "Información";
 $lang["config_info_configuration"] = "Información del Comercio";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Componentes Integrados";
 $lang["config_integrations_configuration"] = "Componentes de Terceros Integrados";
 $lang["config_invoice"] = "Factura";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Informacion de la configuracion de la zona";
 $lang["config_location"] = "Inventario";
 $lang["config_location_configuration"] = "Ubicación de Inventario";
 $lang["config_location_info"] = "Información de Configuración de Ubicación";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Desea hacer un respaldo antes de salir? Pulsa [OK] para respaldar o [Cancelar] para salir.";
 $lang["config_mailchimp"] = "Correo Chimp";
 $lang["config_mailchimp_api_key"] = "Clave de la API Mailchimp";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Decimales de impuestos";
 $lang["config_tax_id"] = "Identificador del Impuesto";
 $lang["config_tax_included"] = "Impuestos incluidos";
 $lang["config_theme"] = "Tema";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Separador de miles";
 $lang["config_timezone"] = "Zona Horaria";
 $lang["config_timezone_error"] = "";

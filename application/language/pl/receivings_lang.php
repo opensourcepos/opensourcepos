@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Anuluj";
 $lang["receivings_cannot_be_deleted"] = "";
 $lang["receivings_comments"] = "";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Інформація про працівників";
 $lang["employees_cannot_be_deleted"] = "Неможливо видалити вибраних працівника(ів), які вже здійснили продажі або ви намагаєтесь видалити свій обліковий запис.";
 $lang["employees_change_password"] = "Змінити пароль";

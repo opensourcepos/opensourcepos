@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "增/減庫存.";
 $lang["items_allow_alt_description"] = "允許ALT描述";
 $lang["items_amount_entry"] = "金額輸入";

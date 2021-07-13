@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Menambah atau mengurangi Inventori.";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amount_entry"] = "Jumlah entri";

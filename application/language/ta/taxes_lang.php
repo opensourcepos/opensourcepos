@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "விதிவிலக்கு சேர்க்கவும்";
 $lang["taxes_cascade"] = "(பல்நிலை) தொடர்பெருக்கி";
 $lang["taxes_cascade_sequence"] = "(பல்நிலை) தொடர்பெருக்கி வரிசை";

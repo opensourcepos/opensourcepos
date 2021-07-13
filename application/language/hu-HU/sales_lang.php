@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Összeg";
 $lang["sales_authorized_signature"] = "";
 $lang["sales_cancel_sale"] = "Mégsem";
 $lang["sales_cash"] = "Készpénz";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "";
 $lang["sales_cash_filter"] = "Készpénz";
 $lang["sales_change_due"] = "Visszajáró";

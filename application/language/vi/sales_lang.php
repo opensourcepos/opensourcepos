@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Các điểm sẵn có";
 $lang["rewards_package"] = "Điểm thưởng";
 $lang["rewards_remaining_balance"] = "Giá trị còn lại của điểm thưởng là ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "Số tiền thanh toán";
 $lang["sales_authorized_signature"] = "Chữ ký ủy quyền";
 $lang["sales_cancel_sale"] = "Thôi";
 $lang["sales_cash"] = "Tiền mặt";
+$lang["sales_cash_adjustment"] = "Điều chỉnh tiền mặt";
 $lang["sales_cash_deposit"] = "Số dư tiền mặt";
 $lang["sales_cash_filter"] = "Tiền mặt";
 $lang["sales_change_due"] = "Tiền thối lại";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Số giấy giao việc";
 $lang["sales_work_order_number_duplicate"] = "Số giấy giao việc phải là duy nhất.";
 $lang["sales_work_order_sent"] = "Gửi Giấy giao việc cho";
 $lang["sales_work_order_unsent"] = "Gặp lỗi khi gửi Giấy giao việc cho";
-$lang["sales_cash_adjustment"] = "Điều chỉnh tiền mặt";

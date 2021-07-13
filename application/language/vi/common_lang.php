@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_city"] = "Thành phố";
@@ -27,6 +28,7 @@ $lang["common_gender"] = "Giới tính";
 $lang["common_gender_female"] = "Nữ";
 $lang["common_gender_male"] = "Nam";
 $lang["common_gender_undefined"] = "";
+$lang["common_icon"] = "";
 $lang["common_id"] = "Mã số";
 $lang["common_import"] = "Nhập";
 $lang["common_import_change_file"] = "Thay đổi";
@@ -40,6 +42,8 @@ $lang["common_last_name_required"] = "Trường Họ là bắt buộc.";
 $lang["common_last_page"] = "Cuối";
 $lang["common_learn_about_project"] = "để biết thông tin mới nhất về dự án.";
 $lang["common_list_of"] = "Danh sách của";
+$lang["common_logo"] = "";
+$lang["common_logo_mark"] = "";
 $lang["common_logout"] = "Đăng xuất";
 $lang["common_migration_needed"] = "Nâng cấp cơ sở dữ liệu lên %1 sẽ bắt đầu sau khi đăng nhập.";
 $lang["common_new"] = "Mới";
@@ -60,6 +64,8 @@ $lang["common_return_policy"] = "Chính sách hoàn trả";
 $lang["common_search"] = "Tìm kiếm";
 $lang["common_search_options"] = "Tùy chọn tìm kiếm";
 $lang["common_searched_for"] = "Tìm kiếm bằng";
+$lang["common_software_short"] = "";
+$lang["common_software_title"] = "";
 $lang["common_state"] = "Tỉnh";
 $lang["common_submit"] = "Gửi";
 $lang["common_total_spent"] = "Trả tổng cộng";

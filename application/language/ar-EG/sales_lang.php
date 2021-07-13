@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "المبلغ المدفوع";
 $lang["sales_authorized_signature"] = "توقيع معتمد";
 $lang["sales_cancel_sale"] = "الغاء عملية البيع";
 $lang["sales_cash"] = "نقدى";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "ايداع نقدي";
 $lang["sales_cash_filter"] = "نقدى";
 $lang["sales_change_due"] = "الباقى";

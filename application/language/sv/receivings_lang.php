@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Avbryt";
 $lang["receivings_cannot_be_deleted"] = "Mottagande (s) radering misslyckades.";
 $lang["receivings_comments"] = "Kommentarer";

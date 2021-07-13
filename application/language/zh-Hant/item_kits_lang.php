@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "新增套件";
 $lang["item_kits_all"] = "全部";
 $lang["item_kits_cannot_be_deleted"] = "無法刪除產品套件.";

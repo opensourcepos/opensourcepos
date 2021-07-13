@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Ontvangen bedrag";
 $lang["sales_authorized_signature"] = "Handtekening";
 $lang["sales_cancel_sale"] = "Annuleer";
 $lang["sales_cash"] = "Contant";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Cash";
 $lang["sales_cash_filter"] = "Contant";
 $lang["sales_change_due"] = "Wisselgeld terug";

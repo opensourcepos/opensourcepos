@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Företagsadress";
 $lang["config_address_required"] = "Företagsadress är ett obligatoriskt fält.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1 maj";
 $lang["config_financial_year_nov"] = "1 november";
 $lang["config_financial_year_oct"] = "1 oktober";
 $lang["config_financial_year_sep"] = "1 september";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "Inloggningssida reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "reCAPTCHA Secret Key";
 $lang["config_gcaptcha_secret_key_required"] = "reCAPTCHA Secret Key är ett obligatoriskt fält";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Begränsningar för bildöverföring";
 $lang["config_include_hsn"] = "Inkludera stöd för HSN-koder";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Butiksinformation";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Integrationer";
 $lang["config_integrations_configuration"] = "Tredjepartsintegrationer";
 $lang["config_invoice"] = "Faktura";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Lokaliseringskonfigurationsinformation";
 $lang["config_location"] = "Lager";
 $lang["config_location_configuration"] = "Lagerplatser";
 $lang["config_location_info"] = "Platskonfigurationsinformation";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Vill du göra en säkerhetskopiering innan du loggar ut? Klicka på [OK] för att säkerhetskopiera eller [Avbryt] för att logga ut.";
 $lang["config_mailchimp"] = "MailChimp";
 $lang["config_mailchimp_api_key"] = "MailChimp API Key";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Skatt decimaler";
 $lang["config_tax_id"] = "Skatteid";
 $lang["config_tax_included"] = "Skatt ingår";
 $lang["config_theme"] = "Tema";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Tusentals separator";
 $lang["config_timezone"] = "Tidszon";
 $lang["config_timezone_error"] = "OSPOS-tidszon skiljer sig från din lokala tidszon.";

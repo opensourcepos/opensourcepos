@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Kontonummer";
 $lang["suppliers_agency_name"] = "Agentur";
 $lang["suppliers_cannot_be_deleted"] = "Kunde inte radera valda leverantör (er). En eller flera har försäljning.";
