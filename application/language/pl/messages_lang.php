@@ -1,6 +1,5 @@
-<?php 
-
-$lang["messages_first_name"] = "";
+<?php
+$lang["messages_first_name"] = "Pierwsze imię";
 $lang["messages_last_name"] = "";
 $lang["messages_message"] = "";
 $lang["messages_message_placeholder"] = "";
