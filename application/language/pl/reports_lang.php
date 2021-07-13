@@ -1,6 +1,5 @@
-<?php 
-
-$lang["reports_all"] = "";
+<?php
+$lang["reports_all"] = "Wszystko";
 $lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "";
