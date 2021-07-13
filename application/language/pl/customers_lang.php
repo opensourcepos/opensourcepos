@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Konto #";
 $lang["customers_account_number_duplicate"] = "";
 $lang["customers_available_points"] = "Dostępne punkty";

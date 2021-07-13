@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Номер рахунку";
 $lang["customers_account_number_duplicate"] = "Такий номер рахунку вже є в базі данних.";
 $lang["customers_available_points"] = "Доступні бали";
@@ -11,6 +12,10 @@ $lang["customers_confirm_delete"] = "Ви впевнені, що хочете в
 $lang["customers_confirm_restore"] = "Ви впевнені,що хочете відновити вибраних клієнтів?";
 $lang["customers_consent"] = "Згода на реєстрацію";
 $lang["customers_consent_required"] = "Згода на реєстрацію - обов'язкове поле.";
+$lang["customers_csv_import_failed"] = "Помилка імпорту CSV";
+$lang["customers_csv_import_nodata_wrongformat"] = "Завантажений файл не містить даних або неправильно відформатований.";
+$lang["customers_csv_import_partially_failed"] = "Імпорт клієнта пройшов успішно, але з деякими збоями:";
+$lang["customers_csv_import_success"] = "Імпорт клієнта вдалий.";
 $lang["customers_customer"] = "Клієнт";
 $lang["customers_date"] = "Дата";
 $lang["customers_discount"] = "Знижка";
@@ -20,10 +25,6 @@ $lang["customers_discount_type"] = "Тип знижки";
 $lang["customers_email_duplicate"] = "Така адреса електронної пошти вже існує в базі данних.";
 $lang["customers_employee"] = "Працівник";
 $lang["customers_error_adding_updating"] = "Помилка при додаванні/оновленні клієнта.";
-$lang["customers_csv_import_failed"] = "Помилка імпорту CSV";
-$lang["customers_csv_import_nodata_wrongformat"] = "Завантажений файл не містить даних або неправильно відформатований.";
-$lang["customers_csv_import_partially_failed"] = "Імпорт клієнта пройшов успішно, але з деякими збоями:";
-$lang["customers_csv_import_success"] = "Імпорт клієнта вдалий.";
 $lang["customers_import_items_csv"] = "Імпорт клієнта з CSV";
 $lang["customers_mailchimp_activity_click"] = "Кнопка електронної пошти";
 $lang["customers_mailchimp_activity_lastopen"] = "Останній відкритий лист";

@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Montant Présenté";
 $lang["sales_authorized_signature"] = "Signature autorisée";
 $lang["sales_cancel_sale"] = "Annuler la Vente";
 $lang["sales_cash"] = "Espèce";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Dépôt d'Espèce";
 $lang["sales_cash_filter"] = "Espèce";
 $lang["sales_change_due"] = "Monnaie Rendu";

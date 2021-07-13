@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Importo Offerto";
 $lang["sales_authorized_signature"] = "Firma Autorizzata";
 $lang["sales_cancel_sale"] = "Annulla";
 $lang["sales_cash"] = "Contanti";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Deposito Contanti";
 $lang["sales_cash_filter"] = "Contanti";
 $lang["sales_change_due"] = "Resto Dovuto";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "添加費用";
 $lang["expenses_amount"] = "數量";
 $lang["expenses_amount_number"] = "金額必須是數字";

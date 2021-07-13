@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "屬性";
 $lang["module_attributes_desc"] = "新增、修改、刪除、搜尋 屬性.";
 $lang["module_both"] = "兩者";

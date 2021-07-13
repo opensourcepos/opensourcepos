@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1 de maio";
 $lang["config_financial_year_nov"] = "1 de novembro";
 $lang["config_financial_year_oct"] = "1 de outubro";
 $lang["config_financial_year_sep"] = "1 de setembro";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "Página de login reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "Chave secreta do reCAPTCHA";
 $lang["config_gcaptcha_secret_key_required"] = "A chave secreta reCAPTCHA é um campo obrigatório";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Restrições no envio de imagens";
 $lang["config_include_hsn"] = "Incluir suporte para códigos HSN";
 $lang["config_info"] = "Informações";
 $lang["config_info_configuration"] = "Informações da loja";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Integrações";
 $lang["config_integrations_configuration"] = "Integrações de terceiros";
 $lang["config_invoice"] = "Fatura";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Informações da Configuração de Localização"
 $lang["config_location"] = "Estoque";
 $lang["config_location_configuration"] = "Localização do Estoque";
 $lang["config_location_info"] = "Informações da localização";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Você não quer fazer uma cópia de segurança antes de sair? Clique [OK] para fazer a cópia de segurança.";
 $lang["config_mailchimp"] = "Configuração Mailchimp";
 $lang["config_mailchimp_api_key"] = "Mailchimp chave API";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Decimais da taxa";
 $lang["config_tax_id"] = "Id imposto";
 $lang["config_tax_included"] = "Imposto Incluído";
 $lang["config_theme"] = "Tema";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Separador de milhar";
 $lang["config_timezone"] = "Fuso horário";
 $lang["config_timezone_error"] = "O fuso horário do OSPOS é diferente do fuso horário local.";

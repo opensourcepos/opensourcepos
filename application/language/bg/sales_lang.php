@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Налични точки";
 $lang["rewards_package"] = "Награди";
 $lang["rewards_remaining_balance"] = "Оставащата стойност на точките за награда е ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "Предоставена сума";
 $lang["sales_authorized_signature"] = "Оторизиран подпис";
 $lang["sales_cancel_sale"] = "Отказ";
 $lang["sales_cash"] = "В брой";
+$lang["sales_cash_adjustment"] = "Корекция на пари в брой";
 $lang["sales_cash_deposit"] = "Депозит в брой";
 $lang["sales_cash_filter"] = "В брой";
 $lang["sales_change_due"] = "Промяна на дължимото";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Номер работна поръчка";
 $lang["sales_work_order_number_duplicate"] = "Номерът на работната поръчка трябва да е уникален.";
 $lang["sales_work_order_sent"] = "Работната поръчка е изпратена до";
 $lang["sales_work_order_unsent"] = "Работната поръчка не бе изпратена до";
-$lang["sales_cash_adjustment"] = "Корекция на пари в брой";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "費用類別名稱為必填";
 $lang["expenses_categories_add_item"] = "新增類別";
 $lang["expenses_categories_cannot_be_deleted"] = "不可刪除費用類別";

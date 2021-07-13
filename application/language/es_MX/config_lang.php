@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Dirección de la Empresa";
 $lang["config_address_required"] = "La Dirección de la Empresa es un campo requerido.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1st of May";
 $lang["config_financial_year_nov"] = "1st of November";
 $lang["config_financial_year_oct"] = "1st of October";
 $lang["config_financial_year_sep"] = "1st of September";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "Login Page reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "reCAPTCHA Secret Key";
 $lang["config_gcaptcha_secret_key_required"] = "reCAPTCHA Secret Key is a required field";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Restricciones de carga de imágenes";
 $lang["config_include_hsn"] = "Include Support for HSN Codes";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Store Information";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Integraciones";
 $lang["config_integrations_configuration"] = "Integraciones Externas";
 $lang["config_invoice"] = "Invoice";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Localization Configuration Information";
 $lang["config_location"] = "Stock";
 $lang["config_location_configuration"] = "Stock Locations";
 $lang["config_location_info"] = "Location Configuration Information";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Do you want to make a backup before logging out? Click [OK] to backup or [Cancel] to logout.";
 $lang["config_mailchimp"] = "Mailchimp";
 $lang["config_mailchimp_api_key"] = "Mailchimp Clave API";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_id"] = "Tax Id";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_theme"] = "Theme";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Timezone";
 $lang["config_timezone_error"] = "La zona horaria de OSPOS es diferente a su zona horaria local.";

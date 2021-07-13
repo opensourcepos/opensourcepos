@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "கணக்கு #";
 $lang["customers_account_number_duplicate"] = "இன்த கணக்கு எண் முன்பே டேய்ட்டாபேய்ஸ்இல்  உள்ளது";
 $lang["customers_available_points"] = "இருப்பு புள்ளிகள்";

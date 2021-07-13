@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Alles";
 $lang["reports_authority"] = "Instantie";
 $lang["reports_canceled"] = "Geannuleerd";

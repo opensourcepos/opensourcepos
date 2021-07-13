@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Beschikbare punten";
 $lang["rewards_package"] = "Beloningen";
 $lang["rewards_remaining_balance"] = "Resterende beloningspunten waarde is ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "Betaald bedrag";
 $lang["sales_authorized_signature"] = "Geautoriseerde handtekening";
 $lang["sales_cancel_sale"] = "Annuleren";
 $lang["sales_cash"] = "Contant";
+$lang["sales_cash_adjustment"] = "Contant correctie";
 $lang["sales_cash_deposit"] = "Contact storting";
 $lang["sales_cash_filter"] = "Contant";
 $lang["sales_change_due"] = "Wisselgeld tegoed";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Werkordernummer";
 $lang["sales_work_order_number_duplicate"] = "Werkordernummer moet uniek zijn.";
 $lang["sales_work_order_sent"] = "Werkorder verzonden naar";
 $lang["sales_work_order_unsent"] = "Werkorder niet verzonden naar";
-$lang["sales_cash_adjustment"] = "Contant correctie";

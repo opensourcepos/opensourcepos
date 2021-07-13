@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Agregar Artículo";
 $lang["item_kits_all"] = "Todo";
 $lang["item_kits_cannot_be_deleted"] = "Borrado de Kit(s) de Artículos fallido.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["enum_half_down"] = "Halveren naar beneden";
 $lang["enum_half_even"] = "Halveren even";
 $lang["enum_half_five"] = "Halveren vijf";

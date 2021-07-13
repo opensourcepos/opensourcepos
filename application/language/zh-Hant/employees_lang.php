@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "員工基本資料";
 $lang["employees_cannot_be_deleted"] = "無法刪除選定的僱員，選定的員工中已有銷售紀錄或你正在試圖刪除自己.";
 $lang["employees_change_password"] = "更改密碼";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Poin yg tersedia";
 $lang["rewards_package"] = "Penghargaan";
 $lang["rewards_remaining_balance"] = "Poin penghargaan tersisa ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "Nilai Pembayaran";
 $lang["sales_authorized_signature"] = "Tanda tangan resmi";
 $lang["sales_cancel_sale"] = "Batal Jual";
 $lang["sales_cash"] = "Tunai";
+$lang["sales_cash_adjustment"] = "Penyesuaian Kas";
 $lang["sales_cash_deposit"] = "Deposit Tunai";
 $lang["sales_cash_filter"] = "Kontan";
 $lang["sales_change_due"] = "Kembalian Uang";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Nomor Perintah Kerja";
 $lang["sales_work_order_number_duplicate"] = "Nomor Perintah Kerja tidak boleh sama.";
 $lang["sales_work_order_sent"] = "Perintah Kerja dikirim ke";
 $lang["sales_work_order_unsent"] = "Perintah Kerja gagal dikirim ke";
-$lang["sales_cash_adjustment"] = "Penyesuaian Kas";

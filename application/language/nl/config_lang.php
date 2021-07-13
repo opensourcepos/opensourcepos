@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Bedrijfsadres";
 $lang["config_address_required"] = "Bedrijfsadres is een vereist veld.";
 $lang["config_all_set"] = "Alle bestandsmachtigingen zijn juist ingesteld!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1 mei";
 $lang["config_financial_year_nov"] = "1 november";
 $lang["config_financial_year_oct"] = "1 oktober";
 $lang["config_financial_year_sep"] = "1 september";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "Aanmeldingspagina reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "reCAPTCHA geheime sleutel";
 $lang["config_gcaptcha_secret_key_required"] = "reCAPTCHA geheime sleutel is een vereist veld";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Afbeelding upload beperkingen";
 $lang["config_include_hsn"] = "Ondersteuning voor HSN codes inschakelen";
 $lang["config_info"] = "Informatie";
 $lang["config_info_configuration"] = "Winkelinformatie";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Integraties";
 $lang["config_integrations_configuration"] = "Derde partij integraties";
 $lang["config_invoice"] = "Factuur";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Lokalisatie configuratie informatie";
 $lang["config_location"] = "Voorraad";
 $lang["config_location_configuration"] = "Voorraadlocaties";
 $lang["config_location_info"] = "Locatie configuratie informatie";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Wilt u een reservekopie maken voor het afmelden? Klik op [OK] om te bevestigen of op [Annuleren] om toch af te melden.";
 $lang["config_mailchimp"] = "MailChimp";
 $lang["config_mailchimp_api_key"] = "MailChimp API-sleutel";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Belasting decimalen";
 $lang["config_tax_id"] = "Belasting ID";
 $lang["config_tax_included"] = "Inclusief belasting";
 $lang["config_theme"] = "Thema";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Duizenden scheidingsteken";
 $lang["config_timezone"] = "Tijdzone";
 $lang["config_timezone_error"] = "OSPOS tijdzone is anders dan uw lokale tijdzone.";

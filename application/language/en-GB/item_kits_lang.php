@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Add Item";
 $lang["item_kits_all"] = "All";
 $lang["item_kits_cannot_be_deleted"] = "Item Kit(s) delete failed";

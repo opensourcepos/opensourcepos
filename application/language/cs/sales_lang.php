@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Uhrazeno";
 $lang["sales_authorized_signature"] = "";
 $lang["sales_cancel_sale"] = "Zrušit";
 $lang["sales_cash"] = "Hotovost";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "";
 $lang["sales_cash_filter"] = "Hotově";
 $lang["sales_change_due"] = "Zbývá";

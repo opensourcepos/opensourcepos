@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Plaats";
@@ -27,6 +28,7 @@ $lang["common_gender"] = "Geslacht";
 $lang["common_gender_female"] = "V";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_undefined"] = "";
+$lang["common_icon"] = "";
 $lang["common_id"] = "Id";
 $lang["common_import"] = "Importeren";
 $lang["common_import_change_file"] = "Wijzigen";
@@ -40,6 +42,8 @@ $lang["common_last_name_required"] = "Achternaam is een vereist veld.";
 $lang["common_last_page"] = "Laatste";
 $lang["common_learn_about_project"] = "om de laatste informatie over het project te bekijken.";
 $lang["common_list_of"] = "Lijst van";
+$lang["common_logo"] = "";
+$lang["common_logo_mark"] = "";
 $lang["common_logout"] = "Afmelden";
 $lang["common_migration_needed"] = "Een databasemigratie naar %1 zal starten na aanmelding.";
 $lang["common_new"] = "Nieuw";
@@ -60,6 +64,8 @@ $lang["common_return_policy"] = "Retourbeleid";
 $lang["common_search"] = "Zoeken";
 $lang["common_search_options"] = "Zoek opties";
 $lang["common_searched_for"] = "Gezocht naar";
+$lang["common_software_short"] = "";
+$lang["common_software_title"] = "";
 $lang["common_state"] = "Provincie";
 $lang["common_submit"] = "Verzenden";
 $lang["common_total_spent"] = "Totaal uitgegeven";

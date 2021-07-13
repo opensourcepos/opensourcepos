@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Onkosten toevoegen";
 $lang["expenses_amount"] = "Bedrag";
 $lang["expenses_amount_number"] = "Bedrag moet een getal zijn";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Tillgängliga poäng";
 $lang["rewards_package"] = "Belöning";
 $lang["rewards_remaining_balance"] = "Beloppets återstående värde är ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "Upplagt belopp";
 $lang["sales_authorized_signature"] = "Auktoriserad signatur";
 $lang["sales_cancel_sale"] = "Avbryt";
 $lang["sales_cash"] = "Kontant";
+$lang["sales_cash_adjustment"] = "Kontantjustering";
 $lang["sales_cash_deposit"] = "Kontant insättning";
 $lang["sales_cash_filter"] = "Kontant";
 $lang["sales_change_due"] = "Ändra förfallna";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Arbetsorder nummer";
 $lang["sales_work_order_number_duplicate"] = "Arbetsorder nummer måste vara unikt.";
 $lang["sales_work_order_sent"] = "Arbetsorder skickad till";
 $lang["sales_work_order_unsent"] = "Arbetsorder gick ej att skicka till";
-$lang["sales_cash_adjustment"] = "Kontantjustering";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Uitzondering toevoegen";
 $lang["taxes_cascade"] = "Trapsgewijs";
 $lang["taxes_cascade_sequence"] = "Trapsgewijze volgorde";
