@@ -1,6 +1,5 @@
-<?php 
-
-$lang["cashups_amount"] = "";
+<?php
+$lang["cashups_amount"] = "Liczba";
 $lang["cashups_amount_number"] = "";
 $lang["cashups_amount_required"] = "";
 $lang["cashups_cannot_be_deleted"] = "";
