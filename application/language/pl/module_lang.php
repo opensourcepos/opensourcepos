@@ -1,6 +1,5 @@
-<?php 
-
-$lang["module_attributes"] = "";
+<?php
+$lang["module_attributes"] = "Atrybuty";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "";
 $lang["module_cashups"] = "";
