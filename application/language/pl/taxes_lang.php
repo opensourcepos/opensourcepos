@@ -1,6 +1,5 @@
-<?php 
-
-$lang["taxes_add_exception"] = "";
+<?php
+$lang["taxes_add_exception"] = "Dodaj wyjątek";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
 $lang["taxes_city"] = "";
