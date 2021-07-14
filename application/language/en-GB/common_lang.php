@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Address 1";
 $lang["common_address_2"] = "Address 2";
 $lang["common_city"] = "City";
@@ -28,8 +27,8 @@ $lang["common_gender"] = "Gender";
 $lang["common_gender_female"] = "F";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
-$lang["common_id"] = "Id";
+$lang["common_icon"] = "Icon";
+$lang["common_id"] = "ID";
 $lang["common_import"] = "Import";
 $lang["common_import_change_file"] = "Change";
 $lang["common_import_csv"] = "CSV Import";
@@ -42,8 +41,8 @@ $lang["common_last_name_required"] = "Last Name is a required field";
 $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "to learn the latest information about the project";
 $lang["common_list_of"] = "List of";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "Logo";
+$lang["common_logo_mark"] = "Mark";
 $lang["common_logout"] = "Logout";
 $lang["common_migration_needed"] = "A database migration to %1 will start after login";
 $lang["common_new"] = "New";
@@ -64,8 +63,8 @@ $lang["common_return_policy"] = "Return Policy";
 $lang["common_search"] = "Search";
 $lang["common_search_options"] = "Search options";
 $lang["common_searched_for"] = "Searched for";
-$lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_short"] = "OSPOS";
+$lang["common_software_title"] = "Open Source Point of Sale";
 $lang["common_state"] = "County";
 $lang["common_submit"] = "Submit";
 $lang["common_total_spent"] = "Total Spent";
