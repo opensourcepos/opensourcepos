@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Add Expense";
 $lang["expenses_amount"] = "Amount";
 $lang["expenses_amount_number"] = "Amount must be a number";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Category";
 $lang["expenses_category_required"] = "category is a required field";
 $lang["expenses_check"] = "Check";
 $lang["expenses_check_filter"] = "Check";
-$lang["expenses_confirm_delete"] = "Are you sure you want to delete the selected Expense?";
-$lang["expenses_confirm_restore"] = "Are you sure you want to restore the selected Expenses(s)?";
+$lang["expenses_confirm_delete"] = "தேர்ந்தெடுக்கப்பட்ட செலவை நீக்க விரும்புகிறீர்களா?";
+$lang["expenses_confirm_restore"] = "தேர்ந்தெடுக்கப்பட்ட செலவு(களை) மீட்டெடுக்க விரும்புகிறீர்களா?";
 $lang["expenses_credit"] = "Credit Card";
 $lang["expenses_credit_filter"] = "Credit Card";
 $lang["expenses_date"] = "Date";
