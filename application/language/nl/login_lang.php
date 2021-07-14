@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Ongeldige gebruikersnaam of wach
 $lang["login_login"] = "Aanmelden";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Wachtwoord";
 $lang["login_username"] = "Gebruikersnaam";
 $lang["login_welcome"] = "";

@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Neispravno ime/lozinka";
 $lang["login_login"] = "Prijava";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Lozinka";
 $lang["login_username"] = "Korisničko ime";
 $lang["login_welcome"] = "";

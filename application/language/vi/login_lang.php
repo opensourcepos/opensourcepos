@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Tài khoản hoặc mật khẩu
 $lang["login_login"] = "Đăng nhập";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Mật khẩu";
 $lang["login_username"] = "Tài khoản";
 $lang["login_welcome"] = "";

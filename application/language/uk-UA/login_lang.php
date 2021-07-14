@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Невірний логін аб
 $lang["login_login"] = "Логін";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Пароль";
 $lang["login_username"] = "Ім'я користувача";
 $lang["login_welcome"] = "";

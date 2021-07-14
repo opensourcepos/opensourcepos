@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Geçersiz Kullanıcı Adı veya 
 $lang["login_login"] = "Giriş";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Parola";
 $lang["login_username"] = "Kullanıcı Adı";
 $lang["login_welcome"] = "";

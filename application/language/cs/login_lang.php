@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Neplatné jméno nebo heslo.";
 $lang["login_login"] = "Login";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Heslo";
 $lang["login_username"] = "Uživatelské jméno";
 $lang["login_welcome"] = "";

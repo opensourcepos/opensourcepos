@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Nama Pengguna/Kata Kunci Salah."
 $lang["login_login"] = "Masuk";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Kata kunci";
 $lang["login_username"] = "Nama Anda";
 $lang["login_welcome"] = "";

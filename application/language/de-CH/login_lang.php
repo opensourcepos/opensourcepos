@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Ungültiger Benutzername/Passwor
 $lang["login_login"] = "Login";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Passwort";
 $lang["login_username"] = "Benutzername";
 $lang["login_welcome"] = "";

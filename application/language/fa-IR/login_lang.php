@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "نام کاربری یا گذر�
 $lang["login_login"] = "وارد شدن";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "کلمه عبور";
 $lang["login_username"] = "نام کاربری";
 $lang["login_welcome"] = "";

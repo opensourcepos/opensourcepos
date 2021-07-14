@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "பயனர்பெயர் �
 $lang["login_login"] = "உள்நுழைய";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "கடவுச்சொல்";
 $lang["login_username"] = "பயனர்பெயர்";
 $lang["login_welcome"] = "";

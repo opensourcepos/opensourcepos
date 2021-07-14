@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "帳號或密碼錯誤。";
 $lang["login_login"] = "登入";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "密碼";
 $lang["login_username"] = "帳號";
 $lang["login_welcome"] = "";

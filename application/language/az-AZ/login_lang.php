@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Ad və ya şifrə səhvdir.";
 $lang["login_login"] = "Giriş";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Şifrə";
 $lang["login_username"] = "İstifadəçi";
 $lang["login_welcome"] = "";

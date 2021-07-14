@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Username ຫຼື Password ບ�
 $lang["login_login"] = "ເຂົ້າລະບົບ";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Password";
 $lang["login_username"] = "Username";
 $lang["login_welcome"] = "";

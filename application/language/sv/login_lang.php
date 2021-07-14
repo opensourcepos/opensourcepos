@@ -8,6 +8,7 @@ $lang["login_invalid_username_and_password"] = "Ogiltigt användarnamn eller lö
 $lang["login_login"] = "Login";
 $lang["login_logout"] = "";
 $lang["login_migration_needed"] = "";
+$lang["login_migration_success"] = "";
 $lang["login_password"] = "Lösenord";
 $lang["login_username"] = "Användarnamn";
 $lang["login_welcome"] = "";
