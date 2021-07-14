@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company address is a required field.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -27,7 +26,7 @@ $lang["config_barcode_page_width"] = "Display page width";
 $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_second_row"] = "Row 2";
 $lang["config_barcode_third_row"] = "Row 3";
-$lang["config_barcode_tooltip"] = "Warning: This feature can cause duplicate items to be imported or created.  Do not use if you do not want duplicate barcodes.";
+$lang["config_barcode_tooltip"] = "எச்சரிக்கை: இந்த அம்சம் நகல் உருப்படிகளை இறக்குமதி செய்ய அல்லது உருவாக்க காரணமாக இருக்கலாம். நீங்கள் நகல் பட்டைக்குறியீடுகளை விரும்பவில்லை என்றால் பயன்படுத்த வேண்டாம்.";
 $lang["config_barcode_type"] = "Barcode Type";
 $lang["config_barcode_width"] = "Width (px)";
 $lang["config_bottom"] = "Bottom";
@@ -179,12 +178,12 @@ $lang["config_location_configuration"] = "Stock Locations";
 $lang["config_location_info"] = "Location Configuration Information";
 $lang["config_login_form"] = "";
 $lang["config_logout"] = "Do you want to make a backup before logging out? Click [OK] to backup or [Cancel] to logout.";
-$lang["config_mailchimp"] = "Mailchimp";
-$lang["config_mailchimp_api_key"] = "Mailchimp API Key";
-$lang["config_mailchimp_configuration"] = "Mailchimp Configuration";
+$lang["config_mailchimp"] = "மெயில்சிம்ப்";
+$lang["config_mailchimp_api_key"] = "மெயில்சிம்ப் API விசை";
+$lang["config_mailchimp_configuration"] = "மெயில்சிம்ப் அமைப்பு";
 $lang["config_mailchimp_key_successfully"] = "API Key is valid.";
 $lang["config_mailchimp_key_unsuccessfully"] = "API Key is invalid.";
-$lang["config_mailchimp_lists"] = "Mailchimp List(s)";
+$lang["config_mailchimp_lists"] = "மெயில்சிம்ப் பட்டியல்(கள்)";
 $lang["config_mailchimp_tooltip"] = "Click the icon for an API Key.";
 $lang["config_message"] = "Message";
 $lang["config_message_configuration"] = "Message Configuration";
