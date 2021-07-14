@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -127,7 +126,7 @@ $lang["config_financial_year_may"] = "1st of May";
 $lang["config_financial_year_nov"] = "1st of November";
 $lang["config_financial_year_oct"] = "1st of October";
 $lang["config_financial_year_sep"] = "1st of September";
-$lang["config_floating_labels"] = "";
+$lang["config_floating_labels"] = "Floating Labels";
 $lang["config_gcaptcha_enable"] = "Login Page reCAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "reCAPTCHA Secret Key";
 $lang["config_gcaptcha_secret_key_required"] = "reCAPTCHA Secret Key is a required field";
@@ -147,7 +146,7 @@ $lang["config_image_restrictions"] = "Image Upload Restrictions";
 $lang["config_include_hsn"] = "Include Support for HSN Codes";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Shop Information";
-$lang["config_input_groups"] = "";
+$lang["config_input_groups"] = "Input Groups";
 $lang["config_integrations"] = "Integrations";
 $lang["config_integrations_configuration"] = "Third Party Integrations";
 $lang["config_invoice"] = "Invoice";
@@ -177,7 +176,7 @@ $lang["config_locale_info"] = "Localisation Configuration Information";
 $lang["config_location"] = "Stock";
 $lang["config_location_configuration"] = "Stock Locations";
 $lang["config_location_info"] = "Location Configuration Information";
-$lang["config_login_form"] = "";
+$lang["config_login_form"] = "Login Form Style";
 $lang["config_logout"] = "Don't you want to make a backup before logging out? Click [OK] to backup, [Cancel] to logout";
 $lang["config_mailchimp"] = "MailChimp";
 $lang["config_mailchimp_api_key"] = "MailChimp API Key";
@@ -292,7 +291,7 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_id"] = "Tax Id";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_theme"] = "Theme";
-$lang["config_theme_preview"] = "";
+$lang["config_theme_preview"] = "Preview Theme:";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Timezone";
 $lang["config_timezone_error"] = "OSPOS Timezone is Different from your Local Timezone.";
