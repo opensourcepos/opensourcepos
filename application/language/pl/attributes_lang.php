@@ -1,6 +1,6 @@
 <?php 
 
-$lang["attributes_attribute_value_invalid_chars"] = "Wartość atrybutu nie może zawierać \\"_\\" lub \\"|\\"";
+$lang["attributes_attribute_value_invalid_chars"] = "Wartość atrybutu nie może zawierać'_' lub '|'";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
