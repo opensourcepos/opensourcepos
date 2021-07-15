@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
@@ -28,8 +27,8 @@ $lang["common_gender"] = "性別";
 $lang["common_gender_female"] = "女";
 $lang["common_gender_male"] = "男";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
-$lang["common_id"] = "Id";
+$lang["common_icon"] = "圖標";
+$lang["common_id"] = "ID";
 $lang["common_import"] = "匯入";
 $lang["common_import_change_file"] = "變更";
 $lang["common_import_csv"] = "CSV匯入";
@@ -42,8 +41,8 @@ $lang["common_last_name_required"] = "姓氏為必填。";
 $lang["common_last_page"] = "最後一頁";
 $lang["common_learn_about_project"] = "了解系統開展進度.";
 $lang["common_list_of"] = "列表";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "商標";
+$lang["common_logo_mark"] = "標記";
 $lang["common_logout"] = "登出";
 $lang["common_migration_needed"] = "登錄後將啟動到％1的數據庫遷移.";
 $lang["common_new"] = "新";
@@ -64,8 +63,8 @@ $lang["common_return_policy"] = "退貨政策";
 $lang["common_search"] = "搜尋";
 $lang["common_search_options"] = "搜尋選項";
 $lang["common_searched_for"] = "查找";
-$lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_short"] = "開源銷售點";
+$lang["common_software_title"] = "開源銷售點";
 $lang["common_state"] = "州";
 $lang["common_submit"] = "送出";
 $lang["common_total_spent"] = "總花費";
