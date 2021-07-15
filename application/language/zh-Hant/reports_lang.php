@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "全部";
 $lang["reports_authority"] = "機關";
 $lang["reports_canceled"] = "取消";
@@ -116,26 +115,26 @@ $lang["reports_supplier"] = "供應商";
 $lang["reports_suppliers"] = "供應商";
 $lang["reports_suppliers_summary_report"] = "供應商摘要報告";
 $lang["reports_tax"] = "稅額";
-$lang["reports_tax_category"] = "";
+$lang["reports_tax_category"] = "稅種";
 $lang["reports_tax_percent"] = "稅率";
-$lang["reports_tax_rate"] = "";
+$lang["reports_tax_rate"] = "稅率";
 $lang["reports_taxes"] = "稅額";
 $lang["reports_taxes_summary_report"] = "稅金摘要報告";
 $lang["reports_total"] = "總計";
 $lang["reports_total_inventory_value"] = "總庫存價值";
-$lang["reports_total_low_sell_quantity"] = "";
+$lang["reports_total_low_sell_quantity"] = "總低銷售量";
 $lang["reports_total_quantity"] = "總數量";
 $lang["reports_total_retail"] = "總投資額零售價";
-$lang["reports_trans_amount"] = "";
-$lang["reports_trans_due"] = "";
-$lang["reports_trans_group"] = "";
-$lang["reports_trans_nopay_sales"] = "";
-$lang["reports_trans_payments"] = "";
-$lang["reports_trans_refunded"] = "";
-$lang["reports_trans_sales"] = "";
-$lang["reports_trans_type"] = "";
+$lang["reports_trans_amount"] = "交易金額";
+$lang["reports_trans_due"] = "到期";
+$lang["reports_trans_group"] = "交易組";
+$lang["reports_trans_nopay_sales"] = "沒有付款的銷售";
+$lang["reports_trans_payments"] = "付款";
+$lang["reports_trans_refunded"] = "已退款";
+$lang["reports_trans_sales"] = "銷售";
+$lang["reports_trans_type"] = "交易類型";
 $lang["reports_type"] = "類型";
 $lang["reports_unit_price"] = "單價";
-$lang["reports_used"] = "";
-$lang["reports_work_orders"] = "";
+$lang["reports_used"] = "使用點數";
+$lang["reports_work_orders"] = "工作訂單";
 $lang["reports_zero_and_less"] = "零和更少";
