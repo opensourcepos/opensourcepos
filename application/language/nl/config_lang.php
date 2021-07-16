@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Bedrijfsadres";
 $lang["config_address_required"] = "Bedrijfsadres is een vereist veld.";
 $lang["config_all_set"] = "Alle bestandsmachtigingen zijn juist ingesteld!";
@@ -177,7 +176,7 @@ $lang["config_locale_info"] = "Lokalisatie configuratie informatie";
 $lang["config_location"] = "Voorraad";
 $lang["config_location_configuration"] = "Voorraadlocaties";
 $lang["config_location_info"] = "Locatie configuratie informatie";
-$lang["config_login_form"] = "";
+$lang["config_login_form"] = "Stijl aanmeldformulier";
 $lang["config_logout"] = "Wilt u een reservekopie maken voor het afmelden? Klik op [OK] om te bevestigen of op [Annuleren] om toch af te melden.";
 $lang["config_mailchimp"] = "MailChimp";
 $lang["config_mailchimp_api_key"] = "MailChimp API-sleutel";
@@ -292,7 +291,7 @@ $lang["config_tax_decimals"] = "Belasting decimalen";
 $lang["config_tax_id"] = "Belasting ID";
 $lang["config_tax_included"] = "Inclusief belasting";
 $lang["config_theme"] = "Thema";
-$lang["config_theme_preview"] = "";
+$lang["config_theme_preview"] = "Thema voorbeeld:";
 $lang["config_thousands_separator"] = "Duizenden scheidingsteken";
 $lang["config_timezone"] = "Tijdzone";
 $lang["config_timezone_error"] = "OSPOS tijdzone is anders dan uw lokale tijdzone.";
