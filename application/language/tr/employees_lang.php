@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["employees_basic_information"] = "Personel Temel Bilgileri";
 $lang["employees_cannot_be_deleted"] = "Seçili personel silinemedi, personellerin satışları var yada kendinizi silmeye çalışıyorsunuz.";
-$lang["employees_change_password"] = "Şifre değiştir";
+$lang["employees_change_password"] = "Parolayı Değiştir";
 $lang["employees_confirm_delete"] = "Seçili personelleri silmek istediğinize emin misiniz?";
 $lang["employees_confirm_restore"] = "Seçili çalışanları geri yüklemek istediğinizden emin misiniz?";
-$lang["employees_current_password"] = "Şimdiki Şifre";
-$lang["employees_current_password_invalid"] = "Geçerli Şifre geçersiz.";
+$lang["employees_current_password"] = "Var Olan Parola";
+$lang["employees_current_password_invalid"] = "Var Olan Parola geçersiz.";
 $lang["employees_employee"] = "Personel";
 $lang["employees_error_adding_updating"] = "Personel ekleme/güncelleme hatası.";
 $lang["employees_error_deleting_demo_admin"] = "Admin güncellenemez.";
@@ -16,17 +15,17 @@ $lang["employees_login_info"] = "Personel Giriş Bilgileri";
 $lang["employees_new"] = "Yeni Personel";
 $lang["employees_none_selected"] = "Silmek için çalışan seçmediniz.";
 $lang["employees_one_or_multiple"] = "personel";
-$lang["employees_password"] = "Şifre";
-$lang["employees_password_minlength"] = "Şifre en az 8 karakter olmalıdır.";
-$lang["employees_password_must_match"] = "Şifreler uyuşmuyor.";
-$lang["employees_password_not_must_match"] = "Mevcut şifre ve yeni şifre benzersiz olmalıdır.";
-$lang["employees_password_required"] = "Şifre zorunlu alandır.";
+$lang["employees_password"] = "Parola";
+$lang["employees_password_minlength"] = "Parola en az 8 karakter olmalıdır.";
+$lang["employees_password_must_match"] = "Parolalar uyuşmuyor.";
+$lang["employees_password_not_must_match"] = "Geçerli parola ve yeni parola benzersiz olmalıdır.";
+$lang["employees_password_required"] = "Parola zorunludur.";
 $lang["employees_permission_desc"] = "Modül yetkisi vermek için kutuları işaretleyin.";
 $lang["employees_permission_info"] = "Personel İzin ve Yetkileri";
-$lang["employees_repeat_password"] = "Şifre (Tekrar)";
+$lang["employees_repeat_password"] = "Parola Yeniden";
 $lang["employees_subpermission_required"] = "Her bir birim için en az bir izin ekle.";
 $lang["employees_successful_adding"] = "Personel eklendi.";
-$lang["employees_successful_change_password"] = "Şifre değişikliği başarılı.";
+$lang["employees_successful_change_password"] = "Parola değişikliği başarılı.";
 $lang["employees_successful_deleted"] = "Silme başarılı";
 $lang["employees_successful_updating"] = "Personel güncellendi";
 $lang["employees_system_language"] = "Sistem dili";
