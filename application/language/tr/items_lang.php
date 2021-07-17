@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amount_entry"] = "Miktar Girişi";
@@ -26,7 +25,7 @@ $lang["items_csv_import_failed"] = "CSV aktarım hatası";
 $lang["items_csv_import_nodata_wrongformat"] = "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.";
 $lang["items_csv_import_partially_failed"] = "Bazı ürünler aktarılamadı. Aktarılamayanlar listesi.";
 $lang["items_csv_import_success"] = "Ürün aktarımı başarılı.";
-$lang["items_current_quantity"] = "Mevcut Adet";
+$lang["items_current_quantity"] = "Var Olan Adet";
 $lang["items_default_pack_name"] = "Her biri";
 $lang["items_description"] = "Tanım";
 $lang["items_details_count"] = "Stok Hareket Detayları";
