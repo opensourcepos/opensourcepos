@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Var Olan Puanlar";
 $lang["rewards_package"] = "Ödüller";
 $lang["rewards_remaining_balance"] = "Ödül Puanı kalan değeri ";
@@ -10,7 +9,7 @@ $lang["sales_amount_tendered"] = "Ödenen Tutar";
 $lang["sales_authorized_signature"] = "Yetkili İmza";
 $lang["sales_cancel_sale"] = "İptal Et";
 $lang["sales_cash"] = "Nakit";
-$lang["sales_cash_adjustment"] = "";
+$lang["sales_cash_adjustment"] = "Nakit Düzeltimi";
 $lang["sales_cash_deposit"] = "Nakit Depozito";
 $lang["sales_cash_filter"] = "Nakit";
 $lang["sales_change_due"] = "Para Üstü";
@@ -26,13 +25,13 @@ $lang["sales_confirm_delete"] = "Seçilen satışları silmek istediğinize emin
 $lang["sales_confirm_restore"] = "Seçilen satışları kurtarmak istediğinize emin misiniz?";
 $lang["sales_credit"] = "Kredi Kartı";
 $lang["sales_credit_deposit"] = "Kredi Depozito";
-$lang["sales_credit_filter"] = "";
+$lang["sales_credit_filter"] = "Kredi Kartı";
 $lang["sales_customer"] = "Müşteri";
 $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "İskonto";
 $lang["sales_customer_email"] = "E-Posta";
 $lang["sales_customer_location"] = "Konum";
-$lang["sales_customer_mailchimp_status"] = "Mailchimp durumu";
+$lang["sales_customer_mailchimp_status"] = "MailChimp durumu";
 $lang["sales_customer_optional"] = "(Geciken Ödemeler İçin Gerekli)";
 $lang["sales_customer_required"] = "(Gerekli)";
 $lang["sales_customer_total"] = "Total";
@@ -162,7 +161,7 @@ $lang["sales_tax"] = "Vergi";
 $lang["sales_tax_id"] = "Vergi Numarası";
 $lang["sales_tax_invoice"] = "Vergi Faturası";
 $lang["sales_tax_percent"] = "Vergi %";
-$lang["sales_taxed_ind"] = "T";
+$lang["sales_taxed_ind"] = "V";
 $lang["sales_total"] = "Toplam";
 $lang["sales_total_tax_exclusive"] = "Vergi hariç";
 $lang["sales_transaction_failed"] = "Satış işlemi hatası.";
