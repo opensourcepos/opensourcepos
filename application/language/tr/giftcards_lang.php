@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["giftcards_allow_alt_description"] = "Dip Nota izin ver";
 $lang["giftcards_bulk_edit"] = "Çoklu Düzenleme";
@@ -18,7 +17,7 @@ $lang["giftcards_confirm_restore"] = "Seçili Hediye Çeklerini onarmak istediğ
 $lang["giftcards_cost_price"] = "Maliyet Fiyatı";
 $lang["giftcards_count"] = "Stoğu Güncelle";
 $lang["giftcards_csv_import_failed"] = "CSV içe aktarma başarısız.";
-$lang["giftcards_current_quantity"] = "Mevcut Miktar";
+$lang["giftcards_current_quantity"] = "Var Olan Miktar";
 $lang["giftcards_description"] = "Açıklama";
 $lang["giftcards_details_count"] = "Stok Sayım Ayrıntıları";
 $lang["giftcards_do_nothing"] = "Bir Şey Yapma";
