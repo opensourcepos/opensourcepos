@@ -1,6 +1,5 @@
-<?php 
-
-$lang["reports_all"] = "Hepsi";
+<?php
+$lang["reports_all"] = "Tümü";
 $lang["reports_authority"] = "Yetki";
 $lang["reports_canceled"] = "İptal edildi";
 $lang["reports_categories"] = "Kategoriler";
