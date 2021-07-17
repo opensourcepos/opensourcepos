@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Şehir";
@@ -28,12 +27,12 @@ $lang["common_gender"] = "Cinsiyet";
 $lang["common_gender_female"] = "K";
 $lang["common_gender_male"] = "E";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
+$lang["common_icon"] = "Simge";
 $lang["common_id"] = "Kimlik";
 $lang["common_import"] = "Aktar";
 $lang["common_import_change_file"] = "Değiştir";
 $lang["common_import_csv"] = "CSV İçe Aktarım";
-$lang["common_import_full_path"] = "CSV dosyası yeri";
+$lang["common_import_full_path"] = "CSV dosyasının tam yolu gerekli";
 $lang["common_import_remove_file"] = "Kaldır";
 $lang["common_import_select_file"] = "Dosya seç";
 $lang["common_inv"] = "Stok";
@@ -42,8 +41,8 @@ $lang["common_last_name_required"] = "Soyad zorunlu alandır.";
 $lang["common_last_page"] = "Son";
 $lang["common_learn_about_project"] = "Proje hakkında en son bilgileri öğren.";
 $lang["common_list_of"] = "Liste";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "Logo";
+$lang["common_logo_mark"] = "İm";
 $lang["common_logout"] = "Çıkış";
 $lang["common_migration_needed"] = "Giriş yapılınca %1 veritabanına geçiş başlar.";
 $lang["common_new"] = "Yeni";
@@ -64,8 +63,8 @@ $lang["common_return_policy"] = "İade Politikası";
 $lang["common_search"] = "Arama";
 $lang["common_search_options"] = "Arama seçenekleri";
 $lang["common_searched_for"] = "Şu arandı:";
-$lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_short"] = "OSPOS";
+$lang["common_software_title"] = "Açık Kaynaklı Satış Noktası";
 $lang["common_state"] = "Bölge";
 $lang["common_submit"] = "Onayla";
 $lang["common_total_spent"] = "Toplam Harcama";
