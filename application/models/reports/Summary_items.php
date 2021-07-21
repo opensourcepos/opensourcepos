@@ -8,6 +8,7 @@ class Summary_items extends Summary_report
 	{
 		return array(
 			array('item_name' => $this->lang->line('reports_item')),
+			array('category' => $this->lang->line('reports_category')),
 			array('unit_price' => $this->lang->line('reports_unit_price'), 'sorter' => 'number_sorter'),
 			array('quantity' => $this->lang->line('reports_quantity')),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
@@ -23,6 +24,7 @@ class Summary_items extends Summary_report
 
 		$this->db->select('
 				MAX(items.name) AS name,
+				MAX(items.category) AS category,
 				MAX(items.unit_price) AS unit_price,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
