@@ -147,7 +147,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$.post('<?php echo site_url($controller_name . "/delete_attribute_value/");?>' + escape(value), {definition_id: definition_id});
+			$.post('<?php echo site_url($controller_name . "/delete_attribute_value/");?>', {definition_id: definition_id, attribute_value: value});
 		}
 		$(this).parents("li").remove();
 	};
@@ -176,7 +176,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo site_url("attributes/save_attribute_value/");?>' + escape(value), {definition_id: definition_id});
+				$.post('<?php echo site_url("attributes/save_attribute_value/");?>', {definition_id: definition_id, attribute_value: value});
 			}
 		}
 

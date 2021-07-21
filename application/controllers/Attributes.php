@@ -42,16 +42,24 @@ class Attributes extends Secure_Controller
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 
-	public function save_attribute_value($attribute_value)
+	public function save_attribute_value()
 	{
-		$success = $this->Attribute->save_value(urldecode($attribute_value), $this->input->post('definition_id'), $this->input->post('item_id'), $this->input->post('attribute_id'));
+		$success = $this->Attribute->save_value(
+			$this->input->post('attribute_value'),
+			$this->input->post('definition_id'),
+			$this->input->post('item_id'),
+			$this->input->post('attribute_id')
+		);
 
 		echo json_encode(array('success' => $success != 0));
 	}
 
-	public function delete_attribute_value($attribute_value)
+	public function delete_attribute_value()
 	{
-		$success = $this->Attribute->delete_value($attribute_value, $this->input->post('definition_id'));
+		$success = $this->Attribute->delete_value(
+			$this->input->post('attribute_value'),
+			$this->input->post('definition_id')
+		);
 
 		echo json_encode(array('success' => $success));
 	}
