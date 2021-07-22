@@ -18,6 +18,14 @@ class Employee extends Person
 		return ($this->db->get()->num_rows() == 1);
 	}
 
+	public function username_exists($username)
+	{
+		$this->db->from('employees');
+		$this->db->where('employees.username', $username);
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
 	/*
 	Gets total of rows
 	*/
@@ -97,7 +105,7 @@ class Employee extends Person
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		if(ENVIRONMENT != 'testing' && parent::save($person_data, $employee_id))
+		if(ENVIRONMENT != 'testing' && !$this->username_exists($employee_data['username']) && parent::save($person_data, $employee_id))
 		{
 			if(!$employee_id || !$this->exists($employee_id))
 			{
