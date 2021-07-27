@@ -36,7 +36,6 @@ class Item extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->from('items');
 		$this->db->where('item_number', (string) $item_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -207,7 +206,7 @@ class Item extends CI_Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only === TRUE)
 		{
 			return $this->db->get()->row()->count;
 		}
@@ -622,6 +621,7 @@ class Item extends CI_Model
 				$this->db->like('attribute_value', $search);
 				$this->db->where('definition_type', TEXT);
 				$this->db->where('deleted', $filters['is_deleted']);
+				$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 
 				foreach($this->db->get('attribute_links')->result() as $row)
 				{
