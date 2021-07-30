@@ -147,6 +147,7 @@ $lang["config_image_restrictions"] = "Restricciones de carga de imágenes";
 $lang["config_include_hsn"] = "Incluir Soporte para Códigos HSN";
 $lang["config_info"] = "Información";
 $lang["config_info_configuration"] = "Información del Comercio";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Componentes Integrados";
 $lang["config_integrations_configuration"] = "Componentes de Terceros Integrados";
 $lang["config_invoice"] = "Factura";
