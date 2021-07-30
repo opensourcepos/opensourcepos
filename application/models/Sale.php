@@ -232,6 +232,11 @@ class Sale extends CI_Model
 		{
 			$this->db->like('payments.payment_type', $this->lang->line('sales_credit'));
 		}
+		
+		if($filters['only_debitcard'] != FALSE)
+		{
+			$this->db->like('payments.payment_type', $this->lang->line('sales_debit'));
+		}
 
 		if($filters['only_due'] != FALSE)
 		{

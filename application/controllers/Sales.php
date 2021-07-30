@@ -37,6 +37,7 @@ class Sales extends Secure_Controller
 				'only_due' => $this->lang->line('sales_due_filter'),
 				'only_check' => $this->lang->line('sales_check_filter'),
 				'only_creditcard' => $this->lang->line('sales_credit_filter'),
+				'only_debitcard' => $this->lang->line('sales_debit_filter'),
 				'only_invoices' => $this->lang->line('sales_invoice_filter'));
 
 			$this->load->view('sales/manage', $data);
@@ -67,6 +68,7 @@ class Sales extends Secure_Controller
 						 'only_due' => FALSE,
 						 'only_check' => FALSE,
 						 'only_creditcard' => FALSE,
+						 'only_debitcard' => FALSE,
 						 'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
 						 'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
 
