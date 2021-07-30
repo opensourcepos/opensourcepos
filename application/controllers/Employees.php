@@ -190,5 +190,11 @@ class Employees extends Persons
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_cannot_be_deleted')));
 		}
 	}
+
+	public function check_username()
+	{
+		$exists = $this->Employee->username_exists($this->input->get('username'));
+		echo !$exists ? 'true' : 'false';
+	}
 }
 ?>
