@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Cantidad Recibida";
 $lang["sales_authorized_signature"] = "Firma Autorizada";
 $lang["sales_cancel_sale"] = "Cancelar Venta";
 $lang["sales_cash"] = "Efectivo";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Deposito Efectivo";
 $lang["sales_cash_filter"] = "Efectivo";
 $lang["sales_change_due"] = "Cambio";

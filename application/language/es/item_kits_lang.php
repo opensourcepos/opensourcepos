@@ -14,6 +14,7 @@ $lang["item_kits_error_adding_updating"] = "Error agregando/actualizando Kit de 
 $lang["item_kits_find_kit_item"] = "Buscar Kit";
 $lang["item_kits_info"] = "Info de Kit";
 $lang["item_kits_item"] = "Artículo";
+$lang["item_kits_item_kit_number_duplicate"] = "";
 $lang["item_kits_item_kit_number"] = "Código";
 $lang["item_kits_item_number_duplicate"] = "Código de Kit Duplicado";
 $lang["item_kits_item_number"] = "";
