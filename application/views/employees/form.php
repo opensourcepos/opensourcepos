@@ -240,7 +240,7 @@ $(document).ready(function()
 			{
 				required: "<?php echo $this->lang->line('employees_username_required'); ?>",
 				minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>",
-				username: "<?php echo $this->lang->line('employees_employee_username_duplicate'); ?>"
+				remote: "<?php echo $this->lang->line('employees_username_duplicate'); ?>"
             },
 			password:
 			{
