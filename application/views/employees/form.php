@@ -209,9 +209,16 @@ $(document).ready(function()
 			last_name: 'required',
 			username:
 			{
+				<?php
+				if($person_info->person_id == "")
+				{
+				?>
+				remote: "<?php echo site_url($controller_name . '/check_username')?>",
+				<?php
+				}
+				?>
 				required: true,
-				minlength: 5,
-				remote: "<?php echo site_url($controller_name . '/check_username')?>"
+				minlength: 5
 			},
 			password:
 			{
