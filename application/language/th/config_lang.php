@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_all_set"] = "การตั้งค่าอนุญาตไฟล์ทั้งหมดถูกต้อง!";
@@ -127,7 +126,7 @@ $lang["config_financial_year_may"] = "วันที่ 1 พฤษภาคม
 $lang["config_financial_year_nov"] = "วันที่ 1 พฤศจิกายน";
 $lang["config_financial_year_oct"] = "วันที่ 1 ตุลาคม";
 $lang["config_financial_year_sep"] = "วันที่ 1 กันยายน";
-$lang["config_floating_labels"] = "";
+$lang["config_floating_labels"] = "Floating Labels";
 $lang["config_gcaptcha_enable"] = "ขอรหัสยืนยันใหม่ เพื่อเข้าระบบ";
 $lang["config_gcaptcha_secret_key"] = "รหัสลับ สำหรับรหัสยืนยัน";
 $lang["config_gcaptcha_secret_key_required"] = "จำเป็นต้องระบุ รหัสลับ สำหรับรหัสยืนยัน";
@@ -147,7 +146,7 @@ $lang["config_image_restrictions"] = "ข้อจำกัดของไฟล
 $lang["config_include_hsn"] = "เพิ่มการรองรับ HSN Codes";
 $lang["config_info"] = "ข้อมูลร้านค้า";
 $lang["config_info_configuration"] = "ข้อมูลร้านค้า";
-$lang["config_input_groups"] = "";
+$lang["config_input_groups"] = "Input Groups";
 $lang["config_integrations"] = "การเข้าร่วม";
 $lang["config_integrations_configuration"] = "การเข้าร่วมกับบุคคลภายนอก";
 $lang["config_invoice"] = "ใบแจ้งหนี้";
@@ -177,7 +176,7 @@ $lang["config_locale_info"] = "ข้อมูลเขตพื้นที่"
 $lang["config_location"] = "สินค้าคงคลัง";
 $lang["config_location_configuration"] = "ตำแหน่งสินค้าคงคลัง";
 $lang["config_location_info"] = "ข้อมูลตำแหน่งสินค้าคงคลัง";
-$lang["config_login_form"] = "";
+$lang["config_login_form"] = "รูปแบบแบบฟอร์มการเข้าระบบ";
 $lang["config_logout"] = "ต้องการสำรองข้อมูลก่อนออกจากระบบหรือไม่? [OK] สำรองข้อมูล / [Cancel] ออกจากระบบ";
 $lang["config_mailchimp"] = "ระบบส่งอีเมล์เมล์ชิม";
 $lang["config_mailchimp_api_key"] = "API Key สำหรับระบบส่งอีเมล์เมล์ชิม";
@@ -292,7 +291,7 @@ $lang["config_tax_decimals"] = "จำนวนทศนิยมภาษี";
 $lang["config_tax_id"] = "เลขประจำตัวผู้เสียภาษี";
 $lang["config_tax_included"] = "รวมภาษีแล้ว";
 $lang["config_theme"] = "Theme";
-$lang["config_theme_preview"] = "";
+$lang["config_theme_preview"] = "ดูตัวอย่างธีม:";
 $lang["config_thousands_separator"] = "ตัวคั่นหลักพัน";
 $lang["config_timezone"] = "โซนเวลา";
 $lang["config_timezone_error"] = "เขตเวลาของระบบ OSPOS แตกต่างกับเขตเวลาปัจจุบันของคุณ";
