@@ -213,12 +213,13 @@ $(document).ready(function()
 				if($person_info->person_id == "")
 				{
 				?>
-				remote: "<?php echo site_url($controller_name . '/check_username')?>",
+				remote: '<?php echo site_url("$controller_name/check_username")?>',
 				<?php
 				}
 				?>
 				required: true,
 				minlength: 5
+
 			},
 			password:
 			{
