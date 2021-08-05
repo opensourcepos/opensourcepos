@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Agregar Artículo";
 $lang["item_kits_all"] = "Todo";
 $lang["item_kits_cannot_be_deleted"] = "Borrado de Kit(s) de Artículos fallido.";
@@ -7,7 +6,7 @@ $lang["item_kits_confirm_delete"] = "¿Estás seguro(a) de querer borrar los kit
 $lang["item_kits_confirm_restore"] = "¿Está seguro de querer restaurar lo(s) kit(s) seleccionado(s)?";
 $lang["item_kits_description"] = "Descripción del Kit de Artículos";
 $lang["item_kits_discount"] = "Descuento";
-$lang["item_kits_discount_fixed"] = "";
+$lang["item_kits_discount_fixed"] = "Descuento Fijo";
 $lang["item_kits_discount_percent"] = "Porcentaje de descuento";
 $lang["item_kits_discount_type"] = "Tipo de Descuento";
 $lang["item_kits_error_adding_updating"] = "Error agregando/actualizando Kit de Artículos.";
