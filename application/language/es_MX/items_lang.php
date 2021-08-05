@@ -1,19 +1,18 @@
-<?php 
-
-$lang["items_add_minus"] = "";
-$lang["items_allow_alt_description"] = "";
-$lang["items_amount_entry"] = "";
-$lang["items_bulk_edit"] = "";
-$lang["items_buy_price_required"] = "";
-$lang["items_cannot_be_deleted"] = "";
-$lang["items_cannot_find_item"] = "";
-$lang["items_category"] = "";
-$lang["items_category_required"] = "";
-$lang["items_change_all_to_allow_alt_desc"] = "";
-$lang["items_change_all_to_not_allow_allow_desc"] = "";
-$lang["items_change_all_to_serialized"] = "";
-$lang["items_change_all_to_unserialized"] = "";
-$lang["items_change_image"] = "";
+<?php
+$lang["items_add_minus"] = "Inventario a agregar o disminuir.";
+$lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
+$lang["items_amount_entry"] = "Ingrese Cantidad";
+$lang["items_bulk_edit"] = "Edición Masiva";
+$lang["items_buy_price_required"] = "Precio de Compra es un campo requerido.";
+$lang["items_cannot_be_deleted"] = "No se puede borrar el item(s) seleccionado, uno a mas de los items seleccionados tienen ventas.";
+$lang["items_cannot_find_item"] = "Articulo no encontrado.";
+$lang["items_category"] = "Categoría";
+$lang["items_category_required"] = "Categoría es un campo requerido.";
+$lang["items_change_all_to_allow_alt_desc"] = "Permitir Descripción Alternativa para todo.";
+$lang["items_change_all_to_not_allow_allow_desc"] = "No permitir Descripción Alternativa para todo.";
+$lang["items_change_all_to_serialized"] = "Cambiar todo a Serializado";
+$lang["items_change_all_to_unserialized"] = "Cambiar todo a No-Serializado";
+$lang["items_change_image"] = "Cambiar Imagen";
 $lang["items_confirm_bulk_edit"] = "";
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "";
 $lang["items_confirm_delete"] = "";
