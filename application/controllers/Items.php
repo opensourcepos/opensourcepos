@@ -849,11 +849,10 @@ class Items extends Secure_Controller
 			{
 				set_time_limit(240);
 
-				$failCodes					= [];
-				$third_party_data			= [];
-				$csv_rows					= get_csv_file($_FILES['file_path']['tmp_name']);
-				$employee_id				= $this->Employee->get_logged_in_employee_info()->person_id;
-				$allowed_stock_locations	= $this->Stock_location->get_allowed_locations();
+				$failCodes = [];
+				$csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
+				$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+				$allowed_stock_locations = $this->Stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->Attribute->get_definition_names();
 
 				unset($attribute_definition_names[-1]);	//Removes the common_none_selected_text from the array
@@ -872,20 +871,20 @@ class Items extends Secure_Controller
 
 				foreach($csv_rows as $key => $row)
 				{
-					$is_failed_row	= FALSE;
-					$item_id		= $row['Id'];
-					$is_update 		= !empty($item_id);
-					$item_data		= array(
-						'item_id'				=> $item_id,
-						'name'					=> $row['Item Name'],
-						'description'			=> $row['Description'],
-						'category'				=> $row['Category'],
-						'cost_price'			=> $row['Cost Price'],
-						'unit_price'			=> $row['Unit Price'],
-						'reorder_level'			=> $row['Reorder Level'],
-						'deleted'				=> FALSE,
-						'hsn_code'				=> $row['HSN'],
-						'pic_filename'			=> $row['Image']);
+					$is_failed_row = FALSE;
+					$item_id = $row['Id'];
+					$is_update = !empty($item_id);
+					$item_data = array(
+						'item_id' => $item_id,
+						'name' => $row['Item Name'],
+						'description' => $row['Description'],
+						'category' => $row['Category'],
+						'cost_price' => $row['Cost Price'],
+						'unit_price' => $row['Unit Price'],
+						'reorder_level' => $row['Reorder Level'],
+						'deleted' => FALSE,
+						'hsn_code' => $row['HSN'],
+						'pic_filename' => $row['Image']);
 
 					if(!empty($row['supplier_id']))
 					{
@@ -894,13 +893,13 @@ class Items extends Secure_Controller
 
 					if($is_update)
 					{
-						$item_data['allow_alt_description']	= empty($row['Allow Alt Description']) ? NULL : $row['Allow Alt Description'];
-						$item_data['is_serialized']			= empty($row['Item has Serial Number']) ? NULL : $row['Item has Serial Number'];
+						$item_data['allow_alt_description'] = empty($row['Allow Alt Description']) ? NULL : $row['Allow Alt Description'];
+						$item_data['is_serialized'] = empty($row['Item has Serial Number']) ? NULL : $row['Item has Serial Number'];
 					}
 					else
 					{
-						$item_data['allow_alt_description']	= empty($row['Allow Alt Description'])? '0' : '1';
-						$item_data['is_serialized']			= empty($row['Item has Serial Number'])? '0' : '1';
+						$item_data['allow_alt_description'] = empty($row['Allow Alt Description'])? '0' : '1';
+						$item_data['is_serialized'] = empty($row['Item has Serial Number'])? '0' : '1';
 					}
 
 					if(!empty($row['Barcode']))
@@ -929,8 +928,8 @@ class Items extends Secure_Controller
 					}
 					else
 					{
-						$failed_row		= $key+2;
-						$failCodes[]	= $failed_row;
+						$failed_row = $key+2;
+						$failCodes[] = $failed_row;
 						log_message('ERROR',"CSV Item import failed on line $failed_row. This item was not imported.");
 					}
 
@@ -969,14 +968,14 @@ class Items extends Secure_Controller
 	 */
 	private function data_error_check($row, $item_data, $allowed_locations, $definition_names, $attribute_data)
 	{
-		$item_id	= $row['Id'];
-		$is_update	= $item_id ? TRUE : FALSE;
+		$item_id = $row['Id'];
+		$is_update = $item_id ? TRUE : FALSE;
 
 		//Check for empty required fields
 		$check_for_empty = array(
-			'name'			=> $item_data['name'],
-			'category'		=> $item_data['category'],
-			'unit_price'	=> $item_data['unit_price']);
+			'name' => $item_data['name'],
+			'category' => $item_data['category'],
+			'unit_price' => $item_data['unit_price']);
 
 		foreach($check_for_empty as $key => $val)
 		{
@@ -1002,12 +1001,12 @@ class Items extends Secure_Controller
 
 		//Build array of fields to check for numerics
 		$check_for_numeric_values = array(
-			'cost_price'	=> $item_data['cost_price'],
-			'unit_price'	=> $item_data['unit_price'],
-			'reorder_level'	=> $item_data['reorder_level'],
-			'supplier_id'	=> $item_data['supplier_id'],
-			'Tax 1 Percent'	=> $row['Tax 1 Percent'],
-			'Tax 2 Percent'	=> $row['Tax 2 Percent']);
+			'cost_price' => $item_data['cost_price'],
+			'unit_price' => $item_data['unit_price'],
+			'reorder_level' => $item_data['reorder_level'],
+			'supplier_id' => $item_data['supplier_id'],
+			'Tax 1 Percent' => $row['Tax 1 Percent'],
+			'Tax 2 Percent' => $row['Tax 2 Percent']);
 
 		foreach($allowed_locations as $location_name)
 		{
@@ -1029,14 +1028,14 @@ class Items extends Secure_Controller
 		{
 			if(!empty($row["attribute_$definition_name"]))
 			{
-				$definition_type	= $attribute_data[$definition_name]['definition_type'];
-				$attribute_value 	= $row["attribute_$definition_name"];
+				$definition_type = $attribute_data[$definition_name]['definition_type'];
+				$attribute_value = $row["attribute_$definition_name"];
 
 				switch($definition_type)
 				{
 					case DROPDOWN:
-						$dropdown_values 	= $attribute_data[$definition_name]['dropdown_values'];
-						$dropdown_values[] 	= '';
+						$dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
+						$dropdown_values[] = '';
 
 						if(!empty($attribute_value) && in_array($attribute_value, $dropdown_values) === FALSE)
 						{
@@ -1135,20 +1134,20 @@ class Items extends Secure_Controller
 	private function save_inventory_quantities($row, $item_data, $allowed_locations, $employee_id)
 	{
 		//Quantities & Inventory Section
-		$comment			= $this->lang->line('items_inventory_CSV_import_quantity');
-		$is_update			= $row['Id'] ? TRUE : FALSE;
+		$comment = $this->lang->line('items_inventory_CSV_import_quantity');
+		$is_update = $row['Id'] ? TRUE : FALSE;
 
 		foreach($allowed_locations as $location_id => $location_name)
 		{
 			$item_quantity_data = array(
-				'item_id' 		=> $item_data['item_id'],
-				'location_id'	=> $location_id);
+				'item_id' => $item_data['item_id'],
+				'location_id' => $location_id);
 
 			$csv_data = array(
-				'trans_items'		=> $item_data['item_id'],
-				'trans_user'		=> $employee_id,
-				'trans_comment'		=> $comment,
-				'trans_location'	=> $location_id);
+				'trans_items' => $item_data['item_id'],
+				'trans_user' => $employee_id,
+				'trans_comment' => $comment,
+				'trans_location' => $location_id);
 
 			if(!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0')
 			{
