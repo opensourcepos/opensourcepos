@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Todas";
 $lang["reports_authority"] = "Autoridad";
 $lang["reports_canceled"] = "Cancelado";
@@ -11,10 +10,10 @@ $lang["reports_code_invoice"] = "INV";
 $lang["reports_code_pos"] = "POS";
 $lang["reports_code_quote"] = "Q";
 $lang["reports_code_return"] = "RET";
-$lang["reports_code_type"] = "";
-$lang["reports_code_work_order"] = "";
-$lang["reports_comments"] = "";
-$lang["reports_complete"] = "";
+$lang["reports_code_type"] = "Tipo";
+$lang["reports_code_work_order"] = "OT";
+$lang["reports_comments"] = "Comentarios";
+$lang["reports_complete"] = "Ventas y Devoluciones Completadas";
 $lang["reports_completed_sales"] = "";
 $lang["reports_confirm_delete"] = "";
 $lang["reports_confirm_restore"] = "";
