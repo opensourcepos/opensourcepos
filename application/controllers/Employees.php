@@ -60,6 +60,7 @@ class Employees extends Persons
 			$person_info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $person_info;
+		$data['employee_id'] = $employee_id;
 
 		$modules = array();
 		foreach($this->Module->get_all_modules()->result() as $module)
@@ -191,9 +192,9 @@ class Employees extends Persons
 		}
 	}
 
-	public function check_username()
+	public function check_username($employee_id)
 	{
-		$exists = $this->Employee->username_exists($this->input->get('username'));
+		$exists = $this->Employee->username_exists($employee_id, $this->input->get('username'));
 		echo !$exists ? 'true' : 'false';
 	}
 }
