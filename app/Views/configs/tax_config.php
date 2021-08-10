@@ -1,110 +1,125 @@
-<?php echo form_open('config/save_tax/', array('id' => 'tax_config_form', 'class' => 'form-horizontal')); ?>
+<?php
+/**
+ * @var array $tax_code_options
+ * @var array $tax_category_options
+ * @var array $tax_jurisdiction_options
+ * @var string $controller_name
+ */
+?>
+<?php echo form_open('config/save_tax/', ['id' => 'tax_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 			<ul id="tax_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_tax_id'), 'tax_id', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.tax_id'), 'tax_id', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('tax_id'))); ?>
+						'value' => esc(config('OSPOS')->tax_id, 'attr')
+					]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_tax_included'), 'tax_included', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.tax_included'), 'tax_included', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'tax_included',
 						'id' => 'tax_included',
 						'value' => 'tax_included',
-						'checked'=>$this->config->item('tax_included'))); ?>
+						'checked' => config('OSPOS')->tax_included
+					]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_rate_1'), 'default_tax_1_rate', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 						'name' => 'default_tax_1_name',
 						'id' => 'default_tax_1_name',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : $this->lang->line('items_sales_tax_1'))); ?>
+						'value' => config('OSPOS')->default_tax_1_name !== FALSE ? esc(config('OSPOS')->default_tax_1_name, 'attr') : lang('Items.sales_tax_1')]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
-					<?php echo form_input(array(
+					<?php echo form_input ([
 						'name' => 'default_tax_1_rate',
 						'id' => 'default_tax_1_rate',
 						'class' => 'form-control input-sm',
-						'value'=> to_tax_decimals($this->config->item('default_tax_1_rate')))); ?>
+						'value' => to_tax_decimals(config('OSPOS')->default_tax_1_rate)
+					]) ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_2_rate', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_rate_2'), 'default_tax_2_rate', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 						'name' => 'default_tax_2_name',
 						'id' => 'default_tax_2_name',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : $this->lang->line('items_sales_tax_2'))); ?>
+						'value' => config('OSPOS')->default_tax_2_name !== FALSE ? esc(config('OSPOS')->default_tax_2_name, 'attr') : lang('Items.sales_tax_2')
+					]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
-					<?php echo form_input(array(
+					<?php echo form_input ([
 						'name' => 'default_tax_2_rate',
 						'id' => 'default_tax_2_rate',
 						'class' => 'form-control input-sm',
-						'value'=> to_tax_decimals($this->config->item('default_tax_2_rate')))); ?>
+						'value' => to_tax_decimals(config('OSPOS')->default_tax_2_rate)
+					]) ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_use_destination_based_tax'), 'use_destination_based_tax', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.use_destination_based_tax'), 'use_destination_based_tax', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'use_destination_based_tax',
 						'id' => 'use_destination_based_tax',
 						'value' => 'use_destination_based_tax',
-						'checked'=>$this->config->item('use_destination_based_tax'))); ?>
+						'checked' => config('OSPOS')->use_destination_based_tax
+					]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_tax_code'), 'default_tax_code', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_code', $tax_code_options, $this->config->item('default_tax_code'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('default_tax_code', esc($tax_code_options, 'attr'), esc(config('OSPOS')->default_tax_code, 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_tax_category'), 'default_tax_category', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_category', $tax_category_options, $this->config->item('default_tax_category'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('default_tax_category', esc($tax_category_options, 'attr'), esc(config('OSPOS')->default_tax_category, 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_tax_jurisdiction'), 'default_tax_jurisdiction', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_jurisdiction', $tax_jurisdiction_options, $this->config->item('default_tax_jurisdiction'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options, 'attr'), esc(config('OSPOS')->default_tax_jurisdiction, 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
-			<?php echo form_submit(array(
+			<?php echo form_submit ([
 				'name' => 'submit_tax',
 				'id' => 'submit_tax',
-				'value' => $this->lang->line('common_submit'),
-				'class' => 'btn btn-primary btn-sm pull-right')); ?>
+				'value' => lang('Common.submit'),
+				'class' => 'btn btn-primary btn-sm pull-right'
+			]) ?>
 		</fieldset>
 	</div>
 
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -144,11 +159,11 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 			},
 			default_tax2_rate:
 			{
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 			},
 		},
 
@@ -156,7 +171,7 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				number: "<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
+				number: "<?php echo lang('Config.default_tax_rate_number') ?>"
 			},
 		}
 	}));

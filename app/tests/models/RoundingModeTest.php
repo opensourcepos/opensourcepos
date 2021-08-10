@@ -1,16 +1,22 @@
 <?php
+
+namespace App\Models;
+
+use CodeIgniter\Test\CIUnitTestCase;
+
+use App\Models\Enums\Rounding_mode;
+
 /**
  * @backupGlobals disabled
  */
 
-
-class Rounding_mode_test extends UnitTestCase
+class RoundingModeTest extends CIUnitTestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->resetInstance();
-        $this->CI->load->model('enums/Rounding_mode');
+        $this->rounding_mode = model('enums/Rounding_mode');
     }
 
     public function test_rounding()

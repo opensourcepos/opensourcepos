@@ -1,41 +1,41 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Summary_report.php");
+namespace App\Models\Reports;
 
 class Summary_discounts extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
-		return array(
-			array('discount' => $this->lang->line('reports_discount'), 'sorter' => 'number_sorter'),
-			array('count' => $this->lang->line('reports_count')),
-			array('total' => $this->lang->line('reports_total')));
+		return [
+			['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
+			['count' => lang('Reports.count')],
+			['total' => lang('Reports.total')]
+		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		if($inputs['discount_type'] == FIXED)
+		$builder = $this->db->table('sales_items AS sales_items');
+
+		if($inputs['discount_type'] == FIXED)	//TODO: if there are only two options for this if/else statement then it needs to be refactored to use ternary operators. Also ===?
 		{
-			$this->db->select('SUM(sales_items.discount) AS total, MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
-			$this->db->where('discount_type', FIXED);
+			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("' . config('OSPOS')->currency_symbol . '",sales_items.discount)) AS discount, count(*) AS count');
+			$builder->where('discount_type', FIXED);
 		}
-		elseif($inputs['discount_type'] == PERCENT)
+		elseif($inputs['discount_type'] == PERCENT)	//TODO: === ?
 		{
-			$this->db->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
-			$this->db->where('discount_type', PERCENT);
-		}	
-		
-		$this->db->where('discount >', 0);
-		$this->db->group_by('sales_items.discount');
-		$this->db->order_by('sales_items.discount');
-		
+			$builder->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
+			$builder->where('discount_type', PERCENT);
+		}
 
-		$this->db->from('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$builder->where('discount >', 0);
+		$builder->groupBy('sales_items.discount');
+		$builder->orderBy('sales_items.discount');
 
-		$this->_where($inputs);
+		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
-		return $this->db->get()->result_array();
+		$this->_where($inputs, $builder);	//TODO: Hungarian notation
+
+		return $builder->get()->getResultArray();
 	}
 }
-?>

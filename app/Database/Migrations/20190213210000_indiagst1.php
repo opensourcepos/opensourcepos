@@ -1,13 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_IndiaGST1 extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_IndiaGST1 extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_indiagst1.sql');
 
@@ -16,9 +15,8 @@ class Migration_IndiaGST1 extends CI_Migration
 		error_log('Definition of Supplier.Tax Id corrected');
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 
 }
-?>

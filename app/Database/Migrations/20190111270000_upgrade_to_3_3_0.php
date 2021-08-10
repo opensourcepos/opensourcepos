@@ -1,20 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_Upgrade_To_3_3_0 extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_Upgrade_To_3_3_0 extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		execute_script(APPPATH . 'migrations/sqlscripts/3.2.1_to_3.3.0.sql');
 	}
 
-	public function down()
+	public function down(): void
 	{
 
 	}
 }
-?>

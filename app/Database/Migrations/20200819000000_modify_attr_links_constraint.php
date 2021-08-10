@@ -1,13 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_modify_attr_links_constraint extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_modify_attr_links_constraint extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		error_log('Migrating modify_attr_links_constraint');
 
@@ -17,8 +16,7 @@ class Migration_modify_attr_links_constraint extends CI_Migration
 		error_log('Migrating modify_attr_links_constraint');
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 }
-?>

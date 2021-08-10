@@ -1,201 +1,221 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Persons.php");
+namespace App\Controllers;
 
+use app\Models\Module;
+
+/**
+ *
+ *
+ * @property module module
+ *
+ */
 class Employees extends Persons
 {
 	public function __construct()
 	{
 		parent::__construct('employees');
+
+		$this->module = model('Module');
 	}
 
-	/*
-	Returns employee table data rows. This will be called with AJAX.
-	*/
-	public function search()
+	/**
+	 * Returns employee table data rows. This will be called with AJAX.
+	 */
+	public function search(): void
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$employees = $this->Employee->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Employee->get_found_rows($search);
+		$employees = $this->employee->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->employee->get_found_rows($search);
 
-		$data_rows = array();
-		foreach($employees->result() as $person)
+		$data_rows = [];
+		foreach($employees->getResult() as $person)
 		{
-			$data_rows[] = $this->xss_clean(get_person_data_row($person));
+			$data_rows[] = get_person_data_row($person);
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	public function suggest()
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
+	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->input->get('term'), TRUE));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), 25, TRUE);
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
 
-	/*
-	Loads the employee edit form
-	*/
-	public function view($employee_id = -1)
+	/**
+	 * Loads the employee edit form
+	 */
+	public function view(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$person_info = $this->Employee->get_info($employee_id);
+		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
-			$person_info->$property = $this->xss_clean($value);
+			$person_info->$property = $value;
 		}
 		$data['person_info'] = $person_info;
 		$data['employee_id'] = $employee_id;
 
-		$modules = array();
-		foreach($this->Module->get_all_modules()->result() as $module)
+		$modules = [];
+		foreach($this->module->get_all_modules()->getResult() as $module)
 		{
-			$module->module_id = $this->xss_clean($module->module_id);
-			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
-			$module->menu_group = $this->xss_clean($this->Employee->get_menu_group($module->module_id, $person_info->person_id));
+			$module->grant = $this->employee->has_grant($module->module_id, $person_info->person_id);
+			$module->menu_group = $this->employee->get_menu_group($module->module_id, $person_info->person_id);
 
 			$modules[] = $module;
 		}
 		$data['all_modules'] = $modules;
 
-		$permissions = array();
-		foreach($this->Module->get_all_subpermissions()->result() as $permission)
+		$permissions = [];
+		foreach($this->module->get_all_subpermissions()->getResult() as $permission)	//TODO: subpermissions does not follow naming standards.
 		{
-			$permission->module_id = $this->xss_clean($permission->module_id);
-			$permission->permission_id = str_replace(' ', '_', $this->xss_clean($permission->permission_id));
-			$permission->grant = $this->xss_clean($this->Employee->has_grant($permission->permission_id, $person_info->person_id));
+			$permission->permission_id = str_replace(' ', '_', $permission->permission_id);
+			$permission->grant = $this->employee->has_grant($permission->permission_id, $person_info->person_id);
 
 			$permissions[] = $permission;
 		}
 		$data['all_subpermissions'] = $permissions;
 
-		$this->load->view('employees/form', $data);
+		echo view('employees/form', $data);
 	}
 
-	/*
-	Inserts/updates an employee
-	*/
-	public function save($employee_id = -1)
+	/**
+	 * Inserts/updates an employee
+	 */
+	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$first_name = $this->xss_clean($this->input->post('first_name'));
-		$last_name = $this->xss_clean($this->input->post('last_name'));
-		$email = $this->xss_clean(strtolower($this->input->post('email')));
+		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: duplicated code
+		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
 		$last_name = $this->nameize($last_name);
 
-		$person_data = array(
+		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->input->post('gender'),
+			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
 			'email' => $email,
-			'phone_number' => $this->input->post('phone_number'),
-			'address_1' => $this->input->post('address_1'),
-			'address_2' => $this->input->post('address_2'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state'),
-			'zip' => $this->input->post('zip'),
-			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments'),
-		);
+			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
+			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
+			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
+			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
+			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
+			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
+		];
 
-		$grants_array = array();
-		foreach($this->Module->get_all_permissions()->result() as $permission)
+		$grants_array = [];
+		foreach($this->module->get_all_permissions()->getResult() as $permission)
 		{
-			$grants = array();
-			$grant = $this->input->post('grant_'.$permission->permission_id) != NULL ? $this->input->post('grant_'.$permission->permission_id) : '';
+			$grants = [];
+			$grant = $this->request->getPost('grant_'.$permission->permission_id) != NULL ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_STRING) : '';
+
 			if($grant == $permission->permission_id)
 			{
 				$grants['permission_id'] = $permission->permission_id;
-				$grants['menu_group'] = $this->input->post('menu_group_'.$permission->permission_id) != NULL ? $this->input->post('menu_group_'.$permission->permission_id) : '--';
+				$grants['menu_group'] = $this->request->getPost('menu_group_'.$permission->permission_id) != NULL ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_STRING) : '--';
 				$grants_array[] = $grants;
 			}
 		}
 
 		//Password has been changed OR first time password set
-		if($this->input->post('password') != '' && ENVIRONMENT != 'testing')
+		if($this->request->getPost('password') != '' && ENVIRONMENT != 'testing')
 		{
-			$exploded = explode(":", $this->input->post('language'));
-			$employee_data = array(
-				'username' 	=> $this->input->post('username'),
-				'password' 	=> password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
+			$employee_data = [
+				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_STRING),
+				'password' 	=> password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
 				'hash_version' 	=> 2,
 				'language_code' => $exploded[0],
 				'language' 	=> $exploded[1]
-			);
+			];
 		}
 		else //Password not changed
 		{
-			$exploded = explode(":", $this->input->post('language'));
-			$employee_data = array(
-				'username' 	=> $this->input->post('username'),
+			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
+			$employee_data = [
+				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_STRING),
 				'language_code'	=> $exploded[0],
 				'language' 	=> $exploded[1]
-			);
+			];
 		}
 
-		if($this->Employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
+		if($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
 		{
 			// New employee
 			if($employee_id == -1)
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('employees_successful_adding') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $this->xss_clean($employee_data['person_id'])));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $employee_data['person_id']
+				]);
 			}
 			else // Existing employee
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('employees_successful_updating') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $employee_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $employee_id
+				]);
 			}
 		}
 		else // Failure
 		{
-			echo json_encode(array('success' => FALSE,
-							'message' => $this->lang->line('employees_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-							'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+				'id' => -1
+			]);
 		}
 	}
 
-	/*
-	This deletes employees from the employees table
-	*/
-	public function delete()
+	/**
+	 * This deletes employees from the employees table
+	 */
+	public function delete(): void
 	{
-		$employees_to_delete = $this->xss_clean($this->input->post('ids'));
+		$employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
-		if($this->Employee->delete_list($employees_to_delete))
+		if($this->employee->delete_list($employees_to_delete))	//TODO: this is passing a string, but delete_list expects an array
 		{
-			echo json_encode(array('success' => TRUE,'message' => $this->lang->line('employees_successful_deleted') . ' ' .
-							count($employees_to_delete) . ' ' . $this->lang->line('employees_one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Employees.cannot_be_deleted')]);
 		}
 	}
 
-	public function check_username($employee_id)
+	/**
+	 * @param $employee_id
+	 * @return void
+	 */
+	public function check_username($employee_id): void
 	{
-		$exists = $this->Employee->username_exists($employee_id, $this->input->get('username'));
+		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username', FILTER_SANITIZE_STRING));
 		echo !$exists ? 'true' : 'false';
 	}
 }
-?>

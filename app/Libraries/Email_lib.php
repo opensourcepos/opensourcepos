@@ -1,50 +1,61 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace app\Libraries;
+
+use CodeIgniter\Email\Email;
+use CodeIgniter\Encryption\Encryption;
+use CodeIgniter\Encryption\EncrypterInterface;
+
 
 /**
  * Email library
  *
  * Library with utilities to configure and send emails
+ *
+ * @property email email
+ * @property encryption encryption
+ * @property encrypterinterface encrypter
  */
 
 class Email_lib
 {
-	private $CI;
-
   	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->email = new Email();
+		$this->encryption = new Encryption();
+		$this->encrypter = $this->encryption->initialize();
 
-		$this->CI->load->library('email');
 
-		$config = array(
+		$config = [
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',
 			'validate' => TRUE,
-			'protocol' => $this->CI->config->item('protocol'),
-			'mailpath' => $this->CI->config->item('mailpath'),
-			'smtp_host' => $this->CI->config->item('smtp_host'),
-			'smtp_user' => $this->CI->config->item('smtp_user'),
-			'smtp_pass' => $this->CI->encryption->decrypt($this->CI->config->item('smtp_pass')),
-			'smtp_port' => $this->CI->config->item('smtp_port'),
-			'smtp_timeout' => $this->CI->config->item('smtp_timeout'),
-			'smtp_crypto' => $this->CI->config->item('smtp_crypto')
-		);
+			'protocol' => config('OSPOS')->protocol,
+			'mailpath' => config('OSPOS')->mailpath,
+			'smtp_host' => config('OSPOS')->smtp_host,
+			'smtp_user' => config('OSPOS')->smtp_user,
+			'smtp_pass' => $this->encrypter->decrypt(config('OSPOS')->smtp_pass),
+			'smtp_port' => config('OSPOS')->smtp_port,
+			'smtp_timeout' => config('OSPOS')->smtp_timeout,
+			'smtp_crypto' => config('OSPOS')->smtp_crypto
+		];
 
-		$this->CI->email->initialize($config);
+		$this->email->initialize($config);
 	}
 
 	/**
 	 * Email sending function
 	 * Example of use: $response = sendEmail('john@doe.com', 'Hello', 'This is a message', $filename);
 	 */
-	public function sendEmail($to, $subject, $message, $attachment = NULL)
+	public function sendEmail(string $to, string $subject, string $message, string $attachment = NULL): bool
 	{
-		$email = $this->CI->email;
+		$email = $this->email;
 
-		$email->from($this->CI->config->item('email'), $this->CI->config->item('company'));
-		$email->to($to);
-		$email->subject($subject);
-		$email->message($message);
+		$email->setFrom(config('OSPOS')->email, config('OSPOS')->company);
+		$email->setTo($to);
+		$email->setSubject($subject);
+		$email->setMessage($message);
+
 		if(!empty($attachment))
 		{
 			$email->attach($attachment);
@@ -54,11 +65,9 @@ class Email_lib
 
 		if(!$result)
 		{
-			error_log($email->print_debugger());
+			error_log($email->printDebugger());
 		}
 
 		return $result;
 	}
 }
-
-?>

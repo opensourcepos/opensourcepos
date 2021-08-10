@@ -1,42 +1,54 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Report.php");
+namespace App\Models\Reports;
 
+use app\Models\Receiving;
+
+/**
+ * 
+ * 
+ * @property receiving receiving
+ * 
+ */
 class Detailed_receivings extends Report
 {
-	public function create(array $inputs)
+	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
-		$this->Receiving->create_temp_table($inputs);
+		$receiving = model(Receiving::class);
+		$receiving->create_temp_table($inputs);
 	}
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
-		return array(
-			'summary' => array(
-				array('id' => $this->lang->line('reports_receiving_id')),
-				array('receiving_time' => $this->lang->line('reports_date'), 'sortable' => FALSE),
-				array('quantity' => $this->lang->line('reports_quantity')),
-				array('employee_name' => $this->lang->line('reports_received_by')),
-				array('supplier_name' => $this->lang->line('reports_supplied_by')),
-				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-				array('payment_type' => $this->lang->line('reports_payment_type')),
-				array('comment' => $this->lang->line('reports_comments')),
-				array('reference' => $this->lang->line('receivings_reference'))),
-			'details' => array(
-				$this->lang->line('reports_item_number'),
-				$this->lang->line('reports_name'),
-				$this->lang->line('reports_category'),
-				$this->lang->line('reports_quantity'),
-				$this->lang->line('reports_total'),
-				$this->lang->line('reports_discount'))
-		);
+		return [
+			'summary' => [
+				['id' => lang('Reports.receiving_id')],
+				['receiving_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['quantity' => lang('Reports.quantity')],
+				['employee_name' => lang('Reports.received_by')],
+				['supplier_name' => lang('Reports.supplied_by')],
+				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+				['payment_type' => lang('Reports.payment_type')],
+				['comment' => lang('Reports.comments')],
+				['reference' => lang('Receivings.reference')]
+			],
+			'details' => [
+				lang('Reports.item_number'),
+				lang('Reports.name'),
+				lang('Reports.category'),
+				lang('Reports.quantity'),
+				lang('Reports.total'),
+				lang('Reports.discount')
+			]
+		];
 	}
 
-	public function getDataByReceivingId($receiving_id)
+	public function getDataByReceivingId(string $receiving_id): array
 	{
-		$this->db->select('receiving_id,
-			MAX(receiving_time) as receiving_time,
+		$builder = $this->db->table('receivings_items_temp');
+		$builder->select('receiving_id,
+			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -46,19 +58,19 @@ class Detailed_receivings extends Report
 			MAX(payment_type) as payment_type,
 			MAX(comment) as comment,
 			MAX(reference) as reference');
-		$this->db->from('receivings_items_temp');
-		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-		$this->db->where('receiving_id', $receiving_id);
-		$this->db->group_by('receiving_id');
+		$builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
+		$builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
+		$builder->where('receiving_id', $receiving_id);
+		$builder->groupBy('receiving_id');
 
-		return $this->db->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$this->db->select('receiving_id,
-			MAX(receiving_time) as receiving_time,
+		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
+		$builder->select('receiving_id,
+			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -67,37 +79,39 @@ class Detailed_receivings extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment,
 			MAX(reference) AS reference');
-		$this->db->from('receivings_items_temp AS receivings_items_temp');
-		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
+		$builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
+		$builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $inputs['location_id']);
+			$builder->where('item_location', $inputs['location_id']);
 		}
 
-		if($inputs['receiving_type'] == 'receiving')
+		if($inputs['receiving_type'] == 'receiving')	//TODO: These if statements should be replaced with a switch statement
 		{
-			$this->db->where('quantity_purchased >', 0);
+			$builder->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased <', 0);
+			$builder->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->having('items_purchased = 0');
+			$builder->having('items_purchased = 0');
 		}
-		$this->db->group_by('receiving_id', 'receiving_time');
-		$this->db->order_by('receiving_id');
 
-		$data = array();
-		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
+		$builder->groupBy('receiving_id', 'receiving_date');
+		$builder->orderBy('receiving_id');
 
-		foreach($data['summary'] as $key=>$value)
+		$data = [];
+		$data['summary'] = $builder->get()->getResultArray();
+		$data['details'] = [];
+
+		$builder = $this->db->table('receivings_items_temp');
+
+		foreach($data['summary'] as $key => $value)
 		{
-			$this->db->select('
+			$builder->select('
 				MAX(name) AS name, 
 				MAX(item_number) AS item_number, 
 				MAX(category) AS category, 
@@ -108,49 +122,50 @@ class Detailed_receivings extends Report
 				MAX(discount_type) AS discount_type, 
 				MAX(item_location) AS item_location, 
 				MAX(item_receiving_quantity) AS receiving_quantity');
-			$this->db->from('receivings_items_temp');
-			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
+			$builder->join('items', 'receivings_items_temp.item_id = items.item_id');
+
 			if(count($inputs['definition_ids']) > 0)
 			{
 				$format = $this->db->escape(dateformat_mysql());
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
-				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
-				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+				$builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
+				$builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
+				$builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
+				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
-			$this->db->where('receivings_items_temp.receiving_id', $value['receiving_id']);
-			$this->db->group_by('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
-			$data['details'][$key] = $this->db->get()->result_array();
+
+			$builder->where('receivings_items_temp.receiving_id', $value['receiving_id']);
+			$builder->groupBy('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
+			$data['details'][$key] = $builder->get()->getResultArray();
 		}
 
 		return $data;
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$this->db->select('SUM(total) AS total');
-		$this->db->from('receivings_items_temp');
+		$builder = $this->db->table('receivings_items_temp');
+		$builder->select('SUM(total) AS total');
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $inputs['location_id']);
+			$builder->where('item_location', $inputs['location_id']);
 		}
 
+		//TODO: These if statements should be replaced with a switch statement
 		if($inputs['receiving_type'] == 'receiving')
 		{
-			$this->db->where('quantity_purchased >', 0);
+			$builder->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased <', 0);
+			$builder->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->where('quantity_purchased', 0);
+			$builder->where('quantity_purchased', 0);
 		}
 
-		return $this->db->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
-?>

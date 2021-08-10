@@ -1,26 +1,30 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\Tokens;
+
+use app\Models\Sale;
 
 /**
  * Token_invoice_count class
+ *
+ * @property sale sale
+ *
  */
-
 class Token_invoice_count extends Token
 {
-	public function __construct($value = '')
+	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
-
-		$this->CI->load->model('Sale');
 	}
 
-	public function token_id()
+	public function token_id(): string
 	{
 		return 'CO';
 	}
 
-	public function get_value()
+	public function get_value(): int
 	{
-		return empty($value) ? $this->CI->Sale->get_invoice_count() : $value;
+		$sale = model(Sale::class);
+		return empty($value) ? $sale->get_invoice_count() : $value;
 	}
 }
-?>

@@ -1,18 +1,22 @@
 <?php
 
-class Migration_move_expenses_categories extends CI_Migration {
+namespace App\Database\Migrations;
 
-	public function __construct()
-	{
-		parent::__construct();
-	}
+use CodeIgniter\Database\Migration;
 
-	public function up()
+class Migration_move_expenses_categories extends Migration
+{
+	public function up(): void
 	{
 		error_log('Migrating expense categories module');
 
-		$this->db->simple_query("UPDATE ospos_grants SET menu_group = 'office' WHERE permission_id = 'expenses_categories'");
+		$this->db->simpleQuery("UPDATE ospos_grants SET menu_group = 'office' WHERE permission_id = 'expenses_categories'");
 
 		error_log('Migrating expense categories module completed');
+	}
+
+	public function down(): void
+	{
+
 	}
 }

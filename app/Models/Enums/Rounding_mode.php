@@ -1,8 +1,12 @@
 <?php
 
+namespace App\Models\Enums;
+
+use ReflectionClass;
+
 class Rounding_mode
 {
-	const HALF_UP = PHP_ROUND_HALF_UP;
+	const HALF_UP = PHP_ROUND_HALF_UP;  //TODO: These constants need to be moved to constants.php
 	const HALF_DOWN = PHP_ROUND_HALF_DOWN;
 	const HALF_EVEN = PHP_ROUND_HALF_EVEN;
 	const HALF_ODD = PHP_ROUND_HALF_ODD;
@@ -10,38 +14,36 @@ class Rounding_mode
 	const ROUND_DOWN = 6;
 	const HALF_FIVE = 7;
 
-	public static function get_rounding_options()
+	public function __construct()
 	{
-		$CI =& get_instance();
-		$CI->load->helper('language');
+		helper('language');
+	}
+
+	public static function get_rounding_options(): array
+	{
 		$class = new ReflectionClass(__CLASS__);
-		$result = array();
+		$result = [];
 
 		foreach($class->getConstants() as $key => $value)
 		{
-			$result[$value] = lang(strtolower('ENUM_'. $key));
+			$result[$value] = lang('Enum.' . strtolower($key));
 		}
 
 		return $result;
 	}
 
-	public static function get_rounding_code_name($code)
+	public static function get_rounding_code_name(int $code): string
 	{
-		$CI =& get_instance();
-		$CI->load->helper('language');
-
 		if(empty($code))
 		{
-			return lang('common_unknown');
+			return lang('Common.unknown');
 		}
 
 		return Rounding_mode::get_rounding_options()[$code];
 	}
 
-	public static function get_html_rounding_options()
+	public static function get_html_rounding_options(): string
 	{
-		$CI =& get_instance();
-		$CI->load->helper('language');
 		$x = '';
 
 		foreach(Rounding_mode::get_rounding_options() as $option => $label)
@@ -52,16 +54,16 @@ class Rounding_mode
 		return $x;
 	}
 
-	public static function round_number($rounding_mode, $amount, $decimals)
-	{
+	public static function round_number(int $rounding_mode, float $amount, int $decimals): string
+	{//TODO: this needs to be be replaced with a switch statement
 		if($rounding_mode == Rounding_mode::ROUND_UP)
 		{
-			$fig = pow(10,$decimals);
+			$fig = pow(10, $decimals);
 			$rounded_total = (ceil($fig*$amount) + ceil($fig*$amount - ceil($fig*$amount)))/$fig;
 		}
 		elseif($rounding_mode == Rounding_mode::ROUND_DOWN)
 		{
-			$fig = pow(10,$decimals);
+			$fig = pow(10, $decimals);
 			$rounded_total = (floor($fig*$amount) + floor($fig*$amount - floor($fig*$amount)))/$fig;
 		}
 		elseif($rounding_mode == Rounding_mode::HALF_FIVE)
