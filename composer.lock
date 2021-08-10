@@ -39,12 +39,12 @@
             "homepage": "https://codeigniter.com",
             "support": {
                 "forum": "http://forum.codeigniter.com/",
-                "issues": "https://github.com/bcit-ci/CodeIgniter/issues",
+                "issues": "https://github.com/codeigniter4/framework/issues",
                 "slack": "https://codeigniterchat.slack.com",
-                "source": "https://github.com/bcit-ci/CodeIgniter",
-                "wiki": "https://github.com/bcit-ci/CodeIgniter/wiki"
+                "source": "https://github.com/codeigniter4/framework",
+                "wiki": "https://github.com/codeigniter4/frameworkwiki"
             },
-            "time": "2019-09-19T12:08:45+00:00"
+            "time": "2021-08-10T12:08:45+00:00"
         },
         {
             "name": "dompdf/dompdf",
