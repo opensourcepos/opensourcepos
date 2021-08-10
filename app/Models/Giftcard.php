@@ -1,71 +1,76 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Giftcard class
  */
-
-class Giftcard extends CI_Model
+class Giftcard extends Model
 {
-	/*
-	Determines if a given giftcard_id is a giftcard
-	*/
-	public function exists($giftcard_id)
+	/**
+	 * Determines if a given giftcard_id is a giftcard
+	 */
+	public function exists(int $giftcard_id): bool
 	{
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_id', $giftcard_id);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_id', $giftcard_id);
+		$builder->where('deleted', 0);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets max gift card number
-	*/
-	public function get_max_number()
+	/**
+	 * Gets max gift card number	//TODO: This isn't entirely accurate.  It returns the object and the results then pulls the giftcard_number.
+	 */
+	public function get_max_number(): object
 	{
-		$this->db->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
-		$this->db->order_by("giftcard_number","desc");
-		$this->db->limit(1);
+		$builder = $this->db->table('giftcards');
+		$builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
+		$builder->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
+		$builder->orderBy("giftcard_number","desc");
+		$builder->limit(1);
 
-		return $this->db->get()->row();
+		return $builder->get()->getRow();
 	}
 
-	/*
-	Gets total of rows
-	*/
-	public function get_total_rows()
+	/**
+	 * Gets total of rows
+	 */
+	public function get_total_rows(): int
 	{
-		$this->db->from('giftcards');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
-	/*
-	Gets information about a particular giftcard
-	*/
-	public function get_info($giftcard_id)
+	/**
+	 * Gets information about a particular giftcard
+	 */
+	public function get_info(int $giftcard_id): object
 	{
-		$this->db->from('giftcards');
-		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
-		$this->db->where('giftcard_id', $giftcard_id);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->join('people', 'people.person_id = giftcards.person_id', 'left');
+		$builder->where('giftcard_id', $giftcard_id);
+		$builder->where('deleted', 0);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
-			//Get empty base parent object, as $giftcard_id is NOT an giftcard
+			//Get empty base parent object, as $giftcard_id is NOT a giftcard
 			$giftcard_obj = new stdClass();
 
 			//Get all the fields from giftcards table
-			foreach($this->db->list_fields('giftcards') as $field)
+			foreach($this->db->getFieldNames('giftcards') as $field)
 			{
 				$giftcard_obj->$field = '';
 			}
@@ -74,49 +79,51 @@ class Giftcard extends CI_Model
 		}
 	}
 
-	/*
-	Gets an giftcard id given a giftcard number
-	*/
-	public function get_giftcard_id($giftcard_number)
+	/**
+	 * Gets a giftcard id given a giftcard number
+	 */
+	public function get_giftcard_id(string $giftcard_number): bool
 	{
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
+		$builder->where('deleted', 0);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row()->giftcard_id;
+			return $query->getRow()->giftcard_id;
 		}
 
 		return FALSE;
 	}
 
-	/*
-	Gets information about multiple giftcards
-	*/
-	public function get_multiple_info($giftcard_ids)
+	/**
+	 * Gets information about multiple giftcards
+	 */
+	public function get_multiple_info(array $giftcard_ids): ResultInterface
 	{
-		$this->db->from('giftcards');
-		$this->db->where_in('giftcard_id', $giftcard_ids);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('giftcard_number', 'asc');
+		$builder = $this->db->table('giftcards');
+		$builder->whereIn('giftcard_id', $giftcard_ids);
+		$builder->where('deleted', 0);
+		$builder->orderBy('giftcard_number', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Inserts or updates a giftcard
-	*/
-	public function save(&$giftcard_data, $giftcard_id = FALSE)
+	/**
+	 * Inserts or updates a giftcard
+	 */
+	public function save_value(array &$giftcard_data, $giftcard_id = FALSE): bool
 	{
+		$builder = $this->db->table('giftcards');
+
 		if(!$giftcard_id || !$this->exists($giftcard_id))
 		{
-			if($this->db->insert('giftcards', $giftcard_data))
+			if($builder->insert($giftcard_data))
 			{
-				$giftcard_data['giftcard_number'] = $this->db->insert_id();
-				$giftcard_data['giftcard_id'] = $this->db->insert_id();
+				$giftcard_data['giftcard_number'] = $this->db->insertID();
+				$giftcard_data['giftcard_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -124,69 +131,74 @@ class Giftcard extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('giftcard_id', $giftcard_id);
+		$builder->where('giftcard_id', $giftcard_id);
 
-		return $this->db->update('giftcards', $giftcard_data);
+		return $builder->update($giftcard_data);
 	}
 
-	/*
-	Updates multiple giftcards at once
-	*/
-	public function update_multiple($giftcard_data, $giftcard_ids)
+	/**
+	 * Updates multiple giftcards at once
+	 */
+	public function update_multiple(array $giftcard_data, array $giftcard_ids): bool	//TODO: This function appears to never be used in the code.
 	{
-		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$builder = $this->db->table('giftcards');
+		$builder->whereIn('giftcard_id', $giftcard_ids);
 
-		return $this->db->update('giftcards', $giftcard_data);
+		return $builder->update($giftcard_data);
 	}
 
-	/*
-	Deletes one giftcard
-	*/
-	public function delete($giftcard_id)
+	/**
+	 * Deletes one giftcard
+	 */
+	public function delete($giftcard_id = null, bool $purge = false): bool
 	{
-		$this->db->where('giftcard_id', $giftcard_id);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_id', $giftcard_id);
 
-		return $this->db->update('giftcards', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 
-	/*
-	Deletes a list of giftcards
-	*/
-	public function delete_list($giftcard_ids)
+	/**
+	 * Deletes a list of giftcards
+	 */
+	public function delete_list(array $giftcard_ids): bool
 	{
-		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$builder = $this->db->table('giftcards');
+		$builder->whereIn('giftcard_id', $giftcard_ids);
 
-		return $this->db->update('giftcards', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
- 	/*
-	Get search suggestions to find giftcards
-	*/
-	public function get_search_suggestions($search, $limit = 25)
+ 	/**
+	 * Get search suggestions to find giftcards
+	 */
+	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
-		$this->db->from('giftcards');
-		$this->db->like('giftcard_number', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('giftcard_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder = $this->db->table('giftcards');
+		$builder->like('giftcard_number', $search);
+		$builder->where('deleted', 0);
+		$builder->orderBy('giftcard_number', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[]=array('label' => $row->giftcard_number);
+			$suggestions[]= ['label' => $row->giftcard_number];
 		}
 
- 		$this->db->from('customers');
-		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
-		$this->db->order_by('last_name', 'asc');
-		foreach($this->db->get()->result() as $row)
+ 		$builder = $this->db->table('customers');
+		$builder->join('people', 'customers.person_id = people.person_id', 'left');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
+		$builder->where('deleted', 0);
+		$builder->orderBy('last_name', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('label' => $row->first_name.' '.$row->last_name);
+			$suggestions[] = ['label' => $row->first_name.' '.$row->last_name];
 		}
 
 		//only return $limit suggestions
@@ -198,99 +210,103 @@ class Giftcard extends CI_Model
 		return $suggestions;
 	}
 
-	/*
-	Gets gift cards
-	*/
-	public function get_found_rows($search)
+	/**
+	 * Gets gift cards
+	 */
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'giftcard_number', 'asc', TRUE);
 	}
 
-	/*
-	Performs a search on giftcards
-	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'giftcard_number', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Performs a search on giftcards
+	 */
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
-		// get_found_rows case
-		if($count_only == TRUE)
-		{
-			$this->db->select('COUNT(giftcards.giftcard_id) as count');
-		}
-
-		$this->db->from('giftcards AS giftcards');
-		$this->db->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
-		$this->db->group_start();
-			$this->db->like('person.first_name', $search);
-			$this->db->or_like('person.last_name', $search);
-			$this->db->or_like('CONCAT(person.first_name, " ", person.last_name)', $search);
-			$this->db->or_like('giftcards.giftcard_number', $search);
-			$this->db->or_like('giftcards.person_id', $search);
-		$this->db->group_end();
-		$this->db->where('giftcards.deleted', 0);
+		$builder = $this->db->table('giftcards');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
-			return $this->db->get()->row()->count;
+			$builder->select('COUNT(giftcards.giftcard_id) as count');
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
+		$builder->groupStart();
+			$builder->like('person.first_name', $search);
+			$builder->orLike('person.last_name', $search);
+			$builder->orLike('CONCAT(person.first_name, " ", person.last_name)', $search);
+			$builder->orLike('giftcards.giftcard_number', $search);
+			$builder->orLike('giftcards.person_id', $search);
+		$builder->groupEnd();
+		$builder->where('giftcards.deleted', 0);
+
+		// get_found_rows case
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		{
+			return $builder->get()->getRow()->count;
+		}
+
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets gift card value
-	*/
-	public function get_giftcard_value($giftcard_number)
+	/**
+	 * Gets gift card value
+	 */
+	public function get_giftcard_value(string $giftcard_number): float	//TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
 	{
-		if( !$this->exists($this->get_giftcard_id($giftcard_number)) )
+		if(!$this->exists($this->get_giftcard_id($giftcard_number)))
 		{
 			return 0;
 		}
 
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
 
-		return $this->db->get()->row()->value;
+		return $builder->get()->getRow()->value;
 	}
 
-	/*
-	Updates gift card value
-	*/
-	public function update_giftcard_value($giftcard_number, $value)
+	/**
+	 * Updates gift card value
+	 */
+	public function update_giftcard_value(string $giftcard_number, float $value): void	//TODO: Should we return the value of update like other similar functions do?
 	{
-		$this->db->where('giftcard_number', $giftcard_number);
-		$this->db->update('giftcards', array('value' => $value));
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
+		$builder->update(['value' => $value]);
 	}
 
-	/*
-	Determines if a given giftcard_name esists
-	*/
-	public function exists_gitcard_name($giftcard_name)
+	/**
+	 * Determines if a given giftcard_name exists
+	 */
+	public function exists_giftcard_name($giftcard_name): bool
 	{
 		$giftcard_name = strtoupper($giftcard_name);
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_name);
-		$this->db->where('deleted', 0);
 
-		return ($this->db->get()->num_rows() == 1);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_name);
+		$builder->where('deleted', 0);
+
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Generate unique gift card name/number
-	*/
-	public function generate_unique_giftcard_name($value)
+	/**
+	 * Generate unique gift card name/number
+	 */
+	public function generate_unique_giftcard_name(string $value): string
 	{
 		$value = str_replace('.', 'DE', $value);
 		$random = bin2hex(openssl_random_pseudo_bytes(3));
-		$giftcard_name = (string)$random . '-' . $value;
-		if($this->exists_gitcard_name($giftcard_name))
+		$giftcard_name = "$random-$value";
+
+		if($this->exists_giftcard_name($giftcard_name))
 		{
 			$this->generate_unique_giftcard_name($value);
 		}
@@ -298,20 +314,19 @@ class Giftcard extends CI_Model
 		return strtoupper($giftcard_name);
 	}
 
-	/*
-	Gets gift card customer
-	*/
-	public function get_giftcard_customer($giftcard_number)
+	/**
+	 * Gets gift card customer
+	 */
+	public function get_giftcard_customer(string $giftcard_number): int
 	{
 		if( !$this->exists($this->get_giftcard_id($giftcard_number)) )
 		{
 			return 0;
 		}
 
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
 
-		return $this->db->get()->row()->person_id;
+		return $builder->get()->getRow()->person_id;
 	}
 }
-?>

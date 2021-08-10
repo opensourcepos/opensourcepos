@@ -1,44 +1,44 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Summary_report.php");
+namespace App\Models\Reports;
 
 class Summary_customers extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
-		return array(
-			array('customer_name' => $this->lang->line('reports_customer')),
-			array('sales' => $this->lang->line('reports_sales'), 'sorter' => 'number_sorter'),
-			array('quantity' => $this->lang->line('reports_quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
+		return [
+			['customer_name' => lang('Reports.customer')],
+			['sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
+			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+		];
 	}
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs, object &$builder): void	//TODO: Hungarian notation
 	{
-		parent::_select($inputs);
+		parent::_select($inputs, $builder);	//TODO: Hungarian notation
 
-		$this->db->select('
+		$builder->select('
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased,
 				COUNT(DISTINCT sales.sale_id) AS sales
 		');
 	}
 
-	protected function _from()
+	protected function _from(object &$builder): void	//TODO: Hungarian notation
 	{
-		parent::_from();
+		parent::_from($builder);	//TODO: Hungarian notation
 
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
+		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
-	protected function _group_order()
+	protected function _group_order(object &$builder): void	//TODO: Hungarian notation
 	{
-		$this->db->group_by('sales.customer_id');
-		$this->db->order_by('customer_p.last_name');
+		$builder->groupBy('sales.customer_id');
+		$builder->orderBy('customer_p.last_name');
 	}
 }
-?>

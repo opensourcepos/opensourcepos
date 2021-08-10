@@ -1,58 +1,59 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Summary_report.php");
+namespace App\Models\Reports;
 
 class Summary_expenses_categories extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
-		return array(
-			array('category_name' => $this->lang->line('reports_expenses_category')),
-			array('count' => $this->lang->line('reports_count')),
-			array('total_amount' => $this->lang->line('reports_expenses_amount'), 'sorter' => 'number_sorter'),
-			array('total_tax_amount' => $this->lang->line('reports_expenses_tax_amount'), 'sorter' => 'number_sorter'));
+		return [
+			['category_name' => lang('Reports.expenses_category')],
+			['count' => lang('Reports.count')],
+			['total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'],
+			['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter']
+		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$this->db->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
-		$this->db->from('expenses AS expenses');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder = $this->db->table('expenses AS expenses');
+		$builder->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 
-		if(empty($this->config->item('date_or_time_format')))
+		//TODO: convert this to ternary notation
+		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Duplicated code
 		{
-			$this->db->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
 		else
 		{
-			$this->db->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
 		}
 
-		$this->db->where('expenses.deleted', 0);
+		$builder->where('expenses.deleted', 0);
 
-		$this->db->group_by('expense_categories.category_name');
-		$this->db->order_by('expense_categories.category_name');
+		$builder->groupBy('expense_categories.category_name');
+		$builder->orderBy('expense_categories.category_name');
 
-		return $this->db->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$this->db->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
-		$this->db->from('expenses AS expenses');
+		$builder = $this->db->table('expenses AS expenses');
+		$builder->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Duplicated code
 		{
-			$this->db->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
 		else
 		{
-			$this->db->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
 		}
 
-		$this->db->where('expenses.deleted', 0);
+		$builder->where('expenses.deleted', 0);
 
-		return $this->db->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
-?>

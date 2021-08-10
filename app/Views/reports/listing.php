@@ -1,4 +1,12 @@
-<?php $this->load->view("partial/header"); ?>
+<?php
+/**
+ * @var array $grants
+ */
+
+use app\Models\Employee;
+
+?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -7,7 +15,7 @@
 <?php
 if(isset($error))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
+	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 ?>
 
@@ -15,7 +23,7 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo $this->lang->line('reports_graphical_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo lang('Reports.graphical_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php
@@ -34,7 +42,7 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?php echo $this->lang->line('reports_summary_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang('Reports.summary_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php 
@@ -53,11 +61,11 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?php echo $this->lang->line('reports_detailed_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?php echo lang('Reports.detailed_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php 			
-				$person_id = $this->session->userdata('person_id');
+				$person_id = $this->session->get('person_id');
 				show_report_if_allowed('detailed', 'sales', $person_id);
 				show_report_if_allowed('detailed', 'receivings', $person_id);
 				show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
@@ -69,12 +77,13 @@ if(isset($error))
 		</div>
 
 		<?php
-		if ($this->Employee->has_grant('reports_inventory', $this->session->userdata('person_id')))
+		$employee = model(Employee::class);
+		if ($employee->has_grant('reports_inventory', $this->session->get('person_id')))
 		{
 		?>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp</span><?php echo $this->lang->line('reports_inventory_reports'); ?></h3>
+					<h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp</span><?php echo lang('Reports.inventory_reports') ?></h3>
 				</div>
 				<div class="list-group">
 				<?php 
@@ -89,4 +98,4 @@ if(isset($error))
 	</div>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view('partial/footer') ?>

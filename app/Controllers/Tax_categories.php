@@ -1,100 +1,118 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Secure_Controller.php");
+namespace App\Controllers;
 
+use app\Models\Tax_category;
+
+/**
+ * @property tax_category tax_category
+ */
 class Tax_categories extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('tax_categories');
+		
+		$this->tax_category = model('Tax_category');
 	}
 
-
-	public function index()
+	public function index(): void
 	{
-		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+		 $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 
-		 $this->load->view('taxes/tax_categories', $data);
+		 echo view('taxes/tax_categories', $data);
 	}
 
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$tax_categories = $this->Tax_category->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Tax_category->get_found_rows($search);
+		$tax_categories = $this->tax_category->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->tax_category->get_found_rows($search);
 
-		$data_rows = array();
-		foreach($tax_categories->result() as $tax_category)
+		$data_rows = [];
+		foreach($tax_categories->getResult() as $tax_category)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_category_data_row($tax_category));
+			$data_rows[] = get_tax_categories_data_row($tax_category);
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row($row_id)
+	public function get_row($row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_category_data_row($this->Tax_category->get_info($row_id)));
+		$data_row = get_tax_categories_data_row($this->tax_category->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view($tax_category_id = -1)
+	public function view(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
 	{
-		$data['tax_category_info'] = $this->Tax_category->get_info($tax_category_id);
+		$data['tax_category_info'] = $this->tax_category->get_info($tax_category_id);
 
-		$this->load->view("taxes/tax_category_form", $data);
+		echo view("taxes/tax_category_form", $data);
 	}
 
 
-	public function save($tax_category_id = -1)
+	public function save(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
 	{
-		$tax_category_data = array(
-			'tax_category' => $this->input->post('tax_category'),
-			'tax_category_code' => $this->input->post('tax_category_code'),
-			'tax_group_sequence' => $this->input->post('tax_group_sequence')
-		);
+		$tax_category_data = [
+			'tax_category' => $this->request->getPost('tax_category', FILTER_SANITIZE_STRING),
+			'tax_category_code' => $this->request->getPost('tax_category_code', FILTER_SANITIZE_STRING),
+			'tax_group_sequence' => $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT)
+		];
 
-		if($this->Tax_category->save($tax_category_data, $tax_category_id))
+		if($this->tax_category->save_value($tax_category_data, $tax_category_id))
 		{
-			$tax_category_data = $this->xss_clean($tax_category_data);
-
 			// New tax_category_id
-			if($tax_category_id == -1)
+			if($tax_category_id == -1)	//TODO: Need to replace -1 with constant
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_adding'), 'id' => $tax_category_data['tax_category_id']));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Tax_categories.successful_adding'),
+					'id' => $tax_category_data['tax_category_id']
+				]);
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_updating'), 'id' => $tax_category_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Tax_categories.successful_updating'),
+					'id' => $tax_category_id
+				]);
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'],
+				'id' => -1	//TODO: Need to replace -1 with constant
+			]);
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
-		$tax_categories_to_delete = $this->input->post('ids');
+		$tax_categories_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-		if($this->Tax_category->delete_list($tax_categories_to_delete))
+		if($this->tax_category->delete_list($tax_categories_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . $this->lang->line('taxes_categories_one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Tax_categories.successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . lang('Tax_categories.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_categories.cannot_be_deleted')]);
 		}
 	}
 }
-?>

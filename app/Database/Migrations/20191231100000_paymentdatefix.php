@@ -1,20 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_PaymentDateFix extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_PaymentDateFix extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		execute_script(APPPATH . 'migrations/sqlscripts/3.3.2_paymentdatefix.sql');
 	}
 
-	public function down()
+	public function down(): void
 	{
 
 	}
 }
-?>

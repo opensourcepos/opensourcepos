@@ -1,40 +1,64 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Secure_Controller.php");
+namespace App\Controllers;
 
+use app\Libraries\Tax_lib;
+use app\Models\enums\Rounding_mode;
+use app\Models\Tax;
+use app\Models\Tax_category;
+use app\Models\Tax_code;
+use app\Models\Tax_jurisdiction;
+
+/**
+ * @property tax_lib tax_lib
+ * @property rounding_mode rounding_mode
+ * @property tax tax
+ * @property tax_category tax_category
+ * @property tax_code tax_code
+ * @property tax_jurisdiction tax_jurisdiction
+ */
 class Taxes extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('taxes');
 
-		$this->load->model('enums/Rounding_mode');
-		$this->load->library('tax_lib');
-		$this->load->helper('tax_helper');
+		$this->rounding_mode = model('enums/Rounding_mode');
+		$this->tax = model('Tax');
+		$this->tax_category = model('Tax_category');
+		$this->tax_code = model('Tax_code');
+		$this->tax_jurisdiction = model('Tax_jurisdiction');
+		
+		$this->tax_lib = new Tax_lib();
+
+		helper('tax_helper');
 	}
 
-	public function index()
+	public function index(): void
 	{
-		$data['tax_codes'] = $this->xss_clean($this->Tax_code->get_all()->result_array());
+		$data['tax_codes'] = $this->tax_code->get_all()->getResultArray();
 		if (count($data['tax_codes']) == 0)
 		{
-			$data['tax_codes'] = $this->Tax_code->get_empty_row();
+			$data['tax_codes'] = $this->tax_code->get_empty_row();
 		}
-		$data['tax_categories'] = $this->xss_clean($this->Tax_category->get_all()->result_array());
+
+		$data['tax_categories'] = $this->tax_category->get_all()->getResultArray();
 		if (count($data['tax_categories']) == 0)
 		{
-			$data['tax_categories'] = $this->Tax_category->get_empty_row();
+			$data['tax_categories'] = $this->tax_category->get_empty_row();
 		}
-		$data['tax_jurisdictions'] = $this->xss_clean($this->Tax_jurisdiction->get_all()->result_array());
+
+		$data['tax_jurisdictions'] = $this->tax_jurisdiction->get_all()->getResultArray();
 		if (count($data['tax_jurisdictions']) == 0)
 		{
-			$data['tax_jurisdictions'] = $this->Tax_jurisdiction->get_empty_row();
+			$data['tax_jurisdictions'] = $this->tax_jurisdiction->get_empty_row();
 		}
-		$data['tax_rate_table_headers'] = $this->xss_clean(get_tax_rates_manage_table_headers());
-		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+
+		$data['tax_rate_table_headers'] = get_tax_rates_manage_table_headers();
+		$data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
 
-		if($this->config->item('tax_included') == '1')
+		if(config('OSPOS')->tax_included)
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -45,40 +69,40 @@ class Taxes extends Secure_Controller
 
 		$data['tax_type_options'] = $this->tax_lib->get_tax_type_options($data['default_tax_type']);
 
-		$this->load->view('taxes/manage', $data);
+		echo view('taxes/manage', $data);
 	}
 
 
 	/*
 	Returns tax_codes table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
-		$search = $this->input->get('search');
-		$limit = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
-		$order = $this->input->get('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$tax_rates = $this->Tax->search($search, $limit, $offset, $sort, $order);
+		$tax_rates = $this->tax->search($search, $limit, $offset, $sort, $order);
 
-		$total_rows = $this->Tax->get_found_rows($search);
+		$total_rows = $this->tax->get_found_rows($search);
 
-		$data_rows = array();
-		foreach($tax_rates->result() as $tax_rate_row)
+		$data_rows = [];
+		foreach($tax_rates->getResult() as $tax_rate_row)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
+			$data_rows[] = get_tax_rates_data_row($tax_rate_row);
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	public function suggest_search()
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
+	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->Tax->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));	//TODO: There is no get_search_suggestions function in the tax model
 
 		echo json_encode($suggestions);
 	}
@@ -86,31 +110,31 @@ class Taxes extends Secure_Controller
 	/*
 	Provides list of tax categories to select from
 	*/
-	public function suggest_tax_categories()
+	public function suggest_tax_categories(): void
 	{
-		$suggestions = $this->xss_clean($this->Tax_category->get_tax_category_suggestions($this->input->post('term')));
+		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
 
 
-	public function get_row($row_id)
+	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_rates_data_row($this->Tax->get_info($row_id), $this));
+		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view_tax_codes($tax_code = -1)
+	public function view_tax_codes(int $tax_code = -1): void	//TODO: Replace -1 with constant
 	{
-		$tax_code_info = $this->Tax->get_info($tax_code);
+		$tax_code_info = $this->tax->get_info($tax_code);
 
-		$default_tax_category_id = 1; // Tax category id is always the default tax category
-		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
+		$default_tax_category_id = 1; // Tax category id is always the default tax category	//TODO: Replace 1 with constant
+		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);	//TODO: this variable is never used in the code.
 
-		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		if($this->config->item('tax_included') == '1')
+		if(config('OSPOS')->tax_included)
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -119,11 +143,11 @@ class Taxes extends Secure_Controller
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
 		}
 
-		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if($tax_code == -1)
-		{
+		if($tax_code == -1)	//TODO: Replace -1 with constant
+		{//TODO: Duplicated code
 			$data['tax_code'] = '';
 			$data['tax_code_name'] = '';
 			$data['tax_code_type'] = '0';
@@ -151,44 +175,41 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
-		$tax_rates = array();
-		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
+		$tax_rates = [];
+		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist.  This was deleted by @steveireland in https://github.com/opensourcepos/opensourcepos/commit/32204698379c230f2a6756655f40334308023de9#diff-e746bab6720cf5dbf855de6cda68f7aca9ecea7ddd5a39bb852e9b9047a7a838L435 but it's unclear if that was on purpose or accidental.
 		{
-			$tax_rate_row = array();
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row = [];
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_code_form', $data);
+		echo view('taxes/tax_code_form', $data);
 	}
 
 
-	public function view($tax_rate_id = -1)
+	public function view(int $tax_rate_id = -1): void	//TODO: Replace -1 with constant
 	{
-
-		$tax_rate_info = $this->Tax->get_info($tax_rate_id);
+		$tax_rate_info = $this->tax->get_info($tax_rate_id);
 
 		$data['tax_rate_id'] = $tax_rate_id;
-		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['rounding_options'] = rounding_mode::get_rounding_options();
 
 		$data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 
-		if($tax_rate_id == -1)
+		if($tax_rate_id == -1)	//TODO: Replace -1 with constant
 		{
-			$data['rate_tax_code_id'] = $this->config->item('default_tax_code');
-			$data['rate_tax_category_id'] = $this->config->item('default_tax_category');
-			$data['rate_jurisdiction_id'] = $this->config->item('default_tax_jurisdiction');
-			$data['tax_rounding_code'] = Rounding_mode::HALF_UP;
+			$data['rate_tax_code_id'] = config('OSPOS')->default_tax_code;
+			$data['rate_tax_category_id'] = config('OSPOS')->default_tax_category;
+			$data['rate_jurisdiction_id'] = config('OSPOS')->default_tax_jurisdiction;
+			$data['tax_rounding_code'] = rounding_mode::HALF_UP;
 			$data['tax_rate'] = '0.0000';
 		}
 		else
@@ -201,26 +222,22 @@ class Taxes extends Secure_Controller
 			$data['tax_rate'] = $tax_rate_info->tax_rate;
 		}
 
-		$data = $this->xss_clean($data);
-
-		$this->load->view('taxes/tax_rates_form', $data);
+		echo view('taxes/tax_rates_form', $data);
 	}
 
-
-
-	public function view_tax_categories($tax_code = -1)
+	public function view_tax_categories(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
-		$tax_code_info = $this->Tax->get_info($tax_code);
+		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated Code
 
-		$default_tax_category_id = 1; // Tax category id is always the default tax category
-		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
+		$default_tax_category_id = 1; // Tax category id is always the default tax category	//TODO: replace with a constant.
+		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);
 
-		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if($this->config->item('tax_included') == '1')
+		if(config('OSPOS')->tax_included)
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -229,7 +246,7 @@ class Taxes extends Secure_Controller
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
 		}
 
-		if($tax_code == -1)
+		if($tax_code == -1)	//TODO: Replace -1 with constant
 		{
 			$data['tax_code'] = '';
 			$data['tax_code_name'] = '';
@@ -258,38 +275,36 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
-		$tax_rates = array();
-		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
+		$tax_rates = [];
+		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist in the tax model
 		{
-			$tax_rate_row = array();
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row = [];
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_category_form', $data);
+		echo view('taxes/tax_category_form', $data);
 	}
 
-	public function view_tax_jurisdictions($tax_code = -1)
+	public function view_tax_jurisdictions(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
-		$tax_code_info = $this->Tax->get_info($tax_code);
+		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated code
 
 		$default_tax_category_id = 1; // Tax category id is always the default tax category
-		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
+		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);	//TODO: This variable is not used anywhere in the code
 
-		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if($this->config->item('tax_included') == '1')
+		if(config('OSPOS')->tax_included)
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -298,7 +313,7 @@ class Taxes extends Secure_Controller
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
 		}
 
-		if($tax_code == -1)
+		if($tax_code == -1)	//TODO: Replace -1 with constant
 		{
 			$data['tax_code'] = '';
 			$data['tax_code_name'] = '';
@@ -327,141 +342,150 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
-		$tax_rates = array();
-		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
+		$tax_rates = [];
+		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist in the tax model
 		{
-			$tax_rate_row = array();
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row = [];
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_jurisdiction_form', $data);
+		echo view('taxes/tax_jurisdiction_form', $data);
 	}
 
-	public static function get_html_rounding_options()
+	public static function get_html_rounding_options(): string
 	{
-		return Rounding_mode::get_html_rounding_options();
+		return rounding_mode::get_html_rounding_options();
 	}
 
-	public function save($tax_rate_id = -1)
+	public function save(int $tax_rate_id = -1): void	//TODO: Replace -1 with constant
 	{
-		$tax_category_id = $this->input->post('rate_tax_category_id');
-		$tax_rate = parse_tax($this->input->post('tax_rate'));
+		$tax_category_id = $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT);
+		$tax_rate = parse_tax($this->request->getPost('tax_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
-		if ($tax_rate == 0) {
-			$tax_category_info = $this->Tax_category->get_info($tax_category_id);
+		if ($tax_rate == 0)	//TODO: Replace 0 with constant?
+		{
+			$tax_category_info = $this->tax_category->get_info($tax_category_id);	//TODO: this variable is not used anywhere in the code
 		}
 
-		$tax_rate_data = array(
-			'rate_tax_code_id' => $this->input->post('rate_tax_code_id'),
-			'rate_tax_category_id' => $this->input->post('rate_tax_category_id'),
-			'rate_jurisdiction_id' => $this->input->post('rate_jurisdiction_id'),
+		$tax_rate_data = [
+			'rate_tax_code_id' => $this->request->getPost('rate_tax_code_id', FILTER_SANITIZE_NUMBER_INT),
+			'rate_tax_category_id' => $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT),
+			'rate_jurisdiction_id' => $this->request->getPost('rate_jurisdiction_id', FILTER_SANITIZE_NUMBER_INT),
 			'tax_rate' => $tax_rate,
-			'tax_rounding_code' => $this->input->post('tax_rounding_code')
-		);
+			'tax_rounding_code' => $this->request->getPost('tax_rounding_code', FILTER_SANITIZE_NUMBER_INT)
+		];
 
-		if($this->Tax->save($tax_rate_data, $tax_rate_id))
+		if($this->tax->save_value($tax_rate_data, $tax_rate_id))
 		{
-			if($tax_rate_id == -1)
-			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_rate_successfully_added')));
+			if($tax_rate_id == -1)	//TODO: Replace -1 with constant
+			{//TODO: this needs to be replaced with ternary notation
+				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successfully_added')]);
 			}
 			else //Existing tax_code
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_rate_successful_updated')));
+				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successful_updated')]);
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_tax_rate_error_adding_updating')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_rate_error_adding_updating')]);
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
-		$tax_codes_to_delete = $this->xss_clean($this->input->post('ids'));
+		$tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-		if($this->Tax->delete_list($tax_codes_to_delete))
+		if($this->tax->delete_list($tax_codes_to_delete))	//TODO: this needs to be replaced with ternary notation
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_code_successful_deleted')));
+			echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_code_successful_deleted')]);
 		} else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_tax_code_cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_code_cannot_be_deleted')]);
 		}
 	}
 
-	public function suggest_tax_codes()
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
+	public function suggest_tax_codes(): void
 	{
-		$suggestions = $this->xss_clean($this->Tax_code->get_tax_codes_search_suggestions($this->input->post_get('term')));
+		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
 
-
-	public function save_tax_codes()
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
+	public function save_tax_codes(): void
 	{
-		$tax_code_id = $this->input->post('tax_code_id');
-		$tax_code = $this->input->post('tax_code');
-		$tax_code_name = $this->input->post('tax_code_name');
-		$tax_code_id = $this->input->post('tax_code_id');
-		$city = $this->input->post('city');
-		$state = $this->input->post('state');
+		$tax_code_id = $this->request->getPost('tax_code_id', FILTER_SANITIZE_NUMBER_INT);
+		$tax_code = $this->request->getPost('tax_code', FILTER_SANITIZE_STRING);
+		$tax_code_name = $this->request->getPost('tax_code_name', FILTER_SANITIZE_STRING);
+		$city = $this->request->getPost('city', FILTER_SANITIZE_STRING);
+		$state = $this->request->getPost('state', FILTER_SANITIZE_STRING);
 
-		$array_save = array();
+		$array_save = [];	//TODO: the naming of this variable is not good.
 		foreach($tax_code_id as $key=>$val)
 		{
-			$array_save[] = array('tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
-			'tax_code_name'=>$this->xss_clean($tax_code_name[$key]), 'tax_code_id'=>$this->xss_clean($tax_code_id[$key]),
-			'city'=>$this->xss_clean($city[$key]), 'state'=>$this->xss_clean($state[$key]));
+			$array_save[] = [
+				'tax_code_id'=>$val,
+				'tax_code'=>$tax_code[$key],
+				'tax_code_name'=>$tax_code_name[$key],
+				'city'=>$city[$key],
+				'state'=>$state[$key]
+			];
 		}
 
-		$success = $this->Tax_code->save_tax_codes($array_save);
+		$success = $this->tax_code->save_tax_codes($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
-			'message' => $this->lang->line('taxes_tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
-		));
+			'message' => lang('Taxes.tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
+		]);
 	}
 
-	public function save_tax_jurisdictions()
+	public function save_tax_jurisdictions(): void
 	{
-		$jurisdiction_id = $this->input->post('jurisdiction_id');
-		$jurisdiction_name = $this->input->post('jurisdiction_name');
-		$tax_group = $this->input->post('tax_group');
-		$tax_type = $this->input->post('tax_type');
-		$reporting_authority = $this->input->post('reporting_authority');
-		$tax_group_sequence = $this->input->post('tax_group_sequence');
-		$cascade_sequence = $this->input->post('cascade_sequence');
+		$jurisdiction_id = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
+		$jurisdiction_name = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING);
+		$tax_group = $this->request->getPost('tax_group', FILTER_SANITIZE_STRING);
+		$tax_type = $this->request->getPost('tax_type', FILTER_SANITIZE_NUMBER_INT);
+		$reporting_authority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_STRING);
+		$tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
+		$cascade_sequence = $this->request->getPost('cascade_sequence', FILTER_SANITIZE_NUMBER_INT);
 
-		$array_save = array();
-
+		$array_save = [];
 		$unique_tax_groups = [];
 
 		foreach($jurisdiction_id as $key => $val)
 		{
-			$array_save[] = array(
-				'jurisdiction_id'=>$this->xss_clean($val),
-				'jurisdiction_name'=>$this->xss_clean($jurisdiction_name[$key]),
-				'tax_group'=>$this->xss_clean($tax_group[$key]),
-				'tax_type'=>$this->xss_clean($tax_type[$key]),
-				'reporting_authority'=>$this->xss_clean($reporting_authority[$key]),
-				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]),
-				'cascade_sequence'=>$this->xss_clean($cascade_sequence[$key]));
+			$array_save[] = [
+				'jurisdiction_id'=>$val,
+				'jurisdiction_name'=>$jurisdiction_name[$key],
+				'tax_group'=>$tax_group[$key],
+				'tax_type'=>$tax_type[$key],
+				'reporting_authority'=>$reporting_authority[$key],
+				'tax_group_sequence'=>$tax_group_sequence[$key],
+				'cascade_sequence'=>$cascade_sequence[$key]
+			];
 
-			if (array_search($tax_group[$key], $unique_tax_groups) !== false)
+			if (in_array($tax_group[$key], $unique_tax_groups))	//TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
 			{
-				echo json_encode(array(
+				echo json_encode ([
 					'success' => FALSE,
-					'message' => $this->lang->line('taxes_tax_group_not_unique', $tax_group[$key])
-				));
+					'message' => lang('Taxes.tax_group_not_unique', ['group' => $tax_group[$key]])
+				]);
 				return;
 			}
 			else
@@ -470,61 +494,70 @@ class Taxes extends Secure_Controller
 			}
 		}
 
-		$success = $this->Tax_jurisdiction->save_jurisdictions($array_save);
+		$success = $this->tax_jurisdiction->save_jurisdictions($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
-			'message' => $this->lang->line('taxes_tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
-		));
+			'message' => lang('Taxes.tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
+		]);
 	}
 
-	public function save_tax_categories()
+	public function save_tax_categories(): void
 	{
-		$tax_category_id = $this->input->post('tax_category_id');
-		$tax_category = $this->input->post('tax_category');
-		$tax_group_sequence = $this->input->post('tax_group_sequence');
+		$tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
+		$tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_STRING);
+		$tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
 
-		$array_save= array();
+		$array_save= [];
 
 		foreach($tax_category_id as $key => $val)
 		{
-			$array_save[] = array(
-				'tax_category_id'=>$this->xss_clean($val),
-				'tax_category'=>$this->xss_clean($tax_category[$key]),
-				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]));
+			$array_save[] = [
+				'tax_category_id'=>$val,
+				'tax_category'=>$tax_category[$key],
+				'tax_group_sequence'=>$tax_group_sequence[$key]
+			];
 		}
 
-		$success = $this->Tax_category->save_categories($array_save);
+		$success = $this->tax_category->save_categories($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
-			'message' => $this->lang->line('taxes_tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
-		));
+			'message' => lang('Taxes.tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
+		]);
 	}
 
-	public function ajax_tax_codes()
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
+	public function ajax_tax_codes(): void
 	{
-		$tax_codes = $this->Tax_code->get_all()->result_array();
+		$tax_codes = $this->tax_code->get_all()->getResultArray();
 
-		$tax_codes = $this->xss_clean($tax_codes);
-
-		$this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes));
+		echo view('partial/tax_codes', ['tax_codes' => $tax_codes]);
 	}
 
-	public function ajax_tax_categories()
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
+	public function ajax_tax_categories(): void
 	{
-		$tax_categories = $this->Tax_category->get_all()->result_array();
+		$tax_categories = $this->tax_category->get_all()->getResultArray();
 
-		$tax_categories = $this->xss_clean($tax_categories);
-
-		$this->load->view('partial/tax_categories', array('tax_categories' => $tax_categories));
+		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
-	public function ajax_tax_jurisdictions()
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
+	public function ajax_tax_jurisdictions(): void
 	{
-		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->result_array();
+		$tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
 
-		if($this->config->item('tax_included') == '1')
+		if(config('OSPOS')->tax_included)	//TODO: ternary notation
 		{
 			$default_tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -533,10 +566,12 @@ class Taxes extends Secure_Controller
 			$default_tax_type = Tax_lib::TAX_TYPE_EXCLUDED;
 		}
 
-		$tax_jurisdictions = $this->xss_clean($tax_jurisdictions);
 		$tax_types = $this->tax_lib->get_tax_types();
 
-		$this->load->view('partial/tax_jurisdictions', array('tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
+		echo view('partial/tax_jurisdictions', [
+			'tax_jurisdictions' => $tax_jurisdictions,
+			'tax_types' => $tax_types,
+			'default_tax_type' => $default_tax_type
+		]);
 	}
 }
-?>

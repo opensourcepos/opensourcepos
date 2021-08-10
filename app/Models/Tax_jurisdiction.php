@@ -1,54 +1,60 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Tax Jurisdiction class
  */
 
-class Tax_jurisdiction extends CI_Model
+class Tax_jurisdiction extends Model
 {
 	/**
 	 *  Determines if it exists in the table
 	 */
-	public function exists($jurisdiction_id)
+	public function exists(int $jurisdiction_id): bool
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
 	 *  Gets total of rows
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
-	/**
+	/***
 	 * Gets information about the particular record
 	 */
-	public function get_info($jurisdiction_id)
+	public function get_info(int $jurisdiction_id): object
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('jurisdiction_id', $jurisdiction_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
-		else
+		else	//TODO: this else is not needed.  Just put everything below it without an else.
 		{
 			//Get empty base parent object
 			$tax_jurisdiction_obj = new stdClass();
 
 			//Get all the fields from the table
-			foreach($this->db->list_fields('tax_jurisdictions') as $field)
+			foreach($this->db->getFieldNames('tax_jurisdictions') as $field)
 			{
 				$tax_jurisdiction_obj->$field = '';
 			}
@@ -59,72 +65,83 @@ class Tax_jurisdiction extends CI_Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface
 	{
-		$this->db->from('tax_jurisdictions');
+		$builder = $this->db->table('tax_jurisdictions');
+
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('jurisdiction_name', 'asc');
+		$builder->orderBy('jurisdiction_name', 'asc');
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info($jurisdiction_ids)
+	public function get_multiple_info(array $jurisdiction_ids): ResultInterface
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
-		$this->db->order_by('jurisdiction_name', 'asc');
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
+		$builder->orderBy('jurisdiction_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(&$jurisdiction_data, $jurisdiction_id = FALSE)
+	public function save_value(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
 	{
+		$builder = $this->db->table('tax_jurisdictions');
 		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
 		{
-			if($this->db->insert('tax_jurisdictions', $jurisdiction_data))
+			if($builder->insert($jurisdiction_data))	//TODO: Replace this with simply a return of the result of insert()... see update() below.
 			{
-				$jurisdiction_data['jurisdiction_id'] = $this->db->insert_id();
+				$jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
 				return TRUE;
 			}
 
 			return FALSE;
 		}
 
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $this->db->update('tax_jurisdictions', $jurisdiction_data);
+		return $builder->update($jurisdiction_data);
 	}
 
 	/**
 	 * Saves changes to the tax jurisdictions table
 	 */
-	public function save_jurisdictions($array_save)
+	public function save_jurisdictions(array $array_save): bool
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
 		foreach($array_save as $key => $value)
 		{
 			// save or update
-			$tax_jurisdiction_data = array('jurisdiction_name' => $value['jurisdiction_name'], 'tax_group' => $value['tax_group'], 'tax_type' => $value['tax_type'], 'reporting_authority' => $value['reporting_authority'], 'tax_group_sequence' => $value['tax_group_sequence'], 'cascade_sequence' => $value['cascade_sequence'], 'deleted' => '0');
-			$this->save($tax_jurisdiction_data, $value['jurisdiction_id']);
-			if($value['jurisdiction_id'] == -1)
+			$tax_jurisdiction_data = [
+				'jurisdiction_name' => $value['jurisdiction_name'],
+				'tax_group' => $value['tax_group'],
+				'tax_type' => $value['tax_type'],
+				'reporting_authority' => $value['reporting_authority'],
+				'tax_group_sequence' => $value['tax_group_sequence'],
+				'cascade_sequence' => $value['cascade_sequence'],
+				'deleted' => '0'];
+
+			$this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
+
+			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant. Also === ?.  Also replace this with ternary notation.
 			{
 				$not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
 			}
@@ -135,7 +152,7 @@ class Tax_jurisdiction extends CI_Model
 		}
 
 		// all entries not available in post will be deleted now
-		$deleted_tax_jurisdictions = $this->get_all()->result_array();
+		$deleted_tax_jurisdictions = $this->get_all()->getResultArray();
 
 		foreach($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data)
 		{
@@ -145,34 +162,36 @@ class Tax_jurisdiction extends CI_Model
 			}
 		}
 
-		$this->db->trans_complete();
-		return $this->db->trans_status();
+		$this->db->transComplete();
+		return $this->db->transStatus();
 	}
 
 	/**
 	 * Soft deletes a specific tax jurisdiction
 	 */
-	public function delete($jurisdiction_id)
+	public function delete(int $jurisdiction_id = null, bool $purge = false): bool
 	{
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $this->db->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 
 	/**
 	 * Soft deletes a list of rows
 	 */
-	public function delete_list($jurisdiction_ids)
+	public function delete_list(array $jurisdiction_ids): bool
 	{
-		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 
-		return $this->db->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows($search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
 	}
@@ -180,49 +199,51 @@ class Tax_jurisdiction extends CI_Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'jurisdiction_name', $order='asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
-		// get_found_rows case
-		if($count_only == TRUE)
-		{
-			$this->db->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
-		}
-
-		$this->db->from('tax_jurisdictions AS tax_jurisdictions');
-		$this->db->group_start();
-			$this->db->like('jurisdiction_name', $search);
-			$this->db->or_like('reporting_authority', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: Replace this with just count_only: `if($count_only)`
 		{
-			return $this->db->get()->row()->count;
+			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->groupStart();
+			$builder->like('jurisdiction_name', $search);
+			$builder->orLike('reporting_authority', $search);
+		$builder->groupEnd();
+		$builder->where('deleted', 0);
+
+		// get_found_rows case
+		if($count_only == TRUE)	//TODO: ===
+		{
+			return $builder->get()->getRow()->count;
+		}
+
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	public function get_empty_row()
+	public function get_empty_row(): array
 	{
-		return array('0' => array(
-			'jurisdiction_id' => -1,
-			'jurisdiction_name' => '',
-			'tax_group' => '',
-			'tax_type' => '1',
-			'reporting_authority' => '',
-			'tax_group_sequence' => '',
-			'cascade_sequence' => '',
-			'deleted' => ''));
+		return [
+			'0' => [
+				'jurisdiction_id' => -1,	//TODO: Replace -1 with a constant
+				'jurisdiction_name' => '',
+				'tax_group' => '',
+				'tax_type' => '1',
+				'reporting_authority' => '',
+				'tax_group_sequence' => '',
+				'cascade_sequence' => '',
+				'deleted' => ''
+			]
+		];
 	}
-
 }
-?>

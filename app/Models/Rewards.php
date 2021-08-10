@@ -1,21 +1,26 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Rewards class
  */
 
-class Rewards extends CI_Model
+class Rewards extends Model	//TODO: This class is named with plural while the general practice is to name models singular
 {
-	/*
-	Inserts or updates a rewards
-	*/
-	public function save(&$rewards_data, $rewards_id = FALSE)
+	/**
+	 * Inserts or updates a rewards
+	 */
+	public function save_value(array &$rewards_data, bool $rewards_id = FALSE): bool
 	{
-		if(!$rewards_id || !$this->exists($rewards_id))
+		$builder = $this->db->table('sales_reward_points');
+		if(!$rewards_id || !$this->exists($rewards_id))		//TODO: looks like we are missing the exists function in this class
 		{
-			if($this->db->insert('sales_reward_points', $rewards_data))
+			if($builder->insert($rewards_data))
 			{
-				$rewards_data['id'] = $this->db->insert_id();
+				$rewards_data['id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -23,9 +28,8 @@ class Rewards extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('id', $rewards_id);
+		$builder->where('id', $rewards_id);
 
-		return $this->db->update('sales_reward_points', $rewards_data);
+		return $builder->update($rewards_data);
 	}
 }
-?>

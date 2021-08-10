@@ -1,15 +1,26 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class No_Access extends CI_Controller 
+namespace App\Controllers;
+
+use app\Models\Module;
+
+/**
+ * Part of the grants mechanism to restrict access to modules that the user doesn't have permission for.
+ * Instantiated in the views.
+ *
+ * @property module module
+ */
+class No_Access extends BaseController
 {
-	public function index($module_id = '', $permission_id = '')
+	public function __construct()
 	{
-		$data['module_name']   = $this->Module->get_module_name($module_id);
+		$this->module = model('Module');
+	}
+	public function index(string $module_id = '', string $permission_id = ''): void
+	{
+		$data['module_name']   = $this->module->get_module_name($module_id);
 		$data['permission_id'] = $permission_id;
-		
-		$data = $this->security->xss_clean($data);
-		
-		$this->load->view('no_access', $data);
+
+		echo view('no_access', $data);
 	}
 }
-?>

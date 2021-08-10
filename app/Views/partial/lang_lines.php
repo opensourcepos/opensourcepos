@@ -2,8 +2,8 @@
 (function(lang, $) {
 
     var lines = {
-        'common_submit' : "<?php echo $this->lang->line('common_submit') ?>",
-        'common_close' : "<?php echo $this->lang->line('common_close') ?>"
+        'common_submit' : "<?php echo lang('Common.submit') ?>",
+        'common_close' : "<?php echo lang('Common.close') ?>"
     };
 
     $.extend(lang, {

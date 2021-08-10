@@ -1,82 +1,90 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Item_taxes class
  */
-
-class Item_taxes extends CI_Model
+class Item_taxes extends Model
 {
-	/*
-	Gets tax info for a particular item
-	*/
-	public function get_info($item_id)
+	/**
+	 * Gets tax info for a particular item
+	 */
+	public function get_info(int $item_id): array
 	{
-		$this->db->from('items_taxes');
-		$this->db->where('item_id',$item_id);
+		$builder = $this->db->table('items_taxes');
+		$builder->where('item_id', $item_id);
 
 		//return an array of taxes for an item
-		return $this->db->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
-	/*
-	Inserts or updates an item's taxes
-	*/
-	public function save(&$items_taxes_data, $item_id)
+	/**
+	 * Inserts or updates an item's taxes
+	 */
+	public function save_value(array &$items_taxes_data, int $item_id): bool
 	{
 		$success = TRUE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$this->delete($item_id);
+
+		$builder = $this->db->table('items_taxes');
 
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$success &= $this->db->insert('items_taxes', $row);
+			$success &= $builder->insert($row);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
 
-	/*
-	Saves taxes for multiple items
-	*/
-	public function save_multiple(&$items_taxes_data, $item_ids)
+	/**
+	 * Saves taxes for multiple items
+	 */
+	public function save_multiple(array &$items_taxes_data, string $item_ids): bool	//TODO: investigate why this is sent as a : delimited string rather than an array.
 	{
 		$success = TRUE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		foreach(explode(':', $item_ids) as $item_id)
 		{
 			$this->delete($item_id);
 
+			$builder = $this->db->table('items_taxes');
+
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$success &= $this->db->insert('items_taxes', $row);
+				$success &= $builder->insert($row);
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
 
-	/*
-	Deletes taxes given an item
-	*/
-	public function delete($item_id)
+	/**
+	 * Deletes taxes given an item
+	 */
+	public function delete(int $item_id = null, bool $purge = false): bool
 	{
-		return $this->db->delete('items_taxes', array('item_id' => $item_id));
+		$builder = $this->db->table('items_taxes');
+
+		return $builder->delete(['item_id' => $item_id]);
 	}
 }
-?>

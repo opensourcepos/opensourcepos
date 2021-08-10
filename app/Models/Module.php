@@ -1,101 +1,106 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
 
 /**
  * Module class
  */
-
-class Module extends CI_Model
+class Module extends Model
 {
-	function __construct()
+	public function get_module_name(string $module_id): string
 	{
-		parent::__construct();
-	}
+		$builder = $this->db->table('modules');
+		$query = $builder->getWhere(['module_id' => $module_id], 1);
 
-	public function get_module_name($module_id)
-	{
-		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
-
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
-			return $this->lang->line($row->name_lang_key);
+			return lang($row->name_lang_key);
 		}
 
-		return $this->lang->line('error_unknown');
+		return lang('Error.unknown');
 	}
 
-	public function get_module_desc($module_id)
+	public function get_module_desc(string $module_id): string	//TODO: This method doesn't seem to be called in the code.  Is it needed?  Also, probably should change the name to get_module_description()
 	{
-		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
+		$builder = $this->db->table('modules');
+		$query = $builder->getWhere(['module_id' => $module_id], 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
-			return $this->lang->line($row->desc_lang_key);
+			return lang($row->desc_lang_key);
 		}
 
-		return $this->lang->line('error_unknown');
+		return lang('Error.unknown');
 	}
 
-	public function get_all_permissions()
+	public function get_all_permissions(): ResultInterface
 	{
-		$this->db->from('permissions');
+		$builder = $this->db->table('permissions');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	public function get_all_subpermissions()
+	public function get_all_subpermissions(): ResultInterface
 	{
-		$this->db->from('permissions');
-		$this->db->join('modules AS modules', 'modules.module_id = permissions.module_id');
+		$builder = $this->db->table('permissions');
+		$builder->join('modules AS modules', 'modules.module_id = permissions.module_id');	//TODO: can the table parameter just be modules instead of modules AS modules?
+
 		// can't quote the parameters correctly when using different operators..
-		$this->db->where('modules.module_id != ', 'permission_id', FALSE);
+		$builder->where('modules.module_id != ', 'permission_id', FALSE);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	public function get_all_modules()
+	public function get_all_modules(): ResultInterface
 	{
-		$this->db->from('modules');
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$builder = $this->db->table('modules');
+		$builder->orderBy('sort', 'asc');
+
+		return $builder->get();
 	}
 
-	public function get_allowed_home_modules($person_id)
+	public function get_allowed_home_modules(int $person_id): ResultInterface
 	{
-		$menus = array('home', 'both');
-		$this->db->from('modules');
-		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
-		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
-		$this->db->where('person_id', $person_id);
-		$this->db->where_in('menu_group', $menus);
-		$this->db->where('sort !=', 0);
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$menus = ['home', 'both'];
+		$builder = $this->db->table('modules');	//TODO: this is duplicated with the code below... probably refactor a method and just pass through whether home/office modules are needed.
+		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
+		$builder->join('grants', 'permissions.permission_id = grants.permission_id');
+		$builder->where('person_id', $person_id);
+		$builder->whereIn('menu_group', $menus);
+		$builder->where('sort !=', 0);
+		$builder->orderBy('sort', 'asc');
+
+		return $builder->get();
 	}
 
-	public function get_allowed_office_modules($person_id)
+	public function get_allowed_office_modules(int $person_id): ResultInterface
 	{
-		$menus = array('office', 'both');
-		$this->db->from('modules');
-		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
-		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
-		$this->db->where('person_id', $person_id);
-		$this->db->where_in('menu_group', $menus);
-		$this->db->where('sort !=', 0);
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$menus = ['office', 'both'];
+		$builder = $this->db->table('modules');	//TODO: Duplicated code
+		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
+		$builder->join('grants', 'permissions.permission_id = grants.permission_id');
+		$builder->where('person_id', $person_id);
+		$builder->whereIn('menu_group', $menus);
+		$builder->where('sort !=', 0);
+		$builder->orderBy('sort', 'asc');
+
+		return $builder->get();
 	}
 
 	/**
 	 * This method is used to set the show the office navigation icon on the home page
 	 * which happens when the sort value is greater than zero
 	 */
-	public function set_show_office_group($show_office_group)
+	public function set_show_office_group(bool $show_office_group): void	//TODO: Should we return the value of update() as a bool for consistency?
 	{
-		if($show_office_group)
+		if($show_office_group)	//TODO: This should be replaced with ternary notation
 		{
 			$sort = 999;
 		}
@@ -104,24 +109,23 @@ class Module extends CI_Model
 			$sort = 0;
 		}
 
-		$modules_data = array(
-			'sort' => $sort
-		);
-		$this->db->where('module_id', 'office');
-		$this->db->update('modules', $modules_data);
+		$modules_data = ['sort' => $sort];
+
+		$builder = $this->db->table('modules');
+		$builder->where('module_id', 'office');
+		$builder->update($modules_data);
 	}
 
 	/**
 	 * This method is used to show the office navigation icon on the home page
 	 * which happens when the sort value is greater than zero
 	 */
-	public function get_show_office_group()
+	public function get_show_office_group(): int
 	{
-		$this->db->select('sort');
-		$this->db->from('grants');
-		$this->db->where('module_id', 'office');
-		$this->db->from('modules');
-		return $this->db->get()->row()->sort;
+		$builder = $this->db->table('modules');
+		$builder->select('sort');
+		$builder->where('module_id', 'office');
+
+		return $builder->get()->getRow()->sort;
 	}
 }
-?>

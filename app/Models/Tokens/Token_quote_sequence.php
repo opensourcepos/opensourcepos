@@ -1,19 +1,35 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\Tokens;
+
+use app\Models\Appconfig;
+use ReflectionException;
 
 /**
  * Token_quote_sequence class
+ *
+ * @property appconfig appconfig
+ *
  */
-
 class Token_quote_sequence extends Token
 {
-	public function token_id()
+	public function __construct()
+	{
+		parent::__construct();
+		$this->appconfig = model('AppConfig');
+
+	}
+
+	public function token_id(): string
 	{
 		return 'QSEQ';
 	}
 
-	public function get_value($save = TRUE)
+	/**
+	 * @throws ReflectionException
+	 */
+	public function get_value(): string
 	{
-		return $this->CI->Appconfig->acquire_next_quote_sequence($save);
+		return $this->appconfig->acquire_save_next_quote_sequence();
 	}
 }
-?>
