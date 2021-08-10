@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\tokens;
+
+use CodeIgniter\Model;
 
 /**
  * Token_year_invoice_count class

@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\tokens;
+
+use CodeIgniter\Model;
 
 require_once(APPPATH . 'Models/tokens/Token.php');
 require_once(APPPATH . 'Models/tokens/Token_customer.php');
