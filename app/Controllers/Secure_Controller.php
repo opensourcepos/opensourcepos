@@ -10,7 +10,7 @@ class Secure_Controller extends CI_Controller
 	{
 		parent::__construct();
 		
-		$this->load->model('Employee');
+		$this->Employee = model('Employee');
 		$model = $this->Employee;
 
 		if(!$model->is_logged_in())

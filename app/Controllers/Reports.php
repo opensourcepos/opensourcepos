@@ -40,7 +40,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_sales');
+		$this->Summary_sales = model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
 		$report_data = $model->getData($inputs);
@@ -77,7 +77,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_categories');
+		$this->Summary_categories = model('reports/Summary_categories');
 		$model = $this->Summary_categories;
 
 		$report_data = $model->getData($inputs);
@@ -113,7 +113,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
 
-		$this->load->model('reports/Summary_expenses_categories');
+		$this->Summary_expenses_categories = model('reports/Summary_expenses_categories');
 		$model = $this->Summary_expenses_categories;
 
 		$report_data = $model->getData($inputs);
@@ -146,7 +146,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_customers');
+		$this->Summary_customers = model('reports/Summary_customers');
 		$model = $this->Summary_customers;
 
 		$report_data = $model->getData($inputs);
@@ -183,7 +183,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_suppliers');
+		$this->Summary_suppliers = model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
 
 		$report_data = $model->getData($inputs);
@@ -219,7 +219,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_items');
+		$this->Summary_items = model('reports/Summary_items');
 		$model = $this->Summary_items;
 
 		$report_data = $model->getData($inputs);
@@ -257,7 +257,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_employees');
+		$this->Summary_employees = model('reports/Summary_employees');
 		$model = $this->Summary_employees;
 
 		$report_data = $model->getData($inputs);
@@ -294,7 +294,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_taxes');
+		$this->Summary_taxes = model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 
 		$report_data = $model->getData($inputs);
@@ -328,7 +328,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_sales_taxes');
+		$this->Summary_sales_taxes = model('reports/Summary_sales_taxes');
 		$model = $this->Summary_sales_taxes;
 
 		$report_data = $model->getData($inputs);
@@ -377,7 +377,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,'discount_type'=>$discount_type);
 
-		$this->load->model('reports/Summary_discounts');
+		$this->Summary_discounts = model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
 
 		$report_data = $model->getData($inputs);
@@ -409,7 +409,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => 'complete', 'location_id' => 'all');
 
-		$this->load->model('reports/Summary_payments');
+		$this->Summary_payments = model('reports/Summary_payments');
 		$model = $this->Summary_payments;
 
 		$report_data = $model->getData($inputs);
@@ -510,7 +510,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
 
-		$this->load->model('reports/Summary_expenses_categories');
+		$this->Summary_expenses_categories = model('reports/Summary_expenses_categories');
 		$model = $this->Summary_expenses_categories;
 
 		$report_data = $model->getData($inputs);
@@ -544,7 +544,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_sales');
+		$this->Summary_sales = model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
 		$report_data = $model->getData($inputs);
@@ -581,7 +581,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_items');
+		$this->Summary_items = model('reports/Summary_items');
 		$model = $this->Summary_items;
 
 		$report_data = $model->getData($inputs);
@@ -617,7 +617,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_categories');
+		$this->Summary_categories = model('reports/Summary_categories');
 		$model = $this->Summary_categories;
 
 		$report_data = $model->getData($inputs);
@@ -651,7 +651,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_suppliers');
+		$this->Summary_suppliers = model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
 
 		$report_data = $model->getData($inputs);
@@ -685,7 +685,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_employees');
+		$this->Summary_employees = model('reports/Summary_employees');
 		$model = $this->Summary_employees;
 
 		$report_data = $model->getData($inputs);
@@ -719,7 +719,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_taxes');
+		$this->Summary_taxes = model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 
 		$report_data = $model->getData($inputs);
@@ -753,7 +753,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_sales_taxes');
+		$this->Summary_sales_taxes = model('reports/Summary_sales_taxes');
 		$model = $this->Summary_sales_taxes;
 
 		$report_data = $model->getData($inputs);
@@ -787,7 +787,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_customers');
+		$this->Summary_customers = model('reports/Summary_customers');
 		$model = $this->Summary_customers;
 
 		$report_data = $model->getData($inputs);
@@ -823,7 +823,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,'discount_type'=>$discount_type);
 
-		$this->load->model('reports/Summary_discounts');
+		$this->Summary_discounts = model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
 
 		$report_data = $model->getData($inputs);
@@ -859,7 +859,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
 
-		$this->load->model('reports/Summary_payments');
+		$this->Summary_payments = model('reports/Summary_payments');
 		$model = $this->Summary_payments;
 
 		$report_data = $model->getData($inputs);
@@ -930,7 +930,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type);
 
-		$this->load->model('reports/Specific_customer');
+		$this->Specific_customer = model('reports/Specific_customer');
 		$model = $this->Specific_customer;
 
 		$model->create($inputs);
@@ -1042,7 +1042,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type);
 
-		$this->load->model('reports/Specific_employee');
+		$this->Specific_employee = model('reports/Specific_employee');
 		$model = $this->Specific_employee;
 
 		$model->create($inputs);
@@ -1150,7 +1150,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'discount' => $discount, 'sale_type' => $sale_type, 'discount_type' => $discount_type);
 
-		$this->load->model('reports/Specific_discount');
+		$this->Specific_discount = model('reports/Specific_discount');
 		$model = $this->Specific_discount;
 
 		$model->create($inputs);
@@ -1236,7 +1236,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('sale_id' => $sale_id);
 
-		$this->load->model('reports/Detailed_sales');
+		$this->Detailed_sales = model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 
 		$model->create($inputs);
@@ -1294,7 +1294,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'supplier_id' => $supplier_id, 'sale_type' => $sale_type);
 
-		$this->load->model('reports/Specific_supplier');
+		$this->Specific_supplier = model('reports/Specific_supplier');
 		$model = $this->Specific_supplier;
 
 		$model->create($inputs);
@@ -1357,7 +1357,7 @@ class Reports extends Secure_Controller
 
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names));
 
-		$this->load->model('reports/Detailed_sales');
+		$this->Detailed_sales = model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 
 		$model->create($inputs);
@@ -1456,7 +1456,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('receiving_id' => $receiving_id);
 
-		$this->load->model('reports/Detailed_receivings');
+		$this->Detailed_receivings = model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 
 		$model->create($inputs);
@@ -1487,7 +1487,7 @@ class Reports extends Secure_Controller
 
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names));
 
-		$this->load->model('reports/Detailed_receivings');
+		$this->Detailed_receivings = model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 
 		$model->create($inputs);
@@ -1558,7 +1558,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array();
 
-		$this->load->model('reports/Inventory_low');
+		$this->Inventory_low = model('reports/Inventory_low');
 		$model = $this->Inventory_low;
 
 		$report_data = $model->getData($inputs);
@@ -1588,7 +1588,7 @@ class Reports extends Secure_Controller
 
 	public function inventory_summary_input()
 	{
-		$this->load->model('reports/Inventory_summary');
+		$this->Inventory_summary = model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
 
 		$data = array();
@@ -1605,7 +1605,7 @@ class Reports extends Secure_Controller
 	{
 		$inputs = array('location_id' => $location_id, 'item_count' => $item_count);
 
-		$this->load->model('reports/Inventory_summary');
+		$this->Inventory_summary = model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
 
 		$report_data = $model->getData($inputs);

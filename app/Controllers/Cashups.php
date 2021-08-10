@@ -101,7 +101,7 @@ class Cashups extends Secure_Controller
 			}
 
 			// get all the transactions payment summaries
-			$this->load->model('reports/Summary_payments');
+			$this->SummaryPayments = model('reports/Summary_payments');
 			$reports_data = $this->Summary_payments->getData($inputs);
 
 			foreach($reports_data as $row)
