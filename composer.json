@@ -17,16 +17,16 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.2",
+		"php": "^7.3",
 		"codeigniter/framework": "^3.1.11",
-		"dompdf/dompdf": "^0.8.5",
-		"tamtamchik/namecase": "^1.0",
-		"paragonie/random_compat": "^2.0",
-		"vlucas/phpdotenv": "^2.4"
+		"dompdf/dompdf": "^0.8.6",
+		"tamtamchik/namecase": "^1.0.6",
+		"paragonie/random_compat": "^2.0.20",
+		"vlucas/phpdotenv": "^2.6.7"
 	},
 	"require-dev": {
-		"mikey179/vfsstream": "1.1.*",
-		"phpunit/phpunit": "7.5.6",
-		"kenjis/ci-phpunit-test": "0.18.0"
+		"mikey179/vfsstream": "^1.6.9",
+		"phpunit/phpunit": "^7.5.20",
+		"kenjis/ci-phpunit-test": "^0.18.0"
 	}
 }

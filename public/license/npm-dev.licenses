@@ -1,0 +1,34 @@
+{
+  "version": "3.4.0",
+  "name": "opensourcepos",
+  "dependencies": {
+    "eslint": {
+      "version": "7.31.0",
+      "resolved": "https://registry.npmjs.org/eslint/-/eslint-7.31.0.tgz"
+    },
+    "grunt-contrib-clean": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/grunt-contrib-clean/-/grunt-contrib-clean-2.0.0.tgz"
+    },
+    "grunt-contrib-copy": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/grunt-contrib-copy/-/grunt-contrib-copy-1.0.0.tgz"
+    },
+    "grunt": {
+      "version": "1.4.1",
+      "resolved": "https://registry.npmjs.org/grunt/-/grunt-1.4.1.tgz"
+    },
+    "prettier": {
+      "version": "2.3.2",
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-2.3.2.tgz"
+    },
+    "stylelint-config-standard": {
+      "version": "22.0.0",
+      "resolved": "https://registry.npmjs.org/stylelint-config-standard/-/stylelint-config-standard-22.0.0.tgz"
+    },
+    "stylelint": {
+      "version": "13.13.1",
+      "resolved": "https://registry.npmjs.org/stylelint/-/stylelint-13.13.1.tgz"
+    }
+  }
+}

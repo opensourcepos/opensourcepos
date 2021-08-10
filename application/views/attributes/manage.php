@@ -1,37 +1,30 @@
 <?php $this->load->view("partial/header"); ?>
 
 <script type="text/javascript">
-	$(document).ready(function()
-	{
+	document.querySelector(document).ready(function() {
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		table_support.init({
-			resource: '<?php echo site_url($controller_name);?>',
-			headers: <?php echo $table_headers; ?>,
-			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+			resource: '<?= site_url($controller_name); ?>',
+			headers: <?= $table_headers; ?>,
+			pageSize: <?= $this->config->item('lines_per_page'); ?>,
 			uniqueId: 'definition_id'
 		});
 	});
 </script>
 
-<div id="title_bar" class="btn-toolbar print_hide">
-
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
-	        title='<?php echo $this->lang->line($controller_name . '_new'); ?>'>
-		<span class="glyphicon glyphicon-star">&nbsp</span><?php echo $this->lang->line($controller_name. '_new'); ?>
+<div id="title_bar" class="btn-toolbar d-flex justify-content-end d-print-none">
+	<button class="btn btn-info modal-dlg" data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url($controller_name . '/view'); ?>" title="<?= $this->lang->line($controller_name . '_new'); ?>">
+		<i class="bi bi-star-fill"></i> <?= $this->lang->line($controller_name . '_new'); ?>
 	</button>
 </div>
 
 <div id="toolbar">
-	<div class="pull-left form-inline" role="toolbar">
-		<button id="delete" class="btn btn-default btn-sm print_hide">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete"); ?>
-		</button>
+	<div class="form-inline" role="toolbar">
+		<button id="delete" class="btn btn-secondary d-print-none"><i class="bi bi-eraser"></i> <?= $this->lang->line('common_delete'); ?></button>
 	</div>
 </div>
 
-<div id="table_holder">
-	<table id="table"></table>
-</div>
+<table id="table"></table>
 
 <?php $this->load->view("partial/footer"); ?>

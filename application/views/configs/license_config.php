@@ -1,25 +1,11 @@
-<?php echo form_open('', array('id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
-	<div id="config_wrapper">
-		<fieldset>
-			<?php
-			$counter = 0;
-			foreach($licenses as $license)
-			{
-			?>
-				<div class="form-group form-group-sm">
-					<?php echo form_label($license['title'], 'license', array('class' => 'control-label col-xs-3')); ?>
-					<div class='col-xs-6'>
-						<?php echo form_textarea(array(
-							'name' => 'license',
-							'id' => 'license_' . $counter++,
-							'class' => 'form-control',
-							'readonly' => '',
-							'value' => $license['text'])); ?>
-					</div>
-				</div>
-			<?php
-			}
-			?>
-		</fieldset>
+<?php
+$title_license['config_title'] = $this->lang->line('config_license_configuration');
+$this->load->view('configs/config_header', $title_license);
+?>
+
+<?php foreach ($licenses as $license) { ?>
+	<div class="mb-3 mx-3 mx-lg-0">
+		<?= form_label($license['title'], 'license', array('class' => 'form-label')); ?>
+		<?= form_textarea(array('class' => 'form-control font-monospace', 'style' => 'font-size: .875rem;', 'disabled' => '', 'readonly' => '', 'value' => $license['text'])); ?>
 	</div>
-<?php echo form_close(); ?>
+<?php } ?>
