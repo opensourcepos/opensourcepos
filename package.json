@@ -9,7 +9,17 @@
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "all": "npm run install && npm run update && npm run copy && npm run prettier",
+    "copy": "grunt clean:ui && grunt copy",
+    "install": "composer install",
+    "gen-licenses": "npm ls --prod --json > public/license/npm-prod.licenses && npm ls --dev --json > public/license/npm-dev.licenses && composer licenses --format=json > public/license/composer.licenses",
+    "lint-css": "stylelint public/css/*.css",
+    "lint-js": "eslint public/js/*.js",
+    "prettier": "prettier --write public/css/*.css && prettier --write public/js/*.js",
+    "reset": "npm run uninstall && npm run install && npm run update",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "uninstall": "grunt clean:composer && grunt clean:npm",
+    "update": "npm update && composer self-update && composer update && npm run gen-licenses"
   },
   "repository": {
     "type": "git",
@@ -20,34 +30,24 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-apigen": "^0.1.3",
-    "grunt-bower": "^0.21.0",
-    "grunt-bower-concat": "^1.0.0",
-    "grunt-bower-licensechecker": "^0.1.2",
-    "grunt-bowercopy": "^1.2.5",
-    "grunt-cache-breaker": "^2.0.1",
-    "grunt-cli": "^1.4.3",
-    "grunt-composer": "^0.4.5",
-    "grunt-contrib-clean": "~1.0.0",
-    "grunt-contrib-compress": "^1.4.1",
-    "grunt-contrib-concat": "~0.5.1",
+    "eslint": "^7.31.0",
+    "grunt": "^1.4.1",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-uglify": "^5.0.1",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-license-bower": "~1.0.1",
-    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
-    "grunt-wiredep": "^2.0.0",
-    "load-grunt-tasks": "^3.4.0"
+    "prettier": "^2.3.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0"
   },
   "dependencies": {
-    "bootstrap": "^3.4.1",
-    "bootstrap-5": "npm:bootstrap@^5.0.2",
-    "bootswatch": "^3.4.1",
-    "bootswatch-5": "npm:bootswatch@^5.0.2",
+    "bootstrap": "^5.0.2",
+    "bootstrap-icons": "^1.5.0",
+    "bootstrap-select": "^1.13.18",
+    "bootstrap-table": "^1.18.3",
+    "bootswatch": "^5.0.2",
+    "clipboard": "^2.0.8",
     "elegant-circles": "github:BudsieBuds/elegant-circles",
-    "npm": "^7.19.0"
+    "jasny-bootstrap": "^4.0.0",
+    "jquery": "^3.6.0",
+    "npm": "^7.20.2"
   }
 }

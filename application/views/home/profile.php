@@ -15,12 +15,30 @@
 			<div class="modal-body text-start">
 
 				<div id="modal-profile">
+					<?php if ($this->Appconfig->get('company_logo')) : ?>
+						<img class="img-thumbnail rounded-circle" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="<?php echo $this->lang->line('common_logo') . '&nbsp;' . $this->config->item('company'); ?>">
+					<?php endif; ?>
 					<h5><?php echo $user_info->first_name . '&nbsp;' . $user_info->last_name; ?></h5>
-					<span><?php echo $user_info->person_id; ?></span>
+					<div><?php echo $this->lang->line('common_id') . $user_info->person_id; ?></div>
+					<div><?php echo $this->lang->line('common_gender') . $user_info->gender; ?></div>
+					<div><?php echo $this->lang->line('common_email') . $user_info->email; ?></div>
+					<div><?php echo $this->lang->line('common_phone_number') . $user_info->phone_number; ?></div>
+					<div><?php echo $this->lang->line('common_address_1') . $user_info->address_1; ?></div>
+					<div><?php echo $this->lang->line('common_address_2') . $user_info->address_2; ?></div>
+					<div><?php echo $this->lang->line('common_city') . $user_info->city; ?></div>
+					<div><?php echo $this->lang->line('common_state') . $user_info->state; ?></div>
+					<div><?php echo $this->lang->line('common_zip') . $user_info->zip; ?></div>
+					<div><?php echo $this->lang->line('common_country') . $user_info->country; ?></div>
+					<div><?php echo $this->lang->line('common_comments') . $user_info->comments; ?></div>
+					<div><?php echo $this->lang->line('common_username') . $user_info->username; ?></div>
+					<div><?php echo $this->lang->line('common_password') . $user_info->password; ?></div>
+					<div><?php echo $this->lang->line('common_hash_version') . $user_info->hash_version; ?></div>
+					<div><?php echo $this->lang->line('common_language_code') . $user_info->language_code; ?></div>
+					<div><?php echo $this->lang->line('common_language') . $user_info->language; ?></div>
 				</div>
 
 				<div id="modal-password" class="d-none">
-					<h6 class="text-end mb-3"><span class="badge bg-danger"><?php echo $this->lang->line('common_fields_required_message'); ?></span></h6>
+					<?php $this->load->view("partial/required"); ?>
 					<div class="form-floating mb-3">
 						<input name="username" type="text" class="form-control" placeholder="<?php echo $this->lang->line('login_username'); ?>" value="<?php echo $user_info->username; ?>" disabled>
 						<label for="input-username"><?php echo $this->lang->line('login_username'); ?></label>
@@ -44,7 +62,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 				<a type="button" id="modal-button-logout" class="btn btn-danger" href="home/logout"><?php echo $this->lang->line('login_logout'); ?></a>
-				<button type="button" id="modal-button-save" class="btn btn-success d-none">Save</button>
+				<button type="button" id="modal-button-save" class="btn btn-primary d-none">Save</button>
 			</div>
 		</div>
 	</div>

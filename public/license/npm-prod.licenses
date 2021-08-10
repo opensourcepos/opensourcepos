@@ -1,0 +1,46 @@
+{
+  "version": "3.4.0",
+  "name": "opensourcepos",
+  "dependencies": {
+    "bootstrap-icons": {
+      "version": "1.5.0",
+      "resolved": "https://registry.npmjs.org/bootstrap-icons/-/bootstrap-icons-1.5.0.tgz"
+    },
+    "bootstrap-select": {
+      "version": "1.13.18",
+      "resolved": "https://registry.npmjs.org/bootstrap-select/-/bootstrap-select-1.13.18.tgz"
+    },
+    "bootstrap-table": {
+      "version": "1.18.3",
+      "resolved": "https://registry.npmjs.org/bootstrap-table/-/bootstrap-table-1.18.3.tgz"
+    },
+    "bootstrap": {
+      "version": "5.0.2",
+      "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-5.0.2.tgz"
+    },
+    "bootswatch": {
+      "version": "5.0.2",
+      "resolved": "https://registry.npmjs.org/bootswatch/-/bootswatch-5.0.2.tgz"
+    },
+    "clipboard": {
+      "version": "2.0.8",
+      "resolved": "https://registry.npmjs.org/clipboard/-/clipboard-2.0.8.tgz"
+    },
+    "elegant-circles": {
+      "version": "1.0.0",
+      "resolved": "git+ssh://git@github.com/BudsieBuds/elegant-circles.git#0f4470d19d4da27647f10bca2eb0391f093c091a"
+    },
+    "jasny-bootstrap": {
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/jasny-bootstrap/-/jasny-bootstrap-4.0.0.tgz"
+    },
+    "jquery": {
+      "version": "3.6.0",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.6.0.tgz"
+    },
+    "npm": {
+      "version": "7.20.2",
+      "resolved": "https://registry.npmjs.org/npm/-/npm-7.20.2.tgz"
+    }
+  }
+}

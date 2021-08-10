@@ -8,7 +8,8 @@ body {
   min-height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
 }
 
-.container-login, .footer {
+.container-login,
+.footer {
   max-width: 720px;
 }
 
@@ -27,7 +28,10 @@ body {
 }
 
 img.logo {
-  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.87)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.87)) drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.87)) drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.87)); /* White border around Company Logo for correct display on darker themes */
+  filter: drop-shadow(1px 0 0 rgba(255, 255, 255, 0.87))
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.87))
+    drop-shadow(-1px 0 0 rgba(255, 255, 255, 0.87))
+    drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.87)); /* White border around Company Logo for correct display on darker themes */
 }
 
 .box-login {
@@ -74,7 +78,8 @@ footer a:not(:hover) {
     min-height: auto;
   }
 
-  .box-logo, .box-login {
+  .box-logo,
+  .box-login {
     width: 100%;
   }
 
@@ -94,7 +99,8 @@ footer a:not(:hover) {
 
 /* QHD Styling */
 @media (min-width: 2560px) {
-  .container-login, .footer {
+  .container-login,
+  .footer {
     max-width: 960px;
   }
 
@@ -109,7 +115,8 @@ footer a:not(:hover) {
 
 /* 4K Styling */
 @media (min-width: 3840px) {
-  .container-login, .footer {
+  .container-login,
+  .footer {
     max-width: 1140px;
   }
 

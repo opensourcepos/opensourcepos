@@ -1,6 +1,6 @@
 {
-    "name": "OpenSourcePOS",
-    "version": "3.3.3",
+    "name": "opensourcepos/opensourcepos",
+    "version": "dev-master",
     "license": [
         "MIT"
     ],
@@ -11,22 +11,58 @@
                 "MIT"
             ]
         },
+        "doctrine/instantiator": {
+            "version": "1.4.0",
+            "license": [
+                "MIT"
+            ]
+        },
         "dompdf/dompdf": {
             "version": "v0.8.6",
             "license": [
                 "LGPL-2.1"
             ]
         },
-        "mikey179/vfsStream": {
-            "version": "v1.1.0",
+        "kenjis/ci-phpunit-test": {
+            "version": "v0.18.0",
             "license": [
-                "BSD"
+                "MIT"
+            ]
+        },
+        "mikey179/vfsstream": {
+            "version": "v1.6.9",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "myclabs/deep-copy": {
+            "version": "1.10.2",
+            "license": [
+                "MIT"
+            ]
+        },
+        "nikic/php-parser": {
+            "version": "v4.12.0",
+            "license": [
+                "BSD-3-Clause"
             ]
         },
         "paragonie/random_compat": {
-            "version": "2.0.19",
+            "version": "v2.0.20",
             "license": [
                 "MIT"
+            ]
+        },
+        "phar-io/manifest": {
+            "version": "1.0.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phar-io/version": {
+            "version": "2.0.1",
+            "license": [
+                "BSD-3-Clause"
             ]
         },
         "phenx/php-font-lib": {
@@ -36,9 +72,147 @@
             ]
         },
         "phenx/php-svg-lib": {
-            "version": "0.3.3",
+            "version": "v0.3.3",
             "license": [
                 "LGPL-3.0"
+            ]
+        },
+        "phpdocumentor/reflection-common": {
+            "version": "2.2.0",
+            "license": [
+                "MIT"
+            ]
+        },
+        "phpdocumentor/reflection-docblock": {
+            "version": "5.2.2",
+            "license": [
+                "MIT"
+            ]
+        },
+        "phpdocumentor/type-resolver": {
+            "version": "1.4.0",
+            "license": [
+                "MIT"
+            ]
+        },
+        "phpspec/prophecy": {
+            "version": "1.13.0",
+            "license": [
+                "MIT"
+            ]
+        },
+        "phpunit/php-code-coverage": {
+            "version": "6.1.4",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phpunit/php-file-iterator": {
+            "version": "2.0.4",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phpunit/php-text-template": {
+            "version": "1.2.1",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phpunit/php-timer": {
+            "version": "2.1.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phpunit/php-token-stream": {
+            "version": "3.1.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "phpunit/phpunit": {
+            "version": "7.5.20",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sabberworm/php-css-parser": {
+            "version": "8.3.1",
+            "license": [
+                "MIT"
+            ]
+        },
+        "sebastian/code-unit-reverse-lookup": {
+            "version": "1.0.2",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/comparator": {
+            "version": "3.0.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/diff": {
+            "version": "3.0.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/environment": {
+            "version": "4.2.4",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/exporter": {
+            "version": "3.1.3",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/global-state": {
+            "version": "2.0.0",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/object-enumerator": {
+            "version": "3.0.4",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/object-reflector": {
+            "version": "1.1.2",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/recursion-context": {
+            "version": "3.0.1",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/resource-operations": {
+            "version": "2.0.2",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "sebastian/version": {
+            "version": "2.0.1",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "symfony/polyfill-ctype": {
+            "version": "v1.23.0",
+            "license": [
+                "MIT"
             ]
         },
         "tamtamchik/namecase": {
@@ -47,17 +221,23 @@
                 "MIT"
             ]
         },
-        "vlucas/phpdotenv": {
-            "version": "2.6.6",
+        "theseer/tokenizer": {
+            "version": "1.2.1",
             "license": [
-                "BSD-3-Clause-Attribution"
+                "BSD-3-Clause"
             ]
         },
-        "symfony/polyfill-ctype": {
-             "version": "v1.20.0",
-             "license": [
-                 "MIT"
-             ]
+        "vlucas/phpdotenv": {
+            "version": "v2.6.7",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "webmozart/assert": {
+            "version": "1.10.0",
+            "license": [
+                "MIT"
+            ]
         }
     }
 }

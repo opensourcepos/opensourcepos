@@ -1,172 +1,215 @@
-<style type="text/css">
-	 a:hover {
-	  cursor:pointer;
+<?php
+$logs = '../application/logs/';
+$uploads = '../public/uploads/';
+$images = '../public/uploads/item_pics/';
+$import = '../import_items.csv';
+$importcustomers = '../import_customers.csv';
+$bullet = '&raquo; ';
+$divider = ' &middot; ';
+$enabled = '<span class="text-success">&#10003; Enabled</span>';
+$disabled = '<span class="text-danger">&#10007; Disabled</span>';
+$writable = '<span class="text-success">&#10003; Writable</span>';
+$notwritable = '<span class="text-danger">&#10007; Not Writable</span>';
+$readable = '<span class="text-success">&#10003; Readable</span>';
+$notreadable = '<span class="text-danger">&#10007; Not Readable</span>';
+$permissions_check = '<span class="text-success">&#10003; Security Check Passed</span>';
+$permissions_fail = '<span class="text-danger">&#10007; Vulnerable or Incorrect Permissions</span>';
+
+function get_browser_name($user_agent)
+{
+	$t = strtolower($user_agent);
+	$t = " " . $t;
+	if (strpos($t, 'opera') || strpos($t, 'opr/')) return 'Opera';
+	elseif (strpos($t, 'edge')) return 'Edge';
+	elseif (strpos($t, 'chrome')) return 'Chrome';
+	elseif (strpos($t, 'safari')) return 'Safari';
+	elseif (strpos($t, 'firefox')) return 'Firefox';
+	elseif (strpos($t, 'msie') || strpos($t, 'trident/7')) return 'Internet Explorer';
+	return 'Unknown';
 }
-	 hidden {
-  visibility: hidden;
-}
-</style>
-</style>
-<script type="text/javascript" src="js/clipboard.min.js"></script>
-<div id="config_wrapper" class="col-sm-12">
-	<?php echo $this->lang->line('config_server_notice'); ?>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-2" align="left"><br>
-			<p style="min-height:14.7em;"><strong>General Info </p> 
-			<p style="min-height:9.9em;">User Setup</p> 
-			<p>Permissions</p></strong>
-			</div> 
-			<div class="col-sm-8" id="issuetemplate" align="left"><br>
-				<?php echo $this->lang->line('config_ospos_info') . ':'; ?>
-				<?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
-				Language Code: <?php echo current_language_code(); ?><br><br>
-				<div id="TimeError"></div>
-				Extensions & Modules:<br>
-					<?php 
-						echo "&#187; GD: ", extension_loaded('gd') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; INTL: ", extension_loaded('intl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br> <br>';		
-					?>
-				User Configuration:<br>
-				.Browser:
-					<?php
-						function get_browser_name($user_agent)
-						{
-							if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
-							elseif (strpos($user_agent, 'Edge')) return 'Edge';
-							elseif (strpos($user_agent, 'Chrome')) return 'Chrome';
-							elseif (strpos($user_agent, 'Safari')) return 'Safari';
-							elseif (strpos($user_agent, 'Firefox')) return 'Firefox';
-							elseif (strpos($user_agent, 'MSIE') || strpos($user_agent, 'Trident/7')) return 'Internet Explorer';
-							return 'Other';
-						}
-						 echo get_browser_name($_SERVER['HTTP_USER_AGENT']); 
-					?><br>
-				.Server Software: <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
-				.PHP Version: <?php echo PHP_VERSION; ?><br>
-				.DB Version: <?php echo mysqli_get_server_info($this->db->conn_id); ?><br>
-				.Server Port: <?php echo $_SERVER['SERVER_PORT']; ?><br>
-				.OS: <?php echo php_uname('s') .' '. php_uname('r');?><br><br>
-				File Permissions:<br>
-						&#187; [application/logs:]
-						<?php $logs = '../application/logs/'; 
-							$uploads = '../public/uploads/'; 
-							$images = '../public/uploads/item_pics/'; 
-							$import = '../import_items.csv';
-							$importcustomers = '../import_customers.csv';
-							
-							if (is_writable($logs)) {
-								echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
-							} else {
-								echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="red">	Not Writable &#x2717 </font>';						
-							}
-							clearstatcache();
-							if (is_writable($logs) && substr(decoct(fileperms($logs)), -4) != 750  ) {
-								echo ' | <font color="red">Vulnerable or Incorrect Permissions &#x2717</font>';
-							} else {
-								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
-							}	
-							clearstatcache();
-						?>
-						<br>
-						&#187; [public/uploads:]
-						<?php
-							if (is_writable($uploads)) {
-								echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="green">	 Writable &#x2713 </font>';
-							} else {
-								echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
-							}
-							clearstatcache();
-							if (is_writable($uploads) && substr(decoct(fileperms($uploads)), -4) != 750  ) {
-								echo ' | <font color="red">Vulnerable or Incorrect Permissions &#x2717</font>';
-							} else {
-								echo ' |  <font color="green">Security Check Passed &#x2713 </font>';						
-							}	
-							clearstatcache();
-						?>
-						<br>
-						&#187; [public/uploads/item_pics:]	
-						<?php 
-							if (is_writable($images)) {
-								echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<font color="green"> Writable &#x2713 </font>';
-							} else {
-								echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<font color="red"> Not Writable &#x2717 </font>';
-							} 
-							clearstatcache();
-							if (substr(decoct(fileperms($images)), -4) != 750  ) {
-								echo ' | <font color="red">Vulnerable or Incorrect Permissions &#x2717</font>';
-							} else {
-								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
-							}	
-							clearstatcache();
-						?>
-						<br>
-						&#187; [import_customers.csv:]
-						<?php 
-							if (is_readable($importcustomers)) {
-								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="green">	 Readable &#x2713 </font>';
-							} else {
-								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Readable &#x2717 </font>';
-							}
-							clearstatcache(); 
-							if (!((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660) )) {
-								echo ' | <font color="red">Vulnerable or Incorrect Permissions &#x2717</font>';
-							} else {
-								echo ' | <font color="green">Security Check Passed &#x2713 </font>';						
-							}	
-							clearstatcache();
-						?>
-						<br>
-						<?php
-					
-						if(!((substr(decoct(fileperms($logs)), -4) == 750) && (substr(decoct(fileperms($uploads)), -4) == 750) && (substr(decoct(fileperms($images)), -4) == 750) 
-                             && ((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660)))) {
-							echo '<br><font color="red"><strong>' . $this->lang->line('config_security_issue') . '</strong> <br>' . $this->lang->line('config_perm_risk') . '</font><br>';
-						} 
-						else { 
-							echo '<br><font color="green">' . $this->lang->line('config_no_risk') . '</strong> <br> </font>';
-						}
-						if(substr(decoct(fileperms($logs)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [application/logs:] ' . $this->lang->line('config_is_writable') . '</font>';						
-						}
-						if(substr(decoct(fileperms($uploads)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [public/uploads:] ' . $this->lang->line('config_is_writable') . '</font>';						
-						}
-						if(substr(decoct(fileperms($images)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [public/uploads/item_pics:] ' . $this->lang->line('config_is_writable') . '</font>';						
-						}
-						if(!((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660))) {
-							echo '<br><font color="red"> &#187; [import_customers.csv:] ' . $this->lang->line('config_is_readable') . '</font>';
-						}
-						?>
-						<br>
-				<div id="timezone" style="font-weight:600;"></div><br><br>
-				<div id="ostimezone" style="display:none;" ><?php echo $this->config->item('timezone'); ?></div><br>
-				<br>	
+?>
+
+<?php
+$title_system['config_title'] = $this->lang->line('config_system_info');
+$this->load->view('configs/config_header', $title_system);
+?>
+
+<div class="mb-3"><?= $this->lang->line('config_server_notice'); ?></div>
+
+<form id="copy-issue">
+
+	<?php
+	if (!((substr(decoct(fileperms($logs)), -4) == 750) && (substr(decoct(fileperms($uploads)), -4) == 750) && (substr(decoct(fileperms($images)), -4) == 750) && ((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660)))) {
+		echo '<div class="card text-white bg-danger mb-4">
+		<div class="card-header fw-bold"><i class="bi bi-exclamation-circle"></i> ' . $this->lang->line('config_security_issue') . '</div>
+			<div class="card-body">
+				<p class="card-text">' . $this->lang->line('config_perm_risk') . '</p>
+				<ul class="list-unstyled mb-0">';
+		if (substr(decoct(fileperms($logs)), -4) != 750) {
+			echo '<li class="card-text">' . $bullet . '<code class="text-white">application/logs</code> ' . $this->lang->line('config_is_writable') . '</li>';
+		}
+		if (substr(decoct(fileperms($uploads)), -4) != 750) {
+			echo '<li class="card-text">' . $bullet . '<code class="text-white">public/uploads</code> ' . $this->lang->line('config_is_writable') . '</li>';
+		}
+		if (substr(decoct(fileperms($images)), -4) != 750) {
+			echo '<li class="card-text">' . $bullet . '<code class="text-white">public/uploads/item_pics</code> ' . $this->lang->line('config_is_writable') . '</li>';
+		}
+		if (!((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660))) {
+			echo '<li class="card-text">' . $bullet . '<code class="text-white">import_customers.csv</code> ' . $this->lang->line('config_is_readable') . '</li>';
+		}
+		echo '</div></div>';
+	}
+	?>
+
+	<div class="row mb-3">
+		<label for="general-info" class="col-12 col-lg-2 form-label fw-bold">General Info</label>
+		<div class="col-12 col-lg-10" id="general-info">
+			<?= $this->lang->line('config_ospos_info') . ': ' . $this->config->item('application_version') . ' - ' . substr($this->config->item('commit_sha1'), 0, 6); ?><br>
+			<div>Language Code: <?= current_language_code(); ?></div><br>
+			<div id="time-error" class="row mb-3 d-none">
+				<div class="col-12 text-danger"><?= $this->lang->line('config_timezone_error'); ?></div>
+				<div class="col-6">
+					<label for="timezone"><?= $this->lang->line('config_user_timezone'); ?></label>
+					<div id="timezone"></div>
+				</div>
+				<div class="col-6">
+					<label for="ostimezone"><?= $this->lang->line('config_os_timezone'); ?></label>
+					<div id="ostimezone"><?= $this->config->item('timezone'); ?></div>
+				</div>
 			</div>
+			<span>Extensions & Modules:</span><br>
+			<ul class="list-unstyled">
+				<li><?= $bullet . 'GD: ', extension_loaded('gd') ? $enabled : $disabled; ?></li>
+				<li><?= $bullet . 'BC Math: ', extension_loaded('bcmath') ? $enabled : $disabled; ?></li>
+				<li><?= $bullet . 'INTL: ', extension_loaded('intl') ? $enabled : $disabled; ?></li>
+				<li><?= $bullet . 'OpenSSL: ', extension_loaded('openssl') ? $enabled : $disabled; ?></li>
+				<li><?= $bullet . 'MBString: ', extension_loaded('mbstring') ? $enabled : $disabled; ?></li>
+				<li><?= $bullet . 'Curl: ', extension_loaded('curl') ? $enabled : $disabled; ?></li>
+			</ul>
 		</div>
 	</div>
-</div>
-<div align="center">
-		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= $this->lang->line('config_report_an_issue'); ?></a>
-		<script>
-			var clipboard = new ClipboardJS('.copy');
 
-			clipboard.on('success', function(e) {
-				document.getSelection().removeAllRanges();
-			});
-			
-			document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;	
-					
-			$(function() {
-				$('#timezone').clone().appendTo('#timezoneE');
-			});
-							
-			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<font color="red"><?php echo $this->lang->line('config_timezone_error'); ?></font><br><br><?php echo $this->lang->line('config_user_timezone'); ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo $this->lang->line('config_os_timezone'); ?><div id="ostimezoneE" style="font-weight:600;"><?php echo $this->config->item('timezone'); ?></div><br>';
-		</script>
+	<div class="row mb-3">
+		<label for="user-setup" class="col-12 col-lg-2 form-label fw-bold">User Setup</label>
+		<div class="col-12 col-lg-10" id="user-setup">
+			<ul class="list-unstyled">
+				<li><?= $bullet . 'Browser: ' . get_browser_name($_SERVER['HTTP_USER_AGENT']); ?></li>
+				<li><?= $bullet . 'Server Software: ' . $_SERVER['SERVER_SOFTWARE']; ?></li>
+				<li><?= $bullet . 'PHP Version: ' . PHP_VERSION; ?></li>
+				<li><?= $bullet . 'DB Version: ' . mysqli_get_server_info($this->db->conn_id); ?></li>
+				<li><?= $bullet . 'Server Port: ' . $_SERVER['SERVER_PORT']; ?></li>
+				<li><?= $bullet . 'OS: ' . php_uname('s') . ' ' . php_uname('r'); ?></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label for="permissions" class="col-12 col-lg-2 form-label fw-bold">Permissions</label>
+		<div class="col-12 col-lg-10" id="permissions">
+			<ul class="list-unstyled">
+				<li>
+					<?= $bullet; ?><code>application/logs</code>
+					<?php
+					if (is_writable($logs)) {
+						echo substr(sprintf("%o", fileperms($logs)), -4) . $divider . $writable;
+					} else {
+						echo substr(sprintf("%o", fileperms($logs)), -4) . $notwritable;
+					}
+					clearstatcache();
+					echo $divider;
+					if (is_writable($logs) && substr(decoct(fileperms($logs)), -4) != 750) {
+						echo $permissions_fail;
+					} else {
+						echo $permissions_check;
+					}
+					clearstatcache();
+					?>
+				</li>
+				<li>
+					<?= $bullet; ?><code>public/uploads</code>
+					<?php
+					if (is_writable($uploads)) {
+						echo substr(sprintf("%o", fileperms($uploads)), -4) . $divider . $writable;
+					} else {
+						echo substr(sprintf("%o", fileperms($uploads)), -4) . $notwritable;
+					}
+					clearstatcache();
+					echo $divider;
+					if (is_writable($uploads) && substr(decoct(fileperms($uploads)), -4) != 750) {
+						echo $permissions_fail;
+					} else {
+						echo $permissions_check;
+					}
+					clearstatcache();
+					?>
+				</li>
+				<li>
+					<?= $bullet; ?><code>public/uploads/item_pics</code>
+					<?php
+					if (is_writable($images)) {
+						echo substr(sprintf("%o", fileperms($images)), -4) . $divider . $writable;
+					} else {
+						echo substr(sprintf("%o", fileperms($images)), -4) . $notwritable;
+					}
+					clearstatcache();
+					echo $divider;
+					if (substr(decoct(fileperms($images)), -4) != 750) {
+						echo $permissions_fail;
+					} else {
+						echo $permissions_check;
+					}
+					clearstatcache();
+					?>
+				</li>
+				<li>
+					<?= $bullet; ?><code>import_customers.csv</code>
+					<?php
+					if (is_readable($importcustomers)) {
+						echo substr(sprintf("%o", fileperms($importcustomers)), -4) . $divider . $readable;
+					} else {
+						echo substr(sprintf("%o", fileperms($importcustomers)), -4) . $notreadable;
+					}
+					clearstatcache();
+					echo $divider;
+					if (!((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660))) {
+						echo $permissions_fail;
+					} else {
+						echo $permissions_check;
+					}
+					clearstatcache();
+					?>
+				</li>
+			</ul>
+			<?php
+			if (((substr(decoct(fileperms($logs)), -4) == 750) && (substr(decoct(fileperms($uploads)), -4) == 750) && (substr(decoct(fileperms($images)), -4) == 750) && ((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660)))) {
+				echo '<span class="text-success">' . $this->lang->line('config_no_risk') . '</span>';
+			} ?>
+		</div>
+	</div>
+</form>
+
+<div class="d-flex justify-content-center gap-3">
+	<button class="copy btn btn-secondary" data-clipboard-action="copy" data-clipboard-target="#copy-issue"><i class="bi bi-clipboard-plus"></i> Copy Info</button>
+	<a class="btn btn-secondary" href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank" rel="noopener"><i class="bi bi-flag"></i> <?= $this->lang->line('config_report_an_issue'); ?></a>
 </div>
+
+<script type="text/javascript" src="dist/clipboard/clipboard.min.js"></script>
+
+<script type="text/javascript">
+	// clipboard.js
+	var clipboard = new ClipboardJS('.copy');
+
+	clipboard.on('success', function(e) {
+		document.getSelection().removeAllRanges();
+	});
+
+	// timezone
+	document.getElementById('timezone').innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+	var timezone = document.getElementById('timezone').innerText;
+	var ostimezone = document.getElementById('ostimezone').innerText;
+
+	if (timezone !== ostimezone) {
+		document.getElementById('time-error').classList.remove('d-none');
+	}
+</script>
