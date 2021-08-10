@@ -1,6 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Secure_Controller extends CI_Controller 
+namespace App\Controllers;
+
+class Secure_Controller extends BaseController
 {
 	/*
 	* Controllers that are considered secure extend Secure_Controller, optionally a $module_id can

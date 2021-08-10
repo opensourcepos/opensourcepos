@@ -1,6 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Login extends CI_Controller
+namespace App\Controllers;
+
+class Login extends BaseController
 {
 	public function index()
 	{

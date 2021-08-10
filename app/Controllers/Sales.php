@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Controllers;
 
 require_once("Secure_Controller.php");
 
@@ -805,7 +807,7 @@ class Sales extends Secure_Controller
 			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->item('company_logo'));
 
 			// generate email attachment: invoice in pdf format
-			$html = echo view("sales/" . $type . "_email", $sale_data, TRUE);
+			$html = view("sales/" . $type . "_email", $sale_data, TRUE);
 
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
@@ -839,7 +841,7 @@ class Sales extends Secure_Controller
 			$to = $sale_data['customer_email'];
 			$subject = $this->lang->line('sales_receipt');
 
-			$text = echo view('sales/receipt_email', $sale_data, TRUE);
+			$text = view('sales/receipt_email', $sale_data, TRUE);
 
 			$result = $this->email_lib->sendEmail($to, $subject, $text);
 
