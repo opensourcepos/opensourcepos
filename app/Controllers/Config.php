@@ -2,6 +2,11 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Barcode_lib;
+use app\Libraries\Mailchimp_lib;
+use app\Libraries\Receiving_lib;
+use app\Libraries\Sale_lib;
+
 require_once("Secure_Controller.php");
 
 class Config extends Secure_Controller
@@ -10,8 +15,8 @@ class Config extends Secure_Controller
 	{
 		parent::__construct('config');
 
-		$this->load->library('barcode_lib');
-		$this->load->library('sale_lib');
+		$this->barcode_lib = new Barcode_lib();
+		$this->sale_lib = new Sale_lib();
 	}
 
 	/*
@@ -465,7 +470,7 @@ class Config extends Secure_Controller
 	 */
 	private function _mailchimp($api_key = '')
 	{
-		$this->load->library('mailchimp_lib', array('api_key' => $api_key));
+		$this->mailchimp_lib = new Mailchimp_lib(array('api_key' => $api_key));
 
 		$result = array();
 
@@ -566,7 +571,7 @@ class Config extends Secure_Controller
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_table();
 		$this->sale_lib->clear_all();
-		$this->load->library('receiving_lib');
+		$this->receiving_lib = new Receiving_lib();
 		$this->receiving_lib->clear_stock_source();
 		$this->receiving_lib->clear_stock_destination();
 		$this->receiving_lib->clear_all();
@@ -876,7 +881,7 @@ class Config extends Secure_Controller
 			'max_width' => '800',
 			'max_height' => '680',
 			'file_name' => 'company_logo');
-		$this->load->library('upload', $config);
+		$this->upload = new Upload($config);
 		$this->upload->do_upload('company_logo');
 
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');

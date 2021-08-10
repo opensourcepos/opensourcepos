@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Barcode_lib;
+use app\Libraries\Token_lib;
+
 require_once("Secure_Controller.php");
 
 class Sales extends Secure_Controller
@@ -11,10 +14,10 @@ class Sales extends Secure_Controller
 		parent::__construct('sales');
 
 		$this->load->helper('file');
-		$this->load->library('sale_lib');
-		$this->load->library('email_lib');
-		$this->load->library('token_lib');
-		$this->load->library('barcode_lib');
+		$this->sale_lib = new Sale_lib();
+		$this->email_lib = new Email_lib();
+		$this->token_lib = new Token_lib();
+		$this->barcode_lib = new Barcode_lib();
 	}
 
 	public function index()

@@ -10,7 +10,7 @@ class Messages extends Secure_Controller
 	{
 		parent::__construct('messages');
 		
-		$this->load->library('sms_lib');
+		$this->sms_lib = new Sms_lib();
 	}
 	
 	public function index()

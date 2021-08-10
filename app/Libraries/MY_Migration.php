@@ -1,8 +1,8 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+namespace app\Libraries;
 
-class MY_Migration extends CI_Migration {
+class MY_Migration extends Migration {
 
 	public function get_last_migration()
 	{

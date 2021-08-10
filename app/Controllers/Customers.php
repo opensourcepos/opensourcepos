@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Mailchimp_lib;
+
 require_once("Persons.php");
 
 class Customers extends Persons
@@ -12,7 +14,7 @@ class Customers extends Persons
 	{
 		parent::__construct('customers');
 
-		$this->load->library('mailchimp_lib');
+		$this->mailchimp_lib = new Mailchimp_lib();
 
 		$CI =& get_instance();
 

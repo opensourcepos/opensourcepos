@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Tax_lib;
+
 require_once("Secure_Controller.php");
 
 class Taxes extends Secure_Controller
@@ -11,7 +13,7 @@ class Taxes extends Secure_Controller
 		parent::__construct('taxes');
 
 		$this->Rounding_mode = model('enums/Rounding_mode');
-		$this->load->library('tax_lib');
+		$this->tax_lib = new Tax_lib();
 		$this->load->helper('tax_helper');
 	}
 

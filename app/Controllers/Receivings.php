@@ -10,9 +10,9 @@ class Receivings extends Secure_Controller
 	{
 		parent::__construct('receivings');
 
-		$this->load->library('receiving_lib');
-		$this->load->library('token_lib');
-		$this->load->library('barcode_lib');
+		$this->receiving_lib = new Receiving_lib();
+		$this->token_lib = new Token_lib();
+		$this->barcode_lib = new Barcode_lib();
 	}
 
 	public function index()

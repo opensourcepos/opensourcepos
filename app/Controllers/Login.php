@@ -6,7 +6,7 @@ class Login extends BaseController
 {
 	public function index()
 	{
-		$this->load->library('migration');
+		$this->migration = new Migration();
 		if($this->Employee->is_logged_in())
 		{
 			redirect('home');

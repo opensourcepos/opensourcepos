@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Barcode_lib;
+
 require_once("Secure_Controller.php");
 
 class Item_kits extends Secure_Controller
@@ -217,7 +219,7 @@ class Item_kits extends Secure_Controller
 	
 	public function generate_barcodes($item_kit_ids)
 	{
-		$this->load->library('barcode_lib');
+		$this->barcode_lib = new Barcode_lib();
 		$result = array();
 
 		$item_kit_ids = explode(':', $item_kit_ids);

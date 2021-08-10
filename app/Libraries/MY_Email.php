@@ -1,7 +1,9 @@
-<?php 
+<?php
 
-class MY_Email extends CI_Email {
-	
+namespace app\Libraries;
+
+class MY_Email extends CI_Email
+{
 	var $default_cc_address 	= "";
 	var $default_email_address 	= "";
 	var $default_sender_name 	= "";
@@ -29,7 +31,5 @@ class MY_Email extends CI_Email {
 		$this->to($to);
 		return $this->send();
 	}
-    
 }
-
 ?>

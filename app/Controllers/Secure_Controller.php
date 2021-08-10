@@ -29,7 +29,7 @@ class Secure_Controller extends BaseController
 
 		// load up global data visible to all the loaded views
 
-		$this->load->library('session');
+		$this->session = new Session();
 		if($menu_group == NULL)
 		{
 			$menu_group = $this->session->userdata('menu_group');

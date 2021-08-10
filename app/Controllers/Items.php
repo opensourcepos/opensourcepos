@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Item_lib;
+
 require_once('Secure_Controller.php');
 
 class Items extends Secure_Controller
@@ -10,7 +12,7 @@ class Items extends Secure_Controller
 	{
 		parent::__construct('items');
 
-		$this->load->library('item_lib');
+		$this->item_lib = new Item_lib();
 	}
 
 	public function index()
@@ -85,7 +87,7 @@ class Items extends Secure_Controller
 	public function pic_thumb($pic_filename)
 	{
 		$this->load->helper('file');
-		$this->load->library('image_lib');
+		$this->image_lib = new Image_lib();
 
 		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
 		$images = glob('./uploads/item_pics/' . $pic_filename);
@@ -415,7 +417,7 @@ class Items extends Secure_Controller
 
 	public function generate_barcodes($item_ids)
 	{
-		$this->load->library('barcode_lib');
+		$this->barcode_lib = new Barcode_lib();
 
 		$item_ids = explode(':', $item_ids);
 		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->result_array();
@@ -706,7 +708,7 @@ class Items extends Secure_Controller
 			'max_width' => $this->config->item('image_max_width'),
 			'max_height' => $this->config->item('image_max_height'));
 
-		$this->load->library('upload', $config);
+		$this->upload = new Upload($config);
 		$this->upload->do_upload('item_image');
 
 		return strlen($this->upload->display_errors()) === 0 || !strcmp($this->upload->display_errors(), '<p>' . $this->lang->line('upload_no_file_selected') . '</p>');
