@@ -1,20 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_taxgroupconstraint extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_taxgroupconstraint extends Migration
 {
-	public function __construct()
+	public function up(): void
 	{
-		parent::__construct();
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('tax_jurisdictions') . ' ADD CONSTRAINT tax_jurisdictions_uq1 UNIQUE (tax_group)');
 	}
 
-	public function up()
+	public function down(): void
 	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('tax_jurisdictions') . ' ADD CONSTRAINT tax_jurisdictions_uq1 UNIQUE (tax_group)');
-	}
-
-	public function down()
-	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('tax_jurisdictions') . ' DROP INDEX tax_jurisdictions_uq1');
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('tax_jurisdictions') . ' DROP INDEX tax_jurisdictions_uq1');
 	}
 }
-?>

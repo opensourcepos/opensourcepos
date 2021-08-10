@@ -1,63 +1,63 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once(APPPATH . 'models/tokens/Token.php');
-require_once(APPPATH . 'models/tokens/Token_customer.php');
-require_once(APPPATH . 'models/tokens/Token_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_invoice_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_quote_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_year_quote_count.php');
-require_once(APPPATH . 'models/tokens/Token_work_order_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_suspended_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_year_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_price.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_weight.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_ean.php');
+namespace App\Models\Tokens;
+
+use CodeIgniter\Model;
 
 /**
  * Token class
  */
-
-abstract class Token
+abstract class Token Extends Model
 {
-	protected $CI;
-
 	protected $value = '';
 
 	public function __construct($value = '')
 	{
-		$this->CI =& get_instance();
+		parent::__construct();
+
 		$this->value = $value;
 	}
 
-	static function get_barcode_tokens()
+	static function get_barcode_tokens(): array
 	{
-		return array(new Token_barcode_price(), new Token_barcode_weight(), new Token_barcode_ean());
+		return [
+			new Token_barcode_price(),
+			new Token_barcode_weight(),
+			new Token_barcode_ean()
+		];
 	}
 
-	static function get_tokens()
+	static function get_tokens(): array
 	{
-		return array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
-			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(),
-			new Token_work_order_sequence(), new Token_year_invoice_count(), new Token_year_quote_count());
+		return [
+			new Token_customer(),
+			new Token_invoice_count(),
+			new Token_invoice_sequence(),
+			new Token_quote_sequence(),
+			new Token_suspended_invoice_count(),
+			new Token_quote_sequence(),
+			new Token_work_order_sequence(),
+			new Token_year_invoice_count(),
+			new Token_year_quote_count()
+		];
 	}
 
-	abstract public function token_id();
+	abstract public function token_id(): string;
 
 	abstract public function get_value();
 
-	function matches($token_id)
+	function matches($token_id): bool
 	{
-		return token_id() == $token_id;
+		return $this->token_id() == $token_id;
 	}
 
-	function replace($text)
+	function replace_token(string $text): string	//TODO: This function is never called in the code
 	{
 		if(strstr($text, $this->token_id()))
 		{
 			return str_replace($this->token_id(), $this->get_value(), $text);
 		}
+
 		return $text;
 	}
-
 }
-?>

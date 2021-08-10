@@ -1,11 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
+/**
+ * @var string $heading
+ * @var string $message
+ */
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Database Error</title>
-<style type="text/css">
+<style>
 
 ::selection { background-color: #E13300; color: white; }
 ::-moz-selection { background-color: #E13300; color: white; }
@@ -57,8 +61,8 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<h1><?php echo esc($heading) ?></h1>
+		<?php echo esc($message) ?>
 	</div>
 </body>
 </html>

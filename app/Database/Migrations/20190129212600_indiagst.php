@@ -1,15 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_IndiaGST extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_IndiaGST extends Migration
 {
-	public function __construct()
+	public function up(): void
 	{
-		parent::__construct();
-	}
-
-	public function up()
-	{
-		if(!$this->db->field_exists('sales_tax_code', 'customers'))
+		if(!$this->db->fieldExists('sales_tax_code', 'customers'))
 		{
 			return;
 		}
@@ -20,11 +19,11 @@ class Migration_IndiaGST extends CI_Migration
 		error_log('Migrating tax configuration');
 
 		$count_of_tax_codes = $this->get_count_of_tax_code_entries();
+		
 		if($count_of_tax_codes > 0)
 		{
 			$this->migrate_tax_code_data();
 		}
-
 
 		$this->migrate_customer_tax_codes();
 
@@ -47,32 +46,32 @@ class Migration_IndiaGST extends CI_Migration
 		error_log('Migrating tax configuration completed');
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 
-	private function get_count_of_tax_code_entries()
+	private function get_count_of_tax_code_entries(): int
 	{
-		$this->db->select('COUNT(*) as count');
-		$this->db->from('tax_codes_backup');
-
-		return $this->db->get()->row()->count;
+		$builder = $this->db->table('tax_codes_backup');
+		$builder->select('COUNT(*) as count');
+		
+		return $builder->get()->getRow()->count;
 	}
 
-	private function get_count_of_sales_taxes_entries()
+	private function get_count_of_sales_taxes_entries(): int
 	{
-		$this->db->select('COUNT(*) as count');
-		$this->db->from('sales_taxes_backup');
-
-		return $this->db->get()->row()->count;
+		$builder = $this->db->table('sales_taxes_backup');
+		$builder->select('COUNT(*) as count');
+		
+		return $builder->get()->getRow()->count;
 	}
 
-	private function get_count_of_rate_entries()
+	private function get_count_of_rate_entries(): int
 	{
-		$this->db->select('COUNT(*) as count');
-		$this->db->from('tax_code_rates_backup');
-
-		return $this->db->get()->row()->count;
+		$builder = $this->db->table('tax_code_rates_backup');
+		$builder->select('COUNT(*) as count');
+		
+		return $builder->get()->getRow()->count;
 	}
 
 	/*
@@ -80,11 +79,10 @@ class Migration_IndiaGST extends CI_Migration
 	 * assigning a tax_code_id id to the entry  This only needs to be done if there are
 	 * tax codes in the table.
 	 */
-	private function migrate_tax_code_data()
+	private function migrate_tax_code_data(): void
 	{
-		$this->db->query('INSERT INTO ' . $this->db->dbprefix('tax_codes') . ' (tax_code, tax_code_name, city, state)
-			SELECT tax_code, tax_code_name, city, state FROM ' . $this->db->dbprefix('tax_codes_backup'));
-
+		$this->db->query('INSERT INTO ' . $this->db->prefixTable('tax_codes') . ' (tax_code, tax_code_name, city, state)
+			SELECT tax_code, tax_code_name, city, state FROM ' . $this->db->prefixTable('tax_codes_backup'));
 	}
 
 	/* 
@@ -93,12 +91,12 @@ class Migration_IndiaGST extends CI_Migration
 	 * After it is complete then it will drop the old customer tax code.
 	 * This MUST run so that the old tax code is dropped
 	 */	
-	private function migrate_customer_tax_codes()
+	private function migrate_customer_tax_codes(): void
 	{
-		$this->db->query('UPDATE ' . $this->db->dbprefix('customers') . ' AS  fa SET fa.sales_tax_code_id = (
-			SELECT tax_code_id FROM ' . $this->db->dbprefix('tax_codes') . ' AS fb where fa.sales_tax_code = fb.tax_code)');
+		$this->db->query('UPDATE ' . $this->db->prefixTable('customers') . ' AS  fa SET fa.sales_tax_code_id = (
+			SELECT tax_code_id FROM ' . $this->db->prefixTable('tax_codes') . ' AS fb where fa.sales_tax_code = fb.tax_code)');
 
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('customers') . ' DROP COLUMN sales_tax_code');
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('customers') . ' DROP COLUMN sales_tax_code');
 	}
 
 	/**
@@ -111,43 +109,40 @@ class Migration_IndiaGST extends CI_Migration
 	 * to be created and defined manually AFTER the upgrade.
 	 * CONVERTING OLD TAX DATA TO BE SPLIT OUT BY JURISDICTION IS BEYOND THE SCOPE OF THIS EFFORT
 	 */
-	private function migrate_sales_taxes_data()
+	private function migrate_sales_taxes_data(): void
 	{
-		$this->db->query('INSERT INTO ' . $this->db->dbprefix('sales_taxes')
+		$this->db->query('INSERT INTO ' . $this->db->prefixTable('sales_taxes')
 			. ' (sale_id, jurisdiction_id, tax_category_id, tax_type, tax_group, sale_tax_basis, sale_tax_amount, print_sequence, '
 			. '`name`, tax_rate, sales_tax_code_id, rounding_code) '
 			. 'select sale_id, rate_jurisdiction_id, rate_tax_category_id, tax_type, tax_group, sale_tax_basis, sale_tax_amount, '
 			. 'print_sequence, `name`, A.tax_rate, tax_code_id, rounding_code '
-			. 'from ' . $this->db->dbprefix('sales_taxes_backup') . ' AS A '
-			. 'left outer join ' . $this->db->dbprefix('tax_codes') . ' AS B on sales_tax_code = tax_code '
-			. 'left outer join ' . $this->db->dbprefix('tax_rates') . ' AS C on tax_code_id = rate_tax_code_id and A.tax_rate = C.tax_rate '
+			. 'from ' . $this->db->prefixTable('sales_taxes_backup') . ' AS A '
+			. 'left outer join ' . $this->db->prefixTable('tax_codes') . ' AS B on sales_tax_code = tax_code '
+			. 'left outer join ' . $this->db->prefixTable('tax_rates') . ' AS C on tax_code_id = rate_tax_code_id and A.tax_rate = C.tax_rate '
 			. 'order by sale_id');
 	}
 
-	private function migrate_tax_rates()
+	private function migrate_tax_rates(): void
 	{
 		// create a dummy jurisdiction record and retrieve the jurisdiction rate id
 
-		$this->db->query('INSERT INTO ' . $this->db->dbprefix('tax_jurisdictions') . ' (jurisdiction_name, tax_group, tax_type, reporting_authority, '
-		. "tax_group_sequence, cascade_sequence, deleted)  VALUES ('Jurisdiction1','TaxGroup1','1','Authority1',1,0,'0')");
+		$this->db->query('INSERT INTO ' . $this->db->prefixTable('tax_jurisdictions') . ' (jurisdiction_name, tax_group, tax_type, reporting_authority, '
+		. "tax_group_sequence, cascade_sequence, deleted)  VALUES ('Jurisdiction1', 'TaxGroup1', '1', 'Authority1', 1, 0, '0')");
 
-		$jurisdiction_id = $this->db->query('SELECT jurisdiction_id FROM ' . $this->db->dbprefix('tax_jurisdictions') . " WHERE jurisdiction_name = 'Jurisdiction1'")->row()->jurisdiction_id;
-
+		$jurisdiction_id = $this->db->query('SELECT jurisdiction_id FROM ' . $this->db->prefixTable('tax_jurisdictions') . " WHERE jurisdiction_name = 'Jurisdiction1'")->getRow()->jurisdiction_id;
 
 		// Insert old tax_code rates data into the new tax rates table
-
-		$this->db->query('INSERT INTO ' . $this->db->dbprefix('tax_rates')
+		$this->db->query('INSERT INTO ' . $this->db->prefixTable('tax_rates')
 			. ' (rate_tax_category_id, rate_jurisdiction_id, rate_tax_code_id, tax_rate, tax_rounding_code) '
 			. 'SELECT rate_tax_category_id, ' . $jurisdiction_id . ', tax_code_id, tax_rate, rounding_code FROM '
-			. $this->db->dbprefix('tax_code_rates_backup') . ' JOIN ' . $this->db->dbprefix('tax_codes')
+			. $this->db->prefixTable('tax_code_rates_backup') . ' JOIN ' . $this->db->prefixTable('tax_codes')
 			. ' ON tax_code = rate_tax_code');
 	}
 
-	private function drop_backups()
+	private function drop_backups(): void
 	{
-		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('tax_codes_backup'));
-		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('sales_taxes_backup'));
-		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('tax_code_rates_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('tax_codes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('sales_taxes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('tax_code_rates_backup'));
 	}
 }
-?>

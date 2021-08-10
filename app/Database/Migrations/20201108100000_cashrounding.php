@@ -1,20 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_cashrounding extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_cashrounding extends Migration
 {
-	public function __construct()
+	public function up(): void
 	{
-		parent::__construct();
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' ADD COLUMN `cash_adjustment` tinyint NOT NULL DEFAULT 0 AFTER `cash_refund`');
 	}
 
-	public function up()
+	public function down(): void
 	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('sales_payments') . ' ADD COLUMN `cash_adjustment` tinyint NOT NULL DEFAULT 0 AFTER `cash_refund`');
-	}
-
-	public function down()
-	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('sales_payments') . ' DROP COLUMN `cash_adjustment`');
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' DROP COLUMN `cash_adjustment`');
 	}
 }
-?>

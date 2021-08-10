@@ -1,13 +1,19 @@
 {
 	"name": "opensourcepos/opensourcepos",
-	"description": "Open Source Point of Sale is a web-based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
+	"description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
 	"license": "MIT",
 	"authors": [
 		{
-		    "name": "jekkos"
+			"name": "jekkos"
 		},
 		{
-		    "name": "FrancescoUK"
+			"name": "FrancescoUK"
+		},
+		{
+			"name": "objecttothis"
+		},
+		{
+			"name": "steveireland"
 		}
 	],
 	"type": "project",
@@ -17,16 +23,20 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.2",
-		"codeigniter/framework": "^3.1.11",
-		"dompdf/dompdf": "^2.0.2",
+		"php": "^7.3 || ^8.0",
+		"codeigniter4/framework": "^4.1.3",
+		"dompdf/dompdf": "^2.0.1",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
-		"vlucas/phpdotenv": "^2.4"
+		"vlucas/phpdotenv": "^2.4",
+		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
-		"mikey179/vfsstream": "1.1.*",
-		"phpunit/phpunit": "7.5.6",
+        "roave/security-advisories": "dev-latest",
+		"codeigniter4/devkit": "v1.1.0",
+		"fakerphp/faker": "^1.9",
+		"mikey179/vfsstream": "^1.6",
+		"phpunit/phpunit": "^9.1",
 		"kenjis/ci-phpunit-test": "0.18.0"
 	}
 }

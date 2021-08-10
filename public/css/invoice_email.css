@@ -38,7 +38,7 @@ pre { font-family: DejaVu Sans, Helvetica, Sans-Serif; font-size: 13px; }
 #meta-content { width: 300px; }
 #items { width: 100%;  border: 1px solid black; }
 #items th { background: #eee; }
-#items tr.item-row td { border: 0; vertical-align: top; }
+#items tr.item-row td { border: none; vertical-align: top; }
 #items td { font-family: DejaVu Sans, Helvetica, Sans-Serif; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
@@ -46,7 +46,7 @@ pre { font-family: DejaVu Sans, Helvetica, Sans-Serif; font-size: 13px; }
 #items td.total-value { text-align: right; border-width: 1px 0px 1px 0; border-style: solid; }
 #items td.centered-value { text-align: center; }
 #items td.balance { background: #eeeeee; }
-#items td.blank { border: 0; }
+#items td.blank { border: none; }
 
 #terms { text-align: center; margin: 20px 0; }
 #terms h5 { border-bottom: 1px solid black; font: 13px DejaVu Sans, Helvetica, Sans-Serif; padding: 8px 0; margin: 8px 0; line-height: 1.3em; }

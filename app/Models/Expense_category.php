@@ -1,46 +1,51 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Expense_category class
  */
-
-class Expense_category extends CI_Model
+class Expense_category extends Model
 {
-	/*
-	Determines if a given Expense_id is an Expense category
-	*/
-	public function exists($expense_category_id)
+	/**
+	 * Determines if a given Expense_id is an Expense category
+	 */
+	public function exists(int $expense_category_id): bool
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('expense_category_id', $expense_category_id);
+		$builder = $this->db->table('expense_categories');
+		$builder->where('expense_category_id', $expense_category_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets total of rows
-	*/
-	public function get_total_rows()
+	/**
+	 * Gets total of rows
+	 */
+	public function get_total_rows(): int
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('expense_categories');
+		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
-	/*
-	Gets information about a particular category
-	*/
-	public function get_info($expense_category_id)
+	/**
+	 * Gets information about a particular category
+	 */
+	public function get_info(int $expense_category_id): object
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('expense_category_id', $expense_category_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('expense_categories');
+		$builder->where('expense_category_id', $expense_category_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -48,7 +53,7 @@ class Expense_category extends CI_Model
 			$expense_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('expense_categories') as $field)
+			foreach($this->db->getFieldNames('expense_categories') as $field)
 			{
 				$expense_obj->$field = '';
 			}
@@ -57,49 +62,52 @@ class Expense_category extends CI_Model
 		}
 	}
 
-	/*
-	Returns all the expense_categories
-	*/
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = FALSE)
+	/**
+	 * Returns all the expense_categories
+	 */
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = FALSE): ResultInterface
 	{
-		$this->db->from('expense_categories');
+		$builder = $this->db->table('expense_categories');
+
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('category_name', 'asc');
+		$builder->orderBy('category_name', 'asc');
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets information about multiple expense_category_id
-	*/
-	public function get_multiple_info($expense_category_ids)
+	/**
+	 * Gets information about multiple expense_category_id
+	 */
+	public function get_multiple_info(array $expense_category_ids): ResultInterface
 	{
-		$this->db->from('expense_categories');
-		$this->db->where_in('expense_category_id', $expense_category_ids);
-		$this->db->order_by('category_name', 'asc');
+		$builder = $this->db->table('expense_categories');
+		$builder->whereIn('expense_category_id', $expense_category_ids);
+		$builder->orderBy('category_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Inserts or updates an expense_category
-	*/
-	public function save(&$expense_category_data, $expense_category_id = FALSE)
+	/**
+	 * Inserts or updates an expense_category
+	 */
+	public function save_value(array &$expense_category_data, bool $expense_category_id = FALSE): bool
 	{
+		$builder = $this->db->table('expense_categories');
+
 		if(!$expense_category_id || !$this->exists($expense_category_id))
 		{
-			if($this->db->insert('expense_categories', $expense_category_data))
+			if($builder->insert($expense_category_data))
 			{
-				$expense_category_data['expense_category_id'] = $this->db->insert_id();
+				$expense_category_data['expense_category_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -107,61 +115,62 @@ class Expense_category extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('expense_category_id', $expense_category_id);
+		$builder->where('expense_category_id', $expense_category_id);
 
-		return $this->db->update('expense_categories', $expense_category_data);
+		return $builder->update($expense_category_data);
 	}
 
-	/*
-	Deletes a list of expense_category
-	*/
-	public function delete_list($expense_category_ids)
+	/**
+	 * Deletes a list of expense_category
+	 */
+	public function delete_list(array $expense_category_ids): bool
 	{
-		$this->db->where_in('expense_category_id', $expense_category_ids);
+		$builder = $this->db->table('expense_categories');
+		$builder->whereIn('expense_category_id', $expense_category_ids);
 
-		return $this->db->update('expense_categories', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
-	/*
-	Gets rows
-	*/
-	public function get_found_rows($search)
+	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'category_name', 'asc', TRUE);
 	}
 
-	/*
-	Perform a search on expense_category
-	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'category_name', $order='asc', $count_only = FALSE)
+	/**
+	 * Perform a search on expense_category
+	 */
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE): ResultInterface
 	{
-		// get_found_rows case
-		if($count_only == TRUE)
-		{
-			$this->db->select('COUNT(expense_categories.expense_category_id) as count');
-		}
-
-		$this->db->from('expense_categories AS expense_categories');
-		$this->db->group_start();
-			$this->db->like('category_name', $search);
-			$this->db->or_like('category_description', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('expense_categories AS expense_categories');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
-			return $this->db->get()->row()->count;
+			$builder->select('COUNT(expense_categories.expense_category_id) as count');
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->groupStart();
+			$builder->like('category_name', $search);
+			$builder->orLike('category_description', $search);
+		$builder->groupEnd();
+		$builder->where('deleted', 0);
+
+		// get_found_rows case
+		if($count_only)
+		{
+			return $builder->get()->getRow()->count;
+		}
+
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 }
-?>

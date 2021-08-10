@@ -1,6 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-function generate_import_items_csv($stock_locations,$attributes)
+function generate_import_items_csv(array $stock_locations, array $attributes): string
 {
 	$csv_headers = pack('CCC',0xef,0xbb,0xbf);	//Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
 	$csv_headers .= 'Id,Barcode,"Item Name",Category,"Supplier ID","Cost Price","Unit Price","Tax 1 Name","Tax 1 Percent","Tax 2 Name","Tax 2 Percent","Reorder Level",Description,"Allow Alt Description","Item has Serial Number",Image,HSN';
@@ -10,7 +10,7 @@ function generate_import_items_csv($stock_locations,$attributes)
 	return $csv_headers;
 }
 
-function generate_stock_location_headers($locations)
+function generate_stock_location_headers(array $locations): string
 {
 	$location_headers = '';
 
@@ -22,7 +22,7 @@ function generate_stock_location_headers($locations)
 	return $location_headers;
 }
 
-function generate_attribute_headers($attribute_names)
+function generate_attribute_headers(array $attribute_names): string
 {
 	$attribute_headers = '';
 	unset($attribute_names[-1]);
@@ -35,7 +35,7 @@ function generate_attribute_headers($attribute_names)
 	return $attribute_headers;
 }
 
-function get_csv_file($file_name)
+function get_csv_file(string $file_name): array
 {
 //TODO: current implementation reads the entire file in.  This is memory intensive for large files.
 //We may want to rework the CSV import feature to read the file in chunks, process it and continue.
@@ -46,8 +46,7 @@ function get_csv_file($file_name)
 
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
-		$CI =& get_instance();
-		$CI->load->helper('security');
+		helper('security');
 
 		$csv_rows = [];
 
@@ -62,9 +61,9 @@ function get_csv_file($file_name)
 		while(($row = fgetcsv($csv_file)) !== FALSE)
 		{
 			//Skip empty lines
-			if($row !== array(null))
+			if($row !== [null])
 			{
-				$csv_rows[] = array_combine($headers, $CI->security->xss_clean($row));
+				$csv_rows[] = array_combine($headers, $row);
 			}
 		}
 
@@ -74,7 +73,7 @@ function get_csv_file($file_name)
 	return $csv_rows;
 }
 
-function bom_exists(&$file_handle)
+function bom_exists(&$file_handle): bool
 {
 	$result		= FALSE;
 	$candidate	= fread($file_handle, 3);
@@ -90,4 +89,3 @@ function bom_exists(&$file_handle)
 
 	return $result;
 }
-?>

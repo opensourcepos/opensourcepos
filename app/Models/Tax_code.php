@@ -1,46 +1,52 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Tax Code class
  */
-
-class Tax_code extends CI_Model
+class Tax_code extends Model
 {
 	/**
 	 *  Determines if it exists in the table
 	 */
-	public function exists($tax_code)
+	public function exists(string $tax_code): bool
 	{
-		$this->db->from('tax_codes');
-		$this->db->where('tax_code', $tax_code);
+		$builder = $this->db->table('tax_codes');
+		$builder->where('tax_code', $tax_code);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: this should be === since getNumRows returns an int
 	}
 
 	/**
 	 *  Gets total of rows
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
-		$this->db->from('tax_codes');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_codes');
+		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info($tax_code_id)
+	public function get_info(int $tax_code_id): object
 	{
-		$this->db->from('tax_codes');
-		$this->db->where('tax_code_id', $tax_code_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('tax_codes');
 
-		if($query->num_rows()==1)
+		$builder->where('tax_code_id', $tax_code_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
+
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -48,7 +54,7 @@ class Tax_code extends CI_Model
 			$tax_code_obj = new stdClass();
 
 			//Get all the fields from the table
-			foreach($this->db->list_fields('tax_codes') as $field)
+			foreach($this->db->getFieldNames('tax_codes') as $field)
 			{
 				$tax_code_obj->$field = '';
 			}
@@ -59,74 +65,82 @@ class Tax_code extends CI_Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
 	{
-		$this->db->from('tax_codes');
+		$builder = $this->db->table('tax_codes');
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('tax_code_name', 'asc');
+		$builder->orderBy('tax_code_name', 'asc');
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info($tax_codes)
+	public function get_multiple_info(array $tax_codes): ResultInterface
 	{
-		$this->db->from('tax_codes');
-		$this->db->where_in('tax_code', $tax_codes);
-		$this->db->order_by('tax_code_name', 'asc');
+		$builder = $this->db->table('tax_codes');
+		$builder->whereIn('tax_code', $tax_codes);
+		$builder->orderBy('tax_code_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(&$tax_code_data)
+	public function save($tax_code_data): bool
 	{
+		$builder = $this->db->table('tax_codes');
+
 		if(!$this->exists($tax_code_data['tax_code']))
 		{
-			if($this->db->insert('tax_codes', $tax_code_data))
+			if($builder->insert($tax_code_data))	//TODO: this should be refactored to return $builder->insert($tax_code_data); in the same way that $builder->update() below is the return.  Look for this in the other save functions as well.
 			{
 				return TRUE;
 			}
 			return FALSE;
 		}
 
-		$this->db->where('tax_code', $tax_code_data['tax_code']);
+		$builder->where('tax_code', $tax_code_data['tax_code']);
 
-		return $this->db->update('tax_codes', $tax_code_data);
+		return $builder->update($tax_code_data);
 	}
 
 	/**
 	 * Saves changes to the tax codes table
 	 */
-	public function save_tax_codes($array_save)
+	public function save_tax_codes(array $array_save): bool	//TODO: Need to rename $array_save to probably $tax_codes
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
 		foreach($array_save as $key => $value)
 		{
 			// save or update
-			$tax_code_data = array('tax_code' => $value['tax_code'], 'tax_code_name' => $value['tax_code_name'], 'city' => $value['city'], 'state' => $value['state'], 'deleted' => '0');
+			$tax_code_data = [
+				'tax_code' => $value['tax_code'],
+				'tax_code_name' => $value['tax_code_name'],
+				'city' => $value['city'],
+				'state' => $value['state'],
+				'deleted' => '0'
+			];
 			$this->save($tax_code_data);
 			$not_to_delete[] = $tax_code_data['tax_code'];
 		}
 
 		// all entries not available in post will be deleted now
-		$deleted_tax_codes = $this->get_all()->result_array();
+		$deleted_tax_codes = $this->get_all()->getResultArray();
 
 		foreach($deleted_tax_codes as $key => $tax_code_data)
 		{
@@ -136,34 +150,36 @@ class Tax_code extends CI_Model
 			}
 		}
 
-		$this->db->trans_complete();
-		return $this->db->trans_status();
+		$this->db->transComplete();
+		return $this->db->transStatus();
 	}
 
 	/**
 	 * Deletes a specific tax code
 	 */
-	public function delete($tax_code)
+	public function delete(string $tax_code = null, bool $purge = false): bool
 	{
-		$this->db->where('tax_code', $tax_code);
+		$builder = $this->db->table('tax_codes');
+		$builder->where('tax_code', $tax_code);
 
-		return $this->db->update('tax_codes', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 
 	/**
 	 * Deletes a list of rows
 	 */
-	public function delete_list($tax_codes)
+	public function delete_list(array $tax_codes): bool
 	{
-		$this->db->where_in('tax_code', $tax_codes);
+		$builder = $this->db->table('tax_codes');
+		$builder->whereIn('tax_code', $tax_codes);
 
-		return $this->db->update('tax_codes', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows($search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -171,93 +187,93 @@ class Tax_code extends CI_Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code_name', $order='asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
-		// get_found_rows case
-		if($count_only == TRUE)
-		{
-			$this->db->select('COUNT(tax_codes.tax_code) as count');
-		}
-
-		$this->db->from('tax_codes AS tax_codes');
-		$this->db->group_start();
-		$this->db->like('tax_code_name', $search);
-		$this->db->or_like('tax_code', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_codes AS tax_codes');
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			$builder->select('COUNT(tax_codes.tax_code) as count');
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->groupStart();
+		$builder->like('tax_code_name', $search);
+		$builder->orLike('tax_code', $search);
+		$builder->groupEnd();
+		$builder->where('deleted', 0);
+
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			return $builder->get()->getRow()->count;
+		}
+
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
 	 * Gets the tax code to use for a given customer
 	 */
-	public function get_sales_tax_code($city = '', $state = '')
+	public function get_sales_tax_code(string $city = '', string $state = '')
 	{
 		// if tax code using both city and state cannot be found then  try again using just the state
 		// if the state tax code cannot be found then try again using blanks for both
-		$this->db->from('tax_codes');
-		$this->db->where('city', $city);
-		$this->db->where('state', $state);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_codes');
+		$builder->where('city', $city);
+		$builder->where('state', $state);
+		$builder->where('deleted', 0);
 
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row()->tax_code_id;
+			return $query->getRow()->tax_code_id;
+		}
+
+		$builder = $this->db->table('tax_codes');
+		$builder->where('city', '');
+		$builder->where('state', $state);
+		$builder->where('deleted', 0);
+
+		$query = $builder->get();
+
+		if($query->getNumRows() == 1)		//TODO: this should be ===
+		{
+			return $query->getRow()->tax_code_id;
 		}
 		else
 		{
-			$this->db->from('tax_codes');
-			$this->db->where('city', '');
-			$this->db->where('state', $state);
-			$this->db->where('deleted', 0);
-
-			$query = $this->db->get();
-
-			if($query->num_rows() == 1)
-			{
-				return $query->row()->tax_code_id;
-			}
-			else
-			{
-				return $this->config->item('default_tax_code');
-			}
+			return config('OSPOS')->default_tax_code;
 		}
-		return FALSE;
 	}
 
-	public function get_tax_codes_search_suggestions($search, $limit = 25)
+	public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
-		$this->db->from('tax_codes');
+		$builder = $this->db->table('tax_codes');
+
 		if(!empty($search))
 		{
-			$this->db->like('tax_code', $search);
-			$this->db->or_like('tax_code_name', $search);
+			$builder->like('tax_code', $search);
+			$builder->orLike('tax_code_name', $search);
 		}
-		$this->db->where('deleted', 0);
-		$this->db->order_by('tax_code_name', 'asc');
 
-		foreach($this->db->get()->result() as $row)
+		$builder->where('deleted', 0);
+		$builder->orderBy('tax_code_name', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->tax_code_id, 'label' => ($row->tax_code . ' ' . $row->tax_code_name));
+			$suggestions[] = ['value' => $row->tax_code_id, 'label' => ($row->tax_code . ' ' . $row->tax_code_name)];
 		}
 
 		//only return $limit suggestions
@@ -269,15 +285,17 @@ class Tax_code extends CI_Model
 		return $suggestions;
 	}
 
-	public function get_empty_row()
+	public function get_empty_row(): array
 	{
-		return array('0' => array(
-			'tax_code_id' => -1,
-			'tax_code' => '',
-			'tax_code_name' => '',
-			'city' => '',
-			'state' => '',
-			'deleted' => 0));
+		return [
+			'0' => [
+				'tax_code_id' => -1,
+				'tax_code' => '',
+				'tax_code_name' => '',
+				'city' => '',
+				'state' => '',
+				'deleted' => 0
+			]
+		];
 	}
 }
-?>

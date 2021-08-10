@@ -1,4 +1,9 @@
-<?php echo form_open('', array('id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php
+/**
+ * @var array $licenses
+ */
+?>
+<?php echo form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset>
 			<?php
@@ -7,14 +12,15 @@
 			{
 			?>
 				<div class="form-group form-group-sm">
-					<?php echo form_label($license['title'], 'license', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(esc($license['title'], 'attr'), 'license', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-6'>
-						<?php echo form_textarea(array(
+						<?php echo form_textarea ([
 							'name' => 'license',
-							'id' => 'license_' . $counter++,
+							'id' => 'license_' . $counter++,	//TODO: String Interpolation
 							'class' => 'form-control',
 							'readonly' => '',
-							'value' => $license['text'])); ?>
+							'value' => esc($license['text'], 'attr')
+						]) ?>
 					</div>
 				</div>
 			<?php
@@ -22,4 +28,4 @@
 			?>
 		</fieldset>
 	</div>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
