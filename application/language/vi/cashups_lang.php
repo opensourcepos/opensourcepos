@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Tổng số";
 $lang["cashups_amount_number"] = "Tổng số phải là dạng số";
 $lang["cashups_amount_required"] = "";

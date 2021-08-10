@@ -26,8 +26,8 @@ function load_config()
         $CI->config->set_item('language_code', 'en-US');
     }
 
-    _load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language(), FALSE);
-    _load_language_files($CI, '../application/language', current_language_code(), TRUE);
+    _load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language());
+    _load_language_files($CI, '../application/language', current_language_code());
 
     //Set timezone from config database
     if($CI->config->item('timezone'))
@@ -46,33 +46,16 @@ function load_config()
  * @param $CI
  * @param $path
  * @param $language
- * @param $fallback
  */
-function _load_language_files($CI, $path, $language, $fallback)
+function _load_language_files($CI, $path, $language)
 {
     $map = directory_map($path . DIRECTORY_SEPARATOR . $language);
 
     foreach($map as $file)
 	{
-
         if(!is_array($file) && substr(strrchr($file, '.'), 1) == 'php')
 		{
-            $filename = strtr($file, '', '_lang.php');
-            if ($fallback) {
-                $CI->lang->load($filename, 'en-US');
-
-                $array = $CI->lang->load($filename, $language, TRUE);
-                foreach($array as $lang_key => $lang_value) {
-                    if ($lang_value !== '') {
-                        $CI->lang->language[$lang_key] = $lang_value;
-                    }
-                }
-            }
-            else
-            {
-                $CI->lang->load($filename, $language);
-            }
-
+            $CI->lang->load(strtr($file, '', '_lang.php'), $language);
         }
     }
 }

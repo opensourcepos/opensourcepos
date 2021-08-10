@@ -249,7 +249,7 @@ function get_payment_options()
 	$config = get_instance()->config;
 	$lang = get_instance()->lang;
 
-	$payments = [];
+	$payments = array();
 
 
 	if($config->item('payment_options_order') == 'debitcreditcash')
@@ -388,7 +388,7 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimals=NULL, $type=\NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -424,6 +424,7 @@ function parse_tax($number)
 function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
+
 	if(empty($number))
 	{
 		return $number;
@@ -441,7 +442,7 @@ function parse_decimals($number, $decimals = NULL)
 
 	$config = get_instance()->config;
 
-	if($decimals === NULL)
+	if($decimals == NULL)
 	{
 		$decimals = $config->item('currency_decimals');
 	}
@@ -599,13 +600,12 @@ function dateformat_bootstrap($php_format)
 
 function valid_date($date)
 {
-	$config = get_instance()->Appconfig;
-	return (DateTime::createFromFormat($config->get('dateformat'), $date));
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
 }
 
 function valid_decimal($decimal)
 {
-	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
+	return preg_match('/^(\d*\.)?\d+$/', $decimal);
 }
 
 ?>

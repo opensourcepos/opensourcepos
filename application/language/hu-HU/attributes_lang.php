@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Tulajdonság értéke nem tartalmazhat '_' vagy '|' karaktert";
 $lang["attributes_confirm_delete"] = "Biztosan törli szeretné a kijelölt tulajdonságokat?";
 $lang["attributes_confirm_restore"] = "Biztosan visszaállítja a kijelölt tulajdonságokat?";

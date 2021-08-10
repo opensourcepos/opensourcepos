@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Thuộc tính";
 $lang["module_attributes_desc"] = "Thêm, Cập nhật, Xóa và Tìm kiếm các thuộc tính.";
 $lang["module_both"] = "Cả hai";

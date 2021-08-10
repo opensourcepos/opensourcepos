@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["datepicker_all_time"] = "ஆதி முதல்";
 $lang["datepicker_apply"] = "உபயோகி";
 $lang["datepicker_cancel"] = "ரத்துசெய்";

@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
 $lang["items_amount_entry"] = "Đầu mục tổng số";

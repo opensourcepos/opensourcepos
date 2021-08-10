@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Tambahkan Biaya";
 $lang["expenses_amount"] = "Jumlah";
 $lang["expenses_amount_number"] = "Jumlah harus berupa angka";

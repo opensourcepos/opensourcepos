@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Kenmerken";
 $lang["module_attributes_desc"] = "Kenmerken toevoegen, bijwerken, verwijderen en zoeken.";
 $lang["module_both"] = "Beide";

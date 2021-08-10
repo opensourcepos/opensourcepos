@@ -2,6 +2,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     clean: {
       composer: ["vendor"],
+      licenses: ["public/license/"],
       npm: ["node_modules"],
       ui: ["public/dist/"]
     },
@@ -108,38 +109,6 @@ module.exports = function (grunt) {
             expand: true,
             src: "LICENSE",
             dest: "public/license/",
-            filter: "isFile",
-          },
-          {
-            expand: true,
-            cwd: "node_modules/bootstrap",
-            src: "LICENSE",
-            dest: "public/license/",
-            rename: function (dest, src) {
-              return dest + src.replace("LICENSE", "bootstrap.license");
-            },
-            filter: "isFile",
-          },
-          {
-            expand: true,
-            cwd: "node_modules/bootstrap-icons",
-            src: "LICENSE.md",
-            dest: "public/license/",
-            rename: function (dest, src) {
-              return (
-                dest + src.replace("LICENSE.md", "bootstrap-icons.license")
-              );
-            },
-            filter: "isFile",
-          },
-          {
-            expand: true,
-            cwd: "node_modules/bootswatch",
-            src: "LICENSE",
-            dest: "public/license/",
-            rename: function (dest, src) {
-              return dest + src.replace("LICENSE", "bootswatch.license");
-            },
             filter: "isFile",
           },
         ],

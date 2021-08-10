@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Скасувати";
 $lang["receivings_cannot_be_deleted"] = "Не вдалося видалити надходження.";
 $lang["receivings_comments"] = "Примітки";

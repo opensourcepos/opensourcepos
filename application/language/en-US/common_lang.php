@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Address 1";
 $lang["common_address_2"] = "Address 2";
 $lang["common_city"] = "City";
@@ -44,8 +43,6 @@ $lang["common_learn_about_project"] = "to learn the latest information about the
 $lang["common_list_of"] = "List of";
 $lang["common_logo"] = "Logo";
 $lang["common_logo_mark"] = "Mark";
-$lang["common_logout"] = "";
-$lang["common_migration_needed"] = "";
 $lang["common_new"] = "New";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "There are no people to display.";

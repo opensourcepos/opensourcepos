@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Información";
 $lang["employees_cannot_be_deleted"] = "No se puede borrar los empleados seleccionados, uno o más de ellos tienen ventas registradas ó intentas borrar tu propia cuenta.";
 $lang["employees_change_password"] = "Cambiar contraseña";
@@ -34,4 +35,3 @@ $lang["employees_update"] = "Actualizar Empleado";
 $lang["employees_username"] = "Nombre de Usuario";
 $lang["employees_username_minlength"] = "Nombre de usuario debe tener por lo menos 5 letras.";
 $lang["employees_username_required"] = "Es necesario el nombre de usuario.";
-$lang["employees_username_duplicate"] = "El usuario del empleado ya esta en uso. Favor de escoger otro.";

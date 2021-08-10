@@ -209,10 +209,8 @@ $(document).ready(function()
 			last_name: 'required',
 			username:
 			{
-
 				required: true,
-				minlength: 5,
-				remote: '<?php echo site_url("$controller_name/check_username/$employee_id")?>'
+				minlength: 5
 			},
 			password:
 			{
@@ -240,9 +238,8 @@ $(document).ready(function()
 			username:
 			{
 				required: "<?php echo $this->lang->line('employees_username_required'); ?>",
-				minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>",
-				remote: "<?php echo $this->lang->line('employees_username_duplicate'); ?>"
-            },
+				minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>"
+			},
 			password:
 			{
 				<?php

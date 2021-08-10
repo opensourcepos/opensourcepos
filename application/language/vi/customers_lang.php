@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Tài khoản #";
 $lang["customers_account_number_duplicate"] = "Số tài khoản đã sẵn có trong cơ sở dữ liệu rồi.";
 $lang["customers_available_points"] = "Các điểm sẵn có";

@@ -37,10 +37,6 @@
     "jquery": {
       "version": "3.6.0",
       "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.6.0.tgz"
-    },
-    "npm": {
-      "version": "7.20.2",
-      "resolved": "https://registry.npmjs.org/npm/-/npm-7.20.2.tgz"
     }
   }
 }

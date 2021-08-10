@@ -1,5 +1,6 @@
-<?php
-$lang["receivings_cancel_receiving"] = "ரத்து செய்";
+<?php 
+
+$lang["receivings_cancel_receiving"] = "Cancel";
 $lang["receivings_cannot_be_deleted"] = "Receiving(s) delete failed.";
 $lang["receivings_comments"] = "Comments";
 $lang["receivings_complete_receiving"] = "Finish";

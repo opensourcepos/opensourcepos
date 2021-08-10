@@ -1,7 +1,7 @@
 {
   "name": "opensourcepos",
   "version": "3.4.0",
-  "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
+  "description": "Open Source Point of Sale is a web-based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
   "main": "index.php",
   "license": "MIT",
   "authors": [
@@ -9,17 +9,15 @@
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
   "scripts": {
-    "all": "npm run install && npm run update && npm run copy && npm run prettier",
-    "copy": "grunt clean:ui && grunt copy",
+    "clean": "grunt clean:composer & grunt clean:npm",
+    "copy": "grunt clean:ui & grunt clean:licenses & grunt copy & npm run gen-licenses",
     "install": "composer install",
-    "gen-licenses": "npm ls --prod --json > public/license/npm-prod.licenses && npm ls --dev --json > public/license/npm-dev.licenses && composer licenses --format=json > public/license/composer.licenses",
-    "lint-css": "stylelint public/css/*.css",
-    "lint-js": "eslint public/js/*.js",
-    "prettier": "prettier --write public/css/*.css && prettier --write public/js/*.js",
-    "reset": "npm run uninstall && npm run install && npm run update",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "uninstall": "grunt clean:composer && grunt clean:npm",
-    "update": "npm update && composer self-update && composer update && npm run gen-licenses"
+    "full": "npm run reset & npm run copy & npm run prettier",
+    "gen-licenses": "npm ls --prod --json > public/license/npm-prod.licenses & npm ls --dev --json > public/license/npm-dev.licenses & composer licenses --format=json > public/license/composer.licenses",
+    "prettier": "prettier --write public/css/*.css & prettier --write public/js/*.js",
+    "reset": "npm run clean & npm install & npm run install & npm run update",
+    "test": "echo \"Error: no test specified\" & exit 1",
+    "update": "npm update & composer self-update & composer update"
   },
   "repository": {
     "type": "git",
@@ -30,24 +28,21 @@
     "POS"
   ],
   "devDependencies": {
-    "eslint": "^7.31.0",
     "grunt": "^1.4.1",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "prettier": "^2.3.2",
-    "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^22.0.0"
+    "npm": "^7.20.5",
+    "prettier": "^2.3.2"
   },
   "dependencies": {
-    "bootstrap": "^5.0.2",
+    "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",
     "bootstrap-select": "^1.13.18",
     "bootstrap-table": "^1.18.3",
-    "bootswatch": "^5.0.2",
+    "bootswatch": "^5.1.0",
     "clipboard": "^2.0.8",
     "elegant-circles": "github:BudsieBuds/elegant-circles",
     "jasny-bootstrap": "^4.0.0",
-    "jquery": "^3.6.0",
-    "npm": "^7.20.2"
+    "jquery": "^3.6.0"
   }
 }

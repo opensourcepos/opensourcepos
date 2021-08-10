@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Сума";
 $lang["cashups_amount_number"] = "Сума повинна бути числом";
 $lang["cashups_amount_required"] = "Сума - обов'язкове поле.";

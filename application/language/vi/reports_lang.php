@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Tất cả";
 $lang["reports_authority"] = "Thẩm quyền";
 $lang["reports_canceled"] = "Đã hủy";

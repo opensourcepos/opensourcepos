@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Annuleren";
 $lang["receivings_cannot_be_deleted"] = "Levering(en) verwijderen mislukt.";
 $lang["receivings_comments"] = "Opmerkingen";

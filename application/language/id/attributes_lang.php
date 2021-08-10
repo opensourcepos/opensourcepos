@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Nilai Atribut tidak boleh mengandung karakter '_' atau '|'";
 $lang["attributes_confirm_delete"] = "Apakah Anda yakin ingin menghapus atribut tersebut?";
 $lang["attributes_confirm_restore"] = "Apakah Anda yakin ingin mengembalikan atribut tersebut?";

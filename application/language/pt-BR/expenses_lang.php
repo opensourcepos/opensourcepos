@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Adicionar Despesa";
 $lang["expenses_amount"] = "Total";
 $lang["expenses_amount_number"] = "O valor deve ser um número";

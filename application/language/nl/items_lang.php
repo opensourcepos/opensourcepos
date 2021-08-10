@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Voorraad om toe te voegen of af te trekken.";
 $lang["items_allow_alt_description"] = "Alternatieve beschrijving toestaan";
 $lang["items_amount_entry"] = "Aantal vermelding";

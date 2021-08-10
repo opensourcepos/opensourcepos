@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["suppliers_account_number"] = "Accountnummer";
 $lang["suppliers_agency_name"] = "Agentschapnaam";
 $lang["suppliers_cannot_be_deleted"] = "Kan geselecteerde leverancier(s) niet verwijderen. Eén of meer bevatten verkopen.";
