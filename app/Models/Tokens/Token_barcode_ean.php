@@ -1,22 +1,19 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\Tokens;
 
 /**
  * Token_barcode_price class
  */
-
 class Token_barcode_ean extends Token
 {
-
-    public function token_id()
-    {
+    public function token_id(): string
+	{
         return 'I';
     }
 
-    public function get_value()
-    {
+    public function get_value(): string
+	{
         return '\w';
     }
-
 }
-
-?>

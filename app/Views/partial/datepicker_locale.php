@@ -2,11 +2,11 @@
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
+        format: "<?php echo dateformat_bootstrap(config('OSPOS')->dateformat) . ' ' . dateformat_bootstrap(config('OSPOS')->timeformat) ?>",
         <?php
-        $t = $this->config->item('timeformat');
+        $t = config('OSPOS')->timeformat;
         $m = $t[strlen($t)-1];
-        if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+        if( strpos(config('OSPOS')->timeformat, 'a') !== false || strpos(config('OSPOS')->timeformat, 'A') !== false )
         {
             ?>
             showMeridian: true,
@@ -24,76 +24,76 @@ var pickerconfig = function(config) {
         todayBtn: true,
         todayHighlight: true,
         bootcssVer: 3,
-        language: "<?php echo current_language_code(); ?>"
-    }, <?php echo isset($config) ? $config : '{}' ?>);
+        language: "<?php echo current_language_code() ?>"
+    }, <?php echo $config ?? '{}' ?>);
 };
 
-$.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
+$.fn.datetimepicker.dates['<?php echo config('OSPOS')->language ?>'] = {
     days: [
-		"<?php echo $this->lang->line("cal_sunday"); ?>",
-        "<?php echo $this->lang->line("cal_monday"); ?>",
-        "<?php echo $this->lang->line("cal_tuesday"); ?>",
-        "<?php echo $this->lang->line("cal_wednesday"); ?>",
-        "<?php echo $this->lang->line("cal_thursday"); ?>",
-        "<?php echo $this->lang->line("cal_friday"); ?>",
-        "<?php echo $this->lang->line("cal_saturday"); ?>",
-        "<?php echo $this->lang->line("cal_sunday"); ?>"
+		"<?php echo lang('Cal.sunday') ?>",
+        "<?php echo lang('Cal.monday') ?>",
+        "<?php echo lang('Cal.tuesday') ?>",
+        "<?php echo lang('Cal.wednesday') ?>",
+        "<?php echo lang('Cal.thursday') ?>",
+        "<?php echo lang('Cal.friday') ?>",
+        "<?php echo lang('Cal.saturday') ?>",
+        "<?php echo lang('Cal.sunday') ?>"
 		],
         daysShort: [
-		"<?php echo $this->lang->line("cal_sun"); ?>",
-        "<?php echo $this->lang->line("cal_mon"); ?>",
-        "<?php echo $this->lang->line("cal_tue"); ?>",
-        "<?php echo $this->lang->line("cal_wed"); ?>",
-        "<?php echo $this->lang->line("cal_thu"); ?>",
-        "<?php echo $this->lang->line("cal_fri"); ?>",
-        "<?php echo $this->lang->line("cal_sat"); ?>"
+		"<?php echo lang('Cal.sun') ?>",
+        "<?php echo lang('Cal.mon') ?>",
+        "<?php echo lang('Cal.tue') ?>",
+        "<?php echo lang('Cal.wed') ?>",
+        "<?php echo lang('Cal.thu') ?>",
+        "<?php echo lang('Cal.fri') ?>",
+        "<?php echo lang('Cal.sat') ?>"
 		],
         daysMin: [
-		"<?php echo $this->lang->line("cal_su"); ?>",
-        "<?php echo $this->lang->line("cal_mo"); ?>",
-        "<?php echo $this->lang->line("cal_tu"); ?>",
-        "<?php echo $this->lang->line("cal_we"); ?>",
-        "<?php echo $this->lang->line("cal_th"); ?>",
-        "<?php echo $this->lang->line("cal_fr"); ?>",
-        "<?php echo $this->lang->line("cal_sa"); ?>"
+		"<?php echo lang('Cal.su') ?>",
+        "<?php echo lang('Cal.mo') ?>",
+        "<?php echo lang('Cal.tu') ?>",
+        "<?php echo lang('Cal.we') ?>",
+        "<?php echo lang('Cal.th') ?>",
+        "<?php echo lang('Cal.fr') ?>",
+        "<?php echo lang('Cal.sa') ?>"
 		],
         months: [
-		"<?php echo $this->lang->line("cal_january"); ?>",
-        "<?php echo $this->lang->line("cal_february"); ?>",
-        "<?php echo $this->lang->line("cal_march"); ?>",
-        "<?php echo $this->lang->line("cal_april"); ?>",
-        "<?php echo $this->lang->line("cal_may"); ?>",
-        "<?php echo $this->lang->line("cal_june"); ?>",
-        "<?php echo $this->lang->line("cal_july"); ?>",
-        "<?php echo $this->lang->line("cal_august"); ?>",
-        "<?php echo $this->lang->line("cal_september"); ?>",
-        "<?php echo $this->lang->line("cal_october"); ?>",
-        "<?php echo $this->lang->line("cal_november"); ?>",
-        "<?php echo $this->lang->line("cal_december"); ?>"
+		"<?php echo lang('Cal.january') ?>",
+        "<?php echo lang('Cal.february') ?>",
+        "<?php echo lang('Cal.march') ?>",
+        "<?php echo lang('Cal.april') ?>",
+        "<?php echo lang('Cal.may') ?>",
+        "<?php echo lang('Cal.june') ?>",
+        "<?php echo lang('Cal.july') ?>",
+        "<?php echo lang('Cal.august') ?>",
+        "<?php echo lang('Cal.september') ?>",
+        "<?php echo lang('Cal.october') ?>",
+        "<?php echo lang('Cal.november') ?>",
+        "<?php echo lang('Cal.december') ?>"
 		],
         monthsShort: [
-		"<?php echo $this->lang->line("cal_jan"); ?>",
-        "<?php echo $this->lang->line("cal_feb"); ?>",
-        "<?php echo $this->lang->line("cal_mar"); ?>",
-        "<?php echo $this->lang->line("cal_apr"); ?>",
-        "<?php echo $this->lang->line("cal_may"); ?>",
-        "<?php echo $this->lang->line("cal_jun"); ?>",
-        "<?php echo $this->lang->line("cal_jul"); ?>",
-        "<?php echo $this->lang->line("cal_aug"); ?>",
-        "<?php echo $this->lang->line("cal_sep"); ?>",
-        "<?php echo $this->lang->line("cal_oct"); ?>",
-        "<?php echo $this->lang->line("cal_nov"); ?>",
-        "<?php echo $this->lang->line("cal_dec"); ?>"
+		"<?php echo lang('Cal.jan') ?>",
+        "<?php echo lang('Cal.feb') ?>",
+        "<?php echo lang('Cal.mar') ?>",
+        "<?php echo lang('Cal.apr') ?>",
+        "<?php echo lang('Cal.may') ?>",
+        "<?php echo lang('Cal.jun') ?>",
+        "<?php echo lang('Cal.jul') ?>",
+        "<?php echo lang('Cal.aug') ?>",
+        "<?php echo lang('Cal.sep') ?>",
+        "<?php echo lang('Cal.oct') ?>",
+        "<?php echo lang('Cal.nov') ?>",
+        "<?php echo lang('Cal.dec') ?>"
 		],
-    today: "<?php echo $this->lang->line("datepicker_today"); ?>",
+    today: "<?php echo lang('Datepicker.today') ?>",
     <?php
-        if( strpos($this->config->item('timeformat'), 'a') !== false )
+        if( strpos(config('OSPOS')->timeformat, 'a') !== false )
         {
     ?>
     meridiem: ["am", "pm"],
     <?php
         }
-        elseif( strpos($this->config->item('timeformat'), 'A') !== false )
+        elseif( strpos(config('OSPOS')->timeformat, 'A') !== false )
         {
     ?>
     meridiem: ["AM", "PM"],
@@ -106,7 +106,7 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     <?php
         }
     ?>
-    weekStart: <?php echo $this->lang->line("datepicker_weekstart"); ?>
+    weekStart: <?php echo lang('Datepicker.weekstart') ?>
 };
 
 $(".datetime").datetimepicker(pickerconfig());

@@ -1,98 +1,119 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Secure_Controller.php");
+namespace App\Controllers;
 
+use app\Models\Tax_jurisdiction;
+
+/**
+ * @property tax_jurisdiction tax_jurisdiction
+ */
 class Tax_jurisdictions extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('tax_jurisdictions');
+
+		$this->tax_jurisdiction = model('Tax_jurisdiction');
+
+		helper('tax_helper');
 	}
 
 
-	public function index()
+	public function index(): void
 	{
-		 $data['table_headers'] = $this->xss_clean(get_tax_jurisdictions_table_headers());
+		 $data['table_headers'] = get_tax_jurisdictions_table_headers();
 
-		 $this->load->view('taxes/tax_jurisdictions', $data);
+		 echo view('taxes/tax_jurisdictions', $data);
 	}
 
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	 */
-	public function search()
+	public function search(): void
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$tax_jurisdictions = $this->Tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Tax_jurisdiction->get_found_rows($search);
+		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
 
-		$data_rows = array();
-		foreach($tax_jurisdictions->result() as $tax_jurisdiction)
+		$data_rows = [];
+		foreach($tax_jurisdictions->getResult() as $tax_jurisdiction)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_jurisdiction_data_row($tax_jurisdiction));
+			$data_rows[] = get_tax_jurisdictions_data_row($tax_jurisdiction);
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row($row_id)
+	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_jurisdiction_data_row($this->Tax_jurisdiction->get_info($row_id)));
+		$data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view($tax_jurisdiction_id = -1)
+	public function view(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
-		$data['tax_jurisdiction_info'] = $this->Tax_jurisdiction->get_info($tax_jurisdiction_id);
+		$data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
-		$this->load->view("taxes/tax_jurisdiction_form", $data);
+		echo view("taxes/tax_jurisdiction_form", $data);
 	}
 
 
-	public function save($jurisdiction_id = -1)
+	public function save(int $jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
-		$tax_jurisdiction_data = array(
-			'jurisdiction_name' => $this->input->post('jurisdiction_name'),
-			'reporting_authority' => $this->input->post('reporting_authority')
-		);
+		$tax_jurisdiction_data = [
+			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING),
+			'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_STRING)
+		];
 
-		if($this->Tax_jurisdiction->save($tax_jurisdiction_data))
+		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))
 		{
-			$tax_jurisdiction_data = $this->xss_clean($tax_jurisdiction_data);
-
-			if($jurisdiction_id == -1)
+			if($jurisdiction_id == -1)	//TODO: Replace -1 with constant
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_adding'), 'id' => $tax_jurisdiction_data['jurisdiction_id']));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Tax_jurisdictions.successful_adding'),
+					'id' => $tax_jurisdiction_data['jurisdiction_id']
+				]);
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_updating'), 'id' => $jurisdiction_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Tax_jurisdictions.successful_updating'),
+					'id' => $jurisdiction_id
+				]);
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_jurisdictions_error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'], 'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
+				'id' => -1
+			]);
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
-		$tax_jurisdictions_to_delete = $this->input->post('ids');
+		$tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-		if($this->Tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
+		if($this->tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . $this->lang->line('taxes_jurisdictions_one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_jurisdictions_cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
 		}
 	}
 }
-?>

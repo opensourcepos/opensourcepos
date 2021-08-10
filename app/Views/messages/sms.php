@@ -1,38 +1,38 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 	      
 <div class="jumbotron" style="max-width: 60%; margin:auto">
-	<?php echo form_open("messages/send/", array('id'=>'send_sms_form', 'enctype'=>'multipart/form-data', 'method'=>'post', 'class'=>'form-horizontal')); ?>
+	<?php echo form_open("messages/send/", ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
 		<fieldset>
-			<legend style="text-align: center;"><?php echo $this->lang->line('messages_sms_send'); ?></legend>
+			<legend style="text-align: center;"><?php echo lang('Messages.sms_send') ?></legend>
 			<div class="form-group form-group-sm">
-				<label for="phone" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_phone'); ?></label>
+				<label for="phone" class="col-xs-3 control-label"><?php echo lang('Messages.phone') ?></label>
 				<div class="col-xs-9">
-					<input class="form-control input-sm", type="text", name="phone", placeholder="<?php echo $this->lang->line('messages_phone_placeholder'); ?>"></input>
-					<span class="help-block" style="text-align:center;"><?php echo $this->lang->line('messages_multiple_phones'); ?></span>
+					<input class="form-control input-sm" type="text" name="phone" placeholder="<?php echo lang('Messages.phone_placeholder') ?>" />
+					<span class="help-block" style="text-align:center;"><?php echo lang('Messages.multiple_phones') ?></span>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<label for="message" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_message'); ?></label>
+				<label for="message" class="col-xs-3 control-label"><?php echo lang('Messages.message') ?></label>
 				<div class="col-xs-9">
-					<textarea class="form-control input-sm" rows="3" id="message" name="message" placeholder="<?php echo $this->lang->line('messages_message_placeholder'); ?>"></textarea>
+					<textarea class="form-control input-sm" rows="3" id="message" name="message" placeholder="<?php echo lang('Messages.message_placeholder') ?>"></textarea>
 				</div>
 			</div>
 
-			<?php echo form_submit(array(
-				'name'=>'submit_form',
-				'id'=>'submit_form',
-				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'));?>
+			<?php echo form_submit ([
+				'name' => 'submit_form',
+				'id' => 'submit_form',
+				'value' => lang('Common.submit'),
+				'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
-	<?php echo form_close(); ?>
+	<?php echo form_close() ?>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view('partial/footer') ?>
 
 <script type="text/javascript">
 //validation and submit handling

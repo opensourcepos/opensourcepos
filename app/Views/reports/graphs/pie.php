@@ -1,8 +1,15 @@
+<?php
+/**
+ * @var array $labels_1
+ * @var array $series_data_1
+ * @var bool $show_currency
+ */
+?>
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode($labels_1); ?>,
-		series: <?php echo json_encode($series_data_1); ?>
+		labels: <?php echo json_encode(esc($labels_1, 'js')) ?>,
+		series: <?php echo json_encode(esc($series_data_1, 'js')) ?>
 	};
 	
 	// We are setting a few options for our chart and override the defaults
@@ -29,18 +36,18 @@
 			Chartist.plugins.tooltip({
 				transformTooltipTextFnc: function(value) {
 					<?php
-					if( $show_currency )
+					if($show_currency)
 					{
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+							return value + '<?php echo esc(config('OSPOS')->currency_symbol, 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo esc(config('OSPOS')->currency_symbol, 'js') ?>' + value;
 					<?php
 						}
 					}

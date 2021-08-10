@@ -1,74 +1,87 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Expense class
+ *
+ * @property employee employee
+ * @property expense_category expense_category
  */
-
-class Expense extends CI_Model
+class Expense extends Model
 {
-	/*
-	Determines if a given Expense_id is an Expense
-	*/
-	public function exists($expense_id)
+	/**
+	 * Determines if a given Expense_id is an Expense
+	 */
+	public function exists(int $expense_id): bool
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets category info
-	*/
-	public function get_expense_category($expense_id)
+	/**
+	 * Gets category info
+	 */
+	public function get_expense_category(int $expense_id): object	//TODO: This function is never called in the code
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->Expense_category->get_info($this->db->get()->row()->expense_category_id);
+		$expense_category = model(Expense_category::class);
+		return $expense_category->get_info($builder->get()->getRow()->expense_category_id);	//TODO: refactor out the nested function call.
 	}
 
-	/*
-	Gets employee info
-	*/
-	public function get_employee($expense_id)
+	/**
+	 * Gets employee info
+	 */
+	public function get_employee(int $expense_id): object	//TODO: This function is never called in the code
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		$employee = model(Employee::class);
+
+		return $employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}
 
-	public function get_multiple_info($expense_ids)
+	public function get_multiple_info(array $expense_ids): ResultInterface
 	{
-		$this->db->from('expenses');
-		$this->db->where_in('expenses.expense_id', $expense_ids);
-		$this->db->order_by('expense_id', 'asc');
+		$builder = $this->db->table('expenses');
+		$builder->whereIn('expenses.expense_id', $expense_ids);
+		$builder->orderBy('expense_id', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets rows
-	*/
-	public function get_found_rows($search, $filters)
+	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
 
-	/*
-	Searches expenses
-	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Searches expenses
+	 */
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$builder = $this->db->table('expenses AS expenses');
+
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
-			$this->db->select('COUNT(DISTINCT expenses.expense_id) as count');
+			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
 		else
 		{
-			$this->db->select('
+			$builder->select('
 				expenses.expense_id,
 				MAX(expenses.date) AS date,
 				MAX(suppliers.company_name) AS supplier_name,
@@ -83,84 +96,88 @@ class Expense extends CI_Model
 			');
 		}
 
-		$this->db->from('expenses AS expenses');
-		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
+		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
 
-		$this->db->group_start();
-			$this->db->like('employees.first_name', $search);
-			$this->db->or_like('expenses.date', $search);
-			$this->db->or_like('employees.last_name', $search);
-			$this->db->or_like('expenses.payment_type', $search);
-			$this->db->or_like('expenses.amount', $search);
-			$this->db->or_like('expense_categories.category_name', $search);
-			$this->db->or_like('CONCAT(employees.first_name, " ", employees.last_name)', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+			$builder->like('employees.first_name', $search);
+			$builder->orLike('expenses.date', $search);
+			$builder->orLike('employees.last_name', $search);
+			$builder->orLike('expenses.payment_type', $search);
+			$builder->orLike('expenses.amount', $search);
+			$builder->orLike('expense_categories.category_name', $search);
+			$builder->orLike('CONCAT(employees.first_name, " ", employees.last_name)', $search);
+		$builder->groupEnd();
 
-		$this->db->where('expenses.deleted', $filters['is_deleted']);
+		$builder->where('expenses.deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
+		/*	//TODO: Below needs to be replaced with Ternary notation
+		empty(config('OSPOS')->date_or_time_format)
+			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
+			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+		*/
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
-			$this->db->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_debit'] != FALSE)
+		if($filters['only_debit'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_debit'])`... same with below.
 		{
-			$this->db->like('expenses.payment_type', $this->lang->line('expenses_debit'));
+			$builder->like('expenses.payment_type', lang('Expenses.debit'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', $this->lang->line('expenses_credit'));
+			$builder->like('expenses.payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->group_start();
-				$this->db->like('expenses.payment_type', $this->lang->line('expenses_cash'));
-				$this->db->or_where('expenses.payment_type IS NULL');
-			$this->db->group_end();
+			$builder->groupStart();
+				$builder->like('expenses.payment_type', lang('Expenses.cash'));
+				$builder->orWhere('expenses.payment_type IS NULL');
+			$builder->groupEnd();
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', $this->lang->line('expenses_due'));
+			$builder->like('expenses.payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', $this->lang->line('expenses_check'));
+			$builder->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
-		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
-		$this->db->group_by('expense_id');
+		$builder->groupBy('expense_id');
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets information about a particular expense
-	*/
-	public function get_info($expense_id)
+	/**
+	 * Gets information about a particular expense
+	 */
+	public function get_info(int $expense_id): object
 	{
-		$this->db->select('
+		$builder = $this->db->table('expenses AS expenses');
+		$builder->select('
 			expenses.expense_id AS expense_id,
 			expenses.date AS date,
 			suppliers.company_name AS supplier_name,
@@ -177,24 +194,25 @@ class Expense extends CI_Model
 			expense_categories.expense_category_id AS expense_category_id,
 			expense_categories.category_name AS category_name
 		');
-		$this->db->from('expenses AS expenses');
-		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
-		$this->db->where('expense_id', $expense_id);
 
-		$query = $this->db->get();
-		if($query->num_rows() == 1)
+		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
+		$builder->where('expense_id', $expense_id);
+
+		$query = $builder->get();
+
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			//Get empty base parent object
 			$expenses_obj = new stdClass();
 
 			//Get all the fields from expenses table
-			foreach($this->db->list_fields('expenses') as $field)
+			foreach($this->db->getFieldNames('expenses') as $field)
 			{
 				$expenses_obj->$field = '';
 			}
@@ -205,16 +223,18 @@ class Expense extends CI_Model
 		}
 	}
 
-	/*
-	Inserts or updates an expense
-	*/
-	public function save(&$expense_data, $expense_id = FALSE)
+	/**
+	 * Inserts or updates an expense
+	 */
+	public function save_value(array &$expense_data, bool $expense_id = FALSE): bool
 	{
+		$builder = $this->db->table('expenses');
+
 		if(!$expense_id || !$this->exists($expense_id))
 		{
-			if($this->db->insert('expenses', $expense_data))
+			if($builder->insert($expense_data))
 			{
-				$expense_data['expense_id'] = $this->db->insert_id();
+				$expense_data['expense_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -222,95 +242,93 @@ class Expense extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('expense_id', $expense_id);
+		$builder->where('expense_id', $expense_id);
 
-		return $this->db->update('expenses', $expense_data);
+		return $builder->update($expense_data);
 	}
 
-	/*
-	Deletes a list of expense_category
-	*/
-	public function delete_list($expense_ids)
+	/**
+	 * Deletes a list of expense_category
+	 */
+	public function delete_list(array $expense_ids): bool
 	{
-		$success = FALSE;
+		$builder = $this->db->table('expenses');
 
-		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
-			$this->db->where_in('expense_id', $expense_ids);
-			$success = $this->db->update('expenses', array('deleted'=>1));
-		$this->db->trans_complete();
+		$this->db->transStart();
+			$builder->whereIn('expense_id', $expense_ids);
+			$success = $builder->update(['deleted' => 1]);
+		$this->db->transComplete();
+
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
 
-	/*
-	Gets the payment summary for the expenses (expenses/manage) view
-	*/
-	public function get_payments_summary($search, $filters)
+	/**
+	 * Gets the payment summary for the expenses (expenses/manage) view
+	 */
+	public function get_payments_summary(string $search, array $filters): array	//TODO: $search is passed but never used in the function
 	{
 		// get payment summary
-		$this->db->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
-		$this->db->from('expenses');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('expenses');
+		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
+		$builder->where('deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
-			$this->db->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_cash'])`... same with below.
 		{
-			$this->db->like('payment_type', $this->lang->line('expenses_cash'));
+			$builder->like('payment_type', lang('Expenses.cash'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('expenses_due'));
+			$builder->like('payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('expenses_check'));
+			$builder->like('payment_type', lang('Expenses.check'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('expenses_credit'));
+			$builder->like('payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_debit'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('expenses_debit'));
+			$builder->like('payment_type', lang('Expenses.debit'));
 		}
 
-		$this->db->group_by('payment_type');
+		$builder->groupBy('payment_type');
 
-		$payments = $this->db->get()->result_array();
-
-		return $payments;
+		return $builder->get()->getResultArray();
 	}
 
-	/*
-	Gets the payment options to show in the expense forms
-	*/
-	public function get_payment_options()
+	/**
+	 * Gets the payment options to show in the expense forms
+	 */
+	public function get_payment_options(): array
 	{
 		return get_payment_options();
 	}
 
-	/*
-	Gets the expense payment
-	*/
-	public function get_expense_payment($expense_id)
+	/**
+	 * Gets the expense payment
+	 */
+	public function get_expense_payment(int $expense_id): ResultInterface
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 }
-?>

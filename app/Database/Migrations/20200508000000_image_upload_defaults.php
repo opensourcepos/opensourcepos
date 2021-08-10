@@ -1,27 +1,28 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_image_upload_defaults extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_image_upload_defaults extends Migration
 {
-	public function __construct()
+	public function up(): void
 	{
-		parent::__construct();
+		$image_values = [
+			['key' => 'image_allowed_types', 'value' => 'gif|jpg|png'],
+			['key' => 'image_max_height', 'value' => '480'],
+			['key' => 'image_max_size', 'value' => '128'],
+			['key' => 'image_max_width', 'value' => '640']
+		];
+
+		$builder = $this->db->table('app_config');
+		$builder->insertBatch($image_values);
 	}
 
-	public function up()
+	public function down(): void
 	{
-		$image_values = array(
-			array('key' => 'image_allowed_types', 'value' => 'gif|jpg|png'),
-			array('key' => 'image_max_height', 'value' => '480'),
-			array('key' => 'image_max_size', 'value' => '128'),
-			array('key' => 'image_max_width', 'value' => '640'));
-
-		$this->db->insert_batch('app_config', $image_values);
-	}
-
-	public function down()
-	{
-		$this->db->where_in('key', array('image_allowed_types','image_max_height','image_max_size','image_max_width'));
-		$this->db->delete('app_config');
+		$builder = $this->db->table('app_config');
+		$builder->whereIn('key', ['image_allowed_types','image_max_height','image_max_size','image_max_width']);
+		$builder->delete();
 	}
 }
-?>
