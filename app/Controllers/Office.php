@@ -11,7 +11,7 @@ class Office extends Secure_Controller
 
 	public function index()
 	{
-		$this->load->view('home/office');
+		echo view('home/office');
 	}
 
 	public function logout()

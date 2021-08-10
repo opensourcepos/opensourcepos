@@ -56,7 +56,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php $this->load->view('partial/datepicker_locale'); ?>
+	<?php echo view('partial/datepicker_locale'); ?>
 
     $('#datetime').datetimepicker(pickerconfig);
 

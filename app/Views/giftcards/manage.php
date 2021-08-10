@@ -1,8 +1,8 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	<?php echo view('partial/bootstrap_tables_locale'); ?>
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
@@ -31,4 +31,4 @@ $(document).ready(function()
 	<table id="table"></table>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

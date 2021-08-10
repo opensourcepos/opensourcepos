@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -35,7 +35,7 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+		<?php echo view('partial/bootstrap_tables_locale'); ?>
 
 		$('#table')
 			.addClass("table-striped")
@@ -62,4 +62,4 @@
 	});
 </script>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

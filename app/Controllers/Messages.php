@@ -13,7 +13,7 @@ class Messages extends Secure_Controller
 	
 	public function index()
 	{
-		$this->load->view('messages/sms');
+		echo view('messages/sms');
 	}
 
 	public function view($person_id = -1)
@@ -25,7 +25,7 @@ class Messages extends Secure_Controller
 		}
 		$data['person_info'] = $info;
 
-		$this->load->view('messages/form_sms', $data);
+		echo view('messages/form_sms', $data);
 	}
 
 	public function send()

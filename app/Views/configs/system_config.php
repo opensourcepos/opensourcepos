@@ -8,10 +8,10 @@
 		<li><a href="#license_tabs" data-toggle="tab" title="<?php echo $this->lang->line('config_license_configuration'); ?>"><?php echo $this->lang->line('config_license'); ?></a></li>
 	</ul>  
 		<div class="tab-content">
-		<div class="tab-pane active" id="system_tabs"><?php $this->load->view("configs/system_info"); ?></div>
-		<div class="tab-pane" id="email_tabs"><?php $this->load->view("configs/email_config"); ?></div>
-		<div class="tab-pane" id="message_tabs"><?php $this->load->view("configs/message_config"); ?></div>
-		<div class="tab-pane" id="integrations_tabs"><?php $this->load->view("configs/integrations_config"); ?></div>
-		<div class="tab-pane" id="license_tabs"><br><?php $this->load->view("configs/license_config"); ?></div>
+		<div class="tab-pane active" id="system_tabs"><?php echo view("configs/system_info"); ?></div>
+		<div class="tab-pane" id="email_tabs"><?php echo view("configs/email_config"); ?></div>
+		<div class="tab-pane" id="message_tabs"><?php echo view("configs/message_config"); ?></div>
+		<div class="tab-pane" id="integrations_tabs"><?php echo view("configs/integrations_config"); ?></div>
+		<div class="tab-pane" id="license_tabs"><br><?php echo view("configs/license_config"); ?></div>
 	</div>
 </div>

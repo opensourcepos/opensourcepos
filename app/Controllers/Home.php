@@ -11,7 +11,7 @@ class Home extends Secure_Controller
 
 	public function index()
 	{
-		$this->load->view('home/home');
+		echo view('home/home');
 	}
 
 	public function logout()
@@ -31,7 +31,7 @@ class Home extends Secure_Controller
 		}
 		$data['person_info'] = $person_info;
 
-		$this->load->view('home/form_change_password', $data);
+		echo view('home/form_change_password', $data);
 	}
 
 	/*

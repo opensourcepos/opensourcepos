@@ -16,7 +16,7 @@
 			</div>
 
             <div id="dinner_tables">
-				<?php $this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables)); ?>
+				<?php echo view('partial/dinner_tables', array('dinner_tables' => $dinner_tables)); ?>
 			</div>
             
             <?php echo form_submit(array(

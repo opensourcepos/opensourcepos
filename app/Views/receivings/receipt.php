@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <?php
 	if (isset($error_message))
@@ -7,7 +7,7 @@
 		exit;
 	}
 
-	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
+	echo view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
 
 ?>
 
@@ -153,4 +153,4 @@
 		<?php echo $receiving_id; ?>
 	</div>
 </div>
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

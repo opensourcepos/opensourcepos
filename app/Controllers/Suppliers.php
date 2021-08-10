@@ -13,7 +13,7 @@ class Suppliers extends Persons
 	{
 		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
 
-		$this->load->view('people/manage', $data);
+		echo view('people/manage', $data);
 	}
 
 	/*
@@ -82,7 +82,7 @@ class Suppliers extends Persons
 		$data['person_info'] = $info;
 		$data['categories'] = $this->Supplier->get_categories();
 
-		$this->load->view("suppliers/form", $data);
+		echo view("suppliers/form", $data);
 	}
 	
 	/*

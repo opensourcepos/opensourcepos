@@ -89,8 +89,8 @@
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
-	<?php $this->load->view('partial/header_js'); ?>
-	<?php $this->load->view('partial/lang_lines'); ?>
+	<?php echo view('partial/header_js'); ?>
+	<?php echo view('partial/lang_lines'); ?>
 
 	<style type="text/css">
 		html {

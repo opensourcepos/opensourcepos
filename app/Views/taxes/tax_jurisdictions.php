@@ -5,7 +5,7 @@
 		<ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_jurisdictions">
-			<?php $this->load->view('partial/tax_jurisdictions'); ?>
+			<?php echo view('partial/tax_jurisdictions'); ?>
 		</div>
 
 		<?php echo form_submit(array(

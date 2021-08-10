@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <?php
 if (isset($error))
@@ -527,4 +527,4 @@ $(document).ready(function()
 
 </script>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

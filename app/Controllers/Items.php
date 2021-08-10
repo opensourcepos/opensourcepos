@@ -29,7 +29,7 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->lang->line('items_is_deleted'),
 			'temporary' => $this->lang->line('items_temp'));
 
-		$this->load->view('items/manage', $data);
+		echo view('items/manage', $data);
 	}
 
 	/*
@@ -358,7 +358,7 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		$this->load->view('items/form', $data);
+		echo view('items/form', $data);
 	}
 
 	public function inventory($item_id = NEW_ITEM)
@@ -383,7 +383,7 @@ class Items extends Secure_Controller
 			$data['item_quantities'][$location['location_id']] = $quantity;
 		}
 
-		$this->load->view('items/form_inventory', $data);
+		echo view('items/form_inventory', $data);
 	}
 
 	public function count_details($item_id = NEW_ITEM)
@@ -408,7 +408,7 @@ class Items extends Secure_Controller
 			$data['item_quantities'][$location['location_id']] = $quantity;
 		}
 
-		$this->load->view('items/form_count_details', $data);
+		echo view('items/form_count_details', $data);
 	}
 
 	public function generate_barcodes($item_ids)
@@ -436,7 +436,7 @@ class Items extends Secure_Controller
 		}
 		$data['items'] = $result;
 
-		$this->load->view('barcodes/barcode_sheet', $data);
+		echo view('barcodes/barcode_sheet', $data);
 	}
 
 	public function attributes($item_id = NEW_ITEM)
@@ -470,7 +470,7 @@ class Items extends Secure_Controller
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$this->load->view('attributes/item', $data);
+		echo view('attributes/item', $data);
 	}
 
 	public function bulk_edit()
@@ -494,7 +494,7 @@ class Items extends Secure_Controller
 			1  => $this->lang->line('items_change_all_to_serialized'),
 			0  => $this->lang->line('items_change_all_to_unserialized'));
 
-		$this->load->view('items/form_bulk', $data);
+		echo view('items/form_bulk', $data);
 	}
 
 	public function save($item_id = NEW_ITEM)
@@ -831,7 +831,7 @@ class Items extends Secure_Controller
 
 	public function csv_import()
 	{
-		$this->load->view('items/form_csv_import', NULL);
+		echo view('items/form_csv_import', NULL);
 	}
 
 	/**

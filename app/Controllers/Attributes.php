@@ -13,7 +13,7 @@ class Attributes extends Secure_Controller
 	{
 		$data['table_headers'] = $this->xss_clean(get_attribute_definition_manage_table_headers());
 
-		$this->load->view('attributes/manage', $data);
+		echo view('attributes/manage', $data);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class Attributes extends Secure_Controller
 		$selected_flags = $info->definition_flags === '' ? $show_all : $info->definition_flags;
 		$data['selected_definition_flags'] = $this->get_attributes($selected_flags);
 
-		$this->load->view('attributes/form', $data);
+		echo view('attributes/form', $data);
 	}
 
 	public function delete_value($attribute_id)

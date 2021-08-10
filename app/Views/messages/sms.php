@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -32,7 +32,7 @@
 	<?php echo form_close(); ?>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>
 
 <script type="text/javascript">
 //validation and submit handling

@@ -243,7 +243,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	<?php $this->load->view('partial/datepicker_locale'); ?>
+	<?php echo view('partial/datepicker_locale'); ?>
 
 	$('#open_date').datetimepicker({
 		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",

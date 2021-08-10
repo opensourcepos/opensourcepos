@@ -8,7 +8,7 @@ class Taxes extends Secure_Controller
 	{
 		parent::__construct('taxes');
 
-		$this->load->model('enums/Rounding_mode');
+		$this->Rounding_mode = model('enums/Rounding_mode');
 		$this->load->library('tax_lib');
 		$this->load->helper('tax_helper');
 	}
@@ -45,7 +45,7 @@ class Taxes extends Secure_Controller
 
 		$data['tax_type_options'] = $this->tax_lib->get_tax_type_options($data['default_tax_type']);
 
-		$this->load->view('taxes/manage', $data);
+		echo view('taxes/manage', $data);
 	}
 
 
@@ -167,7 +167,7 @@ class Taxes extends Secure_Controller
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_code_form', $data);
+		echo view('taxes/tax_code_form', $data);
 	}
 
 
@@ -203,7 +203,7 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$this->load->view('taxes/tax_rates_form', $data);
+		echo view('taxes/tax_rates_form', $data);
 	}
 
 
@@ -274,7 +274,7 @@ class Taxes extends Secure_Controller
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_category_form', $data);
+		echo view('taxes/tax_category_form', $data);
 	}
 
 	public function view_tax_jurisdictions($tax_code = -1)
@@ -343,7 +343,7 @@ class Taxes extends Secure_Controller
 
 		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view('taxes/tax_jurisdiction_form', $data);
+		echo view('taxes/tax_jurisdiction_form', $data);
 	}
 
 	public static function get_html_rounding_options()
@@ -508,7 +508,7 @@ class Taxes extends Secure_Controller
 
 		$tax_codes = $this->xss_clean($tax_codes);
 
-		$this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes));
+		echo view('partial/tax_codes', array('tax_codes' => $tax_codes));
 	}
 
 	public function ajax_tax_categories()
@@ -517,7 +517,7 @@ class Taxes extends Secure_Controller
 
 		$tax_categories = $this->xss_clean($tax_categories);
 
-		$this->load->view('partial/tax_categories', array('tax_categories' => $tax_categories));
+		echo view('partial/tax_categories', array('tax_categories' => $tax_categories));
 	}
 
 	public function ajax_tax_jurisdictions()
@@ -536,7 +536,7 @@ class Taxes extends Secure_Controller
 		$tax_jurisdictions = $this->xss_clean($tax_jurisdictions);
 		$tax_types = $this->tax_lib->get_tax_types();
 
-		$this->load->view('partial/tax_jurisdictions', array('tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
+		echo view('partial/tax_jurisdictions', array('tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
 	}
 }
 ?>

@@ -77,7 +77,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
 (function() {
-		<?php $this->load->view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->item('dateformat') . '"}'))); ?>
+		<?php echo view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->item('dateformat') . '"}'))); ?>
 
 		var enable_delete = function() {
 			$('.remove_attribute_btn').click(function() {

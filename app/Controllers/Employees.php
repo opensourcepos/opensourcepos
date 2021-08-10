@@ -84,7 +84,7 @@ class Employees extends Persons
 		}
 		$data['all_subpermissions'] = $permissions;
 
-		$this->load->view('employees/form', $data);
+		echo view('employees/form', $data);
 	}
 
 	/*

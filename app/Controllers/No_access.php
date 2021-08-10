@@ -9,7 +9,7 @@ class No_Access extends CI_Controller
 		
 		$data = $this->security->xss_clean($data);
 		
-		$this->load->view('no_access', $data);
+		echo view('no_access', $data);
 	}
 }
 ?>

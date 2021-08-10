@@ -12,7 +12,7 @@ class Tax_codes extends Secure_Controller
 
 	public function index()
 	{
-		 $this->load->view('taxes/tax_codes',get_data());
+		 echo view('taxes/tax_codes',get_data());
 	}
 
 	public function get_data()
@@ -55,7 +55,7 @@ class Tax_codes extends Secure_Controller
 	{
 		$data['tax_code_info'] = $this->Tax_code->get_info($tax_code_id);
 
-		$this->load->view("taxes/tax_code_form", $data);
+		echo view("taxes/tax_code_form", $data);
 	}
 
 

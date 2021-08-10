@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <script type="text/javascript">
 $(document).ready(function()
@@ -9,13 +9,13 @@ $(document).ready(function()
 	});
 
 	// load the preset datarange picker
-	<?php $this->load->view('partial/daterangepicker'); ?>
+	<?php echo view('partial/daterangepicker'); ?>
 
 	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
 		table_support.refresh();
 	});
 
-	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	<?php echo view('partial/bootstrap_tables_locale'); ?>
 
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
@@ -33,7 +33,7 @@ $(document).ready(function()
 });
 </script>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
+<?php echo view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
 
 <div id="title_bar" class="print_hide btn-toolbar">
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
@@ -60,4 +60,4 @@ $(document).ready(function()
 	<table id="table"></table>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

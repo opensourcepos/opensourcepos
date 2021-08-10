@@ -39,7 +39,7 @@ class Sales extends Secure_Controller
 				'only_creditcard' => $this->lang->line('sales_credit_filter'),
 				'only_invoices' => $this->lang->line('sales_invoice_filter'));
 
-			$this->load->view('sales/manage', $data);
+			echo view('sales/manage', $data);
 		}
 	}
 
@@ -666,7 +666,7 @@ class Sales extends Secure_Controller
 				else
 				{
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-					$this->load->view('sales/'.$invoice_view, $data);
+					echo view('sales/'.$invoice_view, $data);
 					$this->sale_lib->clear_all();
 				}
 			}
@@ -709,7 +709,7 @@ class Sales extends Secure_Controller
 
 				$data['barcode'] = NULL;
 
-				$this->load->view('sales/work_order', $data);
+				echo view('sales/work_order', $data);
 				$this->sale_lib->clear_mode();
 				$this->sale_lib->clear_all();
 			}
@@ -746,7 +746,7 @@ class Sales extends Secure_Controller
 
 				$data['barcode'] = NULL;
 
-				$this->load->view('sales/quote', $data);
+				echo view('sales/quote', $data);
 				$this->sale_lib->clear_mode();
 				$this->sale_lib->clear_all();
 			}
@@ -778,7 +778,7 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-				$this->load->view('sales/receipt', $data);
+				echo view('sales/receipt', $data);
 				$this->sale_lib->clear_all();
 			}
 		}
@@ -805,7 +805,7 @@ class Sales extends Secure_Controller
 			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->item('company_logo'));
 
 			// generate email attachment: invoice in pdf format
-			$html = $this->load->view("sales/" . $type . "_email", $sale_data, TRUE);
+			$html = echo view("sales/" . $type . "_email", $sale_data, TRUE);
 
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
@@ -839,7 +839,7 @@ class Sales extends Secure_Controller
 			$to = $sale_data['customer_email'];
 			$subject = $this->lang->line('sales_receipt');
 
-			$text = $this->load->view('sales/receipt_email', $sale_data, TRUE);
+			$text = echo view('sales/receipt_email', $sale_data, TRUE);
 
 			$result = $this->email_lib->sendEmail($to, $subject, $text);
 
@@ -1150,13 +1150,13 @@ class Sales extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$this->load->view("sales/register", $data);
+		echo view("sales/register", $data);
 	}
 
 	public function receipt($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);
-		$this->load->view('sales/receipt', $data);
+		echo view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 
@@ -1164,7 +1164,7 @@ class Sales extends Secure_Controller
 	{
 		$data = $this->_load_sale_data($sale_id);
 
-		$this->load->view('sales/'.$data['invoice_view'], $data);
+		echo view('sales/'.$data['invoice_view'], $data);
 		$this->sale_lib->clear_all();
 	}
 
@@ -1215,7 +1215,7 @@ class Sales extends Secure_Controller
 
 		$data['new_payment_options'] = $this->xss_clean($payment_options);
 
-		$this->load->view('sales/form', $data);
+		echo view('sales/form', $data);
 	}
 
 	public function delete($sale_id = -1, $update_inventory = TRUE)
@@ -1462,7 +1462,7 @@ class Sales extends Secure_Controller
 		$data = array();
 		$customer_id = $this->sale_lib->get_customer();
 		$data['suspended_sales'] = $this->xss_clean($this->Sale->get_all_suspended($customer_id));
-		$this->load->view('sales/suspended', $data);
+		echo view('sales/suspended', $data);
 	}
 
 	/**

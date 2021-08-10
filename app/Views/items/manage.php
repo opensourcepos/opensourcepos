@@ -1,4 +1,4 @@
-<?php $this->load->view('partial/header'); ?>
+<?php echo view('partial/header'); ?>
 
 <script type="text/javascript">
 $(document).ready(function()
@@ -18,7 +18,7 @@ $(document).ready(function()
     });
 
 	// load the preset daterange picker
-	<?php $this->load->view('partial/daterangepicker'); ?>
+	<?php echo view('partial/daterangepicker'); ?>
     // set the beginning of time as starting date
     $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>");
 	// update the hidden inputs with the selected dates before submitting the search data
@@ -31,7 +31,7 @@ $(document).ready(function()
        table_support.refresh();
     });
 
-    <?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+    <?php echo view('partial/bootstrap_tables_locale'); ?>
 
     table_support.init({
         employee_id: <?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>,
@@ -96,4 +96,4 @@ $(document).ready(function()
     <table id="table"></table>
 </div>
 
-<?php $this->load->view('partial/footer'); ?>
+<?php echo view('partial/footer'); ?>

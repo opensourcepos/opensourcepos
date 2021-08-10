@@ -5,7 +5,7 @@
             <ul id="stock_error_message_box" class="error_message_box"></ul>
 
             <div id="stock_locations">
-				<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
+				<?php echo view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 			</div>
             
             <?php echo form_submit(array(

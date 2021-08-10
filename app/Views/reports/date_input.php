@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -93,12 +93,12 @@ if(isset($error))
 	?>
 <?php echo form_close(); ?>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>
 
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php $this->load->view('partial/daterangepicker'); ?>
+	<?php echo view('partial/daterangepicker'); ?>
 
 	$("#generate_report").click(function()
 	{		

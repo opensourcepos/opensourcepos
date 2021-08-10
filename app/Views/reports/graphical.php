@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -10,7 +10,7 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
-<?php $this->load->view($chart_type); ?>
+<?php echo view($chart_type); ?>
 
 <div id="chart_report_summary">
 	<?php
@@ -23,4 +23,4 @@
 	?>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

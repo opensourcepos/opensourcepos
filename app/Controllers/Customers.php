@@ -21,7 +21,7 @@ class Customers extends Persons
 	{
 		$data['table_headers'] = $this->xss_clean(get_customer_manage_table_headers());
 
-		$this->load->view('people/manage', $data);
+		echo view('people/manage', $data);
 	}
 
 	/*
@@ -220,7 +220,7 @@ class Customers extends Persons
 			}
 		}
 
-		$this->load->view("customers/form", $data);
+		echo view("customers/form", $data);
 	}
 
 	/*
@@ -358,7 +358,7 @@ class Customers extends Persons
 
 	public function csv_import()
 	{
-		$this->load->view('customers/form_csv_import', NULL);
+		echo view('customers/form_csv_import', NULL);
 	}
 
 	public function do_csv_import()

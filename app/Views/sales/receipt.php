@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <?php
 if (isset($error_message))
@@ -31,7 +31,7 @@ if (isset($error_message))
 	</script>
 <?php endif; ?>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
+<?php echo view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
@@ -44,6 +44,6 @@ if (isset($error_message))
 	<?php endif; ?>
 </div>
 
-<?php $this->load->view("sales/" . $this->config->item('receipt_template')); ?>
+<?php echo view("sales/" . $this->config->item('receipt_template')); ?>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

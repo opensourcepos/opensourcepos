@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header"); ?>
+<?php echo view("partial/header"); ?>
 
 <div id="page_title"><?php echo $title ?></div>
 
@@ -22,7 +22,7 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	 	<?php echo view('partial/bootstrap_tables_locale'); ?>
 
 		var details_data = <?php echo json_encode($details_data); ?>;
 		<?php
@@ -94,4 +94,4 @@
 	});
 </script>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view("partial/footer"); ?>

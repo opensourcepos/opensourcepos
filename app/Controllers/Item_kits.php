@@ -48,7 +48,7 @@ class Item_kits extends Secure_Controller
 	{
 		$data['table_headers'] = $this->xss_clean(get_item_kits_manage_table_headers());
 
-		$this->load->view('item_kits/manage', $data);
+		echo view('item_kits/manage', $data);
 	}
 
 	/*
@@ -125,7 +125,7 @@ class Item_kits extends Secure_Controller
 		$data['selected_kit_item_id'] = $info->kit_item_id;
 		$data['selected_kit_item'] = ($item_kit_id > 0 && isset($info->kit_item_id)) ? $info->item_name : '';
 
-		$this->load->view("item_kits/form", $data);
+		echo view("item_kits/form", $data);
 	}
 	
 	public function save($item_kit_id = -1)
@@ -241,7 +241,7 @@ class Item_kits extends Secure_Controller
 		$data['barcode_config'] = $barcode_config;
 
 		// display barcodes
-		$this->load->view("barcodes/barcode_sheet", $data);
+		echo view("barcodes/barcode_sheet", $data);
 	}
 }
 ?>

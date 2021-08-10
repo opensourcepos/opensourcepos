@@ -21,7 +21,7 @@ class Expenses extends Secure_Controller
 			'only_debit' => $this->lang->line('expenses_debit_filter'),
 			'is_deleted' => $this->lang->line('expenses_is_deleted'));
 
-		$this->load->view('expenses/manage', $data);
+		echo view('expenses/manage', $data);
 	}
 
 	public function search()
@@ -109,7 +109,7 @@ class Expenses extends Secure_Controller
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
 		$data['payment_options'] = $this->xss_clean($this->Expense->get_payment_options(FALSE));
 
-		$this->load->view("expenses/form", $data);
+		echo view("expenses/form", $data);
 	}
 
 	public function get_row($row_id)

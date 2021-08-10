@@ -5,7 +5,7 @@
 		<ul id="tax_categories_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_categories">
-			<?php $this->load->view('partial/tax_categories'); ?>
+			<?php echo view('partial/tax_categories'); ?>
 		</div>
 
 		<?php echo form_submit(array(

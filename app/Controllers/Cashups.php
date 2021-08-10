@@ -16,7 +16,7 @@ class Cashups extends Secure_Controller
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array('is_deleted' => $this->lang->line('cashups_is_deleted'));
 
-		$this->load->view('cashups/manage', $data);
+		echo view('cashups/manage', $data);
 	}
 
 	public function search()
@@ -148,7 +148,7 @@ class Cashups extends Secure_Controller
 
 		$data['cash_ups_info'] = $cash_ups_info;
 
-		$this->load->view("cashups/form", $data);
+		echo view("cashups/form", $data);
 	}
 
 	public function get_row($row_id)

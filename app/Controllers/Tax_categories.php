@@ -14,7 +14,7 @@ class Tax_categories extends Secure_Controller
 	{
 		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
 
-		 $this->load->view('taxes/tax_categories', $data);
+		 echo view('taxes/tax_categories', $data);
 	}
 
 	/*
@@ -51,7 +51,7 @@ class Tax_categories extends Secure_Controller
 	{
 		$data['tax_category_info'] = $this->Tax_category->get_info($tax_category_id);
 
-		$this->load->view("taxes/tax_category_form", $data);
+		echo view("taxes/tax_category_form", $data);
 	}
 
 

@@ -158,7 +158,7 @@ $(document).ready(function()
 		});
 	<?php endif; ?>
 	
-	<?php $this->load->view('partial/datepicker_locale'); ?>
+	<?php echo view('partial/datepicker_locale'); ?>
 
 	var fill_value_customer = function(event, ui) {
 		event.preventDefault();

@@ -39,7 +39,7 @@
 					</div>
 				</div>
 
-				<?php $this->load->view("people/form_basic_info"); ?>
+				<?php echo view("people/form_basic_info"); ?>
 				
 				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('customers_discount_type'), 'discount_type', array('class'=>'control-label col-xs-3')); ?>

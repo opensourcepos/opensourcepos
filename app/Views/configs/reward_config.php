@@ -16,7 +16,7 @@
 			</div>
 
             <div id="customer_rewards">
-				<?php $this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards)); ?>
+				<?php echo view('partial/customer_rewards', array('customer_rewards' => $customer_rewards)); ?>
 			</div>
             
             <?php echo form_submit(array(

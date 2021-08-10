@@ -13,7 +13,7 @@ abstract class Persons extends Secure_Controller
 	{
 		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
 
-		$this->load->view('people/manage', $data);
+		echo view('people/manage', $data);
 	}
 
 	/*

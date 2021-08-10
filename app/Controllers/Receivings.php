@@ -163,7 +163,7 @@ class Receivings extends Secure_Controller
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
 	
-		$this->load->view('receivings/form', $data);
+		echo view('receivings/form', $data);
 	}
 
 	public function delete_item($item_number)
@@ -256,7 +256,7 @@ class Receivings extends Secure_Controller
 
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-		$this->load->view("receivings/receipt",$data);
+		echo view("receivings/receipt",$data);
 
 		$this->receiving_lib->clear_all();
 	}
@@ -321,7 +321,7 @@ class Receivings extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 		
-		$this->load->view("receivings/receipt", $data);
+		echo view("receivings/receipt", $data);
 
 		$this->receiving_lib->clear_all();
 	}
@@ -370,7 +370,7 @@ class Receivings extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$this->load->view("receivings/receiving", $data);
+		echo view("receivings/receiving", $data);
 	}
 	
 	public function save($receiving_id = -1)
