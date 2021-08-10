@@ -22,7 +22,8 @@
 		"dompdf/dompdf": "^0.8.5",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
-		"vlucas/phpdotenv": "^2.4"
+		"vlucas/phpdotenv": "^2.4",
+	  	"eventsauce/eventsauce": "^0.8.2"
 	},
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",
