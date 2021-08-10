@@ -20,12 +20,13 @@
   <script type="text/javascript" src="dist/bootstrap-select/bootstrap-select.min.js"></script>
   <script type="text/javascript" src="dist/bootstrap-table/bootstrap-table.min.js"></script>
   <script type="text/javascript" src="js/bs-select_options.js"></script>
-  <script type="text/javascript" src="js/lang_lines.js"></script>
-  <script type="text/javascript" src="js/clock.js"></script>
-  <script type="text/javascript" src="js/other.js"></script>
   <script type="text/javascript" src="js/bs-tooltips.js"></script>
   <script type="text/javascript" src="js/bs-modal_switch_content.js"></script>
   <script type="text/javascript" src="js/bs-tab_anchor_linking.js"></script>
+  <script type="text/javascript" src="js/bs-validation.js"></script>
+  <script type="text/javascript" src="js/lang_lines.js"></script>
+  <script type="text/javascript" src="js/clock.js"></script>
+  <script type="text/javascript" src="js/other.js"></script>
   <script type="text/javascript" src="js/ospos-change_password.js"></script>
 </body>
 

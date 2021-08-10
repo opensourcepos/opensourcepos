@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_email/', array('id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_email/', array('id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_email['config_title'] = $this->lang->line('config_email_configuration');
@@ -77,7 +77,7 @@ $this->load->view('configs/config_header', $title_email);
 	<button class="btn btn-primary" name="submit_email"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling

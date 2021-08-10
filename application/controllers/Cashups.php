@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -28,9 +28,10 @@ class Cashups extends Secure_Controller
 		$sort     = $this->input->get('sort');
 		$order    = $this->input->get('order');
 		$filters  = array(
-					 'start_date' => $this->input->get('start_date'),
-					 'end_date' => $this->input->get('end_date'),
-					 'is_deleted' => FALSE);
+			'start_date' => $this->input->get('start_date'),
+			'end_date' => $this->input->get('end_date'),
+			'is_deleted' => FALSE
+		);
 
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
@@ -38,8 +39,7 @@ class Cashups extends Secure_Controller
 		$cash_ups = $this->Cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Cashup->get_found_rows($search, $filters);
 		$data_rows = array();
-		foreach($cash_ups->result() as $cash_up)
-		{
+		foreach ($cash_ups->result() as $cash_up) {
 			$data_rows[] = $this->xss_clean(get_cash_up_data_row($cash_up));
 		}
 
@@ -51,10 +51,8 @@ class Cashups extends Secure_Controller
 		$data = array();
 
 		$data['employees'] = array();
-		foreach($this->Employee->get_all()->result() as $employee)
-		{
-			foreach(get_object_vars($employee) as $property => $value)
-			{
+		foreach ($this->Employee->get_all()->result() as $employee) {
+			foreach (get_object_vars($employee) as $property => $value) {
 				$employee->$property = $this->xss_clean($value);
 			}
 
@@ -63,25 +61,24 @@ class Cashups extends Secure_Controller
 
 		$cash_ups_info = $this->Cashup->get_info($cashup_id);
 
-		foreach(get_object_vars($cash_ups_info) as $property => $value)
-		{
+		foreach (get_object_vars($cash_ups_info) as $property => $value) {
 			$cash_ups_info->$property = $this->xss_clean($value);
 		}
 
 		// open cashup
-		if(empty($cash_ups_info->cashup_id))
-		{
+		if (empty($cash_ups_info->cashup_id)) {
 			$cash_ups_info->open_date = date('Y-m-d H:i:s');
 			$cash_ups_info->close_date = $cash_ups_info->open_date;
 			$cash_ups_info->open_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 			$cash_ups_info->close_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		}
 		// if all the amounts are null or 0 that means it's a close cashup
-		elseif(floatval($cash_ups_info->closed_amount_cash) == 0 &&
+		elseif (
+			floatval($cash_ups_info->closed_amount_cash) == 0 &&
 			floatval($cash_ups_info->closed_amount_due) == 0 &&
 			floatval($cash_ups_info->closed_amount_card) == 0 &&
-			floatval($cash_ups_info->closed_amount_check) == 0)
-		{
+			floatval($cash_ups_info->closed_amount_check) == 0
+		) {
 			// set the close date and time to the actual as this is a close session
 			$cash_ups_info->close_date = date('Y-m-d H:i:s');
 
@@ -89,13 +86,10 @@ class Cashups extends Secure_Controller
 			$cash_ups_info->closed_amount_cash = $cash_ups_info->open_amount_cash + $cash_ups_info->transfer_amount_cash;
 
 			// if it's date mode only and not date & time truncate the open and end date to date only
-			if(empty($this->config->item('date_or_time_format')))
-			{
+			if (empty($this->config->item('date_or_time_format'))) {
 				// search for all the payments given the time range
 				$inputs = array('start_date' => substr($cash_ups_info->open_date, 0, 10), 'end_date' => substr($cash_ups_info->close_date, 0, 10), 'sale_type' => 'complete', 'location_id' => 'all');
-			}
-			else
-			{
+			} else {
 				// search for all the payments given the time range
 				$inputs = array('start_date' => $cash_ups_info->open_date, 'end_date' => $cash_ups_info->close_date, 'sale_type' => 'complete', 'location_id' => 'all');
 			}
@@ -104,25 +98,18 @@ class Cashups extends Secure_Controller
 			$this->load->model('reports/Summary_payments');
 			$reports_data = $this->Summary_payments->getData($inputs);
 
-			foreach($reports_data as $row)
-			{
-				if($row['trans_group'] == $this->lang->line('reports_trans_payments'))
-				{
-					if($row['trans_type'] == $this->lang->line('sales_cash'))
-					{
+			foreach ($reports_data as $row) {
+				if ($row['trans_group'] == $this->lang->line('reports_trans_payments')) {
+					if ($row['trans_type'] == $this->lang->line('sales_cash')) {
 						$cash_ups_info->closed_amount_cash += $this->xss_clean($row['trans_amount']);
-					}
-					elseif($row['trans_type'] == $this->lang->line('sales_due'))
-					{
+					} elseif ($row['trans_type'] == $this->lang->line('sales_due')) {
 						$cash_ups_info->closed_amount_due += $this->xss_clean($row['trans_amount']);
-					}
-					elseif($row['trans_type'] == $this->lang->line('sales_debit') ||
-						$row['trans_type'] == $this->lang->line('sales_credit'))
-					{
+					} elseif (
+						$row['trans_type'] == $this->lang->line('sales_debit') ||
+						$row['trans_type'] == $this->lang->line('sales_credit')
+					) {
 						$cash_ups_info->closed_amount_card += $this->xss_clean($row['trans_amount']);
-					}
-					elseif($row['trans_type'] == $this->lang->line('sales_check'))
-					{
+					} elseif ($row['trans_type'] == $this->lang->line('sales_check')) {
 						$cash_ups_info->closed_amount_check += $this->xss_clean($row['trans_amount']);
 					}
 				}
@@ -130,16 +117,16 @@ class Cashups extends Secure_Controller
 
 			// lookup expenses paid in cash
 			$filters = array(
-						 'only_cash' => TRUE,
-						 'only_due' => FALSE,
-						 'only_check' => FALSE,
-						 'only_credit' => FALSE,
-						 'only_debit' => FALSE,
-						 'is_deleted' => FALSE);
+				'only_cash' => TRUE,
+				'only_due' => FALSE,
+				'only_check' => FALSE,
+				'only_credit' => FALSE,
+				'only_debit' => FALSE,
+				'is_deleted' => FALSE
+			);
 			$payments = $this->Expense->get_payments_summary('', array_merge($inputs, $filters));
 
-			foreach($payments as $row)
-			{
+			foreach ($payments as $row) {
 				$cash_ups_info->closed_amount_cash -= $this->xss_clean($row['amount']);
 			}
 
@@ -184,21 +171,17 @@ class Cashups extends Secure_Controller
 			'deleted' => $this->input->post('deleted') != NULL
 		);
 
-		if($this->Cashup->save($cash_up_data, $cashup_id))
-		{
+		if ($this->Cashup->save($cash_up_data, $cashup_id)) {
 			$cash_up_data = $this->xss_clean($cash_up_data);
 
 			//New cashup_id
-			if($cashup_id == -1)
-			{
+			if ($cashup_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('cashups_successful_adding'), 'id' => $cash_up_data['cashup_id']));
-			}
-			else // Existing Cashup
+			} else // Existing Cashup
 			{
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('cashups_successful_updating'), 'id' => $cashup_id));
 			}
-		}
-		else//failure
+		} else //failure
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('cashups_error_adding_updating'), 'id' => -1));
 		}
@@ -208,12 +191,9 @@ class Cashups extends Secure_Controller
 	{
 		$cash_ups_to_delete = $this->input->post('ids');
 
-		if($this->Cashup->delete_list($cash_ups_to_delete))
-		{
+		if ($this->Cashup->delete_list($cash_ups_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('cashups_successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . $this->lang->line('cashups_one_or_multiple'), 'ids' => $cash_ups_to_delete));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('cashups_cannot_be_deleted'), 'ids' => $cash_ups_to_delete));
 		}
 	}
@@ -243,4 +223,3 @@ class Cashups extends Secure_Controller
 		return ($closed_amount_cash - $open_amount_cash - $transfer_amount_cash + $closed_amount_due + $closed_amount_card + $closed_amount_check);
 	}
 }
-?>

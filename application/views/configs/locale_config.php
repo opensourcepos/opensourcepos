@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_locale/', array('id' => 'locale_config_form', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_locale/', array('id' => 'locale_config_form', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_locale['config_title'] = $this->lang->line('config_locale_configuration');
@@ -7,23 +7,23 @@ $this->load->view('configs/config_header', $title_locale);
 
 <div id="config_wrapper">
 	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<div id="required_fields_message"><?= $this->lang->line('common_fields_required_message'); ?></div>
 		<ul id="locale_error_message_box" class="error_message_box"></ul>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_number_locale'), 'number_locale', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_number_locale'), 'number_locale', array('class' => 'control-label col-xs-2')); ?>
 			<div class='row'>
 				<div class='col-xs-1'>
-					<?php echo form_input('number_locale', $this->config->item('number_locale'), array('class' => 'form-control input-sm', 'id' => 'number_locale')); ?>
-					<?php echo form_hidden('save_number_locale', $this->config->item('number_locale')); ?>
+					<?= form_input('number_locale', $this->config->item('number_locale'), array('class' => 'form-control input-sm', 'id' => 'number_locale')); ?>
+					<?= form_hidden('save_number_locale', $this->config->item('number_locale')); ?>
 				</div>
 				<div class="col-xs-2">
 					<label class="control-label">
 						<a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
-							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_number_locale_tooltip'); ?>"></span>
+							<i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="<?= $this->lang->line('config_number_locale_tooltip'); ?>"></i>
 						</a>
 						<span id="number_locale_example">
-							&nbsp&nbsp<?php echo to_currency(1234567890.12300); ?>
+							&nbsp;&nbsp;<?= to_currency(1234567890.12300); ?>
 						</span>
 					</label>
 				</div>
@@ -31,9 +31,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_thousands_separator'), 'thousands_separator', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_thousands_separator'), 'thousands_separator', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_checkbox(array(
+				<?= form_checkbox(array(
 					'name' => 'thousands_separator',
 					'id' => 'thousands_separator',
 					'value' => 'thousands_separator',
@@ -43,9 +43,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-1'>
-				<?php echo form_input(array(
+				<?= form_input(array(
 					'name' => 'currency_symbol',
 					'id' => 'currency_symbol',
 					'class' => 'form-control input-sm number_locale',
@@ -55,9 +55,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_currency_code'), 'currency_code', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_currency_code'), 'currency_code', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-1'>
-				<?php echo form_input(array(
+				<?= form_input(array(
 					'name' => 'currency_code',
 					'id' => 'currency_code',
 					'class' => 'form-control input-sm number_locale',
@@ -67,9 +67,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_currency_decimals'), 'currency_decimals', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_currency_decimals'), 'currency_decimals', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'currency_decimals',
 					array(
 						'0' => '0',
@@ -84,9 +84,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_tax_decimals'), 'tax_decimals', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_tax_decimals'), 'tax_decimals', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'tax_decimals',
 					array(
 						'0' => '0',
@@ -103,9 +103,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_quantity_decimals'), 'quantity_decimals', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_quantity_decimals'), 'quantity_decimals', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'quantity_decimals',
 					array(
 						'0' => '0',
@@ -121,9 +121,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_cash_decimals'), 'cash_decimals', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_cash_decimals'), 'cash_decimals', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'cash_decimals',
 					array(
 						'-1' => '-1',
@@ -138,23 +138,23 @@ $this->load->view('configs/config_header', $title_locale);
 			</div>
 			<div class='col-xs-1'>
 				<label class="control-label">
-					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
+					<i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="<?= $this->lang->line('config_cash_decimals_tooltip'); ?>"></i>
 				</label>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_cash_rounding'), 'cash_rounding_code', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_cash_rounding'), 'cash_rounding_code', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown('cash_rounding_code', $rounding_options, $this->config->item('cash_rounding_code'), array('class' => 'form-control input-sm'));
+				<?= form_dropdown('cash_rounding_code', $rounding_options, $this->config->item('cash_rounding_code'), array('class' => 'form-control input-sm'));
 				?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_payment_options_order'), 'payment_options_order', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_payment_options_order'), 'payment_options_order', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'payment_options_order',
 					array(
 						'cashdebitcredit' => $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_credit'),
@@ -171,21 +171,21 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_country_codes'), 'country_codes', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-1'>
-				<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class' => 'form-control input-sm')); ?>
+				<?= form_input('country_codes', $this->config->item('country_codes'), array('class' => 'form-control input-sm')); ?>
 			</div>
 			<div class="col-xs-1">
 				<label class="control-label">
-					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
+					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="<?= $this->lang->line('config_country_codes_tooltip'); ?>"></i></a>
 				</label>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_language'), 'language', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_language'), 'language', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'language',
 					get_languages(),
 					current_language_code(TRUE) . ':' . current_language(TRUE),
@@ -196,9 +196,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_timezone'), 'timezone', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_timezone'), 'timezone', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'timezone',
 					get_timezones(),
 					$this->config->item('timezone') ? $this->config->item('timezone') : date_default_timezone_get(),
@@ -209,9 +209,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-sm-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'dateformat',
 					get_dateformats(),
 					$this->config->item('dateformat'),
@@ -220,7 +220,7 @@ $this->load->view('configs/config_header', $title_locale);
 				?>
 			</div>
 			<div class='col-sm-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'timeformat',
 					get_timeformats(),
 					$this->config->item('timeformat'),
@@ -231,9 +231,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_date_or_time_format'), 'date_or_time_format', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_date_or_time_format'), 'date_or_time_format', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_checkbox(array(
+				<?= form_checkbox(array(
 					'name' => 'date_or_time_format',
 					'id' => 'date_or_time_format',
 					'value' => 'date_or_time_format',
@@ -243,9 +243,9 @@ $this->load->view('configs/config_header', $title_locale);
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('config_financial_year'), 'financial_year', array('class' => 'control-label col-xs-2')); ?>
+			<?= form_label($this->lang->line('config_financial_year'), 'financial_year', array('class' => 'control-label col-xs-2')); ?>
 			<div class='col-xs-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'financial_year',
 					array(
 						'1' => $this->lang->line('config_financial_year_jan'),
@@ -268,15 +268,15 @@ $this->load->view('configs/config_header', $title_locale);
 			</div>
 		</div>
 
-		<?php echo form_submit(array(
+		<?= form_submit(array(
 			'name' => 'submit_locale',
 			'id' => 'submit_locale',
 			'value' => $this->lang->line('common_submit'),
-			'class' => 'btn btn-primary btn-sm pull-right'
+			'class' => 'btn btn-primary pull-right'
 		)); ?>
 	</fieldset>
 </div>
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
@@ -291,7 +291,7 @@ $this->load->view('configs/config_header', $title_locale);
 			data['currency_symbol'] = $('#currency_symbol').val();
 			data['currency_code'] = $('#currency_code').val();
 			data['thousands_separator'] = $('#thousands_separator').is(":checked")
-			$.post("<?php echo site_url($controller_name . '/ajax_check_number_locale') ?>",
+			$.post("<?= site_url($controller_name . '/ajax_check_number_locale') ?>",
 				data,
 				function(response) {
 					$("input[name='save_number_locale']").val(response.save_number_locale);
@@ -308,7 +308,7 @@ $this->load->view('configs/config_header', $title_locale);
 				number_locale: {
 					required: true,
 					remote: {
-						url: "<?php echo site_url($controller_name . '/ajax_check_number_locale') ?>",
+						url: "<?= site_url($controller_name . '/ajax_check_number_locale') ?>",
 						type: 'POST',
 						data: {
 							'number_locale': function() {
@@ -341,8 +341,8 @@ $this->load->view('configs/config_header', $title_locale);
 
 			messages: {
 				number_locale: {
-					required: "<?php echo $this->lang->line('config_number_locale_required') ?>",
-					number_locale: "<?php echo $this->lang->line('config_number_locale_invalid') ?>"
+					required: "<?= $this->lang->line('config_number_locale_required') ?>",
+					number_locale: "<?= $this->lang->line('config_number_locale_invalid') ?>"
 				}
 			},
 

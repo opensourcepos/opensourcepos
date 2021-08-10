@@ -57,8 +57,8 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<h1><?= $heading; ?></h1>
+		<?= $message; ?>
 	</div>
 </body>
 </html>

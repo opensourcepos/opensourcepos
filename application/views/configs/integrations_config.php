@@ -69,13 +69,13 @@ $this->load->view('configs/config_header', $title_integrations);
 	<button class="btn btn-primary" name="sumbit_mailchimp"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
 	document.querySelector(document).ready(function() {
 		document.querySelector('#mailchimp_api_key').change(function() {
-			$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key') ?>", {
+			$.post("<?= site_url($controller_name . '/ajax_check_mailchimp_api_key') ?>", {
 					'mailchimp_api_key': document.querySelector('#mailchimp_api_key').value
 				},
 				function(response) {
@@ -114,7 +114,7 @@ $this->load->view('configs/config_header', $title_integrations);
 	/*//validation and submit handling
 	$(document).ready(function() {
 		$('#mailchimp_api_key').change(function() {
-			$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key') ?>", {
+			$.post("<?= site_url($controller_name . '/ajax_check_mailchimp_api_key') ?>", {
 					'mailchimp_api_key': $('#mailchimp_api_key').val()
 				},
 				function(response) {

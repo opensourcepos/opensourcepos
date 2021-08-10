@@ -30,7 +30,7 @@
       </div>
       <div class="flex-grow-1 text-end pe-3 pe-lg-0">
         <?= ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') : ''); ?>
-        <button type="button" class="btn btn-outline-primary btn-sm" onclick="removeAnimationBg()" data-bs-toggle="modal" data-bs-target="#profile-modal" title="<?= $this->lang->line('employees_change_password'); ?>">
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="removeAnimationBg()" data-bs-toggle="modal" data-bs-target="#profile-modal" title="<?= $this->lang->line('employees_change_password'); ?>">
           <?= $user_info->first_name . '&nbsp;' . $user_info->last_name; ?>
         </button>
         <?php $this->load->view("home/profile"); ?>

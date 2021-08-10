@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_tables/', array('id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_tables/', array('id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_table['config_title'] = $this->lang->line('config_table_configuration');
@@ -60,7 +60,7 @@ $this->load->view('configs/config_header', $title_table);
 	<?php $this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables)); ?>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
@@ -79,7 +79,7 @@ $this->load->view('configs/config_header', $title_table);
 
 		$("#dinner_table_enable").change(enable_disable_dinner_table_enable);
 
-		var table_count = <?php echo sizeof($dinner_tables); ?>;
+		var table_count = <?= sizeof($dinner_tables); ?>;
 
 		var hide_show_remove = function() {
 			if ($("input[name*='dinner_tables']:enabled").length > 1) {
@@ -95,7 +95,7 @@ $this->load->view('configs/config_header', $title_table);
 			var block = $(this).parent().clone(true);
 			var new_block = block.insertAfter($(this).parent());
 			var new_block_id = 'dinner_table_' + ++id;
-			$(new_block).find('label').html("<?php echo $this->lang->line('config_dinner_table'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?= $this->lang->line('config_dinner_table'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 			hide_show_remove();
 		};
@@ -122,11 +122,11 @@ $this->load->view('configs/config_header', $title_table);
 				value_count = $(this).val() == value ? value_count + 1 : value_count;
 			});
 			return value_count < 2;
-		}, "<?php echo $this->lang->line('config_dinner_table_duplicate'); ?>");
+		}, "<?= $this->lang->line('config_dinner_table_duplicate'); ?>");
 
 		$.validator.addMethod('valid_chars', function(value, element) {
 			return value.indexOf('_') === -1;
-		}, "<?php echo $this->lang->line('config_dinner_table_invalid_chars'); ?>");
+		}, "<?= $this->lang->line('config_dinner_table_invalid_chars'); ?>");
 
 		$('#table_config_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {
@@ -141,7 +141,7 @@ $this->load->view('configs/config_header', $title_table);
 						}, {
 							type: response.success ? 'success' : 'danger'
 						});
-						$("#dinner_tables").load('<?php echo site_url("config/ajax_dinner_tables"); ?>', init_add_remove_tables);
+						$("#dinner_tables").load('<?= site_url("config/ajax_dinner_tables"); ?>', init_add_remove_tables);
 					},
 					dataType: 'json'
 				});
@@ -155,7 +155,7 @@ $this->load->view('configs/config_header', $title_table);
 
 				foreach ($dinner_tables as $dinner_table => $table) {
 				?>
-					<?php echo 'dinner_table_' . ++$i ?>: {
+					<?= 'dinner_table_' . ++$i ?>: {
 						required: true,
 						dinner_table: true,
 						valid_chars: true
@@ -171,7 +171,7 @@ $this->load->view('configs/config_header', $title_table);
 
 				foreach ($dinner_tables as $dinner_table => $table) {
 				?>
-					<?php echo 'dinner_table_' . ++$i ?>: "<?php echo $this->lang->line('config_dinner_table_required'); ?>",
+					<?= 'dinner_table_' . ++$i ?>: "<?= $this->lang->line('config_dinner_table_required'); ?>",
 				<?php
 				}
 				?>

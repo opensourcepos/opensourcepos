@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Pontos Disponíveis";
 $lang["rewards_package"] = "Recompensa";
 $lang["rewards_remaining_balance"] = "O valor restante dos pontos de recompensa é ";
@@ -9,6 +10,7 @@ $lang["sales_amount_tendered"] = "A Pagar";
 $lang["sales_authorized_signature"] = "Assinatura autorizada";
 $lang["sales_cancel_sale"] = "Cancelar";
 $lang["sales_cash"] = "Dinheiro";
+$lang["sales_cash_adjustment"] = "Ajuste de Dinheiro";
 $lang["sales_cash_deposit"] = "Depósito em dinheiro";
 $lang["sales_cash_filter"] = "Dinheiro";
 $lang["sales_change_due"] = "Troco";
@@ -178,4 +180,3 @@ $lang["sales_work_order_number"] = "Número da ordem de trabalho";
 $lang["sales_work_order_number_duplicate"] = "O número da ordem de serviço deve ser exclusivo.";
 $lang["sales_work_order_sent"] = "Ordem de trabalho enviada para";
 $lang["sales_work_order_unsent"] = "A ordem de serviço não foi enviada para";
-$lang["sales_cash_adjustment"] = "Ajuste de Dinheiro";

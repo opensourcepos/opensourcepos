@@ -1,38 +1,32 @@
-<?php echo form_open('taxes/save_tax_codes/', array('id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
-<div id="config_wrapper">
-	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
+<?= form_open('taxes/save_tax_codes/', array('id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
 
-		<div id="tax_codes">
-			<?php $this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes)); ?>
-		</div>
+<?php
+$title_codes['config_title'] = $this->lang->line('taxes_tax_codes_configuration');
+$this->load->view('configs/config_header', $title_codes);
+?>
 
-		<?php echo form_submit(array(
-			'name' => 'submit_tax_codes',
-			'id' => 'submit_tax_codes',
-			'value' => $this->lang->line('common_submit'),
-			'class' => 'btn btn-primary btn-sm pull-right')); ?>
-	</fieldset>
+<ul id="tax_codes_message_box" class="error_message_box"></ul>
+
+<div id="tax_codes">
+	<?php $this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes)); ?>
 </div>
-<?php echo form_close(); ?>
+
+<div class="d-flex justify-content-end">
+	<button class="btn btn-primary" name="submit_tax_codes"><?= $this->lang->line('common_submit'); ?></button>
+</div>
 
 <script type="text/javascript">
 	//validation and submit handling
-	$(document).ready(function()
-	{
-		var tax_code_count = <?php echo sizeof($tax_codes); ?>;
+	$(document).ready(function() {
+		var tax_code_count = <?= sizeof($tax_codes); ?>;
 		if (tax_code_count == 0) {
 			tax_code_count = 1;
 		}
 
 		var hide_show_remove_tax_code = function() {
-			if ($("input[name*='tax_code']:enabled").length > 1)
-			{
+			if ($("input[name*='tax_code']:enabled").length > 1) {
 				$(".remove_tax_code").show();
-			}
-			else
-			{
+			} else {
 				$(".remove_tax_code").hide();
 			}
 		};
@@ -46,7 +40,7 @@
 			++tax_code_count;
 			var new_tax_code_id = 'tax_code_' + tax_code_count;
 
-			$(new_block).find('label').html("<?php echo $this->lang->line('taxes_tax_code'); ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?= $this->lang->line('taxes_tax_code'); ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find("input[name='tax_code[]']").attr('id', new_tax_code_id).removeAttr('disabled').attr('class', 'form-control text-uppercase required input-sm').val('');
 			$(new_block).find("input[name='tax_code_name[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
 			$(new_block).find("input[name='city[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
@@ -69,7 +63,7 @@
 		init_add_remove_tax_codes();
 
 		// run validator once for all fields
-		$.validator.addMethod('check4TaxCodeDups' , function(value, element) {
+		$.validator.addMethod('check4TaxCodeDups', function(value, element) {
 			var value_count = 0;
 			$("input[name='tax_code[]']").each(function() {
 				value_count = $(this).val() == value ? value_count + 1 : value_count;
@@ -78,48 +72,51 @@
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_code_duplicate'); ?>");
+		}, "<?= $this->lang->line('taxes_tax_code_duplicate'); ?>");
 
 		$.validator.addMethod('validateTaxCodeCharacters', function(value, element) {
 			if ((value.indexOf('_') != -1)) {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_code_invalid_chars'); ?>");
+		}, "<?= $this->lang->line('taxes_tax_code_invalid_chars'); ?>");
 
 		$.validator.addMethod('requireTaxCode', function(value, element) {
-			if (value .trim() == '') {
+			if (value.trim() == '') {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_code_required'); ?>");
+		}, "<?= $this->lang->line('taxes_tax_code_required'); ?>");
 
 		$('#tax_codes_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
-					success: function(response)	{
-						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_codes").load('<?php echo site_url("taxes/ajax_tax_codes"); ?>', init_add_remove_tax_codes);
+					success: function(response) {
+						$.notify({
+							message: response.message
+						}, {
+							type: response.success ? 'success' : 'danger'
+						});
+						$("#tax_codes").load('<?= site_url("taxes/ajax_tax_codes"); ?>', init_add_remove_tax_codes);
 					},
 					dataType: 'json'
 				});
 			},
 			invalidHandler: function(event, validator) {
-				$.notify("<?php echo $this->lang->line('common_correct_errors'); ?>");
+				$.notify("<?= $this->lang->line('common_correct_errors'); ?>");
 			},
 			errorLabelContainer: "#tax_code_error_message_box"
 		}));
 
 		<?php
 		$i = 0;
-		foreach($tax_codes as $tax_code=>$tax_code_data)
-		{
+		foreach ($tax_codes as $tax_code => $tax_code_data) {
 		?>
-		$('<?php echo '#tax_code_' . ++$i ?>').rules( "add", {
-			requireTaxCode: true,
-			check4TaxCodeDups: true,
-			validateTaxCodeCharacters: true
-		});
+			$('<?= '#tax_code_' . ++$i ?>').rules("add", {
+				requireTaxCode: true,
+				check4TaxCodeDups: true,
+				validateTaxCodeCharacters: true
+			});
 		<?php
 		}
 		?>

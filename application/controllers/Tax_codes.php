@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -12,7 +12,7 @@ class Tax_codes extends Secure_Controller
 
 	public function index()
 	{
-		 $this->load->view('taxes/tax_codes',get_data());
+		$this->load->view('taxes/tax_codes', get_data());
 	}
 
 	public function get_data()
@@ -36,8 +36,7 @@ class Tax_codes extends Secure_Controller
 		$total_rows = $this->Tax_code->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_codes->result() as $tax_code)
-		{
+		foreach ($tax_codes->result() as $tax_code) {
 			$data_rows[] = $this->xss_clean(get_tax_code_data_row($tax_code));
 		}
 
@@ -68,21 +67,15 @@ class Tax_codes extends Secure_Controller
 			'state' => $this->input->post('state')
 		);
 
-		if($this->Tax_code->save($tax_code_data))
-		{
+		if ($this->Tax_code->save($tax_code_data)) {
 			$tax_code_data = $this->xss_clean($tax_code_data);
 
-			if($tax_code_id == -1)
-			{
+			if ($tax_code_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_codes_successful_adding'), 'id' => $tax_code_data['tax_code_id']));
-			}
-			else
-			{
+			} else {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_codes_successful_updating'), 'id' => $tax_code_id));
 			}
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_codes_error_adding_updating') . ' ' . $tax_code_data['tax_code_id'], 'id' => -1));
 		}
 	}
@@ -91,14 +84,10 @@ class Tax_codes extends Secure_Controller
 	{
 		$tax_codes_to_delete = $this->input->post('ids');
 
-		if($this->Tax_code->delete_list($tax_codes_to_delete))
-		{
+		if ($this->Tax_code->delete_list($tax_codes_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_codes_successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . $this->lang->line('taxes_codes_one_or_multiple')));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_codes_cannot_be_deleted')));
 		}
 	}
 }
-?>

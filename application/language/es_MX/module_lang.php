@@ -1,19 +1,18 @@
-<?php 
-
-$lang["module_attributes"] = "";
-$lang["module_attributes_desc"] = "";
-$lang["module_both"] = "";
-$lang["module_cashups"] = "";
-$lang["module_cashups_desc"] = "";
-$lang["module_config"] = "";
-$lang["module_config_desc"] = "";
-$lang["module_customers"] = "";
-$lang["module_customers_desc"] = "";
-$lang["module_employees"] = "";
-$lang["module_employees_desc"] = "";
-$lang["module_expenses"] = "";
-$lang["module_expenses_categories"] = "";
-$lang["module_expenses_categories_desc"] = "";
+<?php
+$lang["module_attributes"] = "Atributos";
+$lang["module_attributes_desc"] = "Agregar, Actualizar, Borrar y Buscar atributos.";
+$lang["module_both"] = "Ambos";
+$lang["module_cashups"] = "Corte de Caja";
+$lang["module_cashups_desc"] = "Agregar, Actualizar, Borrar y Buscar Cortes de Caja.";
+$lang["module_config"] = "Configuración";
+$lang["module_config_desc"] = "Cambiar Configuracion de OSPOS.";
+$lang["module_customers"] = "Clientes";
+$lang["module_customers_desc"] = "Agregar, Actualizar, Borrar y Buscar Clientes.";
+$lang["module_employees"] = "Empleados";
+$lang["module_employees_desc"] = "Agregar, Actualizar, Borrar y Buscar Empleados.";
+$lang["module_expenses"] = "Gastos";
+$lang["module_expenses_categories"] = "Categorías de Gastos";
+$lang["module_expenses_categories_desc"] = "Agregar, Actualizar, y Borrar Categorías de Gastos.";
 $lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "";
 $lang["module_giftcards_desc"] = "";

@@ -10,9 +10,9 @@ class Sms_lib
 {
 	private $CI;
 
-  	public function __construct()
+	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->CI = &get_instance();
 	}
 
 	/*
@@ -28,12 +28,9 @@ class Sms_lib
 		$response = FALSE;
 
 		// if any of the parameters is empty return with a FALSE
-		if(empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator))
-		{
+		if (empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator)) {
 			//echo $username . ' ' . $password . ' ' . $phone . ' ' . $message . ' ' . $originator;
-		}
-		else
-		{
+		} else {
 			$response = TRUE;
 
 			// make sure passed string is url encoded
@@ -64,5 +61,3 @@ class Sms_lib
 		return $response;
 	}
 }
-
-?>

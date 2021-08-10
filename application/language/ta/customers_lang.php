@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "கணக்கு #";
 $lang["customers_account_number_duplicate"] = "இன்த கணக்கு எண் முன்பே டேய்ட்டாபேய்ஸ்இல்  உள்ளது";
 $lang["customers_available_points"] = "இருப்பு புள்ளிகள்";
@@ -31,7 +32,7 @@ $lang["customers_mailchimp_activity_open"] = "மின்னஞ்சல் த
 $lang["customers_mailchimp_activity_total"] = "மின்னஞ்சல் அனுப்பப்பட்டது";
 $lang["customers_mailchimp_activity_unopen"] = "மின்னஞ்சல் திறக்கப்படவில்லை";
 $lang["customers_mailchimp_email_client"] = "மின்னஞ்சல் வாடிக்கையாளர்";
-$lang["customers_mailchimp_info"] = "அஞ்சல்சிம்ப்";
+$lang["customers_mailchimp_info"] = "மெயில்சிம்ப்";
 $lang["customers_mailchimp_member_rating"] = "மதிப்பீடு";
 $lang["customers_mailchimp_status"] = "நிலை";
 $lang["customers_mailchimp_vip"] = "வி.ஐ.பி.";

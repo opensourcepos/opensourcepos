@@ -1,12 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Migration helper
- */
+// Migration helper
 
 function execute_script($path)
 {
-	$CI =& get_instance();
+	$CI = &get_instance();
 
 	$version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
 	error_log("Migrating to $version (file: $path)");
@@ -21,14 +19,11 @@ function execute_script($path)
 	$sqls = explode(';', $sql);
 	array_pop($sqls);
 
-	foreach($sqls as $statement)
-	{
+	foreach ($sqls as $statement) {
 		$statement = $statement . ';';
 
-		if(!$CI->db->simple_query($statement))
-		{
-			foreach($CI->db->error() as $error)
-			{
+		if (!$CI->db->simple_query($statement)) {
+			foreach ($CI->db->error() as $error) {
 				error_log('error: ' . $error);
 			}
 		}
@@ -36,5 +31,3 @@ function execute_script($path)
 
 	error_log("Migrated to $version");
 }
-
-?>

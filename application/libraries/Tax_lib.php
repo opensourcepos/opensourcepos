@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Tax library
@@ -15,7 +15,7 @@ class Tax_lib
 
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->CI = &get_instance();
 	}
 
 	public function get_tax_types()
@@ -62,48 +62,36 @@ class Tax_lib
 		$item_taxes = array();
 
 		// Charge sales tax if customer is not selected (walk-in) or customer is flagged as taxable
-		if($customer_id == -1 || $customer_info->taxable)
-		{
-			foreach($cart as $line => $item)
-			{
+		if ($customer_id == -1 || $customer_info->taxable) {
+			foreach ($cart as $line => $item) {
 				$taxed = FALSE;
 
-				if(!($this->CI->config->item('use_destination_based_tax')))
-				{
+				if (!($this->CI->config->item('use_destination_based_tax'))) {
 					// Start of current Base System tax calculations
 
-					if($sale_id == -1)
-					{
+					if ($sale_id == -1) {
 						$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
-					}
-					else
-					{
+					} else {
 						$tax_info = $this->CI->Sale->get_sales_item_taxes($sale_id, $item['item_id']);
-
 					}
 					$tax_group_sequence = 0;
 					$cascade_level = 0;
 					$cascade_basis_level = 0;
 
-					foreach($tax_info as $tax)
-					{
+					foreach ($tax_info as $tax) {
 						// This computes tax for each line item and adds it to the tax type total
 						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = 0.0;
 
-						if($this->CI->config->item('tax_included'))
-						{
+						if ($this->CI->config->item('tax_included')) {
 							$tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 							$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP);
-						}
-						else
-						{
+						} else {
 							$tax_type = Tax_lib::TAX_TYPE_EXCLUDED;
 							$tax_amount = $this->get_tax_for_amount($tax_basis, $tax['percent'], Rounding_mode::HALF_UP, $tax_decimals);
 						}
 
-						if($tax_amount <> 0)
-						{
+						if ($tax_amount <> 0) {
 							$tax_group_sequence++;
 							$this->update_taxes($taxes, $tax_type, $tax['name'], $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);
 							$tax_group_sequence += 1;
@@ -124,25 +112,19 @@ class Tax_lib
 
 						$item_taxes[] = $items_taxes_detail;
 					}
-				}
-				else
-				{
+				} else {
 					// Start of destination based tax calculations
 
-					if($item['tax_category_id'] == NULL)
-					{
+					if ($item['tax_category_id'] == NULL) {
 						$item['tax_category_id'] = $this->CI->config->config['default_tax_category'];
 					}
 
 					$taxed = $this->apply_destination_tax($item, $customer_info->city, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
 				}
 
-				if($taxed)
-				{
+				if ($taxed) {
 					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_taxed_ind');
-				}
-				else
-				{
+				} else {
 					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_nontaxed_ind');
 				}
 			}
@@ -167,12 +149,11 @@ class Tax_lib
 	/*
 	* Updates the sales_tax array which is later saved to the `sales_taxes` table and used for printing taxes on receipts and invoices
 	*/
-	public function update_taxes(&$taxes, $tax_type, $tax_group, $tax_rate, $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id, $name = '', $tax_code_id = NULL, $jurisdiction_id = NULL,$tax_category_id = NULL  )
+	public function update_taxes(&$taxes, $tax_type, $tax_group, $tax_rate, $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id, $name = '', $tax_code_id = NULL, $jurisdiction_id = NULL, $tax_category_id = NULL)
 	{
 		$tax_group_index = $this->clean('X' . (float)$tax_rate . '% ' . $tax_group);
 
-		if(!array_key_exists($tax_group_index, $taxes))
-		{
+		if (!array_key_exists($tax_group_index, $taxes)) {
 			$insertkey = $tax_group_index;
 
 			$tax = array($insertkey => array(
@@ -192,9 +173,7 @@ class Tax_lib
 
 			//add to existing array
 			$taxes += $tax;
-		}
-		else
-		{
+		} else {
 			// Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
 			// but the scale will in reality be the scale specified by the tax_decimal configuration value  used for sales_items_taxes
 			$taxes[$tax_group_index]['sale_tax_basis'] = bcadd($taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
@@ -208,11 +187,9 @@ class Tax_lib
 	*/
 	public function apply_invoice_taxing(&$taxes)
 	{
-		if(!empty($taxes))
-		{
+		if (!empty($taxes)) {
 			$sort = array();
-			foreach($taxes as $k => $v)
-			{
+			foreach ($taxes as $k => $v) {
 				$sort['print_sequence'][$k] = $v['print_sequence'];
 			}
 			array_multisort($sort['print_sequence'], SORT_ASC, $taxes);
@@ -220,8 +197,7 @@ class Tax_lib
 
 		$decimals = totals_decimals();
 
-		foreach($taxes as $row_number => $tax)
-		{
+		foreach ($taxes as $row_number => $tax) {
 			$taxes[$row_number]['sale_tax_amount'] = $this->get_tax_for_amount($tax['sale_tax_basis'], $tax['tax_rate'], $tax['rounding_code'], $decimals);
 		}
 	}
@@ -231,60 +207,41 @@ class Tax_lib
 	 */
 	public function round_taxes(&$taxes)
 	{
-		if(!empty($taxes))
-		{
+		if (!empty($taxes)) {
 			$sort = array();
-			foreach($taxes as $k => $v)
-			{
+			foreach ($taxes as $k => $v) {
 				$sort['print_sequence'][$k] = $v['print_sequence'];
 			}
 			array_multisort($sort['print_sequence'], SORT_ASC, $taxes);
 		}
 
 		// If tax included then round decimal to tax decimals, otherwise round it to currency_decimals
-		if($this->CI->config->item('tax_included'))
-		{
+		if ($this->CI->config->item('tax_included')) {
 			$decimals = tax_decimals();
-		}
-		else
-		{
+		} else {
 			$decimals = totals_decimals();
 		}
 
-		foreach($taxes as $row_number => $sales_tax)
-		{
+		foreach ($taxes as $row_number => $sales_tax) {
 			$tax_amount = $sales_tax['sale_tax_amount'];
 			$rounding_code = $sales_tax['rounding_code'];
 			$rounded_tax_amount = $tax_amount;
 
-			if($rounding_code == Rounding_mode::HALF_UP)
-			{
+			if ($rounding_code == Rounding_mode::HALF_UP) {
 				$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-			}
-			elseif($rounding_code == Rounding_mode::HALF_DOWN)
-			{
+			} elseif ($rounding_code == Rounding_mode::HALF_DOWN) {
 				$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_DOWN);
-			}
-			elseif($rounding_code == Rounding_mode::HALF_EVEN)
-			{
+			} elseif ($rounding_code == Rounding_mode::HALF_EVEN) {
 				$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_EVEN);
-			}
-			elseif($rounding_code == Rounding_mode::HALF_ODD)
-			{
+			} elseif ($rounding_code == Rounding_mode::HALF_ODD) {
 				$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-			}
-			elseif($rounding_code == Rounding_mode::ROUND_UP)
-			{
+			} elseif ($rounding_code == Rounding_mode::ROUND_UP) {
 				$fig = (int)str_pad('1', $decimals, '0');
 				$rounded_tax_amount = ceil($tax_amount * $fig) / $fig;
-			}
-			elseif($rounding_code == Rounding_mode::ROUND_DOWN)
-			{
+			} elseif ($rounding_code == Rounding_mode::ROUND_DOWN) {
 				$fig = (int)str_pad('1', $decimals, '0');
 				$rounded_tax_amount = floor($tax_amount * $fig) / $fig;
-			}
-			elseif($rounding_code == Rounding_mode::HALF_FIVE)
-			{
+			} elseif ($rounding_code == Rounding_mode::HALF_FIVE) {
 				$rounded_tax_amount = round($tax_amount / 5) * 5;
 			}
 
@@ -303,8 +260,7 @@ class Tax_lib
 		$tax_code_id = $this->get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code_id);
 
 		// If tax code cannot be determined or the price is zero then skip this item
-		if($tax_code_id != -1 && $item['price'] != 0)
-		{
+		if ($tax_code_id != -1 && $item['price'] != 0) {
 			$tax_decimals = tax_decimals();
 
 			$tax_definition = $this->CI->Tax->get_taxes($tax_code_id, $item['tax_category_id']);
@@ -317,11 +273,9 @@ class Tax_lib
 			$last_cascade_sequence = 0;
 			$cascade_tax_amount = 0.0;
 
-			foreach($tax_definition as $tax)
-			{
+			foreach ($tax_definition as $tax) {
 				$cascade_sequence = $tax['cascade_sequence'];
-				if($cascade_sequence != $last_cascade_sequence)
-				{
+				if ($cascade_sequence != $last_cascade_sequence) {
 					$last_cascade_sequence = $cascade_sequence;
 					$tax_basis = $tax_basis + $cascade_tax_amount;
 				}
@@ -333,18 +287,14 @@ class Tax_lib
 
 				$tax_type = $tax['tax_type'];
 
-				if($tax_type == Tax_lib::TAX_TYPE_INCLUDED)
-				{
+				if ($tax_type == Tax_lib::TAX_TYPE_INCLUDED) {
 					$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax_rate, $tax_decimals, $rounding_code);
-				}
-				else
-				{
+				} else {
 					$tax_amount = $this->get_tax_for_amount($tax_basis, $tax_rate, $rounding_code, $tax_decimals);
 					$cascade_tax_amount = $cascade_tax_amount + $tax_amount;
 				}
 
-				if($tax_amount != 0)
-				{
+				if ($tax_amount != 0) {
 					$taxed = TRUE;
 					$this->update_taxes($taxes, $tax_type, $tax['tax_group'], $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
 				}
@@ -372,18 +322,13 @@ class Tax_lib
 
 	public function get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code_id)
 	{
-		if($register_mode == "sale")
-		{
+		if ($register_mode == "sale") {
 			$sales_tax_code_id = $this->CI->config->config['default_tax_code']; // overrides customer assigned code
-		}
-		else
-		{
-			if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
-			{
+		} else {
+			if ($sales_tax_code_id == NULL || $sales_tax_code_id == 0) {
 				$sales_tax_code_id = $this->CI->Tax_code->get_sales_tax_code($city, $state);
 
-				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
-				{
+				if ($sales_tax_code_id == NULL || $sales_tax_code_id == 0) {
 					$sales_tax_code_id = $this->CI->config->config['default_tax_code']; // overrides customer assigned code
 				}
 			}
@@ -404,8 +349,7 @@ class Tax_lib
 		$tax_codes = $this->CI->Tax_code->get_all()->result_array();
 		$tax_code_options = array();
 		$tax_code_options[''] = '';
-		foreach($tax_codes as $tax_code)
-		{
+		foreach ($tax_codes as $tax_code) {
 			$a = $tax_code['tax_code_id'];
 			$b = $tax_code['tax_code_name'];
 			$tax_code_options[$a] = $b;
@@ -419,8 +363,7 @@ class Tax_lib
 		$tax_jurisdictions = $this->CI->Tax_jurisdiction->get_all()->result_array();
 		$tax_jurisdiction_options = array();
 		$tax_jurisdiction_options[0] = '';
-		foreach($tax_jurisdictions as $tax_jurisdiction)
-		{
+		foreach ($tax_jurisdictions as $tax_jurisdiction) {
 			$a = $tax_jurisdiction['jurisdiction_id'];
 			$b = $tax_jurisdiction['jurisdiction_name'];
 			$tax_jurisdiction_options[$a] = $b;
@@ -434,8 +377,7 @@ class Tax_lib
 		$tax_categories = $this->CI->Tax_category->get_all()->result_array();
 		$tax_category_options = array();
 		$tax_category_options[0] = '';
-		foreach($tax_categories as $tax_category)
-		{
+		foreach ($tax_categories as $tax_category) {
 			$a = $tax_category['tax_category_id'];
 			$b = $tax_category['tax_category'];
 
@@ -452,12 +394,9 @@ class Tax_lib
 		$s1 = '';
 		$s2 = '';
 
-		if($selected_tax_type === Tax_lib::TAX_TYPE_EXCLUDED)
-		{
+		if ($selected_tax_type === Tax_lib::TAX_TYPE_EXCLUDED) {
 			$s1 = $selected;
-		}
-		else if($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED)
-		{
+		} else if ($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED) {
 			$s2 = $selected;
 		}
 
@@ -465,4 +404,3 @@ class Tax_lib
 			. '</option><option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . $this->CI->lang->line('taxes_vat_tax') . '</option>';
 	}
 }
-?>

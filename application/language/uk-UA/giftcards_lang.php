@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Інвентар для додавання або віднімання.";
 $lang["giftcards_allow_alt_description"] = "Дозволити альтернативний опис";
 $lang["giftcards_bulk_edit"] = "Масове редагування";
@@ -16,6 +17,7 @@ $lang["giftcards_confirm_delete"] = "Ви впевнені, що хочете в
 $lang["giftcards_confirm_restore"] = "Ви впевнені, що хочете відновити вибрані подарункові карти?";
 $lang["giftcards_cost_price"] = "Оптова ціна";
 $lang["giftcards_count"] = "Оновлення переліку (інвентаря)";
+$lang["giftcards_csv_import_failed"] = "Помилка імпорту CSV.";
 $lang["giftcards_current_quantity"] = "Кількість";
 $lang["giftcards_description"] = "Опис";
 $lang["giftcards_details_count"] = "Детальна інвентаризація";
@@ -24,7 +26,6 @@ $lang["giftcards_edit_fields_you_want_to_update"] = "Відредагуйте п
 $lang["giftcards_edit_multiple_giftcards"] = "Редагування декількох подарунковиїх карт.";
 $lang["giftcards_error_adding_updating"] = "Помилка при додаванні/оновленні подарункової карти.";
 $lang["giftcards_error_updating_multiple"] = "Помилка при оновлені подарункових карт.";
-$lang["giftcards_csv_import_failed"] = "Помилка імпорту CSV.";
 $lang["giftcards_generate_barcodes"] = "Створення штрих-кодів";
 $lang["giftcards_giftcard"] = "Подарункова карта";
 $lang["giftcards_giftcard_number"] = "Номер подарункової карти";

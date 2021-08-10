@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Số hiệu tài khoản";
 $lang["suppliers_agency_name"] = "Tên đại lý";
 $lang["suppliers_cannot_be_deleted"] = "Không thể xóa các Nhà cung cấp đã chọn. Một hay nhiều có Bán hàng.";

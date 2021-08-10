@@ -8,6 +8,6 @@ clock_tick();
 
 var update_clock = function update_clock() {
   document.getElementById("clock").innerHTML = moment().format(
-    "<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>"
+    "<?= dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>"
   );
 };

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -12,9 +12,9 @@ class Tax_categories extends Secure_Controller
 
 	public function index()
 	{
-		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
 
-		 $this->load->view('taxes/tax_categories', $data);
+		$this->load->view('taxes/tax_categories', $data);
 	}
 
 	/*
@@ -32,8 +32,7 @@ class Tax_categories extends Secure_Controller
 		$total_rows = $this->Tax_category->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_categories->result() as $tax_category)
-		{
+		foreach ($tax_categories->result() as $tax_category) {
 			$data_rows[] = $this->xss_clean(get_tax_category_data_row($tax_category));
 		}
 
@@ -63,22 +62,16 @@ class Tax_categories extends Secure_Controller
 			'tax_group_sequence' => $this->input->post('tax_group_sequence')
 		);
 
-		if($this->Tax_category->save($tax_category_data, $tax_category_id))
-		{
+		if ($this->Tax_category->save($tax_category_data, $tax_category_id)) {
 			$tax_category_data = $this->xss_clean($tax_category_data);
 
 			// New tax_category_id
-			if($tax_category_id == -1)
-			{
+			if ($tax_category_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_adding'), 'id' => $tax_category_data['tax_category_id']));
-			}
-			else
-			{
+			} else {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_updating'), 'id' => $tax_category_id));
 			}
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
 		}
 	}
@@ -87,14 +80,10 @@ class Tax_categories extends Secure_Controller
 	{
 		$tax_categories_to_delete = $this->input->post('ids');
 
-		if($this->Tax_category->delete_list($tax_categories_to_delete))
-		{
+		if ($this->Tax_category->delete_list($tax_categories_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . $this->lang->line('taxes_categories_one_or_multiple')));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_cannot_be_deleted')));
 		}
 	}
 }
-?>

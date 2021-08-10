@@ -1,12 +1,11 @@
 $.notifyDefaults({
   placement: {
-    align: "<?php echo $this->config->item('notify_horizontal_position'); ?>",
-    from: "<?php echo $this->config->item('notify_vertical_position'); ?>",
+    align: "<?= $this->config->item('notify_horizontal_position'); ?>",
+    from: "<?= $this->config->item('notify_vertical_position'); ?>",
   },
 });
 
-var cookie_name =
-  "<?php echo $this->config->item('cookie_prefix').$this->config->item('csrf_cookie_name'); ?>";
+var cookie_name = "<?= $this->config->item('cookie_prefix').$this->config->item('csrf_cookie_name'); ?>";
 
 var csrf_token = function () {
   return Cookies.get(cookie_name);
@@ -14,16 +13,14 @@ var csrf_token = function () {
 
 var csrf_form_base = function () {
   return {
-    "<?php echo $this->security->get_csrf_token_name(); ?>": function () {
+    "<?= $this->security->get_csrf_token_name(); ?>": function () {
       return csrf_token();
     },
   };
 };
 
 var setup_csrf_token = function () {
-  $('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(
-    csrf_token()
-  );
+  $('input[name="<?= $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
 };
 
 var ajax = $.ajax;

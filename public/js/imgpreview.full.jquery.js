@@ -46,12 +46,7 @@
         },
         userDefinedSettings
       ),
-      $container = $("<div/>")
-        .attr("id", s.containerID)
-        .append("<img/>")
-        .hide()
-        .css("position", "absolute")
-        .appendTo("body"),
+      $container = $("<div/>").attr("id", s.containerID).append("<img/>").hide().css("position", "absolute").appendTo("body"),
       $img = $("img", $container).css(s.imgCSS),
       // Get all valid elements (linking to images / ATTR with image link):
       $collection = this.filter(":linkingToImage(" + s.srcAttr + ")");

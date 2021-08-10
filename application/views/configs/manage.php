@@ -2,52 +2,52 @@
 
 <?php
 $info_tab = 'id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info" title="' . $this->lang->line('config_info_configuration') . '"';
-$info_title = '<i class="bi bi-shop"></i>&nbsp;&nbsp;' . $this->lang->line('config_info');
+$info_title = '<i class="bi bi-shop pe-2"></i>' . $this->lang->line('config_info');
 
 $general_tab = 'id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" title="' . $this->lang->line('config_general_configuration') . '"';
-$general_title = '<i class="bi bi-sliders"></i>&nbsp;&nbsp;' . $this->lang->line('config_general');
+$general_title = '<i class="bi bi-sliders pe-2"></i>' . $this->lang->line('config_general');
 
 $appearance_tab = 'id="appearance-tab" data-bs-toggle="tab" href="#appearance" role="tab" aria-controls="appearance" title="Appearance Configuration"';
-$appearance_title = '<i class="bi bi-eye"></i>&nbsp;&nbsp;Appearance';
+$appearance_title = '<i class="bi bi-eye pe-2"></i>Appearance';
 
 $locale_tab = 'id="locale-tab" data-bs-toggle="tab" href="#locale" role="tab" aria-controls="locale" title="' . $this->lang->line('config_locale_configuration') . '"';
-$locale_title = '<i class="bi bi-translate"></i>&nbsp;&nbsp;' . $this->lang->line('config_locale');
+$locale_title = '<i class="bi bi-translate pe-2"></i>' . $this->lang->line('config_locale');
 
 $tax_tab = 'id="tax-tab" data-bs-toggle="tab" href="#tax" role="tab" aria-controls="tax" title="' . $this->lang->line('config_tax_configuration') . '"';
-$tax_title = '<i class="bi bi-piggy-bank"></i>&nbsp;&nbsp;' . $this->lang->line('config_tax');
+$tax_title = '<i class="bi bi-piggy-bank pe-2"></i>' . $this->lang->line('config_tax');
 
 $barcode_tab = 'id="barcode-tab" data-bs-toggle="tab" href="#barcode" role="tab" aria-controls="barcode" title="' . $this->lang->line('config_barcode_configuration') . '"';
-$barcode_title = '<i class="bi bi-upc-scan"></i>&nbsp;&nbsp;' . $this->lang->line('config_barcode');
+$barcode_title = '<i class="bi bi-upc-scan pe-2"></i>' . $this->lang->line('config_barcode');
 
 $stock_tab = 'id="stock-tab" data-bs-toggle="tab" href="#stock" role="tab" aria-controls="stock" title="' . $this->lang->line('config_location_configuration') . '"';
-$stock_title = '<i class="bi bi-truck"></i>&nbsp;&nbsp;' . $this->lang->line('config_location');
+$stock_title = '<i class="bi bi-truck pe-2"></i>' . $this->lang->line('config_location');
 
 $receipt_tab = 'id="receipt-tab" data-bs-toggle="tab" href="#receipt" role="tab" aria-controls="receipt" title="' . $this->lang->line('config_receipt_configuration') . '"';
-$receipt_title = '<i class="bi bi-receipt"></i>&nbsp;&nbsp;' . $this->lang->line('config_receipt');
+$receipt_title = '<i class="bi bi-receipt pe-2"></i>' . $this->lang->line('config_receipt');
 
 $invoice_tab = 'id="invoice-tab" data-bs-toggle="tab" href="#invoice" role="tab" aria-controls="invoice" title="' . $this->lang->line('config_invoice_configuration') . '"';
-$invoice_title = '<i class="bi bi-file-text"></i>&nbsp;&nbsp;' . $this->lang->line('config_invoice');
+$invoice_title = '<i class="bi bi-file-text pe-2"></i>' . $this->lang->line('config_invoice');
 
 $reward_tab = 'id="reward-tab" data-bs-toggle="tab" href="#reward" role="tab" aria-controls="reward" title="' . $this->lang->line('config_reward_configuration') . '"';
-$reward_title = '<i class="bi bi-trophy"></i>&nbsp;&nbsp;' . $this->lang->line('config_reward');
+$reward_title = '<i class="bi bi-trophy pe-2"></i>' . $this->lang->line('config_reward');
 
 $table_tab = 'id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" title="' . $this->lang->line('config_table_configuration') . '"';
-$table_title = '<i class="bi bi-cup-straw"></i>&nbsp;&nbsp;' . $this->lang->line('config_table');
+$table_title = '<i class="bi bi-cup-straw pe-2"></i>' . $this->lang->line('config_table');
 
 $email_tab = 'id="email-tab" data-bs-toggle="tab" href="#email" role="tab" aria-controls="email" title="' . $this->lang->line('config_email_configuration') . '"';
-$email_title = '<i class="bi bi-envelope"></i>&nbsp;&nbsp;' . $this->lang->line('config_email');
+$email_title = '<i class="bi bi-envelope pe-2"></i>' . $this->lang->line('config_email');
 
 $message_tab = 'id="message-tab" data-bs-toggle="tab" href="#message" role="tab" aria-controls="message" title="' . $this->lang->line('config_message_configuration') . '"';
-$message_title = '<i class="bi bi-chat"></i>&nbsp;&nbsp;' . $this->lang->line('config_message');
+$message_title = '<i class="bi bi-chat pe-2"></i>' . $this->lang->line('config_message');
 
 $integrations_tab = 'id="integrations-tab" data-bs-toggle="tab" href="#integrations" role="tab" aria-controls="integrations" title="' . $this->lang->line('config_integrations_configuration') . '"';
-$integrations_title = '<i class="bi bi-gear-wide-connected"></i>&nbsp;&nbsp;' . $this->lang->line('config_integrations');
+$integrations_title = '<i class="bi bi-gear-wide-connected pe-2"></i>' . $this->lang->line('config_integrations');
 
 $system_tab = 'id="system-tab" data-bs-toggle="tab" href="#system" role="tab" aria-controls="system" title="' . $this->lang->line('config_system_info') . '"';
-$system_title = '<i class="bi bi-info-circle"></i>&nbsp;&nbsp;' . $this->lang->line('config_system_info');
+$system_title = '<i class="bi bi-info-circle pe-2"></i>' . $this->lang->line('config_system_info');
 
 $license_tab = 'id="license-tab" data-bs-toggle="tab" href="#license" role="tab" aria-controls="license" title="' . $this->lang->line('config_license_configuration') . '"';
-$license_title = '<i class="bi bi-journal-check"></i>&nbsp;&nbsp;' . $this->lang->line('config_license');
+$license_title = '<i class="bi bi-journal-check pe-2"></i>' . $this->lang->line('config_license');
 ?>
 
 <div class="row">

@@ -115,7 +115,7 @@ a.rollover img {
   vertical-align: none;
 }
 
-button.btn.dropdown-toggle.btn-sm {
+button.btn.dropdown-toggle {
   background-color: white;
   color: black;
   border: 2px solid #dce4ec;

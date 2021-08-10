@@ -15,8 +15,12 @@
       "resolved": "https://registry.npmjs.org/grunt/-/grunt-1.4.1.tgz"
     },
     "npm": {
-      "version": "7.20.5",
-      "resolved": "https://registry.npmjs.org/npm/-/npm-7.20.5.tgz"
+      "version": "7.20.6",
+      "resolved": "https://registry.npmjs.org/npm/-/npm-7.20.6.tgz"
+    },
+    "prettier": {
+      "version": "2.3.2",
+      "resolved": "https://registry.npmjs.org/prettier/-/prettier-2.3.2.tgz"
     }
   }
 }

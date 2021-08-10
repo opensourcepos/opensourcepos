@@ -1,11 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 use emberlabs\Barcode\BarcodeBase;
-require APPPATH.'/views/barcodes/BarcodeBase.php';
-require APPPATH.'/views/barcodes/Code39.php';
-require APPPATH.'/views/barcodes/Code128.php';
-require APPPATH.'/views/barcodes/Ean13.php';
-require APPPATH.'/views/barcodes/Ean8.php';
+
+require APPPATH . '/views/barcodes/BarcodeBase.php';
+require APPPATH . '/views/barcodes/Code39.php';
+require APPPATH . '/views/barcodes/Code128.php';
+require APPPATH . '/views/barcodes/Ean13.php';
+require APPPATH . '/views/barcodes/Ean8.php';
 
 /**
  * Barcode library
@@ -20,7 +21,7 @@ class Barcode_lib
 
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->CI = &get_instance();
 	}
 
 	public function get_list_barcodes()
@@ -63,8 +64,7 @@ class Barcode_lib
 		$is_valid = empty($item['item_number']) && $barcode_config['barcode_generate_if_empty'] || $barcode_instance->validate($item['item_number']);
 
 		// if barcode validation does not succeed,
-		if(!$is_valid)
-		{
+		if (!$is_valid) {
 			$barcode_instance = Barcode_lib::get_barcode_instance();
 		}
 		$seed = Barcode_lib::barcode_seed($item, $barcode_instance, $barcode_config);
@@ -73,10 +73,9 @@ class Barcode_lib
 		return $barcode_instance;
 	}
 
-	private static function get_barcode_instance($barcode_type='Code128')
+	private static function get_barcode_instance($barcode_type = 'Code128')
 	{
-		switch($barcode_type)
-		{
+		switch ($barcode_type) {
 			case 'Code39':
 				return new emberlabs\Barcode\Code39();
 				break;
@@ -100,19 +99,13 @@ class Barcode_lib
 	{
 		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']) ? $item['item_number'] : $item['item_id'];
 
-		if($barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
-		{
+		if ($barcode_config['barcode_content'] !== "id" && !empty($item['item_number'])) {
 			$seed = $item['item_number'];
-		}
-		else
-		{
-			if($barcode_config['barcode_generate_if_empty'])
-			{
+		} else {
+			if ($barcode_config['barcode_generate_if_empty']) {
 				// generate barcode with the correct instance
 				$seed = $barcode_instance->generate($seed);
-			}
-			else
-			{
+			} else {
 				$seed = $item['item_id'];
 			}
 		}
@@ -121,25 +114,21 @@ class Barcode_lib
 
 	private function generate_barcode($item, $barcode_config)
 	{
-		try
-		{
+		try {
 			$barcode_instance = Barcode_lib::barcode_instance($item, $barcode_config);
 			$barcode_instance->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
 
 			$barcode_instance->draw();
 
 			return $barcode_instance->base64();
-		}
-		catch(Exception $e)
-		{
+		} catch (Exception $e) {
 			echo 'Caught exception: ', $e->getMessage(), "\n";
 		}
 	}
 
 	public function generate_receipt_barcode($barcode_content)
 	{
-		try
-		{
+		try {
 			// Code128 is the default and used in this case for the receipts
 			$barcode = $this->get_barcode_instance();
 
@@ -153,9 +142,7 @@ class Barcode_lib
 			$barcode->draw();
 
 			return $barcode->base64();
-		}
-		catch(Exception $e)
-		{
+		} catch (Exception $e) {
 			echo 'Caught exception: ', $e->getMessage(), "\n";
 		}
 	}
@@ -177,28 +164,17 @@ class Barcode_lib
 	{
 		$result = '';
 
-		if($layout_type == 'name')
-		{
+		if ($layout_type == 'name') {
 			$result = $this->CI->lang->line('items_name') . " " . $item['name'];
-		}
-		elseif($layout_type == 'category' && isset($item['category']))
-		{
+		} elseif ($layout_type == 'category' && isset($item['category'])) {
 			$result = $this->CI->lang->line('items_category') . " " . $item['category'];
-		}
-		elseif($layout_type == 'cost_price' && isset($item['cost_price']))
-		{
+		} elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
 			$result = $this->CI->lang->line('items_cost_price') . " " . to_currency($item['cost_price']);
-		}
-		elseif($layout_type == 'unit_price' && isset($item['unit_price']))
-		{
+		} elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {
 			$result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
-		}
-		elseif($layout_type == 'company_name')
-		{
+		} elseif ($layout_type == 'company_name') {
 			$result = $barcode_config['company'];
-		}
-		elseif($layout_type == 'item_code')
-		{
+		} elseif ($layout_type == 'item_code') {
 			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 		}
 
@@ -209,12 +185,9 @@ class Barcode_lib
 	{
 		$array = array();
 
-		if(($handle = opendir($folder)) !== FALSE)
-		{
-			while(($file = readdir($handle)) !== FALSE)
-			{
-				if(substr($file, -4, 4) === '.ttf')
-				{
+		if (($handle = opendir($folder)) !== FALSE) {
+			while (($file = readdir($handle)) !== FALSE) {
+				if (substr($file, -4, 4) === '.ttf') {
 					$array[$file] = $file;
 				}
 			}
@@ -232,5 +205,3 @@ class Barcode_lib
 		return substr($font_file_name, 0, -4);
 	}
 }
-
-?>

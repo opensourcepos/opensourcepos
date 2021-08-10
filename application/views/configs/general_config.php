@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_general/', array('id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_general/', array('id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_general['config_title'] = $this->lang->line('config_general_configuration');
@@ -83,13 +83,13 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_image_restrictions'), 'image_restrictions', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_image_restrictions'), 'image_restrictions', array('class' => 'control-label col-xs-2')); ?>
 	<div class="col-sm-10">
 		<div class="form-group form-group-sm row">
 			<div class='col-sm-2'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-horizontal"></span></span>
-					<?php echo form_input(array(
+					<span class="input-group-addon input-sm"><i class="bi bi-arrow-left-right"></i></span>
+					<?= form_input(array(
 						'name' => 'image_max_width',
 						'id' => 'image_max_width',
 						'class' => 'form-control input-sm required',
@@ -97,8 +97,8 @@ $this->load->view('configs/config_header', $title_general);
 						'min' => 128,
 						'max' => 3840,
 						'value' => $this->config->item('image_max_width'),
-						'data-toggle' => 'tooltip',
-						'data-placement' => 'top',
+						'data-bs-toggle' => 'tooltip',
+						'data-bs-placement' => 'top',
 						'title' => $this->lang->line('config_image_max_width_tooltip')
 					));
 					?>
@@ -106,8 +106,8 @@ $this->load->view('configs/config_header', $title_general);
 			</div>
 			<div class='col-sm-2'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-vertical"></span></span>
-					<?php echo form_input(array(
+					<span class="input-group-addon input-sm"><i class="bi bi-arrow-down-up"></i></span>
+					<?= form_input(array(
 						'name' => 'image_max_height',
 						'id' => 'image_max_height',
 						'class' => 'form-control input-sm required',
@@ -115,8 +115,8 @@ $this->load->view('configs/config_header', $title_general);
 						'min' => 128,
 						'max' => 3840,
 						'value' => $this->config->item('image_max_height'),
-						'data-toggle' => 'tooltip',
-						'data-placement' => 'top',
+						'data-bs-toggle' => 'tooltip',
+						'data-bs-placement' => 'top',
 						'title' => $this->lang->line('config_image_max_height_tooltip')
 					));
 					?>
@@ -124,8 +124,8 @@ $this->load->view('configs/config_header', $title_general);
 			</div>
 			<div class='col-sm-2'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-hdd"></span></span>
-					<?php echo form_input(array(
+					<span class="input-group-addon input-sm"><i class="bi bi-hdd"></i></span>
+					<?= form_input(array(
 						'name' => 'image_max_size',
 						'id' => 'image_max_size',
 						'class' => 'form-control input-sm required',
@@ -133,8 +133,8 @@ $this->load->view('configs/config_header', $title_general);
 						'min' => 128,
 						'max' => 2048,
 						'value' => $this->config->item('image_max_size'),
-						'data-toggle' => 'tooltip',
-						'data-placement' => 'top',
+						'data-bs-toggle' => 'tooltip',
+						'data-bs-placement' => 'top',
 						'title' => $this->lang->line('config_image_max_size_tooltip')
 					));
 					?>
@@ -142,13 +142,13 @@ $this->load->view('configs/config_header', $title_general);
 			</div>
 			<div class='col-sm-4'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_image_allowed_file_types'); ?></span>
-					<?php echo form_multiselect('image_allowed_types[]', $image_allowed_types, $selected_image_allowed_types, array(
+					<span class="input-group-addon input-sm"><?= $this->lang->line('config_image_allowed_file_types'); ?></span>
+					<?= form_multiselect('image_allowed_types[]', $image_allowed_types, $selected_image_allowed_types, array(
 						'id' => 'image_allowed_types',
 						'class' => 'selectpicker show-menu-arrow',
 						'data-none-selected-text' => $this->lang->line('common_none_selected_text'),
 						'data-selected-text-format' => 'count > 1',
-						'data-style' => 'btn-default btn-sm',
+						'data-style' => 'btn-outline-secondary',
 						'data-width' => '100%'
 					));
 					?>
@@ -159,13 +159,13 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_suggestions_layout'), 'suggestions_layout', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_suggestions_layout'), 'suggestions_layout', array('class' => 'control-label col-xs-2')); ?>
 	<div class="col-sm-10">
 		<div class="form-group form-group-sm row">
 			<div class='col-sm-3'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_first_column'); ?></span>
-					<?php echo form_dropdown(
+					<span class="input-group-addon input-sm"><?= $this->lang->line('config_suggestions_first_column'); ?></span>
+					<?= form_dropdown(
 						'suggestions_first_column',
 						array(
 							'name' => $this->lang->line('items_name'),
@@ -180,8 +180,8 @@ $this->load->view('configs/config_header', $title_general);
 			</div>
 			<div class='col-sm-3'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_second_column'); ?></span>
-					<?php echo form_dropdown(
+					<span class="input-group-addon input-sm"><?= $this->lang->line('config_suggestions_second_column'); ?></span>
+					<?= form_dropdown(
 						'suggestions_second_column',
 						array(
 							'' => $this->lang->line('config_none'),
@@ -197,8 +197,8 @@ $this->load->view('configs/config_header', $title_general);
 			</div>
 			<div class='col-sm-3'>
 				<div class='input-group'>
-					<span class="input-group-addon input-sm"><?php echo $this->lang->line('config_suggestions_third_column'); ?></span>
-					<?php echo form_dropdown(
+					<span class="input-group-addon input-sm"><?= $this->lang->line('config_suggestions_third_column'); ?></span>
+					<?= form_dropdown(
 						'suggestions_third_column',
 						array(
 							'' => $this->lang->line('config_none'),
@@ -217,47 +217,47 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-8'>
 		<label class="radio-inline">
-			<?php echo form_radio(array(
+			<?= form_radio(array(
 				'name' => 'giftcard_number',
 				'value' => 'series',
 				'checked' => $this->config->item('giftcard_number') == 'series'
 			)); ?>
-			<?php echo $this->lang->line('config_giftcard_series'); ?>
+			<?= $this->lang->line('config_giftcard_series'); ?>
 		</label>
 		<label class="radio-inline">
-			<?php echo form_radio(array(
+			<?= form_radio(array(
 				'name' => 'giftcard_number',
 				'value' => 'random',
 				'checked' => $this->config->item('giftcard_number') == 'random'
 			)); ?>
-			<?php echo $this->lang->line('config_giftcard_random'); ?>
+			<?= $this->lang->line('config_giftcard_random'); ?>
 		</label>
 	</div>
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_derive_sale_quantity'), 'derive_sale_quantity', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_derive_sale_quantity'), 'derive_sale_quantity', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-1'>
-		<?php echo form_checkbox(array(
+		<?= form_checkbox(array(
 			'name' => 'derive_sale_quantity',
 			'id' => 'derive_sale_quantity',
 			'value' => 'derive_sale_quantity',
 			'checked' => $this->config->item('derive_sale_quantity')
 		)); ?>
-		&nbsp
+		&nbsp;
 		<label class="control-label">
-			<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></span>
+			<i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="<?= $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></i>
 		</label>
 	</div>
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_show_office_group'), 'show_office_group', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_show_office_group'), 'show_office_group', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-1'>
-		<?php echo form_checkbox(array(
+		<?= form_checkbox(array(
 			'name' => 'show_office_group',
 			'id' => 'show_office_group',
 			'value' => 'show_office_group',
@@ -267,9 +267,9 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_multi_pack_enabled'), 'multi_pack_enabled', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_multi_pack_enabled'), 'multi_pack_enabled', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-1'>
-		<?php echo form_checkbox(array(
+		<?= form_checkbox(array(
 			'name' => 'multi_pack_enabled',
 			'id' => 'multi_pack_enabled',
 			'value' => 'multi_pack_enabled',
@@ -279,9 +279,9 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_include_hsn'), 'include_hsn', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_include_hsn'), 'include_hsn', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-1'>
-		<?php echo form_checkbox(array(
+		<?= form_checkbox(array(
 			'name' => 'include_hsn',
 			'id' => 'include_hsn',
 			'value' => 'include_hsn',
@@ -291,9 +291,9 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_category_dropdown'), 'category_dropdown', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_category_dropdown'), 'category_dropdown', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-1'>
-		<?php echo form_checkbox(array(
+		<?= form_checkbox(array(
 			'name' => 'category_dropdown',
 			'id' => 'category_dropdown',
 			'value' => 'category_dropdown',
@@ -303,10 +303,10 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-2'>
-		<div id="backup_db" class="btn btn-default btn-sm">
-			<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
+		<div id="backup_db" class="btn btn-outline-secondary">
+			<span style="top:22%;"><?= $this->lang->line('config_backup_button'); ?></span>
 		</div>
 	</div>
 </div>
@@ -316,15 +316,15 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_theme'), 'theme', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_theme'), 'theme', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-sm-10'>
 		<div class="form-group form-group-sm row">
 			<div class='col-sm-3'>
-				<?php echo form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm', 'id' => 'theme-change')); ?>
+				<?= form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm', 'id' => 'theme-change')); ?>
 			</div>
 			<div class="col-sm-7">
-				<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($this->config->item('theme')) ? 'default' : $this->config->item('theme')); ?>" target="_blank" rel=”noopener”>
-					<span><?php echo $this->lang->line('config_theme_preview') . ' ' . ucfirst($this->config->item('theme')) . ' '; ?></span><span class="glyphicon glyphicon-new-window"></span>
+				<a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($this->config->item('theme')) ? 'default' : $this->config->item('theme')); ?>" target="_blank" rel=”noopener”>
+					<span><?= $this->lang->line('config_theme_preview') . ' ' . ucfirst($this->config->item('theme')) . ' '; ?></span><i class="bi bi-box-arrow-up-right"></i>
 				</a>
 			</div>
 		</div>
@@ -332,9 +332,9 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_login_form'), 'login_form', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_login_form'), 'login_form', array('class' => 'control-label col-xs-2')); ?>
 	<div class='col-xs-2'>
-		<?php echo form_dropdown(
+		<?= form_dropdown(
 			'login_form',
 			array(
 				'floating_labels' => $this->lang->line('config_floating_labels'),
@@ -347,11 +347,11 @@ $this->load->view('configs/config_header', $title_general);
 </div>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('config_notify_alignment'), 'notify_horizontal_position', array('class' => 'control-label col-xs-2')); ?>
+	<?= form_label($this->lang->line('config_notify_alignment'), 'notify_horizontal_position', array('class' => 'control-label col-xs-2')); ?>
 	<div class="col-sm-10">
 		<div class="form-group form-group-sm row">
 			<div class='col-sm-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'notify_vertical_position',
 					array(
 						'top' => $this->lang->line('config_top'),
@@ -362,7 +362,7 @@ $this->load->view('configs/config_header', $title_general);
 				); ?>
 			</div>
 			<div class='col-sm-2'>
-				<?php echo form_dropdown(
+				<?= form_dropdown(
 					'notify_horizontal_position',
 					array(
 						'left' => $this->lang->line('config_left'),
@@ -377,7 +377,7 @@ $this->load->view('configs/config_header', $title_general);
 	</div>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
@@ -398,7 +398,7 @@ $this->load->view('configs/config_header', $title_general);
 		$("#gcaptcha_enable").change(enable_disable_gcaptcha_enable);
 
 		$("#backup_db").click(function() {
-			window.location = '<?php echo site_url('config/backup_db') ?>';
+			window.location = '<?= site_url('config/backup_db') ?>';
 		});
 
 		$('#general_config_form').validate($.extend(form_support.handler, {
@@ -408,11 +408,11 @@ $this->load->view('configs/config_header', $title_general);
 			rules: {
 				lines_per_page: {
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?= site_url($controller_name . '/check_numeric') ?>"
 				},
 				default_sales_discount: {
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?= site_url($controller_name . '/check_numeric') ?>"
 				},
 				gcaptcha_site_key: {
 					required: "#gcaptcha_enable:checked"
@@ -424,18 +424,18 @@ $this->load->view('configs/config_header', $title_general);
 
 			messages: {
 				default_sales_discount: {
-					required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
-					number: "<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
+					required: "<?= $this->lang->line('config_default_sales_discount_required'); ?>",
+					number: "<?= $this->lang->line('config_default_sales_discount_number'); ?>"
 				},
 				lines_per_page: {
-					required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
-					number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"
+					required: "<?= $this->lang->line('config_lines_per_page_required'); ?>",
+					number: "<?= $this->lang->line('config_lines_per_page_number'); ?>"
 				},
 				gcaptcha_site_key: {
-					required: "<?php echo $this->lang->line('config_gcaptcha_site_key_required'); ?>"
+					required: "<?= $this->lang->line('config_gcaptcha_site_key_required'); ?>"
 				},
 				gcaptcha_secret_key: {
-					required: "<?php echo $this->lang->line('config_gcaptcha_secret_key_required'); ?>"
+					required: "<?= $this->lang->line('config_gcaptcha_secret_key_required'); ?>"
 				}
 			},
 

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -14,12 +14,14 @@ class Expenses extends Secure_Controller
 		$data['table_headers'] = $this->xss_clean(get_expenses_manage_table_headers());
 
 		// filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array('only_cash' => $this->lang->line('expenses_cash_filter'),
+		$data['filters'] = array(
+			'only_cash' => $this->lang->line('expenses_cash_filter'),
 			'only_due' => $this->lang->line('expenses_due_filter'),
 			'only_check' => $this->lang->line('expenses_check_filter'),
 			'only_credit' => $this->lang->line('expenses_credit_filter'),
 			'only_debit' => $this->lang->line('expenses_debit_filter'),
-			'is_deleted' => $this->lang->line('expenses_is_deleted'));
+			'is_deleted' => $this->lang->line('expenses_is_deleted')
+		);
 
 		$this->load->view('expenses/manage', $data);
 	}
@@ -33,14 +35,15 @@ class Expenses extends Secure_Controller
 		$sort     = $this->input->get('sort');
 		$order    = $this->input->get('order');
 		$filters  = array(
-					 'start_date' => $this->input->get('start_date'),
-					 'end_date' => $this->input->get('end_date'),
-					 'only_cash' => FALSE,
-					 'only_due' => FALSE,
-					 'only_check' => FALSE,
-					 'only_credit' => FALSE,
-					 'only_debit' => FALSE,
-					 'is_deleted' => FALSE);
+			'start_date' => $this->input->get('start_date'),
+			'end_date' => $this->input->get('end_date'),
+			'only_cash' => FALSE,
+			'only_due' => FALSE,
+			'only_check' => FALSE,
+			'only_credit' => FALSE,
+			'only_debit' => FALSE,
+			'is_deleted' => FALSE
+		);
 
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
@@ -50,13 +53,11 @@ class Expenses extends Secure_Controller
 		$payments = $this->Expense->get_payments_summary($search, $filters);
 		$payment_summary = get_expenses_manage_payments_summary($payments, $expenses);
 		$data_rows = array();
-		foreach($expenses->result() as $expense)
-		{
+		foreach ($expenses->result() as $expense) {
 			$data_rows[] = $this->xss_clean(get_expenses_data_row($expense));
 		}
 
-		if($total_rows > 0)
-		{
+		if ($total_rows > 0) {
 			$data_rows[] = $this->xss_clean(get_expenses_data_last_row($expenses));
 		}
 
@@ -68,10 +69,8 @@ class Expenses extends Secure_Controller
 		$data = array();
 
 		$data['employees'] = array();
-		foreach($this->Employee->get_all()->result() as $employee)
-		{
-			foreach(get_object_vars($employee) as $property => $value)
-			{
+		foreach ($this->Employee->get_all()->result() as $employee) {
+			foreach (get_object_vars($employee) as $property => $value) {
 				$employee->$property = $this->xss_clean($value);
 			}
 
@@ -81,25 +80,21 @@ class Expenses extends Secure_Controller
 		$data['expenses_info'] = $this->Expense->get_info($expense_id);
 
 		$expense_categories = array();
-		foreach($this->Expense_category->get_all(0, 0, TRUE)->result_array() as $row)
-		{
+		foreach ($this->Expense_category->get_all(0, 0, TRUE)->result_array() as $row) {
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
 		}
 		$data['expense_categories'] = $expense_categories;
 
 		$expense_id = $data['expenses_info']->expense_id;
 
-		if(empty($expense_id))
-		{
+		if (empty($expense_id)) {
 			$data['expenses_info']->date = date('Y-m-d H:i:s');
 			$data['expenses_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		}
 
 		$data['payments'] = array();
-		foreach($this->Expense->get_expense_payment($expense_id)->result() as $payment)
-		{
-			foreach(get_object_vars($payment) as $property => $value)
-			{
+		foreach ($this->Expense->get_expense_payment($expense_id)->result() as $payment) {
+			foreach (get_object_vars($payment) as $property => $value) {
 				$payment->$property = $this->xss_clean($value);
 			}
 
@@ -139,21 +134,17 @@ class Expenses extends Secure_Controller
 			'deleted' => $this->input->post('deleted') != NULL
 		);
 
-		if($this->Expense->save($expense_data, $expense_id))
-		{
+		if ($this->Expense->save($expense_data, $expense_id)) {
 			$expense_data = $this->xss_clean($expense_data);
 
 			//New expense_id
-			if($expense_id == -1)
-			{
+			if ($expense_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_adding'), 'id' => $expense_data['expense_id']));
-			}
-			else // Existing Expense
+			} else // Existing Expense
 			{
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_updating'), 'id' => $expense_id));
 			}
-		}
-		else//failure
+		} else //failure
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_error_adding_updating'), 'id' => -1));
 		}
@@ -170,14 +161,10 @@ class Expenses extends Secure_Controller
 	{
 		$expenses_to_delete = $this->input->post('ids');
 
-		if($this->Expense->delete_list($expenses_to_delete))
-		{
+		if ($this->Expense->delete_list($expenses_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . $this->lang->line('expenses_one_or_multiple'), 'ids' => $expenses_to_delete));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_cannot_be_deleted'), 'ids' => $expenses_to_delete));
 		}
 	}
 }
-?>

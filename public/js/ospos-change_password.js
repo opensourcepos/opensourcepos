@@ -7,7 +7,7 @@ $(document).ready(function () {
     function (value, element, param) {
       return this.optional(element) || value != $(param).val();
     },
-    '<?php echo $this->lang->line("employees_password_not_must_match"); ?>'
+    '<?= $this->lang->line("employees_password_not_must_match"); ?>'
   );
 
   $("#employee_form").validate(
@@ -42,14 +42,11 @@ $(document).ready(function () {
 
         messages: {
           password: {
-            required:
-              "<?php echo $this->lang->line('employees_password_required'); ?>",
-            minlength:
-              "<?php echo $this->lang->line('employees_password_minlength'); ?>",
+            required: "<?= $this->lang->line('employees_password_required'); ?>",
+            minlength: "<?= $this->lang->line('employees_password_minlength'); ?>",
           },
           repeat_password: {
-            equalTo:
-              "<?php echo $this->lang->line('employees_password_must_match'); ?>",
+            equalTo: "<?= $this->lang->line('employees_password_must_match'); ?>",
           },
         },
       },

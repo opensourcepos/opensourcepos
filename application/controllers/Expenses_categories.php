@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -11,9 +11,9 @@ class Expenses_categories extends Secure_Controller
 
 	public function index()
 	{
-		 $data['table_headers'] = $this->xss_clean(get_expense_category_manage_table_headers());
+		$data['table_headers'] = $this->xss_clean(get_expense_category_manage_table_headers());
 
-		 $this->load->view('expenses_categories/manage', $data);
+		$this->load->view('expenses_categories/manage', $data);
 	}
 
 	/*
@@ -31,8 +31,7 @@ class Expenses_categories extends Secure_Controller
 		$total_rows = $this->Expense_category->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($expense_categories->result() as $expense_category)
-		{
+		foreach ($expense_categories->result() as $expense_category) {
 			$data_rows[] = $this->xss_clean(get_expense_category_data_row($expense_category));
 		}
 
@@ -60,21 +59,17 @@ class Expenses_categories extends Secure_Controller
 			'category_description' => $this->input->post('category_description')
 		);
 
-		if($this->Expense_category->save($expense_category_data, $expense_category_id))
-		{
+		if ($this->Expense_category->save($expense_category_data, $expense_category_id)) {
 			$expense_category_data = $this->xss_clean($expense_category_data);
 
 			// New expense_category_id
-			if($expense_category_id == -1)
-			{
+			if ($expense_category_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_categories_successful_adding'), 'id' => $expense_category_data['expense_category_id']));
-			}
-			else // Existing Expense Category
+			} else // Existing Expense Category
 			{
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_categories_successful_updating'), 'id' => $expense_category_id));
 			}
-		}
-		else//failure
+		} else //failure
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_categories_error_adding_updating') . ' ' . $expense_category_data['category_name'], 'id' => -1));
 		}
@@ -84,14 +79,10 @@ class Expenses_categories extends Secure_Controller
 	{
 		$expense_category_to_delete = $this->input->post('ids');
 
-		if($this->Expense_category->delete_list($expense_category_to_delete))
-		{
+		if ($this->Expense_category->delete_list($expense_category_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_categories_successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . $this->lang->line('expenses_categories_one_or_multiple')));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_categories_cannot_be_deleted')));
 		}
 	}
 }
-?>

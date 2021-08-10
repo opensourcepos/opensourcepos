@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Gider ekle";
 $lang["expenses_amount"] = "Miktar";
 $lang["expenses_amount_number"] = "Miktar değeri sayı olmalı";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Kategori";
 $lang["expenses_category_required"] = "Kaetgori gerekli bir alandır";
 $lang["expenses_check"] = "Çek";
 $lang["expenses_check_filter"] = "Çek";
-$lang["expenses_confirm_delete"] = "Seçilen Gideri silmek istediğiniden emin misiniz?";
-$lang["expenses_confirm_restore"] = "Seçilen Gideri onarmak istediğiniden emin misiniz?";
+$lang["expenses_confirm_delete"] = "Seçilen Gider(ler)i silmek istediğinizden emin misiniz?";
+$lang["expenses_confirm_restore"] = "Seçilen Gider(ler)i onarmak istediğinizden emin misiniz?";
 $lang["expenses_credit"] = "Kredi Kartı";
 $lang["expenses_credit_filter"] = "Kredi Kartı";
 $lang["expenses_date"] = "Tarih";

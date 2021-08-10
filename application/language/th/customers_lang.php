@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";

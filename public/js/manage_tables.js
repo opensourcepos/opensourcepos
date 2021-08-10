@@ -21,8 +21,7 @@
       if (button_id == "submit" && !submitted && btn_id != "btnNew") {
         form.submit();
 
-        validator.valid() &&
-          $("#submit").prop("disabled", true).css("opacity", 0.5);
+        validator.valid() && $("#submit").prop("disabled", true).css("opacity", 0.5);
       }
       return false;
     };
@@ -37,15 +36,12 @@
     var buttons = function (event) {
       var buttons = [];
       var dialog_class = "modal-dlg";
-      $.each(
-        $(this).attr("class").split(/\s+/),
-        function (classIndex, className) {
-          var width_class = className.split("modal-dlg-");
-          if (width_class && width_class.length > 1) {
-            dialog_class = className;
-          }
+      $.each($(this).attr("class").split(/\s+/), function (classIndex, className) {
+        var width_class = className.split("modal-dlg-");
+        if (width_class && width_class.length > 1) {
+          dialog_class = className;
         }
-      );
+      });
 
       var has_new_btn = "btnNew" in $(this).data();
       $.each($(this).data(), function (name, value) {
@@ -94,12 +90,9 @@
                 title: $link.attr("title"),
                 message: function () {
                   var node = $("<div></div>");
-                  $.get(
-                    $link.attr("href") || $link.data("href"),
-                    function (data) {
-                      node.html(data);
-                    }
-                  );
+                  $.get($link.attr("href") || $link.data("href"), function (data) {
+                    node.html(data);
+                  });
                   return node;
                 },
               },
@@ -124,10 +117,7 @@
   var enable_actions = function (callback) {
     return function () {
       var selection_empty = selected_rows().length == 0;
-      $("#toolbar button:not(.dropdown-toggle)").attr(
-        "disabled",
-        selection_empty
-      );
+      $("#toolbar button:not(.dropdown-toggle)").attr("disabled", selection_empty);
       typeof callback == "function" && callback();
     };
   };
@@ -138,9 +128,7 @@
 
   var selected_ids = function () {
     return $.map(table().getSelections(), function (element) {
-      return element[options.uniqueId || "id"] !== "-"
-        ? element[options.uniqueId || "id"]
-        : null;
+      return element[options.uniqueId || "id"] !== "-" ? element[options.uniqueId || "id"] : null;
     });
   };
 
@@ -278,8 +266,7 @@
           onColumnSwitch: function (field, checked) {
             var user_settings = localStorage[options.employee_id];
             user_settings = (user_settings && JSON.parse(user_settings)) || {};
-            user_settings[options.resource] =
-              user_settings[options.resource] || {};
+            user_settings[options.resource] = user_settings[options.resource] || {};
             user_settings[options.resource][field] = checked;
             localStorage[options.employee_id] = JSON.stringify(user_settings);
             dialog_support.init("a.modal-dlg");

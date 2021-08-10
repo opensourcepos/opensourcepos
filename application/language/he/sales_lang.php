@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "סכום ההצעה";
 $lang["sales_authorized_signature"] = "חתימת מורשה";
 $lang["sales_cancel_sale"] = "בטל";
 $lang["sales_cash"] = "מזומן";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "הפקדת מזומן";
 $lang["sales_cash_filter"] = "מזומן";
 $lang["sales_change_due"] = "עודף לתשלום";

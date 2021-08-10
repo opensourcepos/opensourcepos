@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -12,9 +12,9 @@ class Tax_jurisdictions extends Secure_Controller
 
 	public function index()
 	{
-		 $data['table_headers'] = $this->xss_clean(get_tax_jurisdictions_table_headers());
+		$data['table_headers'] = $this->xss_clean(get_tax_jurisdictions_table_headers());
 
-		 $this->load->view('taxes/tax_jurisdictions', $data);
+		$this->load->view('taxes/tax_jurisdictions', $data);
 	}
 
 	/*
@@ -32,8 +32,7 @@ class Tax_jurisdictions extends Secure_Controller
 		$total_rows = $this->Tax_jurisdiction->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_jurisdictions->result() as $tax_jurisdiction)
-		{
+		foreach ($tax_jurisdictions->result() as $tax_jurisdiction) {
 			$data_rows[] = $this->xss_clean(get_tax_jurisdiction_data_row($tax_jurisdiction));
 		}
 
@@ -62,21 +61,15 @@ class Tax_jurisdictions extends Secure_Controller
 			'reporting_authority' => $this->input->post('reporting_authority')
 		);
 
-		if($this->Tax_jurisdiction->save($tax_jurisdiction_data))
-		{
+		if ($this->Tax_jurisdiction->save($tax_jurisdiction_data)) {
 			$tax_jurisdiction_data = $this->xss_clean($tax_jurisdiction_data);
 
-			if($jurisdiction_id == -1)
-			{
+			if ($jurisdiction_id == -1) {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_adding'), 'id' => $tax_jurisdiction_data['jurisdiction_id']));
-			}
-			else
-			{
+			} else {
 				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_updating'), 'id' => $jurisdiction_id));
 			}
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_jurisdictions_error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'], 'id' => -1));
 		}
 	}
@@ -85,14 +78,10 @@ class Tax_jurisdictions extends Secure_Controller
 	{
 		$tax_jurisdictions_to_delete = $this->input->post('ids');
 
-		if($this->Tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
-		{
+		if ($this->Tax_jurisdiction->delete_list($tax_jurisdictions_to_delete)) {
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_jurisdictions_successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . $this->lang->line('taxes_jurisdictions_one_or_multiple')));
-		}
-		else
-		{
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_jurisdictions_cannot_be_deleted')));
 		}
 	}
 }
-?>

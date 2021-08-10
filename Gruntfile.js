@@ -63,7 +63,7 @@ module.exports = function (grunt) {
               "bootstrap-table.js",
               "bootstrap-table.min.js",
             ],
-            dest: "public/dist/bootstrap-select/",
+            dest: "public/dist/bootstrap-table/",
             filter: "isFile",
           },
           {
@@ -119,5 +119,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-copy");
 
-  grunt.registerTask("default", ["clean:ui", "copy"]);
+  grunt.registerTask("default", ["clean:ui", "clean:licenses", "copy"]);
 };

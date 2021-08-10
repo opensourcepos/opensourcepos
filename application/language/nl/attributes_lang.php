@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Kenmerkwaarde mag niet '_' of '|' bevatten";
 $lang["attributes_confirm_delete"] = "Weet u zeker dat u de geselecteerde kenmerken wilt verwijderen?";
 $lang["attributes_confirm_restore"] = "Weet u zeker dat u de geselecteerde kenmerken wilt herstellen?";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Voorraad toevoegen of aftrekken.";
 $lang["giftcards_allow_alt_description"] = "Alternatieve beschrijving toestaan";
 $lang["giftcards_bulk_edit"] = "Bewerken in bulk";

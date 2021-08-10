@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_invoice/', array('id' => 'invoice_config_form', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_invoice/', array('id' => 'invoice_config_form', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_invoice['config_title'] = $this->lang->line('config_invoice_configuration');
@@ -118,7 +118,7 @@ $this->load->view('configs/config_header', $title_invoice);
 	<button class="btn btn-primary" name="submit_invoice"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling

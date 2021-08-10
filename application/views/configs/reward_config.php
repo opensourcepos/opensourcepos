@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_rewards/', array('id' => 'reward_config_form', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_rewards/', array('id' => 'reward_config_form', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_reward['config_title'] = $this->lang->line('config_reward_configuration');
@@ -64,7 +64,7 @@ $this->load->view('configs/config_header', $title_reward);
 	<?php $this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards)); ?>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
@@ -84,7 +84,7 @@ var enable_disable_customer_reward_enable = (function() {
 
 document.querySelector("#customer_reward_enable").change(enable_disable_customer_reward_enable);
 
-var table_count = <?php echo sizeof($customer_rewards); ?>;
+var table_count = <?= sizeof($customer_rewards); ?>;
 
 var hide_show_remove = function() {
 	if (document.querySelector("input[name*='customer_rewards']:enabled").length > 1) {
@@ -103,7 +103,7 @@ var add_customer_reward = function() {
 	var new_block = block.insertAfter(document.querySelector(this).parent());
 	var new_block_id = 'customer_reward_' + ++id;
 	var new_block_id_next = 'reward_points_' + id;
-	document.querySelector(new_block).querySelector('label').html("<?php echo $this->lang->line('config_customer_reward'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+	document.querySelector(new_block).querySelector('label').html("<?= $this->lang->line('config_customer_reward'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 	document.querySelector(new_block).querySelector("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 	document.querySelector(new_block).querySelector("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm').val('');
 	hide_show_remove();
@@ -131,11 +131,11 @@ $.validator.addMethod('customer_reward', function(value, element) {
 		value_count = document.querySelector(this).value == value ? value_count + 1 : value_count;
 	});
 	return value_count < 2;
-}, "<?php echo $this->lang->line('config_customer_reward_duplicate'); ?>");
+}, "<?= $this->lang->line('config_customer_reward_duplicate'); ?>");
 
 $.validator.addMethod('valid_chars', function(value, element) {
 	return value.indexOf('_') === -1;
-}, "<?php echo $this->lang->line('config_customer_reward_invalid_chars'); ?>");
+}, "<?= $this->lang->line('config_customer_reward_invalid_chars'); ?>");
 
 document.querySelector('#reward_config_form').validate($.extend(form_support.handler, {
 	submitHandler: function(form) {
@@ -150,7 +150,7 @@ document.querySelector('#reward_config_form').validate($.extend(form_support.han
 				}, {
 					type: response.success ? 'success' : 'danger'
 				});
-				document.querySelector("#customer_rewards").load('<?php echo site_url("config/ajax_customer_rewards"); ?>', init_add_remove_tables);
+				document.querySelector("#customer_rewards").load('<?= site_url("config/ajax_customer_rewards"); ?>', init_add_remove_tables);
 			},
 			dataType: 'json'
 		});
@@ -164,7 +164,7 @@ document.querySelector('#reward_config_form').validate($.extend(form_support.han
 
 		foreach ($customer_rewards as $customer_reward => $table) {
 		?>
-			<?php echo 'customer_reward_' . ++$i ?>: {
+			<?= 'customer_reward_' . ++$i ?>: {
 				required: true,
 				customer_reward: true,
 				valid_chars: true
@@ -180,7 +180,7 @@ document.querySelector('#reward_config_form').validate($.extend(form_support.han
 
 		foreach ($customer_rewards as $customer_reward => $table) {
 		?>
-			<?php echo 'customer_reward_' . ++$i ?>: "<?php echo $this->lang->line('config_customer_reward_required'); ?>",
+			<?= 'customer_reward_' . ++$i ?>: "<?= $this->lang->line('config_customer_reward_required'); ?>",
 		<?php
 		}
 		?>

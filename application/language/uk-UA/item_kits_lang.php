@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Додати товар";
 $lang["item_kits_all"] = "Все";
 $lang["item_kits_cannot_be_deleted"] = "Не можливо видалити товар(и).";
@@ -13,6 +14,9 @@ $lang["item_kits_error_adding_updating"] = "При додаванні/оновл
 $lang["item_kits_find_kit_item"] = "Комплект товару";
 $lang["item_kits_info"] = "Інформація про комплект товару";
 $lang["item_kits_item"] = "Товар";
+$lang["item_kits_item_kit_number"] = "Штрихкод";
+$lang["item_kits_item_kit_number_duplicate"] = "Товарний комплект вже присутній у базі.";
+$lang["item_kits_item_number"] = "";
 $lang["item_kits_items"] = "Товари";
 $lang["item_kits_kit"] = "ІН комплекту";
 $lang["item_kits_kit_and_components"] = "Комплект та комплектуючі";
@@ -32,5 +36,3 @@ $lang["item_kits_successful_adding"] = "Комплект товару успіш
 $lang["item_kits_successful_deleted"] = "Комплект товару успішно видалено";
 $lang["item_kits_successful_updating"] = "Комплект товару успішно оновлено";
 $lang["item_kits_update"] = "Оновити комплект товару";
-$lang["item_kits_item_kit_number_duplicate"] = "Товарний комплект вже присутній у базі.";
-$lang["item_kits_item_kit_number"] = "Штрихкод";

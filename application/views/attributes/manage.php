@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 
 <script type="text/javascript">
-	document.querySelector(document).ready(function() {
+	$(document).ready(function() {
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		table_support.init({
@@ -13,18 +13,20 @@
 	});
 </script>
 
-<div id="title_bar" class="btn-toolbar d-flex justify-content-end d-print-none">
-	<button class="btn btn-info modal-dlg" data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url($controller_name . '/view'); ?>" title="<?= $this->lang->line($controller_name . '_new'); ?>">
-		<i class="bi bi-star-fill"></i> <?= $this->lang->line($controller_name . '_new'); ?>
+<div class="btn-toolbar justify-content-end d-print-none mb-3" role="toolbar">
+	<button class="btn btn-primary modal-dlg" data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url($controller_name . '/view'); ?>" title="<?= $this->lang->line($controller_name . '_new'); ?>">
+		<i class="bi bi-star pe-1"></i><?= $this->lang->line($controller_name . '_new'); ?>
 	</button>
 </div>
 
-<div id="toolbar">
-	<div class="form-inline" role="toolbar">
-		<button id="delete" class="btn btn-secondary d-print-none"><i class="bi bi-eraser"></i> <?= $this->lang->line('common_delete'); ?></button>
-	</div>
+<div class="btn-toolbar mb-3" role="toolbar">
+	<button id="delete" class="btn btn-outline-secondary d-print-none">
+		<i class="bi bi-trash pe-1"></i><?= $this->lang->line('common_delete'); ?>
+	</button>
 </div>
 
-<table id="table"></table>
+<div id="table_holder">
+	<table id="table"></table>
+</div>
 
 <?php $this->load->view("partial/footer"); ?>

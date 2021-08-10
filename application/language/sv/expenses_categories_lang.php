@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Expense Kategori namn krävs";
 $lang["expenses_categories_add_item"] = "Lägg till Kategori";
 $lang["expenses_categories_cannot_be_deleted"] = "Kunde inte ta bort kategorikostnad";

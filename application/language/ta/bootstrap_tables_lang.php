@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "அனைத்தும்";
 $lang["tables_columns"] = "நெடுவரிசை";
 $lang["tables_hide_show_pagination"] = "பக்கமாக்கலை காண்பி / மறை";

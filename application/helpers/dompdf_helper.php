@@ -1,8 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * PDF helper
- */
+// PDF helper
 
 function create_pdf($html, $filename = '')
 {
@@ -10,14 +8,10 @@ function create_pdf($html, $filename = '')
     $dompdf = new Dompdf\Dompdf(array("isRemoteEnabled" => TRUE, "isPhpEnabled" => TRUE));
     $dompdf->loadHtml(str_replace(array("\n", "\r"), '', $html));
     $dompdf->render();
-    
-    if($filename != '')
-    {
+
+    if ($filename != '') {
         $dompdf->stream($filename . '.pdf');
-    }
-    else
-    {
+    } else {
         return $dompdf->output();
     }
 }
-?>

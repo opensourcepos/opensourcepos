@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "Значення атрибуту не може містити ':' або'|'";
 $lang["attributes_confirm_delete"] = "Ви впевнені, що хочете видалити вибрані атрибут(и)?";
 $lang["attributes_confirm_restore"] = "Ви впевнені, що хочете відновити вибрані атрибут(и)?";

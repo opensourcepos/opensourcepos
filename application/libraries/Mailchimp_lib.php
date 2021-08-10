@@ -31,23 +31,18 @@ class MailchimpConnector
 	 */
 	public function __construct($api_key = '')
 	{
-		$CI =& get_instance();
+		$CI = &get_instance();
 
-		if(empty($api_key))
-		{
+		if (empty($api_key)) {
 			$this->_api_key = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_api_key'));
-		}
-		else
-		{
+		} else {
 			$this->_api_key = $api_key;
 		}
 
-		if(!empty($this->_api_key))
-		{
+		if (!empty($this->_api_key)) {
 			// Replace <dc> with correct datacenter obtained from the last part of the api key
 			$strings = explode('-', $this->_api_key);
-			if(is_array($strings) && !empty($strings[1]))
-			{
+			if (is_array($strings) && !empty($strings[1])) {
 				$this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);
 			}
 		}
@@ -62,8 +57,7 @@ class MailchimpConnector
 	 */
 	public function call($httpVerb = 'POST', $method, $args = array())
 	{
-		if(!empty($this->_api_key))
-		{
+		if (!empty($this->_api_key)) {
 			return $this->_request($httpVerb, $method, $args);
 		}
 
@@ -79,8 +73,7 @@ class MailchimpConnector
 	 */
 	private function _build_request_url($httpVerb = 'POST', $method, $args = array())
 	{
-		if($httpVerb == 'GET')
-		{
+		if ($httpVerb == 'GET') {
 			return $this->_api_endpoint . $method . '?' . http_build_query($args);
 		}
 
@@ -98,8 +91,7 @@ class MailchimpConnector
 	{
 		$result = FALSE;
 
-		if(($ch = curl_init()) !== FALSE)
-		{
+		if (($ch = curl_init()) !== FALSE) {
 			curl_setopt($ch, CURLOPT_URL, $this->_build_request_url($httpVerb, $method, $args));
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 			curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->_api_key);
@@ -140,51 +132,51 @@ class Mailchimp_lib
 	}
 
 	/**
-	* Gets information about all lists owned by the authenticated account.
-	*
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*   By the default it places a simple query to list name & id and count of members & merge_fields
-	*   NOTE: no space between , and next word is allowed. You will not get the filter to work in full but just the first tag
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
-	*/
+	 * Gets information about all lists owned by the authenticated account.
+	 *
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *   By the default it places a simple query to list name & id and count of members & merge_fields
+	 *   NOTE: no space between , and next word is allowed. You will not get the filter to work in full but just the first tag
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
+	 */
 	public function getLists(array $parameters = array('fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'))
 	{
 		return $this->_connector->call('GET', '/lists', $parameters);
 	}
 
 	/**
-	* Gets a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
-	*/
+	 * Gets a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
+	 */
 	public function getList($list_id, $parameters = array('fields' => 'id,name,stats.member_count,stats.merge_field_count'))
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id, $parameters);
 	}
 
 	/**
-	* Gets information about all members of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
-	*/
+	 * Gets information about all members of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
+	 */
 	public function getMembers($list_id, $count, $offset, $parameters = array('fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'))
 	{
 		$parameters += [
@@ -196,76 +188,76 @@ class Mailchimp_lib
 	}
 
 	/**
-	* Gets information about a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $md5id
-	*   The member's email address md5 hash which is the id.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
-	*/
+	 * Gets information about a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $md5id
+	 *   The member's email address md5 hash which is the id.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
+	 */
 	public function getMemberInfoById($list_id, $md5id, $parameters = array('fields' => 'email_address,status,merge_fields'))
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);
 	}
 
 	/**
-	* Gets information about a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
-	*/
+	 * Gets information about a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
+	 */
 	public function getMemberInfo($list_id, $email, $parameters = array())
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
 
 	/**
-	* Gets activity related to a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
-	*/
+	 * Gets activity related to a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
+	 */
 	public function getMemberActivity($list_id, $email, $parameters = array())
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);
 	}
 
 	/**
-	* Adds a new member to a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The email address to add.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
-	*/
+	 * Adds a new member to a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The email address to add.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
+	 */
 	public function addMember($list_id, $email, $first_name, $last_name, $parameters = array())
 	{
 		$parameters += [
@@ -281,36 +273,36 @@ class Mailchimp_lib
 	}
 
 	/**
-	* Removes a member from a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
-	*/
+	 * Removes a member from a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
+	 */
 	public function removeMember($list_id, $email)
 	{
 		return $this->_connector->call('DELETE', '/lists/' . $list_id . '/members/' . md5(strtolower($email)));
 	}
 
 	/**
-	* Updates a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
-	*/
+	 * Updates a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
+	 */
 	public function updateMember($list_id, $email, $first_name, $last_name, $parameters = array())
 	{
 		$parameters += [
@@ -325,19 +317,19 @@ class Mailchimp_lib
 	}
 
 	/**
-	* Adds a new or update an existing member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
-	*/
+	 * Adds a new or update an existing member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *
+	 * @return object
+	 *
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
+	 */
 	public function addOrUpdateMember($list_id, $email, $first_name, $last_name, $status, $parameters = array())
 	{
 		$parameters += [
@@ -353,5 +345,3 @@ class Mailchimp_lib
 		return $this->_connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
 }
-
-?>

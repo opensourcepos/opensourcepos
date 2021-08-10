@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Summa";
 $lang["cashups_amount_number"] = "Summa måste vara ett nummer";
 $lang["cashups_amount_required"] = "Summa kan ej lämnas tomt.";

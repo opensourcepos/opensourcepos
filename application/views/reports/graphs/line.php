@@ -1,10 +1,10 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode($labels_1); ?>,
+		labels: <?= json_encode($labels_1); ?>,
 		series: [{
-			name: '<?php echo $yaxis_title; ?>',
-			data: <?php echo json_encode($series_data_1); ?>
+			name: '<?= $yaxis_title; ?>',
+			data: <?= json_encode($series_data_1); ?>
 		}]
 	};
 
@@ -59,13 +59,13 @@
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+						return value + '<?= $this->config->item('currency_symbol'); ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+						return '<?= $this->config->item('currency_symbol'); ?>' + value;				
 				<?php
 					}
 				}
@@ -83,7 +83,7 @@
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
 				axisX: {
-					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisTitle: '<?= $xaxis_title; ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: -100,
@@ -92,7 +92,7 @@
 					textAnchor: 'middle'
 				},
 				axisY: {
-					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisTitle: '<?= $yaxis_title; ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,
@@ -112,13 +112,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+							return value + '<?= $this->config->item('currency_symbol'); ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?= $this->config->item('currency_symbol'); ?>' + value;				
 					<?php
 						}
 					}
@@ -141,13 +141,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+							return value + '<?= $this->config->item('currency_symbol'); ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?= $this->config->item('currency_symbol'); ?>' + value;				
 					<?php
 						}
 					}

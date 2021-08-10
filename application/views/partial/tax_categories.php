@@ -1,15 +1,14 @@
 <?php
 $i = 0;
 
-foreach($tax_categories as $key => $category)
-{
+foreach ($tax_categories as $key => $category) {
 	$tax_category_id = $category['tax_category_id'];
 	$tax_category = $category['tax_category'];
 	$tax_group_sequence = $category['tax_group_sequence'];
 	++$i;
-	?>
+?>
 	<div class="form-group form-group-sm" style="display:block;">
-		<?php echo form_label($this->lang->line('taxes_tax_category') . ' ' . $i, 'tax_category_' . $i, array('class' => 'control-label col-xs-2')); ?>
+		<?= form_label($this->lang->line('taxes_tax_category') . ' ' . $i, 'tax_category_' . $i, array('class' => 'control-label col-xs-2')); ?>
 		<div class='col-xs-3'>
 			<?php $form_data = array(
 				'name' => 'tax_category[]',
@@ -31,10 +30,10 @@ foreach($tax_categories as $key => $category)
 			echo form_input($form_data);
 			?>
 		</div>
-		<span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
+		<i class="add_tax_category bi bi-plus pt-2"></i>
 		<span>&nbsp;&nbsp;</span>
-		<span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('tax_category_id[]', $tax_category_id); ?>
+		<i class="remove_tax_category bi bi-dash pt-2"></i>
+		<?= form_hidden('tax_category_id[]', $tax_category_id); ?>
 	</div>
 <?php
 }

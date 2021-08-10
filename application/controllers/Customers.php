@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Persons.php");
 
@@ -12,7 +12,7 @@ class Customers extends Persons
 
 		$this->load->library('mailchimp_lib');
 
-		$CI =& get_instance();
+		$CI = &get_instance();
 
 		$this->_list_id = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_list_id'));
 	}
@@ -33,8 +33,7 @@ class Customers extends Persons
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
 		$stats = $this->Customer->get_stats($person->person_id);
-		if(empty($stats))
-		{
+		if (empty($stats)) {
 			//create object with empty properties.
 			$stats = new stdClass;
 			$stats->total = 0;
@@ -65,12 +64,10 @@ class Customers extends Persons
 		$total_rows = $this->Customer->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($customers->result() as $person)
-		{
+		foreach ($customers->result() as $person) {
 			// retrieve the total amount the customer spent so far together with min, max and average values
 			$stats = $this->Customer->get_stats($person->person_id);
-			if(empty($stats))
-			{
+			if (empty($stats)) {
 				//create object with empty properties.
 				$stats = new stdClass;
 				$stats->total = 0;
@@ -110,14 +107,12 @@ class Customers extends Persons
 	public function view($customer_id = -1)
 	{
 		$info = $this->Customer->get_info($customer_id);
-		foreach(get_object_vars($info) as $property => $value)
-		{
+		foreach (get_object_vars($info) as $property => $value) {
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
 
-		if(empty($info->person_id) || empty($info->date) || empty($info->employee_id))
-		{
+		if (empty($info->person_id) || empty($info->date) || empty($info->employee_id)) {
 			$data['person_info']->date = date('Y-m-d H:i:s');
 			$data['person_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		}
@@ -128,80 +123,59 @@ class Customers extends Persons
 		$tax_code_info = $this->Tax_code->get_info($info->sales_tax_code_id);
 		$tax_code_id = $tax_code_info->tax_code_id;
 
-		if($tax_code_info->tax_code != NULL)
-		{
+		if ($tax_code_info->tax_code != NULL) {
 			$data['sales_tax_code_label'] = $this->xss_clean($tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name);
-		}
-		else
-		{
+		} else {
 			$data['sales_tax_code_label'] = '';
 		}
 
 		$packages = array('' => $this->lang->line('items_none'));
-		foreach($this->Customer_rewards->get_all()->result_array() as $row)
-		{
+		foreach ($this->Customer_rewards->get_all()->result_array() as $row) {
 			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
 		}
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($this->config->item('use_destination_based_tax') == '1')
-		{
+		if ($this->config->item('use_destination_based_tax') == '1') {
 			$data['use_destination_based_tax'] = TRUE;
-		}
-		else
-		{
+		} else {
 			$data['use_destination_based_tax'] = FALSE;
 		}
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
 		$stats = $this->Customer->get_stats($customer_id);
-		if(!empty($stats))
-		{
-			foreach(get_object_vars($stats) as $property => $value)
-			{
+		if (!empty($stats)) {
+			foreach (get_object_vars($stats) as $property => $value) {
 				$info->$property = $this->xss_clean($value);
 			}
 			$data['stats'] = $stats;
 		}
 
 		// retrieve the info from Mailchimp only if there is an email address assigned
-		if(!empty($info->email))
-		{
+		if (!empty($info->email)) {
 			// collect mailchimp customer info
-			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE)
-			{
+			if (($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE) {
 				$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
 
 				// collect customer mailchimp emails activities (stats)
-				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE)
-				{
-					if(array_key_exists('activity', $activities))
-					{
+				if (($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE) {
+					if (array_key_exists('activity', $activities)) {
 						$open = 0;
 						$unopen = 0;
 						$click = 0;
 						$total = 0;
 						$lastopen = '';
 
-						foreach($activities['activity'] as $activity)
-						{
-							if($activity['action'] == 'sent')
-							{
+						foreach ($activities['activity'] as $activity) {
+							if ($activity['action'] == 'sent') {
 								++$unopen;
-							}
-							elseif($activity['action'] == 'open')
-							{
-								if(empty($lastopen))
-								{
+							} elseif ($activity['action'] == 'open') {
+								if (empty($lastopen)) {
 									$lastopen = substr($activity['timestamp'], 0, 10);
 								}
 								++$open;
-							}
-							elseif($activity['action'] == 'click')
-							{
-								if(empty($lastopen))
-								{
+							} elseif ($activity['action'] == 'click') {
+								if (empty($lastopen)) {
 									$lastopen = substr($activity['timestamp'], 0, 10);
 								}
 								++$click;
@@ -267,30 +241,32 @@ class Customers extends Persons
 			'sales_tax_code_id' => $this->input->post('sales_tax_code_id') == '' ? NULL : $this->input->post('sales_tax_code_id')
 		);
 
-		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
-		{
+		if ($this->Customer->save_customer($person_data, $customer_data, $customer_id)) {
 			// save customer to Mailchimp selected list
 			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
 
 			// New customer
-			if($customer_id == -1)
+			if ($customer_id == -1) {
+				echo json_encode(array(
+					'success' => TRUE,
+					'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $this->xss_clean($customer_data['person_id'])
+				));
+			} else // Existing customer
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $this->xss_clean($customer_data['person_id'])));
+				echo json_encode(array(
+					'success' => TRUE,
+					'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $customer_id
+				));
 			}
-			else // Existing customer
-			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $customer_id));
-			}
-		}
-		else // Failure
+		} else // Failure
 		{
-			echo json_encode(array('success' => FALSE,
-							'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-							'id' => -1));
+			echo json_encode(array(
+				'success' => FALSE,
+				'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+				'id' => -1
+			));
 		}
 	}
 
@@ -324,10 +300,8 @@ class Customers extends Persons
 
 		$count = 0;
 
-		foreach($customers_info->result() as $info)
-		{
-			if($this->Customer->delete($info->person_id))
-			{
+		foreach ($customers_info->result() as $info) {
+			if ($this->Customer->delete($info->person_id)) {
 				// remove customer from Mailchimp selected list
 				$this->mailchimp_lib->removeMember($this->_list_id, $info->email);
 
@@ -335,13 +309,12 @@ class Customers extends Persons
 			}
 		}
 
-		if($count == count($customers_to_delete))
-		{
-			echo json_encode(array('success' => TRUE,
-				'message' => $this->lang->line('customers_successful_deleted') . ' ' . $count . ' ' . $this->lang->line('customers_one_or_multiple')));
-		}
-		else
-		{
+		if ($count == count($customers_to_delete)) {
+			echo json_encode(array(
+				'success' => TRUE,
+				'message' => $this->lang->line('customers_successful_deleted') . ' ' . $count . ' ' . $this->lang->line('customers_one_or_multiple')
+			));
+		} else {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_cannot_be_deleted')));
 		}
 	}
@@ -363,29 +336,23 @@ class Customers extends Persons
 
 	public function do_csv_import()
 	{
-		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
-		{
+		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK) {
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_failed')));
-		}
-		else
-		{
-			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
-			{
+		} else {
+			if (($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE) {
 				// Skip the first row as it's the table description
 				fgetcsv($handle);
 				$i = 1;
 
 				$failCodes = array();
 
-				while(($data = fgetcsv($handle)) !== FALSE)
-				{
+				while (($data = fgetcsv($handle)) !== FALSE) {
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 
 					$consent = $data[3] == '' ? 0 : 1;
 
-					if(sizeof($data) >= 16 && $consent)
-					{
+					if (sizeof($data) >= 16 && $consent) {
 						$email = strtolower($data[4]);
 						$person_data = array(
 							'first_name'	=> $data[0],
@@ -416,50 +383,36 @@ class Customers extends Persons
 						// don't duplicate people with same email
 						$invalidated = $this->Customer->check_email_exists($email);
 
-						if($account_number != '')
-						{
+						if ($account_number != '') {
 							$customer_data['account_number'] = $account_number;
 							$invalidated &= $this->Customer->check_account_number_exists($account_number);
 						}
-					}
-					else
-					{
+					} else {
 						$invalidated = TRUE;
 					}
 
-					if($invalidated)
-					{
+					if ($invalidated) {
 						$failCodes[] = $i;
-					}
-					elseif($this->Customer->save_customer($person_data, $customer_data))
-					{
+					} elseif ($this->Customer->save_customer($person_data, $customer_data)) {
 						// save customer to Mailchimp selected list
 						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
-					}
-					else
-					{
+					} else {
 						$failCodes[] = $i;
 					}
 
 					++$i;
 				}
 
-				if(count($failCodes) > 0)
-				{
+				if (count($failCodes) > 0) {
 					$message = $this->lang->line('customers_csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 
 					echo json_encode(array('success' => FALSE, 'message' => $message));
-				}
-				else
-				{
+				} else {
 					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_csv_import_success')));
 				}
-			}
-			else
-			{
+			} else {
 				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_nodata_wrongformat')));
 			}
 		}
 	}
 }
-?>

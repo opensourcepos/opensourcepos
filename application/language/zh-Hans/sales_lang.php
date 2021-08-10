@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "已收帳款";
 $lang["sales_authorized_signature"] = "";
 $lang["sales_cancel_sale"] = "取消銷售";
 $lang["sales_cash"] = "現金";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "";
 $lang["sales_cash_filter"] = "現金";
 $lang["sales_change_due"] = "更改到期日";

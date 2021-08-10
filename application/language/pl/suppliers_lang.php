@@ -1,6 +1,6 @@
 <?php 
 
-$lang["suppliers_account_number"] = "";
+$lang["suppliers_account_number"] = "Numer konta";
 $lang["suppliers_agency_name"] = "";
 $lang["suppliers_cannot_be_deleted"] = "";
 $lang["suppliers_category"] = "";

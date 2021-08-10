@@ -49,7 +49,7 @@ $this->load->view('configs/config_header', $title_appearance);
 	<button class="btn btn-primary" name="submit_appearance"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
@@ -70,7 +70,7 @@ $this->load->view('configs/config_header', $title_appearance);
 		$("#gcaptcha_enable").change(enable_disable_gcaptcha_enable);
 
 		$("#backup_db").click(function() {
-			window.location = '<?php echo site_url('config/backup_db') ?>';
+			window.location = '<?= site_url('config/backup_db') ?>';
 		});
 
 		$('#general_config_form').validate($.extend(form_support.handler, {
@@ -80,11 +80,11 @@ $this->load->view('configs/config_header', $title_appearance);
 			rules: {
 				lines_per_page: {
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?= site_url($controller_name . '/check_numeric') ?>"
 				},
 				default_sales_discount: {
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?= site_url($controller_name . '/check_numeric') ?>"
 				},
 				gcaptcha_site_key: {
 					required: "#gcaptcha_enable:checked"
@@ -96,18 +96,18 @@ $this->load->view('configs/config_header', $title_appearance);
 
 			messages: {
 				default_sales_discount: {
-					required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
-					number: "<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
+					required: "<?= $this->lang->line('config_default_sales_discount_required'); ?>",
+					number: "<?= $this->lang->line('config_default_sales_discount_number'); ?>"
 				},
 				lines_per_page: {
-					required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
-					number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"
+					required: "<?= $this->lang->line('config_lines_per_page_required'); ?>",
+					number: "<?= $this->lang->line('config_lines_per_page_number'); ?>"
 				},
 				gcaptcha_site_key: {
-					required: "<?php echo $this->lang->line('config_gcaptcha_site_key_required'); ?>"
+					required: "<?= $this->lang->line('config_gcaptcha_site_key_required'); ?>"
 				},
 				gcaptcha_secret_key: {
-					required: "<?php echo $this->lang->line('config_gcaptcha_secret_key_required'); ?>"
+					required: "<?= $this->lang->line('config_gcaptcha_secret_key_required'); ?>"
 				}
 			},
 

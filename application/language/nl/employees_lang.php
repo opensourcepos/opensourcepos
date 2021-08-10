@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Informatie";
 $lang["employees_cannot_be_deleted"] = "Kan geselecteerde werknemer(s) niet verwijderen, één of meerdere bevatten verwerkte verkopen of u probeert uw account te verwijderen.";
 $lang["employees_change_password"] = "Wachtwoord wijzigen";

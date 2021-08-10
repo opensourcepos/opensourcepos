@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Mal Əlavə Etmək";
 $lang["item_kits_all"] = "Hamısı";
 $lang["item_kits_cannot_be_deleted"] = "Dəst Mal (lar) silinə bilməz.";

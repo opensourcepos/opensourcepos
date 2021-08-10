@@ -18,6 +18,15 @@ class Employee extends Person
 		return ($this->db->get()->num_rows() == 1);
 	}
 
+	public function username_exists($employee_id, $username)
+	{
+		$this->db->from('employees');
+		$this->db->where('employees.username', $username);
+		$this->db->where('employees.person_id <>', $employee_id);
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
 	/*
 	Gets total of rows
 	*/

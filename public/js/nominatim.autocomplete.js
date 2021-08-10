@@ -23,11 +23,7 @@
     var parse_field = function (format, address) {
       var fields = [];
       $.each(format.split("|"), function (key, value) {
-        if (
-          address[value] &&
-          fields.length < 2 &&
-          $.inArray(address[value], fields) === -1
-        ) {
+        if (address[value] && fields.length < 2 && $.inArray(address[value], fields) === -1) {
           fields.push(address[value]);
         }
       });
@@ -83,16 +79,11 @@
 
       $("#" + key).autocomplete({
         source: function (request, response) {
-          var params = default_params(
-            key,
-            value.response && value.response.field,
-            options.language
-          );
+          var params = default_params(key, value.response && value.response.field, options.language);
           var request_params = { q: request.term };
           options.extra_params &&
             $.each(options.extra_params, function (key, param) {
-              request_params[key] =
-                typeof param == "function" ? param() : param;
+              request_params[key] = typeof param == "function" ? param() : param;
             });
 
           $.ajax({
@@ -104,11 +95,7 @@
               response(
                 unique(
                   $.map(data, function (item) {
-                    return create_parser(
-                      key,
-                      (value.response && value.response.format) ||
-                        value.dependencies
-                    )(data);
+                    return create_parser(key, (value.response && value.response.format) || value.dependencies)(data);
                   })
                 )
               );

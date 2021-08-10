@@ -10,6 +10,7 @@ $lang["sales_amount_tendered"] = "Ποσό Είσπραξης";
 $lang["sales_authorized_signature"] = "Εγκεκριμένη Υπογραφή";
 $lang["sales_cancel_sale"] = "Ακύρωση";
 $lang["sales_cash"] = "Μετρητά";
+$lang["sales_cash_adjustment"] = "";
 $lang["sales_cash_deposit"] = "Προκαταβολή Μετρητών";
 $lang["sales_cash_filter"] = "Μετρητά";
 $lang["sales_change_due"] = "Ποσό Επιστροφής";

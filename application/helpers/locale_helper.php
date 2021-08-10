@@ -9,21 +9,17 @@ define('DEFAULT_PRECISION', 2);
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
-/**
- * Currency locale helper
- */
+// Currency locale helper
 
 function current_language_code($load_system_language = FALSE)
 {
 	$employee = get_instance()->Employee;
 
 	// Returns the language code of the employee if set or system language code if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)
-	{
+	if ($employee->is_logged_in() && $load_system_language != TRUE) {
 		$employee_info = $employee->get_logged_in_employee_info();
 
-		if(property_exists($employee_info, 'language_code') && !empty($employee_info->language_code))
-		{
+		if (property_exists($employee_info, 'language_code') && !empty($employee_info->language_code)) {
 			return $employee_info->language_code;
 		}
 	}
@@ -38,11 +34,9 @@ function current_language($load_system_language = FALSE)
 	$employee = get_instance()->Employee;
 
 	// Returns the language of the employee if set or system language if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)
-	{
+	if ($employee->is_logged_in() && $load_system_language != TRUE) {
 		$employee_info = $employee->get_logged_in_employee_info();
-		if(property_exists($employee_info, 'language') && !empty($employee_info->language))
-		{
+		if (property_exists($employee_info, 'language') && !empty($employee_info->language)) {
 			return $employee_info->language;
 		}
 	}
@@ -104,17 +98,12 @@ function load_language($load_system_language = FALSE, array $lang_array)
 {
 	$lang = get_instance()->lang;
 
-	if($load_system_language = TRUE)
-	{
-		foreach($lang_array as $language_file)
-		{
+	if ($load_system_language = TRUE) {
+		foreach ($lang_array as $language_file) {
 			$lang->load($language_file, current_language_code(TRUE));
 		}
-	}
-	else
-	{
-		foreach($lang_array as $language_file)
-		{
+	} else {
+		foreach ($lang_array as $language_file) {
 			$lang->load($language_file, current_language_code());
 		}
 	}
@@ -249,34 +238,26 @@ function get_payment_options()
 	$config = get_instance()->config;
 	$lang = get_instance()->lang;
 
-	$payments = array();
+	$payments = [];
 
 
-	if($config->item('payment_options_order') == 'debitcreditcash')
-	{
+	if ($config->item('payment_options_order') == 'debitcreditcash') {
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
 		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
 		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
-	}
-	elseif($config->item('payment_options_order') == 'debitcashcredit')
-	{
+	} elseif ($config->item('payment_options_order') == 'debitcashcredit') {
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
 		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
 		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
-	}
-	elseif($config->item('payment_options_order') == 'creditdebitcash')
-	{
+	} elseif ($config->item('payment_options_order') == 'creditdebitcash') {
 		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
 		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
-	}
-	elseif($config->item('payment_options_order') == 'creditcashdebit')
-	{
+	} elseif ($config->item('payment_options_order') == 'creditcashdebit') {
 		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
 		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-	}
-	else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
+	} else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
 	{
 		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
 		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
@@ -287,8 +268,7 @@ function get_payment_options()
 	$payments[$lang->line('sales_check')] = $lang->line('sales_check');
 
 	// If India (list of country codes include India) then include Unified Payment Interface
-	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false)
-	{
+	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false) {
 		$payments[$lang->line('sales_upi')] = $lang->line('sales_upi');
 	}
 
@@ -361,12 +341,9 @@ function to_currency_tax($number)
 {
 	$config = get_instance()->config;
 
-	if($config->item('tax_included') == '1')
-	{
+	if ($config->item('tax_included') == '1') {
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
-	}
-	else
-	{
+	} else {
 		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
 	}
 }
@@ -375,8 +352,7 @@ function to_tax_decimals($number)
 {
 	// taxes that are NULL, '' or 0 don't need to be displayed
 	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
-	if(empty($number))
-	{
+	if (empty($number)) {
 		return $number;
 	}
 
@@ -388,12 +364,11 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals=NULL, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimals = NULL, $type = \NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
-	if(!isset($number))
-	{
+	if (!isset($number)) {
 		return $number;
 	}
 
@@ -402,8 +377,7 @@ function to_decimals($number, $decimals=NULL, $type=\NumberFormatter::DECIMAL)
 	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
 	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
 
-	if(empty($config->item('thousands_separator')))
-	{
+	if (empty($config->item('thousands_separator'))) {
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
 	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
@@ -424,42 +398,33 @@ function parse_tax($number)
 function parse_decimals($number, $decimals = NULL)
 {
 	// ignore empty strings and return
-
-	if(empty($number))
-	{
+	if (empty($number)) {
 		return $number;
 	}
 
-	if ($number > MAX_PRECISION)
-	{
+	if ($number > MAX_PRECISION) {
 		return FALSE;
 	}
 
-	if ($number > 1.e14)
-	{
+	if ($number > 1.e14) {
 		return FALSE;
 	}
 
 	$config = get_instance()->config;
 
-	if($decimals == NULL)
-	{
+	if ($decimals === NULL) {
 		$decimals = $config->item('currency_decimals');
 	}
 
 	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
 
-	if(empty($config->item('thousands_separator')))
-	{
+	if (empty($config->item('thousands_separator'))) {
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
 
-	try
-	{
+	try {
 		return $fmt->parse($number);
-	}
-	catch(Exception $e)
-	{
+	} catch (Exception $e) {
 		return FALSE;
 	}
 }
@@ -600,12 +565,11 @@ function dateformat_bootstrap($php_format)
 
 function valid_date($date)
 {
-	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $date);
+	$config = get_instance()->Appconfig;
+	return (DateTime::createFromFormat($config->get('dateformat'), $date));
 }
 
 function valid_decimal($decimal)
 {
-	return preg_match('/^(\d*\.)?\d+$/', $decimal);
+	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
-
-?>

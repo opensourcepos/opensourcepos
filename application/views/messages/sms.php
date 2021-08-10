@@ -3,50 +3,49 @@
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
-	      
-<div class="jumbotron" style="max-width: 60%; margin:auto">
-	<?php echo form_open("messages/send/", array('id'=>'send_sms_form', 'enctype'=>'multipart/form-data', 'method'=>'post', 'class'=>'form-horizontal')); ?>
-		<fieldset>
-			<legend style="text-align: center;"><?php echo $this->lang->line('messages_sms_send'); ?></legend>
-			<div class="form-group form-group-sm">
-				<label for="phone" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_phone'); ?></label>
-				<div class="col-xs-9">
-					<input class="form-control input-sm", type="text", name="phone", placeholder="<?php echo $this->lang->line('messages_phone_placeholder'); ?>"></input>
-					<span class="help-block" style="text-align:center;"><?php echo $this->lang->line('messages_multiple_phones'); ?></span>
-				</div>
-			</div>
 
-			<div class="form-group form-group-sm">
-				<label for="message" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_message'); ?></label>
-				<div class="col-xs-9">
-					<textarea class="form-control input-sm" rows="3" id="message" name="message" placeholder="<?php echo $this->lang->line('messages_message_placeholder'); ?>"></textarea>
-				</div>
-			</div>
-
-			<?php echo form_submit(array(
-				'name'=>'submit_form',
-				'id'=>'submit_form',
-				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'));?>
-		</fieldset>
-	<?php echo form_close(); ?>
+<?= form_open("messages/send/", array('id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal')); ?>
+<h5><?= $this->lang->line('messages_sms_send'); ?></h5>
+<div class="col mb-3">
+	<label for="message-recipients" class="form-label"><?= $this->lang->line('messages_phone'); ?></label>
+	<div class="input-group">
+		<span class="input-group-text" id="message-icon"><i class="bi bi-phone"></i></span>
+		<input type="text" name="phone" class="form-control" id="message-recipients" aria-describedby="message-icon" required placeholder="<?= $this->lang->line('messages_phone_placeholder'); ?>">
+	</div>
+	<span class="form-text"><?= $this->lang->line('messages_multiple_phones'); ?></span>
 </div>
+
+<div class="col mb-3">
+	<label for="text-message" class="form-label"><?= $this->lang->line('messages_message'); ?></label>
+	<div class="input-group">
+		<span class="input-group-text"><i class="bi bi-chat-quote"></i></span>
+		<textarea class="form-control" name="message" id="text-message" rows="10" placeholder="<?= $this->lang->line('messages_message_placeholder'); ?>"></textarea>
+	</div>
+</div>
+
+<div class="d-flex justify-content-end">
+	<button class="btn btn-primary" id="submit_form" name="submit_form"><?= $this->lang->line('common_submit'); ?></button>
+</div>
+<?= form_close(); ?>
 
 <?php $this->load->view("partial/footer"); ?>
 
 <script type="text/javascript">
-//validation and submit handling
-$(document).ready(function()
-{
-	$('#send_sms_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
-				},
-				dataType: 'json'
-			});
-		}
+	//validation and submit handling
+	$(document).ready(function() {
+		$('#send_sms_form').validate({
+			submitHandler: function(form) {
+				$(form).ajaxSubmit({
+					success: function(response) {
+						$.notify({
+							message: response.message
+						}, {
+							type: response.success ? 'success' : 'danger'
+						})
+					},
+					dataType: 'json'
+				});
+			}
+		});
 	});
-});
 </script>

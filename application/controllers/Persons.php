@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -42,7 +42,7 @@ abstract class Persons extends Secure_Controller
 	The function supports UTF-8 string.
 
 	Example:
-		i.e. <?php echo nameize("john o'grady-smith"); ?>
+		i.e. <?= nameize("john o'grady-smith"); ?>
 
 		returns John O'Grady-Smith
 	*/
@@ -52,4 +52,3 @@ abstract class Persons extends Secure_Controller
 		return str_name_case($string);
 	}
 }
-?>

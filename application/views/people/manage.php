@@ -1,60 +1,47 @@
 <?php $this->load->view("partial/header"); ?>
 
 <script type="text/javascript">
-$(document).ready(function()
-{
-	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	$(document).ready(function() {
+		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
-	table_support.init({
-		resource: '<?php echo site_url($controller_name);?>',
-		headers: <?php echo $table_headers; ?>,
-		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
-		uniqueId: 'people.person_id',
-		enableActions: function()
-		{
-			var email_disabled = $("td input:checkbox:checked").parents("tr").find("td a[href^='mailto:']").length == 0;
-			$("#email").prop('disabled', email_disabled);
-		}
-	});
-
-	$("#email").click(function(event)
-	{
-		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element)
-		{
-			return $(element).attr('href').replace(/^mailto:/, '');
+		table_support.init({
+			resource: '<?= site_url($controller_name); ?>',
+			headers: <?= $table_headers; ?>,
+			pageSize: <?= $this->config->item('lines_per_page'); ?>,
+			uniqueId: 'people.person_id',
+			enableActions: function() {
+				var email_disabled = $("td input:checkbox:checked").parents("tr").find("td a[href^='mailto:']").length == 0;
+				$("#email").prop('disabled', email_disabled);
+			}
 		});
-		location.href = "mailto:" + recipients.join(",");
+
+		$("#email").click(function(event) {
+			var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element) {
+				return $(element).attr('href').replace(/^mailto:/, '');
+			});
+			location.href = "mailto:" + recipients.join(",");
+		});
 	});
-});
 </script>
 
-<div id="title_bar" class="btn-toolbar">
-	<?php
-	if ($controller_name == 'customers')
-	{
-	?>
-		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/csv_import"); ?>'
-				title='<?php echo $this->lang->line('customers_import_items_csv'); ?>'>
-			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_csv'); ?>
+<div class="btn-toolbar justify-content-end mb-3" role="toolbar">
+	<?php if ($controller_name == 'customers') { ?>
+		<button class="btn btn-primary modal-dlg me-2" data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url($controller_name . '/csv_import'); ?>" title="<?= $this->lang->line('customers_import_items_csv'); ?>">
+			<i class="bi bi-box-arrow-in-down-right pe-1"></i><?= $this->lang->line('common_import_csv'); ?>
 		</button>
-	<?php
-	}
-	?>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
-			title='<?php echo $this->lang->line($controller_name . '_new'); ?>'>
-		<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name . '_new'); ?>
+	<?php } ?>
+	<button class="btn btn-primary modal-dlg" data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url($controller_name . '/view'); ?>" title="<?= $this->lang->line($controller_name . '_new'); ?>">
+		<i class="bi bi-person pe-1"></i><?= $this->lang->line($controller_name . '_new'); ?>
 	</button>
 </div>
 
-<div id="toolbar">
-	<div class="pull-left btn-toolbar">
-		<button id="delete" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
-		</button>
-		<button id="email" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-envelope">&nbsp</span><?php echo $this->lang->line("common_email");?>
-		</button>
-	</div>
+<div class="btn-toolbar mb-3" role="toolbar">
+	<button id="delete" class="btn btn-outline-secondary me-2">
+		<i class="bi bi-trash pe-1"></i><?= $this->lang->line('common_delete'); ?>
+	</button>
+	<button id="email" class="btn btn-outline-secondary">
+		<i class="bi bi-envelope pe-1"></i><?= $this->lang->line('common_email'); ?>
+	</button>
 </div>
 
 <div id="table_holder">

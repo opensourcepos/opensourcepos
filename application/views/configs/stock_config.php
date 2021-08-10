@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_stock['config_title'] = $this->lang->line('config_location_configuration');
@@ -15,12 +15,12 @@ $this->load->view('configs/config_header', $title_stock);
 	<button class="btn btn-primary" name="submit_stock"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling
 	$(document).ready(function() {
-		var location_count = <?php echo sizeof($stock_locations); ?>;
+		var location_count = <?= sizeof($stock_locations); ?>;
 
 		var hide_show_remove = function() {
 			if ($("input[name*='stock_location']:enabled").length > 1) {
@@ -34,7 +34,7 @@ $this->load->view('configs/config_header', $title_stock);
 			var block = $(this).parent().clone(true);
 			var new_block = block.insertAfter($(this).parent());
 			var new_block_id = 'stock_location[]';
-			$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?= $this->lang->line('config_stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 			hide_show_remove();
 		};
@@ -59,11 +59,11 @@ $this->load->view('configs/config_header', $title_stock);
 				value_count = $(this).val() == value ? value_count + 1 : value_count;
 			});
 			return value_count < 2;
-		}, "<?php echo $this->lang->line('config_stock_location_duplicate'); ?>");
+		}, "<?= $this->lang->line('config_stock_location_duplicate'); ?>");
 
 		$.validator.addMethod('valid_chars', function(value, element) {
 			return value.indexOf('_') === -1;
-		}, "<?php echo $this->lang->line('config_stock_location_invalid_chars'); ?>");
+		}, "<?= $this->lang->line('config_stock_location_invalid_chars'); ?>");
 
 		$('#location_config_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {
@@ -74,7 +74,7 @@ $this->load->view('configs/config_header', $title_stock);
 						}, {
 							type: response.success ? 'success' : 'danger'
 						});
-						$("#stock_locations").load('<?php echo site_url("config/ajax_stock_locations"); ?>', init_add_remove_locations);
+						$("#stock_locations").load('<?= site_url("config/ajax_stock_locations"); ?>', init_add_remove_locations);
 					},
 					dataType: 'json'
 				});
@@ -88,7 +88,7 @@ $this->load->view('configs/config_header', $title_stock);
 
 				foreach ($stock_locations as $location => $location_data) {
 				?>
-					<?php echo 'stock_location_' . ++$i ?>: {
+					<?= 'stock_location_' . ++$i ?>: {
 						required: true,
 						stock_location: true,
 						valid_chars: true
@@ -104,7 +104,7 @@ $this->load->view('configs/config_header', $title_stock);
 
 				foreach ($stock_locations as $location => $location_data) {
 				?>
-					<?php echo 'stock_location_' . ++$i ?>: "<?php echo $this->lang->line('config_stock_location_required'); ?>",
+					<?= 'stock_location_' . ++$i ?>: "<?= $this->lang->line('config_stock_location_required'); ?>",
 				<?php
 				}
 				?>

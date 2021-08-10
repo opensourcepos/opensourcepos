@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Persons.php");
 
@@ -26,7 +26,7 @@ class Suppliers extends Persons
 
 		echo json_encode($data_row);
 	}
-	
+
 	/*
 	Returns Supplier table data rows. This will be called with AJAX.
 	*/
@@ -42,8 +42,7 @@ class Suppliers extends Persons
 		$total_rows = $this->Supplier->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($suppliers->result() as $supplier)
-		{
+		foreach ($suppliers->result() as $supplier) {
 			$row = $this->xss_clean(get_supplier_data_row($supplier));
 			$row['category'] = $this->Supplier->get_category_name($row['category']);
 			$data_rows[] = $row;
@@ -51,7 +50,7 @@ class Suppliers extends Persons
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
-	
+
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
@@ -68,15 +67,14 @@ class Suppliers extends Persons
 
 		echo json_encode($suggestions);
 	}
-	
+
 	/*
 	Loads the supplier edit form
 	*/
 	public function view($supplier_id = -1)
 	{
 		$info = $this->Supplier->get_info($supplier_id);
-		foreach(get_object_vars($info) as $property => $value)
-		{
+		foreach (get_object_vars($info) as $property => $value) {
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
@@ -84,7 +82,7 @@ class Suppliers extends Persons
 
 		$this->load->view("suppliers/form", $data);
 	}
-	
+
 	/*
 	Inserts/updates a supplier
 	*/
@@ -121,34 +119,36 @@ class Suppliers extends Persons
 			'tax_id' => $this->input->post('tax_id')
 		);
 
-		if($this->Supplier->save_supplier($person_data, $supplier_data, $supplier_id))
-		{
+		if ($this->Supplier->save_supplier($person_data, $supplier_data, $supplier_id)) {
 			$supplier_data = $this->xss_clean($supplier_data);
 
 			//New supplier
-			if($supplier_id == -1)
+			if ($supplier_id == -1) {
+				echo json_encode(array(
+					'success' => TRUE,
+					'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
+					'id' => $supplier_data['person_id']
+				));
+			} else //Existing supplier
 			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_data['person_id']));
+				echo json_encode(array(
+					'success' => TRUE,
+					'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
+					'id' => $supplier_id
+				));
 			}
-			else //Existing supplier
-			{
-				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_id));
-			}
-		}
-		else//failure
+		} else //failure
 		{
 			$supplier_data = $this->xss_clean($supplier_data);
 
-			echo json_encode(array('success' => FALSE,
-							'message' => $this->lang->line('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
-							'id' => -1));
+			echo json_encode(array(
+				'success' => FALSE,
+				'message' => $this->lang->line('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
+				'id' => -1
+			));
 		}
 	}
-	
+
 	/*
 	This deletes suppliers from the suppliers table
 	*/
@@ -156,16 +156,11 @@ class Suppliers extends Persons
 	{
 		$suppliers_to_delete = $this->xss_clean($this->input->post('ids'));
 
-		if($this->Supplier->delete_list($suppliers_to_delete))
-		{
-			echo json_encode(array('success' => TRUE,'message' => $this->lang->line('suppliers_successful_deleted').' '.
-							count($suppliers_to_delete).' '.$this->lang->line('suppliers_one_or_multiple')));
-		}
-		else
-		{
-			echo json_encode(array('success' => FALSE,'message' => $this->lang->line('suppliers_cannot_be_deleted')));
+		if ($this->Supplier->delete_list($suppliers_to_delete)) {
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('suppliers_successful_deleted') . ' ' .
+				count($suppliers_to_delete) . ' ' . $this->lang->line('suppliers_one_or_multiple')));
+		} else {
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('suppliers_cannot_be_deleted')));
 		}
 	}
-	
 }
-?>

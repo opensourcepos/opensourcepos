@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_info/', array('id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?= form_open('config/save_info/', array('id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 
 <?php
 $title_info['config_title'] = $this->lang->line('config_info_configuration');
@@ -25,15 +25,15 @@ $this->load->view('configs/config_header', $title_info);
 				<span class="input-group-text"><i class="bi bi-image"></i></span>
 				<div class="fileinput-new form-control rounded-end mb-0" style="height: 200px;"></div>
 				<div class="fileinput-exists fileinput-preview img-thumbnail form-control rounded-end mb-0 bg-light" style="height: 200px; background-size: 40px 40px; background-position: 0 0, 20px 20px; background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white), linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);">
-					<img class="mx-auto" data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('config_company_logo'); ?>" src="<?php if ($logo_exists) echo base_url('uploads/' . $this->config->item('company_logo')); ?>">
+					<img class="mx-auto" data-src="holder.js/100%x100%" alt="<?= $this->lang->line('config_company_logo'); ?>" src="<?php if ($logo_exists) echo base_url('uploads/' . $this->config->item('company_logo')); ?>">
 				</div>
 			</div>
-			<div class="btn btn-secondary btn-file">
-				<span class="fileinput-new"><i class="bi bi-hand-index"></i>&nbsp;&nbsp;<?= $this->lang->line("config_company_select_image"); ?></span>
-				<span class="fileinput-exists"><i class="bi bi-images"></i>&nbsp;&nbsp;<?= $this->lang->line("config_company_change_image"); ?></span>
+			<div class="btn btn-secondary btn-file me-2">
+				<span class="fileinput-new"><i class="bi bi-hand-index pe-1"></i><?= $this->lang->line("config_company_select_image"); ?></span>
+				<span class="fileinput-exists"><i class="bi bi-images pe-1"></i><?= $this->lang->line("config_company_change_image"); ?></span>
 				<input type="file" name="company_logo">
 			</div>
-			<button class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput"><i class="bi bi-eraser"></i>&nbsp;&nbsp;<?= $this->lang->line("config_company_remove_image"); ?></button>
+			<button class="btn btn-outline-secondary fileinput-exists" data-dismiss="fileinput"><i class="bi bi-eraser pe-1"></i><?= $this->lang->line("config_company_remove_image"); ?></button>
 		</div>
 	</div>
 	<div class="col-12 col-lg-6 form-text d-none d-lg-block" id="company-logo-desc">
@@ -95,7 +95,7 @@ $this->load->view('configs/config_header', $title_info);
 	<button class="btn btn-primary" name="submit_info"><?= $this->lang->line('common_submit'); ?></button>
 </div>
 
-<?php echo form_close(); ?>
+<?= form_close(); ?>
 
 <script type="text/javascript">
 	//validation and submit handling

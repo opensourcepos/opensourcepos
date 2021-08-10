@@ -1,32 +1,25 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
 	public function index()
 	{
 		$this->load->library('migration');
-		if($this->Employee->is_logged_in())
-		{
+		if ($this->Employee->is_logged_in()) {
 			redirect('home');
-		}
-		else
-		{
+		} else {
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
 
 
-			if($this->config->item('gcaptcha_enable'))
-			{
+			if ($this->config->item('gcaptcha_enable')) {
 				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
 			}
 
-			if($this->form_validation->run() == FALSE)
-			{
+			if ($this->form_validation->run() == FALSE) {
 				$this->load->view('login');
-			}
-			else
-			{
+			} else {
 				redirect('home');
 			}
 		}
@@ -36,22 +29,19 @@ class Login extends CI_Controller
 	{
 		$password = $this->input->post('password');
 
-		if(!$this->_installation_check())
-		{
+		if (!$this->_installation_check()) {
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_installation'));
 
 			return FALSE;
 		}
 
-		if (!$this->migration->is_latest())
-		{
+		if (!$this->migration->is_latest()) {
 			set_time_limit(3600);
 			// trigger any required upgrade before starting the application
 			$this->migration->latest();
 		}
 
-		if(!$this->Employee->login($username, $password))
-		{
+		if (!$this->Employee->login($username, $password)) {
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
 
 			return FALSE;
@@ -73,8 +63,7 @@ class Login extends CI_Controller
 
 		$status = json_decode($result, TRUE);
 
-		if(empty($status['success']))
-		{
+		if (empty($status['success'])) {
 			$this->form_validation->set_message('gcaptcha_check', $this->lang->line('login_invalid_gcaptcha'));
 
 			return FALSE;
@@ -89,15 +78,13 @@ class Login extends CI_Controller
 		$extensions = implode(', ', get_loaded_extensions());
 		$keys = array('bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl');
 		$pattern = '/';
-		foreach($keys as $key) 
-		{
+		foreach ($keys as $key) {
 			$pattern .= '(?=.*\b' . preg_quote($key, '/') . '\b)';
 		}
 		$pattern .= '/i';
 		$result = preg_match($pattern, $extensions);
 
-		if(!$result)
-		{
+		if (!$result) {
 			error_log('Check your php.ini');
 			error_log('PHP installed extensions: ' . $extensions);
 			error_log('PHP required extensions: ' . implode(', ', $keys));
@@ -106,4 +93,3 @@ class Login extends CI_Controller
 		return $result;
 	}
 }
-?>

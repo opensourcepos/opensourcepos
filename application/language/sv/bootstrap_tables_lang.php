@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "alla";
 $lang["tables_columns"] = "Kolumner";
 $lang["tables_hide_show_pagination"] = "Dölj/visa sida";

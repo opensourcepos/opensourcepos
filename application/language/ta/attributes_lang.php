@@ -1,8 +1,7 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain '_' or '|'";
-$lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
-$lang["attributes_confirm_restore"] = "Are you sure you want to restore the selected attribute(s)?";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "பண்புக்கூறு மதிப்பு '_' அல்லது '|' கொண்டிருக்கக்கூடாது";
+$lang["attributes_confirm_delete"] = "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறு (களை) நீக்க விரும்புகிறீர்களா?";
+$lang["attributes_confirm_restore"] = "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறுகளை (களை) மீட்டெடுக்க விரும்புகிறீர்களா?";
 $lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
 $lang["attributes_definition_error_adding_updating"] = "Attribute %1 could not be added or updated. Please check the error log.";
 $lang["attributes_definition_flags"] = "Attribute Visibility";

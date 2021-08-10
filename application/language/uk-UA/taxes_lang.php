@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Додати виняток";
 $lang["taxes_cascade"] = "Каскад";
 $lang["taxes_cascade_sequence"] = "Послідовність каскаду";
@@ -53,6 +54,7 @@ $lang["taxes_tax_codes_saved_successfully"] = "Податкові коди ус�
 $lang["taxes_tax_codes_saved_unsuccessfully"] = "Не вдалося зберегти податковий код.";
 $lang["taxes_tax_excluded"] = "Без податку";
 $lang["taxes_tax_group"] = "Податкова група";
+$lang["taxes_tax_group_not_unique"] = "Податкова група % 1 не є унікальною";
 $lang["taxes_tax_group_sequence"] = "Послідовність податкової групи";
 $lang["taxes_tax_included"] = "Податок включений";
 $lang["taxes_tax_jurisdiction"] = "Податкова юрисдикція";
@@ -76,4 +78,3 @@ $lang["taxes_tax_rounding"] = "Податкове округлення";
 $lang["taxes_tax_type"] = "Вид податку";
 $lang["taxes_update"] = "Оновіть категорію податку з продаж";
 $lang["taxes_vat_tax"] = "НДС податок";
-$lang["taxes_tax_group_not_unique"] = "Податкова група % 1 не є унікальною";

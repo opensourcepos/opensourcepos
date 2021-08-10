@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Địa chỉ công ty";
 $lang["config_address_required"] = "Trường địa chỉ công ty là bắt buộc.";
 $lang["config_all_set"] = "Mọi quyền đều được đặt chính xác!";
@@ -126,6 +127,7 @@ $lang["config_financial_year_may"] = "1 tháng năm";
 $lang["config_financial_year_nov"] = "1 tháng mười một";
 $lang["config_financial_year_oct"] = "1 tháng mười";
 $lang["config_financial_year_sep"] = "1 tháng chín";
+$lang["config_floating_labels"] = "";
 $lang["config_gcaptcha_enable"] = "reCAPTCHA cho trang đăng nhập";
 $lang["config_gcaptcha_secret_key"] = "Khóa bí mật reCAPTCHA";
 $lang["config_gcaptcha_secret_key_required"] = "Khóa bí mật reCAPTCHA là trường bắt buộc";
@@ -145,6 +147,7 @@ $lang["config_image_restrictions"] = "Hạn chế tải ảnh lên";
 $lang["config_include_hsn"] = "Bao gồm hỗ trợ cho mã HSN";
 $lang["config_info"] = "Thông tin";
 $lang["config_info_configuration"] = "Thông tin cửa hàng";
+$lang["config_input_groups"] = "";
 $lang["config_integrations"] = "Tích hợp";
 $lang["config_integrations_configuration"] = "Tích hợp bên thứ ba";
 $lang["config_invoice"] = "Hóa đơn";
@@ -174,6 +177,7 @@ $lang["config_locale_info"] = "Thông tin Cấu hình Bản địa hóa";
 $lang["config_location"] = "Kho";
 $lang["config_location_configuration"] = "Vị trí kho";
 $lang["config_location_info"] = "Thông tin cấu hình vị trí";
+$lang["config_login_form"] = "";
 $lang["config_logout"] = "Bạn có muốn sao lưu dự phòng trước khi đăng xuất ra không? Bấm chuột vào [OK] để sao lưu hoặc [Cancel] để đăng xuất.";
 $lang["config_mailchimp"] = "Mailchimp";
 $lang["config_mailchimp_api_key"] = "Khóa API Mailchimp";
@@ -288,6 +292,7 @@ $lang["config_tax_decimals"] = "Phần thập phân Thế";
 $lang["config_tax_id"] = "Mã số thuế";
 $lang["config_tax_included"] = "Gồm thuế";
 $lang["config_theme"] = "Giao diện";
+$lang["config_theme_preview"] = "";
 $lang["config_thousands_separator"] = "Dấu ngăn cách phần nghìn";
 $lang["config_timezone"] = "Múi giờ";
 $lang["config_timezone_error"] = "Múi giờ OSPOS khác với múi giờ trên máy của bạn.";

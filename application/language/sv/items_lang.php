@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Lager att lägga till eller ta bort.";
 $lang["items_allow_alt_description"] = "Tillåt alternativ beskrivning";
 $lang["items_amount_entry"] = "Belopp";

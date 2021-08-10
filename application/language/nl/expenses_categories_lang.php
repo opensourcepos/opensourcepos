@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Onkostencategorie naam is vereist";
 $lang["expenses_categories_add_item"] = "Category toevoegen";
 $lang["expenses_categories_cannot_be_deleted"] = "Kan categorie onkosten niet verwijderen";
