@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Item_kit_items class
  */
 
-class Item_kit_items extends CI_Model
+class Item_kit_items extends Model
 {
 	/*
 	Gets item kit items for a particular item kit

@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Stock_location class
  */
 
-class Stock_location extends CI_Model
+class Stock_location extends Model
 {
 	public function exists($location_id = -1)
 	{

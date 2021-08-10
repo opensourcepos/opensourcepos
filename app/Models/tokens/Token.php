@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once(APPPATH . 'models/tokens/Token.php');
-require_once(APPPATH . 'models/tokens/Token_customer.php');
-require_once(APPPATH . 'models/tokens/Token_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_invoice_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_quote_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_year_quote_count.php');
-require_once(APPPATH . 'models/tokens/Token_work_order_sequence.php');
-require_once(APPPATH . 'models/tokens/Token_suspended_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_year_invoice_count.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_price.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_weight.php');
-require_once(APPPATH . 'models/tokens/Token_barcode_ean.php');
+require_once(APPPATH . 'Models/tokens/Token.php');
+require_once(APPPATH . 'Models/tokens/Token_customer.php');
+require_once(APPPATH . 'Models/tokens/Token_invoice_count.php');
+require_once(APPPATH . 'Models/tokens/Token_invoice_sequence.php');
+require_once(APPPATH . 'Models/tokens/Token_quote_sequence.php');
+require_once(APPPATH . 'Models/tokens/Token_year_quote_count.php');
+require_once(APPPATH . 'Models/tokens/Token_work_order_sequence.php');
+require_once(APPPATH . 'Models/tokens/Token_suspended_invoice_count.php');
+require_once(APPPATH . 'Models/tokens/Token_year_invoice_count.php');
+require_once(APPPATH . 'Models/tokens/Token_barcode_price.php');
+require_once(APPPATH . 'Models/tokens/Token_barcode_weight.php');
+require_once(APPPATH . 'Models/tokens/Token_barcode_ean.php');
 
 /**
  * Token class

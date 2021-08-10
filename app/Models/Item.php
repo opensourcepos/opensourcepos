@@ -1,9 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
 /**
  * Item class
  */
 
-class Item extends CI_Model
+class Item extends Model
 {
 	/*
 	Determines if a given item_id is an item

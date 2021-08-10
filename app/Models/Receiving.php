@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Receiving class
  */
 
-class Receiving extends CI_Model
+class Receiving extends Model
 {
 	public function get_info($receiving_id)
 	{

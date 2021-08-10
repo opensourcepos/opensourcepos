@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Inventory class
  */
 
-class Inventory extends CI_Model
+class Inventory extends Model
 {
 	public function insert($inventory_data)
 	{

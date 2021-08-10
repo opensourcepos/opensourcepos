@@ -1,9 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
 /**
  * Attribute class
  */
 
-class Attribute extends CI_Model
+class Attribute extends Model
 {
 	const SHOW_IN_ITEMS = 1;
 	const SHOW_IN_SALES = 2;

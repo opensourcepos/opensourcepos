@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Appconfig class
  */
 
-class Appconfig extends CI_Model
+class Appconfig extends Model
 {
 	public function exists($key)
 	{

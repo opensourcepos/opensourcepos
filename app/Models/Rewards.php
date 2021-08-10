@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Rewards class
  */
 
-class Rewards extends CI_Model
+class Rewards extends Model
 {
 	/*
 	Inserts or updates a rewards

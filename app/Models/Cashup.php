@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Cashup class
  */
 
-class Cashup extends CI_Model
+class Cashup extends Model
 {
 	/*
 	Determines if a given Cashup_id is an Cashup

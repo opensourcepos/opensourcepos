@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Dinner_table class
  */
 
-class Dinner_table extends CI_Model
+class Dinner_table extends Model
 {
 	public function exists($dinner_table_id)
 	{

@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Module class
  */
 
-class Module extends CI_Model
+class Module extends Model
 {
 	function __construct()
 	{

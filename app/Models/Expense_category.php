@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Expense_category class
  */
 
-class Expense_category extends CI_Model
+class Expense_category extends Model
 {
 	/*
 	Determines if a given Expense_id is an Expense category

@@ -1,8 +1,13 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
 /**
  * Sale class
  */
-class Sale extends CI_Model
+class Sale extends Model
 {
 	/**
 	 * Get sale info

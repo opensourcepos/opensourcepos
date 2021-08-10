@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Giftcard class
  */
 
-class Giftcard extends CI_Model
+class Giftcard extends Model
 {
 	/*
 	Determines if a given giftcard_id is a giftcard

@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Customer_rewards class
  */
 
-class Customer_rewards extends CI_Model
+class Customer_rewards extends Model
 {
 	public function exists($package_id)
 	{

@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Item_taxes class
  */
 
-class Item_taxes extends CI_Model
+class Item_taxes extends Model
 {
 	/*
 	Gets tax info for a particular item

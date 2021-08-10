@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Tax class
  */
 
-class Tax extends CI_Model
+class Tax extends Model
 {
 	/**
 	 * Determines if a given row is on file

@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Tax Category class
  */
 
-class Tax_category extends CI_Model
+class Tax_category extends Model
 {
 	/**
 	 *  Determines if it exists in the table

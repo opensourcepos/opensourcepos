@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Base class for People classes
  */
 
-class Person extends CI_Model
+class Person extends Model
 {
 	/**
 	 * Determines whether the given person exists in the people database table

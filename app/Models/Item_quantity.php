@@ -1,10 +1,14 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
 
 /**
  * Item_quantity class
  */
 
-class Item_quantity extends CI_Model
+class Item_quantity extends Model
 {
     public function exists($item_id, $location_id)
     {
