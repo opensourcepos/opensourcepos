@@ -1,80 +1,93 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Session\Session;
 
 /**
  * Employee class
+ *
+ * @property session session
+ *
  */
-
 class Employee extends Person
 {
-	/*
-	Determines if a given person_id is an employee
-	*/
-	public function exists($person_id)
+	public function __construct()
 	{
-		$this->db->from('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
-		$this->db->where('employees.person_id', $person_id);
-
-		return ($this->db->get()->num_rows() == 1);
+		parent::__construct();
+		$this->session = session();
 	}
 
-	public function username_exists($employee_id, $username)
+	/**
+	 * Determines if a given person_id is an employee
+	 */
+	public function exists(int $person_id): bool
 	{
-		$this->db->from('employees');
-		$this->db->where('employees.username', $username);
-		$this->db->where('employees.person_id <>', $employee_id);
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'people.person_id = employees.person_id');
+		$builder->where('employees.person_id', $person_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets total of rows
-	*/
-	public function get_total_rows()
+	public function username_exists(int $employee_id, string $username): bool
 	{
-		$this->db->from('employees');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('employees');
+		$builder->where('employees.username', $username);
+		$builder->where('employees.person_id <>', $employee_id);
 
-		return $this->db->count_all_results();
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Returns all the employees
-	*/
-	public function get_all($limit = 10000, $offset = 0)
+	/**
+	 * Gets total of rows
+	 */
+	public function get_total_rows(): int
 	{
-		$this->db->from('employees');
-		$this->db->where('deleted', 0);
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->order_by('last_name', 'asc');
-		$this->db->limit($limit);
-		$this->db->offset($offset);
+		$builder = $this->db->table('employees');
+		$builder->where('deleted', 0);
 
-		return $this->db->get();
+		return $builder->countAllResults();
 	}
 
-	/*
-	Gets information about a particular employee
-	*/
-	public function get_info($employee_id)
+	/**
+	 * Returns all the employees
+	 */
+	public function get_all(int $limit = 10000, int $offset = 0): ResultInterface
 	{
-		$this->db->from('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
-		$this->db->where('employees.person_id', $employee_id);
-		$query = $this->db->get();
+		$builder = $this->db->table('employees');
+		$builder->where('deleted', 0);
+		$builder->join('people', 'employees.person_id = people.person_id');
+		$builder->orderBy('last_name', 'asc');
+		$builder->limit($limit);
+		$builder->offset($offset);
 
-		if($query->num_rows() == 1)
+		return $builder->get();
+	}
+
+	/**
+	 * Gets information about a particular employee
+	 */
+	public function get_info(int $person_id): object
+	{
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'people.person_id = employees.person_id');
+		$builder->where('employees.person_id', $person_id);
+		$query = $builder->get();
+
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			//Get empty base parent object, as $employee_id is NOT an employee
-			$person_obj = parent::get_info(-1);
+			$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
 
 			//Get all the fields from employee table
-			//append those fields to base parent object, we we have a complete empty object
-			foreach($this->db->list_fields('employees') as $field)
+			//append those fields to base parent object, we have a complete empty object
+			foreach($this->db->getFieldNames('employees') as $field)
 			{
 				$person_obj->$field = '';
 			}
@@ -83,185 +96,212 @@ class Employee extends Person
 		}
 	}
 
-	/*
-	Gets information about multiple employees
-	*/
-	public function get_multiple_info($employee_ids)
+	/**
+	 * Gets information about multiple employees
+	 */
+	public function get_multiple_info(array $person_ids): ResultInterface
 	{
-		$this->db->from('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
-		$this->db->where_in('employees.person_id', $employee_ids);
-		$this->db->order_by('last_name', 'asc');
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'people.person_id = employees.person_id');
+		$builder->whereIn('employees.person_id', $person_ids);
+		$builder->orderBy('last_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Inserts or updates an employee
-	*/
-	public function save_employee(&$person_data, &$employee_data, &$grants_data, $employee_id = FALSE)
+	/**
+	 * Inserts or updates an employee
+	 */
+	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE): bool
 	{
 		$success = FALSE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		if(ENVIRONMENT != 'testing' && parent::save($person_data, $employee_id))
+		if(ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id))
 		{
+			$builder = $this->db->table('employees');
 			if(!$employee_id || !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
-				$success = $this->db->insert('employees', $employee_data);
+				$success = $builder->insert($employee_data);
 			}
 			else
 			{
-				$this->db->where('person_id', $employee_id);
-				$success = $this->db->update('employees', $employee_data);
+				$builder->where('person_id', $employee_id);
+				$success = $builder->update($employee_data);
 			}
 
 			//We have either inserted or updated a new employee, now lets set permissions.
 			if($success)
 			{
 				//First lets clear out any grants the employee currently has.
-				$success = $this->db->delete('grants', array('person_id' => $employee_id));
+				$builder = $this->db->table('grants');
+				$success = $builder->delete(['person_id' => $employee_id]);
 
 				//Now insert the new grants
 				if($success)
 				{
 					foreach($grants_data as $grant)
 					{
-						$success = $this->db->insert('grants', array('permission_id' => $grant['permission_id'], 'person_id' => $employee_id, 'menu_group' => $grant['menu_group']));
+						$data = [
+							'permission_id' => $grant['permission_id'],
+							'person_id' => $employee_id,
+							'menu_group' => $grant['menu_group']
+						];
+
+						$builder = $this->db->table('grants');
+						$success = $builder->insert($data);
 					}
 				}
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
 
-	/*
-	Deletes one employee
-	*/
-	public function delete($employee_id)
+	/**
+	 * Deletes one employee
+	 */
+	public function delete($employee_id = null, bool $purge = false): bool
 	{
 		$success = FALSE;
 
-		//Don't let employees delete theirself
+		//Don't let employees delete themselves
 		if($employee_id == $this->get_logged_in_employee_info()->person_id)
 		{
 			return FALSE;
 		}
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		//Delete permissions
-		if($this->db->delete('grants', array('person_id' => $employee_id)))
+		$builder = $this->db->table('grants');
+
+		if($builder->delete(['person_id' => $employee_id]))
 		{
-			$this->db->where('person_id', $employee_id);
-			$success = $this->db->update('employees', array('deleted' => 1));
+			$builder = $this->db->table('employees');
+			$builder->where('person_id', $employee_id);
+			$success = $builder->update(['deleted' => 1]);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
 		return $success;
 	}
 
-	/*
-	Deletes a list of employees
-	*/
-	public function delete_list($employee_ids)
+	/**
+	 * Deletes a list of employees
+	 */
+	public function delete_list(array $person_ids): bool
 	{
 		$success = FALSE;
 
-		//Don't let employees delete theirself
-		if(in_array($this->get_logged_in_employee_info()->person_id, $employee_ids))
+		//Don't let employees delete themselves
+		if(in_array($this->get_logged_in_employee_info()->person_id, $person_ids))
 		{
 			return FALSE;
 		}
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		$this->db->where_in('person_id', $employee_ids);
+		$builder = $this->db->table('grants');
+		$builder->whereIn('person_id', $person_ids);
 		//Delete permissions
-		if($this->db->delete('grants'))
+		if($builder->delete())
 		{
 			//delete from employee table
-			$this->db->where_in('person_id', $employee_ids);
-			$success = $this->db->update('employees', array('deleted' => 1));
+			$builder = $this->db->table('employees');
+			$builder->whereIn('person_id', $person_ids);
+			$success = $builder->update(['deleted' => 1]);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
+		$success &= $this->db->transStatus();
 
 		return $success;
  	}
 
-	/*
-	Get search suggestions to find employees
-	*/
-	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5)
+	/**
+	 * Get search suggestions to find employees
+	 */
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = FALSE): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
-		$this->db->from('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
-		if($include_deleted == FALSE)
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'employees.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
+
+		if($unique == FALSE)
 		{
-			$this->db->where('deleted', 0);
-		}
-		$this->db->order_by('last_name', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->from('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		if($include_deleted == FALSE)
+		$builder->orderBy('last_name', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
 		{
-			$this->db->where('deleted', 0);
-		}
-		$this->db->like('email', $search);
-		$this->db->order_by('email', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->email);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name];
 		}
 
-		$this->db->from('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		if($include_deleted == FALSE)
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'employees.person_id = people.person_id');
+
+		if(!$unique)
 		{
-			$this->db->where('deleted', 0);
-		}
-		$this->db->like('username', $search);
-		$this->db->order_by('username', 'asc');
-		foreach($this->db->get()->result() as $row)
-		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->username);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->from('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		if($include_deleted == FALSE)
+		$builder->like('email', $search);
+		$builder->orderBy('email', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
 		{
-			$this->db->where('deleted', 0);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->email];
 		}
-		$this->db->like('phone_number', $search);
-		$this->db->order_by('phone_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'employees.person_id = people.person_id');
+
+		if(!$unique)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
+			$builder->where('deleted', 0);
+		}
+
+		$builder->like('username', $search);
+		$builder->orderBy('username', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
+		{
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->username];
+		}
+
+		$builder = $this->db->table('employees');
+		$builder->join('people', 'employees.person_id = people.person_id');
+
+		if(!$unique)
+		{
+			$builder->where('deleted', 0);
+		}
+
+		$builder->like('phone_number', $search);
+		$builder->orderBy('phone_number', 'asc');
+
+		foreach($builder->get()->getResult() as $row)
+		{
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number];
 		}
 
 		//only return $limit suggestions
@@ -273,125 +313,126 @@ class Employee extends Person
 		return $suggestions;
 	}
 
- 	/*
-	Gets rows
-	*/
-	public function get_found_rows($search)
+ 	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
 
-	/*
-	Performs a search on employees
-	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Performs a search on employees
+	 */
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
-		// get_found_rows case
-		if($count_only == TRUE)
-		{
-			$this->db->select('COUNT(employees.person_id) as count');
-		}
-
-		$this->db->from('employees AS employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('phone_number', $search);
-			$this->db->or_like('username', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('employees AS employees');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
-			return $this->db->get()->row()->count;
+			$builder->select('COUNT(employees.person_id) as count');
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->join('people', 'employees.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('email', $search);
+			$builder->orLike('phone_number', $search);
+			$builder->orLike('username', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
+		$builder->where('deleted', 0);
+
+		// get_found_rows case
+		if($count_only)
+		{
+			return $builder->get()->getRow()->count;
+		}
+
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Attempts to login employee and set session. Returns boolean based on outcome.
-	*/
-	public function login($username, $password)
+	/**
+	 * Attempts to log in employee and set session. Returns boolean based on outcome.
+	 */
+	public function login(string $username, string $password): bool
 	{
-		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
+		$builder = $this->db->table('employees');
+		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-		if($query->num_rows() === 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
 			// compare passwords depending on the hash version
-			if($row->hash_version === '1' && $row->password === md5($password))
+			if($row->hash_version == 1 && $row->password == md5($password))	//TODO: === ?
 			{
-				$this->db->where('person_id', $row->person_id);
-				$this->session->set_userdata('person_id', $row->person_id);
+				$builder->where('person_id', $row->person_id);
+				$this->session->set('person_id', $row->person_id);
 				$password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-				return $this->db->update('employees', array('hash_version' => 2, 'password' => $password_hash));
+				return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
 			}
-			elseif($row->hash_version === '2' && password_verify($password, $row->password))
+			elseif($row->hash_version == 2 && password_verify($password, $row->password))	//TODO: === ?
 			{
-				$this->session->set_userdata('person_id', $row->person_id);
+				$this->session->set('person_id', $row->person_id);
 
 				return TRUE;
 			}
-
 		}
 
 		return FALSE;
 	}
 
-	/*
-	Logs out a user by destorying all session data and redirect to login
-	*/
-	public function logout()
+	/**
+	 * Logs out a user by destroying all session data and redirect to log in
+	 */
+	public function logout(): void
 	{
-		$this->session->sess_destroy();
+		$this->session->destroy();
 
 		redirect('login');
 	}
 
-	/*
-	Determins if a employee is logged in
-	*/
-	public function is_logged_in()
+	/**
+	 * Determines if an employee is logged in
+	 */
+	public function is_logged_in(): bool
 	{
-		return ($this->session->userdata('person_id') != FALSE);
+		return ($this->session->get('person_id') != FALSE);
 	}
 
-	/*
-	Gets information about the currently logged in employee.
-	*/
+	/**
+	 * Gets information about the currently logged in employee.
+	 */
 	public function get_logged_in_employee_info()
 	{
 		if($this->is_logged_in())
 		{
-			return $this->get_info($this->session->userdata('person_id'));
+			return $this->get_info($this->session->get('person_id'));
 		}
 
 		return FALSE;
 	}
 
-	/*
-	Determines whether the employee has access to at least one submodule
-	*/
-	public function has_module_grant($permission_id, $person_id)
+	/**
+	 * Determines whether the employee has access to at least one submodule
+	 */
+	public function has_module_grant(string $permission_id, int $person_id): bool
 	{
-		$this->db->from('grants');
-		$this->db->like('permission_id', $permission_id, 'after');
-		$this->db->where('person_id', $person_id);
-		$result_count = $this->db->get()->num_rows();
+		$builder = $this->db->table('grants');
+		$builder->like('permission_id', $permission_id, 'after');
+		$builder->where('person_id', $person_id);
+		$result_count = $builder->get()->getNumRows();
 
 		if($result_count != 1)
 		{
@@ -401,21 +442,21 @@ class Employee extends Person
 		return $this->has_subpermissions($permission_id);
 	}
 
- 	/*
-	Checks permissions
-	*/
-	public function has_subpermissions($permission_id)
+ 	/**
+	 * Checks permissions
+	 */
+	public function has_subpermissions(string $permission_id): bool
 	{
-		$this->db->from('permissions');
-		$this->db->like('permission_id', $permission_id.'_', 'after');
+		$builder = $this->db->table('permissions');
+		$builder->like('permission_id', $permission_id.'_', 'after');
 
-		return ($this->db->get()->num_rows() == 0);
+		return ($builder->get()->getNumRows() == 0);	//TODO: ===
 	}
 
 	/**
 	 * Determines whether the employee specified employee has access the specific module.
 	 */
-	public function has_grant($permission_id, $person_id)
+	public function has_grant(string $permission_id, int $person_id): bool
 	{
 		//if no module_id is null, allow access
 		if($permission_id == NULL)
@@ -423,22 +464,23 @@ class Employee extends Person
 			return TRUE;
 		}
 
-		$query = $this->db->get_where('grants', array('person_id' => $person_id, 'permission_id' => $permission_id), 1);
+		$builder = $this->db->table('grants');
+		$query = $builder->getWhere(['person_id' => $person_id, 'permission_id' => $permission_id], 1);
 
-		return ($query->num_rows() == 1);
+		return ($query->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
 	 * Returns the menu group designation that this module is to appear in
 	 */
-	public function get_menu_group($permission_id, $person_id)
+	public function get_menu_group(string $permission_id, int $person_id): string
 	{
-		$this->db->select('menu_group');
-		$this->db->from('grants');
-		$this->db->where('permission_id', $permission_id);
-		$this->db->where('person_id', $person_id);
+		$builder = $this->db->table('grants');
+		$builder->select('menu_group');
+		$builder->where('permission_id', $permission_id);
+		$builder->where('person_id', $person_id);
 
-		$row = $this->db->get()->row();
+		$row = $builder->get()->getRow();
 
 		// If no grants are assigned yet then set the default to 'home'
 		if($row == NULL)
@@ -451,60 +493,58 @@ class Employee extends Person
 		}
 	}
 
-	/*
-	Gets employee permission grants
-	*/
-	public function get_employee_grants($person_id)
+	/**
+	 * Gets employee permission grants
+	 */
+	public function get_employee_grants(int $person_id): array
 	{
-		$this->db->from('grants');
-		$this->db->where('person_id', $person_id);
+		$builder = $this->db->table('grants');
+		$builder->where('person_id', $person_id);
 
-		return $this->db->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
-	/*
-	Attempts to login employee and set session. Returns boolean based on outcome.
-	*/
-	public function check_password($username, $password)
+	/**
+	 * Attempts to log in employee and set session. Returns boolean based on outcome.
+	 */
+	public function check_password(string $username, string $password): bool
 	{
-		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
+		$builder = $this->db->table('employees');
+		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
-			// compare passwords
 			if(password_verify($password, $row->password))
 			{
 				return TRUE;
 			}
-
 		}
 
 		return FALSE;
 	}
 
-	/*
-	Change password for the employee
-	*/
-	public function change_password($employee_data, $employee_id = FALSE)
+	/**
+	 * Change password for the employee
+	 */
+	public function change_password(array $employee_data, $employee_id = FALSE): bool
 	{
 		$success = FALSE;
 
 		if(ENVIRONMENT != 'testing')
 		{
-			//Run these queries as a transaction, we want to make sure we do all or nothing
-			$this->db->trans_start();
+			$this->db->transStart();
 
-			$this->db->where('person_id', $employee_id);
-			$success = $this->db->update('employees', $employee_data);
+			$builder = $this->db->table('employees');
+			$builder->where('person_id', $employee_id);
+			$success = $builder->update($employee_data);
 
-			$this->db->trans_complete();
+			$this->db->transComplete();
 
-			$success &= $this->db->trans_status();
+			$success &= $this->db->transStatus();
 		}
 
 		return $success;
 	}
 }
-?>

@@ -1,13 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_modify_session_datatype extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_modify_session_datatype extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		error_log('Migrating modify_session_datatype');
 
@@ -16,8 +15,7 @@ class Migration_modify_session_datatype extends CI_Migration
 		error_log('Migrating modify_session_datatype');
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 }
-?>

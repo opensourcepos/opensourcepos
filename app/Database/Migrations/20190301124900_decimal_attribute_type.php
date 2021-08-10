@@ -1,20 +1,18 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_decimal_attribute_type extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_decimal_attribute_type extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_decimal_attribute_type.sql');
 	}
 
-	public function down()
+	public function down(): void
 	{
 
 	}
 }
-?>

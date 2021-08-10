@@ -1,42 +1,42 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Summary_report.php");
+namespace App\Models\Reports;
 
 class Summary_categories extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
-		return array(
-			array('category' => $this->lang->line('reports_category')),
-			array('quantity' => $this->lang->line('reports_quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
+		return [
+			['category' => lang('Reports.category')],
+			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+		];
 	}
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs, &$builder): void	//TODO: Hungarian notation
 	{
-		parent::_select($inputs);
+		parent::_select($inputs, $builder);	//TODO: hungarian notation
 
-		$this->db->select('
-				items.category AS category,
-				SUM(sales_items.quantity_purchased) AS quantity_purchased
+		$builder->select('
+			items.category AS category,
+			SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 	}
 
-	protected function _from()
+	protected function _from(&$builder): void	//TODO: hungarian notation
 	{
-		parent::_from();
+		parent::_from($builder);
 
-		$this->db->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
+		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
-	protected function _group_order()
+	protected function _group_order(&$builder): void	//TODO: hungarian notation
 	{
-		$this->db->group_by('category');
-		$this->db->order_by('category');
+		$builder->groupBy('category');
+		$builder->orderBy('category');
 	}
 }
-?>

@@ -2,10 +2,10 @@
 /node_modules
 /vendor
 /public/bower_components
-
-# Logs
-/application/logs/*
-*.log
+app/Config/email.php
+app/sessions/*
+app/logs/*
+app/uploads/*
 npm-debug.log*
 
 # Build generated
@@ -81,6 +81,7 @@ $RECYCLE.BIN/
 git-svn-diff.py
 *.bash
 .swp
+system/
 *.swp
 *.rej
 *.orig
@@ -88,3 +89,8 @@ git-svn-diff.py
 *.~
 .env
 auth.json
+
+*.png
+*.jpg
+*.jpeg
+*copy*

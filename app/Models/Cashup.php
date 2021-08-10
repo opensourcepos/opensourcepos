@@ -1,62 +1,74 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Cashup class
+ *
+ * @property employee employee
  */
 
-class Cashup extends CI_Model
+class Cashup extends Model
 {
-	/*
-	Determines if a given Cashup_id is an Cashup
-	*/
-	public function exists($cashup_id)
+	/**
+	 * Determines if a given Cashup_id is a Cashup
+	 */
+	public function exists(int $cashup_id): bool
 	{
-		$this->db->from('cash_up');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder = $this->db->table('cash_up');
+		$builder->where('cashup_id', $cashup_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets employee info
-	*/
-	public function get_employee($cashup_id)
+	/**
+	 * Gets employee info
+	 */
+	public function get_employee(int $cashup_id): object    //TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
 	{
-		$this->db->from('cash_up');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder = $this->db->table('cash_up');
+		$builder->where('cashup_id', $cashup_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		$employee = model(Employee::class);
+
+		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
-	public function get_multiple_info($cash_up_ids)
+	public function get_multiple_info(string $cashup_ids): ResultInterface
 	{
-		$this->db->from('cash_up');
-		$this->db->where_in('cashup_id', $cashup_ids);
-		$this->db->order_by('cashup_id', 'asc');
+		$builder = $this->db->table('cash_up');
+		$builder->whereIn('cashup_id', $cashup_ids);
+		$builder->orderBy('cashup_id', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets rows
-	*/
-	public function get_found_rows($search, $filters)
+	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}
 
-	/*
-	Searches cashups
-	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'cashup_id', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Searches cashups
+	 */
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$builder = $this->db->table('cash_up AS cash_up');
+		
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(cash_up.cashup_id) as count');
+			$builder->select('COUNT(cash_up.cashup_id) as count');
 		}
 
-		$this->db->select('
+		$builder->select('
 			cash_up.cashup_id,
 			MAX(cash_up.open_date) AS open_date,
 			MAX(cash_up.close_date) AS close_date,
@@ -76,56 +88,57 @@ class Cashup extends CI_Model
 			MAX(close_employees.first_name) AS close_first_name,
 			MAX(close_employees.last_name) AS close_last_name
 		');
-		$this->db->from('cash_up AS cash_up');
-		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
-		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
-		$this->db->group_start();
-			$this->db->like('cash_up.open_date', $search);
-			$this->db->or_like('open_employees.first_name', $search);
-			$this->db->or_like('open_employees.last_name', $search);
-			$this->db->or_like('close_employees.first_name', $search);
-			$this->db->or_like('close_employees.last_name', $search);
-			$this->db->or_like('cash_up.closed_amount_total', $search);
-			$this->db->or_like('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
-			$this->db->or_like('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
+		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
-		$this->db->where('cash_up.deleted', $filters['is_deleted']);
+		$builder->groupStart();
+			$builder->like('cash_up.open_date', $search);
+			$builder->orLike('open_employees.first_name', $search);
+			$builder->orLike('open_employees.last_name', $search);
+			$builder->orLike('close_employees.first_name', $search);
+			$builder->orLike('close_employees.last_name', $search);
+			$builder->orLike('cash_up.closed_amount_total', $search);
+			$builder->orLike('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
+			$builder->orLike('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
+		$builder->groupEnd();
 
-		if(empty($this->config->item('date_or_time_format')))
+		$builder->where('cash_up.deleted', $filters['is_deleted']);
+
+		if(empty(config('OSPOS')->date_or_time_format))	//TODO: convert this to ternary notation.
 		{
-			$this->db->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		$this->db->group_by('cashup_id');
+		$builder->groupBy('cashup_id');
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $builder->get()->getRowArray()['count'];
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	/*
-	Gets information about a particular cashup
+	/**
+	* Gets information about a particular cashup
 	*/
-	public function get_info($cashup_id)
+	public function get_info(int $cashup_id): object
 	{
-		$this->db->select('
+		$builder = $this->db->table('cash_up AS cash_up');
+		$builder->select('
 			cash_up.cashup_id AS cashup_id,
 			cash_up.open_date AS open_date,
 			cash_up.close_date AS close_date,
@@ -146,15 +159,14 @@ class Cashup extends CI_Model
 			close_employees.first_name AS close_first_name,
 			close_employees.last_name AS close_last_name
 		');
-		$this->db->from('cash_up AS cash_up');
-		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
-		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
+		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
+		$builder->where('cashup_id', $cashup_id);
 
-		$query = $this->db->get();
-		if($query->num_rows() == 1)
+		$query = $builder->get();
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -162,7 +174,7 @@ class Cashup extends CI_Model
 			$cash_up_obj = new stdClass();
 
 			//Get all the fields from cashup table
-			foreach($this->db->list_fields('cash_up') as $field)
+			foreach($this->db->getFieldNames('cash_up') as $field)
 			{
 				$cash_up_obj->$field = '';
 			}
@@ -171,16 +183,17 @@ class Cashup extends CI_Model
 		}
 	}
 
-	/*
-	Inserts or updates an cashup
+	/**
+	* Inserts or updates a cashup
 	*/
-	public function save(&$cash_up_data, $cashup_id = FALSE)
+	public function save_value(array &$cash_up_data, $cashup_id = FALSE): bool
 	{
-		if(!$cashup_id == -1 || !$this->exists($cashup_id))
+		if(!$cashup_id == -1 || !$this->exists($cashup_id))	//TODO: Replace -1 with constant
 		{
-			if($this->db->insert('cash_up', $cash_up_data))
+			$builder = $this->db->table('cash_up');
+			if($builder->insert($cash_up_data))
 			{
-				$cash_up_data['cashup_id'] = $this->db->insert_id();
+				$cash_up_data['cashup_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -188,25 +201,24 @@ class Cashup extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('cashup_id', $cashup_id);
+		$builder = $this->db->table('cash_up');
+		$builder->where('cashup_id', $cashup_id);
 
-		return $this->db->update('cash_up', $cash_up_data);
+		return $builder->update($cash_up_data);
 	}
 
-	/*
-	Deletes a list of cashups
-	*/
-	public function delete_list($cashup_ids)
+	/**
+	 * Deletes a list of cashups
+	 */
+	public function delete_list(array $cashup_ids): bool
 	{
-		$success = FALSE;
-
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
-			$this->db->where_in('cashup_id', $cashup_ids);
-			$success = $this->db->update('cash_up', array('deleted'=>1));
-		$this->db->trans_complete();
+		$this->db->transStart();
+			$builder = $this->db->table('cash_up');
+			$builder->whereIn('cashup_id', $cashup_ids);
+			$success = $builder->update(['deleted' => 1]);
+		$this->db->transComplete();
 
 		return $success;
 	}
 }
-?>

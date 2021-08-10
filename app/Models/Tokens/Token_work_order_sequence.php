@@ -1,19 +1,34 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models\Tokens;
+
+use app\Models\Appconfig;
+use ReflectionException;
 
 /**
  * Token_work_order_sequence class
+ *
+ * @property appconfig appconfig
+ *
  */
-
 class Token_work_order_sequence extends Token
 {
-	public function token_id()
+	public function __construct($value = '')
+	{
+		parent::__construct($value);
+		$this->appconfig = model('AppConfig');
+	}
+
+	public function token_id(): string
 	{
 		return 'WSEQ';
 	}
 
-	public function get_value($save = TRUE)
+	/**
+	 * @throws ReflectionException
+	 */
+	public function get_value(): string
 	{
-		return $this->CI->Appconfig->acquire_next_work_order_sequence($save);
+		return $this->appconfig->acquire_save_next_work_order_sequence();
 	}
 }
-?>

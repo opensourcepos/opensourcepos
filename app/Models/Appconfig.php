@@ -1,113 +1,132 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Model;
+use ReflectionException;
 
 /**
  * Appconfig class
+ *
+ * @property mixed config
  */
-
-class Appconfig extends CI_Model
+class Appconfig extends Model
 {
-	public function exists($key)
+	public function exists(string $key): bool
 	{
-		$this->db->from('app_config');
-		$this->db->where('app_config.key', $key);
+		$builder = $this->db->table('app_config');
+		$builder->where('app_config.key', $key);	//TODO: I think we can skip app_config. and just write where(key, $key);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	public function get_all()
+	public function get_all(): ResultInterface
 	{
-		$this->db->from('app_config');
-		$this->db->order_by('key', 'asc');
+		$builder = $this->db->table('app_config');
+		$builder->orderBy('key', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
-	public function get($key, $default = '')
+	public function get_value(string $key, string $default = ''): string
 	{
-		$query = $this->db->get_where('app_config', array('key' => $key), 1);
+		$builder = $this->db->table('app_config');
+		$query = $builder->getWhere('key', $key, 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
-			return $query->row()->value;
+			return $query->getRow()->value;
 		}
 
 		return $default;
 	}
 
-	public function save($key, $value)
+	/**
+	 * Calls the parent save() from BaseModel but additionally updates the cached array value.
+	 * @param $data
+	 * @return bool
+	 * @throws ReflectionException
+	 */
+	public function save($data): bool
 	{
-		$config_data = array(
-			'key'   => $key,
-			'value' => $value
-		);
+		$this->config = config('OSPOS');
+		$success = parent::save($data);
 
-		if(!$this->exists($key))
+		$key = array_keys($data)[0];
+
+		if($success)
 		{
-			return $this->db->insert('app_config', $config_data);
+			$this->config[$key] = $data[$key];
 		}
-
-		$this->db->where('key', $key);
-
-		return $this->db->update('app_config', $config_data);
-	}
-
-	public function batch_save($data)
-	{
-		$success = TRUE;
-
-		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
-
-		foreach($data as $key=>$value)
-		{
-			$success &= $this->save($key, $value);
-		}
-
-		$this->db->trans_complete();
-
-		$success &= $this->db->trans_status();
 
 		return $success;
 	}
 
-	public function delete($key)
+	/**
+	 * @throws ReflectionException
+	 */
+	public function batch_save(array $data): bool
 	{
-		return $this->db->delete('app_config', array('key' => $key));
-	}
+		$success = TRUE;
 
-	public function delete_all()
-	{
-		return $this->db->empty_table('app_config');
-	}
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->transStart();
 
-	public function acquire_next_invoice_sequence($save = TRUE)
-	{
-		$last_used = $this->get('last_used_invoice_number') + 1;
-		if($save)
+		foreach($data as $element)
 		{
-			$this->save('last_used_invoice_number', $last_used);
+			$success &= $this->save($element);
 		}
+
+		$this->db->transComplete();
+
+		$success &= $this->db->transStatus();
+
+		return $success;
+	}
+
+	public function delete(string $key = null, bool $purge = false): bool
+	{
+		$builder = $this->db->table('app_config');
+		return $builder->delete(['key' => $key]);
+	}
+
+	public function delete_all(): bool	//TODO: This function is never used in the code. Consider removing it.
+	{
+		$builder = $this->db->table('app_config');
+		return $builder->emptyTable();
+	}
+
+	/**
+	 * @throws ReflectionException
+	 */
+	public function acquire_save_next_invoice_sequence(): string
+	{
+		$last_used = (int)config('OSPOS')->last_used_invoice_number + 1;
+		$this->save(['last_used_invoice_number' => $last_used]);
+
 		return $last_used;
 	}
 
-	public function acquire_next_quote_sequence($save = TRUE)
+	/**
+	 * @throws ReflectionException
+	 */
+	public function acquire_save_next_quote_sequence(): string
 	{
-		$last_used = $this->get('last_used_quote_number') + 1;
-		if($save)
-		{
-			$this->save('last_used_quote_number', $last_used);
-		}
+		$last_used = (int)config('OSPOS')->last_used_quote_number + 1;
+		$this->save(['last_used_quote_number' => $last_used]);
+
 		return $last_used;
 	}
 
-	public function acquire_next_work_order_sequence($save = TRUE)
+	/**
+	 * @throws ReflectionException
+	 */
+	public function acquire_save_next_work_order_sequence(): string
 	{
-		$last_used = $this->get('last_used_work_order_number') + 1;
-		if($save)
-		{
-			$this->save('last_used_work_order_number', $last_used);
-		}
+		$last_used = (int)config('OSPOS')->last_used_work_order_number + 1;
+		$this->save(['last_used_work_order_number' => $last_used]);
+
 		return $last_used;
 	}
 }
-?>

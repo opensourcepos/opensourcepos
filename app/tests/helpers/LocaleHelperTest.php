@@ -1,8 +1,12 @@
 <?php
+namespace App\Helpers;
+
+use CodeIgniter\Test\CIUnitTestCase;
+
 /**
  * @backupGlobals disabled
  */
-class Locale_helper_test extends UnitTestCase
+class LocaleHelperTest extends CIUnitTestCase 
 {
     public function test_parse_decimals_precision()
     {
@@ -17,6 +21,4 @@ class Locale_helper_test extends UnitTestCase
 
         $this->assertEquals(5.00, $decimals);
     }
-
-
 }

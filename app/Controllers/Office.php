@@ -1,7 +1,12 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-require_once("Secure_Controller.php");
+namespace App\Controllers;
 
+use app\Models\Employee;
+
+/**
+ * @property employee employee
+ */
 class Office extends Secure_Controller
 {
 	function __construct()
@@ -9,14 +14,15 @@ class Office extends Secure_Controller
 		parent::__construct('office', NULL, 'office');
 	}
 
-	public function index()
+	public function index(): void
 	{
-		$this->load->view('home/office');
+		echo view('home/office');
 	}
 
-	public function logout()
+	public function logout(): void
 	{
-		$this->Employee->logout();
+		$this->employee = model('Employee');
+
+		$this->employee->logout();
 	}
 }
-?>

@@ -1,80 +1,60 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+namespace App\Events;
+
+use app\Libraries\MY_Migration;
+use app\Models\Appconfig;
+use CodeIgniter\Session\Session;
+use Config\Services;
 
 /**
- * Loads configuration from database into global CI config
+ * @property my_migration migration;
+ * @property session session;
+ * @property appconfig appconfig;
+ * @property mixed $migration_config
+ * @property mixed $config
  */
-function load_config()
+class Load_config
 {
-    $CI =& get_instance();
-
-    $migration = $CI->load->library('migration');
-    if (!$CI->migration->is_latest())
+    /**
+     * Loads configuration from database into App CI config and then applies those settings
+     */
+    public function load_config()
     {
-        $CI->session->sess_destroy();
-    }
+        //Migrations
+        $migration_config = config('Migrations');
+        $migration = new My_Migration($migration_config);
 
-    foreach($CI->Appconfig->get_all()->result() as $app_config)
-    {	
-        $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
-    }
+        $this->session = session();
 
-    // fallback to English if language settings are not correct
-    $file_exists = !file_exists('../application/language/' . current_language_code());
-    if(current_language_code() == null || current_language() == null || $file_exists)
-    {
-        $CI->config->set_item('language', 'english');
-        $CI->config->set_item('language_code', 'en-US');
-    }
+        //Database Configuration
+        $config = config('OSPOS');
+        $appconfig = model(Appconfig::class);
 
-    _load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language(), FALSE);
-    _load_language_files($CI, '../application/language', current_language_code(), TRUE);
-
-    //Set timezone from config database
-    if($CI->config->item('timezone'))
-    {
-        date_default_timezone_set($CI->config->item('timezone'));
-    }
-    else
-    {
-        date_default_timezone_set('America/New_York');
-    }
-
-    bcscale(max(2, totals_decimals() + tax_decimals()));
-}
-
-/**
- * @param $CI
- * @param $path
- * @param $language
- * @param $fallback
- */
-function _load_language_files($CI, $path, $language, $fallback)
-{
-    $map = directory_map($path . DIRECTORY_SEPARATOR . $language);
-
-    foreach($map as $file)
-	{
-
-        if(!is_array($file) && substr(strrchr($file, '.'), 1) == 'php')
-		{
-            $filename = strtr($file, '', '_lang.php');
-            if ($fallback) {
-                $CI->lang->load($filename, 'en-US');
-
-                $array = $CI->lang->load($filename, $language, TRUE);
-                foreach($array as $lang_key => $lang_value) {
-                    if ($lang_value !== '') {
-                        $CI->lang->language[$lang_key] = $lang_value;
-                    }
-                }
-            }
-            else
-            {
-                $CI->lang->load($filename, $language);
-            }
-
+        if (!$migration->is_latest())
+        {
+            $this->session->destroy();
         }
+
+        foreach($appconfig->get_all()->getResult() as $app_config)
+        {
+            $config[$app_config->key] = $app_config->value;
+        }
+
+        //Language
+        $language_exists = file_exists('../app/Language/' . current_language_code());
+        if(current_language_code() == null || current_language() == null || !$language_exists)
+        {
+            $config->language = 'english';
+            $config->language_code = 'en-US';
+        }
+
+        $language = Services::language();
+        $language->setLocale($config->language_code);
+
+        //Time Zone
+        date_default_timezone_set($config->timezone ?? 'America/New_York');
+
+        bcscale(max(2, totals_decimals() + tax_decimals()));
     }
 }
-
-?>

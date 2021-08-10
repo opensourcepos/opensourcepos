@@ -1,13 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+use Config\Database;
 
 /**
  * Migration helper
  */
-
-function execute_script($path)
+function execute_script(string $path): void
 {
-	$CI =& get_instance();
-
 	$version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
 	error_log("Migrating to $version (file: $path)");
 
@@ -21,20 +20,20 @@ function execute_script($path)
 	$sqls = explode(';', $sql);
 	array_pop($sqls);
 
+	$db = Database::connect();
+
 	foreach($sqls as $statement)
 	{
-		$statement = $statement . ';';
+		$statement = $statement . ';';	//TODO: Can use string interpolation here
 
-		if(!$CI->db->simple_query($statement))
+		if(!$db->simpleQuery($statement))
 		{
-			foreach($CI->db->error() as $error)
+			foreach($db->error() as $error)
 			{
-				error_log('error: ' . $error);
+				error_log('error: ' . $error);	//TODO: Can use string interpolation here
 			}
 		}
 	}
 
 	error_log("Migrated to $version");
 }
-
-?>

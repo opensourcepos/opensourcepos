@@ -1,45 +1,59 @@
-<?php $this->load->view("partial/header"); ?>
+<?php
+/**
+ * @var bool $print_after_sale
+ * @var string $transaction_time
+ * @var int $receiving_id
+ * @var string $employee
+ * @var array $cart
+ * @var bool $show_stock_locations
+ * @var float $total
+ * @var string $mode
+ * @var string $payment_type
+ * @var float $amount_tendered
+ * @var float $amount_change
+ * @var string $barcode
+ */
+?>
+<?php echo view('partial/header') ?>
 
 <?php
 	if (isset($error_message))
 	{
-		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+		echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error_message) . '</div>';
 		exit;
 	}
 
-	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
-
-?>
+	echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
+	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
 </div>
 
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
-		if ($this->config->item('company_logo') != '') 
+		if (config('OSPOS')->company_logo != '')
 		{ 
 		?>
-			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
+			<div id="company_name"><img id="image" src="<?php echo esc(base_url('uploads/' . config('OSPOS')->company_logo), 'url') ?>" alt="company_logo" /></div>
 		<?php
 		}
 		?>
 
 		<?php
-		if ($this->config->item('receipt_show_company_name')) 
+		if (config('OSPOS')->receipt_show_company_name)
 		{ 
 		?>
-			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<div id="company_name"><?php echo esc(config('OSPOS')->company) ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
-		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
-		<div id="sale_receipt"><?php echo $this->lang->line('receivings_receipt'); ?></div>
-		<div id="sale_time"><?php echo $transaction_time ?></div>
+		<div id="company_address"><?php echo esc(nl2br(config('OSPOS')->address)) ?></div>
+		<div id="company_phone"><?php echo esc(config('OSPOS')->phone) ?></div>
+		<div id="sale_receipt"><?php echo lang('Receivings.receipt') ?></div>
+		<div id="sale_time"><?php echo esc($transaction_time) ?></div>
 	</div>
 
 	<div id="receipt_general_info">
@@ -47,43 +61,42 @@
 		if(isset($supplier))
 		{
 		?>
-			<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?></div>
+			<div id="customer"><?php echo lang('Suppliers.supplier') . esc(": $supplier") ?></div>
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo $this->lang->line('receivings_id').": ".$receiving_id; ?></div>
+		<div id="sale_id"><?php echo lang('Receivings.id') . ": $receiving_id" ?></div>
 		<?php 
 		if (!empty($reference))
 		{
 		?>
-			<div id="reference"><?php echo $this->lang->line('receivings_reference').": ".$reference; ?></div>	
+			<div id="reference"><?php echo lang('Receivings.reference') . esc(": $reference") ?></div>
 		<?php 
 		}
 		?>
-		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
+		<div id="employee"><?php echo lang('Employees.employee') . esc(": $employee") ?></div>
 	</div>
 
 	<table id="receipt_items">
 		<tr>
-			<th style="width:40%;"><?php echo $this->lang->line('items_item'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('common_price'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-			<th style="width:15%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
+			<th style="width:40%;"><?php echo lang('Items.item') ?></th>
+			<th style="width:20%;"><?php echo lang('Common.price') ?></th>
+			<th style="width:20%;"><?php echo lang('Sales.quantity') ?></th>
+			<th style="width:15%;text-align:right;"><?php echo lang('Sales.total') ?></th>
 		</tr>
 
 		<?php
-		foreach(array_reverse($cart, TRUE) as $line=>$item)
+		foreach(array_reverse($cart, TRUE) as $line => $item)
 		{
 		?>
 			<tr>
-				<td><?php echo $item['name'] . ' ' . $item['attribute_values']; ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
-				?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1; ?></td>
-				<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
+				<td><?php echo esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
+				<td><?php echo to_currency($item['price']) ?></td>
+				<td><?php echo to_quantity_decimals($item['quantity']) . ' ' . ($show_stock_locations ? ' [' . esc($item['stock_name']) . ']' : '') ?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1 ?></td>
+				<td><div class="total-value"><?php echo to_currency($item['total']) ?></div></td>
 			</tr>
 			<tr>
-				<td ><?php echo $item['serialnumber']; ?></td>
+				<td ><?php echo esc($item['serialnumber']) ?></td>
 			</tr>
 			<?php
 			if ($item['discount'] > 0 )
@@ -94,13 +107,13 @@
 					if($item['discount_type'] == FIXED)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . $this->lang->line("sales_discount") ?></td>
+						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . ' ' . lang('Sales.discount') ?></td>
 					<?php
 					}
 					elseif($item['discount_type'] == PERCENT)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_decimals($item['discount']) . " " . $this->lang->line("sales_discount_included") ?></td>
+						<td colspan="3" class="discount"><?php echo to_decimals($item['discount']) . ' ' . lang('Sales.discount_included') ?></td>
 					<?php
 					}	
 					?>
@@ -112,29 +125,29 @@
 		}
 		?>	
 		<tr>
-			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_total'); ?></td>
-			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total); ?></div></td>
+			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo lang('Sales.total') ?></td>
+			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total) ?></div></td>
 		</tr>
 		<?php 
-		if($mode!='requisition')
+		if($mode != 'requisition')
 		{
 		?>
 			<tr>
-				<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
-				<td><div class="total-value"><?php echo $payment_type; ?></div></td>
+				<td colspan="3" style='text-align:right;'><?php echo lang('Sales.payment') ?></td>
+				<td><div class="total-value"><?php echo esc($payment_type) ?></div></td>
 			</tr>
 
 			<?php if(isset($amount_change))
 			{
 			?>
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
-					<td><div class="total-value"><?php echo to_currency($amount_tendered); ?></div></td>
+					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.amount_tendered') ?></td>
+					<td><div class="total-value"><?php echo to_currency($amount_tendered) ?></div></td>
 				</tr>
 
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></td>
-					<td><div class="total-value"><?php echo $amount_change; ?></div></td>
+					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.change_due') ?></td>
+					<td><div class="total-value"><?php echo $amount_change ?></div></td>
 				</tr>
 			<?php
 			}
@@ -145,12 +158,12 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo nl2br($this->config->item('return_policy')); ?>
+		<?php echo esc(nl2br(config('OSPOS')->return_policy)) ?>
 	</div>
 
 	<div id='barcode'>
-		<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-		<?php echo $receiving_id; ?>
+		<img alt='<?php echo esc($barcode, 'attr') ?>' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
+		<?php echo $receiving_id ?>
 	</div>
 </div>
-<?php $this->load->view("partial/footer"); ?>
+<?php echo view('partial/footer') ?>

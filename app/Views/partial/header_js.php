@@ -4,30 +4,30 @@
 		setInterval('update_clock();', 1000);
 	}
 
-	// start the clock immediatly
+	// start the clock immediately
 	clock_tick();
 
 	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
+		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat) ?>");
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo $this->config->item('notify_horizontal_position'); ?>",
-		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
+		align: "<?php echo esc(config('OSPOS')->notify_horizontal_position, 'js') ?>",
+		from: "<?php echo esc(config('OSPOS')->notify_vertical_position, 'js') ?>"
 	}});
 
-	var cookie_name = "<?php echo $this->config->item('cookie_prefix').$this->config->item('csrf_cookie_name'); ?>";
+	var cookie_name = "<?php echo esc(config('OSPOS')->cookie_prefix, 'js') . esc(config('OSPOS')->csrf_cookie_name, 'js') ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);
 	};
 
 	var csrf_form_base = function() {
-		return { <?php echo $this->security->get_csrf_token_name(); ?> : function () { return csrf_token();  } };
+		return { <?php echo esc($this->security->get_csrf_token_name(), 'js') ?> : function () { return csrf_token() } }
 	};
 
 	var setup_csrf_token = function() {
-		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
+		$('input[name="<?php echo esc($this->security->get_csrf_token_name(), 'js') ?>"]').val(csrf_token());
 	};
 
 	var ajax = $.ajax;
@@ -47,23 +47,8 @@
 
 		return ajax.apply(this, arguments);
 	};
-    
+
 	$(document).ajaxComplete(setup_csrf_token);
-	$(document).ready(function(){
-		$("#logout").click(function(event) {
-			event.preventDefault();
-			$.ajax({
-				url: "<?php echo site_url('home/logout'); ?>", 
-				data: { 
-					"<?php echo $this->security->get_csrf_token_name(); ?>": csrf_token()
-				},
-				success: function() {
-					window.location.href = '<?php echo site_url(); ?>';
-				},
-				method: "POST"
-			});
-		});
-	});
 
 	var submit = $.fn.submit;
 

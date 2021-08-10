@@ -1,21 +1,80 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php
+/**
+ * @var object $exception
+ * @var string $message
+ */
 
-An uncaught Exception was encountered
+use CodeIgniter\CLI\CLI;
 
-Type:        <?php echo get_class($exception), "\n"; ?>
-Message:     <?php echo $message, "\n"; ?>
-Filename:    <?php echo $exception->getFile(), "\n"; ?>
-Line Number: <?php echo $exception->getLine(); ?>
+// The main Exception
+CLI::newLine();
+CLI::write('[' . get_class($exception) . ']', 'light_gray', 'red');
+CLI::newLine();
+CLI::write($message);
+CLI::newLine();
+CLI::write('at ' . CLI::color(clean_path($exception->getFile()) . ':' . $exception->getLine(), 'green'));
+CLI::newLine();
 
-<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
+// The backtrace
+if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE)
+{
+	$backtraces = $exception->getTrace();
 
-Backtrace:
-<?php	foreach ($exception->getTrace() as $error): ?>
-<?php		if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
-	File: <?php echo $error['file'], "\n"; ?>
-	Line: <?php echo $error['line'], "\n"; ?>
-	Function: <?php echo $error['function'], "\n\n"; ?>
-<?php		endif ?>
-<?php	endforeach ?>
+	if ($backtraces)
+	{
+		CLI::write('Backtrace:', 'green');
+	}
 
-<?php endif ?>
+	foreach ($backtraces as $i => $error)
+	{
+		$padFile  = '    '; // 4 spaces
+		$padClass = '       '; // 7 spaces
+		$c        = str_pad($i + 1, 3, ' ', STR_PAD_LEFT);
+
+		if (isset($error['file']))
+		{
+			$filepath = clean_path($error['file']) . ':' . $error['line'];
+
+			CLI::write($c . $padFile . CLI::color($filepath, 'yellow'));
+		}
+		else
+		{
+			CLI::write($c . $padFile . CLI::color('[internal function]', 'yellow'));
+		}
+
+		$function = '';
+
+		if (isset($error['class']))
+		{
+			$type = ($error['type'] === '->') ? '()' . $error['type'] : $error['type'];
+			$function .= $padClass . $error['class'] . $type . $error['function'];
+		}
+		elseif (isset($error['function']))
+		{
+			$function .= $padClass . $error['function'];
+		}
+
+		$args = implode(', ', array_map(static function ($value)
+		{
+			switch (true)
+			{
+				case is_object($value):
+					return 'Object(' . get_class($value) . ')';
+
+				case is_array($value):
+					return count($value) ? '[...]' : '[]';
+
+				case $value === null:
+					return 'null'; // return the lowercased version
+
+				default:
+					return var_export($value, true);
+			}
+		}, array_values($error['args'] ?? [])));
+
+		$function .= '(' . $args . ')';
+
+		CLI::write($function);
+		CLI::newLine();
+	}
+}
