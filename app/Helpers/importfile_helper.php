@@ -47,7 +47,7 @@ function get_csv_file($file_name)
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
 		$CI =& get_instance();
-		$CI->load->helper('security');
+		helper('security');
 
 		$csv_rows = [];
 

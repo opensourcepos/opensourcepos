@@ -12,7 +12,7 @@ class Migration_TaxAmount extends CI_Migration
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('tax_lib');
+		$this->tax_lib = new Tax_lib();
 	}
 
 	public function up()

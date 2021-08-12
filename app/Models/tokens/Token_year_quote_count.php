@@ -14,7 +14,7 @@ class Token_year_quote_count extends Token
 	{
 		parent::__construct();
 
-		$this->CI->load->model('Sale');
+		$this->CI->sale = model('Sale');
 	}
 
 	public function token_id()

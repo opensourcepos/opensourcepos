@@ -7,7 +7,7 @@ function load_config()
 {
     $CI =& get_instance();
 
-    $migration = $CI->load->library('migration');
+    $CI->migration = new Migration();
     if (!$CI->migration->is_latest())
     {
         $CI->session->sess_destroy();

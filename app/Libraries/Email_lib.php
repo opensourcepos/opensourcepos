@@ -16,7 +16,7 @@ class Email_lib
 	{
 		$this->CI =& get_instance();
 
-		$this->CI->load->library('email');
+		$this->CI->email = new Email();
 
 		$config = array(
 			'mailtype' => 'html',

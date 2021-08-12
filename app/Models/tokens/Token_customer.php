@@ -17,7 +17,7 @@ class Token_customer extends Token
 	{
 		parent::__construct();
 		$this->customer_info = $customer_info;
-		$this->CI->load->library('sale_lib');
+		$this->CI->sale_lib = new Sale_lib();
 	}
 
 	public function token_id()

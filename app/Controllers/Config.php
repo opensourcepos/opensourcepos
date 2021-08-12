@@ -872,7 +872,7 @@ class Config extends Secure_Controller
 
 	private function _handle_logo_upload()
 	{
-		$this->load->helper('directory');
+		helper('directory');
 
 		// load upload library
 		$config = array('upload_path' => './uploads/',
@@ -951,7 +951,7 @@ class Config extends Secure_Controller
 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
 			$save = 'uploads/' . $file_name;
-			$this->load->helper('download');
+			helper('download');
 			while(ob_get_level())
 			{
 				ob_end_clean();

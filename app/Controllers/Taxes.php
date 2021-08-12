@@ -14,7 +14,7 @@ class Taxes extends Secure_Controller
 
 		$this->Rounding_mode = model('enums/Rounding_mode');
 		$this->tax_lib = new Tax_lib();
-		$this->load->helper('tax_helper');
+		helper('tax_helper');
 	}
 
 	public function index()

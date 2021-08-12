@@ -26,7 +26,7 @@ class Reports extends Secure_Controller
 			}
 		}
 
-		$this->load->helper('report');
+		helper('report');
 	}
 
 	//Initial Report listing screen

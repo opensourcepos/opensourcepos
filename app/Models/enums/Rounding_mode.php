@@ -17,7 +17,7 @@ class Rounding_mode
 	public static function get_rounding_options()
 	{
 		$CI =& get_instance();
-		$CI->load->helper('language');
+		helper('language');
 		$class = new ReflectionClass(__CLASS__);
 		$result = array();
 
@@ -32,7 +32,7 @@ class Rounding_mode
 	public static function get_rounding_code_name($code)
 	{
 		$CI =& get_instance();
-		$CI->load->helper('language');
+		helper('language');
 
 		if(empty($code))
 		{
@@ -45,7 +45,7 @@ class Rounding_mode
 	public static function get_html_rounding_options()
 	{
 		$CI =& get_instance();
-		$CI->load->helper('language');
+		helper('language');
 		$x = '';
 
 		foreach(Rounding_mode::get_rounding_options() as $option => $label)

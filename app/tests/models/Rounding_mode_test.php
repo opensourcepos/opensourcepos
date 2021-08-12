@@ -3,14 +3,13 @@
  * @backupGlobals disabled
  */
 
-
 class Rounding_mode_test extends UnitTestCase
 {
 
     public function setUp()
     {
         $this->resetInstance();
-        $this->CI->load->model('enums/Rounding_mode');
+        $this->CI->rounding_mode = model('enums/Rounding_mode');
     }
 
     public function test_rounding()

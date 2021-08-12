@@ -15,8 +15,8 @@ class Sale_lib
 	public function __construct()
 	{
 		$this->CI =& get_instance();
-		$this->CI->load->library('tax_lib');
-		$this->CI->load->model('enums/Rounding_mode');
+		$this->CI->tax_lib = new Tax_lib();
+		$this->CI->Rounding_mode = model('enums/Rounding_mode');
 	}
 
 	public function get_line_sequence_options()

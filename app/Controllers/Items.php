@@ -86,7 +86,7 @@ class Items extends Secure_Controller
 
 	public function pic_thumb($pic_filename)
 	{
-		$this->load->helper('file');
+		helper('file');
 		$this->image_lib = new Image_lib();
 
 		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);

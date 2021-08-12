@@ -13,7 +13,7 @@ class Sales extends Secure_Controller
 	{
 		parent::__construct('sales');
 
-		$this->load->helper('file');
+		helper('file');
 		$this->sale_lib = new Sale_lib();
 		$this->email_lib = new Email_lib();
 		$this->token_lib = new Token_lib();
@@ -813,7 +813,7 @@ class Sales extends Secure_Controller
 			$html = view("sales/" . $type . "_email", $sale_data, TRUE);
 
 			// load pdf helper
-			$this->load->helper(array('dompdf', 'file'));
+			helper(array('dompdf', 'file'));
 			$filename = sys_get_temp_dir() . '/' . $this->lang->line("sales_" . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
 			if(file_put_contents($filename, create_pdf($html)) !== FALSE)
 			{
