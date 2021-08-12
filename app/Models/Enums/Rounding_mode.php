@@ -2,8 +2,6 @@
 
 namespace App\Models\Enums;
 
-use CodeIgniter\Model;
-
 class Rounding_mode
 {
 	const HALF_UP = PHP_ROUND_HALF_UP;

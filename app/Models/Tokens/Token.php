@@ -2,8 +2,6 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
-
 require_once(APPPATH . 'Models/tokens/Token.php');
 require_once(APPPATH . 'Models/tokens/Token_customer.php');
 require_once(APPPATH . 'Models/tokens/Token_invoice_count.php');
