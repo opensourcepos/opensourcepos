@@ -23,7 +23,7 @@ class Encryption extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $key = '';
+	public $key;	//Set in the constructor
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -64,4 +64,9 @@ class Encryption extends BaseConfig
 	 * @var string
 	 */
 	public $digest = 'SHA512';
+
+	function __construct()
+	{
+		$this->key = getenv('ENCRYPTION_KEY') ? getenv('ENCRYPTION_KEY') : '';
+	}
 }

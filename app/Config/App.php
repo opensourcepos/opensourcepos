@@ -7,6 +7,44 @@ use CodeIgniter\Config\BaseConfig;
 class App extends BaseConfig
 {
 	/**
+	 * This is the code version of the Open Source Point of Sale you're running.
+	 *
+	 * @var string
+	 */
+	public $application_version = '3.5.0-dev';
+
+	/**
+	 * This is the commit hash for the version you are currently using.
+	 *
+	 * @var string
+	 */
+	public $commit_sha1 = 'dev';
+
+	/**
+	 * This is to indicated whether we want XSS clean to be performed or not
+	 * By default it's enabled as it's assumed the installation has Internet access and needs to be protected,
+	 * however intranet only installations may not need this so they can set FALSE to improve performance
+	 *
+	 * @var bool
+	 */
+	public $ospos_xss_clean = true;
+	//TODO: This may need to be replaced with CI4's implementation.
+
+	/**
+	 * Logs are stored in writable/logs
+	 *
+	 * @var bool
+	 */
+	public $db_log_enabled = false;
+
+	/**
+	 * Defines whether to require/reroute to HTTPS
+	 *
+	 * @var bool
+	 */
+	private $https_on;	//Set in the constructor
+
+	/**
 	 * --------------------------------------------------------------------------
 	 * Base Site URL
 	 * --------------------------------------------------------------------------
@@ -23,10 +61,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	private $https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
-	public $baseURL = $https_on ? 'https' : 'http';
-	public $baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
-	public $baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+	public $baseURL;	//Defined in the constructor
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -287,7 +322,7 @@ class App extends BaseConfig
 	 *
 	 * @deprecated use Config\Cookie::$secure property instead.
 	 */
-	public $cookieSecure = $https_on;
+	public $cookieSecure;
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -359,7 +394,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $CSRFTokenName = 'csrf_ospos_v4';
+	public $CSRFTokenName;
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -385,7 +420,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $CSRFCookieName = 'csrf_cookie_ospos_v4';
+	public $CSRFCookieName;
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -466,4 +501,12 @@ class App extends BaseConfig
 	 * @var boolean
 	 */
 	public $CSPEnabled = false;
+
+	function __construct()
+	{
+		$this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
+		$this->baseURL = $this->https_on ? 'https' : 'http';
+		$this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
+		$this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+	}
 }

@@ -22,7 +22,8 @@ use CodeIgniter\Exceptions\FrameworkException;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
-Events::on('pre_system', function () {
+Events::on('pre_system', function ()
+{
 	if (ENVIRONMENT !== 'testing')
 	{
 		if (ini_get('zlib.output_compression'))
@@ -35,9 +36,20 @@ Events::on('pre_system', function () {
 			ob_end_flush();
 		}
 
-		ob_start(function ($buffer) {
+		ob_start(function ($buffer)
+		{
 			return $buffer;
 		});
+
+		try
+		{
+			$dotenv = new Dotenv\Dotenv($config_path);
+			$dotenv->overload();
+		}
+		catch(Exception $e)
+		{
+			// continue, .env file not present
+		}
 	}
 
 	/*
@@ -52,3 +64,9 @@ Events::on('pre_system', function () {
 		Services::toolbar()->respond();
 	}
 });
+
+Events::on('post_controller_constructor', ['Load_config', 'load_config']);
+
+Events::on('post_controller', ['Db_log', 'db_log_queries']);
+
+Events::on('pre_controller', ['Save', 'validate_save']);

@@ -62,7 +62,7 @@ class Cookie extends BaseConfig
 	 *
 	 * @var boolean
 	 */
-	public $secure = false;
+	public $secure;
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -116,4 +116,10 @@ class Cookie extends BaseConfig
 	 * @see https://tools.ietf.org/html/rfc2616#section-2.2
 	 */
 	public $raw = false;
+
+	function __construct()
+	{
+		$config = config('Config\\App');
+		$this->secure = $config->https_on;
+	}
 }
