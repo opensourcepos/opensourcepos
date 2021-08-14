@@ -4,8 +4,7 @@ jobs:
   -build-ospos:
     runs-on: ubuntu-latest
     env:
-      - TAG=$(echo ${GITHUB_REF} | sed s/feature\\///)
-      - date=`date +%Y%m%d%H%M%S` && branch=${GITHUB_REF} && rev=`git rev-parse --short=6 HEAD`
+      date=`date +%Y%m%d%H%M%S` && branch=${GITHUB_REF} && rev=`git rev-parse --short=6 HEAD`
     steps:
       - name: Install composer dependencies 
         run: docker run --rm -v $(pwd):/app opensourcepos/composer composer install
