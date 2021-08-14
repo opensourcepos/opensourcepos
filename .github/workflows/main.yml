@@ -1,0 +1,18 @@
+name: build
+on: [push]
+jobs:
+  -build-ospos:
+    runs-on: ubuntu-latest
+    env:
+      - TAG=$(echo ${GITHUB_REF} | sed s/feature\\///)
+      - date=`date +%Y%m%d%H%M%S` && branch=${GITHUB_REF} && rev=`git rev-parse --short=6 HEAD`
+    steps:
+      - name: Install composer dependencies 
+        run: docker run --rm -v $(pwd):/app opensourcepos/composer composer install
+      - name: Install npm and bower dependencies. Run Grunt.
+        run: docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower sh -c "npm install && bower install && grunt package"
+      - name: Build the container  
+        run: docker build . --target ospos -t ospos
+      - name: Run the tests in the test container
+        run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+
