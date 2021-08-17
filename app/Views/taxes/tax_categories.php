@@ -1,7 +1,7 @@
 <?php echo form_open('taxes/save_tax_categories/', array('id' => 'tax_categories_form', 'class' => 'form-horizontal')); ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 		<ul id="tax_categories_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_categories">
@@ -11,7 +11,7 @@
 		<?php echo form_submit(array(
 			'name' => 'submit_tax_categories',
 			'id' => 'submit_tax_categories',
-			'value' => $this->lang->line('common_submit'),
+			'value' => lang('common_submit'),
 			'class' => 'btn btn-primary btn-sm pull-right')); ?>
 	</fieldset>
 </div>
@@ -47,7 +47,7 @@
 			++tax_categories_count;
 			var new_tax_category_id = 'tax_category_' + tax_categories_count;
 
-			$(new_block).find('label').html("<?php echo $this->lang->line('taxes_tax_category'); ?> " + tax_categories_count).attr('for', new_tax_category_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?php echo lang('taxes_tax_category'); ?> " + tax_categories_count).attr('for', new_tax_category_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find("input[name='tax_category[]']").attr('id', new_tax_category_id).removeAttr('disabled').attr('class', 'form-control input-sm required').val('');
 			$(new_block).find("input[name='tax_group_sequence[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
 			$(new_block).find("input[name='tax_category_id[]']").val('-1');
@@ -78,21 +78,21 @@
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_category_duplicate'); ?>");
+		}, "<?php echo lang('taxes_tax_category_duplicate'); ?>");
 
 		$.validator.addMethod('validateTaxCategoryCharacters', function(value, element) {
 			if ((value.indexOf('_') != -1)) {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_category_invalid_chars'); ?>");
+		}, "<?php echo lang('taxes_tax_category_invalid_chars'); ?>");
 
 		$.validator.addMethod('requireTaxCategory', function(value, element) {
 			if (value .trim() == '') {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_category_required'); ?>");
+		}, "<?php echo lang('taxes_tax_category_required'); ?>");
 
 		$('#tax_categories_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {
@@ -105,7 +105,7 @@
 				});
 			},
 			invalidHandler: function(event, validator) {
-				$.notify("<?php echo $this->lang->line('common_correct_errors'); ?>");
+				$.notify("<?php echo lang('common_correct_errors'); ?>");
 			},
 			errorLabelContainer: "#tax_category_error_message_box"
 		}));

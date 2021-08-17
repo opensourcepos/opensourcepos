@@ -141,7 +141,7 @@ class Customers extends Persons
 			$data['sales_tax_code_label'] = '';
 		}
 
-		$packages = array('' => $this->lang->line('items_none'));
+		$packages = array('' => lang('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
 		{
 			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
@@ -280,20 +280,20 @@ class Customers extends Persons
 			if($customer_id == -1)
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
+								'message' => lang('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $this->xss_clean($customer_data['person_id'])));
 			}
 			else // Existing customer
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
+								'message' => lang('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $customer_id));
 			}
 		}
 		else // Failure
 		{
 			echo json_encode(array('success' => FALSE,
-							'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+							'message' => lang('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 							'id' => -1));
 		}
 	}
@@ -342,11 +342,11 @@ class Customers extends Persons
 		if($count == count($customers_to_delete))
 		{
 			echo json_encode(array('success' => TRUE,
-				'message' => $this->lang->line('customers_successful_deleted') . ' ' . $count . ' ' . $this->lang->line('customers_one_or_multiple')));
+				'message' => lang('customers_successful_deleted') . ' ' . $count . ' ' . lang('customers_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('customers_cannot_be_deleted')));
 		}
 	}
 
@@ -369,7 +369,7 @@ class Customers extends Persons
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_failed')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('customers_csv_import_failed')));
 		}
 		else
 		{
@@ -450,18 +450,18 @@ class Customers extends Persons
 
 				if(count($failCodes) > 0)
 				{
-					$message = $this->lang->line('customers_csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = lang('customers_csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_csv_import_success')));
+					echo json_encode(array('success' => TRUE, 'message' => lang('customers_csv_import_success')));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_csv_import_nodata_wrongformat')));
+				echo json_encode(array('success' => FALSE, 'message' => lang('customers_csv_import_nodata_wrongformat')));
 			}
 		}
 	}

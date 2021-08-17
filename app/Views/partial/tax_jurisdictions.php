@@ -13,13 +13,13 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 	++$i;
 ?>
 	<div class="form-group form-group-sm" style="display:block;" >
-		<?php echo form_label($this->lang->line('taxes_tax_jurisdiction') . ' ' . $i, 'jurisdiction_name_' . $i, array('class'=>'control-label col-xs-2')); ?>
+		<?php echo form_label(lang('taxes_tax_jurisdiction') . ' ' . $i, 'jurisdiction_name_' . $i, array('class'=>'control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
 				'name'=>'jurisdiction_name[]',
 				'id'=>'jurisdiction_name_' . $i,
 				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_jurisdiction_name'),
+				'placeholder'=>lang('taxes_jurisdiction_name'),
 				'value'=>$jurisdiction_name
 				);
 				echo form_input($form_data);
@@ -30,7 +30,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 			<?php $form_data = array(
 				'name'=>'tax_group[]',
 				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_tax_group'),
+				'placeholder'=>lang('taxes_tax_group'),
 				'value'=>$tax_group
 			);
 			echo form_input($form_data);
@@ -45,7 +45,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 			<?php $form_data = array(
 				'name'=>'reporting_authority[]',
 				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_reporting_authority'),
+				'placeholder'=>lang('taxes_reporting_authority'),
 				'value'=>$reporting_authority
 			);
 			echo form_input($form_data);
@@ -56,7 +56,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 			<?php $form_data = array(
 				'name'=>'tax_group_sequence[]',
 				'class'=>'valid_chars form-control input-sm',
-				'placeholder' => $this->lang->line('taxes_sequence'),
+				'placeholder' => lang('taxes_sequence'),
 				'value'=>$tax_group_sequence
 			);
 			echo form_input($form_data);
@@ -67,7 +67,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 			<?php $form_data = array(
 				'name'=>'cascade_sequence[]',
 				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_cascade_sequence'),
+				'placeholder'=>lang('taxes_cascade_sequence'),
 				'value'=>$cascade_sequence
 			);
 			echo form_input($form_data);

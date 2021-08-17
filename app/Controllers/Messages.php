@@ -39,11 +39,11 @@ class Messages extends Secure_Controller
 
 		if($response)
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone));
+			echo json_encode(array('success' => TRUE, 'message' => lang('messages_successfully_sent') . ' ' . $phone));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone));
+			echo json_encode(array('success' => FALSE, 'message' => lang('messages_unsuccessfully_sent') . ' ' . $phone));
 		}
 	}
 	
@@ -56,11 +56,11 @@ class Messages extends Secure_Controller
 
 		if($response)
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone, 'person_id' => $this->xss_clean($person_id)));
+			echo json_encode(array('success' => TRUE, 'message' => lang('messages_successfully_sent') . ' ' . $phone, 'person_id' => $this->xss_clean($person_id)));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('messages_unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
 		}
 	}
 }

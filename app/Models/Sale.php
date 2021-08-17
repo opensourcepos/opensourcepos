@@ -228,24 +228,24 @@ class Sale extends Model
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->group_start();
-				$this->db->like('payments.payment_type', $this->lang->line('sales_cash'));
+				$this->db->like('payments.payment_type', lang('sales_cash'));
 				$this->db->or_where('payments.payment_type IS NULL');
 			$this->db->group_end();
 		}
 
 		if($filters['only_creditcard'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', $this->lang->line('sales_credit'));
+			$this->db->like('payments.payment_type', lang('sales_credit'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', $this->lang->line('sales_due'));
+			$this->db->like('payments.payment_type', lang('sales_due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', $this->lang->line('sales_check'));
+			$this->db->like('payments.payment_type', lang('sales_check'));
 		}
 
 		// get_found_rows case
@@ -334,22 +334,22 @@ class Sale extends Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_cash'));
+			$this->db->like('payment_type', lang('sales_cash'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_due'));
+			$this->db->like('payment_type', lang('sales_due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_check'));
+			$this->db->like('payment_type', lang('sales_check'));
 		}
 
 		if($filters['only_creditcard'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_credit'));
+			$this->db->like('payment_type', lang('sales_credit'));
 		}
 
 		$this->db->group_by('payment_type');
@@ -361,7 +361,7 @@ class Sale extends Model
 		$gift_card_amount = 0;
 		foreach($payments as $key=>$payment)
 		{
-			if(strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE)
+			if(strstr($payment['payment_type'], lang('sales_giftcard')) != FALSE)
 			{
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
@@ -373,7 +373,7 @@ class Sale extends Model
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+			$payments[] = array('payment_type' => lang('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}
 
 		return $payments;
@@ -624,14 +624,14 @@ class Sale extends Model
 		$total_amount_used = 0;
 		foreach($payments as $payment_id=>$payment)
 		{
-			if(!empty(strstr($payment['payment_type'], $this->lang->line('sales_giftcard'))))
+			if(!empty(strstr($payment['payment_type'], lang('sales_giftcard'))))
 			{
 				// We have a gift card and we have to deduct the used value from the total value of the card.
 				$splitpayment = explode( ':', $payment['payment_type'] );
 				$cur_giftcard_value = $this->Giftcard->get_giftcard_value( $splitpayment[1] );
 				$this->Giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
-			elseif(!empty(strstr($payment['payment_type'], $this->lang->line('sales_rewards'))))
+			elseif(!empty(strstr($payment['payment_type'], lang('sales_rewards'))))
 			{
 				$cur_rewards_value = $this->Customer->get_info($customer_id)->points;
 				$this->Customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
@@ -976,18 +976,18 @@ class Sale extends Model
 
 		if($giftcard == TRUE)
 		{
-			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
+			$payments[lang('sales_giftcard')] = lang('sales_giftcard');
 		}
 
 		if($reward_points == TRUE)
 		{
-			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
+			$payments[lang('sales_rewards')] = lang('sales_rewards');
 		}
 
 		if($this->sale_lib->get_mode() == 'sale_work_order')
 		{
-			$payments[$this->lang->line('sales_cash_deposit')] = $this->lang->line('sales_cash_deposit');
-			$payments[$this->lang->line('sales_credit_deposit')] = $this->lang->line('sales_credit_deposit');
+			$payments[lang('sales_cash_deposit')] = lang('sales_cash_deposit');
+			$payments[lang('sales_credit_deposit')] = lang('sales_credit_deposit');
 		}
 
 		return $payments;

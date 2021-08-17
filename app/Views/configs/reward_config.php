@@ -1,11 +1,11 @@
 <?php echo form_open('config/save_rewards/', array('id' => 'reward_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+            <div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
             <ul id="reward_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_customer_reward_enable'), 'customer_reward_enable', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('config_customer_reward_enable'), 'customer_reward_enable', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
 						'name' => 'customer_reward_enable',
@@ -22,7 +22,7 @@
             <?php echo form_submit(array(
                 'name' => 'submit_reward',
                 'id' => 'submit_reward',
-                'value' => $this->lang->line('common_submit'),
+                'value' => lang('common_submit'),
                 'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
@@ -72,7 +72,7 @@ $(document).ready(function()
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'customer_reward_' + ++id;
 		var new_block_id_next = 'reward_points_' + id;
-		$(new_block).find('label').html("<?php echo $this->lang->line('config_customer_reward'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+		$(new_block).find('label').html("<?php echo lang('config_customer_reward'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 		$(new_block).find("input[id='"+previous_id+"']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		$(new_block).find("input[id='"+previous_id_next+"']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();
@@ -100,11 +100,11 @@ $(document).ready(function()
 			value_count = $(this).val() == value ? value_count + 1 : value_count; 
 		});
 		return value_count < 2;
-    }, "<?php echo $this->lang->line('config_customer_reward_duplicate'); ?>");
+    }, "<?php echo lang('config_customer_reward_duplicate'); ?>");
 
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
-    }, "<?php echo $this->lang->line('config_customer_reward_invalid_chars'); ?>");
+    }, "<?php echo lang('config_customer_reward_invalid_chars'); ?>");
 	
 	$('#reward_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
@@ -150,7 +150,7 @@ $(document).ready(function()
 			foreach($customer_rewards as $customer_reward=>$table)
 			{
 			?>
-				<?php echo 'customer_reward_' . ++$i ?>: "<?php echo $this->lang->line('config_customer_reward_required'); ?>",
+				<?php echo 'customer_reward_' . ++$i ?>: "<?php echo lang('config_customer_reward_required'); ?>",
 			<?php
 			}
 			?>

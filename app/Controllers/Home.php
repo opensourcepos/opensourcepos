@@ -53,21 +53,21 @@ class Home extends Secure_Controller
 
 				if($this->Employee->change_password($employee_data, $employee_id))
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_change_password'), 'id' => $employee_id));
+					echo json_encode(array('success' => TRUE, 'message' => lang('employees_successful_change_password'), 'id' => $employee_id));
 				}
 				else//failure
 				{
-					echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_unsuccessful_change_password'), 'id' => -1));
+					echo json_encode(array('success' => FALSE, 'message' => lang('employees_unsuccessful_change_password'), 'id' => -1));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid'), 'id' => -1));
+				echo json_encode(array('success' => FALSE, 'message' => lang('employees_current_password_invalid'), 'id' => -1));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid'), 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('employees_current_password_invalid'), 'id' => -1));
 		}
 	}
 }

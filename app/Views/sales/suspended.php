@@ -10,20 +10,20 @@
 <table id="suspended_sales_table" class="table table-striped table-hover">
 	<thead>
 		<tr bgcolor="#CCC">
-			<th><?php echo $this->lang->line('sales_suspended_doc_id'); ?></th>
-			<th><?php echo $this->lang->line('sales_date'); ?></th>
+			<th><?php echo lang('sales_suspended_doc_id'); ?></th>
+			<th><?php echo lang('sales_date'); ?></th>
 			<?php
 			if($this->config->item('dinner_table_enable') == TRUE)
 			{
 			?>
-				<th><?php echo $this->lang->line('sales_table'); ?></th>
+				<th><?php echo lang('sales_table'); ?></th>
 			<?php
 			}
 			?>
-			<th><?php echo $this->lang->line('sales_customer'); ?></th>
-			<th><?php echo $this->lang->line('sales_employee'); ?></th>
-			<th><?php echo $this->lang->line('sales_comments'); ?></th>
-			<th><?php echo $this->lang->line('sales_unsuspend_and_delete'); ?></th>
+			<th><?php echo lang('sales_customer'); ?></th>
+			<th><?php echo lang('sales_employee'); ?></th>
+			<th><?php echo lang('sales_comments'); ?></th>
+			<th><?php echo lang('sales_unsuspend_and_delete'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -76,7 +76,7 @@
 				<td>
 					<?php echo form_open('sales/unsuspend'); ?>
 						<?php echo form_hidden('suspended_sale_id', $suspended_sale['sale_id']); ?>
-						<input type="submit" name="submit" value="<?php echo $this->lang->line('sales_unsuspend'); ?>" id="submit" class="btn btn-primary btn-xs pull-right">
+						<input type="submit" name="submit" value="<?php echo lang('sales_unsuspend'); ?>" id="submit" class="btn btn-primary btn-xs pull-right">
 					<?php echo form_close(); ?>
 				</td>
 			</tr>

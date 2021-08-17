@@ -19,7 +19,7 @@ class Migration_RefundTracking extends CI_Migration
 			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
 			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') AS trans_amount';
 
-		$cash_payment = $this->lang->line('sales_cash');
+		$cash_payment = lang('sales_cash');
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('migrate_taxes') .
 			' (INDEX(sale_id)) ENGINE=MEMORY

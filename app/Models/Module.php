@@ -23,10 +23,10 @@ class Module extends Model
 		{
 			$row = $query->row();
 
-			return $this->lang->line($row->name_lang_key);
+			return lang($row->name_lang_key);
 		}
 
-		return $this->lang->line('error_unknown');
+		return lang('error_unknown');
 	}
 
 	public function get_module_desc($module_id)
@@ -37,10 +37,10 @@ class Module extends Model
 		{
 			$row = $query->row();
 
-			return $this->lang->line($row->desc_lang_key);
+			return lang($row->desc_lang_key);
 		}
 
-		return $this->lang->line('error_unknown');
+		return lang('error_unknown');
 	}
 
 	public function get_all_permissions()

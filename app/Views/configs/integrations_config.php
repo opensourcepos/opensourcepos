@@ -1,12 +1,12 @@
 <?php echo form_open('config/save_mailchimp/', array('id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<div id="integrations_header"><?php echo $this->lang->line('config_mailchimp_configuration')?></div>
+			<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+			<div id="integrations_header"><?php echo lang('config_mailchimp_configuration')?></div>
 			<ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_mailchimp_api_key'), 'mailchimp_api_key', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('config_mailchimp_api_key'), 'mailchimp_api_key', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-cloud"></span></span>
@@ -19,13 +19,13 @@
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_mailchimp_tooltip'); ?>"></span></a>
+						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('config_mailchimp_tooltip'); ?>"></span></a>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_mailchimp_lists'), 'mailchimp_list_id', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('config_mailchimp_lists'), 'mailchimp_list_id', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -40,7 +40,7 @@
 			<?php echo form_submit(array(
 				'name' => 'submit_mailchimp',
 				'id' => 'submit_mailchimp',
-				'value' => $this->lang->line('common_submit'),
+				'value' => lang('common_submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>

@@ -1,7 +1,7 @@
 <?php echo form_open('taxes/save_tax_jurisdictions/', array('id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal')); ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+		<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 		<ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_jurisdictions">
@@ -11,7 +11,7 @@
 		<?php echo form_submit(array(
 			'name' => 'submit_tax_jurisdictions',
 			'id' => 'submit_tax_jurisdictions',
-			'value' => $this->lang->line('common_submit'),
+			'value' => lang('common_submit'),
 			'class' => 'btn btn-primary btn-sm pull-right')); ?>
 	</fieldset>
 </div>
@@ -48,7 +48,7 @@
 			++tax_jurisdictions_count;
 			var new_jurisdiction_name_id = 'jurisdiction_name_' + tax_jurisdictions_count;
 
-			$(new_block).find('label').html("<?php echo $this->lang->line('taxes_tax_jurisdiction'); ?> " + tax_jurisdictions_count).attr('for', new_jurisdiction_name_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?php echo lang('taxes_tax_jurisdiction'); ?> " + tax_jurisdictions_count).attr('for', new_jurisdiction_name_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find("input[name='jurisdiction_name[]']").attr('id', new_jurisdiction_name_id).removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
 			$(new_block).find("input[name='tax_group[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
 			$(new_block).find("select[name='tax_type[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
@@ -81,21 +81,21 @@
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_duplicate'); ?>");
+		}, "<?php echo lang('taxes_tax_jurisdiction_duplicate'); ?>");
 
 		$.validator.addMethod('validateTaxJurisdictionCharacters', function(value, element) {
 			if ((value.indexOf('_') != -1)) {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_invalid_chars'); ?>");
+		}, "<?php echo lang('taxes_tax_jurisdiction_invalid_chars'); ?>");
 
 		$.validator.addMethod('requireTaxJurisdiction', function(value, element) {
 			if (value .trim() == '') {
 				return false;
 			}
 			return true;
-		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_required'); ?>");
+		}, "<?php echo lang('taxes_tax_jurisdiction_required'); ?>");
 
 		$('#tax_jurisdictions_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {
@@ -108,7 +108,7 @@
 				});
 			},
 			invalidHandler: function(event, validator) {
-				$.notify("<?php echo $this->lang->line('common_correct_errors'); ?>");
+				$.notify("<?php echo lang('common_correct_errors'); ?>");
 			},
 			errorLabelContainer: "#tax_jurisdiction_error_message_box"
 		}));

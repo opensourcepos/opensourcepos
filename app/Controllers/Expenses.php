@@ -16,12 +16,12 @@ class Expenses extends Secure_Controller
 		$data['table_headers'] = $this->xss_clean(get_expenses_manage_table_headers());
 
 		// filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array('only_cash' => $this->lang->line('expenses_cash_filter'),
-			'only_due' => $this->lang->line('expenses_due_filter'),
-			'only_check' => $this->lang->line('expenses_check_filter'),
-			'only_credit' => $this->lang->line('expenses_credit_filter'),
-			'only_debit' => $this->lang->line('expenses_debit_filter'),
-			'is_deleted' => $this->lang->line('expenses_is_deleted'));
+		$data['filters'] = array('only_cash' => lang('expenses_cash_filter'),
+			'only_due' => lang('expenses_due_filter'),
+			'only_check' => lang('expenses_check_filter'),
+			'only_credit' => lang('expenses_credit_filter'),
+			'only_debit' => lang('expenses_debit_filter'),
+			'is_deleted' => lang('expenses_is_deleted'));
 
 		echo view('expenses/manage', $data);
 	}
@@ -148,16 +148,16 @@ class Expenses extends Secure_Controller
 			//New expense_id
 			if($expense_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_adding'), 'id' => $expense_data['expense_id']));
+				echo json_encode(array('success' => TRUE, 'message' => lang('expenses_successful_adding'), 'id' => $expense_data['expense_id']));
 			}
 			else // Existing Expense
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_updating'), 'id' => $expense_id));
+				echo json_encode(array('success' => TRUE, 'message' => lang('expenses_successful_updating'), 'id' => $expense_id));
 			}
 		}
 		else//failure
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_error_adding_updating'), 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('expenses_error_adding_updating'), 'id' => -1));
 		}
 	}
 
@@ -174,11 +174,11 @@ class Expenses extends Secure_Controller
 
 		if($this->Expense->delete_list($expenses_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . $this->lang->line('expenses_one_or_multiple'), 'ids' => $expenses_to_delete));
+			echo json_encode(array('success' => TRUE, 'message' => lang('expenses_successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('expenses_one_or_multiple'), 'ids' => $expenses_to_delete));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_cannot_be_deleted'), 'ids' => $expenses_to_delete));
+			echo json_encode(array('success' => FALSE, 'message' => lang('expenses_cannot_be_deleted'), 'ids' => $expenses_to_delete));
 		}
 	}
 }

@@ -112,12 +112,12 @@ class Giftcards extends Secure_Controller
 			//New giftcard
 			if($giftcard_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_adding') . ' ' .
+				echo json_encode(array('success' => TRUE, 'message' => lang('giftcards_successful_adding') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_data['giftcard_id']));
 			}
 			else //Existing giftcard
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_updating') . ' ' .
+				echo json_encode(array('success' => TRUE, 'message' => lang('giftcards_successful_updating') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_id));
 			}
 		}
@@ -125,7 +125,7 @@ class Giftcards extends Secure_Controller
 		{
 			$giftcard_data = $this->xss_clean($giftcard_data);
 			
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('giftcards_error_adding_updating') . ' ' .
+			echo json_encode(array('success' => FALSE, 'message' => lang('giftcards_error_adding_updating') . ' ' .
 							$giftcard_data['giftcard_number'], 'id' => -1));
 		}
 	}
@@ -142,12 +142,12 @@ class Giftcards extends Secure_Controller
 
 		if($this->Giftcard->delete_list($giftcards_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('giftcards_successful_deleted') . ' ' .
-							count($giftcards_to_delete).' '.$this->lang->line('giftcards_one_or_multiple')));
+			echo json_encode(array('success' => TRUE, 'message' => lang('giftcards_successful_deleted') . ' ' .
+							count($giftcards_to_delete).' '.lang('giftcards_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('giftcards_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('giftcards_cannot_be_deleted')));
 		}
 	}
 }

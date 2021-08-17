@@ -277,7 +277,7 @@ class Config extends Secure_Controller
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $upload_success && $result ? TRUE : FALSE;
-		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
+		$message = lang('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
 
 		echo json_encode(array(
@@ -339,7 +339,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -407,7 +407,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -436,7 +436,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -461,7 +461,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -500,7 +500,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
+			'message' => lang('config_mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
 			'mailchimp_lists' => $lists
 		));
 	}
@@ -526,7 +526,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -617,7 +617,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -666,7 +666,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -693,7 +693,7 @@ class Config extends Secure_Controller
 
 		$success &= $this->db->trans_status();
 
-		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
+		$message = lang('config_saved_' . ($success ? '' : 'un') . 'successfully');
 
 		echo json_encode(array(
 			'success' => $success,
@@ -756,7 +756,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -785,7 +785,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -817,7 +817,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -859,7 +859,7 @@ class Config extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -884,7 +884,7 @@ class Config extends Secure_Controller
 		$this->upload = new Upload($config);
 		$this->upload->do_upload('company_logo');
 
-		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
+		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');
 	}
 
 	private function _check_encryption()

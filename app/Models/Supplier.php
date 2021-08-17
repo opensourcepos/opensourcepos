@@ -288,8 +288,8 @@ class Supplier extends Person
 	public function get_categories()
 	{
 		return array(
-			self::GOODS_SUPPLIER => $this->lang->line('suppliers_goods'),
-			self::COST_SUPPLIER => $this->lang->line('suppliers_cost')
+			self::GOODS_SUPPLIER => lang('suppliers_goods'),
+			self::COST_SUPPLIER => lang('suppliers_cost')
 		);
 	}
 
@@ -300,11 +300,11 @@ class Supplier extends Person
 	{
 		if($id == self::GOODS_SUPPLIER)
 		{
-			return $this->lang->line('suppliers_goods');
+			return lang('suppliers_goods');
 		}
 		elseif($id == self::COST_SUPPLIER)
 		{
-			return $this->lang->line('suppliers_cost');
+			return lang('suppliers_cost');
 		}
 	}
 }

@@ -19,13 +19,13 @@
 		if($name == "total_quantity")
 		{
 	?>
-			<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' .$value; ?></div>
+			<div class="summary_row"><?php echo lang('reports_'.$name) . ': ' .$value; ?></div>
 	<?php
 		}
 		else
 		{
 	?>
-			<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' . to_currency($value); ?></div>
+			<div class="summary_row"><?php echo lang('reports_'.$name) . ': ' . to_currency($value); ?></div>
 	<?php
 		}
 	}

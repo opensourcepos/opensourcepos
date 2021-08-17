@@ -1,18 +1,18 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open($controller_name . '/save/' . $person_info->person_id, array('id'=>'customer_form', 'class'=>'form-horizontal')); ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
-			<a data-toggle="tab" href="#customer_basic_info"><?php echo $this->lang->line("customers_basic_information"); ?></a>
+			<a data-toggle="tab" href="#customer_basic_info"><?php echo lang("customers_basic_information"); ?></a>
 		</li>
 		<?php
 		if(!empty($stats))
 		{
 		?>
 			<li role="presentation">
-				<a data-toggle="tab" href="#customer_stats_info"><?php echo $this->lang->line("customers_stats_info"); ?></a>
+				<a data-toggle="tab" href="#customer_stats_info"><?php echo lang("customers_stats_info"); ?></a>
 			</li>
 		<?php
 		}
@@ -22,7 +22,7 @@
 		{
 		?>
 			<li role="presentation">
-				<a data-toggle="tab" href="#customer_mailchimp_info"><?php echo $this->lang->line("customers_mailchimp_info"); ?></a>
+				<a data-toggle="tab" href="#customer_mailchimp_info"><?php echo lang("customers_mailchimp_info"); ?></a>
 			</li>
 		<?php
 		}
@@ -33,7 +33,7 @@
 		<div class="tab-pane fade in active" id="customer_basic_info">
 			<fieldset>
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_consent'), 'consent', array('class' => 'required control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_consent'), 'consent', array('class' => 'required control-label col-xs-3')); ?>
 					<div class='col-xs-1'>
 						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? (boolean)!$this->config->item('enforce_privacy') : (boolean)$person_info->consent); ?>
 					</div>
@@ -42,7 +42,7 @@
 				<?php echo view("people/form_basic_info"); ?>
 				
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_discount_type'), 'discount_type', array('class'=>'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_discount_type'), 'discount_type', array('class'=>'control-label col-xs-3')); ?>
 					<div class="col-xs-8">
 						<label class="radio-inline">
 							<?php echo form_radio(array(
@@ -51,7 +51,7 @@
 									'id'=>'discount_type',
 									'value'=>0,
 									'checked'=>$person_info->discount_type == PERCENT)
-							); ?> <?php echo $this->lang->line('customers_discount_percent'); ?>
+							); ?> <?php echo lang('customers_discount_percent'); ?>
 						</label>
 						<label class="radio-inline">
 							<?php echo form_radio(array(
@@ -60,13 +60,13 @@
 									'id'=>'discount_type',
 									'value'=>1,
 									'checked'=>$person_info->discount_type == FIXED)
-							); ?> <?php echo $this->lang->line('customers_discount_fixed'); ?>
+							); ?> <?php echo lang('customers_discount_fixed'); ?>
 						</label>
 					</div>
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_discount'), 'discount', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_discount'), 'discount', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-3'>
 						<div class="input-group input-group-sm">
 							<?php echo form_input(array(
@@ -81,7 +81,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<?php echo form_input(array(
 								'name'=>'company_name',
@@ -93,7 +93,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-4'>
 						<?php echo form_input(array(
 								'name'=>'account_number',
@@ -105,7 +105,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_tax_id'), 'tax_id', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_tax_id'), 'tax_id', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-4'>
 						<?php echo form_input(array(
 								'name'=>'tax_id',
@@ -118,14 +118,14 @@
 
 				<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('rewards_package'), 'rewards', array('class'=>'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('rewards_package'), 'rewards', array('class'=>'control-label col-xs-3')); ?>
 						<div class='col-xs-8'>
 							<?php echo form_dropdown('package_id', $packages, $selected_package, array('class'=>'form-control')); ?>
 						</div>
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_available_points'), 'available_points', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_available_points'), 'available_points', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'available_points',
@@ -139,7 +139,7 @@
 				<?php endif; ?>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-1'>
 						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable); ?>
 					</div>
@@ -150,7 +150,7 @@
 				{
 				?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_tax_code'), 'sales_tax_code_name', array('class'=>'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_tax_code'), 'sales_tax_code_name', array('class'=>'control-label col-xs-3')); ?>
 						<div class='col-xs-8'>
 							<div class="input-group input-group-sm">
 								<?php echo form_input(array(
@@ -169,7 +169,7 @@
 				?>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -185,7 +185,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('customers_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<?php echo form_input(array(
 								'name'=>'employee',
@@ -208,7 +208,7 @@
 			<div class="tab-pane" id="customer_stats_info">
 				<fieldset>
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
@@ -229,7 +229,7 @@
 					</div>
 					
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_max'), 'max', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_max'), 'max', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
@@ -250,7 +250,7 @@
 					</div>
 					
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_min'), 'min', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_min'), 'min', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
@@ -271,7 +271,7 @@
 					</div>
 					
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_average'), 'average', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_average'), 'average', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
@@ -292,7 +292,7 @@
 					</div>
 					
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_quantity'), 'quantity', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_quantity'), 'quantity', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php echo form_input(array(
@@ -307,7 +307,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_avg_discount'), 'avg_discount', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_avg_discount'), 'avg_discount', array('class' => 'control-label col-xs-3')); ?>
 						<div class="col-xs-3">
 							<div class="input-group input-group-sm">
 								<?php echo form_input(array(
@@ -334,7 +334,7 @@
 			<div class="tab-pane" id="customer_mailchimp_info">
 				<fieldset>
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_status'), 'mailchimp_status', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_status'), 'mailchimp_status', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_dropdown('mailchimp_status', 
 								array(
@@ -349,14 +349,14 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_vip'), 'mailchimp_vip', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_vip'), 'mailchimp_vip', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-1'>
 							<?php echo form_checkbox('mailchimp_vip', '1', $mailchimp_info['vip'] == '' ? FALSE : (boolean)$mailchimp_info['vip']); ?>
 						</div>
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_member_rating'), 'mailchimp_member_rating', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_member_rating'), 'mailchimp_member_rating', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_member_rating',
@@ -368,7 +368,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_activity_total'), 'mailchimp_activity_total', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_activity_total'), 'mailchimp_activity_total', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_activity_total',
@@ -380,7 +380,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_activity_lastopen',
@@ -392,7 +392,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_activity_open'), 'mailchimp_activity_open', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_activity_open'), 'mailchimp_activity_open', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_activity_open',
@@ -404,7 +404,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_activity_click'), 'mailchimp_activity_click', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_activity_click'), 'mailchimp_activity_click', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_activity_click',
@@ -416,7 +416,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_activity_unopen'), 'mailchimp_activity_unopen', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_activity_unopen'), 'mailchimp_activity_unopen', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_activity_unopen',
@@ -428,7 +428,7 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('customers_mailchimp_email_client'), 'mailchimp_email_client', array('class' => 'control-label col-xs-3')); ?>
+						<?php echo form_label(lang('customers_mailchimp_email_client'), 'mailchimp_email_client', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-4'>
 							<?php echo form_input(array(
 									'name'=>'mailchimp_email_client',
@@ -519,11 +519,11 @@ $(document).ready(function()
 
 		messages:
 		{
-			first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
-			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-			consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
-			email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
-			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
+			first_name: "<?php echo lang('common_first_name_required'); ?>",
+			last_name: "<?php echo lang('common_last_name_required'); ?>",
+			consent: "<?php echo lang('customers_consent_required'); ?>",
+			email: "<?php echo lang('customers_email_duplicate'); ?>",
+			account_number: "<?php echo lang('customers_account_number_duplicate'); ?>"
 		}
 	}, form_support.error));
 });

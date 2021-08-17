@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_person_id'), 'person_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('giftcards_person_id'), 'person_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'person_name',
@@ -25,7 +25,7 @@
 		}
 		?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'giftcard_number', array('class'=>'control-label col-xs-3'.$class)); ?>
+			<?php echo form_label(lang('giftcards_giftcard_number'), 'giftcard_number', array('class'=>'control-label col-xs-3'.$class)); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'giftcard_number',
@@ -37,7 +37,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_card_value'), 'giftcard_amount', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('giftcards_card_value'), 'giftcard_amount', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -141,16 +141,16 @@ $(document).ready(function()
 			?>
 				giftcard_number:
 				{
-					required: "<?php echo $this->lang->line('giftcards_number_required'); ?>",
-					number: "<?php echo $this->lang->line('giftcards_number'); ?>"
+					required: "<?php echo lang('giftcards_number_required'); ?>",
+					number: "<?php echo lang('giftcards_number'); ?>"
 				},
  			<?php
 			}
 			?>
 			giftcard_amount:
 			{
-				required: "<?php echo $this->lang->line('giftcards_value_required'); ?>",
-				remote: "<?php echo $this->lang->line('giftcards_value'); ?>"
+				required: "<?php echo lang('giftcards_value_required'); ?>",
+				remote: "<?php echo lang('giftcards_value'); ?>"
 			}
 		}
 	}, form_support.error));

@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('expenses_categories/save/'.$category_info->expense_category_id, array('id'=>'expense_category_edit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="expenses_categories">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('expenses_categories_name'), 'category_name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('expenses_categories_name'), 'category_name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'category_name',
@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('expenses_categories_description'), 'category_description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('expenses_categories_description'), 'category_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'category_description',
@@ -56,7 +56,7 @@ $(document).ready(function()
 
 		messages:
 		{
-			category_name: "<?php echo $this->lang->line('category_name_required'); ?>"
+			category_name: "<?php echo lang('category_name_required'); ?>"
 		}
 	}, form_support.error));
 });

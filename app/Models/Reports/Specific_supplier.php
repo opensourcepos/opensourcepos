@@ -17,19 +17,19 @@ class Specific_supplier extends Report
 	public function getDataColumns()
 	{
 		return array(
-			array('id' => $this->lang->line('reports_sale_id')),
-			array('type_code' => $this->lang->line('reports_code_type')),
-			array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
-			array('name' => $this->lang->line('reports_name')),
-			array('category' => $this->lang->line('reports_category')),
-			array('item_number' => $this->lang->line('reports_item_number')),
-			array('quantity' => $this->lang->line('reports_quantity')),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
-			array('discount' => $this->lang->line('reports_discount'))
+			array('id' => lang('reports_sale_id')),
+			array('type_code' => lang('reports_code_type')),
+			array('sale_date' => lang('reports_date'), 'sortable' => FALSE),
+			array('name' => lang('reports_name')),
+			array('category' => lang('reports_category')),
+			array('item_number' => lang('reports_item_number')),
+			array('quantity' => lang('reports_quantity')),
+			array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
+			array('cost' => lang('reports_cost'), 'sorter' => 'number_sorter'),
+			array('profit' => lang('reports_profit'), 'sorter' => 'number_sorter'),
+			array('discount' => lang('reports_discount'))
 		);
 	}
 
@@ -37,12 +37,12 @@ class Specific_supplier extends Report
 	{
 		$this->db->select('sale_id,
 			MAX(CASE
-			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_pos') . '\'
-			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_invoice') . '\'
-			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_work_order') . '\'
-			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_quote') . '\'
-			WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_return') . '\'
-			WHEN sale_status = ' . CANCELED . ' THEN \'' . $this->lang->line('reports_code_canceled') . '\'
+			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_pos') . '\'
+			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_invoice') . '\'
+			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('reports_code_work_order') . '\'
+			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('reports_code_quote') . '\'
+			WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_return') . '\'
+			WHEN sale_status = ' . CANCELED . ' THEN \'' . lang('reports_code_canceled') . '\'
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,

@@ -1,4 +1,4 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
@@ -6,7 +6,7 @@
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('attributes_definition_name'), 'definition_name', array('class'=>'required control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_name'), 'definition_name', array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<?php echo form_input(array(
 					'name'=>'definition_name',
@@ -18,30 +18,30 @@
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('attributes_definition_type'), 'definition_type', array('class'=>'required control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_type'), 'definition_type', array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"');?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('attributes_definition_group'), 'definition_group', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_group'), 'definition_group', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<?php echo form_dropdown('definition_group', $definition_group, $definition_info->definition_fk, 'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : ''));?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label($this->lang->line('attributes_definition_flags'), 'definition_flags', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_flags'), 'definition_flags', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), array('id'=>'definition_flags', 'class'=>'selectpicker show-menu-arrow', 'data-none-selected-text'=>$this->lang->line('common_none_selected_text'), 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+				<?php echo form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), array('id'=>'definition_flags', 'class'=>'selectpicker show-menu-arrow', 'data-none-selected-text'=>lang('common_none_selected_text'), 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 			</div>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label($this->lang->line('attributes_definition_unit'), 'definition_units', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_unit'), 'definition_units', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<?php echo form_input(array('name'=>'definition_unit', 'value'=>$definition_info->definition_unit,'class'=>'form-control input-sm', 'id' => 'definition_unit'));?>
@@ -50,7 +50,7 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label($this->lang->line('attributes_definition_values'), 'definition_value', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label(lang('attributes_definition_values'), 'definition_value', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<?php echo form_input(array('name'=>'definition_value', 'class'=>'form-control input-sm', 'id' => 'definition_value'));?>
@@ -201,7 +201,7 @@ $(document).ready(function()
 
 	$.validator.addMethod('valid_chars', function(value, element) {
         return value.match(/(\||_)/g) == null;
-	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
+	}, "<?php echo lang('attributes_attribute_value_invalid_chars'); ?>");
 
 	$('form').bind('submit', function () {
 		$(this).find(':input').prop('disabled', false);
@@ -235,8 +235,8 @@ $(document).ready(function()
 		},
         messages:
         {
-            definition_name: "<?php echo $this->lang->line('attributes_definition_name_required'); ?>",
-            definition_type: "<?php echo $this->lang->line('attributes_definition_type_required'); ?>"
+            definition_name: "<?php echo lang('attributes_definition_name_required'); ?>",
+            definition_type: "<?php echo lang('attributes_definition_type_required'); ?>"
         }
 	}, form_support.error));
 });

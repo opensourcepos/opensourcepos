@@ -34,13 +34,13 @@ if(isset($error_message))
 <?php echo view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('common_print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_work_order'); ?></div></a>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('sales_send_work_order'); ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('sales_discard'), array('class'=>'btn btn-danger btn-sm', 'id'=>'discard_work_order_button')); ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('sales_discard'), array('class'=>'btn btn-danger btn-sm', 'id'=>'discard_work_order_button')); ?>
 </div>
 
 <div id="page-wrap">
@@ -86,7 +86,7 @@ if(isset($error_message))
 				<td><?php echo $work_order_number; ?></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
+				<td class="meta-head"><?php echo lang('common_date'); ?></td>
 				<td><?php echo $transaction_date; ?></td>
 			</tr>
 			<?php
@@ -94,7 +94,7 @@ if(isset($error_message))
 			{
 			?>
 				<tr>
-					<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
+					<td class="meta-head"><?php echo lang('sales_amount_due'); ?></td>
 					<td><?php echo to_currency($total); ?></td>
 				</tr>
 			<?php
@@ -105,12 +105,12 @@ if(isset($error_message))
 
 	<table id="items">
 		<tr>
-			<th><?php echo $this->lang->line('sales_item_number'); ?></th>
-			<th><?php echo $this->lang->line('sales_item_name'); ?></th>
-			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
-			<th><?php echo $this->lang->line('sales_price'); ?></th>
-			<th><?php echo $this->lang->line('sales_discount'); ?></th>
-			<th><?php echo $this->lang->line('sales_total'); ?></th>
+			<th><?php echo lang('sales_item_number'); ?></th>
+			<th><?php echo lang('sales_item_name'); ?></th>
+			<th><?php echo lang('sales_quantity'); ?></th>
+			<th><?php echo lang('sales_price'); ?></th>
+			<th><?php echo lang('sales_discount'); ?></th>
+			<th><?php echo lang('sales_total'); ?></th>
 		</tr>
 		<?php
 		foreach($cart as $line=>$item)
@@ -147,7 +147,7 @@ if(isset($error_message))
 		<?php if($print_price_info) { ?>
 			<tr>
 				<td colspan="3" class="blank-bottom"> </td>
-				<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
+				<td colspan="2" class="total-line"><?php echo lang('sales_sub_total'); ?></td>
 				<td class="total-value" id="subtotal"><?php echo to_currency($subtotal); ?></td>
 			</tr>
 			<?php
@@ -164,7 +164,7 @@ if(isset($error_message))
 			?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
+				<td colspan="2" class="total-line"><?php echo lang('sales_total'); ?></td>
 				<td class="total-value" id="total"><?php echo to_currency($total); ?></td>
 			</tr>
 		<?php } ?>
@@ -173,9 +173,9 @@ if(isset($error_message))
 		$show_giftcard_remainder = FALSE;
 		foreach($payments as $payment_id=>$payment)
 		{
-			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$only_sale_check |= $payment['payment_type'] == lang('sales_check');
 			$splitpayment = explode(':', $payment['payment_type']);
-			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
+			$show_giftcard_remainder |= $splitpayment[0] == lang('sales_giftcard');
 			?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
@@ -189,7 +189,7 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('sales_comments') . ': ' . $comments; ?></div>
 			</h5>
 		</div>
 	</div>

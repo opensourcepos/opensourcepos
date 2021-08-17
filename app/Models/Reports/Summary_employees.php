@@ -11,14 +11,14 @@ class Summary_employees extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('employee_name' => $this->lang->line('reports_employee')),
-			array('sales' => $this->lang->line('reports_sales'), 'sorter' => 'number_sorter'),
-			array('quantity' => $this->lang->line('reports_quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
+			array('employee_name' => lang('reports_employee')),
+			array('sales' => lang('reports_sales'), 'sorter' => 'number_sorter'),
+			array('quantity' => lang('reports_quantity'), 'sorter' => 'number_sorter'),
+			array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
+			array('cost' => lang('reports_cost'), 'sorter' => 'number_sorter'),
+			array('profit' => lang('reports_profit'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _select(array $inputs)

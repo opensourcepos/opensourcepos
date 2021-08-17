@@ -18,22 +18,22 @@ class Detailed_receivings extends Report
 	{
 		return array(
 			'summary' => array(
-				array('id' => $this->lang->line('reports_receiving_id')),
-				array('receiving_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
-				array('quantity' => $this->lang->line('reports_quantity')),
-				array('employee_name' => $this->lang->line('reports_received_by')),
-				array('supplier_name' => $this->lang->line('reports_supplied_by')),
-				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
-				array('payment_type' => $this->lang->line('reports_payment_type')),
-				array('comment' => $this->lang->line('reports_comments')),
-				array('reference' => $this->lang->line('receivings_reference'))),
+				array('id' => lang('reports_receiving_id')),
+				array('receiving_date' => lang('reports_date'), 'sortable' => FALSE),
+				array('quantity' => lang('reports_quantity')),
+				array('employee_name' => lang('reports_received_by')),
+				array('supplier_name' => lang('reports_supplied_by')),
+				array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
+				array('payment_type' => lang('reports_payment_type')),
+				array('comment' => lang('reports_comments')),
+				array('reference' => lang('receivings_reference'))),
 			'details' => array(
-				$this->lang->line('reports_item_number'),
-				$this->lang->line('reports_name'),
-				$this->lang->line('reports_category'),
-				$this->lang->line('reports_quantity'),
-				$this->lang->line('reports_total'),
-				$this->lang->line('reports_discount'))
+				lang('reports_item_number'),
+				lang('reports_name'),
+				lang('reports_category'),
+				lang('reports_quantity'),
+				lang('reports_total'),
+				lang('reports_discount'))
 		);
 	}
 

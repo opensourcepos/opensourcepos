@@ -37,22 +37,22 @@ $(document).ready(function()
 
 <div id="title_bar" class="print_hide btn-toolbar">
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
-		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo $this->lang->line('common_print'); ?>
+		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo lang('common_print'); ?>
 	</button>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
-			title='<?php echo $this->lang->line($controller_name.'_new'); ?>'>
-		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo $this->lang->line($controller_name . '_new'); ?>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
+			title='<?php echo lang($controller_name.'_new'); ?>'>
+		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo lang($controller_name . '_new'); ?>
 	</button>
 </div>
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
 		<button id="delete" class="btn btn-default btn-sm print_hide">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
+			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo lang("common_delete");?>
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'data-none-selected-text'=>$this->lang->line('common_none_selected_text'), 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'data-none-selected-text'=>lang('common_none_selected_text'), 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 	</div>
 </div>
 

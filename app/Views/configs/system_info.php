@@ -9,7 +9,7 @@
 </style>
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
-	<?php echo $this->lang->line('config_server_notice'); ?>
+	<?php echo lang('config_server_notice'); ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-2" align="left"><br>
@@ -18,7 +18,7 @@
 			<p>Permissions</p></strong>
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" align="left"><br>
-				<?php echo $this->lang->line('config_ospos_info') . ':'; ?>
+				<?php echo lang('config_ospos_info') . ':'; ?>
 				<?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
 				Language Code: <?php echo current_language_code(); ?><br><br>
 				<div id="TimeError"></div>
@@ -125,22 +125,22 @@
 					
 						if(!((substr(decoct(fileperms($logs)), -4) == 750) && (substr(decoct(fileperms($uploads)), -4) == 750) && (substr(decoct(fileperms($images)), -4) == 750) 
                              && ((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660)))) {
-							echo '<br><font color="red"><strong>' . $this->lang->line('config_security_issue') . '</strong> <br>' . $this->lang->line('config_perm_risk') . '</font><br>';
+							echo '<br><font color="red"><strong>' . lang('config_security_issue') . '</strong> <br>' . lang('config_perm_risk') . '</font><br>';
 						} 
 						else { 
-							echo '<br><font color="green">' . $this->lang->line('config_no_risk') . '</strong> <br> </font>';
+							echo '<br><font color="green">' . lang('config_no_risk') . '</strong> <br> </font>';
 						}
 						if(substr(decoct(fileperms($logs)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [application/logs:] ' . $this->lang->line('config_is_writable') . '</font>';						
+							echo '<br><font color="red"> &#187; [application/logs:] ' . lang('config_is_writable') . '</font>';						
 						}
 						if(substr(decoct(fileperms($uploads)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [public/uploads:] ' . $this->lang->line('config_is_writable') . '</font>';						
+							echo '<br><font color="red"> &#187; [public/uploads:] ' . lang('config_is_writable') . '</font>';						
 						}
 						if(substr(decoct(fileperms($images)), -4) != 750) {
-							echo '<br><font color="red"> &#187; [public/uploads/item_pics:] ' . $this->lang->line('config_is_writable') . '</font>';						
+							echo '<br><font color="red"> &#187; [public/uploads/item_pics:] ' . lang('config_is_writable') . '</font>';						
 						}
 						if(!((substr(decoct(fileperms($importcustomers)), -4) == 640) || (substr(decoct(fileperms($importcustomers)), -4) == 660))) {
-							echo '<br><font color="red"> &#187; [import_customers.csv:] ' . $this->lang->line('config_is_readable') . '</font>';
+							echo '<br><font color="red"> &#187; [import_customers.csv:] ' . lang('config_is_readable') . '</font>';
 						}
 						?>
 						<br>
@@ -152,7 +152,7 @@
 	</div>
 </div>
 <div align="center">
-		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= $this->lang->line('config_report_an_issue'); ?></a>
+		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= lang('config_report_an_issue'); ?></a>
 		<script>
 			var clipboard = new ClipboardJS('.copy');
 
@@ -167,6 +167,6 @@
 			});
 							
 			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<font color="red"><?php echo $this->lang->line('config_timezone_error'); ?></font><br><br><?php echo $this->lang->line('config_user_timezone'); ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo $this->lang->line('config_os_timezone'); ?><div id="ostimezoneE" style="font-weight:600;"><?php echo $this->config->item('timezone'); ?></div><br>';
+			document.getElementById("TimeError").innerHTML = '<font color="red"><?php echo lang('config_timezone_error'); ?></font><br><br><?php echo lang('config_user_timezone'); ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('config_os_timezone'); ?><div id="ostimezoneE" style="font-weight:600;"><?php echo $this->config->item('timezone'); ?></div><br>';
 		</script>
 </div>

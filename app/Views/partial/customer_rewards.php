@@ -9,7 +9,7 @@ foreach($customer_rewards as $customer_rewards => $reward_category)
 	++$i;
 ?>
 	<div class="form-group form-group-sm" style="<?php echo $reward_category['deleted'] ? 'display:none;' : 'display:block;' ?>">
-		<?php echo form_label($this->lang->line('config_customer_reward') . ' ' . $i, 'customer_reward_' . $i, array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('config_customer_reward') . ' ' . $i, 'customer_reward_' . $i, array('class'=>'required control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
 					'name'=>'customer_reward_' . $customer_reward_id,

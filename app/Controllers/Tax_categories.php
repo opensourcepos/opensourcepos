@@ -72,16 +72,16 @@ class Tax_categories extends Secure_Controller
 			// New tax_category_id
 			if($tax_category_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_adding'), 'id' => $tax_category_data['tax_category_id']));
+				echo json_encode(array('success' => TRUE, 'message' => lang('taxes_categories_successful_adding'), 'id' => $tax_category_data['tax_category_id']));
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_updating'), 'id' => $tax_category_id));
+				echo json_encode(array('success' => TRUE, 'message' => lang('taxes_categories_successful_updating'), 'id' => $tax_category_id));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('taxes_categories_error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
 		}
 	}
 
@@ -91,11 +91,11 @@ class Tax_categories extends Secure_Controller
 
 		if($this->Tax_category->delete_list($tax_categories_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_categories_successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . $this->lang->line('taxes_categories_one_or_multiple')));
+			echo json_encode(array('success' => TRUE, 'message' => lang('taxes_categories_successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . lang('taxes_categories_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_categories_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('taxes_categories_cannot_be_deleted')));
 		}
 	}
 }

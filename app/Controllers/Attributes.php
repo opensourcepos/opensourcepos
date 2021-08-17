@@ -104,20 +104,20 @@ class Attributes extends Secure_Controller
 					$this->Attribute->save_value($definition_value, $definition_data['definition_id']);
 				}
 
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('attributes_definition_successful_adding').' '.
+				echo json_encode(array('success' => TRUE, 'message' => lang('attributes_definition_successful_adding').' '.
 					$definition_name, 'id' => $definition_data['definition_id']));
 			}
 		//Existing definition
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('attributes_definition_successful_updating').' '.
+				echo json_encode(array('success' => TRUE, 'message' => lang('attributes_definition_successful_updating').' '.
 					$definition_name, 'id' => $definition_id));
 			}
 		}
 	//Failure
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attributes_definition_error_adding_updating', $definition_name), 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('attributes_definition_error_adding_updating', $definition_name), 'id' => -1));
 		}
 	}
 
@@ -144,7 +144,7 @@ class Attributes extends Secure_Controller
 		{
 			if ($id & $definition_flags)
 			{
-				$definition_flag_names[$id] = $this->lang->line('attributes_' . strtolower($term) . '_visibility');
+				$definition_flag_names[$id] = lang('attributes_' . strtolower($term) . '_visibility');
 			}
 		}
 		return $definition_flag_names;
@@ -161,7 +161,7 @@ class Attributes extends Secure_Controller
 		$data['definition_id'] = $definition_id;
 		$data['definition_values'] = $this->Attribute->get_definition_values($definition_id);
 		$data['definition_group'] = $this->Attribute->get_definitions_by_type(GROUP, $definition_id);
-		$data['definition_group'][''] = $this->lang->line('common_none_selected_text');
+		$data['definition_group'][''] = lang('common_none_selected_text');
 		$data['definition_info'] = $info;
 
 		$show_all = Attribute::SHOW_IN_ITEMS | Attribute::SHOW_IN_RECEIVINGS | Attribute::SHOW_IN_SALES;
@@ -183,12 +183,12 @@ class Attributes extends Secure_Controller
 
 		if($this->Attribute->delete_definition_list($attributes_to_delete))
 		{
-			$message = $this->lang->line('attributes_definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . $this->lang->line('attributes_definition_one_or_multiple');
+			$message = lang('attributes_definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('attributes_definition_one_or_multiple');
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attributes_definition_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('attributes_definition_cannot_be_deleted')));
 		}
 	}
 }

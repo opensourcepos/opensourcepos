@@ -6,37 +6,37 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs">
 	<li class="active" role="presentation">
-		<a data-toggle="tab" href="#info_tab" title="<?php echo $this->lang->line('config_info_configuration'); ?>"><?php echo $this->lang->line('config_info'); ?></a>
+		<a data-toggle="tab" href="#info_tab" title="<?php echo lang('config_info_configuration'); ?>"><?php echo lang('config_info'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#general_tab" title="<?php echo $this->lang->line('config_general_configuration'); ?>"><?php echo $this->lang->line('config_general'); ?></a>
+		<a data-toggle="tab" href="#general_tab" title="<?php echo lang('config_general_configuration'); ?>"><?php echo lang('config_general'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_tab" title="<?php echo $this->lang->line('config_tax_configuration'); ?>"><?php echo $this->lang->line('config_tax'); ?></a>
+		<a data-toggle="tab" href="#tax_tab" title="<?php echo lang('config_tax_configuration'); ?>"><?php echo lang('config_tax'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#locale_tab" title="<?php echo $this->lang->line('config_locale_configuration'); ?>"><?php echo $this->lang->line('config_locale'); ?></a>
+		<a data-toggle="tab" href="#locale_tab" title="<?php echo lang('config_locale_configuration'); ?>"><?php echo lang('config_locale'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#barcode_tab" title="<?php echo $this->lang->line('config_barcode_configuration'); ?>"><?php echo $this->lang->line('config_barcode'); ?></a>
+		<a data-toggle="tab" href="#barcode_tab" title="<?php echo lang('config_barcode_configuration'); ?>"><?php echo lang('config_barcode'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#stock_tab" title="<?php echo $this->lang->line('config_location_configuration'); ?>"><?php echo $this->lang->line('config_location'); ?></a>
+		<a data-toggle="tab" href="#stock_tab" title="<?php echo lang('config_location_configuration'); ?>"><?php echo lang('config_location'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#receipt_tab" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>"><?php echo $this->lang->line('config_receipt'); ?></a>
+		<a data-toggle="tab" href="#receipt_tab" title="<?php echo lang('config_receipt_configuration'); ?>"><?php echo lang('config_receipt'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#invoice_tab" title="<?php echo $this->lang->line('config_invoice_configuration'); ?>"><?php echo $this->lang->line('config_invoice'); ?></a>
+		<a data-toggle="tab" href="#invoice_tab" title="<?php echo lang('config_invoice_configuration'); ?>"><?php echo lang('config_invoice'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
+		<a data-toggle="tab" href="#reward_tab" title="<?php echo lang('config_reward_configuration'); ?>"><?php echo lang('config_reward'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
+		<a data-toggle="tab" href="#table_tab" title="<?php echo lang('config_table_configuration'); ?>"><?php echo lang('config_table'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#system_tab" title="<?php echo $this->lang->line('config_system_conf'); ?>"><?php echo $this->lang->line('config_system_conf'); ?></a>
+		<a data-toggle="tab" href="#system_tab" title="<?php echo lang('config_system_conf'); ?>"><?php echo lang('config_system_conf'); ?></a>
 	</li>
 </ul>
 

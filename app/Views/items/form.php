@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/save/'.$item_info->item_id, array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_item_number'), 'item_number', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_item_number'), 'item_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_name'), 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
@@ -32,7 +32,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -62,7 +62,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_stock_type'), 'stock_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_stock_type'), 'stock_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
 					<?php echo form_radio(array(
@@ -71,7 +71,7 @@
 							'id'=>'stock_type',
 							'value'=>0,
 							'checked'=>$item_info->stock_type == HAS_STOCK)
-					); ?> <?php echo $this->lang->line('items_stock'); ?>
+					); ?> <?php echo lang('items_stock'); ?>
 				</label>
 				<label class="radio-inline">
 					<?php echo form_radio(array(
@@ -80,13 +80,13 @@
 							'id'=>'stock_type',
 							'value'=>1,
 							'checked'=>$item_info->stock_type == HAS_NO_STOCK)
-					); ?><?php echo $this->lang->line('items_nonstock'); ?>
+					); ?><?php echo lang('items_nonstock'); ?>
 				</label>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_type'), 'item_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_type'), 'item_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
 					<?php
@@ -100,7 +100,7 @@
 						{
 							$radio_button['disabled'] = TRUE;
 						}
-						echo form_radio($radio_button); ?> <?php echo $this->lang->line('items_standard'); ?>
+						echo form_radio($radio_button); ?> <?php echo lang('items_standard'); ?>
 				</label>
 				<label class="radio-inline">
 					<?php
@@ -114,7 +114,7 @@
 						{
 							$radio_button['disabled'] = TRUE;
 						}
-						echo form_radio($radio_button); ?> <?php echo $this->lang->line('items_kit');
+						echo form_radio($radio_button); ?> <?php echo lang('items_kit');
 					?>
 				</label>
 				<?php
@@ -128,7 +128,7 @@
 								'id' => 'item_type',
 								'value' => 2,
 								'checked' => $item_info->item_type == ITEM_AMOUNT_ENTRY)
-						); ?><?php echo $this->lang->line('items_amount_entry'); ?>
+						); ?><?php echo lang('items_amount_entry'); ?>
 					</label>
 				<?php
 				}
@@ -144,7 +144,7 @@
 								'id'=>'item_type',
 								'value'=>3,
 								'checked'=>$item_info->item_type == ITEM_TEMP)
-						); ?> <?php echo $this->lang->line('items_temp'); ?>
+						); ?> <?php echo lang('items_temp'); ?>
 					</label>
 				<?php
 				}
@@ -153,14 +153,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_cost_price'), 'cost_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -181,7 +181,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_unit_price'), 'unit_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -206,7 +206,7 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 							'name'=>'tax_names[]',
@@ -229,7 +229,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 							'name'=>'tax_names[]',
@@ -256,7 +256,7 @@
 
 		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('taxes_tax_category'), 'tax_category', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('taxes_tax_category'), 'tax_category', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input(array(
@@ -274,7 +274,7 @@
 
 		<?php if($include_hsn): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_hsn_code'), 'category', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_hsn_code'), 'category', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
 					<div class="input-group">
 						<?php echo form_input(array(
@@ -293,7 +293,7 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'], 'quantity_' . $key, array('class'=>'required control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_quantity').' '.$location_detail['location_name'], 'quantity_' . $key, array('class'=>'required control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 							'name'=>'quantity_' . $key,
@@ -309,7 +309,7 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_receiving_quantity'), 'receiving_quantity', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'receiving_quantity',
@@ -322,7 +322,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_reorder_level'), 'reorder_level', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'reorder_level',
@@ -335,7 +335,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'description',
@@ -347,29 +347,29 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_image'), 'items_image', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_image'), 'items_image', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
 					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
 					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
-						<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('items_image'); ?>"
+						<img data-src="holder.js/100%x100%" alt="<?php echo lang('items_image'); ?>"
 							 src="<?php echo $image_path; ?>"
 							 style="max-height: 100%; max-width: 100%;">
 					</div>
 					<div>
 						<span class="btn btn-default btn-sm btn-file">
-							<span class="fileinput-new"><?php echo $this->lang->line("items_select_image"); ?></span>
-							<span class="fileinput-exists"><?php echo $this->lang->line("items_change_image"); ?></span>
+							<span class="fileinput-new"><?php echo lang("items_select_image"); ?></span>
+							<span class="fileinput-exists"><?php echo lang("items_change_image"); ?></span>
 							<input type="file" name="item_image" accept="image/*">
 						</span>
-						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("items_remove_image"); ?></a>
+						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo lang("items_remove_image"); ?></a>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 						'name'=>'allow_alt_description',
@@ -381,7 +381,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 						'name'=>'is_serialized',
@@ -397,7 +397,7 @@
 		{
 			?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_qty_per_pack'), 'qty_per_pack', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_qty_per_pack'), 'qty_per_pack', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 							'name'=>'qty_per_pack',
@@ -408,7 +408,7 @@
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_pack_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_pack_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
 					<?php echo form_input(array(
 							'name'=>'pack_name',
@@ -419,7 +419,7 @@
 				</div>
 			</div>
 			<div class="form-group  form-group-sm">
-				<?php echo form_label($this->lang->line('items_low_sell_item'), 'low_sell_item_name', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('items_low_sell_item'), 'low_sell_item_name', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input(array(
@@ -437,7 +437,7 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_is_deleted'), 'is_deleted', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('items_is_deleted'), 'is_deleted', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 						'name'=>'is_deleted',
@@ -516,7 +516,7 @@ $(document).ready(function()
 
 	$.validator.addMethod('valid_chars', function(value, element) {
 		return value.match(/(\||_)/g) == null;
-	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
+	}, "<?php echo lang('attributes_attribute_value_invalid_chars'); ?>");
 
 	var init_validation = function() {
 		$('#item_form').validate($.extend({
@@ -608,18 +608,18 @@ $(document).ready(function()
 
 			messages:
 			{
-				name: "<?php echo $this->lang->line('items_name_required'); ?>",
-				item_number: "<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
-				category: "<?php echo $this->lang->line('items_category_required'); ?>",
+				name: "<?php echo lang('items_name_required'); ?>",
+				item_number: "<?php echo lang('items_item_number_duplicate'); ?>",
+				category: "<?php echo lang('items_category_required'); ?>",
 				cost_price:
 				{
-					required: "<?php echo $this->lang->line('items_cost_price_required'); ?>",
-					number: "<?php echo $this->lang->line('items_cost_price_number'); ?>"
+					required: "<?php echo lang('items_cost_price_required'); ?>",
+					number: "<?php echo lang('items_cost_price_number'); ?>"
 				},
 				unit_price:
 				{
-					required: "<?php echo $this->lang->line('items_unit_price_required'); ?>",
-					number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
+					required: "<?php echo lang('items_unit_price_required'); ?>",
+					number: "<?php echo lang('items_unit_price_number'); ?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -627,26 +627,26 @@ $(document).ready(function()
 				?>
 				<?php echo 'quantity_' . $key ?>:
 					{
-						required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-						number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+						required: "<?php echo lang('items_quantity_required'); ?>",
+						number: "<?php echo lang('items_quantity_number'); ?>"
 					},
 				<?php
 				}
 				?>
 				receiving_quantity:
 				{
-					required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
-					number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
+					required: "<?php echo lang('items_quantity_required'); ?>",
+					number: "<?php echo lang('items_quantity_number'); ?>"
 				},
 				reorder_level:
 				{
-					required: "<?php echo $this->lang->line('items_reorder_level_required'); ?>",
-					number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
+					required: "<?php echo lang('items_reorder_level_required'); ?>",
+					number: "<?php echo lang('items_reorder_level_number'); ?>"
 				},
 				tax_percent:
 				{
-					required: "<?php echo $this->lang->line('items_tax_percent_required'); ?>",
-					number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
+					required: "<?php echo lang('items_tax_percent_required'); ?>",
+					number: "<?php echo lang('items_tax_percent_number'); ?>"
 				}
 			}
 		}, form_support.error));

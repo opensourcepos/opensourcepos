@@ -10,16 +10,16 @@ class Inventory_summary extends Report
 {
 	public function getDataColumns()
 	{
-		return array(array('item_name' => $this->lang->line('reports_item_name')),
-					array('item_number' => $this->lang->line('reports_item_number')),
-					array('category' => $this->lang->line('reports_category')),
-					array('quantity' => $this->lang->line('reports_quantity')),
-					array('low_sell_quantity' => $this->lang->line('reports_low_sell_quantity')),
-					array('reorder_level' => $this->lang->line('reports_reorder_level')),
-					array('location_name' => $this->lang->line('reports_stock_location')),
-					array('cost_price' => $this->lang->line('reports_cost_price'), 'sorter' => 'number_sorter'),
-					array('unit_price' => $this->lang->line('reports_unit_price'), 'sorter' => 'number_sorter'),
-					array('subtotal' => $this->lang->line('reports_sub_total_value'), 'sorter' => 'number_sorter'));
+		return array(array('item_name' => lang('reports_item_name')),
+					array('item_number' => lang('reports_item_number')),
+					array('category' => lang('reports_category')),
+					array('quantity' => lang('reports_quantity')),
+					array('low_sell_quantity' => lang('reports_low_sell_quantity')),
+					array('reorder_level' => lang('reports_reorder_level')),
+					array('location_name' => lang('reports_stock_location')),
+					array('cost_price' => lang('reports_cost_price'), 'sorter' => 'number_sorter'),
+					array('unit_price' => lang('reports_unit_price'), 'sorter' => 'number_sorter'),
+					array('subtotal' => lang('reports_sub_total_value'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)
@@ -81,9 +81,9 @@ class Inventory_summary extends Report
 	 */
 	public function getItemCountDropdownArray()
 	{
-		return array('all' => $this->lang->line('reports_all'),
-					'zero_and_less' => $this->lang->line('reports_zero_and_less'),
-					'more_than_zero' => $this->lang->line('reports_more_than_zero'));
+		return array('all' => lang('reports_all'),
+					'zero_and_less' => lang('reports_zero_and_less'),
+					'more_than_zero' => lang('reports_more_than_zero'));
 	}
 }
 ?>

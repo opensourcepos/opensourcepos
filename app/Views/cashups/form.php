@@ -1,16 +1,16 @@
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('cashups/save/'.$cash_ups_info->cashup_id, array('id'=>'cashups_edit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_info'), 'cash_ups_info', array('class'=>'control-label col-xs-3')); ?>
-			<?php echo form_label(!empty($cash_ups_info->cashup_id) ? $this->lang->line('cashups_id') . ' ' . $cash_ups_info->cashup_id : '', 'cashup_id', array('class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
+			<?php echo form_label(lang('cashups_info'), 'cash_ups_info', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(!empty($cash_ups_info->cashup_id) ? lang('cashups_id') . ' ' . $cash_ups_info->cashup_id : '', 'cashup_id', array('class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_open_date'), 'open_date', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_open_date'), 'open_date', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -25,14 +25,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_open_employee'), 'open_employee', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_open_employee'), 'open_employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('open_employee_id', $employees, $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"');?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_open_amount_cash'), 'open_amount_cash', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_open_amount_cash'), 'open_amount_cash', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_transfer_amount_cash'), 'transfer_amount_cash', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_transfer_amount_cash'), 'transfer_amount_cash', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -72,7 +72,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_close_date'), 'close_date', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_close_date'), 'close_date', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -87,14 +87,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_close_employee'), 'close_employee', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_close_employee'), 'close_employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('close_employee_id', $employees, $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"');?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_closed_amount_cash'), 'closed_amount_cash', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_closed_amount_cash'), 'closed_amount_cash', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -114,7 +114,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_note'), 'note', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_note'), 'note', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_checkbox(array(
 					'name'=>'note',
@@ -126,7 +126,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_closed_amount_due'), 'closed_amount_due', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_closed_amount_due'), 'closed_amount_due', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -146,7 +146,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_closed_amount_card'), 'closed_amount_card', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_closed_amount_card'), 'closed_amount_card', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -166,7 +166,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_closed_amount_check'), 'closed_amount_check', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_closed_amount_check'), 'closed_amount_check', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -186,7 +186,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_closed_amount_total'), 'closed_amount_total', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_closed_amount_total'), 'closed_amount_total', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -207,7 +207,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('cashups_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('cashups_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_textarea(array(
 					'name'=>'description',
@@ -223,7 +223,7 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('cashups_is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('cashups_is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-5'>
 					<?php echo form_checkbox(array(
 						'name'=>'deleted',
@@ -342,18 +342,18 @@ $(document).ready(function()
 		{
 			open_date:
 			{
-				required: '<?php echo $this->lang->line('cashups_date_required'); ?>'
+				required: '<?php echo lang('cashups_date_required'); ?>'
 
 			},
 			close_date:
 			{
-				required: '<?php echo $this->lang->line('cashups_date_required'); ?>'
+				required: '<?php echo lang('cashups_date_required'); ?>'
 
 			},
 			amount:
 			{
-				required: '<?php echo $this->lang->line('cashups_amount_required'); ?>',
-				number: '<?php echo $this->lang->line('cashups_amount_number'); ?>'
+				required: '<?php echo lang('cashups_amount_required'); ?>',
+				number: '<?php echo lang('cashups_amount_number'); ?>'
 			}
 		}
 	}, form_support.error));

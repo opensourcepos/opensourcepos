@@ -5,7 +5,7 @@
 </script>
 
 
-<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
+<div id="page_title"><?php echo lang('reports_report_input'); ?></div>
 
 <?php
 if(isset($error))
@@ -17,14 +17,14 @@ if(isset($error))
 <?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
 		<div id='report_stock_location' class="col-xs-3">
 			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('reports_item_count'), 'reports_item_count_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('reports_item_count'), 'reports_item_count_label', array('class'=>'required control-label col-xs-2')); ?>
 		<div id='report_item_count' class="col-xs-3">
 			<?php echo form_dropdown('item_count',$item_count,'all','id="item_count" class="form-control"'); ?>
 		</div>
@@ -34,7 +34,7 @@ if(isset($error))
 	echo form_button(array(
 		'name'=>'generate_report',
 		'id'=>'generate_report',
-		'content'=>$this->lang->line('common_submit'),
+		'content'=>lang('common_submit'),
 		'class'=>'btn btn-primary btn-sm')
 	);
 	?>

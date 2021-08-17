@@ -11,18 +11,18 @@ class Summary_payments extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('trans_group' => $this->lang->line('reports_trans_group')),
-			array('trans_type' => $this->lang->line('reports_trans_type')),
-			array('trans_sales' => $this->lang->line('reports_sales')),
-			array('trans_amount' => $this->lang->line('reports_trans_amount')),
-			array('trans_payments' => $this->lang->line('reports_trans_payments')),
-			array('trans_refunded' => $this->lang->line('reports_trans_refunded')),
-			array('trans_due' => $this->lang->line('reports_trans_due')));
+			array('trans_group' => lang('reports_trans_group')),
+			array('trans_type' => lang('reports_trans_type')),
+			array('trans_sales' => lang('reports_sales')),
+			array('trans_amount' => lang('reports_trans_amount')),
+			array('trans_payments' => lang('reports_trans_payments')),
+			array('trans_refunded' => lang('reports_trans_refunded')),
+			array('trans_due' => lang('reports_trans_due')));
 	}
 
 	public function getData(array $inputs)
 	{
-		$cash_payment = $this->lang->line('sales_cash');
+		$cash_payment = lang('sales_cash');
 
 		$separator[] = array(
 			'trans_group' => '<HR>',
@@ -47,10 +47,10 @@ class Summary_payments extends Summary_report
 
 		$this->create_summary_payments_temp_tables($where);
 
-		$select = '\'' . $this->lang->line('reports_trans_sales') . '\' AS trans_group, ';
-		$select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN \'' . $this->lang->line('reports_code_pos')
-			. '\' WHEN ' . SALE_TYPE_INVOICE . ' THEN \'' . $this->lang->line('sales_invoice')
-			. '\' WHEN ' . SALE_TYPE_RETURN . ' THEN \'' . $this->lang->line('sales_return')
+		$select = '\'' . lang('reports_trans_sales') . '\' AS trans_group, ';
+		$select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN \'' . lang('reports_code_pos')
+			. '\' WHEN ' . SALE_TYPE_INVOICE . ' THEN \'' . lang('sales_invoice')
+			. '\' WHEN ' . SALE_TYPE_RETURN . ' THEN \'' . lang('sales_return')
 			. '\' END) AS trans_type, ';
 		$select .= 'COUNT(sales.sale_id) AS trans_sales, ';
 		$select .= 'SUM(sumpay_items.trans_amount) AS trans_amount, ';
@@ -79,7 +79,7 @@ class Summary_payments extends Summary_report
 			}
 		}
 
-		$select = '\'' . $this->lang->line('reports_trans_payments') . '\' AS trans_group, ';
+		$select = '\'' . lang('reports_trans_payments') . '\' AS trans_group, ';
 		$select .= 'sales_payments.payment_type as trans_type, ';
 		$select .= 'COUNT(sales.sale_id) AS trans_sales, ';
 		$select .= 'SUM(payment_amount - cash_refund) AS trans_amount,';
@@ -102,7 +102,7 @@ class Summary_payments extends Summary_report
 		$gift_card_amount = 0;
 		foreach($payments as $key => $payment)
 		{
-			if(strstr($payment['trans_type'], $this->lang->line('sales_giftcard')) !== FALSE)
+			if(strstr($payment['trans_type'], lang('sales_giftcard')) !== FALSE)
 			{
 				$gift_card_count  += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
@@ -114,7 +114,7 @@ class Summary_payments extends Summary_report
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('trans_group' => $this->lang->line('reports_trans_payments'), 'trans_type' => $this->lang->line('sales_giftcard'), 'trans_sales' => $gift_card_count,
+			$payments[] = array('trans_group' => lang('reports_trans_payments'), 'trans_type' => lang('sales_giftcard'), 'trans_sales' => $gift_card_count,
 				'trans_amount' => $gift_card_amount, 'trans_payments' => $gift_card_amount, 'trans_refunded' => 0, 'trans_due' => 0);
 		}
 

@@ -1,11 +1,11 @@
 <?php echo form_open('config/save_tables/', array('id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+            <div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
             <ul id="table_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_dinner_table_enable'), 'dinner_table_enable', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('config_dinner_table_enable'), 'dinner_table_enable', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
 						'name' => 'dinner_table_enable',
@@ -22,7 +22,7 @@
             <?php echo form_submit(array(
                 'name' => 'submit_table',
                 'id' => 'submit_table',
-                'value' => $this->lang->line('common_submit'),
+                'value' => lang('common_submit'),
                 'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
@@ -68,7 +68,7 @@ $(document).ready(function()
 		var block = $(this).parent().clone(true);
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'dinner_table_' + ++id;
-		$(new_block).find('label').html("<?php echo $this->lang->line('config_dinner_table'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+		$(new_block).find('label').html("<?php echo lang('config_dinner_table'); ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();
 	};
@@ -95,11 +95,11 @@ $(document).ready(function()
 			value_count = $(this).val() == value ? value_count + 1 : value_count; 
 		});
 		return value_count < 2;
-    }, "<?php echo $this->lang->line('config_dinner_table_duplicate'); ?>");
+    }, "<?php echo lang('config_dinner_table_duplicate'); ?>");
 
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
-    }, "<?php echo $this->lang->line('config_dinner_table_invalid_chars'); ?>");
+    }, "<?php echo lang('config_dinner_table_invalid_chars'); ?>");
 	
 	$('#table_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
@@ -145,7 +145,7 @@ $(document).ready(function()
 			foreach($dinner_tables as $dinner_table=>$table)
 			{
 			?>
-				<?php echo 'dinner_table_' . ++$i ?>: "<?php echo $this->lang->line('config_dinner_table_required'); ?>",
+				<?php echo 'dinner_table_' . ++$i ?>: "<?php echo lang('config_dinner_table_required'); ?>",
 			<?php
 			}
 			?>
