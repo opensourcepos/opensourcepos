@@ -11,11 +11,11 @@ class Summary_sales_taxes extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('reporting_authority' => lang('reports_authority')),
-			array('jurisdiction_name' => lang('reports_jurisdiction')),
-			array('tax_category' => lang('reports_tax_category')),
-			array('tax_rate' => lang('reports_tax_rate'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'));
+			array('reporting_authority' => lang('Reports.authority')),
+			array('jurisdiction_name' => lang('Reports.jurisdiction')),
+			array('tax_category' => lang('Reports.tax_category')),
+			array('tax_rate' => lang('Reports.tax_rate'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _where(array $inputs)

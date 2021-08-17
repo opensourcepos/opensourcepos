@@ -11,13 +11,13 @@ class Summary_categories extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('category' => lang('reports_category')),
-			array('quantity' => lang('reports_quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('reports_profit'), 'sorter' => 'number_sorter'));
+			array('category' => lang('Reports.category')),
+			array('quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'),
+			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
+			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _select(array $inputs)

@@ -45,7 +45,7 @@ class Inventory extends Model
 					'trans_inventory' => -1 * $inventory_sum['sum'],
 					'trans_items' => $item_id,
 					'trans_location' => $inventory_sum['location_id'],
-					'trans_comment' => lang('items_is_deleted'),
+					'trans_comment' => lang('Items.is_deleted'),
 					'trans_user' => $this->Employee->get_logged_in_employee_info()->person_id)
 				);
 			}

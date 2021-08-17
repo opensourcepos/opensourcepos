@@ -1,18 +1,18 @@
 <?php echo form_open('config/save_barcode/', array('id' => 'barcode_config_form', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="barcode_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_type'), 'barcode_type', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.barcode_type'), 'barcode_type', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('barcode_type', $support_barcode, $this->config->item('barcode_type'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_width'), 'barcode_width', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.barcode_width'), 'barcode_width', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'step' => '5',
@@ -27,7 +27,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_height'), 'barcode_height', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.barcode_height'), 'barcode_height', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'type' => 'number',
@@ -41,7 +41,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_font'), 'barcode_font', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.barcode_font'), 'barcode_font', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-sm-2'>
 					<?php echo form_dropdown('barcode_font',
 						$this->barcode_lib->listfonts("fonts"),
@@ -61,7 +61,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_allow_duplicate_barcodes'), 'allow_duplicate_barcodes', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.allow_duplicate_barcodes'), 'allow_duplicate_barcodes', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
 						'name' => 'allow_duplicate_barcodes',
@@ -70,27 +70,27 @@
 						'checked' => $this->config->item('allow_duplicate_barcodes'))); ?>
 					&nbsp
 					<label class="control-label">
-						<span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('config_barcode_tooltip'); ?>"></span>
+						<span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.barcode_tooltip'); ?>"></span>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_content'), 'barcode_content', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.barcode_content'), 'barcode_content', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
 							'name' => 'barcode_content',
 							'value' => 'id',
 							'checked'=>$this->config->item('barcode_content') === "id")); ?>
-						<?php echo lang('config_barcode_id'); ?>
+						<?php echo lang('Config.barcode_id'); ?>
 					</label>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
 							'name' => 'barcode_content',
 							'value' => 'number',
 							'checked'=>$this->config->item('barcode_content') === "number")); ?>
-						<?php echo lang('config_barcode_number'); ?>
+						<?php echo lang('Config.barcode_number'); ?>
 					</label>
 					&nbsp
 					&nbsp
@@ -99,13 +99,13 @@
 							'name' => 'barcode_generate_if_empty',
 							'value' => 'barcode_generate_if_empty',
 							'checked'=>$this->config->item('barcode_generate_if_empty'))); ?>
-						<?php echo lang('config_barcode_generate_if_empty'); ?>
+						<?php echo lang('Config.barcode_generate_if_empty'); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_formats'), 'barcode_formats', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.barcode_formats'), 'barcode_formats', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<?php
 					$barcode_formats = json_decode($this->config->item('barcode_formats'));
@@ -119,44 +119,44 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_layout'), 'barcode_layout', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.barcode_layout'), 'barcode_layout', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
-						<label class="control-label col-sm-1"><?php echo lang('config_barcode_first_row').' '; ?></label>
+						<label class="control-label col-sm-1"><?php echo lang('Config.barcode_first_row').' '; ?></label>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('barcode_first_row', array(
-								'not_show' => lang('config_none'),
-								'name' => lang('items_name'),
-								'category' => lang('items_category'),
-								'cost_price' => lang('items_cost_price'),
-								'unit_price' => lang('items_unit_price'),
-								'company_name' => lang('suppliers_company_name')
+								'not_show' => lang('Config.none'),
+								'name' => lang('Items.name'),
+								'category' => lang('Items.category'),
+								'cost_price' => lang('Items.cost_price'),
+								'unit_price' => lang('Items.unit_price'),
+								'company_name' => lang('Suppliers.company_name')
 							),
 							$this->config->item('barcode_first_row'), array('class' => 'form-control input-sm')); ?>
 						</div>
-						<label class="control-label col-sm-1"><?php echo lang('config_barcode_second_row').' '; ?></label>
+						<label class="control-label col-sm-1"><?php echo lang('Config.barcode_second_row').' '; ?></label>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('barcode_second_row', array(
-								'not_show' => lang('config_none'),
-								'name' => lang('items_name'),
-								'category' => lang('items_category'),
-								'cost_price' => lang('items_cost_price'),
-								'unit_price' => lang('items_unit_price'),
-								'item_code' => lang('items_item_number'),
-								'company_name' => lang('suppliers_company_name')
+								'not_show' => lang('Config.none'),
+								'name' => lang('Items.name'),
+								'category' => lang('Items.category'),
+								'cost_price' => lang('Items.cost_price'),
+								'unit_price' => lang('Items.unit_price'),
+								'item_code' => lang('Items.item_number'),
+								'company_name' => lang('Suppliers.company_name')
 							),
 							$this->config->item('barcode_second_row'), array('class' => 'form-control input-sm')); ?>
 						</div>
-						<label class="control-label col-sm-1"><?php echo lang('config_barcode_third_row').' '; ?></label>
+						<label class="control-label col-sm-1"><?php echo lang('Config.barcode_third_row').' '; ?></label>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('barcode_third_row', array(
-								'not_show' => lang('config_none'),
-								'name' => lang('items_name'),
-								'category' => lang('items_category'),
-								'cost_price' => lang('items_cost_price'),
-								'unit_price' => lang('items_unit_price'),
-								'item_code' => lang('items_item_number'),
-								'company_name' => lang('suppliers_company_name')
+								'not_show' => lang('Config.none'),
+								'name' => lang('Items.name'),
+								'category' => lang('Items.category'),
+								'cost_price' => lang('Items.cost_price'),
+								'unit_price' => lang('Items.unit_price'),
+								'item_code' => lang('Items.item_number'),
+								'company_name' => lang('Suppliers.company_name')
 							),
 							$this->config->item('barcode_third_row'), array('class' => 'form-control input-sm')); ?>
 						</div>
@@ -165,7 +165,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_barcode_number_in_row'), 'barcode_num_in_row', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name' => 'barcode_num_in_row',
@@ -176,7 +176,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-			<?php echo form_label(lang('config_barcode_page_width'), 'barcode_page_width', array('class' => 'control-label col-xs-2 required')); ?>
+			<?php echo form_label(lang('Config.barcode_page_width'), 'barcode_page_width', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-sm-2">
 					<div class='input-group'>
 						<?php echo form_input(array(
@@ -190,7 +190,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-			<?php echo form_label(lang('config_barcode_page_cellspacing'), 'barcode_page_cellspacing', array('class' => 'control-label col-xs-2 required')); ?>
+			<?php echo form_label(lang('Config.barcode_page_cellspacing'), 'barcode_page_cellspacing', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-sm-2'>
 					<div class="input-group">
 						<?php echo form_input(array(
@@ -206,7 +206,7 @@
 			<?php echo form_submit(array(
 				'name' => 'submit_barcode',
 				'id' => 'submit_barcode',
-				'value' => lang('common_submit'),
+				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
@@ -257,33 +257,33 @@ $(document).ready(function()
 		{
 			barcode_width:
 			{
-				required:"<?php echo lang('config_default_barcode_width_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_width_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_width_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_width_number'); ?>"
 			},
 			barcode_height:
 			{
-				required:"<?php echo lang('config_default_barcode_height_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_height_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_height_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_height_number'); ?>"
 			},
 			barcode_font_size:
 			{
-				required:"<?php echo lang('config_default_barcode_font_size_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_font_size_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_font_size_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_font_size_number'); ?>"
 			},
 			barcode_num_in_row:
 			{
-				required:"<?php echo lang('config_default_barcode_num_in_row_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_num_in_row_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_num_in_row_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_num_in_row_number'); ?>"
 			},
 			barcode_page_width:
 			{
-				required:"<?php echo lang('config_default_barcode_page_width_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_page_width_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_page_width_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_page_width_number'); ?>"
 			},
 			barcode_page_cellspacing:
 			{
-				required:"<?php echo lang('config_default_barcode_page_cellspacing_required'); ?>",
-				number:"<?php echo lang('config_default_barcode_page_cellspacing_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_page_cellspacing_required'); ?>",
+				number:"<?php echo lang('Config.default_barcode_page_cellspacing_number'); ?>"
 			}
 		}
 	}));

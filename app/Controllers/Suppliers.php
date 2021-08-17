@@ -131,13 +131,13 @@ class Suppliers extends Persons
 			if($supplier_id == -1)
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => lang('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
+								'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
 								'id' => $supplier_data['person_id']));
 			}
 			else //Existing supplier
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => lang('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
+								'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
 								'id' => $supplier_id));
 			}
 		}
@@ -146,7 +146,7 @@ class Suppliers extends Persons
 			$supplier_data = $this->xss_clean($supplier_data);
 
 			echo json_encode(array('success' => FALSE,
-							'message' => lang('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
+							'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
 							'id' => -1));
 		}
 	}
@@ -160,12 +160,12 @@ class Suppliers extends Persons
 
 		if($this->Supplier->delete_list($suppliers_to_delete))
 		{
-			echo json_encode(array('success' => TRUE,'message' => lang('suppliers_successful_deleted').' '.
-							count($suppliers_to_delete).' '.lang('suppliers_one_or_multiple')));
+			echo json_encode(array('success' => TRUE,'message' => lang('Suppliers.successful_deleted').' '.
+							count($suppliers_to_delete).' '.lang('Suppliers.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE,'message' => lang('suppliers_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE,'message' => lang('Suppliers.cannot_be_deleted')));
 		}
 	}
 	

@@ -181,19 +181,19 @@ class Barcode_lib
 
 		if($layout_type == 'name')
 		{
-			$result = $this->CI->lang->line('items_name') . " " . $item['name'];
+			$result = lang('Items.name') . " " . $item['name'];
 		}
 		elseif($layout_type == 'category' && isset($item['category']))
 		{
-			$result = $this->CI->lang->line('items_category') . " " . $item['category'];
+			$result = lang('Items.category') . " " . $item['category'];
 		}
 		elseif($layout_type == 'cost_price' && isset($item['cost_price']))
 		{
-			$result = $this->CI->lang->line('items_cost_price') . " " . to_currency($item['cost_price']);
+			$result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
 		}
 		elseif($layout_type == 'unit_price' && isset($item['unit_price']))
 		{
-			$result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
+			$result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
 		}
 		elseif($layout_type == 'company_name')
 		{
@@ -224,7 +224,7 @@ class Barcode_lib
 
 		closedir($handle);
 
-		array_unshift($array, $this->CI->lang->line('config_none'));
+		array_unshift($array, lang('Config.none'));
 
 		return $array;
 	}

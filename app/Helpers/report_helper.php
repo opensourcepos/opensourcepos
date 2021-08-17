@@ -20,8 +20,8 @@ function show_report($report_prefix, $report_name, $lang_key='')
 	$CI =& get_instance();
 
 	$lang_key = empty($lang_key) ? $report_name : $lang_key;
-	$report_label = $CI->lang->line($lang_key);
-	$report_prefix = empty($report_prefix) ? '' : $report_prefix . '_';
+	$report_label = lang($lang_key);
+	$report_prefix = empty($report_prefix) ? '' : $report_prefix . '.';
 	// no summary nor detailed reports for receivings
 	if(!empty($report_label) && $report_label != $lang_key . ' (TBD)')
 	{

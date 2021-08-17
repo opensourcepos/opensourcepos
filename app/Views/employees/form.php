@@ -1,17 +1,17 @@
-<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open($controller_name . '/save/' . $person_info->person_id, array('id'=>'employee_form', 'class'=>'form-horizontal')); ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
-			<a data-toggle="tab" href="#employee_basic_info"><?php echo lang("employees_basic_information"); ?></a>
+			<a data-toggle="tab" href="#employee_basic_info"><?php echo lang('Employees.basic_information'); ?></a>
 		</li>
 		<li role="presentation">
-			<a data-toggle="tab" href="#employee_login_info"><?php echo lang("employees_login_info"); ?></a>
+			<a data-toggle="tab" href="#employee_login_info"><?php echo lang('Employees.login_info'); ?></a>
 		</li>
 		<li role="presentation">
-			<a data-toggle="tab" href="#employee_permission_info"><?php echo lang("employees_permission_info"); ?></a>
+			<a data-toggle="tab" href="#employee_permission_info"><?php echo lang('Employees.permission_info'); ?></a>
 		</li>
 	</ul>
 
@@ -25,7 +25,7 @@
 		<div class="tab-pane" id="employee_login_info">
 			<fieldset>
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
+					<?php echo form_label(lang('Employees.username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -42,7 +42,7 @@
 				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
+					<?php echo form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -56,7 +56,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
+				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -70,12 +70,12 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('employees_language'), 'language', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label(lang('Employees.language'), 'language', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<?php 
 								$languages = get_languages();
-								$languages[':'] = lang('employees_system_language');
+								$languages[':'] = lang('Employees.system_language');
 								$language_code = current_language_code();
 								$language = current_language();
 								
@@ -101,7 +101,7 @@
 
 		<div class="tab-pane" id="employee_permission_info">
 			<fieldset>
-				<p><?php echo lang("employees_permission_desc"); ?></p>
+				<p><?php echo lang('Employees.permission_desc'); ?></p>
 
 				<ul id="permission_list">
 					<?php
@@ -109,21 +109,21 @@
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grant_".$module->module_id, $module->module_id, $module->grant, "class='module'"); ?>
-							<?php echo form_dropdown("menu_group_".$module->module_id, array(
-								'home' => lang('module_home'),
-								'office' => lang('module_office'),
-								'both' => lang('module_both')
-							), $module->menu_group, "class='module'"); ?>
-							<span class="medium"><?php echo lang('module_'.$module->module_id);?>:</span>
-							<span class="small"><?php echo lang('module_'.$module->module_id.'_desc');?></span>
+							<?php echo form_checkbox("grant_".$module->module_id, $module->module_id, $module->grant, "class=\'module\'"); ?>
+							<?php echo form_dropdown("menu_group_" . $module->module_id, array(
+								'home' => lang('Module.home'),
+								'office' => lang('Module.office'),
+								'both' => lang('Module.both')
+							), $module->menu_group, "class=\'module\'"); ?>
+							<span class="medium"><?php echo lang('Module.' . $module->module_id);?>:</span>
+							<span class="small"><?php echo lang('Module.' . $module->module_id . '_desc');?></span>
 							<?php
 								foreach($all_subpermissions as $permission)
 								{
 									$exploded_permission = explode('_', $permission->permission_id, 2);
 									if($permission->module_id == $module->module_id)
 									{
-										$lang_key = $module->module_id.'_'.$exploded_permission[1];
+										$lang_key = $module->module_id.'_' . $exploded_permission[1];
 										$lang_line = lang($lang_key);
 										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
 										if(!empty($lang_line))
@@ -169,7 +169,7 @@ $(document).ready(function()
 			}
 		});
 		return result;
-	}, "<?php echo lang('employees_subpermission_required'); ?>");
+	}, "<?php echo lang('Employees.subpermission_required'); ?>");
 
 	$('ul#permission_list > li > input.module').each(function()
 	{
@@ -235,13 +235,13 @@ $(document).ready(function()
 
 		messages: 
 		{
-			first_name: "<?php echo lang('common_first_name_required'); ?>",
-			last_name: "<?php echo lang('common_last_name_required'); ?>",
+			first_name: "<?php echo lang('Common.first_name_required'); ?>",
+			last_name: "<?php echo lang('Common.last_name_required'); ?>",
 			username:
 			{
-				required: "<?php echo lang('employees_username_required'); ?>",
-				minlength: "<?php echo lang('employees_username_minlength'); ?>",
-				remote: "<?php echo lang('employees_username_duplicate'); ?>"
+				required: "<?php echo lang('Employees.username_required'); ?>",
+				minlength: "<?php echo lang('Employees.username_minlength'); ?>",
+				remote: "<?php echo lang('Employees.username_duplicate'); ?>"
             },
 			password:
 			{
@@ -249,17 +249,17 @@ $(document).ready(function()
 				if($person_info->person_id == "")
 				{
 				?>
-				required: "<?php echo lang('employees_password_required'); ?>",
+				required: "<?php echo lang('Employees.password_required'); ?>",
 				<?php
 				}
 				?>
-				minlength: "<?php echo lang('employees_password_minlength'); ?>"
+				minlength: "<?php echo lang('Employees.password_minlength'); ?>"
 			},
 			repeat_password:
 			{
-				equalTo: "<?php echo lang('employees_password_must_match'); ?>"
+				equalTo: "<?php echo lang('Employees.password_must_match'); ?>"
 			},
-			email: "<?php echo lang('common_email_invalid_format'); ?>"
+			email: "<?php echo lang('Common.email_invalid_format'); ?>"
 		}
 	}, form_support.error));
 });

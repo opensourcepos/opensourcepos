@@ -177,13 +177,13 @@ class Item_kits extends Secure_Controller
 			if($new_item)
 			{
 				echo json_encode(array('success' => $success,
-					'message' => lang('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+					'message' => lang('Item_kits.successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
 
 			}
 			else
 			{
 				echo json_encode(array('success' => $success,
-					'message' => lang('item_kits_successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+					'message' => lang('Item_kits.successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
 			}
 		}
 		else//failure
@@ -191,7 +191,7 @@ class Item_kits extends Secure_Controller
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
 			echo json_encode(array('success' => FALSE, 
-								'message' => lang('item_kits_error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
+								'message' => lang('Item_kits.error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
 		}
 	}
 	
@@ -202,12 +202,12 @@ class Item_kits extends Secure_Controller
 		if($this->Item_kit->delete_list($item_kits_to_delete))
 		{
 			echo json_encode(array('success' => TRUE,
-								'message' => lang('item_kits_successful_deleted').' '.count($item_kits_to_delete).' '.lang('item_kits_one_or_multiple')));
+								'message' => lang('Item_kits.successful_deleted').' '.count($item_kits_to_delete).' '.lang('Item_kits.one_or_multiple')));
 		}
 		else
 		{
 			echo json_encode(array('success' => FALSE,
-								'message' => lang('item_kits_cannot_be_deleted')));
+								'message' => lang('Item_kits.cannot_be_deleted')));
 		}
 	}
 

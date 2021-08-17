@@ -109,7 +109,7 @@ class Receivings extends Secure_Controller
 		}
 		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type))
 		{
-			$data['error'] = lang('receivings_unable_to_add_item');
+			$data['error'] = lang('Receivings.unable_to_add_item');
 		}
 
 		$this->_reload($data);
@@ -138,7 +138,7 @@ class Receivings extends Secure_Controller
 		}
 		else
 		{
-			$data['error']=lang('receivings_error_editing_item');
+			$data['error']=lang('Receivings.error_editing_item');
 		}
 
 		$this->_reload($data);
@@ -182,12 +182,12 @@ class Receivings extends Secure_Controller
 	
 		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('receivings_successfully_deleted') . ' ' .
-							count($receiving_ids) . ' ' . lang('receivings_one_or_multiple'), 'ids' => $receiving_ids));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Receivings.successfully_deleted') . ' ' .
+							count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'), 'ids' => $receiving_ids));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('receivings_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Receivings.cannot_be_deleted')));
 		}
 	}
 
@@ -249,7 +249,7 @@ class Receivings extends Secure_Controller
 
 		if($data['receiving_id'] == 'RECV -1')
 		{
-			$data['error_message'] = lang('receivings_transaction_failed');
+			$data['error_message'] = lang('Receivings.transaction_failed');
 		}
 		else
 		{
@@ -278,7 +278,7 @@ class Receivings extends Secure_Controller
 		}
 		else 
 		{
-			$data['error'] = lang('receivings_error_requisition');
+			$data['error'] = lang('Receivings.error_requisition');
 
 			$this->_reload($data);	
 		}
@@ -331,13 +331,13 @@ class Receivings extends Secure_Controller
 	private function _reload($data = array())
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
-		$data['modes'] = array('receive' => lang('receivings_receiving'), 'return' => lang('receivings_return'));
+		$data['modes'] = array('receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return'));
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('receivings');
 		$data['show_stock_locations'] = count($data['stock_locations']) > 1;
 		if($data['show_stock_locations']) 
 		{
-			$data['modes']['requisition'] = lang('receivings_requisition');
+			$data['modes']['requisition'] = lang('Receivings.requisition');
 			$data['stock_source'] = $this->receiving_lib->get_stock_source();
 			$data['stock_destination'] = $this->receiving_lib->get_stock_destination();
 		}
@@ -393,11 +393,11 @@ class Receivings extends Secure_Controller
 		$this->Inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);
 		if($this->Receiving->update($receiving_data, $receiving_id))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('receivings_successfully_updated'), 'id' => $receiving_id));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Receivings.successfully_updated'), 'id' => $receiving_id));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('receivings_unsuccessfully_updated'), 'id' => $receiving_id));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Receivings.unsuccessfully_updated'), 'id' => $receiving_id));
 		}
 	}
 

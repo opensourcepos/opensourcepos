@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open($controller_name . '/save/' . $person_info->person_id, array('id'=>'supplier_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="supplier_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('suppliers_company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Suppliers.company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'company_name',
@@ -17,14 +17,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('suppliers_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Suppliers.category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('category', $categories, $person_info->category, array('class'=>'form-control', 'id'=>'category'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">	
-			<?php echo form_label(lang('suppliers_agency_name'), 'agency_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Suppliers.agency_name'), 'agency_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'agency_name',
@@ -38,7 +38,7 @@
 		<?php echo view("people/form_basic_info"); ?>
 
 		<div class="form-group form-group-sm">	
-			<?php echo form_label(lang('suppliers_account_number'), 'account_number', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Suppliers.account_number'), 'account_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'account_number',
@@ -50,7 +50,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('suppliers_tax_id'), 'tax_id', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Suppliers.tax_id'), 'tax_id', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'tax_id',
@@ -91,10 +91,10 @@ $(document).ready(function()
 
 		messages: 
 		{
-			company_name: "<?php echo lang('suppliers_company_name_required'); ?>",
-			first_name: "<?php echo lang('common_first_name_required'); ?>",
-			last_name: "<?php echo lang('common_last_name_required'); ?>",
-			email: "<?php echo lang('common_email_invalid_format'); ?>"
+			company_name: "<?php echo lang('Suppliers.company_name_required'); ?>",
+			first_name: "<?php echo lang('Common.first_name_required'); ?>",
+			last_name: "<?php echo lang('Common.last_name_required'); ?>",
+			email: "<?php echo lang('Common.email_invalid_format'); ?>"
 		}
 	}, form_support.error));
 });

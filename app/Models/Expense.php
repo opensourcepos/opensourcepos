@@ -115,30 +115,30 @@ class Expense extends Model
 
 		if($filters['only_debit'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('expenses_debit'));
+			$this->db->like('expenses.payment_type', lang('Expenses.debit'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('expenses_credit'));
+			$this->db->like('expenses.payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->group_start();
-				$this->db->like('expenses.payment_type', lang('expenses_cash'));
+				$this->db->like('expenses.payment_type', lang('Expenses.cash'));
 				$this->db->or_where('expenses.payment_type IS NULL');
 			$this->db->group_end();
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('expenses_due'));
+			$this->db->like('expenses.payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('expenses_check'));
+			$this->db->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
 		// get_found_rows case
@@ -268,27 +268,27 @@ class Expense extends Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('expenses_cash'));
+			$this->db->like('payment_type', lang('Expenses.cash'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('expenses_due'));
+			$this->db->like('payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('expenses_check'));
+			$this->db->like('payment_type', lang('Expenses.check'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('expenses_credit'));
+			$this->db->like('payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_debit'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('expenses_debit'));
+			$this->db->like('payment_type', lang('Expenses.debit'));
 		}
 
 		$this->db->group_by('payment_type');

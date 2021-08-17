@@ -107,7 +107,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $defaultLocale = 'en';
+	public $defaultLocale = 'en-US';
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -134,8 +134,49 @@ class App extends BaseConfig
 	 *
 	 * @var string[]
 	 */
-	public $supportedLocales = ['en'];
-//TODO: This likely needs to be populated with the locales that we have translated languages for.
+	public $supportedLocales = [
+		'ar-EG',
+		'ar-LB',
+		'az-AZ',
+		'bg',
+		'bs-BA',
+		'cs',
+		'da',
+		'de',
+		'de-CH',
+		'el',
+		'en-GB',
+		'en-US',
+		'es',
+		'fa_IR',
+		'fr',
+		'he',
+		'hr-HR',
+		'hu-HU',
+		'hy',
+		'id',
+		'it',
+		'km',
+		'lo',
+		'ml',
+		'nb_NO',
+		'nl',
+		'nl-BE',
+		'pl',
+		'pt-BR',
+		'ro',
+		'ru',
+		'sv',
+		'ta',
+		'th',
+		'tl-PH',
+		'tr',
+		'uk-UA',
+		'ur-PK',
+		'vi',
+		'zh-HANS',
+		'zh-Hant',
+	];
 
 	/**
 	 * --------------------------------------------------------------------------

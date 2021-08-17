@@ -26,7 +26,7 @@ class Module extends Model
 			return lang($row->name_lang_key);
 		}
 
-		return lang('error_unknown');
+		return lang('Error.unknown');
 	}
 
 	public function get_module_desc($module_id)
@@ -40,7 +40,7 @@ class Module extends Model
 			return lang($row->desc_lang_key);
 		}
 
-		return lang('error_unknown');
+		return lang('Error.unknown');
 	}
 
 	public function get_all_permissions()

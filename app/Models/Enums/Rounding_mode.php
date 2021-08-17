@@ -21,7 +21,7 @@ class Rounding_mode
 
 		foreach($class->getConstants() as $key => $value)
 		{
-			$result[$value] = lang(strtolower('ENUM_'. $key));
+			$result[$value] = lang('Enum.' . strtolower($key));
 		}
 
 		return $result;
@@ -34,7 +34,7 @@ class Rounding_mode
 
 		if(empty($code))
 		{
-			return lang('common_unknown');
+			return lang('Common.unknown');
 		}
 
 		return Rounding_mode::get_rounding_options()[$code];

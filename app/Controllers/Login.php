@@ -40,7 +40,7 @@ class Login extends BaseController
 
 		if(!$this->_installation_check())
 		{
-			$this->form_validation->set_message('login_check', lang('login_invalid_installation'));
+			$this->form_validation->set_message('login_check', lang('Login.invalid_installation'));
 
 			return FALSE;
 		}
@@ -54,7 +54,7 @@ class Login extends BaseController
 
 		if(!$this->Employee->login($username, $password))
 		{
-			$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
+			$this->form_validation->set_message('login_check', lang('Login.invalid_username_and_password'));
 
 			return FALSE;
 		}
@@ -77,7 +77,7 @@ class Login extends BaseController
 
 		if(empty($status['success']))
 		{
-			$this->form_validation->set_message('gcaptcha_check', lang('login_invalid_gcaptcha'));
+			$this->form_validation->set_message('gcaptcha_check', lang('Login.invalid_gcaptcha'));
 
 			return FALSE;
 		}

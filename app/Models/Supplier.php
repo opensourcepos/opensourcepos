@@ -288,8 +288,8 @@ class Supplier extends Person
 	public function get_categories()
 	{
 		return array(
-			self::GOODS_SUPPLIER => lang('suppliers_goods'),
-			self::COST_SUPPLIER => lang('suppliers_cost')
+			self::GOODS_SUPPLIER => lang('Suppliers.goods'),
+			self::COST_SUPPLIER => lang('Suppliers.cost')
 		);
 	}
 
@@ -300,11 +300,11 @@ class Supplier extends Person
 	{
 		if($id == self::GOODS_SUPPLIER)
 		{
-			return lang('suppliers_goods');
+			return lang('Suppliers.goods');
 		}
 		elseif($id == self::COST_SUPPLIER)
 		{
-			return lang('suppliers_cost');
+			return lang('Suppliers.cost');
 		}
 	}
 }

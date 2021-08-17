@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo lang('items_edit_fields_you_want_to_update'); ?></div>
+<div id="required_fields_message"><?php echo lang('Items.edit_fields_you_want_to_update'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/bulk_update/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="bulk_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
@@ -16,7 +16,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.category'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -30,14 +30,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class'=>'form-control'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_cost_price'), 'cost_price', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.cost_price'), 'cost_price', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -56,7 +56,7 @@
 		</div>
 
 		<div class="form-group form-group">
-			<?php echo form_label(lang('items_unit_price'), 'unit_price', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.unit_price'), 'unit_price', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -75,7 +75,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
@@ -98,7 +98,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
@@ -121,7 +121,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'reorder_level',
@@ -132,7 +132,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'description',
@@ -143,14 +143,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', array('class'=>'form-control'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class'=>'form-control'));?>
 			</div>
@@ -173,7 +173,7 @@ $(document).ready(function()
 	$('#tax_percent_name_1, #tax_name_1').blur(function() {
 		var disabled = !($('#tax_percent_name_1').val() + $('#tax_name_1').val());
 		$('#tax_percent_name_2, #tax_name_2').prop('disabled', disabled);
-		confirm_message =  disabled ? '' : "<?php echo lang('items_confirm_bulk_edit_wipe_taxes') ?>";
+		confirm_message =  disabled ? '' : "<?php echo lang('Items.confirm_bulk_edit_wipe_taxes') ?>";
 	});
 
 	$('#item_form').validate($.extend({
@@ -220,19 +220,19 @@ $(document).ready(function()
 		{
 			unit_price:
 			{
-				number: "<?php echo lang('items_unit_price_number'); ?>"
+				number: "<?php echo lang('Items.unit_price_number'); ?>"
 			},
 			tax_percent:
 			{
-				number: "<?php echo lang('items_tax_percent_number'); ?>"
+				number: "<?php echo lang('Items.tax_percent_number'); ?>"
 			},
 			quantity:
 			{
-				number: "<?php echo lang('items_quantity_number'); ?>"
+				number: "<?php echo lang('Items.quantity_number'); ?>"
 			},
 			reorder_level:
 			{
-				number: "<?php echo lang('items_reorder_level_number'); ?>"
+				number: "<?php echo lang('Items.reorder_level_number'); ?>"
 			}
 		}
 	}, form_support.error));

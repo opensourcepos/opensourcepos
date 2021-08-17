@@ -25,7 +25,7 @@ if(isset($success))
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label class="control-label"><?php echo lang('sales_mode'); ?></label>
+					<label class="control-label"><?php echo lang('Sales.mode'); ?></label>
 				</li>
 				<li class="pull-left">
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
@@ -35,7 +35,7 @@ if(isset($success))
 				{
 				?>
 					<li class="pull-left first_li">
-						<label class="control-label"><?php echo lang('sales_table'); ?></label>
+						<label class="control-label"><?php echo lang('Sales.table'); ?></label>
 					</li>
 					<li class="pull-left">
 						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
@@ -46,7 +46,7 @@ if(isset($success))
 				{
 				?>
 					<li class="pull-left">
-						<label class="control-label"><?php echo lang('sales_stock_location'); ?></label>
+						<label class="control-label"><?php echo lang('Sales.stock_location'); ?></label>
 					</li>
 					<li class="pull-left">
 						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
@@ -57,8 +57,8 @@ if(isset($success))
 
 				<li class="pull-right">
 					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo site_url($controller_name."/suspended"); ?>"
-							title="<?php echo lang('sales_suspended_sales'); ?>">
-						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('sales_suspended_sales'); ?>
+							title="<?php echo lang('Sales.suspended_sales'); ?>">
+						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('Sales.suspended_sales'); ?>
 					</button>
 				</li>
 
@@ -67,8 +67,8 @@ if(isset($success))
 				{
 				?>
 					<li class="pull-right">
-						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('sales_takings'),
-									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>lang('sales_takings'))); ?>
+						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'),
+									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>lang('Sales.takings'))); ?>
 					</li>
 				<?php
 				}
@@ -83,16 +83,16 @@ if(isset($success))
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label for="item" class='control-label'><?php echo lang('sales_find_or_scan_item_or_receipt'); ?></label>
+					<label for="item" class='control-label'><?php echo lang('Sales.find_or_scan_item_or_receipt'); ?></label>
 				</li>
 				<li class="pull-left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>++$tabindex)); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
-					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new="<?php echo lang('common_new') ?>" data-btn-submit="<?php echo lang('common_submit')?>" data-href="<?php echo site_url("items/view"); ?>"
-							title="<?php echo lang($controller_name . '_new_item'); ?>">
-						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo lang($controller_name. '_new_item'); ?>
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new="<?php echo lang('Common.new') ?>" data-btn-submit="<?php echo lang('Common.submit')?>" data-href="<?php echo site_url("items/view"); ?>"
+							title="<?php echo lang($controller_name . '.new_item'); ?>">
+						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo lang($controller_name . '.new_item'); ?>
 					</button>
 				</li>
 			</ul>
@@ -105,14 +105,14 @@ if(isset($success))
 	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
-				<th style="width: 5%; "><?php echo lang('common_delete'); ?></th>
-				<th style="width: 15%;"><?php echo lang('sales_item_number'); ?></th>
-				<th style="width: 30%;"><?php echo lang('sales_item_name'); ?></th>
-				<th style="width: 10%;"><?php echo lang('sales_price'); ?></th>
-				<th style="width: 10%;"><?php echo lang('sales_quantity'); ?></th>
-				<th style="width: 15%;"><?php echo lang('sales_discount'); ?></th>
-				<th style="width: 10%;"><?php echo lang('sales_total'); ?></th>
-				<th style="width: 5%; "><?php echo lang('sales_update'); ?></th>
+				<th style="width: 5%; "><?php echo lang('Common.delete'); ?></th>
+				<th style="width: 15%;"><?php echo lang('Sales.item_number'); ?></th>
+				<th style="width: 30%;"><?php echo lang('Sales.item_name'); ?></th>
+				<th style="width: 10%;"><?php echo lang('Sales.price'); ?></th>
+				<th style="width: 10%;"><?php echo lang('Sales.quantity'); ?></th>
+				<th style="width: 15%;"><?php echo lang('Sales.discount'); ?></th>
+				<th style="width: 10%;"><?php echo lang('Sales.total'); ?></th>
+				<th style="width: 5%; "><?php echo lang('Sales.update'); ?></th>
 			</tr>
 		</thead>
 
@@ -123,7 +123,7 @@ if(isset($success))
 			?>
 				<tr>
 					<td colspan='8'>
-						<div class='alert alert-dismissible alert-info'><?php echo lang('sales_no_items_in_cart'); ?></div>
+						<div class='alert alert-dismissible alert-info'><?php echo lang('Sales.no_items_in_cart'); ?></div>
 					</td>
 				</tr>
 			<?php
@@ -215,7 +215,7 @@ if(isset($success))
 								?>
 							</td>
 
-							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo lang('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo lang('Sales.update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php
@@ -237,7 +237,7 @@ if(isset($success))
 								if($item['allow_alt_description'])
 								{
 								?>
-									<td style="color: #2F4F4F;"><?php echo lang('sales_description_abbrv'); ?></td>
+									<td style="color: #2F4F4F;"><?php echo lang('Sales.description_abbrv'); ?></td>
 								<?php
 								}
 								?>
@@ -257,7 +257,7 @@ if(isset($success))
 										}
 										else
 										{
-											echo lang('sales_no_description');
+											echo lang('Sales.no_description');
 											echo form_hidden('description','');
 										}
 									}
@@ -268,7 +268,7 @@ if(isset($success))
 									<?php
 									if($item['is_serialized'])
 									{
-										echo lang('sales_serial');
+										echo lang('Sales.serial');
 									}
 									?>
 								</td>
@@ -308,15 +308,15 @@ if(isset($success))
 			?>
 				<table class="sales_table_100">
 					<tr>
-						<th style="width: 55%;"><?php echo lang("sales_customer"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => lang('common_submit'), 'title' => lang('customers_update'))); ?></th>
+						<th style="width: 55%;"><?php echo lang('Sales.customer'); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Customers.update'))); ?></th>
 					</tr>
 					<?php
 					if(!empty($customer_email))
 					{
 					?>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("sales_customer_email"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Sales.customer_email'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $customer_email; ?></th>
 						</tr>
 					<?php
@@ -327,7 +327,7 @@ if(isset($success))
 					{
 					?>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("sales_customer_address"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Sales.customer_address'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $customer_address; ?></th>
 						</tr>
 					<?php
@@ -338,14 +338,14 @@ if(isset($success))
 					{
 					?>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("sales_customer_location"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Sales.customer_location'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $customer_location; ?></th>
 						</tr>
 					<?php
 					}
 					?>
 					<tr>
-						<th style="width: 55%;"><?php echo lang("sales_customer_discount"); ?></th>
+						<th style="width: 55%;"><?php echo lang('Sales.customer_discount'); ?></th>
 						<th style="width: 45%; text-align: right;"><?php echo ($customer_discount_type == FIXED)?to_currency($customer_discount):$customer_discount . '%'; ?></th>
 					</tr>
 					<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
@@ -354,11 +354,11 @@ if(isset($success))
 					{
 					?>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("rewards_package"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Sales.rewards_package'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['package_name']; ?></th>
 						</tr>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("customers_available_points"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Customers.available_points'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['points']; ?></th>
 						</tr>
 					<?php
@@ -366,7 +366,7 @@ if(isset($success))
 					?>
 					<?php endif; ?>
 					<tr>
-						<th style="width: 55%;"><?php echo lang("sales_customer_total"); ?></th>
+						<th style="width: 55%;"><?php echo lang('Sales.customer_total'); ?></th>
 						<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
 					</tr>
 					<?php
@@ -374,7 +374,7 @@ if(isset($success))
 					{
 					?>
 						<tr>
-							<th style="width: 55%;"><?php echo lang("sales_customer_mailchimp_status"); ?></th>
+							<th style="width: 55%;"><?php echo lang('Sales.customer_mailchimp_status'); ?></th>
 							<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
 						</tr>
 					<?php
@@ -382,20 +382,20 @@ if(isset($success))
 					?>
 				</table>
 
-				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('common_remove').' '.lang('customers_customer'),
-								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>lang('common_remove').' '.lang('customers_customer'))); ?>
+				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Common.remove').' '.lang('Customers.customer'),
+								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>lang('Common.remove').' '.lang('Customers.customer'))); ?>
 			<?php
 			}
 			else
 			{
 			?>
 				<div class="form-group" id="select_customer">
-					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('sales_select_customer') . ' ' . $customer_required; ?></label>
-					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>lang('sales_start_typing_customer_name'))); ?>
+					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Sales.select_customer') . ' ' . $customer_required; ?></label>
+					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>lang('Sales.start_typing_customer_name'))); ?>
 
-					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('common_submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
-							title="<?php echo lang($controller_name. '_new_customer'); ?>">
-						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang($controller_name. '_new_customer'); ?>
+					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('Common.submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
+							title="<?php echo lang($controller_name . '.new_customer'); ?>">
+						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang($controller_name . '.new_customer'); ?>
 					</button>
 
 				</div>
@@ -406,11 +406,11 @@ if(isset($success))
 
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
-				<th style="width: 55%;"><?php echo lang('sales_quantity_of_items',$item_count); ?></th>
+				<th style="width: 55%;"><?php echo lang('Sales.quantity_of_items',$item_count); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo $total_units; ?></th>
 			</tr>
 			<tr>
-				<th style="width: 55%;"><?php echo lang('sales_sub_total'); ?></th>
+				<th style="width: 55%;"><?php echo lang('Sales.sub_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($subtotal); ?></th>
 			</tr>
 
@@ -427,7 +427,7 @@ if(isset($success))
 			?>
 
 			<tr>
-				<th style="width: 55%; font-size: 150%"><?php echo lang('sales_total'); ?></th>
+				<th style="width: 55%; font-size: 150%"><?php echo lang('Sales.total'); ?></th>
 				<th style="width: 45%; font-size: 150%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
 			</tr>
 		</table>
@@ -439,11 +439,11 @@ if(isset($success))
 		?>
 			<table class="sales_table_100" id="payment_totals">
 				<tr>
-					<th style="width: 55%;"><?php echo lang('sales_payments_total'); ?></th>
+					<th style="width: 55%;"><?php echo lang('Sales.payments_total'); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
 				</tr>
 				<tr>
-					<th style="width: 55%; font-size: 120%"><?php echo lang('sales_amount_due'); ?></th>
+					<th style="width: 55%; font-size: 120%"><?php echo lang('Sales.amount_due'); ?></th>
 					<th style="width: 45%; font-size: 120%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
 				</tr>
 			</table>
@@ -457,13 +457,13 @@ if(isset($success))
 					<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
-								<td><?php echo lang('sales_payment'); ?></td>
+								<td><?php echo lang('Sales.payment'); ?></td>
 								<td>
 									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit', 'disabled'=>'disabled')); ?>
 								</td>
 							</tr>
 							<tr>
-								<td><span id="amount_tendered_label"><?php echo lang('sales_amount_tendered'); ?></span></td>
+								<td><span id="amount_tendered_label"><?php echo lang('Sales.amount_tendered'); ?></span></td>
 								<td>
 									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>'0', 'size'=>'5', 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
 								</td>
@@ -481,7 +481,7 @@ if(isset($success))
 						{
 							foreach($payments as $payment_id => $payment)
 							{
-								if($payment['payment_type'] == lang('sales_due'))
+								if($payment['payment_type'] == lang('Sales.due'))
 								{
 									$due_payment = TRUE;
 								}
@@ -491,7 +491,7 @@ if(isset($success))
 						if(!$due_payment || ($due_payment && isset($customer)))
 						{
 					?>
-							<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo lang('sales_complete_sale'); ?></div>
+							<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo lang('Sales.complete_sale'); ?></div>
 					<?php
 						}
 					}
@@ -504,13 +504,13 @@ if(isset($success))
 					<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
-								<td><?php echo lang('sales_payment'); ?></td>
+								<td><?php echo lang('Sales.payment'); ?></td>
 								<td>
 									<?php echo form_dropdown('payment_type', $payment_options,  $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 								</td>
 							</tr>
 							<tr>
-								<td><span id="amount_tendered_label"><?php echo lang('sales_amount_tendered'); ?></span></td>
+								<td><span id="amount_tendered_label"><?php echo lang('Sales.amount_tendered'); ?></span></td>
 								<td>
 									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm non-giftcard-input', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
 									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm giftcard-input', 'disabled' => true, 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
@@ -519,7 +519,7 @@ if(isset($success))
 						</table>
 					<?php echo form_close(); ?>
 
-					<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo lang('sales_add_payment'); ?></div>
+					<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo lang('Sales.add_payment'); ?></div>
 				<?php
 				}
 				?>
@@ -532,9 +532,9 @@ if(isset($success))
 					<table class="sales_table_100" id="register">
 						<thead>
 							<tr>
-								<th style="width: 10%;"><?php echo lang('common_delete'); ?></th>
-								<th style="width: 60%;"><?php echo lang('sales_payment_type'); ?></th>
-								<th style="width: 20%;"><?php echo lang('sales_payment_amount'); ?></th>
+								<th style="width: 10%;"><?php echo lang('Common.delete'); ?></th>
+								<th style="width: 60%;"><?php echo lang('Sales.payment_type'); ?></th>
+								<th style="width: 20%;"><?php echo lang('Sales.payment_amount'); ?></th>
 							</tr>
 						</thead>
 
@@ -560,7 +560,7 @@ if(isset($success))
 
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				<div class="form-group" id="buttons_sale">
-					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('sales_suspend_sale'); ?></div>
+					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('Sales.suspend_sale'); ?></div>
 					<?php
 					// Only show this part if the payment covers the total
 					if(!$pos_mode && isset($customer))
@@ -571,7 +571,7 @@ if(isset($success))
 					}
 					?>
 
-					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo lang('sales_cancel_sale'); ?></div>
+					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo lang('Sales.cancel_sale'); ?></div>
 				</div>
 			<?php echo form_close(); ?>
 
@@ -584,7 +584,7 @@ if(isset($success))
 					<div class="no-gutter row">
 						<div class="form-group form-group-sm">
 							<div class="col-xs-12">
-								<?php echo form_label(lang('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
+								<?php echo form_label(lang('Common.comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
 								<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
 							</div>
 						</div>
@@ -594,7 +594,7 @@ if(isset($success))
 							<div class="col-xs-6">
 								<label for="sales_print_after_sale" class="control-label checkbox">
 									<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'value'=>1, 'checked'=>$print_after_sale)); ?>
-									<?php echo lang('sales_print_after_sale')?>
+									<?php echo lang('Sales.print_after_sale')?>
 								</label>
 							</div>
 
@@ -605,7 +605,7 @@ if(isset($success))
 								<div class="col-xs-6">
 									<label for="email_receipt" class="control-label checkbox">
 										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
-										<?php echo lang('sales_email_receipt'); ?>
+										<?php echo lang('Sales.email_receipt'); ?>
 									</label>
 								</div>
 							<?php
@@ -618,7 +618,7 @@ if(isset($success))
 								<div class="col-xs-6">
 									<label for="price_work_orders" class="control-label checkbox">
 									<?php echo form_checkbox(array('name'=>'price_work_orders', 'id'=>'price_work_orders', 'value'=>1, 'checked'=>$price_work_orders)); ?>
-									<?php echo lang('sales_include_prices'); ?>
+									<?php echo lang('Sales.include_prices'); ?>
 									</label>
 								</div>
 							<?php
@@ -634,7 +634,7 @@ if(isset($success))
 							<div class="form-group form-group-sm">
 								<div class="col-xs-6">
 									<label for="sales_invoice_number" class="control-label checkbox">
-										<?php echo lang('sales_invoice_enable'); ?>
+										<?php echo lang('Sales.invoice_enable'); ?>
 									</label>
 								</div>
 
@@ -707,7 +707,7 @@ $(document).ready(function()
 	$('#item').focus();
 
 	$('#item').blur(function() {
-		$(this).val("<?php echo lang('sales_start_typing_item_name'); ?>");
+		$(this).val("<?php echo lang('Sales.start_typing_item_name'); ?>");
 	});
 
 	$('#item').autocomplete( {
@@ -730,7 +730,7 @@ $(document).ready(function()
 	});
 
 	var clear_fields = function() {
-		if($(this).val().match("<?php echo lang('sales_start_typing_item_name') . '|' . lang('sales_start_typing_customer_name'); ?>"))
+		if($(this).val().match("<?php echo lang('Sales.start_typing_item_name') . '|' . lang('Sales.start_typing_customer_name'); ?>"))
 		{
 			$(this).val('');
 		}
@@ -741,7 +741,7 @@ $(document).ready(function()
 	});
 
 	$('#customer').blur(function() {
-		$(this).val("<?php echo lang('sales_start_typing_customer_name'); ?>");
+		$(this).val("<?php echo lang('Sales.start_typing_customer_name'); ?>");
 	});
 
 	$('#customer').autocomplete( {
@@ -817,7 +817,7 @@ $(document).ready(function()
 	});
 
 	$('#cancel_sale_button').click(function() {
-		if(confirm("<?php echo lang('sales_confirm_cancel_sale'); ?>"))
+		if(confirm("<?php echo lang('Sales.confirm_cancel_sale'); ?>"))
 		{
 			$('#buttons_form').attr('action', "<?php echo site_url($controller_name.'/cancel'); ?>");
 			$('#buttons_form').submit();
@@ -895,21 +895,21 @@ function check_payment_type()
 {
 	var cash_mode = <?php echo json_encode($cash_mode); ?>;
 
-	if($("#payment_types").val() == "<?php echo lang('sales_giftcard'); ?>")
+	if($("#payment_types").val() == "<?php echo lang('Sales.giftcard'); ?>")
 	{
 		$("#sale_total").html("<?php echo to_currency($total); ?>");
 		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo lang('sales_giftcard_number'); ?>");
+		$("#amount_tendered_label").html("<?php echo lang('Sales.giftcard_number'); ?>");
 		$("#amount_tendered:enabled").val('').focus();
 		$(".giftcard-input").attr('disabled', false);
 		$(".non-giftcard-input").attr('disabled', true);
 		$(".giftcard-input:enabled").val('').focus();
 	}
-	else if(($("#payment_types").val() == "<?php echo lang('sales_cash'); ?>" && cash_mode == '1'))
+	else if(($("#payment_types").val() == "<?php echo lang('Sales.cash'); ?>" && cash_mode == '1'))
 	{
 		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
 		$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo lang('sales_amount_tendered'); ?>");
+		$("#amount_tendered_label").html("<?php echo lang('Sales.amount_tendered'); ?>");
 		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($cash_amount_due); ?>");
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
@@ -918,7 +918,7 @@ function check_payment_type()
 	{
 		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
 		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo lang('sales_amount_tendered'); ?>");
+		$("#amount_tendered_label").html("<?php echo lang('Sales.amount_tendered'); ?>");
 		$("#amount_tendered:enabled").val("<?php echo to_currency_no_money($amount_due); ?>");
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);

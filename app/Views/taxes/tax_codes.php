@@ -1,7 +1,7 @@
 <?php echo form_open('taxes/save_tax_codes/', array('id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+		<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_codes">
@@ -11,7 +11,7 @@
 		<?php echo form_submit(array(
 			'name' => 'submit_tax_codes',
 			'id' => 'submit_tax_codes',
-			'value' => lang('common_submit'),
+			'value' => lang('Common.submit'),
 			'class' => 'btn btn-primary btn-sm pull-right')); ?>
 	</fieldset>
 </div>
@@ -46,7 +46,7 @@
 			++tax_code_count;
 			var new_tax_code_id = 'tax_code_' + tax_code_count;
 
-			$(new_block).find('label').html("<?php echo lang('taxes_tax_code'); ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?php echo lang('Taxes.tax_code'); ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find("input[name='tax_code[]']").attr('id', new_tax_code_id).removeAttr('disabled').attr('class', 'form-control text-uppercase required input-sm').val('');
 			$(new_block).find("input[name='tax_code_name[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
 			$(new_block).find("input[name='city[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
@@ -78,21 +78,21 @@
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('taxes_tax_code_duplicate'); ?>");
+		}, "<?php echo lang('Taxes.tax_code_duplicate'); ?>");
 
 		$.validator.addMethod('validateTaxCodeCharacters', function(value, element) {
 			if ((value.indexOf('_') != -1)) {
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('taxes_tax_code_invalid_chars'); ?>");
+		}, "<?php echo lang('Taxes.tax_code_invalid_chars'); ?>");
 
 		$.validator.addMethod('requireTaxCode', function(value, element) {
 			if (value .trim() == '') {
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('taxes_tax_code_required'); ?>");
+		}, "<?php echo lang('Taxes.tax_code_required'); ?>");
 
 		$('#tax_codes_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form, event) {
@@ -105,7 +105,7 @@
 				});
 			},
 			invalidHandler: function(event, validator) {
-				$.notify("<?php echo lang('common_correct_errors'); ?>");
+				$.notify("<?php echo lang('Common.correct_errors'); ?>");
 			},
 			errorLabelContainer: "#tax_code_error_message_box"
 		}));

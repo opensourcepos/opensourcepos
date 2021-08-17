@@ -1,7 +1,7 @@
 <?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+            <div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
             <ul id="stock_error_message_box" class="error_message_box"></ul>
 
             <div id="stock_locations">
@@ -11,7 +11,7 @@
             <?php echo form_submit(array(
                 'name' => 'submit_stock',
                 'id' => 'submit_stock',
-                'value' => lang('common_submit'),
+                'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
@@ -38,7 +38,7 @@ $(document).ready(function()
 		var block = $(this).parent().clone(true);
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'stock_location[]';
-		$(new_block).find('label').html("<?php echo lang('config_stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+		$(new_block).find('label').html("<?php echo lang('Config.stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();
 	};
@@ -63,11 +63,11 @@ $(document).ready(function()
 			value_count = $(this).val() == value ? value_count + 1 : value_count; 
 		});
 		return value_count < 2;
-    }, "<?php echo lang('config_stock_location_duplicate'); ?>");
+    }, "<?php echo lang('Config.stock_location_duplicate'); ?>");
 
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
-    }, "<?php echo lang('config_stock_location_invalid_chars'); ?>");
+    }, "<?php echo lang('Config.stock_location_invalid_chars'); ?>");
 	
 	$('#location_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
@@ -109,7 +109,7 @@ $(document).ready(function()
 			foreach($stock_locations as $location=>$location_data)
 			{
 			?>
-				<?php echo 'stock_location_' . ++$i ?>: "<?php echo lang('config_stock_location_required'); ?>",
+				<?php echo 'stock_location_' . ++$i ?>: "<?php echo lang('Config.stock_location_required'); ?>",
 			<?php
 			}
 			?>

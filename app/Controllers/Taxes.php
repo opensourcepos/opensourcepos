@@ -376,16 +376,16 @@ class Taxes extends Secure_Controller
 		{
 			if($tax_rate_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('taxes_tax_rate_successfully_added')));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_rate_successfully_added')));
 			}
 			else //Existing tax_code
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('taxes_tax_rate_successful_updated')));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_rate_successful_updated')));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('taxes_tax_rate_error_adding_updating')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Taxes.tax_rate_error_adding_updating')));
 		}
 	}
 
@@ -395,10 +395,10 @@ class Taxes extends Secure_Controller
 
 		if($this->Tax->delete_list($tax_codes_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('taxes_tax_code_successful_deleted')));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_code_successful_deleted')));
 		} else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('taxes_tax_code_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Taxes.tax_code_cannot_be_deleted')));
 		}
 	}
 
@@ -431,7 +431,7 @@ class Taxes extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => lang('taxes_tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('Taxes.tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -464,7 +464,7 @@ class Taxes extends Secure_Controller
 			{
 				echo json_encode(array(
 					'success' => FALSE,
-					'message' => lang('taxes_tax_group_not_unique', $tax_group[$key])
+					'message' => lang('Taxes.tax_group_not_unique', $tax_group[$key])
 				));
 				return;
 			}
@@ -478,7 +478,7 @@ class Taxes extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => lang('taxes_tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('Taxes.tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 
@@ -502,7 +502,7 @@ class Taxes extends Secure_Controller
 
 		echo json_encode(array(
 			'success' => $success,
-			'message' => lang('taxes_tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => lang('Taxes.tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
 

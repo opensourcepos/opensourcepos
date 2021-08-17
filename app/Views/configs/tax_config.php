@@ -1,11 +1,11 @@
 <?php echo form_open('config/save_tax/', array('id' => 'tax_config_form', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="tax_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_tax_id'), 'tax_id', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.tax_id'), 'tax_id', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name' => 'tax_id',
@@ -16,7 +16,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_tax_included'), 'tax_included', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.tax_included'), 'tax_included', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_checkbox(array(
 						'name' => 'tax_included',
@@ -27,13 +27,13 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_default_tax_rate_1'), 'default_tax_1_rate', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_rate_1'), 'default_tax_1_rate', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name' => 'default_tax_1_name',
 						'id' => 'default_tax_1_name',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : lang('items_sales_tax_1'))); ?>
+						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : lang('Items.sales_tax_1'))); ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input(array(
@@ -46,13 +46,13 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_default_tax_rate_2'), 'default_tax_2_rate', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_rate_2'), 'default_tax_2_rate', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name' => 'default_tax_2_name',
 						'id' => 'default_tax_2_name',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : lang('items_sales_tax_2'))); ?>
+						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : lang('Items.sales_tax_2'))); ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input(array(
@@ -65,7 +65,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_use_destination_based_tax'), 'use_destination_based_tax', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.use_destination_based_tax'), 'use_destination_based_tax', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_checkbox(array(
 						'name' => 'use_destination_based_tax',
@@ -76,21 +76,21 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_default_tax_code'), 'default_tax_code', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('default_tax_code', $tax_code_options, $this->config->item('default_tax_code'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_default_tax_category'), 'default_tax_category', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('default_tax_category', $tax_category_options, $this->config->item('default_tax_category'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_default_tax_jurisdiction'), 'default_tax_jurisdiction', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('default_tax_jurisdiction', $tax_jurisdiction_options, $this->config->item('default_tax_jurisdiction'), array('class' => 'form-control input-sm')); ?>
 				</div>
@@ -99,7 +99,7 @@
 			<?php echo form_submit(array(
 				'name' => 'submit_tax',
 				'id' => 'submit_tax',
-				'value' => lang('common_submit'),
+				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
@@ -156,7 +156,7 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				number: "<?php echo lang('config_default_tax_rate_number'); ?>"
+				number: "<?php echo lang('Config.default_tax_rate_number'); ?>"
 			},
 		}
 	}));

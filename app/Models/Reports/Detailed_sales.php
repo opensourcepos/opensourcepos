@@ -18,34 +18,34 @@ class Detailed_sales extends Report
 	{
 		return array(
 			'summary' => array(
-				array('id' => lang('reports_sale_id')),
-				array('type_code' => lang('reports_code_type')),
-				array('sale_date' => lang('reports_date'), 'sortable' => FALSE),
-				array('quantity' => lang('reports_quantity')),
-				array('employee_name' => lang('reports_sold_by')),
-				array('customer_name' => lang('reports_sold_to')),
-				array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
-				array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
-				array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
-				array('cost' => lang('reports_cost'), 'sorter' => 'number_sorter'),
-				array('profit' => lang('reports_profit'), 'sorter' => 'number_sorter'),
-				array('payment_type' => lang('reports_payment_type'), 'sortable' => FALSE),
-				array('comment' => lang('reports_comments'))),
+				array('id' => lang('Reports.sale_id')),
+				array('type_code' => lang('Reports.code_type')),
+				array('sale_date' => lang('Reports.date'), 'sortable' => FALSE),
+				array('quantity' => lang('Reports.quantity')),
+				array('employee_name' => lang('Reports.sold_by')),
+				array('customer_name' => lang('Reports.sold_to')),
+				array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+				array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+				array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+				array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
+				array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'),
+				array('payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE),
+				array('comment' => lang('Reports.comments'))),
 			'details' => array(
-				lang('reports_name'),
-				lang('reports_category'),
-				lang('reports_item_number'),
-				lang('reports_description'),
-				lang('reports_quantity'),
-				lang('reports_subtotal'),
-				lang('reports_tax'),
-				lang('reports_total'),
-				lang('reports_cost'),
-				lang('reports_profit'),
-				lang('reports_discount')),
+				lang('Reports.name'),
+				lang('Reports.category'),
+				lang('Reports.item_number'),
+				lang('Reports.description'),
+				lang('Reports.quantity'),
+				lang('Reports.subtotal'),
+				lang('Reports.tax'),
+				lang('Reports.total'),
+				lang('Reports.cost'),
+				lang('Reports.profit'),
+				lang('Reports.discount')),
 			'details_rewards' => array(
-				lang('reports_used'),
-				lang('reports_earned'))
+				lang('Reports.used'),
+				lang('Reports.earned'))
 		);
 	}
 
@@ -74,12 +74,12 @@ class Detailed_sales extends Report
 	{
 		$this->db->select('sale_id, 
 			MAX(CASE
-			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_pos') . '\'			
-			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_invoice') . '\'
-			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('reports_code_work_order') . '\'
-			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('reports_code_quote') . '\'
-			WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('reports_code_return') . '\'
-			WHEN sale_status = ' . CANCELED . ' THEN \'' . lang('reports_code_canceled') . '\'
+			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'			
+			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
+			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_work_order') . '\'
+			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_quote') . '\'
+			WHEN sale_type = ' . SALE_TYPE_RETURN . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_return') . '\'
+			WHEN sale_status = ' . CANCELED . ' THEN \'' . lang('Reports.code_canceled') . '\'
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,

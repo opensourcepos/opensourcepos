@@ -15,7 +15,7 @@
 ?>
 
 <div id="page-wrap">
-	<div id="header"><?php echo lang('sales_quote'); ?></div>
+	<div id="header"><?php echo lang('Sales.quote'); ?></div>
 	<table id="info">
 		<tr>
 			<td id="logo">
@@ -41,11 +41,11 @@
 			<td id="meta">
 				<table id="meta-content"  align="right">
 					<tr>
-						<td class="meta-head"><?php echo lang('sales_quote_number');?> </td>
+						<td class="meta-head"><?php echo lang('Sales.quote_number');?> </td>
 						<td><?php echo $quote_number; ?></td>
 					</tr>
 					<tr>
-						<td class="meta-head"><?php echo lang('common_date'); ?></td>
+						<td class="meta-head"><?php echo lang('Common.date'); ?></td>
 						<td><?php echo $transaction_date; ?></td>
 					</tr>
 					<?php
@@ -53,7 +53,7 @@
 					{
 					?>
 						<tr>
-							<td class="meta-head"><?php echo lang('sales_amount_due'); ?></td>
+							<td class="meta-head"><?php echo lang('Sales.amount_due'); ?></td>
 							<td class="due"><?php echo to_currency($total); ?></td>
 						</tr>
 					<?php
@@ -66,22 +66,22 @@
 
 	<table id="items">
 		<tr>
-			<th><?php echo lang('sales_item_number'); ?></th>
-			<th><?php echo lang('sales_item_name'); ?></th>
-			<th><?php echo lang('sales_quantity'); ?></th>
-			<th><?php echo lang('sales_price'); ?></th>
-			<th><?php echo lang('sales_discount'); ?></th>
+			<th><?php echo lang('Sales.item_number'); ?></th>
+			<th><?php echo lang('Sales.item_name'); ?></th>
+			<th><?php echo lang('Sales.quantity'); ?></th>
+			<th><?php echo lang('Sales.price'); ?></th>
+			<th><?php echo lang('Sales.discount'); ?></th>
 			<?php
 			$quote_columns = 6;
 			if($discount > 0)
 			{
 				$quote_columns = $quote_columns + 1;
 				?>
-				<th><?php echo lang('sales_customer_discount'); ?></th>
+				<th><?php echo lang('Sales.customer_discount'); ?></th>
 				<?php
 			}
 			?>
-			<th><?php echo lang('sales_total'); ?></th>
+			<th><?php echo lang('Sales.total'); ?></th>
 		</tr>
 
 		<?php
@@ -112,7 +112,7 @@
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_sub_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.sub_total'); ?></td>
 			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
 		</tr>
 
@@ -131,7 +131,7 @@
 
 		<tr>
 			<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.total'); ?></td>
 			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
 		</tr>
 	</table>
@@ -140,7 +140,7 @@
 		<div id="sale_return_policy">
 			<h5>
 				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
-				<div><?php echo lang('sales_comments') . ': ' . (empty($comments) ? $this->config->item('quote_default_comments') : $comments); ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->config->item('quote_default_comments') : $comments); ?></div>
 			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
 		</div>

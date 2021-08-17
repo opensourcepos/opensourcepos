@@ -1,16 +1,16 @@
-<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('expenses/save/'.$expenses_info->expense_id, array('id'=>'expenses_edit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_info'), 'expenses_info', array('class'=>'control-label col-xs-3')); ?>
-			<?php echo form_label(!empty($expenses_info->expense_id) ? lang('expenses_expense_id') . ' ' . $expenses_info->expense_id : '', 'expenses_info_id', array('class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
+			<?php echo form_label(lang('Expenses.info'), 'expenses_info', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(!empty($expenses_info->expense_id) ? lang('Expenses.expense_id') . ' ' . $expenses_info->expense_id : '', 'expenses_info_id', array('class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_date'), 'date', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.date'), 'date', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -25,13 +25,13 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
 						'name'=>'supplier_name',
 						'id'=>'supplier_name',
 						'class'=>'form-control input-sm',
-						'value'=>lang('expenses_start_typing_supplier_name'))
+						'value'=>lang('Expenses.start_typing_supplier_name'))
 					);
 					echo form_input(array(
 						'type'=>'hidden',
@@ -47,7 +47,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_supplier_tax_code'), 'supplier_tax_code', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.supplier_tax_code'), 'supplier_tax_code', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
 						'name'=>'supplier_tax_code',
@@ -59,7 +59,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_amount'), 'amount', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.amount'), 'amount', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -79,7 +79,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_tax_amount'), 'tax_amount', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.tax_amount'), 'tax_amount', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
@@ -99,28 +99,28 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_payment'), 'payment_type', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.payment'), 'payment_type', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('payment_type', $payment_options, $expenses_info->payment_type, array('class'=>'form-control', 'id'=>'payment_type'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_categories_name'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses_categories.name'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('expense_category_id', $expense_categories, $expenses_info->expense_category_id, array('class'=>'form-control', 'id'=>'category')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"');?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('expenses_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_textarea(array(
 					'name'=>'description',
@@ -136,7 +136,7 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('expenses_is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('Expenses.is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-5'>
 					<?php echo form_checkbox(array(
 						'name'=>'deleted',
@@ -187,7 +187,7 @@ $(document).ready(function()
 	});
 
 	$('#supplier_name').blur(function() {
-		$(this).attr('value',"<?php echo lang('expenses_start_typing_supplier_name'); ?>");
+		$(this).attr('value',"<?php echo lang('Expenses.start_typing_supplier_name'); ?>");
 	});
 
 	$('#remove_supplier_button').css('display', 'none');
@@ -246,20 +246,20 @@ $(document).ready(function()
 
 		messages:
 		{
-			category: "<?php echo lang('expenses_category_required'); ?>",
+			category: "<?php echo lang('Expenses.category_required'); ?>",
 			date:
 			{
-				required: "<?php echo lang('expenses_date_required'); ?>"
+				required: "<?php echo lang('Expenses.date_required'); ?>"
 
 			},
 			amount:
 			{
-				required: "<?php echo lang('expenses_amount_required'); ?>",
-				remote: "<?php echo lang('expenses_amount_number'); ?>"
+				required: "<?php echo lang('Expenses.amount_required'); ?>",
+				remote: "<?php echo lang('Expenses.amount_number'); ?>"
 			},
 			tax_amount:
 			{
-				remote: "<?php echo lang('expenses_tax_amount_number'); ?>"
+				remote: "<?php echo lang('Expenses.tax_amount_number'); ?>"
 			}
 		}
 	}, form_support.error));

@@ -69,16 +69,16 @@ class Expenses_categories extends Secure_Controller
 			// New expense_category_id
 			if($expense_category_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('expenses_categories_successful_adding'), 'id' => $expense_category_data['expense_category_id']));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Expenses_categories.successful_adding'), 'id' => $expense_category_data['expense_category_id']));
 			}
 			else // Existing Expense Category
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('expenses_categories_successful_updating'), 'id' => $expense_category_id));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Expenses_categories.successful_updating'), 'id' => $expense_category_id));
 			}
 		}
 		else//failure
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('expenses_categories_error_adding_updating') . ' ' . $expense_category_data['category_name'], 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'], 'id' => -1));
 		}
 	}
 
@@ -88,11 +88,11 @@ class Expenses_categories extends Secure_Controller
 
 		if($this->Expense_category->delete_list($expense_category_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('expenses_categories_successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('expenses_categories_one_or_multiple')));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('expenses_categories_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Expenses_categories.cannot_be_deleted')));
 		}
 	}
 }

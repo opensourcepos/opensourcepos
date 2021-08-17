@@ -8,59 +8,59 @@
 
 		$('#daterangepicker').daterangepicker({
 			"ranges": {
-				"<?php echo lang("datepicker_today"); ?>": [
+				"<?php echo lang('Datepicker.today'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_today_last_year"); ?>": [
+				"<?php echo lang('Datepicker.today_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 				],
-				"<?php echo lang("datepicker_yesterday"); ?>": [
+				"<?php echo lang('Datepicker.yesterday'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_last_7"); ?>": [
+				"<?php echo lang('Datepicker.last_7'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-6,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_last_30"); ?>": [
+				"<?php echo lang('Datepicker.last_30'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-29,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_this_month"); ?>": [
+				"<?php echo lang('Datepicker.this_month'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m")+1,1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_same_month_to_same_day_last_year"); ?>": [
+				"<?php echo lang('Datepicker.same_month_to_same_day_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 				],
-				"<?php echo lang("datepicker_same_month_last_year"); ?>": [
+				"<?php echo lang('Datepicker.same_month_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m")+1,1,date("Y")-1)-1);?>"
 				],
-				"<?php echo lang("datepicker_last_month"); ?>": [
+				"<?php echo lang('Datepicker.last_month'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m")-1,1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_this_year"); ?>": [
+				"<?php echo lang('Datepicker.this_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")+1)-1);?>"
 				],
-				"<?php echo lang("datepicker_last_year"); ?>": [
+				"<?php echo lang('Datepicker.last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_this_financial_year"); ?>": [
+				"<?php echo lang('Datepicker.this_financial_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")+1)-1);?>"
 				],
-				"<?php echo lang("datepicker_last_financial_year"); ?>": [
+				"<?php echo lang('Datepicker.last_financial_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y"))-1);?>"
 				],
-				"<?php echo lang("datepicker_all_time"); ?>": [
+				"<?php echo lang('Datepicker.all_time'); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 				],
@@ -68,36 +68,36 @@
 			"locale": {
 				"format": '<?php echo dateformat_momentjs($this->config->item("dateformat"))?>',
 				"separator": " - ",
-				"applyLabel": "<?php echo lang("datepicker_apply"); ?>",
-				"cancelLabel": "<?php echo lang("datepicker_cancel"); ?>",
-				"fromLabel": "<?php echo lang("datepicker_from"); ?>",
-				"toLabel": "<?php echo lang("datepicker_to"); ?>",
-				"customRangeLabel": "<?php echo lang("datepicker_custom"); ?>",
+				"applyLabel": "<?php echo lang('Datepicker.apply'); ?>",
+				"cancelLabel": "<?php echo lang('Datepicker.cancel'); ?>",
+				"fromLabel": "<?php echo lang('Datepicker.from'); ?>",
+				"toLabel": "<?php echo lang('Datepicker.to'); ?>",
+				"customRangeLabel": "<?php echo lang('Datepicker.custom'); ?>",
 				"daysOfWeek": [
-					"<?php echo lang("cal_su"); ?>",
-					"<?php echo lang("cal_mo"); ?>",
-					"<?php echo lang("cal_tu"); ?>",
-					"<?php echo lang("cal_we"); ?>",
-					"<?php echo lang("cal_th"); ?>",
-					"<?php echo lang("cal_fr"); ?>",
-					"<?php echo lang("cal_sa"); ?>",
-					"<?php echo lang("cal_su"); ?>"
+					"<?php echo lang('Cal.su'); ?>",
+					"<?php echo lang('Cal.mo'); ?>",
+					"<?php echo lang('Cal.tu'); ?>",
+					"<?php echo lang('Cal.we'); ?>",
+					"<?php echo lang('Cal.th'); ?>",
+					"<?php echo lang('Cal.fr'); ?>",
+					"<?php echo lang('Cal.sa'); ?>",
+					"<?php echo lang('Cal.su'); ?>"
 				],
 				"monthNames": [
-					"<?php echo lang("cal_january"); ?>",
-					"<?php echo lang("cal_february"); ?>",
-					"<?php echo lang("cal_march"); ?>",
-					"<?php echo lang("cal_april"); ?>",
-					"<?php echo lang("cal_may"); ?>",
-					"<?php echo lang("cal_june"); ?>",
-					"<?php echo lang("cal_july"); ?>",
-					"<?php echo lang("cal_august"); ?>",
-					"<?php echo lang("cal_september"); ?>",
-					"<?php echo lang("cal_october"); ?>",
-					"<?php echo lang("cal_november"); ?>",
-					"<?php echo lang("cal_december"); ?>"
+					"<?php echo lang('Cal.january'); ?>",
+					"<?php echo lang('Cal.february'); ?>",
+					"<?php echo lang('Cal.march'); ?>",
+					"<?php echo lang('Cal.april'); ?>",
+					"<?php echo lang('Cal.may'); ?>",
+					"<?php echo lang('Cal.june'); ?>",
+					"<?php echo lang('Cal.july'); ?>",
+					"<?php echo lang('Cal.august'); ?>",
+					"<?php echo lang('Cal.september'); ?>",
+					"<?php echo lang('Cal.october'); ?>",
+					"<?php echo lang('Cal.november'); ?>",
+					"<?php echo lang('Cal.december'); ?>"
 				],
-				"firstDay": <?php echo lang("datepicker_weekstart"); ?>
+				"firstDay": <?php echo lang('Datepicker.weekstart'); ?>
 			},
 			"alwaysShowCalendars": true,
 			"startDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>",
@@ -118,59 +118,59 @@
 		var end_date = "<?php echo date('Y-m-d H:i:s', mktime(23,59,59,date("m"),date("d"),date("Y")))?>";
 		$('#daterangepicker').daterangepicker({
 			"ranges": {
-				"<?php echo lang("datepicker_today"); ?>": [
+				"<?php echo lang('Datepicker.today'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'), mktime(0,0,0,date("m"),date("d"),date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_today_last_year"); ?>": [
+				"<?php echo lang('Datepicker.today_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1));?>"
 				],
-				"<?php echo lang("datepicker_yesterday"); ?>": [
+				"<?php echo lang('Datepicker.yesterday'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d")-1,date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_last_7"); ?>": [
+				"<?php echo lang('Datepicker.last_7'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-6,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_last_30"); ?>": [
+				"<?php echo lang('Datepicker.last_30'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-29,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_this_month"); ?>": [
+				"<?php echo lang('Datepicker.this_month'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_same_month_to_same_day_last_year"); ?>": [
+				"<?php echo lang('Datepicker.same_month_to_same_day_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1));?>"
 				],
-				"<?php echo lang("datepicker_same_month_last_year"); ?>": [
+				"<?php echo lang('Datepicker.same_month_last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")-1));?>"
 				],
-				"<?php echo lang("datepicker_last_month"); ?>": [
+				"<?php echo lang('Datepicker.last_month'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m")-1,1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),0,date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_this_year"); ?>": [
+				"<?php echo lang('Datepicker.this_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_last_year"); ?>": [
+				"<?php echo lang('Datepicker.last_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,12,31,date("Y")-1));?>"
 				],
-				"<?php echo lang("datepicker_this_financial_year"); ?>": [
+				"<?php echo lang('Datepicker.this_financial_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_last_financial_year"); ?>": [
+				"<?php echo lang('Datepicker.last_financial_year'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,$this->config->item('financial_year'),0,date("Y")));?>"
 				],
-				"<?php echo lang("datepicker_all_time"); ?>": [
+				"<?php echo lang('Datepicker.all_time'); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,2010));?>",
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
@@ -178,36 +178,36 @@
 			"locale": {
 				"format": '<?php echo dateformat_momentjs($this->config->item("dateformat")." ".$this->config->item('timeformat'))?>',
 				"separator": " - ",
-				"applyLabel": "<?php echo lang("datepicker_apply"); ?>",
-				"cancelLabel": "<?php echo lang("datepicker_cancel"); ?>",
-				"fromLabel": "<?php echo lang("datepicker_from"); ?>",
-				"toLabel": "<?php echo lang("datepicker_to"); ?>",
-				"customRangeLabel": "<?php echo lang("datepicker_custom"); ?>",
+				"applyLabel": "<?php echo lang('Datepicker.apply'); ?>",
+				"cancelLabel": "<?php echo lang('Datepicker.cancel'); ?>",
+				"fromLabel": "<?php echo lang('Datepicker.from'); ?>",
+				"toLabel": "<?php echo lang('Datepicker.to'); ?>",
+				"customRangeLabel": "<?php echo lang('Datepicker.custom'); ?>",
 				"daysOfWeek": [
-					"<?php echo lang("cal_su"); ?>",
-					"<?php echo lang("cal_mo"); ?>",
-					"<?php echo lang("cal_tu"); ?>",
-					"<?php echo lang("cal_we"); ?>",
-					"<?php echo lang("cal_th"); ?>",
-					"<?php echo lang("cal_fr"); ?>",
-					"<?php echo lang("cal_sa"); ?>",
-					"<?php echo lang("cal_su"); ?>"
+					"<?php echo lang('Cal.su'); ?>",
+					"<?php echo lang('Cal.mo'); ?>",
+					"<?php echo lang('Cal.tu'); ?>",
+					"<?php echo lang('Cal.we'); ?>",
+					"<?php echo lang('Cal.th'); ?>",
+					"<?php echo lang('Cal.fr'); ?>",
+					"<?php echo lang('Cal.sa'); ?>",
+					"<?php echo lang('Cal.su'); ?>"
 				],
 				"monthNames": [
-					"<?php echo lang("cal_january"); ?>",
-					"<?php echo lang("cal_february"); ?>",
-					"<?php echo lang("cal_march"); ?>",
-					"<?php echo lang("cal_april"); ?>",
-					"<?php echo lang("cal_may"); ?>",
-					"<?php echo lang("cal_june"); ?>",
-					"<?php echo lang("cal_july"); ?>",
-					"<?php echo lang("cal_august"); ?>",
-					"<?php echo lang("cal_september"); ?>",
-					"<?php echo lang("cal_october"); ?>",
-					"<?php echo lang("cal_november"); ?>",
-					"<?php echo lang("cal_december"); ?>"
+					"<?php echo lang('Cal.january'); ?>",
+					"<?php echo lang('Cal.february'); ?>",
+					"<?php echo lang('Cal.march'); ?>",
+					"<?php echo lang('Cal.april'); ?>",
+					"<?php echo lang('Cal.may'); ?>",
+					"<?php echo lang('Cal.june'); ?>",
+					"<?php echo lang('Cal.july'); ?>",
+					"<?php echo lang('Cal.august'); ?>",
+					"<?php echo lang('Cal.september'); ?>",
+					"<?php echo lang('Cal.october'); ?>",
+					"<?php echo lang('Cal.november'); ?>",
+					"<?php echo lang('Cal.december'); ?>"
 				],
-				"firstDay": <?php echo lang("datepicker_weekstart"); ?>
+				"firstDay": <?php echo lang('Datepicker.weekstart'); ?>
 			},
 		    "timePicker": true,
 		    "timePickerSeconds": true,

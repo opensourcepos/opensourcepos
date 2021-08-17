@@ -60,7 +60,7 @@ class Load_config
         {
             if(!is_array($file) && substr(strrchr($file, '.'), 1) == 'php')
             {
-                $filename = strtr($file, '', '_lang.php');
+                $filename = strtr($file, '', '.php');
                 if ($fallback)
                 {
                     $CI->lang->load($filename, 'en-US');

@@ -64,7 +64,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_sales_summary_report'),
+			'title' => lang('Reports.sales_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -100,7 +100,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_categories_summary_report'),
+			'title' => lang('Reports.categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -133,7 +133,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_expenses_categories_summary_report'),
+			'title' => lang('Reports.expenses_categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -170,7 +170,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_customers_summary_report'),
+			'title' => lang('Reports.customers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -206,7 +206,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_suppliers_summary_report'),
+			'title' => lang('Reports.suppliers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -244,7 +244,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_items_summary_report'),
+			'title' => lang('Reports.items_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -281,7 +281,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_employees_summary_report'),
+			'title' => lang('Reports.employees_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -315,7 +315,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_taxes_summary_report'),
+			'title' => lang('Reports.taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -349,7 +349,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_sales_taxes_summary_report'),
+			'title' => lang('Reports.sales_taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -363,12 +363,12 @@ class Reports extends Secure_Controller
 	{
 		$data = array();
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
-		$stock_locations['all'] = lang('reports_all');
+		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'sale';
 		$data['discount_type_options'] = array(
-			'0' => lang('reports_discount_percent'),
-			'1'=> lang('reports_discount_fixed'));
+			'0' => lang('Reports.discount_percent'),
+			'1'=> lang('Reports.discount_fixed'));
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		echo view('reports/date_input', $data);
@@ -396,7 +396,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_discounts_summary_report'),
+			'title' => lang('Reports.discounts_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -436,7 +436,7 @@ class Reports extends Secure_Controller
 			{
 				if(empty($row['trans_type']))
 				{
-					$row['trans_type'] = lang('reports_trans_nopay_sales');
+					$row['trans_type'] = lang('Reports.trans_nopay_sales');
 				}
 
 				$tabular_data[] = $this->xss_clean(array(
@@ -452,7 +452,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_payments_summary_report'),
+			'title' => lang('Reports.payments_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -467,7 +467,7 @@ class Reports extends Secure_Controller
 	{
 		$data = array();
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
-		$stock_locations['all'] = lang('reports_all');
+		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'sale';
 		$data['sale_type_options'] = $this->get_sale_type_options();
@@ -488,7 +488,7 @@ class Reports extends Secure_Controller
 	{
 		$data = array();
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
-		$stock_locations['all'] =  lang('reports_all');
+		$stock_locations['all'] =  lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'sale';
 		$data['sale_type_options'] = $this->get_sale_type_options();
@@ -500,7 +500,7 @@ class Reports extends Secure_Controller
 	{
 		$data = array();
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('receivings'));
-		$stock_locations['all'] =  lang('reports_all');
+		$stock_locations['all'] =  lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'receiving';
 
@@ -529,7 +529,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_expenses_categories_summary_report'),
+			'title' => lang('Reports.expenses_categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -564,14 +564,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_sales_summary_report'),
+			'title' => lang('Reports.sales_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/line',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'yaxis_title' => lang('reports_revenue'),
-			'xaxis_title' => lang('reports_date'),
+			'yaxis_title' => lang('Reports.revenue'),
+			'xaxis_title' => lang('Reports.date'),
 			'show_currency' => TRUE
 		);
 
@@ -600,14 +600,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_items_summary_report'),
+			'title' => lang('Reports.items_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'yaxis_title' => lang('reports_items'),
-			'xaxis_title' => lang('reports_revenue'),
+			'yaxis_title' => lang('Reports.items'),
+			'xaxis_title' => lang('Reports.revenue'),
 			'show_currency' => TRUE
 		);
 
@@ -636,7 +636,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_categories_summary_report'),
+			'title' => lang('Reports.categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -670,7 +670,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_suppliers_summary_report'),
+			'title' => lang('Reports.suppliers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -704,7 +704,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_employees_summary_report'),
+			'title' => lang('Reports.employees_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -738,7 +738,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_taxes_summary_report'),
+			'title' => lang('Reports.taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -772,7 +772,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_sales_taxes_summary_report'),
+			'title' => lang('Reports.sales_taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -806,14 +806,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_customers_summary_report'),
+			'title' => lang('Reports.customers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'yaxis_title' => lang('reports_customers'),
-			'xaxis_title' => lang('reports_revenue'),
+			'yaxis_title' => lang('Reports.customers'),
+			'xaxis_title' => lang('Reports.revenue'),
 			'show_currency' => TRUE
 		);
 
@@ -842,14 +842,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_discounts_summary_report'),
+			'title' => lang('Reports.discounts_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/bar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'yaxis_title' => lang('reports_count'),
-			'xaxis_title' => lang('reports_discount'),
+			'yaxis_title' => lang('Reports.count'),
+			'xaxis_title' => lang('Reports.discount'),
 			'show_currency' => FALSE
 		);
 
@@ -873,7 +873,7 @@ class Reports extends Secure_Controller
 		{
 			$row = $this->xss_clean($row);
 
-			if($row['trans_group'] == lang('reports_trans_payments') && !empty($row['trans_amount']))
+			if($row['trans_group'] == lang('Reports.trans_payments') && !empty($row['trans_amount']))
 			{
 				$labels[] = $row['trans_type'];
 				$series[] = array('meta' => $row['trans_type'] . ' ' . round($row['trans_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['trans_amount']);
@@ -881,7 +881,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_payments_summary_report'),
+			'title' => lang('Reports.payments_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
@@ -896,7 +896,7 @@ class Reports extends Secure_Controller
 	public function specific_customer_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = lang('reports_customer');
+		$data['specific_input_name'] = lang('Reports.customer');
 		$customers = array();
 		foreach($this->Customer->get_all()->result() as $customer)
 		{
@@ -918,13 +918,13 @@ class Reports extends Secure_Controller
 
 	public function get_payment_type()
 	{
-			$payment_type = array( 'all' => lang('common_none_selected_text'),
-					'cash' => lang('sales_cash'),
-					'due' => lang('sales_due'),
-					'check' => lang('sales_check'),
-					'credit' => lang('sales_credit'),
-					'debit' => lang('sales_debit'),
-					'invoices' => lang('sales_invoice'));
+			$payment_type = array( 'all' => lang('Common.none_selected_text'),
+					'cash' => lang('Sales.cash'),
+					'due' => lang('Sales.due'),
+					'check' => lang('Sales.check'),
+					'credit' => lang('Sales.credit'),
+					'debit' => lang('Sales.debit'),
+					'invoices' => lang('Sales.invoice'));
 			return $payment_type;
 	}
 
@@ -949,12 +949,12 @@ class Reports extends Secure_Controller
 			if($row['sale_status'] == CANCELED)
 			{
 				$button_key = 'data-btn-restore';
-				$button_label = lang('common_restore');
+				$button_label = lang('Common.restore');
 			}
 			else
 			{
 				$button_key = 'data-btn-delete';
-				$button_label = lang('common_delete');
+				$button_label = lang('Common.delete');
 			}
 
 			$summary_data[] = $this->xss_clean(array(
@@ -971,7 +971,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('common_submit'), 'title' => lang('sales_update')))
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Sales.update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -1011,7 +1011,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . lang('reports_report')),
+			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . lang('Reports.report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
@@ -1027,7 +1027,7 @@ class Reports extends Secure_Controller
 	public function specific_employee_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = lang('reports_employee');
+		$data['specific_input_name'] = lang('Reports.employee');
 
 		$employees = array();
 		foreach($this->Employee->get_all()->result() as $employee)
@@ -1061,12 +1061,12 @@ class Reports extends Secure_Controller
 			if($row['sale_status'] == CANCELED)
 			{
 				$button_key = 'data-btn-restore';
-				$button_label = lang('common_restore');
+				$button_label = lang('Common.restore');
 			}
 			else
 			{
 				$button_key = 'data-btn-delete';
-				$button_label = lang('common_delete');
+				$button_label = lang('Common.delete');
 			}
 
 			$summary_data[] = $this->xss_clean(array(
@@ -1083,7 +1083,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('common_submit'), 'title' => lang('sales_update')))
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Sales.update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -1114,7 +1114,7 @@ class Reports extends Secure_Controller
 
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data = array(
-			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('reports_report')),
+			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('Reports.report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
@@ -1130,7 +1130,7 @@ class Reports extends Secure_Controller
 	public function specific_discount_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = lang('reports_discount');
+		$data['specific_input_name'] = lang('Reports.discount');
 
 		$discounts = array();
 		for($i = 0; $i <= 100; $i += 10)
@@ -1139,8 +1139,8 @@ class Reports extends Secure_Controller
 		}
 		$data['specific_input_data'] = $discounts;
 		$data['discount_type_options'] = array(
-			'0' => lang('reports_discount_percent'),
-			'1'=> lang('reports_discount_fixed'));
+			'0' => lang('Reports.discount_percent'),
+			'1'=> lang('Reports.discount_fixed'));
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$data = $this->xss_clean($data);
@@ -1169,12 +1169,12 @@ class Reports extends Secure_Controller
 			if($row['sale_status'] == CANCELED)
 			{
 				$button_key = 'data-btn-restore';
-				$button_label = lang('common_restore');
+				$button_label = lang('Common.restore');
 			}
 			else
 			{
 				$button_key = 'data-btn-delete';
-				$button_label = lang('common_delete');
+				$button_label = lang('Common.delete');
 			}
 
 			$summary_data[] = $this->xss_clean(array(
@@ -1192,7 +1192,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('common_submit'), 'title' => lang('sales_update')))
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Sales.update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -1222,7 +1222,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => $discount . '% ' . lang('reports_discount') . ' ' . lang('reports_report'),
+			'title' => $discount . '% ' . lang('Reports.discount') . ' ' . lang('Reports.report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'summary_data' => $summary_data,
@@ -1248,12 +1248,12 @@ class Reports extends Secure_Controller
 		if($report_data['sale_status'] == CANCELED)
 		{
 			$button_key = 'data-btn-restore';
-			$button_label = lang('common_restore');
+			$button_label = lang('Common.restore');
 		}
 		else
 		{
 			$button_key = 'data-btn-delete';
-			$button_label = lang('common_delete');
+			$button_label = lang('Common.delete');
 		}
 
 		$summary_data = $this->xss_clean(array(
@@ -1270,7 +1270,7 @@ class Reports extends Secure_Controller
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor('sales/edit/'. $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('common_submit'), 'title' => lang('sales_update')))
+				array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Sales.update')))
 		));
 
 		echo json_encode(array($sale_id => $summary_data));
@@ -1279,7 +1279,7 @@ class Reports extends Secure_Controller
 	public function specific_supplier_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = lang('reports_supplier');
+		$data['specific_input_name'] = lang('Reports.supplier');
 
 		$supplier = array();
 		foreach($this->Supplier->get_all()->result() as $supplier)
@@ -1325,7 +1325,7 @@ class Reports extends Secure_Controller
 
 		$supplier_info = $this->Supplier->get_info($supplier_id);
 		$data = array(
-			'title' => $this->xss_clean($supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('reports_report')),
+			'title' => $this->xss_clean($supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -1338,18 +1338,18 @@ class Reports extends Secure_Controller
 	public function get_sale_type_options()
 	{
 		$sale_type_options = array();
-		$sale_type_options['complete'] = lang('reports_complete');
-		$sale_type_options['sales'] = lang('reports_completed_sales');
+		$sale_type_options['complete'] = lang('Reports.complete');
+		$sale_type_options['sales'] = lang('Reports.completed_sales');
 		if($this->config->item('invoice_enable') == '1')
 		{
-			$sale_type_options['quotes'] = lang('reports_quotes');
+			$sale_type_options['quotes'] = lang('Reports.quotes');
 			if($this->config->item('work_order_enable') == '1')
 			{
-				$sale_type_options['work_orders'] = lang('reports_work_orders');
+				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}
 		}
-		$sale_type_options['canceled'] = lang('reports_canceled');
-		$sale_type_options['returns'] = lang('reports_returns');
+		$sale_type_options['canceled'] = lang('Reports.canceled');
+		$sale_type_options['returns'] = lang('Reports.returns');
 		return $sale_type_options;
 	}
 
@@ -1382,12 +1382,12 @@ class Reports extends Secure_Controller
 			if($row['sale_status'] == CANCELED)
 			{
 				$button_key = 'data-btn-restore';
-				$button_label = lang('common_restore');
+				$button_label = lang('Common.restore');
 			}
 			else
 			{
 				$button_key = 'data-btn-delete';
-				$button_label = lang('common_delete');
+				$button_label = lang('Common.delete');
 			}
 
 			$summary_data[] = $this->xss_clean(array(
@@ -1405,7 +1405,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'.$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => 'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('common_submit'), 'title' => lang('sales_update')))
+					array('class' => 'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Sales.update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -1442,7 +1442,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_detailed_sales_report'),
+			'title' => lang('Reports.detailed_sales_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'sales',
@@ -1476,7 +1476,7 @@ class Reports extends Secure_Controller
 			'reference' => $report_data['reference'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor('receivings/edit/'. $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>'modal-dlg print_hide', 'data-btn-submit' => lang('common_submit'), 'data-btn-delete' => lang('common_delete'), 'title' => lang('receivings_update'))
+				array('class'=>'modal-dlg print_hide', 'data-btn-submit' => lang('Common.submit'), 'data-btn-delete' => lang('Common.delete'), 'title' => lang('Receivings.update'))
 			)
 		));
 
@@ -1519,7 +1519,7 @@ class Reports extends Secure_Controller
 				'reference' => $row['reference'],
 				'comment' => $row['comment'],
 				'edit' => anchor('receivings/edit/' . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => 'modal-dlg print_hide', 'data-btn-delete' => lang('common_delete'), 'data-btn-submit' => lang('common_submit'), 'title' => lang('receivings_update'))
+					array('class' => 'modal-dlg print_hide', 'data-btn-delete' => lang('Common.delete'), 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Receivings.update'))
 				)
 			));
 
@@ -1544,7 +1544,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_detailed_receivings_report'),
+			'title' => lang('Reports.detailed_receivings_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
 			'editable' => 'receivings',
@@ -1578,7 +1578,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_inventory_low_report'),
+			'title' => lang('Reports.inventory_low_report'),
 			'subtitle' => '',
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
@@ -1597,7 +1597,7 @@ class Reports extends Secure_Controller
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
 		$stock_locations = $this->xss_clean($this->Stock_location->get_allowed_locations());
-		$stock_locations['all'] = lang('reports_all');
+		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 
 		echo view('reports/inventory_summary_input', $data);
@@ -1630,7 +1630,7 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			'title' => lang('reports_inventory_summary_report'),
+			'title' => lang('Reports.inventory_summary_report'),
 			'subtitle' => '',
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,

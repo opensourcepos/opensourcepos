@@ -223,7 +223,7 @@ class Attribute extends Model
 		}
 
 		$results = $this->db->get('attribute_definitions')->result_array();
-		$definition_name = array(-1 => lang('common_none_selected_text'));
+		$definition_name = array(-1 => lang('Common.none_selected_text'));
 
 		return $definition_name + $this->to_array($results, 'definition_id', 'definition_name');
 	}

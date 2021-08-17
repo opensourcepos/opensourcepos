@@ -11,11 +11,11 @@ class Summary_taxes extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('tax_percent' => lang('reports_tax_percent'), 'sorter' => 'number_sorter'),
-			array('report_count' => lang('reports_sales')),
-			array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('reports_total'), 'sorter' => 'number_sorter'));
+			array('tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'),
+			array('report_count' => lang('Reports.sales')),
+			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _where(array $inputs)

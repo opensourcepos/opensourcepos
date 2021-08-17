@@ -256,11 +256,11 @@ class Tax extends Model
 	{
 		if($tax_code_type == '0')
 		{
-			return lang('taxes_tax_included');
+			return lang('Taxes.tax_included');
 		}
 		else
 		{
-			return lang('taxes_tax_excluded');
+			return lang('Taxes.tax_excluded');
 		}
 	}
 

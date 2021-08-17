@@ -15,7 +15,7 @@
 ?>
 
 <div id="page-wrap">
-	<div id="header"><?php echo lang('sales_work_order'); ?></div>
+	<div id="header"><?php echo lang('Sales.work_order'); ?></div>
 	<table id="info">
 		<tr>
 			<td id="logo">
@@ -40,11 +40,11 @@
 			<td id="meta">
 				<table align="right">
 					<tr>
-						<td class="meta-head"><?php echo lang('sales_work_order_number');?> </td>
+						<td class="meta-head"><?php echo lang('Sales.work_order_number');?> </td>
 						<td><?php echo $work_order_number; ?></td>
 					</tr>
 					<tr>
-						<td class="meta-head"><?php echo lang('common_date'); ?></td>
+						<td class="meta-head"><?php echo lang('Common.date'); ?></td>
 						<td><?php echo $transaction_date; ?></td>
 					</tr>
 					<?php
@@ -52,7 +52,7 @@
 					{
 					?>
 						<tr>
-							<td class="meta-head"><?php echo lang('sales_amount_due'); ?></td>
+							<td class="meta-head"><?php echo lang('Sales.amount_due'); ?></td>
 							<td class="due"><?php echo to_currency($total); ?></td>
 						</tr>
 					<?php
@@ -65,12 +65,12 @@
 
 	<table id="items">
 		<tr>
-			<th><?php echo lang('sales_item_number'); ?></th>
-			<th><?php echo lang('sales_item_name'); ?></th>
-			<th><?php echo lang('sales_quantity'); ?></th>
-			<th><?php echo lang('sales_price'); ?></th>
-			<th><?php echo lang('sales_discount'); ?></th>
-			<th><?php echo lang('sales_total'); ?></th>
+			<th><?php echo lang('Sales.item_number'); ?></th>
+			<th><?php echo lang('Sales.item_name'); ?></th>
+			<th><?php echo lang('Sales.quantity'); ?></th>
+			<th><?php echo lang('Sales.price'); ?></th>
+			<th><?php echo lang('Sales.discount'); ?></th>
+			<th><?php echo lang('Sales.total'); ?></th>
 		</tr>
 
 		<?php
@@ -98,7 +98,7 @@
 
 		<tr>
 			<td colspan="3" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_sub_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.sub_total'); ?></td>
 			<td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
 		</tr>
 
@@ -117,7 +117,7 @@
 
 		<tr>
 			<td colspan="3" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.total'); ?></td>
 			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
 		</tr>
 	</table>
@@ -125,7 +125,7 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('sales_comments') . ': ' . $comments; ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . $comments; ?></div>
 			</h5>
 		</div>
 	</div>

@@ -1,11 +1,11 @@
-<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/save_inventory/'.$item_info->item_id, array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="inv_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.category'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -50,14 +50,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange'=>'fill_quantity(this.value)', 'class'=>'form-control'));	?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'quantity',
@@ -70,7 +70,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_add_minus'), 'quantity', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.add_minus'), 'quantity', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'newquantity',
@@ -81,7 +81,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_inventory_comments'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.inventory_comments'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'trans_comment',
@@ -124,8 +124,8 @@ $(document).ready(function()
 		{
 			newquantity:
 			{
-				required: "<?php echo lang('items_quantity_required'); ?>",
-				number: "<?php echo lang('items_quantity_number'); ?>"
+				required: "<?php echo lang('Items.quantity_required'); ?>",
+				number: "<?php echo lang('Items.quantity_number'); ?>"
 			}
 		}
 	}, form_support.error));

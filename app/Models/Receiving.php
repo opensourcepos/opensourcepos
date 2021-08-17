@@ -225,11 +225,11 @@ class Receiving extends Model
 	public function get_payment_options()
 	{
 		return array(
-			lang('sales_cash') => lang('sales_cash'),
-			lang('sales_check') => lang('sales_check'),
-			lang('sales_debit') => lang('sales_debit'),
-			lang('sales_credit') => lang('sales_credit'),
-			lang('sales_due') => lang('sales_due')
+			lang('Sales.cash') => lang('Sales.cash'),
+			lang('Sales.check') => lang('Sales.check'),
+			lang('Sales.debit') => lang('Sales.debit'),
+			lang('Sales.credit') => lang('Sales.credit'),
+			lang('Sales.due') => lang('Sales.due')
 		);
 	}
 

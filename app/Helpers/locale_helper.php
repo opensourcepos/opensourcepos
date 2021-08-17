@@ -254,42 +254,42 @@ function get_payment_options()
 
 	if($config->item('payment_options_order') == 'debitcreditcash')
 	{
-		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		$payments[lang('Sales.debit')] = lang('Sales.debit');
+		$payments[lang('Sales.credit')] = lang('Sales.credit');
+		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
 	elseif($config->item('payment_options_order') == 'debitcashcredit')
 	{
-		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
-		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+		$payments[lang('Sales.debit')] = lang('Sales.debit');
+		$payments[lang('Sales.cash')] = lang('Sales.cash');
+		$payments[lang('Sales.credit')] = lang('Sales.credit');
 	}
 	elseif($config->item('payment_options_order') == 'creditdebitcash')
 	{
-		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
-		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		$payments[lang('Sales.credit')] = lang('Sales.credit');
+		$payments[lang('Sales.debit')] = lang('Sales.debit');
+		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
 	elseif($config->item('payment_options_order') == 'creditcashdebit')
 	{
-		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
-		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+		$payments[lang('Sales.credit')] = lang('Sales.credit');
+		$payments[lang('Sales.cash')] = lang('Sales.cash');
+		$payments[lang('Sales.debit')] = lang('Sales.debit');
 	}
 	else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
 	{
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
-		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+		$payments[lang('Sales.cash')] = lang('Sales.cash');
+		$payments[lang('Sales.debit')] = lang('Sales.debit');
+		$payments[lang('Sales.credit')] = lang('Sales.credit');
 	}
 
-	$payments[$lang->line('sales_due')] = $lang->line('sales_due');
-	$payments[$lang->line('sales_check')] = $lang->line('sales_check');
+	$payments[lang('Sales.due')] = lang('Sales.due');
+	$payments[lang('Sales.check')] = lang('Sales.check');
 
 	// If India (list of country codes include India) then include Unified Payment Interface
 	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false)
 	{
-		$payments[$lang->line('sales_upi')] = $lang->line('sales_upi');
+		$payments[lang('Sales.upi')] = lang('Sales.upi');
 	}
 
 	return $payments;

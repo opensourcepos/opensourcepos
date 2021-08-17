@@ -23,8 +23,8 @@ class Tax_lib
 	public function get_tax_types()
 	{
 		return array(
-			Tax_lib::TAX_TYPE_EXCLUDED => $this->CI->lang->line('taxes_tax_excluded'),
-			Tax_lib::TAX_TYPE_INCLUDED => $this->CI->lang->line('taxes_tax_included')
+			Tax_lib::TAX_TYPE_EXCLUDED => lang('Taxes.tax_excluded'),
+			Tax_lib::TAX_TYPE_INCLUDED => lang('Taxes.tax_included')
 		);
 	}
 
@@ -141,11 +141,11 @@ class Tax_lib
 
 				if($taxed)
 				{
-					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_taxed_ind');
+					$cart[$line]['taxed_flag'] = lang('Sales.taxed_ind');
 				}
 				else
 				{
-					$cart[$line]['taxed_flag'] = $this->CI->lang->line('sales_nontaxed_ind');
+					$cart[$line]['taxed_flag'] = lang('Sales.nontaxed_ind');
 				}
 			}
 			$this->round_taxes($taxes);
@@ -463,8 +463,8 @@ class Tax_lib
 			$s2 = $selected;
 		}
 
-		return '<option value=\"' . Tax_lib::TAX_TYPE_EXCLUDED . '\" ' . $s1 . '> ' . $this->CI->lang->line('taxes_sales_tax')
-			. '</option><option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . $this->CI->lang->line('taxes_vat_tax') . '</option>';
+		return '<option value=\"' . Tax_lib::TAX_TYPE_EXCLUDED . '\" ' . $s1 . '> ' . lang('Taxes.sales_tax')
+			. '</option><option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
 	}
 }
 ?>

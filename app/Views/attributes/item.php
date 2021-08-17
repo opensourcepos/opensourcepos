@@ -1,5 +1,5 @@
 <div class="form-group form-group-sm">
-	<?php echo form_label(lang("attributes_definition_name"), "definition_name_label", array('class' => 'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Attributes.definition_name"), "definition_name_label", array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
 		<?php echo form_dropdown('definition_name', $definition_names, -1, array('id' => 'definition_name', 'class' => 'form-control')); ?>
 	</div>

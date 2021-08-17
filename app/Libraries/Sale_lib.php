@@ -22,9 +22,9 @@ class Sale_lib
 	public function get_line_sequence_options()
 	{
 		return array(
-			'0' => $this->CI->lang->line('sales_entry'),
-			'1' => $this->CI->lang->line('sales_group_by_type'),
-			'2' => $this->CI->lang->line('sales_group_by_category')
+			'0' => lang('Sales.entry'),
+			'1' => lang('Sales.group_by_type'),
+			'2' => lang('Sales.group_by_category')
 		);
 	}
 
@@ -33,29 +33,29 @@ class Sale_lib
 		$register_modes = array();
 		if($this->CI->config->item('invoice_enable') == '0')
 		{
-			$register_modes['sale'] = $this->CI->lang->line('sales_sale');
+			$register_modes['sale'] = lang('Sales.sale');
 		}
 		else
 		{
-			$register_modes['sale'] = $this->CI->lang->line('sales_receipt');
-			$register_modes['sale_quote'] = $this->CI->lang->line('sales_quote');
+			$register_modes['sale'] = lang('Sales.receipt');
+			$register_modes['sale_quote'] = lang('Sales.quote');
 			if($this->CI->config->item('work_order_enable') == '1')
 			{
-				$register_modes['sale_work_order'] = $this->CI->lang->line('sales_work_order');
+				$register_modes['sale_work_order'] = lang('Sales.work_order');
 			}
-			$register_modes['sale_invoice'] = $this->CI->lang->line('sales_invoice');
+			$register_modes['sale_invoice'] = lang('Sales.invoice');
 		}
-		$register_modes['return'] = $this->CI->lang->line('sales_return');
+		$register_modes['return'] = lang('Sales.return');
 		return $register_modes;
 	}
 
 	public function get_invoice_type_options()
 	{
 		$invoice_types = array();
-		$invoice_types['invoice'] = $this->CI->lang->line('sales_invoice_type_invoice');
-		$invoice_types['tax_invoice'] = $this->CI->lang->line('sales_invoice_type_tax_invoice');
-		$invoice_types['custom_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_invoice');
-		$invoice_types['custom_tax_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_tax_invoice');
+		$invoice_types['invoice'] = lang('Sales.invoice_type_invoice');
+		$invoice_types['tax_invoice'] = lang('Sales.invoice_type_tax_invoice');
+		$invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
+		$invoice_types['custom_tax_invoice'] = lang('Sales.invoice_type_custom_tax_invoice');
 		return $invoice_types;
 	}
 
@@ -394,7 +394,7 @@ class Sale_lib
 
 		if($this->CI->session->userdata('cash_mode'))
 		{
-			if($this->CI->session->userdata('cash_rounding') && $payment_id != $this->CI->lang->line('sales_cash') && $payment_id != $this->CI->lang->line('sales_cash_adjustment'))
+			if($this->CI->session->userdata('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
 			{
 				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 			}
@@ -432,13 +432,13 @@ class Sale_lib
 		$cash_rounding = $this->reset_cash_rounding();
 		if($cash_rounding)
 		{
-			if($decoded_payment_id == $this->CI->lang->line('sales_cash'))
+			if($decoded_payment_id == lang('Sales.cash'))
 			{
-				unset($payments[$this->CI->lang->line('sales_cash_adjustment')]);
+				unset($payments[lang('Sales.cash_adjustment')]);
 			}
-			if($decoded_payment_id == $this->CI->lang->line('sales_cash_adjustment'))
+			if($decoded_payment_id == lang('Sales.cash_adjustment'))
 			{
-				unset($payments[$this->CI->lang->line('sales_cash')]);
+				unset($payments[lang('Sales.cash')]);
 			}
 		}
 		$this->set_payments($payments);
@@ -465,7 +465,7 @@ class Sale_lib
 			{
 				$subtotal = bcadd($payments['payment_amount'], $subtotal);
 			}
-			if($this->CI->lang->line('sales_cash') != $payments['payment_type'] && $this->CI->lang->line('sales_cash_adjustment') != $payments['payment_type'])
+			if(lang('Sales.cash') != $payments['payment_type'] && lang('Sales.cash_adjustment') != $payments['payment_type'])
 			{
 				$cash_mode_eligible = CASH_MODE_FALSE;
 			}
@@ -937,11 +937,11 @@ class Sale_lib
 
 				if($item_quantity - $quantity_added < 0)
 				{
-					return $this->CI->lang->line('sales_quantity_less_than_zero');
+					return lang('Sales.quantity_less_than_zero');
 				}
 				elseif($item_quantity - $quantity_added < $item_info->reorder_level)
 				{
-					return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+					return lang('Sales.quantity_less_than_reorder_level');
 				}
 			}
 		}
@@ -1076,7 +1076,7 @@ class Sale_lib
 			$cash_types_only = true;
 			foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 			{
-				if($row->payment_type != $this->CI->lang->line('sales_cash') && $row->payment_type != $this->CI->lang->line('sales_cash_adjustment'))
+				if($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment'))
 				{
 					$cash_types_only = FALSE;
 				}

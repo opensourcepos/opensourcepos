@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo lang('items_generate_barcodes'); ?></title>
+	<title><?php echo lang('Items.generate_barcodes'); ?></title>
 	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/barcode_font.css" />
 </head>
 

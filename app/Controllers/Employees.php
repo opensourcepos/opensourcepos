@@ -158,20 +158,20 @@ class Employees extends Persons
 			if($employee_id == -1)
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => lang('employees_successful_adding') . ' ' . $first_name . ' ' . $last_name,
+								'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $this->xss_clean($employee_data['person_id'])));
 			}
 			else // Existing employee
 			{
 				echo json_encode(array('success' => TRUE,
-								'message' => lang('employees_successful_updating') . ' ' . $first_name . ' ' . $last_name,
+								'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $employee_id));
 			}
 		}
 		else // Failure
 		{
 			echo json_encode(array('success' => FALSE,
-							'message' => lang('employees_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+							'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 							'id' => -1));
 		}
 	}
@@ -185,12 +185,12 @@ class Employees extends Persons
 
 		if($this->Employee->delete_list($employees_to_delete))
 		{
-			echo json_encode(array('success' => TRUE,'message' => lang('employees_successful_deleted') . ' ' .
-							count($employees_to_delete) . ' ' . lang('employees_one_or_multiple')));
+			echo json_encode(array('success' => TRUE,'message' => lang('Employees.successful_deleted') . ' ' .
+							count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('employees_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Employees.cannot_be_deleted')));
 		}
 	}
 

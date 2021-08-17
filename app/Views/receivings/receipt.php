@@ -12,8 +12,8 @@
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('common_print'); ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'); ?></div></a>
+	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="receipt_wrapper">
@@ -38,7 +38,7 @@
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
-		<div id="sale_receipt"><?php echo lang('receivings_receipt'); ?></div>
+		<div id="sale_receipt"><?php echo lang('Receivings.receipt'); ?></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 	</div>
 
@@ -47,28 +47,28 @@
 		if(isset($supplier))
 		{
 		?>
-			<div id="customer"><?php echo lang('suppliers_supplier').": ".$supplier; ?></div>
+			<div id="customer"><?php echo lang('Suppliers.supplier').": ".$supplier; ?></div>
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo lang('receivings_id').": ".$receiving_id; ?></div>
+		<div id="sale_id"><?php echo lang('Receivings.id').": ".$receiving_id; ?></div>
 		<?php 
 		if (!empty($reference))
 		{
 		?>
-			<div id="reference"><?php echo lang('receivings_reference').": ".$reference; ?></div>	
+			<div id="reference"><?php echo lang('Receivings.reference').": ".$reference; ?></div>	
 		<?php 
 		}
 		?>
-		<div id="employee"><?php echo lang('employees_employee').": ".$employee; ?></div>
+		<div id="employee"><?php echo lang('Employees.employee').": ".$employee; ?></div>
 	</div>
 
 	<table id="receipt_items">
 		<tr>
-			<th style="width:40%;"><?php echo lang('items_item'); ?></th>
-			<th style="width:20%;"><?php echo lang('common_price'); ?></th>
-			<th style="width:20%;"><?php echo lang('sales_quantity'); ?></th>
-			<th style="width:15%;text-align:right;"><?php echo lang('sales_total'); ?></th>
+			<th style="width:40%;"><?php echo lang('Items.item'); ?></th>
+			<th style="width:20%;"><?php echo lang('Common.price'); ?></th>
+			<th style="width:20%;"><?php echo lang('Sales.quantity'); ?></th>
+			<th style="width:15%;text-align:right;"><?php echo lang('Sales.total'); ?></th>
 		</tr>
 
 		<?php
@@ -94,13 +94,13 @@
 					if($item['discount_type'] == FIXED)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . lang("sales_discount") ?></td>
+						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . lang('Sales.discount') ?></td>
 					<?php
 					}
 					elseif($item['discount_type'] == PERCENT)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_decimals($item['discount']) . " " . lang("sales_discount_included") ?></td>
+						<td colspan="3" class="discount"><?php echo to_decimals($item['discount']) . " " . lang('Sales.discount_included') ?></td>
 					<?php
 					}	
 					?>
@@ -112,7 +112,7 @@
 		}
 		?>	
 		<tr>
-			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo lang('sales_total'); ?></td>
+			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo lang('Sales.total'); ?></td>
 			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total); ?></div></td>
 		</tr>
 		<?php 
@@ -120,7 +120,7 @@
 		{
 		?>
 			<tr>
-				<td colspan="3" style='text-align:right;'><?php echo lang('sales_payment'); ?></td>
+				<td colspan="3" style='text-align:right;'><?php echo lang('Sales.payment'); ?></td>
 				<td><div class="total-value"><?php echo $payment_type; ?></div></td>
 			</tr>
 
@@ -128,12 +128,12 @@
 			{
 			?>
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo lang('sales_amount_tendered'); ?></td>
+					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.amount_tendered'); ?></td>
 					<td><div class="total-value"><?php echo to_currency($amount_tendered); ?></div></td>
 				</tr>
 
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo lang('sales_change_due'); ?></td>
+					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.change_due'); ?></td>
 					<td><div class="total-value"><?php echo $amount_change; ?></div></td>
 				</tr>
 			<?php

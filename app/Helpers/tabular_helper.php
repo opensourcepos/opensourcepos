@@ -60,18 +60,18 @@ function get_sales_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('sale_id' => $CI->lang->line('common_id')),
-		array('sale_time' => $CI->lang->line('sales_sale_time')),
-		array('customer_name' => $CI->lang->line('customers_customer')),
-		array('amount_due' => $CI->lang->line('sales_amount_due')),
-		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
-		array('change_due' => $CI->lang->line('sales_change_due')),
-		array('payment_type' => $CI->lang->line('sales_payment_type'))
+		array('sale_id' => lang('Common.id')),
+		array('sale_time' => lang('Sales.sale_time')),
+		array('customer_name' => lang('Customers.customer')),
+		array('amount_due' => lang('Sales.amount_due')),
+		array('amount_tendered' => lang('Sales.amount_tendered')),
+		array('change_due' => lang('Sales.change_due')),
+		array('payment_type' => lang('Sales.payment_type'))
 	);
 
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
-		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
+		$headers[] = array('invoice_number' => lang('Sales.invoice_number'));
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
 
@@ -103,15 +103,15 @@ function get_sale_data_row($sale)
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number) ? '' : anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('title'=>$CI->lang->line('sales_show_invoice'))
+			array('title'=>lang('Sales.show_invoice'))
 		);
 	}
 
 	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
-		array('title' => $CI->lang->line('sales_show_receipt'))
+		array('title' => lang('Sales.show_receipt'))
 	);
 	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => lang('Common.delete'), 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.update'))
 	);
 
 	return $row;
@@ -137,7 +137,7 @@ function get_sale_data_last_row($sales)
 
 	return array(
 		'sale_id' => '-',
-		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
+		'sale_time' => '<b>'.lang('Sales.total').'</b>',
 		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
@@ -160,7 +160,7 @@ function get_sales_manage_payments_summary($payments)
 		$total = bcadd($total, $amount);
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
-	$table .= '<div class="summary_row">' . $CI->lang->line('sales_total') . ': ' . to_currency($total) . '</div>';
+	$table .= '<div class="summary_row">' . lang('Sales.total') . ': ' . to_currency($total) . '</div>';
 	$table .= '</div>';
 
 	return $table;
@@ -175,11 +175,11 @@ function get_people_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('people.person_id' => $CI->lang->line('common_id')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
-		array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number'))
+		array('people.person_id' => lang('Common.id')),
+		array('last_name' => lang('Common.last_name')),
+		array('first_name' => lang('Common.first_name')),
+		array('email' => lang('Common.email')),
+		array('phone_number' => lang('Common.phone_number'))
 	);
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
@@ -205,9 +205,9 @@ function get_person_data_row($person)
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
 		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -221,12 +221,12 @@ function get_customer_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('people.person_id' => $CI->lang->line('common_id')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
-		array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number')),
-		array('total' => $CI->lang->line('common_total_spent'), 'sortable' => FALSE)
+		array('people.person_id' => lang('Common.id')),
+		array('last_name' => lang('Common.last_name')),
+		array('first_name' => lang('Common.first_name')),
+		array('email' => lang('Common.email')),
+		array('phone_number' => lang('Common.phone_number')),
+		array('total' => lang('Common.total_spent'), 'sortable' => FALSE)
 	);
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
@@ -254,9 +254,9 @@ function get_customer_data_row($person, $stats)
 		'phone_number' => $person->phone_number,
 		'total' => to_currency($stats->total),
 		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 	));
 }
 
@@ -269,14 +269,14 @@ function get_suppliers_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('people.person_id' => $CI->lang->line('common_id')),
-		array('company_name' => $CI->lang->line('suppliers_company_name')),
-		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
-		array('category' => $CI->lang->line('suppliers_category')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
-		array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number'))
+		array('people.person_id' => lang('Common.id')),
+		array('company_name' => lang('Suppliers.company_name')),
+		array('agency_name' => lang('Suppliers.agency_name')),
+		array('category' => lang('Suppliers.category')),
+		array('last_name' => lang('Common.last_name')),
+		array('first_name' => lang('Common.first_name')),
+		array('email' => lang('Common.email')),
+		array('phone_number' => lang('Common.phone_number'))
 	);
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
@@ -306,9 +306,9 @@ function get_supplier_data_row($supplier)
 		'email' => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
 		'phone_number' => $supplier->phone_number,
 		'messages' => empty($supplier->phone_number) ? '' : anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+			array('class'=>"modal-dlg", 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
 		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>"modal-dlg", 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update')))
+			array('class'=>"modal-dlg", 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update')))
 	);
 }
 
@@ -323,27 +323,27 @@ function get_items_manage_table_headers()
 	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
 	$headers = array(
-		array('items.item_id' => $CI->lang->line('common_id')),
-		array('item_number' => $CI->lang->line('items_item_number')),
-		array('name' => $CI->lang->line('items_name')),
-		array('category' => $CI->lang->line('items_category')),
-		array('company_name' => $CI->lang->line('suppliers_company_name')),
-		array('cost_price' => $CI->lang->line('items_cost_price')),
-		array('unit_price' => $CI->lang->line('items_unit_price')),
-		array('quantity' => $CI->lang->line('items_quantity'))
+		array('items.item_id' => lang('Common.id')),
+		array('item_number' => lang('Items.item_number')),
+		array('name' => lang('Items.name')),
+		array('category' => lang('Items.category')),
+		array('company_name' => lang('Suppliers.company_name')),
+		array('cost_price' => lang('Items.cost_price')),
+		array('unit_price' => lang('Items.unit_price')),
+		array('quantity' => lang('Items.quantity'))
 	);
 
 	if($CI->config->item('use_destination_based_tax') == '1')
 	{
-		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_category'), 'sortable' => FALSE);
+		$headers[] = array('tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE);
 	}
 	else
 	{
-		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE);
+		$headers[] = array('tax_percents' => lang('Items.tax_percents'), 'sortable' => FALSE);
 
 	}
 
-	$headers[] = array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE);
+	$headers[] = array('item_pic' => lang('Items.image'), 'sortable' => FALSE);
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
@@ -433,13 +433,13 @@ function get_item_data_row($item)
 
 	$icons = array(
 		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
-			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_count'))
+			array('class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.count'))
 		),
 		'stock' => anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('class' => 'modal-dlg', 'title' => $CI->lang->line($controller_name.'_details_count'))
+			array('class' => 'modal-dlg', 'title' => lang($controller_name . '.details_count'))
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+			array('class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.update'))
 		)
 	);
 
@@ -456,11 +456,11 @@ function get_giftcards_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('giftcard_id' => $CI->lang->line('common_id')),
-		array('last_name' => $CI->lang->line('common_last_name')),
-		array('first_name' => $CI->lang->line('common_first_name')),
-		array('giftcard_number' => $CI->lang->line('giftcards_giftcard_number')),
-		array('value' => $CI->lang->line('giftcards_card_value'))
+		array('giftcard_id' => lang('Common.id')),
+		array('last_name' => lang('Common.last_name')),
+		array('first_name' => lang('Common.first_name')),
+		array('giftcard_number' => lang('Giftcards.giftcard_number')),
+		array('value' => lang('Giftcards.card_value'))
 	);
 
 	return transform_headers($headers);
@@ -482,7 +482,7 @@ function get_giftcard_data_row($giftcard)
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -495,12 +495,12 @@ function get_item_kits_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('item_kit_id' => $CI->lang->line('item_kits_kit')),
-		array('item_kit_number' => $CI->lang->line('item_kits_item_kit_number')),
-		array('name' => $CI->lang->line('item_kits_name')),
-		array('description' => $CI->lang->line('item_kits_description')),
-		array('total_cost_price' => $CI->lang->line('items_cost_price'), 'sortable' => FALSE),
-		array('total_unit_price' => $CI->lang->line('items_unit_price'), 'sortable' => FALSE)
+		array('item_kit_id' => lang('Item_kits.kit')),
+		array('item_kit_number' => lang('Item_kits.item_kit_number')),
+		array('name' => lang('Item_kits.name')),
+		array('description' => lang('Item_kits.description')),
+		array('total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE),
+		array('total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE)
 	);
 
 	return transform_headers($headers);
@@ -523,7 +523,7 @@ function get_item_kit_data_row($item_kit)
 		'total_cost_price' => to_currency($item_kit->total_cost_price),
 		'total_unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -572,11 +572,11 @@ function get_attribute_definition_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('definition_id' => $CI->lang->line('attributes_definition_id')),
-		array('definition_name' => $CI->lang->line('attributes_definition_name')),
-		array('definition_type' => $CI->lang->line('attributes_definition_type')),
-		array('definition_flags' => $CI->lang->line('attributes_definition_flags')),
-		array('definition_group' => $CI->lang->line('attributes_definition_group')),
+		array('definition_id' => lang('Attributes.definition_id')),
+		array('definition_name' => lang('Attributes.definition_name')),
+		array('definition_type' => lang('Attributes.definition_type')),
+		array('definition_flags' => lang('Attributes.definition_flags')),
+		array('definition_group' => lang('Attributes.definition_group')),
 	);
 
 	return transform_headers($headers);
@@ -590,7 +590,7 @@ function get_attribute_definition_data_row($attribute)
 
 	if(count($attribute->definition_flags) == 0)
 	{
-		$definition_flags = $CI->lang->line('common_none_selected_text');
+		$definition_flags = lang('Common.none_selected_text');
 	}
 	else if($attribute->definition_type == GROUP)
 	{
@@ -608,7 +608,7 @@ function get_attribute_definition_data_row($attribute)
 		'definition_group' => $attribute->definition_group,
 		'definition_flags' => $definition_flags,
 		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -621,9 +621,9 @@ function get_expense_category_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('expense_category_id' => $CI->lang->line('expenses_categories_category_id')),
-		array('category_name' => $CI->lang->line('expenses_categories_name')),
-		array('category_description' => $CI->lang->line('expenses_categories_description'))
+		array('expense_category_id' => lang('Expenses_categories.category_id')),
+		array('category_name' => lang('Expenses_categories.name')),
+		array('category_description' => lang('Expenses_categories.description'))
 	);
 
 	return transform_headers($headers);
@@ -643,7 +643,7 @@ function get_expense_category_data_row($expense_category)
 		'category_name' => $expense_category->category_name,
 		'category_description' => $expense_category->category_description,
 		'edit' => anchor($controller_name."/view/$expense_category->expense_category_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -657,16 +657,16 @@ function get_expenses_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('expense_id' => $CI->lang->line('expenses_expense_id')),
-		array('date' => $CI->lang->line('expenses_date')),
-		array('supplier_name' => $CI->lang->line('expenses_supplier_name')),
-		array('supplier_tax_code' => $CI->lang->line('expenses_supplier_tax_code')),
-		array('amount' => $CI->lang->line('expenses_amount')),
-		array('tax_amount' => $CI->lang->line('expenses_tax_amount')),
-		array('payment_type' => $CI->lang->line('expenses_payment')),
-		array('category_name' => $CI->lang->line('expenses_categories_name')),
-		array('description' => $CI->lang->line('expenses_description')),
-		array('created_by' => $CI->lang->line('expenses_employee'))
+		array('expense_id' => lang('Expenses.expense_id')),
+		array('date' => lang('Expenses.date')),
+		array('supplier_name' => lang('Expenses.supplier_name')),
+		array('supplier_tax_code' => lang('Expenses.supplier_tax_code')),
+		array('amount' => lang('Expenses.amount')),
+		array('tax_amount' => lang('Expenses.tax_amount')),
+		array('payment_type' => lang('Expenses.payment')),
+		array('category_name' => lang('Expenses_categories.name')),
+		array('description' => lang('Expenses.description')),
+		array('created_by' => lang('Expenses.employee'))
 	);
 
 	return transform_headers($headers);
@@ -693,7 +693,7 @@ function get_expenses_data_row($expense)
 		'description' => $expense->description,
 		'created_by' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }
@@ -717,7 +717,7 @@ function get_expenses_data_last_row($expense)
 
 	return array(
 		'expense_id' => '-',
-		'date' => '<b>'.$CI->lang->line('sales_total').'</b>',
+		'date' => '<b>'.lang('Sales.total').'</b>',
 		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
 		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
 	);
@@ -752,19 +752,19 @@ function get_cashups_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('cashup_id' => $CI->lang->line('cashups_id')),
-		array('open_date' => $CI->lang->line('cashups_opened_date')),
-		array('open_employee_id' => $CI->lang->line('cashups_open_employee')),
-		array('open_amount_cash' => $CI->lang->line('cashups_open_amount_cash')),
-		array('transfer_amount_cash' => $CI->lang->line('cashups_transfer_amount_cash')),
-		array('close_date' => $CI->lang->line('cashups_closed_date')),
-		array('close_employee_id' => $CI->lang->line('cashups_close_employee')),
-		array('closed_amount_cash' => $CI->lang->line('cashups_closed_amount_cash')),
-		array('note' => $CI->lang->line('cashups_note')),
-		array('closed_amount_due' => $CI->lang->line('cashups_closed_amount_due')),
-		array('closed_amount_card' => $CI->lang->line('cashups_closed_amount_card')),
-		array('closed_amount_check' => $CI->lang->line('cashups_closed_amount_check')),
-		array('closed_amount_total' => $CI->lang->line('cashups_closed_amount_total'))
+		array('cashup_id' => lang('Cashups.id')),
+		array('open_date' => lang('Cashups.opened_date')),
+		array('open_employee_id' => lang('Cashups.open_employee')),
+		array('open_amount_cash' => lang('Cashups.open_amount_cash')),
+		array('transfer_amount_cash' => lang('Cashups.transfer_amount_cash')),
+		array('close_date' => lang('Cashups.closed_date')),
+		array('close_employee_id' => lang('Cashups.close_employee')),
+		array('closed_amount_cash' => lang('Cashups.closed_amount_cash')),
+		array('note' => lang('Cashups.note')),
+		array('closed_amount_due' => lang('Cashups.closed_amount_due')),
+		array('closed_amount_card' => lang('Cashups.closed_amount_card')),
+		array('closed_amount_check' => lang('Cashups.closed_amount_check')),
+		array('closed_amount_total' => lang('Cashups.closed_amount_total'))
 	);
 
 	return transform_headers($headers);
@@ -794,7 +794,7 @@ function get_cash_up_data_row($cash_up)
 		'closed_amount_check' => to_currency($cash_up->closed_amount_check),
 		'closed_amount_total' => to_currency($cash_up->closed_amount_total),
 		'edit' => anchor($controller_name."/view/$cash_up->cashup_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
 		)
 	);
 }

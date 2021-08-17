@@ -1,11 +1,11 @@
 <?php echo form_open('config/save_email/', array('id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="email_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_protocol'), 'protocol', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_protocol'), 'protocol', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('protocol', array(
 						'mail' => 'mail',
@@ -18,7 +18,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_mailpath'), 'mailpath', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_mailpath'), 'mailpath', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<?php echo form_input(array(
 						'name' => 'mailpath',
@@ -29,7 +29,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_host'), 'smtp_host', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_host'), 'smtp_host', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
 						'name' => 'smtp_host',
@@ -40,7 +40,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_port'), 'smtp_port', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_port'), 'smtp_port', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
 						'name' => 'smtp_port',
@@ -51,7 +51,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_crypto'), 'smtp_crypto', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('smtp_crypto', array(
 						'' => 'None',
@@ -64,7 +64,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_timeout'), 'smtp_timeout', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
 						'name' => 'smtp_timeout',
@@ -75,7 +75,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_user'), 'smtp_user', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_user'), 'smtp_user', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -89,7 +89,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('config_email_smtp_pass'), 'smtp_pass', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_smtp_pass'), 'smtp_pass', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
@@ -105,7 +105,7 @@
 			<?php echo form_submit(array(
 				'name' => 'submit_email',
 				'id' => 'submit_email',
-				'value' => lang('common_submit'),
+				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>

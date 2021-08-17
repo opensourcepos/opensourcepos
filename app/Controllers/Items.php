@@ -25,13 +25,13 @@ class Items extends Secure_Controller
 
 		//Filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array(
-			'empty_upc' => lang('items_empty_upc_items'),
-			'low_inventory' => lang('items_low_inventory_items'),
-			'is_serialized' => lang('items_serialized_items'),
-			'no_description' => lang('items_no_description_items'),
-			'search_custom' => lang('items_search_attributes'),
-			'is_deleted' => lang('items_is_deleted'),
-			'temporary' => lang('items_temp'));
+			'empty_upc' => lang('Items.empty_upc_items'),
+			'low_inventory' => lang('Items.low_inventory_items'),
+			'is_serialized' => lang('Items.serialized_items'),
+			'no_description' => lang('Items.no_description_items'),
+			'search_custom' => lang('Items.search_attributes'),
+			'is_deleted' => lang('Items.is_deleted'),
+			'temporary' => lang('Items.temp'));
 
 		echo view('items/manage', $data);
 	}
@@ -240,7 +240,7 @@ class Items extends Secure_Controller
 
 		if($data['category_dropdown'] === '1')
 		{
-			$categories 		= array('' => lang('items_none'));
+			$categories 		= array('' => lang('Items.none'));
 			$category_options 	= $this->Attribute->get_definition_values(CATEGORY_DEFINITION_ID);
 			$category_options	= array_combine($category_options,$category_options);	//Overwrite indexes with values for saving in items table instead of attributes
 			$data['categories'] = array_merge($categories,$category_options);
@@ -260,7 +260,7 @@ class Items extends Secure_Controller
 			$item_info->stock_type = HAS_STOCK;
 			$item_info->tax_category_id = NULL;
 			$item_info->qty_per_pack = 1;
-			$item_info->pack_name = lang('items_default_pack_name');
+			$item_info->pack_name = lang('Items.default_pack_name');
 			$data['hsn_code'] = '';
 
 			if($use_destination_based_tax)
@@ -277,7 +277,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 
-		$suppliers = array('' => lang('items_none'));
+		$suppliers = array('' => lang('Items.none'));
 
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
@@ -479,7 +479,7 @@ class Items extends Secure_Controller
 
 	public function bulk_edit()
 	{
-		$suppliers = array('' => lang('items_none'));
+		$suppliers = array('' => lang('Items.none'));
 
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
@@ -489,14 +489,14 @@ class Items extends Secure_Controller
 
 		$data['suppliers'] = $suppliers;
 		$data['allow_alt_description_choices'] = array(
-			'' => lang('items_do_nothing'),
-			1  => lang('items_change_all_to_allow_alt_desc'),
-			0  => lang('items_change_all_to_not_allow_allow_desc'));
+			'' => lang('Items.do_nothing'),
+			1  => lang('Items.change_all_to_allow_alt_desc'),
+			0  => lang('Items.change_all_to_not_allow_allow_desc'));
 
 		$data['serialization_choices'] = array(
-			'' => lang('items_do_nothing'),
-			1  => lang('items_change_all_to_serialized'),
-			0  => lang('items_change_all_to_unserialized'));
+			'' => lang('Items.do_nothing'),
+			1  => lang('Items.change_all_to_serialized'),
+			0  => lang('Items.change_all_to_unserialized'));
 
 		echo view('items/form_bulk', $data);
 	}
@@ -513,7 +513,7 @@ class Items extends Secure_Controller
 			$receiving_quantity = 1;
 		}
 
-		$default_pack_name = lang('items_default_pack_name');
+		$default_pack_name = lang('Items.default_pack_name');
 
 		//Save item data
 		$item_data = array(
@@ -627,7 +627,7 @@ class Items extends Secure_Controller
 						'trans_items' => $item_id,
 						'trans_user' => $employee_id,
 						'trans_location' => $location['location_id'],
-						'trans_comment' => lang('items_manually_editing_of_quantity'),
+						'trans_comment' => lang('Items.manually_editing_of_quantity'),
 						'trans_inventory' => $updated_quantity - $item_quantity->quantity
 					);
 
@@ -655,20 +655,20 @@ class Items extends Secure_Controller
 
 			if($success && $upload_success)
 			{
-				$message = $this->xss_clean(lang('items_successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name']);
+				$message = $this->xss_clean(lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name']);
 
 				echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $item_id));
 			}
 			else
 			{
-				$message = $this->xss_clean($upload_success ? lang('items_error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors()));
+				$message = $this->xss_clean($upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors()));
 
 				echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => $item_id));
 			}
 		}
 		else
 		{
-			$message = $this->xss_clean(lang('items_error_adding_updating') . ' ' . $item_data['name']);
+			$message = $this->xss_clean(lang('Items.error_adding_updating') . ' ' . $item_data['name']);
 
 			echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => NEW_ITEM));
 		}
@@ -748,13 +748,13 @@ class Items extends Secure_Controller
 
 		if($this->Item_quantity->save($item_quantity_data, $item_id, $location_id))
 		{
-			$message = $this->xss_clean(lang('items_successful_updating') . " $cur_item_info->name");
+			$message = $this->xss_clean(lang('Items.successful_updating') . " $cur_item_info->name");
 
 			echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $item_id));
 		}
 		else
 		{
-			$message = $this->xss_clean(lang('items_error_adding_updating') . " $cur_item_info->name");
+			$message = $this->xss_clean(lang('Items.error_adding_updating') . " $cur_item_info->name");
 
 			echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => NEW_ITEM));
 		}
@@ -800,11 +800,11 @@ class Items extends Secure_Controller
 				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode(array('success' => TRUE, 'message' => lang('items_successful_bulk_edit'), 'id' => $this->xss_clean($items_to_update)));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Items.successful_bulk_edit'), 'id' => $this->xss_clean($items_to_update)));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('items_error_updating_multiple')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Items.error_updating_multiple')));
 		}
 	}
 
@@ -814,12 +814,12 @@ class Items extends Secure_Controller
 
 		if($this->Item->delete_list($items_to_delete))
 		{
-			$message = lang('items_successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('items_one_or_multiple');
+			$message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
 			echo json_encode(array('success' => TRUE, 'message' => $message));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('items_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Items.cannot_be_deleted')));
 		}
 	}
 
@@ -845,7 +845,7 @@ class Items extends Secure_Controller
 	{
 		if($_FILES['file_path']['error'] !== UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('items_csv_import_failed')));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Items.csv_import_failed')));
 		}
 		else
 		{
@@ -945,7 +945,7 @@ class Items extends Secure_Controller
 
 				if(count($failCodes) > 0)
 				{
-					$message = lang('items_csv_import_partially_failed', count($failCodes), implode(', ', $failCodes));
+					$message = lang('Items.csv_import_partially_failed', count($failCodes), implode(', ', $failCodes));
 					$this->db->trans_rollback();
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
@@ -953,12 +953,12 @@ class Items extends Secure_Controller
 				{
 					$this->db->trans_commit();
 
-					echo json_encode(array('success' => TRUE, 'message' => lang('items_csv_import_success')));
+					echo json_encode(array('success' => TRUE, 'message' => lang('Items.csv_import_success')));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => lang('items_csv_import_nodata_wrongformat')));
+				echo json_encode(array('success' => FALSE, 'message' => lang('Items.csv_import_nodata_wrongformat')));
 			}
 		}
 	}
@@ -1139,7 +1139,7 @@ class Items extends Secure_Controller
 	private function save_inventory_quantities($row, $item_data, $allowed_locations, $employee_id)
 	{
 		//Quantities & Inventory Section
-		$comment = lang('items_inventory_CSV_import_quantity');
+		$comment = lang('Items.inventory_CSV_import_quantity');
 		$is_update = $row['Id'] ? TRUE : FALSE;
 
 		foreach($allowed_locations as $location_id => $location_name)

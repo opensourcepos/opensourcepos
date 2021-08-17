@@ -34,17 +34,17 @@ $(document).ready(function()
 <?php echo view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('common_print'); ?></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('sales_send_invoice'); ?></div></a>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_invoice'); ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
 <div id="page-wrap">
-	<div id="header"><?php echo lang('sales_invoice'); ?></div>
+	<div id="header"><?php echo lang('Sales.invoice'); ?></div>
 	<div id="block1">
 		<div id="customer-title">
 			<?php
@@ -82,15 +82,15 @@ $(document).ready(function()
 		<div id="company-title"><?php echo nl2br($company_info) ?></div>
 		<table id="meta">
 			<tr>
-				<td class="meta-head"><?php echo lang('sales_invoice_number');?> </td>
+				<td class="meta-head"><?php echo lang('Sales.invoice_number');?> </td>
 				<td><?php echo $invoice_number; ?></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo lang('common_date'); ?></td>
+				<td class="meta-head"><?php echo lang('Common.date'); ?></td>
 				<td><?php echo $transaction_date; ?></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo lang('sales_invoice_total'); ?></td>
+				<td class="meta-head"><?php echo lang('Sales.invoice_total'); ?></td>
 				<td><?php echo to_currency($total); ?></td>
 			</tr>
 		</table>
@@ -98,31 +98,31 @@ $(document).ready(function()
 
 	<table id="items">
 		<tr>
-			<th><?php echo lang('sales_item_number'); ?></th>
+			<th><?php echo lang('Sales.item_number'); ?></th>
 			<?php
 				$invoice_columns = 6;
 				if($include_hsn)
 				{
 					$invoice_columns += 1;
 					?>
-					<th><?php echo lang('sales_hsn'); ?></th>
+					<th><?php echo lang('Sales.hsn'); ?></th>
 					<?php
 				}
 			?>
-			<th><?php echo lang('sales_item_name'); ?></th>
-			<th><?php echo lang('sales_quantity'); ?></th>
-			<th><?php echo lang('sales_price'); ?></th>
-			<th><?php echo lang('sales_discount'); ?></th>
+			<th><?php echo lang('Sales.item_name'); ?></th>
+			<th><?php echo lang('Sales.quantity'); ?></th>
+			<th><?php echo lang('Sales.price'); ?></th>
+			<th><?php echo lang('Sales.discount'); ?></th>
 			<?php
 			if($discount > 0)
 			{
 				$invoice_columns += 1;
 				?>
-				<th><?php echo lang('sales_customer_discount'); ?></th>
+				<th><?php echo lang('Sales.customer_discount'); ?></th>
 			<?php
 			}
 			?>
-			<th><?php echo lang('sales_total'); ?></th>
+			<th><?php echo lang('Sales.total'); ?></th>
 		</tr>
 
 		<?php
@@ -165,7 +165,7 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank-bottom"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_sub_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.sub_total'); ?></td>
 			<td class="total-value" id="subtotal"><?php echo to_currency($subtotal); ?></td>
 		</tr>
 
@@ -184,7 +184,7 @@ $(document).ready(function()
 
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang('sales_total'); ?></td>
+			<td colspan="2" class="total-line"><?php echo lang('Sales.total'); ?></td>
 			<td class="total-value" id="total"><?php echo to_currency($total); ?></td>
 		</tr>
 
@@ -193,9 +193,9 @@ $(document).ready(function()
 		$show_giftcard_remainder = FALSE;
 		foreach($payments as $payment_id=>$payment)
 		{
-			$only_sale_check |= $payment['payment_type'] == lang('sales_check');
+			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
 			$splitpayment = explode(':', $payment['payment_type']);
-			$show_giftcard_remainder |= $splitpayment[0] == lang('sales_giftcard');
+			$show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
@@ -210,7 +210,7 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo lang('sales_giftcard_balance'); ?></td>
+				<td colspan="2" class="total-line"><?php echo lang('Sales.giftcard_balance'); ?></td>
 				<td class="total-value" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></td>
 			</tr>
 			<?php
@@ -221,7 +221,7 @@ $(document).ready(function()
 		?>
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-			<td colspan="2" class="total-line"><?php echo lang($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></td>
+			<td colspan="2" class="total-line"><?php echo lang($amount_change >= 0 ? ($only_sale_check ? 'Sales.check_balance' : 'Sales.change_due') : 'Sales.amount_due') ; ?></td>
 			<td class="total-value" id="change"><?php echo to_currency($amount_change); ?></td>
 		</tr>
 		<?php
@@ -234,7 +234,7 @@ $(document).ready(function()
 		<div id="sale_return_policy">
 			<h5>
 				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('sales_comments') . ': ' . $comments; ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . $comments; ?></div>
 				<div style='padding:4%;'><?php echo $this->config->item('invoice_default_comments'); ?></div>
 			</h5>
 			<div style='padding:2%;'><?php echo nl2br($this->config->item('return_policy')); ?></div>

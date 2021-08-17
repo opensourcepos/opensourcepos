@@ -6,16 +6,16 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs">
 	<li class="active" role="presentation">
-		<a data-toggle="tab" href="#tax_codes_tab" title="<?php echo lang('taxes_tax_codes_configuration'); ?>"><?php echo lang('taxes_tax_codes'); ?></a>
+		<a data-toggle="tab" href="#tax_codes_tab" title="<?php echo lang('Taxes.tax_codes_configuration'); ?>"><?php echo lang('Taxes.tax_codes'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_jurisdictions_tab" title="<?php echo lang('taxes_tax_jurisdictions_configuration'); ?>"><?php echo lang('taxes_tax_jurisdictions'); ?></a>
+		<a data-toggle="tab" href="#tax_jurisdictions_tab" title="<?php echo lang('Taxes.tax_jurisdictions_configuration'); ?>"><?php echo lang('Taxes.tax_jurisdictions'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_categories_tab" title="<?php echo lang('taxes_tax_categories_configuration'); ?>"><?php echo lang('taxes_tax_categories'); ?></a>
+		<a data-toggle="tab" href="#tax_categories_tab" title="<?php echo lang('Taxes.tax_categories_configuration'); ?>"><?php echo lang('Taxes.tax_categories'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_rates_tab" title="<?php echo lang('taxes_tax_rate_configuration'); ?>"><?php echo lang('taxes_tax_rates'); ?></a>
+		<a data-toggle="tab" href="#tax_rates_tab" title="<?php echo lang('Taxes.tax_rate_configuration'); ?>"><?php echo lang('Taxes.tax_rates'); ?></a>
 	</li>
 </ul>
 

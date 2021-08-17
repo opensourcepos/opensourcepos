@@ -11,14 +11,14 @@ class Summary_customers extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('customer_name' => lang('reports_customer')),
-			array('sales' => lang('reports_sales'), 'sorter' => 'number_sorter'),
-			array('quantity' => lang('reports_quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => lang('reports_subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('reports_tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('reports_cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('reports_profit'), 'sorter' => 'number_sorter'));
+			array('customer_name' => lang('Reports.customer')),
+			array('sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'),
+			array('quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'),
+			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
+			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _select(array $inputs)

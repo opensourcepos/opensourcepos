@@ -9,13 +9,13 @@ foreach($tax_categories as $key => $category)
 	++$i;
 	?>
 	<div class="form-group form-group-sm" style="display:block;">
-		<?php echo form_label(lang('taxes_tax_category') . ' ' . $i, 'tax_category_' . $i, array('class' => 'control-label col-xs-2')); ?>
+		<?php echo form_label(lang('Taxes.tax_category') . ' ' . $i, 'tax_category_' . $i, array('class' => 'control-label col-xs-2')); ?>
 		<div class='col-xs-3'>
 			<?php $form_data = array(
 				'name' => 'tax_category[]',
 				'id' => 'tax_category_' . $i,
 				'class' => 'valid_chars form-control input-sm',
-				'placeholder' => lang('taxes_tax_category_name'),
+				'placeholder' => lang('Taxes.tax_category_name'),
 				'value' => $tax_category
 			);
 			echo form_input($form_data);
@@ -25,7 +25,7 @@ foreach($tax_categories as $key => $category)
 			<?php $form_data = array(
 				'name' => 'tax_group_sequence[]',
 				'class' => 'valid_chars form-control input-sm',
-				'placeholder' => lang('taxes_sequence'),
+				'placeholder' => lang('Taxes.sequence'),
 				'value' => $tax_group_sequence
 			);
 			echo form_input($form_data);

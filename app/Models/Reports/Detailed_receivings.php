@@ -18,22 +18,22 @@ class Detailed_receivings extends Report
 	{
 		return array(
 			'summary' => array(
-				array('id' => lang('reports_receiving_id')),
-				array('receiving_date' => lang('reports_date'), 'sortable' => FALSE),
-				array('quantity' => lang('reports_quantity')),
-				array('employee_name' => lang('reports_received_by')),
-				array('supplier_name' => lang('reports_supplied_by')),
-				array('total' => lang('reports_total'), 'sorter' => 'number_sorter'),
-				array('payment_type' => lang('reports_payment_type')),
-				array('comment' => lang('reports_comments')),
-				array('reference' => lang('receivings_reference'))),
+				array('id' => lang('Reports.receiving_id')),
+				array('receiving_date' => lang('Reports.date'), 'sortable' => FALSE),
+				array('quantity' => lang('Reports.quantity')),
+				array('employee_name' => lang('Reports.received_by')),
+				array('supplier_name' => lang('Reports.supplied_by')),
+				array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+				array('payment_type' => lang('Reports.payment_type')),
+				array('comment' => lang('Reports.comments')),
+				array('reference' => lang('Receivings.reference'))),
 			'details' => array(
-				lang('reports_item_number'),
-				lang('reports_name'),
-				lang('reports_category'),
-				lang('reports_quantity'),
-				lang('reports_total'),
-				lang('reports_discount'))
+				lang('Reports.item_number'),
+				lang('Reports.name'),
+				lang('Reports.category'),
+				lang('Reports.quantity'),
+				lang('Reports.total'),
+				lang('Reports.discount'))
 		);
 	}
 

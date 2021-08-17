@@ -22,16 +22,16 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar">
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
-			title='<?php echo lang($controller_name.'_new'); ?>'>
-		<span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang($controller_name . '_new'); ?>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
+			title='<?php echo lang($controller_name . '.new'); ?>'>
+		<span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang($controller_name . '.new'); ?>
 	</button>
 </div>
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
 		<button id="delete" class="btn btn-default btn-sm print_hide">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo lang("common_delete");?>
+			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo lang('Common.delete');?>
 		</button>
 	</div>
 </div>

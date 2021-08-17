@@ -1,11 +1,11 @@
 <?php echo form_open('config/save_message/', array('id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('common_fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="message_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('config_msg_uid'), 'msg_uid', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.msg_uid'), 'msg_uid', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('config_msg_pwd'), 'msg_pwd', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.msg_pwd'), 'msg_pwd', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -33,7 +33,7 @@
 			</div>
 			
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('config_msg_src'), 'msg_src', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.msg_src'), 'msg_src', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-bullhorn"></span></span>
@@ -47,21 +47,21 @@
 			</div>
 			
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('config_msg_msg'), 'msg_msg', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.msg_msg'), 'msg_msg', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_textarea(array(
 						'name' => 'msg_msg',
 						'id' => 'msg_msg',
 						'class' => 'form-control input-sm',
 						'value'=>$this->config->item('msg_msg'),
-						'placeholder'=>lang('config_msg_msg_placeholder')));?>
+						'placeholder'=>lang('Config.msg_msg_placeholder')));?>
 				</div>
 			</div>
 
 			<?php echo form_submit(array(
 				'name' => 'submit_message',
 				'id' => 'submit_message',
-				'value' => lang('common_submit'),
+				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
@@ -84,9 +84,9 @@ $(document).ready(function()
 
 		messages: 
 		{
-			msg_uid: "<?php echo lang('config_msg_uid_required'); ?>",
-			msg_pwd: "<?php echo lang('config_msg_pwd_required'); ?>",
-			msg_src: "<?php echo lang('config_msg_src_required'); ?>"
+			msg_uid: "<?php echo lang('Config.msg_uid_required'); ?>",
+			msg_pwd: "<?php echo lang('Config.msg_pwd_required'); ?>",
+			msg_src: "<?php echo lang('Config.msg_src_required'); ?>"
 		}
 	}));
 });

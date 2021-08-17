@@ -1,7 +1,7 @@
 <?php echo form_open('items', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="count_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
@@ -30,7 +30,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.category'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -46,14 +46,14 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange'=>'display_stock(this.value);', 'class'=>'form-control'));	?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'quantity',
@@ -70,13 +70,13 @@
 <table id="items_count_details" class="table table-striped table-hover">
 	<thead>
 		<tr style="background-color: #999 !important;">
-			<th colspan="4"><?php echo lang('items_inventory_data_tracking'); ?></th>
+			<th colspan="4"><?php echo lang('Items.inventory_data_tracking'); ?></th>
 		</tr>
 		<tr>
-			<th width="30%"><?php echo lang('items_inventory_date'); ?></th>
-			<th width="20%"><?php echo lang('items_inventory_employee'); ?></th>
-			<th width="20%"><?php echo lang('items_inventory_in_out_quantity'); ?></th>
-			<th width="30%"><?php echo lang('items_inventory_remarks'); ?></th>
+			<th width="30%"><?php echo lang('Items.inventory_date'); ?></th>
+			<th width="20%"><?php echo lang('Items.inventory_employee'); ?></th>
+			<th width="20%"><?php echo lang('Items.inventory_in_out_quantity'); ?></th>
+			<th width="30%"><?php echo lang('Items.inventory_remarks'); ?></th>
 		</tr>
 	</thead>
 	<tbody id="inventory_result">

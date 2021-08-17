@@ -16,7 +16,7 @@ class Cashups extends Secure_Controller
 		$data['table_headers'] = $this->xss_clean(get_cashups_manage_table_headers());
 
 		// filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array('is_deleted' => lang('cashups_is_deleted'));
+		$data['filters'] = array('is_deleted' => lang('Cashups.is_deleted'));
 
 		echo view('cashups/manage', $data);
 	}
@@ -108,22 +108,22 @@ class Cashups extends Secure_Controller
 
 			foreach($reports_data as $row)
 			{
-				if($row['trans_group'] == lang('reports_trans_payments'))
+				if($row['trans_group'] == lang('Reports.trans_payments'))
 				{
-					if($row['trans_type'] == lang('sales_cash'))
+					if($row['trans_type'] == lang('Sales.cash'))
 					{
 						$cash_ups_info->closed_amount_cash += $this->xss_clean($row['trans_amount']);
 					}
-					elseif($row['trans_type'] == lang('sales_due'))
+					elseif($row['trans_type'] == lang('Sales.due'))
 					{
 						$cash_ups_info->closed_amount_due += $this->xss_clean($row['trans_amount']);
 					}
-					elseif($row['trans_type'] == lang('sales_debit') ||
-						$row['trans_type'] == lang('sales_credit'))
+					elseif($row['trans_type'] == lang('Sales.debit') ||
+						$row['trans_type'] == lang('Sales.credit'))
 					{
 						$cash_ups_info->closed_amount_card += $this->xss_clean($row['trans_amount']);
 					}
-					elseif($row['trans_type'] == lang('sales_check'))
+					elseif($row['trans_type'] == lang('Sales.check'))
 					{
 						$cash_ups_info->closed_amount_check += $this->xss_clean($row['trans_amount']);
 					}
@@ -193,16 +193,16 @@ class Cashups extends Secure_Controller
 			//New cashup_id
 			if($cashup_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('cashups_successful_adding'), 'id' => $cash_up_data['cashup_id']));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']));
 			}
 			else // Existing Cashup
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('cashups_successful_updating'), 'id' => $cashup_id));
+				echo json_encode(array('success' => TRUE, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id));
 			}
 		}
 		else//failure
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('cashups_error_adding_updating'), 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Cashups.error_adding_updating'), 'id' => -1));
 		}
 	}
 
@@ -212,11 +212,11 @@ class Cashups extends Secure_Controller
 
 		if($this->Cashup->delete_list($cash_ups_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('cashups_successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('cashups_one_or_multiple'), 'ids' => $cash_ups_to_delete));
+			echo json_encode(array('success' => TRUE, 'message' => lang('Cashups.successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('Cashups.one_or_multiple'), 'ids' => $cash_ups_to_delete));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('cashups_cannot_be_deleted'), 'ids' => $cash_ups_to_delete));
+			echo json_encode(array('success' => FALSE, 'message' => lang('Cashups.cannot_be_deleted'), 'ids' => $cash_ups_to_delete));
 		}
 	}
 
