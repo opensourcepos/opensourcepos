@@ -17,7 +17,7 @@ class Module extends Model
 
 	public function get_module_name($module_id)
 	{
-		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
+		$query = $builder->getWhere('modules', array('module_id' => $module_id), 1);
 
 		if($query->num_rows() == 1)
 		{
@@ -31,7 +31,7 @@ class Module extends Model
 
 	public function get_module_desc($module_id)
 	{
-		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
+		$query = $builder->getWhere('modules', array('module_id' => $module_id), 1);
 
 		if($query->num_rows() == 1)
 		{
@@ -45,52 +45,52 @@ class Module extends Model
 
 	public function get_all_permissions()
 	{
-		$this->db->from('permissions');
+		$builder = $this->db->table('permissions');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_all_subpermissions()
 	{
-		$this->db->from('permissions');
+		$builder = $this->db->table('permissions');
 		$this->db->join('modules AS modules', 'modules.module_id = permissions.module_id');
 		// can't quote the parameters correctly when using different operators..
-		$this->db->where('modules.module_id != ', 'permission_id', FALSE);
+		$builder->where('modules.module_id != ', 'permission_id', FALSE);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_all_modules()
 	{
-		$this->db->from('modules');
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$builder = $this->db->table('modules');
+		$builder->orderBy('sort', 'asc');
+		return $builder->get();
 	}
 
 	public function get_allowed_home_modules($person_id)
 	{
 		$menus = array('home', 'both');
-		$this->db->from('modules');
+		$builder = $this->db->table('modules');
 		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
 		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
-		$this->db->where('person_id', $person_id);
+		$builder->where('person_id', $person_id);
 		$this->db->where_in('menu_group', $menus);
-		$this->db->where('sort !=', 0);
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$builder->where('sort !=', 0);
+		$builder->orderBy('sort', 'asc');
+		return $builder->get();
 	}
 
 	public function get_allowed_office_modules($person_id)
 	{
 		$menus = array('office', 'both');
-		$this->db->from('modules');
+		$builder = $this->db->table('modules');
 		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
 		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
-		$this->db->where('person_id', $person_id);
+		$builder->where('person_id', $person_id);
 		$this->db->where_in('menu_group', $menus);
-		$this->db->where('sort !=', 0);
-		$this->db->order_by('sort', 'asc');
-		return $this->db->get();
+		$builder->where('sort !=', 0);
+		$builder->orderBy('sort', 'asc');
+		return $builder->get();
 	}
 
 	/**
@@ -111,8 +111,8 @@ class Module extends Model
 		$modules_data = array(
 			'sort' => $sort
 		);
-		$this->db->where('module_id', 'office');
-		$this->db->update('modules', $modules_data);
+		$builder->where('module_id', 'office');
+		$builder->update('modules', $modules_data);
 	}
 
 	/**
@@ -122,10 +122,10 @@ class Module extends Model
 	public function get_show_office_group()
 	{
 		$this->db->select('sort');
-		$this->db->from('grants');
-		$this->db->where('module_id', 'office');
-		$this->db->from('modules');
-		return $this->db->get()->row()->sort;
+		$builder = $this->db->table('grants');
+		$builder->where('module_id', 'office');
+		$builder = $this->db->table('modules');
+		return $builder->get()->row()->sort;
 	}
 }
 ?>

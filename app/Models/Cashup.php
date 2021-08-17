@@ -15,10 +15,10 @@ class Cashup extends Model
 	*/
 	public function exists($cashup_id)
 	{
-		$this->db->from('cash_up');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder = $this->db->table('cash_up');
+		$builder->where('cashup_id', $cashup_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/*
@@ -26,19 +26,19 @@ class Cashup extends Model
 	*/
 	public function get_employee($cashup_id)
 	{
-		$this->db->from('cash_up');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder = $this->db->table('cash_up');
+		$builder->where('cashup_id', $cashup_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->row()->employee_id);
 	}
 
 	public function get_multiple_info($cash_up_ids)
 	{
-		$this->db->from('cash_up');
+		$builder = $this->db->table('cash_up');
 		$this->db->where_in('cashup_id', $cashup_ids);
-		$this->db->order_by('cashup_id', 'asc');
+		$builder->orderBy('cashup_id', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -80,7 +80,7 @@ class Cashup extends Model
 			MAX(close_employees.first_name) AS close_first_name,
 			MAX(close_employees.last_name) AS close_last_name
 		');
-		$this->db->from('cash_up AS cash_up');
+		$builder = $this->db->table('cash_up AS cash_up');
 		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
 		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
@@ -95,15 +95,15 @@ class Cashup extends Model
 			$this->db->or_like('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
 		$this->db->group_end();
 
-		$this->db->where('cash_up.deleted', $filters['is_deleted']);
+		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		$this->db->group_by('cashup_id');
@@ -111,17 +111,17 @@ class Cashup extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $builder->get()->row_array()['count'];
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -150,12 +150,12 @@ class Cashup extends Model
 			close_employees.first_name AS close_first_name,
 			close_employees.last_name AS close_last_name
 		');
-		$this->db->from('cash_up AS cash_up');
+		$builder = $this->db->table('cash_up AS cash_up');
 		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
 		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
-		$this->db->where('cashup_id', $cashup_id);
+		$builder->where('cashup_id', $cashup_id);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 		if($query->num_rows() == 1)
 		{
 			return $query->row();
@@ -182,7 +182,7 @@ class Cashup extends Model
 	{
 		if(!$cashup_id == -1 || !$this->exists($cashup_id))
 		{
-			if($this->db->insert('cash_up', $cash_up_data))
+			if($builder->insert('cash_up', $cash_up_data))
 			{
 				$cash_up_data['cashup_id'] = $this->db->insert_id();
 
@@ -192,9 +192,9 @@ class Cashup extends Model
 			return FALSE;
 		}
 
-		$this->db->where('cashup_id', $cashup_id);
+		$builder->where('cashup_id', $cashup_id);
 
-		return $this->db->update('cash_up', $cash_up_data);
+		return $builder->update('cash_up', $cash_up_data);
 	}
 
 	/*
@@ -205,10 +205,10 @@ class Cashup extends Model
 		$success = FALSE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 			$this->db->where_in('cashup_id', $cashup_ids);
-			$success = $this->db->update('cash_up', array('deleted'=>1));
-		$this->db->trans_complete();
+			$success = $builder->update('cash_up', array('deleted'=>1));
+		$this->db->transComplete();
 
 		return $success;
 	}

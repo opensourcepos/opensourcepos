@@ -40,7 +40,7 @@ class Summary_categories extends Summary_report
 	protected function _group_order()
 	{
 		$this->db->group_by('category');
-		$this->db->order_by('category');
+		$builder->orderBy('category');
 	}
 }
 ?>

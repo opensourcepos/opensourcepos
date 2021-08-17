@@ -20,15 +20,15 @@ class Summary_sales_taxes extends Summary_report
 
 	protected function _where(array $inputs)
 	{
-		$this->db->where('sales.sale_status', COMPLETED);
+		$builder->where('sales.sale_status', COMPLETED);
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
 		else
 		{
-			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+			$builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
 		}
 	}
 

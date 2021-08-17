@@ -19,10 +19,10 @@ class Person extends Model
 	 */
 	public function exists($person_id)
 	{
-		$this->db->from('people');
-		$this->db->where('people.person_id', $person_id);
+		$builder = $this->db->table('people');
+		$builder->where('people.person_id', $person_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -36,12 +36,12 @@ class Person extends Model
 	 */
 	public function get_all($limit = 10000, $offset = 0)
 	{
-		$this->db->from('people');
-		$this->db->order_by('last_name', 'asc');
+		$builder = $this->db->table('people');
+		$builder->orderBy('last_name', 'asc');
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -51,8 +51,8 @@ class Person extends Model
 	 */
 	public function get_total_rows()
 	{
-		$this->db->from('people');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('people');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
@@ -66,7 +66,7 @@ class Person extends Model
 	 */
 	public function get_info($person_id)
 	{
-		$query = $this->db->get_where('people', array('person_id' => $person_id), 1);
+		$query = $builder->getWhere('people', array('person_id' => $person_id), 1);
 
 		if($query->num_rows() == 1)
 		{
@@ -95,11 +95,11 @@ class Person extends Model
 	 */
 	public function get_multiple_info($person_ids)
 	{
-		$this->db->from('people');
+		$builder = $this->db->table('people');
 		$this->db->where_in('person_id', $person_ids);
-		$this->db->order_by('last_name', 'asc');
+		$builder->orderBy('last_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Person extends Model
 	{
 		if(!$person_id || !$this->exists($person_id))
 		{
-			if($this->db->insert('people', $person_data))
+			if($builder->insert('people', $person_data))
 			{
 				$person_data['person_id'] = $this->db->insert_id();
 
@@ -125,9 +125,9 @@ class Person extends Model
 			return FALSE;
 		}
 
-		$this->db->where('person_id', $person_id);
+		$builder->where('person_id', $person_id);
 
-		return $this->db->update('people', $person_data);
+		return $builder->update('people', $person_data);
 	}
 
 	/**
@@ -144,9 +144,9 @@ class Person extends Model
 		$suggestions = array();
 
 //		$this->db->select('person_id');
-//		$this->db->from('people');
-//		$this->db->where('deleted', 0);
-//		$this->db->where('person_id', $search);
+//		$builder = $this->db->table('people');
+//		$builder->where('deleted', 0);
+//		$builder->where('person_id', $search);
 //		$this->db->group_start();
 //			$this->db->like('first_name', $search);
 //			$this->db->or_like('last_name', $search);
@@ -154,9 +154,9 @@ class Person extends Model
 //			$this->db->or_like('email', $search);
 //			$this->db->or_like('phone_number', $search);
 //			$this->db->group_end();
-//		$this->db->order_by('last_name', 'asc');
+//		$builder->orderBy('last_name', 'asc');
 
-		foreach($this->db->get()->result() as $row)
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->person_id);
 		}

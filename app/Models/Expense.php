@@ -15,10 +15,10 @@ class Expense extends Model
 	*/
 	public function exists($expense_id)
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/*
@@ -26,10 +26,10 @@ class Expense extends Model
 	*/
 	public function get_expense_category($expense_id)
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->Expense_category->get_info($this->db->get()->row()->expense_category_id);
+		return $this->Expense_category->get_info($builder->get()->row()->expense_category_id);
 	}
 
 	/*
@@ -37,19 +37,19 @@ class Expense extends Model
 	*/
 	public function get_employee($expense_id)
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->row()->employee_id);
 	}
 
 	public function get_multiple_info($expense_ids)
 	{
-		$this->db->from('expenses');
+		$builder = $this->db->table('expenses');
 		$this->db->where_in('expenses.expense_id', $expense_ids);
-		$this->db->order_by('expense_id', 'asc');
+		$builder->orderBy('expense_id', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -87,7 +87,7 @@ class Expense extends Model
 			');
 		}
 
-		$this->db->from('expenses AS expenses');
+		$builder = $this->db->table('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
@@ -102,15 +102,15 @@ class Expense extends Model
 			$this->db->or_like('CONCAT(employees.first_name, " ", employees.last_name)', $search);
 		$this->db->group_end();
 
-		$this->db->where('expenses.deleted', $filters['is_deleted']);
+		$builder->where('expenses.deleted', $filters['is_deleted']);
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		if($filters['only_debit'] != FALSE)
@@ -144,19 +144,19 @@ class Expense extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
 		$this->db->group_by('expense_id');
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -181,13 +181,13 @@ class Expense extends Model
 			expense_categories.expense_category_id AS expense_category_id,
 			expense_categories.category_name AS category_name
 		');
-		$this->db->from('expenses AS expenses');
+		$builder = $this->db->table('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
-		$this->db->where('expense_id', $expense_id);
+		$builder->where('expense_id', $expense_id);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 		if($query->num_rows() == 1)
 		{
 			return $query->row();
@@ -216,7 +216,7 @@ class Expense extends Model
 	{
 		if(!$expense_id || !$this->exists($expense_id))
 		{
-			if($this->db->insert('expenses', $expense_data))
+			if($builder->insert('expenses', $expense_data))
 			{
 				$expense_data['expense_id'] = $this->db->insert_id();
 
@@ -226,9 +226,9 @@ class Expense extends Model
 			return FALSE;
 		}
 
-		$this->db->where('expense_id', $expense_id);
+		$builder->where('expense_id', $expense_id);
 
-		return $this->db->update('expenses', $expense_data);
+		return $builder->update('expenses', $expense_data);
 	}
 
 	/*
@@ -239,10 +239,10 @@ class Expense extends Model
 		$success = FALSE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 			$this->db->where_in('expense_id', $expense_ids);
-			$success = $this->db->update('expenses', array('deleted'=>1));
-		$this->db->trans_complete();
+			$success = $builder->update('expenses', array('deleted'=>1));
+		$this->db->transComplete();
 
 		return $success;
 	}
@@ -254,16 +254,16 @@ class Expense extends Model
 	{
 		// get payment summary
 		$this->db->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
-		$this->db->from('expenses');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('expenses');
+		$builder->where('deleted', $filters['is_deleted']);
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		if($filters['only_cash'] != FALSE)
@@ -293,7 +293,7 @@ class Expense extends Model
 
 		$this->db->group_by('payment_type');
 
-		$payments = $this->db->get()->result_array();
+		$payments = $builder->get()->result_array();
 
 		return $payments;
 	}
@@ -311,10 +311,10 @@ class Expense extends Model
 	*/
 	public function get_expense_payment($expense_id)
 	{
-		$this->db->from('expenses');
-		$this->db->where('expense_id', $expense_id);
+		$builder = $this->db->table('expenses');
+		$builder->where('expense_id', $expense_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 }
 ?>

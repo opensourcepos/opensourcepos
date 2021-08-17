@@ -15,11 +15,11 @@ class Giftcard extends Model
 	*/
 	public function exists($giftcard_id)
 	{
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_id', $giftcard_id);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_id', $giftcard_id);
+		$builder->where('deleted', 0);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/*
@@ -28,12 +28,12 @@ class Giftcard extends Model
 	public function get_max_number()
 	{
 		$this->db->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
-		$this->db->order_by("giftcard_number","desc");
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
+		$builder->orderBy("giftcard_number","desc");
 		$this->db->limit(1);
 
-		return $this->db->get()->row();
+		return $builder->get()->row();
 	}
 
 	/*
@@ -41,8 +41,8 @@ class Giftcard extends Model
 	*/
 	public function get_total_rows()
 	{
-		$this->db->from('giftcards');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
@@ -52,12 +52,12 @@ class Giftcard extends Model
 	*/
 	public function get_info($giftcard_id)
 	{
-		$this->db->from('giftcards');
+		$builder = $this->db->table('giftcards');
 		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
-		$this->db->where('giftcard_id', $giftcard_id);
-		$this->db->where('deleted', 0);
+		$builder->where('giftcard_id', $giftcard_id);
+		$builder->where('deleted', 0);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
 		if($query->num_rows() == 1)
 		{
@@ -83,11 +83,11 @@ class Giftcard extends Model
 	*/
 	public function get_giftcard_id($giftcard_number)
 	{
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
+		$builder->where('deleted', 0);
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
 		if($query->num_rows() == 1)
 		{
@@ -102,12 +102,12 @@ class Giftcard extends Model
 	*/
 	public function get_multiple_info($giftcard_ids)
 	{
-		$this->db->from('giftcards');
+		$builder = $this->db->table('giftcards');
 		$this->db->where_in('giftcard_id', $giftcard_ids);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('giftcard_number', 'asc');
+		$builder->where('deleted', 0);
+		$builder->orderBy('giftcard_number', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -117,7 +117,7 @@ class Giftcard extends Model
 	{
 		if(!$giftcard_id || !$this->exists($giftcard_id))
 		{
-			if($this->db->insert('giftcards', $giftcard_data))
+			if($builder->insert('giftcards', $giftcard_data))
 			{
 				$giftcard_data['giftcard_number'] = $this->db->insert_id();
 				$giftcard_data['giftcard_id'] = $this->db->insert_id();
@@ -128,9 +128,9 @@ class Giftcard extends Model
 			return FALSE;
 		}
 
-		$this->db->where('giftcard_id', $giftcard_id);
+		$builder->where('giftcard_id', $giftcard_id);
 
-		return $this->db->update('giftcards', $giftcard_data);
+		return $builder->update('giftcards', $giftcard_data);
 	}
 
 	/*
@@ -140,7 +140,7 @@ class Giftcard extends Model
 	{
 		$this->db->where_in('giftcard_id', $giftcard_ids);
 
-		return $this->db->update('giftcards', $giftcard_data);
+		return $builder->update('giftcards', $giftcard_data);
 	}
 
 	/*
@@ -148,9 +148,9 @@ class Giftcard extends Model
 	*/
 	public function delete($giftcard_id)
 	{
-		$this->db->where('giftcard_id', $giftcard_id);
+		$builder->where('giftcard_id', $giftcard_id);
 
-		return $this->db->update('giftcards', array('deleted' => 1));
+		return $builder->update('giftcards', array('deleted' => 1));
 	}
 
 	/*
@@ -160,7 +160,7 @@ class Giftcard extends Model
 	{
 		$this->db->where_in('giftcard_id', $giftcard_ids);
 
-		return $this->db->update('giftcards', array('deleted' => 1));
+		return $builder->update('giftcards', array('deleted' => 1));
  	}
 
  	/*
@@ -170,25 +170,25 @@ class Giftcard extends Model
 	{
 		$suggestions = array();
 
-		$this->db->from('giftcards');
+		$builder = $this->db->table('giftcards');
 		$this->db->like('giftcard_number', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('giftcard_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->where('deleted', 0);
+		$builder->orderBy('giftcard_number', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[]=array('label' => $row->giftcard_number);
 		}
 
- 		$this->db->from('customers');
+ 		$builder = $this->db->table('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
 		$this->db->group_start();
 			$this->db->like('first_name', $search);
 			$this->db->or_like('last_name', $search);
 			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
 		$this->db->group_end();
-		$this->db->where('deleted', 0);
-		$this->db->order_by('last_name', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->where('deleted', 0);
+		$builder->orderBy('last_name', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->first_name.' '.$row->last_name);
 		}
@@ -221,7 +221,7 @@ class Giftcard extends Model
 			$this->db->select('COUNT(giftcards.giftcard_id) as count');
 		}
 
-		$this->db->from('giftcards AS giftcards');
+		$builder = $this->db->table('giftcards AS giftcards');
 		$this->db->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
 		$this->db->group_start();
 			$this->db->like('person.first_name', $search);
@@ -230,22 +230,22 @@ class Giftcard extends Model
 			$this->db->or_like('giftcards.giftcard_number', $search);
 			$this->db->or_like('giftcards.person_id', $search);
 		$this->db->group_end();
-		$this->db->where('giftcards.deleted', 0);
+		$builder->where('giftcards.deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -258,10 +258,10 @@ class Giftcard extends Model
 			return 0;
 		}
 
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
 
-		return $this->db->get()->row()->value;
+		return $builder->get()->row()->value;
 	}
 
 	/*
@@ -269,8 +269,8 @@ class Giftcard extends Model
 	*/
 	public function update_giftcard_value($giftcard_number, $value)
 	{
-		$this->db->where('giftcard_number', $giftcard_number);
-		$this->db->update('giftcards', array('value' => $value));
+		$builder->where('giftcard_number', $giftcard_number);
+		$builder->update('giftcards', array('value' => $value));
 	}
 
 	/*
@@ -279,11 +279,11 @@ class Giftcard extends Model
 	public function exists_gitcard_name($giftcard_name)
 	{
 		$giftcard_name = strtoupper($giftcard_name);
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_name);
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_name);
+		$builder->where('deleted', 0);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/*
@@ -312,10 +312,10 @@ class Giftcard extends Model
 			return 0;
 		}
 
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcard_number);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcard_number);
 
-		return $this->db->get()->row()->person_id;
+		return $builder->get()->row()->person_id;
 	}
 }
 ?>

@@ -12,23 +12,24 @@ class Appconfig extends Model
 {
 	public function exists($key)
 	{
-		$this->db->from('app_config');
-		$this->db->where('app_config.key', $key);
+		$builder = $this->db->table('app_config');
+		$builder->where('app_config.key', $key);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	public function get_all()
 	{
-		$this->db->from('app_config');
-		$this->db->order_by('key', 'asc');
+		$builder = $this->db->table('app_config');
+		$builder->orderBy('key', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get($key, $default = '')
 	{
-		$query = $this->db->get_where('app_config', array('key' => $key), 1);
+		$builder = $this->db->table('app_config');
+		$query = $builder->getWhere('key', $key, 1);
 
 		if($query->num_rows() == 1)
 		{
@@ -44,15 +45,17 @@ class Appconfig extends Model
 			'key'   => $key,
 			'value' => $value
 		);
-
+		
+		$builder = $this->db->table('app_config');
+		
 		if(!$this->exists($key))
 		{
-			return $this->db->insert('app_config', $config_data);
+			return $builder->insert($config_data);
 		}
 
-		$this->db->where('key', $key);
+		$builder->where('key', $key);
 
-		return $this->db->update('app_config', $config_data);
+		return $builder->update($config_data);
 	}
 
 	public function batch_save($data)
@@ -60,28 +63,30 @@ class Appconfig extends Model
 		$success = TRUE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		foreach($data as $key=>$value)
 		{
 			$success &= $this->save($key, $value);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
 
 	public function delete($key)
 	{
-		return $this->db->delete('app_config', array('key' => $key));
+		$builder = $this->db->table('app_config');
+		return $builder->delete('key', $key);
 	}
 
 	public function delete_all()
 	{
-		return $this->db->empty_table('app_config');
+		$builder = $this->db->table('app_config');
+		return $builder->emptyTable();
 	}
 
 	public function acquire_save_next_invoice_sequence()

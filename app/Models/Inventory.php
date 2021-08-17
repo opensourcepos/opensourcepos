@@ -12,26 +12,26 @@ class Inventory extends Model
 {
 	public function insert($inventory_data)
 	{
-		return $this->db->insert('inventory', $inventory_data);
+		return $builder->insert('inventory', $inventory_data);
 	}
 
 	public function update($comment, $inventory_data)
 	{
-		$this->db->where('trans_comment', $comment);
-		return $this->db->update('inventory', $inventory_data);
+		$builder->where('trans_comment', $comment);
+		return $builder->update('inventory', $inventory_data);
 	}
 
 	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
 	{
-		$this->db->from('inventory');
-		$this->db->where('trans_items', $item_id);
+		$builder = $this->db->table('inventory');
+		$builder->where('trans_items', $item_id);
         if($location_id != FALSE)
         {
-            $this->db->where('trans_location', $location_id);
+            $builder->where('trans_location', $location_id);
         }
-		$this->db->order_by('trans_date', 'desc');
+		$builder->orderBy('trans_date', 'desc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function reset_quantity($item_id)
@@ -57,11 +57,11 @@ class Inventory extends Model
 	public function get_inventory_sum($item_id)
 	{
 		$this->db->select('SUM(trans_inventory) AS sum, MAX(trans_location) AS location_id');
-		$this->db->from('inventory');
-		$this->db->where('trans_items', $item_id);
+		$builder = $this->db->table('inventory');
+		$builder->where('trans_items', $item_id);
 		$this->db->group_by('trans_location');
 
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 }
 ?>

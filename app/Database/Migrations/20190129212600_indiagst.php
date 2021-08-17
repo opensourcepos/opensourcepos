@@ -54,25 +54,25 @@ class Migration_IndiaGST extends CI_Migration
 	private function get_count_of_tax_code_entries()
 	{
 		$this->db->select('COUNT(*) as count');
-		$this->db->from('tax_codes_backup');
+		$builder = $this->db->table('tax_codes_backup');
 
-		return $this->db->get()->row()->count;
+		return $builder->get()->row()->count;
 	}
 
 	private function get_count_of_sales_taxes_entries()
 	{
 		$this->db->select('COUNT(*) as count');
-		$this->db->from('sales_taxes_backup');
+		$builder = $this->db->table('sales_taxes_backup');
 
-		return $this->db->get()->row()->count;
+		return $builder->get()->row()->count;
 	}
 
 	private function get_count_of_rate_entries()
 	{
 		$this->db->select('COUNT(*) as count');
-		$this->db->from('tax_code_rates_backup');
+		$builder = $this->db->table('tax_code_rates_backup');
 
-		return $this->db->get()->row()->count;
+		return $builder->get()->row()->count;
 	}
 
 	/*

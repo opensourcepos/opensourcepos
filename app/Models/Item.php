@@ -19,13 +19,13 @@ class Item extends Model
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) !== '0')
 		{
-			$this->db->where('item_id', intval($item_id));
+			$builder->where('item_id', intval($item_id));
 			if($ignore_deleted === FALSE)
 			{
-				$this->db->where('deleted', $deleted);
+				$builder->where('deleted', $deleted);
 			}
 
-			return ($this->db->get('items')->num_rows() === 1);
+			return ($builder->get('items')->getNumRows() === 1);
 		}
 
 		return FALSE;
@@ -41,15 +41,15 @@ class Item extends Model
 			return FALSE;
 		}
 
-		$this->db->where('item_number', (string) $item_number);
+		$builder->where('item_number', (string) $item_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
-			$this->db->where('item_id !=', intval($item_id));
+			$builder->where('item_id !=', intval($item_id));
 		}
 
-		return ($this->db->get('items')->num_rows() >= 1);
+		return ($builder->get('items')->getNumRows() >= 1);
 	}
 
 	/*
@@ -57,16 +57,16 @@ class Item extends Model
 	*/
 	public function get_total_rows()
 	{
-		$this->db->from('items');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
 
 	public function get_tax_category_usage($tax_category_id)
 	{
-		$this->db->from('items');
-		$this->db->where('tax_category_id', $tax_category_id);
+		$builder = $this->db->table('items');
+		$builder->where('tax_category_id', $tax_category_id);
 
 		return $this->db->count_all_results();
 	}
@@ -130,23 +130,23 @@ class Item extends Model
 			}
 		}
 
-		$this->db->from('items AS items');
+		$builder = $this->db->table('items AS items');
 		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
 
 		if($filters['stock_location_id'] > -1)
 		{
 			$this->db->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
-			$this->db->where('location_id', $filters['stock_location_id']);
+			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		$attributes_enabled = count($filters['definition_ids']) > 0;
@@ -182,27 +182,27 @@ class Item extends Model
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 		}
 
-		$this->db->where('items.deleted', $filters['is_deleted']);
+		$builder->where('items.deleted', $filters['is_deleted']);
 
 		if($filters['empty_upc'] != FALSE)
 		{
-			$this->db->where('item_number', NULL);
+			$builder->where('item_number', NULL);
 		}
 		if($filters['low_inventory'] != FALSE)
 		{
-			$this->db->where('quantity <=', 'reorder_level');
+			$builder->where('quantity <=', 'reorder_level');
 		}
 		if($filters['is_serialized'] != FALSE)
 		{
-			$this->db->where('is_serialized', 1);
+			$builder->where('is_serialized', 1);
 		}
 		if($filters['no_description'] != FALSE)
 		{
-			$this->db->where('items.description', '');
+			$builder->where('items.description', '');
 		}
 		if($filters['temporary'] != FALSE)
 		{
-			$this->db->where('items.item_type', ITEM_TEMP);
+			$builder->where('items.item_type', ITEM_TEMP);
 		}
 		else
 		{
@@ -213,21 +213,21 @@ class Item extends Model
 		// get_found_rows case
 		if($count_only === TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.item_id');
 
 		// order by name of item by default
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -235,25 +235,25 @@ class Item extends Model
 	*/
 	public function get_all($stock_location_id = -1, $rows = 0, $limit_from = 0)
 	{
-		$this->db->from('items');
+		$builder = $this->db->table('items');
 
 		if($stock_location_id > -1)
 		{
 			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
-			$this->db->where('location_id', $stock_location_id);
+			$builder->where('location_id', $stock_location_id);
 		}
 
-		$this->db->where('items.deleted', 0);
+		$builder->where('items.deleted', 0);
 
 		// order by name of item
-		$this->db->order_by('items.name', 'asc');
+		$builder->orderBy('items.name', 'asc');
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -267,10 +267,10 @@ class Item extends Model
 		$this->db->select('GROUP_CONCAT(attribute_date SEPARATOR \'|\') AS attribute_dtvalues');
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
-		$this->db->where('items.item_id', $item_id);
+		$builder->where('items.item_id', $item_id);
 		$this->db->group_by('items.item_id');
 
-		$query = $this->db->get('items');
+		$query = $builder->get('items');
 
 		if($query->num_rows() == 1)
 		{
@@ -297,7 +297,7 @@ class Item extends Model
 	public function get_info_by_id_or_number($item_id, $include_deleted = TRUE)
 	{
 		$this->db->group_start();
-		$this->db->where('items.item_number', $item_id);
+		$builder->where('items.item_number', $item_id);
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -310,14 +310,14 @@ class Item extends Model
 
 		if(!$include_deleted)
 		{
-			$this->db->where('items.deleted', 0);
+			$builder->where('items.deleted', 0);
 		}
 
 		// limit to only 1 so there is a result in case two are returned
 		// due to barcode and item_id clash
 		$this->db->limit(1);
 
-		$query = $this->db->get('items');
+		$query = $builder->get('items');
 
 		if($query->num_rows() == 1)
 		{
@@ -332,15 +332,15 @@ class Item extends Model
 	*/
 	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
-		$this->db->from('items');
+		$builder = $this->db->table('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where('item_number', $item_number);
+		$builder->where('item_number', $item_number);
 		if($ignore_deleted == FALSE)
 		{
-			$this->db->where('items.deleted', $deleted);
+			$builder->where('items.deleted', $deleted);
 		}
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
 		if($query->num_rows() == 1)
 		{
@@ -362,16 +362,16 @@ class Item extends Model
 		$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) ORDER BY definition_id SEPARATOR '|') AS attribute_dtvalues");
 		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) ORDER BY definition_id SEPARATOR \'|\') AS attribute_dvalues');
 		$this->db->select('MAX(quantity) as quantity');
-		$this->db->from('items');
+		$builder = $this->db->table('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
 		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
-		$this->db->where('location_id', $location_id);
+		$builder->where('location_id', $location_id);
 		$this->db->where_in('items.item_id', $item_ids);
 		$this->db->group_by('items.item_id');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -381,13 +381,13 @@ class Item extends Model
 	{
 		if(!$item_id || !$this->exists($item_id, TRUE))
 		{
-			if($this->db->insert('items', $item_data))
+			if($builder->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
 				if($item_data['low_sell_item_id'] == -1)
 				{
-					$this->db->where('item_id', $item_data['item_id']);
-					$this->db->update('items', array('low_sell_item_id'=>$item_data['item_id']));
+					$builder->where('item_id', $item_data['item_id']);
+					$builder->update('items', array('low_sell_item_id'=>$item_data['item_id']));
 				}
 
 				return TRUE;
@@ -400,9 +400,9 @@ class Item extends Model
 			$item_data['item_id'] = $item_id;
 		}
 
-		$this->db->where('item_id', $item_id);
+		$builder->where('item_id', $item_id);
 
-		return $this->db->update('items', $item_data);
+		return $builder->update('items', $item_data);
 	}
 
 	/*
@@ -412,7 +412,7 @@ class Item extends Model
 	{
 		$this->db->where_in('item_id', explode(':', $item_ids));
 
-		return $this->db->update('items', $item_data);
+		return $builder->update('items', $item_data);
 	}
 
 	/*
@@ -421,17 +421,17 @@ class Item extends Model
 	public function delete($item_id)
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
-		$this->db->where('item_id', $item_id);
-		$success = $this->db->update('items', array('deleted'=>1));
+		$builder->where('item_id', $item_id);
+		$success = $builder->update('items', array('deleted'=>1));
 		$success &= $this->Inventory->reset_quantity($item_id);
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -441,9 +441,9 @@ class Item extends Model
 	*/
 	public function undelete($item_id)
 	{
-		$this->db->where('item_id', $item_id);
+		$builder->where('item_id', $item_id);
 
-		return $this->db->update('items', array('deleted'=>0));
+		return $builder->update('items', array('deleted'=>0));
 	}
 
 	/*
@@ -452,21 +452,21 @@ class Item extends Model
 	public function delete_list($item_ids)
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
-		$success = $this->db->update('items', array('deleted'=>1));
+		$success = $builder->update('items', array('deleted'=>1));
 
 		foreach($item_ids as $item_id)
 		{
 			$success &= $this->Inventory->reset_quantity($item_id);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -555,23 +555,23 @@ class Item extends Model
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->orderBy('name', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		$this->db->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 		$this->db->like('item_number', $search);
-		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->orderBy('item_number', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
@@ -580,36 +580,36 @@ class Item extends Model
 		{
 			//Search by category
 			$this->db->select('category');
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
 			$this->db->like('category', $search);
-			$this->db->order_by('category', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('category', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->category);
 			}
 
 			//Search by supplier
 			$this->db->select('company_name');
-			$this->db->from('suppliers');
+			$builder = $this->db->table('suppliers');
 			$this->db->like('company_name', $search);
 			// restrict to non deleted companies only if is_deleted is FALSE
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
-			$this->db->order_by('company_name', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('company_name', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
 			//Search by description
 			$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->like('description', $search);
-			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('description', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$entry = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
@@ -624,11 +624,11 @@ class Item extends Model
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
-				$this->db->where('definition_type', TEXT);
-				$this->db->where('deleted', $filters['is_deleted']);
+				$builder->where('definition_type', TEXT);
+				$builder->where('deleted', $filters['is_deleted']);
 				$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 
-				foreach($this->db->get('attribute_links')->result() as $row)
+				foreach($builder->get('attribute_links')->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
@@ -651,25 +651,25 @@ class Item extends Model
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$this->db->where('stock_type', '0'); // stocked items only
+		$builder->where('stock_type', '0'); // stocked items only
 		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->orderBy('name', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		$this->db->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$this->db->where('stock_type', '0'); // stocked items only
+		$builder->where('stock_type', '0'); // stocked items only
 		$this->db->like('item_number', $search);
-		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->orderBy('item_number', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
@@ -678,40 +678,40 @@ class Item extends Model
 		{
 			//Search by category
 			$this->db->select('category');
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-			$this->db->where('stock_type', '0'); // stocked items only
+			$builder->where('stock_type', '0'); // stocked items only
 			$this->db->distinct();
 			$this->db->like('category', $search);
-			$this->db->order_by('category', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('category', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->category);
 			}
 
 			//Search by supplier
 			$this->db->select('company_name');
-			$this->db->from('suppliers');
+			$builder = $this->db->table('suppliers');
 			$this->db->like('company_name', $search);
 			// restrict to non deleted companies only if is_deleted is FALSE
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
-			$this->db->order_by('company_name', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('company_name', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
 			//Search by description
 			$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-			$this->db->where('stock_type', '0'); // stocked items only
+			$builder->where('stock_type', '0'); // stocked items only
 			$this->db->like('description', $search);
-			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('description', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$entry = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
@@ -726,11 +726,11 @@ class Item extends Model
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
-				$this->db->where('definition_type', TEXT);
-				$this->db->where('stock_type', '0'); // stocked items only
-				$this->db->where('deleted', $filters['is_deleted']);
+				$builder->where('definition_type', TEXT);
+				$builder->where('stock_type', '0'); // stocked items only
+				$builder->where('deleted', $filters['is_deleted']);
 
-				foreach($this->db->get('attribute_links')->result() as $row)
+				foreach($builder->get('attribute_links')->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
@@ -752,22 +752,22 @@ class Item extends Model
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select('item_id, name');
-		$this->db->where('deleted', $filters['is_deleted']);
-		$this->db->where('item_type', ITEM_KIT);
+		$builder->where('deleted', $filters['is_deleted']);
+		$builder->where('item_type', ITEM_KIT);
 		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		foreach($this->db->get('items')->result() as $row)
+		$builder->orderBy('name', 'asc');
+		foreach($builder->get('items')->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 		}
 
 		$this->db->select('item_id, item_number');
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', $filters['is_deleted']);
 		$this->db->like('item_number', $search);
-		$this->db->where('item_type', ITEM_KIT);
-		$this->db->order_by('item_number', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->where('item_type', ITEM_KIT);
+		$builder->orderBy('item_number', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
@@ -776,41 +776,41 @@ class Item extends Model
 		{
 			//Search by category
 			$this->db->select('category');
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->where('item_type', ITEM_KIT);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
+			$builder->where('item_type', ITEM_KIT);
 			$this->db->distinct();
 			$this->db->like('category', $search);
-			$this->db->order_by('category', 'asc');
+			$builder->orderBy('category', 'asc');
 
-			foreach($this->db->get()->result() as $row)
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->category);
 			}
 
 			//Search by supplier
 			$this->db->select('company_name');
-			$this->db->from('suppliers');
+			$builder = $this->db->table('suppliers');
 			$this->db->like('company_name', $search);
 
 			// restrict to non deleted companies only if is_deleted is FALSE
-			$this->db->where('deleted', $filters['is_deleted']);
+			$builder->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
-			$this->db->order_by('company_name', 'asc');
+			$builder->orderBy('company_name', 'asc');
 
-			foreach($this->db->get()->result() as $row)
+			foreach($builder->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->company_name);
 			}
 
 			//Search by description
 			$this->db->select('item_id, name, description');
-			$this->db->from('items');
-			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->where('item_type', ITEM_KIT);
+			$builder = $this->db->table('items');
+			$builder->where('deleted', $filters['is_deleted']);
+			$builder->where('item_type', ITEM_KIT);
 			$this->db->like('description', $search);
-			$this->db->order_by('description', 'asc');
-			foreach($this->db->get()->result() as $row)
+			$builder->orderBy('description', 'asc');
+			foreach($builder->get()->result() as $row)
 			{
 				$entry = array('value' => $row->item_id, 'label' => $row->name);
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
@@ -825,11 +825,11 @@ class Item extends Model
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 				$this->db->like('attribute_value', $search);
-				$this->db->where('definition_type', TEXT);
-				$this->db->where('stock_type', '0'); // stocked items only
-				$this->db->where('deleted', $filters['is_deleted']);
+				$builder->where('definition_type', TEXT);
+				$builder->where('stock_type', '0'); // stocked items only
+				$builder->where('deleted', $filters['is_deleted']);
 
-				foreach($this->db->get('attribute_links')->result() as $row)
+				foreach($builder->get('attribute_links')->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
@@ -850,12 +850,12 @@ class Item extends Model
 		$suggestions = [];
 
 		$this->db->select($this->get_search_suggestion_format('item_id, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', '0');
-		$this->db->where('stock_type', '0'); // stocked items only
+		$builder = $this->db->table('items');
+		$builder->where('deleted', '0');
+		$builder->where('stock_type', '0'); // stocked items only
 		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->orderBy('name', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
@@ -868,11 +868,11 @@ class Item extends Model
 		$suggestions = [];
 		$this->db->distinct();
 		$this->db->select('category');
-		$this->db->from('items');
+		$builder = $this->db->table('items');
 		$this->db->like('category', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('category', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->where('deleted', 0);
+		$builder->orderBy('category', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->category);
 		}
@@ -885,11 +885,11 @@ class Item extends Model
 		$suggestions = [];
 		$this->db->distinct();
 		$this->db->select('location');
-		$this->db->from('items');
+		$builder = $this->db->table('items');
 		$this->db->like('location', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('location', 'asc');
-		foreach($this->db->get()->result() as $row)
+		$builder->where('deleted', 0);
+		$builder->orderBy('location', 'asc');
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->location);
 		}
@@ -900,12 +900,12 @@ class Item extends Model
 	public function get_categories()
 	{
 		$this->db->select('category');
-		$this->db->from('items');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('items');
+		$builder->where('deleted', 0);
 		$this->db->distinct();
-		$this->db->order_by('category', 'asc');
+		$builder->orderBy('category', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -928,12 +928,12 @@ class Item extends Model
 			$old_price = $item_info->cost_price;
 		}
 
-		$this->db->from('item_quantities');
+		$builder = $this->db->table('item_quantities');
 		$this->db->select_sum('quantity');
-		$this->db->where('item_id', $item_id);
+		$builder->where('item_id', $item_id);
 		$this->db->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
-		$this->db->where('stock_locations.deleted', 0);
-		$old_total_quantity = $this->db->get()->row()->quantity;
+		$builder->where('stock_locations.deleted', 0);
+		$old_total_quantity = $builder->get()->row()->quantity;
 
 		$total_quantity = $old_total_quantity + $items_received;
 		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
@@ -945,20 +945,20 @@ class Item extends Model
 
 	public function update_item_number($item_id, $item_number)
 	{
-		$this->db->where('item_id', $item_id);
-		$this->db->update('items', array('item_number'=>$item_number));
+		$builder->where('item_id', $item_id);
+		$builder->update('items', array('item_number'=>$item_number));
 	}
 
 	public function update_item_name($item_id, $item_name)
 	{
-		$this->db->where('item_id', $item_id);
-		$this->db->update('items', array('name'=>$item_name));
+		$builder->where('item_id', $item_id);
+		$builder->update('items', array('name'=>$item_name));
 	}
 
 	public function update_item_description($item_id, $item_description)
 	{
-		$this->db->where('item_id', $item_id);
-		$this->db->update('items', array('description'=>$item_description));
+		$builder->where('item_id', $item_id);
+		$builder->update('items', array('description'=>$item_description));
 	}
 
 	/**

@@ -15,10 +15,10 @@ class Tax_jurisdiction extends Model
 	 */
 	public function exists($jurisdiction_id)
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -26,8 +26,8 @@ class Tax_jurisdiction extends Model
 	 */
 	public function get_total_rows()
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
@@ -37,10 +37,10 @@ class Tax_jurisdiction extends Model
 	 */
 	public function get_info($jurisdiction_id)
 	{
-		$this->db->from('tax_jurisdictions');
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('tax_jurisdictions');
+		$builder->where('jurisdiction_id', $jurisdiction_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
 
 		if($query->num_rows()==1)
 		{
@@ -65,20 +65,20 @@ class Tax_jurisdiction extends Model
 	 */
 	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
 	{
-		$this->db->from('tax_jurisdictions');
+		$builder = $this->db->table('tax_jurisdictions');
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('jurisdiction_name', 'asc');
+		$builder->orderBy('jurisdiction_name', 'asc');
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -86,11 +86,11 @@ class Tax_jurisdiction extends Model
 	 */
 	public function get_multiple_info($jurisdiction_ids)
 	{
-		$this->db->from('tax_jurisdictions');
+		$builder = $this->db->table('tax_jurisdictions');
 		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
-		$this->db->order_by('jurisdiction_name', 'asc');
+		$builder->orderBy('jurisdiction_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Tax_jurisdiction extends Model
 	{
 		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
 		{
-			if($this->db->insert('tax_jurisdictions', $jurisdiction_data))
+			if($builder->insert('tax_jurisdictions', $jurisdiction_data))
 			{
 				$jurisdiction_data['jurisdiction_id'] = $this->db->insert_id();
 				return TRUE;
@@ -109,9 +109,9 @@ class Tax_jurisdiction extends Model
 			return FALSE;
 		}
 
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $this->db->update('tax_jurisdictions', $jurisdiction_data);
+		return $builder->update('tax_jurisdictions', $jurisdiction_data);
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Tax_jurisdiction extends Model
 	 */
 	public function save_jurisdictions($array_save)
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$not_to_delete = array();
 
@@ -149,8 +149,8 @@ class Tax_jurisdiction extends Model
 			}
 		}
 
-		$this->db->trans_complete();
-		return $this->db->trans_status();
+		$this->db->transComplete();
+		return $this->db->transStatus();
 	}
 
 	/**
@@ -158,9 +158,9 @@ class Tax_jurisdiction extends Model
 	 */
 	public function delete($jurisdiction_id)
 	{
-		$this->db->where('jurisdiction_id', $jurisdiction_id);
+		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $this->db->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update('tax_jurisdictions', array('deleted' => 1));
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Tax_jurisdiction extends Model
 	{
 		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
 
-		return $this->db->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update('tax_jurisdictions', array('deleted' => 1));
  	}
 
 	/**
@@ -192,27 +192,27 @@ class Tax_jurisdiction extends Model
 			$this->db->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
 
-		$this->db->from('tax_jurisdictions AS tax_jurisdictions');
+		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 		$this->db->group_start();
 			$this->db->like('jurisdiction_name', $search);
 			$this->db->or_like('reporting_authority', $search);
 		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_empty_row()

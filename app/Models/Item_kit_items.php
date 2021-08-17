@@ -16,15 +16,15 @@ class Item_kit_items extends Model
 	public function get_info($item_kit_id)
 	{
 		$this->db->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
-		$this->db->from('item_kit_items as item_kit_items');
+		$builder = $this->db->table('item_kit_items as item_kit_items');
 		$this->db->join('items as items', 'item_kit_items.item_id = items.item_id');
 		$this->db->join('item_kits as item_kits', 'item_kits.item_kit_id = item_kit_items.item_kit_id');
-		$this->db->where('item_kits.item_kit_id', $item_kit_id);
+		$builder->where('item_kits.item_kit_id', $item_kit_id);
 		$this->db->or_where('item_kit_number', $item_kit_id);
-		$this->db->order_by('kit_sequence', 'asc');
+		$builder->orderBy('kit_sequence', 'asc');
 
 		//return an array of item kit items for an item
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 
 	/*
@@ -32,13 +32,13 @@ class Item_kit_items extends Model
 	*/
 	public function get_info_for_sale($item_kit_id)
 	{
-		$this->db->from('item_kit_items');
-		$this->db->where('item_kit_id', $item_kit_id);
+		$builder = $this->db->table('item_kit_items');
+		$builder->where('item_kit_id', $item_kit_id);
 
-		$this->db->order_by('kit_sequence', 'desc');
+		$builder->orderBy('kit_sequence', 'desc');
 
 		//return an array of item kit items for an item
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 	/*
 	Inserts or updates an item kit's items
@@ -49,7 +49,7 @@ class Item_kit_items extends Model
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$this->delete($item_kit_id);
 
@@ -58,13 +58,13 @@ class Item_kit_items extends Model
 			foreach($item_kit_items_data as $row)
 			{
 				$row['item_kit_id'] = $item_kit_id;
-				$success &= $this->db->insert('item_kit_items', $row);
+				$success &= $builder->insert('item_kit_items', $row);
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -74,7 +74,7 @@ class Item_kit_items extends Model
 	*/
 	public function delete($item_kit_id)
 	{
-		return $this->db->delete('item_kit_items', array('item_kit_id' => $item_kit_id));
+		return $builder->delete('item_kit_items', array('item_kit_id' => $item_kit_id));
 	}
 }
 ?>

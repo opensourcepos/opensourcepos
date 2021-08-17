@@ -579,7 +579,7 @@ class Config extends Secure_Controller
 
 	public function save_locations()
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$not_to_delete = array();
 		foreach($this->input->post() as $key => $value)
@@ -611,9 +611,9 @@ class Config extends Secure_Controller
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success = $this->db->trans_status();
+		$success = $this->db->transStatus();
 
 		echo json_encode(array(
 			'success' => $success,
@@ -623,7 +623,7 @@ class Config extends Secure_Controller
 
 	public function save_tables()
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$dinner_table_enable = $this->input->post('dinner_table_enable') != NULL;
 
@@ -660,9 +660,9 @@ class Config extends Secure_Controller
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success = $this->db->trans_status();
+		$success = $this->db->transStatus();
 
 		echo json_encode(array(
 			'success' => $success,
@@ -672,7 +672,7 @@ class Config extends Secure_Controller
 
 	public function save_tax()
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$batch_save_data = array(
 			'default_tax_1_rate' => parse_tax($this->input->post('default_tax_1_rate')),
@@ -689,9 +689,9 @@ class Config extends Secure_Controller
 
 		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 
@@ -703,7 +703,7 @@ class Config extends Secure_Controller
 
 	public function save_rewards()
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$customer_reward_enable = $this->input->post('customer_reward_enable') != NULL;
 
@@ -750,9 +750,9 @@ class Config extends Secure_Controller
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success = $this->db->trans_status();
+		$success = $this->db->transStatus();
 
 		echo json_encode(array(
 			'success' => $success,

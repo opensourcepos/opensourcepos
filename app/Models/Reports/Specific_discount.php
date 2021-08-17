@@ -73,66 +73,66 @@ class Specific_discount extends Report
 			SUM(profit) AS profit,
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
-		$this->db->from('sales_items_temp');
+		$builder = $this->db->table('sales_items_temp');
 
-		$this->db->where('discount >=', $inputs['discount']);
-		$this->db->where('discount_type', $inputs['discount_type']);
+		$builder->where('discount >=', $inputs['discount']);
+		$builder->where('discount_type', $inputs['discount_type']);
 
 		if($inputs['sale_type'] == 'complete')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$builder->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
+			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$builder->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
+			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_QUOTE);
+			$builder->where('sale_status', SUSPENDED);
+			$builder->where('sale_type', SALE_TYPE_QUOTE);
 		}
 		elseif($inputs['sale_type'] == 'work_orders')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_WORK_ORDER);
+			$builder->where('sale_status', SUSPENDED);
+			$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
 		}
 		elseif($inputs['sale_type'] == 'canceled')
 		{
-			$this->db->where('sale_status', CANCELED);
+			$builder->where('sale_status', CANCELED);
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sale_status', COMPLETED);
-			$this->db->where('sale_type', SALE_TYPE_RETURN);
+			$builder->where('sale_status', COMPLETED);
+			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('MAX(sale_date)');
+		$builder->orderBy('MAX(sale_date)');
 
 		$data = array();
-		$data['summary'] = $this->db->get()->result_array();
+		$data['summary'] = $builder->get()->result_array();
 		$data['details'] = array();
 		$data['rewards'] = array();
 
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
-			$this->db->from('sales_items_temp');
-			$this->db->where('sale_id', $value['sale_id']);
-			$data['details'][$key] = $this->db->get()->result_array();
+			$builder = $this->db->table('sales_items_temp');
+			$builder->where('sale_id', $value['sale_id']);
+			$data['details'][$key] = $builder->get()->result_array();
 			$this->db->select('used, earned');
-			$this->db->from('sales_reward_points');
-			$this->db->where('sale_id', $value['sale_id']);
-			$data['rewards'][$key] = $this->db->get()->result_array();
+			$builder = $this->db->table('sales_reward_points');
+			$builder->where('sale_id', $value['sale_id']);
+			$data['rewards'][$key] = $builder->get()->result_array();
 		}
 
 		return $data;
@@ -141,49 +141,49 @@ class Specific_discount extends Report
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$builder = $this->db->table('sales_items_temp');
 
-		$this->db->where('discount >=', $inputs['discount']);
-		$this->db->where('discount_type', $inputs['discount_type']);
+		$builder->where('discount >=', $inputs['discount']);
+		$builder->where('discount_type', $inputs['discount_type']);
 
 		if($inputs['sale_type'] == 'complete')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$builder->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
+			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$builder->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
+			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_QUOTE);
+			$builder->where('sale_status', SUSPENDED);
+			$builder->where('sale_type', SALE_TYPE_QUOTE);
 		}
 		elseif($inputs['sale_type'] == 'work_orders')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_WORK_ORDER);
+			$builder->where('sale_status', SUSPENDED);
+			$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
 		}
 		elseif($inputs['sale_type'] == 'canceled')
 		{
-			$this->db->where('sale_status', CANCELED);
+			$builder->where('sale_status', CANCELED);
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sale_status', COMPLETED);
-			$this->db->where('sale_type', SALE_TYPE_RETURN);
+			$builder->where('sale_status', COMPLETED);
+			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		return $this->db->get()->row_array();
+		return $builder->get()->row_array();
 	}
 }
 ?>

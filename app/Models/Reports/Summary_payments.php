@@ -59,15 +59,15 @@ class Summary_payments extends Summary_report
 		$select .= 'SUM(CASE WHEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) > 0 THEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) ELSE 0 END) as trans_due ';
 
 		$this->db->select($select);
-		$this->db->from('ospos_sales AS sales');
+		$builder = $this->db->table('ospos_sales AS sales');
 		$this->db->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
 		$this->db->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
-		$this->db->where('sales.sale_status', COMPLETED);
+		$builder->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
 		$this->db->group_by('trans_type');
 
-		$sales = $this->db->get()->result_array();
+		$sales = $builder->get()->result_array();
 
 		// At this point in time refunds are assumed to be cash refunds.
 		$total_cash_refund = 0;
@@ -88,14 +88,14 @@ class Summary_payments extends Summary_report
 		$select .= '0 AS trans_due ';
 
 		$this->db->select($select);
-		$this->db->from('sales AS sales');
+		$builder = $this->db->table('sales AS sales');
 		$this->db->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id', 'left outer');
-		$this->db->where('sales.sale_status', COMPLETED);
+		$builder->where('sales.sale_status', COMPLETED);
 		$this->_where($inputs);
 
 		$this->db->group_by('sales_payments.payment_type');
 
-		$payments = $this->db->get()->result_array();
+		$payments = $builder->get()->result_array();
 
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;

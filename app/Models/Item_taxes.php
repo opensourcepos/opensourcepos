@@ -15,11 +15,11 @@ class Item_taxes extends Model
 	*/
 	public function get_info($item_id)
 	{
-		$this->db->from('items_taxes');
-		$this->db->where('item_id',$item_id);
+		$builder = $this->db->table('items_taxes');
+		$builder->where('item_id',$item_id);
 
 		//return an array of taxes for an item
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 
 	/*
@@ -30,19 +30,19 @@ class Item_taxes extends Model
 		$success = TRUE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$this->delete($item_id);
 
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$success &= $this->db->insert('items_taxes', $row);
+			$success &= $builder->insert('items_taxes', $row);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -55,7 +55,7 @@ class Item_taxes extends Model
 		$success = TRUE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		foreach(explode(':', $item_ids) as $item_id)
 		{
@@ -64,13 +64,13 @@ class Item_taxes extends Model
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$success &= $this->db->insert('items_taxes', $row);
+				$success &= $builder->insert('items_taxes', $row);
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -80,7 +80,7 @@ class Item_taxes extends Model
 	*/
 	public function delete($item_id)
 	{
-		return $this->db->delete('items_taxes', array('item_id' => $item_id));
+		return $builder->delete('items_taxes', array('item_id' => $item_id));
 	}
 }
 ?>

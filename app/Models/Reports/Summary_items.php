@@ -44,7 +44,7 @@ class Summary_items extends Summary_report
 	protected function _group_order()
 	{
 		$this->db->group_by('items.item_id');
-		$this->db->order_by('name');
+		$builder->orderBy('name');
 	}
 }
 ?>

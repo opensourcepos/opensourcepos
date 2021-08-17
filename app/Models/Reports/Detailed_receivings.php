@@ -50,13 +50,13 @@ class Detailed_receivings extends Report
 			MAX(payment_type) as payment_type,
 			MAX(comment) as comment,
 			MAX(reference) as reference');
-		$this->db->from('receivings_items_temp');
+		$builder = $this->db->table('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-		$this->db->where('receiving_id', $receiving_id);
+		$builder->where('receiving_id', $receiving_id);
 		$this->db->group_by('receiving_id');
 
-		return $this->db->get()->row_array();
+		return $builder->get()->row_array();
 	}
 
 	public function getData(array $inputs)
@@ -71,32 +71,32 @@ class Detailed_receivings extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment,
 			MAX(reference) AS reference');
-		$this->db->from('receivings_items_temp AS receivings_items_temp');
+		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $inputs['location_id']);
+			$builder->where('item_location', $inputs['location_id']);
 		}
 
 		if($inputs['receiving_type'] == 'receiving')
 		{
-			$this->db->where('quantity_purchased >', 0);
+			$builder->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased <', 0);
+			$builder->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
 			$this->db->having('items_purchased = 0');
 		}
 		$this->db->group_by('receiving_id', 'receiving_date');
-		$this->db->order_by('receiving_id');
+		$builder->orderBy('receiving_id');
 
 		$data = array();
-		$data['summary'] = $this->db->get()->result_array();
+		$data['summary'] = $builder->get()->result_array();
 		$data['details'] = array();
 
 		foreach($data['summary'] as $key=>$value)
@@ -112,7 +112,7 @@ class Detailed_receivings extends Report
 				MAX(discount_type) AS discount_type, 
 				MAX(item_location) AS item_location, 
 				MAX(item_receiving_quantity) AS receiving_quantity');
-			$this->db->from('receivings_items_temp');
+			$builder = $this->db->table('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
 			if(count($inputs['definition_ids']) > 0)
 			{
@@ -123,9 +123,9 @@ class Detailed_receivings extends Report
 				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
-			$this->db->where('receivings_items_temp.receiving_id', $value['receiving_id']);
+			$builder->where('receivings_items_temp.receiving_id', $value['receiving_id']);
 			$this->db->group_by('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
-			$data['details'][$key] = $this->db->get()->result_array();
+			$data['details'][$key] = $builder->get()->result_array();
 		}
 
 		return $data;
@@ -134,27 +134,27 @@ class Detailed_receivings extends Report
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(total) AS total');
-		$this->db->from('receivings_items_temp');
+		$builder = $this->db->table('receivings_items_temp');
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $inputs['location_id']);
+			$builder->where('item_location', $inputs['location_id']);
 		}
 
 		if($inputs['receiving_type'] == 'receiving')
 		{
-			$this->db->where('quantity_purchased >', 0);
+			$builder->where('quantity_purchased >', 0);
 		}
 		elseif($inputs['receiving_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased <', 0);
+			$builder->where('quantity_purchased <', 0);
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->where('quantity_purchased', 0);
+			$builder->where('quantity_purchased', 0);
 		}
 
-		return $this->db->get()->row_array();
+		return $builder->get()->row_array();
 	}
 }
 ?>

@@ -12,10 +12,10 @@ class Dinner_table extends Model
 {
 	public function exists($dinner_table_id)
 	{
-		$this->db->from('dinner_tables');
-		$this->db->where('dinner_table_id', $dinner_table_id);
+		$builder = $this->db->table('dinner_tables');
+		$builder->where('dinner_table_id', $dinner_table_id);
 
-		return ($this->db->get()->num_rows() >= 1);
+		return ($builder->get()->getNumRows() >= 1);
 	}
 
 	public function save($table_data, $dinner_table_id)
@@ -24,12 +24,12 @@ class Dinner_table extends Model
 
 		if(!$this->exists($dinner_table_id))
 		{
-			return $this->db->insert('dinner_tables', $table_data_to_save);
+			return $builder->insert('dinner_tables', $table_data_to_save);
 		}
 
-		$this->db->where('dinner_table_id', $dinner_table_id);
+		$builder->where('dinner_table_id', $dinner_table_id);
 
-		return $this->db->update('dinner_tables', $table_data_to_save);
+		return $builder->update('dinner_tables', $table_data_to_save);
 	}
 
 	/**
@@ -37,12 +37,12 @@ class Dinner_table extends Model
 	*/
 	public function get_empty_tables($current_dinner_table_id)
 	{
-		$this->db->from('dinner_tables');
-		$this->db->where('status', 0);
+		$builder = $this->db->table('dinner_tables');
+		$builder->where('status', 0);
 		$this->db->or_where('dinner_table_id', $current_dinner_table_id);
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 
-		$empty_tables = $this->db->get()->result_array();
+		$empty_tables = $builder->get()->result_array();
 
 		$empty_tables_array = array();
 		foreach($empty_tables as $empty_table)
@@ -61,10 +61,10 @@ class Dinner_table extends Model
 		}
 		else
 		{
-			$this->db->from('dinner_tables');
-			$this->db->where('dinner_table_id', $dinner_table_id);
+			$builder = $this->db->table('dinner_tables');
+			$builder->where('dinner_table_id', $dinner_table_id);
 
-			return $this->db->get()->row()->name;
+			return $builder->get()->row()->name;
 		}
 	}
 
@@ -76,19 +76,19 @@ class Dinner_table extends Model
 		}
 		else
 		{
-			$this->db->from('dinner_tables');
-			$this->db->where('dinner_table_id', $dinner_table_id);
+			$builder = $this->db->table('dinner_tables');
+			$builder->where('dinner_table_id', $dinner_table_id);
 
-			return ($this->db->get()->row()->status == 1);
+			return ($builder->get()->row()->status == 1);
 		}
 	}
 
 	public function get_all()
 	{
-		$this->db->from('dinner_tables');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('dinner_tables');
+		$builder->where('deleted', 0);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -96,9 +96,9 @@ class Dinner_table extends Model
 	*/
 	public function delete($dinner_table_id)
 	{
-		$this->db->where('dinner_table_id', $dinner_table_id);
+		$builder->where('dinner_table_id', $dinner_table_id);
 
-		return $this->db->update('dinner_tables', array('deleted' => 1));
+		return $builder->update('dinner_tables', array('deleted' => 1));
 	}
 
 	/**
@@ -109,8 +109,8 @@ class Dinner_table extends Model
 	{
 		if($dinner_table_id > 2 )
 		{
-			$this->db->where('dinner_table_id', $dinner_table_id);
-			return $this->db->update('dinner_tables', array('status' => 1));
+			$builder->where('dinner_table_id', $dinner_table_id);
+			return $builder->update('dinner_tables', array('status' => 1));
 		}
 		else
 		{
@@ -125,8 +125,8 @@ class Dinner_table extends Model
 	{
 		if($dinner_table_id > 2 )
 		{
-			$this->db->where('dinner_table_id', $dinner_table_id);
-			return $this->db->update('dinner_tables', array('status' => 0));
+			$builder->where('dinner_table_id', $dinner_table_id);
+			return $builder->update('dinner_tables', array('status' => 0));
 		}
 		else
 		{

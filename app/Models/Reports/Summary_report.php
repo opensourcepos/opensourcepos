@@ -95,7 +95,7 @@ abstract class Summary_report extends Report
 
 	private function __common_from()
 	{
-		$this->db->from('sales_items AS sales_items');
+		$builder = $this->db->table('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
@@ -108,53 +108,53 @@ abstract class Summary_report extends Report
 	{
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
 		else
 		{
-			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+			$builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
 		}
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('sales_items.item_location', $inputs['location_id']);
+			$builder->where('sales_items.item_location', $inputs['location_id']);
 		}
 
 		if($inputs['sale_type'] == 'complete')
 		{
-			$this->db->where('sales.sale_status', COMPLETED);
+			$builder->where('sales.sale_status', COMPLETED);
 			$this->db->group_start();
-				$this->db->where('sales.sale_type', SALE_TYPE_POS);
+				$builder->where('sales.sale_type', SALE_TYPE_POS);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_RETURN);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status', COMPLETED);
+			$builder->where('sales.sale_status', COMPLETED);
 			$this->db->group_start();
-				$this->db->where('sales.sale_type', SALE_TYPE_POS);
+				$builder->where('sales.sale_type', SALE_TYPE_POS);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status', SUSPENDED);
-			$this->db->where('sales.sale_type', SALE_TYPE_QUOTE);
+			$builder->where('sales.sale_status', SUSPENDED);
+			$builder->where('sales.sale_type', SALE_TYPE_QUOTE);
 		}
 		elseif($inputs['sale_type'] == 'work_orders')
 		{
-			$this->db->where('sales.sale_status', SUSPENDED);
-			$this->db->where('sales.sale_type', SALE_TYPE_WORK_ORDER);
+			$builder->where('sales.sale_status', SUSPENDED);
+			$builder->where('sales.sale_type', SALE_TYPE_WORK_ORDER);
 		}
 		elseif($inputs['sale_type'] == 'canceled')
 		{
-			$this->db->where('sales.sale_status', CANCELED);
+			$builder->where('sales.sale_status', CANCELED);
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status', COMPLETED);
-			$this->db->where('sales.sale_type', SALE_TYPE_RETURN);
+			$builder->where('sales.sale_status', COMPLETED);
+			$builder->where('sales.sale_type', SALE_TYPE_RETURN);
 		}
 	}
 
@@ -190,7 +190,7 @@ abstract class Summary_report extends Report
 
 		$this->_group_order();
 
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 
 	public function getSummaryData(array $inputs)
@@ -201,7 +201,7 @@ abstract class Summary_report extends Report
 
 		$this->_where($inputs);
 
-		return $this->db->get()->row_array();
+		return $builder->get()->row_array();
 	}
 }
 ?>

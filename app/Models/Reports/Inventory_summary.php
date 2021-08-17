@@ -25,32 +25,32 @@ class Inventory_summary extends Report
 	public function getData(array $inputs)
 	{
 		$this->db->select($this->Item->get_item_name('name') . ', items.item_number, items.category, item_quantities.quantity, (item_quantities.quantity * items.qty_per_pack) as low_sell_quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
-		$this->db->from('items AS items');
+		$builder = $this->db->table('items AS items');
 		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
 		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-		$this->db->where('items.deleted', 0);
-		$this->db->where('items.stock_type', 0);
-		$this->db->where('stock_locations.deleted', 0);
+		$builder->where('items.deleted', 0);
+		$builder->where('items.stock_type', 0);
+		$builder->where('stock_locations.deleted', 0);
 
 		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
 		if($inputs['item_count'] == 'zero_and_less')
 		{
-			$this->db->where('item_quantities.quantity <=', 0);
+			$builder->where('item_quantities.quantity <=', 0);
 		}
 		elseif($inputs['item_count'] == 'more_than_zero')
 		{
-			$this->db->where('item_quantities.quantity >', 0);
+			$builder->where('item_quantities.quantity >', 0);
 		}
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('stock_locations.location_id', $inputs['location_id']);
+			$builder->where('stock_locations.location_id', $inputs['location_id']);
 		}
 
-        $this->db->order_by('items.name');
-		$this->db->order_by('items.qty_per_pack');
+        $builder->orderBy('items.name');
+		$builder->orderBy('items.qty_per_pack');
 
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 
 	/**

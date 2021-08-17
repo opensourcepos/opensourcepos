@@ -17,7 +17,7 @@ class Rewards extends Model
 	{
 		if(!$rewards_id || !$this->exists($rewards_id))
 		{
-			if($this->db->insert('sales_reward_points', $rewards_data))
+			if($builder->insert('sales_reward_points', $rewards_data))
 			{
 				$rewards_data['id'] = $this->db->insert_id();
 
@@ -27,9 +27,9 @@ class Rewards extends Model
 			return FALSE;
 		}
 
-		$this->db->where('id', $rewards_id);
+		$builder->where('id', $rewards_id);
 
-		return $this->db->update('sales_reward_points', $rewards_data);
+		return $builder->update('sales_reward_points', $rewards_data);
 	}
 }
 ?>

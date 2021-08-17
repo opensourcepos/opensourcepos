@@ -12,32 +12,32 @@ class Item_quantity extends Model
 {
     public function exists($item_id, $location_id)
     {
-        $this->db->from('item_quantities');
-        $this->db->where('item_id', $item_id);
-        $this->db->where('location_id', $location_id);
+        $builder = $this->db->table('item_quantities');
+        $builder->where('item_id', $item_id);
+        $builder->where('location_id', $location_id);
 
-        return ($this->db->get()->num_rows() == 1);
+        return ($builder->get()->getNumRows() == 1);
     }
 
     public function save($location_detail, $item_id, $location_id)
     {
         if(!$this->exists($item_id, $location_id))
         {
-            return $this->db->insert('item_quantities', $location_detail);
+            return $builder->insert('item_quantities', $location_detail);
         }
 
-        $this->db->where('item_id', $item_id);
-        $this->db->where('location_id', $location_id);
+        $builder->where('item_id', $item_id);
+        $builder->where('location_id', $location_id);
 
-        return $this->db->update('item_quantities', $location_detail);
+        return $builder->update('item_quantities', $location_detail);
     }
 
     public function get_item_quantity($item_id, $location_id)
     {
-        $this->db->from('item_quantities');
-        $this->db->where('item_id', $item_id);
-        $this->db->where('location_id', $location_id);
-        $result = $this->db->get()->row();
+        $builder = $this->db->table('item_quantities');
+        $builder->where('item_id', $item_id);
+        $builder->where('location_id', $location_id);
+        $result = $builder->get()->row();
         if(empty($result) == TRUE)
         {
             //Get empty base parent object, as $item_id is NOT an item
@@ -74,9 +74,9 @@ class Item_quantity extends Model
 	*/
 	public function reset_quantity($item_id)
 	{
-        $this->db->where('item_id', $item_id);
+        $builder->where('item_id', $item_id);
 
-        return $this->db->update('item_quantities', array('quantity' => 0));
+        return $builder->update('item_quantities', array('quantity' => 0));
 	}
 
 	/*
@@ -86,7 +86,7 @@ class Item_quantity extends Model
 	{
         $this->db->where_in('item_id', $item_ids);
 
-        return $this->db->update('item_quantities', array('quantity' => 0));
+        return $builder->update('item_quantities', array('quantity' => 0));
 	}
 }
 ?>

@@ -12,30 +12,30 @@ class Stock_location extends Model
 {
 	public function exists($location_id = -1)
 	{
-		$this->db->from('stock_locations');
-		$this->db->where('location_id', $location_id);
+		$builder = $this->db->table('stock_locations');
+		$builder->where('location_id', $location_id);
 
-		return ($this->db->get()->num_rows() >= 1);
+		return ($builder->get()->getNumRows() >= 1);
 	}
 
 	public function get_all()
 	{
-		$this->db->from('stock_locations');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('stock_locations');
+		$builder->where('deleted', 0);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_undeleted_all($module_id = 'items')
 	{
-		$this->db->from('stock_locations');
+		$builder = $this->db->table('stock_locations');
 		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->userdata('person_id'));
 		$this->db->like('permissions.permission_id', $module_id, 'after');
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function show_locations($module_id = 'items')
@@ -47,7 +47,7 @@ class Stock_location extends Model
 
 	public function multiple_locations()
 	{
-		return $this->get_all()->num_rows() > 1;
+		return $this->get_all()->getNumRows() > 1;
 	}
 
 	public function get_allowed_locations($module_id = 'items')
@@ -64,44 +64,44 @@ class Stock_location extends Model
 
 	public function is_allowed_location($location_id, $module_id = 'items')
 	{
-		$this->db->from('stock_locations');
+		$builder = $this->db->table('stock_locations');
 		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->userdata('person_id'));
 		$this->db->like('permissions.permission_id', $module_id, 'after');
-		$this->db->where('stock_locations.location_id', $location_id);
-		$this->db->where('deleted', 0);
+		$builder->where('stock_locations.location_id', $location_id);
+		$builder->where('deleted', 0);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	public function get_default_location_id($module_id = 'items')
 	{
-		$this->db->from('stock_locations');
+		$builder = $this->db->table('stock_locations');
 		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->userdata('person_id'));
 		$this->db->like('permissions.permission_id', $module_id, 'after');
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 		$this->db->limit(1);
 
-		return $this->db->get()->row()->location_id;
+		return $builder->get()->row()->location_id;
 	}
 
 	public function get_location_name($location_id)
 	{
-		$this->db->from('stock_locations');
-		$this->db->where('location_id', $location_id);
+		$builder = $this->db->table('stock_locations');
+		$builder->where('location_id', $location_id);
 
-		return $this->db->get()->row()->location_name;
+		return $builder->get()->row()->location_name;
 	}
 
 	public function get_location_id($location_name)
 	{
-		$this->db->from('stock_locations');
-		$this->db->where('location_name', $location_name);
+		$builder = $this->db->table('stock_locations');
+		$builder->where('location_name', $location_name);
 
-		return $this->db->get()->row()->location_id;
+		return $builder->get()->row()->location_id;
 	}
 
 	public function save(&$location_data, $location_id)
@@ -112,9 +112,9 @@ class Stock_location extends Model
 
 		if(!$this->exists($location_id))
 		{
-			$this->db->trans_start();
+			$this->db->transStart();
 
-			$this->db->insert('stock_locations', $location_data_to_save);
+			$builder->insert('stock_locations', $location_data_to_save);
  			$location_id = $this->db->insert_id();
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
@@ -126,29 +126,29 @@ class Stock_location extends Model
 			foreach($items->result_array() as $item)
 			{
 				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
-				$this->db->insert('item_quantities', $quantity_data);
+				$builder->insert('item_quantities', $quantity_data);
 			}
 
-			$this->db->trans_complete();
+			$this->db->transComplete();
 
-			return $this->db->trans_status();
+			return $this->db->transStatus();
 		}
 
 		$original_location_name = $this->get_location_name($location_id);
 
 		if($original_location_name != $location_name)
 		{
-			$this->db->where('location_id', $location_id);
-			$this->db->delete('permissions');
+			$builder->where('location_id', $location_id);
+			$builder->delete('permissions');
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
 			$this->_insert_new_permission('sales', $location_id, $location_name);
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 		}
 
-		$this->db->where('location_id', $location_id);
+		$builder->where('location_id', $location_id);
 
-		return $this->db->update('stock_locations', $location_data_to_save);
+		return $builder->update('stock_locations', $location_data_to_save);
 	}
 
 	private function _insert_new_permission($module, $location_id, $location_name)
@@ -156,7 +156,7 @@ class Stock_location extends Model
 		// insert new permission for stock location
 		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);
 		$permission_data = array('permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
-		$this->db->insert('permissions', $permission_data);
+		$builder->insert('permissions', $permission_data);
 
 		// insert grants for new permission
 		$employees = $this->Employee->get_all();
@@ -166,7 +166,7 @@ class Stock_location extends Model
 			$menu_group = $this->Employee->get_menu_group($module, $employee['person_id']);
 
 			$grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id'], 'menu_group' => $menu_group);
-			$this->db->insert('grants', $grants_data);
+			$builder->insert('grants', $grants_data);
 		}
 	}
 
@@ -175,17 +175,17 @@ class Stock_location extends Model
 	 */
 	public function delete($location_id)
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		$this->db->where('location_id', $location_id);
-		$this->db->update('stock_locations', array('deleted' => 1));
+		$builder->where('location_id', $location_id);
+		$builder->update('stock_locations', array('deleted' => 1));
 
-		$this->db->where('location_id', $location_id);
-		$this->db->delete('permissions');
+		$builder->where('location_id', $location_id);
+		$builder->delete('permissions');
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		return $this->db->trans_status();
+		return $this->db->transStatus();
 	}
 }
 ?>

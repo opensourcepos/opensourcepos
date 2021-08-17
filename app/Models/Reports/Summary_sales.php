@@ -35,7 +35,7 @@ class Summary_sales extends Summary_report
 	protected function _group_order()
 	{
 		$this->db->group_by('sale_date');
-		$this->db->order_by('sale_date');
+		$builder->orderBy('sale_date');
 	}
 }
 ?>

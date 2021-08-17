@@ -12,10 +12,10 @@ class Customer_rewards extends Model
 {
 	public function exists($package_id)
 	{
-		$this->db->from('customers_packages');
-		$this->db->where('package_id', $package_id);
+		$builder = $this->db->table('customers_packages');
+		$builder->where('package_id', $package_id);
 
-		return ($this->db->get()->num_rows() >= 1);
+		return ($builder->get()->getNumRows() >= 1);
 	}
 
 	public function save($package_data, $package_id)
@@ -24,36 +24,36 @@ class Customer_rewards extends Model
 
 		if(!$this->exists($package_id))
 		{
-			return $this->db->insert('customers_packages', $package_data_to_save);
+			return $builder->insert('customers_packages', $package_data_to_save);
 		}
 
-		$this->db->where('package_id', $package_id);
+		$builder->where('package_id', $package_id);
 
-		return $this->db->update('customers_packages', $package_data_to_save);
+		return $builder->update('customers_packages', $package_data_to_save);
 	}
 
 	public function get_name($package_id)
 	{
-		$this->db->from('customers_packages');
-		$this->db->where('package_id', $package_id);
+		$builder = $this->db->table('customers_packages');
+		$builder->where('package_id', $package_id);
 
-		return $this->db->get()->row()->package_name;
+		return $builder->get()->row()->package_name;
 	}
 
 	public function get_points_percent($package_id)
 	{
-		$this->db->from('customers_packages');
-		$this->db->where('package_id', $package_id);
+		$builder = $this->db->table('customers_packages');
+		$builder->where('package_id', $package_id);
 
-		return $this->db->get()->row()->points_percent;
+		return $builder->get()->row()->points_percent;
 	}
 
 	public function get_all()
 	{
-		$this->db->from('customers_packages');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('customers_packages');
+		$builder->where('deleted', 0);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -61,9 +61,9 @@ class Customer_rewards extends Model
 	*/
 	public function delete($package_id)
 	{
-		$this->db->where('package_id', $package_id);
+		$builder->where('package_id', $package_id);
 
-		return $this->db->update('customers_packages', array('deleted' => 1));
+		return $builder->update('customers_packages', array('deleted' => 1));
 	}
 }
 ?>

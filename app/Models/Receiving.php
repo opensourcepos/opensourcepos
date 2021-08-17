@@ -12,20 +12,20 @@ class Receiving extends Model
 {
 	public function get_info($receiving_id)
 	{
-		$this->db->from('receivings');
+		$builder = $this->db->table('receivings');
 		$this->db->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
 		$this->db->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
-		$this->db->where('receiving_id', $receiving_id);
+		$builder->where('receiving_id', $receiving_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_receiving_by_reference($reference)
 	{
-		$this->db->from('receivings');
-		$this->db->where('reference', $reference);
+		$builder = $this->db->table('receivings');
+		$builder->where('reference', $reference);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function is_valid_receipt($receipt_receiving_id)
@@ -41,7 +41,7 @@ class Receiving extends Model
 			}
 			else
 			{
-				return $this->get_receiving_by_reference($receipt_receiving_id)->num_rows() > 0;
+				return $this->get_receiving_by_reference($receipt_receiving_id)->getNumRows() > 0;
 			}
 		}
 
@@ -50,17 +50,17 @@ class Receiving extends Model
 
 	public function exists($receiving_id)
 	{
-		$this->db->from('receivings');
-		$this->db->where('receiving_id', $receiving_id);
+		$builder = $this->db->table('receivings');
+		$builder->where('receiving_id', $receiving_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	public function update($receiving_data, $receiving_id)
 	{
-		$this->db->where('receiving_id', $receiving_id);
+		$builder->where('receiving_id', $receiving_id);
 
-		return $this->db->update('receivings', $receiving_data);
+		return $builder->update('receivings', $receiving_data);
 	}
 
 	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE)
@@ -80,9 +80,9 @@ class Receiving extends Model
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
-		$this->db->insert('receivings', $receivings_data);
+		$builder->insert('receivings', $receivings_data);
 		$receiving_id = $this->db->insert_id();
 
 		foreach($items as $line=>$item)
@@ -104,7 +104,7 @@ class Receiving extends Model
 				'item_location' => $item['item_location']
 			);
 
-			$this->db->insert('receivings_items', $receivings_items_data);
+			$builder->insert('receivings_items', $receivings_items_data);
 
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
@@ -136,9 +136,9 @@ class Receiving extends Model
 			$supplier = $this->Supplier->get_info($supplier_id);
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		if($this->db->trans_status() === FALSE)
+		if($this->db->transStatus() === FALSE)
 		{
 			return -1;
 		}
@@ -151,7 +151,7 @@ class Receiving extends Model
 		$success = TRUE;
 
 		// start a transaction to assure data integrity
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		foreach($receiving_ids as $receiving_id)
 		{
@@ -159,9 +159,9 @@ class Receiving extends Model
 		}
 
 		// execute transaction
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->transStatus();
 
 		return $success;
 	}
@@ -169,7 +169,7 @@ class Receiving extends Model
 	public function delete($receiving_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		if($update_inventory)
 		{
@@ -196,30 +196,30 @@ class Receiving extends Model
 		}
 
 		// delete all items
-		$this->db->delete('receivings_items', array('receiving_id' => $receiving_id));
+		$builder->delete('receivings_items', array('receiving_id' => $receiving_id));
 		// delete sale itself
-		$this->db->delete('receivings', array('receiving_id' => $receiving_id));
+		$builder->delete('receivings', array('receiving_id' => $receiving_id));
 
 		// execute transaction
-		$this->db->trans_complete();
+		$this->db->transComplete();
 	
-		return $this->db->trans_status();
+		return $this->db->transStatus();
 	}
 
 	public function get_receiving_items($receiving_id)
 	{
-		$this->db->from('receivings_items');
-		$this->db->where('receiving_id', $receiving_id);
+		$builder = $this->db->table('receivings_items');
+		$builder->where('receiving_id', $receiving_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 	
 	public function get_supplier($receiving_id)
 	{
-		$this->db->from('receivings');
-		$this->db->where('receiving_id', $receiving_id);
+		$builder = $this->db->table('receivings');
+		$builder->where('receiving_id', $receiving_id);
 
-		return $this->Supplier->get_info($this->db->get()->row()->supplier_id);
+		return $this->Supplier->get_info($builder->get()->row()->supplier_id);
 	}
 
 	public function get_payment_options()

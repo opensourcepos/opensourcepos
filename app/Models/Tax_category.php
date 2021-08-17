@@ -15,10 +15,10 @@ class Tax_category extends Model
 	 */
 	public function exists($tax_category_id)
 	{
-		$this->db->from('tax_categories');
-		$this->db->where('tax_category_id', $tax_category_id);
+		$builder = $this->db->table('tax_categories');
+		$builder->where('tax_category_id', $tax_category_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -26,8 +26,8 @@ class Tax_category extends Model
 	 */
 	public function get_total_rows()
 	{
-		$this->db->from('tax_categories');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_categories');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
@@ -37,10 +37,10 @@ class Tax_category extends Model
 	 */
 	public function get_info($tax_category_id)
 	{
-		$this->db->from('tax_categories');
-		$this->db->where('tax_category_id', $tax_category_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('tax_categories');
+		$builder->where('tax_category_id', $tax_category_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
 
 		if($query->num_rows()==1)
 		{
@@ -65,21 +65,21 @@ class Tax_category extends Model
 	 */
 	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
 	{
-		$this->db->from('tax_categories');
+		$builder = $this->db->table('tax_categories');
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('tax_group_sequence', 'asc');
-		$this->db->order_by('tax_category', 'asc');
+		$builder->orderBy('tax_group_sequence', 'asc');
+		$builder->orderBy('tax_category', 'asc');
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -87,11 +87,11 @@ class Tax_category extends Model
 	 */
 	public function get_multiple_info($tax_category_ids)
 	{
-		$this->db->from('tax_categories');
+		$builder = $this->db->table('tax_categories');
 		$this->db->where_in('tax_category_id', $tax_category_ids);
-		$this->db->order_by('tax_category', 'asc');
+		$builder->orderBy('tax_category', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Tax_category extends Model
 	{
 		if(!$tax_category_id || !$this->exists($tax_category_id))
 		{
-			if($this->db->insert('tax_categories', $tax_category_data))
+			if($builder->insert('tax_categories', $tax_category_data))
 			{
 				$tax_category_data['tax_category_id'] = $this->db->insert_id();
 
@@ -111,9 +111,9 @@ class Tax_category extends Model
 			return FALSE;
 		}
 
-		$this->db->where('tax_category_id', $tax_category_id);
+		$builder->where('tax_category_id', $tax_category_id);
 
-		return $this->db->update('tax_categories', $tax_category_data);
+		return $builder->update('tax_categories', $tax_category_data);
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Tax_category extends Model
 	 */
 	public function save_categories($array_save)
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$not_to_delete = array();
 
@@ -151,8 +151,8 @@ class Tax_category extends Model
 			}
 		}
 
-		$this->db->trans_complete();
-		return $this->db->trans_status();
+		$this->db->transComplete();
+		return $this->db->transStatus();
 	}
 
 	/**
@@ -160,9 +160,9 @@ class Tax_category extends Model
 	 */
 	public function delete($tax_category_id)
 	{
-		$this->db->where('tax_category_id', $tax_category_id);
+		$builder->where('tax_category_id', $tax_category_id);
 
-		return $this->db->update('tax_categories', array('deleted' => 1));
+		return $builder->update('tax_categories', array('deleted' => 1));
 	}
 
 	/**
@@ -172,7 +172,7 @@ class Tax_category extends Model
 	{
 		$this->db->where_in('tax_category_id', $tax_category_ids);
 
-		return $this->db->update('tax_categories', array('deleted' => 1));
+		return $builder->update('tax_categories', array('deleted' => 1));
  	}
 
 	/**
@@ -194,39 +194,39 @@ class Tax_category extends Model
 			$this->db->select('COUNT(tax_categories.tax_category_id) as count');
 		}
 
-		$this->db->from('tax_categories AS tax_categories');
+		$builder = $this->db->table('tax_categories AS tax_categories');
 		$this->db->like('tax_category', $search);
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_tax_category_suggestions($search)
 	{
 		$suggestions = array();
 
-		$this->db->from('tax_categories');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('tax_categories');
+		$builder->where('deleted', 0);
 		if(!empty($search))
 		{
 			$this->db->like('tax_category', '%'.$search.'%');
 		}
-		$this->db->order_by('tax_category', 'asc');
+		$builder->orderBy('tax_category', 'asc');
 
-		foreach($this->db->get()->result() as $row)
+		foreach($builder->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->tax_category_id, 'label' => $row->tax_category);
 		}

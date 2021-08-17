@@ -57,7 +57,7 @@ class Sale extends Model
 				MAX(payments.payment_type) AS payment_type
 		');
 
-		$this->db->from('sales_items AS sales_items');
+		$builder = $this->db->table('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
@@ -66,12 +66,12 @@ class Sale extends Model
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'LEFT OUTER');
 
-		$this->db->where('sales.sale_id', $sale_id);
+		$builder->where('sales.sale_id', $sale_id);
 
 		$this->db->group_by('sales.sale_id');
-		$this->db->order_by('sales.sale_time', 'asc');
+		$builder->orderBy('sales.sale_time', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -182,7 +182,7 @@ class Sale extends Model
 			');
 		}
 
-		$this->db->from('sales_items AS sales_items');
+		$builder = $this->db->table('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
@@ -191,14 +191,14 @@ class Sale extends Model
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'LEFT OUTER');
 
-		$this->db->where($where);
+		$builder->where($where);
 
 		if(!empty($search))
 		{
 			if($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ', $search);
-				$this->db->where('sales.sale_id', $pieces[1]);
+				$builder->where('sales.sale_id', $pieces[1]);
 			}
 			else
 			{
@@ -217,12 +217,12 @@ class Sale extends Model
 
 		if($filters['location_id'] != 'all')
 		{
-			$this->db->where('sales_items.item_location', $filters['location_id']);
+			$builder->where('sales_items.item_location', $filters['location_id']);
 		}
 
 		if($filters['only_invoices'] != FALSE)
 		{
-			$this->db->where('sales.invoice_number IS NOT NULL');
+			$builder->where('sales.invoice_number IS NOT NULL');
 		}
 
 		if($filters['only_cash'] != FALSE)
@@ -251,20 +251,20 @@ class Sale extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
 		$this->db->group_by('sales.sale_id');
 
 		// order by sale time by default
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -274,18 +274,18 @@ class Sale extends Model
 	{
 		// get payment summary
 		$this->db->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
-		$this->db->from('sales AS sales');
+		$builder = $this->db->table('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+			$builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		if(!empty($search))
@@ -293,7 +293,7 @@ class Sale extends Model
 			if($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ',$search);
-				$this->db->where('sales.sale_id', $pieces[1]);
+				$builder->where('sales.sale_id', $pieces[1]);
 			}
 			else
 			{
@@ -312,24 +312,24 @@ class Sale extends Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
+			$builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
 		}
 		elseif($filters['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status = ' . SUSPENDED . ' AND sales.quote_number IS NOT NULL');
+			$builder->where('sales.sale_status = ' . SUSPENDED . ' AND sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
+			$builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
 		}
 		elseif($filters['sale_type'] == 'all')
 		{
-			$this->db->where('sales.sale_status = ' . COMPLETED);
+			$builder->where('sales.sale_status = ' . COMPLETED);
 		}
 
 		if($filters['only_invoices'] != FALSE)
 		{
-			$this->db->where('invoice_number IS NOT NULL');
+			$builder->where('invoice_number IS NOT NULL');
 		}
 
 		if($filters['only_cash'] != FALSE)
@@ -354,7 +354,7 @@ class Sale extends Model
 
 		$this->db->group_by('payment_type');
 
-		$payments = $this->db->get()->result_array();
+		$payments = $builder->get()->result_array();
 
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
@@ -384,7 +384,7 @@ class Sale extends Model
 	 */
 	public function get_total_rows()
 	{
-		$this->db->from('sales');
+		$builder = $this->db->table('sales');
 
 		return $this->db->count_all_results();
 	}
@@ -400,15 +400,15 @@ class Sale extends Model
 		{
 			$this->db->distinct();
 			$this->db->select('first_name, last_name');
-			$this->db->from('sales');
+			$builder = $this->db->table('sales');
 			$this->db->join('people', 'people.person_id = sales.customer_id');
 			$this->db->like('last_name', $search);
 			$this->db->or_like('first_name', $search);
 			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
 			$this->db->or_like('company_name', $search);
-			$this->db->order_by('last_name', 'asc');
+			$builder->orderBy('last_name', 'asc');
 
-			foreach($this->db->get()->result_array() as $result)
+			foreach($builder->get()->result_array() as $result)
 			{
 				$suggestions[] = array('label' => $result['first_name'] . ' ' . $result['last_name']);
 			}
@@ -426,8 +426,8 @@ class Sale extends Model
 	 */
 	public function get_invoice_count()
 	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number IS NOT NULL');
+		$builder = $this->db->table('sales');
+		$builder->where('invoice_number IS NOT NULL');
 
 		return $this->db->count_all_results();
 	}
@@ -437,10 +437,10 @@ class Sale extends Model
 	 */
 	public function get_sale_by_invoice_number($invoice_number)
 	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number', $invoice_number);
+		$builder = $this->db->table('sales');
+		$builder->where('invoice_number', $invoice_number);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	public function get_invoice_number_for_year($year = '', $start_from = 0)
@@ -460,10 +460,10 @@ class Sale extends Model
 	{
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select('COUNT( 1 ) AS number_year');
-		$this->db->from('sales');
-		$this->db->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
-		$this->db->where("$field IS NOT NULL");
-		$result = $this->db->get()->row_array();
+		$builder = $this->db->table('sales');
+		$builder->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
+		$builder->where("$field IS NOT NULL");
+		$result = $builder->get()->row_array();
 
 		return ($start_from + $result['number_year']);
 	}
@@ -502,10 +502,10 @@ class Sale extends Model
 	 */
 	public function exists($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return ($this->db->get()->num_rows()==1);
+		return ($builder->get()->getNumRows()==1);
 	}
 
 	/**
@@ -513,14 +513,14 @@ class Sale extends Model
 	 */
 	public function update($sale_id, $sale_data, $payments)
 	{
-		$this->db->where('sale_id', $sale_id);
-		$success = $this->db->update('sales', $sale_data);
+		$builder->where('sale_id', $sale_id);
+		$success = $builder->update('sales', $sale_data);
 
 		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
 		if($success && !empty($payments))
 		{
 			//Run these queries as a transaction, we want to make sure we do all or nothing
-			$this->db->trans_start();
+			$this->db->transStart();
 
 			// add new payments
 			foreach($payments as $payment)
@@ -543,7 +543,7 @@ class Sale extends Model
 						'cash_adjustment' => $cash_adjustment,
 						'employee_id'	  => $employee_id
 					);
-					$success = $this->db->insert('sales_payments', $sales_payments_data);
+					$success = $builder->insert('sales_payments', $sales_payments_data);
 				}
 				elseif($payment_id != -1)
 				{
@@ -556,20 +556,20 @@ class Sale extends Model
 							'cash_refund' => $cash_refund,
 							'cash_adjustment' => $cash_adjustment
 						);
-						$this->db->where('payment_id', $payment_id);
-						$success = $this->db->update('sales_payments', $sales_payments_data);
+						$builder->where('payment_id', $payment_id);
+						$success = $builder->update('sales_payments', $sales_payments_data);
 					}
 					else
 					{
 						// Remove existing payment transactions with a payment amount of zero
-						$success = $this->db->delete('sales_payments', array('payment_id' => $payment_id));
+						$success = $builder->delete('sales_payments', array('payment_id' => $payment_id));
 					}
 				}
 			}
 
-			$this->db->trans_complete();
+			$this->db->transComplete();
 
-			$success &= $this->db->trans_status();
+			$success &= $this->db->transStatus();
 		}
 		return $success;
 	}
@@ -608,17 +608,17 @@ class Sale extends Model
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		if($sale_id == -1)
 		{
-			$this->db->insert('sales', $sales_data);
+			$builder->insert('sales', $sales_data);
 			$sale_id = $this->db->insert_id();
 		}
 		else
 		{
-			$this->db->where('sale_id', $sale_id);
-			$this->db->update('sales', $sales_data);
+			$builder->where('sale_id', $sale_id);
+			$builder->update('sales', $sales_data);
 		}
 		$total_amount = 0;
 		$total_amount_used = 0;
@@ -647,7 +647,7 @@ class Sale extends Model
 				'employee_id'	  => $employee_id
 			);
 
-			$this->db->insert('sales_payments', $sales_payments_data);
+			$builder->insert('sales_payments', $sales_payments_data);
 
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
 		}
@@ -680,7 +680,7 @@ class Sale extends Model
 				'print_option'		=> $item['print_option']
 			);
 
-			$this->db->insert('sales_items', $sales_items_data);
+			$builder->insert('sales_items', $sales_items_data);
 
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)
 			{
@@ -731,9 +731,9 @@ class Sale extends Model
 			}
 		}
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		if($this->db->trans_status() === FALSE)
+		if($this->db->transStatus() === FALSE)
 		{
 			return -1;
 		}
@@ -749,7 +749,7 @@ class Sale extends Model
 		foreach($sales_taxes as $line=>$sales_tax)
 		{
 			$sales_tax['sale_id'] = $sale_id;
-			$this->db->insert('sales_taxes', $sales_tax);
+			$builder->insert('sales_taxes', $sales_tax);
 		}
 	}
 
@@ -780,7 +780,7 @@ class Sale extends Model
 				'tax_category_id' => $tax_item['tax_category_id']
 			);
 
-			$this->db->insert('sales_items_taxes', $sales_items_taxes);
+			$builder->insert('sales_items_taxes', $sales_items_taxes);
 		}
 	}
 
@@ -789,11 +789,11 @@ class Sale extends Model
 	 */
 	public function get_sales_taxes($sale_id)
 	{
-		$this->db->from('sales_taxes');
-		$this->db->where('sale_id', $sale_id);
-		$this->db->order_by('print_sequence', 'asc');
+		$builder = $this->db->table('sales_taxes');
+		$builder->where('sale_id', $sale_id);
+		$builder->orderBy('print_sequence', 'asc');
 
-		$query = $this->db->get();
+		$query = $builder->get();
 
 		return $query->result_array();
 	}
@@ -804,12 +804,12 @@ class Sale extends Model
 	public function get_sales_item_taxes($sale_id, $item_id)
 	{
 		$this->db->select('item_id, name, percent');
-		$this->db->from('sales_items_taxes');
-		$this->db->where('sale_id',$sale_id);
-		$this->db->where('item_id',$item_id);
+		$builder = $this->db->table('sales_items_taxes');
+		$builder->where('sale_id',$sale_id);
+		$builder->where('item_id',$item_id);
 
 		//return an array of taxes for an item
-		return $this->db->get()->result_array();
+		return $builder->get()->result_array();
 	}
 
 	/**
@@ -848,7 +848,7 @@ class Sale extends Model
 	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		$sale_status = $this->get_sale_status($sale_id);
 
@@ -884,9 +884,9 @@ class Sale extends Model
 		$this->update_sale_status($sale_id, CANCELED);
 
 		// execute transaction
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		return $this->db->trans_status();
+		return $this->db->transStatus();
 	}
 
 	/**
@@ -894,10 +894,10 @@ class Sale extends Model
 	 */
 	public function get_sale_items($sale_id)
 	{
-		$this->db->from('sales_items');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales_items');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -922,38 +922,38 @@ class Sale extends Model
 			category,
 			item_type,
 			stock_type');
-		$this->db->from('sales_items AS sales_items');
+		$builder = $this->db->table('sales_items AS sales_items');
 		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
-		$this->db->where('sales_items.sale_id', $sale_id);
+		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
 		if($this->config->item('line_sequence') == '0')
 		{
-			$this->db->order_by('line', 'asc');
+			$builder->orderBy('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
 		elseif($this->config->item('line_sequence') == '1')
 		{
-			$this->db->order_by('stock_type', 'desc');
-			$this->db->order_by('sales_items.description', 'asc');
-			$this->db->order_by('items.name', 'asc');
-			$this->db->order_by('items.qty_per_pack', 'asc');
+			$builder->orderBy('stock_type', 'desc');
+			$builder->orderBy('sales_items.description', 'asc');
+			$builder->orderBy('items.name', 'asc');
+			$builder->orderBy('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
 		elseif($this->config->item('line_sequence') == '2')
 		{
-			$this->db->order_by('category', 'asc');
-			$this->db->order_by('sales_items.description', 'asc');
-			$this->db->order_by('items.name', 'asc');
-			$this->db->order_by('items.qty_per_pack', 'asc');
+			$builder->orderBy('category', 'asc');
+			$builder->orderBy('sales_items.description', 'asc');
+			$builder->orderBy('items.name', 'asc');
+			$builder->orderBy('items.qty_per_pack', 'asc');
 		}
 		// Group by entry sequence in descending sequence (the Standard)
 		else
 		{
-			$this->db->order_by('line', 'desc');
+			$builder->orderBy('line', 'desc');
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -961,10 +961,10 @@ class Sale extends Model
 	 */
 	public function get_sale_payments($sale_id)
 	{
-		$this->db->from('sales_payments');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales_payments');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**
@@ -998,10 +998,10 @@ class Sale extends Model
 	 */
 	public function get_customer($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->Customer->get_info($this->db->get()->row()->customer_id);
+		return $this->Customer->get_info($builder->get()->row()->customer_id);
 	}
 
 	/**
@@ -1009,10 +1009,10 @@ class Sale extends Model
 	 */
 	public function get_employee($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->row()->employee_id);
 	}
 
 	/**
@@ -1020,14 +1020,14 @@ class Sale extends Model
 	 */
 	public function check_quote_number_exists($quote_number, $sale_id = '')
 	{
-		$this->db->from('sales');
-		$this->db->where('quote_number', $quote_number);
+		$builder = $this->db->table('sales');
+		$builder->where('quote_number', $quote_number);
 		if(!empty($sale_id))
 		{
-			$this->db->where('sale_id !=', $sale_id);
+			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -1035,14 +1035,14 @@ class Sale extends Model
 	 */
 	public function check_invoice_number_exists($invoice_number, $sale_id = '')
 	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number', $invoice_number);
+		$builder = $this->db->table('sales');
+		$builder->where('invoice_number', $invoice_number);
 		if(!empty($sale_id))
 		{
-			$this->db->where('sale_id !=', $sale_id);
+			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -1050,14 +1050,14 @@ class Sale extends Model
 	 */
 	public function check_work_order_number_exists($work_order_number, $sale_id = '')
 	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number', $work_order_number);
+		$builder = $this->db->table('sales');
+		$builder->where('invoice_number', $work_order_number);
 		if(!empty($sale_id))
 		{
-			$this->db->where('sale_id !=', $sale_id);
+			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -1070,10 +1070,10 @@ class Sale extends Model
 			return 0;
 		}
 
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number', $giftcardNumber);
+		$builder = $this->db->table('giftcards');
+		$builder->where('giftcard_number', $giftcardNumber);
 
-		return $this->db->get()->row()->value;
+		return $builder->get()->row()->value;
 	}
 
 	/**
@@ -1256,10 +1256,10 @@ class Sale extends Model
 			return NULL;
 		}
 
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->db->get()->row()->dinner_table_id;
+		return $builder->get()->row()->dinner_table_id;
 	}
 
 	/**
@@ -1267,10 +1267,10 @@ class Sale extends Model
 	 */
 	public function get_sale_type($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->db->get()->row()->sale_type;
+		return $builder->get()->row()->sale_type;
 	}
 
 	/**
@@ -1278,16 +1278,16 @@ class Sale extends Model
 	 */
 	public function get_sale_status($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		return $this->db->get()->row()->sale_status;
+		return $builder->get()->row()->sale_status;
 	}
 
 	public function update_sale_status($sale_id, $sale_status)
 	{
-		$this->db->where('sale_id', $sale_id);
-		$this->db->update('sales', array('sale_status'=>$sale_status));
+		$builder->where('sale_id', $sale_id);
+		$builder->update('sales', array('sale_status'=>$sale_status));
 	}
 
 	/**
@@ -1295,10 +1295,10 @@ class Sale extends Model
 	 */
 	public function get_quote_number($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		$row = $this->db->get()->row();
+		$row = $builder->get()->row();
 
 		if($row != NULL)
 		{
@@ -1313,10 +1313,10 @@ class Sale extends Model
 	 */
 	public function get_work_order_number($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		$row = $this->db->get()->row();
+		$row = $builder->get()->row();
 
 		if($row != NULL)
 		{
@@ -1331,10 +1331,10 @@ class Sale extends Model
 	 */
 	public function get_comment($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 
-		$row = $this->db->get()->row();
+		$row = $builder->get()->row();
 
 		if($row != NULL)
 		{
@@ -1349,9 +1349,9 @@ class Sale extends Model
 	 */
 	public function get_suspended_invoice_count()
 	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number IS NOT NULL');
-		$this->db->where('sale_status', SUSPENDED);
+		$builder = $this->db->table('sales');
+		$builder->where('invoice_number IS NOT NULL');
+		$builder->where('sale_status', SUSPENDED);
 
 		return $this->db->count_all_results();
 	}
@@ -1363,7 +1363,7 @@ class Sale extends Model
 	public function delete_suspended_sale($sale_id)
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
+		$this->db->transStart();
 
 		if($this->config->item('dinner_table_enable') == TRUE)
 		{
@@ -1373,9 +1373,9 @@ class Sale extends Model
 
 		$this->update_sale_status($sale_id, CANCELED);
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		return $this->db->trans_status();
+		return $this->db->transStatus();
 	}
 
 	/**
@@ -1384,7 +1384,7 @@ class Sale extends Model
 	 */
 	public function clear_suspended_sale_detail($sale_id)
 	{
-		$this->db->trans_start();
+		$this->db->transStart();
 
 
 		if($this->config->item('dinner_table_enable') == TRUE)
@@ -1393,14 +1393,14 @@ class Sale extends Model
 			$this->Dinner_table->release($dinner_table);
 		}
 
-		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
-		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
+		$builder->delete('sales_payments', array('sale_id' => $sale_id));
+		$builder->delete('sales_items_taxes', array('sale_id' => $sale_id));
+		$builder->delete('sales_items', array('sale_id' => $sale_id));
+		$builder->delete('sales_taxes', array('sale_id' => $sale_id));
 
-		$this->db->trans_complete();
+		$this->db->transComplete();
 
-		return $this->db->trans_status();
+		return $this->db->transStatus();
 	}
 
 	/**
@@ -1408,12 +1408,12 @@ class Sale extends Model
 	 */
 	public function get_suspended_sale_info($sale_id)
 	{
-		$this->db->from('sales');
-		$this->db->where('sale_id', $sale_id);
+		$builder = $this->db->table('sales');
+		$builder->where('sale_id', $sale_id);
 		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
 		$this->db-where('sale_status', SUSPENDED);
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/**

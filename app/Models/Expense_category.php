@@ -15,10 +15,10 @@ class Expense_category extends Model
 	*/
 	public function exists($expense_category_id)
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('expense_category_id', $expense_category_id);
+		$builder = $this->db->table('expense_categories');
+		$builder->where('expense_category_id', $expense_category_id);
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/*
@@ -26,8 +26,8 @@ class Expense_category extends Model
 	*/
 	public function get_total_rows()
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('deleted', 0);
+		$builder = $this->db->table('expense_categories');
+		$builder->where('deleted', 0);
 
 		return $this->db->count_all_results();
 	}
@@ -37,10 +37,10 @@ class Expense_category extends Model
 	*/
 	public function get_info($expense_category_id)
 	{
-		$this->db->from('expense_categories');
-		$this->db->where('expense_category_id', $expense_category_id);
-		$this->db->where('deleted', 0);
-		$query = $this->db->get();
+		$builder = $this->db->table('expense_categories');
+		$builder->where('expense_category_id', $expense_category_id);
+		$builder->where('deleted', 0);
+		$query = $builder->get();
 
 		if($query->num_rows()==1)
 		{
@@ -66,20 +66,20 @@ class Expense_category extends Model
 	*/
 	public function get_all($rows = 0, $limit_from = 0, $no_deleted = FALSE)
 	{
-		$this->db->from('expense_categories');
+		$builder = $this->db->table('expense_categories');
 		if($no_deleted == TRUE)
 		{
-			$this->db->where('deleted', 0);
+			$builder->where('deleted', 0);
 		}
 
-		$this->db->order_by('category_name', 'asc');
+		$builder->orderBy('category_name', 'asc');
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -87,11 +87,11 @@ class Expense_category extends Model
 	*/
 	public function get_multiple_info($expense_category_ids)
 	{
-		$this->db->from('expense_categories');
+		$builder = $this->db->table('expense_categories');
 		$this->db->where_in('expense_category_id', $expense_category_ids);
-		$this->db->order_by('category_name', 'asc');
+		$builder->orderBy('category_name', 'asc');
 
-		return $this->db->get();
+		return $builder->get();
 	}
 
 	/*
@@ -101,7 +101,7 @@ class Expense_category extends Model
 	{
 		if(!$expense_category_id || !$this->exists($expense_category_id))
 		{
-			if($this->db->insert('expense_categories', $expense_category_data))
+			if($builder->insert('expense_categories', $expense_category_data))
 			{
 				$expense_category_data['expense_category_id'] = $this->db->insert_id();
 
@@ -111,9 +111,9 @@ class Expense_category extends Model
 			return FALSE;
 		}
 
-		$this->db->where('expense_category_id', $expense_category_id);
+		$builder->where('expense_category_id', $expense_category_id);
 
-		return $this->db->update('expense_categories', $expense_category_data);
+		return $builder->update('expense_categories', $expense_category_data);
 	}
 
 	/*
@@ -123,7 +123,7 @@ class Expense_category extends Model
 	{
 		$this->db->where_in('expense_category_id', $expense_category_ids);
 
-		return $this->db->update('expense_categories', array('deleted' => 1));
+		return $builder->update('expense_categories', array('deleted' => 1));
  	}
 
 	/*
@@ -145,27 +145,27 @@ class Expense_category extends Model
 			$this->db->select('COUNT(expense_categories.expense_category_id) as count');
 		}
 
-		$this->db->from('expense_categories AS expense_categories');
+		$builder = $this->db->table('expense_categories AS expense_categories');
 		$this->db->group_start();
 			$this->db->like('category_name', $search);
 			$this->db->or_like('category_description', $search);
 		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row()->count;
+			return $builder->get()->row()->count;
 		}
 
-		$this->db->order_by($sort, $order);
+		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();
+		return $builder->get();
 	}
 }
 ?>
