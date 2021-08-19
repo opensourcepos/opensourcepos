@@ -128,7 +128,7 @@ function get_sale_data_last_row($sales)
 	$sum_amount_tendered = 0;
 	$sum_change_due = 0;
 
-	foreach($sales->result() as $key=>$sale)
+	foreach($sales->getResult() as $key=>$sale)
 	{
 		$sum_amount_due += $sale->amount_due;
 		$sum_amount_tendered += $sale->amount_tendered;
@@ -709,7 +709,7 @@ function get_expenses_data_last_row($expense)
 	$sum_amount_expense = 0;
 	$sum_tax_amount_expense = 0;
 
-	foreach($expense->result() as $key=>$expense)
+	foreach($expense->getResult() as $key=>$expense)
 	{
 		$sum_amount_expense += $expense->amount;
 		$sum_tax_amount_expense += $expense->tax_amount;

@@ -32,7 +32,7 @@ class Sale extends Model
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 		}
 
-		$this->db->select('
+		$builder->select('
 				sales.sale_id AS sale_id,
 				MAX(DATE(sales.sale_time)) AS sale_date,
 				MAX(sales.sale_time) AS sale_time,
@@ -58,11 +58,11 @@ class Sale extends Model
 		');
 
 		$builder = $this->db->table('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
-		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
+		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
+		$builder->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'LEFT OUTER');
 
@@ -101,15 +101,15 @@ class Sale extends Model
 
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are orthogonal to the main query
 		// create a temporary table to contain all the payments per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id,
 					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
 				GROUP BY payments.sale_id
@@ -133,7 +133,7 @@ class Sale extends Model
 		$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
 			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
@@ -142,10 +142,10 @@ class Sale extends Model
 					SUM(sales_items_taxes.item_tax_amount) AS tax,
 					SUM(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS internal_tax,
 					SUM(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS sales_tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_items_taxes') . ' AS sales_items_taxes
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -155,11 +155,11 @@ class Sale extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(DISTINCT sales.sale_id) AS count');
+			$builder->select('COUNT(DISTINCT sales.sale_id) AS count');
 		}
 		else
 		{
-			$this->db->select('
+			$builder->select('
 					sales.sale_id AS sale_id,
 					MAX(DATE(sales.sale_time)) AS sale_date,
 					MAX(sales.sale_time) AS sale_time,
@@ -183,11 +183,11 @@ class Sale extends Model
 		}
 
 		$builder = $this->db->table('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
-		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
+		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
+		$builder->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'LEFT OUTER');
 
@@ -202,16 +202,16 @@ class Sale extends Model
 			}
 			else
 			{
-				$this->db->group_start();
+				$builder->groupStart();
 					// customer last name
-					$this->db->like('customer_p.last_name', $search);
+					$builder->like('customer_p.last_name', $search);
 					// customer first name
-					$this->db->or_like('customer_p.first_name', $search);
+					$builder->orLike('customer_p.first_name', $search);
 					// customer first and last name
-					$this->db->or_like('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
+					$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
 					// customer company name
-					$this->db->or_like('customer.company_name', $search);
-				$this->db->group_end();
+					$builder->orLike('customer.company_name', $search);
+				$builder->groupEnd();
 			}
 		}
 
@@ -227,31 +227,31 @@ class Sale extends Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->group_start();
-				$this->db->like('payments.payment_type', lang('Sales.cash'));
+			$builder->groupStart();
+				$builder->like('payments.payment_type', lang('Sales.cash'));
 				$this->db->or_where('payments.payment_type IS NULL');
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 
 		if($filters['only_creditcard'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', lang('Sales.credit'));
+			$builder->like('payments.payment_type', lang('Sales.credit'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', lang('Sales.due'));
+			$builder->like('payments.payment_type', lang('Sales.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', lang('Sales.check'));
+			$builder->like('payments.payment_type', lang('Sales.check'));
 		}
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$this->db->group_by('sales.sale_id');
@@ -261,7 +261,7 @@ class Sale extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -273,11 +273,11 @@ class Sale extends Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
+		$builder->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
 		$builder = $this->db->table('sales AS sales');
-		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
+		$builder->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
+		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
@@ -297,16 +297,16 @@ class Sale extends Model
 			}
 			else
 			{
-				$this->db->group_start();
+				$builder->groupStart();
 					// customer last name
-					$this->db->like('customer_p.last_name', $search);
+					$builder->like('customer_p.last_name', $search);
 					// customer first name
-					$this->db->or_like('customer_p.first_name', $search);
+					$builder->orLike('customer_p.first_name', $search);
 					// customer first and last name
-					$this->db->or_like('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
+					$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
 					// customer company name
-					$this->db->or_like('customer.company_name', $search);
-				$this->db->group_end();
+					$builder->orLike('customer.company_name', $search);
+				$builder->groupEnd();
 			}
 		}
 
@@ -334,27 +334,27 @@ class Sale extends Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Sales.cash'));
+			$builder->like('payment_type', lang('Sales.cash'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Sales.due'));
+			$builder->like('payment_type', lang('Sales.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Sales.check'));
+			$builder->like('payment_type', lang('Sales.check'));
 		}
 
 		if($filters['only_creditcard'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Sales.credit'));
+			$builder->like('payment_type', lang('Sales.credit'));
 		}
 
 		$this->db->group_by('payment_type');
 
-		$payments = $builder->get()->result_array();
+		$payments = $builder->get()->getResultArray();
 
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
@@ -386,7 +386,7 @@ class Sale extends Model
 	{
 		$builder = $this->db->table('sales');
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -398,17 +398,17 @@ class Sale extends Model
 
 		if(!$this->is_valid_receipt($search))
 		{
-			$this->db->distinct();
-			$this->db->select('first_name, last_name');
+			$builder->distinct();
+			$builder->select('first_name, last_name');
 			$builder = $this->db->table('sales');
-			$this->db->join('people', 'people.person_id = sales.customer_id');
-			$this->db->like('last_name', $search);
-			$this->db->or_like('first_name', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-			$this->db->or_like('company_name', $search);
+			$builder->join('people', 'people.person_id = sales.customer_id');
+			$builder->like('last_name', $search);
+			$builder->orLike('first_name', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+			$builder->orLike('company_name', $search);
 			$builder->orderBy('last_name', 'asc');
 
-			foreach($builder->get()->result_array() as $result)
+			foreach($builder->get()->getResultArray() as $result)
 			{
 				$suggestions[] = array('label' => $result['first_name'] . ' ' . $result['last_name']);
 			}
@@ -429,7 +429,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number IS NOT NULL');
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -459,7 +459,7 @@ class Sale extends Model
 	private function get_number_for_year($field, $year = '', $start_from = 0)
 	{
 		$year = $year == '' ? date('Y') : $year;
-		$this->db->select('COUNT( 1 ) AS number_year');
+		$builder->select('COUNT( 1 ) AS number_year');
 		$builder = $this->db->table('sales');
 		$builder->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
 		$builder->where("$field IS NOT NULL");
@@ -485,9 +485,9 @@ class Sale extends Model
 			elseif($this->config->item('invoice_enable') == TRUE)
 			{
 				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
-				if($sale_info->num_rows() > 0)
+				if($sale_info->getNumRows() > 0)
 				{
-					$receipt_sale_id = 'POS ' . $sale_info->row()->sale_id;
+					$receipt_sale_id = 'POS ' . $sale_info->getRow()->sale_id;
 
 					return TRUE;
 				}
@@ -613,7 +613,7 @@ class Sale extends Model
 		if($sale_id == -1)
 		{
 			$builder->insert('sales', $sales_data);
-			$sale_id = $this->db->insert_id();
+			$sale_id = $this->db->insertID();
 		}
 		else
 		{
@@ -795,7 +795,7 @@ class Sale extends Model
 
 		$query = $builder->get();
 
-		return $query->result_array();
+		return $query->getResultArray();
 	}
 
 	/**
@@ -803,13 +803,13 @@ class Sale extends Model
 	 */
 	public function get_sales_item_taxes($sale_id, $item_id)
 	{
-		$this->db->select('item_id, name, percent');
+		$builder->select('item_id, name, percent');
 		$builder = $this->db->table('sales_items_taxes');
 		$builder->where('sale_id',$sale_id);
 		$builder->where('item_id',$item_id);
 
 		//return an array of taxes for an item
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	/**
@@ -856,7 +856,7 @@ class Sale extends Model
 		{
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
-			$items = $this->get_sale_items($sale_id)->result_array();
+			$items = $this->get_sale_items($sale_id)->getResultArray();
 			foreach($items as $item)
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
@@ -905,7 +905,7 @@ class Sale extends Model
 	 */
 	public function get_sale_items_ordered($sale_id)
 	{
-		$this->db->select('
+		$builder->select('
 			sales_items.sale_id,
 			sales_items.item_id,
 			sales_items.description,
@@ -923,7 +923,7 @@ class Sale extends Model
 			item_type,
 			stock_type');
 		$builder = $this->db->table('sales_items AS sales_items');
-		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
+		$builder->join('items AS items', 'sales_items.item_id = items.item_id');
 		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
@@ -1001,7 +1001,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $this->Customer->get_info($builder->get()->row()->customer_id);
+		return $this->Customer->get_info($builder->get()->getRow()->customer_id);
 	}
 
 	/**
@@ -1012,7 +1012,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $this->Employee->get_info($builder->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	/**
@@ -1073,7 +1073,7 @@ class Sale extends Model
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_number', $giftcardNumber);
 
-		return $builder->get()->row()->value;
+		return $builder->get()->getRow()->value;
 	}
 
 	/**
@@ -1124,7 +1124,7 @@ class Sale extends Model
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
 			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
@@ -1133,10 +1133,10 @@ class Sale extends Model
 					SUM(ROUND(sales_items_taxes.item_tax_amount, ' . $decimals . ')) AS tax,
 					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS internal_tax,
 					SUM(ROUND(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END, ' . $decimals . ')) AS sales_tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_items_taxes') . ' AS sales_items_taxes
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -1144,7 +1144,7 @@ class Sale extends Model
 		);
 
 		// create a temporary table to contain all the payment types and amount
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
@@ -1152,15 +1152,15 @@ class Sale extends Model
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					SUM(payments.cash_refund) AS sale_cash_refund,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
 				GROUP BY payments.sale_id
 			)'
 		);
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp') .
 			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
 				SELECT
@@ -1204,22 +1204,22 @@ class Sale extends Model
 					$sale_cost AS cost,
 					($sale_subtotal - $sale_cost) AS profit
 					" . '
-				FROM ' . $this->db->dbprefix('sales_items') . ' AS sales_items
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_items') . ' AS sales_items
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales_items.sale_id = sales.sale_id
-				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
+				INNER JOIN ' . $this->db->prefixTable('items') . ' AS items
 					ON sales_items.item_id = items.item_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments_temp') . ' AS payments
+				LEFT OUTER JOIN ' . $this->db->prefixTable('sales_payments_temp') . ' AS payments
 					ON sales_items.sale_id = payments.sale_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('suppliers') . ' AS supplier
+				LEFT OUTER JOIN ' . $this->db->prefixTable('suppliers') . ' AS supplier
 					ON items.supplier_id = supplier.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS customer_p
+				LEFT OUTER JOIN ' . $this->db->prefixTable('people') . ' AS customer_p
 					ON sales.customer_id = customer_p.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('customers') . ' AS customer
+				LEFT OUTER JOIN ' . $this->db->prefixTable('customers') . ' AS customer
 					ON sales.customer_id = customer.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS employee
+				LEFT OUTER JOIN ' . $this->db->prefixTable('people') . ' AS employee
 					ON sales.employee_id = employee.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes_temp') . ' AS sales_items_taxes
+				LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items_taxes_temp') . ' AS sales_items_taxes
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -1235,15 +1235,15 @@ class Sale extends Model
 		if($customer_id == -1)
 		{
 			$query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
-				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
+				. $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
 			$query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
-				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
+				. $this->db->prefixTable('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
-		return $query->result_array();
+		return $query->getResultArray();
 	}
 
 	/**
@@ -1259,7 +1259,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $builder->get()->row()->dinner_table_id;
+		return $builder->get()->getRow()->dinner_table_id;
 	}
 
 	/**
@@ -1270,7 +1270,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $builder->get()->row()->sale_type;
+		return $builder->get()->getRow()->sale_type;
 	}
 
 	/**
@@ -1281,7 +1281,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $builder->get()->row()->sale_status;
+		return $builder->get()->getRow()->sale_status;
 	}
 
 	public function update_sale_status($sale_id, $sale_status)
@@ -1298,7 +1298,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		$row = $builder->get()->row();
+		$row = $builder->get()->getRow();
 
 		if($row != NULL)
 		{
@@ -1316,7 +1316,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		$row = $builder->get()->row();
+		$row = $builder->get()->getRow();
 
 		if($row != NULL)
 		{
@@ -1334,7 +1334,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		$row = $builder->get()->row();
+		$row = $builder->get()->getRow();
 
 		if($row != NULL)
 		{
@@ -1353,7 +1353,7 @@ class Sale extends Model
 		$builder->where('invoice_number IS NOT NULL');
 		$builder->where('sale_status', SUSPENDED);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -1410,7 +1410,7 @@ class Sale extends Model
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
+		$builder->join('people', 'people.person_id = sales.customer_id', 'LEFT');
 		$this->db-where('sale_status', SUSPENDED);
 
 		return $builder->get();

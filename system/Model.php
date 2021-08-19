@@ -650,7 +650,7 @@ class Model extends BaseModel
 		return parent::shouldUpdate($data) &&
 			($this->useAutoIncrement
 				? true
-				: $this->where($this->primaryKey, $this->getIdValue($data))->countAllResults() === 1
+				: $this->where($this->primaryKey, $this->getIdValue($data))->getNumRows() === 1
 			);
 	}
 

@@ -51,7 +51,7 @@ class Detailed_sales extends Report
 
 	public function getDataBySaleId($sale_id)
 	{
-		$this->db->select('sale_id,
+		$builder->select('sale_id,
 			sale_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
@@ -72,7 +72,7 @@ class Detailed_sales extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, 
+		$builder->select('sale_id, 
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'			
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
@@ -104,19 +104,19 @@ class Detailed_sales extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
@@ -142,13 +142,13 @@ class Detailed_sales extends Report
 		$builder->orderBy('MAX(sale_date)');
 
 		$data = array();
-		$data['summary'] = $builder->get()->result_array();
+		$data['summary'] = $builder->get()->getResultArray();
 		$data['details'] = array();
 		$data['rewards'] = array();
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('
+			$builder->select('
 				MAX(name) AS name, 
 				MAX(category) AS category, 
 				MAX(quantity_purchased) AS quantity_purchased, 
@@ -167,20 +167,20 @@ class Detailed_sales extends Report
 			if(count($inputs['definition_ids']) > 0)
 			{
 				$format = $this->db->escape(dateformat_mysql());
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
-				$this->db->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
-				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+				$builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$builder->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_date, $format)) SEPARATOR '|') AS attribute_dtvalues");
+				$builder->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\'_\', definition_id, attribute_decimal) SEPARATOR \'|\') AS attribute_dvalues');
+				$builder->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
+				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
 			$this->db->group_by('sales_items_temp.sale_id, sales_items_temp.item_id');
 			$builder->where('sales_items_temp.sale_id', $value['sale_id']);
-			$data['details'][$key] = $builder->get()->result_array();
+			$data['details'][$key] = $builder->get()->getResultArray();
 
-			$this->db->select('used, earned');
+			$builder->select('used, earned');
 			$builder = $this->db->table('sales_reward_points');
 			$builder->where('sale_id', $value['sale_id']);
-			$data['rewards'][$key] = $builder->get()->result_array();
+			$data['rewards'][$key] = $builder->get()->getResultArray();
 		}
 
 		return $data;
@@ -188,7 +188,7 @@ class Detailed_sales extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
 
 		if($inputs['location_id'] != 'all')
@@ -199,19 +199,19 @@ class Detailed_sales extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{

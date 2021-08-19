@@ -326,7 +326,7 @@ trait DatabaseTestTrait
 	{
 		$count = $this->db->table($table)
 						  ->where($where)
-						  ->countAllResults();
+						  ->getNumRows();
 
 		$this->assertTrue($count === 0, 'Row was found in database');
 	}
@@ -366,7 +366,7 @@ trait DatabaseTestTrait
 	{
 		$count = $this->db->table($table)
 						  ->where($where)
-						  ->countAllResults();
+						  ->getNumRows();
 
 		$this->assertEquals($expected, $count, 'Wrong number of matching rows in database.');
 	}

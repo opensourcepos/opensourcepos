@@ -21,7 +21,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		error_log('Migrating sales tax history. The number of sales that will be migrated is ' . $number_of_unmigrated);
 		if($number_of_unmigrated > 0)
 		{
-			$unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->result_array();
+			$unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->getResultArray();
 			foreach($unmigrated_invoices as $key=>$unmigrated_invoice)
 			{
 				$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
@@ -50,7 +50,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		}
 		$sales_taxes = array();
 		$tax_group_sequence = 0;
-		$items = $this->get_sale_items_for_migration($sale_id)->result_array();
+		$items = $this->get_sale_items_for_migration($sale_id)->getResultArray();
 		foreach($items as $item)
 		{
 			// This computes tax for each line item and adds it to the tax type total
@@ -80,29 +80,29 @@ class Migration_Sales_Tax_Data extends CI_Migration
 
 	private function get_unmigrated($block_count)
 	{
-		$this->db->select('SIT.sale_id');
-		$this->db->select('ST.sale_id as sales_taxes_sale_id');
+		$builder->select('SIT.sale_id');
+		$builder->select('ST.sale_id as sales_taxes_sale_id');
 		$builder = $this->db->table('sales_items_taxes as SIT');
-		$this->db->join('sales_taxes as ST','SIT.sale_id = ST.sale_id', 'left');
+		$builder->join('sales_taxes as ST','SIT.sale_id = ST.sale_id', 'left');
 		$builder->where('ST.sale_id is null');
 		$this->db->group_by('SIT.sale_id');
 		$this->db->group_by('ST.sale_id');
 		$builder->orderBy('SIT.sale_id');
-		$this->db->limit($block_count);
+		$builder->limit($block_count);
 		return $builder->get();
 	}
 
 	private function get_sale_items_for_migration($sale_id)
 	{
-		$this->db->select('sales_items.sale_id as sale_id');
-		$this->db->select('sales_items.line as line');
-		$this->db->select('item_unit_price');
-		$this->db->select('discount_percent');
-		$this->db->select('quantity_purchased');
-		$this->db->select('percent');
-		$this->db->select('name');
+		$builder->select('sales_items.sale_id as sale_id');
+		$builder->select('sales_items.line as line');
+		$builder->select('item_unit_price');
+		$builder->select('discount_percent');
+		$builder->select('quantity_purchased');
+		$builder->select('percent');
+		$builder->select('name');
 		$builder = $this->db->table('sales_items as sales_items');
-		$this->db->join('sales_items_taxes as sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id and sales_items.line = sales_items_taxes.line');
+		$builder->join('sales_items_taxes as sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id and sales_items.line = sales_items_taxes.line');
 		$builder->where('sales_items.sale_id', $sale_id);
 		return $builder->get();
 	}
@@ -110,11 +110,11 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	private function get_count_of_unmigrated()
 	{
 		$result = $this->db->query('SELECT COUNT(*) FROM(SELECT SIT.sale_id, ST.sale_id as sales_taxes_sale_id FROM '
-			. $this->db->dbprefix('sales_items_taxes')
+			. $this->db->prefixTable('sales_items_taxes')
 			. ' as SIT LEFT JOIN '
-			. $this->db->dbprefix('sales_taxes')
+			. $this->db->prefixTable('sales_taxes')
 			. ' as ST ON SIT.sale_id = ST.sale_id WHERE ST.sale_id is null GROUP BY SIT.sale_id, ST.sale_id'
-			. ' ORDER BY SIT.sale_id) as US')->result_array();
+			. ' ORDER BY SIT.sale_id) as US')->getResultArray();
 		return $result[0]['COUNT(*)'];
 	}
 

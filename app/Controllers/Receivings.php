@@ -149,13 +149,13 @@ class Receivings extends Secure_Controller
 		$data = array();
 
 		$data['suppliers'] = array('' => 'No Supplier');
-		foreach($this->Supplier->get_all()->result() as $supplier)
+		foreach($this->Supplier->get_all()->getResult() as $supplier)
 		{
 			$data['suppliers'][$supplier->person_id] = $this->xss_clean($supplier->first_name . ' ' . $supplier->last_name);
 		}
 	
 		$data['employees'] = array();
-		foreach($this->Employee->get_all()->result() as $employee)
+		foreach($this->Employee->get_all()->getResult() as $employee)
 		{
 			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
 		}

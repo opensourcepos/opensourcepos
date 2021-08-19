@@ -50,7 +50,7 @@ class Sales extends Secure_Controller
 
 	public function get_row($row_id)
 	{
-		$sale_info = $this->Sale->get_info($row_id)->row();
+		$sale_info = $this->Sale->get_info($row_id)->getRow();
 		$data_row = $this->xss_clean(get_sale_data_row($sale_info));
 
 		echo json_encode($data_row);
@@ -85,7 +85,7 @@ class Sales extends Secure_Controller
 		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments));
 
 		$data_rows = array();
-		foreach($sales->result() as $sale)
+		foreach($sales->getResult() as $sale)
 		{
 			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
 		}
@@ -1191,7 +1191,7 @@ class Sales extends Secure_Controller
 		}
 
 		$data['payments'] = array();
-		foreach($this->Sale->get_sale_payments($sale_id)->result() as $payment)
+		foreach($this->Sale->get_sale_payments($sale_id)->getResult() as $payment)
 		{
 			foreach(get_object_vars($payment) as $property => $value)
 			{

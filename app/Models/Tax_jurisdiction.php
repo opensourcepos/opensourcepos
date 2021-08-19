@@ -29,7 +29,7 @@ class Tax_jurisdiction extends Model
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -42,9 +42,9 @@ class Tax_jurisdiction extends Model
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows()==1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -75,7 +75,7 @@ class Tax_jurisdiction extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -87,7 +87,7 @@ class Tax_jurisdiction extends Model
 	public function get_multiple_info($jurisdiction_ids)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
-		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
+		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 		$builder->orderBy('jurisdiction_name', 'asc');
 
 		return $builder->get();
@@ -102,7 +102,7 @@ class Tax_jurisdiction extends Model
 		{
 			if($builder->insert('tax_jurisdictions', $jurisdiction_data))
 			{
-				$jurisdiction_data['jurisdiction_id'] = $this->db->insert_id();
+				$jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
 				return TRUE;
 			}
 
@@ -139,7 +139,7 @@ class Tax_jurisdiction extends Model
 		}
 
 		// all entries not available in post will be deleted now
-		$deleted_tax_jurisdictions = $this->get_all()->result_array();
+		$deleted_tax_jurisdictions = $this->get_all()->getResultArray();
 
 		foreach($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data)
 		{
@@ -168,7 +168,7 @@ class Tax_jurisdiction extends Model
 	 */
 	public function delete_list($jurisdiction_ids)
 	{
-		$this->db->where_in('jurisdiction_id', $jurisdiction_ids);
+		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 
 		return $builder->update('tax_jurisdictions', array('deleted' => 1));
  	}
@@ -189,27 +189,27 @@ class Tax_jurisdiction extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
+			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
 
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
-		$this->db->group_start();
-			$this->db->like('jurisdiction_name', $search);
-			$this->db->or_like('reporting_authority', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+			$builder->like('jurisdiction_name', $search);
+			$builder->orLike('reporting_authority', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();

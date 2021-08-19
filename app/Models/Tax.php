@@ -28,7 +28,7 @@ class Tax extends Model
 	{
 		$builder = $this->db->table('tax_rates');
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Tax extends Model
 		$builder = $this->db->table('tax_rates');
 		$builder->where('rate_tax_category_id', $tax_category_id);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -47,30 +47,30 @@ class Tax extends Model
 	 */
 	public function get_info($tax_rate_id)
 	{
-		$this->db->select('tax_rate_id');
-		$this->db->select('rate_tax_code_id');
-		$this->db->select('tax_code');
-		$this->db->select('tax_code_name');
-		$this->db->select('rate_jurisdiction_id');
-		$this->db->select('jurisdiction_name');
-		$this->db->select('rate_tax_category_id');
-		$this->db->select('tax_category');
-		$this->db->select('tax_rate');
-		$this->db->select('tax_rounding_code');
+		$builder->select('tax_rate_id');
+		$builder->select('rate_tax_code_id');
+		$builder->select('tax_code');
+		$builder->select('tax_code_name');
+		$builder->select('rate_jurisdiction_id');
+		$builder->select('jurisdiction_name');
+		$builder->select('rate_tax_category_id');
+		$builder->select('tax_category');
+		$builder->select('tax_rate');
+		$builder->select('tax_rounding_code');
 		$builder = $this->db->table('tax_rates');
-		$this->db->join('tax_codes',
+		$builder->join('tax_codes',
 			'rate_tax_code_id = tax_code_id', 'LEFT');
-		$this->db->join('tax_categories',
+		$builder->join('tax_categories',
 			'rate_tax_category_id = tax_category_id', 'LEFT');
-		$this->db->join('tax_jurisdictions',
+		$builder->join('tax_jurisdictions',
 			'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
 		$builder->where('tax_rate_id', $tax_rate_id);
 
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -100,14 +100,14 @@ class Tax extends Model
 	{
 		$query = $this->db->query('select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
 			rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence 
-			from ' . $this->db->dbprefix('tax_rates') . ' 
-			left outer join ' . $this->db->dbprefix('tax_codes') . ' on rate_tax_code_id = tax_code_id 
-			left outer join ' . $this->db->dbprefix('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id 
-			left outer join ' . $this->db->dbprefix('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
+			from ' . $this->db->prefixTable('tax_rates') . ' 
+			left outer join ' . $this->db->prefixTable('tax_codes') . ' on rate_tax_code_id = tax_code_id 
+			left outer join ' . $this->db->prefixTable('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id 
+			left outer join ' . $this->db->prefixTable('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
 			where rate_tax_code_id = ' . $this->db->escape($tax_code_id) . ' and rate_tax_category_id = ' . $this->db->escape($tax_category_id) . '
 			order by cascade_sequence, tax_group, jurisdiction_name, tax_jurisdictions.tax_group_sequence + tax_categories.tax_group_sequence');
 
-		return $query->result_array();
+		return $query->getResultArray();
 	}
 
 	/**
@@ -116,15 +116,15 @@ class Tax extends Model
 	public function get_rate_info($tax_code_id, $tax_category_id)
 	{
 		$builder = $this->db->table('tax_rates');
-		$this->db->join('tax_categories', 'rate_tax_category_id = tax_category_id');
+		$builder->join('tax_categories', 'rate_tax_category_id = tax_category_id');
 		$builder->where('rate_tax_code_id', $tax_code_id);
 		$builder->where('rate_tax_category_id', $tax_category_id);
 
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -155,7 +155,7 @@ class Tax extends Model
 		{
 			if($builder->insert('tax_rates', $tax_rate_data))
 			{
-				$tax_rate_data['tax_rate_id'] = $this->db->insert_id();
+				$tax_rate_data['tax_rate_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -186,7 +186,7 @@ class Tax extends Model
 	 */
 	public function delete_list($tax_rate_ids)
 	{
-		$this->db->where_in('tax_rate_id', $tax_rate_ids);
+		$builder->whereIn('tax_rate_id', $tax_rate_ids);
 
 		return $builder->delete('tax_rates');
 	}
@@ -208,45 +208,45 @@ class Tax extends Model
 
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(tax_rate_id) as count');
+			$builder->select('COUNT(tax_rate_id) as count');
 		} else
 		{
-			$this->db->select('tax_rate_id');
-			$this->db->select('tax_code');
-			$this->db->select('rate_tax_code_id');
-			$this->db->select('tax_code_name');
-			$this->db->select('rate_jurisdiction_id');
-			$this->db->select('jurisdiction_name');
-			$this->db->select('rate_tax_category_id');
-			$this->db->select('tax_category');
-			$this->db->select('tax_rate');
-			$this->db->select('tax_rounding_code');
+			$builder->select('tax_rate_id');
+			$builder->select('tax_code');
+			$builder->select('rate_tax_code_id');
+			$builder->select('tax_code_name');
+			$builder->select('rate_jurisdiction_id');
+			$builder->select('jurisdiction_name');
+			$builder->select('rate_tax_category_id');
+			$builder->select('tax_category');
+			$builder->select('tax_rate');
+			$builder->select('tax_rounding_code');
 		}
 		$builder = $this->db->table('tax_rates');
-		$this->db->join('tax_codes',
+		$builder->join('tax_codes',
 			'rate_tax_code_id = tax_code_id', 'LEFT');
-		$this->db->join('tax_categories',
+		$builder->join('tax_categories',
 			'rate_tax_category_id = tax_category_id', 'LEFT');
-		$this->db->join('tax_jurisdictions',
+		$builder->join('tax_jurisdictions',
 			'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
 
 		if(!empty($search))
 		{
-			$this->db->like('rate_tax_code', $search);
-			$this->db->or_like('tax_code_name', $search);
+			$builder->like('rate_tax_code', $search);
+			$builder->orLike('tax_code_name', $search);
 		}
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -266,11 +266,11 @@ class Tax extends Model
 
 	public function get_tax_category($tax_category_id)
 	{
-		$this->db->select('tax_category');
+		$builder->select('tax_category');
 		$builder = $this->db->table('tax_categories');
 		$builder->where('tax_category_id', $tax_category_id);
 
-		return $builder->get()->row()->tax_category;
+		return $builder->get()->getRow()->tax_category;
 	}
 
 	public function get_all_tax_categories()
@@ -283,10 +283,10 @@ class Tax extends Model
 
 	public function get_tax_category_id($tax_category)
 	{
-		$this->db->select('tax_category_id');
+		$builder->select('tax_category_id');
 		$builder = $this->db->table('tax_categories');
 
-		return $builder->get()->row()->tax_category_id;
+		return $builder->get()->getRow()->tax_category_id;
 	}
 
 }

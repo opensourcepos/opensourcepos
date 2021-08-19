@@ -37,7 +37,7 @@ class Customer_rewards extends Model
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
 
-		return $builder->get()->row()->package_name;
+		return $builder->get()->getRow()->package_name;
 	}
 
 	public function get_points_percent($package_id)
@@ -45,7 +45,7 @@ class Customer_rewards extends Model
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
 
-		return $builder->get()->row()->points_percent;
+		return $builder->get()->getRow()->points_percent;
 	}
 
 	public function get_all()

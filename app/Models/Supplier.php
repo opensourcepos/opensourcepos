@@ -19,7 +19,7 @@ class Supplier extends Person
 	public function exists($person_id)
 	{
 		$builder = $this->db->table('suppliers');	
-		$this->db->join('people', 'people.person_id = suppliers.person_id');
+		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->where('suppliers.person_id', $person_id);
 		
 		return ($builder->get()->getNumRows() == 1);
@@ -33,7 +33,7 @@ class Supplier extends Person
 		$builder = $this->db->table('suppliers');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 	
 	/*
@@ -42,13 +42,13 @@ class Supplier extends Person
 	public function get_all($category = self::GOODS_SUPPLIER, $limit_from = 0, $rows = 0)
 	{
 		$builder = $this->db->table('suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');
+		$builder->join('people', 'suppliers.person_id = people.person_id');
 		$builder->where('category', $category);
 		$builder->where('deleted', 0);
 		$builder->orderBy('company_name', 'asc');
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();		
@@ -60,13 +60,13 @@ class Supplier extends Person
 	public function get_info($supplier_id)
 	{
 		$builder = $this->db->table('suppliers');	
-		$this->db->join('people', 'people.person_id = suppliers.person_id');
+		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->where('suppliers.person_id', $supplier_id);
 		$query = $builder->get();
 		
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -90,8 +90,8 @@ class Supplier extends Person
 	public function get_multiple_info($suppliers_ids)
 	{
 		$builder = $this->db->table('suppliers');
-		$this->db->join('people', 'people.person_id = suppliers.person_id');		
-		$this->db->where_in('suppliers.person_id', $suppliers_ids);
+		$builder->join('people', 'people.person_id = suppliers.person_id');		
+		$builder->whereIn('suppliers.person_id', $suppliers_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -143,7 +143,7 @@ class Supplier extends Person
 	*/
 	public function delete_list($supplier_ids)
 	{
-		$this->db->where_in('person_id', $supplier_ids);
+		$builder->whereIn('person_id', $supplier_ids);
 
 		return $builder->update('suppliers', array('deleted' => 1));
  	}
@@ -156,37 +156,37 @@ class Supplier extends Person
 		$suggestions = array();
 
 		$builder = $this->db->table('suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');
+		$builder->join('people', 'suppliers.person_id = people.person_id');
 		$builder->where('deleted', 0);
-		$this->db->like('company_name', $search);
+		$builder->like('company_name', $search);
 		$builder->orderBy('company_name', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->company_name);
 		}
 
 		$builder = $this->db->table('suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');
+		$builder->join('people', 'suppliers.person_id = people.person_id');
 		$builder->where('deleted', 0);
-		$this->db->distinct();
-		$this->db->like('agency_name', $search);
+		$builder->distinct();
+		$builder->like('agency_name', $search);
 		$builder->where('agency_name IS NOT NULL');
 		$builder->orderBy('agency_name', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->agency_name);
 		}
 
 		$builder = $this->db->table('suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search); 
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people', 'suppliers.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search); 
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		$builder->orderBy('last_name', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name);
 		}
@@ -194,31 +194,31 @@ class Supplier extends Person
 		if(!$unique)
 		{
 			$builder = $this->db->table('suppliers');
-			$this->db->join('people', 'suppliers.person_id = people.person_id');
+			$builder->join('people', 'suppliers.person_id = people.person_id');
 			$builder->where('deleted', 0);
-			$this->db->like('email', $search);
+			$builder->like('email', $search);
 			$builder->orderBy('email', 'asc');
-			foreach($builder->get()->result() as $row)
+			foreach($builder->get()->getResult() as $row)
 			{
 				$suggestions[] = array('value' => $row->person_id, 'label' => $row->email);
 			}
 
 			$builder = $this->db->table('suppliers');
-			$this->db->join('people', 'suppliers.person_id = people.person_id');
+			$builder->join('people', 'suppliers.person_id = people.person_id');
 			$builder->where('deleted', 0);
-			$this->db->like('phone_number', $search);
+			$builder->like('phone_number', $search);
 			$builder->orderBy('phone_number', 'asc');
-			foreach($builder->get()->result() as $row)
+			foreach($builder->get()->getResult() as $row)
 			{
 				$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
 			}
 
 			$builder = $this->db->table('suppliers');
-			$this->db->join('people', 'suppliers.person_id = people.person_id');
+			$builder->join('people', 'suppliers.person_id = people.person_id');
 			$builder->where('deleted', 0);
-			$this->db->like('account_number', $search);
+			$builder->like('account_number', $search);
 			$builder->orderBy('account_number', 'asc');
-			foreach($builder->get()->result() as $row)
+			foreach($builder->get()->getResult() as $row)
 			{
 				$suggestions[] = array('value' => $row->person_id, 'label' => $row->account_number);
 			}
@@ -249,34 +249,34 @@ class Supplier extends Person
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(suppliers.person_id) as count');
+			$builder->select('COUNT(suppliers.person_id) as count');
 		}
 
 		$builder = $this->db->table('suppliers AS suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('company_name', $search);
-			$this->db->or_like('agency_name', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('phone_number', $search);
-			$this->db->or_like('account_number', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people', 'suppliers.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('company_name', $search);
+			$builder->orLike('agency_name', $search);
+			$builder->orLike('email', $search);
+			$builder->orLike('phone_number', $search);
+			$builder->orLike('account_number', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();

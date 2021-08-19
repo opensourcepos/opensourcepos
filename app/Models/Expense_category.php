@@ -29,7 +29,7 @@ class Expense_category extends Model
 		$builder = $this->db->table('expense_categories');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/*
@@ -42,9 +42,9 @@ class Expense_category extends Model
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows()==1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -76,7 +76,7 @@ class Expense_category extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -88,7 +88,7 @@ class Expense_category extends Model
 	public function get_multiple_info($expense_category_ids)
 	{
 		$builder = $this->db->table('expense_categories');
-		$this->db->where_in('expense_category_id', $expense_category_ids);
+		$builder->whereIn('expense_category_id', $expense_category_ids);
 		$builder->orderBy('category_name', 'asc');
 
 		return $builder->get();
@@ -103,7 +103,7 @@ class Expense_category extends Model
 		{
 			if($builder->insert('expense_categories', $expense_category_data))
 			{
-				$expense_category_data['expense_category_id'] = $this->db->insert_id();
+				$expense_category_data['expense_category_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -121,7 +121,7 @@ class Expense_category extends Model
 	*/
 	public function delete_list($expense_category_ids)
 	{
-		$this->db->where_in('expense_category_id', $expense_category_ids);
+		$builder->whereIn('expense_category_id', $expense_category_ids);
 
 		return $builder->update('expense_categories', array('deleted' => 1));
  	}
@@ -142,27 +142,27 @@ class Expense_category extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(expense_categories.expense_category_id) as count');
+			$builder->select('COUNT(expense_categories.expense_category_id) as count');
 		}
 
 		$builder = $this->db->table('expense_categories AS expense_categories');
-		$this->db->group_start();
-			$this->db->like('category_name', $search);
-			$this->db->or_like('category_description', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+			$builder->like('category_name', $search);
+			$builder->orLike('category_description', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();

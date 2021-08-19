@@ -27,13 +27,13 @@ class Giftcard extends Model
 	*/
 	public function get_max_number()
 	{
-		$this->db->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
+		$builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
 		$builder->orderBy("giftcard_number","desc");
-		$this->db->limit(1);
+		$builder->limit(1);
 
-		return $builder->get()->row();
+		return $builder->get()->getRow();
 	}
 
 	/*
@@ -44,7 +44,7 @@ class Giftcard extends Model
 		$builder = $this->db->table('giftcards');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/*
@@ -53,15 +53,15 @@ class Giftcard extends Model
 	public function get_info($giftcard_id)
 	{
 		$builder = $this->db->table('giftcards');
-		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
+		$builder->join('people', 'people.person_id = giftcards.person_id', 'left');
 		$builder->where('giftcard_id', $giftcard_id);
 		$builder->where('deleted', 0);
 
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -89,9 +89,9 @@ class Giftcard extends Model
 
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row()->giftcard_id;
+			return $query->getRow()->giftcard_id;
 		}
 
 		return FALSE;
@@ -103,7 +103,7 @@ class Giftcard extends Model
 	public function get_multiple_info($giftcard_ids)
 	{
 		$builder = $this->db->table('giftcards');
-		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$builder->whereIn('giftcard_id', $giftcard_ids);
 		$builder->where('deleted', 0);
 		$builder->orderBy('giftcard_number', 'asc');
 
@@ -119,8 +119,8 @@ class Giftcard extends Model
 		{
 			if($builder->insert('giftcards', $giftcard_data))
 			{
-				$giftcard_data['giftcard_number'] = $this->db->insert_id();
-				$giftcard_data['giftcard_id'] = $this->db->insert_id();
+				$giftcard_data['giftcard_number'] = $this->db->insertID();
+				$giftcard_data['giftcard_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -138,7 +138,7 @@ class Giftcard extends Model
 	*/
 	public function update_multiple($giftcard_data, $giftcard_ids)
 	{
-		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$builder->whereIn('giftcard_id', $giftcard_ids);
 
 		return $builder->update('giftcards', $giftcard_data);
 	}
@@ -158,7 +158,7 @@ class Giftcard extends Model
 	*/
 	public function delete_list($giftcard_ids)
 	{
-		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$builder->whereIn('giftcard_id', $giftcard_ids);
 
 		return $builder->update('giftcards', array('deleted' => 1));
  	}
@@ -171,24 +171,24 @@ class Giftcard extends Model
 		$suggestions = array();
 
 		$builder = $this->db->table('giftcards');
-		$this->db->like('giftcard_number', $search);
+		$builder->like('giftcard_number', $search);
 		$builder->where('deleted', 0);
 		$builder->orderBy('giftcard_number', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[]=array('label' => $row->giftcard_number);
 		}
 
  		$builder = $this->db->table('customers');
-		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people', 'customers.person_id = people.person_id', 'left');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		$builder->orderBy('last_name', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('label' => $row->first_name.' '.$row->last_name);
 		}
@@ -218,31 +218,31 @@ class Giftcard extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(giftcards.giftcard_id) as count');
+			$builder->select('COUNT(giftcards.giftcard_id) as count');
 		}
 
 		$builder = $this->db->table('giftcards AS giftcards');
-		$this->db->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
-		$this->db->group_start();
-			$this->db->like('person.first_name', $search);
-			$this->db->or_like('person.last_name', $search);
-			$this->db->or_like('CONCAT(person.first_name, " ", person.last_name)', $search);
-			$this->db->or_like('giftcards.giftcard_number', $search);
-			$this->db->or_like('giftcards.person_id', $search);
-		$this->db->group_end();
+		$builder->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
+		$builder->groupStart();
+			$builder->like('person.first_name', $search);
+			$builder->orLike('person.last_name', $search);
+			$builder->orLike('CONCAT(person.first_name, " ", person.last_name)', $search);
+			$builder->orLike('giftcards.giftcard_number', $search);
+			$builder->orLike('giftcards.person_id', $search);
+		$builder->groupEnd();
 		$builder->where('giftcards.deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -261,7 +261,7 @@ class Giftcard extends Model
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_number', $giftcard_number);
 
-		return $builder->get()->row()->value;
+		return $builder->get()->getRow()->value;
 	}
 
 	/*
@@ -315,7 +315,7 @@ class Giftcard extends Model
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_number', $giftcard_number);
 
-		return $builder->get()->row()->person_id;
+		return $builder->get()->getRow()->person_id;
 	}
 }
 ?>

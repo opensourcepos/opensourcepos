@@ -48,14 +48,14 @@ class Summary_sales_taxes extends Summary_report
 
 		$query = $this->db->query("SELECT reporting_authority, jurisdiction_name, tax_category, tax_rate,
 			SUM(sale_tax_amount) AS tax
-			FROM " . $this->db->dbprefix('sales_taxes') . " AS sales_taxes
-			JOIN " . $this->db->dbprefix('sales') . " AS sales ON sales_taxes.sale_id = sales.sale_id
-			JOIN " . $this->db->dbprefix('tax_categories') . " AS tax_categories ON sales_taxes.tax_category_id = tax_categories.tax_category_id
-			JOIN " . $this->db->dbprefix('tax_jurisdictions') . " AS tax_jurisdictions ON sales_taxes.jurisdiction_id = tax_jurisdictions.jurisdiction_id "
+			FROM " . $this->db->prefixTable('sales_taxes') . " AS sales_taxes
+			JOIN " . $this->db->prefixTable('sales') . " AS sales ON sales_taxes.sale_id = sales.sale_id
+			JOIN " . $this->db->prefixTable('tax_categories') . " AS tax_categories ON sales_taxes.tax_category_id = tax_categories.tax_category_id
+			JOIN " . $this->db->prefixTable('tax_jurisdictions') . " AS tax_jurisdictions ON sales_taxes.jurisdiction_id = tax_jurisdictions.jurisdiction_id "
 			. $where .
 			"GROUP BY reporting_authority, jurisdiction_name, tax_category; ");
 
-		return $query->result_array();
+		return $query->getResultArray();
 	}
 }
 ?>

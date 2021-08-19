@@ -37,7 +37,7 @@ class Item_quantity extends Model
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
         $builder->where('location_id', $location_id);
-        $result = $builder->get()->row();
+        $result = $builder->get()->getRow();
         if(empty($result) == TRUE)
         {
             //Get empty base parent object, as $item_id is NOT an item
@@ -84,7 +84,7 @@ class Item_quantity extends Model
 	*/
 	public function reset_quantity_list($item_ids)
 	{
-        $this->db->where_in('item_id', $item_ids);
+        $builder->whereIn('item_id', $item_ids);
 
         return $builder->update('item_quantities', array('quantity' => 0));
 	}

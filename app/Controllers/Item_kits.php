@@ -70,7 +70,7 @@ class Item_kits extends Secure_Controller
 		$total_rows = $this->Item_kit->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($item_kits->result() as $item_kit)
+		foreach($item_kits->getResult() as $item_kit)
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
 			$item_kit = $this->_add_totals_to_item_kit($item_kit);

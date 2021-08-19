@@ -25,7 +25,7 @@ class Summary_employees extends Summary_report
 	{
 		parent::_select($inputs);
 
-		$this->db->select('
+		$builder->select('
 				MAX(CONCAT(employee_p.first_name, " ", employee_p.last_name)) AS employee,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased,
 				COUNT(DISTINCT sales.sale_id) AS sales
@@ -36,7 +36,7 @@ class Summary_employees extends Summary_report
 	{
 		parent::_from();
 
-		$this->db->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
+		$builder->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
 	}
 
 	protected function _group_order()

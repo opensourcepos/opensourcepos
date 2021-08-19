@@ -29,7 +29,7 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->Expense_category->get_info($builder->get()->row()->expense_category_id);
+		return $this->Expense_category->get_info($builder->get()->getRow()->expense_category_id);
 	}
 
 	/*
@@ -40,13 +40,13 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->Employee->get_info($builder->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	public function get_multiple_info($expense_ids)
 	{
 		$builder = $this->db->table('expenses');
-		$this->db->where_in('expenses.expense_id', $expense_ids);
+		$builder->whereIn('expenses.expense_id', $expense_ids);
 		$builder->orderBy('expense_id', 'asc');
 
 		return $builder->get();
@@ -68,11 +68,11 @@ class Expense extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(DISTINCT expenses.expense_id) as count');
+			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
 		else
 		{
-			$this->db->select('
+			$builder->select('
 				expenses.expense_id,
 				MAX(expenses.date) AS date,
 				MAX(suppliers.company_name) AS supplier_name,
@@ -88,19 +88,19 @@ class Expense extends Model
 		}
 
 		$builder = $this->db->table('expenses AS expenses');
-		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
+		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
 
-		$this->db->group_start();
-			$this->db->like('employees.first_name', $search);
-			$this->db->or_like('expenses.date', $search);
-			$this->db->or_like('employees.last_name', $search);
-			$this->db->or_like('expenses.payment_type', $search);
-			$this->db->or_like('expenses.amount', $search);
-			$this->db->or_like('expense_categories.category_name', $search);
-			$this->db->or_like('CONCAT(employees.first_name, " ", employees.last_name)', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+			$builder->like('employees.first_name', $search);
+			$builder->orLike('expenses.date', $search);
+			$builder->orLike('employees.last_name', $search);
+			$builder->orLike('expenses.payment_type', $search);
+			$builder->orLike('expenses.amount', $search);
+			$builder->orLike('expense_categories.category_name', $search);
+			$builder->orLike('CONCAT(employees.first_name, " ", employees.last_name)', $search);
+		$builder->groupEnd();
 
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
@@ -115,36 +115,36 @@ class Expense extends Model
 
 		if($filters['only_debit'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('Expenses.debit'));
+			$builder->like('expenses.payment_type', lang('Expenses.debit'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('Expenses.credit'));
+			$builder->like('expenses.payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->group_start();
-				$this->db->like('expenses.payment_type', lang('Expenses.cash'));
+			$builder->groupStart();
+				$builder->like('expenses.payment_type', lang('Expenses.cash'));
 				$this->db->or_where('expenses.payment_type IS NULL');
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('Expenses.due'));
+			$builder->like('expenses.payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('expenses.payment_type', lang('Expenses.check'));
+			$builder->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$this->db->group_by('expense_id');
@@ -153,7 +153,7 @@ class Expense extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -164,7 +164,7 @@ class Expense extends Model
 	*/
 	public function get_info($expense_id)
 	{
-		$this->db->select('
+		$builder->select('
 			expenses.expense_id AS expense_id,
 			expenses.date AS date,
 			suppliers.company_name AS supplier_name,
@@ -182,15 +182,15 @@ class Expense extends Model
 			expense_categories.category_name AS category_name
 		');
 		$builder = $this->db->table('expenses AS expenses');
-		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
+		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
 		$builder->where('expense_id', $expense_id);
 
 		$query = $builder->get();
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -218,7 +218,7 @@ class Expense extends Model
 		{
 			if($builder->insert('expenses', $expense_data))
 			{
-				$expense_data['expense_id'] = $this->db->insert_id();
+				$expense_data['expense_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -240,7 +240,7 @@ class Expense extends Model
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
-			$this->db->where_in('expense_id', $expense_ids);
+			$builder->whereIn('expense_id', $expense_ids);
 			$success = $builder->update('expenses', array('deleted'=>1));
 		$this->db->transComplete();
 
@@ -253,7 +253,7 @@ class Expense extends Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
+		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder = $this->db->table('expenses');
 		$builder->where('deleted', $filters['is_deleted']);
 
@@ -268,32 +268,32 @@ class Expense extends Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Expenses.cash'));
+			$builder->like('payment_type', lang('Expenses.cash'));
 		}
 
 		if($filters['only_due'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Expenses.due'));
+			$builder->like('payment_type', lang('Expenses.due'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Expenses.check'));
+			$builder->like('payment_type', lang('Expenses.check'));
 		}
 
 		if($filters['only_credit'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Expenses.credit'));
+			$builder->like('payment_type', lang('Expenses.credit'));
 		}
 
 		if($filters['only_debit'] != FALSE)
 		{
-			$this->db->like('payment_type', lang('Expenses.debit'));
+			$builder->like('payment_type', lang('Expenses.debit'));
 		}
 
 		$this->db->group_by('payment_type');
 
-		$payments = $builder->get()->result_array();
+		$payments = $builder->get()->getResultArray();
 
 		return $payments;
 	}

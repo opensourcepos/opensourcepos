@@ -25,16 +25,16 @@ class Inventory_low extends Report
 			item_quantities.quantity, 
 			items.reorder_level, 
 			stock_locations.location_name
-			FROM " . $this->db->dbprefix('items') . " AS items
-			JOIN " . $this->db->dbprefix('item_quantities') . " AS item_quantities ON items.item_id = item_quantities.item_id
-			JOIN " . $this->db->dbprefix('stock_locations') . " AS stock_locations ON item_quantities.location_id = stock_locations.location_id
+			FROM " . $this->db->prefixTable('items') . " AS items
+			JOIN " . $this->db->prefixTable('item_quantities') . " AS item_quantities ON items.item_id = item_quantities.item_id
+			JOIN " . $this->db->prefixTable('stock_locations') . " AS stock_locations ON item_quantities.location_id = stock_locations.location_id
 			WHERE items.deleted = 0
 			AND items.stock_type = 0
 			AND item_quantities.quantity <= items.reorder_level
 			AND stock_locations.deleted = 0
 			ORDER BY items.name");
 
-		return $query->result_array();
+		return $query->getResultArray();
 	}
 
 	public function getSummaryData(array $inputs)

@@ -18,28 +18,28 @@ class Migration_database_optimizations extends CI_Migration
 		$this->migrate_duplicate_attribute_values(DATE);
 
 		//Select all attributes that have data in more than one column
-		$this->db->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
-		$this->db->group_start();
+		$builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
+		$builder->groupStart();
 			$builder->where('attribute_value IS NOT NULL');
 			$builder->where('attribute_date IS NOT NULL');
-		$this->db->group_end();
+		$builder->groupEnd();
 		$this->db->or_group_start();
 			$builder->where('attribute_value IS NOT NULL');
 			$builder->where('attribute_decimal IS NOT NULL');
-		$this->db->group_end();
+		$builder->groupEnd();
 		$attribute_values = $builder->get('attribute_values');
 
 		$this->db->transStart();
 
 		//Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
-		foreach($attribute_values->result_array() as $attribute_value)
+		foreach($attribute_values->getResultArray() as $attribute_value)
 		{
 			$attribute_links = $this->db->query('SELECT links.definition_id, links.item_id, links.attribute_id, defs.definition_type FROM ospos_attribute_links links JOIN ospos_attribute_definitions defs ON defs.definition_id = links.definition_id where attribute_id = '. $attribute_value['attribute_id']);
 
 			$builder->where('attribute_id', $attribute_value['attribute_id']);
 			$builder->delete('attribute_values');
 
-			foreach($attribute_links->result_array() as $attribute_link)
+			foreach($attribute_links->getResultArray() as $attribute_link)
 			{
 				$builder->where('attribute_id',$attribute_link['attribute_id']);
 				$builder->where('item_id',$attribute_link['item_id']);
@@ -77,14 +77,14 @@ class Migration_database_optimizations extends CI_Migration
 
 		$column = 'attribute_' . strtolower($attribute_type);
 
-		$this->db->select("$column, attribute_id");
+		$builder->select("$column, attribute_id");
 		$this->db->group_by($column);
 		$this->db->having("COUNT($column) > 1");
 		$duplicated_values = $builder->get('attribute_values');
 
-		foreach($duplicated_values->result_array() as $duplicated_value)
+		foreach($duplicated_values->getResultArray() as $duplicated_value)
 		{
-			$this->db->select('attribute_id');
+			$builder->select('attribute_id');
 			$builder->where($column, $duplicated_value[$column]);
 			$attribute_ids_to_fix = $builder->get('attribute_values');
 
@@ -101,7 +101,7 @@ class Migration_database_optimizations extends CI_Migration
 	 */
 	private function reassign_duplicate_attribute_values($attribute_ids_to_fix, $attribute_value)
 	{
-		foreach($attribute_ids_to_fix->result_array() as $attribute_id)
+		foreach($attribute_ids_to_fix->getResultArray() as $attribute_id)
 		{
 			//Update attribute_link with the attribute_id we are keeping
 			$builder->where('attribute_id', $attribute_id['attribute_id']);
@@ -111,7 +111,7 @@ class Migration_database_optimizations extends CI_Migration
 			if($attribute_id['attribute_id'] !== $attribute_value['attribute_id'])
 			{
 				$builder->where('attribute_id', $attribute_id['attribute_id']);
-				$builder->delete($this->db->dbprefix('attribute_values'));
+				$builder->delete($this->db->prefixTable('attribute_values'));
 			}
 		}
 	}

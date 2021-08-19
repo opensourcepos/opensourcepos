@@ -56,12 +56,12 @@ class Inventory extends Model
 
 	public function get_inventory_sum($item_id)
 	{
-		$this->db->select('SUM(trans_inventory) AS sum, MAX(trans_location) AS location_id');
+		$builder->select('SUM(trans_inventory) AS sum, MAX(trans_location) AS location_id');
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
 		$this->db->group_by('trans_location');
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 }
 ?>

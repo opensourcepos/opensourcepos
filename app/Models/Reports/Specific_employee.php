@@ -50,7 +50,7 @@ class Specific_employee extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id,
+		$builder->select('sale_id,
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
@@ -78,19 +78,19 @@ class Specific_employee extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
@@ -116,20 +116,20 @@ class Specific_employee extends Report
 		$builder->orderBy('MAX(sale_date)');
 
 		$data = array();
-		$data['summary'] = $builder->get()->result_array();
+		$data['summary'] = $builder->get()->getResultArray();
 		$data['details'] = array();
 		$data['rewards'] = array();
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
+			$builder->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
 			$builder = $this->db->table('sales_items_temp');
 			$builder->where('sale_id', $value['sale_id']);
-			$data['details'][$key] = $builder->get()->result_array();
-			$this->db->select('used, earned');
+			$data['details'][$key] = $builder->get()->getResultArray();
+			$builder->select('used, earned');
 			$builder = $this->db->table('sales_reward_points');
 			$builder->where('sale_id', $value['sale_id']);
-			$data['rewards'][$key] = $builder->get()->result_array();
+			$data['rewards'][$key] = $builder->get()->getResultArray();
 		}
 
 		return $data;
@@ -137,7 +137,7 @@ class Specific_employee extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
 
 		$builder->where('employee_id', $inputs['employee_id']);
@@ -145,19 +145,19 @@ class Specific_employee extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{

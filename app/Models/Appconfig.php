@@ -31,9 +31,9 @@ class Appconfig extends Model
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere('key', $key, 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row()->value;
+			return $query->getRow()->value;
 		}
 
 		return $default;

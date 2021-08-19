@@ -69,7 +69,7 @@ class Customers extends Persons
 		$total_rows = $this->Customer->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($customers->result() as $person)
+		foreach($customers->getResult() as $person)
 		{
 			// retrieve the total amount the customer spent so far together with min, max and average values
 			$stats = $this->Customer->get_stats($person->person_id);
@@ -142,7 +142,7 @@ class Customers extends Persons
 		}
 
 		$packages = array('' => lang('Items.none'));
-		foreach($this->Customer_rewards->get_all()->result_array() as $row)
+		foreach($this->Customer_rewards->get_all()->getResultArray() as $row)
 		{
 			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
 		}
@@ -328,7 +328,7 @@ class Customers extends Persons
 
 		$count = 0;
 
-		foreach($customers_info->result() as $info)
+		foreach($customers_info->getResult() as $info)
 		{
 			if($this->Customer->delete($info->person_id))
 			{

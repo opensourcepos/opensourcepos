@@ -9,12 +9,12 @@ class Migration_cashrounding extends CI_Migration
 
 	public function up()
 	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('sales_payments') . ' ADD COLUMN `cash_adjustment` tinyint NOT NULL DEFAULT 0 AFTER `cash_refund`');
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' ADD COLUMN `cash_adjustment` tinyint NOT NULL DEFAULT 0 AFTER `cash_refund`');
 	}
 
 	public function down()
 	{
-		$this->db->query('ALTER TABLE ' . $this->db->dbprefix('sales_payments') . ' DROP COLUMN `cash_adjustment`');
+		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' DROP COLUMN `cash_adjustment`');
 	}
 }
 ?>

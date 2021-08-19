@@ -20,12 +20,12 @@ class Summary_discounts extends Summary_report
 	{
 		if($inputs['discount_type'] == FIXED)
 		{
-			$this->db->select('SUM(sales_items.discount) AS total, MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
+			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
 			$builder->where('discount_type', FIXED);
 		}
 		elseif($inputs['discount_type'] == PERCENT)
 		{
-			$this->db->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
+			$builder->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
 			$builder->where('discount_type', PERCENT);
 		}	
 		
@@ -35,11 +35,11 @@ class Summary_discounts extends Summary_report
 		
 
 		$builder = $this->db->table('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
 		$this->_where($inputs);
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 }
 ?>

@@ -33,7 +33,7 @@ class Giftcards extends Secure_Controller
 		$total_rows = $this->Giftcard->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($giftcards->result() as $giftcard)
+		foreach($giftcards->getResult() as $giftcard)
 		{
 			$data_rows[] = $this->xss_clean(get_giftcard_data_row($giftcard));
 		}

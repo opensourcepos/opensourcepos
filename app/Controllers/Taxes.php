@@ -19,17 +19,17 @@ class Taxes extends Secure_Controller
 
 	public function index()
 	{
-		$data['tax_codes'] = $this->xss_clean($this->Tax_code->get_all()->result_array());
+		$data['tax_codes'] = $this->xss_clean($this->Tax_code->get_all()->getResultArray());
 		if (count($data['tax_codes']) == 0)
 		{
 			$data['tax_codes'] = $this->Tax_code->get_empty_row();
 		}
-		$data['tax_categories'] = $this->xss_clean($this->Tax_category->get_all()->result_array());
+		$data['tax_categories'] = $this->xss_clean($this->Tax_category->get_all()->getResultArray());
 		if (count($data['tax_categories']) == 0)
 		{
 			$data['tax_categories'] = $this->Tax_category->get_empty_row();
 		}
-		$data['tax_jurisdictions'] = $this->xss_clean($this->Tax_jurisdiction->get_all()->result_array());
+		$data['tax_jurisdictions'] = $this->xss_clean($this->Tax_jurisdiction->get_all()->getResultArray());
 		if (count($data['tax_jurisdictions']) == 0)
 		{
 			$data['tax_jurisdictions'] = $this->Tax_jurisdiction->get_empty_row();
@@ -69,7 +69,7 @@ class Taxes extends Secure_Controller
 		$total_rows = $this->Tax->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_rates->result() as $tax_rate_row)
+		foreach($tax_rates->getResult() as $tax_rate_row)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
 		}
@@ -508,7 +508,7 @@ class Taxes extends Secure_Controller
 
 	public function ajax_tax_codes()
 	{
-		$tax_codes = $this->Tax_code->get_all()->result_array();
+		$tax_codes = $this->Tax_code->get_all()->getResultArray();
 
 		$tax_codes = $this->xss_clean($tax_codes);
 
@@ -517,7 +517,7 @@ class Taxes extends Secure_Controller
 
 	public function ajax_tax_categories()
 	{
-		$tax_categories = $this->Tax_category->get_all()->result_array();
+		$tax_categories = $this->Tax_category->get_all()->getResultArray();
 
 		$tax_categories = $this->xss_clean($tax_categories);
 
@@ -526,7 +526,7 @@ class Taxes extends Secure_Controller
 
 	public function ajax_tax_jurisdictions()
 	{
-		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->result_array();
+		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->getResultArray();
 
 		if($this->config->item('tax_included') == '1')
 		{

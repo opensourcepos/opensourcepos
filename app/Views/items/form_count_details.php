@@ -85,7 +85,7 @@
 		 * the tbody content of the table will be filled in by the javascript (see bottom of page)
 		*/
 
-		$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->result_array();
+		$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
 		$employee_name = array();
 
 		foreach($inventory_array as $row)

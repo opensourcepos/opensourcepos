@@ -40,7 +40,7 @@ class Cashups extends Secure_Controller
 		$cash_ups = $this->Cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Cashup->get_found_rows($search, $filters);
 		$data_rows = array();
-		foreach($cash_ups->result() as $cash_up)
+		foreach($cash_ups->getResult() as $cash_up)
 		{
 			$data_rows[] = $this->xss_clean(get_cash_up_data_row($cash_up));
 		}
@@ -53,7 +53,7 @@ class Cashups extends Secure_Controller
 		$data = array();
 
 		$data['employees'] = array();
-		foreach($this->Employee->get_all()->result() as $employee)
+		foreach($this->Employee->get_all()->getResult() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
 			{

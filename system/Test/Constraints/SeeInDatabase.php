@@ -48,7 +48,7 @@ class SeeInDatabase extends Constraint
 	 */
 	public function matches($table): bool
 	{
-		return $this->db->table($table)->where($this->data)->countAllResults() > 0;
+		return $this->db->table($table)->where($this->data)->getNumRows() > 0;
 	}
 
 	/**

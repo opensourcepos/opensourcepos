@@ -42,7 +42,7 @@ class Dinner_table extends Model
 		$this->db->or_where('dinner_table_id', $current_dinner_table_id);
 		$builder->where('deleted', 0);
 
-		$empty_tables = $builder->get()->result_array();
+		$empty_tables = $builder->get()->getResultArray();
 
 		$empty_tables_array = array();
 		foreach($empty_tables as $empty_table)
@@ -64,7 +64,7 @@ class Dinner_table extends Model
 			$builder = $this->db->table('dinner_tables');
 			$builder->where('dinner_table_id', $dinner_table_id);
 
-			return $builder->get()->row()->name;
+			return $builder->get()->getRow()->name;
 		}
 	}
 
@@ -79,7 +79,7 @@ class Dinner_table extends Model
 			$builder = $this->db->table('dinner_tables');
 			$builder->where('dinner_table_id', $dinner_table_id);
 
-			return ($builder->get()->row()->status == 1);
+			return ($builder->get()->getRow()->status == 1);
 		}
 	}
 

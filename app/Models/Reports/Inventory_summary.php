@@ -24,10 +24,10 @@ class Inventory_summary extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select($this->Item->get_item_name('name') . ', items.item_number, items.category, item_quantities.quantity, (item_quantities.quantity * items.qty_per_pack) as low_sell_quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
+		$builder->select($this->Item->get_item_name('name') . ', items.item_number, items.category, item_quantities.quantity, (item_quantities.quantity * items.qty_per_pack) as low_sell_quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
 		$builder = $this->db->table('items AS items');
-		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
-		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+		$builder->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
+		$builder->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
 		$builder->where('items.deleted', 0);
 		$builder->where('items.stock_type', 0);
 		$builder->where('stock_locations.deleted', 0);
@@ -50,7 +50,7 @@ class Inventory_summary extends Report
         $builder->orderBy('items.name');
 		$builder->orderBy('items.qty_per_pack');
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	/**

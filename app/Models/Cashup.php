@@ -29,13 +29,13 @@ class Cashup extends Model
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		return $this->Employee->get_info($builder->get()->row()->employee_id);
+		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	public function get_multiple_info($cash_up_ids)
 	{
 		$builder = $this->db->table('cash_up');
-		$this->db->where_in('cashup_id', $cashup_ids);
+		$builder->whereIn('cashup_id', $cashup_ids);
 		$builder->orderBy('cashup_id', 'asc');
 
 		return $builder->get();
@@ -57,10 +57,10 @@ class Cashup extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(cash_up.cashup_id) as count');
+			$builder->select('COUNT(cash_up.cashup_id) as count');
 		}
 
-		$this->db->select('
+		$builder->select('
 			cash_up.cashup_id,
 			MAX(cash_up.open_date) AS open_date,
 			MAX(cash_up.close_date) AS close_date,
@@ -81,19 +81,19 @@ class Cashup extends Model
 			MAX(close_employees.last_name) AS close_last_name
 		');
 		$builder = $this->db->table('cash_up AS cash_up');
-		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
-		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
+		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
+		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
-		$this->db->group_start();
-			$this->db->like('cash_up.open_date', $search);
-			$this->db->or_like('open_employees.first_name', $search);
-			$this->db->or_like('open_employees.last_name', $search);
-			$this->db->or_like('close_employees.first_name', $search);
-			$this->db->or_like('close_employees.last_name', $search);
-			$this->db->or_like('cash_up.closed_amount_total', $search);
-			$this->db->or_like('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
-			$this->db->or_like('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+			$builder->like('cash_up.open_date', $search);
+			$builder->orLike('open_employees.first_name', $search);
+			$builder->orLike('open_employees.last_name', $search);
+			$builder->orLike('close_employees.first_name', $search);
+			$builder->orLike('close_employees.last_name', $search);
+			$builder->orLike('cash_up.closed_amount_total', $search);
+			$builder->orLike('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
+			$builder->orLike('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
+		$builder->groupEnd();
 
 		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
@@ -118,7 +118,7 @@ class Cashup extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -129,7 +129,7 @@ class Cashup extends Model
 	*/
 	public function get_info($cashup_id)
 	{
-		$this->db->select('
+		$builder->select('
 			cash_up.cashup_id AS cashup_id,
 			cash_up.open_date AS open_date,
 			cash_up.close_date AS close_date,
@@ -151,14 +151,14 @@ class Cashup extends Model
 			close_employees.last_name AS close_last_name
 		');
 		$builder = $this->db->table('cash_up AS cash_up');
-		$this->db->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
-		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
+		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
+		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 		$builder->where('cashup_id', $cashup_id);
 
 		$query = $builder->get();
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -184,7 +184,7 @@ class Cashup extends Model
 		{
 			if($builder->insert('cash_up', $cash_up_data))
 			{
-				$cash_up_data['cashup_id'] = $this->db->insert_id();
+				$cash_up_data['cashup_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -206,7 +206,7 @@ class Cashup extends Model
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
-			$this->db->where_in('cashup_id', $cashup_ids);
+			$builder->whereIn('cashup_id', $cashup_ids);
 			$success = $builder->update('cash_up', array('deleted'=>1));
 		$this->db->transComplete();
 

@@ -403,7 +403,7 @@ class Tax_lib
 
 	public function get_tax_code_options()
 	{
-		$tax_codes = $this->CI->Tax_code->get_all()->result_array();
+		$tax_codes = $this->CI->Tax_code->get_all()->getResultArray();
 		$tax_code_options = array();
 		$tax_code_options[''] = '';
 		foreach($tax_codes as $tax_code)
@@ -418,7 +418,7 @@ class Tax_lib
 
 	public function get_tax_jurisdiction_options()
 	{
-		$tax_jurisdictions = $this->CI->Tax_jurisdiction->get_all()->result_array();
+		$tax_jurisdictions = $this->CI->Tax_jurisdiction->get_all()->getResultArray();
 		$tax_jurisdiction_options = array();
 		$tax_jurisdiction_options[0] = '';
 		foreach($tax_jurisdictions as $tax_jurisdiction)
@@ -433,7 +433,7 @@ class Tax_lib
 
 	public function get_tax_category_options()
 	{
-		$tax_categories = $this->CI->Tax_category->get_all()->result_array();
+		$tax_categories = $this->CI->Tax_category->get_all()->getResultArray();
 		$tax_category_options = array();
 		$tax_category_options[0] = '';
 		foreach($tax_categories as $tax_category)

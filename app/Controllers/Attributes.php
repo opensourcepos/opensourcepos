@@ -33,7 +33,7 @@ class Attributes extends Secure_Controller
 		$total_rows = $this->Attribute->get_found_rows($search);
 
 		$data_rows = [];
-		foreach($attributes->result() as $attribute)
+		foreach($attributes->getResult() as $attribute)
 		{
 			$attribute->definition_flags = $this->get_attributes($attribute->definition_flags);
 			$data_rows[] = get_attribute_definition_data_row($attribute, $this);

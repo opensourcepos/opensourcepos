@@ -16,7 +16,7 @@ class Employee extends Person
 	public function exists($person_id)
 	{
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
+		$builder->join('people', 'people.person_id = employees.person_id');
 		$builder->where('employees.person_id', $person_id);
 
 		return ($builder->get()->getNumRows() == 1);
@@ -39,7 +39,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/*
@@ -49,9 +49,9 @@ class Employee extends Person
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('deleted', 0);
-		$this->db->join('people', 'employees.person_id = people.person_id');
+		$builder->join('people', 'employees.person_id = people.person_id');
 		$builder->orderBy('last_name', 'asc');
-		$this->db->limit($limit);
+		$builder->limit($limit);
 		$this->db->offset($offset);
 
 		return $builder->get();
@@ -63,13 +63,13 @@ class Employee extends Person
 	public function get_info($employee_id)
 	{
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
+		$builder->join('people', 'people.person_id = employees.person_id');
 		$builder->where('employees.person_id', $employee_id);
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -93,8 +93,8 @@ class Employee extends Person
 	public function get_multiple_info($employee_ids)
 	{
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'people.person_id = employees.person_id');
-		$this->db->where_in('employees.person_id', $employee_ids);
+		$builder->join('people', 'people.person_id = employees.person_id');
+		$builder->whereIn('employees.person_id', $employee_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -191,12 +191,12 @@ class Employee extends Person
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		$this->db->where_in('person_id', $employee_ids);
+		$builder->whereIn('person_id', $employee_ids);
 		//Delete permissions
 		if($builder->delete('grants'))
 		{
 			//delete from employee table
-			$this->db->where_in('person_id', $employee_ids);
+			$builder->whereIn('person_id', $employee_ids);
 			$success = $builder->update('employees', array('deleted' => 1));
 		}
 
@@ -213,57 +213,57 @@ class Employee extends Person
 		$suggestions = array();
 
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people', 'employees.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
 		$builder->orderBy('last_name', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
 		}
 
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
+		$builder->join('people', 'employees.person_id = people.person_id');
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
-		$this->db->like('email', $search);
+		$builder->like('email', $search);
 		$builder->orderBy('email', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->email);
 		}
 
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
+		$builder->join('people', 'employees.person_id = people.person_id');
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
-		$this->db->like('username', $search);
+		$builder->like('username', $search);
 		$builder->orderBy('username', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->username);
 		}
 
 		$builder = $this->db->table('employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
+		$builder->join('people', 'employees.person_id = people.person_id');
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
-		$this->db->like('phone_number', $search);
+		$builder->like('phone_number', $search);
 		$builder->orderBy('phone_number', 'asc');
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
 		}
@@ -293,32 +293,32 @@ class Employee extends Person
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(employees.person_id) as count');
+			$builder->select('COUNT(employees.person_id) as count');
 		}
 
 		$builder = $this->db->table('employees AS employees');
-		$this->db->join('people', 'employees.person_id = people.person_id');
-		$this->db->group_start();
-			$this->db->like('first_name', $search);
-			$this->db->or_like('last_name', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('phone_number', $search);
-			$this->db->or_like('username', $search);
-			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-		$this->db->group_end();
+		$builder->join('people', 'employees.person_id = people.person_id');
+		$builder->groupStart();
+			$builder->like('first_name', $search);
+			$builder->orLike('last_name', $search);
+			$builder->orLike('email', $search);
+			$builder->orLike('phone_number', $search);
+			$builder->orLike('username', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -331,9 +331,9 @@ class Employee extends Person
 	{
 		$query = $builder->getWhere('employees', array('username' => $username, 'deleted' => 0), 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
 			// compare passwords depending on the hash version
 			if($row->hash_version == 1 && $row->password == md5($password))
@@ -393,7 +393,7 @@ class Employee extends Person
 	public function has_module_grant($permission_id, $person_id)
 	{
 		$builder = $this->db->table('grants');
-		$this->db->like('permission_id', $permission_id, 'after');
+		$builder->like('permission_id', $permission_id, 'after');
 		$builder->where('person_id', $person_id);
 		$result_count = $builder->get()->getNumRows();
 
@@ -411,7 +411,7 @@ class Employee extends Person
 	public function has_subpermissions($permission_id)
 	{
 		$builder = $this->db->table('permissions');
-		$this->db->like('permission_id', $permission_id.'_', 'after');
+		$builder->like('permission_id', $permission_id.'_', 'after');
 
 		return ($builder->get()->getNumRows() == 0);
 	}
@@ -429,7 +429,7 @@ class Employee extends Person
 
 		$query = $builder->getWhere('grants', array('person_id' => $person_id, 'permission_id' => $permission_id), 1);
 
-		return ($query->num_rows() == 1);
+		return ($query->getNumRows() == 1);
 	}
 
 	/**
@@ -437,12 +437,12 @@ class Employee extends Person
 	 */
 	public function get_menu_group($permission_id, $person_id)
 	{
-		$this->db->select('menu_group');
+		$builder->select('menu_group');
 		$builder = $this->db->table('grants');
 		$builder->where('permission_id', $permission_id);
 		$builder->where('person_id', $person_id);
 
-		$row = $builder->get()->row();
+		$row = $builder->get()->getRow();
 
 		// If no grants are assigned yet then set the default to 'home'
 		if($row == NULL)
@@ -463,7 +463,7 @@ class Employee extends Person
 		$builder = $this->db->table('grants');
 		$builder->where('person_id', $person_id);
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	/*
@@ -473,9 +473,9 @@ class Employee extends Person
 	{
 		$query = $builder->getWhere('employees', array('username' => $username, 'deleted' => 0), 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			$row = $query->row();
+			$row = $query->getRow();
 
 			// compare passwords
 			if(password_verify($password, $row->password))

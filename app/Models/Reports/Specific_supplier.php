@@ -35,7 +35,7 @@ class Specific_supplier extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id,
+		$builder->select('sale_id,
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
@@ -65,19 +65,19 @@ class Specific_supplier extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
@@ -102,12 +102,12 @@ class Specific_supplier extends Report
 		$this->db->group_by('item_id');
 		$builder->orderBy('sale_id');
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
 
 		$builder->where('supplier_id', $inputs['supplier_id']);
@@ -115,19 +115,19 @@ class Specific_supplier extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{

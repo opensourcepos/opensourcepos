@@ -35,7 +35,7 @@ class Migration_remove_duplicate_links extends CI_Migration
 		$this->db->having('COUNT(attribute_id) > 1');
 		$duplicated_links = $builder->get('attribute_links');
 
-		foreach($duplicated_links->result_array() as $duplicated_link)
+		foreach($duplicated_links->getResultArray() as $duplicated_link)
 		{
 			$builder->where('sale_id', NULL);
 			$builder->where('receiving_id', NULL);

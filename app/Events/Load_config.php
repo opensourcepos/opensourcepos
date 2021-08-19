@@ -17,7 +17,7 @@ class Load_config
             $CI->session->sess_destroy();
         }
 
-        foreach($CI->Appconfig->get_all()->result() as $app_config)
+        foreach($CI->Appconfig->get_all()->getResult() as $app_config)
         {
             $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
         }

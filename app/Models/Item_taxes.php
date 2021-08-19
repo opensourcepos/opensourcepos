@@ -19,7 +19,7 @@ class Item_taxes extends Model
 		$builder->where('item_id',$item_id);
 
 		//return an array of taxes for an item
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	/*

@@ -26,7 +26,7 @@ class Summary_items extends Summary_report
 	{
 		parent::_select($inputs);
 
-		$this->db->select('
+		$builder->select('
 				MAX(items.name) AS name,
 				MAX(items.category) AS category,
 				MAX(items.unit_price) AS unit_price,
@@ -38,7 +38,7 @@ class Summary_items extends Summary_report
 	{
 		parent::_from();
 
-		$this->db->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
+		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
 	protected function _group_order()

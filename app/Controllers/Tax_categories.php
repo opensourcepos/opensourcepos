@@ -34,7 +34,7 @@ class Tax_categories extends Secure_Controller
 		$total_rows = $this->Tax_category->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_categories->result() as $tax_category)
+		foreach($tax_categories->getResult() as $tax_category)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_category_data_row($tax_category));
 		}

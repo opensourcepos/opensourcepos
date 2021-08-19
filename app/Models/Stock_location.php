@@ -29,10 +29,10 @@ class Stock_location extends Model
 	public function get_undeleted_all($module_id = 'items')
 	{
 		$builder = $this->db->table('stock_locations');
-		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
-		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
+		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
+		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
 		$builder->where('person_id', $this->session->userdata('person_id'));
-		$this->db->like('permissions.permission_id', $module_id, 'after');
+		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('deleted', 0);
 
 		return $builder->get();
@@ -52,7 +52,7 @@ class Stock_location extends Model
 
 	public function get_allowed_locations($module_id = 'items')
 	{
-		$stock = $this->get_undeleted_all($module_id)->result_array();
+		$stock = $this->get_undeleted_all($module_id)->getResultArray();
 		$stock_locations = array();
 		foreach($stock as $location_data)
 		{
@@ -65,10 +65,10 @@ class Stock_location extends Model
 	public function is_allowed_location($location_id, $module_id = 'items')
 	{
 		$builder = $this->db->table('stock_locations');
-		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
-		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
+		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
+		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
 		$builder->where('person_id', $this->session->userdata('person_id'));
-		$this->db->like('permissions.permission_id', $module_id, 'after');
+		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('stock_locations.location_id', $location_id);
 		$builder->where('deleted', 0);
 
@@ -78,14 +78,14 @@ class Stock_location extends Model
 	public function get_default_location_id($module_id = 'items')
 	{
 		$builder = $this->db->table('stock_locations');
-		$this->db->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
-		$this->db->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
+		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
+		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
 		$builder->where('person_id', $this->session->userdata('person_id'));
-		$this->db->like('permissions.permission_id', $module_id, 'after');
+		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('deleted', 0);
-		$this->db->limit(1);
+		$builder->limit(1);
 
-		return $builder->get()->row()->location_id;
+		return $builder->get()->getRow()->location_id;
 	}
 
 	public function get_location_name($location_id)
@@ -93,7 +93,7 @@ class Stock_location extends Model
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);
 
-		return $builder->get()->row()->location_name;
+		return $builder->get()->getRow()->location_name;
 	}
 
 	public function get_location_id($location_name)
@@ -101,7 +101,7 @@ class Stock_location extends Model
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_name', $location_name);
 
-		return $builder->get()->row()->location_id;
+		return $builder->get()->getRow()->location_id;
 	}
 
 	public function save(&$location_data, $location_id)
@@ -115,7 +115,7 @@ class Stock_location extends Model
 			$this->db->transStart();
 
 			$builder->insert('stock_locations', $location_data_to_save);
- 			$location_id = $this->db->insert_id();
+ 			$location_id = $this->db->insertID();
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
 			$this->_insert_new_permission('sales', $location_id, $location_name);
@@ -123,7 +123,7 @@ class Stock_location extends Model
 
 			// insert quantities for existing items
 			$items = $this->Item->get_all();
-			foreach($items->result_array() as $item)
+			foreach($items->getResultArray() as $item)
 			{
 				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
 				$builder->insert('item_quantities', $quantity_data);
@@ -160,7 +160,7 @@ class Stock_location extends Model
 
 		// insert grants for new permission
 		$employees = $this->Employee->get_all();
-		foreach($employees->result_array() as $employee)
+		foreach($employees->getResultArray() as $employee)
 		{
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
 			$menu_group = $this->Employee->get_menu_group($module, $employee['person_id']);

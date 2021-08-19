@@ -202,9 +202,9 @@ class Config extends Secure_Controller
 
 	public function index()
 	{
-		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
-		$data['dinner_tables'] = $this->Dinner_table->get_all()->result_array();
-		$data['customer_rewards'] = $this->Customer_rewards->get_all()->result_array();
+		$data['stock_locations'] = $this->Stock_location->get_all()->getResultArray();
+		$data['dinner_tables'] = $this->Dinner_table->get_all()->getResultArray();
+		$data['customer_rewards'] = $this->Customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
@@ -532,7 +532,7 @@ class Config extends Secure_Controller
 
 	public function ajax_stock_locations()
 	{
-		$stock_locations = $this->Stock_location->get_all()->result_array();
+		$stock_locations = $this->Stock_location->get_all()->getResultArray();
 
 		$stock_locations = $this->xss_clean($stock_locations);
 
@@ -541,7 +541,7 @@ class Config extends Secure_Controller
 
 	public function ajax_dinner_tables()
 	{
-		$dinner_tables = $this->Dinner_table->get_all()->result_array();
+		$dinner_tables = $this->Dinner_table->get_all()->getResultArray();
 
 		$dinner_tables = $this->xss_clean($dinner_tables);
 
@@ -550,7 +550,7 @@ class Config extends Secure_Controller
 
 	public function ajax_tax_categories()
 	{
-		$tax_categories = $this->Tax->get_all_tax_categories()->result_array();
+		$tax_categories = $this->Tax->get_all_tax_categories()->getResultArray();
 
 		$tax_categories = $this->xss_clean($tax_categories);
 
@@ -559,7 +559,7 @@ class Config extends Secure_Controller
 
 	public function ajax_customer_rewards()
 	{
-		$customer_rewards = $this->Customer_rewards->get_all()->result_array();
+		$customer_rewards = $this->Customer_rewards->get_all()->getResultArray();
 
 		$customer_rewards = $this->xss_clean($customer_rewards);
 
@@ -601,7 +601,7 @@ class Config extends Secure_Controller
 		}
 
 		// all locations not available in post will be deleted now
-		$deleted_locations = $this->Stock_location->get_all()->result_array();
+		$deleted_locations = $this->Stock_location->get_all()->getResultArray();
 
 		foreach($deleted_locations as $location => $location_data)
 		{
@@ -649,7 +649,7 @@ class Config extends Secure_Controller
 			}
 
 			// all tables not available in post will be deleted now
-			$deleted_tables = $this->Dinner_table->get_all()->result_array();
+			$deleted_tables = $this->Dinner_table->get_all()->getResultArray();
 
 			foreach($deleted_tables as $dinner_tables => $table)
 			{
@@ -739,7 +739,7 @@ class Config extends Secure_Controller
 			}
 
 			// all packages not available in post will be deleted now
-			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
+			$deleted_packages = $this->Customer_rewards->get_all()->getResultArray();
 
 			foreach($deleted_packages as $customer_rewards => $reward_category)
 			{

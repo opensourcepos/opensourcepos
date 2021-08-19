@@ -71,7 +71,7 @@ class Items extends Secure_Controller
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 		$data_rows = [];
 
-		foreach($items->result() as $item)
+		foreach($items->getResult() as $item)
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item));
 
@@ -180,7 +180,7 @@ class Items extends Secure_Controller
 
 		$result = [];
 
-		foreach($item_infos->result() as $item_info)
+		foreach($item_infos->getResult() as $item_info)
 		{
 			$result[$item_info->item_id] = $this->xss_clean(get_item_data_row($item_info));
 		}
@@ -279,7 +279,7 @@ class Items extends Secure_Controller
 
 		$suppliers = array('' => lang('Items.none'));
 
-		foreach($this->Supplier->get_all()->result_array() as $row)
+		foreach($this->Supplier->get_all()->getResultArray() as $row)
 		{
 			$suppliers[$this->xss_clean($row['person_id'])] = $this->xss_clean($row['company_name']);
 		}
@@ -301,7 +301,7 @@ class Items extends Secure_Controller
 			$data['use_destination_based_tax'] = TRUE;
 			$tax_categories = [];
 
-			foreach($this->Tax_category->get_all()->result_array() as $row)
+			foreach($this->Tax_category->get_all()->getResultArray() as $row)
 			{
 				$tax_categories[$this->xss_clean($row['tax_category_id'])] = $this->xss_clean($row['tax_category']);
 			}
@@ -338,7 +338,7 @@ class Items extends Secure_Controller
 		}
 
 		$data['image_path']	= sizeof($images) > 0 ? base_url($images[0]) : '';
-		$stock_locations	= $this->Stock_location->get_undeleted_all()->result_array();
+		$stock_locations	= $this->Stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -376,7 +376,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 		$data['stock_locations'] = [];
-		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
+		$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -401,7 +401,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 		$data['stock_locations'] = [];
-		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
+		$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -420,7 +420,7 @@ class Items extends Secure_Controller
 		$this->barcode_lib = new Barcode_lib();
 
 		$item_ids = explode(':', $item_ids);
-		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->result_array();
+		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
 		$config = $this->barcode_lib->get_barcode_config();
 
 		$data['barcode_config'] = $config;
@@ -481,7 +481,7 @@ class Items extends Secure_Controller
 	{
 		$suppliers = array('' => lang('Items.none'));
 
-		foreach($this->Supplier->get_all()->result_array() as $row)
+		foreach($this->Supplier->get_all()->getResultArray() as $row)
 		{
 			$row = $this->xss_clean($row);
 			$suppliers[$row['person_id']] = $row['company_name'];
@@ -601,7 +601,7 @@ class Items extends Secure_Controller
 			}
 
 			//Save item quantity
-			$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
+			$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
 			foreach($stock_locations as $location)
 			{
 				$updated_quantity = parse_quantity($this->input->post('quantity_' . $location['location_id']));

@@ -19,7 +19,7 @@ class Rewards extends Model
 		{
 			if($builder->insert('sales_reward_points', $rewards_data))
 			{
-				$rewards_data['id'] = $this->db->insert_id();
+				$rewards_data['id'] = $this->db->insertID();
 
 				return TRUE;
 			}

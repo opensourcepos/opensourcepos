@@ -48,7 +48,7 @@ class Secure_Controller extends BaseController
 			$allowed_modules = $this->Module->get_allowed_office_modules($logged_in_employee_info->person_id);
 		}
 
-		foreach($allowed_modules->result() as $module)
+		foreach($allowed_modules->getResult() as $module)
 		{
 			$data['allowed_modules'][] = $module;
 		}

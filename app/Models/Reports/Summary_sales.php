@@ -25,7 +25,7 @@ class Summary_sales extends Summary_report
 	{
 		parent::_select($inputs);
 
-		$this->db->select('
+		$builder->select('
 				DATE(sales.sale_time) AS sale_date,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased,
 				COUNT(DISTINCT sales.sale_id) AS sales

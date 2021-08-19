@@ -29,7 +29,7 @@ class Tax_code extends Model
 		$builder = $this->db->table('tax_codes');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -42,9 +42,9 @@ class Tax_code extends Model
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows()==1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -75,7 +75,7 @@ class Tax_code extends Model
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -87,7 +87,7 @@ class Tax_code extends Model
 	public function get_multiple_info($tax_codes)
 	{
 		$builder = $this->db->table('tax_codes');
-		$this->db->where_in('tax_code', $tax_codes);
+		$builder->whereIn('tax_code', $tax_codes);
 		$builder->orderBy('tax_code_name', 'asc');
 
 		return $builder->get();
@@ -130,7 +130,7 @@ class Tax_code extends Model
 		}
 
 		// all entries not available in post will be deleted now
-		$deleted_tax_codes = $this->get_all()->result_array();
+		$deleted_tax_codes = $this->get_all()->getResultArray();
 
 		foreach($deleted_tax_codes as $key => $tax_code_data)
 		{
@@ -159,7 +159,7 @@ class Tax_code extends Model
 	 */
 	public function delete_list($tax_codes)
 	{
-		$this->db->where_in('tax_code', $tax_codes);
+		$builder->whereIn('tax_code', $tax_codes);
 
 		return $builder->update('tax_codes', array('deleted' => 1));
  	}
@@ -180,27 +180,27 @@ class Tax_code extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(tax_codes.tax_code) as count');
+			$builder->select('COUNT(tax_codes.tax_code) as count');
 		}
 
 		$builder = $this->db->table('tax_codes AS tax_codes');
-		$this->db->group_start();
-		$this->db->like('tax_code_name', $search);
-		$this->db->or_like('tax_code', $search);
-		$this->db->group_end();
+		$builder->groupStart();
+		$builder->like('tax_code_name', $search);
+		$builder->orLike('tax_code', $search);
+		$builder->groupEnd();
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();
@@ -221,9 +221,9 @@ class Tax_code extends Model
 
 		$query = $builder->get();
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row()->tax_code_id;
+			return $query->getRow()->tax_code_id;
 		}
 		else
 		{
@@ -234,9 +234,9 @@ class Tax_code extends Model
 
 			$query = $builder->get();
 
-			if($query->num_rows() == 1)
+			if($query->getNumRows() == 1)
 			{
-				return $query->row()->tax_code_id;
+				return $query->getRow()->tax_code_id;
 			}
 			else
 			{
@@ -253,13 +253,13 @@ class Tax_code extends Model
 		$builder = $this->db->table('tax_codes');
 		if(!empty($search))
 		{
-			$this->db->like('tax_code', $search);
-			$this->db->or_like('tax_code_name', $search);
+			$builder->like('tax_code', $search);
+			$builder->orLike('tax_code_name', $search);
 		}
 		$builder->where('deleted', 0);
 		$builder->orderBy('tax_code_name', 'asc');
 
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->tax_code_id, 'label' => ($row->tax_code . ' ' . $row->tax_code_name));
 		}

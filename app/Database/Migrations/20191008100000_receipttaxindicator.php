@@ -9,13 +9,13 @@ class Migration_receipttaxindicator extends CI_Migration
 
 	public function up()
 	{
-		$this->db->query('INSERT INTO ' . $this->db->dbprefix('app_config') . ' (`key`, `value`)
+		$this->db->query('INSERT INTO ' . $this->db->prefixTable('app_config') . ' (`key`, `value`)
 			VALUES (\'receipt_show_tax_ind\', \'0\')');
 	}
 
 	public function down()
 	{
-		$this->db->query('DELETE FROM ' . $this->db->dbprefix('app_config') . ' WHERE key = \'receipt_show_tax_ind\'');
+		$this->db->query('DELETE FROM ' . $this->db->prefixTable('app_config') . ' WHERE key = \'receipt_show_tax_ind\'');
 	}
 }
 ?>

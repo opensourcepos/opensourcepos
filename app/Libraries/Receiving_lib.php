@@ -233,7 +233,7 @@ class Receiving_lib
 			$receiving_quantity = $item_info->receiving_quantity;
 		}
 
-		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->row_object();
+		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
 		$item = array($insertkey => array(
 				'item_id' => $item_id,
@@ -316,14 +316,14 @@ class Receiving_lib
 		} 
 		else 
 		{
-			$receiving_id = $this->CI->Receiving->get_receiving_by_reference($receipt_receiving_id)->row()->receiving_id;
+			$receiving_id = $this->CI->Receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
 		}
 
 		$this->empty_cart();
 		$this->remove_supplier();
 		$this->clear_comment();
 
-		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
+		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
 		}
@@ -348,13 +348,13 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->remove_supplier();
 
-		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
+		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
-		//$this->set_reference($this->CI->Receiving->get_info($receiving_id)->row()->reference);
+		//$this->set_reference($this->CI->Receiving->get_info($receiving_id)->getRow()->reference);
 	}
 
 	public function clear_all()

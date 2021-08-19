@@ -38,7 +38,7 @@ class Tax_codes extends Secure_Controller
 		$total_rows = $this->Tax_code->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_codes->result() as $tax_code)
+		foreach($tax_codes->getResult() as $tax_code)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_code_data_row($tax_code));
 		}

@@ -13,8 +13,8 @@ class Receiving extends Model
 	public function get_info($receiving_id)
 	{
 		$builder = $this->db->table('receivings');
-		$this->db->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
-		$this->db->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
+		$builder->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
+		$builder->join('suppliers', 'suppliers.person_id = receivings.supplier_id', 'LEFT');
 		$builder->where('receiving_id', $receiving_id);
 
 		return $builder->get();
@@ -83,7 +83,7 @@ class Receiving extends Model
 		$this->db->transStart();
 
 		$builder->insert('receivings', $receivings_data);
-		$receiving_id = $this->db->insert_id();
+		$receiving_id = $this->db->insertID();
 
 		foreach($items as $line=>$item)
 		{
@@ -175,7 +175,7 @@ class Receiving extends Model
 		{
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
-			$items = $this->get_receiving_items($receiving_id)->result_array();
+			$items = $this->get_receiving_items($receiving_id)->getResultArray();
 			foreach($items as $item)
 			{
 				// create query to update inventory tracking
@@ -219,7 +219,7 @@ class Receiving extends Model
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
 
-		return $this->Supplier->get_info($builder->get()->row()->supplier_id);
+		return $this->Supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 
 	public function get_payment_options()
@@ -254,7 +254,7 @@ class Receiving extends Model
 			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
 		}
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('receivings_items_temp') .
 			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
@@ -281,10 +281,10 @@ class Receiving extends Model
 					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS total,
 					MAX((CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) - (item_cost_price * quantity_purchased)) AS profit,
 					MAX(item_cost_price * quantity_purchased * receivings_items.receiving_quantity ) AS cost
-				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
-				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings
+				FROM ' . $this->db->prefixTable('receivings_items') . ' AS receivings_items
+				INNER JOIN ' . $this->db->prefixTable('receivings') . ' AS receivings
 					ON receivings_items.receiving_id = receivings.receiving_id
-				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
+				INNER JOIN ' . $this->db->prefixTable('items') . ' AS items
 					ON receivings_items.item_id = items.item_id
 				' . "
 				$where

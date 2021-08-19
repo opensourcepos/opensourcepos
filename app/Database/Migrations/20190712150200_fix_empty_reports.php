@@ -9,11 +9,11 @@ class Migration_fix_empty_reports extends CI_Migration
 
 	public function up()
 	{
-		$this->db->select('location_name');
+		$builder->select('location_name');
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', 1);
-		$this->db->limit(1);
-		$location_name = $builder->get()->result_array()[0]['location_name'];
+		$builder->limit(1);
+		$location_name = $builder->get()->getResultArray()[0]['location_name'];
 
 		$location_name = str_replace(' ', '_', $location_name);
 		$this->db->set('location_id',1);

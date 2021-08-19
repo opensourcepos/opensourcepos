@@ -874,7 +874,7 @@ class Sale_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
-		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->row_object();
+		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->getRowObject();
 
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
@@ -1029,7 +1029,7 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
+		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
 		}
@@ -1063,7 +1063,7 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
+		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
 		}
@@ -1074,7 +1074,7 @@ class Sale_lib
 		if($this->CI->session->userdata('cash_rounding'))
 		{
 			$cash_types_only = true;
-			foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
+			foreach($this->CI->Sale->get_sale_payments($sale_id)->getResult() as $row)
 			{
 				if($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment'))
 				{
@@ -1093,7 +1093,7 @@ class Sale_lib
 		}
 
 		// Now load payments
-		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
+		foreach($this->CI->Sale->get_sale_payments($sale_id)->getResult() as $row)
 		{
 			$this->add_payment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
 		}

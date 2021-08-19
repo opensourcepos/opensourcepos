@@ -898,7 +898,7 @@ class Reports extends Secure_Controller
 		$data = array();
 		$data['specific_input_name'] = lang('Reports.customer');
 		$customers = array();
-		foreach($this->Customer->get_all()->result() as $customer)
+		foreach($this->Customer->get_all()->getResult() as $customer)
 		{
 			if(isset($customer->company_name))
 			{
@@ -1030,7 +1030,7 @@ class Reports extends Secure_Controller
 		$data['specific_input_name'] = lang('Reports.employee');
 
 		$employees = array();
-		foreach($this->Employee->get_all()->result() as $employee)
+		foreach($this->Employee->get_all()->getResult() as $employee)
 		{
 			$employees[$employee->person_id] = $this->xss_clean($employee->first_name . ' ' . $employee->last_name);
 		}
@@ -1282,7 +1282,7 @@ class Reports extends Secure_Controller
 		$data['specific_input_name'] = lang('Reports.supplier');
 
 		$supplier = array();
-		foreach($this->Supplier->get_all()->result() as $supplier)
+		foreach($this->Supplier->get_all()->getResult() as $supplier)
 		{
 			$suppliers[$supplier->person_id] = $this->xss_clean($supplier->company_name . ' (' . $supplier->first_name . ' ' . $supplier->last_name . ')');
 		}

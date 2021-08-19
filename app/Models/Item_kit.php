@@ -72,7 +72,7 @@ class Item_kit extends Model
 	{
 		$builder = $this->db->table('item_kits');
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/*
@@ -80,7 +80,7 @@ class Item_kit extends Model
 	*/
 	public function get_info($item_kit_id)
 	{
-		$this->db->select('
+		$builder->select('
 		item_kit_id,
 		item_kits.name as name,
 		item_kit_number,
@@ -107,15 +107,15 @@ class Item_kit extends Model
 		stock_type');
 
 		$builder = $this->db->table('item_kits');
-		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
+		$builder->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$builder->where('item_kit_id', $item_kit_id);
 		$this->db->or_where('item_kit_number', $item_kit_id);
 
 		$query = $builder->get();
 
-		if($query->num_rows()==1)
+		if($query->getNumRows()==1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -138,7 +138,7 @@ class Item_kit extends Model
 	public function get_multiple_info($item_kit_ids)
 	{
 		$builder = $this->db->table('item_kits');
-		$this->db->where_in('item_kit_id', $item_kit_ids);
+		$builder->whereIn('item_kit_id', $item_kit_ids);
 		$builder->orderBy('name', 'asc');
 
 		return $builder->get();
@@ -153,7 +153,7 @@ class Item_kit extends Model
 		{
 			if($builder->insert('item_kits', $item_kit_data))
 			{
-				$item_kit_data['item_kit_id'] = $this->db->insert_id();
+				$item_kit_data['item_kit_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -179,7 +179,7 @@ class Item_kit extends Model
 	*/
 	public function delete_list($item_kit_ids)
 	{
-		$this->db->where_in('item_kit_id', $item_kit_ids);
+		$builder->whereIn('item_kit_id', $item_kit_ids);
 
 		return $builder->delete('item_kits');
 	}
@@ -193,21 +193,21 @@ class Item_kit extends Model
 		//KIT #
 		if(stripos($search, 'KIT ') !== FALSE)
 		{
-			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
+			$builder->like('item_kit_id', str_ireplace('KIT ', '', $search));
 			$builder->orderBy('item_kit_id', 'asc');
 
-			foreach($builder->get()->result() as $row)
+			foreach($builder->get()->getResult() as $row)
 			{
 				$suggestions[] = array('value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
 			}
 		}
 		else
 		{
-			$this->db->like('name', $search);
-			$this->db->or_like('item_kit_number', $search);
+			$builder->like('name', $search);
+			$builder->orLike('item_kit_number', $search);
 			$builder->orderBy('name', 'asc');
 
-			foreach($builder->get()->result() as $row)
+			foreach($builder->get()->getResult() as $row)
 			{
 				$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
 			}
@@ -238,31 +238,31 @@ class Item_kit extends Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(item_kits.item_kit_id) as count');
+			$builder->select('COUNT(item_kits.item_kit_id) as count');
 		}
 
 		$builder = $this->db->table('item_kits AS item_kits');
-		$this->db->like('name', $search);
-		$this->db->or_like('description', $search);
-		$this->db->or_like('item_kit_number', $search);
+		$builder->like('name', $search);
+		$builder->orLike('description', $search);
+		$builder->orLike('item_kit_number', $search);
 
 		//KIT #
 		if(stripos($search, 'KIT ') !== FALSE)
 		{
-			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
+			$builder->orLike('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row()->count;
+			return $builder->get()->getRow()->count;
 		}
 
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
 		{
-			$this->db->limit($rows, $limit_from);
+			$builder->limit($rows, $limit_from);
 		}
 
 		return $builder->get();

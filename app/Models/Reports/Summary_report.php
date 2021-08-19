@@ -50,24 +50,24 @@ abstract class Summary_report extends Report
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
 			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
 					SUM(ROUND(sales_items_taxes.item_tax_amount,' . $decimals . ')) AS tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_items_taxes') . ' AS sales_items_taxes
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)'
 		);
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
@@ -75,8 +75,8 @@ abstract class Summary_report extends Report
 					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
 					SUM(payments.cash_refund) AS sale_cash_refund,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
 				GROUP BY sale_id
@@ -84,7 +84,7 @@ abstract class Summary_report extends Report
 		);
 
 
-		$this->db->select("
+		$builder->select("
 				IFNULL($sale_subtotal, $sale_total) AS subtotal,
 				$sales_tax AS tax,
 				IFNULL($sale_total, $sale_subtotal) AS total,
@@ -96,11 +96,11 @@ abstract class Summary_report extends Report
 	private function __common_from()
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$builder->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'left outer');
-		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
+		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 
 	}
 
@@ -123,19 +123,19 @@ abstract class Summary_report extends Report
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sales.sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 				$builder->where('sales.sale_type', SALE_TYPE_POS);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_RETURN);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$builder->where('sales.sale_status', COMPLETED);
-			$this->db->group_start();
+			$builder->groupStart();
 				$builder->where('sales.sale_type', SALE_TYPE_POS);
 				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
-			$this->db->group_end();
+			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
@@ -190,7 +190,7 @@ abstract class Summary_report extends Report
 
 		$this->_group_order();
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	public function getSummaryData(array $inputs)

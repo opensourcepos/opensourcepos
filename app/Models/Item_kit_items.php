@@ -15,16 +15,16 @@ class Item_kit_items extends Model
 	*/
 	public function get_info($item_kit_id)
 	{
-		$this->db->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
+		$builder->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
 		$builder = $this->db->table('item_kit_items as item_kit_items');
-		$this->db->join('items as items', 'item_kit_items.item_id = items.item_id');
-		$this->db->join('item_kits as item_kits', 'item_kits.item_kit_id = item_kit_items.item_kit_id');
+		$builder->join('items as items', 'item_kit_items.item_id = items.item_id');
+		$builder->join('item_kits as item_kits', 'item_kits.item_kit_id = item_kit_items.item_kit_id');
 		$builder->where('item_kits.item_kit_id', $item_kit_id);
 		$this->db->or_where('item_kit_number', $item_kit_id);
 		$builder->orderBy('kit_sequence', 'asc');
 
 		//return an array of item kit items for an item
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	/*
@@ -38,7 +38,7 @@ class Item_kit_items extends Model
 		$builder->orderBy('kit_sequence', 'desc');
 
 		//return an array of item kit items for an item
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 	/*
 	Inserts or updates an item kit's items

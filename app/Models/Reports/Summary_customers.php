@@ -25,7 +25,7 @@ class Summary_customers extends Summary_report
 	{
 		parent::_select($inputs);
 
-		$this->db->select('
+		$builder->select('
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased,
 				COUNT(DISTINCT sales.sale_id) AS sales
@@ -36,7 +36,7 @@ class Summary_customers extends Summary_report
 	{
 		parent::_from();
 
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
+		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
 	protected function _group_order()

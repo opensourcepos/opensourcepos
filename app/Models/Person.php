@@ -38,7 +38,7 @@ class Person extends Model
 	{
 		$builder = $this->db->table('people');
 		$builder->orderBy('last_name', 'asc');
-		$this->db->limit($limit);
+		$builder->limit($limit);
 		$this->db->offset($offset);
 
 		return $builder->get();
@@ -54,7 +54,7 @@ class Person extends Model
 		$builder = $this->db->table('people');
 		$builder->where('deleted', 0);
 
-		return $this->db->count_all_results();
+		return $builder->countAllResults();
 	}
 
 	/**
@@ -68,9 +68,9 @@ class Person extends Model
 	{
 		$query = $builder->getWhere('people', array('person_id' => $person_id), 1);
 
-		if($query->num_rows() == 1)
+		if($query->getNumRows() == 1)
 		{
-			return $query->row();
+			return $query->getRow();
 		}
 		else
 		{
@@ -96,7 +96,7 @@ class Person extends Model
 	public function get_multiple_info($person_ids)
 	{
 		$builder = $this->db->table('people');
-		$this->db->where_in('person_id', $person_ids);
+		$builder->whereIn('person_id', $person_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -117,7 +117,7 @@ class Person extends Model
 		{
 			if($builder->insert('people', $person_data))
 			{
-				$person_data['person_id'] = $this->db->insert_id();
+				$person_data['person_id'] = $this->db->insertID();
 
 				return TRUE;
 			}
@@ -143,20 +143,20 @@ class Person extends Model
 	{
 		$suggestions = array();
 
-//		$this->db->select('person_id');
+//		$builder->select('person_id');
 //		$builder = $this->db->table('people');
 //		$builder->where('deleted', 0);
 //		$builder->where('person_id', $search);
-//		$this->db->group_start();
-//			$this->db->like('first_name', $search);
-//			$this->db->or_like('last_name', $search);
-//			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-//			$this->db->or_like('email', $search);
-//			$this->db->or_like('phone_number', $search);
-//			$this->db->group_end();
+//		$builder->groupStart();
+//			$builder->like('first_name', $search);
+//			$builder->orLike('last_name', $search);
+//			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+//			$builder->orLike('email', $search);
+//			$builder->orLike('phone_number', $search);
+//			$builder->groupEnd();
 //		$builder->orderBy('last_name', 'asc');
 
-		foreach($builder->get()->result() as $row)
+		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('label' => $row->person_id);
 		}

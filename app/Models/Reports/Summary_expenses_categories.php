@@ -19,9 +19,9 @@ class Summary_expenses_categories extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
+		$builder->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
 		$builder = $this->db->table('expenses AS expenses');
-		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
@@ -37,12 +37,12 @@ class Summary_expenses_categories extends Summary_report
 		$this->db->group_by('expense_categories.category_name');
 		$builder->orderBy('expense_categories.category_name');
 
-		return $builder->get()->result_array();
+		return $builder->get()->getResultArray();
 	}
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
+		$builder->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
 		$builder = $this->db->table('expenses AS expenses');
 
 		if(empty($this->config->item('date_or_time_format')))

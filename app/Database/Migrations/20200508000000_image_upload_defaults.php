@@ -20,7 +20,7 @@ class Migration_image_upload_defaults extends CI_Migration
 
 	public function down()
 	{
-		$this->db->where_in('key', array('image_allowed_types','image_max_height','image_max_size','image_max_width'));
+		$builder->whereIn('key', array('image_allowed_types','image_max_height','image_max_size','image_max_width'));
 		$builder->delete('app_config');
 	}
 }

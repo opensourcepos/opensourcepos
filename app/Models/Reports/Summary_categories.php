@@ -24,7 +24,7 @@ class Summary_categories extends Summary_report
 	{
 		parent::_select($inputs);
 
-		$this->db->select('
+		$builder->select('
 				items.category AS category,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
@@ -34,7 +34,7 @@ class Summary_categories extends Summary_report
 	{
 		parent::_from();
 
-		$this->db->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
+		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
 	protected function _group_order()
