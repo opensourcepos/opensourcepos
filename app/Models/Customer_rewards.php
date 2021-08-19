@@ -10,7 +10,7 @@ use CodeIgniter\Model;
 
 class Customer_rewards extends Model
 {
-	public function exists($package_id)
+	public function exists($package_id): bool
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
@@ -18,18 +18,20 @@ class Customer_rewards extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	public function save($package_data, $package_id)
+	public function save($package_data, $package_id): bool
 	{
 		$package_data_to_save = array('package_name' => $package_data['package_name'], 'deleted' => 0, 'points_percent' => $package_data['points_percent']);
 
 		if(!$this->exists($package_id))
 		{
-			return $builder->insert('customers_packages', $package_data_to_save);
+			$builder = $this->db->table('customers_packages');
+			return $builder->insert($package_data_to_save);
 		}
 
+		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
 
-		return $builder->update('customers_packages', $package_data_to_save);
+		return $builder->update($package_data_to_save);
 	}
 
 	public function get_name($package_id)
@@ -55,12 +57,13 @@ class Customer_rewards extends Model
 
 		return $builder->get();
 	}
-
+//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	/**
 	Deletes one reward package
 	*/
-	public function delete($package_id)
+	public function delete($package_id): bool
 	{
+		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
 
 		return $builder->update('customers_packages', array('deleted' => 1));

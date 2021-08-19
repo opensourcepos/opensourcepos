@@ -54,9 +54,9 @@ class Detailed_receivings extends Report
 		$builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$builder->where('receiving_id', $receiving_id);
-		$this->db->group_by('receiving_id');
+		$builder->groupBy('receiving_id');
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 
 	public function getData(array $inputs)
@@ -92,7 +92,7 @@ class Detailed_receivings extends Report
 		{
 			$this->db->having('items_purchased = 0');
 		}
-		$this->db->group_by('receiving_id', 'receiving_date');
+		$builder->groupBy('receiving_id', 'receiving_date');
 		$builder->orderBy('receiving_id');
 
 		$data = array();
@@ -124,7 +124,7 @@ class Detailed_receivings extends Report
 				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
 			$builder->where('receivings_items_temp.receiving_id', $value['receiving_id']);
-			$this->db->group_by('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
+			$builder->groupBy('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
 			$data['details'][$key] = $builder->get()->getResultArray();
 		}
 
@@ -154,7 +154,7 @@ class Detailed_receivings extends Report
 			$builder->where('quantity_purchased', 0);
 		}
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
 ?>

@@ -125,8 +125,8 @@ abstract class Summary_report extends Report
 			$builder->where('sales.sale_status', COMPLETED);
 			$builder->groupStart();
 				$builder->where('sales.sale_type', SALE_TYPE_POS);
-				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
-				$this->db->or_where('sales.sale_type', SALE_TYPE_RETURN);
+				$builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
+				$builder->orWhere('sales.sale_type', SALE_TYPE_RETURN);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -134,7 +134,7 @@ abstract class Summary_report extends Report
 			$builder->where('sales.sale_status', COMPLETED);
 			$builder->groupStart();
 				$builder->where('sales.sale_type', SALE_TYPE_POS);
-				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
+				$builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -201,7 +201,7 @@ abstract class Summary_report extends Report
 
 		$this->_where($inputs);
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
 ?>

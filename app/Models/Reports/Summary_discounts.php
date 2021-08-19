@@ -30,7 +30,7 @@ class Summary_discounts extends Summary_report
 		}	
 		
 		$builder->where('discount >', 0);
-		$this->db->group_by('sales_items.discount');
+		$builder->groupBy('sales_items.discount');
 		$builder->orderBy('sales_items.discount');
 		
 

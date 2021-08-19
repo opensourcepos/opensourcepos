@@ -89,8 +89,8 @@ class Specific_customer extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -98,7 +98,7 @@ class Specific_customer extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -121,7 +121,7 @@ class Specific_customer extends Report
 			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		$this->db->group_by('sale_id');
+		$builder->groupBy('sale_id');
 		$builder->orderBy('MAX(sale_date)');
 
 		$data = array();
@@ -165,8 +165,8 @@ class Specific_customer extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -174,7 +174,7 @@ class Specific_customer extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -197,7 +197,7 @@ class Specific_customer extends Report
 			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
 ?>

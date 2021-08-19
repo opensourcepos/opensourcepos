@@ -76,8 +76,8 @@ class Migration_TaxAmount extends CI_Migration
 		$builder->select('ST.sale_id as sales_taxes_sale_id');
 		$builder = $this->db->table('sales_items_taxes as SIT');
 		$builder->join('sales_taxes as ST', 'SIT.sale_id = ST.sale_id', 'left');
-		$this->db->group_by('SIT.sale_id');
-		$this->db->group_by('ST.sale_id');
+		$builder->groupBy('SIT.sale_id');
+		$builder->groupBy('ST.sale_id');
 		$builder->orderBy('SIT.sale_id');
 		$builder->limit($block_count);
 		return $builder->get();

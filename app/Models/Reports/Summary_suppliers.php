@@ -41,7 +41,7 @@ class Summary_suppliers extends Summary_report
 
 	protected function _group_order()
 	{
-		$this->db->group_by('items.supplier_id');
+		$builder->groupBy('items.supplier_id');
 		$builder->orderBy('MAX(CONCAT(supplier_c.company_name, " (", supplier_p.first_name, " ", supplier_p.last_name, ")"))');
 	}
 }

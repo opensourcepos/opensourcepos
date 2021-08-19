@@ -132,12 +132,12 @@ class Tax extends Model
 			$tax_rate_obj = new stdClass();
 
 			//Get all the fields from tax_codes table
-			foreach($this->db->list_fields('tax_rates') as $field)
+			foreach($this->db->getFieldNames('tax_rates') as $field)
 			{
 				$tax_rate_obj->$field = '';
 			}
 			//Get all the fields from tax_rates table
-			foreach($this->db->list_fields('tax_categories') as $field)
+			foreach($this->db->getFieldNames('tax_categories') as $field)
 			{
 				$tax_rate_obj->$field = '';
 			}

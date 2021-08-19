@@ -931,7 +931,7 @@ class Sales extends Secure_Controller
 		$cash_rounding = $this->sale_lib->reset_cash_rounding();
 		$data['cash_rounding'] = $cash_rounding;
 
-		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+		$sale_info = $this->Sale->get_info($sale_id)->getRowArray();
 		$this->sale_lib->copy_entire_sale($sale_id);
 		$data = array();
 		$data['cart'] = $this->sale_lib->get_cart();
@@ -1177,7 +1177,7 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 
-		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());
+		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->getRowArray());
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['selected_customer_name'] = $sale_info['customer_name'];
 		$employee_info = $this->Employee->get_info($sale_info['employee_id']);
@@ -1352,7 +1352,7 @@ class Sales extends Secure_Controller
 			{
 				$cash_adjustment = CASH_ADJUSTMENT_FALSE;
 				$amount_tendered += $payment_amount;
-				$sale_info = $this->Sale->get_info($sale_id)->row_array();
+				$sale_info = $this->Sale->get_info($sale_id)->getRowArray();
 
 				if($amount_tendered > $sale_info['amount_due'])
 				{

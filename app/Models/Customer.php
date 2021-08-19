@@ -13,7 +13,7 @@ class Customer extends Person
 	/*
 	Determines if a given person_id is a customer
 	*/
-	public function exists($person_id)
+	public function exists($person_id): bool
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
@@ -25,7 +25,7 @@ class Customer extends Person
 	/*
 	Checks if account number exists
 	*/
-	public function check_account_number_exists($account_number, $person_id = '')
+	public function check_account_number_exists($account_number, $person_id = ''): bool
 	{
 		$builder = $this->db->table('customers');
 		$builder->where('account_number', $account_number);
@@ -84,11 +84,11 @@ class Customer extends Person
 		else
 		{
 			//Get empty base parent object, as $customer_id is NOT a customer
-			$person_obj = parent::get_info(-1);
+			$person_obj = parent::get_info(-1);	//TODO: NEED TO CREATE A GLOBAL CONSTANT FOR NO_PERSON IN CONFIG/CONSTANTS.PHP AND CALL IT HERE FOR CLARITY.
 
 			//Get all the fields from customer table
-			//append those fields to base parent object, we we have a complete empty object
-			foreach($this->db->list_fields('customers') as $field)
+			//append those fields to base parent object, we have a complete empty object
+			foreach($this->db->getFieldNames('customers') as $field)
 			{
 				$person_obj->$field = '';
 			}
@@ -103,8 +103,8 @@ class Customer extends Person
 	public function get_stats($customer_id)
 	{
 		// create a temporary table to contain all the sum and average of items
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp') .
-			' (INDEX(sale_id)) ENGINE=MEMORY
+		$query = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp');
+		$query .= ' (INDEX(sale_id)) ENGINE=MEMORY
 			(
 				SELECT
 					sales.sale_id AS sale_id,
@@ -115,12 +115,13 @@ class Customer extends Person
 					ON sales_items.sale_id = sales.sale_id
 				WHERE sales.customer_id = ' . $this->db->escape($customer_id) . '
 				GROUP BY sale_id
-			)'
-		);
+			)';
+		$this->db->query($query);
 
 		$totals_decimals = totals_decimals();
 		$quantity_decimals = quantity_decimals();
 
+		$builder = $this->db->table('sales');
 		$builder->select('
 						SUM(sales_payments.payment_amount - sales_payments.cash_refund) AS total,
 						MIN(sales_payments.payment_amount - sales_payments.cash_refund) AS min,
@@ -130,17 +131,17 @@ class Customer extends Person
 						ROUND(AVG(sales_items_temp.avg_discount), $totals_decimals) AS avg_discount,
 						ROUND(SUM(sales_items_temp.quantity), $quantity_decimals) AS quantity
 						");
-		$builder = $this->db->table('sales');
 		$builder->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id');
 		$builder->join('sales_items_temp AS sales_items_temp', 'sales.sale_id = sales_items_temp.sale_id');
 		$builder->where('sales.customer_id', $customer_id);
 		$builder->where('sales.sale_status', COMPLETED);
-		$this->db->group_by('sales.customer_id');
+		$builder->groupBy('sales.customer_id');
 
 		$stat = $builder->get()->getRow();
 
 		// drop the temporary table to contain memory consumption as it's no longer required
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->prefixTable('sales_items_temp'));
+		$query = 'DROP TEMPORARY TABLE IF EXISTS ' . $this->db->prefixTable('sales_items_temp');
+		$this->db->query($query);
 
 		return $stat;
 	}
@@ -161,7 +162,7 @@ class Customer extends Person
 	/*
 	Checks if customer email exists
 	*/
-	public function check_email_exists($email, $customer_id = '')
+	public function check_email_exists($email, $customer_id = ''): bool
 	{
 		// if the email is empty return like it is not existing
 		if(empty($email))
@@ -194,15 +195,16 @@ class Customer extends Person
 
 		if(parent::save($person_data, $customer_id))
 		{
+			$builder = $this->db->table('customers');
 			if(!$customer_id || !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
-				$success = $builder->insert('customers', $customer_data);
+				$success = $builder->insert($customer_data);
 			}
 			else
 			{
 				$builder->where('person_id', $customer_id);
-				$success = $builder->update('customers', $customer_data);
+				$success = $builder->update($customer_data);
 			}
 		}
 
@@ -218,23 +220,24 @@ class Customer extends Person
 	*/
 	public function update_reward_points_value($customer_id, $value)
 	{
+		$builder = $this->db->table('customers');
 		$builder->where('person_id', $customer_id);
-		$builder->update('customers', array('points' => $value));
+		$builder->update(['points' => $value]);
 	}
-
+//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	/*
 	Deletes one customer
 	*/
-	public function delete($customer_id)
+	public function delete($customer_id): bool
 	{
 		$result = TRUE;
 
 		// if privacy enforcement is selected scramble customer data
 		if($this->config->item('enforce_privacy'))
 		{
+			$builder = $this->db->table('people');
 			$builder->where('person_id', $customer_id);
-
-			$result &= $builder->update('people', array(
+			$result &= $builder->update([
 					'first_name'	=> $customer_id,
 					'last_name'		=> $customer_id,
 					'phone_number'	=> '',
@@ -247,11 +250,11 @@ class Customer extends Person
 					'zip'			=> '',
 					'country'		=> '',
 					'comments'		=> ''
-				));
+				]);
 
+			$builder = $this->db->table('customers');
 			$builder->where('person_id', $customer_id);
-
-			$result &= $builder->update('customers', array(
+			$result &= $builder->update([
 					'consent'			=> 0,
 					'company_name'		=> NULL,
 					'account_number'	=> NULL,
@@ -263,13 +266,14 @@ class Customer extends Person
 					'points'			=> NULL,
 					'sales_tax_code_id'	=> NULL,
 					'deleted'			=> 1
-				));
+				]);
 		}
 		else
 		{
+			$builder = $this->db->table('customers');
 			$builder->where('person_id', $customer_id);
 
-			$result &= $builder->update('customers', array('deleted' => 1));
+			$result &= $builder->update(['deleted' => 1]);
 		}
 
 		return $result;
@@ -278,17 +282,18 @@ class Customer extends Person
 	/*
 	Deletes a list of customers
 	*/
-	public function delete_list($customer_ids)
+	public function delete_list($customer_ids): bool
 	{
+		$builder = $this->db->table('customers');
 		$builder->whereIn('person_id', $customer_ids);
 
-		return $builder->update('customers', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
  	/*
 	Get search suggestions to find customers
 	*/
-	public function get_search_suggestions($search, $unique = TRUE, $limit = 25)
+	public function get_search_suggestions($search, $unique = TRUE, $limit = 25): array
 	{
 		$suggestions = array();
 
@@ -376,13 +381,14 @@ class Customer extends Person
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('customers AS customers');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(customers.person_id) as count');
 		}
 
-		$builder = $this->db->table('customers AS customers');
 		$builder->join('people', 'customers.person_id = people.person_id');
 		$builder->groupStart();
 			$builder->like('first_name', $search);

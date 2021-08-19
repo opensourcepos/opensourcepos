@@ -127,7 +127,7 @@ class Expense extends Model
 		{
 			$builder->groupStart();
 				$builder->like('expenses.payment_type', lang('Expenses.cash'));
-				$this->db->or_where('expenses.payment_type IS NULL');
+				$builder->orWhere('expenses.payment_type IS NULL');
 			$builder->groupEnd();
 		}
 
@@ -147,7 +147,7 @@ class Expense extends Model
 			return $builder->get()->getRow()->count;
 		}
 
-		$this->db->group_by('expense_id');
+		$builder->groupBy('expense_id');
 
 		$builder->orderBy($sort, $order);
 
@@ -198,7 +198,7 @@ class Expense extends Model
 			$expenses_obj = new stdClass();
 
 			//Get all the fields from expenses table
-			foreach($this->db->list_fields('expenses') as $field)
+			foreach($this->db->getFieldNames('expenses') as $field)
 			{
 				$expenses_obj->$field = '';
 			}
@@ -291,7 +291,7 @@ class Expense extends Model
 			$builder->like('payment_type', lang('Expenses.debit'));
 		}
 
-		$this->db->group_by('payment_type');
+		$builder->groupBy('payment_type');
 
 		$payments = $builder->get()->getResultArray();
 

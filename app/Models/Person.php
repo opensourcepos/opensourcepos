@@ -39,7 +39,7 @@ class Person extends Model
 		$builder = $this->db->table('people');
 		$builder->orderBy('last_name', 'asc');
 		$builder->limit($limit);
-		$this->db->offset($offset);
+		$builder->offset($offset);
 
 		return $builder->get();
 	}
@@ -77,7 +77,7 @@ class Person extends Model
 			//create object with empty properties.
 			$person_obj = new stdClass;
 
-			foreach($this->db->list_fields('people') as $field)
+			foreach($this->db->getFieldNames('people') as $field)
 			{
 				$person_obj->$field = '';
 			}

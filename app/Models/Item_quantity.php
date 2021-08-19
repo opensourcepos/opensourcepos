@@ -44,7 +44,7 @@ class Item_quantity extends Model
             $result = new stdClass();
 
             //Get all the fields from items table (TODO to be reviewed)
-            foreach($this->db->list_fields('item_quantities') as $field)
+            foreach($this->db->getFieldNames('item_quantities') as $field)
             {
                 $result->$field = '';
             }

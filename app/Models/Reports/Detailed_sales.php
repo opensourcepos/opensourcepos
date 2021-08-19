@@ -67,7 +67,7 @@ class Detailed_sales extends Report
 		$builder = $this->db->table('sales_items_temp');
 		$builder->where('sale_id', $sale_id);
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 
 	public function getData(array $inputs)
@@ -106,8 +106,8 @@ class Detailed_sales extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -115,7 +115,7 @@ class Detailed_sales extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -138,7 +138,7 @@ class Detailed_sales extends Report
 			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		$this->db->group_by('sale_id');
+		$builder->groupBy('sale_id');
 		$builder->orderBy('MAX(sale_date)');
 
 		$data = array();
@@ -173,7 +173,7 @@ class Detailed_sales extends Report
 				$builder->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
-			$this->db->group_by('sales_items_temp.sale_id, sales_items_temp.item_id');
+			$builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id');
 			$builder->where('sales_items_temp.sale_id', $value['sale_id']);
 			$data['details'][$key] = $builder->get()->getResultArray();
 
@@ -201,8 +201,8 @@ class Detailed_sales extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -210,7 +210,7 @@ class Detailed_sales extends Report
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
 			$builder->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
 			$builder->groupEnd();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -233,7 +233,7 @@ class Detailed_sales extends Report
 			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
 ?>

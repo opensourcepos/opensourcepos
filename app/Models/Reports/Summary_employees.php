@@ -41,7 +41,7 @@ class Summary_employees extends Summary_report
 
 	protected function _group_order()
 	{
-		$this->db->group_by('sales.employee_id');
+		$builder->groupBy('sales.employee_id');
 		$builder->orderBy('employee_p.last_name');
 	}
 }

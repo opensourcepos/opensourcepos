@@ -59,7 +59,7 @@ class Inventory extends Model
 		$builder->select('SUM(trans_inventory) AS sum, MAX(trans_location) AS location_id');
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
-		$this->db->group_by('trans_location');
+		$builder->groupBy('trans_location');
 
 		return $builder->get()->getResultArray();
 	}

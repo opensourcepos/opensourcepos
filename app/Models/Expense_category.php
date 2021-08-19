@@ -52,7 +52,7 @@ class Expense_category extends Model
 			$expense_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('expense_categories') as $field)
+			foreach($this->db->getFieldNames('expense_categories') as $field)
 			{
 				$expense_obj->$field = '';
 			}

@@ -52,7 +52,7 @@ class Tax_jurisdiction extends Model
 			$tax_jurisdiction_obj = new stdClass();
 
 			//Get all the fields from the table
-			foreach($this->db->list_fields('tax_jurisdictions') as $field)
+			foreach($this->db->getFieldNames('tax_jurisdictions') as $field)
 			{
 				$tax_jurisdiction_obj->$field = '';
 			}

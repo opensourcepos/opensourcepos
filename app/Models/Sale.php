@@ -68,7 +68,7 @@ class Sale extends Model
 
 		$builder->where('sales.sale_id', $sale_id);
 
-		$this->db->group_by('sales.sale_id');
+		$builder->groupBy('sales.sale_id');
 		$builder->orderBy('sales.sale_time', 'asc');
 
 		return $builder->get();
@@ -229,7 +229,7 @@ class Sale extends Model
 		{
 			$builder->groupStart();
 				$builder->like('payments.payment_type', lang('Sales.cash'));
-				$this->db->or_where('payments.payment_type IS NULL');
+				$builder->orWhere('payments.payment_type IS NULL');
 			$builder->groupEnd();
 		}
 
@@ -254,7 +254,7 @@ class Sale extends Model
 			return $builder->get()->getRow()->count;
 		}
 
-		$this->db->group_by('sales.sale_id');
+		$builder->groupBy('sales.sale_id');
 
 		// order by sale time by default
 		$builder->orderBy($sort, $order);
@@ -352,7 +352,7 @@ class Sale extends Model
 			$builder->like('payment_type', lang('Sales.credit'));
 		}
 
-		$this->db->group_by('payment_type');
+		$builder->groupBy('payment_type');
 
 		$payments = $builder->get()->getResultArray();
 
@@ -463,7 +463,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('DATE_FORMAT(sale_time, "%Y" ) = ', $year);
 		$builder->where("$field IS NOT NULL");
-		$result = $builder->get()->row_array();
+		$result = $builder->get()->getRowArray();
 
 		return ($start_from + $result['number_year']);
 	}

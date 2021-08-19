@@ -217,7 +217,7 @@ class Item extends Model
 		}
 
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
-		$this->db->group_by('items.item_id');
+		$builder->groupBy('items.item_id');
 
 		// order by name of item by default
 		$builder->orderBy($sort, $order);
@@ -268,7 +268,7 @@ class Item extends Model
 		$builder->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
 		$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$builder->where('items.item_id', $item_id);
-		$this->db->group_by('items.item_id');
+		$builder->groupBy('items.item_id');
 
 		$query = $builder->get('items');
 
@@ -282,7 +282,7 @@ class Item extends Model
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('items') as $field)
+			foreach($this->db->getFieldNames('items') as $field)
 			{
 				$item_obj->$field = '';
 			}
@@ -303,7 +303,7 @@ class Item extends Model
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
-			$this->db->or_where('items.item_id', intval($item_id));
+			$builder->orWhere('items.item_id', intval($item_id));
 		}
 
 		$builder->groupEnd();
@@ -369,7 +369,7 @@ class Item extends Model
 		$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$builder->where('location_id', $location_id);
 		$builder->whereIn('items.item_id', $item_ids);
-		$this->db->group_by('items.item_id');
+		$builder->groupBy('items.item_id');
 
 		return $builder->get();
 	}

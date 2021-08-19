@@ -25,7 +25,7 @@ class Appconfig extends Model
 
 		return $builder->get();
 	}
-
+//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function get($key, $default = '')
 	{
 		$builder = $this->db->table('app_config');
@@ -39,12 +39,12 @@ class Appconfig extends Model
 		return $default;
 	}
 
-	public function save($key, $value)
+	public function save($key, $value): bool
 	{
-		$config_data = array(
+		$config_data = [
 			'key'   => $key,
 			'value' => $value
-		);
+		];
 		
 		$builder = $this->db->table('app_config');
 		
@@ -76,8 +76,8 @@ class Appconfig extends Model
 
 		return $success;
 	}
-
-	public function delete($key)
+//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
+	public function delete($key): bool
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->delete('key', $key);

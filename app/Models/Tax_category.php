@@ -52,7 +52,7 @@ class Tax_category extends Model
 			$tax_category_obj = new stdClass();
 
 			//Get all the fields from the table
-			foreach($this->db->list_fields('tax_categories') as $field)
+			foreach($this->db->getFieldNames('tax_categories') as $field)
 			{
 				$tax_category_obj->$field = '';
 			}

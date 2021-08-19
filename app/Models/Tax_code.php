@@ -52,7 +52,7 @@ class Tax_code extends Model
 			$tax_code_obj = new stdClass();
 
 			//Get all the fields from the table
-			foreach($this->db->list_fields('tax_codes') as $field)
+			foreach($this->db->getFieldNames('tax_codes') as $field)
 			{
 				$tax_code_obj->$field = '';
 			}

@@ -69,7 +69,7 @@ class Giftcard extends Model
 			$giftcard_obj = new stdClass();
 
 			//Get all the fields from giftcards table
-			foreach($this->db->list_fields('giftcards') as $field)
+			foreach($this->db->getFieldNames('giftcards') as $field)
 			{
 				$giftcard_obj->$field = '';
 			}

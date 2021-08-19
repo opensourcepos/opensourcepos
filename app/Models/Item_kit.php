@@ -109,7 +109,7 @@ class Item_kit extends Model
 		$builder = $this->db->table('item_kits');
 		$builder->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$builder->where('item_kit_id', $item_kit_id);
-		$this->db->or_where('item_kit_number', $item_kit_id);
+		$builder->orWhere('item_kit_number', $item_kit_id);
 
 		$query = $builder->get();
 
@@ -123,7 +123,7 @@ class Item_kit extends Model
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			foreach($this->db->list_fields('item_kits') as $field)
+			foreach($this->db->getFieldNames('item_kits') as $field)
 			{
 				$item_obj->$field = '';
 			}

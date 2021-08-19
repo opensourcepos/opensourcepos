@@ -75,7 +75,7 @@ class Supplier extends Person
 			
 			//Get all the fields from supplier table		
 			//append those fields to base parent object, we we have a complete empty object
-			foreach($this->db->list_fields('suppliers') as $field)
+			foreach($this->db->getFieldNames('suppliers') as $field)
 			{
 				$person_obj->$field = '';
 			}

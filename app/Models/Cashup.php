@@ -32,7 +32,7 @@ class Cashup extends Model
 		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
-	public function get_multiple_info($cash_up_ids)
+	public function get_multiple_info($cashup_ids)
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->whereIn('cashup_id', $cashup_ids);
@@ -54,6 +54,8 @@ class Cashup extends Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'cashup_id', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('cash_up AS cash_up');
+		
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
@@ -80,7 +82,7 @@ class Cashup extends Model
 			MAX(close_employees.first_name) AS close_first_name,
 			MAX(close_employees.last_name) AS close_last_name
 		');
-		$builder = $this->db->table('cash_up AS cash_up');
+
 		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
 		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
@@ -106,12 +108,12 @@ class Cashup extends Model
 			$builder->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		$this->db->group_by('cashup_id');
+		$builder->groupBy('cashup_id');
 
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $builder->get()->row_array()['count'];
+			return $builder->get()->getRowArray()['count'];
 		}
 
 		$builder->orderBy($sort, $order);
@@ -129,6 +131,7 @@ class Cashup extends Model
 	*/
 	public function get_info($cashup_id)
 	{
+		$builder = $this->db->table('cash_up AS cash_up');
 		$builder->select('
 			cash_up.cashup_id AS cashup_id,
 			cash_up.open_date AS open_date,
@@ -150,7 +153,6 @@ class Cashup extends Model
 			close_employees.first_name AS close_first_name,
 			close_employees.last_name AS close_last_name
 		');
-		$builder = $this->db->table('cash_up AS cash_up');
 		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
 		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 		$builder->where('cashup_id', $cashup_id);
@@ -166,7 +168,7 @@ class Cashup extends Model
 			$cash_up_obj = new stdClass();
 
 			//Get all the fields from cashup table
-			foreach($this->db->list_fields('cash_up') as $field)
+			foreach($this->db->getFieldNames('cash_up') as $field)
 			{
 				$cash_up_obj->$field = '';
 			}
@@ -174,15 +176,16 @@ class Cashup extends Model
 			return $cash_up_obj;
 		}
 	}
-
+//TODO: gotta fix this function.  It thinks it's an override of the BaseModel save
 	/*
-	Inserts or updates an cashup
+	Inserts or updates a cashup
 	*/
-	public function save(&$cash_up_data, $cashup_id = FALSE)
+	public function save(&$cash_up_data, $cashup_id = FALSE): bool
 	{
 		if(!$cashup_id == -1 || !$this->exists($cashup_id))
 		{
-			if($builder->insert('cash_up', $cash_up_data))
+			$builder = $this->db->table('cash_up');
+			if($builder->insert($cash_up_data))
 			{
 				$cash_up_data['cashup_id'] = $this->db->insertID();
 
@@ -192,22 +195,24 @@ class Cashup extends Model
 			return FALSE;
 		}
 
+		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		return $builder->update('cash_up', $cash_up_data);
+		return $builder->update($cash_up_data);
 	}
 
 	/*
 	Deletes a list of cashups
 	*/
-	public function delete_list($cashup_ids)
+	public function delete_list($cashup_ids): bool
 	{
 		$success = FALSE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
+			$builder = $this->db->table('cash_up');
 			$builder->whereIn('cashup_id', $cashup_ids);
-			$success = $builder->update('cash_up', array('deleted'=>1));
+			$success = $builder->update(['deleted' => 1]);
 		$this->db->transComplete();
 
 		return $success;

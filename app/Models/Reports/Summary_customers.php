@@ -41,7 +41,7 @@ class Summary_customers extends Summary_report
 
 	protected function _group_order()
 	{
-		$this->db->group_by('sales.customer_id');
+		$builder->groupBy('sales.customer_id');
 		$builder->orderBy('customer_p.last_name');
 	}
 }

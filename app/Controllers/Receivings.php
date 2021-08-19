@@ -160,7 +160,7 @@ class Receivings extends Secure_Controller
 			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
 		}
 	
-		$receiving_info = $this->xss_clean($this->Receiving->get_info($receiving_id)->row_array());
+		$receiving_info = $this->xss_clean($this->Receiving->get_info($receiving_id)->getRowArray());
 		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
@@ -286,7 +286,7 @@ class Receivings extends Secure_Controller
 	
 	public function receipt($receiving_id)
 	{
-		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
+		$receiving_info = $this->Receiving->get_info($receiving_id)->getRowArray();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();

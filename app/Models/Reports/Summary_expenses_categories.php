@@ -34,7 +34,7 @@ class Summary_expenses_categories extends Summary_report
 
 		$builder->where('expenses.deleted', 0);
 
-		$this->db->group_by('expense_categories.category_name');
+		$builder->groupBy('expense_categories.category_name');
 		$builder->orderBy('expense_categories.category_name');
 
 		return $builder->get()->getResultArray();
@@ -56,7 +56,7 @@ class Summary_expenses_categories extends Summary_report
 
 		$builder->where('expenses.deleted', 0);
 
-		return $builder->get()->row_array();
+		return $builder->get()->getRowArray();
 	}
 }
 ?>

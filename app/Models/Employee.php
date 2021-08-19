@@ -13,7 +13,7 @@ class Employee extends Person
 	/*
 	Determines if a given person_id is an employee
 	*/
-	public function exists($person_id)
+	public function exists($person_id): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
@@ -22,7 +22,7 @@ class Employee extends Person
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function username_exists($employee_id, $username)
+	public function username_exists($employee_id, $username): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('employees.username', $username);
@@ -52,7 +52,7 @@ class Employee extends Person
 		$builder->join('people', 'employees.person_id = people.person_id');
 		$builder->orderBy('last_name', 'asc');
 		$builder->limit($limit);
-		$this->db->offset($offset);
+		$builder->offset($offset);
 
 		return $builder->get();
 	}
@@ -78,7 +78,7 @@ class Employee extends Person
 
 			//Get all the fields from employee table
 			//append those fields to base parent object, we we have a complete empty object
-			foreach($this->db->list_fields('employees') as $field)
+			foreach($this->db->getFieldNames('employees') as $field)
 			{
 				$person_obj->$field = '';
 			}
@@ -112,29 +112,38 @@ class Employee extends Person
 
 		if(ENVIRONMENT != 'testing' && parent::save($person_data, $employee_id))
 		{
+			$builder = $this->db->table('employees');
 			if(!$employee_id || !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
-				$success = $builder->insert('employees', $employee_data);
+				$success = $builder->insert($employee_data);
 			}
 			else
 			{
 				$builder->where('person_id', $employee_id);
-				$success = $builder->update('employees', $employee_data);
+				$success = $builder->update($employee_data);
 			}
 
 			//We have either inserted or updated a new employee, now lets set permissions.
 			if($success)
 			{
 				//First lets clear out any grants the employee currently has.
-				$success = $builder->delete('grants', array('person_id' => $employee_id));
+				$builder = $this->db->table('grants');
+				$success = $builder->delete(['person_id' => $employee_id]);
 
 				//Now insert the new grants
 				if($success)
 				{
 					foreach($grants_data as $grant)
 					{
-						$success = $builder->insert('grants', array('permission_id' => $grant['permission_id'], 'person_id' => $employee_id, 'menu_group' => $grant['menu_group']));
+						$data = [
+							'permission_id' => $grant['permission_id'],
+							'person_id' => $employee_id,
+							'menu_group' => $grant['menu_group']
+						];
+
+						$builder = $this->db->table('grants');
+						$success = $builder->insert($data);
 					}
 				}
 			}
@@ -150,11 +159,11 @@ class Employee extends Person
 	/*
 	Deletes one employee
 	*/
-	public function delete($employee_id)
+	public function delete($employee_id): bool
 	{
 		$success = FALSE;
 
-		//Don't let employees delete theirself
+		//Don't let employees delete themselves
 		if($employee_id == $this->get_logged_in_employee_info()->person_id)
 		{
 			return FALSE;
@@ -164,10 +173,12 @@ class Employee extends Person
 		$this->db->transStart();
 
 		//Delete permissions
-		if($builder->delete('grants', array('person_id' => $employee_id)))
+		$builder = $this->db->table('grants');
+		if($builder->delete(['person_id' => $employee_id]))
 		{
+			$builder = $this->db->table('employees');
 			$builder->where('person_id', $employee_id);
-			$success = $builder->update('employees', array('deleted' => 1));
+			$success = $builder->update(['deleted' => 1]);
 		}
 
 		$this->db->transComplete();
@@ -182,7 +193,7 @@ class Employee extends Person
 	{
 		$success = FALSE;
 
-		//Don't let employees delete theirself
+		//Don't let employees delete themselves
 		if(in_array($this->get_logged_in_employee_info()->person_id, $employee_ids))
 		{
 			return FALSE;
@@ -191,13 +202,15 @@ class Employee extends Person
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
+		$builder = $this->db->table('grants');
 		$builder->whereIn('person_id', $employee_ids);
 		//Delete permissions
-		if($builder->delete('grants'))
+		if($builder->delete())
 		{
 			//delete from employee table
+			$builder = $this->db->table('employees');
 			$builder->whereIn('person_id', $employee_ids);
-			$success = $builder->update('employees', array('deleted' => 1));
+			$success = $builder->update(['deleted' => 1]);
 		}
 
 		$this->db->transComplete();
@@ -208,9 +221,9 @@ class Employee extends Person
 	/*
 	Get search suggestions to find employees
 	*/
-	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5)
+	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
@@ -231,10 +244,12 @@ class Employee extends Person
 
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
+
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
+
 		$builder->like('email', $search);
 		$builder->orderBy('email', 'asc');
 		foreach($builder->get()->getResult() as $row)
@@ -244,12 +259,15 @@ class Employee extends Person
 
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
+
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
+
 		$builder->like('username', $search);
 		$builder->orderBy('username', 'asc');
+
 		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->username);
@@ -257,12 +275,15 @@ class Employee extends Person
 
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
+
 		if($include_deleted == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
+
 		$builder->like('phone_number', $search);
 		$builder->orderBy('phone_number', 'asc');
+
 		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
@@ -290,13 +311,14 @@ class Employee extends Person
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('employees AS employees');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(employees.person_id) as count');
 		}
 
-		$builder = $this->db->table('employees AS employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 		$builder->groupStart();
 			$builder->like('first_name', $search);
@@ -329,6 +351,7 @@ class Employee extends Person
 	*/
 	public function login($username, $password)
 	{
+		$builder = $this->db->table('employees');
 		$query = $builder->getWhere('employees', array('username' => $username, 'deleted' => 0), 1);
 
 		if($query->getNumRows() == 1)
@@ -342,10 +365,10 @@ class Employee extends Person
 				$this->session->set_userdata('person_id', $row->person_id);
 				$password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-				return $builder->update('employees', array('hash_version' => 2, 'password' => $password_hash));
+				return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
 			}
 			elseif($row->hash_version == 2 && password_verify($password, $row->password))
-			{
+			{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
 				$this->session->set_userdata('person_id', $row->person_id);
 
 				return TRUE;
@@ -357,20 +380,20 @@ class Employee extends Person
 	}
 
 	/*
-	Logs out a user by destorying all session data and redirect to login
+	Logs out a user by destroying all session data and redirect to login
 	*/
 	public function logout()
-	{
+	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
 		$this->session->sess_destroy();
 
 		redirect('login');
 	}
 
 	/*
-	Determins if a employee is logged in
+	* Determines if a employee is logged in
 	*/
 	public function is_logged_in()
-	{
+	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
 		return ($this->session->userdata('person_id') != FALSE);
 	}
 
@@ -378,7 +401,7 @@ class Employee extends Person
 	Gets information about the currently logged in employee.
 	*/
 	public function get_logged_in_employee_info()
-	{
+	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
 		if($this->is_logged_in())
 		{
 			return $this->get_info($this->session->userdata('person_id'));
@@ -388,9 +411,9 @@ class Employee extends Person
 	}
 
 	/*
-	Determines whether the employee has access to at least one submodule
+	* Determines whether the employee has access to at least one submodule
 	*/
-	public function has_module_grant($permission_id, $person_id)
+	public function has_module_grant($permission_id, $person_id): bool
 	{
 		$builder = $this->db->table('grants');
 		$builder->like('permission_id', $permission_id, 'after');
@@ -406,7 +429,7 @@ class Employee extends Person
 	}
 
  	/*
-	Checks permissions
+	* Checks permissions
 	*/
 	public function has_subpermissions($permission_id)
 	{
@@ -419,7 +442,7 @@ class Employee extends Person
 	/**
 	 * Determines whether the employee specified employee has access the specific module.
 	 */
-	public function has_grant($permission_id, $person_id)
+	public function has_grant($permission_id, $person_id): bool
 	{
 		//if no module_id is null, allow access
 		if($permission_id == NULL)
@@ -427,7 +450,8 @@ class Employee extends Person
 			return TRUE;
 		}
 
-		$query = $builder->getWhere('grants', array('person_id' => $person_id, 'permission_id' => $permission_id), 1);
+		$builder = $this->db->table('grants');
+		$query = $builder->getWhere(['person_id' => $person_id, 'permission_id' => $permission_id], 1);
 
 		return ($query->getNumRows() == 1);
 	}
@@ -435,10 +459,10 @@ class Employee extends Person
 	/**
 	 * Returns the menu group designation that this module is to appear in
 	 */
-	public function get_menu_group($permission_id, $person_id)
+	public function get_menu_group($permission_id, $person_id): string
 	{
-		$builder->select('menu_group');
 		$builder = $this->db->table('grants');
+		$builder->select('menu_group');
 		$builder->where('permission_id', $permission_id);
 		$builder->where('person_id', $person_id);
 
@@ -458,7 +482,7 @@ class Employee extends Person
 	/*
 	Gets employee permission grants
 	*/
-	public function get_employee_grants($person_id)
+	public function get_employee_grants($person_id): array
 	{
 		$builder = $this->db->table('grants');
 		$builder->where('person_id', $person_id);
@@ -467,11 +491,12 @@ class Employee extends Person
 	}
 
 	/*
-	Attempts to login employee and set session. Returns boolean based on outcome.
+	Attempts to log in employee and set session. Returns boolean based on outcome.
 	*/
-	public function check_password($username, $password)
+	public function check_password($username, $password): bool
 	{
-		$query = $builder->getWhere('employees', array('username' => $username, 'deleted' => 0), 1);
+		$builder = $this->db->table('employees');
+		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
 		if($query->getNumRows() == 1)
 		{
@@ -500,8 +525,9 @@ class Employee extends Person
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->transStart();
 
+			$builder = $this->db->table('employees');
 			$builder->where('person_id', $employee_id);
-			$success = $builder->update('employees', $employee_data);
+			$success = $builder->update($employee_data);
 
 			$this->db->transComplete();
 
