@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Cantidad";
 $lang["cashups_amount_number"] = "Cantidad debe ser un numero";
 $lang["cashups_amount_required"] = "Cantidad es un campo obligatorio.";
@@ -36,3 +35,14 @@ $lang["cashups_successful_updating"] = "Turno actualizado con éxito";
 $lang["cashups_total"] = "Total";
 $lang["cashups_transfer_amount_cash"] = "Salida/Entrada de Efectivo";
 $lang["cashups_update"] = "Actualizar Turno";
+$lang["cashups_warning"] = "No enviar a menos que sea Abierto o Cerrado en el día";
+$lang['cashups_transfer_amount_cash'] = "Entrada/Salida de Efectivo";
+$lang['cashups_transfer_amount_cash_minus'] = "Convertir en Efectivo = -";
+$lang["cashups_info_employee"] = "Empleado Información de Efectivo";
+$lang["cashups_giftcard"] = "Tarjetas de Regalo de Efectivo";
+$lang["cashups_enable_expected"] = "Mostrar Ventas";
+$lang["cashups_closed_amount_giftcard"] = "Tarjetas de Regalo";
+$lang["cashups_confirm_submit"] = "¿Está seguro que desea enviar este efectivo? La jornada estará cerrada.";
+$lang["cashups_cash_difference"] = "Diferencia de Efectivo: ";
+$lang["cashups_cancel_cashups_enter"] = "Pulse Aceptar para enviar o haga clic en Cancelar para continuar editando";
+$lang["cashups_cancel_cashups"] = "Cancelar";
