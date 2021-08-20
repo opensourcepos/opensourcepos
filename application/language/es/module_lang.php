@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Atributos";
 $lang["module_attributes_desc"] = "Agregar, Actualizar, Eliminar y Buscar atributos.";
 $lang["module_both"] = "Ambos";
-$lang["module_cashups"] = "Turnos";
+$lang["module_cashups"] = "Día de apertura o Cierre";
 $lang["module_cashups_desc"] = "Agregar, Actualizar, Borrar y Buscar Turnos.";
 $lang["module_config"] = "Configuración de la Tienda";
 $lang["module_config_desc"] = "Cambiar la configuración de OSPOS.";
@@ -39,3 +38,9 @@ $lang["module_suppliers"] = "Proveedores";
 $lang["module_suppliers_desc"] = "Agregar, Actualizar, Borrar y Buscar Proveedores.";
 $lang["module_taxes"] = "Impuestos";
 $lang["module_taxes_desc"] = "Configurar Impuestos de Ventas.";
+$lang["module_timeclocks_categories_desc"] = "Agregar, Actualizar, Borrar, y buscar Reloj de Registro de Categorías";
+$lang["module_timeclocks_categories"] = "Reloj de Registro de Categorías";
+$lang["module_timeclocks_desc"] = "Reloj de Registro.";
+$lang["module_timeclocks"] = "Reloj de Registro";
+$lang["module_admin_cashups_desc"] = "Administrador de retiro";
+$lang["module_admin_cashups"] = "Administrador de retiro";
