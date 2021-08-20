@@ -8,7 +8,7 @@ class Summary_taxes extends Summary_report
 	{
 		return array(
 			array('tax_percent' => $this->lang->line('reports_tax_percent'), 'sorter' => 'number_sorter'),
-			array('report_count' => $this->lang->line('reports_sales')),
+			array('report_count' => $this->lang->line('reports_sales'), 'sorter' => 'number_sorter'),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
