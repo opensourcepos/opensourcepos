@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Ingreso(s) no se borraron.";
 $lang["receivings_comments"] = "Comentarios";
@@ -34,7 +33,7 @@ $lang["receivings_reference"] = "Referencia";
 $lang["receivings_register"] = "Entrada de Artículos";
 $lang["receivings_requisition"] = "Requisición";
 $lang["receivings_return"] = "Devolver";
-$lang["receivings_select_supplier"] = "Seleccionar Proveedor (Opcional)";
+$lang["receivings_select_supplier"] = "Seleccionar Proveedor (Requerido)";
 $lang["receivings_ship_pack"] = "Paquete de Envío";
 $lang["receivings_start_typing_supplier_name"] = "Empieza a escribir el nombre del proveedor...";
 $lang["receivings_stock"] = "Inventario";
@@ -52,3 +51,6 @@ $lang["receivings_transaction_failed"] = "La(s) Transaccion(es) de Entrada Falla
 $lang["receivings_unable_to_add_item"] = "No se pudo agregar el artículo.";
 $lang["receivings_unsuccessfully_updated"] = "Actualizacion de Recepción fallida.";
 $lang["receivings_update"] = "Editar";
+$lang["receivings_daily"] = "Recepción Diaria";
+$lang["receivings_confirm_restore"] = "Seguro que quiere restaurar esta recepción? Éste será restaurado.";
+$lang["receivings_amount_due"] = "Importe Adeudado";
