@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Todo";
 $lang["reports_authority"] = "Autorización";
 $lang["reports_canceled"] = "Cancelado";
@@ -110,7 +109,7 @@ $lang["reports_sold_to"] = "Vendido A";
 $lang["reports_stock_location"] = "Ubicación de Inventario";
 $lang["reports_sub_total_value"] = "SubTotal";
 $lang["reports_subtotal"] = "Sub-total";
-$lang["reports_summary_reports"] = "Reportes Resumidos";
+$lang["reports_summary_reports"] = "Reportes Resumidos de Ventas";
 $lang["reports_supplied_by"] = "Provisto por";
 $lang["reports_supplier"] = "Proveedor";
 $lang["reports_suppliers"] = "Proveedores";
@@ -139,3 +138,9 @@ $lang["reports_unit_price"] = "Precio de Venta";
 $lang["reports_used"] = "Puntos usados";
 $lang["reports_work_orders"] = "Ordenes";
 $lang["reports_zero_and_less"] = "Cero y negativos";
+$lang["reports_tax_name"] = "Nombres de Impuestos";
+$lang["reports_sold_items"] = "Artículos Vendidos";
+$lang["reports_service_charge"] = "Costo de Servicio";
+$lang["reports_expenses_payment_amount"] = "Pago";
+$lang["reports_detailed_receivings_report_input"] = "Entrada detallada del reporte de recepción";
+$lang["reports_commission"] = "Comisión";
