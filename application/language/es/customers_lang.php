@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "Este número de cuenta ya esta en la base de datos.";
-$lang["customers_available_points"] = "Puntos disponibles";
+$lang["customers_available_points"] = "Puntos Disponibles";
 $lang["customers_average"] = "Gasto promedio";
 $lang["customers_avg_discount"] = "Descuento promedio";
 $lang["customers_basic_information"] = "Información";
@@ -32,7 +31,7 @@ $lang["customers_mailchimp_activity_open"] = "Correo abierto";
 $lang["customers_mailchimp_activity_total"] = "Correo enviado";
 $lang["customers_mailchimp_activity_unopen"] = "Correo sin abrir";
 $lang["customers_mailchimp_email_client"] = "Correo del cliente";
-$lang["customers_mailchimp_info"] = "Mail chimp";
+$lang["customers_mailchimp_info"] = "Correo Mailchimp";
 $lang["customers_mailchimp_member_rating"] = "Porcentaje";
 $lang["customers_mailchimp_status"] = "Estado";
 $lang["customers_mailchimp_vip"] = "VIP";
@@ -52,3 +51,4 @@ $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";
 $lang["rewards_package"] = "Paquete de premios";
+$lang["customers_available_points_value"] = "Puntos Disponibles";
