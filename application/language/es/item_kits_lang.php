@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Agregar Artículo";
 $lang["item_kits_all"] = "Todo";
 $lang["item_kits_cannot_be_deleted"] = "Borrado de Kit(s) de Artículos fallido.";
@@ -36,3 +35,5 @@ $lang["item_kits_successful_adding"] = "Has agregado satisfactoriamente un Kit d
 $lang["item_kits_successful_deleted"] = "Has borrado satisfactoriamente";
 $lang["item_kits_successful_updating"] = "Has actualizado satisfactoriamente un Kit de Artículos";
 $lang["item_kits_update"] = "Actualizar Kit de Artículos";
+$lang["item_kits_unit_price"] = "Precio Unitario";
+$lang["item_kits_item_kit_number_duplicate"] = "El Número del Kit de Artículo yá está presente en la base de datos.";
