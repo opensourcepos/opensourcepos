@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "";
 $lang["items_allow_alt_description"] = "";
 $lang["items_amount_entry"] = "";
@@ -7,17 +6,17 @@ $lang["items_bulk_edit"] = "";
 $lang["items_buy_price_required"] = "";
 $lang["items_cannot_be_deleted"] = "";
 $lang["items_cannot_find_item"] = "";
-$lang["items_category"] = "";
-$lang["items_category_required"] = "";
-$lang["items_change_all_to_allow_alt_desc"] = "";
-$lang["items_change_all_to_not_allow_allow_desc"] = "";
+$lang["items_category"] = "Categorie";
+$lang["items_category_required"] = "Campul Categorie este obligatoriu.";
+$lang["items_change_all_to_allow_alt_desc"] = "Permite descriere alternativa pentru tot.";
+$lang["items_change_all_to_not_allow_allow_desc"] = "Nu permite descriere alternativa pentru tot.";
 $lang["items_change_all_to_serialized"] = "";
 $lang["items_change_all_to_unserialized"] = "";
-$lang["items_change_image"] = "";
-$lang["items_confirm_bulk_edit"] = "";
-$lang["items_confirm_bulk_edit_wipe_taxes"] = "";
-$lang["items_confirm_delete"] = "";
-$lang["items_confirm_restore"] = "";
+$lang["items_change_image"] = "Schimbare imagine";
+$lang["items_confirm_bulk_edit"] = "Sigur doriti editarea produsului/produselor selectate?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Toate informatiile cu privire la taxe, vor fi inlocuite.";
+$lang["items_confirm_delete"] = "Sigur doriti stergerea produselor selectate?";
+$lang["items_confirm_restore"] = "Sigur doriti restaurarea produselor selectate?";
 $lang["items_cost_price"] = "";
 $lang["items_cost_price_number"] = "";
 $lang["items_cost_price_required"] = "";
@@ -110,3 +109,5 @@ $lang["items_unit_price_required"] = "";
 $lang["items_upc_database"] = "";
 $lang["items_update"] = "";
 $lang["items_use_inventory_menu"] = "";
+$lang["items_categories"] = "Categorii - selectare numar produs.";
+$lang["items_category_new"] = "Categorie noua";
