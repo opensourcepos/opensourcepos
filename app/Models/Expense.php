@@ -11,9 +11,9 @@ use CodeIgniter\Model;
 class Expense extends Model
 {
 	/*
-	Determines if a given Expense_id is an Expense
+	* Determines if a given Expense_id is an Expense
 	*/
-	public function exists($expense_id)
+	public function exists($expense_id): bool
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
@@ -53,7 +53,7 @@ class Expense extends Model
 	}
 
 	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search, $filters)
 	{
@@ -61,10 +61,11 @@ class Expense extends Model
 	}
 
 	/*
-	Searches expenses
+	* Searches expenses
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('expenses AS expenses');
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
@@ -87,7 +88,6 @@ class Expense extends Model
 			');
 		}
 
-		$builder = $this->db->table('expenses AS expenses');
 		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
@@ -164,6 +164,7 @@ class Expense extends Model
 	*/
 	public function get_info($expense_id)
 	{
+		$builder = $this->db->table('expenses AS expenses');
 		$builder->select('
 			expenses.expense_id AS expense_id,
 			expenses.date AS date,
@@ -181,7 +182,7 @@ class Expense extends Model
 			expense_categories.expense_category_id AS expense_category_id,
 			expense_categories.category_name AS category_name
 		');
-		$builder = $this->db->table('expenses AS expenses');
+
 		$builder->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 		$builder->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
@@ -212,8 +213,10 @@ class Expense extends Model
 	/*
 	Inserts or updates an expense
 	*/
-	public function save(&$expense_data, $expense_id = FALSE)
+	public function save(&$expense_data, $expense_id = FALSE): bool
 	{
+		$builder = $this->db->table('expenses');
+
 		if(!$expense_id || !$this->exists($expense_id))
 		{
 			if($builder->insert('expenses', $expense_data))
@@ -228,20 +231,21 @@ class Expense extends Model
 
 		$builder->where('expense_id', $expense_id);
 
-		return $builder->update('expenses', $expense_data);
+		return $builder->update($expense_data);
 	}
 
 	/*
 	Deletes a list of expense_category
 	*/
-	public function delete_list($expense_ids)
+	public function delete_list($expense_ids): bool
 	{
 		$success = FALSE;
+		$builder = $this->db->table('expenses');
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 			$builder->whereIn('expense_id', $expense_ids);
-			$success = $builder->update('expenses', array('deleted'=>1));
+			$success = $builder->update(['deleted' => 1]);
 		$this->db->transComplete();
 
 		return $success;
@@ -250,11 +254,11 @@ class Expense extends Model
 	/*
 	Gets the payment summary for the expenses (expenses/manage) view
 	*/
-	public function get_payments_summary($search, $filters)
+	public function get_payments_summary($search, $filters): array
 	{
 		// get payment summary
-		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder = $this->db->table('expenses');
+		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder->where('deleted', $filters['is_deleted']);
 
 		if(empty($this->config->item('date_or_time_format')))
@@ -293,15 +297,13 @@ class Expense extends Model
 
 		$builder->groupBy('payment_type');
 
-		$payments = $builder->get()->getResultArray();
-
-		return $payments;
+		return $builder->get()->getResultArray();;
 	}
 
 	/*
 	Gets the payment options to show in the expense forms
 	*/
-	public function get_payment_options()
+	public function get_payment_options(): array
 	{
 		return get_payment_options();
 	}

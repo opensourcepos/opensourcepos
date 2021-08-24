@@ -11,36 +11,40 @@ use CodeIgniter\Model;
 class Item extends Model
 {
 	/*
-	Determines if a given item_id is an item
+	* Determines if a given item_id is an item
 	*/
-	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
+
+	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE): bool
 	{
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) !== '0')
 		{
+			$builder = $this->db->table('items');
 			$builder->where('item_id', intval($item_id));
+
 			if($ignore_deleted === FALSE)
 			{
 				$builder->where('deleted', $deleted);
 			}
 
-			return ($builder->get('items')->getNumRows() === 1);
+			return ($builder->get()->getNumRows() === 1);
 		}
 
 		return FALSE;
 	}
 
 	/*
-	Determines if a given item_number exists
+	* Determines if a given item_number exists
 	*/
-	public function item_number_exists($item_number, $item_id = '')
+	public function item_number_exists($item_number, $item_id = ''): bool
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
 		{
 			return FALSE;
 		}
 
+		$builder = $this->db->table('items');
 		$builder->where('item_number', (string) $item_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -49,11 +53,11 @@ class Item extends Model
 			$builder->where('item_id !=', intval($item_id));
 		}
 
-		return ($builder->get('items')->getNumRows() >= 1);
+		return ($builder->get()->getNumRows() >= 1);
 	}
 
 	/*
-	Gets total of rows
+	* Gets total of rows
 	*/
 	public function get_total_rows()
 	{
@@ -72,7 +76,7 @@ class Item extends Model
 	}
 
 	/*
-	Get number of rows
+	* Get number of rows
 	*/
 	public function get_found_rows($search, $filters)
 	{
@@ -80,10 +84,12 @@ class Item extends Model
 	}
 
 	/*
-	Perform a search on items
+	* Perform a search on items
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
+
 		// get_found_rows case
 		if($count_only === TRUE)
 		{
@@ -130,7 +136,6 @@ class Item extends Model
 			}
 		}
 
-		$builder = $this->db->table('items AS items');
 		$builder->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$builder->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
 

@@ -13,7 +13,7 @@ class Expense_category extends Model
 	/*
 	Determines if a given Expense_id is an Expense category
 	*/
-	public function exists($expense_category_id)
+	public function exists($expense_category_id): bool
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->where('expense_category_id', $expense_category_id);
@@ -42,7 +42,7 @@ class Expense_category extends Model
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->getNumRows()==1)
+		if($query->getNumRows() == 1)
 		{
 			return $query->getRow();
 		}
@@ -67,6 +67,7 @@ class Expense_category extends Model
 	public function get_all($rows = 0, $limit_from = 0, $no_deleted = FALSE)
 	{
 		$builder = $this->db->table('expense_categories');
+
 		if($no_deleted == TRUE)
 		{
 			$builder->where('deleted', 0);
@@ -97,11 +98,14 @@ class Expense_category extends Model
 	/*
 	Inserts or updates an expense_category
 	*/
-	public function save(&$expense_category_data, $expense_category_id = FALSE)
+	public function save(&$expense_category_data, $expense_category_id = FALSE): bool
 	{
+		$builder = $this->db->table('expense_categories');
+
 		if(!$expense_category_id || !$this->exists($expense_category_id))
 		{
-			if($builder->insert('expense_categories', $expense_category_data))
+
+			if($builder->insert($expense_category_data))
 			{
 				$expense_category_data['expense_category_id'] = $this->db->insertID();
 
@@ -119,11 +123,12 @@ class Expense_category extends Model
 	/*
 	Deletes a list of expense_category
 	*/
-	public function delete_list($expense_category_ids)
+	public function delete_list($expense_category_ids): bool
 	{
+		$builder = $this->db->table('expense_categories');
 		$builder->whereIn('expense_category_id', $expense_category_ids);
 
-		return $builder->update('expense_categories', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
 	/*
@@ -139,13 +144,14 @@ class Expense_category extends Model
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'category_name', $order='asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('expense_categories AS expense_categories');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(expense_categories.expense_category_id) as count');
 		}
 
-		$builder = $this->db->table('expense_categories AS expense_categories');
 		$builder->groupStart();
 			$builder->like('category_name', $search);
 			$builder->orLike('category_description', $search);
