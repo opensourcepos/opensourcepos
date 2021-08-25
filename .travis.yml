@@ -1,12 +1,17 @@
 sudo: required
 if: tag IS blank
 
+addons:
+  apt:
+    packages:
+      - docker-ce
 branches:
   except:
     - weblate
 services:
   - docker
 before_install:
+  - docker --version
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
