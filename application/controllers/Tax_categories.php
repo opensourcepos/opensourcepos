@@ -25,7 +25,7 @@ class Tax_categories extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort   = $this->input->post('sort') === NULL ? 'tax_category' : $this->db->escape($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$tax_categories = $this->Tax_category->search($search, $limit, $offset, $sort, $order);
