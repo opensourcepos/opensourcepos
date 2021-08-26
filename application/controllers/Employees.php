@@ -17,7 +17,7 @@ class Employees extends Persons
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort = $this->input->post('sort') === NULL ? LAST_NAME : $this->db->escape($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$employees = $this->Employee->search($search, $limit, $offset, $sort, $order);

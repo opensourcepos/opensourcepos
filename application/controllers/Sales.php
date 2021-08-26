@@ -54,10 +54,10 @@ class Sales extends Secure_Controller
 	public function search()
 	{
 		$search = $this->input->get('search');
-		$limit = $this->input->get('limit');
+		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
-		$order = $this->input->get('order');
+		$sort   = $this->input->post('sort') === NULL ? 'sales.sale_time' : $this->db->escape($this->input->get('sort'));
+		$order  = $this->input->get('order');
 
 		$filters = array('sale_type' => 'all',
 						 'location_id' => 'all',
