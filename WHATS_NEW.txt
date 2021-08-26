@@ -1,3 +1,18 @@
+Version 3.3.5
+-------------
++ Translation updates (Romanian, Ukranian, Vietnamese, Thai, Polish, Swedish, Portugese, Arabic, French, Chinese, Dutch, Tamil, Turkish, Spanish)
++ New login page restyle
++ Partial BS5 upgrade
++ Username verification fix on employee insert/update
++ Minor report fixes
++ Attribute encoding fix
++ Grunt/CI updates
++ Database and performance optimizations
++ CSV item import improvements
++ Fix decimal render
++ Translation fallback in other languages than english
++ Fixes for docker to make it run on Windows
+
 Version 3.3.4
 -------------
 + Translation updates (Hungarian, Indonesian, Bosnian, Ukranian, Vietnamese, Spanish)
