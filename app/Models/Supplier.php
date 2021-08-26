@@ -141,7 +141,7 @@ class Supplier extends Person
 	/*
 	Deletes a list of suppliers
 	*/
-	public function delete_list($supplier_ids)
+	public function delete_list($supplier_ids): bool
 	{
 		$builder->whereIn('person_id', $supplier_ids);
 

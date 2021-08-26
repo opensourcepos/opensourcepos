@@ -146,7 +146,7 @@ class Receiving extends Model
 		return $receiving_id;
 	}
 
-	public function delete_list($receiving_ids, $employee_id, $update_inventory = TRUE)
+	public function delete_list($receiving_ids, $employee_id, $update_inventory = TRUE): bool
 	{
 		$success = TRUE;
 

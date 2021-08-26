@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Item_kit class
@@ -11,9 +12,9 @@ use CodeIgniter\Model;
 class Item_kit extends Model
 {
 	/*
-	Determines if a given item_id is an item kit
+	* Determines if a given item_id is an item kit
 	*/
-	public function exists($item_kit_id)
+	public function exists($item_kit_id): bool
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->where('item_kit_id', $item_kit_id);
@@ -22,9 +23,9 @@ class Item_kit extends Model
 	}
 
 	/*
-	Check if a given item_id is an item kit
+	* Check if a given item_id is an item kit
 	*/
-	public function is_valid_item_kit($item_kit_id)
+	public function is_valid_item_kit($item_kit_id): bool
 	{
 		if(!empty($item_kit_id))
 		{
@@ -45,15 +46,16 @@ class Item_kit extends Model
 	}
 
 	/*
-	Determines if a given item_number exists
+	* Determines if a given item_number exists
 	*/
-	public function item_number_exists($item_kit_number, $item_kit_id = '')
+	public function item_number_exists($item_kit_number, $item_kit_id = ''): bool
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
 		{
 			return FALSE;
 		}
 
+		$builder = $this->db->table('item_kits');
 		$builder->where('item_kit_number', (string) $item_kit_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -62,11 +64,11 @@ class Item_kit extends Model
 			$builder->where('item_kit_id !=', (int) $item_kit_id);
 		}
 
-		return ($builder->get('item_kits')->getNumRows() >= 1);
+		return ($builder->get()->getNumRows() >= 1);
 	}
 
 	/*
-	Gets total of rows
+	* Gets total of rows
 	*/
 	public function get_total_rows()
 	{
@@ -76,37 +78,38 @@ class Item_kit extends Model
 	}
 
 	/*
-	Gets information about a particular item kit
+	* Gets information about a particular item kit
 	*/
 	public function get_info($item_kit_id)
 	{
-		$builder->select('
-		item_kit_id,
-		item_kits.name as name,
-		item_kit_number,
-		items.name as item_name,
-		item_kits.description,
-		items.description as item_description,
-		item_kits.item_id as kit_item_id,
-		kit_discount,
-		kit_discount_type,
-		price_option,
-		print_option,
-		category,
-		supplier_id,
-		item_number,
-		cost_price,
-		unit_price,
-		reorder_level,
-		receiving_quantity,
-		pic_filename,
-		allow_alt_description,
-		is_serialized,
-		items.deleted,
-		item_type,
-		stock_type');
-
 		$builder = $this->db->table('item_kits');
+		$builder->select('
+			item_kit_id,
+			item_kits.name as name,
+			item_kit_number,
+			items.name as item_name,
+			item_kits.description,
+			items.description as item_description,
+			item_kits.item_id as kit_item_id,
+			kit_discount,
+			kit_discount_type,
+			price_option,
+			print_option,
+			category,
+			supplier_id,
+			item_number,
+			cost_price,
+			unit_price,
+			reorder_level,
+			receiving_quantity,
+			pic_filename,
+			allow_alt_description,
+			is_serialized,
+			items.deleted,
+			item_type,
+			stock_type
+		');
+
 		$builder->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$builder->where('item_kit_id', $item_kit_id);
 		$builder->orWhere('item_kit_number', $item_kit_id);
@@ -133,7 +136,7 @@ class Item_kit extends Model
 	}
 
 	/*
-	Gets information about multiple item kits
+	* Gets information about multiple item kits
 	*/
 	public function get_multiple_info($item_kit_ids)
 	{
@@ -145,10 +148,11 @@ class Item_kit extends Model
 	}
 
 	/*
-	Inserts or updates an item kit
+	* Inserts or updates an item kit
 	*/
-	public function save(&$item_kit_data, $item_kit_id = FALSE)
+	public function save(&$item_kit_data, $item_kit_id = FALSE): bool
 	{
+		$builder = $this->db->table('item_kits');
 		if(!$item_kit_id || !$this->exists($item_kit_id))
 		{
 			if($builder->insert('item_kits', $item_kit_data))
@@ -163,28 +167,30 @@ class Item_kit extends Model
 
 		$builder->where('item_kit_id', $item_kit_id);
 
-		return $builder->update('item_kits', $item_kit_data);
+		return $builder->update($item_kit_data);
 	}
 
 	/*
-	Deletes one item kit
+	* Deletes one item kit
 	*/
-	public function delete($item_kit_id)
+	public function delete($item_kit_id): bool
 	{
-		return $builder->delete('item_kits', array('item_kit_id' => $item_kit_id));
+		$builder = $this->db->table('item_kits');
+		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 
 	/*
-	Deletes a list of item kits
+	* Deletes a list of item kits
 	*/
-	public function delete_list($item_kit_ids)
+	public function delete_list($item_kit_ids): bool
 	{
+		$builder = $this->db->table('item_kits');
 		$builder->whereIn('item_kit_id', $item_kit_ids);
 
-		return $builder->delete('item_kits');
+		return $builder->delete();
 	}
 
-	public function get_search_suggestions($search, $limit = 25)
+	public function get_search_suggestions($search, $limit = 25): array
 	{
 		$suggestions = array();
 
@@ -223,7 +229,7 @@ class Item_kit extends Model
 	}
 
  	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search)
 	{
@@ -231,17 +237,18 @@ class Item_kit extends Model
 	}
 
 	/*
-	Perform a search on items
+	* Perform a search on items
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'name', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(item_kits.item_kit_id) as count');
 		}
 
-		$builder = $this->db->table('item_kits AS item_kits');
 		$builder->like('name', $search);
 		$builder->orLike('description', $search);
 		$builder->orLike('item_kit_number', $search);

@@ -25,7 +25,7 @@ function execute_script($path)
 	{
 		$statement = $statement . ';';
 
-		if(!$CI->db->simple_query($statement))
+		if(!$CI->db->simpleQuery($statement))
 		{
 			foreach($CI->db->error() as $error)
 			{

@@ -79,7 +79,7 @@ class Migration_database_optimizations extends CI_Migration
 
 		$builder->select("$column, attribute_id");
 		$builder->groupBy($column);
-		$this->db->having("COUNT($column) > 1");
+		$builder->having("COUNT($column) > 1");
 		$duplicated_values = $builder->get('attribute_values');
 
 		foreach($duplicated_values->getResultArray() as $duplicated_value)

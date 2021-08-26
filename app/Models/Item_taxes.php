@@ -11,9 +11,9 @@ use CodeIgniter\Model;
 class Item_taxes extends Model
 {
 	/*
-	Gets tax info for a particular item
+	* Gets tax info for a particular item
 	*/
-	public function get_info($item_id)
+	public function get_info($item_id): array
 	{
 		$builder = $this->db->table('items_taxes');
 		$builder->where('item_id',$item_id);
@@ -23,9 +23,9 @@ class Item_taxes extends Model
 	}
 
 	/*
-	Inserts or updates an item's taxes
+	* Inserts or updates an item's taxes
 	*/
-	public function save(&$items_taxes_data, $item_id)
+	public function save(&$items_taxes_data, $item_id): bool
 	{
 		$success = TRUE;
 
@@ -37,7 +37,8 @@ class Item_taxes extends Model
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$success &= $builder->insert('items_taxes', $row);
+			$builder = $this->db->table('items_taxes');
+			$success &= $builder->insert($row);
 		}
 
 		$this->db->transComplete();
@@ -48,9 +49,9 @@ class Item_taxes extends Model
 	}
 
 	/*
-	Saves taxes for multiple items
+	* Saves taxes for multiple items
 	*/
-	public function save_multiple(&$items_taxes_data, $item_ids)
+	public function save_multiple(&$items_taxes_data, $item_ids): bool
 	{
 		$success = TRUE;
 
@@ -64,7 +65,8 @@ class Item_taxes extends Model
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$success &= $builder->insert('items_taxes', $row);
+				$builder = $this->db->table('items_taxes');
+				$success &= $builder->insert($row);
 			}
 		}
 
@@ -76,11 +78,12 @@ class Item_taxes extends Model
 	}
 
 	/*
-	Deletes taxes given an item
+	* Deletes taxes given an item
 	*/
-	public function delete($item_id)
+	public function delete($item_id): bool
 	{
-		return $builder->delete('items_taxes', array('item_id' => $item_id));
+		$builder = $this->db->table('items_taxes');
+		return $builder->delete(['item_id' => $item_id]);
 	}
 }
 ?>

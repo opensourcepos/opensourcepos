@@ -30,9 +30,9 @@ class Migration_remove_duplicate_links extends CI_Migration
 		$builder->groupBy('item_id');
 		$builder->groupBy('definition_id');
 		$builder->groupBy('attribute_id');
-		$this->db->having('COUNT(item_id) > 1');
-		$this->db->having('COUNT(definition_id) > 1');
-		$this->db->having('COUNT(attribute_id) > 1');
+		$builder->having('COUNT(item_id) > 1');
+		$builder->having('COUNT(definition_id) > 1');
+		$builder->having('COUNT(attribute_id) > 1');
 		$duplicated_links = $builder->get('attribute_links');
 
 		foreach($duplicated_links->getResultArray() as $duplicated_link)

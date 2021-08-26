@@ -189,7 +189,7 @@ class Employee extends Person
 	/*
 	Deletes a list of employees
 	*/
-	public function delete_list($employee_ids)
+	public function delete_list($employee_ids): bool
 	{
 		$success = FALSE;
 
@@ -215,7 +215,7 @@ class Employee extends Person
 
 		$this->db->transComplete();
 
-		return $success;
+		return $success;	//TODO: need to add transStatus() to $success before returning
  	}
 
 	/*

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Giftcard class
@@ -66,7 +67,7 @@ class Giftcard extends Model
 		else
 		{
 			//Get empty base parent object, as $giftcard_id is NOT an giftcard
-			$giftcard_obj = new stdClass();	//TODO: need to sort this out.
+			$giftcard_obj = new stdClass();
 
 			//Get all the fields from giftcards table
 			foreach($this->db->getFieldNames('giftcards') as $field)
@@ -79,7 +80,7 @@ class Giftcard extends Model
 	}
 
 	/*
-	* Gets an giftcard id given a giftcard number
+	* Gets a giftcard id given a giftcard number
 	*/
 	public function get_giftcard_id($giftcard_number): bool
 	{

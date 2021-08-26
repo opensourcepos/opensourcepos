@@ -815,7 +815,7 @@ class Sale extends Model
 	/**
 	 * Deletes list of sales
 	 */
-	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
+	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE): bool
 	{
 		$result = TRUE;
 

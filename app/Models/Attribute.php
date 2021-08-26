@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Attribute class
@@ -110,7 +111,7 @@ class Attribute extends Model
 		else
 		{
 			//Get empty base parent object, as $item_id is NOT an item
-			$item_obj = new \stdClass();
+			$item_obj = new stdClass();
 
 			//Get all the fields from attribute_definitions table
 			foreach($this->db->getFieldNames('attribute_definitions') as $field)
@@ -615,7 +616,7 @@ class Attribute extends Model
 		$query = 'INSERT INTO ' . $this->db->prefixTable('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')	';
 		$query .= 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
 		$query .= 'FROM ' . $this->db->prefixTable('attribute_links');
-		$query .= 'WHERE item_id = ' . $this->db->escape($item_id)
+		$query .= 'WHERE item_id = ' . $this->db->escape($item_id);
 		$query .=' AND sale_id IS NULL AND receiving_id IS NULL';
 		$this->db->query($query);
 	}
@@ -769,6 +770,8 @@ class Attribute extends Model
 
 			return $this->db->transStatus();
 		}
+
+		return true;	//TODO: if the definition type is a dropdown then this will return true.  Is that what we want here?
 	}
 
 	/*

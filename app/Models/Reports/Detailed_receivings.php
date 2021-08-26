@@ -90,7 +90,7 @@ class Detailed_receivings extends Report
 		}
 		elseif($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->having('items_purchased = 0');
+			$builder->having('items_purchased = 0');
 		}
 		$builder->groupBy('receiving_id', 'receiving_date');
 		$builder->orderBy('receiving_id');

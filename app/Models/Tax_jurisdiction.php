@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Tax Jurisdiction class
@@ -166,7 +167,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Soft deletes a list of rows
 	 */
-	public function delete_list($jurisdiction_ids)
+	public function delete_list($jurisdiction_ids): bool
 	{
 		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 

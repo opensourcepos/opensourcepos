@@ -11,7 +11,7 @@ class Migration_move_expenses_categories extends CI_Migration {
 	{
 		error_log('Migrating expense categories module');
 
-		$this->db->simple_query("UPDATE ospos_grants SET menu_group = 'office' WHERE permission_id = 'expenses_categories'");
+		$this->db->simpleQuery("UPDATE ospos_grants SET menu_group = 'office' WHERE permission_id = 'expenses_categories'");
 
 		error_log('Migrating expense categories module completed');
 	}

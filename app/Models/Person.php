@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Base class for People classes
@@ -75,7 +76,7 @@ class Person extends Model
 		else
 		{
 			//create object with empty properties.
-			$person_obj = new stdClass;
+			$person_obj = new stdClass();
 
 			foreach($this->db->getFieldNames('people') as $field)
 			{
@@ -189,7 +190,7 @@ class Person extends Model
 	 *
 	 * @return boolean always TRUE
 	 */
-	public function delete_list($person_ids)
+	public function delete_list($person_ids): bool
 	{
 		return TRUE;
  	}

@@ -11,12 +11,12 @@ use CodeIgniter\Model;
 class Item_kit_items extends Model
 {
 	/*
-	Gets item kit items for a particular item kit
+	* Gets item kit items for a particular item kit
 	*/
-	public function get_info($item_kit_id)
+	public function get_info($item_kit_id): array
 	{
-		$builder->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
 		$builder = $this->db->table('item_kit_items as item_kit_items');
+		$builder->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
 		$builder->join('items as items', 'item_kit_items.item_id = items.item_id');
 		$builder->join('item_kits as item_kits', 'item_kits.item_kit_id = item_kit_items.item_kit_id');
 		$builder->where('item_kits.item_kit_id', $item_kit_id);
@@ -28,9 +28,9 @@ class Item_kit_items extends Model
 	}
 
 	/*
-	Gets item kit items for a particular item kit
+	* Gets item kit items for a particular item kit
 	*/
-	public function get_info_for_sale($item_kit_id)
+	public function get_info_for_sale($item_kit_id): array
 	{
 		$builder = $this->db->table('item_kit_items');
 		$builder->where('item_kit_id', $item_kit_id);
@@ -41,9 +41,9 @@ class Item_kit_items extends Model
 		return $builder->get()->getResultArray();
 	}
 	/*
-	Inserts or updates an item kit's items
+	* Inserts or updates an item kit's items
 	*/
-	public function save(&$item_kit_items_data, $item_kit_id)
+	public function save(&$item_kit_items_data, $item_kit_id): bool
 	{
 		$success = TRUE;
 
@@ -58,7 +58,8 @@ class Item_kit_items extends Model
 			foreach($item_kit_items_data as $row)
 			{
 				$row['item_kit_id'] = $item_kit_id;
-				$success &= $builder->insert('item_kit_items', $row);
+				$builder = $this->db->table('item_kit_items');
+				$success &= $builder->insert($row);
 			}
 		}
 
@@ -70,11 +71,12 @@ class Item_kit_items extends Model
 	}
 
 	/*
-	Deletes item kit items given an item kit
+	* Deletes item kit items given an item kit
 	*/
-	public function delete($item_kit_id)
+	public function delete($item_kit_id): bool
 	{
-		return $builder->delete('item_kit_items', array('item_kit_id' => $item_kit_id));
+		$builder = $this->db->table('item_kit_items');
+		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 }
 ?>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Tax Category class
@@ -168,7 +169,7 @@ class Tax_category extends Model
 	/**
 	 * Deletes a list of rows
 	 */
-	public function delete_list($tax_category_ids)
+	public function delete_list($tax_category_ids): bool
 	{
 		$builder->whereIn('tax_category_id', $tax_category_ids);
 

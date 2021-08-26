@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Expense class
@@ -248,7 +249,7 @@ class Expense extends Model
 			$success = $builder->update(['deleted' => 1]);
 		$this->db->transComplete();
 
-		return $success;
+		return $success;	//TODO: add TransStatus() to $success with bitwise and assignment operator.
 	}
 
 	/*

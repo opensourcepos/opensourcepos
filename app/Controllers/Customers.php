@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use app\Libraries\Mailchimp_lib;
+use stdClass;
 
 require_once("Persons.php");
 
@@ -36,11 +37,11 @@ class Customers extends Persons
 		$person = $this->Customer->get_info($row_id);
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
-		$stats = $this->Customer->get_stats($person->person_id);
+		$stats = $this->Customer->get_stats($person->person_id);	//TODO: This and the next 11 lines are duplicated in search().  Extract a method.
 		if(empty($stats))
 		{
 			//create object with empty properties.
-			$stats = new stdClass;
+			$stats = new stdClass();
 			$stats->total = 0;
 			$stats->min = 0;
 			$stats->max = 0;
@@ -76,7 +77,7 @@ class Customers extends Persons
 			if(empty($stats))
 			{
 				//create object with empty properties.
-				$stats = new stdClass;
+				$stats = new stdClass();
 				$stats->total = 0;
 				$stats->min = 0;
 				$stats->max = 0;

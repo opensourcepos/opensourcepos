@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use stdClass;
 
 /**
  * Item_quantity class
@@ -10,7 +11,7 @@ use CodeIgniter\Model;
 
 class Item_quantity extends Model
 {
-    public function exists($item_id, $location_id)
+    public function exists($item_id, $location_id): bool
     {
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
@@ -19,17 +20,19 @@ class Item_quantity extends Model
         return ($builder->get()->getNumRows() == 1);
     }
 
-    public function save($location_detail, $item_id, $location_id)
+    public function save($location_detail, $item_id, $location_id): bool
     {
         if(!$this->exists($item_id, $location_id))
         {
-            return $builder->insert('item_quantities', $location_detail);
+			$builder = $this->db->table('item_quantities');
+        	return $builder->insert($location_detail);
         }
 
+		$builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
         $builder->where('location_id', $location_id);
 
-        return $builder->update('item_quantities', $location_detail);
+        return $builder->update($location_detail);
     }
 
     public function get_item_quantity($item_id, $location_id)
@@ -38,6 +41,7 @@ class Item_quantity extends Model
         $builder->where('item_id', $item_id);
         $builder->where('location_id', $location_id);
         $result = $builder->get()->getRow();
+
         if(empty($result) == TRUE)
         {
             //Get empty base parent object, as $item_id is NOT an item
@@ -60,13 +64,13 @@ class Item_quantity extends Model
 	 * if $quantity_change is negative, it will be subtracted,
 	 * if it is positive, it will be added to the current quantity
 	 */
-	public function change_quantity($item_id, $location_id, $quantity_change)
+	public function change_quantity($item_id, $location_id, $quantity_change): bool
 	{
 		$quantity_old = $this->get_item_quantity($item_id, $location_id);
 		$quantity_new = $quantity_old->quantity + $quantity_change;
 		$location_detail = array('item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new);
 
-		return $this->save($location_detail, $item_id, $location_id);
+		return $this->save($location_detail, $item_id, $location_id);	//TODO: need to sort out the unhandled reflection exception error.
 	}
 
 	/*
@@ -74,9 +78,10 @@ class Item_quantity extends Model
 	*/
 	public function reset_quantity($item_id)
 	{
-        $builder->where('item_id', $item_id);
+		$builder = $this->db->table('item_quantities');
+		$builder->where('item_id', $item_id);
 
-        return $builder->update('item_quantities', array('quantity' => 0));
+        return $builder->update(['quantity' => 0]);
 	}
 
 	/*
@@ -84,9 +89,10 @@ class Item_quantity extends Model
 	*/
 	public function reset_quantity_list($item_ids)
 	{
-        $builder->whereIn('item_id', $item_ids);
+		$builder = $this->db->table('item_quantities');
+		$builder->whereIn('item_id', $item_ids);
 
-        return $builder->update('item_quantities', array('quantity' => 0));
+        return $builder->update(['quantity' => 0]);
 	}
 }
 ?>
