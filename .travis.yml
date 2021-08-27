@@ -41,7 +41,7 @@ before_deploy:
 deploy:
   provider: releases
   file: "dist/opensourcepos.$branch.$version.zip"
-  name: "OpensourcePos $version"
+  name: "OpensourcePos Unstable"
   release_notes_file: WHATS_NEW.txt
   prerelease: true
   skip_cleanup: true
