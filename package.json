@@ -42,8 +42,8 @@
     "load-grunt-tasks": "^3.4.0"
   },
   "dependencies": {
-    "bootstrap-5": "npm:bootstrap@^5.0.1",
-    "bootswatch-5": "npm:bootswatch@^5.0.1",
+    "bootstrap-5": "npm:bootstrap@5.0.2",
+    "bootswatch-5": "npm:bootswatch@5.0.2",
     "npm": "^6.14.9"
   }
 }
