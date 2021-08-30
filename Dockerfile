@@ -7,7 +7,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     openssl
 
 
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 

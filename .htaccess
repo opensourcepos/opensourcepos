@@ -1,18 +1,21 @@
 # redirect to public page
-  <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_URI} !^public$
-    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
-    RewriteRule "^(.*)$" "/public/" [R=301,L]
-  </IfModule>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} !^public$
+  RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
+  RewriteRule "^(.*)$" "/public/" [R=301,L]
+</IfModule>
 
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
 Options +SymLinksIfOwnerMatch -Indexes
-Header always set X-Frame-Options SAMEORIGIN
 
 # prevent folder listing
 IndexIgnore *
+
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+</Ifmodule>
 
 # Apache 2.4
 <IfModule authz_core_module>
