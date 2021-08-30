@@ -9,6 +9,7 @@
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
 Options +SymLinksIfOwnerMatch -Indexes
+Header always set X-Frame-Options SAMEORIGIN
 
 # prevent folder listing
 IndexIgnore *
