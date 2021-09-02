@@ -18,7 +18,7 @@ class Person extends Model
 	 *
 	 * @return boolean TRUE if the person exists, FALSE if not
 	 */
-	public function exists($person_id)
+	public function exists($person_id): bool
 	{
 		$builder = $this->db->table('people');
 		$builder->where('people.person_id', $person_id);
@@ -33,9 +33,9 @@ class Person extends Model
 	 *
 	 * @param integer $offset offset the query
 	 *
-	 * @return array array of people table rows
+	 * @return array array of people table rows	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
-	public function get_all($limit = 10000, $offset = 0)
+	public function get_all($limit = 10000, int $offset = 0)
 	{
 		$builder = $this->db->table('people');
 		$builder->orderBy('last_name', 'asc');
@@ -50,7 +50,7 @@ class Person extends Model
 	 *
 	 * @return integer row counter
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('people');
 		$builder->where('deleted', 0);
@@ -63,11 +63,12 @@ class Person extends Model
 	 *
 	 * @param integer $person_id identifier of the person
 	 *
-	 * @return array containing all the fields of the table row
+	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says
 	 */
 	public function get_info($person_id)
 	{
-		$query = $builder->getWhere('people', array('person_id' => $person_id), 1);
+		$builder = $this->db->table('people');
+		$query = $builder->getWhere(['person_id' => $person_id], 1);
 
 		if($query->getNumRows() == 1)
 		{
@@ -92,7 +93,7 @@ class Person extends Model
 	 *
 	 * @param array $person_ids array of people identifiers
 	 *
-	 * @return array containing all the fields of the table row
+	 * @return array containing all the fields of the table row	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
 	public function get_multiple_info($person_ids)
 	{
@@ -112,8 +113,10 @@ class Person extends Model
 	 *
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
-	public function save(&$person_data, $person_id = FALSE)
+	public function save(&$person_data, $person_id = FALSE): bool
 	{
+		$builder = $this->db->table('people');
+
 		if(!$person_id || !$this->exists($person_id))
 		{
 			if($builder->insert('people', $person_data))
@@ -128,7 +131,7 @@ class Person extends Model
 
 		$builder->where('person_id', $person_id);
 
-		return $builder->update('people', $person_data);
+		return $builder->update($person_data);
 	}
 
 	/**
@@ -140,12 +143,14 @@ class Person extends Model
 	 *
 	 * @return array array with the suggestion strings
 	 */
-	public function get_search_suggestions($search, $limit = 25)
+	public function get_search_suggestions($search, $limit = 25): array
 	{
 		$suggestions = array();
 
+		$builder = $this->db->table('people');
+
+//TODO: If this won't be added back into the code later, we should delete this commented section of code
 //		$builder->select('person_id');
-//		$builder = $this->db->table('people');
 //		$builder->where('deleted', 0);
 //		$builder->where('person_id', $search);
 //		$builder->groupStart();
@@ -178,7 +183,7 @@ class Person extends Model
 	 *
 	 * @return boolean always TRUE
 	 */
-	public function delete($person_id)
+	public function delete($person_id): bool
 	{
 		return TRUE;
 	}

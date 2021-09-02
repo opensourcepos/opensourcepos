@@ -10,7 +10,7 @@ use CodeIgniter\Model;
 
 class Stock_location extends Model
 {
-	public function exists($location_id = -1)
+	public function exists($location_id = -1): bool
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);
@@ -38,22 +38,23 @@ class Stock_location extends Model
 		return $builder->get();
 	}
 
-	public function show_locations($module_id = 'items')
+	public function show_locations($module_id = 'items'): bool
 	{
 		$stock_locations = $this->get_allowed_locations($module_id);
 
 		return count($stock_locations) > 1;
 	}
 
-	public function multiple_locations()
+	public function multiple_locations(): bool
 	{
 		return $this->get_all()->getNumRows() > 1;
 	}
 
-	public function get_allowed_locations($module_id = 'items')
+	public function get_allowed_locations($module_id = 'items'): array
 	{
 		$stock = $this->get_undeleted_all($module_id)->getResultArray();
 		$stock_locations = array();
+
 		foreach($stock as $location_data)
 		{
 			$stock_locations[$location_data['location_id']] = $location_data['location_name'];
@@ -62,7 +63,7 @@ class Stock_location extends Model
 		return $stock_locations;
 	}
 
-	public function is_allowed_location($location_id, $module_id = 'items')
+	public function is_allowed_location($location_id, $module_id = 'items'): bool
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
@@ -75,7 +76,7 @@ class Stock_location extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function get_default_location_id($module_id = 'items')
+	public function get_default_location_id($module_id = 'items'): int
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
@@ -88,7 +89,7 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_id;
 	}
 
-	public function get_location_name($location_id)
+	public function get_location_name($location_id): string
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);
@@ -96,7 +97,7 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_name;
 	}
 
-	public function get_location_id($location_name)
+	public function get_location_id($location_name): int
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_name', $location_name);
@@ -104,7 +105,7 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_id;
 	}
 
-	public function save(&$location_data, $location_id)
+	public function save(&$location_data, $location_id): bool
 	{
 		$location_name = $location_data['location_name'];
 
@@ -114,10 +115,11 @@ class Stock_location extends Model
 		{
 			$this->db->transStart();
 
-			$builder->insert('stock_locations', $location_data_to_save);
+			$builder = $this->db->table('stock_locations');
+			$builder->insert($location_data_to_save);
  			$location_id = $this->db->insertID();
 
-			$this->_insert_new_permission('items', $location_id, $location_name);
+			$this->_insert_new_permission('items', $location_id, $location_name);	//TODO: need to refactor out the hungarian notation.
 			$this->_insert_new_permission('sales', $location_id, $location_name);
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 
@@ -126,7 +128,9 @@ class Stock_location extends Model
 			foreach($items->getResultArray() as $item)
 			{
 				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
-				$builder->insert('item_quantities', $quantity_data);
+
+				$builder = $this->db->table('item_quantities');
+				$builder->insert($quantity_data);
 			}
 
 			$this->db->transComplete();
@@ -135,6 +139,8 @@ class Stock_location extends Model
 		}
 
 		$original_location_name = $this->get_location_name($location_id);
+
+		$builder = $this->db->table('stock_locations');
 
 		if($original_location_name != $location_name)
 		{
@@ -148,40 +154,45 @@ class Stock_location extends Model
 
 		$builder->where('location_id', $location_id);
 
-		return $builder->update('stock_locations', $location_data_to_save);
+		return $builder->update($location_data_to_save);
 	}
 
-	private function _insert_new_permission($module, $location_id, $location_name)
+	private function _insert_new_permission($module, $location_id, $location_name)	//TODO: refactor out hungarian notation
 	{
 		// insert new permission for stock location
 		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);
 		$permission_data = array('permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
-		$builder->insert('permissions', $permission_data);
+
+		$builder = $this->db->table('permissions');
+		$builder->insert($permission_data);
 
 		// insert grants for new permission
 		$employees = $this->Employee->get_all();
+
 		foreach($employees->getResultArray() as $employee)
 		{
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
 			$menu_group = $this->Employee->get_menu_group($module, $employee['person_id']);
 
 			$grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id'], 'menu_group' => $menu_group);
-			$builder->insert('grants', $grants_data);
+
+			$builder = $this->db->table('grants');
+			$builder->insert($grants_data);
 		}
 	}
 
 	/*
 	 Deletes one item
 	 */
-	public function delete($location_id)
+	public function delete($location_id): bool	//TODO: for these delete methods, it wants us to add a second parameter with a soft delete override... presumably for GDPR?
 	{
 		$this->db->transStart();
 
+		$builder = $this->db->table('permissions');
 		$builder->where('location_id', $location_id);
 		$builder->update('stock_locations', array('deleted' => 1));
-
 		$builder->where('location_id', $location_id);
-		$builder->delete('permissions');
+		$builder->delete();
 
 		$this->db->transComplete();
 

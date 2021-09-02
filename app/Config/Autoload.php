@@ -157,17 +157,17 @@ class Autoload extends AutoloadConfig
 		'Token_year_quote_count' => '/App/Models/Tokens/Token_year_quote_count.php',
 
 		//Libraries
-		'Barcode_lib' => '/App/Libraries/.php',
-		'Email_lib' => '/App/Libraries/.php',
-		'Item_lib' => '/App/Libraries/.php',
-		'Mailchimp_lib' => '/App/Libraries/.php',
-		'MY_Email' => '/App/Libraries/.php',
-		'MY_Migration' => '/App/Libraries/.php',
-		'Receving_lib' => '/App/Libraries/.php',
-		'Sale_lib' => '/App/Libraries/.php',
-		'Sms_lib' => '/App/Libraries/.php',
-		'Tax_lib' => '/App/Libraries/.php',
-		'Token_lib' => '/App/Libraries/.php',
+		'Barcode_lib' => '/App/Libraries/Barcode_lib.php',
+		'Email_lib' => '/App/Libraries/Email_lib.php',
+		'Item_lib' => '/App/Libraries/Item_lib.php',
+		'Mailchimp_lib' => '/App/Libraries/Mailchimp_lib.php',
+		'MY_Email' => '/App/Libraries/MY_Email.php',
+		'MY_Migration' => '/App/Libraries/MY_Migration.php',
+		'Receving_lib' => '/App/Libraries/Receiving_lib.php',
+		'Sale_lib' => '/App/Libraries/Sale_lib.php',
+		'Sms_lib' => '/App/Libraries/Sms_lib.php',
+		'Tax_lib' => '/App/Libraries/Tax_lib.php',
+		'Token_lib' => '/App/Libraries/Token_lib.php',
 
 		//Miscellaneous
 		'Rounding_mode' => '/App/Models/Enums/Rounding_mode.php'

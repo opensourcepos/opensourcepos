@@ -28,7 +28,7 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
-	public function is_valid_receipt($receipt_receiving_id)
+	public function is_valid_receipt($receipt_receiving_id): bool
 	{
 		if(!empty($receipt_receiving_id))
 		{
@@ -48,7 +48,7 @@ class Receiving extends Model
 		return FALSE;
 	}
 
-	public function exists($receiving_id)
+	public function exists($receiving_id): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -56,14 +56,15 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update($receiving_data, $receiving_id)
+	public function update($receiving_data, $receiving_id): bool
 	{
+		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
 
-		return $builder->update('receivings', $receiving_data);
+		return $builder->update($receiving_data);
 	}
 
-	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE)
+	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE): int	//TODO: the base model is expecting the return type to be a bool.  We need to either override this function properly or rename it, unless there is another solution
 	{
 		if(count($items) == 0)
 		{
@@ -82,7 +83,8 @@ class Receiving extends Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		$builder->insert('receivings', $receivings_data);
+		$builder = $this->db->table('receivings');
+		$builder->insert($receivings_data);
 		$receiving_id = $this->db->insertID();
 
 		foreach($items as $line=>$item)
@@ -104,7 +106,8 @@ class Receiving extends Model
 				'item_location' => $item['item_location']
 			);
 
-			$builder->insert('receivings_items', $receivings_items_data);
+			$builder = $this->db->table('receivings_items');
+			$builder->insert($receivings_items_data);
 
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
@@ -133,12 +136,12 @@ class Receiving extends Model
 
 			$this->Attribute->copy_attribute_links($item['item_id'], 'receiving_id', $receiving_id);
 
-			$supplier = $this->Supplier->get_info($supplier_id);
+			$supplier = $this->Supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
 		$this->db->transComplete();
 
-		if($this->db->transStatus() === FALSE)
+		if($this->db->transStatus() === FALSE)	//TODO: Probably better written as return $this->db->transStatus() ? $receiving_id : -1;
 		{
 			return -1;
 		}
@@ -166,7 +169,7 @@ class Receiving extends Model
 		return $success;
 	}
 
-	public function delete($receiving_id, $employee_id, $update_inventory = TRUE)
+	public function delete($receiving_id, $employee_id, $update_inventory = TRUE): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -196,9 +199,12 @@ class Receiving extends Model
 		}
 
 		// delete all items
-		$builder->delete('receivings_items', array('receiving_id' => $receiving_id));
+		$builder = $this->db->table('receivings_items');
+		$builder->delete(['receiving_id' => $receiving_id]);
 		// delete sale itself
-		$builder->delete('receivings', array('receiving_id' => $receiving_id));
+
+		$builder = $this->db->table('receivings');
+		$builder->delete(['receiving_id' => $receiving_id]);
 
 		// execute transaction
 		$this->db->transComplete();
@@ -222,7 +228,7 @@ class Receiving extends Model
 		return $this->Supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 
-	public function get_payment_options()
+	public function get_payment_options(): array
 	{
 		return array(
 			lang('Sales.cash') => lang('Sales.cash'),
@@ -254,7 +260,7 @@ class Receiving extends Model
 			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
 		}
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('receivings_items_temp') .
+		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('receivings_items_temp') .
 			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
@@ -290,8 +296,9 @@ class Receiving extends Model
 				$where
 				" . '
 				GROUP BY receivings_items.receiving_id, items.item_id, receivings_items.line
-			)'
-		);
+			)';
+
+		$this->db->query($sql);
 	}
 }
 ?>

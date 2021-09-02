@@ -13,7 +13,7 @@ class Employee extends Person
 	/*
 	Determines if a given person_id is an employee
 	*/
-	public function exists($person_id): bool
+	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
@@ -45,7 +45,7 @@ class Employee extends Person
 	/*
 	Returns all the employees
 	*/
-	public function get_all($limit = 10000, $offset = 0)
+	public function get_all(int $limit = 10000, int $offset = 0)
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('deleted', 0);
@@ -60,11 +60,11 @@ class Employee extends Person
 	/*
 	Gets information about a particular employee
 	*/
-	public function get_info($employee_id)
+	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
-		$builder->where('employees.person_id', $employee_id);
+		$builder->where('employees.person_id', $person_id);
 		$query = $builder->get();
 
 		if($query->getNumRows() == 1)
@@ -90,11 +90,11 @@ class Employee extends Person
 	/*
 	Gets information about multiple employees
 	*/
-	public function get_multiple_info($employee_ids)
+	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
-		$builder->whereIn('employees.person_id', $employee_ids);
+		$builder->whereIn('employees.person_id', $person_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -189,12 +189,12 @@ class Employee extends Person
 	/*
 	Deletes a list of employees
 	*/
-	public function delete_list($employee_ids): bool
+	public function delete_list(array $person_ids): bool
 	{
 		$success = FALSE;
 
 		//Don't let employees delete themselves
-		if(in_array($this->get_logged_in_employee_info()->person_id, $employee_ids))
+		if(in_array($this->get_logged_in_employee_info()->person_id, $person_ids))
 		{
 			return FALSE;
 		}
@@ -203,13 +203,13 @@ class Employee extends Person
 		$this->db->transStart();
 
 		$builder = $this->db->table('grants');
-		$builder->whereIn('person_id', $employee_ids);
+		$builder->whereIn('person_id', $person_ids);
 		//Delete permissions
 		if($builder->delete())
 		{
 			//delete from employee table
 			$builder = $this->db->table('employees');
-			$builder->whereIn('person_id', $employee_ids);
+			$builder->whereIn('person_id', $person_ids);
 			$success = $builder->update(['deleted' => 1]);
 		}
 
@@ -221,7 +221,7 @@ class Employee extends Person
 	/*
 	Get search suggestions to find employees
 	*/
-	public function get_search_suggestions($search, $include_deleted = FALSE, $limit = 5): array
+	public function get_search_suggestions(string $search, int $limit = FALSE): array
 	{
 		$suggestions = [];
 
@@ -232,7 +232,7 @@ class Employee extends Person
 			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
-		if($include_deleted == FALSE)
+		if($limit == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -245,7 +245,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($include_deleted == FALSE)
+		if($limit == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -260,7 +260,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($include_deleted == FALSE)
+		if($limit == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -276,7 +276,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($include_deleted == FALSE)
+		if($limit == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}

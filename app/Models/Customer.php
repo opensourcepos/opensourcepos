@@ -13,7 +13,7 @@ class Customer extends Person
 	/*
 	Determines if a given person_id is a customer
 	*/
-	public function exists($person_id): bool
+	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
@@ -52,16 +52,16 @@ class Customer extends Person
 	/*
 	Returns all the customers
 	*/
-	public function get_all($rows = 0, $limit_from = 0)
+	public function get_all(int $limit = 0, int $offset = 0)
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'customers.person_id = people.person_id');
 		$builder->where('deleted', 0);
 		$builder->orderBy('last_name', 'asc');
 
-		if($rows > 0)
+		if($limit > 0)
 		{
-			$builder->limit($rows, $limit_from);
+			$builder->limit($limit, $offset);
 		}
 
 		return $builder->get();
@@ -70,11 +70,11 @@ class Customer extends Person
 	/*
 	Gets information about a particular customer
 	*/
-	public function get_info($customer_id)
+	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
-		$builder->where('customers.person_id', $customer_id);
+		$builder->where('customers.person_id', $person_id);
 		$query = $builder->get();
 
 		if($query->getNumRows() == 1)
@@ -149,11 +149,11 @@ class Customer extends Person
 	/*
 	Gets information about multiple customers
 	*/
-	public function get_multiple_info($customer_ids)
+	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
-		$builder->whereIn('customers.person_id', $customer_ids);
+		$builder->whereIn('customers.person_id', $person_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -282,10 +282,10 @@ class Customer extends Person
 	/*
 	Deletes a list of customers
 	*/
-	public function delete_list($customer_ids): bool
+	public function delete_list(array $person_ids): bool
 	{
 		$builder = $this->db->table('customers');
-		$builder->whereIn('person_id', $customer_ids);
+		$builder->whereIn('person_id', $person_ids);
 
 		return $builder->update(['deleted' => 1]);
  	}
@@ -293,7 +293,7 @@ class Customer extends Person
  	/*
 	Get search suggestions to find customers
 	*/
-	public function get_search_suggestions($search, $unique = TRUE, $limit = 25): array
+	public function get_search_suggestions(string $search, int $limit = TRUE): array
 	{
 		$suggestions = array();
 
@@ -303,7 +303,7 @@ class Customer extends Person
 			$builder->like('first_name', $search);
 			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
-			if($unique)
+			if($limit)
 			{
 				$builder->orLike('email', $search);
 				$builder->orLike('phone_number', $search);
@@ -317,7 +317,7 @@ class Customer extends Person
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->company_name) ? ' [' . $row->company_name . ']' : ''). (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : ''));
 		}
 
-		if(!$unique)
+		if(!$limit)
 		{
 			$builder = $this->db->table('customers');
 			$builder->join('people', 'customers.person_id = people.person_id');

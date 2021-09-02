@@ -13,11 +13,12 @@ class Rewards extends Model
 	/*
 	Inserts or updates a rewards
 	*/
-	public function save(&$rewards_data, $rewards_id = FALSE)
+	public function save(&$rewards_data, $rewards_id = FALSE): bool
 	{
-		if(!$rewards_id || !$this->exists($rewards_id))
+		$builder = $this->db->table('sales_reward_points');
+		if(!$rewards_id || !$this->exists($rewards_id))		//TODO: looks like we are missing the exists function in this class
 		{
-			if($builder->insert('sales_reward_points', $rewards_data))
+			if($builder->insert($rewards_data))
 			{
 				$rewards_data['id'] = $this->db->insertID();
 
@@ -29,7 +30,7 @@ class Rewards extends Model
 
 		$builder->where('id', $rewards_id);
 
-		return $builder->update('sales_reward_points', $rewards_data);
+		return $builder->update($rewards_data);
 	}
 }
 ?>

@@ -14,7 +14,7 @@ class Tax extends Model
 	/**
 	 * Determines if a given row is on file
 	 */
-	public function exists($tax_rate_id)
+	public function exists($tax_rate_id): bool
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->where('tax_rate_id', $tax_rate_id);
@@ -25,7 +25,7 @@ class Tax extends Model
 	/**
 	 * Gets total of rows
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('tax_rates');
 
@@ -35,7 +35,7 @@ class Tax extends Model
 	/**
 	 * Gets list of tax rates that are assigned to a particular tax category
 	 */
-	public function get_tax_category_usage($tax_category_id)
+	public function get_tax_category_usage($tax_category_id): int
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->where('rate_tax_category_id', $tax_category_id);
@@ -48,6 +48,8 @@ class Tax extends Model
 	 */
 	public function get_info($tax_rate_id)
 	{
+		$builder = $this->db->table('tax_rates');
+
 		$builder->select('tax_rate_id');
 		$builder->select('rate_tax_code_id');
 		$builder->select('tax_code');
@@ -58,7 +60,7 @@ class Tax extends Model
 		$builder->select('tax_category');
 		$builder->select('tax_rate');
 		$builder->select('tax_rounding_code');
-		$builder = $this->db->table('tax_rates');
+
 		$builder->join('tax_codes',
 			'rate_tax_code_id = tax_code_id', 'LEFT');
 		$builder->join('tax_categories',
@@ -97,16 +99,18 @@ class Tax extends Model
 	/**
 	 * Get taxes to be collected for a given tax code
 	 */
-	 public function get_taxes($tax_code_id, $tax_category_id)
-	{
-		$query = $this->db->query('select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
+	 public function get_taxes($tax_code_id, $tax_category_id): array
+	 {
+		 $sql = 'select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
 			rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence 
 			from ' . $this->db->prefixTable('tax_rates') . ' 
 			left outer join ' . $this->db->prefixTable('tax_codes') . ' on rate_tax_code_id = tax_code_id 
 			left outer join ' . $this->db->prefixTable('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id 
 			left outer join ' . $this->db->prefixTable('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
 			where rate_tax_code_id = ' . $this->db->escape($tax_code_id) . ' and rate_tax_category_id = ' . $this->db->escape($tax_category_id) . '
-			order by cascade_sequence, tax_group, jurisdiction_name, tax_jurisdictions.tax_group_sequence + tax_categories.tax_group_sequence');
+			order by cascade_sequence, tax_group, jurisdiction_name, tax_jurisdictions.tax_group_sequence + tax_categories.tax_group_sequence';
+
+		$query = $this->db->query($sql);
 
 		return $query->getResultArray();
 	}
@@ -205,8 +209,9 @@ class Tax extends Model
 	 */
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code_name', $order = 'asc', $count_only = FALSE)
 	{
-		// get_found_rows case
+		$builder = $this->db->table('tax_rates');
 
+		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(tax_rate_id) as count');
@@ -223,7 +228,7 @@ class Tax extends Model
 			$builder->select('tax_rate');
 			$builder->select('tax_rounding_code');
 		}
-		$builder = $this->db->table('tax_rates');
+
 		$builder->join('tax_codes',
 			'rate_tax_code_id = tax_code_id', 'LEFT');
 		$builder->join('tax_categories',
@@ -253,7 +258,7 @@ class Tax extends Model
 		return $builder->get();
 	}
 
-	public function get_tax_code_type_name($tax_code_type)
+	public function get_tax_code_type_name($tax_code_type): string
 	{
 		if($tax_code_type == '0')
 		{
@@ -267,8 +272,8 @@ class Tax extends Model
 
 	public function get_tax_category($tax_category_id)
 	{
-		$builder->select('tax_category');
 		$builder = $this->db->table('tax_categories');
+		$builder->select('tax_category');
 		$builder->where('tax_category_id', $tax_category_id);
 
 		return $builder->get()->getRow()->tax_category;

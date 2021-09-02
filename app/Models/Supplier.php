@@ -16,7 +16,7 @@ class Supplier extends Person
 	/*
 	Determines if a given person_id is a customer
 	*/
-	public function exists($person_id)
+	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('suppliers');	
 		$builder->join('people', 'people.person_id = suppliers.person_id');
@@ -28,7 +28,7 @@ class Supplier extends Person
 	/*
 	Gets total of rows
 	*/
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->where('deleted', 0);
@@ -39,16 +39,17 @@ class Supplier extends Person
 	/*
 	Returns all the suppliers
 	*/
-	public function get_all($category = self::GOODS_SUPPLIER, $limit_from = 0, $rows = 0)
+	public function get_all(int $limit = self::GOODS_SUPPLIER, int $offset = 0)
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'suppliers.person_id = people.person_id');
-		$builder->where('category', $category);
+		$builder->where('category', $limit);
 		$builder->where('deleted', 0);
 		$builder->orderBy('company_name', 'asc');
-		if($rows > 0)
+
+		if($rows > 0)	//TODO: Rows seems to never be assigned, so it will never resolve to true
 		{
-			$builder->limit($rows, $limit_from);
+			$builder->limit($rows, $offset);
 		}
 
 		return $builder->get();		
@@ -57,11 +58,11 @@ class Supplier extends Person
 	/*
 	Gets information about a particular supplier
 	*/
-	public function get_info($supplier_id)
+	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('suppliers');	
 		$builder->join('people', 'people.person_id = suppliers.person_id');
-		$builder->where('suppliers.person_id', $supplier_id);
+		$builder->where('suppliers.person_id', $person_id);
 		$query = $builder->get();
 		
 		if($query->getNumRows() == 1)
@@ -87,11 +88,11 @@ class Supplier extends Person
 	/*
 	Gets information about multiple suppliers
 	*/
-	public function get_multiple_info($suppliers_ids)
+	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'people.person_id = suppliers.person_id');		
-		$builder->whereIn('suppliers.person_id', $suppliers_ids);
+		$builder->whereIn('suppliers.person_id', $person_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
@@ -100,7 +101,7 @@ class Supplier extends Person
 	/*
 	Inserts or updates a suppliers
 	*/
-	public function save_supplier(&$person_data, &$supplier_data, $supplier_id = FALSE)
+	public function save_supplier(&$person_data, &$supplier_data, $supplier_id = FALSE): bool
 	{
 		$success = FALSE;
 
@@ -109,15 +110,16 @@ class Supplier extends Person
 		
 		if(parent::save($person_data,$supplier_id))
 		{
+			$builder = $this->db->table('suppliers');
 			if(!$supplier_id || !$this->exists($supplier_id))
 			{
 				$supplier_data['person_id'] = $person_data['person_id'];
-				$success = $builder->insert('suppliers', $supplier_data);
+				$success = $builder->insert($supplier_data);
 			}
 			else
 			{
 				$builder->where('person_id', $supplier_id);
-				$success = $builder->update('suppliers', $supplier_data);
+				$success = $builder->update($supplier_data);
 			}
 		}
 		
@@ -131,27 +133,29 @@ class Supplier extends Person
 	/*
 	Deletes one supplier
 	*/
-	public function delete($supplier_id)
+	public function delete($supplier_id): bool
 	{
+		$builder = $this->db->table('suppliers');
 		$builder->where('person_id', $supplier_id);
 
-		return $builder->update('suppliers', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 	
 	/*
 	Deletes a list of suppliers
 	*/
-	public function delete_list($supplier_ids): bool
+	public function delete_list($person_ids): bool
 	{
-		$builder->whereIn('person_id', $supplier_ids);
+		$builder = $this->db->table('suppliers');
+		$builder->whereIn('person_id', $person_ids);
 
-		return $builder->update('suppliers', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
  	
  	/*
 	Get search suggestions to find suppliers
 	*/
-	public function get_search_suggestions($search, $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $limit = FALSE): array
 	{
 		$suggestions = array();
 
@@ -191,7 +195,7 @@ class Supplier extends Person
 			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name);
 		}
 
-		if(!$unique)
+		if(!$limit)
 		{
 			$builder = $this->db->table('suppliers');
 			$builder->join('people', 'suppliers.person_id = people.person_id');
@@ -234,7 +238,7 @@ class Supplier extends Person
 	}
 
  	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search)
 	{
@@ -242,17 +246,18 @@ class Supplier extends Person
 	}
 	
 	/*
-	Perform a search on suppliers
+	* Perform a search on suppliers
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
 	{
+		$builder = $this->db->table('suppliers AS suppliers');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(suppliers.person_id) as count');
 		}
 
-		$builder = $this->db->table('suppliers AS suppliers');
 		$builder->join('people', 'suppliers.person_id = people.person_id');
 		$builder->groupStart();
 			$builder->like('first_name', $search);
@@ -262,7 +267,7 @@ class Supplier extends Person
 			$builder->orLike('email', $search);
 			$builder->orLike('phone_number', $search);
 			$builder->orLike('account_number', $search);
-			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);	//TODO: According to PHPStorm, this line down to the return is repeated in Customer.php and Employee.php... perhaps refactoring a method in a library could be helpful?
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		
@@ -285,7 +290,7 @@ class Supplier extends Person
 	/*
 	Return supplier categories
 	*/
-	public function get_categories()
+	public function get_categories(): array
 	{
 		return array(
 			self::GOODS_SUPPLIER => lang('Suppliers.goods'),
@@ -296,7 +301,7 @@ class Supplier extends Person
 	/*
 	Return a category name given its id
 	*/
-	public function get_category_name($id)
+	public function get_category_name($id): string
 	{
 		if($id == self::GOODS_SUPPLIER)
 		{
