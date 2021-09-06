@@ -24,7 +24,7 @@ class Giftcards extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->post('sort') === NULL ? 'giftcard_number' : $this->db->escape($this->input->get('sort'));
+		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
 
 		$giftcards = $this->Giftcard->search($search, $limit, $offset, $sort, $order);
