@@ -9,6 +9,8 @@ use stdClass;
  * Item class
  *
  * @property mixed config
+ * @property mixed inventory
+ * @property mixed item_quantity
  */
 
 class Item extends Model
@@ -18,6 +20,8 @@ class Item extends Model
 		parent::__construct();
 
 		$this->config = model('Appconfig');
+		$this->config = model('Inventory');
+		$this->item_quantity = model('Item_quantity');
 	}
 	/*
 	* Determines if a given item_id is an item
@@ -369,7 +373,7 @@ class Item extends Model
 	/*
 	Gets information about multiple items
 	*/
-	public function get_multiple_info($item_ids, $location_id)
+	public function get_multiple_info(array $item_ids, int $location_id)
 	{
 		$format = $this->db->escape(dateformat_mysql());
 
@@ -432,7 +436,7 @@ class Item extends Model
 	/*
 	* Updates multiple items at once
 	*/
-	public function update_multiple($item_data, $item_ids): bool
+	public function update_multiple(array $item_data, string $item_ids): bool
 	{
 		$builder = $this->db->table('items');
 		$builder->whereIn('item_id', explode(':', $item_ids));
@@ -443,19 +447,19 @@ class Item extends Model
 	/*
 	* Deletes one item
 	*/
-	public function delete($item_id): bool
+	public function delete(int $item_id = null, bool $purge = false): bool
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
 		// set to 0 quantities
-		$this->Item_quantity->reset_quantity($item_id);
+		$this->item_quantity->reset_quantity($item_id);
 
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$success = $builder->update(['deleted' => 1]);
 
-		$success &= $this->Inventory->reset_quantity($item_id);
+		$success &= $this->inventory->reset_quantity($item_id);
 
 		$this->db->transComplete();
 
@@ -467,7 +471,7 @@ class Item extends Model
 	/*
 	* Undeletes one item
 	*/
-	public function undelete($item_id): bool
+	public function undelete(int $item_id): bool
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
@@ -478,13 +482,13 @@ class Item extends Model
 	/*
 	* Deletes a list of items
 	*/
-	public function delete_list($item_ids): bool
+	public function delete_list(array $item_ids): bool
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
 		// set to 0 quantities
-		$this->Item_quantity->reset_quantity_list($item_ids);
+		$this->item_quantity->reset_quantity_list($item_ids);
 
 		$builder = $this->db->table('items');
 		$builder->whereIn('item_id', $item_ids);
@@ -492,7 +496,7 @@ class Item extends Model
 
 		foreach($item_ids as $item_id)
 		{
-			$success &= $this->Inventory->reset_quantity($item_id);
+			$success &= $this->inventory->reset_quantity($item_id);
 		}
 
 		$this->db->transComplete();
@@ -502,7 +506,7 @@ class Item extends Model
 		return $success;
 	}
 
-	function get_search_suggestion_format($seed = NULL): string
+	function get_search_suggestion_format(string $seed = NULL): string
 	{
 		$seed .= ',' . $this->config->item('suggestions_first_column');
 
@@ -551,7 +555,7 @@ class Item extends Model
 		return $label;
 	}
 
-	private function append_label(&$label, $item_field_name, $item_info)
+	private function append_label(string &$label, string $item_field_name, object $item_info)
 	{
 		if($item_field_name !== '')
 		{
@@ -580,7 +584,7 @@ class Item extends Model
 		}
 	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25): array
+	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
@@ -684,7 +688,7 @@ class Item extends Model
 	}
 
 
-	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25): array
+	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
@@ -792,7 +796,7 @@ class Item extends Model
 		return array_unique($suggestions, SORT_REGULAR);
 	}
 
-	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25): array
+	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
@@ -896,7 +900,7 @@ class Item extends Model
 		return array_unique($suggestions, SORT_REGULAR);
 	}
 
-	public function get_low_sell_suggestions($search): array
+	public function get_low_sell_suggestions(string $search): array
 	{
 		$suggestions = [];
 
@@ -915,7 +919,7 @@ class Item extends Model
 		return $suggestions;
 	}
 
-	public function get_category_suggestions($search): array
+	public function get_category_suggestions(string $search): array
 	{
 		$suggestions = [];
 
@@ -934,7 +938,7 @@ class Item extends Model
 		return $suggestions;
 	}
 
-	public function get_location_suggestions($search): array
+	public function get_location_suggestions(string $search): array
 	{
 		$suggestions = [];
 
@@ -975,7 +979,7 @@ class Item extends Model
 	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
-	public function change_cost_price($item_id, $items_received, $new_price, $old_price = NULL): bool
+	public function change_cost_price(int $item_id, int $items_received, float $new_price, float $old_price = NULL): bool
 	{
 		if($old_price === NULL)
 		{
@@ -984,7 +988,7 @@ class Item extends Model
 		}
 
 		$builder = $this->db->table('item_quantities');
-		$this->db->select_sum('quantity');
+		$builder->selectSum('quantity');
 		$builder->where('item_id', $item_id);
 		$builder->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
 		$builder->where('stock_locations.deleted', 0);
@@ -998,21 +1002,21 @@ class Item extends Model
 		return $this->save($data, $item_id);
 	}
 
-	public function update_item_number($item_id, $item_number)
+	public function update_item_number(int $item_id, string $item_number)
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$builder->update(['item_number' => $item_number]);	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	}
 
-	public function update_item_name($item_id, $item_name)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	public function update_item_name(int $item_id, string $item_name)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$builder->update(['name' => $item_name]);
 	}
 
-	public function update_item_description($item_id, $item_description)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	public function update_item_description(int $item_id, string $item_description)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
@@ -1024,7 +1028,7 @@ class Item extends Model
 	 * for a multipack environment then the item name should have the
 	 * pack appended to it
 	 */
-	function get_item_name($as_name = NULL): string
+	function get_item_name(string $as_name = NULL): string
 	{
 		if($as_name == NULL)
 		{

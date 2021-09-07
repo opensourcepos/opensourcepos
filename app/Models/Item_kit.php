@@ -7,14 +7,23 @@ use stdClass;
 
 /**
  * Item_kit class
+ *
+ * @property mixed config
  */
 
 class Item_kit extends Model
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->config = model('Appconfig');
+	}
+
 	/*
 	* Determines if a given item_id is an item kit
 	*/
-	public function exists($item_kit_id): bool
+	public function exists(int $item_kit_id): bool
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->where('item_kit_id', $item_kit_id);
@@ -25,14 +34,14 @@ class Item_kit extends Model
 	/*
 	* Check if a given item_id is an item kit
 	*/
-	public function is_valid_item_kit($item_kit_id): bool
+	public function is_valid_item_kit(int $item_kit_id): bool
 	{
 		if(!empty($item_kit_id))
 		{
 			//KIT #
 			$pieces = explode(' ', $item_kit_id);
 
-			if(count($pieces) == 2 && preg_match('/(KIT)/i', $pieces[0]))
+			if((count($pieces) == 2) && preg_match('/(KIT)/i', $pieces[0]))
 			{
 				return $this->exists($pieces[1]);
 			}
@@ -48,7 +57,7 @@ class Item_kit extends Model
 	/*
 	* Determines if a given item_number exists
 	*/
-	public function item_number_exists($item_kit_number, $item_kit_id = ''): bool
+	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
 		{
@@ -70,7 +79,7 @@ class Item_kit extends Model
 	/*
 	* Gets total of rows
 	*/
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('item_kits');
 
@@ -80,7 +89,7 @@ class Item_kit extends Model
 	/*
 	* Gets information about a particular item kit
 	*/
-	public function get_info($item_kit_id)
+	public function get_info(int $item_kit_id)
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->select('
@@ -116,7 +125,7 @@ class Item_kit extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows()==1)
+		if($query->getNumRows() == 1)
 		{
 			return $query->getRow();
 		}
@@ -138,7 +147,7 @@ class Item_kit extends Model
 	/*
 	* Gets information about multiple item kits
 	*/
-	public function get_multiple_info($item_kit_ids)
+	public function get_multiple_info(array $item_kit_ids)
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->whereIn('item_kit_id', $item_kit_ids);
@@ -150,12 +159,12 @@ class Item_kit extends Model
 	/*
 	* Inserts or updates an item kit
 	*/
-	public function save(&$item_kit_data, $item_kit_id = FALSE): bool
+	public function save(array &$item_kit_data, bool $item_kit_id = FALSE): bool
 	{
 		$builder = $this->db->table('item_kits');
 		if(!$item_kit_id || !$this->exists($item_kit_id))
 		{
-			if($builder->insert('item_kits', $item_kit_data))
+			if($builder->insert($item_kit_data))
 			{
 				$item_kit_data['item_kit_id'] = $this->db->insertID();
 
@@ -173,7 +182,7 @@ class Item_kit extends Model
 	/*
 	* Deletes one item kit
 	*/
-	public function delete($item_kit_id): bool
+	public function delete(int $item_kit_id = null, ): bool
 	{
 		$builder = $this->db->table('item_kits');
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
