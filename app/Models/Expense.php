@@ -7,14 +7,27 @@ use stdClass;
 
 /**
  * Expense class
+ *
+ * @property mixed config
+ * @property mixed employee
+ * @property mixed expense_category
+ *
  */
 
 class Expense extends Model
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->config = model('Config');
+		$this->employee = model('Employee');
+		$this->expense_category = model('Expense_category');
+	}
 	/*
 	* Determines if a given Expense_id is an Expense
 	*/
-	public function exists($expense_id): bool
+	public function exists(int $expense_id): bool
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
@@ -25,26 +38,26 @@ class Expense extends Model
 	/*
 	Gets category info
 	*/
-	public function get_expense_category($expense_id)
+	public function get_expense_category(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->Expense_category->get_info($builder->get()->getRow()->expense_category_id);
+		return $this->expense_category->get_info($builder->get()->getRow()->expense_category_id);
 	}
 
 	/*
 	Gets employee info
 	*/
-	public function get_employee($expense_id)
+	public function get_employee(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
+		return $this->employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
-	public function get_multiple_info($expense_ids)
+	public function get_multiple_info(array $expense_ids)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->whereIn('expenses.expense_id', $expense_ids);
@@ -56,7 +69,7 @@ class Expense extends Model
 	/*
 	* Gets rows
 	*/
-	public function get_found_rows($search, $filters)
+	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
@@ -64,7 +77,7 @@ class Expense extends Model
 	/*
 	* Searches expenses
 	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
+	public function search(string $search, array $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
 	{
 		$builder = $this->db->table('expenses AS expenses');
 		// get_found_rows case
@@ -214,13 +227,13 @@ class Expense extends Model
 	/*
 	Inserts or updates an expense
 	*/
-	public function save(&$expense_data, $expense_id = FALSE): bool
+	public function save(array &$expense_data, bool $expense_id = FALSE): bool
 	{
 		$builder = $this->db->table('expenses');
 
 		if(!$expense_id || !$this->exists($expense_id))
 		{
-			if($builder->insert('expenses', $expense_data))
+			if($builder->insert($expense_data))
 			{
 				$expense_data['expense_id'] = $this->db->insertID();
 
@@ -238,7 +251,7 @@ class Expense extends Model
 	/*
 	Deletes a list of expense_category
 	*/
-	public function delete_list($expense_ids): bool
+	public function delete_list(array $expense_ids): bool
 	{
 		$success = FALSE;
 		$builder = $this->db->table('expenses');
@@ -298,7 +311,7 @@ class Expense extends Model
 
 		$builder->groupBy('payment_type');
 
-		return $builder->get()->getResultArray();;
+		return $builder->get()->getResultArray();
 	}
 
 	/*
@@ -312,7 +325,7 @@ class Expense extends Model
 	/*
 	Gets the expense payment
 	*/
-	public function get_expense_payment($expense_id)
+	public function get_expense_payment(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);

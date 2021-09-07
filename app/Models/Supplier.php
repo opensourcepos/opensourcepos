@@ -133,7 +133,7 @@ class Supplier extends Person
 	/*
 	Deletes one supplier
 	*/
-	public function delete($supplier_id): bool
+	public function delete(int $supplier_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->where('person_id', $supplier_id);

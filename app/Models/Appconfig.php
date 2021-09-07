@@ -10,7 +10,7 @@ use CodeIgniter\Model;
 
 class Appconfig extends Model
 {
-	public function exists($key)
+	public function exists($key): bool
 	{
 		$builder = $this->db->table('app_config');
 		$builder->where('app_config.key', $key);
@@ -26,7 +26,7 @@ class Appconfig extends Model
 		return $builder->get();
 	}
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function get($key, $default = '')
+	public function get(string $key, string $default = '')
 	{
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere('key', $key, 1);
@@ -39,7 +39,7 @@ class Appconfig extends Model
 		return $default;
 	}
 
-	public function save($key, $value): bool
+	public function save(string $key, $value): bool
 	{
 		$config_data = [
 			'key'   => $key,
@@ -58,7 +58,7 @@ class Appconfig extends Model
 		return $builder->update($config_data);
 	}
 
-	public function batch_save($data)
+	public function batch_save(array $data): bool
 	{
 		$success = TRUE;
 
@@ -77,7 +77,7 @@ class Appconfig extends Model
 		return $success;
 	}
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function delete($key): bool
+	public function delete(string $key, bool $purge = false): bool
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->delete('key', $key);

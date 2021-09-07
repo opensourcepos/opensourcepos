@@ -6,24 +6,34 @@ use CodeIgniter\Model;
 
 /**
  * Inventory class
+ *
+ * @property mixed employee
+ *
  */
 
 class Inventory extends Model
 {
-	public function insert($inventory_data): bool
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->employee = model('Employee');
+	}
+
+	public function insert(array $inventory_data = null, bool $returnId = true): bool
 	{
 		$builder = $this->db->table('inventory');
 		return $builder->insert($inventory_data);
 	}
 
-	public function update($comment, $inventory_data): bool
+	public function update(string $comment = null, array $inventory_data = null): bool	//TODO: this function either needs a name change or to be brought in line with the parent function declaration.
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_comment', $comment);
 		return $builder->update($inventory_data);
 	}
 
-	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
+	public function get_inventory_data_for_item(int $item_id, bool $location_id = FALSE)
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
@@ -38,19 +48,19 @@ class Inventory extends Model
 		return $builder->get();
 	}
 
-	public function reset_quantity($item_id): bool
+	public function reset_quantity(int $item_id): bool
 	{
 		$inventory_sums = $this->get_inventory_sum($item_id);
 		foreach($inventory_sums as $inventory_sum)
 		{
 			if($inventory_sum['sum'] > 0)
 			{
-				return $this->inventory->insert([
+				return $this->insert([
 					'trans_inventory' => -1 * $inventory_sum['sum'],
 					'trans_items' => $item_id,
 					'trans_location' => $inventory_sum['location_id'],
 					'trans_comment' => lang('Items.is_deleted'),
-					'trans_user' => $this->Employee->get_logged_in_employee_info()->person_id
+					'trans_user' => $this->employee->get_logged_in_employee_info()->person_id
 				]);
 			}
 		}

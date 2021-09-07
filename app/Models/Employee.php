@@ -3,13 +3,22 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Config\Services;
 
 /**
  * Employee class
+ *
+ * @property mixed session
+ *
  */
 
 class Employee extends Person
 {
+	public function __construct()
+	{
+		$this->session = session();
+	}
+
 	/*
 	Determines if a given person_id is an employee
 	*/
@@ -22,7 +31,7 @@ class Employee extends Person
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function username_exists($employee_id, $username): bool
+	public function username_exists(int $employee_id, $username): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('employees.username', $username);
@@ -34,7 +43,7 @@ class Employee extends Person
 	/*
 	Gets total of rows
 	*/
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('deleted', 0);
@@ -103,7 +112,7 @@ class Employee extends Person
 	/*
 	Inserts or updates an employee
 	*/
-	public function save_employee(&$person_data, &$employee_data, &$grants_data, $employee_id = FALSE)
+	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE)
 	{
 		$success = FALSE;
 
@@ -159,7 +168,7 @@ class Employee extends Person
 	/*
 	Deletes one employee
 	*/
-	public function delete($employee_id): bool
+	public function delete(int $employee_id = null, bool $purge = false): bool
 	{
 		$success = FALSE;
 
@@ -221,7 +230,7 @@ class Employee extends Person
 	/*
 	Get search suggestions to find employees
 	*/
-	public function get_search_suggestions(string $search, int $limit = FALSE): array
+	public function get_search_suggestions(string $search, bool $limit = FALSE): array	//TODO: The parent method doesn't take a bool for limit, but an int... need to fix that.
 	{
 		$suggestions = [];
 
@@ -299,7 +308,7 @@ class Employee extends Person
 	}
 
  	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search)
 	{
@@ -307,7 +316,7 @@ class Employee extends Person
 	}
 
 	/*
-	Performs a search on employees
+	* Performs a search on employees
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
 	{
@@ -349,10 +358,10 @@ class Employee extends Person
 	/*
 	Attempts to login employee and set session. Returns boolean based on outcome.
 	*/
-	public function login($username, $password)
+	public function login($username, $password): bool
 	{
 		$builder = $this->db->table('employees');
-		$query = $builder->getWhere('employees', array('username' => $username, 'deleted' => 0), 1);
+		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
 		if($query->getNumRows() == 1)
 		{
@@ -368,12 +377,11 @@ class Employee extends Person
 				return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
 			}
 			elseif($row->hash_version == 2 && password_verify($password, $row->password))
-			{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
+			{
 				$this->session->set_userdata('person_id', $row->person_id);
 
 				return TRUE;
 			}
-
 		}
 
 		return FALSE;
@@ -383,7 +391,7 @@ class Employee extends Person
 	Logs out a user by destroying all session data and redirect to login
 	*/
 	public function logout()
-	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
+	{
 		$this->session->sess_destroy();
 
 		redirect('login');
@@ -392,8 +400,8 @@ class Employee extends Person
 	/*
 	* Determines if a employee is logged in
 	*/
-	public function is_logged_in()
-	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
+	public function is_logged_in(): bool
+	{
 		return ($this->session->userdata('person_id') != FALSE);
 	}
 
@@ -401,7 +409,7 @@ class Employee extends Person
 	Gets information about the currently logged in employee.
 	*/
 	public function get_logged_in_employee_info()
-	{//TODO: need to address this warning "Property accessed through magic method"  Not sure if adding an @Property is the right thing to do here or something else.
+	{
 		if($this->is_logged_in())
 		{
 			return $this->get_info($this->session->userdata('person_id'));
@@ -431,7 +439,7 @@ class Employee extends Person
  	/*
 	* Checks permissions
 	*/
-	public function has_subpermissions($permission_id)
+	public function has_subpermissions($permission_id): bool
 	{
 		$builder = $this->db->table('permissions');
 		$builder->like('permission_id', $permission_id.'_', 'after');

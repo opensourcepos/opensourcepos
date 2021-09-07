@@ -7,12 +7,17 @@ use app\Libraries\Sale_lib;
 
 /**
  * Sale class
+ *
  * @property mixed attribute
  * @property mixed config
  * @property mixed customer
+ * @property mixed customer_rewards
  * @property mixed dinner_table
+ * @property mixed giftcard
  * @property mixed inventory
  * @property mixed item
+ * @property mixed item_quantity
+ * @property mixed rewards
  *
  * @property Sale_lib sale_lib
  */
@@ -20,12 +25,18 @@ class Sale extends Model
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->attribute = model('Attribute');
 		$this->config = model('Config');
 		$this->customer = model('Customer');
+		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
+		$this->giftcard = model('Giftcard');
 		$this->inventory = model('Inventory');
 		$this->item = model('Item');
+		$this->item_quantity = model('Item_quantity');
+		$this->rewards = model('Rewards');
 
 		$this->sale_lib = new Sale_lib();
 	}
@@ -660,8 +671,8 @@ class Sale extends Model
 			{
 				// We have a gift card and we have to deduct the used value from the total value of the card.
 				$splitpayment = explode( ':', $payment['payment_type'] );
-				$cur_giftcard_value = $this->Giftcard->get_giftcard_value( $splitpayment[1] );
-				$this->Giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
+				$cur_giftcard_value = $this->giftcard->get_giftcard_value( $splitpayment[1] );
+				$this->giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
 			elseif(!empty(strstr($payment['payment_type'], lang('Sales.rewards'))))
 			{
@@ -719,8 +730,8 @@ class Sale extends Model
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
-				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-				$this->Item_quantity->save(array('quantity'	=> $item_quantity->quantity - $item['quantity'],
+				$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+				$this->item_quantity->save(array('quantity'	=> $item_quantity->quantity - $item['quantity'],
 					'item_id'		=> $item['item_id'],
 					'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
 
@@ -823,7 +834,7 @@ class Sale extends Model
 	/**
 	 * Return the taxes that were charged
 	 */
-	public function get_sales_taxes($sale_id)
+	public function get_sales_taxes($sale_id): array
 	{
 		$builder = $this->db->table('sales_taxes');
 		$builder->where('sale_id', $sale_id);
@@ -912,7 +923,7 @@ class Sale extends Model
 					$this->inventory->insert($inv_data);
 
 					// update quantities
-					$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
+					$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
 				}
 			}
 		}
@@ -1102,7 +1113,7 @@ class Sale extends Model
 	 */
 	public function get_giftcard_value($giftcardNumber)	//TODO: we need to sort out if this is returning a decimal or an integer and set the return type.
 	{
-		if(!$this->Giftcard->exists($this->Giftcard->get_giftcard_id($giftcardNumber)))
+		if(!$this->giftcard->exists($this->giftcard->get_giftcard_id($giftcardNumber)))
 		{
 			return 0;
 		}
@@ -1272,7 +1283,7 @@ class Sale extends Model
 	 */
 	public function get_all_suspended($customer_id = NULL): array
 	{
-		if($customer_id == -1)
+		if($customer_id == -1)	//TODO: This should be converted to a global constant and stored in constants.php
 		{
 			$query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
 				. $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED);
@@ -1478,7 +1489,7 @@ class Sale extends Model
 
 			if(!empty($package_id))
 			{
-				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
+				$points_percent = $this->customer_rewards->get_points_percent($package_id);
 				$points = $this->customer->get_info($customer_id)->points;
 				$points = ($points == NULL ? 0 : $points);
 				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
@@ -1487,10 +1498,9 @@ class Sale extends Model
 				$this->customer->update_reward_points_value($customer_id, $points);
 				$rewards_data = array('sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
 
-				$this->Rewards->save($rewards_data);
+				$this->rewards->save($rewards_data);
 			}
 		}
 	}
-
 }
 ?>

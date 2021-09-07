@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use DateTime;
 use stdClass;
 
 /**
  * Attribute class
+ * 
+ * @property mixed attribute
  */
 class Attribute extends Model
 {
@@ -14,6 +17,13 @@ class Attribute extends Model
 	const SHOW_IN_SALES = 2;
 	const SHOW_IN_RECEIVINGS = 4;
 
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->appconfig = model('Appconfig');
+	}
+	
 	public static function get_definition_flags(): array
 	{
 		$class = new ReflectionClass(__CLASS__);
@@ -68,7 +78,7 @@ class Attribute extends Model
 		{
 			case DATE:
 				$data_type				= 'date';
-				$attribute_date_value	= DateTime::createFromFormat($this->Appconfig->get('dateformat'), $attribute_value);
+				$attribute_date_value	= DateTime::createFromFormat($this->appconfig->get('dateformat'), $attribute_value);
 				$attribute_value		= $attribute_date_value->format('Y-m-d');
 				break;
 			case DECIMAL:
@@ -364,7 +374,7 @@ class Attribute extends Model
 			{
 				$success = TRUE;
 			}
-			else if($to_type === CHECKBOX)
+			else if($to_type === CHECKBOX)	//TODO: duplicated code.
 			{
 				$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
@@ -384,7 +394,7 @@ class Attribute extends Model
 		{
 			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))
 			{
-				if($to_type === CHECKBOX)
+				if($to_type === CHECKBOX)	//TODO: Duplicated code.
 				{
 					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
@@ -647,7 +657,7 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$locale_date_format = $this->Appconfig->get('dateformat');
+		$locale_date_format = $this->appconfig->get('dateformat');
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
@@ -657,7 +667,7 @@ class Attribute extends Model
 
 			if($attribute_id === FALSE)
 			{
-				switch($definition_type)
+				switch($definition_type)	//TODO: Duplicated code
 				{
 					case DATE:
 						$data_type				= 'date';
@@ -814,7 +824,7 @@ class Attribute extends Model
 	 */
 	public function attribute_cleanup($attributes, $definition_id, $definition_type): bool
 	{
-		$this->db->trans_begin();
+		$this->db->transBegin();
 
 		foreach($attributes as $attribute)
 		{
@@ -823,13 +833,13 @@ class Attribute extends Model
 			if($this->save_link($attribute['item_id'], $definition_id, $new_attribute_id) == FALSE)
 			{
 				log_message('Error', 'Transaction failed');
-				$this->db->trans_rollback();
+				$this->db->transRollback();
 				return FALSE;
 			}
 		}
 		$success = $this->delete_orphaned_links($definition_id);
 
-		$this->db->trans_commit();
+		$this->db->transCommit();
 		return $success;
 	}
 

@@ -13,7 +13,7 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
  * Currency locale helper
  */
 
-function current_language_code($load_system_language = FALSE)
+function current_language_code($load_system_language = FALSE): string
 {
 	$employee = get_instance()->Employee;
 
@@ -33,7 +33,7 @@ function current_language_code($load_system_language = FALSE)
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
-function current_language($load_system_language = FALSE)
+function current_language($load_system_language = FALSE): string
 {
 	$employee = get_instance()->Employee;
 
@@ -52,7 +52,7 @@ function current_language($load_system_language = FALSE)
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
 
-function get_languages()
+function get_languages(): array
 {
 	return array(
 		'ar-EG:arabic' => 'Arabic (Egypt)',
@@ -120,7 +120,7 @@ function load_language($load_system_language = FALSE, array $lang_array)
 	}
 }
 
-function get_timezones()
+function get_timezones(): array
 {
 	return array(
 		'Pacific/Midway' => '(GMT-11:00) Midway Island, Samoa',
@@ -218,7 +218,7 @@ function get_timezones()
 	);
 }
 
-function get_dateformats()
+function get_dateformats(): array
 {
 	return array(
 		'd/m/Y' => 'dd/mm/yyyy',
@@ -231,7 +231,7 @@ function get_dateformats()
 	);
 }
 
-function get_timeformats()
+function get_timeformats(): array
 {
 	return array(
 		'H:i:s' => 'hh:mm:ss (24h)',
@@ -244,7 +244,7 @@ function get_timeformats()
 /*
  Gets the payment options
  */
-function get_payment_options()
+function get_payment_options(): array
 {
 	$config = get_instance()->config;
 	$lang = get_instance()->lang;
@@ -295,7 +295,7 @@ function get_payment_options()
 	return $payments;
 }
 
-function currency_side()
+function currency_side(): bool
 {
 	$config = get_instance()->config;
 
@@ -305,28 +305,28 @@ function currency_side()
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
 
-function quantity_decimals()
+function quantity_decimals(): int
 {
 	$config = get_instance()->config;
 
 	return $config->item('quantity_decimals') ? $config->item('quantity_decimals') : 0;
 }
 
-function totals_decimals()
+function totals_decimals(): int
 {
 	$config = get_instance()->config;
 
 	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
 }
 
-function cash_decimals()
+function cash_decimals(): int
 {
 	$config = get_instance()->config;
 
 	return $config->item('cash_decimals') ? $config->item('cash_decimals') : 0;
 }
 
-function tax_decimals()
+function tax_decimals(): int
 {
 	$config = get_instance()->config;
 
@@ -467,7 +467,7 @@ function parse_decimals($number, $decimals = NULL)
  * Time locale conversion utility
  */
 
-function dateformat_momentjs($php_format)
+function dateformat_momentjs($php_format): string
 {
 	$SYMBOLS_MATCHING = array(
 		'd' => 'DD',
@@ -512,7 +512,7 @@ function dateformat_momentjs($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-function dateformat_mysql()
+function dateformat_mysql(): string
 {
 	$config = get_instance()->config;
 	$php_format = $config->item('dateformat');
@@ -556,7 +556,7 @@ function dateformat_mysql()
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-function dateformat_bootstrap($php_format)
+function dateformat_bootstrap($php_format): string
 {
 	$SYMBOLS_MATCHING = array(
 		// Day
@@ -603,7 +603,7 @@ function valid_date($date)
 	return (DateTime::createFromFormat($config->get('dateformat'), $date));
 }
 
-function valid_decimal($decimal)
+function valid_decimal($decimal): bool
 {
 	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }

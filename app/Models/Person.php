@@ -18,7 +18,7 @@ class Person extends Model
 	 *
 	 * @return boolean TRUE if the person exists, FALSE if not
 	 */
-	public function exists($person_id): bool
+	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('people');
 		$builder->where('people.person_id', $person_id);
@@ -35,7 +35,7 @@ class Person extends Model
 	 *
 	 * @return array array of people table rows	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
-	public function get_all($limit = 10000, int $offset = 0)
+	public function get_all(int $limit = 10000, int $offset = 0)
 	{
 		$builder = $this->db->table('people');
 		$builder->orderBy('last_name', 'asc');
@@ -65,7 +65,7 @@ class Person extends Model
 	 *
 	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says
 	 */
-	public function get_info($person_id)
+	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('people');
 		$query = $builder->getWhere(['person_id' => $person_id], 1);
@@ -95,7 +95,7 @@ class Person extends Model
 	 *
 	 * @return array containing all the fields of the table row	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
-	public function get_multiple_info($person_ids)
+	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('people');
 		$builder->whereIn('person_id', $person_ids);
@@ -143,7 +143,7 @@ class Person extends Model
 	 *
 	 * @return array array with the suggestion strings
 	 */
-	public function get_search_suggestions($search, $limit = 25): array
+	public function get_search_suggestions($search, int $limit = 25): array
 	{
 		$suggestions = array();
 
@@ -183,7 +183,7 @@ class Person extends Model
 	 *
 	 * @return boolean always TRUE
 	 */
-	public function delete($person_id): bool
+	public function delete(int $person_id = null, bool $purge = false): bool
 	{
 		return TRUE;
 	}
@@ -195,7 +195,7 @@ class Person extends Model
 	 *
 	 * @return boolean always TRUE
 	 */
-	public function delete_list($person_ids): bool
+	public function delete_list(array $person_ids): bool
 	{
 		return TRUE;
  	}

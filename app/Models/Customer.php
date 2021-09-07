@@ -6,10 +6,20 @@ use CodeIgniter\Model;
 
 /**
  * Customer class
+ *
+ * @property mixed config
+ *
  */
 
 class Customer extends Person
 {
+	public function __costruct()
+	{
+		parent::__construct();
+
+		$this->config = model('Config');
+	}
+
 	/*
 	Determines if a given person_id is a customer
 	*/
@@ -41,7 +51,7 @@ class Customer extends Person
 	/*
 	Gets total of rows
 	*/
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('customers');
 		$builder->where('deleted', 0);
@@ -103,8 +113,8 @@ class Customer extends Person
 	public function get_stats($customer_id)
 	{
 		// create a temporary table to contain all the sum and average of items
-		$query = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp');
-		$query .= ' (INDEX(sale_id)) ENGINE=MEMORY
+		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp');
+		$sql .= ' (INDEX(sale_id)) ENGINE=MEMORY
 			(
 				SELECT
 					sales.sale_id AS sale_id,
@@ -116,7 +126,7 @@ class Customer extends Person
 				WHERE sales.customer_id = ' . $this->db->escape($customer_id) . '
 				GROUP BY sale_id
 			)';
-		$this->db->query($query);
+		$this->db->query($sql);
 
 		$totals_decimals = totals_decimals();
 		$quantity_decimals = quantity_decimals();
@@ -140,8 +150,8 @@ class Customer extends Person
 		$stat = $builder->get()->getRow();
 
 		// drop the temporary table to contain memory consumption as it's no longer required
-		$query = 'DROP TEMPORARY TABLE IF EXISTS ' . $this->db->prefixTable('sales_items_temp');
-		$this->db->query($query);
+		$sql = 'DROP TEMPORARY TABLE IF EXISTS ' . $this->db->prefixTable('sales_items_temp');
+		$this->db->query($sql);
 
 		return $stat;
 	}
@@ -186,7 +196,7 @@ class Customer extends Person
 	/*
 	Inserts or updates a customer
 	*/
-	public function save_customer(&$person_data, &$customer_data, $customer_id = FALSE)
+	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE)
 	{
 		$success = FALSE;
 
@@ -224,11 +234,12 @@ class Customer extends Person
 		$builder->where('person_id', $customer_id);
 		$builder->update(['points' => $value]);
 	}
+
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	/*
 	Deletes one customer
 	*/
-	public function delete($customer_id): bool
+	public function delete(int $customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
 
@@ -293,9 +304,9 @@ class Customer extends Person
  	/*
 	Get search suggestions to find customers
 	*/
-	public function get_search_suggestions(string $search, int $limit = TRUE): array
+	public function get_search_suggestions(string $search, bool $limit = TRUE): array	//TODO: The parent class has limit as an int and this overrides it as a bool.  No bueno.
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'customers.person_id = people.person_id');
@@ -369,7 +380,7 @@ class Customer extends Person
 	}
 
  	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search)
 	{
@@ -397,7 +408,7 @@ class Customer extends Person
 			$builder->orLike('phone_number', $search);
 			$builder->orLike('account_number', $search);
 			$builder->orLike('company_name', $search);
-			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);	//TODO: Duplicated code.
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
 

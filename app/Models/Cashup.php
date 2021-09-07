@@ -7,10 +7,21 @@ use stdClass;
 
 /**
  * Cashup class
+ *
+ * @property mixed employee
+ *
  */
 
 class Cashup extends Model
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->employee = model('Employee');
+	}
+
+
 	/*
 	Determines if a given Cashup_id is an Cashup
 	*/
@@ -30,7 +41,7 @@ class Cashup extends Model
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
+		return $this->employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	public function get_multiple_info($cashup_ids)
@@ -43,7 +54,7 @@ class Cashup extends Model
 	}
 
 	/*
-	Gets rows
+	* Gets rows
 	*/
 	public function get_found_rows($search, $filters)
 	{
@@ -51,7 +62,7 @@ class Cashup extends Model
 	}
 
 	/*
-	Searches cashups
+	* Searches cashups
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'cashup_id', $order = 'asc', $count_only = FALSE)
 	{
@@ -128,7 +139,7 @@ class Cashup extends Model
 	}
 
 	/*
-	Gets information about a particular cashup
+	* Gets information about a particular cashup
 	*/
 	public function get_info($cashup_id)
 	{
@@ -179,9 +190,9 @@ class Cashup extends Model
 	}
 //TODO: gotta fix this function.  It thinks it's an override of the BaseModel save
 	/*
-	Inserts or updates a cashup
+	* Inserts or updates a cashup
 	*/
-	public function save(&$cash_up_data, $cashup_id = FALSE): bool
+	public function save(array &$cash_up_data, bool $cashup_id = FALSE): bool
 	{
 		if(!$cashup_id == -1 || !$this->exists($cashup_id))
 		{
@@ -203,7 +214,7 @@ class Cashup extends Model
 	}
 
 	/*
-	Deletes a list of cashups
+	* Deletes a list of cashups
 	*/
 	public function delete_list($cashup_ids): bool
 	{

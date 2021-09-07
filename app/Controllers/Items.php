@@ -871,7 +871,7 @@ class Items extends Secure_Controller
 					}
 				}
 
-				$this->db->trans_begin();
+				$this->db->transBegin();
 
 				foreach($csv_rows as $key => $row)
 				{
@@ -946,12 +946,12 @@ class Items extends Secure_Controller
 				if(count($failCodes) > 0)
 				{
 					$message = lang('Items.csv_import_partially_failed', count($failCodes), implode(', ', $failCodes));
-					$this->db->trans_rollback();
+					$this->db->transRollback();
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					$this->db->trans_commit();
+					$this->db->transCommit();
 
 					echo json_encode(array('success' => TRUE, 'message' => lang('Items.csv_import_success')));
 				}

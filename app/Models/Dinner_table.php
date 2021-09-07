@@ -10,7 +10,7 @@ use CodeIgniter\Model;
 
 class Dinner_table extends Model
 {
-	public function exists($dinner_table_id): bool
+	public function exists(int $dinner_table_id): bool
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('dinner_table_id', $dinner_table_id);
@@ -18,7 +18,7 @@ class Dinner_table extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function save($table_data, $dinner_table_id): bool
+	public function save(array $table_data, int $dinner_table_id): bool
 	{
 		$table_data_to_save = array('name' => $table_data['name'], 'deleted' => 0);
 
@@ -36,7 +36,7 @@ class Dinner_table extends Model
 	/**
 	Get empty tables
 	*/
-	public function get_empty_tables($current_dinner_table_id): array
+	public function get_empty_tables(int $current_dinner_table_id): array
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('status', 0);
@@ -69,7 +69,7 @@ class Dinner_table extends Model
 		}
 	}
 
-	public function is_occupied($dinner_table_id): bool
+	public function is_occupied(int $dinner_table_id): bool
 	{
 		if(empty($dinner_table_id))
 		{
@@ -95,7 +95,7 @@ class Dinner_table extends Model
 	/**
 	* Deletes one dinner table
 	*/
-	public function delete($dinner_table_id): bool
+	public function delete(int $dinner_table_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('dinner_table_id', $dinner_table_id);
@@ -107,7 +107,7 @@ class Dinner_table extends Model
 	 * Occupy table
 	 * Ignore the Delivery and Takeaway "tables".  They should never be occupied.
 	 */
-	public function occupy($dinner_table_id): bool
+	public function occupy(int $dinner_table_id): bool
 	{
 		if($dinner_table_id > 2 )
 		{
@@ -124,7 +124,7 @@ class Dinner_table extends Model
 	/**
 	Release table
 	 */
-	public function release($dinner_table_id): bool
+	public function release(int $dinner_table_id): bool
 	{
 		if($dinner_table_id > 2 )
 		{
@@ -141,7 +141,7 @@ class Dinner_table extends Model
 	/**
 	Swap tables
 	 */
-	public function swap_tables($release_dinner_table_id, $occupy_dinner_table_id): bool
+	public function swap_tables(int $release_dinner_table_id, int $occupy_dinner_table_id): bool
 	{
 		return $this->release($release_dinner_table_id) && $this->occupy($occupy_dinner_table_id);
 	}
