@@ -17,7 +17,7 @@ class Customer extends Person
 	{
 		parent::__construct();
 
-		$this->config = model('Config');
+		$this->config = model('Appconfig');
 	}
 
 	/*

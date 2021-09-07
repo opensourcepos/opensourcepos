@@ -131,7 +131,8 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	{
 		foreach($sales_taxes as $line=>$sales_tax)
 		{
-			$builder->insert('sales_taxes', $sales_tax);
+			$builder = $this->db->Table('sales_taxes');	//TODO: need to confirm if this should be inside the for loop or after.  Do I need to "reset" the builder variable after running insert?
+			$builder->insert($sales_tax);
 		}
 	}
 

@@ -28,7 +28,7 @@ class Sale extends Model
 		parent::__construct();
 
 		$this->attribute = model('Attribute');
-		$this->config = model('Config');
+		$this->config = model('Appconfig');
 		$this->customer = model('Customer');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');

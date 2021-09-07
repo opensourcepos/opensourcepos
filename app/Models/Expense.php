@@ -20,7 +20,7 @@ class Expense extends Model
 	{
 		parent::__construct();
 
-		$this->config = model('Config');
+		$this->config = model('Appconfig');
 		$this->employee = model('Employee');
 		$this->expense_category = model('Expense_category');
 	}

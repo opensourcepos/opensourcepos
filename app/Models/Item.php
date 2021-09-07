@@ -7,15 +7,23 @@ use stdClass;
 
 /**
  * Item class
+ *
+ * @property mixed config
  */
 
 class Item extends Model
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->config = model('Appconfig');
+	}
 	/*
 	* Determines if a given item_id is an item
 	*/
 
-	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE): bool
+	public function exists(int $item_id, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
 	{
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -38,7 +46,7 @@ class Item extends Model
 	/*
 	* Determines if a given item_number exists
 	*/
-	public function item_number_exists($item_number, $item_id = ''): bool
+	public function item_number_exists(string $item_number, string $item_id = ''): bool
 	{
 		if($this->config->item('allow_duplicate_barcodes') != FALSE)
 		{
@@ -68,7 +76,7 @@ class Item extends Model
 		return $builder->countAllResults();
 	}
 
-	public function get_tax_category_usage($tax_category_id)
+	public function get_tax_category_usage(int $tax_category_id): int
 	{
 		$builder = $this->db->table('items');
 		$builder->where('tax_category_id', $tax_category_id);
@@ -79,7 +87,7 @@ class Item extends Model
 	/*
 	* Get number of rows
 	*/
-	public function get_found_rows($search, $filters)
+	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
@@ -87,7 +95,7 @@ class Item extends Model
 	/*
 	* Perform a search on items
 	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc', $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
@@ -239,7 +247,7 @@ class Item extends Model
 	/*
 	* Returns all the items
 	*/
-	public function get_all($stock_location_id = -1, $rows = 0, $limit_from = 0)
+	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0)
 	{
 		$builder = $this->db->table('items');
 
@@ -265,7 +273,7 @@ class Item extends Model
 	/*
 	* Gets information about a particular item
 	*/
-	public function get_info($item_id)
+	public function get_info(int $item_id)
 	{
 		$builder = $this->db->table('items');
 		$builder->select('items.*');
@@ -301,7 +309,7 @@ class Item extends Model
 	/*
 	* Gets information about a particular item by item id or number
 	*/
-	public function get_info_by_id_or_number($item_id, $include_deleted = TRUE)
+	public function get_info_by_id_or_number(int $item_id, bool $include_deleted = TRUE)
 	{
 		$builder = $this->db->table('items');
 		$builder->groupStart();
@@ -338,7 +346,7 @@ class Item extends Model
 	/*
 	* Get an item id given an item number
 	*/
-	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
+	public function get_item_id(string $item_number, bool $ignore_deleted = FALSE, bool $deleted = FALSE)
 	{
 		$builder = $this->db->table('items');
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -389,13 +397,13 @@ class Item extends Model
 	/*
 	* Inserts or updates an item
 	*/
-	public function save(&$item_data, $item_id = FALSE): bool
+	public function save(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
 
 		if(!$item_id || !$this->exists($item_id, TRUE))
 		{
-			if($builder->insert('items', $item_data))
+			if($builder->insert($item_data))
 			{
 				$item_data['item_id'] = $this->db->insertID();
 				if($item_data['low_sell_item_id'] == -1)
@@ -415,9 +423,10 @@ class Item extends Model
 			$item_data['item_id'] = $item_id;
 		}
 
+		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 
-		return $builder->update('items', $item_data);
+		return $builder->update($item_data);
 	}
 
 	/*
