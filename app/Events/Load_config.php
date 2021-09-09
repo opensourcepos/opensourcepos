@@ -34,9 +34,9 @@ class Load_config
         $this->load_language_files($CI, '../application/language', current_language_code(), TRUE);
 
         //Set timezone from config database
-        if($CI->config->item('timezone'))
+        if($CI->config->get('timezone'))
         {
-            date_default_timezone_set($CI->config->item('timezone'));
+            date_default_timezone_set($CI->config->get('timezone'));
         }
         else
         {

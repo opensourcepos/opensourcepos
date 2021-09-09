@@ -23,7 +23,7 @@ class Summary_expenses_categories extends Summary_report
 		$builder = $this->db->table('expenses AS expenses');
 		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -45,7 +45,7 @@ class Summary_expenses_categories extends Summary_report
 		$builder->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
 		$builder = $this->db->table('expenses AS expenses');
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}

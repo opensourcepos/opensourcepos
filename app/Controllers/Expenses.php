@@ -126,7 +126,7 @@ class Expenses extends Secure_Controller
 	{
 		$newdate = $this->input->post('date');
 
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $newdate);
 
 		$expense_data = array(
 			'date' => $date_formatter->format('Y-m-d H:i:s'),

@@ -28,7 +28,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Messages.message'), 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2 required')); ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea(array('class'=>'form-control input-sm required', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
+				<?php echo form_textarea(array('class'=>'form-control input-sm required', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->get('msg_msg')));?>
 			</div>
 		</div>
 	</fieldset>

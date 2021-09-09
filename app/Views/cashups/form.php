@@ -36,7 +36,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'open_amount_cash',
@@ -45,7 +45,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->open_amount_cash))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'transfer_amount_cash',
@@ -65,7 +65,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->transfer_amount_cash))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'closed_amount_cash',
@@ -107,7 +107,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_cash))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -130,7 +130,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'closed_amount_due',
@@ -139,7 +139,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -150,7 +150,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'closed_amount_card',
@@ -159,7 +159,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_card))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -170,7 +170,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'closed_amount_check',
@@ -179,7 +179,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_check))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -190,7 +190,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'closed_amount_total',
@@ -200,7 +200,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_total)
 							));?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -246,12 +246,12 @@ $(document).ready(function()
 	<?php echo view('partial/datepicker_locale'); ?>
 
 	$('#open_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		format: "<?php echo dateformat_bootstrap($this->config->get('dateformat')) . ' ' . dateformat_bootstrap($this->config->get('timeformat'));?>",
+		startDate: "<?php echo date($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
-		$t = $this->config->item('timeformat');
+		$t = $this->config->get('timeformat');
 		$m = $t[strlen($t)-1];
-		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+		if( strpos($this->config->get('timeformat'), 'a') !== false || strpos($this->config->get('timeformat'), 'A') !== false )
 		{
 		?>
 			showMeridian: true,
@@ -273,12 +273,12 @@ $(document).ready(function()
 	});
 
 	$('#close_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		format: "<?php echo dateformat_bootstrap($this->config->get('dateformat')) . ' ' . dateformat_bootstrap($this->config->get('timeformat'));?>",
+		startDate: "<?php echo date($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
-		$t = $this->config->item('timeformat');
+		$t = $this->config->get('timeformat');
 		$m = $t[strlen($t)-1];
-		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+		if( strpos($this->config->get('timeformat'), 'a') !== false || strpos($this->config->get('timeformat'), 'A') !== false )
 		{
 		?>
 			showMeridian: true,

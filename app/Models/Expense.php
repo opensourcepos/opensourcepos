@@ -8,9 +8,9 @@ use stdClass;
 /**
  * Expense class
  *
- * @property mixed config
- * @property mixed employee
- * @property mixed expense_category
+ * @property appconfig config
+ * @property employee employee
+ * @property expense_category expense_category
  *
  */
 
@@ -118,7 +118,7 @@ class Expense extends Model
 
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -275,7 +275,7 @@ class Expense extends Model
 		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder->where('deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}

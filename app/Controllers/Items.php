@@ -234,9 +234,9 @@ class Items extends Secure_Controller
 			}
 		}
 
-		$use_destination_based_tax = (boolean)$this->config->item('use_destination_based_tax');
-		$data['include_hsn'] = $this->config->item('include_hsn') === '1';
-		$data['category_dropdown'] = $this->config->item('category_dropdown');
+		$use_destination_based_tax = (boolean)$this->config->get('use_destination_based_tax');
+		$data['include_hsn'] = $this->config->get('include_hsn') === '1';
+		$data['category_dropdown'] = $this->config->get('category_dropdown');
 
 		if($data['category_dropdown'] === '1')
 		{
@@ -250,8 +250,8 @@ class Items extends Secure_Controller
 
 		if($item_id === NEW_ITEM)
 		{
-			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
-			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
+			$data['default_tax_1_rate'] = $this->config->get('default_tax_1_rate');
+			$data['default_tax_2_rate'] = $this->config->get('default_tax_2_rate');
 
 			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 1;
@@ -265,7 +265,7 @@ class Items extends Secure_Controller
 
 			if($use_destination_based_tax)
 			{
-				$item_info->tax_category_id = $this->config->item('default_tax_category');
+				$item_info->tax_category_id = $this->config->get('default_tax_category');
 			}
 		}
 
@@ -273,7 +273,7 @@ class Items extends Secure_Controller
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
 			&& !$data['allow_temp_item']
-			&& !($this->config->item('derive_sale_quantity') === '1'));
+			&& !($this->config->get('derive_sale_quantity') === '1'));
 
 		$data['item_info'] = $item_info;
 
@@ -429,7 +429,7 @@ class Items extends Secure_Controller
 		{
 			$item = $this->xss_clean($item);
 
-			if(empty($item['item_number']) && $this->config->item('barcode_generate_if_empty'))
+			if(empty($item['item_number']) && $this->config->get('barcode_generate_if_empty'))
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
@@ -576,7 +576,7 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$use_destination_based_tax = (boolean)$this->config->item('use_destination_based_tax');
+			$use_destination_based_tax = (boolean)$this->config->get('use_destination_based_tax');
 
 			if(!$use_destination_based_tax)
 			{
@@ -703,10 +703,10 @@ class Items extends Secure_Controller
 	{
 	//Load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
-			'allowed_types' => $this->config->item('image_allowed_types'),
-			'max_size' => $this->config->item('image_max_size'),
-			'max_width' => $this->config->item('image_max_width'),
-			'max_height' => $this->config->item('image_max_height'));
+			'allowed_types' => $this->config->get('image_allowed_types'),
+			'max_size' => $this->config->get('image_max_size'),
+			'max_width' => $this->config->get('image_max_width'),
+			'max_height' => $this->config->get('image_max_height'));
 
 		$this->upload = new Upload($config);
 		$this->upload->do_upload('item_image');

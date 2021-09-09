@@ -20,7 +20,7 @@ $(document).ready(function()
 	// load the preset daterange picker
 	<?php echo view('partial/daterangepicker'); ?>
     // set the beginning of time as starting date
-    $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>");
+    $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->get('dateformat'), mktime(0,0,0,01,01,2010));?>");
 	// update the hidden inputs with the selected dates before submitting the search data
     var start_date = "<?php echo date('Y-m-d', mktime(0,0,0,01,01,2010));?>";
 	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
@@ -37,7 +37,7 @@ $(document).ready(function()
         employee_id: <?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>,
         resource: '<?php echo site_url($controller_name);?>',
         headers: <?php echo $table_headers; ?>,
-        pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+        pageSize: <?php echo $this->config->get('lines_per_page'); ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {
             return $.extend(arguments[0], {

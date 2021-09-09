@@ -69,7 +69,7 @@ function get_sales_manage_table_headers()
 		array('payment_type' => lang('Sales.payment_type'))
 	);
 
-	if($CI->config->item('invoice_enable') == TRUE)
+	if($CI->config->get('invoice_enable') == TRUE)
 	{
 		$headers[] = array('invoice_number' => lang('Sales.invoice_number'));
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
@@ -99,7 +99,7 @@ function get_sale_data_row($sale)
 		'payment_type' => $sale->payment_type
 	);
 
-	if($CI->config->item('invoice_enable'))
+	if($CI->config->get('invoice_enable'))
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number) ? '' : anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
@@ -333,7 +333,7 @@ function get_items_manage_table_headers()
 		array('quantity' => lang('Items.quantity'))
 	);
 
-	if($CI->config->item('use_destination_based_tax') == '1')
+	if($CI->config->get('use_destination_based_tax') == '1')
 	{
 		$headers[] = array('tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE);
 	}
@@ -363,7 +363,7 @@ function get_item_data_row($item)
 {
 	$CI =& get_instance();
 
-	if($CI->config->item('use_destination_based_tax') == '1')
+	if($CI->config->get('use_destination_based_tax') == '1')
 	{
 		if($item->tax_category_id == NULL)
 		{
@@ -411,7 +411,7 @@ function get_item_data_row($item)
 		}
 	}
 
-	if($CI->config->item('multi_pack_enabled') == '1')
+	if($CI->config->get('multi_pack_enabled') == '1')
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}

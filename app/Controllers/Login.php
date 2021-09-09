@@ -18,7 +18,7 @@ class Login extends BaseController
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
 
 
-			if($this->config->item('gcaptcha_enable'))
+			if($this->config->get('gcaptcha_enable'))
 			{
 				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
 			}
@@ -64,7 +64,7 @@ class Login extends BaseController
 
 	public function gcaptcha_check($recaptchaResponse)
 	{
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->config->item('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->input->ip_address();
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->config->get('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->input->ip_address();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);

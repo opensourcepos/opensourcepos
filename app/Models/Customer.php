@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 /**
  * Customer class
  *
- * @property mixed config
+ * @property appconfig config
  *
  */
 
@@ -244,7 +244,7 @@ class Customer extends Person
 		$result = TRUE;
 
 		// if privacy enforcement is selected scramble customer data
-		if($this->config->item('enforce_privacy'))
+		if($this->config->get('enforce_privacy'))
 		{
 			$builder = $this->db->table('people');
 			$builder->where('person_id', $customer_id);

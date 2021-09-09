@@ -28,7 +28,7 @@ function current_language_code($load_system_language = FALSE): string
 		}
 	}
 
-	$language_code = get_instance()->config->item('language_code');
+	$language_code = get_instance()->config->get('language_code');
 
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
@@ -47,7 +47,7 @@ function current_language($load_system_language = FALSE): string
 		}
 	}
 
-	$language = get_instance()->config->item('language');
+	$language = get_instance()->config->get('language');
 
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
@@ -252,31 +252,31 @@ function get_payment_options(): array
 	$payments = [];
 
 
-	if($config->item('payment_options_order') == 'debitcreditcash')
+	if($config->get('payment_options_order') == 'debitcreditcash')
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($config->item('payment_options_order') == 'debitcashcredit')
+	elseif($config->get('payment_options_order') == 'debitcashcredit')
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 	}
-	elseif($config->item('payment_options_order') == 'creditdebitcash')
+	elseif($config->get('payment_options_order') == 'creditdebitcash')
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($config->item('payment_options_order') == 'creditcashdebit')
+	elseif($config->get('payment_options_order') == 'creditcashdebit')
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 	}
-	else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
+	else // default: if($config->get('payment_options_order') == 'cashdebitcredit')
 	{
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
@@ -287,7 +287,7 @@ function get_payment_options(): array
 	$payments[lang('Sales.check')] = lang('Sales.check');
 
 	// If India (list of country codes include India) then include Unified Payment Interface
-	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false)
+	if (stripos(get_instance()->config->get('country_codes'), 'IN') !== false)
 	{
 		$payments[lang('Sales.upi')] = lang('Sales.upi');
 	}
@@ -299,8 +299,8 @@ function currency_side(): bool
 {
 	$config = get_instance()->config;
 
-	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::CURRENCY);
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+	$fmt = new \NumberFormatter($config->get('number_locale'), \NumberFormatter::CURRENCY);
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->get('currency_symbol'));
 
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
@@ -309,42 +309,42 @@ function quantity_decimals(): int
 {
 	$config = get_instance()->config;
 
-	return $config->item('quantity_decimals') ? $config->item('quantity_decimals') : 0;
+	return $config->get('quantity_decimals') ? $config->get('quantity_decimals') : 0;
 }
 
 function totals_decimals(): int
 {
 	$config = get_instance()->config;
 
-	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
+	return $config->get('currency_decimals') ? $config->get('currency_decimals') : 0;
 }
 
 function cash_decimals(): int
 {
 	$config = get_instance()->config;
 
-	return $config->item('cash_decimals') ? $config->item('cash_decimals') : 0;
+	return $config->get('cash_decimals') ? $config->get('cash_decimals') : 0;
 }
 
 function tax_decimals(): int
 {
 	$config = get_instance()->config;
 
-	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
+	return $config->get('tax_decimals') ? $config->get('tax_decimals') : 0;
 }
 
 function to_date($date = DEFAULT_DATE)
 {
 	$config = get_instance()->config;
 
-	return date($config->item('dateformat'), $date);
+	return date($config->get('dateformat'), $date);
 }
 
 function to_datetime($datetime = DEFAULT_DATETIME)
 {
 	$config = get_instance()->config;
 
-	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
+	return date($config->get('dateformat') . ' ' . $config->get('timeformat'), $datetime);
 }
 
 function to_currency($number)
@@ -361,7 +361,7 @@ function to_currency_tax($number)
 {
 	$config = get_instance()->config;
 
-	if($config->item('tax_included') == '1')
+	if($config->get('tax_included') == '1')
 	{
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 	}
@@ -398,15 +398,15 @@ function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL)
 	}
 
 	$config = get_instance()->config;
-	$fmt = new \NumberFormatter($config->item('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->item($decimals));
+	$fmt = new \NumberFormatter($config->get('number_locale'), $type);
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->get($decimals));
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->get($decimals));
 
-	if(empty($config->item('thousands_separator')))
+	if(empty($config->get('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->get('currency_symbol'));
 
 	return $fmt->format($number);
 }
@@ -443,12 +443,12 @@ function parse_decimals($number, $decimals = NULL)
 
 	if($decimals === NULL)
 	{
-		$decimals = $config->item('currency_decimals');
+		$decimals = $config->get('currency_decimals');
 	}
 
-	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
+	$fmt = new \NumberFormatter($config->get('number_locale'), \NumberFormatter::DECIMAL);
 
-	if(empty($config->item('thousands_separator')))
+	if(empty($config->get('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
@@ -515,7 +515,7 @@ function dateformat_momentjs($php_format): string
 function dateformat_mysql(): string
 {
 	$config = get_instance()->config;
-	$php_format = $config->item('dateformat');
+	$php_format = $config->get('dateformat');
 
 	$SYMBOLS_MATCHING = array(
 		// Day

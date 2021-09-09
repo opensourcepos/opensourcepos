@@ -31,7 +31,7 @@ class Sale_lib
 	public function get_register_mode_options()
 	{
 		$register_modes = array();
-		if($this->CI->config->item('invoice_enable') == '0')
+		if($this->CI->config->get('invoice_enable') == '0')
 		{
 			$register_modes['sale'] = lang('Sales.sale');
 		}
@@ -39,7 +39,7 @@ class Sale_lib
 		{
 			$register_modes['sale'] = lang('Sales.receipt');
 			$register_modes['sale_quote'] = lang('Sales.quote');
-			if($this->CI->config->item('work_order_enable') == '1')
+			if($this->CI->config->get('work_order_enable') == '1')
 			{
 				$register_modes['sale_work_order'] = lang('Sales.work_order');
 			}
@@ -91,7 +91,7 @@ class Sale_lib
 		}
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->CI->config->item('line_sequence') == '0')
+		if($this->CI->config->get('line_sequence') == '0')
 		{
 			$sort = array();
 			foreach($filtered_cart as $k => $v)
@@ -101,7 +101,7 @@ class Sale_lib
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->CI->config->item('line_sequence') == '1')
+		elseif($this->CI->config->get('line_sequence') == '1')
 		{
 			$sort = array();
 			foreach($filtered_cart as $k => $v)
@@ -113,7 +113,7 @@ class Sale_lib
 			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);
 		}
 		// Group by Item Category
-		elseif($this->CI->config->item('line_sequence') == '2')
+		elseif($this->CI->config->get('line_sequence') == '2')
 		{
 			$sort = array();
 			foreach($filtered_cart as $k => $v)
@@ -268,7 +268,7 @@ class Sale_lib
 	public function is_invoice_mode()
 	{
 		return ($this->CI->session->userdata('sales_mode') == 'sale_invoice' &&
-					$this->CI->config->item('invoice_enable') == TRUE);
+					$this->CI->config->get('invoice_enable') == TRUE);
 	}
 
 	public function is_sale_by_receipt_mode()
@@ -309,11 +309,11 @@ class Sale_lib
 
 	public function is_print_after_sale()
 	{
-		if($this->CI->config->item('print_receipt_check_behaviour') == 'always')
+		if($this->CI->config->get('print_receipt_check_behaviour') == 'always')
 		{
 			return TRUE;
 		}
-		elseif($this->CI->config->item('print_receipt_check_behaviour') == 'never')
+		elseif($this->CI->config->get('print_receipt_check_behaviour') == 'never')
 		{
 			return FALSE;
 		}
@@ -336,11 +336,11 @@ class Sale_lib
 
 	public function is_email_receipt()
 	{
-		if($this->CI->config->item('email_receipt_check_behaviour') == 'always')
+		if($this->CI->config->get('email_receipt_check_behaviour') == 'always')
 		{
 			return TRUE;
 		}
-		elseif($this->CI->config->item('email_receipt_check_behaviour') == 'never')
+		elseif($this->CI->config->get('email_receipt_check_behaviour') == 'never')
 		{
 			return FALSE;
 		}
@@ -666,7 +666,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('dinner_table'))
 		{
-			if($this->CI->config->item('dinner_table_enable') == TRUE)
+			if($this->CI->config->get('dinner_table_enable') == TRUE)
 			{
 				$this->set_dinner_table(1);
 			}
@@ -869,7 +869,7 @@ class Sale_lib
 		$total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type);
 		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, TRUE);
 
-		if($this->CI->config->item('multi_pack_enabled') == '1')
+		if($this->CI->config->get('multi_pack_enabled') == '1')
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
@@ -1145,7 +1145,7 @@ class Sale_lib
 	 */
 	public function reset_cash_rounding()
 	{
-		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
+		$cash_rounding_code = $this->CI->config->get('cash_rounding_code');
 
 		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)
 		{
@@ -1292,7 +1292,7 @@ class Sale_lib
 	{
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
 
-		if($this->CI->config->item('tax_included'))
+		if($this->CI->config->get('tax_included'))
 		{
 			$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
 			$price_tax_excl = bcdiv($item_total, $tax_fraction);
@@ -1310,7 +1310,7 @@ class Sale_lib
 		$subtotal = 0.0;
 		foreach($this->get_cart() as $item)
 		{
-			if($exclude_tax && $this->CI->config->item('tax_included'))
+			if($exclude_tax && $this->CI->config->get('tax_included'))
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
 			}
@@ -1334,7 +1334,7 @@ class Sale_lib
 
 		$cash_mode = $this->CI->session->userdata('cash_mode');
 
-		if(!$this->CI->config->item('tax_included'))
+		if(!$this->CI->config->get('tax_included'))
 		{
 			$cart = $this->get_cart();
 			foreach($this->CI->tax_lib->get_taxes($cart)[0] as $tax)
@@ -1359,7 +1359,7 @@ class Sale_lib
 	public function check_for_cash_rounding($total)
 	{
 		$cash_decimals = cash_decimals();
-		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
+		$cash_rounding_code = $this->CI->config->get('cash_rounding_code');
 
 		return Rounding_mode::round_number($cash_rounding_code, $total, $cash_decimals);
 	}

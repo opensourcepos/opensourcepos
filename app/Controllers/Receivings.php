@@ -96,8 +96,8 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = $this->config->item('default_receivings_discount');
-		$discount_type = $this->config->item('default_receivings_discount_type');
+		$discount = $this->config->get('default_receivings_discount');
+		$discount_type = $this->config->get('default_receivings_discount_type');
 
 		if($mode == 'return' && $this->Receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -379,7 +379,7 @@ class Receivings extends Secure_Controller
 	{
 		$newdate = $this->input->post('date');
 		
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = array(

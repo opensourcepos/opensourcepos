@@ -11,7 +11,7 @@
 						'name' => 'customer_reward_enable',
 						'value' => 'customer_reward_enable',
 						'id' => 'customer_reward_enable',
-						'checked' => $this->config->item('customer_reward_enable')));?>
+						'checked' => $this->config->get('customer_reward_enable')));?>
 				</div>
 			</div>
 

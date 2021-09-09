@@ -1340,10 +1340,10 @@ class Reports extends Secure_Controller
 		$sale_type_options = array();
 		$sale_type_options['complete'] = lang('Reports.complete');
 		$sale_type_options['sales'] = lang('Reports.completed_sales');
-		if($this->config->item('invoice_enable') == '1')
+		if($this->config->get('invoice_enable') == '1')
 		{
 			$sale_type_options['quotes'] = lang('Reports.quotes');
-			if($this->config->item('work_order_enable') == '1')
+			if($this->config->get('work_order_enable') == '1')
 			{
 				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}
@@ -1645,13 +1645,13 @@ class Reports extends Secure_Controller
 	{
 		$subtitle = '';
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
-			$subtitle .= date($this->config->item('dateformat'), strtotime($inputs['start_date'])) . ' - ' .date($this->config->item('dateformat'), strtotime($inputs['end_date']));
+			$subtitle .= date($this->config->get('dateformat'), strtotime($inputs['start_date'])) . ' - ' .date($this->config->get('dateformat'), strtotime($inputs['end_date']));
 		}
 		else
 		{
-			$subtitle .= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime(rawurldecode($inputs['end_date'])));
+			$subtitle .= date($this->config->get('dateformat').' '.$this->config->get('timeformat'), strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->config->get('dateformat').' '.$this->config->get('timeformat'), strtotime(rawurldecode($inputs['end_date'])));
 		}
 
 		return $subtitle;

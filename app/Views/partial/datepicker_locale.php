@@ -2,11 +2,11 @@
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
+        format: "<?php echo dateformat_bootstrap($this->config->get('dateformat')) . ' ' . dateformat_bootstrap($this->config->get('timeformat'));?>",
         <?php
-        $t = $this->config->item('timeformat');
+        $t = $this->config->get('timeformat');
         $m = $t[strlen($t)-1];
-        if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+        if( strpos($this->config->get('timeformat'), 'a') !== false || strpos($this->config->get('timeformat'), 'A') !== false )
         {
             ?>
             showMeridian: true,
@@ -28,7 +28,7 @@ var pickerconfig = function(config) {
     }, <?php echo isset($config) ? $config : '{}' ?>);
 };
 
-$.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
+$.fn.datetimepicker.dates['<?php echo $this->config->get("language"); ?>'] = {
     days: [
 		"<?php echo lang('Cal.sunday'); ?>",
         "<?php echo lang('Cal.monday'); ?>",
@@ -87,13 +87,13 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
 		],
     today: "<?php echo lang('Datepicker.today'); ?>",
     <?php
-        if( strpos($this->config->item('timeformat'), 'a') !== false )
+        if( strpos($this->config->get('timeformat'), 'a') !== false )
         {
     ?>
     meridiem: ["am", "pm"],
     <?php
         }
-        elseif( strpos($this->config->item('timeformat'), 'A') !== false )
+        elseif( strpos($this->config->get('timeformat'), 'A') !== false )
         {
     ?>
     meridiem: ["AM", "PM"],

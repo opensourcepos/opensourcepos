@@ -29,7 +29,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = array();
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->get('application_version');
 
 		if(file_exists('license/LICENSE'))
 		{
@@ -206,7 +206,7 @@ class Config extends Secure_Controller
 		$data['dinner_tables'] = $this->Dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->Customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = $this->config->item('company_logo') != '';
+		$data['logo_exists'] = $this->config->get('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
@@ -215,7 +215,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->Module->get_show_office_group();
-		$data['currency_code'] = $this->config->item('currency_code');
+		$data['currency_code'] = $this->config->get('currency_code');
 
 		$data = $this->xss_clean($data);
 
@@ -229,15 +229,15 @@ class Config extends Secure_Controller
 		$image_allowed_types 		= array('jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff');
 		$data['image_allowed_types']	= array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] 	= explode('|',$this->config->item('image_allowed_types'));
+		$data['selected_image_allowed_types'] 	= explode('|',$this->config->get('image_allowed_types'));
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= array();
 
 		if($this->_check_encryption())
 		{
-			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->item('mailchimp_api_key'));
-			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->item('mailchimp_list_id'));
+			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->get('mailchimp_api_key'));
+			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->get('mailchimp_list_id'));
 		}
 		else
 		{
@@ -847,7 +847,7 @@ class Config extends Secure_Controller
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if($this->config->item('invoice_enable') == '1')
+			if($this->config->get('invoice_enable') == '1')
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
@@ -889,7 +889,7 @@ class Config extends Secure_Controller
 
 	private function _check_encryption()
 	{
-		$encryption_key = $this->config->item('encryption_key');
+		$encryption_key = $this->config->get('encryption_key');
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')

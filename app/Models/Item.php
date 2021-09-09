@@ -8,9 +8,9 @@ use stdClass;
 /**
  * Item class
  *
- * @property mixed config
- * @property mixed inventory
- * @property mixed item_quantity
+ * @property appconfig config
+ * @property inventory inventory
+ * @property item_quantity item_quantity
  */
 
 class Item extends Model
@@ -52,7 +52,7 @@ class Item extends Model
 	*/
 	public function item_number_exists(string $item_number, string $item_id = ''): bool
 	{
-		if($this->config->item('allow_duplicate_barcodes') != FALSE)
+		if($this->config->get('allow_duplicate_barcodes') != FALSE)
 		{
 			return FALSE;
 		}
@@ -158,7 +158,7 @@ class Item extends Model
 			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -508,16 +508,16 @@ class Item extends Model
 
 	function get_search_suggestion_format(string $seed = NULL): string
 	{
-		$seed .= ',' . $this->config->item('suggestions_first_column');
+		$seed .= ',' . $this->config->get('suggestions_first_column');
 
-		if($this->config->item('suggestions_second_column') !== '')
+		if($this->config->get('suggestions_second_column') !== '')
 		{
-			$seed .= ',' . $this->config->item('suggestions_second_column');
+			$seed .= ',' . $this->config->get('suggestions_second_column');
 		}
 
-		if($this->config->item('suggestions_third_column') !== '')
+		if($this->config->get('suggestions_third_column') !== '')
 		{
-			$seed .= ',' . $this->config->item('suggestions_third_column');
+			$seed .= ',' . $this->config->get('suggestions_third_column');
 		}
 
 		return $seed;
@@ -526,12 +526,12 @@ class Item extends Model
 	function get_search_suggestion_label($result_row): string
 	{
 		$label = '';
-		$label1 = $this->config->item('suggestions_first_column');
-		$label2 = $this->config->item('suggestions_second_column');
-		$label3 = $this->config->item('suggestions_third_column');
+		$label1 = $this->config->get('suggestions_first_column');
+		$label2 = $this->config->get('suggestions_second_column');
+		$label3 = $this->config->get('suggestions_third_column');
 
 		// If multi_pack enabled then if "name" is part of the search suggestions then append pack
-		if($this->config->item('multi_pack_enabled') == '1')
+		if($this->config->get('multi_pack_enabled') == '1')
 		{
 			$this->append_label($label, $label1, $result_row);
 			$this->append_label($label, $label2, $result_row);
@@ -1039,7 +1039,7 @@ class Item extends Model
 			$as_name = ' AS ' . $as_name;
 		}
 
-		if($this->config->item('multi_pack_enabled') == '1')
+		if($this->config->get('multi_pack_enabled') == '1')
 		{
 			$item_name = "concat(items.name,'" . NAME_SEPARATOR . '\', items.pack_name)' . $as_name;
 		}

@@ -31,7 +31,7 @@ if(isset($success))
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 				<?php
-				if($this->config->item('dinner_table_enable') == TRUE)
+				if($this->config->get('dinner_table_enable') == TRUE)
 				{
 				?>
 					<li class="pull-left first_li">
@@ -197,7 +197,7 @@ if(isset($success))
 								<div class="input-group">
 									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
 									<span class="input-group-btn">
-										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
+										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->get('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
 									</span>
 								</div>
 							</td>
@@ -348,7 +348,7 @@ if(isset($success))
 						<th style="width: 55%;"><?php echo lang('Sales.customer_discount'); ?></th>
 						<th style="width: 45%; text-align: right;"><?php echo ($customer_discount_type == FIXED)?to_currency($customer_discount):$customer_discount . '%'; ?></th>
 					</tr>
-					<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
+					<?php if($this->config->get('customer_reward_enable') == TRUE): ?>
 					<?php
 					if(!empty($customer_rewards))
 					{
@@ -627,7 +627,7 @@ if(isset($success))
 						</div>
 					</div>
 					<?php
-					if(($mode == 'sale_invoice') && $this->config->item('invoice_enable') == TRUE)
+					if(($mode == 'sale_invoice') && $this->config->get('invoice_enable') == TRUE)
 					{
 					?>
 						<div class="row">
@@ -778,7 +778,7 @@ $(document).ready(function()
 	});
 
 	<?php
-	if($this->config->item('invoice_enable') == TRUE)
+	if($this->config->get('invoice_enable') == TRUE)
 	{
 	?>
 		$('#sales_invoice_number').keyup(function() {

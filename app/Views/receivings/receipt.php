@@ -19,25 +19,25 @@
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
-		if ($this->config->item('company_logo') != '') 
+		if ($this->config->get('company_logo') != '') 
 		{ 
 		?>
-			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>
+			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->get('company_logo')); ?>" alt="company_logo" /></div>
 		<?php
 		}
 		?>
 
 		<?php
-		if ($this->config->item('receipt_show_company_name')) 
+		if ($this->config->get('receipt_show_company_name')) 
 		{ 
 		?>
-			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<div id="company_name"><?php echo $this->config->get('company'); ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
-		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
+		<div id="company_address"><?php echo nl2br($this->config->get('address')); ?></div>
+		<div id="company_phone"><?php echo $this->config->get('phone'); ?></div>
 		<div id="sale_receipt"><?php echo lang('Receivings.receipt'); ?></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 	</div>
@@ -145,7 +145,7 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo nl2br($this->config->item('return_policy')); ?>
+		<?php echo nl2br($this->config->get('return_policy')); ?>
 	</div>
 
 	<div id='barcode'>

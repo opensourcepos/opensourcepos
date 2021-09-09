@@ -71,7 +71,7 @@ if (isset($error_message))
 			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
-				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+				<div id="company_name"><?php echo $this->config->get('company'); ?></div>
 			<?php
 			}
 			?>
@@ -198,7 +198,7 @@ if (isset($error_message))
 		<div id="sale_return_policy">
 			<h5>
 				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . $comments; ?></div>
-				<div style='padding:4%;'><?php echo $this->config->item('quote_default_comments'); ?></div>
+				<div style='padding:4%;'><?php echo $this->config->get('quote_default_comments'); ?></div>
 			</h5>
 		</div>
 	</div>

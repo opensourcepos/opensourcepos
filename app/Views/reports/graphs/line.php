@@ -59,13 +59,13 @@
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+						return value + '<?php echo $this->config->get('currency_symbol'); ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+						return '<?php echo $this->config->get('currency_symbol'); ?>' + value;				
 				<?php
 					}
 				}
@@ -112,13 +112,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+							return value + '<?php echo $this->config->get('currency_symbol'); ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->config->get('currency_symbol'); ?>' + value;				
 					<?php
 						}
 					}
@@ -141,13 +141,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+							return value + '<?php echo $this->config->get('currency_symbol'); ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->config->get('currency_symbol'); ?>' + value;				
 					<?php
 						}
 					}

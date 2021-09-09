@@ -16,7 +16,7 @@ abstract class Summary_report extends Report
 	{
 		$where = '';
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -37,7 +37,7 @@ abstract class Summary_report extends Report
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 
-		if($this->config->item('tax_included'))
+		if($this->config->get('tax_included'))
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $sales_tax";
@@ -106,7 +106,7 @@ abstract class Summary_report extends Report
 
 	private function __common_where(array $inputs)
 	{
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}

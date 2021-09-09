@@ -9,7 +9,7 @@ use stdClass;
 /**
  * Attribute class
  * 
- * @property mixed attribute
+ * @property attribute attribute
  */
 class Attribute extends Model
 {

@@ -38,7 +38,7 @@ class Taxes extends Secure_Controller
 		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
 
-		if($this->config->item('tax_included') == '1')
+		if($this->config->get('tax_included') == '1')
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -114,7 +114,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		if($this->config->item('tax_included') == '1')
+		if($this->config->get('tax_included') == '1')
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -189,9 +189,9 @@ class Taxes extends Secure_Controller
 
 		if($tax_rate_id == -1)
 		{
-			$data['rate_tax_code_id'] = $this->config->item('default_tax_code');
-			$data['rate_tax_category_id'] = $this->config->item('default_tax_category');
-			$data['rate_jurisdiction_id'] = $this->config->item('default_tax_jurisdiction');
+			$data['rate_tax_code_id'] = $this->config->get('default_tax_code');
+			$data['rate_tax_category_id'] = $this->config->get('default_tax_category');
+			$data['rate_jurisdiction_id'] = $this->config->get('default_tax_jurisdiction');
 			$data['tax_rounding_code'] = Rounding_mode::HALF_UP;
 			$data['tax_rate'] = '0.0000';
 		}
@@ -224,7 +224,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if($this->config->item('tax_included') == '1')
+		if($this->config->get('tax_included') == '1')
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -293,7 +293,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if($this->config->item('tax_included') == '1')
+		if($this->config->get('tax_included') == '1')
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -528,7 +528,7 @@ class Taxes extends Secure_Controller
 	{
 		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->getResultArray();
 
-		if($this->config->item('tax_included') == '1')
+		if($this->config->get('tax_included') == '1')
 		{
 			$default_tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 		}

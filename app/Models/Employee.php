@@ -8,7 +8,7 @@ use Config\Services;
 /**
  * Employee class
  *
- * @property mixed session
+ * @property session session
  *
  */
 

@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 /**
  * Inventory class
  *
- * @property mixed employee
+ * @property employee employee
  *
  */
 

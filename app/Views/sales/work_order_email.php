@@ -20,10 +20,10 @@
 		<tr>
 			<td id="logo">
 				<?php
-				if($this->config->item('company_logo') != '')
+				if($this->config->get('company_logo') != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />
+					<img id="image" src="<?php echo 'uploads/' . $this->config->get('company_logo'); ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<td id="company-title">
-				<pre><?php echo $this->config->item('company'); ?></pre>
+				<pre><?php echo $this->config->get('company'); ?></pre>
 				<pre><?php echo $company_info; ?></pre>
 			</td>
 			<td id="meta">

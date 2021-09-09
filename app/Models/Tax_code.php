@@ -241,7 +241,7 @@ class Tax_code extends Model
 			}
 			else
 			{
-				return $this->config->item('default_tax_code');
+				return $this->config->get('default_tax_code');
 			}
 		}
 		return FALSE;

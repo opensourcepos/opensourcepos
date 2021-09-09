@@ -72,7 +72,7 @@ class Sales extends Secure_Controller
 						 'only_due' => FALSE,
 						 'only_check' => FALSE,
 						 'only_creditcard' => FALSE,
-						 'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
+						 'only_invoices' => $this->config->get('invoice_enable') && $this->input->get('only_invoices'),
 						 'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
 
 		// check if any filter is set in the multiselect dropdown
@@ -170,7 +170,7 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
-		if($this->config->item('dinner_table_enable') == TRUE)
+		if($this->config->get('dinner_table_enable') == TRUE)
 		{
 			$occupied_dinner_table = $this->input->post('dinner_table');
 			$released_dinner_table = $this->sale_lib->get_dinner_table();
@@ -385,8 +385,8 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 
-		$discount = $this->config->item('default_sales_discount');
-		$discount_type = $this->config->item('default_sales_discount_type');
+		$discount = $this->config->get('default_sales_discount');
+		$discount_type = $this->config->get('default_sales_discount_type');
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
@@ -540,7 +540,7 @@ class Sales extends Secure_Controller
 
 		$data['cart'] = $this->sale_lib->get_cart();
 
-		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
+		$data['include_hsn'] = ($this->config->get('include_hsn') == '1');
 		$__time = time();
 		$data['transaction_time'] = to_datetime($__time);
 		$data['transaction_date'] = to_date($__time);
@@ -551,16 +551,16 @@ class Sales extends Secure_Controller
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
 		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone')
+			$this->config->get('address'),
+			$this->config->get('phone')
 		));
-		if($this->config->item('account_number'))
+		if($this->config->get('account_number'))
 		{
-			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config->item('account_number');
+			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config->get('account_number');
 		}
-		if($this->config->item('tax_id') != '')
+		if($this->config->get('tax_id') != '')
 		{
-			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config->item('tax_id');
+			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config->get('tax_id');
 		}
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
@@ -631,7 +631,7 @@ class Sales extends Secure_Controller
 
 		if($this->sale_lib->is_invoice_mode())
 		{
-			$invoice_format = $this->config->item('sales_invoice_format');
+			$invoice_format = $this->config->get('sales_invoice_format');
 
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
 			if(!empty($invoice_format) && $invoice_number == NULL)
@@ -653,7 +653,7 @@ class Sales extends Secure_Controller
 				$sale_type = SALE_TYPE_INVOICE;
 
 				// The PHP file name is the same as the invoice_type key
-				$invoice_view = $this->config->item('invoice_type');
+				$invoice_view = $this->config->get('invoice_type');
 
 				// Save the data to the sales table
 				$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $tax_details);
@@ -690,7 +690,7 @@ class Sales extends Secure_Controller
 			if($work_order_number == NULL)
 			{
 				// generate work order number
-				$work_order_format = $this->config->item('work_order_format');
+				$work_order_format = $this->config->get('work_order_format');
 				$work_order_number = $this->token_lib->render($work_order_format);
 			}
 
@@ -727,7 +727,7 @@ class Sales extends Secure_Controller
 			if($quote_number == NULL)
 			{
 				// generate quote number
-				$quote_format = $this->config->item('sales_quote_format');
+				$quote_format = $this->config->get('sales_quote_format');
 				$quote_number = $this->token_lib->render($quote_format);
 			}
 
@@ -802,12 +802,12 @@ class Sales extends Secure_Controller
 			$number = $sale_data[$type."_number"];
 			$subject = lang('Sales.' . $type) . ' ' . $number;
 
-			$text = $this->config->item('invoice_email_message');
+			$text = $this->config->get('invoice_email_message');
 			$tokens = array(new Token_invoice_sequence($sale_data['invoice_number']),
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
 				new Token_customer((object)$sale_data));
 			$text = $this->token_lib->render($text, $tokens);
-			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->item('company_logo'));
+			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . $this->config->get('company_logo'));
 
 			// generate email attachment: invoice in pdf format
 			$html = view("sales/" . $type . "_email", $sale_data, TRUE);
@@ -945,7 +945,7 @@ class Sales extends Secure_Controller
 		$data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 
-		$data['include_hsn'] = ($this->config->item('include_hsn') == '1');
+		$data['include_hsn'] = ($this->config->get('include_hsn') == '1');
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals($tax_details[0]);
@@ -985,16 +985,16 @@ class Sales extends Secure_Controller
 		$data['sale_status'] = $sale_info['sale_status'];
 
 		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone')
+			$this->config->get('address'),
+			$this->config->get('phone')
 		));
-		if($this->config->item('account_number'))
+		if($this->config->get('account_number'))
 		{
-			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config->item('account_number');
+			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config->get('account_number');
 		}
-		if($this->config->item('tax_id') != '')
+		if($this->config->get('tax_id') != '')
 		{
-			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config->item('tax_id');
+			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config->get('tax_id');
 		}
 
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
@@ -1027,7 +1027,7 @@ class Sales extends Secure_Controller
 			$data['customer_required'] = lang('Sales.customer_optional');
 		}
 
-		$invoice_type = $this->config->item('invoice_type');
+		$invoice_type = $this->config->get('invoice_type');
 		$data['invoice_view'] = $invoice_type;
 
 		return $this->xss_clean($data);
@@ -1098,7 +1098,7 @@ class Sales extends Secure_Controller
 		$data['comment'] = $this->sale_lib->get_comment();
 		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 
-		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
+		if($customer_info && $this->config->get('customer_reward_enable') == TRUE)
 		{
 			$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
 		}
@@ -1114,7 +1114,7 @@ class Sales extends Secure_Controller
 
 		if ($this->sale_lib->get_invoice_number() == NULL)
 		{
-			$invoice_number = $this->config->item('sales_invoice_format');
+			$invoice_number = $this->config->get('sales_invoice_format');
 		}
 
 		$data['invoice_number'] = $invoice_number;
@@ -1283,7 +1283,7 @@ class Sales extends Secure_Controller
 		$newdate = $this->input->post('date');
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $newdate);
 		$sale_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$sale_data = array(
@@ -1386,7 +1386,7 @@ class Sales extends Secure_Controller
 		{
 			$sale_type = $this->sale_lib->get_sale_type();
 
-			if($this->config->item('dinner_table_enable') == TRUE)
+			if($this->config->get('dinner_table_enable') == TRUE)
 			{
 				$dinner_table = $this->sale_lib->get_dinner_table();
 				$this->Dinner_table->release($dinner_table);

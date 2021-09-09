@@ -8,7 +8,7 @@ use stdClass;
 /**
  * Cashup class
  *
- * @property mixed employee
+ * @property employee employee
  *
  */
 
@@ -111,7 +111,7 @@ class Cashup extends Model
 
 		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}

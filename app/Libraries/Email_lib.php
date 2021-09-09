@@ -22,14 +22,14 @@ class Email_lib
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',
 			'validate' => TRUE,
-			'protocol' => $this->CI->config->item('protocol'),
-			'mailpath' => $this->CI->config->item('mailpath'),
-			'smtp_host' => $this->CI->config->item('smtp_host'),
-			'smtp_user' => $this->CI->config->item('smtp_user'),
-			'smtp_pass' => $this->CI->encryption->decrypt($this->CI->config->item('smtp_pass')),
-			'smtp_port' => $this->CI->config->item('smtp_port'),
-			'smtp_timeout' => $this->CI->config->item('smtp_timeout'),
-			'smtp_crypto' => $this->CI->config->item('smtp_crypto')
+			'protocol' => $this->CI->config->get('protocol'),
+			'mailpath' => $this->CI->config->get('mailpath'),
+			'smtp_host' => $this->CI->config->get('smtp_host'),
+			'smtp_user' => $this->CI->config->get('smtp_user'),
+			'smtp_pass' => $this->CI->encryption->decrypt($this->CI->config->get('smtp_pass')),
+			'smtp_port' => $this->CI->config->get('smtp_port'),
+			'smtp_timeout' => $this->CI->config->get('smtp_timeout'),
+			'smtp_crypto' => $this->CI->config->get('smtp_crypto')
 		);
 
 		$this->CI->email->initialize($config);
@@ -43,7 +43,7 @@ class Email_lib
 	{
 		$email = $this->CI->email;
 
-		$email->from($this->CI->config->item('email'), $this->CI->config->item('company'));
+		$email->from($this->CI->config->get('email'), $this->CI->config->get('company'));
 		$email->to($to);
 		$email->subject($subject);
 		$email->message($message);

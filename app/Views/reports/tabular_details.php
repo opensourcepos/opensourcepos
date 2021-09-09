@@ -26,7 +26,7 @@
 
 		var details_data = <?php echo json_encode($details_data); ?>;
 		<?php
-		if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
+		if($this->config->get('customer_reward_enable') == TRUE && !empty($details_data_rewards))
 		{
 		?>
 			var details_data_rewards = <?php echo json_encode($details_data_rewards); ?>;
@@ -53,7 +53,7 @@
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+				pageSize: <?php echo $this->config->get('lines_per_page'); ?>,
 				pagination: true,
 				sortable: true,
 				showColumns: true,
@@ -77,7 +77,7 @@
 					});
 
 					<?php
-					if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
+					if($this->config->get('customer_reward_enable') == TRUE && !empty($details_data_rewards))
 					{
 					?>
 						$detail.append('<table></table>').find("table").bootstrapTable({

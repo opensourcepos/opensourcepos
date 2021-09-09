@@ -91,7 +91,7 @@ class Cashups extends Secure_Controller
 			$cash_ups_info->closed_amount_cash = $cash_ups_info->open_amount_cash + $cash_ups_info->transfer_amount_cash;
 
 			// if it's date mode only and not date & time truncate the open and end date to date only
-			if(empty($this->config->item('date_or_time_format')))
+			if(empty($this->config->get('date_or_time_format')))
 			{
 				// search for all the payments given the time range
 				$inputs = array('start_date' => substr($cash_ups_info->open_date, 0, 10), 'end_date' => substr($cash_ups_info->close_date, 0, 10), 'sale_type' => 'complete', 'location_id' => 'all');
@@ -164,10 +164,10 @@ class Cashups extends Secure_Controller
 	public function save($cashup_id = -1)
 	{
 		$open_date = $this->input->post('open_date');
-		$open_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $open_date);
+		$open_date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $open_date);
 
 		$close_date = $this->input->post('close_date');
-		$close_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $close_date);
+		$close_date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $close_date);
 
 		$cash_up_data = array(
 			'open_date' => $open_date_formatter->format('Y-m-d H:i:s'),

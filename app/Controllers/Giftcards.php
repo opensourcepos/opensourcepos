@@ -72,7 +72,7 @@ class Giftcards extends Secure_Controller
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person_id'] = $giftcard_info->person_id;
-		if($this->config->item('giftcard_number') == "random")
+		if($this->config->get('giftcard_number') == "random")
 		{
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
 		}

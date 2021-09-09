@@ -70,7 +70,7 @@ class Tax_lib
 			{
 				$taxed = FALSE;
 
-				if(!($this->CI->config->item('use_destination_based_tax')))
+				if(!($this->CI->config->get('use_destination_based_tax')))
 				{
 					// Start of current Base System tax calculations
 
@@ -93,7 +93,7 @@ class Tax_lib
 						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = 0.0;
 
-						if($this->CI->config->item('tax_included'))
+						if($this->CI->config->get('tax_included'))
 						{
 							$tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 							$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP);
@@ -244,7 +244,7 @@ class Tax_lib
 		}
 
 		// If tax included then round decimal to tax decimals, otherwise round it to currency_decimals
-		if($this->CI->config->item('tax_included'))
+		if($this->CI->config->get('tax_included'))
 		{
 			$decimals = tax_decimals();
 		}

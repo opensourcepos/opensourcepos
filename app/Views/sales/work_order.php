@@ -71,7 +71,7 @@ if(isset($error_message))
 			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
-				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+				<div id="company_name"><?php echo $this->config->get('company'); ?></div>
 			<?php
 			}
 			?>

@@ -17,7 +17,7 @@
 		</div>
 
 		<?php
-		if($this->config->item('invoice_enable') == TRUE)
+		if($this->config->get('invoice_enable') == TRUE)
 		{
 		?>
 			<div class="form-group form-group-sm">
@@ -47,11 +47,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input(array('name'=>'payment_amount_new', 'value'=>$payment_amount_new, 'id'=>'payment_amount_new', 'class'=>'form-control input-sm'));?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -79,11 +79,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -102,11 +102,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input(array('name'=>'refund_amount_'.$i, 'value'=>$row->cash_refund, 'id'=>'refund_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>

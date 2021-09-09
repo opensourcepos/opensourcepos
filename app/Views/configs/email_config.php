@@ -12,7 +12,7 @@
 						'sendmail' => 'sendmail',
 						'smtp' => 'smtp'
 					),
-					$this->config->item('protocol'), array('class' => 'form-control input-sm', 'id' => 'protocol'));
+					$this->config->get('protocol'), array('class' => 'form-control input-sm', 'id' => 'protocol'));
 					?>
 				</div>
 			</div>
@@ -24,7 +24,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('mailpath'))); ?>
+						'value' => $this->config->get('mailpath'))); ?>
 				</div>
 			</div>
 
@@ -35,7 +35,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('smtp_host'))); ?>
+						'value' => $this->config->get('smtp_host'))); ?>
 				</div>
 			</div>
 
@@ -46,7 +46,7 @@
 						'name' => 'smtp_port',
 						'id' => 'smtp_port',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('smtp_port'))); ?>
+						'value' => $this->config->get('smtp_port'))); ?>
 				</div>
 			</div>
 
@@ -58,7 +58,7 @@
 						'tls' => 'TLS',
 						'ssl' => 'SSL'
 					),
-					$this->config->item('smtp_crypto'), array('class' => 'form-control input-sm', 'id' => 'smtp_crypto'));
+					$this->config->get('smtp_crypto'), array('class' => 'form-control input-sm', 'id' => 'smtp_crypto'));
 					?>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 						'name' => 'smtp_timeout',
 						'id' => 'smtp_timeout',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('smtp_timeout'))); ?>
+						'value' => $this->config->get('smtp_timeout'))); ?>
 				</div>
 			</div>
 
@@ -83,7 +83,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => $this->config->item('smtp_user'))); ?>
+							'value' => $this->config->get('smtp_user'))); ?>
 					</div>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => $this->config->item('smtp_pass'))); ?>
+							'value' => $this->config->get('smtp_pass'))); ?>
 					</div>
 				</div>
 			</div>

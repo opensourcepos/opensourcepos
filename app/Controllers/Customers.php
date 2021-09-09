@@ -150,7 +150,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($this->config->item('use_destination_based_tax') == '1')
+		if($this->config->get('use_destination_based_tax') == '1')
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
@@ -256,7 +256,7 @@ class Customers extends Persons
 			'comments' => $this->input->post('comments')
 		);
 
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
+		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $this->input->post('date'));
 
 		$customer_data = array(
 			'consent' => $this->input->post('consent') != NULL,

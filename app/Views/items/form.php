@@ -118,7 +118,7 @@
 					?>
 				</label>
 				<?php
-				if($this->config->item('derive_sale_quantity') == '1')
+				if($this->config->get('derive_sale_quantity') == '1')
 				{
 				?>
 					<label class="radio-inline">
@@ -164,7 +164,7 @@
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'cost_price',
@@ -174,7 +174,7 @@
 							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -185,7 +185,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'unit_price',
@@ -195,7 +195,7 @@
 							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -212,7 +212,7 @@
 							'name'=>'tax_names[]',
 							'id'=>'tax_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
+							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->get('default_tax_1_name'))
 							);?>
 				</div>
 				<div class="col-xs-4">
@@ -235,7 +235,7 @@
 							'name'=>'tax_names[]',
 							'id'=>'tax_name_2',
 							'class'=>'form-control input-sm',
-							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
+							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->get('default_tax_2_name'))
 							);?>
 				</div>
 				<div class="col-xs-4">
@@ -393,7 +393,7 @@
 		</div>
 
 		<?php
-		if($this->config->item('multi_pack_enabled') == '1')
+		if($this->config->get('multi_pack_enabled') == '1')
 		{
 			?>
 			<div class="form-group form-group-sm">

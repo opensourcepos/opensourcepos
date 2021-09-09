@@ -41,7 +41,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'cost_price',
@@ -49,7 +49,7 @@
 							'class'=>'form-control input-sm')
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'unit_price',
@@ -68,7 +68,7 @@
 							'class'=>'form-control input-sm')
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_1',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('default_tax_1_name'))
+						'value'=>$this->config->get('default_tax_1_name'))
 						);?>
 			</div>
 			<div class="col-xs-4">
@@ -90,7 +90,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))
+							'value'=>to_tax_decimals($this->config->get('default_tax_1_rate')))
 							);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
@@ -104,7 +104,7 @@
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_2',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name'))
+						'value'=>$this->config->get('default_tax_2_name'))
 						);?>
 			</div>
 			<div class="col-xs-4">
@@ -113,7 +113,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_2',
 							'class'=>'form-control input-sm',
-							'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))
+							'value'=>to_tax_decimals($this->config->get('default_tax_2_rate')))
 							);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>

@@ -13,7 +13,7 @@
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('company'))); ?>
+							'value'=>$this->config->get('company'))); ?>
 					</div>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
 							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo'); ?>"
-								 src="<?php if($logo_exists) echo base_url('uploads/' . $this->config->item('company_logo')); else echo ''; ?>"
+								 src="<?php if($logo_exists) echo base_url('uploads/' . $this->config->get('company_logo')); else echo ''; ?>"
 								 style="max-height: 100%; max-width: 100%;">
 						</div>
 						<div>
@@ -47,7 +47,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('address'))); ?>
+						'value'=>$this->config->get('address'))); ?>
 				</div>
 			</div>
 
@@ -60,7 +60,7 @@
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->item('website'))); ?>
+							'value'=>$this->config->get('website'))); ?>
 					</div>
 				</div>
 			</div>
@@ -75,7 +75,7 @@
 							'id' => 'email',
 							'type' => 'email',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->item('email'))); ?>
+							'value'=>$this->config->get('email'))); ?>
 					</div>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('phone'))); ?>
+							'value'=>$this->config->get('phone'))); ?>
 					</div>
 				</div>
 			</div>
@@ -103,7 +103,7 @@
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->item('fax'))); ?>
+							'value'=>$this->config->get('fax'))); ?>
 					</div>
 				</div>
 			</div>
@@ -115,7 +115,7 @@
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('return_policy'))); ?>
+						'value'=>$this->config->get('return_policy'))); ?>
 				</div>
 			</div>
 

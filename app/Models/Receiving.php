@@ -7,12 +7,12 @@ use CodeIgniter\Model;
 /**
  * Receiving class
  *
- * @property mixed attribute
- * @property mixed config
- * @property mixed inventory
- * @property mixed item
- * @property mixed item_quantity
- * @property mixed supplier
+ * @property attribute attribute
+ * @property appconfig config
+ * @property inventory inventory
+ * @property item item
+ * @property item_quantity item_quantity
+ * @property supplier supplier
  */
 
 class Receiving extends Model
@@ -131,7 +131,7 @@ class Receiving extends Model
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
-			if($cur_item_info->cost_price != $item['price'] && $this->config->item('receiving_calculate_average_price') != FALSE)
+			if($cur_item_info->cost_price != $item['price'] && $this->config->get('receiving_calculate_average_price') != FALSE)
 			{
 				$this->item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
 			}
@@ -268,7 +268,7 @@ class Receiving extends Model
 	{
 		if(empty($inputs['receiving_id']))
 		{
-			if(empty($this->config->item('date_or_time_format')))
+			if(empty($this->config->get('date_or_time_format')))
 			{
 				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}

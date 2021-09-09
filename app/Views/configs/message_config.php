@@ -13,7 +13,7 @@
 							'name' => 'msg_uid',
 							'id' => 'msg_uid',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('msg_uid'))); ?>
+							'value'=>$this->config->get('msg_uid'))); ?>
 					</div>
 				</div>
 			</div>
@@ -27,7 +27,7 @@
 							'name' => 'msg_pwd',
 							'id' => 'msg_pwd',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('msg_pwd'))); ?>
+							'value'=>$this->config->get('msg_pwd'))); ?>
 					</div>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 							'name' => 'msg_src',
 							'id' => 'msg_src',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('msg_src') == NULL ? $this->config->item('company') : $this->config->item('msg_src')));?>
+							'value'=>$this->config->get('msg_src') == NULL ? $this->config->get('company') : $this->config->get('msg_src')));?>
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 						'name' => 'msg_msg',
 						'id' => 'msg_msg',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('msg_msg'),
+						'value'=>$this->config->get('msg_msg'),
 						'placeholder'=>lang('Config.msg_msg_placeholder')));?>
 				</div>
 			</div>

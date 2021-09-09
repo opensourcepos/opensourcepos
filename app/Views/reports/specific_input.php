@@ -29,7 +29,7 @@ if(isset($error))
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', array('class'=>'required control-label col-xs-2')); ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', $discount_type_options, $this->config->item('default_sales_discount_type'), array('id'=>'discount_type_id', 'class'=>'form-control')); ?>
+				<?php echo form_dropdown('discount_type', $discount_type_options, $this->config->get('default_sales_discount_type'), array('id'=>'discount_type_id', 'class'=>'form-control')); ?>
 			</div>
 		</div>
 	<?php
@@ -53,7 +53,7 @@ if(isset($error))
 				'class' => 'form-control input-sm required',
 				'type' => 'number',
 				'min' => 0,
-				'value' => $this->config->item('default_sales_discount'))); ?>
+				'value' => $this->config->get('default_sales_discount'))); ?>
 		</div>
 		<?php
 		}

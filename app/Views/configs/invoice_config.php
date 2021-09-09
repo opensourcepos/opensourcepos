@@ -11,14 +11,14 @@
 						'name' => 'invoice_enable',
 						'value' => 'invoice_enable',
 						'id' => 'invoice_enable',
-						'checked' => $this->config->item('invoice_enable')));?>
+						'checked' => $this->config->get('invoice_enable')));?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.invoice_type'), 'invoice_type', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-3'>
-					<?php echo form_dropdown('invoice_type', $invoice_type_options, $this->config->item('invoice_type'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('invoice_type', $invoice_type_options, $this->config->get('invoice_type'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
@@ -29,7 +29,7 @@
 						'name' => 'recv_invoice_format',
 						'id' => 'recv_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('recv_invoice_format'))); ?>
+						'value' => $this->config->get('recv_invoice_format'))); ?>
 				</div>
 			</div>
 
@@ -40,7 +40,7 @@
 						'name' => 'invoice_default_comments',
 						'id' => 'invoice_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('invoice_default_comments')));?>
+						'value' => $this->config->get('invoice_default_comments')));?>
 				</div>
 			</div>
 
@@ -51,14 +51,14 @@
 						'name' => 'invoice_email_message',
 						'id' => 'invoice_email_message',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('invoice_email_message')));?>
+						'value' => $this->config->get('invoice_email_message')));?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.line_sequence'), 'line_sequence', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('line_sequence', $line_sequence_options, $this->config->item('line_sequence'), array('class' => 'form-control input-sm')); ?>
+					<?php echo form_dropdown('line_sequence', $line_sequence_options, $this->config->get('line_sequence'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
@@ -69,7 +69,7 @@
 						'name' => 'sales_invoice_format',
 						'id' => 'sales_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('sales_invoice_format'))); ?>
+						'value' => $this->config->get('sales_invoice_format'))); ?>
 				</div>
 			</div>
 
@@ -81,7 +81,7 @@
 						'name' => 'last_used_invoice_number',
 						'id' => 'last_used_invoice_number',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('last_used_invoice_number'))); ?>
+						'value'=>$this->config->get('last_used_invoice_number'))); ?>
 				</div>
 			</div>
 
@@ -92,7 +92,7 @@
 						'name' => 'sales_quote_format',
 						'id' => 'sales_quote_format',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('sales_quote_format'))); ?>
+						'value' => $this->config->get('sales_quote_format'))); ?>
 				</div>
 			</div>
 
@@ -104,7 +104,7 @@
 						'name' => 'last_used_quote_number',
 						'id' => 'last_used_quote_number',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('last_used_quote_number'))); ?>
+						'value'=>$this->config->get('last_used_quote_number'))); ?>
 				</div>
 			</div>
 
@@ -115,7 +115,7 @@
 						'name' => 'quote_default_comments',
 						'id' => 'quote_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('quote_default_comments')));?>
+						'value' => $this->config->get('quote_default_comments')));?>
 				</div>
 			</div>
 
@@ -126,7 +126,7 @@
 						'name' => 'work_order_enable',
 						'value' => 'work_order_enable',
 						'id' => 'work_order_enable',
-						'checked' => $this->config->item('work_order_enable')));?>
+						'checked' => $this->config->get('work_order_enable')));?>
 				</div>
 			</div>
 
@@ -137,7 +137,7 @@
 						'name' => 'work_order_format',
 						'id' => 'work_order_format',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->item('work_order_format'))); ?>
+						'value' => $this->config->get('work_order_format'))); ?>
 				</div>
 			</div>
 
@@ -149,7 +149,7 @@
 						'name' => 'last_used_work_order_number',
 						'id' => 'last_used_work_order_number',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('last_used_work_order_number'))); ?>
+						'value'=>$this->config->get('last_used_work_order_number'))); ?>
 				</div>
 			</div>
 

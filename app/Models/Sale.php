@@ -8,16 +8,16 @@ use app\Libraries\Sale_lib;
 /**
  * Sale class
  *
- * @property mixed attribute
- * @property mixed config
- * @property mixed customer
- * @property mixed customer_rewards
- * @property mixed dinner_table
- * @property mixed giftcard
- * @property mixed inventory
- * @property mixed item
- * @property mixed item_quantity
- * @property mixed rewards
+ * @property attribute attribute
+ * @property appconfig config
+ * @property customer customer
+ * @property customer_rewards customer_rewards
+ * @property dinner_table dinner_table
+ * @property giftcard giftcard
+ * @property inventory inventory
+ * @property item item
+ * @property item_quantity item_quantity
+ * @property rewards rewards
  *
  * @property Sale_lib sale_lib
  */
@@ -55,7 +55,7 @@ class Sale extends Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		if($this->config->item('tax_included'))
+		if($this->config->get('tax_included'))
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 		}
@@ -122,7 +122,7 @@ class Sale extends Model
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
 
-		if(empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))
 		{
 			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']);
 		}
@@ -312,7 +312,7 @@ class Sale extends Model
 		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
 		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
-		if(empty($this->config->item('date_or_time_format')))	//TODO: duplicated code.  We should think about refactoring out a method.
+		if(empty($this->config->get('date_or_time_format')))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -517,7 +517,7 @@ class Sale extends Model
 			{
 				return $this->exists($pieces[1]);
 			}
-			elseif($this->config->item('invoice_enable') == TRUE)
+			elseif($this->config->get('invoice_enable') == TRUE)
 			{
 				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
 				if($sale_info->getNumRows() > 0)
@@ -764,7 +764,7 @@ class Sale extends Model
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
-		if($this->config->item('dinner_table_enable') == TRUE)
+		if($this->config->get('dinner_table_enable') == TRUE)
 		{
 			if($sale_status == COMPLETED)
 			{
@@ -939,7 +939,7 @@ class Sale extends Model
 	/**
 	 * Gets sale item
 	 */
-	public function get_sale_items($sale_id)
+	public function get_sale_items(int $sale_id)
 	{
 		$builder = $this->db->table('sales_items');
 		$builder->where('sale_id', $sale_id);
@@ -950,14 +950,14 @@ class Sale extends Model
 	/**
 	 * Used by the invoice and receipt programs
 	 */
-	public function get_sale_items_ordered($sale_id)
+	public function get_sale_items_ordered(int $sale_id)
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->select('
 			sales_items.sale_id,
 			sales_items.item_id,
 			sales_items.description,
-			serialnumber,
+			serialnumber,	
 			line,
 			quantity_purchased,
 			item_cost_price,
@@ -974,12 +974,12 @@ class Sale extends Model
 		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->config->item('line_sequence') == '0')
+		if($this->config->get('line_sequence') == '0')
 		{
 			$builder->orderBy('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->config->item('line_sequence') == '1')
+		elseif($this->config->get('line_sequence') == '1')
 		{
 			$builder->orderBy('stock_type', 'desc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -987,7 +987,7 @@ class Sale extends Model
 			$builder->orderBy('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
-		elseif($this->config->item('line_sequence') == '2')
+		elseif($this->config->get('line_sequence') == '2')
 		{
 			$builder->orderBy('category', 'asc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -1006,7 +1006,7 @@ class Sale extends Model
 	/**
 	 * Gets sale payments
 	 */
-	public function get_sale_payments($sale_id)
+	public function get_sale_payments(int $sale_id)
 	{
 		$builder = $this->db->table('sales_payments');
 		$builder->where('sale_id', $sale_id);
@@ -1017,7 +1017,7 @@ class Sale extends Model
 	/**
 	 * Gets sale payment options
 	 */
-	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE): array
+	public function get_payment_options(bool $giftcard = TRUE, bool $reward_points = FALSE): array
 	{
 		$payments = get_payment_options();
 
@@ -1043,7 +1043,7 @@ class Sale extends Model
 	/**
 	 * Gets sale customer name
 	 */
-	public function get_customer($sale_id)
+	public function get_customer(int $sale_id)
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1132,7 +1132,7 @@ class Sale extends Model
 	{
 		if(empty($inputs['sale_id']))
 		{
-			if(empty($this->config->item('date_or_time_format')))
+			if(empty($this->config->get('date_or_time_format')))
 			{
 				$where = 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}
@@ -1160,7 +1160,7 @@ class Sale extends Model
 
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-		if($this->config->item('tax_included'))
+		if($this->config->get('tax_included'))
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $internal_tax";
@@ -1418,7 +1418,7 @@ class Sale extends Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		if($this->config->item('dinner_table_enable') == TRUE)
+		if($this->config->get('dinner_table_enable') == TRUE)
 		{
 			$dinner_table = $this->get_dinner_table($sale_id);
 			$this->dinner_table->release($dinner_table);
@@ -1439,7 +1439,7 @@ class Sale extends Model
 	{
 		$this->db->transStart();
 
-		if($this->config->item('dinner_table_enable') == TRUE)
+		if($this->config->get('dinner_table_enable') == TRUE)
 		{
 			$dinner_table = $this->get_dinner_table($sale_id);
 			$this->dinner_table->release($dinner_table);
@@ -1483,7 +1483,7 @@ class Sale extends Model
 	 */
 	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
 	{
-		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		if(!empty($customer_id) && $this->config->get('customer_reward_enable') == TRUE)
 		{
 			$package_id = $this->customer->get_info($customer_id)->package_id;
 

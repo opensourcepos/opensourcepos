@@ -11,7 +11,7 @@
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
-						'checked' => $this->config->item('dinner_table_enable')));?>
+						'checked' => $this->config->get('dinner_table_enable')));?>
 				</div>
 			</div>
 

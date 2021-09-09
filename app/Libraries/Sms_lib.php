@@ -23,9 +23,9 @@ class Sms_lib
 	 */
 	public function sendSMS($phone, $message)
 	{
-		$username   = $this->CI->config->item('msg_uid');
-		$password   = $this->CI->encryption->decrypt($this->CI->config->item('msg_pwd'));
-		$originator = $this->CI->config->item('msg_src');
+		$username   = $this->CI->config->get('msg_uid');
+		$password   = $this->CI->encryption->decrypt($this->CI->config->get('msg_pwd'));
+		$originator = $this->CI->config->get('msg_src');
 
 		$response = FALSE;
 

@@ -67,7 +67,7 @@ class Secure_Controller extends BaseController
 		// This setting is configurable in application/config/config.php.
 		// Users can disable the XSS clean for performance reasons
 		// (cases like intranet installation with no Internet access)
-		if($this->config->item('ospos_xss_clean') == FALSE)
+		if($this->config->get('ospos_xss_clean') == FALSE)
 		{
 			return $str;
 		}

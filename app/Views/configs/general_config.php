@@ -9,11 +9,11 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm', 'id' => 'theme-change')); ?>
+							<?php echo form_dropdown('theme', $themes, $this->config->get('theme'), array('class' => 'form-control input-sm', 'id' => 'theme-change')); ?>
 						</div>
 						<div class="col-sm-7">
-							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap'==($this->config->item('theme')) ? 'default' : $this->config->item('theme')); ?>" target="_blank" rel=”noopener”>
-								<span><?php echo lang('Config.theme_preview') . ' ' . ucfirst($this->config->item('theme')) . ' '; ?></span><span class="glyphicon glyphicon-new-window"></span>
+							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap'==($this->config->get('theme')) ? 'default' : $this->config->get('theme')); ?>" target="_blank" rel=”noopener”>
+								<span><?php echo lang('Config.theme_preview') . ' ' . ucfirst($this->config->get('theme')) . ' '; ?></span><span class="glyphicon glyphicon-new-window"></span>
 							</a>
 						</div>
 					</div>
@@ -27,7 +27,7 @@
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						),
-						$this->config->item('login_form'), array('class' => 'form-control input-sm')); ?>
+						$this->config->get('login_form'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
 
@@ -42,7 +42,7 @@
 							'type' => 'number',
 							'min' => 0,
 							'max' => 100,
-							'value' => $this->config->item('default_sales_discount'))); ?>
+							'value' => $this->config->get('default_sales_discount'))); ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox(array(
 								'id' => 'default_sales_discount_type',
@@ -51,9 +51,9 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>',
+								'data-on' => '<b>'.$this->config->get('currency_symbol').'</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $this->config->item('default_sales_discount_type'))); ?>
+								'checked' => $this->config->get('default_sales_discount_type'))); ?>
 						</span>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 							'type' => 'number',
 							'min' => 0,
 							'max' => 100,
-							'value' => $this->config->item('default_receivings_discount'))); ?>
+							'value' => $this->config->get('default_receivings_discount'))); ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox(array(
 								'id' => 'default_receivings_discount_type',
@@ -79,9 +79,9 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>',
+								'data-on' => '<b>'.$this->config->get('currency_symbol').'</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $this->config->item('default_receivings_discount_type'))); ?>
+								'checked' => $this->config->get('default_receivings_discount_type'))); ?>
 						</span>
 					</div>
 				</div>
@@ -94,7 +94,7 @@
 						'name' => 'enforce_privacy',
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
-						'checked' => $this->config->item('enforce_privacy'))); ?>
+						'checked' => $this->config->get('enforce_privacy'))); ?>
 					&nbsp
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.enforce_privacy_tooltip'); ?>"></span>
@@ -109,7 +109,7 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => $this->config->item('receiving_calculate_average_price'))); ?>
+						'checked' => $this->config->get('receiving_calculate_average_price'))); ?>
 				</div>
 			</div>
 
@@ -123,7 +123,7 @@
 						'type' => 'number',
 						'min' => 10,
 						'max' => 1000,
-						'value' => $this->config->item('lines_per_page'))); ?>
+						'value' => $this->config->get('lines_per_page'))); ?>
 				</div>
 			</div>
 
@@ -136,14 +136,14 @@
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								),
-								$this->config->item('notify_vertical_position'), array('class' => 'form-control input-sm')); ?>
+								$this->config->get('notify_vertical_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('notify_horizontal_position', array(
 									'left' => lang('Config.left'),
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')),
-									$this->config->item('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
+									$this->config->get('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => $this->config->item('image_max_width'),
+									'value' => $this->config->get('image_max_width'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_width_tooltip')));
@@ -180,7 +180,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => $this->config->item('image_max_height'),
+									'value' => $this->config->get('image_max_height'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_height_tooltip')));
@@ -197,7 +197,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 2048,
-									'value' => $this->config->item('image_max_size'),
+									'value' => $this->config->get('image_max_size'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_size_tooltip')));
@@ -228,7 +228,7 @@
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
-						'checked' => $this->config->item('gcaptcha_enable'))); ?>
+						'checked' => $this->config->get('gcaptcha_enable'))); ?>
 					&nbsp;
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
@@ -245,7 +245,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => $this->config->item('gcaptcha_site_key'))); ?>
+						'value' => $this->config->get('gcaptcha_site_key'))); ?>
 				</div>
 			</div>
 
@@ -256,7 +256,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => $this->config->item('gcaptcha_secret_key'))); ?>
+						'value' => $this->config->get('gcaptcha_secret_key'))); ?>
 				</div>
 			</div>
 
@@ -272,7 +272,7 @@
 									'item_number' => lang('Items.number_information'),
 									'unit_price' => lang('Items.unit_price'),
 									'cost_price' => lang('Items.cost_price')),
-									$this->config->item('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
+									$this->config->get('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
@@ -284,7 +284,7 @@
 									'item_number' => lang('Items.number_information'),
 									'unit_price' => lang('Items.unit_price'),
 									'cost_price' => lang('Items.cost_price')),
-									$this->config->item('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
+									$this->config->get('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
@@ -296,7 +296,7 @@
 									'item_number' => lang('Items.number_information'),
 									'unit_price' => lang('Items.unit_price'),
 									'cost_price' => lang('Items.cost_price')),
-									$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
+									$this->config->get('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
 							</div>
 						</div>
 					</div>
@@ -310,14 +310,14 @@
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'series',
-							'checked' => $this->config->item('giftcard_number') == 'series')); ?>
+							'checked' => $this->config->get('giftcard_number') == 'series')); ?>
 						<?php echo lang('Config.giftcard_series'); ?>
 					</label>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'random',
-							'checked' => $this->config->item('giftcard_number') == 'random')); ?>
+							'checked' => $this->config->get('giftcard_number') == 'random')); ?>
 						<?php echo lang('Config.giftcard_random'); ?>
 					</label>
 				</div>
@@ -330,7 +330,7 @@
 					'name' => 'derive_sale_quantity',
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
-					'checked' => $this->config->item('derive_sale_quantity'))); ?>
+					'checked' => $this->config->get('derive_sale_quantity'))); ?>
 					&nbsp
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.derive_sale_quantity_tooltip'); ?>"></span>
@@ -356,7 +356,7 @@
 						'name' => 'multi_pack_enabled',
 						'id' => 'multi_pack_enabled',
 						'value' => 'multi_pack_enabled',
-						'checked' => $this->config->item('multi_pack_enabled'))); ?>
+						'checked' => $this->config->get('multi_pack_enabled'))); ?>
 				</div>
 			</div>
 
@@ -367,7 +367,7 @@
 						'name' => 'include_hsn',
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
-						'checked' => $this->config->item('include_hsn'))); ?>
+						'checked' => $this->config->get('include_hsn'))); ?>
 				</div>
 			</div>
 
@@ -378,7 +378,7 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => $this->config->item('category_dropdown'))); ?>
+						'checked' => $this->config->get('category_dropdown'))); ?>
 				</div>
 			</div>
 

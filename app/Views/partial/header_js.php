@@ -8,15 +8,15 @@
 	clock_tick();
 
 	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
+		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->get('dateformat').' '.$this->config->get('timeformat'))?>");
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo $this->config->item('notify_horizontal_position'); ?>",
-		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
+		align: "<?php echo $this->config->get('notify_horizontal_position'); ?>",
+		from: "<?php echo $this->config->get('notify_vertical_position'); ?>"
 	}});
 
-	var cookie_name = "<?php echo $this->config->item('cookie_prefix').$this->config->item('csrf_cookie_name'); ?>";
+	var cookie_name = "<?php echo $this->config->get('cookie_prefix').$this->config->get('csrf_cookie_name'); ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);

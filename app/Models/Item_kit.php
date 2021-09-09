@@ -8,7 +8,7 @@ use stdClass;
 /**
  * Item_kit class
  *
- * @property mixed config
+ * @property appconfig config
  */
 
 class Item_kit extends Model
@@ -59,7 +59,7 @@ class Item_kit extends Model
 	*/
 	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
 	{
-		if($this->config->item('allow_duplicate_barcodes') != FALSE)
+		if($this->config->get('allow_duplicate_barcodes') != FALSE)
 		{
 			return FALSE;
 		}

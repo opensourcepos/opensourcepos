@@ -82,7 +82,7 @@ class Token_lib
 
 	public function parse_barcode(&$quantity, &$price,  &$item_id_or_number_or_item_kit_or_receipt)
 	{
-		$barcode_formats = json_decode($this->CI->config->item('barcode_formats'));
+		$barcode_formats = json_decode($this->CI->config->get('barcode_formats'));
 		$barcode_tokens = Token::get_barcode_tokens();
 
 		if(!empty($barcode_formats))
