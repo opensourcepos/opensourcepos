@@ -447,7 +447,7 @@ class Item extends Model
 	/*
 	* Deletes one item
 	*/
-	public function delete(int $item_id = null, bool $purge = false): bool
+	public function delete(int $item_id = null, bool $purge = false): bool	//TODO: need to figure out what to do with these override functions that don't match our signature.
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -874,7 +874,7 @@ class Item extends Model
 			}
 
 			//Search in attributes
-			if($filters['search_custom'] !== FALSE)
+			if($filters['search_custom'] !== FALSE)	//TODO: Duplicate code
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');

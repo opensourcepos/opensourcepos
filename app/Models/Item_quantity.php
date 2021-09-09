@@ -11,7 +11,7 @@ use stdClass;
 
 class Item_quantity extends Model
 {
-    public function exists($item_id, $location_id): bool
+    public function exists(int $item_id, int $location_id): bool
     {
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
@@ -20,7 +20,7 @@ class Item_quantity extends Model
         return ($builder->get()->getNumRows() == 1);
     }
 
-    public function save($location_detail, $item_id, $location_id): bool
+    public function save(array $location_detail, int $item_id, int $location_id): bool
     {
         if(!$this->exists($item_id, $location_id))
         {
@@ -64,19 +64,19 @@ class Item_quantity extends Model
 	 * if $quantity_change is negative, it will be subtracted,
 	 * if it is positive, it will be added to the current quantity
 	 */
-	public function change_quantity($item_id, $location_id, $quantity_change): bool
+	public function change_quantity(int $item_id, int $location_id, int $quantity_change): bool
 	{
 		$quantity_old = $this->get_item_quantity($item_id, $location_id);
 		$quantity_new = $quantity_old->quantity + $quantity_change;
 		$location_detail = array('item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new);
 
-		return $this->save($location_detail, $item_id, $location_id);	//TODO: need to sort out the unhandled reflection exception error.
+		return $this->save($location_detail, $item_id, $location_id);	//TODO: need to sort out the unhandled reflection exception error.  Probably needs to be placed in a try catch to catch the exception  and do something with it.
 	}
 
 	/*
 	* Set to 0 all quantity in the given item
 	*/
-	public function reset_quantity($item_id)
+	public function reset_quantity(int $item_id): bool
 	{
 		$builder = $this->db->table('item_quantities');
 		$builder->where('item_id', $item_id);
@@ -87,7 +87,7 @@ class Item_quantity extends Model
 	/*
 	* Set to 0 all quantity in the given list of items
 	*/
-	public function reset_quantity_list($item_ids)
+	public function reset_quantity_list(array $item_ids): bool
 	{
 		$builder = $this->db->table('item_quantities');
 		$builder->whereIn('item_id', $item_ids);

@@ -13,7 +13,7 @@ class Item_taxes extends Model
 	/*
 	* Gets tax info for a particular item
 	*/
-	public function get_info($item_id): array
+	public function get_info(int $item_id): array
 	{
 		$builder = $this->db->table('items_taxes');
 		$builder->where('item_id',$item_id);
@@ -25,7 +25,7 @@ class Item_taxes extends Model
 	/*
 	* Inserts or updates an item's taxes
 	*/
-	public function save(&$items_taxes_data, $item_id): bool
+	public function save(array &$items_taxes_data, int $item_id): bool
 	{
 		$success = TRUE;
 
@@ -51,7 +51,7 @@ class Item_taxes extends Model
 	/*
 	* Saves taxes for multiple items
 	*/
-	public function save_multiple(&$items_taxes_data, $item_ids): bool
+	public function save_multiple(array &$items_taxes_data, string $item_ids): bool	//TODO: investigate why this is sent as a : delimited string rather than an array.
 	{
 		$success = TRUE;
 
@@ -80,7 +80,7 @@ class Item_taxes extends Model
 	/*
 	* Deletes taxes given an item
 	*/
-	public function delete($item_id): bool
+	public function delete(int $item_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('items_taxes');
 		return $builder->delete(['item_id' => $item_id]);

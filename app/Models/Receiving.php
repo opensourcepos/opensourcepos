@@ -6,11 +6,30 @@ use CodeIgniter\Model;
 
 /**
  * Receiving class
+ *
+ * @property mixed attribute
+ * @property mixed config
+ * @property mixed inventory
+ * @property mixed item
+ * @property mixed item_quantity
+ * @property mixed supplier
  */
 
 class Receiving extends Model
 {
-	public function get_info($receiving_id)
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->attribute = model('Attribute');
+		$this->config = model('Appconfig');
+		$this->inventory = model('Inventory');
+		$this->item = model('Item');
+		$this->item_quantity = model('Item_quantity');
+		$this->supplier = model('Supplier');
+	}
+
+	public function get_info(int $receiving_id)
 	{
 		$builder = $this->db->table('receivings');
 		$builder->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
@@ -20,7 +39,7 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
-	public function get_receiving_by_reference($reference)
+	public function get_receiving_by_reference(string $reference)
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('reference', $reference);
@@ -28,7 +47,7 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
-	public function is_valid_receipt($receipt_receiving_id): bool
+	public function is_valid_receipt(string $receipt_receiving_id): bool	//TODO: maybe receipt_receiving_id should be an array rather than a space delimited string
 	{
 		if(!empty($receipt_receiving_id))
 		{
@@ -48,7 +67,7 @@ class Receiving extends Model
 		return FALSE;
 	}
 
-	public function exists($receiving_id): bool
+	public function exists(int $receiving_id): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -56,7 +75,7 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update($receiving_data, $receiving_id): bool
+	public function update(array $receiving_data, int $receiving_id): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -64,21 +83,21 @@ class Receiving extends Model
 		return $builder->update($receiving_data);
 	}
 
-	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE): int	//TODO: the base model is expecting the return type to be a bool.  We need to either override this function properly or rename it, unless there is another solution
+	public function save(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: the base model is expecting the return type to be a bool.  We need to either override this function properly or rename it, unless there is another solution
 	{
 		if(count($items) == 0)
 		{
 			return -1;
 		}
 
-		$receivings_data = array(
+		$receivings_data = [
 			'receiving_time' => date('Y-m-d H:i:s'),
-			'supplier_id' => $this->Supplier->exists($supplier_id) ? $supplier_id : NULL,
+			'supplier_id' => $this->supplier->exists($supplier_id) ? $supplier_id : NULL,
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
 			'reference' => $reference
-		);
+		];
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -89,9 +108,9 @@ class Receiving extends Model
 
 		foreach($items as $line=>$item)
 		{
-			$cur_item_info = $this->Item->get_info($item['item_id']);
+			$cur_item_info = $this->item->get_info($item['item_id']);
 
-			$receivings_items_data = array(
+			$receivings_items_data = [
 				'receiving_id' => $receiving_id,
 				'item_id' => $item['item_id'],
 				'line' => $item['line'],
@@ -104,7 +123,7 @@ class Receiving extends Model
 				'item_cost_price' => $cur_item_info->cost_price,
 				'item_unit_price' => $item['price'],
 				'item_location' => $item['item_location']
-			);
+			];
 
 			$builder = $this->db->table('receivings_items');
 			$builder->insert($receivings_items_data);
@@ -114,29 +133,32 @@ class Receiving extends Model
 			// update cost price, if changed AND is set in config as wanted
 			if($cur_item_info->cost_price != $item['price'] && $this->config->item('receiving_calculate_average_price') != FALSE)
 			{
-				$this->Item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
+				$this->item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
 			}
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->Item_quantity->save(array('quantity' => $item_quantity->quantity + $items_received, 'item_id' => $item['item_id'],
-											  'location_id' => $item['item_location']), $item['item_id'], $item['item_location']);
+			$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+			$this->item_quantity->save([
+				'quantity' => $item_quantity->quantity + $items_received,
+				'item_id' => $item['item_id'],
+				'location_id' => $item['item_location']],
+				$item['item_id'],
+				$item['item_location']
+			);
 
 			$recv_remarks = 'RECV ' . $receiving_id;
-			$inv_data = array(
+			$inv_data = [
 				'trans_date' => date('Y-m-d H:i:s'),
 				'trans_items' => $item['item_id'],
 				'trans_user' => $employee_id,
 				'trans_location' => $item['item_location'],
 				'trans_comment' => $recv_remarks,
 				'trans_inventory' => $items_received
-			);
+			];
 
-			$this->Inventory->insert($inv_data);
-
-			$this->Attribute->copy_attribute_links($item['item_id'], 'receiving_id', $receiving_id);
-
-			$supplier = $this->Supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
+			$this->inventory->insert($inv_data);
+			$this->attribute->copy_attribute_links($item['item_id'], 'receiving_id', $receiving_id);
+			$supplier = $this->supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
 		$this->db->transComplete();
@@ -149,7 +171,7 @@ class Receiving extends Model
 		return $receiving_id;
 	}
 
-	public function delete_list($receiving_ids, $employee_id, $update_inventory = TRUE): bool
+	public function delete_list(array $receiving_ids, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		$success = TRUE;
 
@@ -169,7 +191,7 @@ class Receiving extends Model
 		return $success;
 	}
 
-	public function delete($receiving_id, $employee_id, $update_inventory = TRUE): bool
+	public function delete(int $receiving_id, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -182,19 +204,19 @@ class Receiving extends Model
 			foreach($items as $item)
 			{
 				// create query to update inventory tracking
-				$inv_data = array(
+				$inv_data = [
 					'trans_date' => date('Y-m-d H:i:s'),
 					'trans_items' => $item['item_id'],
 					'trans_user' => $employee_id,
 					'trans_comment' => 'Deleting receiving ' . $receiving_id,
 					'trans_location' => $item['item_location'],
 					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
-				);
+				];
 				// update inventory
-				$this->Inventory->insert($inv_data);
+				$this->inventory->insert($inv_data);
 
 				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+				$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
 			}
 		}
 
@@ -212,7 +234,7 @@ class Receiving extends Model
 		return $this->db->transStatus();
 	}
 
-	public function get_receiving_items($receiving_id)
+	public function get_receiving_items(int $receiving_id)
 	{
 		$builder = $this->db->table('receivings_items');
 		$builder->where('receiving_id', $receiving_id);
@@ -220,23 +242,23 @@ class Receiving extends Model
 		return $builder->get();
 	}
 	
-	public function get_supplier($receiving_id)
+	public function get_supplier(int $receiving_id)
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
 
-		return $this->Supplier->get_info($builder->get()->getRow()->supplier_id);
+		return $this->supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 
 	public function get_payment_options(): array
 	{
-		return array(
+		return [
 			lang('Sales.cash') => lang('Sales.cash'),
 			lang('Sales.check') => lang('Sales.check'),
 			lang('Sales.debit') => lang('Sales.debit'),
 			lang('Sales.credit') => lang('Sales.credit'),
 			lang('Sales.due') => lang('Sales.due')
-		);
+		];
 	}
 
 	/*

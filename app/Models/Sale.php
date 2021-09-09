@@ -44,7 +44,7 @@ class Sale extends Model
 	/**
 	 * Get sale info
 	 */
-	public function get_info($sale_id)
+	public function get_info(int $sale_id)
 	{
 		$this->create_temp_table(array('sale_id' => $sale_id));
 
@@ -109,7 +109,7 @@ class Sale extends Model
 	/**
 	 * Get number of rows for the takings (sales/manage) view
 	 */
-	public function get_found_rows($search, $filters)
+	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
@@ -117,7 +117,7 @@ class Sale extends Model
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sales.sale_time', $order = 'desc', $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE)
 	{
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
@@ -303,7 +303,7 @@ class Sale extends Model
 	/**
 	 * Get the payment summary for the takings (sales/manage) view
 	 */
-	public function get_payments_summary($search, $filters): array
+	public function get_payments_summary(string $search, array $filters): array
 	{
 		// get payment summary
 		$builder = $this->db->table('sales AS sales');
@@ -426,9 +426,9 @@ class Sale extends Model
 	/**
 	 * Gets search suggestions
 	 */
-	public function get_search_suggestions($search, $limit = 25): array
+	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		if(!$this->is_valid_receipt($search))
 		{
@@ -469,7 +469,7 @@ class Sale extends Model
 	/**
 	 * Gets sale by invoice number
 	 */
-	public function get_sale_by_invoice_number($invoice_number)
+	public function get_sale_by_invoice_number(string $invoice_number)
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number', $invoice_number);
@@ -477,7 +477,7 @@ class Sale extends Model
 		return $builder->get();
 	}
 
-	public function get_invoice_number_for_year($year = '', $start_from = 0): int
+	public function get_invoice_number_for_year(string $year = '', int $start_from = 0): int
 	{
 		return $this->get_number_for_year('invoice_number', $year, $start_from);
 	}
@@ -490,7 +490,7 @@ class Sale extends Model
 	/**
 	 * Gets invoice number by year
 	 */
-	private function get_number_for_year($field, $year = '', $start_from = 0): int
+	private function get_number_for_year(string $field, string $year = '', int $start_from = 0): int
 	{
 		$year = $year == '' ? date('Y') : $year;
 
@@ -506,7 +506,7 @@ class Sale extends Model
 	/**
 	 * Checks if valid receipt
 	 */
-	public function is_valid_receipt(&$receipt_sale_id): bool
+	public function is_valid_receipt(string &$receipt_sale_id): bool	//TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
 	{
 		if(!empty($receipt_sale_id))
 		{
@@ -535,7 +535,7 @@ class Sale extends Model
 	/**
 	 * Checks if sale exists
 	 */
-	public function exists($sale_id): bool
+	public function exists(int $sale_id): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -546,7 +546,7 @@ class Sale extends Model
 	/**
 	 * Update sale
 	 */
-	public function update($sale_id, $sale_data, $payments): bool
+	public function update(int $sale_id, array $sale_data, array $payments): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -571,14 +571,14 @@ class Sale extends Model
 				if($payment_id == -1 && $payment_amount != 0)
 				{
 					// Add a new payment transaction
-					$sales_payments_data = array(
-						'sale_id'		  => $sale_id,
-						'payment_type'	  => $payment_type,
-						'payment_amount'  => $payment_amount,
-						'cash_refund'	  => $cash_refund,
+					$sales_payments_data = [
+						'sale_id' => $sale_id,
+						'payment_type' => $payment_type,
+						'payment_amount' => $payment_amount,
+						'cash_refund' => $cash_refund,
 						'cash_adjustment' => $cash_adjustment,
-						'employee_id'	  => $employee_id
-					);
+						'employee_id'  => $employee_id
+					];
 					$builder = $this->db->table('sales_payments');
 					$success = $builder->insert($sales_payments_data);
 				}
@@ -618,8 +618,8 @@ class Sale extends Model
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
-	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number,
-							$work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool
+	public function save(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
+							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
 		if($sale_id != -1)
 		{
@@ -633,25 +633,25 @@ class Sale extends Model
 			return -1;
 		}
 
-		$sales_data = array(
-			'sale_time'			=> date('Y-m-d H:i:s'),
-			'customer_id'		=> $this->customer->exists($customer_id) ? $customer_id : NULL,
-			'employee_id'		=> $employee_id,
-			'comment'			=> $comment,
-			'sale_status'		=> $sale_status,
-			'invoice_number'	=> $invoice_number,
-			'quote_number'		=> $quote_number,
-			'work_order_number'	=> $work_order_number,
-			'dinner_table_id'	=> $dinner_table,
-			'sale_type'			=> $sale_type
-		);
+		$sales_data = [
+			'sale_time' => date('Y-m-d H:i:s'),
+			'customer_id' => $this->customer->exists($customer_id) ? $customer_id : NULL,
+			'employee_id' => $employee_id,
+			'comment' => $comment,
+			'sale_status' => $sale_status,
+			'invoice_number' => $invoice_number,
+			'quote_number' => $quote_number,
+			'work_order_number'=> $work_order_number,
+			'dinner_table_id' => $dinner_table,
+			'sale_type' => $sale_type
+		];
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
 		$builder = $this->db->table('sales');
 
-		if($sale_id == -1)
+		if($sale_id == -1)	//TODO: I think we have a constant for this and the -1 needs to be replaced with the constant in constants.php... something like NEW_SALE
 		{
 			$builder->insert($sales_data);
 			$sale_id = $this->db->insertID();
@@ -670,8 +670,8 @@ class Sale extends Model
 			if(!empty(strstr($payment['payment_type'], lang('Sales.giftcard'))))
 			{
 				// We have a gift card and we have to deduct the used value from the total value of the card.
-				$splitpayment = explode( ':', $payment['payment_type'] );
-				$cur_giftcard_value = $this->giftcard->get_giftcard_value( $splitpayment[1] );
+				$splitpayment = explode( ':', $payment['payment_type'] );	//TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
+				$cur_giftcard_value = $this->giftcard->get_giftcard_value( $splitpayment[1] );	//TODO: this should be refactored to $current_giftcard_value
 				$this->giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
 			elseif(!empty(strstr($payment['payment_type'], lang('Sales.rewards'))))
@@ -681,14 +681,14 @@ class Sale extends Model
 				$total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
 			}
 
-			$sales_payments_data = array(
-				'sale_id'		  => $sale_id,
-				'payment_type'	  => $payment['payment_type'],
-				'payment_amount'  => $payment['payment_amount'],
-				'cash_refund'     => $payment['cash_refund'],
+			$sales_payments_data = [
+				'sale_id' => $sale_id,
+				'payment_type' => $payment['payment_type'],
+				'payment_amount' => $payment['payment_amount'],
+				'cash_refund' => $payment['cash_refund'],
 				'cash_adjustment' => $payment['cash_adjustment'],
-				'employee_id'	  => $employee_id
-			);
+				'employee_id' => $employee_id
+			];
 
 			$builder = $this->db->table('sales_payments');
 			$builder->insert($sales_payments_data);
@@ -789,9 +789,9 @@ class Sale extends Model
 	/**
 	 * Saves sale tax
 	 */
-	public function save_sales_tax($sale_id, $sales_taxes)
+	public function save_sales_tax(int $sale_id, array $sales_taxes)	//TODO: should we return the result of the insert here as a bool?
 	{
-		foreach($sales_taxes as $line=>$sales_tax)
+		foreach($sales_taxes as $line => $sales_tax)
 		{
 			$sales_tax['sale_id'] = $sale_id;
 			$builder = $this->db->table('sales_taxes');
@@ -800,17 +800,17 @@ class Sale extends Model
 	}
 
 	/**
-	 * Apply customer sales tax if the customer sales tax is enabledl
+	 * Apply customer sales tax if the customer sales tax is enabled
 	 * The original tax is still supported if the user configures it,
 	 * but it won't make sense unless it's used exclusively for the purpose
 	 * of VAT tax which becomes a price component.  VAT taxes must still be reported
 	 * as a separate tax entry on the invoice.
 	 */
-	public function save_sales_items_taxes($sale_id, $sales_item_taxes)
+	public function save_sales_items_taxes(int $sale_id, array $sales_item_taxes)
 	{
 		foreach($sales_item_taxes as $line => $tax_item)
 		{
-			$sales_items_taxes = array(
+			$sales_items_taxes = [
 				'sale_id' => $sale_id,
 				'item_id' => $tax_item['item_id'],
 				'line' => $tax_item['line'],
@@ -824,7 +824,7 @@ class Sale extends Model
 				'tax_category_id' => $tax_item['tax_category_id'],
 				'jurisdiction_id' => $tax_item['jurisdiction_id'],
 				'tax_category_id' => $tax_item['tax_category_id']
-			);
+			];
 
 			$builder = $this->db->table('sales_items_taxes');
 			$builder->insert($sales_items_taxes);
@@ -834,7 +834,7 @@ class Sale extends Model
 	/**
 	 * Return the taxes that were charged
 	 */
-	public function get_sales_taxes($sale_id): array
+	public function get_sales_taxes(int $sale_id): array
 	{
 		$builder = $this->db->table('sales_taxes');
 		$builder->where('sale_id', $sale_id);
@@ -848,7 +848,7 @@ class Sale extends Model
 	/**
 	 * Return the taxes applied to a sale for a particular item
 	 */
-	public function get_sales_item_taxes($sale_id, $item_id): array
+	public function get_sales_item_taxes(int $sale_id, int $item_id): array
 	{
 		$builder = $this->db->table('sales_items_taxes');
 		$builder->select('item_id, name, percent');
@@ -862,7 +862,7 @@ class Sale extends Model
 	/**
 	 * Deletes list of sales
 	 */
-	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE): bool
+	public function delete_list(array $sale_ids, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		$result = TRUE;
 
@@ -877,7 +877,7 @@ class Sale extends Model
 	/**
 	 * Restores list of sales
 	 */
-	public function restore_list($sale_ids, $employee_id, $update_inventory = TRUE): bool
+	public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = TRUE): bool	//TODO: $employee_id and $update_inventory are never used in the function.
 	{
 		foreach($sale_ids as $sale_id)
 		{
@@ -892,7 +892,7 @@ class Sale extends Model
 	 * When a sale is "deleted" it is simply changed to a status of canceled.
 	 * However, if applicable the inventory still needs to be updated
 	 */
-	public function delete($sale_id, $employee_id, $update_inventory = TRUE): bool
+	public function delete(int $sale_id, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();

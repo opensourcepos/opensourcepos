@@ -63,7 +63,7 @@ class Person extends Model
 	 *
 	 * @param integer $person_id identifier of the person
 	 *
-	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says
+	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says array
 	 */
 	public function get_info(int $person_id)
 	{
@@ -113,7 +113,7 @@ class Person extends Model
 	 *
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
-	public function save(&$person_data, $person_id = FALSE): bool
+	public function save(array &$person_data, bool $person_id = FALSE): bool
 	{
 		$builder = $this->db->table('people');
 
@@ -143,7 +143,7 @@ class Person extends Model
 	 *
 	 * @return array array with the suggestion strings
 	 */
-	public function get_search_suggestions($search, int $limit = 25): array
+	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
 		$suggestions = array();
 

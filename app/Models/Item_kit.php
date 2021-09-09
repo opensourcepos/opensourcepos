@@ -182,7 +182,7 @@ class Item_kit extends Model
 	/*
 	* Deletes one item kit
 	*/
-	public function delete(int $item_kit_id = null, ): bool
+	public function delete(int $item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kits');
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
@@ -191,7 +191,7 @@ class Item_kit extends Model
 	/*
 	* Deletes a list of item kits
 	*/
-	public function delete_list($item_kit_ids): bool
+	public function delete_list(array $item_kit_ids): bool
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->whereIn('item_kit_id', $item_kit_ids);
@@ -199,9 +199,9 @@ class Item_kit extends Model
 		return $builder->delete();
 	}
 
-	public function get_search_suggestions($search, $limit = 25): array
+	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$builder = $this->db->table('item_kits');
 
@@ -240,7 +240,7 @@ class Item_kit extends Model
  	/*
 	* Gets rows
 	*/
-	public function get_found_rows($search)
+	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
 	}
@@ -248,7 +248,7 @@ class Item_kit extends Model
 	/*
 	* Perform a search on items
 	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'name', $order = 'asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
 

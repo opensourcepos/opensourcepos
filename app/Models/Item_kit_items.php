@@ -13,7 +13,7 @@ class Item_kit_items extends Model
 	/*
 	* Gets item kit items for a particular item kit
 	*/
-	public function get_info($item_kit_id): array
+	public function get_info(int $item_kit_id): array
 	{
 		$builder = $this->db->table('item_kit_items as item_kit_items');
 		$builder->select('item_kits.item_kit_id, item_kit_items.item_id, quantity, kit_sequence, unit_price, item_type, stock_type');
@@ -30,7 +30,7 @@ class Item_kit_items extends Model
 	/*
 	* Gets item kit items for a particular item kit
 	*/
-	public function get_info_for_sale($item_kit_id): array
+	public function get_info_for_sale(int $item_kit_id): array
 	{
 		$builder = $this->db->table('item_kit_items');
 		$builder->where('item_kit_id', $item_kit_id);
@@ -43,7 +43,7 @@ class Item_kit_items extends Model
 	/*
 	* Inserts or updates an item kit's items
 	*/
-	public function save(&$item_kit_items_data, $item_kit_id): bool
+	public function save(array &$item_kit_items_data, int $item_kit_id): bool
 	{
 		$success = TRUE;
 
@@ -73,7 +73,7 @@ class Item_kit_items extends Model
 	/*
 	* Deletes item kit items given an item kit
 	*/
-	public function delete($item_kit_id): bool
+	public function delete(int $item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kit_items');
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
