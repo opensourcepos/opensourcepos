@@ -7,25 +7,35 @@ use stdClass;
 
 /**
  * Tax Code class
+ *
+ * @property appconfig config
+ *
  */
 
 class Tax_code extends Model
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->config = model('Appconfig');
+	}
+
 	/**
 	 *  Determines if it exists in the table
 	 */
-	public function exists($tax_code)
+	public function exists(string $tax_code): bool
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->where('tax_code', $tax_code);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: this should be === since getNumRows returns an int
 	}
 
 	/**
 	 *  Gets total of rows
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->where('deleted', 0);
@@ -36,14 +46,15 @@ class Tax_code extends Model
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info($tax_code_id)
+	public function get_info(int $tax_code_id)
 	{
 		$builder = $this->db->table('tax_codes');
+
 		$builder->where('tax_code_id', $tax_code_id);
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->getNumRows()==1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -64,7 +75,7 @@ class Tax_code extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE)	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
 	{
 		$builder = $this->db->table('tax_codes');
 		if($no_deleted == TRUE)
@@ -85,7 +96,7 @@ class Tax_code extends Model
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info($tax_codes)
+	public function get_multiple_info(array $tax_codes)
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->whereIn('tax_code', $tax_codes);
@@ -97,11 +108,13 @@ class Tax_code extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(&$tax_code_data)
+	public function save(array &$tax_code_data): bool
 	{
+		$builder = $this->db->table('tax_codes');
+
 		if(!$this->exists($tax_code_data['tax_code']))
 		{
-			if($builder->insert('tax_codes', $tax_code_data))
+			if($builder->insert($tax_code_data))	//TODO: this should be refactored to return $builder->insert($tax_code_data); in the same way that $builder->update() below is the return.  Look for this in the other save functions as well.
 			{
 				return TRUE;
 			}
@@ -110,17 +123,17 @@ class Tax_code extends Model
 
 		$builder->where('tax_code', $tax_code_data['tax_code']);
 
-		return $builder->update('tax_codes', $tax_code_data);
+		return $builder->update($tax_code_data);
 	}
 
 	/**
 	 * Saves changes to the tax codes table
 	 */
-	public function save_tax_codes($array_save)
+	public function save_tax_codes(array $array_save): bool	//TODO: Need to rename $array_save to probably $tax_codes
 	{
 		$this->db->transStart();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
 		foreach($array_save as $key => $value)
 		{
@@ -148,27 +161,29 @@ class Tax_code extends Model
 	/**
 	 * Deletes a specific tax code
 	 */
-	public function delete($tax_code)
+	public function delete(string $tax_code = null, bool $purge = false): bool
 	{
+		$builder = $this->db->table('tax_codes');
 		$builder->where('tax_code', $tax_code);
 
-		return $builder->update('tax_codes', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 
 	/**
 	 * Deletes a list of rows
 	 */
-	public function delete_list($tax_codes): bool
+	public function delete_list(array $tax_codes): bool
 	{
+		$builder = $this->db->table('tax_codes');
 		$builder->whereIn('tax_code', $tax_codes);
 
-		return $builder->update('tax_codes', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows($search)
+	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -176,15 +191,16 @@ class Tax_code extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code_name', $order='asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE)
 	{
+		$builder = $this->db->table('tax_codes AS tax_codes');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(tax_codes.tax_code) as count');
 		}
 
-		$builder = $this->db->table('tax_codes AS tax_codes');
 		$builder->groupStart();
 		$builder->like('tax_code_name', $search);
 		$builder->orLike('tax_code', $search);
@@ -210,7 +226,7 @@ class Tax_code extends Model
 	/**
 	 * Gets the tax code to use for a given customer
 	 */
-	public function get_sales_tax_code($city = '', $state = '')
+	public function get_sales_tax_code(string $city = '', string $state = '')
 	{
 		// if tax code using both city and state cannot be found then  try again using just the state
 		// if the state tax code cannot be found then try again using blanks for both
@@ -222,7 +238,7 @@ class Tax_code extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow()->tax_code_id;
 		}
@@ -235,7 +251,7 @@ class Tax_code extends Model
 
 			$query = $builder->get();
 
-			if($query->getNumRows() == 1)
+			if($query->getNumRows() == 1)		//TODO: this should be ===
 			{
 				return $query->getRow()->tax_code_id;
 			}
@@ -247,9 +263,9 @@ class Tax_code extends Model
 		return FALSE;
 	}
 
-	public function get_tax_codes_search_suggestions($search, $limit = 25)
+	public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$builder = $this->db->table('tax_codes');
 		if(!empty($search))
@@ -262,7 +278,7 @@ class Tax_code extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->tax_code_id, 'label' => ($row->tax_code . ' ' . $row->tax_code_name));
+			$suggestions[] = ['value' => $row->tax_code_id, 'label' => ($row->tax_code . ' ' . $row->tax_code_name)];
 		}
 
 		//only return $limit suggestions
@@ -274,15 +290,16 @@ class Tax_code extends Model
 		return $suggestions;
 	}
 
-	public function get_empty_row()
+	public function get_empty_row(): array
 	{
-		return array('0' => array(
+		return ['0' => [
 			'tax_code_id' => -1,
 			'tax_code' => '',
 			'tax_code_name' => '',
 			'city' => '',
 			'state' => '',
-			'deleted' => 0));
+			'deleted' => 0
+		]];
 	}
 }
 ?>

@@ -14,18 +14,18 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Determines if it exists in the table
 	 */
-	public function exists($jurisdiction_id)
+	public function exists(int $jurisdiction_id): bool
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
 	 *  Gets total of rows
 	 */
-	public function get_total_rows()
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('deleted', 0);
@@ -36,14 +36,14 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info($jurisdiction_id)
+	public function get_info(int $jurisdiction_id)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->getNumRows()==1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -64,9 +64,10 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = TRUE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
+
 		if($no_deleted == TRUE)
 		{
 			$builder->where('deleted', 0);
@@ -85,7 +86,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info($jurisdiction_ids)
+	public function get_multiple_info(array $jurisdiction_ids)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
@@ -97,11 +98,12 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(&$jurisdiction_data, $jurisdiction_id = FALSE)
+	public function save(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
 	{
+		$builder = $this->db->table('tax_jurisdictions');
 		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
 		{
-			if($builder->insert('tax_jurisdictions', $jurisdiction_data))
+			if($builder->insert($jurisdiction_data))	//TODO: Replace this with simply a return of the result of insert()... see update() below.
 			{
 				$jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
 				return TRUE;
@@ -112,24 +114,33 @@ class Tax_jurisdiction extends Model
 
 		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $builder->update('tax_jurisdictions', $jurisdiction_data);
+		return $builder->update($jurisdiction_data);
 	}
 
 	/**
 	 * Saves changes to the tax jurisdictions table
 	 */
-	public function save_jurisdictions($array_save)
+	public function save_jurisdictions(array $array_save): bool
 	{
 		$this->db->transStart();
 
-		$not_to_delete = array();
+		$not_to_delete = [];
 
 		foreach($array_save as $key => $value)
 		{
 			// save or update
-			$tax_jurisdiction_data = array('jurisdiction_name' => $value['jurisdiction_name'], 'tax_group' => $value['tax_group'], 'tax_type' => $value['tax_type'], 'reporting_authority' => $value['reporting_authority'], 'tax_group_sequence' => $value['tax_group_sequence'], 'cascade_sequence' => $value['cascade_sequence'], 'deleted' => '0');
+			$tax_jurisdiction_data = [
+				'jurisdiction_name' => $value['jurisdiction_name'],
+				'tax_group' => $value['tax_group'],
+				'tax_type' => $value['tax_type'],
+				'reporting_authority' => $value['reporting_authority'],
+				'tax_group_sequence' => $value['tax_group_sequence'],
+				'cascade_sequence' => $value['cascade_sequence'],
+				'deleted' => '0'];
+
 			$this->save($tax_jurisdiction_data, $value['jurisdiction_id']);
-			if($value['jurisdiction_id'] == -1)
+
+			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant.
 			{
 				$not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
 			}
@@ -157,27 +168,29 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Soft deletes a specific tax jurisdiction
 	 */
-	public function delete($jurisdiction_id)
+	public function delete(int $jurisdiction_id = null, bool $purge = false): bool
 	{
+		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);
 
-		return $builder->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
 	}
 
 	/**
 	 * Soft deletes a list of rows
 	 */
-	public function delete_list($jurisdiction_ids): bool
+	public function delete_list(array $jurisdiction_ids): bool
 	{
+		$builder = $this->db->table('tax_jurisdictions');
 		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 
-		return $builder->update('tax_jurisdictions', array('deleted' => 1));
+		return $builder->update(['deleted' => 1]);
  	}
 
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows($search)
+	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
 	}
@@ -185,15 +198,16 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'jurisdiction_name', $order='asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE)
 	{
+		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
+
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
 
-		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 		$builder->groupStart();
 			$builder->like('jurisdiction_name', $search);
 			$builder->orLike('reporting_authority', $search);
@@ -201,7 +215,7 @@ class Tax_jurisdiction extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: ===
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -216,9 +230,9 @@ class Tax_jurisdiction extends Model
 		return $builder->get();
 	}
 
-	public function get_empty_row()
+	public function get_empty_row(): array
 	{
-		return array('0' => array(
+		return ['0' => [
 			'jurisdiction_id' => -1,
 			'jurisdiction_name' => '',
 			'tax_group' => '',
@@ -226,8 +240,8 @@ class Tax_jurisdiction extends Model
 			'reporting_authority' => '',
 			'tax_group_sequence' => '',
 			'cascade_sequence' => '',
-			'deleted' => ''));
+			'deleted' => ''
+		]];
 	}
-
 }
 ?>

@@ -8,8 +8,8 @@ use stdClass;
 
 /**
  * Attribute class
- * 
- * @property attribute attribute
+ *
+ * @property appconfig config
  */
 class Attribute extends Model
 {
@@ -21,7 +21,7 @@ class Attribute extends Model
 	{
 		parent::__construct();
 
-		$this->appconfig = model('Appconfig');
+		$this->config = model('Appconfig');
 	}
 	
 	public static function get_definition_flags(): array
@@ -34,7 +34,7 @@ class Attribute extends Model
 	/*
 	 Determines if a given definition_id is an attribute
 	 */
-	public function exists($definition_id, $deleted = FALSE): bool
+	public function exists(int $definition_id, bool $deleted = FALSE): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);

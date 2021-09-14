@@ -109,7 +109,7 @@ class Person extends Model
 	 *
 	 * @param array $person_data array containing person information
 	 *
-	 * @param var $person_id identifier of the person to update the information
+	 * @param bool $person_id identifier of the person to update the information
 	 *
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
@@ -119,7 +119,7 @@ class Person extends Model
 
 		if(!$person_id || !$this->exists($person_id))
 		{
-			if($builder->insert('people', $person_data))
+			if($builder->insert($person_data))
 			{
 				$person_data['person_id'] = $this->db->insertID();
 
@@ -145,7 +145,7 @@ class Person extends Model
 	 */
 	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
-		$suggestions = array();
+		$suggestions = [];
 
 		$builder = $this->db->table('people');
 

@@ -14,7 +14,7 @@ class Tax extends Model
 	/**
 	 * Determines if a given row is on file
 	 */
-	public function exists($tax_rate_id): bool
+	public function exists(int $tax_rate_id): bool
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->where('tax_rate_id', $tax_rate_id);
@@ -35,7 +35,7 @@ class Tax extends Model
 	/**
 	 * Gets list of tax rates that are assigned to a particular tax category
 	 */
-	public function get_tax_category_usage($tax_category_id): int
+	public function get_tax_category_usage(int $tax_category_id): int
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->where('rate_tax_category_id', $tax_category_id);
@@ -46,10 +46,9 @@ class Tax extends Model
 	/**
 	 * Gets the row for a particular id
 	 */
-	public function get_info($tax_rate_id)
+	public function get_info(int $tax_rate_id)
 	{
 		$builder = $this->db->table('tax_rates');
-
 		$builder->select('tax_rate_id');
 		$builder->select('rate_tax_code_id');
 		$builder->select('tax_code');
@@ -71,7 +70,7 @@ class Tax extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: probably should use === here since getNumRows() returns an int.
 		{
 			return $query->getRow();
 		}
@@ -99,7 +98,7 @@ class Tax extends Model
 	/**
 	 * Get taxes to be collected for a given tax code
 	 */
-	 public function get_taxes($tax_code_id, $tax_category_id): array
+	 public function get_taxes(int $tax_code_id, int $tax_category_id): array
 	 {
 		 $sql = 'select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
 			rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence 
@@ -118,7 +117,7 @@ class Tax extends Model
 	/**
 	 * Gets information about a particular tax_code
 	 */
-	public function get_rate_info($tax_code_id, $tax_category_id)
+	public function get_rate_info(int $tax_code_id, int $tax_category_id)
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->join('tax_categories', 'rate_tax_category_id = tax_category_id');
@@ -127,7 +126,7 @@ class Tax extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: this should probably be ===
 		{
 			return $query->getRow();
 		}
@@ -154,11 +153,12 @@ class Tax extends Model
 	/**
 	Inserts or updates a tax_rates entry
 	*/
-	public function save(&$tax_rate_data, $tax_rate_id = -1)
+	public function save(array &$tax_rate_data, int $tax_rate_id = -1): bool	//the default value for $tax_rate_id should be made a constant and replaced here.
 	{
+		$builder = $this->db->table('tax_rates');
 		if(!$this->exists($tax_rate_id))
 		{
-			if($builder->insert('tax_rates', $tax_rate_data))
+			if($builder->insert($tax_rate_data))
 			{
 				$tax_rate_data['tax_rate_id'] = $this->db->insertID();
 
@@ -169,7 +169,7 @@ class Tax extends Model
 		{
 			$builder->where('tax_rate_id', $tax_rate_id);
 
-			if($builder->update('tax_rates', $tax_rate_data))
+			if($builder->update($tax_rate_data))
 			{
 				return TRUE;
 			}
@@ -181,25 +181,28 @@ class Tax extends Model
 	/**
 	 * Deletes a single tax rate entry
 	 */
-	public function delete($tax_rate_id)
+	public function delete(int $tax_rate_id = null, bool $purge = false): bool
 	{
-		return $builder->delete('tax_tax_rates', array('tax_rate_id' => $tax_rate_id));
+		$builder = $this->db->table('tax_rates');
+
+		return $builder->delete(['tax_rate_id' => $tax_rate_id]);	//TODO: Make sure that this is still acceptable in CI4 to combine the where with the delete.
 	}
 
 	/**
 	 * Deletes a list of tax rates
 	 */
-	public function delete_list($tax_rate_ids): bool
+	public function delete_list(array $tax_rate_ids): bool
 	{
+		$builder = $this->db->table('tax_rates');
 		$builder->whereIn('tax_rate_id', $tax_rate_ids);
 
-		return $builder->delete('tax_rates');
+		return $builder->delete();
 	}
 
 	/**
 	 * Gets tax_codes
 	 */
-	public function get_found_rows($search)
+	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -207,7 +210,7 @@ class Tax extends Model
 	/**
 	 * Performs a search on tax_rates
 	 */
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code_name', $order = 'asc', $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('tax_rates');
 
@@ -229,12 +232,9 @@ class Tax extends Model
 			$builder->select('tax_rounding_code');
 		}
 
-		$builder->join('tax_codes',
-			'rate_tax_code_id = tax_code_id', 'LEFT');
-		$builder->join('tax_categories',
-			'rate_tax_category_id = tax_category_id', 'LEFT');
-		$builder->join('tax_jurisdictions',
-			'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
+		$builder->join('tax_codes', 'rate_tax_code_id = tax_code_id', 'LEFT');
+		$builder->join('tax_categories', 'rate_tax_category_id = tax_category_id', 'LEFT');
+		$builder->join('tax_jurisdictions', 'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
 
 		if(!empty($search))
 		{
@@ -258,7 +258,7 @@ class Tax extends Model
 		return $builder->get();
 	}
 
-	public function get_tax_code_type_name($tax_code_type): string
+	public function get_tax_code_type_name(string $tax_code_type): string	//TODO: if this is being called from the view and passed through GET params then it will come through as a string... better if we can get it as an int though.
 	{
 		if($tax_code_type == '0')
 		{
@@ -270,7 +270,7 @@ class Tax extends Model
 		}
 	}
 
-	public function get_tax_category($tax_category_id)
+	public function get_tax_category(int $tax_category_id): string
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->select('tax_category');
@@ -287,13 +287,12 @@ class Tax extends Model
 		return $builder->get();
 	}
 
-	public function get_tax_category_id($tax_category)
+	public function get_tax_category_id(string $tax_category): int
 	{
-		$builder->select('tax_category_id');
 		$builder = $this->db->table('tax_categories');
+		$builder->select('tax_category_id');
 
 		return $builder->get()->getRow()->tax_category_id;
 	}
-
 }
 ?>

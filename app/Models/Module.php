@@ -55,7 +55,7 @@ class Module extends Model
 	public function get_all_subpermissions()
 	{
 		$builder = $this->db->table('permissions');
-		$builder->join('modules AS modules', 'modules.module_id = permissions.module_id');	//TODO: can the table parameter just be modules?
+		$builder->join('modules AS modules', 'modules.module_id = permissions.module_id');	//TODO: can the table parameter just be modules instead of modules AS modules?
 
 		// can't quote the parameters correctly when using different operators..
 		$builder->where('modules.module_id != ', 'permission_id', FALSE);

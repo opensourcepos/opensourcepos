@@ -13,6 +13,7 @@ use app\Libraries\Sale_lib;
  * @property customer customer
  * @property customer_rewards customer_rewards
  * @property dinner_table dinner_table
+ * @property employee employee
  * @property giftcard giftcard
  * @property inventory inventory
  * @property item item
@@ -32,6 +33,7 @@ class Sale extends Model
 		$this->customer = model('Customer');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
+		$this->employee = model('Employee');
 		$this->giftcard = model('Giftcard');
 		$this->inventory = model('Inventory');
 		$this->item = model('Item');
@@ -343,7 +345,7 @@ class Sale extends Model
 			}
 		}
 
-		if($filters['sale_type'] == 'sales')
+		if($filters['sale_type'] == 'sales')	//TODO: we need to think about refactoring this block to a switch statement.
 		{
 			$builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
 		}
@@ -393,7 +395,7 @@ class Sale extends Model
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
 
-		foreach($payments as $key=>$payment)
+		foreach($payments as $key => $payment)
 		{
 			if(strstr($payment['payment_type'], lang('Sales.giftcard')) != FALSE)
 			{
@@ -433,8 +435,7 @@ class Sale extends Model
 		if(!$this->is_valid_receipt($search))
 		{
 			$builder = $this->db->table('sales');
-			$builder->distinct();
-			$builder->select('first_name, last_name');
+			$builder->distinct()->select('first_name, last_name');
 			$builder->join('people', 'people.person_id = sales.customer_id');
 			$builder->like('last_name', $search);
 			$builder->orLike('first_name', $search);
@@ -540,7 +541,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return ($builder->get()->getNumRows()==1);
+		return ($builder->get()->getNumRows() == 1);
 	}
 
 	/**
@@ -731,9 +732,14 @@ class Sale extends Model
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-				$this->item_quantity->save(array('quantity'	=> $item_quantity->quantity - $item['quantity'],
-					'item_id'		=> $item['item_id'],
-					'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
+
+				$this->item_quantity->save([
+					'quantity'	=> $item_quantity->quantity - $item['quantity'],
+					'item_id' => $item['item_id'],
+					'location_id' => $item['item_location']],
+					$item['item_id'],
+					$item['item_location']
+				);
 
 				// if an items was deleted but later returned it's restored with this rule
 
@@ -744,21 +750,21 @@ class Sale extends Model
 
 				// Inventory Count Details
 				$sale_remarks = 'POS '.$sale_id;
-				$inv_data = array(
+				$inv_data = [
 					'trans_date' => date('Y-m-d H:i:s'),
 					'trans_items' => $item['item_id'],
 					'trans_user' => $employee_id,
 					'trans_location' => $item['item_location'],
 					'trans_comment' => $sale_remarks,
 					'trans_inventory' => -$item['quantity']
-				);
-				$this->inventory->insert($inv_data);
+				];
+				$this->inventory->insert($inv_data);	//TODO: Reflection exception needs to be caught if we keep the same inheritance in the insert function.
 			}
 
 			$this->attribute->copy_attribute_links($item['item_id'], 'sale_id', $sale_id);
 		}
 
-		if($customer_id == -1 || $customer->taxable)
+		if($customer_id == -1 || $customer->taxable)	//TODO: Need a NEW_CUSTOMER constant in constants.php instead of -1
 		{
 			$this->save_sales_tax($sale_id, $sales_taxes[0]);
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
@@ -780,7 +786,7 @@ class Sale extends Model
 
 		if($this->db->transStatus() === FALSE)
 		{
-			return -1;
+			return -1;	//TODO: this should also be replaced with a FAIL or NO_PERSON constant or something similar instead of -1
 		}
 
 		return $sale_id;
@@ -822,8 +828,7 @@ class Sale extends Model
 				'item_tax_amount' => $tax_item['item_tax_amount'],
 				'sales_tax_code_id' => $tax_item['sales_tax_code_id'],
 				'tax_category_id' => $tax_item['tax_category_id'],
-				'jurisdiction_id' => $tax_item['jurisdiction_id'],
-				'tax_category_id' => $tax_item['tax_category_id']
+				'jurisdiction_id' => $tax_item['jurisdiction_id']
 			];
 
 			$builder = $this->db->table('sales_items_taxes');
@@ -920,7 +925,7 @@ class Sale extends Model
 						'trans_inventory' => $item['quantity_purchased']
 					);
 					// update inventory
-					$this->inventory->insert($inv_data);
+					$this->inventory->insert($inv_data);		//TODO: Probably need a try/catch for the reflection exception if we keep the inheritance of insert()
 
 					// update quantities
 					$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
@@ -1054,18 +1059,18 @@ class Sale extends Model
 	/**
 	 * Gets sale employee name
 	 */
-	public function get_employee($sale_id)
+	public function get_employee(int $sale_id)
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $this->Employee->get_info($builder->get()->getRow()->employee_id);
+		return $this->employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	/**
 	 * Checks if quote number exists
 	 */
-	public function check_quote_number_exists($quote_number, $sale_id = ''): bool
+	public function check_quote_number_exists(string $quote_number, string $sale_id = ''): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('quote_number', $quote_number);
@@ -1074,13 +1079,13 @@ class Sale extends Model
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
 	}
 
 	/**
 	 * Checks if invoice number exists
 	 */
-	public function check_invoice_number_exists($invoice_number, $sale_id = ''): bool
+	public function check_invoice_number_exists(string $invoice_number, string $sale_id = ''): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number', $invoice_number);
@@ -1090,13 +1095,13 @@ class Sale extends Model
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
 	}
 
 	/**
 	 * Checks if work order number exists
 	 */
-	public function check_work_order_number_exists($work_order_number, $sale_id = ''): bool
+	public function check_work_order_number_exists(string $work_order_number, string $sale_id = ''): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number', $work_order_number);
@@ -1105,15 +1110,15 @@ class Sale extends Model
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
 	}
 
 	/**
 	 * Gets Giftcard value
 	 */
-	public function get_giftcard_value($giftcardNumber)	//TODO: we need to sort out if this is returning a decimal or an integer and set the return type.
+	public function get_giftcard_value(string $giftcardNumber): float
 	{
-		if(!$this->giftcard->exists($this->giftcard->get_giftcard_id($giftcardNumber)))
+		if(!$this->giftcard->exists($this->giftcard->get_giftcard_id($giftcardNumber)))	//TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
 		{
 			return 0;
 		}
@@ -1300,7 +1305,7 @@ class Sale extends Model
 	/**
 	 * Gets the dinner table for the selected sale
 	 */
-	public function get_dinner_table($sale_id)	//TODO: this is returning NULL or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
+	public function get_dinner_table(int $sale_id)	//TODO: this is returning NULL or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
 	{
 		if($sale_id == -1)
 		{
@@ -1316,7 +1321,7 @@ class Sale extends Model
 	/**
 	 * Gets the sale type for the selected sale
 	 */
-	public function get_sale_type($sale_id)
+	public function get_sale_type(int $sale_id)
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1327,7 +1332,7 @@ class Sale extends Model
 	/**
 	 * Gets the sale status for the selected sale
 	 */
-	public function get_sale_status($sale_id)
+	public function get_sale_status(int $sale_id): int
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1335,7 +1340,7 @@ class Sale extends Model
 		return $builder->get()->getRow()->sale_status;
 	}
 
-	public function update_sale_status($sale_id, $sale_status)
+	public function update_sale_status(int $sale_id, int $sale_status)
 	{
 		$builder = $this->db->table('sales');
 		
@@ -1346,7 +1351,7 @@ class Sale extends Model
 	/**
 	 * Gets the quote_number for the selected sale
 	 */
-	public function get_quote_number($sale_id)
+	public function get_quote_number(int $sale_id): ?string
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1364,7 +1369,7 @@ class Sale extends Model
 	/**
 	 * Gets the work order number for the selected sale
 	 */
-	public function get_work_order_number($sale_id)
+	public function get_work_order_number(int $sale_id): ?string
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1382,7 +1387,7 @@ class Sale extends Model
 	/**
 	 * Gets the quote_number for the selected sale
 	 */
-	public function get_comment($sale_id)
+	public function get_comment(int $sale_id): ?string
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1413,7 +1418,7 @@ class Sale extends Model
 	 * Removes a selected sale from the sales table.
 	 * This function should only be called for suspended sales that are being restored to the current cart
 	 */
-	public function delete_suspended_sale($sale_id): bool
+	public function delete_suspended_sale(int $sale_id): bool
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -1435,7 +1440,7 @@ class Sale extends Model
 	 * This clears the sales detail for a given sale_id before the detail is re-saved.
 	 * This allows us to reuse the same sale_id
 	 */
-	public function clear_suspended_sale_detail($sale_id): bool
+	public function clear_suspended_sale_detail(int $sale_id): bool
 	{
 		$this->db->transStart();
 
@@ -1465,7 +1470,7 @@ class Sale extends Model
 	/**
 	 * Gets suspended sale info
 	 */
-	public function get_suspended_sale_info($sale_id)
+	public function get_suspended_sale_info(int $sale_id)
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1481,7 +1486,7 @@ class Sale extends Model
 	 * @param $total_amount
 	 * @param $total_amount_used
 	 */
-	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
+	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used)
 	{
 		if(!empty($customer_id) && $this->config->get('customer_reward_enable') == TRUE)
 		{
@@ -1498,7 +1503,7 @@ class Sale extends Model
 				$this->customer->update_reward_points_value($customer_id, $points);
 				$rewards_data = array('sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
 
-				$this->rewards->save($rewards_data);
+				$this->rewards->save($rewards_data);		//TODO: probably should wrap this in a try/catch if we are going to keep the inheritance.
 			}
 		}
 	}

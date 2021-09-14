@@ -10,12 +10,12 @@ use CodeIgniter\Model;
 
 class Appconfig extends Model
 {
-	public function exists($key): bool
+	public function exists(string $key): bool
 	{
 		$builder = $this->db->table('app_config');
-		$builder->where('app_config.key', $key);
+		$builder->where('app_config.key', $key);	//TODO: I think we can skip app_config. and just write where(key, $key);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	public function get_all()
@@ -31,7 +31,7 @@ class Appconfig extends Model
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere('key', $key, 1);
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow()->value;
 		}
@@ -39,7 +39,7 @@ class Appconfig extends Model
 		return $default;
 	}
 
-	public function save(string $key, $value): bool
+	public function save(string $key, string $value): bool
 	{
 		$config_data = [
 			'key'   => $key,
@@ -77,33 +77,33 @@ class Appconfig extends Model
 		return $success;
 	}
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function delete(string $key, bool $purge = false): bool
+	public function delete(string $key = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->delete('key', $key);
 	}
 
-	public function delete_all()
+	public function delete_all(): bool
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->emptyTable();
 	}
 
-	public function acquire_save_next_invoice_sequence()
+	public function acquire_save_next_invoice_sequence(): string
 	{
-		$last_used = $this->get('last_used_invoice_number') + 1;
+		$last_used = $this->get('last_used_invoice_number') + 1;	//TODO: Get returns a string... make sure that this will work properly and not need to be cast to an int first.
 		$this->save('last_used_invoice_number', $last_used);
 		return $last_used;
 	}
 
-	public function acquire_save_next_quote_sequence()
+	public function acquire_save_next_quote_sequence(): string
 	{
 		$last_used = $this->get('last_used_quote_number') + 1;
 		$this->save('last_used_quote_number', $last_used);
 		return $last_used;
 	}
 
-	public function acquire_save_next_work_order_sequence()
+	public function acquire_save_next_work_order_sequence(): string
 	{
 		$last_used = $this->get('last_used_work_order_number') + 1;
 		$this->save('last_used_work_order_number', $last_used);
