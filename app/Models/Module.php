@@ -72,7 +72,7 @@ class Module extends Model
 
 	public function get_allowed_home_modules(int $person_id)
 	{
-		$menus = array('home', 'both');
+		$menus = ['home', 'both');
 		$builder = $this->db->table('modules');	//TODO: this is duplicated with the code below... probably refactor a method and just pass through whether home/office modules are needed.
 		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
 		$builder->join('grants', 'permissions.permission_id = grants.permission_id');
@@ -85,7 +85,7 @@ class Module extends Model
 
 	public function get_allowed_office_modules(int $person_id)
 	{
-		$menus = array('office', 'both');
+		$menus = ['office', 'both');
 		$builder = $this->db->table('modules');	//TODO: Duplicated code
 		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
 		$builder->join('grants', 'permissions.permission_id = grants.permission_id');

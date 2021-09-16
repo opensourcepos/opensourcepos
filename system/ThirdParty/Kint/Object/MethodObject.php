@@ -36,14 +36,14 @@ class MethodObject extends BasicObject
     public $filename;
     public $startline;
     public $endline;
-    public $parameters = array();
+    public $parameters = [];
     public $abstract;
     public $final;
     public $internal;
     public $docstring;
     public $returntype;
     public $return_reference = false;
-    public $hints = array('callable', 'method');
+    public $hints = ['callable', 'method');
     public $showparams = true;
 
     private $paramcache;
@@ -102,7 +102,7 @@ class MethodObject extends BasicObject
 
     public function setAccessPathFrom(InstanceObject $parent)
     {
-        static $magic = array(
+        static $magic = [
             '__call' => true,
             '__callstatic' => true,
             '__clone' => true,
@@ -172,7 +172,7 @@ class MethodObject extends BasicObject
 
     public function getModifiers()
     {
-        $mods = array(
+        $mods = [
             $this->abstract ? 'abstract' : null,
             $this->final ? 'final' : null,
             $this->getAccess(),
@@ -209,7 +209,7 @@ class MethodObject extends BasicObject
             return $this->paramcache;
         }
 
-        $out = array();
+        $out = [];
 
         foreach ($this->parameters as $p) {
             $type = $p->getType();

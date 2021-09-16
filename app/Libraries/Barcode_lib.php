@@ -18,7 +18,7 @@ require APPPATH.'/views/barcodes/Ean8.php';
 class Barcode_lib
 {
 	private $CI;
-	private $supported_barcodes = array('Code39' => 'Code 39', 'Code128' => 'Code 128', 'Ean8' => 'EAN 8', 'Ean13' => 'EAN 13');
+	private $supported_barcodes = ['Code39' => 'Code 39', 'Code128' => 'Code 128', 'Ean8' => 'EAN 8', 'Ean13' => 'EAN 13');
 
 	public function __construct()
 	{
@@ -209,7 +209,7 @@ class Barcode_lib
 
 	public function listfonts($folder)
 	{
-		$array = array();
+		$array = [];
 
 		if(($handle = opendir($folder)) !== FALSE)
 		{

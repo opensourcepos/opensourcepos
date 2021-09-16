@@ -45,11 +45,11 @@ class SerializePlugin extends Plugin
      * @var bool
      */
     public static $safe_mode = true;
-    public static $options = array(true);
+    public static $options = [true);
 
     public function getTypes()
     {
-        return array('string');
+        return ['string');
     }
 
     public function getTriggers()
@@ -65,7 +65,7 @@ class SerializePlugin extends Plugin
             return;
         }
 
-        if (!self::$safe_mode || !\in_array($trimmed[0], array('C', 'O', 'a'), true)) {
+        if (!self::$safe_mode || !\in_array($trimmed[0], ['C', 'O', 'a'), true)) {
             // Second parameter only supported on PHP 7
             if (KINT_PHP70) {
                 // Suppress warnings on unserializeable variable
@@ -85,9 +85,9 @@ class SerializePlugin extends Plugin
 
         if ($o->access_path) {
             $base_obj->access_path = 'unserialize('.$o->access_path;
-            if (!KINT_PHP70 || self::$options === array(true)) {
+            if (!KINT_PHP70 || self::$options === [true)) {
                 $base_obj->access_path .= ')';
-            } elseif (self::$options === array(false)) {
+            } elseif (self::$options === [false)) {
                 $base_obj->access_path .= ', false)';
             } else {
                 $base_obj->access_path .= ', Serialize::$options)';

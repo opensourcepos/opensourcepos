@@ -27,8 +27,8 @@ namespace Kint\Object\Representation;
 
 class SourceRepresentation extends Representation
 {
-    public $hints = array('source');
-    public $source = array();
+    public $hints = ['source');
+    public $source = [];
     public $filename;
     public $line = 0;
     public $showfilename = false;

@@ -10,10 +10,11 @@ class Summary_discounts extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'),
-			array('count' => lang('Reports.count')),
-			array('total' => lang('Reports.total')));
+		return [
+			['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
+			['count' => lang('Reports.count')],
+			['total' => lang('Reports.total')]
+		];
 	}
 
 	public function getData(array $inputs)

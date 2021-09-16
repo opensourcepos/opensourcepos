@@ -10,16 +10,17 @@ class Summary_items extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('item_name' => lang('Reports.item')),
-			array('category' => lang('Reports.category')),
-			array('unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'),
-			array('quantity' => lang('Reports.quantity')),
-			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
+		return [
+			['item_name' => lang('Reports.item')],
+			['category' => lang('Reports.category')],
+			['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
+			['quantity' => lang('Reports.quantity')],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+		];
 	}
 
 	protected function _select(array $inputs)

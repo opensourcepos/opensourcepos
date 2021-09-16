@@ -34,8 +34,8 @@ abstract class Renderer
     const SORT_VISIBILITY = 1;
     const SORT_FULL = 2;
 
-    protected $call_info = array();
-    protected $statics = array();
+    protected $call_info = [];
+    protected $statics = [];
     protected $show_trace = true;
 
     abstract public function render(BasicObject $o);
@@ -49,7 +49,7 @@ abstract class Renderer
         }
 
         if (!isset($info['modifiers']) || !\is_array($info['modifiers'])) {
-            $info['modifiers'] = array();
+            $info['modifiers'] = [];
         }
 
         if (!isset($info['callee'])) {
@@ -61,10 +61,10 @@ abstract class Renderer
         }
 
         if (!isset($info['trace']) || !\is_array($info['trace'])) {
-            $info['trace'] = array();
+            $info['trace'] = [];
         }
 
-        $this->call_info = array(
+        $this->call_info = [
             'params' => $info['params'],
             'modifiers' => $info['modifiers'],
             'callee' => $info['callee'],
@@ -109,7 +109,7 @@ abstract class Renderer
      */
     public function matchPlugins(array $plugins, array $hints)
     {
-        $out = array();
+        $out = [];
 
         foreach ($hints as $key) {
             if (isset($plugins[$key])) {
@@ -163,11 +163,11 @@ abstract class Renderer
         switch ($sort) {
             case self::SORT_VISIBILITY:
                 /** @var array<array-key, BasicObject[]> Containers to quickly stable sort by type */
-                $containers = array(
-                    BasicObject::ACCESS_PUBLIC => array(),
-                    BasicObject::ACCESS_PROTECTED => array(),
-                    BasicObject::ACCESS_PRIVATE => array(),
-                    BasicObject::ACCESS_NONE => array(),
+                $containers = [
+                    BasicObject::ACCESS_PUBLIC => [],
+                    BasicObject::ACCESS_PROTECTED => [],
+                    BasicObject::ACCESS_PRIVATE => [],
+                    BasicObject::ACCESS_NONE => [],
                 );
 
                 foreach ($contents as $item) {
@@ -176,7 +176,7 @@ abstract class Renderer
 
                 return \call_user_func_array('array_merge', $containers);
             case self::SORT_FULL:
-                \usort($contents, array('Kint\\Renderer\\Renderer', 'sortPropertiesFull'));
+                \usort($contents, ['Kint\\Renderer\\Renderer', 'sortPropertiesFull'));
                 // no break
             default:
                 return $contents;

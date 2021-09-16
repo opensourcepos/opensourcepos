@@ -33,7 +33,7 @@ use ReflectionMethod;
 class TraceFrameObject extends BasicObject
 {
     public $trace;
-    public $hints = array('trace_frame');
+    public $hints = ['trace_frame');
 
     public function __construct(BasicObject $base, array $raw_frame)
     {
@@ -41,7 +41,7 @@ class TraceFrameObject extends BasicObject
 
         $this->transplant($base);
 
-        $this->trace = array(
+        $this->trace = [
             'function' => isset($raw_frame['function']) ? $raw_frame['function'] : null,
             'line' => isset($raw_frame['line']) ? $raw_frame['line'] : null,
             'file' => isset($raw_frame['file']) ? $raw_frame['file'] : null,

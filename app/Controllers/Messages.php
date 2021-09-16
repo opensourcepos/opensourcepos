@@ -32,35 +32,35 @@ class Messages extends Secure_Controller
 
 	public function send()
 	{	
-		$phone   = $this->input->post('phone');
-		$message = $this->input->post('message');
+		$phone   = $this->request->getPost('phone');
+		$message = $this->request->getPost('message');
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
 		if($response)
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Messages.successfully_sent') . ' ' . $phone));
+			echo json_encode (['success' => TRUE, 'message' => lang('Messages.successfully_sent') . ' ' . $phone));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . $phone));
+			echo json_encode (['success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . $phone));
 		}
 	}
 	
 	public function send_form($person_id = -1)
 	{	
-		$phone   = $this->input->post('phone');
-		$message = $this->input->post('message');
+		$phone   = $this->request->getPost('phone');
+		$message = $this->request->getPost('message');
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
 		if($response)
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Messages.successfully_sent') . ' ' . $phone, 'person_id' => $this->xss_clean($person_id)));
+			echo json_encode (['success' => TRUE, 'message' => lang('Messages.successfully_sent') . ' ' . $phone, 'person_id' => $this->xss_clean($person_id)));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
+			echo json_encode (['success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
 		}
 	}
 }

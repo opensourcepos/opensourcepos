@@ -33,12 +33,12 @@ abstract class Token
 
 	static function get_barcode_tokens()
 	{
-		return array(new Token_barcode_price(), new Token_barcode_weight(), new Token_barcode_ean());
+		return [new Token_barcode_price(), new Token_barcode_weight(), new Token_barcode_ean());
 	}
 
 	static function get_tokens()
 	{
-		return array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
+		return [new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
 			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(),
 			new Token_work_order_sequence(), new Token_year_invoice_count(), new Token_year_quote_count());
 	}

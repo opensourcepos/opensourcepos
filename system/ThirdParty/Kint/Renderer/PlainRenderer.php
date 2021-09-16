@@ -31,15 +31,15 @@ use Kint\Object\BlobObject;
 
 class PlainRenderer extends TextRenderer
 {
-    public static $pre_render_sources = array(
-        'script' => array(
-            array('Kint\\Renderer\\PlainRenderer', 'renderJs'),
-            array('Kint\\Renderer\\Text\\MicrotimePlugin', 'renderJs'),
+    public static $pre_render_sources = [
+        'script' => [
+            ['Kint\\Renderer\\PlainRenderer', 'renderJs'),
+            ['Kint\\Renderer\\Text\\MicrotimePlugin', 'renderJs'),
         ),
-        'style' => array(
-            array('Kint\\Renderer\\PlainRenderer', 'renderCss'),
+        'style' => [
+            ['Kint\\Renderer\\PlainRenderer', 'renderCss'),
         ),
-        'raw' => array(),
+        'raw' => [],
     );
 
     /**
@@ -206,7 +206,7 @@ class PlainRenderer extends TextRenderer
 
         // this call converts all non-ASCII characters into numeirc htmlentities
         if (\function_exists('mb_encode_numericentity') && 'ASCII' !== $original_encoding) {
-            $string = \mb_encode_numericentity($string, array(0x80, 0xffff, 0, 0xffff), $encoding);
+            $string = \mb_encode_numericentity($string, [0x80, 0xffff, 0, 0xffff), $encoding);
         }
 
         return $string;
@@ -215,8 +215,8 @@ class PlainRenderer extends TextRenderer
     protected function utf8ToHtmlentity($string)
     {
         return \str_replace(
-            array('┌', '═', '┐', '│', '└', '─', '┘'),
-            array('&#9484;', '&#9552;', '&#9488;', '&#9474;', '&#9492;', '&#9472;', '&#9496;'),
+            ['┌', '═', '┐', '│', '└', '─', '┘'),
+            ['&#9484;', '&#9552;', '&#9488;', '&#9474;', '&#9492;', '&#9472;', '&#9496;'),
             $string
         );
     }

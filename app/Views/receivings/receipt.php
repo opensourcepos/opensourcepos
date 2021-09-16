@@ -7,13 +7,13 @@
 		exit;
 	}
 
-	echo view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
+	echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
 
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'); ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), ['class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="receipt_wrapper">

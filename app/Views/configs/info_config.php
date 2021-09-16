@@ -1,15 +1,15 @@
-<?php echo form_open('config/save_info/', array('id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_info/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="info_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.company'), 'company', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.company'), 'company', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-home"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.company_logo'), 'company_logo', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.company_logo'), 'company_logo', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
@@ -41,9 +41,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.address'), 'address', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.address'), 'address', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_textarea(array(
+					<?php echo form_textarea ([
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
@@ -52,11 +52,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.website'), 'website', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.website'), 'website', ['class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-globe"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
@@ -66,11 +66,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Common.email'), 'email', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-envelope"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'email',
 							'id' => 'email',
 							'type' => 'email',
@@ -81,11 +81,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.phone'), 'phone', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.phone'), 'phone', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
@@ -95,11 +95,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.fax'), 'fax', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.fax'), 'fax', ['class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
@@ -109,9 +109,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Common.return_policy'), 'return_policy', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Common.return_policy'), 'return_policy', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_textarea(array(
+					<?php echo form_textarea ([
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
@@ -119,7 +119,7 @@
 				</div>
 			</div>
 
-			<?php echo form_submit(array(
+			<?php echo form_submit ([
 				'name' => 'submit_info',
 				'id' => 'submit_info',
 				'value' => lang('Common.submit'),

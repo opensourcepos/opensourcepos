@@ -8,9 +8,9 @@ foreach($dinner_tables as $dinner_tables => $table)
 	++$i;
 ?>
 	<div class="form-group form-group-sm" style="<?php echo $table['deleted'] ? 'display:none;' : 'display:block;' ?>">
-		<?php echo form_label(lang('Config.dinner_table') . ' ' . $i, 'dinner_table_' . $i, array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('Config.dinner_table') . ' ' . $i, 'dinner_table_' . $i, ['class'=>'required control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
-			<?php $form_data = array(
+			<?php $form_data = [
 					'name'=>'dinner_table_' . $dinner_table_id,
 					'id'=>'dinner_table_' . $dinner_table_id,
 					'class'=>'dinner_table valid_chars form-control input-sm required',

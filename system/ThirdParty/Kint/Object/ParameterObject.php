@@ -34,7 +34,7 @@ class ParameterObject extends BasicObject
     public $type_hint;
     public $default;
     public $position;
-    public $hints = array('parameter');
+    public $hints = ['parameter');
 
     public function __construct(ReflectionParameter $param)
     {

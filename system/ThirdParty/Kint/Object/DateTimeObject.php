@@ -31,7 +31,7 @@ class DateTimeObject extends InstanceObject
 {
     public $dt;
 
-    public $hints = array('object', 'datetime');
+    public $hints = ['object', 'datetime');
 
     public function __construct(DateTime $dt)
     {

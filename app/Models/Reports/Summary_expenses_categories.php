@@ -10,11 +10,11 @@ class Summary_expenses_categories extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('category_name' => lang('Reports.expenses_category')),
-			array('count' => lang('Reports.count')),
-			array('total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'),
-			array('total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter'));
+		return [
+			['category_name' => lang('Reports.expenses_category')),
+			['count' => lang('Reports.count')),
+			['total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'),
+			['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)

@@ -2,14 +2,14 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, ['id'=>'item_kit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_kit_basic_info">
         <div class="form-group form-group-sm">
-            <?php echo form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', array('class'=>'control-label col-xs-3')); ?>
+            <?php echo form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class'=>'control-label col-xs-3')); ?>
             <div class='col-xs-8'>
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-                    <?php echo form_input(array(
+                    <?php echo form_input ([
                             'name'=>'item_kit_number',
                             'id'=>'item_kit_number',
                             'class'=>'form-control input-sm',
@@ -20,9 +20,9 @@
         </div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.name'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.name'), 'name', ['class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'name',
 						'id'=>'name',
 						'class'=>'form-control input-sm',
@@ -32,10 +32,10 @@
 		</div>
 
 		<div class="form-group  form-group-sm">
-			<?php echo form_label(lang('Item_kits.find_kit_item'), 'item_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.find_kit_item'), 'item_name', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group input-group-sm">
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'item_name',
 						'id'=>'item_name',
 						'class'=>'form-control input-sm',
@@ -49,10 +49,10 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.discount_type'), 'kit_discount_type', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.discount_type'), 'kit_discount_type', ['class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'kit_discount_type',
 							'type'=>'radio',
 							'value'=>0,
@@ -60,7 +60,7 @@
 					); ?> <?php echo lang('Item_kits.discount_percent'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'kit_discount_type',
 							'type'=>'radio',
 							'value'=>1,
@@ -71,10 +71,10 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.discount'), 'kit_discount', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.discount'), 'kit_discount', ['class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>
 				<div class="input-group input-group-sm">
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'kit_discount',
 							'size'=>'5',
 							'maxlength'=>'5',
@@ -87,10 +87,10 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class'=>'required control-label col-xs-3') : ['class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'price_option',
 							'type'=>'radio',
 							'value'=>0,
@@ -98,7 +98,7 @@
 					); ?> <?php echo lang('Item_kits.kit_and_components'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'price_option',
 							'type'=>'radio',
 							'value'=>1,
@@ -106,7 +106,7 @@
 					); ?> <?php echo lang('Item_kits.kit_only'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'price_option',
 							'type'=>'radio',
 							'value'=>2,
@@ -118,10 +118,10 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class'=>'required control-label col-xs-3') : ['class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'print_option',
 							'type'=>'radio',
 							'value'=>0,
@@ -129,7 +129,7 @@
 					); ?> <?php echo lang('Item_kits.all'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'print_option',
 							'type'=>'radio',
 							'value'=>1,
@@ -137,7 +137,7 @@
 					); ?> <?php echo lang('Item_kits.priced_only'); ?>
 				</label>
 				<label class="radio-inline">
-					<?php echo form_radio(array(
+					<?php echo form_radio ([
 							'name'=>'print_option',
 							'type'=>'radio',
 							'value'=>2,
@@ -150,9 +150,9 @@
 
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.description'), 'description', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea(array(
+				<?php echo form_textarea ([
 						'name'=>'description',
 						'id'=>'description',
 						'class'=>'form-control input-sm',
@@ -162,9 +162,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Item_kits.add_item'), 'item', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Item_kits.add_item'), 'item', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'item',
 						'id'=>'item',
 						'class'=>'form-control input-sm')

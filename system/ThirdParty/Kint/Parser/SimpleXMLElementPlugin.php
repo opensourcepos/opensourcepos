@@ -41,7 +41,7 @@ class SimpleXMLElementPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -77,7 +77,7 @@ class SimpleXMLElementPlugin extends Plugin
             $attribs = \iterator_to_array($attribs);
             $attribs = \array_map('strval', $attribs);
         } else {
-            $attribs = array();
+            $attribs = [];
         }
 
         // XML attributes are by definition strings and don't have children,
@@ -144,7 +144,7 @@ class SimpleXMLElementPlugin extends Plugin
 
                     $c = new Representation('Contents');
                     $c->implicit_label = true;
-                    $c->contents = array($this->parser->parseDeep($value, $base_obj));
+                    $c->contents = [$this->parser->parseDeep($value, $base_obj));
                 }
             }
 

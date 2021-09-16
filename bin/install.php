@@ -15,14 +15,14 @@ if ($argc === 3) {
 class Installer
 {
     protected $tmp_dir;
-    protected $packages = array();
+    protected $packages = [];
 
     public function __construct() {
         $this->tmp_dir = __DIR__ . '/tmp';
         @mkdir($this->tmp_dir);
         
-        $this->packages = array(
-            'translations' => array(
+        $this->packages = [
+            'translations' => [
                 'site'  => 'github',
                 'user'  => 'bcit-ci',
                 'repos' => 'codeigniter3-translations',
@@ -31,56 +31,56 @@ class Installer
                 'dst'   => 'system',
                 'example_branch' => '3.0.0',
              ),
-            'restserver' => array(
+            'restserver' => [
                 'site'  => 'github',
                 'user'  => 'chriskacerguis',
                 'repos' => 'codeigniter-restserver',
                 'name'  => 'CodeIgniter Rest Server',
-                'dir'   => array('config', 'controllers', 'language', 'libraries', 'views'),
+                'dir'   => ['config', 'controllers', 'language', 'libraries', 'views'),
                 'pre'   => 'application/',
                 'msg'   => 'See https://github.com/chriskacerguis/codeigniter-restserver',
                 'example_branch' => '2.7.2',
             ),
-            'matches-cli' => array(
+            'matches-cli' => [
                 'site'  => 'github',
                 'user'  => 'avenirer',
                 'repos' => 'codeigniter-matches-cli',
                 'name'  => 'Codeigniter Matches CLI',
-                'dir'   => array('config', 'controllers', 'views'),
+                'dir'   => ['config', 'controllers', 'views'),
                 'msg'   => 'See http://avenirer.github.io/codeigniter-matches-cli/',
                 'example_branch' => 'master',
             ),
-            'hmvc-modules' => array(
+            'hmvc-modules' => [
                 'site'  => 'github',
                 'user'  => 'jenssegers',
                 'repos' => 'codeigniter-hmvc-modules',
                 'name'  => 'CodeIgniter HMVC Modules (jenssegers)',
-                'dir'   => array('core', 'third_party'),
+                'dir'   => ['core', 'third_party'),
                 'msg'   => 'See https://github.com/jenssegers/codeigniter-hmvc-modules#installation',
                 'example_branch' => 'master',
             ),
-            'modular-extensions-hmvc' => array(
+            'modular-extensions-hmvc' => [
                 'site'  => 'bitbucket',
                 'user'  => 'wiredesignz',
                 'repos' => 'codeigniter-modular-extensions-hmvc',
                 'name'  => 'Modular Extensions - HMVC (wiredesignz)',
-                'dir'   => array('core', 'third_party'),
+                'dir'   => ['core', 'third_party'),
                 'msg'   => 'See https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc',
                 'example_branch' => 'codeigniter-3.x',
             ),
-            'ion-auth' => array(
+            'ion-auth' => [
                 'site'  => 'github',
                 'user'  => 'benedmunds',
                 'repos' => 'CodeIgniter-Ion-Auth',
                 'name'  => 'Codeigniter Ion Auth',
-                'dir'   => array(
+                'dir'   => [
                     'config', 'controllers', 'language', 'libraries',
                     'migrations', 'models', 'sql', 'views'
                 ),
                 'msg'   => 'See http://benedmunds.com/ion_auth/',
                 'example_branch' => '2',
             ),
-            'filename-checker' => array(
+            'filename-checker' => [
                 'site'  => 'github',
                 'user'  => 'kenjis',
                 'repos' => 'codeigniter3-filename-checker',
@@ -158,7 +158,7 @@ class Installer
             $src = realpath(dirname($filepath) . "/$repos-$version/$pre$dir");
             $dstfolder = empty($this->packages[$package]['dst']) ? 'application' : 'vendor/codeigniter/framework/system';
             $dst = realpath(__DIR__ . "/../$dstfolder/$dir");
-            return array($src, $dst);
+            return [$src, $dst);
         }
         
         foreach ($dir as $directory) {
@@ -166,7 +166,7 @@ class Installer
             @mkdir(__DIR__ . "/../app/$directory");
             $dst[] = realpath(__DIR__ . "/../app/$directory");
         }
-        return array($src, $dst);
+        return [$src, $dst);
     }
 
     private function downloadFromBitbucket($package, $version)
@@ -183,7 +183,7 @@ class Installer
         if (is_string($dir)) {
             $src = realpath(dirname($filepath) . "/$dirname/$dir");
             $dst = realpath(__DIR__ . "/../app/$dir");
-            return array($src, $dst);
+            return [$src, $dst);
         }
         
         foreach ($dir as $directory) {
@@ -191,7 +191,7 @@ class Installer
             @mkdir(__DIR__ . "/../app/$directory");
             $dst[] = realpath(__DIR__ . "/../app/$directory");
         }
-        return array($src, $dst);
+        return [$src, $dst);
     }
 
     private function download($url)

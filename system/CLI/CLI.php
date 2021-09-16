@@ -214,7 +214,7 @@ class CLI
 	 * $color = CLI::prompt('What is your favourite color?', 'white');
 	 *
 	 * // Will validate options with the in_list rule and accept only if one of the list
-	 * $color = CLI::prompt('What is your favourite color?', array('red','blue'));
+	 * $color = CLI::prompt('What is your favourite color?', ['red','blue'));
 	 *
 	 * // Do not provide options but requires a valid email
 	 * $email = CLI::prompt('What is your email?', null, 'required|valid_email');

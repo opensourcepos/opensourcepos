@@ -31,11 +31,11 @@ use SplFileInfo;
 
 class FsPathPlugin extends Plugin
 {
-    public static $blacklist = array('/', '.');
+    public static $blacklist = ['/', '.');
 
     public function getTypes()
     {
-        return array('string');
+        return ['string');
     }
 
     public function getTriggers()

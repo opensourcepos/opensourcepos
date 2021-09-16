@@ -10,14 +10,14 @@ class Summary_suppliers extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('supplier_name' => lang('Reports.supplier')),
-			array('quantity' => lang('Reports.quantity')),
-			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
+		return [
+			['supplier_name' => lang('Reports.supplier')),
+			['quantity' => lang('Reports.quantity')),
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _select(array $inputs)

@@ -45,7 +45,7 @@ class SplFileInfoRepresentation extends Representation
     public $mtime;
     public $typename = 'Unknown file';
     public $typeflag = '-';
-    public $hints = array('fspath');
+    public $hints = ['fspath');
 
     public function __construct(SplFileInfo $fileInfo)
     {
@@ -109,7 +109,7 @@ class SplFileInfoRepresentation extends Representation
                 break;
         }
 
-        $this->flags = array($this->typeflag);
+        $this->flags = [$this->typeflag);
 
         // User
         $this->flags[] = (($this->perms & 0400) ? 'r' : '-');

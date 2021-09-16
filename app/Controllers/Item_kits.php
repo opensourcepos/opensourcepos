@@ -60,16 +60,16 @@ class Item_kits extends Secure_Controller
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$item_kits = $this->Item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item_kit->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($item_kits->getResult() as $item_kit)
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
@@ -77,12 +77,12 @@ class Item_kits extends Secure_Controller
 			$data_rows[] = $this->xss_clean(get_item_kit_data_row($item_kit));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Item_kit->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Item_kit->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -113,7 +113,7 @@ class Item_kits extends Secure_Controller
 
 		$data['item_kit_info']  = $info;
 
-		$items = array();
+		$items = [];
 		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
@@ -134,15 +134,15 @@ class Item_kits extends Secure_Controller
 	
 	public function save($item_kit_id = -1)
 	{
-		$item_kit_data = array(
-			'name' => $this->input->post('name'),
-			'item_kit_number' => $this->input->post('item_kit_number'),
-			'item_id' => $this->input->post('kit_item_id'),
-			'kit_discount' => $this->input->post('kit_discount'),
-			'kit_discount_type' => $this->input->post('kit_discount_type') == NULL ? PERCENT : $this->input->post('kit_discount_type'),
-			'price_option' => $this->input->post('price_option'),
-			'print_option' => $this->input->post('print_option'),
-			'description' => $this->input->post('description')
+		$item_kit_data = [
+			'name' => $this->request->getPost('name'),
+			'item_kit_number' => $this->request->getPost('item_kit_number'),
+			'item_id' => $this->request->getPost('kit_item_id'),
+			'kit_discount' => $this->request->getPost('kit_discount'),
+			'kit_discount_type' => $this->request->getPost('kit_discount_type') == NULL ? PERCENT : $this->request->getPost('kit_discount_type'),
+			'price_option' => $this->request->getPost('price_option'),
+			'print_option' => $this->request->getPost('print_option'),
+			'description' => $this->request->getPost('description')
 		);
 		
 		if($this->Item_kit->save($item_kit_data, $item_kit_id))
@@ -155,13 +155,13 @@ class Item_kits extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			if($this->input->post('item_kit_qty') != NULL)
+			if($this->request->getPost('item_kit_qty') != NULL)
 			{
-				$item_kit_items = array();
-				foreach($this->input->post('item_kit_qty') as $item_id => $quantity)
+				$item_kit_items = [];
+				foreach($this->request->getPost('item_kit_qty') as $item_id => $quantity)
 				{
-					$seq = $this->input->post('item_kit_seq[' . $item_id . ']');
-					$item_kit_items[] = array(
+					$seq = $this->request->getPost('item_kit_seq[' . $item_id . ']');
+					$item_kit_items[] = [
 						'item_id' => $item_id,
 						'quantity' => $quantity,
 						'kit_sequence' => $seq
@@ -176,13 +176,13 @@ class Item_kits extends Secure_Controller
 
 			if($new_item)
 			{
-				echo json_encode(array('success' => $success,
+				echo json_encode (['success' => $success,
 					'message' => lang('Item_kits.successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
 
 			}
 			else
 			{
-				echo json_encode(array('success' => $success,
+				echo json_encode (['success' => $success,
 					'message' => lang('Item_kits.successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
 			}
 		}
@@ -190,37 +190,37 @@ class Item_kits extends Secure_Controller
 		{
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
-			echo json_encode(array('success' => FALSE, 
+			echo json_encode (['success' => FALSE, 
 								'message' => lang('Item_kits.error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
 		}
 	}
 	
 	public function delete()
 	{
-		$item_kits_to_delete = $this->xss_clean($this->input->post('ids'));
+		$item_kits_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
 		if($this->Item_kit->delete_list($item_kits_to_delete))
 		{
-			echo json_encode(array('success' => TRUE,
+			echo json_encode (['success' => TRUE,
 								'message' => lang('Item_kits.successful_deleted').' '.count($item_kits_to_delete).' '.lang('Item_kits.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE,
+			echo json_encode (['success' => FALSE,
 								'message' => lang('Item_kits.cannot_be_deleted')));
 		}
 	}
 
 	public function check_item_number()
 	{
-		$exists = $this->Item_kit->item_number_exists($this->input->post('item_kit_number'), $this->input->post('item_kit_id'));
+		$exists = $this->Item_kit->item_number_exists($this->request->getPost('item_kit_number'), $this->request->getPost('item_kit_id'));
 		echo !$exists ? 'true' : 'false';
 	}
 	
 	public function generate_barcodes($item_kit_ids)
 	{
 		$this->barcode_lib = new Barcode_lib();
-		$result = array();
+		$result = [];
 
 		$item_kit_ids = explode(':', $item_kit_ids);
 		foreach($item_kit_ids as $item_kid_id)
@@ -230,7 +230,7 @@ class Item_kits extends Secure_Controller
 			
 			$item_kid_id = 'KIT '. urldecode($item_kid_id);
 
-			$result[] = array('name' => $item_kit->name, 'item_id' => $item_kid_id, 'item_number' => $item_kid_id,
+			$result[] = ['name' => $item_kit->name, 'item_id' => $item_kid_id, 'item_number' => $item_kid_id,
 							'cost_price' => $item_kit->total_cost_price, 'unit_price' => $item_kit->total_unit_price);
 		}
 

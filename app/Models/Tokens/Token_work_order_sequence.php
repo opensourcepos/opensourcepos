@@ -2,14 +2,24 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
+use app\Models\Appconfig;
 
 /**
  * Token_work_order_sequence class
+ *
+ * @property appconfig appconfig
+ *
  */
 
 class Token_work_order_sequence extends Token
 {
+	public function __construct($value = '')
+	{
+		parent::__construct($value);
+
+		$this->appconfig = model('Appconfig');
+	}
+
 	public function token_id()
 	{
 		return 'WSEQ';
@@ -17,7 +27,7 @@ class Token_work_order_sequence extends Token
 
 	public function get_value()
 	{
-		return $this->CI->Appconfig->acquire_save_next_work_order_sequence();
+		return $this->appconfig->acquire_save_next_work_order_sequence();
 	}
 }
 ?>

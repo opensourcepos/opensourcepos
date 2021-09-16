@@ -25,7 +25,7 @@ class Code39 extends BarcodeBase
 	 * Binary map
 	 * @var array binMap
 	 */
-	private static $binMap = array(
+	private static $binMap = [
 		' '	=> '011000100',
 		'$'	=> '010101000',
 		'%'	=> '000101010',

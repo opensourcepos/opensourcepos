@@ -62,7 +62,7 @@ function get_csv_file($file_name)
 		while(($row = fgetcsv($csv_file)) !== FALSE)
 		{
 			//Skip empty lines
-			if($row !== array(null))
+			if($row !== [null])
 			{
 				$csv_rows[] = array_combine($headers, $CI->security->xss_clean($row));
 			}

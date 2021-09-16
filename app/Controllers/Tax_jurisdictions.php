@@ -24,22 +24,22 @@ class Tax_jurisdictions extends Secure_Controller
 	 */
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$tax_jurisdictions = $this->Tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Tax_jurisdiction->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_jurisdictions->getResult() as $tax_jurisdiction)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_jurisdiction_data_row($tax_jurisdiction));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	public function get_row($row_id)
@@ -59,9 +59,9 @@ class Tax_jurisdictions extends Secure_Controller
 
 	public function save($jurisdiction_id = -1)
 	{
-		$tax_jurisdiction_data = array(
-			'jurisdiction_name' => $this->input->post('jurisdiction_name'),
-			'reporting_authority' => $this->input->post('reporting_authority')
+		$tax_jurisdiction_data = [
+			'jurisdiction_name' => $this->request->getPost('jurisdiction_name'),
+			'reporting_authority' => $this->request->getPost('reporting_authority')
 		);
 
 		if($this->Tax_jurisdiction->save($tax_jurisdiction_data))
@@ -70,30 +70,30 @@ class Tax_jurisdictions extends Secure_Controller
 
 			if($jurisdiction_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_adding'), 'id' => $tax_jurisdiction_data['jurisdiction_id']));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_adding'), 'id' => $tax_jurisdiction_data['jurisdiction_id']));
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_updating'), 'id' => $jurisdiction_id));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_updating'), 'id' => $jurisdiction_id));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'], 'id' => -1));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'], 'id' => -1));
 		}
 	}
 
 	public function delete()
 	{
-		$tax_jurisdictions_to_delete = $this->input->post('ids');
+		$tax_jurisdictions_to_delete = $this->request->getPost('ids');
 
 		if($this->Tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')));
+			echo json_encode (['success' => TRUE, 'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')));
 		}
 	}
 }

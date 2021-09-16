@@ -37,14 +37,14 @@ class DocstringPlugin extends Plugin implements TabPluginInterface
             return false;
         }
 
-        $docstring = array();
+        $docstring = [];
         foreach (\explode("\n", $r->contents) as $line) {
             $docstring[] = \trim($line);
         }
 
         $docstring = \implode("\n", $docstring);
 
-        $location = array();
+        $location = [];
 
         if ($r->class) {
             $location[] = 'Inherited from '.$this->renderer->escape($r->class);

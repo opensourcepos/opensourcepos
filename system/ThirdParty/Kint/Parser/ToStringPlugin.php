@@ -31,14 +31,14 @@ use ReflectionClass;
 
 class ToStringPlugin extends Plugin
 {
-    public static $blacklist = array(
+    public static $blacklist = [
         'SimpleXMLElement',
         'SplFileObject',
     );
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()

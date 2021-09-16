@@ -14,24 +14,24 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('#', ['id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class'=>'required control-label col-xs-2')); ?>
 		<div id='report_stock_location' class="col-xs-3">
 			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.item_count'), 'reports_item_count_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('Reports.item_count'), 'reports_item_count_label', ['class'=>'required control-label col-xs-2')); ?>
 		<div id='report_item_count' class="col-xs-3">
 			<?php echo form_dropdown('item_count',$item_count,'all','id="item_count" class="form-control"'); ?>
 		</div>
 	</div>
 
 	<?php
-	echo form_button(array(
+	echo form_button ([
 		'name'=>'generate_report',
 		'id'=>'generate_report',
 		'content'=>lang('Common.submit'),

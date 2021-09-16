@@ -2,13 +2,23 @@
 
 namespace App\Controllers;
 
+use app\Models\Attribute;
+
 require_once('Secure_Controller.php');
 
+/**
+ * Attributes controls the custom attributes assigned to items
+ * 
+ * @property attribute attribute
+ * 
+ */
 class Attributes extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('attributes');
+		
+		$this->attribute = model('Attribute');
 	}
 
 	public function index()
@@ -23,14 +33,14 @@ class Attributes extends Secure_Controller
 	 */
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
-		$attributes = $this->Attribute->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Attribute->get_found_rows($search);
+		$attributes = $this->attribute->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->attribute->get_found_rows($search);
 
 		$data_rows = [];
 		foreach($attributes->getResult() as $attribute)
@@ -41,36 +51,36 @@ class Attributes extends Secure_Controller
 
 		$data_rows = $this->xss_clean($data_rows);
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
 	public function save_attribute_value()
 	{
-		$success = $this->Attribute->save_value(
-			$this->input->post('attribute_value'),
-			$this->input->post('definition_id'),
-			$this->input->post('item_id'),
-			$this->input->post('attribute_id')
+		$success = $this->attribute->save_value(
+			$this->request->getPost('attribute_value'),
+			$this->request->getPost('definition_id'),
+			$this->request->getPost('item_id'),
+			$this->request->getPost('attribute_id')
 		);
 
-		echo json_encode(array('success' => $success != 0));
+		echo json_encode(['success' => $success != 0]);
 	}
 
 	public function delete_attribute_value()
 	{
-		$success = $this->Attribute->delete_value(
-			$this->input->post('attribute_value'),
-			$this->input->post('definition_id')
+		$success = $this->attribute->delete_value(
+			$this->request->getPost('attribute_value'),
+			$this->request->getPost('definition_id')
 		);
 
-		echo json_encode(array('success' => $success));
+		echo json_encode(['success' => $success]);
 	}
 
 	public function save_definition($definition_id = NO_DEFINITION_ID)
 	{
 		$definition_flags = 0;
 
-		$flags = (empty($this->input->post('definition_flags'))) ? [] : $this->input->post('definition_flags');
+		$flags = (empty($this->request->getPost('definition_flags'))) ? [] : $this->request->getPost('definition_flags');
 
 		foreach($flags as $flag)
 		{
@@ -78,66 +88,76 @@ class Attributes extends Secure_Controller
 		}
 
 	//Save definition data
-		$definition_data = array(
-			'definition_name' => $this->input->post('definition_name'),
-			'definition_unit' => $this->input->post('definition_unit') != '' ? $this->input->post('definition_unit') : NULL,
+		$definition_data = [
+			'definition_name' => $this->request->getPost('definition_name'),
+			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : NULL,
 			'definition_flags' => $definition_flags,
-			'definition_fk' => $this->input->post('definition_group') != '' ? $this->input->post('definition_group') : NULL
-		);
+			'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : NULL
+		];
 
-		if ($this->input->post('definition_type') != null)
+		if ($this->request->getPost('definition_type') != null)
 		{
-			$definition_data['definition_type'] = DEFINITION_TYPES[$this->input->post('definition_type')];
+			$definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type')];
 		}
 
 		$definition_name = $this->xss_clean($definition_data['definition_name']);
 
-		if($this->Attribute->save_definition($definition_data, $definition_id))
+		if($this->attribute->save_definition($definition_data, $definition_id))
 		{
 		//New definition
 			if($definition_id == 0)
 			{
-				$definition_values = json_decode($this->input->post('definition_values'));
+				$definition_values = json_decode($this->request->getPost('definition_values'));
 
 				foreach($definition_values as $definition_value)
 				{
-					$this->Attribute->save_value($definition_value, $definition_data['definition_id']);
+					$this->attribute->save_value($definition_value, $definition_data['definition_id']);
 				}
 
-				echo json_encode(array('success' => TRUE, 'message' => lang('Attributes.definition_successful_adding').' '.
-					$definition_name, 'id' => $definition_data['definition_id']));
+				echo json_encode([
+					'success' => TRUE,
+					'message' => lang('Attributes.definition_successful_adding') . ' ' . $definition_name,
+					'id' => $definition_data['definition_id']
+				]);
 			}
 		//Existing definition
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Attributes.definition_successful_updating').' '.
-					$definition_name, 'id' => $definition_id));
+				echo json_encode([
+					'success' => TRUE,
+					'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
+					'id' => $definition_id
+				]);
 			}
 		}
 	//Failure
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Attributes.definition_error_adding_updating', $definition_name), 'id' => -1));
+			echo json_encode([
+				'success' => FALSE,
+				'message' => lang('Attributes.definition_error_adding_updating', $definition_name),
+				'id' => -1
+			]);
 		}
 	}
 
 	public function suggest_attribute($definition_id)
 	{
-		$suggestions = $this->xss_clean($this->Attribute->get_suggestions($definition_id, $this->input->get('term')));
+		$suggestions = $this->xss_clean($this->attribute->get_suggestions($definition_id, $this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
 
 	public function get_row($row_id)
 	{
-		$attribute_definition_info = $this->Attribute->get_info($row_id);
+		$attribute_definition_info = $this->attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);
 		$data_row = $this->xss_clean(get_attribute_definition_data_row($attribute_definition_info));
 
 		echo json_encode($data_row);
 	}
 
-	private function get_attributes($definition_flags = 0)
+	private function get_attributes(int $definition_flags = 0): array
 	{
 		$definition_flag_names = [];
 		foreach (Attribute::get_definition_flags() as $id => $term)
@@ -150,17 +170,17 @@ class Attributes extends Secure_Controller
 		return $definition_flag_names;
 	}
 
-	public function view($definition_id = NO_DEFINITION_ID)
+	public function view(int $definition_id = NO_DEFINITION_ID)
 	{
-		$info = $this->Attribute->get_info($definition_id);
+		$info = $this->attribute->get_info($definition_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $this->xss_clean($value);
 		}
 
 		$data['definition_id'] = $definition_id;
-		$data['definition_values'] = $this->Attribute->get_definition_values($definition_id);
-		$data['definition_group'] = $this->Attribute->get_definitions_by_type(GROUP, $definition_id);
+		$data['definition_values'] = $this->attribute->get_definition_values($definition_id);
+		$data['definition_group'] = $this->attribute->get_definitions_by_type(GROUP, $definition_id);
 		$data['definition_group'][''] = lang('Common.none_selected_text');
 		$data['definition_info'] = $info;
 
@@ -172,23 +192,23 @@ class Attributes extends Secure_Controller
 		echo view('attributes/form', $data);
 	}
 
-	public function delete_value($attribute_id)
+	public function delete_value(int $attribute_id): bool	//TODO: This function appears to never be used in the codebase.  Is it needed?
 	{
-		return $this->Attribute->delete_value($attribute_id);
+		return $this->attribute->delete_value($attribute_id);	//TODO: It wants the required definition_id here... maybe making the definition_id default to NO_DEFINITION_ID when not provided?
 	}
 
 	public function delete()
 	{
-		$attributes_to_delete = $this->input->post('ids');
+		$attributes_to_delete = $this->request->getPost('ids');
 
-		if($this->Attribute->delete_definition_list($attributes_to_delete))
+		if($this->attribute->delete_definition_list($attributes_to_delete))
 		{
 			$message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
-			echo json_encode(array('success' => TRUE, 'message' => $message));
+			echo json_encode(['success' => TRUE, 'message' => $message]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Attributes.definition_cannot_be_deleted')));
+			echo json_encode(['success' => FALSE, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
 		}
 	}
 }

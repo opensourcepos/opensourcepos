@@ -33,7 +33,7 @@ use Kint\Renderer\RichRenderer;
 
 class CallablePlugin extends Plugin implements ObjectPluginInterface
 {
-    protected static $method_cache = array();
+    protected static $method_cache = [];
 
     public function renderObject(BasicObject $o)
     {
@@ -161,7 +161,7 @@ class CallablePlugin extends Plugin implements ObjectPluginInterface
         }
 
         if (\strlen($o->owner_class) && \strlen($o->name)) {
-            self::$method_cache[$o->owner_class][$o->name] = array(
+            self::$method_cache[$o->owner_class][$o->name] = [
                 'header' => $header,
                 'children' => $children,
             );

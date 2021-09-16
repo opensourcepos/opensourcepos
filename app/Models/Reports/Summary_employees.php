@@ -10,15 +10,16 @@ class Summary_employees extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('employee_name' => lang('Reports.employee')),
-			array('sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'),
-			array('quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'),
-			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'));
+		return [
+			['employee_name' => lang('Reports.employee')],
+			['sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
+			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+		];
 	}
 
 	protected function _select(array $inputs)

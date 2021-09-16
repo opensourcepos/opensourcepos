@@ -105,7 +105,7 @@ class Migration_database_optimizations extends CI_Migration
 		{
 			//Update attribute_link with the attribute_id we are keeping
 			$builder->where('attribute_id', $attribute_id['attribute_id']);
-			$builder->update('attribute_links', array('attribute_id' => $attribute_value['attribute_id']));
+			$builder->update('attribute_links', ['attribute_id' => $attribute_value['attribute_id']));
 
 			//Delete the row from attribute_values if it isn't our keeper
 			if($attribute_id['attribute_id'] !== $attribute_value['attribute_id'])

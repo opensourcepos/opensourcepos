@@ -26,7 +26,7 @@ class Token_lib_test extends UnitTestCase
 
     public function test_barcode_item_number_and_quantity()
     {
-        $this->CI->config->set_item('barcode_formats', json_encode(array("02{I:5}{W:6}")));
+        $this->CI->config->set_item('barcode_formats', json_encode (["02{I:5}{W:6}")));
 
         $item_number = "0250000123456";
         $quantity = 0;
@@ -39,7 +39,7 @@ class Token_lib_test extends UnitTestCase
 
     public function test_barcode_quantity_and_item_number()
     {
-        $this->CI->config->set_item('barcode_formats', json_encode(array("02{I:6}{W:5}{P:2}")));
+        $this->CI->config->set_item('barcode_formats', json_encode (["02{I:6}{W:5}{P:2}")));
 
         $item_number = "021234565000110";
         $quantity = 0;
@@ -53,7 +53,7 @@ class Token_lib_test extends UnitTestCase
 
     public function test_no_barcode_format()
     {
-        $this->CI->config->set_item('barcode_formats', json_encode(array("")));
+        $this->CI->config->set_item('barcode_formats', json_encode (["")));
 
         $item_number = "021234565000110";
         $quantity = 0;

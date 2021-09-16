@@ -36,7 +36,7 @@ class ClosurePlugin extends Plugin
 {
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -68,14 +68,14 @@ class ClosurePlugin extends Plugin
         $p->contents = &$o->parameters;
         $o->addRepresentation($p, 0);
 
-        $statics = array();
+        $statics = [];
 
         if (\method_exists($closure, 'getClosureThis') && $v = $closure->getClosureThis()) {
-            $statics = array('this' => $v);
+            $statics = ['this' => $v);
         }
 
         if (\count($statics = $statics + $closure->getStaticVariables())) {
-            $statics_parsed = array();
+            $statics_parsed = [];
 
             foreach ($statics as $name => &$static) {
                 $obj = BasicObject::blank('$'.$name);

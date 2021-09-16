@@ -20,7 +20,7 @@ class Customer_rewards extends Model
 
 	public function save(array $package_data, int $package_id): bool	//TODO: Need to rename or bring this in line with the basemodel declaration.
 	{
-		$package_data_to_save = array('package_name' => $package_data['package_name'], 'deleted' => 0, 'points_percent' => $package_data['points_percent']);
+		$package_data_to_save = ['package_name' => $package_data['package_name'], 'deleted' => 0, 'points_percent' => $package_data['points_percent']);
 
 		if(!$this->exists($package_id))
 		{

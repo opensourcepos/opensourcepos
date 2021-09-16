@@ -32,7 +32,7 @@ class TablePlugin extends Plugin
 {
     public function getTypes()
     {
-        return array('array');
+        return ['array');
     }
 
     public function getTriggers()

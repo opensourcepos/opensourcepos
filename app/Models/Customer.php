@@ -325,7 +325,7 @@ class Customer extends Person
 		$builder->orderBy('last_name', 'asc');
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->company_name) ? ' [' . $row->company_name . ']' : ''). (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : ''));
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->company_name) ? ' [' . $row->company_name . ']' : ''). (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : ''));
 		}
 
 		if(!$limit)
@@ -337,7 +337,7 @@ class Customer extends Person
 			$builder->orderBy('email', 'asc');
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => $row->person_id, 'label' => $row->email);
+				$suggestions[] = ['value' => $row->person_id, 'label' => $row->email);
 			}
 
 			$builder = $this->db->table('customers');
@@ -347,7 +347,7 @@ class Customer extends Person
 			$builder->orderBy('phone_number', 'asc');
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
+				$suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number);
 			}
 
 			$builder = $this->db->table('customers');
@@ -357,7 +357,7 @@ class Customer extends Person
 			$builder->orderBy('account_number', 'asc');
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => $row->person_id, 'label' => $row->account_number);
+				$suggestions[] = ['value' => $row->person_id, 'label' => $row->account_number);
 			}
 			$builder = $this->db->table('customers');
 			$builder->join('people', 'customers.person_id = people.person_id');
@@ -366,7 +366,7 @@ class Customer extends Person
 			$builder->orderBy('company_name', 'asc');
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => $row->person_id, 'label' => $row->company_name);
+				$suggestions[] = ['value' => $row->person_id, 'label' => $row->company_name);
 			}
 		}
 

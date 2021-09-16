@@ -1,4 +1,4 @@
-<?php echo form_open('', array('id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset>
 			<?php
@@ -7,9 +7,9 @@
 			{
 			?>
 				<div class="form-group form-group-sm">
-					<?php echo form_label($license['title'], 'license', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label($license['title'], 'license', ['class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-6'>
-						<?php echo form_textarea(array(
+						<?php echo form_textarea ([
 							'name' => 'license',
 							'id' => 'license_' . $counter++,
 							'class' => 'form-control',

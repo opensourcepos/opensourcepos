@@ -29,8 +29,8 @@ class Representation
 {
     public $label;
     public $implicit_label = false;
-    public $hints = array();
-    public $contents = array();
+    public $hints = [];
+    public $contents = [];
 
     protected $name;
 

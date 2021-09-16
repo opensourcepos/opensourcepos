@@ -48,7 +48,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		{
 			$tax_type = Migration_Sales_Tax_Data::SALES_TAX;
 		}
-		$sales_taxes = array();
+		$sales_taxes = [];
 		$tax_group_sequence = 0;
 		$items = $this->get_sale_items_for_migration($sale_id)->getResultArray();
 		foreach($items as $item)
@@ -124,7 +124,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		$builder->where('line', $line);
 		$builder->where('name', $name);
 		$builder->where('percent', $percent);
-		$builder->update('sales_items_taxes', array('tax_type' => $tax_type, 'item_tax_amount' => $item_tax_amount));
+		$builder->update('sales_items_taxes', ['tax_type' => $tax_type, 'item_tax_amount' => $item_tax_amount));
 	}
 
 	private function save_sales_tax(&$sales_taxes)
@@ -211,7 +211,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		if(!array_key_exists($tax_group_index, $sales_taxes))
 		{
 			$insertkey = $tax_group_index;
-			$sales_tax = array($insertkey => array(
+			$sales_tax = [$insertkey => [
 				'sale_id' => $sale_id,
 				'tax_type' => $tax_type,
 				'tax_group' => $tax_group,
@@ -246,7 +246,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	{
 		if(!empty($sales_taxes))
 		{
-			$sort = array();
+			$sort = [];
 			foreach($sales_taxes as $k => $v)
 			{
 				$sort['print_sequence'][$k] = $v['print_sequence'];
@@ -264,7 +264,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	{
 		if(!empty($sales_taxes))
 		{
-			$sort = array();
+			$sort = [];
 			foreach($sales_taxes as $k=>$v)
 			{
 				$sort['print_sequence'][$k] = $v['print_sequence'];

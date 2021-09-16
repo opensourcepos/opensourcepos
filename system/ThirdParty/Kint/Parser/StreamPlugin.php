@@ -34,7 +34,7 @@ class StreamPlugin extends Plugin
 {
     public function getTypes()
     {
-        return array('resource');
+        return ['resource');
     }
 
     public function getTriggers()

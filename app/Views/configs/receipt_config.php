@@ -1,26 +1,26 @@
-<?php echo form_open('config/save_receipt/', array('id' => 'receipt_config_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_receipt/', ['id' => 'receipt_config_form', 'class' => 'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 			<ul id="receipt_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_template'), 'receipt_template', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_template'), 'receipt_template', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('receipt_template', array(
+					<?php echo form_dropdown('receipt_template', [
 						'receipt_default' => lang('Config.receipt_default'),
 						'receipt_short' => lang('Config.receipt_short')
 					),
-					$this->config->get('receipt_template'), array('class' => 'form-control input-sm'));
+					$this->config->get('receipt_template'), ['class' => 'form-control input-sm'));
 					?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_font_size'), 'receipt_font_size', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.receipt_font_size'), 'receipt_font_size', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '20',
@@ -34,10 +34,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_delay_autoreturn'), 'print_delay_autoreturn', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.print_delay_autoreturn'), 'print_delay_autoreturn', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '30',
@@ -51,24 +51,24 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_receipt_check_behaviour'), 'email_receipt_check_behaviour', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.email_receipt_check_behaviour'), 'email_receipt_check_behaviour', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'always',
 							'checked' => $this->config->get('email_receipt_check_behaviour') == 'always')); ?>
 						<?php echo lang('Config.email_receipt_check_behaviour_always'); ?>
 					</label>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'never',
 							'checked' => $this->config->get('email_receipt_check_behaviour') == 'never')); ?>
 						<?php echo lang('Config.email_receipt_check_behaviour_never'); ?>
 					</label>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'last',
 							'checked' => $this->config->get('email_receipt_check_behaviour') == 'last')); ?>
@@ -78,24 +78,24 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_receipt_check_behaviour'), 'print_receipt_check_behaviour', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.print_receipt_check_behaviour'), 'print_receipt_check_behaviour', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'always',
 							'checked' => $this->config->get('print_receipt_check_behaviour') == 'always')); ?>
 						<?php echo lang('Config.print_receipt_check_behaviour_always'); ?>
 					</label>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'never',
 							'checked' => $this->config->get('print_receipt_check_behaviour') == 'never')); ?>
 						<?php echo lang('Config.print_receipt_check_behaviour_never'); ?>
 					</label>
 					<label class="radio-inline">
-						<?php echo form_radio(array(
+						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'last',
 							'checked' => $this->config->get('print_receipt_check_behaviour') == 'last')); ?>
@@ -105,9 +105,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_company_name'), 'receipt_show_company_name', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_company_name'), 'receipt_show_company_name', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_company_name',
 						'value' => 'receipt_show_company_name',
 						'id' => 'receipt_show_company_name',
@@ -116,9 +116,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_taxes'), 'receipt_show_taxes', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_taxes'), 'receipt_show_taxes', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_taxes',
 						'value' => 'receipt_show_taxes',
 						'id' => 'receipt_show_taxes',
@@ -127,9 +127,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_tax_ind'), 'receipt_show_tax_ind', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_tax_ind'), 'receipt_show_tax_ind', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_tax_ind',
 						'value' => 'receipt_show_tax_ind',
 						'id' => 'receipt_show_tax_ind',
@@ -138,9 +138,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_total_discount'), 'receipt_show_total_discount', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_total_discount'), 'receipt_show_total_discount', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_total_discount',
 						'value' => 'receipt_show_total_discount',
 						'id' => 'receipt_show_total_discount',
@@ -149,9 +149,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_description'), 'receipt_show_description', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_description'), 'receipt_show_description', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_description',
 						'value' => 'receipt_show_description',
 						'id' => 'receipt_show_description',
@@ -160,9 +160,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_show_serialnumber'), 'receipt_show_serialnumber', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_show_serialnumber'), 'receipt_show_serialnumber', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'receipt_show_serialnumber',
 						'value' => 'receipt_show_serialnumber',
 						'id' => 'receipt_show_serialnumber',
@@ -171,9 +171,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_silently'), 'print_silently', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.print_silently'), 'print_silently', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'print_silently',
 						'id' => 'print_silently',
 						'value' => 'print_silently',
@@ -182,9 +182,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_header'), 'print_header', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.print_header'), 'print_header', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'print_header',
 						'id' => 'print_header',
 						'value' => 'print_header',
@@ -193,9 +193,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_footer'), 'print_footer', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.print_footer'), 'print_footer', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'print_footer',
 						'id' => 'print_footer',
 						'value' => 'print_footer',
@@ -204,31 +204,31 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receipt_printer'), 'config_receipt_printer', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.receipt_printer'), 'config_receipt_printer', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('receipt_printer',	array(), ' ', 'id="receipt_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.invoice_printer'), 'config_invoice_printer', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.invoice_printer'), 'config_invoice_printer', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('invoice_printer', array(), ' ', 'id="invoice_printer" class="form-control"'); ?>
+					<?php echo form_dropdown('invoice_printer', [], ' ', 'id="invoice_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.takings_printer'), 'config_takings_printer', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.takings_printer'), 'config_takings_printer', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('takings_printer', array(), ' ', 'id="takings_printer" class="form-control"'); ?>
+					<?php echo form_dropdown('takings_printer', [], ' ', 'id="takings_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_top_margin'), 'print_top_margin', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.print_top_margin'), 'print_top_margin', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '20',
@@ -242,10 +242,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_left_margin'), 'print_left_margin', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.print_left_margin'), 'print_left_margin', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '20',
@@ -259,10 +259,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_bottom_margin'), 'print_bottom_margin', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.print_bottom_margin'), 'print_bottom_margin', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '20',
@@ -276,10 +276,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.print_right_margin'), 'print_right_margin', array('class' => 'control-label col-xs-2 required')); ?>
+				<?php echo form_label(lang('Config.print_right_margin'), 'print_right_margin', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'type' => 'number',
 							'min' => '0',
 							'max' => '20',
@@ -292,7 +292,7 @@
 				</div>
 			</div>
 
-			<?php echo form_submit(array(
+			<?php echo form_submit ([
 				'name' => 'submit_receipt',
 				'id' => 'submit_receipt',
 				'value' => lang('Common.submit'),

@@ -2,10 +2,14 @@
 
 namespace app\Libraries;
 
+use app\Models\Attribute;
+
 /**
  * Sale library
  *
  * Library with utilities to manage sales
+ *
+ * @property attribute attribute
  */
 
 class Sale_lib
@@ -17,11 +21,13 @@ class Sale_lib
 		$this->CI =& get_instance();
 		$this->CI->tax_lib = new Tax_lib();
 		$this->CI->Rounding_mode = model('enums/Rounding_mode');
+
+		$this->attribute = model('Attribute');
 	}
 
 	public function get_line_sequence_options()
 	{
-		return array(
+		return [
 			'0' => lang('Sales.entry'),
 			'1' => lang('Sales.group_by_type'),
 			'2' => lang('Sales.group_by_category')
@@ -30,7 +36,7 @@ class Sale_lib
 
 	public function get_register_mode_options()
 	{
-		$register_modes = array();
+		$register_modes = [];
 		if($this->CI->config->get('invoice_enable') == '0')
 		{
 			$register_modes['sale'] = lang('Sales.sale');
@@ -51,7 +57,7 @@ class Sale_lib
 
 	public function get_invoice_type_options()
 	{
-		$invoice_types = array();
+		$invoice_types = [];
 		$invoice_types['invoice'] = lang('Sales.invoice_type_invoice');
 		$invoice_types['tax_invoice'] = lang('Sales.invoice_type_tax_invoice');
 		$invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
@@ -63,7 +69,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_cart'))
 		{
-			$this->set_cart(array());
+			$this->set_cart ([));
 		}
 
 		return $this->CI->session->userdata('sales_cart');
@@ -76,7 +82,7 @@ class Sale_lib
 			return $cart;
 		}
 
-		$filtered_cart = array();
+		$filtered_cart = [];
 
 		foreach($cart as $k => $v)
 		{
@@ -93,7 +99,7 @@ class Sale_lib
 		// Entry sequence (this will render kits in the expected sequence)
 		if($this->CI->config->get('line_sequence') == '0')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
@@ -103,7 +109,7 @@ class Sale_lib
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
 		elseif($this->CI->config->get('line_sequence') == '1')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['stock_type'][$k] = $v['stock_type'];
@@ -115,7 +121,7 @@ class Sale_lib
 		// Group by Item Category
 		elseif($this->CI->config->get('line_sequence') == '2')
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['category'][$k] = $v['stock_type'];
@@ -127,7 +133,7 @@ class Sale_lib
 		// Group by entry sequence in descending sequence (the Standard)
 		else
 		{
-			$sort = array();
+			$sort = [];
 			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
@@ -356,7 +362,7 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_payments'))
 		{
-			$this->set_payments(array());
+			$this->set_payments ([));
 		}
 
 		return $this->CI->session->userdata('sales_payments');
@@ -386,7 +392,7 @@ class Sale_lib
 		else
 		{
 			//add to existing array
-			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount,
+			$payment = [$payment_id => ['payment_type' => $payment_id, 'payment_amount' => $payment_amount,
 				'cash_refund' => 0, 'cash_adjustment' => $cash_adjustment));
 
 			$payments += $payment;
@@ -485,7 +491,7 @@ class Sale_lib
 	 */
 	public function get_totals($taxes)
 	{
-		$totals = array();
+		$totals = [];
 
 		$prediscount_subtotal = 0.0;
 		$subtotal = 0.0;
@@ -874,12 +880,12 @@ class Sale_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
-		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->getRowObject();
+		$attribute_links = $this->attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->getRowObject();
 
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
-			$item = array($insertkey => array(
+			$item = [$insertkey => [
 					'item_id' => $item_id,
 					'item_location' => $item_location,
 					'stock_name' => $this->CI->Stock_location->get_location_name($item_location),

@@ -3,9 +3,17 @@
 namespace App\Controllers;
 
 use app\Libraries\Item_lib;
+use app\Models\Attribute;
 
 require_once('Secure_Controller.php');
 
+/**
+ *
+ * @property item_lib item_lib
+ *
+ * @property attribute attribute
+ *
+ */
 class Items extends Secure_Controller
 {
 	public function __construct()
@@ -13,6 +21,8 @@ class Items extends Secure_Controller
 		parent::__construct('items');
 
 		$this->item_lib = new Item_lib();
+
+		$this->attribute = model('Attribute');
 	}
 
 	public function index()
@@ -24,14 +34,15 @@ class Items extends Secure_Controller
 		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
 
 		//Filters that will be loaded in the multiselect dropdown
-		$data['filters'] = array(
+		$data['filters'] = [
 			'empty_upc' => lang('Items.empty_upc_items'),
 			'low_inventory' => lang('Items.low_inventory_items'),
 			'is_serialized' => lang('Items.serialized_items'),
 			'no_description' => lang('Items.no_description_items'),
 			'search_custom' => lang('Items.search_attributes'),
 			'is_deleted' => lang('Items.is_deleted'),
-			'temporary' => lang('Items.temp'));
+			'temporary' => lang('Items.temp')
+		];
 
 		echo view('items/manage', $data);
 	}
@@ -41,19 +52,19 @@ class Items extends Secure_Controller
 	 */
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
-		$order = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort = $this->request->getGet('sort');
+		$order = $this->request->getGet('order');
 
-		$this->item_lib->set_item_location($this->input->get('stock_location'));
+		$this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
-		$definition_names = $this->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+		$definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
-		$filters = array(
-			'start_date' => $this->input->get('start_date'),
-			'end_date' => $this->input->get('end_date'),
+		$filters = [
+			'start_date' => $this->request->getGet('start_date'),
+			'end_date' => $this->request->getGet('end_date'),
 			'stock_location_id' => $this->item_lib->get_item_location(),
 			'empty_upc' => FALSE,
 			'low_inventory' => FALSE,
@@ -62,10 +73,11 @@ class Items extends Secure_Controller
 			'search_custom' => FALSE,
 			'is_deleted' => FALSE,
 			'temporary' => FALSE,
-			'definition_ids' => array_keys($definition_names));
+			'definition_ids' => array_keys($definition_names)
+		];
 
 		//Check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
+		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
@@ -81,7 +93,7 @@ class Items extends Secure_Controller
 			}
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
 	public function pic_thumb($pic_filename)
@@ -123,9 +135,11 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_search()
 	{
-		$options = array(
-			'search_custom' => $this->input->post('search_custom'),
-			'is_deleted' => $this->input->post('is_deleted') !== NULL);
+		$options = [
+			'search_custom' => $this->request->getPost('search_custom'),
+			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
+		];
+
 		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),	$options, FALSE));
 
 		echo json_encode($suggestions);
@@ -133,8 +147,7 @@ class Items extends Secure_Controller
 
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),
-			array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
+		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),	['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
 		echo json_encode($suggestions);
 	}
@@ -148,8 +161,7 @@ class Items extends Secure_Controller
 
 	public function suggest_kits()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_kit_search_suggestions($this->input->post_get('term'),
-			array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
+		$suggestions = $this->xss_clean($this->Item->get_kit_search_suggestions($this->input->post_get('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
 		echo json_encode($suggestions);
 	}
@@ -159,7 +171,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_category()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_category_suggestions($this->input->get('term')));
+		$suggestions = $this->xss_clean($this->Item->get_category_suggestions($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -169,7 +181,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_location()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_location_suggestions($this->input->get('term')));
+		$suggestions = $this->xss_clean($this->Item->get_location_suggestions($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -201,8 +213,8 @@ class Items extends Secure_Controller
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
 		$data['item_kit_disabled'] = !$this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
-		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id);
-		$data['definition_names'] = $this->Attribute->get_definition_names();
+		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id);
+		$data['definition_names'] = $this->attribute->get_definition_names();
 
 		foreach($data['definition_values'] as $definition_id => $definition)
 		{
@@ -240,8 +252,8 @@ class Items extends Secure_Controller
 
 		if($data['category_dropdown'] === '1')
 		{
-			$categories 		= array('' => lang('Items.none'));
-			$category_options 	= $this->Attribute->get_definition_values(CATEGORY_DEFINITION_ID);
+			$categories 		= ['' => lang('Items.none')];
+			$category_options 	= $this->attribute->get_definition_values(CATEGORY_DEFINITION_ID);
 			$category_options	= array_combine($category_options,$category_options);	//Overwrite indexes with values for saving in items table instead of attributes
 			$data['categories'] = array_merge($categories,$category_options);
 
@@ -277,7 +289,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 
-		$suppliers = array('' => lang('Items.none'));
+		$suppliers = ['' => lang('Items.none')];
 
 		foreach($this->Supplier->get_all()->getResultArray() as $row)
 		{
@@ -346,7 +358,7 @@ class Items extends Secure_Controller
 
 			$quantity = $this->xss_clean($this->Item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity);
 			$quantity = ($item_id === NEW_ITEM) ? 0 : $quantity;
-			$location_array[$location['location_id']] = array('location_name' => $location['location_name'], 'quantity' => $quantity);
+			$location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
 			$data['stock_locations'] = $location_array;
 		}
 
@@ -355,7 +367,7 @@ class Items extends Secure_Controller
 		if($item_id !== NEW_ITEM && $item_info->item_id !== $item_info->low_sell_item_id)
 		{
 			$low_sell_item_info = $this->Item->get_info($item_info->low_sell_item_id);
-			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, array($low_sell_item_info->name, $low_sell_item_info->pack_name));
+			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
 		}
 		else
 		{
@@ -433,7 +445,7 @@ class Items extends Secure_Controller
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
-				$save_item = array('item_number' => $item['item_number']);
+				$save_item = ['item_number' => $item['item_number']];
 
 				$this->Item->save($save_item, $item['item_id']);
 			}
@@ -446,13 +458,13 @@ class Items extends Secure_Controller
 	public function attributes($item_id = NEW_ITEM)
 	{
 		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->input->post('definition_ids'), TRUE);
-		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id) + $this->Attribute->get_values_by_definitions($definition_ids);
-		$data['definition_names'] = $this->Attribute->get_definition_names();
+		$definition_ids = json_decode($this->request->getPost('definition_ids'), TRUE);
+		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+		$data['definition_names'] = $this->attribute->get_definition_names();
 
 		foreach($data['definition_values'] as $definition_id => $definition_value)
 		{
-			$attribute_value = $this->Attribute->get_attribute_value($item_id, $definition_id);
+			$attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
 			$attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? NULL : $attribute_value->attribute_id;
 			$values = &$data['definition_values'][$definition_id];
 			$values['attribute_id'] = $attribute_id;
@@ -461,8 +473,8 @@ class Items extends Secure_Controller
 
 			if ($definition_value['definition_type'] === DROPDOWN)
 			{
-				$values['values'] = $this->Attribute->get_definition_values($definition_id);
-				$link_value = $this->Attribute->get_link_value($item_id, $definition_id);
+				$values['values'] = $this->attribute->get_definition_values($definition_id);
+				$link_value = $this->attribute->get_link_value($item_id, $definition_id);
 				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
 			}
 
@@ -479,7 +491,7 @@ class Items extends Secure_Controller
 
 	public function bulk_edit()
 	{
-		$suppliers = array('' => lang('Items.none'));
+		$suppliers = ['' => lang('Items.none')];
 
 		foreach($this->Supplier->get_all()->getResultArray() as $row)
 		{
@@ -488,15 +500,17 @@ class Items extends Secure_Controller
 		}
 
 		$data['suppliers'] = $suppliers;
-		$data['allow_alt_description_choices'] = array(
+		$data['allow_alt_description_choices'] = [
 			'' => lang('Items.do_nothing'),
 			1  => lang('Items.change_all_to_allow_alt_desc'),
-			0  => lang('Items.change_all_to_not_allow_allow_desc'));
+			0  => lang('Items.change_all_to_not_allow_allow_desc')
+		];
 
-		$data['serialization_choices'] = array(
+		$data['serialization_choices'] = [
 			'' => lang('Items.do_nothing'),
 			1  => lang('Items.change_all_to_serialized'),
-			0  => lang('Items.change_all_to_unserialized'));
+			0  => lang('Items.change_all_to_unserialized')
+		];
 
 		echo view('items/form_bulk', $data);
 	}
@@ -505,8 +519,8 @@ class Items extends Secure_Controller
 	{
 		$upload_success = $this->handle_image_upload();
 		$upload_data = $this->upload->data();
-		$receiving_quantity = parse_quantity($this->input->post('receiving_quantity'));
-		$item_type = $this->input->post('item_type') === NULL ? ITEM : $this->input->post('item_type');
+		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
+		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type');
 
 		if($receiving_quantity === 0 && $item_type !== ITEM_TEMP)
 		{
@@ -516,26 +530,26 @@ class Items extends Secure_Controller
 		$default_pack_name = lang('Items.default_pack_name');
 
 		//Save item data
-		$item_data = array(
-			'name' => $this->input->post('name'),
-			'description' => $this->input->post('description'),
-			'category' => $this->input->post('category'),
+		$item_data = [
+			'name' => $this->request->getPost('name'),
+			'description' => $this->request->getPost('description'),
+			'category' => $this->request->getPost('category'),
 			'item_type' => $item_type,
-			'stock_type' => $this->input->post('stock_type') === NULL ? HAS_STOCK : intval($this->input->post('stock_type')),
-			'supplier_id' => empty($this->input->post('supplier_id')) ? NULL : intval($this->input->post('supplier_id')),
-			'item_number' => empty($this->input->post('item_number')) ? NULL : $this->input->post('item_number'),
-			'cost_price' => parse_decimals($this->input->post('cost_price')),
-			'unit_price' => parse_decimals($this->input->post('unit_price')),
-			'reorder_level' => parse_quantity($this->input->post('reorder_level')),
+			'stock_type' => $this->request->getPost('stock_type') === NULL ? HAS_STOCK : intval($this->request->getPost('stock_type')),
+			'supplier_id' => empty($this->request->getPost('supplier_id')) ? NULL : intval($this->request->getPost('supplier_id')),
+			'item_number' => empty($this->request->getPost('item_number')) ? NULL : $this->request->getPost('item_number'),
+			'cost_price' => parse_decimals($this->request->getPost('cost_price')),
+			'unit_price' => parse_decimals($this->request->getPost('unit_price')),
+			'reorder_level' => parse_quantity($this->request->getPost('reorder_level')),
 			'receiving_quantity' => $receiving_quantity,
-			'allow_alt_description' => $this->input->post('allow_alt_description') !== NULL,
-			'is_serialized' => $this->input->post('is_serialized') !== NULL,
-			'qty_per_pack' => $this->input->post('qty_per_pack') === NULL ? 1 : $this->input->post('qty_per_pack'),
-			'pack_name' => $this->input->post('pack_name') === NULL ? $default_pack_name : $this->input->post('pack_name'),
-			'low_sell_item_id' => $this->input->post('low_sell_item_id') === NULL ? $item_id : $this->input->post('low_sell_item_id'),
-			'deleted' => $this->input->post('is_deleted') !== NULL,
-			'hsn_code' => $this->input->post('hsn_code') === NULL ? '' : $this->input->post('hsn_code')
-		);
+			'allow_alt_description' => $this->request->getPost('allow_alt_description') !== NULL,
+			'is_serialized' => $this->request->getPost('is_serialized') !== NULL,
+			'qty_per_pack' => $this->request->getPost('qty_per_pack') === NULL ? 1 : $this->request->getPost('qty_per_pack'),
+			'pack_name' => $this->request->getPost('pack_name') === NULL ? $default_pack_name : $this->request->getPost('pack_name'),
+			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === NULL ? $item_id : $this->request->getPost('low_sell_item_id'),
+			'deleted' => $this->request->getPost('is_deleted') !== NULL,
+			'hsn_code' => $this->request->getPost('hsn_code') === NULL ? '' : $this->request->getPost('hsn_code')
+		];
 
 		if($item_data['item_type'] == ITEM_TEMP)
 		{
@@ -544,7 +558,7 @@ class Items extends Secure_Controller
 			$item_data['reorder_level'] = 0;
 		}
 
-		$tax_category_id = $this->input->post('tax_category_id');
+		$tax_category_id = $this->request->getPost('tax_category_id');
 
 		if(!isset($tax_category_id))
 		{
@@ -552,7 +566,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			$item_data['tax_category_id'] = empty($this->input->post('tax_category_id')) ? NULL : $this->input->post('tax_category_id');
+			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? NULL : $this->request->getPost('tax_category_id');
 		}
 
 		if(!empty($upload_data['orig_name']))
@@ -581,8 +595,8 @@ class Items extends Secure_Controller
 			if(!$use_destination_based_tax)
 			{
 				$items_taxes_data = [];
-				$tax_names = $this->input->post('tax_names');
-				$tax_percents = $this->input->post('tax_percents');
+				$tax_names = $this->request->getPost('tax_names');
+				$tax_percents = $this->request->getPost('tax_percents');
 
 				$tax_name_index = 0;
 
@@ -592,7 +606,7 @@ class Items extends Secure_Controller
 
 					if(is_numeric($tax_percentage))
 					{
-						$items_taxes_data[] = array('name' => $tax_names[$tax_name_index], 'percent' => $tax_percentage);
+						$items_taxes_data[] = ['name' => $tax_names[$tax_name_index], 'percent' => $tax_percentage];
 					}
 
 					$tax_name_index++;
@@ -604,17 +618,18 @@ class Items extends Secure_Controller
 			$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
 			foreach($stock_locations as $location)
 			{
-				$updated_quantity = parse_quantity($this->input->post('quantity_' . $location['location_id']));
+				$updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
 				if($item_data['item_type'] == ITEM_TEMP)
 				{
 					$updated_quantity = 0;
 				}
 
-				$location_detail = array(
+				$location_detail = [
 						'item_id' => $item_id,
 						'location_id' => $location['location_id'],
-						'quantity' => $updated_quantity);
+						'quantity' => $updated_quantity
+				];
 
 				$item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location['location_id']);
 
@@ -622,61 +637,61 @@ class Items extends Secure_Controller
 				{
 					$success &= $this->Item_quantity->save($location_detail, $item_id, $location['location_id']);
 
-					$inv_data = array(
+					$inv_data = [
 						'trans_date' => date('Y-m-d H:i:s'),
 						'trans_items' => $item_id,
 						'trans_user' => $employee_id,
 						'trans_location' => $location['location_id'],
 						'trans_comment' => lang('Items.manually_editing_of_quantity'),
 						'trans_inventory' => $updated_quantity - $item_quantity->quantity
-					);
+					];
 
 					$success &= $this->Inventory->insert($inv_data);
 				}
 			}
 
 			// Save item attributes
-			$attribute_links = $this->input->post('attribute_links') !== NULL ? $this->input->post('attribute_links') : [];
-			$attribute_ids = $this->input->post('attribute_ids');
+			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links') : [];
+			$attribute_ids = $this->request->getPost('attribute_ids');
 
-			$this->Attribute->delete_link($item_id);
+			$this->attribute->delete_link($item_id);
 
 			foreach($attribute_links as $definition_id => $attribute_id)
 			{
-				$definition_type = $this->Attribute->get_info($definition_id)->definition_type;
+				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
 
 				if($definition_type !== DROPDOWN)
 				{
-					$attribute_id = $this->Attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
+					$attribute_id = $this->attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
 				}
 
-				$this->Attribute->save_link($item_id, $definition_id, $attribute_id);
+				$this->attribute->save_link($item_id, $definition_id, $attribute_id);
 			}
 
 			if($success && $upload_success)
 			{
 				$message = $this->xss_clean(lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name']);
 
-				echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $item_id));
+				echo json_encode (['success' => TRUE, 'message' => $message, 'id' => $item_id]);
 			}
 			else
 			{
 				$message = $this->xss_clean($upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors()));
 
-				echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => $item_id));
+				echo json_encode (['success' => FALSE, 'message' => $message, 'id' => $item_id]);
 			}
 		}
 		else
 		{
 			$message = $this->xss_clean(lang('Items.error_adding_updating') . ' ' . $item_data['name']);
 
-			echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => NEW_ITEM));
+			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
 		}
 	}
 
 	public function check_item_number()
 	{
-		$exists = $this->Item->item_number_exists($this->input->post('item_number'), $this->input->post('item_id'));
+		$exists = $this->Item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
 		echo !$exists ? 'true' : 'false';
 	}
 
@@ -685,9 +700,9 @@ class Items extends Secure_Controller
 	 */
 	public function check_kit_exists()
 	{
-		if($this->input->post('item_number') === NEW_ITEM)
+		if($this->request->getPost('item_number') === NEW_ITEM)
 		{
-			$exists = $this->Item_kit->item_kit_exists_for_name($this->input->post('name'));
+			$exists = $this->Item_kit->item_kit_exists_for_name($this->request->getPost('name'));
 		}
 		else
 		{
@@ -702,11 +717,13 @@ class Items extends Secure_Controller
 	private function handle_image_upload()
 	{
 	//Load upload library
-		$config = array('upload_path' => './uploads/item_pics/',
+		$config = [
+			'upload_path' => './uploads/item_pics/',
 			'allowed_types' => $this->config->get('image_allowed_types'),
 			'max_size' => $this->config->get('image_max_size'),
 			'max_width' => $this->config->get('image_max_width'),
-			'max_height' => $this->config->get('image_max_height'));
+			'max_height' => $this->config->get('image_max_height')
+		];
 
 		$this->upload = new Upload($config);
 		$this->upload->do_upload('item_image');
@@ -716,53 +733,53 @@ class Items extends Secure_Controller
 
 	public function remove_logo($item_id)
 	{
-		$item_data = array('pic_filename' => NULL);
+		$item_data = ['pic_filename' => NULL];
 		$result = $this->Item->save($item_data, $item_id);
 
-		echo json_encode(array('success' => $result));
+		echo json_encode (['success' => $result]);
 	}
 
 	public function save_inventory($item_id = NEW_ITEM)
 	{
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
-		$location_id = $this->input->post('stock_location');
-		$inv_data = array(
+		$location_id = $this->request->getPost('stock_location');
+		$inv_data = [
 			'trans_date' => date('Y-m-d H:i:s'),
 			'trans_items' => $item_id,
 			'trans_user' => $employee_id,
 			'trans_location' => $location_id,
-			'trans_comment' => $this->input->post('trans_comment'),
-			'trans_inventory' => parse_quantity($this->input->post('newquantity'))
-		);
+			'trans_comment' => $this->request->getPost('trans_comment'),
+			'trans_inventory' => parse_quantity($this->request->getPost('newquantity'))
+		];
 
 		$this->Inventory->insert($inv_data);
 
 	//Update stock quantity
 		$item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location_id);
-		$item_quantity_data = array(
+		$item_quantity_data = [
 			'item_id' => $item_id,
 			'location_id' => $location_id,
-			'quantity' => $item_quantity->quantity + parse_quantity($this->input->post('newquantity'))
-		);
+			'quantity' => $item_quantity->quantity + parse_quantity($this->request->getPost('newquantity'))
+		];
 
 		if($this->Item_quantity->save($item_quantity_data, $item_id, $location_id))
 		{
 			$message = $this->xss_clean(lang('Items.successful_updating') . " $cur_item_info->name");
 
-			echo json_encode(array('success' => TRUE, 'message' => $message, 'id' => $item_id));
+			echo json_encode (['success' => TRUE, 'message' => $message, 'id' => $item_id]);
 		}
 		else
 		{
 			$message = $this->xss_clean(lang('Items.error_adding_updating') . " $cur_item_info->name");
 
-			echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => NEW_ITEM));
+			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
 		}
 	}
 
 	public function bulk_update()
 	{
-		$items_to_update = $this->input->post('item_ids');
+		$items_to_update = $this->request->getPost('item_ids');
 		$item_data = [];
 
 		foreach($_POST as $key => $value)
@@ -772,7 +789,7 @@ class Items extends Secure_Controller
 			{
 				$item_data[$key] = $value;
 			}
-			elseif($value !== '' && !(in_array($key, array('item_ids', 'tax_names', 'tax_percents'))))
+			elseif($value !== '' && !(in_array($key, ['item_ids', 'tax_names', 'tax_percents'])))
 			{
 				$item_data[$key] = $value;
 			}
@@ -782,8 +799,8 @@ class Items extends Secure_Controller
 		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = [];
-			$tax_names = $this->input->post('tax_names');
-			$tax_percents = $this->input->post('tax_percents');
+			$tax_names = $this->request->getPost('tax_names');
+			$tax_percents = $this->request->getPost('tax_percents');
 			$tax_updated = FALSE;
 
 			foreach($tax_percents as $tax_percent)
@@ -791,7 +808,7 @@ class Items extends Secure_Controller
 				if(!empty($tax_names[$tax_percent]) && is_numeric($tax_percents[$tax_percent]))
 				{
 					$tax_updated = TRUE;
-					$items_taxes_data[] = array('name' => $tax_names[$tax_percent], 'percent' => $tax_percents[$tax_percent]);
+					$items_taxes_data[] = ['name' => $tax_names[$tax_percent], 'percent' => $tax_percents[$tax_percent]];
 				}
 			}
 
@@ -800,26 +817,26 @@ class Items extends Secure_Controller
 				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode(array('success' => TRUE, 'message' => lang('Items.successful_bulk_edit'), 'id' => $this->xss_clean($items_to_update)));
+			echo json_encode (['success' => TRUE, 'message' => lang('Items.successful_bulk_edit'), 'id' => $this->xss_clean($items_to_update)]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Items.error_updating_multiple')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Items.error_updating_multiple')]);
 		}
 	}
 
 	public function delete()
 	{
-		$items_to_delete = $this->input->post('ids');
+		$items_to_delete = $this->request->getPost('ids');
 
 		if($this->Item->delete_list($items_to_delete))
 		{
 			$message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
-			echo json_encode(array('success' => TRUE, 'message' => $message));
+			echo json_encode (['success' => TRUE, 'message' => $message]);
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Items.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Items.cannot_be_deleted')]);
 		}
 	}
 
@@ -827,7 +844,7 @@ class Items extends Secure_Controller
 	{
 		$name = 'import_items.csv';
 		$allowed_locations = $this->Stock_location->get_allowed_locations();
-		$allowed_attributes = $this->Attribute->get_definition_names(FALSE);
+		$allowed_attributes = $this->attribute->get_definition_names(FALSE);
 		$data = generate_import_items_csv($allowed_locations, $allowed_attributes);
 
 		force_download($name, $data, TRUE);
@@ -845,7 +862,7 @@ class Items extends Secure_Controller
 	{
 		if($_FILES['file_path']['error'] !== UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Items.csv_import_failed')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Items.csv_import_failed')]);
 		}
 		else
 		{
@@ -857,17 +874,17 @@ class Items extends Secure_Controller
 				$csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
 				$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 				$allowed_stock_locations = $this->Stock_location->get_allowed_locations();
-				$attribute_definition_names	= $this->Attribute->get_definition_names();
+				$attribute_definition_names	= $this->attribute->get_definition_names();
 
 				unset($attribute_definition_names[-1]);	//Removes the common_none_selected_text from the array
 
 				foreach($attribute_definition_names as $definition_name)
 				{
-					$attribute_data[$definition_name] = $this->Attribute->get_definition_by_name($definition_name)[0];
+					$attribute_data[$definition_name] = $this->attribute->get_definition_by_name($definition_name)[0];
 
 					if($attribute_data[$definition_name]['definition_type'] === DROPDOWN)
 					{
-						$attribute_data[$definition_name]['dropdown_values'] = $this->Attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
+						$attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
 					}
 				}
 
@@ -878,7 +895,7 @@ class Items extends Secure_Controller
 					$is_failed_row = FALSE;
 					$item_id = $row['Id'];
 					$is_update = !empty($item_id);
-					$item_data = array(
+					$item_data = [
 						'item_id' => $item_id,
 						'name' => $row['Item Name'],
 						'description' => $row['Description'],
@@ -888,7 +905,8 @@ class Items extends Secure_Controller
 						'reorder_level' => $row['Reorder Level'],
 						'deleted' => FALSE,
 						'hsn_code' => $row['HSN'],
-						'pic_filename' => $row['Image']);
+						'pic_filename' => $row['Image']
+					];
 
 					if(!empty($row['supplier_id']))
 					{
@@ -947,18 +965,18 @@ class Items extends Secure_Controller
 				{
 					$message = lang('Items.csv_import_partially_failed', count($failCodes), implode(', ', $failCodes));
 					$this->db->transRollback();
-					echo json_encode(array('success' => FALSE, 'message' => $message));
+					echo json_encode (['success' => FALSE, 'message' => $message]);
 				}
 				else
 				{
 					$this->db->transCommit();
 
-					echo json_encode(array('success' => TRUE, 'message' => lang('Items.csv_import_success')));
+					echo json_encode (['success' => TRUE, 'message' => lang('Items.csv_import_success')]);
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => lang('Items.csv_import_nodata_wrongformat')));
+				echo json_encode (['success' => FALSE, 'message' => lang('Items.csv_import_nodata_wrongformat')]);
 			}
 		}
 	}
@@ -977,10 +995,11 @@ class Items extends Secure_Controller
 		$is_update = $item_id ? TRUE : FALSE;
 
 		//Check for empty required fields
-		$check_for_empty = array(
+		$check_for_empty = [
 			'name' => $item_data['name'],
 			'category' => $item_data['category'],
-			'unit_price' => $item_data['unit_price']);
+			'unit_price' => $item_data['unit_price']
+		];
 
 		foreach($check_for_empty as $key => $val)
 		{
@@ -1005,13 +1024,14 @@ class Items extends Secure_Controller
 		}
 
 		//Build array of fields to check for numerics
-		$check_for_numeric_values = array(
+		$check_for_numeric_values = [
 			'cost_price' => $item_data['cost_price'],
 			'unit_price' => $item_data['unit_price'],
 			'reorder_level' => $item_data['reorder_level'],
 			'supplier_id' => $item_data['supplier_id'],
 			'Tax 1 Percent' => $row['Tax 1 Percent'],
-			'Tax 2 Percent' => $row['Tax 2 Percent']);
+			'Tax 2 Percent' => $row['Tax 2 Percent']
+		];
 
 		foreach($allowed_locations as $location_name)
 		{
@@ -1115,15 +1135,15 @@ class Items extends Secure_Controller
 	 */
 	private function store_attribute_value($value, $attribute_data, $item_id)
 	{
-		$attribute_id = $this->Attribute->value_exists($value, $attribute_data['definition_type']);
+		$attribute_id = $this->attribute->value_exists($value, $attribute_data['definition_type']);
 
-		$this->Attribute->delete_link($item_id, $attribute_data['definition_id']);
+		$this->attribute->delete_link($item_id, $attribute_data['definition_id']);
 
 		if($attribute_id === FALSE)
 		{
-			$attribute_id = $this->Attribute->save_value($value, $attribute_data['definition_id'], $item_id, FALSE, $attribute_data['definition_type']);
+			$attribute_id = $this->attribute->save_value($value, $attribute_data['definition_id'], $item_id, FALSE, $attribute_data['definition_type']);
 		}
-		else if($this->Attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id) === FALSE)
+		else if($this->attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id) === FALSE)
 		{
 			return FALSE;
 		}
@@ -1144,15 +1164,14 @@ class Items extends Secure_Controller
 
 		foreach($allowed_locations as $location_id => $location_name)
 		{
-			$item_quantity_data = array(
-				'item_id' => $item_data['item_id'],
-				'location_id' => $location_id);
+			$item_quantity_data = ['item_id' => $item_data['item_id'], 'location_id' => $location_id];
 
-			$csv_data = array(
+			$csv_data = [
 				'trans_items' => $item_data['item_id'],
 				'trans_user' => $employee_id,
 				'trans_comment' => $comment,
-				'trans_location' => $location_id);
+				'trans_location' => $location_id
+			];
 
 			if(!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0')
 			{
@@ -1188,12 +1207,12 @@ class Items extends Secure_Controller
 
 		if(is_numeric($row['Tax 1 Percent']) && $row['Tax 1 Name'] !== '')
 		{
-			$items_taxes_data[] = array('name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']);
+			$items_taxes_data[] = ['name' => $row['Tax 1 Name'], 'percent' => $row['Tax 1 Percent']];
 		}
 
 		if(is_numeric($row['Tax 2 Percent']) && $row['Tax 2 Name'] !== '')
 		{
-			$items_taxes_data[] = array('name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']);
+			$items_taxes_data[] = ['name' => $row['Tax 2 Name'], 'percent' => $row['Tax 2 Percent']];
 		}
 
 		if(isset($items_taxes_data))
@@ -1221,7 +1240,7 @@ class Items extends Secure_Controller
 				if(sizeof($images) > 0)
 				{
 					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-					$item_data = array('pic_filename' => $new_pic_filename);
+					$item_data = ['pic_filename' => $new_pic_filename];
 					$this->Item->save($item_data, $item->item_id);
 				}
 			}

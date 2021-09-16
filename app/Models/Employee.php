@@ -248,7 +248,7 @@ class Employee extends Person
 		$builder->orderBy('last_name', 'asc');
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
 		}
 
 		$builder = $this->db->table('employees');
@@ -263,7 +263,7 @@ class Employee extends Person
 		$builder->orderBy('email', 'asc');
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->email);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->email);
 		}
 
 		$builder = $this->db->table('employees');
@@ -279,7 +279,7 @@ class Employee extends Person
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->username);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->username);
 		}
 
 		$builder = $this->db->table('employees');
@@ -295,7 +295,7 @@ class Employee extends Person
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->phone_number);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number);
 		}
 
 		//only return $limit suggestions

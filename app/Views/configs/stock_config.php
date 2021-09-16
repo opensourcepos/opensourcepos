@@ -1,14 +1,14 @@
-<?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_locations/', ['id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
             <ul id="stock_error_message_box" class="error_message_box"></ul>
 
             <div id="stock_locations">
-				<?php echo view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
+				<?php echo view('partial/stock_locations', ['stock_locations' => $stock_locations)); ?>
 			</div>
             
-            <?php echo form_submit(array(
+            <?php echo form_submit ([
                 'name' => 'submit_stock',
                 'id' => 'submit_stock',
                 'value' => lang('Common.submit'),

@@ -2,22 +2,32 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
+use app\Models\Appconfig;
 
 /**
  * Token_quote_sequence class
+ *
+ * @property appconfig appconfig
+ *
  */
 
 class Token_quote_sequence extends Token
 {
-	public function token_id()
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->appconfig = model('Appconfig');
+	}
+
+	public function token_id(): string
 	{
 		return 'QSEQ';
 	}
 
-	public function get_value()
+	public function get_value(): string
 	{
-		return $this->CI->Appconfig->acquire_save_next_quote_sequence();
+		return $this->appconfig->acquire_save_next_quote_sequence();
 	}
 }
 ?>

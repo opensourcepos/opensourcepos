@@ -23,7 +23,7 @@ abstract class Persons extends Secure_Controller
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Person->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Person->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}

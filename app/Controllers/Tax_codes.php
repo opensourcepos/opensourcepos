@@ -28,22 +28,22 @@ class Tax_codes extends Secure_Controller
 	 */
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$tax_codes = $this->Tax_code->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Tax_code->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_codes->getResult() as $tax_code)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_code_data_row($tax_code));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	public function get_row($row_id)
@@ -63,11 +63,11 @@ class Tax_codes extends Secure_Controller
 
 	public function save($tax_code_id = -1)
 	{
-		$tax_code_data = array(
-			'tax_code' => $this->input->post('tax_code'),
-			'tax_code_name' => $this->input->post('tax_code_name'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state')
+		$tax_code_data = [
+			'tax_code' => $this->request->getPost('tax_code'),
+			'tax_code_name' => $this->request->getPost('tax_code_name'),
+			'city' => $this->request->getPost('city'),
+			'state' => $this->request->getPost('state')
 		);
 
 		if($this->Tax_code->save($tax_code_data))
@@ -76,30 +76,30 @@ class Tax_codes extends Secure_Controller
 
 			if($tax_code_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_codes.successful_adding'), 'id' => $tax_code_data['tax_code_id']));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_codes.successful_adding'), 'id' => $tax_code_data['tax_code_id']));
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_codes.successful_updating'), 'id' => $tax_code_id));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_codes.successful_updating'), 'id' => $tax_code_id));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'], 'id' => -1));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'], 'id' => -1));
 		}
 	}
 
 	public function delete()
 	{
-		$tax_codes_to_delete = $this->input->post('ids');
+		$tax_codes_to_delete = $this->request->getPost('ids');
 
 		if($this->Tax_code->delete_list($tax_codes_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')));
+			echo json_encode (['success' => TRUE, 'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_codes.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_codes.cannot_be_deleted')));
 		}
 	}
 }

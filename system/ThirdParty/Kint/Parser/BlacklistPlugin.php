@@ -35,14 +35,14 @@ class BlacklistPlugin extends Plugin
      *
      * @var array
      */
-    public static $blacklist = array();
+    public static $blacklist = [];
 
     /**
      * List of classes and interfaces to blacklist except when dumped directly.
      *
      * @var array
      */
-    public static $shallow_blacklist = array();
+    public static $shallow_blacklist = [];
 
     /**
      * Maximum size of arrays before blacklisting.
@@ -60,7 +60,7 @@ class BlacklistPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('object', 'array');
+        return ['object', 'array');
     }
 
     public function getTriggers()

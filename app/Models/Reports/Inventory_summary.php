@@ -10,16 +10,16 @@ class Inventory_summary extends Report
 {
 	public function getDataColumns()
 	{
-		return array(array('item_name' => lang('Reports.item_name')),
-					array('item_number' => lang('Reports.item_number')),
-					array('category' => lang('Reports.category')),
-					array('quantity' => lang('Reports.quantity')),
-					array('low_sell_quantity' => lang('Reports.low_sell_quantity')),
-					array('reorder_level' => lang('Reports.reorder_level')),
-					array('location_name' => lang('Reports.stock_location')),
-					array('cost_price' => lang('Reports.cost_price'), 'sorter' => 'number_sorter'),
-					array('unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'),
-					array('subtotal' => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter'));
+		return [['item_name' => lang('Reports.item_name')),
+					['item_number' => lang('Reports.item_number')),
+					['category' => lang('Reports.category')),
+					['quantity' => lang('Reports.quantity')),
+					['low_sell_quantity' => lang('Reports.low_sell_quantity')),
+					['reorder_level' => lang('Reports.reorder_level')),
+					['location_name' => lang('Reports.stock_location')),
+					['cost_price' => lang('Reports.cost_price'), 'sorter' => 'number_sorter'),
+					['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'),
+					['subtotal' => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)
@@ -61,7 +61,7 @@ class Inventory_summary extends Report
 	 */
 	public function getSummaryData(array $inputs)
 	{
-		$return = array('total_inventory_value' => 0, 'total_quantity' => 0, 'total_low_sell_quantity' => 0, 'total_retail' => 0);
+		$return = ['total_inventory_value' => 0, 'total_quantity' => 0, 'total_low_sell_quantity' => 0, 'total_retail' => 0);
 
 		foreach($inputs as $input)
 		{
@@ -81,7 +81,7 @@ class Inventory_summary extends Report
 	 */
 	public function getItemCountDropdownArray()
 	{
-		return array('all' => lang('Reports.all'),
+		return ['all' => lang('Reports.all'),
 					'zero_and_less' => lang('Reports.zero_and_less'),
 					'more_than_zero' => lang('Reports.more_than_zero'));
 	}

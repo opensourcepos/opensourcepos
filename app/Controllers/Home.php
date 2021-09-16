@@ -41,33 +41,33 @@ class Home extends Secure_Controller
 	*/
 	public function save($employee_id = -1)
 	{
-		if($this->input->post('current_password') != '' && $employee_id != -1)
+		if($this->request->getPost('current_password') != '' && $employee_id != -1)
 		{
-			if($this->Employee->check_password($this->input->post('username'), $this->input->post('current_password')))
+			if($this->Employee->check_password($this->request->getPost('username'), $this->request->getPost('current_password')))
 			{
-				$employee_data = array(
-					'username' => $this->input->post('username'),
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+				$employee_data = [
+					'username' => $this->request->getPost('username'),
+					'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
 					'hash_version' => 2
 				);
 
 				if($this->Employee->change_password($employee_data, $employee_id))
 				{
-					echo json_encode(array('success' => TRUE, 'message' => lang('Employees.successful_change_password'), 'id' => $employee_id));
+					echo json_encode (['success' => TRUE, 'message' => lang('Employees.successful_change_password'), 'id' => $employee_id));
 				}
 				else//failure
 				{
-					echo json_encode(array('success' => FALSE, 'message' => lang('Employees.unsuccessful_change_password'), 'id' => -1));
+					echo json_encode (['success' => FALSE, 'message' => lang('Employees.unsuccessful_change_password'), 'id' => -1));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
+				echo json_encode (['success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
+			echo json_encode (['success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
 		}
 	}
 }

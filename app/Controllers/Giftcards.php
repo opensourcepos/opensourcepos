@@ -23,22 +23,22 @@ class Giftcards extends Secure_Controller
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$giftcards = $this->Giftcard->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Giftcard->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($giftcards->getResult() as $giftcard)
 		{
 			$data_rows[] = $this->xss_clean(get_giftcard_data_row($giftcard));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	/*
@@ -47,14 +47,14 @@ class Giftcards extends Secure_Controller
 
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->input->get('term'), TRUE));
+		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -91,18 +91,18 @@ class Giftcards extends Secure_Controller
 
 	public function save($giftcard_id = -1)
 	{
-		$giftcard_number = $this->input->post('giftcard_number');
+		$giftcard_number = $this->request->getPost('giftcard_number');
 
 		if($giftcard_id == -1 && trim($giftcard_number) == '')
 		{
-			$giftcard_number = $this->Giftcard->generate_unique_giftcard_name($this->input->post('giftcard_amount'));
+			$giftcard_number = $this->Giftcard->generate_unique_giftcard_name($this->request->getPost('giftcard_amount'));
 		}
 
-		$giftcard_data = array(
+		$giftcard_data = [
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $giftcard_number,
-			'value' => parse_decimals($this->input->post('giftcard_amount')),
-			'person_id' => $this->input->post('person_id') == '' ? NULL : $this->input->post('person_id')
+			'value' => parse_decimals($this->request->getPost('giftcard_amount')),
+			'person_id' => $this->request->getPost('person_id') == '' ? NULL : $this->request->getPost('person_id')
 		);
 
 		if($this->Giftcard->save($giftcard_data, $giftcard_id))
@@ -112,12 +112,12 @@ class Giftcards extends Secure_Controller
 			//New giftcard
 			if($giftcard_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Giftcards.successful_adding') . ' ' .
+				echo json_encode (['success' => TRUE, 'message' => lang('Giftcards.successful_adding') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_data['giftcard_id']));
 			}
 			else //Existing giftcard
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Giftcards.successful_updating') . ' ' .
+				echo json_encode (['success' => TRUE, 'message' => lang('Giftcards.successful_updating') . ' ' .
 								$giftcard_data['giftcard_number'], 'id' => $giftcard_id));
 			}
 		}
@@ -125,29 +125,29 @@ class Giftcards extends Secure_Controller
 		{
 			$giftcard_data = $this->xss_clean($giftcard_data);
 			
-			echo json_encode(array('success' => FALSE, 'message' => lang('Giftcards.error_adding_updating') . ' ' .
+			echo json_encode (['success' => FALSE, 'message' => lang('Giftcards.error_adding_updating') . ' ' .
 							$giftcard_data['giftcard_number'], 'id' => -1));
 		}
 	}
 
 	public function ajax_check_number_giftcard()
 	{
-		$parsed_value = parse_decimals($this->input->post('giftcard_amount'));
-		echo json_encode(array('success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)));
+		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount'));
+		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)));
 	}
 
 	public function delete()
 	{
-		$giftcards_to_delete = $this->xss_clean($this->input->post('ids'));
+		$giftcards_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
 		if($this->Giftcard->delete_list($giftcards_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Giftcards.successful_deleted') . ' ' .
+			echo json_encode (['success' => TRUE, 'message' => lang('Giftcards.successful_deleted') . ' ' .
 							count($giftcards_to_delete).' '.lang('Giftcards.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Giftcards.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Giftcards.cannot_be_deleted')));
 		}
 	}
 }

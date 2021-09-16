@@ -1,7 +1,7 @@
 <div class="form-group form-group-sm">
-	<?php echo form_label(lang('Attributes.definition_name"), "definition_name_label", array('class' => 'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Attributes.definition_name"), "definition_name_label", ['class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_dropdown('definition_name', $definition_names, -1, array('id' => 'definition_name', 'class' => 'form-control')); ?>
+		<?php echo form_dropdown('definition_name', $definition_names, -1, ['id' => 'definition_name', 'class' => 'form-control')); ?>
 	</div>
 
 </div>
@@ -12,7 +12,7 @@ foreach($definition_values as $definition_id => $definition_value)
 ?>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($definition_value['definition_name'], $definition_value['definition_name'], array('class' => 'control-label col-xs-3')); ?>
+	<?php echo form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<?php
@@ -22,7 +22,7 @@ foreach($definition_values as $definition_id => $definition_value)
 				if ($definition_value['definition_type'] == DATE)
 				{
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
-					echo form_input(array(
+					echo form_input ([
 						'name' => "attribute_links[$definition_id]",
 						'value' => to_date($value),
 						'class' => 'form-control input-sm datetime',
@@ -49,14 +49,14 @@ foreach($definition_values as $definition_id => $definition_value)
 					$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
 
 				//Sends 0 if the box is unchecked instead of not sending anything.
-					echo form_input(array(
+					echo form_input ([
 						'type' => 'hidden',
 						'name' => "attribute_links[$definition_id]",
 						'id' => "attribute_links[$definition_id]",
 						'value' => 0,
 						'data-definition-id' => $definition_id
 					));
-					echo form_checkbox(array(
+					echo form_checkbox ([
 						'name' => "attribute_links[$definition_id]",
 						'id' => "attribute_links[$definition_id]",
 						'value' => 1,
@@ -77,7 +77,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
 (function() {
-		<?php echo view('partial/datepicker_locale', array('config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->get('dateformat') . '"}'))); ?>
+		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->config->get('dateformat') . '"}'))); ?>
 
 		var enable_delete = function() {
 			$('.remove_attribute_btn').click(function() {

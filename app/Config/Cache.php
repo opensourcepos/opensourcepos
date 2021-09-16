@@ -63,7 +63,7 @@ class Cache extends BaseConfig
 	 *    true       = Enabled, take all query parameters into account.
 	 *                 Please be aware that this may result in numerous cache
 	 *                 files generated for the same page over and over again.
-	 *    array('q') = Enabled, but only take into account the specified list
+	 *    ['q') = Enabled, but only take into account the specified list
 	 *                 of query parameters.
 	 *
 	 * @var boolean|string[]

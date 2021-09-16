@@ -46,46 +46,46 @@ class Ean8 extends BarcodeBase
 	 * Coding map
 	 * @var array 
 	 */
-	private $_codingmap = array(
-		'0' => array(
-			'A' => array(0,0,0,1,1,0,1),
-			'C' => array(1,1,1,0,0,1,0)
+	private $_codingmap = [
+		'0' => [
+			'A' => [0,0,0,1,1,0,1),
+			'C' => [1,1,1,0,0,1,0)
 		),
-		'1' => array(
-			'A' => array(0,0,1,1,0,0,1),
-			'C' => array(1,1,0,0,1,1,0)
+		'1' => [
+			'A' => [0,0,1,1,0,0,1),
+			'C' => [1,1,0,0,1,1,0)
 		),
-		'2' => array(
-			'A' => array(0,0,1,0,0,1,1),
-			'C' => array(1,1,0,1,1,0,0)
+		'2' => [
+			'A' => [0,0,1,0,0,1,1),
+			'C' => [1,1,0,1,1,0,0)
 		),
-		'3' => array(
-			'A' => array(0,1,1,1,1,0,1),
-			'C' => array(1,0,0,0,0,1,0)
+		'3' => [
+			'A' => [0,1,1,1,1,0,1),
+			'C' => [1,0,0,0,0,1,0)
 		),
-		'4' => array(
-			'A' => array(0,1,0,0,0,1,1),
-			'C' => array(1,0,1,1,1,0,0)
+		'4' => [
+			'A' => [0,1,0,0,0,1,1),
+			'C' => [1,0,1,1,1,0,0)
 		),
-		'5' => array(
-			'A' => array(0,1,1,0,0,0,1),
-			'C' => array(1,0,0,1,1,1,0)
+		'5' => [
+			'A' => [0,1,1,0,0,0,1),
+			'C' => [1,0,0,1,1,1,0)
 		),
-		'6' => array(
-			'A' => array(0,1,0,1,1,1,1),
-			'C' => array(1,0,1,0,0,0,0)
+		'6' => [
+			'A' => [0,1,0,1,1,1,1),
+			'C' => [1,0,1,0,0,0,0)
 		),
-		'7' => array(
-			'A' => array(0,1,1,1,0,1,1),
-			'C' => array(1,0,0,0,1,0,0)
+		'7' => [
+			'A' => [0,1,1,1,0,1,1),
+			'C' => [1,0,0,0,1,0,0)
 		),
-		'8' => array(
-			'A' => array(0,1,1,0,1,1,1),
-			'C' => array(1,0,0,1,0,0,0)
+		'8' => [
+			'A' => [0,1,1,0,1,1,1),
+			'C' => [1,0,0,1,0,0,0)
 		),
-		'9' => array(
-			'A' => array(0,0,0,1,0,1,1),
-			'C' => array(1,1,1,0,1,0,0)
+		'9' => [
+			'A' => [0,0,0,1,0,1,1),
+			'C' => [1,1,1,0,1,0,0)
 		)
 	);
 
@@ -155,7 +155,7 @@ class Ean8 extends BarcodeBase
 
 	public function validate($barcode)
 	{
-		$ean = str_replace(array("-","/"," ","\t","\n"), "", $barcode);   // make a clean ean
+		$ean = str_replace (["-","/"," ","\t","\n"), "", $barcode);   // make a clean ean
 		$len = strlen($ean);
 
 		if( !is_numeric($ean) || strlen($barcode) != 8 )
@@ -163,7 +163,7 @@ class Ean8 extends BarcodeBase
 			return false;
 		}
 
-		$weights = array(3,1,3,1,3,1,3);    // weights
+		$weights = [3,1,3,1,3,1,3);    // weights
 		$chk = $ean[7];     // 8. digit
 
 		$i       = 0;

@@ -36,7 +36,7 @@ class Login extends BaseController
 
 	public function login_check($username)
 	{
-		$password = $this->input->post('password');
+		$password = $this->request->getPost('password');
 
 		if(!$this->_installation_check())
 		{
@@ -89,7 +89,7 @@ class Login extends BaseController
 	{
 		// get PHP extensions and check that the required ones are installed
 		$extensions = implode(', ', get_loaded_extensions());
-		$keys = array('bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl');
+		$keys = ['bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl');
 		$pattern = '/';
 		foreach($keys as $key) 
 		{

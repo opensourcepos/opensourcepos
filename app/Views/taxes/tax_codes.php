@@ -1,14 +1,14 @@
-<?php echo form_open('taxes/save_tax_codes/', array('id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal')); ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
 		<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
 		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_codes">
-			<?php echo view('partial/tax_codes', array('tax_codes' => $tax_codes)); ?>
+			<?php echo view('partial/tax_codes', ['tax_codes' => $tax_codes)); ?>
 		</div>
 
-		<?php echo form_submit(array(
+		<?php echo form_submit ([
 			'name' => 'submit_tax_codes',
 			'id' => 'submit_tax_codes',
 			'value' => lang('Common.submit'),

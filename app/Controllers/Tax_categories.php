@@ -24,22 +24,22 @@ class Tax_categories extends Secure_Controller
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$tax_categories = $this->Tax_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Tax_category->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_categories->getResult() as $tax_category)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_category_data_row($tax_category));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	public function get_row($row_id)
@@ -59,10 +59,10 @@ class Tax_categories extends Secure_Controller
 
 	public function save($tax_category_id = -1)
 	{
-		$tax_category_data = array(
-			'tax_category' => $this->input->post('tax_category'),
-			'tax_category_code' => $this->input->post('tax_category_code'),
-			'tax_group_sequence' => $this->input->post('tax_group_sequence')
+		$tax_category_data = [
+			'tax_category' => $this->request->getPost('tax_category'),
+			'tax_category_code' => $this->request->getPost('tax_category_code'),
+			'tax_group_sequence' => $this->request->getPost('tax_group_sequence')
 		);
 
 		if($this->Tax_category->save($tax_category_data, $tax_category_id))
@@ -72,30 +72,30 @@ class Tax_categories extends Secure_Controller
 			// New tax_category_id
 			if($tax_category_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_categories.successful_adding'), 'id' => $tax_category_data['tax_category_id']));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_categories.successful_adding'), 'id' => $tax_category_data['tax_category_id']));
 			}
 			else
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Tax_categories.successful_updating'), 'id' => $tax_category_id));
+				echo json_encode (['success' => TRUE, 'message' => lang('Tax_categories.successful_updating'), 'id' => $tax_category_id));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'], 'id' => -1));
 		}
 	}
 
 	public function delete()
 	{
-		$tax_categories_to_delete = $this->input->post('ids');
+		$tax_categories_to_delete = $this->request->getPost('ids');
 
 		if($this->Tax_category->delete_list($tax_categories_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Tax_categories.successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . lang('Tax_categories.one_or_multiple')));
+			echo json_encode (['success' => TRUE, 'message' => lang('Tax_categories.successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . lang('Tax_categories.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Tax_categories.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Tax_categories.cannot_be_deleted')));
 		}
 	}
 }

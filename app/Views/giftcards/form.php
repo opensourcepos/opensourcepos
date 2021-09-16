@@ -2,12 +2,12 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('giftcards/save/'.$giftcard_id, ['id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.person_id'), 'person_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Giftcards.person_id'), 'person_name', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'person_name',
 						'id'=>'person_name',
 						'class'=>'form-control input-sm',
@@ -25,9 +25,9 @@
 		}
 		?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', array('class'=>'control-label col-xs-3'.$class)); ?>
+			<?php echo form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class'=>'control-label col-xs-3'.$class)); ?>
 			<div class='col-xs-4'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'giftcard_number',
 						'id'=>'giftcard_number',
 						'class'=>'form-control input-sm',
@@ -37,13 +37,13 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.card_value'), 'giftcard_amount', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><?php echo $this->config->get('currency_symbol'); ?></span>
 					<?php endif; ?>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'giftcard_amount',
 							'id'=>'giftcard_amount',
 							'class'=>'form-control input-sm',

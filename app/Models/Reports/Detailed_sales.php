@@ -16,22 +16,22 @@ class Detailed_sales extends Report
 
 	public function getDataColumns()
 	{
-		return array(
-			'summary' => array(
-				array('id' => lang('Reports.sale_id')),
-				array('type_code' => lang('Reports.code_type')),
-				array('sale_date' => lang('Reports.date'), 'sortable' => FALSE),
-				array('quantity' => lang('Reports.quantity')),
-				array('employee_name' => lang('Reports.sold_by')),
-				array('customer_name' => lang('Reports.sold_to')),
-				array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-				array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-				array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-				array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-				array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'),
-				array('payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE),
-				array('comment' => lang('Reports.comments'))),
-			'details' => array(
+		return [
+			'summary' => [
+				['id' => lang('Reports.sale_id')),
+				['type_code' => lang('Reports.code_type')),
+				['sale_date' => lang('Reports.date'), 'sortable' => FALSE),
+				['quantity' => lang('Reports.quantity')),
+				['employee_name' => lang('Reports.sold_by')),
+				['customer_name' => lang('Reports.sold_to')),
+				['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
+				['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
+				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
+				['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
+				['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'),
+				['payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE),
+				['comment' => lang('Reports.comments'))),
+			'details' => [
 				lang('Reports.name'),
 				lang('Reports.category'),
 				lang('Reports.item_number'),
@@ -43,7 +43,7 @@ class Detailed_sales extends Report
 				lang('Reports.cost'),
 				lang('Reports.profit'),
 				lang('Reports.discount')),
-			'details_rewards' => array(
+			'details_rewards' => [
 				lang('Reports.used'),
 				lang('Reports.earned'))
 		);
@@ -141,10 +141,10 @@ class Detailed_sales extends Report
 		$builder->groupBy('sale_id');
 		$builder->orderBy('MAX(sale_date)');
 
-		$data = array();
+		$data = [];
 		$data['summary'] = $builder->get()->getResultArray();
-		$data['details'] = array();
-		$data['rewards'] = array();
+		$data['details'] = [];
+		$data['rewards'] = [];
 
 		foreach($data['summary'] as $key=>$value)
 		{

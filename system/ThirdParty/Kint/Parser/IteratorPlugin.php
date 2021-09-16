@@ -40,7 +40,7 @@ class IteratorPlugin extends Plugin
      *
      * @var array
      */
-    public static $blacklist = array(
+    public static $blacklist = [
         'DOMNamedNodeMap',
         'DOMNodeList',
         'mysqli_result',
@@ -50,7 +50,7 @@ class IteratorPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -73,7 +73,7 @@ class IteratorPlugin extends Plugin
                 $b->hints[] = 'blacklist';
 
                 $r = new Representation('Iterator');
-                $r->contents = array($b);
+                $r->contents = [$b);
 
                 $o->addRepresentation($r);
 
@@ -101,7 +101,7 @@ class IteratorPlugin extends Plugin
 
         $primary = $o->getRepresentations();
         $primary = \reset($primary);
-        if ($primary && $primary === $o->value && $primary->contents === array()) {
+        if ($primary && $primary === $o->value && $primary->contents === []) {
             $o->addRepresentation($r, 0);
         } else {
             $o->addRepresentation($r);

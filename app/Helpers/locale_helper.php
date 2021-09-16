@@ -54,7 +54,7 @@ function current_language($load_system_language = FALSE): string
 
 function get_languages(): array
 {
-	return array(
+	return [
 		'ar-EG:arabic' => 'Arabic (Egypt)',
 		'ar-LB:arabic' => 'Arabic (Lebanon)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
@@ -122,7 +122,7 @@ function load_language($load_system_language = FALSE, array $lang_array)
 
 function get_timezones(): array
 {
-	return array(
+	return [
 		'Pacific/Midway' => '(GMT-11:00) Midway Island, Samoa',
 		'America/Adak' => '(GMT-10:00) Hawaii-Aleutian',
 		'Etc/GMT+10' => '(GMT-10:00) Hawaii',
@@ -220,7 +220,7 @@ function get_timezones(): array
 
 function get_dateformats(): array
 {
-	return array(
+	return [
 		'd/m/Y' => 'dd/mm/yyyy',
 		'd.m.Y' => 'dd.mm.yyyy',
 		'm/d/Y' => 'mm/dd/yyyy',
@@ -233,7 +233,7 @@ function get_dateformats(): array
 
 function get_timeformats(): array
 {
-	return array(
+	return [
 		'H:i:s' => 'hh:mm:ss (24h)',
 		'h:i:s a' => 'hh:mm:ss am/pm',
 		'h:i:s A' => 'hh:mm:ss AM/PM'
@@ -469,7 +469,7 @@ function parse_decimals($number, $decimals = NULL)
 
 function dateformat_momentjs($php_format): string
 {
-	$SYMBOLS_MATCHING = array(
+	$SYMBOLS_MATCHING = [
 		'd' => 'DD',
 		'D' => 'ddd',
 		'j' => 'D',
@@ -517,7 +517,7 @@ function dateformat_mysql(): string
 	$config = get_instance()->config;
 	$php_format = $config->get('dateformat');
 
-	$SYMBOLS_MATCHING = array(
+	$SYMBOLS_MATCHING = [
 		// Day
 		'd' => '%d',
 		'D' => '%a',
@@ -558,7 +558,7 @@ function dateformat_mysql(): string
 
 function dateformat_bootstrap($php_format): string
 {
-	$SYMBOLS_MATCHING = array(
+	$SYMBOLS_MATCHING = [
 		// Day
 		'd' => 'dd',
 		'D' => 'd',

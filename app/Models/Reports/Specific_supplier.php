@@ -16,21 +16,21 @@ class Specific_supplier extends Report
 
 	public function getDataColumns()
 	{
-		return array(
-			array('id' => lang('Reports.sale_id')),
-			array('type_code' => lang('Reports.code_type')),
-			array('sale_date' => lang('Reports.date'), 'sortable' => FALSE),
-			array('name' => lang('Reports.name')),
-			array('category' => lang('Reports.category')),
-			array('item_number' => lang('Reports.item_number')),
-			array('quantity' => lang('Reports.quantity')),
-			array('subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-			array('tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-			array('total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-			array('cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-			array('profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'),
-			array('discount' => lang('Reports.discount'))
-		);
+		return [
+			['id' => lang('Reports.sale_id')],
+			['type_code' => lang('Reports.code_type')],
+			['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+			['name' => lang('Reports.name')],
+			['category' => lang('Reports.category')],
+			['item_number' => lang('Reports.item_number')],
+			['quantity' => lang('Reports.quantity')],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+			['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+			['discount' => lang('Reports.discount')]
+		];
 	}
 
 	public function getData(array $inputs)

@@ -2,12 +2,12 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('items/bulk_update/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('items/bulk_update/', ['id'=>'item_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="bulk_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.name'), 'name', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'name',
 						'id'=>'name',
 						'class'=>'form-control input-sm')
@@ -16,11 +16,11 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.category'), 'category', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'category',
 							'id'=>'category',
 							'class'=>'form-control input-sm')
@@ -30,20 +30,20 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('supplier_id', $suppliers, '', ['class'=>'form-control'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.cost_price'), 'cost_price', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.cost_price'), 'cost_price', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'cost_price',
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm')
@@ -56,13 +56,13 @@
 		</div>
 
 		<div class="form-group form-group">
-			<?php echo form_label(lang('Items.unit_price'), 'unit_price', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.unit_price'), 'unit_price', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'unit_price',
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm')
@@ -75,9 +75,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_1',
 						'class'=>'form-control input-sm',
@@ -86,7 +86,7 @@
 			</div>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
@@ -98,9 +98,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_2',
 						'class'=>'form-control input-sm',
@@ -109,7 +109,7 @@
 			</div>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_2',
 							'class'=>'form-control input-sm',
@@ -121,9 +121,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm')
@@ -132,9 +132,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.description'), 'description', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea(array(
+				<?php echo form_textarea ([
 						'name'=>'description',
 						'id'=>'description',
 						'class'=>'form-control input-sm')
@@ -143,16 +143,16 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', ['class'=>'form-control'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class'=>'form-control'));?>
+				<?php echo form_dropdown('is_serialized', $serialization_choices, '', ['class'=>'form-control'));?>
 			</div>
 		</div>
 	</fieldset>

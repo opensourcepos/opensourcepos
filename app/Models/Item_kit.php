@@ -213,7 +213,7 @@ class Item_kit extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
+				$suggestions[] = ['value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
 			}
 		}
 		else
@@ -224,7 +224,7 @@ class Item_kit extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
+				$suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
 			}
 		}
 

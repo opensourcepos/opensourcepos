@@ -2,12 +2,15 @@
 
 namespace app\Libraries;
 
+use App\Models\Attribute;
+
 /**
  * Receiving library
  *
  * Library with utilities to manage receivings
+ *
+ * @property attribute attribute
  */
-
 class Receiving_lib
 {
 	private $CI;
@@ -15,13 +18,14 @@ class Receiving_lib
 	public function __construct()
 	{
 		$this->CI =& get_instance();
+		$this->attribute = model('Attribute');
 	}
 
 	public function get_cart()
 	{
 		if(!$this->CI->session->userdata('recv_cart'))
 		{
-			$this->set_cart(array());
+			$this->set_cart ([));
 		}
 
 		return $this->CI->session->userdata('recv_cart');
@@ -219,11 +223,11 @@ class Receiving_lib
 
 		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)
 		{
-			$receiving_quantity_choices = array(1  => 'x1');
+			$receiving_quantity_choices = [1  => 'x1');
 		}
 		else
 		{
-			$receiving_quantity_choices = array(
+			$receiving_quantity_choices = [
 				to_quantity_decimals($item_info->receiving_quantity) => 'x' . to_quantity_decimals($item_info->receiving_quantity),
 				1  => 'x1');
 		}
@@ -233,9 +237,9 @@ class Receiving_lib
 			$receiving_quantity = $item_info->receiving_quantity;
 		}
 
-		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
+		$attribute_links = $this->attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
-		$item = array($insertkey => array(
+		$item = [$insertkey => [
 				'item_id' => $item_id,
 				'item_location' => $item_location,
 				'item_number' => $item_info->item_number,

@@ -1,7 +1,7 @@
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.first_name'), 'first_name', array('class'=>'required control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.first_name'), 'first_name', ['class'=>'required control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'first_name',
 				'id'=>'first_name',
 				'class'=>'form-control input-sm',
@@ -11,9 +11,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.last_name'), 'last_name', array('class'=>'required control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.last_name'), 'last_name', ['class'=>'required control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'last_name',
 				'id'=>'last_name',
 				'class'=>'form-control input-sm',
@@ -23,10 +23,10 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.gender'), 'gender', !empty($basic_version) ? ['class'=>'required control-label col-xs-3') : ['class'=>'control-label col-xs-3')); ?>
 	<div class="col-xs-4">
 		<label class="radio-inline">
-			<?php echo form_radio(array(
+			<?php echo form_radio ([
 					'name'=>'gender',
 					'type'=>'radio',
 					'id'=>'gender',
@@ -35,7 +35,7 @@
 					); ?> <?php echo lang('Common.gender_male'); ?>
 		</label>
 		<label class="radio-inline">
-			<?php echo form_radio(array(
+			<?php echo form_radio ([
 					'name'=>'gender',
 					'type'=>'radio',
 					'id'=>'gender',
@@ -48,11 +48,11 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.email'), 'email', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.email'), 'email', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-envelope"></span></span>
-			<?php echo form_input(array(
+			<?php echo form_input ([
 					'name'=>'email',
 					'id'=>'email',
 					'class'=>'form-control input-sm',
@@ -63,11 +63,11 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.phone_number'), 'phone_number', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.phone_number'), 'phone_number', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
-			<?php echo form_input(array(
+			<?php echo form_input ([
 					'name'=>'phone_number',
 					'id'=>'phone_number',
 					'class'=>'form-control input-sm',
@@ -78,9 +78,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.address_1'), 'address_1', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.address_1'), 'address_1', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'address_1',
 				'id'=>'address_1',
 				'class'=>'form-control input-sm',
@@ -90,9 +90,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.address_2'), 'address_2', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.address_2'), 'address_2', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'address_2',
 				'id'=>'address_2',
 				'class'=>'form-control input-sm',
@@ -102,9 +102,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.city'), 'city', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.city'), 'city', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'city',
 				'id'=>'city',
 				'class'=>'form-control input-sm',
@@ -114,9 +114,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.state'), 'state', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.state'), 'state', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'state',
 				'id'=>'state',
 				'class'=>'form-control input-sm',
@@ -126,9 +126,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.zip'), 'zip', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.zip'), 'zip', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'zip',
 				'id'=>'postcode',
 				'class'=>'form-control input-sm',
@@ -138,9 +138,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.country'), 'country', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.country'), 'country', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_input(array(
+		<?php echo form_input ([
 				'name'=>'country',
 				'id'=>'country',
 				'class'=>'form-control input-sm',
@@ -150,9 +150,9 @@
 </div>
 
 <div class="form-group form-group-sm">	
-	<?php echo form_label(lang('Common.comments'), 'comments', array('class'=>'control-label col-xs-3')); ?>
+	<?php echo form_label(lang('Common.comments'), 'comments', ['class'=>'control-label col-xs-3')); ?>
 	<div class='col-xs-8'>
-		<?php echo form_textarea(array(
+		<?php echo form_textarea ([
 				'name'=>'comments',
 				'id'=>'comments',
 				'class'=>'form-control input-sm',

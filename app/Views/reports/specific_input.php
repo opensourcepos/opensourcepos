@@ -14,11 +14,11 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('#', ['id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.date_range'), 'report_date_range_label', array('class'=>'control-label col-xs-2 required')); ?>
+		<?php echo form_label(lang('Reports.date_range'), 'report_date_range_label', ['class'=>'control-label col-xs-2 required')); ?>
 		<div class="col-xs-3">
-				<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
+				<?php echo form_input (['name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
 		</div>
 	</div>
 
@@ -27,9 +27,9 @@ if(isset($error))
 	{
 	?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', array('class'=>'required control-label col-xs-2')); ?>
+			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class'=>'required control-label col-xs-2')); ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', $discount_type_options, $this->config->get('default_sales_discount_type'), array('id'=>'discount_type_id', 'class'=>'form-control')); ?>
+				<?php echo form_dropdown('discount_type', $discount_type_options, $this->config->get('default_sales_discount_type'), ['id'=>'discount_type_id', 'class'=>'form-control')); ?>
 			</div>
 		</div>
 	<?php
@@ -37,7 +37,7 @@ if(isset($error))
 	?>
 
 	<div class="form-group form-group-sm" id="report_specific_input_data">
-		<?php echo form_label($specific_input_name, 'specific_input_name_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label($specific_input_name, 'specific_input_name_label', ['class'=>'required control-label col-xs-2')); ?>
 		<div class="col-xs-3 discount_percent">
 			<?php echo form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control"'); ?>
 		</div>
@@ -47,7 +47,7 @@ if(isset($error))
 		{
 		?>
 		<div class="col-xs-3 discount_fixed">
-			<?php echo form_input(array(
+			<?php echo form_input ([
 				'name' => 'discount_fixed',
 				'id' => 'discount_fixed',
 				'class' => 'form-control input-sm required',
@@ -61,14 +61,14 @@ if(isset($error))
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-2')); ?>
+		<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class'=>'required control-label col-xs-2')); ?>
 		<div id='report_sale_type' class="col-xs-3">
 			<?php echo form_dropdown('sale_type',$sale_type_options, 'complete', 'id="input_type" class="form-control"'); ?>
 		</div>
 	</div>
 
 	<?php 
-	echo form_button(array(
+	echo form_button ([
 			'name'=>'generate_report',
 			'id'=>'generate_report',
 			'content'=>lang('Common.submit'),

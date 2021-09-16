@@ -37,21 +37,21 @@ use Mysqli;
 class MysqliPlugin extends Plugin
 {
     // These 'properties' are actually globals
-    protected $always_readable = array(
+    protected $always_readable = [
         'client_version' => true,
         'connect_errno' => true,
         'connect_error' => true,
     );
 
     // These are readable on empty mysqli objects, but not on failed connections
-    protected $empty_readable = array(
+    protected $empty_readable = [
         'client_info' => true,
         'errno' => true,
         'error' => true,
     );
 
     // These are only readable on connected mysqli objects
-    protected $connected_readable = array(
+    protected $connected_readable = [
         'affected_rows' => true,
         'error_list' => true,
         'field_count' => true,
@@ -69,7 +69,7 @@ class MysqliPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()

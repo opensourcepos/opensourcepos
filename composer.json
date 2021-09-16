@@ -23,7 +23,9 @@
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
 		"vlucas/phpdotenv": "^2.4",
-	  "ext-openssl": "*"
+	  "ext-openssl": "*",
+	  "ext-json": "*",
+	  "ext-bcmath": "*"
 	},
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",

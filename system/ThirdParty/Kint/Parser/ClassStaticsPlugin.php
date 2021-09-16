@@ -33,11 +33,11 @@ use ReflectionProperty;
 
 class ClassStaticsPlugin extends Plugin
 {
-    private static $cache = array();
+    private static $cache = [];
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -53,7 +53,7 @@ class ClassStaticsPlugin extends Plugin
         // Constants
         // TODO: PHP 7.1 allows private consts but reflection doesn't have a way to check them yet
         if (!isset(self::$cache[$class])) {
-            $consts = array();
+            $consts = [];
 
             foreach ($reflection->getConstants() as $name => $val) {
                 $const = BasicObject::blank($name, '\\'.$class.'::'.$name);
@@ -100,7 +100,7 @@ class ClassStaticsPlugin extends Plugin
             return;
         }
 
-        \usort($statics->contents, array('Kint\\Parser\\ClassStaticsPlugin', 'sort'));
+        \usort($statics->contents, ['Kint\\Parser\\ClassStaticsPlugin', 'sort'));
 
         $o->addRepresentation($statics);
     }

@@ -35,7 +35,7 @@ class TextRenderer extends Renderer
     /**
      * TextRenderer plugins should be instances of Kint\Renderer\Text\Plugin.
      */
-    public static $plugins = array(
+    public static $plugins = [
         'blacklist' => 'Kint\\Renderer\\Text\\BlacklistPlugin',
         'depth_limit' => 'Kint\\Renderer\\Text\\DepthLimitPlugin',
         'microtime' => 'Kint\\Renderer\\Text\\MicrotimePlugin',
@@ -47,7 +47,7 @@ class TextRenderer extends Renderer
      * Parser plugins must be instanceof one of these or
      * it will be removed for performance reasons.
      */
-    public static $parser_plugin_whitelist = array(
+    public static $parser_plugin_whitelist = [
         'Kint\\Parser\\BlacklistPlugin',
         'Kint\\Parser\\MicrotimePlugin',
         'Kint\\Parser\\StreamPlugin',
@@ -94,7 +94,7 @@ class TextRenderer extends Renderer
     public $header_width = 80;
     public $indent_width = 4;
 
-    protected $plugin_objs = array();
+    protected $plugin_objs = [];
 
     public function __construct()
     {
@@ -162,7 +162,7 @@ class TextRenderer extends Renderer
 
     public function renderHeader(BasicObject $o)
     {
-        $output = array();
+        $output = [];
 
         if ($o->depth) {
             if (null !== ($s = $o->getModifiers())) {
@@ -274,7 +274,7 @@ class TextRenderer extends Renderer
 
     public function filterParserPlugins(array $plugins)
     {
-        $return = array();
+        $return = [];
 
         foreach ($plugins as $index => $plugin) {
             foreach (self::$parser_plugin_whitelist as $whitelist) {
@@ -313,7 +313,7 @@ class TextRenderer extends Renderer
                 !empty($this->call_info['callee']['class']) ||
                 !\in_array(
                     $this->call_info['callee']['function'],
-                    array('include', 'include_once', 'require', 'require_once'),
+                    ['include', 'include_once', 'require', 'require_once'),
                     true
                 )
             )

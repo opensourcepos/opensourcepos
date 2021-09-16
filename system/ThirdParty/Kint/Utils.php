@@ -51,12 +51,12 @@ final class Utils
      */
     public static function getHumanReadableBytes($value)
     {
-        static $unit = array('B', 'KB', 'MB', 'GB', 'TB');
+        static $unit = ['B', 'KB', 'MB', 'GB', 'TB');
 
         $i = \floor(\log($value, 1024));
         $i = \min($i, 4); // Only go up to TB
 
-        return array(
+        return [
             'value' => (float) ($value / \pow(1024, $i)),
             'unit' => $unit[$i],
         );
@@ -69,7 +69,7 @@ final class Utils
 
     public static function composerGetExtras($key = 'kint')
     {
-        $extras = array();
+        $extras = [];
 
         if (0 === \strpos(KINT_DIR, 'phar://')) {
             // Only run inside phar file, so skip for code coverage
@@ -131,7 +131,7 @@ final class Utils
             return false;
         }
 
-        static $bt_structure = array(
+        static $bt_structure = [
             'function' => 'string',
             'line' => 'integer',
             'file' => 'string',
@@ -169,7 +169,7 @@ final class Utils
     public static function traceFrameIsListed(array $frame, array $matches)
     {
         if (isset($frame['class'])) {
-            $called = array(\strtolower($frame['class']), \strtolower($frame['function']));
+            $called = [\strtolower($frame['class']), \strtolower($frame['function']));
         } else {
             $called = \strtolower($frame['function']);
         }
@@ -189,7 +189,7 @@ final class Utils
                     \preg_match('/^'.$name_regex.'$/', $alias[1]) &&
                     \preg_match('/^\\\\?('.$name_regex.'\\\\)*'.$name_regex.'$/', $alias[0])
                 ) {
-                    $alias = array(
+                    $alias = [
                         \strtolower(\ltrim($alias[0], '\\')),
                         \strtolower($alias[1]),
                     );

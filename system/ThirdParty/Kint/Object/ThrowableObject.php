@@ -32,7 +32,7 @@ use Throwable;
 class ThrowableObject extends InstanceObject
 {
     public $message;
-    public $hints = array('object', 'throwable');
+    public $hints = ['object', 'throwable');
 
     public function __construct($throw)
     {

@@ -63,7 +63,7 @@ class DOMDocumentPlugin extends Plugin
      *
      * @var array
      */
-    public static $blacklist = array(
+    public static $blacklist = [
         'parentNode' => 'DOMNode',
         'firstChild' => 'DOMNode',
         'lastChild' => 'DOMNode',
@@ -81,7 +81,7 @@ class DOMDocumentPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -132,7 +132,7 @@ class DOMDocumentPlugin extends Plugin
             $b->hints[] = 'depth_limit';
 
             $r = new Representation('Iterator');
-            $r->contents = array($b);
+            $r->contents = [$b);
             $o->replaceRepresentation($r, 0);
 
             return;
@@ -167,14 +167,14 @@ class DOMDocumentPlugin extends Plugin
         // Fill the properties
         // They can't be enumerated through reflection or casting,
         // so we have to trust the docs and try them one at a time
-        $known_properties = array(
+        $known_properties = [
             'nodeValue',
             'childNodes',
             'attributes',
         );
 
         if (self::$verbose) {
-            $known_properties = array(
+            $known_properties = [
                 'nodeName',
                 'nodeValue',
                 'nodeType',
@@ -194,8 +194,8 @@ class DOMDocumentPlugin extends Plugin
             );
         }
 
-        $childNodes = array();
-        $attributes = array();
+        $childNodes = [];
+        $attributes = [];
 
         $rep = $o->value;
 
@@ -217,7 +217,7 @@ class DOMDocumentPlugin extends Plugin
 
         // Attributes and comments and text nodes don't
         // need children or attributes of their own
-        if (\in_array($o->classname, array('DOMAttr', 'DOMText', 'DOMComment'), true)) {
+        if (\in_array($o->classname, ['DOMAttr', 'DOMText', 'DOMComment'), true)) {
             return;
         }
 
@@ -239,7 +239,7 @@ class DOMDocumentPlugin extends Plugin
                 $n->transplant($node);
                 $n->name = 'childNodes';
                 $n->classname = 'DOMNodeList';
-                $c->contents = array($n);
+                $c->contents = [$n);
             } else {
                 foreach ($childNodes->contents as $index => $node) {
                     // Shortcircuit text nodes to plain strings
@@ -312,7 +312,7 @@ class DOMDocumentPlugin extends Plugin
             return;
         }
 
-        if (!\in_array($o->classname, array('DOMText', 'DOMAttr', 'DOMComment'), true)) {
+        if (!\in_array($o->classname, ['DOMText', 'DOMAttr', 'DOMComment'), true)) {
             return;
         }
 

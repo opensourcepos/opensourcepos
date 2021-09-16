@@ -48,7 +48,7 @@ class Sale extends Model
 	 */
 	public function get_info(int $sale_id)
 	{
-		$this->create_temp_table(array('sale_id' => $sale_id));
+		$this->create_temp_table (['sale_id' => $sale_id));
 
 		$decimals = totals_decimals();
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
@@ -409,7 +409,7 @@ class Sale extends Model
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('payment_type' => lang('Sales.giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+			$payments[] = ['payment_type' => lang('Sales.giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}
 
 		return $payments;
@@ -445,12 +445,12 @@ class Sale extends Model
 
 			foreach($builder->get()->getResultArray() as $result)
 			{
-				$suggestions[] = array('label' => $result['first_name'] . ' ' . $result['last_name']);
+				$suggestions[] = ['label' => $result['first_name'] . ' ' . $result['last_name']);
 			}
 		}
 		else
 		{
-			$suggestions[] = array('label' => $search);
+			$suggestions[] = ['label' => $search);
 		}
 
 		return $suggestions;
@@ -590,7 +590,7 @@ class Sale extends Model
 					if($payment_amount != 0)
 					{
 						// Update existing payment transactions (payment_type only)
-						$sales_payments_data = array(
+						$sales_payments_data = [
 							'payment_type' => $payment_type,
 							'payment_amount' => $payment_amount,
 							'cash_refund' => $cash_refund,
@@ -710,7 +710,7 @@ class Sale extends Model
 				$item['discount'] = 0.00;
 			}
 
-			$sales_items_data = array(
+			$sales_items_data = [
 				'sale_id' => $sale_id,
 				'item_id' => $item['item_id'],
 				'line' => $item['line'],
@@ -916,7 +916,7 @@ class Sale extends Model
 				if($cur_item_info->stock_type == HAS_STOCK)
 				{
 					// create query to update inventory tracking
-					$inv_data = array(
+					$inv_data = [
 						'trans_date' => date('Y-m-d H:i:s'),
 						'trans_items' => $item['item_id'],
 						'trans_user' => $employee_id,
@@ -1501,7 +1501,7 @@ class Sale extends Model
 				$total_amount_earned = ($total_amount * $points_percent / 100);
 				$points = $points + $total_amount_earned;
 				$this->customer->update_reward_points_value($customer_id, $points);
-				$rewards_data = array('sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
+				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
 
 				$this->rewards->save($rewards_data);		//TODO: probably should wrap this in a try/catch if we are going to keep the inheritance.
 			}

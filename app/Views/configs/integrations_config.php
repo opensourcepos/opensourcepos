@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_mailchimp/', array('id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_mailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
@@ -6,15 +6,16 @@
 			<ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-cloud"></span></span>
-						<?php echo form_input(array(
+						<?php echo form_input ([
 							'name' => 'mailchimp_api_key',
 							'id' => 'mailchimp_api_key',
 							'class' => 'form-control input-sm',
-							'value' => $mailchimp['api_key'])); ?>
+							'value' => $mailchimp['api_key']
+						]); ?>
 					</div>
 				</div>
 				<div class="col-xs-1">
@@ -25,7 +26,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']); ?>
 				<div class='col-xs-4'>
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -37,11 +38,12 @@
 				</div>
 			</div>
 
-			<?php echo form_submit(array(
+			<?php echo form_submit ([
 				'name' => 'submit_mailchimp',
 				'id' => 'submit_mailchimp',
 				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right')); ?>
+				'class' => 'btn btn-primary btn-sm pull-right'
+			]); ?>
 		</fieldset>
 	</div>
 <?php echo form_close(); ?>

@@ -10,21 +10,21 @@ class Summary_payments extends Summary_report
 {
 	protected function _get_data_columns()
 	{
-		return array(
-			array('trans_group' => lang('Reports.trans_group')),
-			array('trans_type' => lang('Reports.trans_type')),
-			array('trans_sales' => lang('Reports.sales')),
-			array('trans_amount' => lang('Reports.trans_amount')),
-			array('trans_payments' => lang('Reports.trans_payments')),
-			array('trans_refunded' => lang('Reports.trans_refunded')),
-			array('trans_due' => lang('Reports.trans_due')));
+		return [
+			['trans_group' => lang('Reports.trans_group')),
+			['trans_type' => lang('Reports.trans_type')),
+			['trans_sales' => lang('Reports.sales')),
+			['trans_amount' => lang('Reports.trans_amount')),
+			['trans_payments' => lang('Reports.trans_payments')),
+			['trans_refunded' => lang('Reports.trans_refunded')),
+			['trans_due' => lang('Reports.trans_due')));
 	}
 
 	public function getData(array $inputs)
 	{
 		$cash_payment = lang('Sales.cash');
 
-		$separator[] = array(
+		$separator[] = [
 			'trans_group' => '<HR>',
 			'trans_type' => '',
 			'trans_sales' => '',
@@ -114,7 +114,7 @@ class Summary_payments extends Summary_report
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('trans_group' => lang('Reports.trans_payments'), 'trans_type' => lang('Sales.giftcard'), 'trans_sales' => $gift_card_count,
+			$payments[] = ['trans_group' => lang('Reports.trans_payments'), 'trans_type' => lang('Sales.giftcard'), 'trans_sales' => $gift_card_count,
 				'trans_amount' => $gift_card_amount, 'trans_payments' => $gift_card_amount, 'trans_refunded' => 0, 'trans_due' => 0);
 		}
 

@@ -1,33 +1,33 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('taxes/save/'.$tax_rate_id, array('id'=>'tax_code_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('taxes/save/'.$tax_rate_id, ['id'=>'tax_code_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="tax_rate_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_code_id', $tax_code_options, $rate_tax_code_id, array('class' => 'form-control input-sm')); ?>
+				<?php echo form_dropdown('rate_tax_code_id', $tax_code_options, $rate_tax_code_id, ['class' => 'form-control input-sm')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_category'), 'rate_tax_category_id', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Taxes.tax_category'), 'rate_tax_category_id', ['class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_category_id', $tax_category_options, $rate_tax_category_id, array('class' => 'form-control input-sm')); ?>
+				<?php echo form_dropdown('rate_tax_category_id', $tax_category_options, $rate_tax_category_id, ['class' => 'form-control input-sm')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_jurisdiction'), 'rate_jurisdiction_id', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Taxes.tax_jurisdiction'), 'rate_jurisdiction_id', ['class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_jurisdiction_id', $tax_jurisdiction_options, $rate_jurisdiction_id, array('class' => 'form-control input-sm')); ?>
+				<?php echo form_dropdown('rate_jurisdiction_id', $tax_jurisdiction_options, $rate_jurisdiction_id, ['class' => 'form-control input-sm')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_rate'), 'tax_rate', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-5 input-group' style='padding-left:15px;' >
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'tax_rate',
 						'id'=>'tax_rate',
 						'class'=>'form-control input-sm text-uppercase',
@@ -39,9 +39,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_rounding'), 'tax_rounding_code', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Taxes.tax_rounding'), 'tax_rounding_code', ['class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('tax_rounding_code', $rounding_options, $tax_rounding_code, array('class' => 'form-control input-sm'));
+				<?php echo form_dropdown('tax_rounding_code', $rounding_options, $tax_rounding_code, ['class' => 'form-control input-sm'));
 				?>
 			</div>
 		</div>

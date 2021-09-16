@@ -37,7 +37,7 @@ class MicrotimePlugin extends Plugin
 
     public function getTypes()
     {
-        return array('string', 'double');
+        return ['string', 'double');
     }
 
     public function getTriggers()
@@ -79,7 +79,7 @@ class MicrotimePlugin extends Plugin
             self::$start = $time;
         }
 
-        self::$last = array($sec, $usec);
+        self::$last = [$sec, $usec);
 
         if (null !== $lap) {
             $total = $time - self::$start;

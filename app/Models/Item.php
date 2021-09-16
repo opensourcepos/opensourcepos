@@ -224,7 +224,7 @@ class Item extends Model
 		}
 		else
 		{
-			$non_temp = array(ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY);
+			$non_temp = [ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY);
 			$builder->whereIn('items.item_type', $non_temp);
 		}
 
@@ -563,7 +563,7 @@ class Item extends Model
 			{
 				if($item_field_name == 'name')
 				{
-					$label .= implode(NAME_SEPARATOR, array($item_info->name, $item_info->pack_name));
+					$label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name));
 				}
 				else
 				{
@@ -574,7 +574,7 @@ class Item extends Model
 			{
 				if($item_field_name == 'name')
 				{
-					$label .= implode(NAME_SEPARATOR, array('', $item_info->name, $item_info->pack_name));
+					$label .= implode(NAME_SEPARATOR, ['', $item_info->name, $item_info->pack_name));
 				}
 				else
 				{
@@ -587,7 +587,7 @@ class Item extends Model
 	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
 
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -598,7 +598,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		$builder = $this->db->table('items');
@@ -610,7 +610,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		if(!$unique)
@@ -625,7 +625,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->category);
+				$suggestions[] = ['label' => $row->category);
 			}
 
 			$builder = $this->db->table('suppliers');
@@ -641,7 +641,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name);
 			}
 
 			//Search by description
@@ -653,7 +653,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -673,7 +673,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
 			}
 		}
@@ -691,7 +691,7 @@ class Item extends Model
 	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
 
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -703,7 +703,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		$builder = $this->db->table('items');
@@ -716,7 +716,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		if(!$unique)
@@ -733,7 +733,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->category);
+				$suggestions[] = ['label' => $row->category);
 			}
 
 			//Search by supplier
@@ -748,7 +748,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name);
 			}
 
 			//Search by description
@@ -762,7 +762,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -782,7 +782,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
 			}
 		}
@@ -799,7 +799,7 @@ class Item extends Model
 	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
 
 		$builder = $this->db->table('items');
 		$builder->select('item_id, name');
@@ -810,7 +810,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+			$suggestions[] = ['value' => $row->item_id, 'label' => $row->name);
 		}
 
 		$builder = $this->db->table('items');
@@ -822,7 +822,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
+			$suggestions[] = ['value' => $row->item_id, 'label' => $row->item_number);
 		}
 
 		if(!$unique)
@@ -838,7 +838,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->category);
+				$suggestions[] = ['label' => $row->category);
 			}
 
 			//Search by supplier
@@ -853,7 +853,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = array('label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name);
 			}
 
 			//Search by description
@@ -866,7 +866,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = array('value' => $row->item_id, 'label' => $row->name);
+				$entry = ['value' => $row->item_id, 'label' => $row->name);
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -886,7 +886,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
 			}
 		}
@@ -913,7 +913,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		return $suggestions;
@@ -932,7 +932,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('label' => $row->category);
+			$suggestions[] = ['label' => $row->category);
 		}
 
 		return $suggestions;
@@ -950,7 +950,7 @@ class Item extends Model
 		$builder->orderBy('location', 'asc');
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('label' => $row->location);
+			$suggestions[] = ['label' => $row->location);
 		}
 
 		return $suggestions;
@@ -997,7 +997,7 @@ class Item extends Model
 		$total_quantity = $old_total_quantity + $items_received;
 		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
 
-		$data = array('cost_price' => $average_price);
+		$data = ['cost_price' => $average_price);
 
 		return $this->save($data, $item_id);
 	}

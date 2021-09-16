@@ -778,7 +778,7 @@ if (! function_exists('set_select'))
 
 		if (is_array($input))
 		{
-			// Note: in_array('', array(0)) returns TRUE, do not use it
+			// Note: in_array('', [0)) returns TRUE, do not use it
 			foreach ($input as &$v)
 			{
 				if ($value === $v)
@@ -824,7 +824,7 @@ if (! function_exists('set_checkbox'))
 
 		if (is_array($input))
 		{
-			// Note: in_array('', array(0)) returns TRUE, do not use it
+			// Note: in_array('', [0)) returns TRUE, do not use it
 			foreach ($input as &$v)
 			{
 				if ($value === $v)
@@ -875,7 +875,7 @@ if (! function_exists('set_radio'))
 
 		if (is_array($input))
 		{
-			// Note: in_array('', array(0)) returns TRUE, do not use it
+			// Note: in_array('', [0)) returns TRUE, do not use it
 			foreach ($input as &$v)
 			{
 				if ($value === $v)

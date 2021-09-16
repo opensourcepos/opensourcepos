@@ -2,19 +2,19 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('expenses/save/'.$expenses_info->expense_id, array('id'=>'expenses_edit_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('expenses/save/'.$expenses_info->expense_id, ['id'=>'expenses_edit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.info'), 'expenses_info', array('class'=>'control-label col-xs-3')); ?>
-			<?php echo form_label(!empty($expenses_info->expense_id) ? lang('Expenses.expense_id') . ' ' . $expenses_info->expense_id : '', 'expenses_info_id', array('class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
+			<?php echo form_label(lang('Expenses.info'), 'expenses_info', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(!empty($expenses_info->expense_id) ? lang('Expenses.expense_id') . ' ' . $expenses_info->expense_id : '', 'expenses_info_id', ['class'=>'control-label col-xs-8', 'style'=>'text-align:left')); ?>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.date'), 'date', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.date'), 'date', ['class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'date',
 							'class'=>'form-control input-sm datetime',
  							'value'=>to_datetime(strtotime($expenses_info->date)),
@@ -25,15 +25,15 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.supplier_name'), 'supplier_name', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'supplier_name',
 						'id'=>'supplier_name',
 						'class'=>'form-control input-sm',
 						'value'=>lang('Expenses.start_typing_supplier_name'))
 					);
-					echo form_input(array(
+					echo form_input ([
 						'type'=>'hidden',
 						'name'=>'supplier_id',
 						'id'=>'supplier_id')
@@ -47,9 +47,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.supplier_tax_code'), 'supplier_tax_code', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.supplier_tax_code'), 'supplier_tax_code', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_input(array(
+				<?php echo form_input ([
 						'name'=>'supplier_tax_code',
 						'id'=>'supplier_tax_code',
 						'class'=>'form-control input-sm',
@@ -59,13 +59,13 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.amount'), 'amount', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.amount'), 'amount', ['class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'amount',
 							'id'=>'amount',
 							'class'=>'form-control input-sm',
@@ -79,13 +79,13 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.tax_amount'), 'tax_amount', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.tax_amount'), 'tax_amount', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
 					<?php endif; ?>
-					<?php echo form_input(array(
+					<?php echo form_input ([
 							'name'=>'tax_amount',
 							'id'=>'tax_amount',
 							'class'=>'form-control input-sm',
@@ -99,30 +99,30 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.payment'), 'payment_type', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.payment'), 'payment_type', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('payment_type', $payment_options, $expenses_info->payment_type, array('class'=>'form-control', 'id'=>'payment_type'));?>
+				<?php echo form_dropdown('payment_type', $payment_options, $expenses_info->payment_type, ['class'=>'form-control', 'id'=>'payment_type'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses_categories.name'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses_categories.name'), 'category', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('expense_category_id', $expense_categories, $expenses_info->expense_category_id, array('class'=>'form-control', 'id'=>'category')); ?>
+				<?php echo form_dropdown('expense_category_id', $expense_categories, $expenses_info->expense_category_id, ['class'=>'form-control', 'id'=>'category')); ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.employee'), 'employee', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"');?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses.description'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Expenses.description'), 'description', ['class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_textarea(array(
+				<?php echo form_textarea ([
 					'name'=>'description',
 					'id'=>'description',
 					'class'=>'form-control input-sm',
@@ -136,9 +136,9 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Expenses.is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label(lang('Expenses.is_deleted').':', 'deleted', ['class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-5'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name'=>'deleted',
 						'id'=>'deleted',
 						'value'=>1,

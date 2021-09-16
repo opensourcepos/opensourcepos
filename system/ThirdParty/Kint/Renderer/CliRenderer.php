@@ -144,8 +144,8 @@ class CliRenderer extends TextRenderer
     protected function utf8ToWindows($string)
     {
         return \str_replace(
-            array('┌', '═', '┐', '│', '└', '─', '┘'),
-            array("\xda", "\xdc", "\xbf", "\xb3", "\xc0", "\xc4", "\xd9"),
+            ['┌', '═', '┐', '│', '└', '─', '┘'),
+            ["\xda", "\xdc", "\xbf", "\xb3", "\xc0", "\xc4", "\xd9"),
             $string
         );
     }

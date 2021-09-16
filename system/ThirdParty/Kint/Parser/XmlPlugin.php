@@ -45,7 +45,7 @@ class XmlPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('string');
+        return ['string');
     }
 
     public function getTriggers()
@@ -63,7 +63,7 @@ class XmlPlugin extends Plugin
             return;
         }
 
-        $xml = \call_user_func(array(\get_class($this), 'xmlTo'.self::$parse_method), $var, $o->access_path);
+        $xml = \call_user_func ([\get_class($this), 'xmlTo'.self::$parse_method), $var, $o->access_path);
 
         if (empty($xml)) {
             return;
@@ -108,7 +108,7 @@ class XmlPlugin extends Plugin
 
         $name = $xml->getName();
 
-        return array($xml, $access_path, $name);
+        return [$xml, $access_path, $name);
     }
 
     /**
@@ -145,6 +145,6 @@ class XmlPlugin extends Plugin
 
         $name = $xml->nodeName;
 
-        return array($xml, $access_path, $name);
+        return [$xml, $access_path, $name);
     }
 }

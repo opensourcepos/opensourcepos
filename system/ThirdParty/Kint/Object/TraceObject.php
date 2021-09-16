@@ -27,7 +27,7 @@ namespace Kint\Object;
 
 class TraceObject extends BasicObject
 {
-    public $hints = array('trace');
+    public $hints = ['trace');
 
     public function getType()
     {

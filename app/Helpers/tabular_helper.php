@@ -9,11 +9,11 @@ Basic tabular headers function
 */
 function transform_headers_readonly($array)
 {
-	$result = array();
+	$result = [];
 
 	foreach($array as $key => $value)
 	{
-		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '', 'switchable' => !preg_match('(^$|&nbsp)', $value));
+		$result[] = ['field' => $key, 'title' => $value, 'sortable' => $value != '', 'switchable' => !preg_match('(^$|&nbsp)', $value)];
 	}
 
 	return json_encode($result);
@@ -24,28 +24,30 @@ Basic tabular headers function
 */
 function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 {
-	$result = array();
+	$result = [];
 
 	if(!$readonly)
 	{
-		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+		$array = array_merge ([['checkbox' => 'select', 'sortable' => FALSE]], $array);
 	}
 
 	if($editable)
 	{
-		$array[] = array('edit' => '');
+		$array[] = ['edit' => ''];
 	}
 
 	foreach($array as $element)
 	{
 		reset($element);
-		$result[] = array('field' => key($element),
+		$result[] = [
+			'field' => key($element),
 			'title' => current($element),
 			'switchable' => isset($element['switchable']) ? $element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
 			'sortable' => isset($element['sortable']) ? $element['sortable'] : current($element) != '',
 			'checkbox' => isset($element['checkbox']) ? $element['checkbox'] : FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
-			'sorter' => isset($element['sorter']) ? $element ['sorter'] : '');
+			'sorter' => isset($element['sorter']) ? $element ['sorter'] : ''
+		];
 	}
 
 	return json_encode($result);
@@ -59,23 +61,23 @@ function get_sales_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('sale_id' => lang('Common.id')),
-		array('sale_time' => lang('Sales.sale_time')),
-		array('customer_name' => lang('Customers.customer')),
-		array('amount_due' => lang('Sales.amount_due')),
-		array('amount_tendered' => lang('Sales.amount_tendered')),
-		array('change_due' => lang('Sales.change_due')),
-		array('payment_type' => lang('Sales.payment_type'))
-	);
+	$headers = [
+		['sale_id' => lang('Common.id')],
+		['sale_time' => lang('Sales.sale_time')],
+		['customer_name' => lang('Customers.customer')],
+		['amount_due' => lang('Sales.amount_due')],
+		['amount_tendered' => lang('Sales.amount_tendered')],
+		['change_due' => lang('Sales.change_due')],
+		['payment_type' => lang('Sales.payment_type')]
+	];
 
 	if($CI->config->get('invoice_enable') == TRUE)
 	{
-		$headers[] = array('invoice_number' => lang('Sales.invoice_number'));
-		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
+		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
+		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE];
 	}
 
-	$headers[] = array('receipt' => '&nbsp', 'sortable' => FALSE);
+	$headers[] = ['receipt' => '&nbsp', 'sortable' => FALSE];
 
 	return transform_headers($headers);
 }
@@ -89,7 +91,7 @@ function get_sale_data_row($sale)
 
 	$controller_name = $CI->uri->segment(1);
 
-	$row = array (
+	$row = [
 		'sale_id' => $sale->sale_id,
 		'sale_time' => to_datetime(strtotime($sale->sale_time)),
 		'customer_name' => $sale->customer_name,
@@ -97,21 +99,32 @@ function get_sale_data_row($sale)
 		'amount_tendered' => to_currency($sale->amount_tendered),
 		'change_due' => to_currency($sale->change_due),
 		'payment_type' => $sale->payment_type
-	);
+	];
 
 	if($CI->config->get('invoice_enable'))
 	{
 		$row['invoice_number'] = $sale->invoice_number;
-		$row['invoice'] = empty($sale->invoice_number) ? '' : anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('title'=>lang('Sales.show_invoice'))
-		);
+		$row['invoice'] = empty($sale->invoice_number)
+			? ''
+			: anchor(
+				$controller_name."/invoice/$sale->sale_id",
+				'<span class="glyphicon glyphicon-list-alt"></span>',
+				['title'=>lang('Sales.show_invoice')]
+			);
 	}
 
 	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
-		array('title' => lang('Sales.show_receipt'))
+		['title' => lang('Sales.show_receipt')]
 	);
-	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => lang('Common.delete'), 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.update'))
+	$row['edit'] = anchor(
+		$controller_name."/edit/$sale->sale_id",
+		'<span class="glyphicon glyphicon-edit"></span>',
+		[
+			'class' => 'modal-dlg print_hide',
+			'data-btn-delete' => lang('Common.delete'),
+			'data-btn-submit' => lang('Common.submit'),
+			'title' => lang($controller_name . '.update')
+		]
 	);
 
 	return $row;
@@ -135,13 +148,13 @@ function get_sale_data_last_row($sales)
 		$sum_change_due += $sale->change_due;
 	}
 
-	return array(
+	return [
 		'sale_id' => '-',
 		'sale_time' => '<b>'.lang('Sales.total').'</b>',
 		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
-	);
+	];
 }
 
 /*
@@ -174,17 +187,17 @@ function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('people.person_id' => lang('Common.id')),
-		array('last_name' => lang('Common.last_name')),
-		array('first_name' => lang('Common.first_name')),
-		array('email' => lang('Common.email')),
-		array('phone_number' => lang('Common.phone_number'))
-	);
+	$headers = [
+		['people.person_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')]
+	];
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
-		$headers[] = array('messages' => '', 'sortable' => FALSE);
+		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}
 
 	return transform_headers($headers);
@@ -198,18 +211,33 @@ function get_person_data_row($person)
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
 		'first_name' => $person->first_name,
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
-		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
-		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'messages' => empty($person->phone_number)
+			? ''
+			: anchor(
+				"Messages/view/$person->person_id",
+				'<span class="glyphicon glyphicon-phone"></span>',
+				[
+					'class'=>'modal-dlg',
+					'data-btn-submit' => lang('Common.submit'),
+					'title'=>lang('Messages.sms_send')
+				]
+			),
+		'edit' => anchor(
+			$controller_name."/view/$person->person_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+					'class'=>'modal-dlg',
+					'data-btn-submit' => lang('Common.submit'),
+					'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 
@@ -220,18 +248,18 @@ function get_customer_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('people.person_id' => lang('Common.id')),
-		array('last_name' => lang('Common.last_name')),
-		array('first_name' => lang('Common.first_name')),
-		array('email' => lang('Common.email')),
-		array('phone_number' => lang('Common.phone_number')),
-		array('total' => lang('Common.total_spent'), 'sortable' => FALSE)
-	);
+	$headers = [
+		['people.person_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')],
+		['total' => lang('Common.total_spent'), 'sortable' => FALSE]
+	];
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
-		$headers[] = array('messages' => '', 'sortable' => FALSE);
+		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}
 
 	return transform_headers($headers);
@@ -246,18 +274,34 @@ function get_customer_data_row($person, $stats)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
 		'first_name' => $person->first_name,
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
 		'total' => to_currency($stats->total),
-		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
-		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
-	));
+		'messages' => empty($person->phone_number)
+			? ''
+			: anchor(
+				"Messages/view/$person->person_id",
+				'<span class="glyphicon glyphicon-phone"></span>',
+				[
+					'class'=>'modal-dlg',
+					'data-btn-submit' => lang('Common.submit'),
+					'title'=>lang('Messages.sms_send')
+				]
+			),
+		'edit' => anchor(
+			$controller_name."/view/$person->person_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
+		)
+	];
 }
 
 
@@ -268,20 +312,20 @@ function get_suppliers_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('people.person_id' => lang('Common.id')),
-		array('company_name' => lang('Suppliers.company_name')),
-		array('agency_name' => lang('Suppliers.agency_name')),
-		array('category' => lang('Suppliers.category')),
-		array('last_name' => lang('Common.last_name')),
-		array('first_name' => lang('Common.first_name')),
-		array('email' => lang('Common.email')),
-		array('phone_number' => lang('Common.phone_number'))
-	);
+	$headers = [
+		['people.person_id' => lang('Common.id')],
+		['company_name' => lang('Suppliers.company_name')],
+		['agency_name' => lang('Suppliers.agency_name')],
+		['category' => lang('Suppliers.category')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')]
+	];
 
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
-		$headers[] = array('messages' => '');
+		$headers[] = ['messages' => ''];
 	}
 
 	return transform_headers($headers);
@@ -296,7 +340,7 @@ function get_supplier_data_row($supplier)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'people.person_id' => $supplier->person_id,
 		'company_name' => $supplier->company_name,
 		'agency_name' => $supplier->agency_name,
@@ -305,53 +349,70 @@ function get_supplier_data_row($supplier)
 		'first_name' => $supplier->first_name,
 		'email' => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
 		'phone_number' => $supplier->phone_number,
-		'messages' => empty($supplier->phone_number) ? '' : anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>',
-			array('class'=>"modal-dlg", 'data-btn-submit' => lang('Common.submit'), 'title'=>lang('Messages.sms_send'))),
-		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>"modal-dlg", 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update')))
-	);
+		'messages' => empty($supplier->phone_number)
+			? ''
+			: anchor(
+				"Messages/view/$supplier->person_id",
+				'<span class="glyphicon glyphicon-phone"></span>',
+				[
+					'class'=>"modal-dlg",
+					'data-btn-submit' => lang('Common.submit'),
+					'title'=>lang('Messages.sms_send')
+				]
+			),
+		'edit' => anchor(
+			$controller_name."/view/$supplier->person_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>"modal-dlg",
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
+		)
+	];
 }
 
 
-/*
-Get the header for the items tabular view
+/**
+* Get the header for the items tabular view
 */
 function get_items_manage_table_headers()
 {
-	$CI =& get_instance();
+	$attribute = model('Attribute');
+	$config = model('Appconfig');
 
-	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
-	$headers = array(
-		array('items.item_id' => lang('Common.id')),
-		array('item_number' => lang('Items.item_number')),
-		array('name' => lang('Items.name')),
-		array('category' => lang('Items.category')),
-		array('company_name' => lang('Suppliers.company_name')),
-		array('cost_price' => lang('Items.cost_price')),
-		array('unit_price' => lang('Items.unit_price')),
-		array('quantity' => lang('Items.quantity'))
-	);
+	$headers = [
+		['items.item_id' => lang('Common.id')],
+		['item_number' => lang('Items.item_number')],
+		['name' => lang('Items.name')],
+		['category' => lang('Items.category')],
+		['company_name' => lang('Suppliers.company_name')],
+		['cost_price' => lang('Items.cost_price')],
+		['unit_price' => lang('Items.unit_price')],
+		['quantity' => lang('Items.quantity')]
+	];
 
-	if($CI->config->get('use_destination_based_tax') == '1')
+	if($config->get('use_destination_based_tax') == '1')
 	{
-		$headers[] = array('tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE);
+		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
 	}
 	else
 	{
-		$headers[] = array('tax_percents' => lang('Items.tax_percents'), 'sortable' => FALSE);
+		$headers[] = ['tax_percents' => lang('Items.tax_percents'), 'sortable' => FALSE];
 
 	}
 
-	$headers[] = array('item_pic' => lang('Items.image'), 'sortable' => FALSE);
+	$headers[] = ['item_pic' => lang('Items.image'), 'sortable' => FALSE];
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$headers[] = array($definition_id => $definition_name, 'sortable' => FALSE);
+		$headers[] = [$definition_id => $definition_name, 'sortable' => FALSE];
 	}
 
-	$headers[] = array('inventory' => '');
-	$headers[] = array('stock' => '');
+	$headers[] = ['inventory' => ''];
+	$headers[] = ['stock' => ''];
 
 	return transform_headers($headers);
 }
@@ -361,9 +422,12 @@ Get the html data row for the item
 */
 function get_item_data_row($item)
 {
-	$CI =& get_instance();
+	$attribute = model('Attribute');
+	$config = model('Appconfig');
+	$item_taxes = model('Item_taxes');
+	$tax_category = model('Tax_category');
 
-	if($CI->config->get('use_destination_based_tax') == '1')
+	if($config->get('use_destination_based_tax') == '1')
 	{
 		if($item->tax_category_id == NULL)
 		{
@@ -371,13 +435,13 @@ function get_item_data_row($item)
 		}
 		else
 		{
-			$tax_category_info = $CI->Tax_category->get_info($item->tax_category_id);
+			$tax_category_info = $tax_category->get_info($item->tax_category_id);
 			$tax_percents = $tax_category_info->tax_category;
 		}
 	}
 	else
 	{
-		$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
+		$item_tax_info = $item_taxes->get_info($item->item_id);
 		$tax_percents = '';
 		foreach($item_tax_info as $tax_info)
 		{
@@ -388,7 +452,8 @@ function get_item_data_row($item)
 		$tax_percents = !$tax_percents ? '-' : $tax_percents;
 	}
 
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	$image = NULL;
 	if($item->pic_filename != '')
@@ -411,14 +476,14 @@ function get_item_data_row($item)
 		}
 	}
 
-	if($CI->config->get('multi_pack_enabled') == '1')
+	if($config->get('multi_pack_enabled') == '1')
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
 
-	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);
 
-	$columns = array (
+	$columns = [
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
 		'name' => $item->name,
@@ -429,22 +494,38 @@ function get_item_data_row($item)
 		'quantity' => to_quantity_decimals($item->quantity),
 		'tax_percents' => !$tax_percents ? '-' : $tax_percents,
 		'item_pic' => $image
-	);
+	];
 
-	$icons = array(
-		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
-			array('class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.count'))
+	$icons = [
+		'inventory' => anchor(
+			$controller_name."/inventory/$item->item_id",
+			'<span class="glyphicon glyphicon-pushpin"></span>',
+			[
+				'class' => 'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title' => lang($controller_name . '.count')
+			]
 		),
-		'stock' => anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('class' => 'modal-dlg', 'title' => lang($controller_name . '.details_count'))
+		'stock' => anchor(
+			$controller_name."/count_details/$item->item_id",
+			'<span class="glyphicon glyphicon-list-alt"></span>',
+			[
+				'class' => 'modal-dlg',
+				'title' => lang($controller_name . '.details_count')
+			]
 		),
-		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$item->item_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class' => 'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title' => lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 
 	return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
-
 }
 
 
@@ -455,13 +536,13 @@ function get_giftcards_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('giftcard_id' => lang('Common.id')),
-		array('last_name' => lang('Common.last_name')),
-		array('first_name' => lang('Common.first_name')),
-		array('giftcard_number' => lang('Giftcards.giftcard_number')),
-		array('value' => lang('Giftcards.card_value'))
-	);
+	$headers = [
+		['giftcard_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['giftcard_number' => lang('Giftcards.giftcard_number')],
+		['value' => lang('Giftcards.card_value')]
+	];
 
 	return transform_headers($headers);
 }
@@ -475,16 +556,22 @@ function get_giftcard_data_row($giftcard)
 
 	$controller_name=strtolower(get_class($CI));
 
-	return array (
+	return [
 		'giftcard_id' => $giftcard->giftcard_id,
 		'last_name' => $giftcard->last_name,
 		'first_name' => $giftcard->first_name,
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
-		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$giftcard->giftcard_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 /*
@@ -494,14 +581,14 @@ function get_item_kits_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('item_kit_id' => lang('Item_kits.kit')),
-		array('item_kit_number' => lang('Item_kits.item_kit_number')),
-		array('name' => lang('Item_kits.name')),
-		array('description' => lang('Item_kits.description')),
-		array('total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE),
-		array('total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE)
-	);
+	$headers = [
+		['item_kit_id' => lang('Item_kits.kit')],
+		['item_kit_number' => lang('Item_kits.item_kit_number')],
+		['name' => lang('Item_kits.name')],
+		['description' => lang('Item_kits.description')],
+		['total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE],
+		['total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE]
+	];
 
 	return transform_headers($headers);
 }
@@ -515,21 +602,27 @@ function get_item_kit_data_row($item_kit)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'item_kit_id' => $item_kit->item_kit_id,
 		'item_kit_number' => $item_kit->item_kit_number,
 		'name' => $item_kit->name,
 		'description' => $item_kit->description,
 		'total_cost_price' => to_currency($item_kit->total_cost_price),
 		'total_unit_price' => to_currency($item_kit->total_unit_price),
-		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$item_kit->item_kit_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 function parse_attribute_values($columns, $row) {
-	$attribute_values = array();
+	$attribute_values = [];
 	foreach($columns as $column) {
 		if (array_key_exists($column, $row))
 		{
@@ -542,9 +635,9 @@ function parse_attribute_values($columns, $row) {
 
 function expand_attribute_values($definition_names, $row)
 {
-	$values = parse_attribute_values(array('attribute_values', 'attribute_dtvalues', 'attribute_dvalues'), $row);
+	$values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
-	$indexed_values = array();
+	$indexed_values = [];
 	foreach($values as $attribute_value)
 	{
 		$exploded_value = explode('_', $attribute_value);
@@ -554,7 +647,7 @@ function expand_attribute_values($definition_names, $row)
 		}
 	}
 
-	$attribute_values = array();
+	$attribute_values = [];
 	foreach($definition_names as $definition_id => $definition_name)
 	{
 		if(isset($indexed_values[$definition_id]))
@@ -571,13 +664,13 @@ function get_attribute_definition_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('definition_id' => lang('Attributes.definition_id')),
-		array('definition_name' => lang('Attributes.definition_name')),
-		array('definition_type' => lang('Attributes.definition_type')),
-		array('definition_flags' => lang('Attributes.definition_flags')),
-		array('definition_group' => lang('Attributes.definition_group')),
-	);
+	$headers = [
+		['definition_id' => lang('Attributes.definition_id')],
+		['definition_name' => lang('Attributes.definition_name')],
+		['definition_type' => lang('Attributes.definition_type')],
+		['definition_flags' => lang('Attributes.definition_flags')],
+		['definition_group' => lang('Attributes.definition_group')],
+	];
 
 	return transform_headers($headers);
 }
@@ -601,16 +694,22 @@ function get_attribute_definition_data_row($attribute)
 		$definition_flags = implode(', ', $attribute->definition_flags);
 	}
 
-	return array (
+	return [
 		'definition_id' => $attribute->definition_id,
 		'definition_name' => $attribute->definition_name,
 		'definition_type' => $attribute->definition_type,
 		'definition_group' => $attribute->definition_group,
 		'definition_flags' => $definition_flags,
-		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			"$controller_name/view/$attribute->definition_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 /*
@@ -620,11 +719,11 @@ function get_expense_category_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('expense_category_id' => lang('Expenses_categories.category_id')),
-		array('category_name' => lang('Expenses_categories.name')),
-		array('category_description' => lang('Expenses_categories.description'))
-	);
+	$headers = [
+		['expense_category_id' => lang('Expenses_categories.category_id')],
+		['category_name' => lang('Expenses_categories.name')],
+		['category_description' => lang('Expenses_categories.description')]
+	];
 
 	return transform_headers($headers);
 }
@@ -638,14 +737,20 @@ function get_expense_category_data_row($expense_category)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'expense_category_id' => $expense_category->expense_category_id,
 		'category_name' => $expense_category->category_name,
 		'category_description' => $expense_category->category_description,
-		'edit' => anchor($controller_name."/view/$expense_category->expense_category_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$expense_category->expense_category_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 
@@ -656,18 +761,18 @@ function get_expenses_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('expense_id' => lang('Expenses.expense_id')),
-		array('date' => lang('Expenses.date')),
-		array('supplier_name' => lang('Expenses.supplier_name')),
-		array('supplier_tax_code' => lang('Expenses.supplier_tax_code')),
-		array('amount' => lang('Expenses.amount')),
-		array('tax_amount' => lang('Expenses.tax_amount')),
-		array('payment_type' => lang('Expenses.payment')),
-		array('category_name' => lang('Expenses_categories.name')),
-		array('description' => lang('Expenses.description')),
-		array('created_by' => lang('Expenses.employee'))
-	);
+	$headers = [
+		['expense_id' => lang('Expenses.expense_id')],
+		['date' => lang('Expenses.date')],
+		['supplier_name' => lang('Expenses.supplier_name')],
+		['supplier_tax_code' => lang('Expenses.supplier_tax_code')],
+		['amount' => lang('Expenses.amount')],
+		['tax_amount' => lang('Expenses.tax_amount')],
+		['payment_type' => lang('Expenses.payment')],
+		['category_name' => lang('Expenses_categories.name')],
+		['description' => lang('Expenses.description')],
+		['created_by' => lang('Expenses.employee')]
+	];
 
 	return transform_headers($headers);
 }
@@ -681,7 +786,7 @@ function get_expenses_data_row($expense)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'expense_id' => $expense->expense_id,
 		'date' => to_datetime(strtotime($expense->date)),
 		'supplier_name' => $expense->supplier_name,
@@ -692,10 +797,16 @@ function get_expenses_data_row($expense)
 		'category_name' => $expense->category_name,
 		'description' => $expense->description,
 		'created_by' => $expense->first_name.' '. $expense->last_name,
-		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$expense->expense_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 
 /*
@@ -715,12 +826,12 @@ function get_expenses_data_last_row($expense)
 		$sum_tax_amount_expense += $expense->tax_amount;
 	}
 
-	return array(
+	return [
 		'expense_id' => '-',
 		'date' => '<b>'.lang('Sales.total').'</b>',
 		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
 		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
-	);
+	];
 }
 
 /*
@@ -751,21 +862,21 @@ function get_cashups_manage_table_headers()
 {
 	$CI =& get_instance();
 
-	$headers = array(
-		array('cashup_id' => lang('Cashups.id')),
-		array('open_date' => lang('Cashups.opened_date')),
-		array('open_employee_id' => lang('Cashups.open_employee')),
-		array('open_amount_cash' => lang('Cashups.open_amount_cash')),
-		array('transfer_amount_cash' => lang('Cashups.transfer_amount_cash')),
-		array('close_date' => lang('Cashups.closed_date')),
-		array('close_employee_id' => lang('Cashups.close_employee')),
-		array('closed_amount_cash' => lang('Cashups.closed_amount_cash')),
-		array('note' => lang('Cashups.note')),
-		array('closed_amount_due' => lang('Cashups.closed_amount_due')),
-		array('closed_amount_card' => lang('Cashups.closed_amount_card')),
-		array('closed_amount_check' => lang('Cashups.closed_amount_check')),
-		array('closed_amount_total' => lang('Cashups.closed_amount_total'))
-	);
+	$headers = [
+		['cashup_id' => lang('Cashups.id')],
+		['open_date' => lang('Cashups.opened_date')],
+		['open_employee_id' => lang('Cashups.open_employee')],
+	['open_amount_cash' => lang('Cashups.open_amount_cash')],
+		['transfer_amount_cash' => lang('Cashups.transfer_amount_cash')],
+		['close_date' => lang('Cashups.closed_date')],
+		['close_employee_id' => lang('Cashups.close_employee')],
+		['closed_amount_cash' => lang('Cashups.closed_amount_cash')],
+		['note' => lang('Cashups.note')],
+		['closed_amount_due' => lang('Cashups.closed_amount_due')],
+		['closed_amount_card' => lang('Cashups.closed_amount_card')],
+		['closed_amount_check' => lang('Cashups.closed_amount_check')],
+		['closed_amount_total' => lang('Cashups.closed_amount_total')]
+	];
 
 	return transform_headers($headers);
 }
@@ -779,7 +890,7 @@ function get_cash_up_data_row($cash_up)
 
 	$controller_name = strtolower(get_class($CI));
 
-	return array (
+	return [
 		'cashup_id' => $cash_up->cashup_id,
 		'open_date' => to_datetime(strtotime($cash_up->open_date)),
 		'open_employee_id' => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
@@ -793,9 +904,15 @@ function get_cash_up_data_row($cash_up)
 		'closed_amount_card' => to_currency($cash_up->closed_amount_card),
 		'closed_amount_check' => to_currency($cash_up->closed_amount_check),
 		'closed_amount_total' => to_currency($cash_up->closed_amount_total),
-		'edit' => anchor($controller_name."/view/$cash_up->cashup_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title'=>lang($controller_name . '.update'))
+		'edit' => anchor(
+			$controller_name."/view/$cash_up->cashup_id",
+			'<span class="glyphicon glyphicon-edit"></span>',
+			[
+				'class'=>'modal-dlg',
+				'data-btn-submit' => lang('Common.submit'),
+				'title'=>lang($controller_name . '.update')
+			]
 		)
-	);
+	];
 }
 ?>

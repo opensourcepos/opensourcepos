@@ -1,4 +1,4 @@
-<?php echo form_open('taxes/save_tax_jurisdictions/', array('id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('taxes/save_tax_jurisdictions/', ['id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal')); ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
 		<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
@@ -8,7 +8,7 @@
 			<?php echo view('partial/tax_jurisdictions'); ?>
 		</div>
 
-		<?php echo form_submit(array(
+		<?php echo form_submit ([
 			'name' => 'submit_tax_jurisdictions',
 			'id' => 'submit_tax_jurisdictions',
 			'value' => lang('Common.submit'),

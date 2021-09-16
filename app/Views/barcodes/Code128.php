@@ -32,7 +32,7 @@ class Code128 extends BarcodeBase
 	 * index that PHP gives us to produce the common index. 
 	 * @var static array 
 	 */
-	private static $barMap = array(
+	private static $barMap = [
 		11011001100, 11001101100, 11001100110, 10010011000, 10010001100, // 4 (end)
 		10001001100, 10011001000, 10011000100, 10001100100, 11001001000, // 9
 		11001000100, 11000100100, 10110011100, 10011011100, 10011001110, // 14
@@ -62,7 +62,7 @@ class Code128 extends BarcodeBase
 	 * natively to the matching code from the barMap.
 	 * @var static array 
 	 */
-	private static $mapA = array(
+	private static $mapA = [
 		' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', // 9 (end)
 		'*', '+', ',', '-', '.', '/', '0', '1', '2', '3', // 19
 		'4', '5', '6', '7', '8', '9', ':', ';', '<', '=', // 29
@@ -89,7 +89,7 @@ class Code128 extends BarcodeBase
 	 * Same idea from MapA applied here to B.
 	 * @var static array
 	 */
-	private static $mapB = array(
+	private static $mapB = [
 		' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', // 9 (end)
 		'*', '+', ',', '-', '.', '/', '0', '1', '2', '3', // 19
 		'4', '5', '6', '7', '8', '9', ':', ';', '<', '=', // 29
@@ -112,7 +112,7 @@ class Code128 extends BarcodeBase
 	 * occors. 
 	 * @var static array
 	 */
-	private static $mapC = array(
+	private static $mapC = [
 		100 => 
 		'CODE_B', 'CODE_A', 'FNC_1', 'START_A', 'START_B', 
 		'START_C', 'STOP', // 106
@@ -264,7 +264,7 @@ class Code128 extends BarcodeBase
 			}
 
 			$pairs = '';
-			$newAry = array();
+			$newAry = [];
 			foreach($charAry as $k => $char)
 			{
 				if (($k % 2) == 0 && $k != 0)

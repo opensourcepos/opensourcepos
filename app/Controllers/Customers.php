@@ -60,16 +60,16 @@ class Customers extends Persons
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit  = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
-		$order  = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit  = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($customers->getResult() as $person)
 		{
 			// retrieve the total amount the customer spent so far together with min, max and average values
@@ -89,7 +89,7 @@ class Customers extends Persons
 			$data_rows[] = $this->xss_clean(get_customer_data_row($person, $stats));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	/*
@@ -97,14 +97,14 @@ class Customers extends Persons
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
+		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), FALSE));
+		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->request->getPost('term'), FALSE));
 
 		echo json_encode($suggestions);
 	}
@@ -142,7 +142,7 @@ class Customers extends Persons
 			$data['sales_tax_code_label'] = '';
 		}
 
-		$packages = array('' => lang('Items.none'));
+		$packages = ['' => lang('Items.none'));
 		foreach($this->Customer_rewards->get_all()->getResultArray() as $row)
 		{
 			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
@@ -233,67 +233,67 @@ class Customers extends Persons
 	*/
 	public function save($customer_id = -1)
 	{
-		$first_name = $this->xss_clean($this->input->post('first_name'));
-		$last_name = $this->xss_clean($this->input->post('last_name'));
-		$email = $this->xss_clean(strtolower($this->input->post('email')));
+		$first_name = $this->xss_clean($this->request->getPost('first_name'));
+		$last_name = $this->xss_clean($this->request->getPost('last_name'));
+		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
 		$last_name = $this->nameize($last_name);
 
-		$person_data = array(
+		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->input->post('gender'),
+			'gender' => $this->request->getPost('gender'),
 			'email' => $email,
-			'phone_number' => $this->input->post('phone_number'),
-			'address_1' => $this->input->post('address_1'),
-			'address_2' => $this->input->post('address_2'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state'),
-			'zip' => $this->input->post('zip'),
-			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments')
+			'phone_number' => $this->request->getPost('phone_number'),
+			'address_1' => $this->request->getPost('address_1'),
+			'address_2' => $this->request->getPost('address_2'),
+			'city' => $this->request->getPost('city'),
+			'state' => $this->request->getPost('state'),
+			'zip' => $this->request->getPost('zip'),
+			'country' => $this->request->getPost('country'),
+			'comments' => $this->request->getPost('comments')
 		);
 
-		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $this->input->post('date'));
+		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $this->request->getPost('date'));
 
-		$customer_data = array(
-			'consent' => $this->input->post('consent') != NULL,
-			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
-			'tax_id' => $this->input->post('tax_id'),
-			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
-			'discount' => $this->input->post('discount') == '' ? 0.00 : $this->input->post('discount'),
-			'discount_type' => $this->input->post('discount_type') == NULL ? PERCENT : $this->input->post('discount_type'),
-			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
-			'taxable' => $this->input->post('taxable') != NULL,
+		$customer_data = [
+			'consent' => $this->request->getPost('consent') != NULL,
+			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number'),
+			'tax_id' => $this->request->getPost('tax_id'),
+			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name'),
+			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount'),
+			'discount_type' => $this->request->getPost('discount_type') == NULL ? PERCENT : $this->request->getPost('discount_type'),
+			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id'),
+			'taxable' => $this->request->getPost('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'employee_id' => $this->input->post('employee_id'),
-			'sales_tax_code_id' => $this->input->post('sales_tax_code_id') == '' ? NULL : $this->input->post('sales_tax_code_id')
+			'employee_id' => $this->request->getPost('employee_id'),
+			'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? NULL : $this->request->getPost('sales_tax_code_id')
 		);
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{
 			// save customer to Mailchimp selected list
-			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
+			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->request->getPost('mailchimp_status'), ['vip' => $this->request->getPost('mailchimp_vip') != NULL));
 
 			// New customer
 			if($customer_id == -1)
 			{
-				echo json_encode(array('success' => TRUE,
+				echo json_encode (['success' => TRUE,
 								'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $this->xss_clean($customer_data['person_id'])));
 			}
 			else // Existing customer
 			{
-				echo json_encode(array('success' => TRUE,
+				echo json_encode (['success' => TRUE,
 								'message' => lang('Customers.successful_updating') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $customer_id));
 			}
 		}
 		else // Failure
 		{
-			echo json_encode(array('success' => FALSE,
+			echo json_encode (['success' => FALSE,
 							'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 							'id' => -1));
 		}
@@ -304,7 +304,7 @@ class Customers extends Persons
 	*/
 	public function ajax_check_email()
 	{
-		$exists = $this->Customer->check_email_exists(strtolower($this->input->post('email')), $this->input->post('person_id'));
+		$exists = $this->Customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id'));
 
 		echo !$exists ? 'true' : 'false';
 	}
@@ -314,7 +314,7 @@ class Customers extends Persons
 	*/
 	public function ajax_check_account_number()
 	{
-		$exists = $this->Customer->check_account_number_exists($this->input->post('account_number'), $this->input->post('person_id'));
+		$exists = $this->Customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id'));
 
 		echo !$exists ? 'true' : 'false';
 	}
@@ -324,7 +324,7 @@ class Customers extends Persons
 	*/
 	public function delete()
 	{
-		$customers_to_delete = $this->input->post('ids');
+		$customers_to_delete = $this->request->getPost('ids');
 		$customers_info = $this->Customer->get_multiple_info($customers_to_delete);
 
 		$count = 0;
@@ -342,12 +342,12 @@ class Customers extends Persons
 
 		if($count == count($customers_to_delete))
 		{
-			echo json_encode(array('success' => TRUE,
+			echo json_encode (['success' => TRUE,
 				'message' => lang('Customers.successful_deleted') . ' ' . $count . ' ' . lang('Customers.one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Customers.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Customers.cannot_be_deleted')));
 		}
 	}
 
@@ -370,7 +370,7 @@ class Customers extends Persons
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Customers.csv_import_failed')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Customers.csv_import_failed')));
 		}
 		else
 		{
@@ -380,7 +380,7 @@ class Customers extends Persons
 				fgetcsv($handle);
 				$i = 1;
 
-				$failCodes = array();
+				$failCodes = [];
 
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{
@@ -392,7 +392,7 @@ class Customers extends Persons
 					if(sizeof($data) >= 16 && $consent)
 					{
 						$email = strtolower($data[4]);
-						$person_data = array(
+						$person_data = [
 							'first_name'	=> $data[0],
 							'last_name'		=> $data[1],
 							'gender'		=> $data[2],
@@ -407,7 +407,7 @@ class Customers extends Persons
 							'comments'		=> $data[12]
 						);
 
-						$customer_data = array(
+						$customer_data = [
 							'consent'			=> $consent,
 							'company_name'		=> $data[13],
 							'discount'			=> $data[15],
@@ -453,16 +453,16 @@ class Customers extends Persons
 				{
 					$message = lang('Customers.csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 
-					echo json_encode(array('success' => FALSE, 'message' => $message));
+					echo json_encode (['success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => lang('Customers.csv_import_success')));
+					echo json_encode (['success' => TRUE, 'message' => lang('Customers.csv_import_success')));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => lang('Customers.csv_import_nodata_wrongformat')));
+				echo json_encode (['success' => FALSE, 'message' => lang('Customers.csv_import_nodata_wrongformat')));
 			}
 		}
 	}

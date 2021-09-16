@@ -30,7 +30,7 @@ class DocstringRepresentation extends Representation
     public $file;
     public $line;
     public $class;
-    public $hints = array('docstring');
+    public $hints = ['docstring');
 
     public function __construct($docstring, $file, $line, $class = null)
     {

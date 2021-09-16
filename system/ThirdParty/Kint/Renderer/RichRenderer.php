@@ -37,7 +37,7 @@ class RichRenderer extends Renderer
     /**
      * RichRenderer object plugins should implement Kint\Renderer\Rich\ObjectPluginInterface.
      */
-    public static $object_plugins = array(
+    public static $object_plugins = [
         'blacklist' => 'Kint\\Renderer\\Rich\\BlacklistPlugin',
         'callable' => 'Kint\\Renderer\\Rich\\CallablePlugin',
         'closure' => 'Kint\\Renderer\\Rich\\ClosurePlugin',
@@ -51,7 +51,7 @@ class RichRenderer extends Renderer
     /**
      * RichRenderer tab plugins should implement Kint\Renderer\Rich\TabPluginInterface.
      */
-    public static $tab_plugins = array(
+    public static $tab_plugins = [
         'binary' => 'Kint\\Renderer\\Rich\\BinaryPlugin',
         'color' => 'Kint\\Renderer\\Rich\\ColorPlugin',
         'docstring' => 'Kint\\Renderer\\Rich\\DocstringPlugin',
@@ -61,15 +61,15 @@ class RichRenderer extends Renderer
         'timestamp' => 'Kint\\Renderer\\Rich\\TimestampPlugin',
     );
 
-    public static $pre_render_sources = array(
-        'script' => array(
-            array('Kint\\Renderer\\RichRenderer', 'renderJs'),
-            array('Kint\\Renderer\\Rich\\MicrotimePlugin', 'renderJs'),
+    public static $pre_render_sources = [
+        'script' => [
+            ['Kint\\Renderer\\RichRenderer', 'renderJs'),
+            ['Kint\\Renderer\\Rich\\MicrotimePlugin', 'renderJs'),
         ),
-        'style' => array(
-            array('Kint\\Renderer\\RichRenderer', 'renderCss'),
+        'style' => [
+            ['Kint\\Renderer\\RichRenderer', 'renderCss'),
         ),
-        'raw' => array(),
+        'raw' => [],
     );
 
     /**
@@ -132,7 +132,7 @@ class RichRenderer extends Renderer
 
     public static $always_pre_render = false;
 
-    protected $plugin_objs = array();
+    protected $plugin_objs = [];
     protected $expand = false;
     protected $force_pre_render = false;
     protected $pre_render;
@@ -321,8 +321,8 @@ class RichRenderer extends Renderer
 
     public function renderChildren(BasicObject $o)
     {
-        $contents = array();
-        $tabs = array();
+        $contents = [];
+        $tabs = [];
 
         foreach ($o->getRepresentations() as $rep) {
             $result = $this->renderTab($o, $rep);
@@ -441,7 +441,7 @@ class RichRenderer extends Renderer
                 !empty($this->call_info['callee']['class']) ||
                 !\in_array(
                     $this->call_info['callee']['function'],
-                    array('include', 'include_once', 'require', 'require_once'),
+                    ['include', 'include_once', 'require', 'require_once'),
                     true
                 )
             )
@@ -465,7 +465,7 @@ class RichRenderer extends Renderer
 
                 $output .= '<li>'.$this->ideLink($step['file'], $step['line']); // closing tag not required
                 if (isset($step['function'])
-                    && !\in_array($step['function'], array('include', 'include_once', 'require', 'require_once'), true)
+                    && !\in_array($step['function'], ['include', 'include_once', 'require', 'require_once'), true)
                 ) {
                     $output .= ' [';
                     if (isset($step['class'])) {
@@ -501,7 +501,7 @@ class RichRenderer extends Renderer
 
         // this call converts all non-ASCII characters into numeirc htmlentities
         if (\function_exists('mb_encode_numericentity') && 'ASCII' !== $original_encoding) {
-            $string = \mb_encode_numericentity($string, array(0x80, 0xffff, 0, 0xffff), $encoding);
+            $string = \mb_encode_numericentity($string, [0x80, 0xffff, 0, 0xffff), $encoding);
         }
 
         return $string;

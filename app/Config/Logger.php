@@ -30,7 +30,7 @@ class Logger extends BaseConfig
 	 *
 	 * You can also pass an array with threshold levels to show individual error types
 	 *
-	 *     array(1, 2, 3, 8) = Emergency, Alert, Critical, and Debug messages
+	 *     [1, 2, 3, 8) = Emergency, Alert, Critical, and Debug messages
 	 *
 	 * For a live site you'll usually enable Critical or higher (3) to be logged otherwise
 	 * your log files will fill up very fast.

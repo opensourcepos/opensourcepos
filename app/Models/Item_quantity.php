@@ -68,7 +68,7 @@ class Item_quantity extends Model
 	{
 		$quantity_old = $this->get_item_quantity($item_id, $location_id);
 		$quantity_new = $quantity_old->quantity + $quantity_change;
-		$location_detail = array('item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new);
+		$location_detail = ['item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new);
 
 		return $this->save($location_detail, $item_id, $location_id);	//TODO: need to sort out the unhandled reflection exception error.  Probably needs to be placed in a try catch to catch the exception  and do something with it.
 	}

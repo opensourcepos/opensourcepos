@@ -86,7 +86,7 @@ class Secure_Controller extends BaseController
 	{
 		$result = TRUE;
 
-		foreach($this->input->get() as $str)
+		foreach($this->request->getGet() as $str)
 		{
 			$result &= parse_decimals($str);
 		}

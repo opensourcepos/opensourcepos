@@ -164,7 +164,7 @@ class Person extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = array('label' => $row->person_id);
+			$suggestions[] = ['label' => $row->person_id);
 		}
 
 		//only return $limit suggestions

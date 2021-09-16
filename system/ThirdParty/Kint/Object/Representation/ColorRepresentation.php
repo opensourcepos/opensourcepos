@@ -39,7 +39,7 @@ class ColorRepresentation extends Representation
     const COLOR_HEX_4 = 8;
     const COLOR_HEX_8 = 9;
 
-    public static $color_map = array(
+    public static $color_map = [
         'aliceblue' => 'f0f8ff',
         'antiquewhite' => 'faebd7',
         'aqua' => '00ffff',
@@ -199,7 +199,7 @@ class ColorRepresentation extends Representation
     public $a = 1.0;
     public $variant;
     public $implicit_label = true;
-    public $hints = array('color');
+    public $hints = ['color');
 
     public function __construct($value)
     {
@@ -413,14 +413,14 @@ class ColorRepresentation extends Representation
 
                 if (3 === $i) {
                     $color = $color / 100;
-                } elseif (\in_array($variant, array(self::COLOR_RGB, self::COLOR_RGBA), true)) {
+                } elseif (\in_array($variant, [self::COLOR_RGB, self::COLOR_RGBA), true)) {
                     $color = \round($color / 100 * 0xFF);
                 }
             }
 
             $color = (float) $color;
 
-            if (0 === $i && \in_array($variant, array(self::COLOR_HSL, self::COLOR_HSLA), true)) {
+            if (0 === $i && \in_array($variant, [self::COLOR_HSL, self::COLOR_HSLA), true)) {
                 $color = ($color % 360 + 360) % 360;
             }
         }
@@ -486,7 +486,7 @@ class ColorRepresentation extends Representation
         $m2 = ($l <= 0.5) ? $l * ($s + 1) : $l + $s - $l * $s;
         $m1 = $l * 2 - $m2;
 
-        return array(
+        return [
             (int) \round(self::hueToRgb($m1, $m2, $h + 1 / 3) * 0xFF),
             (int) \round(self::hueToRgb($m1, $m2, $h) * 0xFF),
             (int) \round(self::hueToRgb($m1, $m2, $h - 1 / 3) * 0xFF),
@@ -541,7 +541,7 @@ class ColorRepresentation extends Representation
             }
         }
 
-        return array(
+        return [
             (float) ($H * 360 % 360),
             (float) ($S * 100),
             (float) ($L * 100),

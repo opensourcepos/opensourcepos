@@ -1,13 +1,13 @@
-<?php echo form_open('config/save_tables/', array('id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('config/save_tables/', ['id' => 'table_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
             <ul id="table_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
+					<?php echo form_checkbox ([
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
@@ -16,10 +16,10 @@
 			</div>
 
             <div id="dinner_tables">
-				<?php echo view('partial/dinner_tables', array('dinner_tables' => $dinner_tables)); ?>
+				<?php echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables)); ?>
 			</div>
             
-            <?php echo form_submit(array(
+            <?php echo form_submit ([
                 'name' => 'submit_table',
                 'id' => 'submit_table',
                 'value' => lang('Common.submit'),

@@ -86,7 +86,7 @@ class Table
 	/**
 	 * Set the template from the table config file if it exists
 	 *
-	 * @param  array $config (default: array())
+	 * @param  array $config (default: [])
 	 * @return void
 	 */
 	public function __construct($config = [])
@@ -227,7 +227,7 @@ class Table
 	{
 		// If there is no $args[0], skip this and treat as an associative array
 		// This can happen if there is only a single key, for example this is passed to table->generate
-		// array(array('foo'=>'bar'))
+		// [array('foo'=>'bar'))
 		if (isset($args[0]) && count($args) === 1 && is_array($args[0]) && ! isset($args[0]['data']))
 		{
 			$args = $args[0];

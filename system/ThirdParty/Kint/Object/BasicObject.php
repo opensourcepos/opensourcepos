@@ -51,9 +51,9 @@ class BasicObject
     public $depth = 0;
     public $size;
     public $value;
-    public $hints = array();
+    public $hints = [];
 
-    protected $representations = array();
+    protected $representations = [];
 
     public function __construct()
     {
@@ -70,7 +70,7 @@ class BasicObject
         } else {
             $this->representations = \array_merge(
                 \array_slice($this->representations, 0, $pos),
-                array($rep->getName() => $rep),
+                [$rep->getName() => $rep),
                 \array_slice($this->representations, $pos)
             );
         }
@@ -111,7 +111,7 @@ class BasicObject
 
     public function clearRepresentations()
     {
-        $this->representations = array();
+        $this->representations = [];
     }
 
     public function getType()
@@ -225,7 +225,7 @@ class BasicObject
 
     public static function sortByAccess(BasicObject $a, BasicObject $b)
     {
-        static $sorts = array(
+        static $sorts = [
             self::ACCESS_PUBLIC => 1,
             self::ACCESS_PROTECTED => 2,
             self::ACCESS_PRIVATE => 3,

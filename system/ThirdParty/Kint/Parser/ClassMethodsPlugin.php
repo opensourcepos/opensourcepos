@@ -33,11 +33,11 @@ use ReflectionClass;
 
 class ClassMethodsPlugin extends Plugin
 {
-    private static $cache = array();
+    private static $cache = [];
 
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()
@@ -51,7 +51,7 @@ class ClassMethodsPlugin extends Plugin
 
         // assuming class definition will not change inside one request
         if (!isset(self::$cache[$class])) {
-            $methods = array();
+            $methods = [];
 
             $reflection = new ReflectionClass($class);
 
@@ -59,7 +59,7 @@ class ClassMethodsPlugin extends Plugin
                 $methods[] = new MethodObject($method);
             }
 
-            \usort($methods, array('Kint\\Parser\\ClassMethodsPlugin', 'sort'));
+            \usort($methods, ['Kint\\Parser\\ClassMethodsPlugin', 'sort'));
 
             self::$cache[$class] = $methods;
         }

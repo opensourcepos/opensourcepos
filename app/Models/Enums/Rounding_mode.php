@@ -17,7 +17,7 @@ class Rounding_mode
 		$CI =& get_instance();
 		helper('language');
 		$class = new ReflectionClass(__CLASS__);
-		$result = array();
+		$result = [];
 
 		foreach($class->getConstants() as $key => $value)
 		{

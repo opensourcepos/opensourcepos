@@ -18,7 +18,7 @@ class Email_lib
 
 		$this->CI->email = new Email();
 
-		$config = array(
+		$config = [
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',
 			'validate' => TRUE,

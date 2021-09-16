@@ -81,12 +81,12 @@ $(document).ready(function()
         <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo site_url("$controller_name/generate_barcodes"); ?>' title='<?php echo lang('Items.generate_barcodes');?>'>
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?php echo lang('Items.generate_barcodes'); ?>
         </button>
-        <?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-        <?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-none-selected-text'=>lang('Common.none_selected_text'), 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+        <?php echo form_input (['name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
+        <?php echo form_multiselect('filters[]', $filters, '', ['id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-none-selected-text'=>lang('Common.none_selected_text'), 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
         <?php
         if (count($stock_locations) > 1)
         {
-            echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit'));
+            echo form_dropdown('stock_location', $stock_locations, $stock_location, ['id'=>'stock_location', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit'));
         }
         ?>
     </div>

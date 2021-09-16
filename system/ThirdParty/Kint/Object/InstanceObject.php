@@ -32,7 +32,7 @@ class InstanceObject extends BasicObject
     public $hash;
     public $filename;
     public $startline;
-    public $hints = array('object');
+    public $hints = ['object');
 
     public function getType()
     {

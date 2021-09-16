@@ -32,7 +32,7 @@ class ArrayObjectPlugin extends Plugin
 {
     public function getTypes()
     {
-        return array('object');
+        return ['object');
     }
 
     public function getTriggers()

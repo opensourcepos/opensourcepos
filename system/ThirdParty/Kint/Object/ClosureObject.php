@@ -27,8 +27,8 @@ namespace Kint\Object;
 
 class ClosureObject extends InstanceObject
 {
-    public $parameters = array();
-    public $hints = array('object', 'callable', 'closure');
+    public $parameters = [];
+    public $hints = ['object', 'callable', 'closure');
 
     private $paramcache;
 
@@ -49,7 +49,7 @@ class ClosureObject extends InstanceObject
             return $this->paramcache;
         }
 
-        $out = array();
+        $out = [];
 
         foreach ($this->parameters as $p) {
             $type = $p->getType();

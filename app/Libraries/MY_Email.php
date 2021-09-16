@@ -10,7 +10,7 @@ class MY_Email extends CI_Email
 	var $default_sender_address = "";
 	var $default_bounce_address = "";
 
-	function __construct($config = array())
+	function __construct($config = [])
 	{
 		parent::__construct($config);
 	}

@@ -32,7 +32,7 @@ class JsonPlugin extends Plugin
 {
     public function getTypes()
     {
-        return array('string');
+        return ['string');
     }
 
     public function getTriggers()

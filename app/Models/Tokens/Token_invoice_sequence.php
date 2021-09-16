@@ -2,10 +2,12 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
+use app\Models\Appconfig;
 
 /**
  * Token_invoice_sequence class
+ *
+ * @property appconfig appconfig
  */
 
 class Token_invoice_sequence extends Token
@@ -14,16 +16,18 @@ class Token_invoice_sequence extends Token
 	public function __construct($value = '')
 	{
 		parent::__construct($value);
+
+		$this->appconfig = model('Appconfig');
 	}
 
-	public function token_id()
+	public function token_id(): string
 	{
 		return 'ISEQ';
 	}
 
-	public function get_value()
+	public function get_value(): string
 	{
-		return $this->CI->Appconfig->acquire_save_next_invoice_sequence();
+		return $this->appconfig->acquire_save_next_invoice_sequence();
 	}
 }
 ?>

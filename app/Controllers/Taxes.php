@@ -58,23 +58,23 @@ class Taxes extends Secure_Controller
 	*/
 	public function search()
 	{
-		$search = $this->input->get('search');
-		$limit = $this->input->get('limit');
-		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
-		$order = $this->input->get('order');
+		$search = $this->request->getGet('search');
+		$limit = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort = $this->request->getGet('sort');
+		$order = $this->request->getGet('order');
 
 		$tax_rates = $this->Tax->search($search, $limit, $offset, $sort, $order);
 
 		$total_rows = $this->Tax->get_found_rows($search);
 
-		$data_rows = array();
+		$data_rows = [];
 		foreach($tax_rates->getResult() as $tax_rate_row)
 		{
 			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	/*
@@ -82,7 +82,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Tax->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Tax->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -92,7 +92,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_tax_categories()
 	{
-		$suggestions = $this->xss_clean($this->Tax_category->get_tax_category_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Tax_category->get_tax_category_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -157,10 +157,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -264,10 +264,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -333,10 +333,10 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_rates = array();
+		$tax_rates = [];
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_rate_row = array();
+			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
 			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
 			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
@@ -357,48 +357,48 @@ class Taxes extends Secure_Controller
 
 	public function save($tax_rate_id = -1)
 	{
-		$tax_category_id = $this->input->post('rate_tax_category_id');
-		$tax_rate = parse_tax($this->input->post('tax_rate'));
+		$tax_category_id = $this->request->getPost('rate_tax_category_id');
+		$tax_rate = parse_tax($this->request->getPost('tax_rate'));
 
 		if ($tax_rate == 0) {
 			$tax_category_info = $this->Tax_category->get_info($tax_category_id);
 		}
 
-		$tax_rate_data = array(
-			'rate_tax_code_id' => $this->input->post('rate_tax_code_id'),
-			'rate_tax_category_id' => $this->input->post('rate_tax_category_id'),
-			'rate_jurisdiction_id' => $this->input->post('rate_jurisdiction_id'),
+		$tax_rate_data = [
+			'rate_tax_code_id' => $this->request->getPost('rate_tax_code_id'),
+			'rate_tax_category_id' => $this->request->getPost('rate_tax_category_id'),
+			'rate_jurisdiction_id' => $this->request->getPost('rate_jurisdiction_id'),
 			'tax_rate' => $tax_rate,
-			'tax_rounding_code' => $this->input->post('tax_rounding_code')
+			'tax_rounding_code' => $this->request->getPost('tax_rounding_code')
 		);
 
 		if($this->Tax->save($tax_rate_data, $tax_rate_id))
 		{
 			if($tax_rate_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_rate_successfully_added')));
+				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successfully_added')));
 			}
 			else //Existing tax_code
 			{
-				echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_rate_successful_updated')));
+				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successful_updated')));
 			}
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Taxes.tax_rate_error_adding_updating')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_rate_error_adding_updating')));
 		}
 	}
 
 	public function delete()
 	{
-		$tax_codes_to_delete = $this->xss_clean($this->input->post('ids'));
+		$tax_codes_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
 		if($this->Tax->delete_list($tax_codes_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => lang('Taxes.tax_code_successful_deleted')));
+			echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_code_successful_deleted')));
 		} else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => lang('Taxes.tax_code_cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_code_cannot_be_deleted')));
 		}
 	}
 
@@ -412,24 +412,24 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_codes()
 	{
-		$tax_code_id = $this->input->post('tax_code_id');
-		$tax_code = $this->input->post('tax_code');
-		$tax_code_name = $this->input->post('tax_code_name');
-		$tax_code_id = $this->input->post('tax_code_id');
-		$city = $this->input->post('city');
-		$state = $this->input->post('state');
+		$tax_code_id = $this->request->getPost('tax_code_id');
+		$tax_code = $this->request->getPost('tax_code');
+		$tax_code_name = $this->request->getPost('tax_code_name');
+		$tax_code_id = $this->request->getPost('tax_code_id');
+		$city = $this->request->getPost('city');
+		$state = $this->request->getPost('state');
 
-		$array_save = array();
+		$array_save = [];
 		foreach($tax_code_id as $key=>$val)
 		{
-			$array_save[] = array('tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
+			$array_save[] = ['tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
 			'tax_code_name'=>$this->xss_clean($tax_code_name[$key]), 'tax_code_id'=>$this->xss_clean($tax_code_id[$key]),
 			'city'=>$this->xss_clean($city[$key]), 'state'=>$this->xss_clean($state[$key]));
 		}
 
 		$success = $this->Tax_code->save_tax_codes($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
 			'message' => lang('Taxes.tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
@@ -437,21 +437,21 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_jurisdictions()
 	{
-		$jurisdiction_id = $this->input->post('jurisdiction_id');
-		$jurisdiction_name = $this->input->post('jurisdiction_name');
-		$tax_group = $this->input->post('tax_group');
-		$tax_type = $this->input->post('tax_type');
-		$reporting_authority = $this->input->post('reporting_authority');
-		$tax_group_sequence = $this->input->post('tax_group_sequence');
-		$cascade_sequence = $this->input->post('cascade_sequence');
+		$jurisdiction_id = $this->request->getPost('jurisdiction_id');
+		$jurisdiction_name = $this->request->getPost('jurisdiction_name');
+		$tax_group = $this->request->getPost('tax_group');
+		$tax_type = $this->request->getPost('tax_type');
+		$reporting_authority = $this->request->getPost('reporting_authority');
+		$tax_group_sequence = $this->request->getPost('tax_group_sequence');
+		$cascade_sequence = $this->request->getPost('cascade_sequence');
 
-		$array_save = array();
+		$array_save = [];
 
 		$unique_tax_groups = [];
 
 		foreach($jurisdiction_id as $key => $val)
 		{
-			$array_save[] = array(
+			$array_save[] = [
 				'jurisdiction_id'=>$this->xss_clean($val),
 				'jurisdiction_name'=>$this->xss_clean($jurisdiction_name[$key]),
 				'tax_group'=>$this->xss_clean($tax_group[$key]),
@@ -462,7 +462,7 @@ class Taxes extends Secure_Controller
 
 			if (array_search($tax_group[$key], $unique_tax_groups) !== false)
 			{
-				echo json_encode(array(
+				echo json_encode ([
 					'success' => FALSE,
 					'message' => lang('Taxes.tax_group_not_unique', $tax_group[$key])
 				));
@@ -476,7 +476,7 @@ class Taxes extends Secure_Controller
 
 		$success = $this->Tax_jurisdiction->save_jurisdictions($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
 			'message' => lang('Taxes.tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
@@ -484,15 +484,15 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_categories()
 	{
-		$tax_category_id = $this->input->post('tax_category_id');
-		$tax_category = $this->input->post('tax_category');
-		$tax_group_sequence = $this->input->post('tax_group_sequence');
+		$tax_category_id = $this->request->getPost('tax_category_id');
+		$tax_category = $this->request->getPost('tax_category');
+		$tax_group_sequence = $this->request->getPost('tax_group_sequence');
 
-		$array_save= array();
+		$array_save= [];
 
 		foreach($tax_category_id as $key => $val)
 		{
-			$array_save[] = array(
+			$array_save[] = [
 				'tax_category_id'=>$this->xss_clean($val),
 				'tax_category'=>$this->xss_clean($tax_category[$key]),
 				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]));
@@ -500,7 +500,7 @@ class Taxes extends Secure_Controller
 
 		$success = $this->Tax_category->save_categories($array_save);
 
-		echo json_encode(array(
+		echo json_encode ([
 			'success' => $success,
 			'message' => lang('Taxes.tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
@@ -512,7 +512,7 @@ class Taxes extends Secure_Controller
 
 		$tax_codes = $this->xss_clean($tax_codes);
 
-		echo view('partial/tax_codes', array('tax_codes' => $tax_codes));
+		echo view('partial/tax_codes', ['tax_codes' => $tax_codes));
 	}
 
 	public function ajax_tax_categories()
@@ -521,7 +521,7 @@ class Taxes extends Secure_Controller
 
 		$tax_categories = $this->xss_clean($tax_categories);
 
-		echo view('partial/tax_categories', array('tax_categories' => $tax_categories));
+		echo view('partial/tax_categories', ['tax_categories' => $tax_categories));
 	}
 
 	public function ajax_tax_jurisdictions()
@@ -540,7 +540,7 @@ class Taxes extends Secure_Controller
 		$tax_jurisdictions = $this->xss_clean($tax_jurisdictions);
 		$tax_types = $this->tax_lib->get_tax_types();
 
-		echo view('partial/tax_jurisdictions', array('tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
+		echo view('partial/tax_jurisdictions', ['tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
 	}
 }
 ?>

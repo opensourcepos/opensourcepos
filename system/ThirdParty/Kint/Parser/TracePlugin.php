@@ -32,11 +32,11 @@ use Kint\Utils;
 
 class TracePlugin extends Plugin
 {
-    public static $blacklist = array('spl_autoload_call');
+    public static $blacklist = ['spl_autoload_call');
 
     public function getTypes()
     {
-        return array('array');
+        return ['array');
     }
 
     public function getTriggers()
@@ -64,7 +64,7 @@ class TracePlugin extends Plugin
 
         Utils::normalizeAliases(self::$blacklist);
 
-        $rep->contents = array();
+        $rep->contents = [];
 
         foreach ($old_trace as $frame) {
             $index = $frame->name;

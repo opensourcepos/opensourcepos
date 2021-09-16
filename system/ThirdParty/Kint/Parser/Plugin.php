@@ -43,7 +43,7 @@ abstract class Plugin
      */
     public function getTypes()
     {
-        return array();
+        return [];
     }
 
     public function getTriggers()

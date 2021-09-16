@@ -453,7 +453,7 @@ if (! function_exists('safe_mailto'))
 
 		// improve obfuscation by eliminating newlines & whitespace
 		$output = '<script type="text/javascript">'
-				. 'var l=new Array();';
+				. 'var l=new [];';
 
 		foreach ($x as $i => $value)
 		{

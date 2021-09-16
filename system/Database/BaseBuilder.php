@@ -3115,7 +3115,7 @@ class BaseBuilder
 					{
 						continue;
 					}
-					// $matches = array(
+					// $matches = [
 					//	0 => '(test <= foo)',	/* the whole thing */
 					//	1 => '(',		/* optional */
 					//	2 => 'test',		/* the field name */

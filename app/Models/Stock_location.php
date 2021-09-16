@@ -173,7 +173,7 @@ class Stock_location extends Model
 	{
 		// insert new permission for stock location
 		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);
-		$permission_data = array('permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
+		$permission_data = ['permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
 
 		$builder = $this->db->table('permissions');
 		$builder->insert($permission_data);

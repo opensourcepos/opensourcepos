@@ -29,7 +29,7 @@ use Kint\Object\BasicObject;
 
 class TimestampPlugin extends Plugin
 {
-    public static $blacklist = array(
+    public static $blacklist = [
         2147483648,
         2147483647,
         1073741824,
@@ -38,7 +38,7 @@ class TimestampPlugin extends Plugin
 
     public function getTypes()
     {
-        return array('string', 'integer');
+        return ['string', 'integer');
     }
 
     public function getTriggers()

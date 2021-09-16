@@ -20,7 +20,7 @@ class Dinner_table extends Model
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function save(array $table_data, int $dinner_table_id): bool
 	{
-		$table_data_to_save = array('name' => $table_data['name'], 'deleted' => 0);
+		$table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0);
 
 		$builder = $this->db->table('dinner_tables');
 		if(!$this->exists($dinner_table_id))
@@ -45,7 +45,7 @@ class Dinner_table extends Model
 
 		$empty_tables = $builder->get()->getResultArray();
 
-		$empty_tables_array = array();
+		$empty_tables_array = [];
 		foreach($empty_tables as $empty_table)
 		{
 			$empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];

@@ -1078,9 +1078,9 @@ class Forge
 	 *
 	 *    - TRUE will always set $field['unsigned'] to 'UNSIGNED'
 	 *    - FALSE will always set $field['unsigned'] to ''
-	 *    - array(TYPE) will set $field['unsigned'] to 'UNSIGNED',
+	 *    - [TYPE) will set $field['unsigned'] to 'UNSIGNED',
 	 *        if $attributes['TYPE'] is found in the array
-	 *    - array(TYPE => UTYPE) will change $field['type'],
+	 *    - [TYPE => UTYPE) will change $field['type'],
 	 *        from TYPE to UTYPE in case of a match
 	 *
 	 * @param array $attributes

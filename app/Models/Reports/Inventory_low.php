@@ -10,12 +10,12 @@ class Inventory_low extends Report
 {
 	public function getDataColumns()
 	{
-		return array(
-			array('item_name' => lang('Reports.item_name')),
-			array('item_number' => lang('Reports.item_number')),
-			array('quantity' => lang('Reports.quantity')),
-			array('reorder_level' => lang('Reports.reorder_level')),
-			array('location_name' => lang('Reports.stock_location')));
+		return [
+			['item_name' => lang('Reports.item_name')),
+			['item_number' => lang('Reports.item_number')),
+			['quantity' => lang('Reports.quantity')),
+			['reorder_level' => lang('Reports.reorder_level')),
+			['location_name' => lang('Reports.stock_location')));
 	}
 
 	public function getData(array $inputs)
@@ -39,7 +39,7 @@ class Inventory_low extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		return array();
+		return [];
 	}
 }
 ?>
