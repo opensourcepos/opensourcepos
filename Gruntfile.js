@@ -11,12 +11,12 @@ module.exports = function(grunt) {
 		bower_concat: {
 			all: {
 				mainFiles: {
-					'bootstrap-table': [ 
-						"dist/bootstrap-table.min.js", 
-						"dist/bootstrap-table.css", 
-						"dist/extensions/export/bootstrap-table-export.min.js", 
-						"dist/extensions/mobile/bootstrap-table-mobile.min.js", 
-						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js", 
+					'bootstrap-table': [
+						"dist/bootstrap-table.min.js",
+						"dist/bootstrap-table.css",
+						"dist/extensions/export/bootstrap-table-export.min.js",
+						"dist/extensions/mobile/bootstrap-table-mobile.min.js",
+						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js",
 						"dist/extensions/sticky-header/bootstrap-table-sticky-header.css"
 					],
 					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
@@ -63,14 +63,14 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'node_modules/bootstrap-5/dist/css',
+						cwd: 'node_modules/bootstrap/dist/css',
 						src: ['bootstrap.css', 'bootstrap.min.css'],
 						dest: 'public/dist/bootswatch-5/bootstrap/',
 						filter: 'isFile'
 					},
 					{
 						expand: true,
-						cwd: 'node_modules/bootswatch-5/dist',
+						cwd: 'node_modules/bootswatch/dist',
 						src: ['**/bootstrap.css', '**/bootstrap.min.css'],
 						dest: 'public/dist/bootswatch-5/',
 						filter: 'isFile'
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
 					filter: 'isFile',},
 					{
 						expand: true,
-						cwd: 'node_modules/bootstrap-5',
+						cwd: 'node_modules/bootstrap',
 						src: 'LICENSE',
 						dest: 'public/license/',
 						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootstrap-5.license'); },
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 					},
 					{
 						expand: true,
-						cwd: 'node_modules/bootswatch-5',
+						cwd: 'node_modules/bootswatch',
 						src: 'LICENSE',
 						dest: 'public/license/',
 						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootswatch-5.license'); },
@@ -223,7 +223,10 @@ module.exports = function(grunt) {
 			}
 		},
 		clean: {
-			license: ['public/bower_components/**/bower.json']
+			bower: ["public/bower_components"],
+			composer: ["vendor"],
+			license: ['public/bower_components/**/bower.json'],
+			npm: ["node_modules"]
 		},
 		license: {
 			all: {
