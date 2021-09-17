@@ -1,4 +1,4 @@
-The MIT License (MIT)
+MIT License
 
 Copyright (c) 2013-2021 jekkos
 Copyright (c) 2015-2021 FrancescoUK (aka daN4cat)
@@ -7,6 +7,7 @@ Copyright (c) 2017-2021 objecttothis
 Copyright (c) 2017-2021 odiea
 Copyright (c) 2017-2021 WebShells
 Copyright (c) 2020-2021 Andriux1990
+Copyright (c) 2021 BudsieBuds
 Copyright (c) 2019 Loyd Jayme (aka loydjayme25)
 Copyright (c) 2018 Erasto Marroquin (aka Erastus)
 Copyright (c) 2018 Nathan Sas (aka nathanzky)
@@ -36,34 +37,19 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-You cannot claim copyright or ownership of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-Versions ≥ 3.3.2:
+Additionally, you cannot claim copyright or ownership of the Software.
 
-Footer signatures "© 2010 - 2021 · opensourcepos.org · 3.3.3 - 6909c8"
-In the format of: "© 2010 - Current Year · opensourcepos.org · Version - Commit"
-
-and/or 
-
-"· opensourcepos.org ·"
-with version, hash and URL link to the official website of the project MUST BE RETAINED, 
-MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
-
-Versions < 3.3.2:
-
-Footer signatures "You are using Open Source Point Of Sale" 
-
-and/or 
-
-"Open Source Point Of Sale"
-
-with version, hash and URL link to the original distribution of the code MUST BE RETAINED, 
-MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
-OR OTHER DEALINGS IN THE SOFTWARE.
+The footer signatures with version, hash and URL link to the official website
+of the project MUST BE RETAINED, MUST BE VISIBLE IN EVERY PAGE and CANNOT BE
+MODIFIED.
+Footer signatures are in the format
+"© 2010 - current year · opensourcepos.org · version - commit"
+or "Open Source Point of Sale".
