@@ -15,7 +15,7 @@ class Detailed_receivings extends Report
 		return array(
 			'summary' => array(
 				array('id' => $this->lang->line('reports_receiving_id')),
-				array('receiving_time' => $this->lang->line('reports_date'), 'sortable' => FALSE),
+				array('receiving_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('employee_name' => $this->lang->line('reports_received_by')),
 				array('supplier_name' => $this->lang->line('reports_supplied_by')),
@@ -36,7 +36,7 @@ class Detailed_receivings extends Report
 	public function getDataByReceivingId($receiving_id)
 	{
 		$this->db->select('receiving_id,
-			MAX(receiving_time) as receiving_time,
+			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -58,7 +58,7 @@ class Detailed_receivings extends Report
 	public function getData(array $inputs)
 	{
 		$this->db->select('receiving_id,
-			MAX(receiving_time) as receiving_time,
+			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -88,7 +88,7 @@ class Detailed_receivings extends Report
 		{
 			$this->db->having('items_purchased = 0');
 		}
-		$this->db->group_by('receiving_id', 'receiving_time');
+		$this->db->group_by('receiving_id', 'receiving_date');
 		$this->db->order_by('receiving_id');
 
 		$data = array();

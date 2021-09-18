@@ -15,7 +15,7 @@ class Specific_supplier extends Report
 		return array(
 			array('id' => $this->lang->line('reports_sale_id')),
 			array('type_code' => $this->lang->line('reports_code_type')),
-			array('sale_time' => $this->lang->line('reports_date'), 'sortable' => FALSE),
+			array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 			array('name' => $this->lang->line('reports_name')),
 			array('category' => $this->lang->line('reports_category')),
 			array('item_number' => $this->lang->line('reports_item_number')),
@@ -42,7 +42,7 @@ class Specific_supplier extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_time) AS sale_time,
+			MAX(sale_date) AS sale_date,
 			MAX(name) AS name,
 			MAX(category) AS category,
 			MAX(item_number) AS item_number,

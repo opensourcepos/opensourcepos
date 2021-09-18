@@ -16,7 +16,7 @@ class Specific_discount extends Report
 			'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
 				array('type_code' => $this->lang->line('reports_code_type')),
-				array('sale_time' => $this->lang->line('reports_date'), 'sortable' => FALSE),
+				array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('employee_name' => $this->lang->line('reports_sold_by')),
 				array('customer_name' => $this->lang->line('reports_sold_to')),
@@ -58,7 +58,7 @@ class Specific_discount extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_time) AS sale_time,
+			MAX(sale_date) AS sale_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
@@ -112,7 +112,7 @@ class Specific_discount extends Report
 		}
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('MAX(sale_time)');
+		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
