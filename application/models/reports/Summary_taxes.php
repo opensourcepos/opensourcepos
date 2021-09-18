@@ -7,6 +7,7 @@ class Summary_taxes extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
+			array('tax_name' => $this->lang->line('reports_tax_name'), 'sortable' => FALSE),
 			array('tax_percent' => $this->lang->line('reports_tax_percent'), 'sorter' => 'number_sorter'),
 			array('report_count' => $this->lang->line('reports_sales'), 'sorter' => 'number_sorter'),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
@@ -63,9 +64,10 @@ class Summary_taxes extends Summary_report
 				. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END)';
 		}
 
-		$query = $this->db->query("SELECT percent, COUNT(DISTINCT sale_id) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
+		$query = $this->db->query("SELECT name as name, percent, COUNT(DISTINCT sale_id) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
 			FROM (
 				SELECT
+					name AS name,
 					CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent,
 					sales.sale_id AS sale_id,
 					$sale_subtotal AS subtotal,
