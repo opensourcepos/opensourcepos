@@ -16,7 +16,7 @@ class Specific_employee extends Report
 			'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
 				array('type_code' => $this->lang->line('reports_code_type')),
-				array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
+				array('sale_time' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('customer_name' => $this->lang->line('reports_sold_to')),
 				array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
@@ -57,7 +57,7 @@ class Specific_employee extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_date) AS sale_date,
+			MAX(sale_time) AS sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(customer_name) AS customer_name,
 			SUM(subtotal) AS subtotal,
@@ -109,7 +109,7 @@ class Specific_employee extends Report
 		}
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('MAX(sale_date)');
+		$this->db->order_by('MAX(sale_time)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
