@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
-
 abstract class Persons extends Secure_Controller
 {
 	public function __construct($module_id = NULL)

@@ -5,8 +5,6 @@ namespace App\Controllers;
 use app\Libraries\Barcode_lib;
 use app\Libraries\Token_lib;
 
-require_once("Secure_Controller.php");
-
 class Sales extends Secure_Controller
 {
 	public function __construct()

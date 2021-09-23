@@ -10,7 +10,7 @@ use ReflectionClass;
 /**
  * Attribute class
  *
- * @property appconfig config
+ * @property appconfig appconfig
  */
 class Attribute extends Model
 {
@@ -22,7 +22,7 @@ class Attribute extends Model
 	{
 		parent::__construct();
 
-		$this->config = model('Appconfig');
+		$this->appconfig = model('Appconfig');
 	}
 
 	public static function get_definition_flags(): array
@@ -242,7 +242,7 @@ class Attribute extends Model
 		}
 
 		$results = $builder->get()->getResultArray();
-		$definition_name = [-1 => lang('Common.none_selected_text'));
+		$definition_name = [-1 => lang('Common.none_selected_text')];
 
 		return $definition_name + $this->to_array($results, 'definition_id', 'definition_name');
 	}

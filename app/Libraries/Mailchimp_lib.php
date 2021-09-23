@@ -103,7 +103,7 @@ class MailchimpConnector
 		if(($ch = curl_init()) !== FALSE)
 		{
 			curl_setopt($ch, CURLOPT_URL, $this->_build_request_url($httpVerb, $method, $args));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json'));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 			curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->_api_key);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'PHP-MCAPI/3.0');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -149,11 +149,10 @@ class Mailchimp_lib
 	*   By the default it places a simple query to list name & id and count of members & merge_fields
 	*   NOTE: no space between , and next word is allowed. You will not get the filter to work in full but just the first tag
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
 	*/
-	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'))
+	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'])
 	{
 		return $this->_connector->call('GET', '/lists', $parameters);
 	}
@@ -170,7 +169,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
 	*/
-	public function getList($list_id, $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count'))
+	public function getList($list_id, $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count'])
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id, $parameters);
 	}
@@ -183,11 +182,10 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
 	*/
-	public function getMembers($list_id, $count, $offset, $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'))
+	public function getMembers($list_id, $count, $offset, $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'])
 	{
 		$parameters += [
 			'count' => $count,
@@ -207,11 +205,10 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	*/
-	public function getMemberInfoById($list_id, $md5id, $parameters = ['fields' => 'email_address,status,merge_fields'))
+	public function getMemberInfoById($list_id, $md5id, $parameters = ['fields' => 'email_address,status,merge_fields'])
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);
 	}
@@ -226,7 +223,6 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	*/
@@ -245,7 +241,6 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
 	*/
@@ -264,7 +259,6 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
 	*/
@@ -276,7 +270,7 @@ class Mailchimp_lib
 			'merge_fields' => [
 				'FNAME' => $first_name,
 				'LNAME' => $last_name
-			)
+			]
 		];
 
 		return $this->_connector->call('POST', '/lists/' . $list_id . '/members/', $parameters);
@@ -290,7 +284,6 @@ class Mailchimp_lib
 	* @param string $email
 	*   The member's email address.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
 	*/
@@ -309,8 +302,6 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
-	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
 	*/
 	public function updateMember($list_id, $email, $first_name, $last_name, $parameters = [])
@@ -320,7 +311,7 @@ class Mailchimp_lib
 			'merge_fields' => [
 				'FNAME' => $first_name,
 				'LNAME' => $last_name
-			)
+			]
 		];
 
 		return $this->_connector->call('PATCH', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
@@ -336,7 +327,6 @@ class Mailchimp_lib
 	* @param array $parameters
 	*   Associative array of optional request parameters.
 	*
-	* @return object
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
 	*/
@@ -349,7 +339,7 @@ class Mailchimp_lib
 			'merge_fields' => [
 				'FNAME' => $first_name,
 				'LNAME' => $last_name
-			)
+			]
 		];
 
 		return $this->_connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);

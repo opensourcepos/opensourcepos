@@ -2,13 +2,21 @@
 
 namespace App\Controllers;
 
-require_once("Persons.php");
+use app\Models\Module;
 
+/**
+ *
+ *
+ * @property module module
+ *
+ */
 class Employees extends Persons
 {
 	public function __construct()
 	{
 		parent::__construct('employees');
+
+		$this->module = model('Module');
 	}
 
 	/*
@@ -31,7 +39,7 @@ class Employees extends Persons
 			$data_rows[] = $this->xss_clean(get_person_data_row($person));
 		}
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
 	/*
@@ -54,7 +62,7 @@ class Employees extends Persons
 	/*
 	Loads the employee edit form
 	*/
-	public function view($employee_id = -1)
+	public function view(int $employee_id = -1)//TODO: Replace -1 with a constant
 	{
 		$person_info = $this->Employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
@@ -65,7 +73,7 @@ class Employees extends Persons
 		$data['employee_id'] = $employee_id;
 
 		$modules = [];
-		foreach($this->Module->get_all_modules()->getResult() as $module)
+		foreach($this->module->get_all_modules()->getResult() as $module)
 		{
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
@@ -76,7 +84,7 @@ class Employees extends Persons
 		$data['all_modules'] = $modules;
 
 		$permissions = [];
-		foreach($this->Module->get_all_subpermissions()->getResult() as $permission)
+		foreach($this->module->get_all_subpermissions()->getResult() as $permission)	//TODO: subpermissions does not follow naming standards.
 		{
 			$permission->module_id = $this->xss_clean($permission->module_id);
 			$permission->permission_id = str_replace(' ', '_', $this->xss_clean($permission->permission_id));
@@ -92,9 +100,9 @@ class Employees extends Persons
 	/*
 	Inserts/updates an employee
 	*/
-	public function save($employee_id = -1)
+	public function save(int $employee_id = -1)	//TODO: Replace -1 with a constant
 	{
-		$first_name = $this->xss_clean($this->request->getPost('first_name'));
+		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: duplicated code
 		$last_name = $this->xss_clean($this->request->getPost('last_name'));
 		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
 
@@ -114,11 +122,11 @@ class Employees extends Persons
 			'state' => $this->request->getPost('state'),
 			'zip' => $this->request->getPost('zip'),
 			'country' => $this->request->getPost('country'),
-			'comments' => $this->request->getPost('comments'),
-		);
+			'comments' => $this->request->getPost('comments')
+		];
 
 		$grants_array = [];
-		foreach($this->Module->get_all_permissions()->getResult() as $permission)
+		foreach($this->module->get_all_permissions()->getResult() as $permission)
 		{
 			$grants = [];
 			$grant = $this->request->getPost('grant_'.$permission->permission_id) != NULL ? $this->request->getPost('grant_'.$permission->permission_id) : '';
@@ -140,7 +148,7 @@ class Employees extends Persons
 				'hash_version' 	=> 2,
 				'language_code' => $exploded[0],
 				'language' 	=> $exploded[1]
-			);
+			];
 		}
 		else //Password not changed
 		{
@@ -149,7 +157,7 @@ class Employees extends Persons
 				'username' 	=> $this->request->getPost('username'),
 				'language_code'	=> $exploded[0],
 				'language' 	=> $exploded[1]
-			);
+			];
 		}
 
 		if($this->Employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
@@ -157,22 +165,28 @@ class Employees extends Persons
 			// New employee
 			if($employee_id == -1)
 			{
-				echo json_encode (['success' => TRUE,
-								'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $this->xss_clean($employee_data['person_id'])));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $this->xss_clean($employee_data['person_id'])
+				]);
 			}
 			else // Existing employee
 			{
-				echo json_encode (['success' => TRUE,
-								'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-								'id' => $employee_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
+					'id' => $employee_id
+				]);
 			}
 		}
 		else // Failure
 		{
-			echo json_encode (['success' => FALSE,
-							'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-							'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+				'id' => -1
+			]);
 		}
 	}
 
@@ -185,12 +199,14 @@ class Employees extends Persons
 
 		if($this->Employee->delete_list($employees_to_delete))
 		{
-			echo json_encode (['success' => TRUE,'message' => lang('Employees.successful_deleted') . ' ' .
-							count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Employees.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Employees.cannot_be_deleted')]);
 		}
 	}
 
@@ -200,4 +216,5 @@ class Employees extends Persons
 		echo !$exists ? 'true' : 'false';
 	}
 }
+//TODO: PSR-2 Coding standard says that we need to ditch the closing tag when the file only contains PHP
 ?>

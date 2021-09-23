@@ -2,9 +2,7 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
-
-class Home extends Secure_Controller 
+class Home extends Secure_Controller
 {
 	public function __construct()
 	{
@@ -24,7 +22,7 @@ class Home extends Secure_Controller
 	/*
 	Load "change employee password" form
 	*/
-	public function change_password($employee_id = -1)
+	public function change_password(int $employee_id = -1)	//TODO: Replace -1 with a constant
 	{
 		$person_info = $this->Employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
@@ -39,7 +37,7 @@ class Home extends Secure_Controller
 	/*
 	Change employee password
 	*/
-	public function save($employee_id = -1)
+	public function save(int $employee_id = -1)	//TODO: Replace -1 with a constant
 	{
 		if($this->request->getPost('current_password') != '' && $employee_id != -1)
 		{
@@ -49,25 +47,41 @@ class Home extends Secure_Controller
 					'username' => $this->request->getPost('username'),
 					'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
 					'hash_version' => 2
-				);
+				];
 
 				if($this->Employee->change_password($employee_data, $employee_id))
 				{
-					echo json_encode (['success' => TRUE, 'message' => lang('Employees.successful_change_password'), 'id' => $employee_id));
+					echo json_encode ([
+						'success' => TRUE,
+						'message' => lang('Employees.successful_change_password'),
+						'id' => $employee_id
+					]);
 				}
 				else//failure
-				{
-					echo json_encode (['success' => FALSE, 'message' => lang('Employees.unsuccessful_change_password'), 'id' => -1));
+				{//TODO: Replace -1 with constant
+					echo json_encode ([
+						'success' => FALSE,
+						'message' => lang('Employees.unsuccessful_change_password'),
+						'id' => -1
+					]);
 				}
 			}
 			else
-			{
-				echo json_encode (['success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
+			{//TODO: Replace -1 with constant
+				echo json_encode ([
+					'success' => FALSE,
+					'message' => lang('Employees.current_password_invalid'),
+					'id' => -1
+				]);
 			}
 		}
 		else
-		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Employees.current_password_invalid'), 'id' => -1));
+		{//TODO: Replace -1 with constant
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Employees.current_password_invalid'),
+				'id' => -1
+			]);
 		}
 	}
 }

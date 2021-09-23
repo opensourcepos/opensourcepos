@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
-
 class Receivings extends Secure_Controller
 {
 	public function __construct()

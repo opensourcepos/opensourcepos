@@ -76,7 +76,7 @@ class Attributes extends Secure_Controller
 		echo json_encode(['success' => $success]);
 	}
 
-	public function save_definition($definition_id = NO_DEFINITION_ID)
+	public function save_definition(int $definition_id = NO_DEFINITION_ID)
 	{
 		$definition_flags = 0;
 
@@ -141,14 +141,14 @@ class Attributes extends Secure_Controller
 		}
 	}
 
-	public function suggest_attribute($definition_id)
+	public function suggest_attribute(int $definition_id)
 	{
 		$suggestions = $this->xss_clean($this->attribute->get_suggestions($definition_id, $this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function get_row($row_id)
+	public function get_row(int $row_id)
 	{
 		$attribute_definition_info = $this->attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);

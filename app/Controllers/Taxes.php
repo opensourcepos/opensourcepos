@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use app\Libraries\Tax_lib;
 
-require_once("Secure_Controller.php");
-
 class Taxes extends Secure_Controller
 {
 	public function __construct()

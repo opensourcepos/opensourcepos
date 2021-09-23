@@ -8,7 +8,7 @@ use stdClass;
 /**
  * Tax Code class
  *
- * @property appconfig config
+ * @property appconfig appconfig
  *
  */
 
@@ -18,7 +18,7 @@ class Tax_code extends Model
 	{
 		parent::__construct();
 
-		$this->config = model('Appconfig');
+		$this->appconfig = model('Appconfig');
 	}
 
 	/**
@@ -257,7 +257,7 @@ class Tax_code extends Model
 			}
 			else
 			{
-				return $this->config->get('default_tax_code');
+				return $this->appconfig->get('default_tax_code');
 			}
 		}
 		return FALSE;

@@ -2,16 +2,26 @@
 
 namespace App\Controllers;
 
+
+
 use app\Libraries\Item_lib;
+
 use app\Models\Attribute;
+use app\Models\Item;
+use app\Models\Stock_location;
+use Config\Services;
 
 require_once('Secure_Controller.php');
 
 /**
  *
+ * @property image image
+ *
  * @property item_lib item_lib
  *
  * @property attribute attribute
+ * @property item item
+ * @property stock_location stock_location
  *
  */
 class Items extends Secure_Controller
@@ -20,9 +30,13 @@ class Items extends Secure_Controller
 	{
 		parent::__construct('items');
 
+		$this->image = Services::image();
+
 		$this->item_lib = new Item_lib();
 
 		$this->attribute = model('Attribute');
+		$this->item = model('Item');
+		$this->stock_location = model('Stock_location');
 	}
 
 	public function index()
@@ -31,7 +45,7 @@ class Items extends Secure_Controller
 
 		$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers());
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
-		$data['stock_locations'] = $this->xss_clean($this->Stock_location->get_allowed_locations());
+		$data['stock_locations'] = $this->xss_clean($this->stock_location->get_allowed_locations());
 
 		//Filters that will be loaded in the multiselect dropdown
 		$data['filters'] = [
@@ -77,10 +91,10 @@ class Items extends Secure_Controller
 		];
 
 		//Check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);
+		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
-		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
-		$total_rows = $this->Item->get_found_rows($search, $filters);
+		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+		$total_rows = $this->item->get_found_rows($search, $filters);
 		$data_rows = [];
 
 		foreach($items->getResult() as $item)
@@ -99,7 +113,6 @@ class Items extends Secure_Controller
 	public function pic_thumb($pic_filename)
 	{
 		helper('file');
-		$this->image_lib = new Image_lib();
 
 		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
 		$images = glob('./uploads/item_pics/' . $pic_filename);
@@ -109,7 +122,7 @@ class Items extends Secure_Controller
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
-			$thumb_path = $base_path . $this->image_lib->thumb_marker . '.' . $file_extension;
+			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
@@ -120,13 +133,13 @@ class Items extends Secure_Controller
 				$config['width'] = 52;
 				$config['height'] = 32;
 
-				$this->image_lib->initialize($config);
-				$this->image_lib->resize();
+				$this->image->initialize($config);
+				$this->image->resize();
 
-				$thumb_path = $this->image_lib->full_dst_path;
+				$thumb_path = $this->image->full_dst_path;
 			}
-			$this->output->set_content_type(get_mime_by_extension($thumb_path));
-			$this->output->set_output(file_get_contents($thumb_path));
+			$this->response->setContentType(get_mime_by_extension($thumb_path));
+			$this->output->set_output(file_get_contents($thumb_path));	//TODO: figure out the CI4 counterpart to this.
 		}
 	}
 
@@ -140,28 +153,28 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
 		];
 
-		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),	$options, FALSE));
+		$suggestions = $this->xss_clean($this->item->get_search_suggestions($this->request->getPostGet('term'),	$options, FALSE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),	['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
+		$suggestions = $this->xss_clean($this->item->get_search_suggestions($this->request->getPostGet('term'),	['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_low_sell()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_low_sell_suggestions($this->input->post_get('name')));
+		$suggestions = $this->xss_clean($this->item->get_low_sell_suggestions($this->request->getPostGet('name')));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_kits()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_kit_search_suggestions($this->input->post_get('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
+		$suggestions = $this->xss_clean($this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
 		echo json_encode($suggestions);
 	}
@@ -171,7 +184,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_category()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_category_suggestions($this->request->getGet('term')));
+		$suggestions = $this->xss_clean($this->item->get_category_suggestions($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -181,14 +194,14 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_location()
 	{
-		$suggestions = $this->xss_clean($this->Item->get_location_suggestions($this->request->getGet('term')));
+		$suggestions = $this->xss_clean($this->item->get_location_suggestions($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
 
 	public function get_row($item_ids)
 	{
-		$item_infos = $this->Item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
 		$result = [];
 
@@ -221,7 +234,7 @@ class Items extends Secure_Controller
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$item_info = $this->Item->get_info($item_id);
+		$item_info = $this->item->get_info($item_id);
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
@@ -350,7 +363,7 @@ class Items extends Secure_Controller
 		}
 
 		$data['image_path']	= sizeof($images) > 0 ? base_url($images[0]) : '';
-		$stock_locations	= $this->Stock_location->get_undeleted_all()->getResultArray();
+		$stock_locations	= $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -366,7 +379,7 @@ class Items extends Secure_Controller
 
 		if($item_id !== NEW_ITEM && $item_info->item_id !== $item_info->low_sell_item_id)
 		{
-			$low_sell_item_info = $this->Item->get_info($item_info->low_sell_item_id);
+			$low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
 			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
 		}
 		else
@@ -379,7 +392,7 @@ class Items extends Secure_Controller
 
 	public function inventory($item_id = NEW_ITEM)
 	{
-		$item_info = $this->Item->get_info($item_id);
+		$item_info = $this->item->get_info($item_id);
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
@@ -388,7 +401,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 		$data['stock_locations'] = [];
-		$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
+		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -404,7 +417,7 @@ class Items extends Secure_Controller
 
 	public function count_details($item_id = NEW_ITEM)
 	{
-		$item_info = $this->Item->get_info($item_id);
+		$item_info = $this->item->get_info($item_id);
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
@@ -413,7 +426,7 @@ class Items extends Secure_Controller
 
 		$data['item_info'] = $item_info;
 		$data['stock_locations'] = [];
-		$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
+		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -432,7 +445,7 @@ class Items extends Secure_Controller
 		$this->barcode_lib = new Barcode_lib();
 
 		$item_ids = explode(':', $item_ids);
-		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+		$result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
 		$config = $this->barcode_lib->get_barcode_config();
 
 		$data['barcode_config'] = $config;
@@ -447,7 +460,7 @@ class Items extends Secure_Controller
 				$item['item_number'] = $barcode_instance->getData();
 				$save_item = ['item_number' => $item['item_number']];
 
-				$this->Item->save($save_item, $item['item_id']);
+				$this->item->save($save_item, $item['item_id']);
 			}
 		}
 		$data['items'] = $result;
@@ -579,7 +592,7 @@ class Items extends Secure_Controller
 
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 
-		if($this->Item->save($item_data, $item_id))
+		if($this->item->save($item_data, $item_id))
 		{
 			$success = TRUE;
 			$new_item = FALSE;
@@ -615,7 +628,7 @@ class Items extends Secure_Controller
 			}
 
 			//Save item quantity
-			$stock_locations = $this->Stock_location->get_undeleted_all()->getResultArray();
+			$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 			foreach($stock_locations as $location)
 			{
 				$updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
@@ -691,7 +704,7 @@ class Items extends Secure_Controller
 
 	public function check_item_number()
 	{
-		$exists = $this->Item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
+		$exists = $this->item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
 		echo !$exists ? 'true' : 'false';
 	}
 
@@ -734,7 +747,7 @@ class Items extends Secure_Controller
 	public function remove_logo($item_id)
 	{
 		$item_data = ['pic_filename' => NULL];
-		$result = $this->Item->save($item_data, $item_id);
+		$result = $this->item->save($item_data, $item_id);
 
 		echo json_encode (['success' => $result]);
 	}
@@ -742,7 +755,7 @@ class Items extends Secure_Controller
 	public function save_inventory($item_id = NEW_ITEM)
 	{
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$cur_item_info = $this->Item->get_info($item_id);
+		$cur_item_info = $this->item->get_info($item_id);
 		$location_id = $this->request->getPost('stock_location');
 		$inv_data = [
 			'trans_date' => date('Y-m-d H:i:s'),
@@ -796,7 +809,7 @@ class Items extends Secure_Controller
 		}
 
 		//Item data could be empty if tax information is being updated
-		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
+		if(empty($item_data) || $this->item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = [];
 			$tax_names = $this->request->getPost('tax_names');
@@ -829,7 +842,7 @@ class Items extends Secure_Controller
 	{
 		$items_to_delete = $this->request->getPost('ids');
 
-		if($this->Item->delete_list($items_to_delete))
+		if($this->item->delete_list($items_to_delete))
 		{
 			$message = lang('Items.successful_deleted') . ' ' . count($items_to_delete) . ' ' . lang('Items.one_or_multiple');
 			echo json_encode (['success' => TRUE, 'message' => $message]);
@@ -843,7 +856,7 @@ class Items extends Secure_Controller
 	public function generate_csv_file()
 	{
 		$name = 'import_items.csv';
-		$allowed_locations = $this->Stock_location->get_allowed_locations();
+		$allowed_locations = $this->stock_location->get_allowed_locations();
 		$allowed_attributes = $this->attribute->get_definition_names(FALSE);
 		$data = generate_import_items_csv($allowed_locations, $allowed_attributes);
 
@@ -873,7 +886,7 @@ class Items extends Secure_Controller
 				$failCodes = [];
 				$csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
 				$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-				$allowed_stock_locations = $this->Stock_location->get_allowed_locations();
+				$allowed_stock_locations = $this->stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->attribute->get_definition_names();
 
 				unset($attribute_definition_names[-1]);	//Removes the common_none_selected_text from the array
@@ -927,7 +940,7 @@ class Items extends Secure_Controller
 					if(!empty($row['Barcode']))
 					{
 						$item_data['item_number'] = $row['Barcode'];
-						$is_failed_row = $this->Item->item_number_exists($item_data['item_number']);
+						$is_failed_row = $this->item->item_number_exists($item_data['item_number']);
 					}
 
 					if(!$is_failed_row)
@@ -938,7 +951,7 @@ class Items extends Secure_Controller
 					//Remove FALSE, NULL, '' and empty strings but keep 0
 					$item_data = array_filter($item_data, 'strlen');
 
-					if(!$is_failed_row && $this->Item->save($item_data, $item_id))
+					if(!$is_failed_row && $this->item->save($item_data, $item_id))
 					{
 						$this->save_tax_data($row, $item_data);
 						$this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
@@ -946,7 +959,7 @@ class Items extends Secure_Controller
 
 						if($is_update)
 						{
-							$item_data = array_merge($item_data, get_object_vars($this->Item->get_info_by_id_or_number($item_id)));
+							$item_data = array_merge($item_data, get_object_vars($this->item->get_info_by_id_or_number($item_id)));
 						}
 					}
 					else
@@ -1016,7 +1029,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->Item->exists($item_id))
+			if(!$this->item->exists($item_id))
 			{
 				log_message('Error',"non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
 				return TRUE;
@@ -1241,7 +1254,7 @@ class Items extends Secure_Controller
 				{
 					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
 					$item_data = ['pic_filename' => $new_pic_filename];
-					$this->Item->save($item_data, $item->item_id);
+					$this->item->save($item_data, $item->item_id);
 				}
 			}
 		}

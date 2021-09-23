@@ -4,29 +4,46 @@ namespace App\Controllers;
 
 use app\Libraries\Barcode_lib;
 
-require_once("Secure_Controller.php");
+use app\Models\Item;
+use app\Models\Item_kit;
+use app\Models\Item_kit_items;
 
+/**
+ *
+ *
+ * @property barcode_lib barcode_lib
+ *
+ * @property item item
+ * @property item_kit item_kit
+ * @property item_kit_items item_kit_items
+ *
+ *
+ */
 class Item_kits extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('item_kits');
+
+		$this->item = model('Item');
+		$this->item_kit = model('Item_kit');
+		$this->item_kit_items = model('Item_kit_items');
 	}
 	
 	/*
 	Add the total cost and retail price to a passed items kit retrieving the data from each singular item part of the kit
 	*/
-	private function _add_totals_to_item_kit($item_kit)
+	private function _add_totals_to_item_kit(object $item_kit): object    //TODO: Hungarian notation
 	{
-		$kit_item_info = $this->Item->get_info(isset($item_kit->kit_item_id) ? $item_kit->kit_item_id : $item_kit->item_id);
+		$kit_item_info = $this->item->get_info(isset($item_kit->kit_item_id) ? $item_kit->kit_item_id : $item_kit->item_id);
 
 		$item_kit->total_cost_price = 0;
 		$item_kit->total_unit_price = (float)$kit_item_info->unit_price;
 		$total_quantity = 0;
 
-		foreach($this->Item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
+		foreach($this->item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
 		{
-			$item_info = $this->Item->get_info($item_kit_item['item_id']);
+			$item_info = $this->item->get_info($item_kit_item['item_id']);
 			foreach(get_object_vars($item_info) as $property => $value)
 			{
 				$item_info->$property = $this->xss_clean($value);
@@ -66,8 +83,8 @@ class Item_kits extends Secure_Controller
 		$sort   = $this->request->getGet('sort');
 		$order  = $this->request->getGet('order');
 
-		$item_kits = $this->Item_kit->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Item_kit->get_found_rows($search);
+		$item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->item_kit->get_found_rows($search);
 
 		$data_rows = [];
 		foreach($item_kits->getResult() as $item_kit)
@@ -77,29 +94,29 @@ class Item_kits extends Secure_Controller
 			$data_rows[] = $this->xss_clean(get_item_kit_data_row($item_kit));
 		}
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Item_kit->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->xss_clean($this->item_kit->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function get_row($row_id)
+	public function get_row(int $row_id)
 	{
 		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
-		$item_kit = $this->_add_totals_to_item_kit($this->Item_kit->get_info($row_id));
+		$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
 
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
 	
-	public function view($item_kit_id = -1)
+	public function view(int $item_kit_id = -1)	//TODO: Replace -1 with a constant
 	{
-		$info = $this->Item_kit->get_info($item_kit_id);
+		$info = $this->item_kit->get_info($item_kit_id);
 
-		if($item_kit_id == -1)
+		if($item_kit_id == -1)	//TODO: Replace -1 with a constant
 		{
 			$info->price_option = '0';
 			$info->print_option = PRINT_ALL;
@@ -114,10 +131,10 @@ class Item_kits extends Secure_Controller
 		$data['item_kit_info']  = $info;
 
 		$items = [];
-		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
+		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
-			$item['name'] = $this->xss_clean($this->Item->get_info($item_kit_item['item_id'])->name);
+			$item['name'] = $this->xss_clean($this->item->get_info($item_kit_item['item_id'])->name);
 			$item['item_id'] = $this->xss_clean($item_kit_item['item_id']);
 			$item['quantity'] = $this->xss_clean($item_kit_item['quantity']);
 
@@ -132,7 +149,7 @@ class Item_kits extends Secure_Controller
 		echo view("item_kits/form", $data);
 	}
 	
-	public function save($item_kit_id = -1)
+	public function save(int $item_kit_id = -1)	//TODO: Replace -1 with a constant
 	{
 		$item_kit_data = [
 			'name' => $this->request->getPost('name'),
@@ -143,13 +160,13 @@ class Item_kits extends Secure_Controller
 			'price_option' => $this->request->getPost('price_option'),
 			'print_option' => $this->request->getPost('print_option'),
 			'description' => $this->request->getPost('description')
-		);
+		];
 		
-		if($this->Item_kit->save($item_kit_data, $item_kit_id))
+		if($this->item_kit->save($item_kit_data, $item_kit_id))	//TODO: Reflection exception
 		{
 			$new_item = FALSE;
 			//New item kit
-			if($item_kit_id == -1)
+			if($item_kit_id == -1)	//TODO: Replace -1 with a constant
 			{
 				$item_kit_id = $item_kit_data['item_kit_id'];
 				$new_item = TRUE;
@@ -165,33 +182,42 @@ class Item_kits extends Secure_Controller
 						'item_id' => $item_id,
 						'quantity' => $quantity,
 						'kit_sequence' => $seq
-					);
+					];
 				}
 
 			}
 
-			$success = $this->Item_kit_items->save($item_kit_items, $item_kit_id);
+			$success = $this->item_kit_items->save($item_kit_items, $item_kit_id);	//TODO: Reflection exception
 
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
 			if($new_item)
 			{
-				echo json_encode (['success' => $success,
-					'message' => lang('Item_kits.successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+				echo json_encode ([
+					'success' => $success,
+					'message' => lang('Item_kits.successful_adding').' '.$item_kit_data['name'],
+					'id' => $item_kit_id
+				]);
 
 			}
 			else
 			{
-				echo json_encode (['success' => $success,
-					'message' => lang('Item_kits.successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+				echo json_encode ([
+					'success' => $success,
+					'message' => lang('Item_kits.successful_updating').' '.$item_kit_data['name'],
+					'id' => $item_kit_id
+				]);
 			}
 		}
 		else//failure
 		{
 			$item_kit_data = $this->xss_clean($item_kit_data);
 
-			echo json_encode (['success' => FALSE, 
-								'message' => lang('Item_kits.error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
+				'id' => -1	//TODO: Replace -1 with a constant
+			]);
 		}
 	}
 	
@@ -199,25 +225,26 @@ class Item_kits extends Secure_Controller
 	{
 		$item_kits_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
-		if($this->Item_kit->delete_list($item_kits_to_delete))
+		if($this->item_kit->delete_list($item_kits_to_delete))
 		{
-			echo json_encode (['success' => TRUE,
-								'message' => lang('Item_kits.successful_deleted').' '.count($item_kits_to_delete).' '.lang('Item_kits.one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Item_kits.successful_deleted') . ' ' . count($item_kits_to_delete) . ' ' . lang('Item_kits.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE,
-								'message' => lang('Item_kits.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Item_kits.cannot_be_deleted')]);
 		}
 	}
 
 	public function check_item_number()
 	{
-		$exists = $this->Item_kit->item_number_exists($this->request->getPost('item_kit_number'), $this->request->getPost('item_kit_id'));
+		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number'), $this->request->getPost('item_kit_id'));
 		echo !$exists ? 'true' : 'false';
 	}
 	
-	public function generate_barcodes($item_kit_ids)
+	public function generate_barcodes(string $item_kit_ids)
 	{
 		$this->barcode_lib = new Barcode_lib();
 		$result = [];
@@ -226,12 +253,17 @@ class Item_kits extends Secure_Controller
 		foreach($item_kit_ids as $item_kid_id)
 		{		
 			// calculate the total cost and retail price of the Kit so it can be added to the barcode text at the bottom
-			$item_kit = $this->_add_totals_to_item_kit($this->Item_kit->get_info($item_kid_id));
+			$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
 			
 			$item_kid_id = 'KIT '. urldecode($item_kid_id);
 
-			$result[] = ['name' => $item_kit->name, 'item_id' => $item_kid_id, 'item_number' => $item_kid_id,
-							'cost_price' => $item_kit->total_cost_price, 'unit_price' => $item_kit->total_unit_price);
+			$result[] = [
+				'name' => $item_kit->name,
+				'item_id' => $item_kid_id,
+				'item_number' => $item_kid_id,
+				'cost_price' => $item_kit->total_cost_price,
+				'unit_price' => $item_kit->total_unit_price
+			];
 		}
 
 		$data['items'] = $result;

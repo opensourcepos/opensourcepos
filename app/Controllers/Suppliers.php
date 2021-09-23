@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-require_once("Persons.php");
-
 class Suppliers extends Persons
 {
 	public function __construct()

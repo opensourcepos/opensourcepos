@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
-
 class Office extends Secure_Controller
 {
 	function __construct()

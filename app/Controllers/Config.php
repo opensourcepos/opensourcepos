@@ -6,16 +6,43 @@ use app\Libraries\Barcode_lib;
 use app\Libraries\Mailchimp_lib;
 use app\Libraries\Receiving_lib;
 use app\Libraries\Sale_lib;
-use app\Models\Appconfig;
+use app\Libraries\Tax_lib;
 
-require_once("Secure_Controller.php");
+use app\Models\Appconfig;
+use app\Models\Attribute;
+use app\Models\Customer_rewards;
+use app\Models\Dinner_table;
+use app\Models\Module;
+use app\Models\Enums\Rounding_mode;
+use app\Models\Stock_location;
+use app\Models\Tax;
+
+use CodeIgniter\Encryption\Encryption;
+use CodeIgniter\Encryption\EncrypterInterface;
+use DirectoryIterator;
+use NumberFormatter;
 
 /**
  * 
  * 
  * @property barcode_lib barcode_lib
+ * @property mailchimp_lib mailchimp_lib
+ * @property receiving_lib receiving_lib
  * @property sale_lib sale_lib
+ * @property tax_lib tax_lib
+ *
+ * @property encryption encryption
+ * @property encrypterinterface encrypter
+ *
  * @property appconfig appconfig
+ * @property attribute attribute
+ * @property customer_rewards customer_rewards
+ * @property dinner_table dinner_table
+ * @property module module
+ * @property rounding_mode rounding_mode
+ * @property stock_location stock_location
+ * @property tax tax
+ * @property upload upload
  * 
  */
 class Config extends Secure_Controller
@@ -26,8 +53,20 @@ class Config extends Secure_Controller
 
 		$this->barcode_lib = new Barcode_lib();
 		$this->sale_lib = new Sale_lib();
+		$this->receiving_lib = new receiving_lib();
+		$this->tax_lib = new Tax_lib();
 		
 		$this->appconfig = model('Appconfig');
+		$this->attribute = model('Attribute');
+		$this->customer_rewards = model('Customer_rewards');
+		$this->dinner_table = model('Dinner_table');
+		$this->module = model('Module');
+		$this->rounding_mode = model('Rounding_mode');
+		$this->stock_location = model('Stock_location');
+		$this->tax = model('Tax');
+
+		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
+		$this->encrypter = $this->encryption->initialize();
 	}
 
 	/*
@@ -40,7 +79,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = [];
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->get('application_version');
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->appconfig->get('application_version');
 
 		if(file_exists('license/LICENSE'))
 		{
@@ -108,7 +147,7 @@ class Config extends Secure_Controller
 					{
 						if(is_array($val1))
 						{
-							$license[$i]['text'] .= 'component: ' . $key1 . "\n";
+							$license[$i]['text'] .= 'component: ' . $key1 . "\n";	//TODO: Duplicated Code
 
 							foreach($val1 as $key2 => $val2)
 							{
@@ -156,7 +195,7 @@ class Config extends Secure_Controller
 			{
 				if(is_array($val))
 				{
-					$license[$i]['text'] .= 'component: ' . $key . "\n";
+					$license[$i]['text'] .= 'component: ' . $key . "\n";	//TODO: Duplicated Code.
 
 					foreach($val as $key1 => $val1)
 					{
@@ -190,14 +229,14 @@ class Config extends Secure_Controller
 	/*
 	 * This function loads all the available themes in the dist/bootswatch directory
 	 */
-	private function _themes()
+	private function _themes(): array	//TODO: Hungarian notation
 	{
 		$themes = [];
 
 		// read all themes in the dist folder
 		$dir = new DirectoryIterator('dist/bootswatch');
 
-		foreach($dir as $dirinfo)
+		foreach($dir as $dirinfo)	//TODO: $dirinfo doesn't follow naming convention
 		{
 			if($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts')
 			{
@@ -213,20 +252,20 @@ class Config extends Secure_Controller
 
 	public function index()
 	{
-		$data['stock_locations'] = $this->Stock_location->get_all()->getResultArray();
-		$data['dinner_tables'] = $this->Dinner_table->get_all()->getResultArray();
-		$data['customer_rewards'] = $this->Customer_rewards->get_all()->getResultArray();
+		$data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
+		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
+		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = $this->config->get('company_logo') != '';
+		$data['logo_exists'] = $this->appconfig->get('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
-		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
-		$data['show_office_group'] = $this->Module->get_show_office_group();
-		$data['currency_code'] = $this->config->get('currency_code');
+		$data['show_office_group'] = $this->module->get_show_office_group();
+		$data['currency_code'] = $this->appconfig->get('currency_code');
 
 		$data = $this->xss_clean($data);
 
@@ -240,15 +279,15 @@ class Config extends Secure_Controller
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] = explode('|',$this->config->get('image_allowed_types'));
+		$data['selected_image_allowed_types'] = explode('|',$this->appconfig->get('image_allowed_types'));
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
-		if($this->_check_encryption())
+		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->get('mailchimp_api_key'));
-			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->get('mailchimp_list_id'));
+			$data['mailchimp']['api_key'] = $this->encrypter->decrypt($this->appconfig->get('mailchimp_api_key'));
+			$data['mailchimp']['list_id'] = $this->encrypter->decrypt($this->appconfig->get('mailchimp_list_id'));
 		}
 		else
 		{
@@ -287,7 +326,7 @@ class Config extends Secure_Controller
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $upload_success && $result ? TRUE : FALSE;
+		$success = $upload_success && $result ? TRUE : FALSE;	//TODO: This can be simplified to just `$upload_success && $result`
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
 
@@ -325,7 +364,7 @@ class Config extends Secure_Controller
 			'category_dropdown' => $this->request->getPost('category_dropdown') != NULL
 		];
 
-		$this->Module->set_show_office_group($this->request->getPost('show_office_group') != NULL);
+		$this->module->set_show_office_group($this->request->getPost('show_office_group') != NULL);
 
 		if($batch_save_data['category_dropdown'] == 1)
 		{
@@ -335,11 +374,11 @@ class Config extends Secure_Controller
 			$definition_data['definition_id'] = CATEGORY_DEFINITION_ID;
 			$definition_data['deleted'] = 0;
 
-			$this->Attribute->save_definition($definition_data, CATEGORY_DEFINITION_ID);
+			$this->attribute->save_definition($definition_data, CATEGORY_DEFINITION_ID);
 		}
 		else if($batch_save_data['category_dropdown'] == NO_DEFINITION_ID)
 		{
-			$this->Attribute->delete_definition(CATEGORY_DEFINITION_ID);
+			$this->attribute->delete_definition(CATEGORY_DEFINITION_ID);
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
@@ -353,25 +392,25 @@ class Config extends Secure_Controller
 		$number_locale = $this->request->getPost('number_locale');
 		$save_number_locale = $this->request->getPost('save_number_locale');
 
-		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
+		$fmt = new NumberFormatter($number_locale, NumberFormatter::CURRENCY);
 		if($number_locale != $save_number_locale)
 		{
-			$currency_symbol = $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
-			$currency_code = $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE);
+			$currency_symbol = $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+			$currency_code = $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE);
 			$save_number_locale = $number_locale;
 		}
 		else
 		{
-			$currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol');
-			$currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code');
+			$currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol');
+			$currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code');
 		}
 
 		if($this->request->getPost('thousands_separator') == 'false')
 		{
-			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+			$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}
 
-		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
+		$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
 		$number_local_example = $fmt->format(1234567890.12300);
 
 		echo json_encode([
@@ -408,7 +447,7 @@ class Config extends Secure_Controller
 		];
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $result ? TRUE : FALSE; //TODO: this can be replaced with (bool) $result;
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -419,7 +458,7 @@ class Config extends Secure_Controller
 
 		if($this->_check_encryption())
 		{
-			$password = $this->encryption->encrypt($this->request->getPost('smtp_pass'));
+			$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
 		}
 
 		$batch_save_data = [
@@ -434,7 +473,7 @@ class Config extends Secure_Controller
 		];
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $result ? TRUE : FALSE;//TODO: this can be replaced with (bool) $result;
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -445,7 +484,7 @@ class Config extends Secure_Controller
 
 		if($this->_check_encryption())
 		{
-			$password = $this->encryption->encrypt($this->request->getPost('msg_pwd'));
+			$password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
 		}
 
 		$batch_save_data = [
@@ -456,7 +495,7 @@ class Config extends Secure_Controller
 		];
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $result ? TRUE : FALSE;	//TODO: this can be replaced with (bool) $result;
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -464,7 +503,7 @@ class Config extends Secure_Controller
 	/*
 	 * This function fetches all the available lists from Mailchimp for the given API key
 	 */
-	private function _mailchimp($api_key = '')
+	private function _mailchimp(string $api_key = ''): array	//TODO: Hungarian notation
 	{
 		$this->mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
 
@@ -492,7 +531,7 @@ class Config extends Secure_Controller
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
-		$success = count($lists) > 0 ? TRUE : FALSE;
+		$success = count($lists) > 0 ? TRUE : FALSE;	//TODO: This can be replaced with `count($lists) > 0;`
 
 		echo json_encode ([
 			'success' => $success,
@@ -506,23 +545,23 @@ class Config extends Secure_Controller
 		$api_key = '';
 		$list_id = '';
 
-		if($this->_check_encryption())
+		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$api_key = $this->encryption->encrypt($this->request->getPost('mailchimp_api_key'));
-			$list_id = $this->encryption->encrypt($this->request->getPost('mailchimp_list_id'));
+			$api_key = $this->encrypter->encrypt($this->request->getPost('mailchimp_api_key'));
+			$list_id = $this->encrypter->encrypt($this->request->getPost('mailchimp_list_id'));
 		}
 
 		$batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $result ? TRUE : FALSE;	//TODO: this can be replaced with (bool) $result;
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
 	public function ajax_stock_locations()
 	{
-		$stock_locations = $this->Stock_location->get_all()->getResultArray();
+		$stock_locations = $this->stock_location->get_all()->getResultArray();
 
 		$stock_locations = $this->xss_clean($stock_locations);
 
@@ -531,7 +570,7 @@ class Config extends Secure_Controller
 
 	public function ajax_dinner_tables()
 	{
-		$dinner_tables = $this->Dinner_table->get_all()->getResultArray();
+		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
 		$dinner_tables = $this->xss_clean($dinner_tables);
 
@@ -540,7 +579,7 @@ class Config extends Secure_Controller
 
 	public function ajax_tax_categories()
 	{
-		$tax_categories = $this->Tax->get_all_tax_categories()->getResultArray();
+		$tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
 		$tax_categories = $this->xss_clean($tax_categories);
 
@@ -549,14 +588,14 @@ class Config extends Secure_Controller
 
 	public function ajax_customer_rewards()
 	{
-		$customer_rewards = $this->Customer_rewards->get_all()->getResultArray();
+		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
 		$customer_rewards = $this->xss_clean($customer_rewards);
 
 		echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
 	}
 
-	private function _clear_session_state()
+	private function _clear_session_state()	//TODO: Hungarian notation
 	{
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_table();
@@ -580,9 +619,9 @@ class Config extends Secure_Controller
 				foreach ($value as $location_id => $location_name)
 				{
 					$location_data = ['location_name' => $location_name];
-					if($this->Stock_location->save($location_data, $location_id))
+					if($this->stock_location->save($location_data, $location_id))	//TODO: Reflection Exception
 					{
-						$location_id = $this->Stock_location->get_location_id($location_name);
+						$location_id = $this->stock_location->get_location_id($location_name);
 						$not_to_delete[] = $location_id;
 						$this->_clear_session_state();
 					}
@@ -591,13 +630,13 @@ class Config extends Secure_Controller
 		}
 
 		// all locations not available in post will be deleted now
-		$deleted_locations = $this->Stock_location->get_all()->getResultArray();
+		$deleted_locations = $this->stock_location->get_all()->getResultArray();
 
 		foreach($deleted_locations as $location => $location_data)
 		{
 			if(!in_array($location_data['location_id'], $not_to_delete))
 			{
-				$this->Stock_location->delete($location_data['location_id']);
+				$this->stock_location->delete($location_data['location_id']);
 			}
 		}
 
@@ -614,7 +653,7 @@ class Config extends Secure_Controller
 
 		$dinner_table_enable = $this->request->getPost('dinner_table_enable') != NULL;
 
-		$this->Appconfig->save('dinner_table_enable', $dinner_table_enable);
+		$this->appconfig->save('dinner_table_enable', $dinner_table_enable);	//TODO: reflection exception
 
 		if($dinner_table_enable)
 		{
@@ -628,7 +667,7 @@ class Config extends Secure_Controller
 
 					// save or update
 					$table_data = ['name' => $value];
-					if($this->Dinner_table->save($table_data, $dinner_table_id))
+					if($this->dinner_table->save($table_data, $dinner_table_id))		//TODO: reflection exception
 					{
 						$this->_clear_session_state();
 					}
@@ -636,13 +675,13 @@ class Config extends Secure_Controller
 			}
 
 			// all tables not available in post will be deleted now
-			$deleted_tables = $this->Dinner_table->get_all()->getResultArray();
+			$deleted_tables = $this->dinner_table->get_all()->getResultArray();
 
 			foreach($deleted_tables as $dinner_tables => $table)
 			{
 				if(!in_array($table['dinner_table_id'], $not_to_delete))
 				{
-					$this->Dinner_table->delete($table['dinner_table_id']);
+					$this->dinner_table->delete($table['dinner_table_id']);
 				}
 			}
 		}
@@ -671,7 +710,7 @@ class Config extends Secure_Controller
 			'tax_id' => $this->request->getPost('tax_id')
 		];
 
-		$success = $this->appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
+		$success = $this->appconfig->batch_save($batch_save_data) ? TRUE : FALSE;	//TODO: This can be replaced with `$this->appconfig->batch_save($batch_save_data);`
 
 		$this->db->transComplete();
 
@@ -688,7 +727,7 @@ class Config extends Secure_Controller
 
 		$customer_reward_enable = $this->request->getPost('customer_reward_enable') != NULL;
 
-		$this->Appconfig->save('customer_reward_enable', $customer_reward_enable);
+		$this->appconfig->save('customer_reward_enable', $customer_reward_enable);		//TODO: reflection exception
 
 		if($customer_reward_enable)
 		{
@@ -715,18 +754,18 @@ class Config extends Secure_Controller
 				{
 					// save or update
 					$package_data = ['package_name' => $value['package_name'], 'points_percent' => $value['points_percent']];
-					$this->Customer_rewards->save($package_data, $key);
+					$this->customer_rewards->save($package_data, $key);	//TODO: reflection exception
 				}
 			}
 
 			// all packages not available in post will be deleted now
-			$deleted_packages = $this->Customer_rewards->get_all()->getResultArray();
+			$deleted_packages = $this->customer_rewards->get_all()->getResultArray();
 
 			foreach($deleted_packages as $customer_rewards => $reward_category)
 			{
 				if(!in_array($reward_category['package_id'], $not_to_delete))
 				{
-					$this->Customer_rewards->delete($reward_category['package_id']);
+					$this->customer_rewards->delete($reward_category['package_id']);
 				}
 			}
 		}
@@ -759,7 +798,7 @@ class Config extends Secure_Controller
 		];
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $result ? TRUE : FALSE;	//TODO: This can be replaced with $result since that will be a bool;
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -785,9 +824,9 @@ class Config extends Secure_Controller
 			'print_left_margin' => $this->request->getPost('print_left_margin'),
 			'print_bottom_margin' => $this->request->getPost('print_bottom_margin'),
 			'print_right_margin' => $this->request->getPost('print_right_margin')
-		);
+		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
+		$result = $this->appconfig->batch_save($batch_save_data);	//TODO: This and the line below can be replaced with `return $this->appconfig->batch_save($batch_save_data); since that will be a bool;
 		$success = $result ? TRUE : FALSE;
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
@@ -810,16 +849,16 @@ class Config extends Secure_Controller
 			'work_order_format' => $this->request->getPost('work_order_format'),
 			'last_used_work_order_number' => $this->request->getPost('last_used_work_order_number'),
 			'invoice_type' => $this->request->getPost('invoice_type')
-		);
+		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
+		$result = $this->appconfig->batch_save($batch_save_data);//TODO: This and the line below can be replaced with `return $this->appconfig->batch_save($batch_save_data); since that will be a bool;
 		$success = $result ? TRUE : FALSE;
 
 		// Update the register mode with the latest change so that if the user
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if($this->config->get('invoice_enable') == '1')
+			if($this->appconfig->get('invoice_enable') == '1')
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
@@ -839,7 +878,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $result]);
 	}
 
-	private function _handle_logo_upload()
+	private function _handle_logo_upload(): bool    //TODO: Remove hungarian notation.
 	{
 		helper('directory');
 
@@ -851,15 +890,15 @@ class Config extends Secure_Controller
 			'max_height' => '680',
 			'file_name' => 'company_logo'
 		];
-		$this->upload = new Upload($config);
+		$this->upload = new Upload($config);	//TODO: Need to find the CI4 equivalent to the upload class.
 		$this->upload->do_upload('company_logo');
 
-		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');
+		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');	//TODO: this should probably be broken up into
 	}
 
-	private function _check_encryption()
+	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
-		$encryption_key = $this->config->get('encryption_key');
+		$encryption_key = $this->appconfig->get('encryption_key');
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
@@ -871,10 +910,10 @@ class Config extends Secure_Controller
 			$config = file_get_contents($config_path);
 
 			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
-			$key = bin2hex($this->encryption->create_key(32));
+			$key = bin2hex($this->encryption->createKey(32));
 
 			// set the encryption key in the config item
-			$this->config->set_item('encryption_key', $key);
+			$this->appconfig->save('encryption_key', $key);		//TODO: reflection exception
 
 			// replace the empty placeholder with a real randomly generated encryption key
 			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
@@ -891,7 +930,7 @@ class Config extends Secure_Controller
 				$handle = @fopen($config_path, 'w+');
 
 				// Write the file
-				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;
+				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;	//TODO: This can be replaced with `(fwrite($handle, $config) === FALSE);`
 
 				fclose($handle);
 			}
@@ -910,11 +949,11 @@ class Config extends Secure_Controller
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		if($this->Employee->has_module_grant('config', $employee_id))
 		{
-			$this->load->dbutil();
+			$this->load->dbutil();	//TODO: CI4 does not have this utility any longer https://forum.codeigniter.com/thread-78658-post-384595.html#pid384595
 
 			$prefs = ['format' => 'zip', 'filename' => 'ospos.sql'];
 
-			$backup = $this->dbutil->backup($prefs);
+			$backup = $this->dbutil->backup($prefs);	//TODO: We need a new method for backing up the database.
 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
 			$save = 'uploads/' . $file_name;

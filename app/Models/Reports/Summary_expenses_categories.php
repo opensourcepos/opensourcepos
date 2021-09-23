@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 use CodeIgniter\Model;
 
-require_once("Summary_report.php");
+
 
 class Summary_expenses_categories extends Summary_report
 {

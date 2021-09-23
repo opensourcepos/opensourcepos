@@ -12,7 +12,7 @@ class Rounding_mode
 	const ROUND_DOWN = 6;
 	const HALF_FIVE = 7;
 
-	public static function get_rounding_options()
+	public static function get_rounding_options(): array
 	{
 		$CI =& get_instance();
 		helper('language');

@@ -25,7 +25,9 @@
 		"vlucas/phpdotenv": "^2.4",
 	  "ext-openssl": "*",
 	  "ext-json": "*",
-	  "ext-bcmath": "*"
+	  "ext-bcmath": "*",
+	  "ext-intl": "*",
+	  "ext-curl": "*"
 	},
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",

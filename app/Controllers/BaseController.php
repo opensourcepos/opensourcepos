@@ -18,6 +18,9 @@ use Psr\Log\LoggerInterface;
  *     class Home extends BaseController
  *
  * For security be sure to declare any new methods as protected or private.
+ *
+ * @property db db
+ *
  */
 
 class BaseController extends Controller
@@ -54,5 +57,6 @@ class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
+		$this->db = \Config\Database::connect(); //Load database connection
 	}
 }

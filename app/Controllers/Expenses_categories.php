@@ -2,13 +2,21 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
+use app\Models\Expense_category;
 
-class Expenses_categories extends Secure_Controller
+/**
+ *
+ *
+ * @property expense_category expense_category
+ *
+ */
+class Expenses_categories extends Secure_Controller	//TODO: Is this class ever used?
 {
 	public function __construct()
 	{
 		parent::__construct('expenses_categories');
+
+		$this->expense_category = model('Expense_category');
 	}
 
 	public function index()
@@ -29,8 +37,8 @@ class Expenses_categories extends Secure_Controller
 		$sort   = $this->request->getGet('sort');
 		$order  = $this->request->getGet('order');
 
-		$expense_categories = $this->Expense_category->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Expense_category->get_found_rows($search);
+		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->expense_category->get_found_rows($search);
 
 		$data_rows = [];
 		foreach($expense_categories->getResult() as $expense_category)
@@ -38,47 +46,59 @@ class Expenses_categories extends Secure_Controller
 			$data_rows[] = $this->xss_clean(get_expense_category_data_row($expense_category));
 		}
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row($row_id)
+	public function get_row(int $row_id)
 	{
-		$data_row = $this->xss_clean(get_expense_category_data_row($this->Expense_category->get_info($row_id)));
+		$data_row = $this->xss_clean(get_expense_category_data_row($this->expense_category->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
 
-	public function view($expense_category_id = -1)
+	public function view(int $expense_category_id = -1)	//TODO: Replace -1 with a constant
 	{
-		$data['category_info'] = $this->Expense_category->get_info($expense_category_id);
+		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
 
 		echo view("expenses_categories/form", $data);
 	}
 
-	public function save($expense_category_id = -1)
+	public function save(int $expense_category_id = -1)	//TODO: Replace -1 with a constant
 	{
 		$expense_category_data = [
 			'category_name' => $this->request->getPost('category_name'),
 			'category_description' => $this->request->getPost('category_description')
-		);
+		];
 
-		if($this->Expense_category->save($expense_category_data, $expense_category_id))
+		if($this->expense_category->save($expense_category_data, $expense_category_id))	//TODO: Reflection exception
 		{
 			$expense_category_data = $this->xss_clean($expense_category_data);
 
 			// New expense_category_id
 			if($expense_category_id == -1)
 			{
-				echo json_encode (['success' => TRUE, 'message' => lang('Expenses_categories.successful_adding'), 'id' => $expense_category_data['expense_category_id']));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Expenses_categories.successful_adding'),
+					'id' => $expense_category_data['expense_category_id']
+				]);
 			}
 			else // Existing Expense Category
 			{
-				echo json_encode (['success' => TRUE, 'message' => lang('Expenses_categories.successful_updating'), 'id' => $expense_category_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Expenses_categories.successful_updating'),
+					'id' => $expense_category_id
+				]);
 			}
 		}
 		else//failure
-		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'], 'id' => -1));
+		{//TODO: need to replace -1 for a constant
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
+				'id' => -1
+			]);
 		}
 	}
 
@@ -86,13 +106,15 @@ class Expenses_categories extends Secure_Controller
 	{
 		$expense_category_to_delete = $this->request->getPost('ids');
 
-		if($this->Expense_category->delete_list($expense_category_to_delete))
+		if($this->expense_category->delete_list($expense_category_to_delete))
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')));
+			echo json_encode (['success' => TRUE,
+				'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses_categories.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
 		}
 	}
 }

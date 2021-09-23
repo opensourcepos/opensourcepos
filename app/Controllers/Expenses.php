@@ -2,13 +2,25 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
+use app\Models\Expense;
 
+/**
+ *
+ *
+ * @property appconfig appconfig
+ * @property expense expense
+ * @property expense_category expense_category
+ *
+ */
 class Expenses extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('expenses');
+
+		$this->appconfig = model('Appconfig');
+		$this->expense = model('Expense');
+		$this->expense_category = model('Expense_category');
 	}
 
 	public function index()
@@ -30,7 +42,7 @@ class Expenses extends Secure_Controller
 
 	public function search()
 	{
-		$payments = 0;
+		$payments = 0;	//TODO: this variable is never used.
 		$search   = $this->request->getGet('search');
 		$limit    = $this->request->getGet('limit');
 		$offset   = $this->request->getGet('offset');
@@ -48,13 +60,14 @@ class Expenses extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);
+		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);	//TODO: variable naming does not match standard
 		$filters = array_merge($filters, $filledup);
-		$expenses = $this->Expense->search($search, $filters, $limit, $offset, $sort, $order);
-		$total_rows = $this->Expense->get_found_rows($search, $filters);
-		$payments = $this->Expense->get_payments_summary($search, $filters);
+		$expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
+		$total_rows = $this->expense->get_found_rows($search, $filters);
+		$payments = $this->expense->get_payments_summary($search, $filters);
 		$payment_summary = get_expenses_manage_payments_summary($payments, $expenses);
 		$data_rows = [];
+
 		foreach($expenses->getResult() as $expense)
 		{
 			$data_rows[] = $this->xss_clean(get_expenses_data_row($expense));
@@ -68,9 +81,9 @@ class Expenses extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
-	public function view($expense_id = -1)
+	public function view(int $expense_id = -1)	//TODO: Replace -1 with a constant
 	{
-		$data = [];
+		$data = [];	//TODO: Duplicated code
 
 		$data['employees'] = [];
 		foreach($this->Employee->get_all()->getResult() as $employee)
@@ -83,10 +96,10 @@ class Expenses extends Secure_Controller
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
 		}
 
-		$data['expenses_info'] = $this->Expense->get_info($expense_id);
+		$data['expenses_info'] = $this->expense->get_info($expense_id);
 
 		$expense_categories = [];
-		foreach($this->Expense_category->get_all(0, 0, TRUE)->getResultArray() as $row)
+		foreach($this->expense_category->get_all(0, 0, TRUE)->getResultArray() as $row)
 		{
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
 		}
@@ -101,7 +114,7 @@ class Expenses extends Secure_Controller
 		}
 
 		$data['payments'] = [];
-		foreach($this->Expense->get_expense_payment($expense_id)->getResult() as $payment)
+		foreach($this->expense->get_expense_payment($expense_id)->getResult() as $payment)
 		{
 			foreach(get_object_vars($payment) as $property => $value)
 			{
@@ -112,24 +125,24 @@ class Expenses extends Secure_Controller
 		}
 
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
-		$data['payment_options'] = $this->xss_clean($this->Expense->get_payment_options(FALSE));
+		$data['payment_options'] = $this->xss_clean($this->expense->get_payment_options(FALSE));
 
 		echo view("expenses/form", $data);
 	}
 
-	public function get_row($row_id)
+	public function get_row(int $row_id)
 	{
-		$expense_info = $this->Expense->get_info($row_id);
+		$expense_info = $this->expense->get_info($row_id);
 		$data_row = $this->xss_clean(get_expenses_data_row($expense_info));
 
 		echo json_encode($data_row);
 	}
 
-	public function save($expense_id = -1)
+	public function save(int $expense_id = -1)//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');
 
-		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $newdate);
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
@@ -144,7 +157,7 @@ class Expenses extends Secure_Controller
 			'deleted' => $this->request->getPost('deleted') != NULL
 		];
 
-		if($this->Expense->save($expense_data, $expense_id))
+		if($this->expense->save($expense_data, $expense_id))	//TODO: Reflection exception
 		{
 			$expense_data = $this->xss_clean($expense_data);
 
@@ -175,7 +188,7 @@ class Expenses extends Secure_Controller
 	{
 		$expenses_to_delete = $this->request->getPost('ids');
 
-		if($this->Expense->delete_list($expenses_to_delete))
+		if($this->expense->delete_list($expenses_to_delete))
 		{
 			echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
 		}

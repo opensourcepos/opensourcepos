@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-require_once("Secure_Controller.php");
-
 class Messages extends Secure_Controller
 {
 	public function __construct()
