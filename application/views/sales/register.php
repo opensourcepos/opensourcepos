@@ -73,6 +73,7 @@ if(isset($success))
 				<?php
 				}
 				?>
+
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
@@ -396,8 +397,11 @@ if(isset($success))
 					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo $this->lang->line('common_submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
 							title="<?php echo $this->lang->line($controller_name. '_new_customer'); ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+					</button>					
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?php echo site_url("$controller_name/sales_keyboard_help"); ?>"
+							title="<?php echo $this->lang->line('sales_key_title'); ?>">
+						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?php echo $this->lang->line('sales_key_help'); ?>
 					</button>
-
 				</div>
 			<?php
 			}
@@ -924,6 +928,53 @@ function check_payment_type()
 		$(".non-giftcard-input").attr('disabled', false);
 	}
 }
+
+// Add Keyboard Shortcuts/Hotkeys to Sale Register
+document.body.onkeyup = function(e)
+{
+	switch(event.altKey && event.keyCode) 
+	{
+        case 49: // Alt + 1 Items Seach
+			$("#item").focus();
+			$("#item").select();
+            break;
+        case 50: // Alt + 2 Customers Search
+			$("#customer").focus();
+			$("#customer").select();
+            break;
+		case 51: // Alt + 3 Suspend Current Sale
+			$("#suspend_sale_button").click();
+			break;
+		case 52: // Alt + 4 Check Suspended
+			$("#show_suspended_sales_button").click();
+			break;
+        case 53: // Alt + 5 Edit Amount Tendered Value
+			$("#amount_tendered").focus();
+			$("#amount_tendered").select();
+            break;
+		case 54: // Alt + 6 Add Payment
+			$("#add_payment_button").click();
+			break;	
+		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
+			$("#add_payment_button").click();
+			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			break; 
+		case 56: // Alt + 8 Finish Quote/Invoice without payment
+			$("#finish_invoice_quote_button").click();
+			break;
+		case 57: // Alt + 9 Open Shortcuts Help Modal
+			$("#show_keyboard_help").click();
+			break;
+	}
+	
+	switch(event.keyCode) 
+	{
+		case 27: // ESC Cancel Current Sale
+			$("#cancel_sale_button").click();
+			break;		  
+    }
+}
+
 </script>
 
 <?php $this->load->view("partial/footer"); ?>

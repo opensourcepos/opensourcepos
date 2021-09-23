@@ -1484,6 +1484,11 @@ class Sales extends Secure_Controller
 
 		$this->_reload();
 	}
+	
+	public function sales_keyboard_help()
+	{
+		$this->load->view('sales/help');
+	}
 
 	public function check_invoice_number()
 	{
