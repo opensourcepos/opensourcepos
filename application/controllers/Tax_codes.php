@@ -29,7 +29,7 @@ class Tax_codes extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort   = $this->Tax_code->sort_column($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$tax_codes = $this->Tax_code->search($search, $limit, $offset, $sort, $order);

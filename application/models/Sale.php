@@ -4,6 +4,12 @@
  */
 class Sale extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('sales')) ? $field : 'sale_id';
+	}
+
 	/**
 	 * Get sale info
 	 */

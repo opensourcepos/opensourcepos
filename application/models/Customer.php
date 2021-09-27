@@ -6,6 +6,13 @@
 
 class Customer extends Person
 {
+
+	public function sort_column($field)
+	{
+		$allowed_columns = array_merge($this->db->list_fields('customers'), $this->db->list_fields('people'));
+		return in_array($field, $allowed_columns) ? $field : 'people.person_id';
+	}
+
 	/*
 	Determines if a given person_id is a customer
 	*/

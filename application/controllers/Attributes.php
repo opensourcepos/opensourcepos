@@ -24,7 +24,7 @@ class Attributes extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort   = $this->Attribute->sort_column($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$attributes = $this->Attribute->search($search, $limit, $offset, $sort, $order);

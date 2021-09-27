@@ -6,6 +6,13 @@
 
 class Giftcard extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		$allowed_columns = array_merge($this->db->list_fields('people'), $this->db->list_fields('giftcards'));
+		return in_array($field, $allowed_columns) ? $field : 'giftcard_id';
+	}
+
 	/*
 	Determines if a given giftcard_id is a giftcard
 	*/

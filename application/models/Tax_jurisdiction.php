@@ -6,6 +6,12 @@
 
 class Tax_jurisdiction extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('tax_jurisdictions')) ? $field : 'jurisdiction_id';
+	}
+
 	/**
 	 *  Determines if it exists in the table
 	 */

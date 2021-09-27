@@ -6,6 +6,12 @@
 
 class Expense extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('expenses')) ? $field : 'expense_id';
+	}
+
 	/*
 	Determines if a given Expense_id is an Expense
 	*/

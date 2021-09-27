@@ -9,7 +9,6 @@ class Tax_categories extends Secure_Controller
 		parent::__construct('tax_categories');
 	}
 
-
 	public function index()
 	{
 		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
@@ -25,7 +24,7 @@ class Tax_categories extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort   = $this->Tax_category->sort_column($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$tax_categories = $this->Tax_category->search($search, $limit, $offset, $sort, $order);

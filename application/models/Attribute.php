@@ -16,6 +16,11 @@ class Attribute extends CI_Model
 		return array_flip($class->getConstants());
 	}
 
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('attribute_definitions')) ? $field : 'definition_id';
+	}
+
 	/*
 	 Determines if a given definition_id is an attribute
 	 */
