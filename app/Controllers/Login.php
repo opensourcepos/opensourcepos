@@ -2,23 +2,41 @@
 
 namespace App\Controllers;
 
+use app\Models\Appconfig;
+use app\Models\Employee;
+use Config\Services;
+
+/**
+ * 
+ *
+ * @property appconfig appconfig
+ * @property employee employee
+ *
+ * @property mixed migration
+ *
+ */
 class Login extends BaseController
 {
+	public function __construct()
+	{
+		$this->migration = Services::migrations();
+		$this->appconfig = model('Appconfig');
+		$this->employee = model('Employee');
+	}
 	public function index()
 	{
-		$this->migration = new Migration();
-		if($this->Employee->is_logged_in())
+		if($this->employee->is_logged_in())
 		{
 			redirect('home');
 		}
 		else
 		{
-			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');	//TODO: Form Validation needs to be upgraded https://codeigniter4.github.io/CodeIgniter4/installation/upgrade_validations.html
 
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
 
 
-			if($this->config->get('gcaptcha_enable'))
+			if($this->appconfig->get('gcaptcha_enable'))
 			{
 				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
 			}
@@ -34,25 +52,21 @@ class Login extends BaseController
 		}
 	}
 
-	public function login_check($username)
+	public function login_check(string $username): bool
 	{
 		$password = $this->request->getPost('password');
 
-		if(!$this->_installation_check())
+		if(!$this->_installation_check())	//TODO: Hungarian notation
 		{
 			$this->form_validation->set_message('login_check', lang('Login.invalid_installation'));
 
 			return FALSE;
 		}
 
-		if (!$this->migration->is_latest())
-		{
-			set_time_limit(3600);
-			// trigger any required upgrade before starting the application
-			$this->migration->latest();
-		}
+		set_time_limit(3600);
+		$this->migration->latest();
 
-		if(!$this->Employee->login($username, $password))
+		if(!$this->employee->login($username, $password))
 		{
 			$this->form_validation->set_message('login_check', lang('Login.invalid_username_and_password'));
 
@@ -62,9 +76,9 @@ class Login extends BaseController
 		return TRUE;
 	}
 
-	public function gcaptcha_check($recaptchaResponse)
+	public function gcaptcha_check(string $recaptchaResponse): bool
 	{
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->config->get('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->input->ip_address();
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->appconfig->get('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -85,11 +99,19 @@ class Login extends BaseController
 		return TRUE;
 	}
 
-	private function _installation_check()
+	private function _installation_check()	//TODO: Hungarian Notation
 	{
 		// get PHP extensions and check that the required ones are installed
 		$extensions = implode(', ', get_loaded_extensions());
-		$keys = ['bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl');
+		$keys = [
+			'bcmath',
+			'intl',
+			'gd',
+			'openssl',
+			'mbstring',
+			'curl'
+		];
+
 		$pattern = '/';
 		foreach($keys as $key) 
 		{

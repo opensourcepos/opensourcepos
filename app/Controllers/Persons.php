@@ -2,16 +2,26 @@
 
 namespace App\Controllers;
 
+use app\Models\Person;
+
+/**
+ *
+ *
+ * @property person person
+ *
+ */
 abstract class Persons extends Secure_Controller
 {
-	public function __construct($module_id = NULL)
+	public function __construct(string $module_id = NULL)
 	{
 		parent::__construct($module_id);
+
+		$this->person = model('Person');
 	}
 
 	public function index()
 	{
-		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
+		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());	//TODO: Replace xss_clean
 
 		echo view('people/manage', $data);
 	}
@@ -21,7 +31,7 @@ abstract class Persons extends Secure_Controller
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Person->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->xss_clean($this->person->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -29,9 +39,9 @@ abstract class Persons extends Secure_Controller
 	/*
 	Gets one row for a person manage table. This is called using AJAX to update one row.
 	*/
-	public function get_row($row_id)
+	public function get_row(int $row_id)
 	{
-		$data_row = $this->xss_clean(get_person_data_row($this->Person->get_info($row_id)));
+		$data_row = $this->xss_clean(get_person_data_row($this->person->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
@@ -47,7 +57,7 @@ abstract class Persons extends Secure_Controller
 		returns John O'Grady-Smith
 	*/
 
-	protected function nameize($string)
+	protected function nameize(string $string): string	//TODO: The parameter should not be named $string.  Should also think about renaming the function.  The term is Proper Noun Capitalization, so perhaps something more reflective of that.
 	{
 		return str_name_case($string);
 	}

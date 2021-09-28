@@ -2,6 +2,34 @@
 
 namespace App\Controllers;
 
+use app\Libraries\Receiving_lib;
+use app\Libraries\Token_lib;
+use app\Libraries\Barcode_lib;
+
+use app\Models\Appconfig;
+use app\Models\Inventory;
+use app\Models\Item;
+use app\Models\Item_kit;
+use app\Models\Receiving;
+use app\Models\Stock_location;
+use app\Models\Supplier;
+
+/**
+ * 
+ * 
+ * @property receiving_lib receiving_lib
+ * @property token_lib token_lib
+ * @property barcode_lib barcode_lib
+ *
+ * @property appconfig appconfig
+ * @property inventory inventory
+ * @property item item
+ * @property item_kit item_kit
+ * @property receiving receiving
+ * @property stock_location stock_location
+ * @property supplier supplier
+ * 
+ */
 class Receivings extends Secure_Controller
 {
 	public function __construct()
@@ -11,6 +39,14 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib = new Receiving_lib();
 		$this->token_lib = new Token_lib();
 		$this->barcode_lib = new Barcode_lib();
+
+		$this->appconfig = model('Appconfig');
+		$this->inventory = model('Inventory');
+		$this->item_kit = model('Item_kit');
+		$this->item = model('Item');
+		$this->receiving = model('Receiving');
+		$this->stock_location = model('Stock_location');
+		$this->supplier = model('Supplier');
 	}
 
 	public function index()
@@ -20,8 +56,8 @@ class Receivings extends Secure_Controller
 
 	public function item_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE), TRUE);
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->request->getGet('term')));
+		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
 		$suggestions = $this->xss_clean($suggestions);
 
@@ -30,8 +66,8 @@ class Receivings extends Secure_Controller
 
 	public function stock_item_search()
 	{
-		$suggestions = $this->Item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE), TRUE);
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->request->getGet('term')));
+		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
 		$suggestions = $this->xss_clean($suggestions);
 
@@ -41,7 +77,7 @@ class Receivings extends Secure_Controller
 	public function select_supplier()
 	{
 		$supplier_id = $this->request->getPost('supplier');
-		if($this->Supplier->exists($supplier_id))
+		if($this->supplier->exists($supplier_id))
 		{
 			$this->receiving_lib->set_supplier($supplier_id);
 		}
@@ -61,7 +97,7 @@ class Receivings extends Secure_Controller
 			$mode = $this->request->getPost('mode');
 			$this->receiving_lib->set_mode($mode);
 		}
-		elseif($this->Stock_location->is_allowed_location($stock_source, 'receivings'))
+		elseif($this->stock_location->is_allowed_location($stock_source, 'receivings'))
 		{
 			$this->receiving_lib->set_stock_source($stock_source);
 			$this->receiving_lib->set_stock_destination($stock_destination);
@@ -94,14 +130,14 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = $this->config->get('default_receivings_discount');
-		$discount_type = $this->config->get('default_receivings_discount_type');
+		$discount = $this->appconfig->get('default_receivings_discount');
+		$discount_type = $this->appconfig->get('default_receivings_discount_type');
 
-		if($mode == 'return' && $this->Receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
+		if($mode == 'return' && $this->receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}
-		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+		elseif($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type);
 		}
@@ -117,11 +153,11 @@ class Receivings extends Secure_Controller
 	{
 		$data = [];
 
-		$this->form_validation->set_rules('price', 'lang:items_price', 'required|callback_numeric');
+		$this->form_validation->set_rules('price', 'lang:items_price', 'required|callback_numeric');	//TODO: need to upgrade form_validation
 		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
 		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|callback_numeric');
 
-		$description = $this->request->getPost('description');
+		$description = $this->request->getPost('description');	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber');
 		$price = parse_decimals($this->request->getPost('price'));
 		$quantity = parse_quantity($this->request->getPost('quantity'));
@@ -130,7 +166,7 @@ class Receivings extends Secure_Controller
 
 		$receiving_quantity = $this->request->getPost('receiving_quantity');
 
-		if($this->form_validation->run() != FALSE)
+		if($this->form_validation->run() != FALSE)	//TODO Form validation
 		{
 			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity);
 		}
@@ -146,8 +182,8 @@ class Receivings extends Secure_Controller
 	{
 		$data = [];
 
-		$data['suppliers'] = ['' => 'No Supplier');
-		foreach($this->Supplier->get_all()->getResult() as $supplier)
+		$data['suppliers'] = ['' => 'No Supplier'];
+		foreach($this->supplier->get_all()->getResult() as $supplier)
 		{
 			$data['suppliers'][$supplier->person_id] = $this->xss_clean($supplier->first_name . ' ' . $supplier->last_name);
 		}
@@ -158,7 +194,7 @@ class Receivings extends Secure_Controller
 			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
 		}
 	
-		$receiving_info = $this->xss_clean($this->Receiving->get_info($receiving_id)->getRowArray());
+		$receiving_info = $this->xss_clean($this->receiving->get_info($receiving_id)->getRowArray());
 		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
@@ -176,16 +212,18 @@ class Receivings extends Secure_Controller
 	public function delete($receiving_id = -1, $update_inventory = TRUE) 
 	{
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids') : [$receiving_id);
+		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids') : [$receiving_id];	//TODO: Replace -1 with constant
 	
-		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
+		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Receivings.successfully_deleted') . ' ' .
-							count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'), 'ids' => $receiving_ids));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Receivings.successfully_deleted') . ' ' . count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'),
+				'ids' => $receiving_ids]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Receivings.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Receivings.cannot_be_deleted')]);
 		}
 	}
 
@@ -208,7 +246,7 @@ class Receivings extends Secure_Controller
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_type'] = $this->request->getPost('payment_type');
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
+		$data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
 		if($this->request->getPost('amount_tendered') != NULL)
 		{
@@ -224,15 +262,15 @@ class Receivings extends Secure_Controller
 		$supplier_id = $this->receiving_lib->get_supplier();
 		if($supplier_id != -1)
 		{
-			$supplier_info = $this->Supplier->get_info($supplier_id);
-			$data['supplier'] = $supplier_info->company_name;
+			$supplier_info = $this->supplier->get_info($supplier_id);
+			$data['supplier'] = $supplier_info->company_name;	//TODO: duplicated code
 			$data['first_name'] = $supplier_info->first_name;
 			$data['last_name'] = $supplier_info->last_name;
 			$data['supplier_email'] = $supplier_info->email;
 			$data['supplier_address'] = $supplier_info->address_1;
 			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
 			{
-				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;				
+				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
 			}
 			else
 			{
@@ -241,7 +279,7 @@ class Receivings extends Secure_Controller
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);
+		$data['receiving_id'] = 'RECV ' . $this->receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);	//TODO: Reflection Exception
 
 		$data = $this->xss_clean($data);
 
@@ -251,7 +289,7 @@ class Receivings extends Secure_Controller
 		}
 		else
 		{
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);				
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 		}
 
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
@@ -284,13 +322,13 @@ class Receivings extends Secure_Controller
 	
 	public function receipt($receiving_id)
 	{
-		$receiving_info = $this->Receiving->get_info($receiving_id)->getRowArray();
+		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['transaction_time'] = to_datetime(strtotime($receiving_info['receiving_time']));
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
+		$data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
 		$data['payment_type'] = $receiving_info['payment_type'];
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['receiving_id'] = 'RECV ' . $receiving_id;
@@ -298,10 +336,10 @@ class Receivings extends Secure_Controller
 		$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
-		$supplier_id = $this->receiving_lib->get_supplier();
+		$supplier_id = $this->receiving_lib->get_supplier();	//TODO: Duplicated code
 		if($supplier_id != -1)
 		{
-			$supplier_info = $this->Supplier->get_info($supplier_id);
+			$supplier_info = $this->supplier->get_info($supplier_id);
 			$data['supplier'] = $supplier_info->company_name;
 			$data['first_name'] = $supplier_info->first_name;
 			$data['last_name'] = $supplier_info->last_name;
@@ -309,7 +347,7 @@ class Receivings extends Secure_Controller
 			$data['supplier_address'] = $supplier_info->address_1;
 			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
 			{
-				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;				
+				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
 			}
 			else
 			{
@@ -329,9 +367,9 @@ class Receivings extends Secure_Controller
 	private function _reload($data = [])
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
-		$data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return'));
+		$data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];
 		$data['mode'] = $this->receiving_lib->get_mode();
-		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('receivings');
+		$data['stock_locations'] = $this->stock_location->get_allowed_locations('receivings');
 		$data['show_stock_locations'] = count($data['stock_locations']) > 1;
 		if($data['show_stock_locations']) 
 		{
@@ -344,13 +382,13 @@ class Receivings extends Secure_Controller
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
-		$data['payment_options'] = $this->Receiving->get_payment_options();
+		$data['payment_options'] = $this->receiving->get_payment_options();
 
 		$supplier_id = $this->receiving_lib->get_supplier();
 		$supplier_info = '';
-		if($supplier_id != -1)
+		if($supplier_id != -1)	//TODO: Duplicated Code... replace -1 with a constant
 		{
-			$supplier_info = $this->Supplier->get_info($supplier_id);
+			$supplier_info = $this->supplier->get_info($supplier_id);
 			$data['supplier'] = $supplier_info->company_name;
 			$data['first_name'] = $supplier_info->first_name;
 			$data['last_name'] = $supplier_info->last_name;
@@ -358,7 +396,7 @@ class Receivings extends Secure_Controller
 			$data['supplier_address'] = $supplier_info->address_1;
 			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
 			{
-				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;				
+				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
 			}
 			else
 			{
@@ -373,11 +411,11 @@ class Receivings extends Secure_Controller
 		echo view("receivings/receiving", $data);
 	}
 	
-	public function save($receiving_id = -1)
+	public function save(int $receiving_id = -1)	//TODO: Replace -1 with a constant
 	{
-		$newdate = $this->request->getPost('date');
+		$newdate = $this->request->getPost('date');	//TODO: newdate does not follow naming conventions
 		
-		$date_formatter = date_create_from_format($this->config->get('dateformat') . ' ' . $this->config->get('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = [
@@ -386,16 +424,24 @@ class Receivings extends Secure_Controller
 			'employee_id' => $this->request->getPost('employee_id'),
 			'comment' => $this->request->getPost('comment'),
 			'reference' => $this->request->getPost('reference') != '' ? $this->request->getPost('reference') : NULL
-		);
+		];
 
-		$this->Inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);
-		if($this->Receiving->update($receiving_data, $receiving_id))
+		$this->inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);	//TODO: Reflection Exception
+		if($this->receiving->update($receiving_data, $receiving_id))	//TODO: Reflection Exception
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Receivings.successfully_updated'), 'id' => $receiving_id));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Receivings.successfully_updated'),
+				'id' => $receiving_id
+			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Receivings.unsuccessfully_updated'), 'id' => $receiving_id));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Receivings.unsuccessfully_updated'),
+				'id' => $receiving_id
+			]);
 		}
 	}
 
@@ -403,7 +449,7 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->clear_all();
 
-		$this->_reload();
+		$this->_reload();	//TODO: Hungarian Notation
 	}
 }
 ?>
