@@ -28,8 +28,8 @@ $hook['post_controller'] = array(
 
 $hook['pre_controller'][] = array(
     'class'    => '',
-    'function' => 'validate_save',
-    'filename' => 'save_hook.php',
+    'function' => 'validate_method',
+    'filename' => 'method_hook.php',
     'filepath' => 'hooks'
 );
 
