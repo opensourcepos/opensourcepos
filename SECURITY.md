@@ -17,7 +17,8 @@ receiving such patches depend on the CVSS v3.0 Rating:
 
 | CVSS v3.0 | Supported Versions                                 |
 | --------- | -------------------------------------------------- |
-| 7.3       | 3.5.5                                              |
+| 7.3       | 3.3.5                                              |
+| 9.8       | 3.3.6                                              |
 
 ## Reporting a Vulnerability
 
