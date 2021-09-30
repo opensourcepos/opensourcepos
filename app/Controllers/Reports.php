@@ -92,7 +92,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary sales report
-	public function summary_sales(string $start_date, string $end_date, int $sale_type, string $location_id = 'all')
+	public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')	//TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
 	{//TODO: Duplicated code
 		$inputs = [
 			'start_date' => $start_date,
@@ -134,7 +134,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Categories report
-	public function summary_categories($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated code
 		$inputs = [
 			'start_date' => $start_date,
@@ -175,9 +175,9 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Expenses by Categories report
-	public function summary_expenses_categories($start_date, $end_date, $sale_type)
+	public function summary_expenses_categories(string $start_date, string $end_date, string $sale_type)
 	{
-		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];
+		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];	//TODO: Duplicated Code
 
 		$this->summary_expenses_categories = model('reports/Summary_expenses_categories');
 		$model = $this->summary_expenses_categories;
@@ -208,9 +208,9 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Customers report
-	public function summary_customers($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
-		$inputs = [
+		$inputs = [	//TODO: Duplicated Code
 			'start_date' => $start_date,
 			'end_date' => $end_date,
 			'sale_type' => $sale_type,
@@ -224,6 +224,7 @@ class Reports extends Secure_Controller
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
 		$tabular_data = [];
+
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean ([
@@ -250,7 +251,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Suppliers report
-	public function summary_suppliers($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -291,7 +292,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Items report
-	public function summary_items($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -307,6 +308,7 @@ class Reports extends Secure_Controller
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
 		$tabular_data = [];
+
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean ([
@@ -334,7 +336,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Employees report
-	public function summary_employees($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -350,6 +352,7 @@ class Reports extends Secure_Controller
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
 		$tabular_data = [];
+
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean ([
@@ -376,7 +379,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Taxes report
-	public function summary_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicate Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -392,6 +395,7 @@ class Reports extends Secure_Controller
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
 		$tabular_data = [];
+
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean ([
@@ -415,7 +419,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Sales Taxes report
-	public function summary_sales_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated code
 		$inputs = [
 			'start_date' => $start_date,
@@ -467,7 +471,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Discounts report
-	public function summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all', $discount_type=0)
+	public function summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0)
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -505,7 +509,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Summary Payments report
-	public function summary_payments($start_date, $end_date)
+	public function summary_payments(string $start_date, string $end_date)
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -521,6 +525,7 @@ class Reports extends Secure_Controller
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
 		$tabular_data = [];
+
 		foreach($report_data as $row)
 		{
 			if($row['trans_group'] == '<HR>')
@@ -611,7 +616,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical Expenses by Categories report
-	public function graphical_summary_expenses_categories($start_date, $end_date, $sale_type)
+	public function graphical_summary_expenses_categories(string $start_date, string $end_date, string $sale_type)
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -652,7 +657,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary sales report
-	public function graphical_summary_sales($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -694,7 +699,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary items report
-	public function graphical_summary_items($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -736,7 +741,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary customers report
-	public function graphical_summary_categories($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -775,7 +780,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary suppliers report
-	public function graphical_summary_suppliers($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -815,7 +820,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary employees report
-	public function graphical_summary_employees($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -855,7 +860,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary taxes report
-	public function graphical_summary_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -895,7 +900,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary sales taxes report
-	public function graphical_summary_sales_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -935,7 +940,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary customers report
-	public function graphical_summary_customers($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -977,7 +982,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary discounts report
-	public function graphical_summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all', $discount_type=0)
+	public function graphical_summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', $discount_type=0)
 	{//TODO: Duplicated Code
 		$inputs = [
 			'start_date' => $start_date,
@@ -1020,7 +1025,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary payments report
-	public function graphical_summary_payments($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_payments(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -1099,7 +1104,7 @@ class Reports extends Secure_Controller
 			return $payment_type;	//TODO: This can just be return [...]... no need for the variable.
 	}
 
-	public function specific_customer($start_date, $end_date, $customer_id, $sale_type, $payment_type)
+	public function specific_customer(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type)
 	{
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
 
@@ -1218,7 +1223,7 @@ class Reports extends Secure_Controller
 		echo view('reports/specific_input', $data);
 	}
 
-	public function specific_employee($start_date, $end_date, $employee_id, $sale_type)
+	public function specific_employee(string $start_date, string $end_date, string $employee_id, string $sale_type)
 	{
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
 
@@ -1332,7 +1337,7 @@ class Reports extends Secure_Controller
 		echo view('reports/specific_input', $data);
 	}
 
-	public function specific_discount($start_date, $end_date, $discount, $sale_type, $discount_type)
+	public function specific_discount(string $start_date, string $end_date, string $discount, string $sale_type, string $discount_type)
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -1405,7 +1410,9 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])
+					($drow['discount_type'] == PERCENT)
+						? $drow['discount'].'%'
+						: to_currency($drow['discount'])
 				]);
 			}
 
@@ -1431,7 +1438,7 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular_details', $data);
 	}
 
-	public function get_detailed_sales_row($sale_id)
+	public function get_detailed_sales_row(string $sale_id)
 	{
 		$inputs = ['sale_id' => $sale_id];
 
@@ -1496,7 +1503,7 @@ class Reports extends Secure_Controller
 		echo view('reports/specific_input', $data);
 	}
 
-	public function specific_supplier($start_date, $end_date, $supplier_id, $sale_type)
+	public function specific_supplier(string $start_date, string $end_date, string $supplier_id, string $sale_type)
 	{
 		$inputs = [
 			'start_date' => $start_date,
@@ -1544,7 +1551,7 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	public function get_sale_type_options()
+	public function get_sale_type_options(): array
 	{
 		$sale_type_options = [];
 		$sale_type_options['complete'] = lang('Reports.complete');
@@ -1562,7 +1569,7 @@ class Reports extends Secure_Controller
 		return $sale_type_options;
 	}
 
-	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function detailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all')
 	{
 		$definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES);
 
@@ -1680,7 +1687,7 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular_details', $data);
 	}
 
-	public function get_detailed_receivings_row($receiving_id)
+	public function get_detailed_receivings_row(string $receiving_id)
 	{
 		$inputs = ['receiving_id' => $receiving_id];
 
@@ -1715,7 +1722,7 @@ class Reports extends Secure_Controller
 		echo json_encode ([$receiving_id => $summary_data]);
 	}
 
-	public function detailed_receivings($start_date, $end_date, $receiving_type, $location_id = 'all')
+	public function detailed_receivings(string $start_date, string $end_date, string $receiving_type, string $location_id = 'all')
 	{
 		$definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS);
 
@@ -1841,7 +1848,7 @@ class Reports extends Secure_Controller
 		echo view('reports/inventory_summary_input', $data);
 	}
 
-	public function inventory_summary($location_id = 'all', $item_count = 'all')
+	public function inventory_summary(string $location_id = 'all', string $item_count = 'all')
 	{
 		$inputs = ['location_id' => $location_id, 'item_count' => $item_count];
 
@@ -1879,7 +1886,7 @@ class Reports extends Secure_Controller
 	}
 
 	//	Returns subtitle for the reports
-	private function _get_subtitle_report($inputs)	//TODO: Hungarian Notation
+	private function _get_subtitle_report(array $inputs): string	//TODO: Hungarian Notation
 	{
 		$subtitle = '';
 

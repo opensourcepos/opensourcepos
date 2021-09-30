@@ -37,7 +37,7 @@ class Detailed_receivings extends Report
 		);
 	}
 
-	public function getDataByReceivingId($receiving_id)
+	public function getDataByReceivingId(string $receiving_id)
 	{
 		$builder->select('receiving_id,
 			MAX(receiving_date) as receiving_date,

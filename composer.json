@@ -27,7 +27,8 @@
 	  "ext-json": "*",
 	  "ext-bcmath": "*",
 	  "ext-intl": "*",
-	  "ext-curl": "*"
+	  "ext-curl": "*",
+	  "ext-mbstring": "*"
 	},
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",

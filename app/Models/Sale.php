@@ -48,7 +48,7 @@ class Sale extends Model
 	 */
 	public function get_info(int $sale_id)
 	{
-		$this->create_temp_table (['sale_id' => $sale_id));
+		$this->create_temp_table (['sale_id' => $sale_id]);
 
 		$decimals = totals_decimals();
 		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';

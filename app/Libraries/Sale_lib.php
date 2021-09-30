@@ -430,7 +430,7 @@ class Sale_lib
 	 * and the payment type is one of the cash types then automatically delete the other
 	 * @param $payment_id
 	 */
-	public function delete_payment($payment_id)
+	public function delete_payment(string $payment_id)
 	{
 		$payments = $this->get_payments();
 		$decoded_payment_id = urldecode($payment_id);

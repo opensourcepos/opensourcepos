@@ -2,11 +2,21 @@
 
 namespace App\Controllers;
 
+use app\Models\Supplier;
+
+/**
+ *
+ *
+ * @property supplier supplier
+ *
+ */
 class Suppliers extends Persons
 {
 	public function __construct()
 	{
 		parent::__construct('suppliers');
+
+		$this->supplier = model('Supplier');
 	}
 
 	public function index()
@@ -21,8 +31,8 @@ class Suppliers extends Persons
 	*/
 	public function get_row($row_id)
 	{
-		$data_row = $this->xss_clean(get_supplier_data_row($this->Supplier->get_info($row_id)));
-		$data_row['category'] = $this->Supplier->get_category_name($data_row['category']);
+		$data_row = $this->xss_clean(get_supplier_data_row($this->supplier->get_info($row_id)));
+		$data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
 		echo json_encode($data_row);
 	}
@@ -33,23 +43,24 @@ class Suppliers extends Persons
 	public function search()
 	{
 		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
+		$limit = $this->request->getGet('limit');
 		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$sort = $this->request->getGet('sort');
+		$order = $this->request->getGet('order');
 
-		$suppliers = $this->Supplier->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Supplier->get_found_rows($search);
+		$suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->supplier->get_found_rows($search);
 
 		$data_rows = [];
+
 		foreach($suppliers->getResult() as $supplier)
 		{
 			$row = $this->xss_clean(get_supplier_data_row($supplier));
-			$row['category'] = $this->Supplier->get_category_name($row['category']);
+			$row['category'] = $this->supplier->get_category_name($row['category']);
 			$data_rows[] = $row;
 		}
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows));
+		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 	
 	/*
@@ -57,14 +68,14 @@ class Suppliers extends Persons
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->xss_clean($this->Supplier->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->xss_clean($this->supplier->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->Supplier->get_search_suggestions($this->request->getPost('term'), FALSE));
+		$suggestions = $this->xss_clean($this->supplier->get_search_suggestions($this->request->getPost('term'), FALSE));
 
 		echo json_encode($suggestions);
 	}
@@ -72,15 +83,15 @@ class Suppliers extends Persons
 	/*
 	Loads the supplier edit form
 	*/
-	public function view($supplier_id = -1)
+	public function view(int $supplier_id = -1)	//TODO: Replace -1 with constant
 	{
-		$info = $this->Supplier->get_info($supplier_id);
+		$info = $this->supplier->get_info($supplier_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
-		$data['categories'] = $this->Supplier->get_categories();
+		$data['categories'] = $this->supplier->get_categories();
 
 		echo view("suppliers/form", $data);
 	}
@@ -88,9 +99,9 @@ class Suppliers extends Persons
 	/*
 	Inserts/updates a supplier
 	*/
-	public function save($supplier_id = -1)
+	public function save(int $supplier_id = -1)	//TODO: Replace -1 with constant
 	{
-		$first_name = $this->xss_clean($this->request->getPost('first_name'));
+		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: Duplicate code
 		$last_name = $this->xss_clean($this->request->getPost('last_name'));
 		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
 
@@ -111,7 +122,7 @@ class Suppliers extends Persons
 			'zip' => $this->request->getPost('zip'),
 			'country' => $this->request->getPost('country'),
 			'comments' => $this->request->getPost('comments')
-		);
+		];
 
 		$supplier_data = [
 			'company_name' => $this->request->getPost('company_name'),
@@ -119,33 +130,38 @@ class Suppliers extends Persons
 			'category' => $this->request->getPost('category'),
 			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number'),
 			'tax_id' => $this->request->getPost('tax_id')
-		);
+		];
 
-		if($this->Supplier->save_supplier($person_data, $supplier_data, $supplier_id))
+		if($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id))
 		{
 			$supplier_data = $this->xss_clean($supplier_data);
 
 			//New supplier
-			if($supplier_id == -1)
+			if($supplier_id == -1)	//TODO: Replace -1 with a constant
 			{
-				echo json_encode (['success' => TRUE,
-								'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_data['person_id']));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
+					'id' => $supplier_data['person_id']
+				]);
 			}
 			else //Existing supplier
 			{
-				echo json_encode (['success' => TRUE,
-								'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
-								'id' => $supplier_id));
+				echo json_encode ([
+					'success' => TRUE,
+					'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
+					'id' => $supplier_id]);
 			}
 		}
 		else//failure
 		{
 			$supplier_data = $this->xss_clean($supplier_data);
 
-			echo json_encode (['success' => FALSE,
-							'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
-							'id' => -1));
+			echo json_encode ([
+				'success' => FALSE,
+				'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
+				'id' => -1	//TODO: Replace -1 with a constant
+			]);
 		}
 	}
 	
@@ -156,14 +172,16 @@ class Suppliers extends Persons
 	{
 		$suppliers_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
-		if($this->Supplier->delete_list($suppliers_to_delete))
+		if($this->supplier->delete_list($suppliers_to_delete))
 		{
-			echo json_encode (['success' => TRUE,'message' => lang('Suppliers.successful_deleted').' '.
-							count($suppliers_to_delete).' '.lang('Suppliers.one_or_multiple')));
+			echo json_encode ([
+				'success' => TRUE,
+				'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliers_to_delete) . ' ' . lang('Suppliers.one_or_multiple')
+			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE,'message' => lang('Suppliers.cannot_be_deleted')));
+			echo json_encode (['success' => FALSE, 'message' => lang('Suppliers.cannot_be_deleted')]);
 		}
 	}
 	
