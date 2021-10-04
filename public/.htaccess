@@ -26,7 +26,8 @@ Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
 
 <IfModule mod_headers.c>
   Header always set X-Frame-Options "SAMEORIGIN"
-  Header add Content-Security-Policy "script-src 'self'"
+  Header add Content-Security-Policy "script-src 'unsafe-inline'"
+  Header add Content-Security-Policy "font-src 'self', '*googleapis.com'"
   Header set X-Content-Type-Options "nosniff"
   Header set X-XSS-Protection "1; mode=block"
   Header set X-Frame-Options "DENY"
