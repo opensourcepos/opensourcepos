@@ -17,6 +17,7 @@ We release patches for security vulnerabilities. Which versions are eligible to 
 | CVSS v3.0 | Supported Versions                                 |
 | --------- | -------------------------------------------------- |
 | 7.3       | 3.3.5                                              |
+| 9.8       | 3.3.6                                              |
 
 ## Reporting a Vulnerability
 

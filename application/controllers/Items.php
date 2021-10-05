@@ -566,7 +566,7 @@ class Items extends Secure_Controller
 			$success = TRUE;
 			$new_item = FALSE;
 
-			if($item_id === NEW_ITEM)
+			if($item_id == NEW_ITEM)
 			{
 				$item_id = $item_data['item_id'];
 				$new_item = TRUE;
@@ -886,7 +886,7 @@ class Items extends Secure_Controller
 						'hsn_code' => $row['HSN'],
 						'pic_filename' => $row['Image']);
 
-					if(!empty($row['supplier_id']))
+					if(!empty($row['Supplier ID']))
 					{
 						$item_data['supplier_id'] = $this->Supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : NULL;
 					}
