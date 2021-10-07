@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "All";
 $lang["reports_authority"] = "Authority";
 $lang["reports_canceled"] = "Cancelled";
@@ -75,7 +74,7 @@ $lang["reports_payment_type"] = "Payment Type";
 $lang["reports_payments"] = "Payments";
 $lang["reports_payments_summary_report"] = "Payments Summary Report";
 $lang["reports_profit"] = "Profit";
-$lang["reports_quantity"] = "Quantity";
+$lang["reports_quantity"] = "Qty";
 $lang["reports_quantity_purchased"] = "Quantity Purchased";
 $lang["reports_quotes"] = "Quotes";
 $lang["reports_received_by"] = "Received By";
@@ -110,7 +109,7 @@ $lang["reports_sold_to"] = "Sold To";
 $lang["reports_stock_location"] = "Stock Location";
 $lang["reports_sub_total_value"] = "Sub Total";
 $lang["reports_subtotal"] = "Sub Total";
-$lang["reports_summary_reports"] = "Summary Reports";
+$lang["reports_summary_reports"] = "Sales Summary Reports";
 $lang["reports_supplied_by"] = "Supplied by";
 $lang["reports_supplier"] = "Supplier";
 $lang["reports_suppliers"] = "Suppliers";
