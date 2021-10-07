@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventory to add or subtract";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
 $lang["items_amount_entry"] = "Amount Entry";
@@ -68,7 +67,7 @@ $lang["items_none"] = "None";
 $lang["items_none_selected"] = "You have not selected any Item(s) to edit";
 $lang["items_nonstock"] = "Non-stocked";
 $lang["items_number_information"] = "Item Number";
-$lang["items_number_required"] = "Barcode is a required field";
+$lang["items_number_required"] = "Barcodes to print";
 $lang["items_one_or_multiple"] = "item(s)";
 $lang["items_pack_name"] = "Pack Name";
 $lang["items_qty_per_pack"] = "Quantity per pack";
@@ -83,7 +82,7 @@ $lang["items_reorder_level_required"] = "Reorder Level is a required field";
 $lang["items_retrive_item_info"] = "Retrieve Item Info";
 $lang["items_sales_tax_1"] = "Sales Tax";
 $lang["items_sales_tax_2"] = "Sales Tax 2";
-$lang["items_search_attributes"] = "Search Attributes";
+$lang["items_search_attributes"] = "Search Attributes. Date format Y-m-d";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "Serialised Items";
 $lang["items_standard"] = "Standard";
