@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
@@ -112,7 +111,7 @@ $lang["sales_price"] = "Price";
 $lang["sales_print_after_sale"] = "Print after Sale";
 $lang["sales_quantity"] = "Qty.";
 $lang["sales_quantity_less_than_reorder_level"] = "Warning: Desired Quantity is below Reorder Level for that Item";
-$lang["sales_quantity_less_than_zero"] = "Warning: Desired Quantity is insufficient. You can still process the sale, but audit your inventory";
+$lang["sales_quantity_less_than_zero"] = "Warning: Desired Quantity is out of stock, audit your inventory.";
 $lang["sales_quantity_of_items"] = "Quantity of %1 Items";
 $lang["sales_quote"] = "Quote";
 $lang["sales_quote_number"] = "Quote Number";
@@ -162,11 +161,11 @@ $lang["sales_tax"] = "Tax";
 $lang["sales_tax_id"] = "Tax Id";
 $lang["sales_tax_invoice"] = "Tax Invoice";
 $lang["sales_tax_percent"] = "Tax %";
-$lang["sales_taxed_ind"] = "Sales tax indicator";
+$lang["sales_taxed_ind"] = "T";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_transaction_failed"] = "Sales Transaction failed";
-$lang["sales_unable_to_add_item"] = "Item add to Sale failed";
+$lang["sales_unable_to_add_item"] = "Item add to Sale failed. Out of stock";
 $lang["sales_unsuccessfully_deleted"] = "Sale(s) delete failed";
 $lang["sales_unsuccessfully_restored"] = "Sale(s) restore failed";
 $lang["sales_unsuccessfully_suspended_sale"] = "Sale suspend failed";
