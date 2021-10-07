@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Attributes";
 $lang["module_attributes_desc"] = "Add, Update, Delete, and Search attributes";
 $lang["module_both"] = "Both";
-$lang["module_cashups"] = "Cashups";
+$lang["module_cashups"] = "Day Open or Close";
 $lang["module_cashups_desc"] = "Add, Update, Delete, and Search Cashups";
 $lang["module_config"] = "Configuration";
 $lang["module_config_desc"] = "Change OSPOS's Configuration";
