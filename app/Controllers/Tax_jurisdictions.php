@@ -2,11 +2,21 @@
 
 namespace App\Controllers;
 
+use app\Models\Tax_jurisdiction;
+
+/**
+ *
+ *
+ * @property tax_jurisdiction tax_jurisdiction
+ *
+ */
 class Tax_jurisdictions extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('tax_jurisdictions');
+
+		$this->tax_jurisdiction = model('Tax_jurisdiction');
 	}
 
 
