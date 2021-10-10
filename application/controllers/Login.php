@@ -82,7 +82,6 @@ class Login extends CI_Controller
 			curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
 			curl_setopt($ch, CURLOPT_POST, TRUE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($check));
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
 			$result = curl_exec($ch);
