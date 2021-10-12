@@ -2,13 +2,9 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_employees extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
 			['employee_name' => lang('Reports.employee')],
@@ -21,8 +17,9 @@ class Summary_employees extends Summary_report
 			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
 		];
 	}
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs)	//TODO: hungarian notation
 	{
 		parent::_select($inputs);
 
@@ -33,14 +30,14 @@ class Summary_employees extends Summary_report
 		');
 	}
 
-	protected function _from()
+	protected function _from()	//TODO: hungarian notation
 	{
 		parent::_from();
 
 		$builder->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
 	}
 
-	protected function _group_order()
+	protected function _group_order()	//TODO: hungarian notation
 	{
 		$builder->groupBy('sales.employee_id');
 		$builder->orderBy('employee_p.last_name');

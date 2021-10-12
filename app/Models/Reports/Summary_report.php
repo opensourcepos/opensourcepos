@@ -2,21 +2,31 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Appconfig;
 
-
-
+/**
+ *
+ *
+ * @property appconfig appconfig
+ *
+ */
 abstract class Summary_report extends Report
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->appconfig = model('Appconfig');
+	}
+
 	/**
 	 * Private interface implementing the core basic functionality for all reports
 	 */
-
-	private function __common_select(array $inputs)
+	private function __common_select(array $inputs)	//TODO: Hungarian notation
 	{
-		$where = '';
+		$where = '';	//TODO: Duplicated code
 
-		if(empty($this->config->get('date_or_time_format')))
+		if(empty($this->appconfig->get('date_or_time_format')))
 		{
 			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -37,7 +47,7 @@ abstract class Summary_report extends Report
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 
-		if($this->config->get('tax_included'))
+		if($this->appconfig->get('tax_included'))
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $sales_tax";
@@ -83,7 +93,7 @@ abstract class Summary_report extends Report
 			)'
 		);
 
-
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->select("
 				IFNULL($sale_subtotal, $sale_total) AS subtotal,
 				$sales_tax AS tax,
@@ -93,7 +103,7 @@ abstract class Summary_report extends Report
 		");
 	}
 
-	private function __common_from()
+	private function __common_from()	//TODO: hungarian notation
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
@@ -101,12 +111,12 @@ abstract class Summary_report extends Report
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'left outer');
 		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
-
 	}
 
 	private function __common_where(array $inputs)
 	{
-		if(empty($this->config->get('date_or_time_format')))
+		//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -162,12 +172,12 @@ abstract class Summary_report extends Report
 	 * Protected class interface implemented by derived classes where required
 	 */
 
-	abstract protected function _get_data_columns();
+	abstract protected function _get_data_columns();	//TODO: hungarian notation
 
-	protected function _select(array $inputs)	{ $this->__common_select($inputs); }
-	protected function _from()					{ $this->__common_from(); }
-	protected function _where(array $inputs)	{ $this->__common_where($inputs); }
-	protected function _group_order()			{}
+	protected function _select(array $inputs)	{ $this->__common_select($inputs); }	//TODO: hungarian notation
+	protected function _from()					{ $this->__common_from(); }	//TODO: hungarian notation
+	protected function _where(array $inputs)	{ $this->__common_where($inputs); }	//TODO: hungarian notation
+	protected function _group_order()			{}	//TODO: hungarian notation
 
 	/**
 	 * Public interface implementing the base abstract class, 
@@ -175,30 +185,28 @@ abstract class Summary_report extends Report
 	 * like a non sale report (e.g. expenses)
 	 */
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
 		return $this->_get_data_columns();
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+
 		$this->_select($inputs);
-
 		$this->_from();
-
 		$this->_where($inputs);
-
 		$this->_group_order();
 
 		return $builder->get()->getResultArray();
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$this->__common_select($inputs);
-
 		$this->__common_from();
-
 		$this->_where($inputs);
 
 		return $builder->get()->getRowArray();

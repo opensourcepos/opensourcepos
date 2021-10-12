@@ -2,19 +2,30 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Sale;
 
-
-
+/**
+ *
+ *
+ * @property sale sale
+ *
+ */
 class Specific_employee extends Report
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->sale = model('Sale');
+	}
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table($inputs);
+		$this->sale->create_temp_table($inputs);
 	}
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
 		return [
 			'summary' => [
@@ -51,9 +62,11 @@ class Specific_employee extends Report
 		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$builder->select('sale_id,
+		$builder = $this->db->table('sales_items_temp');
+		$builder->select('
+			sale_id,
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
@@ -74,10 +87,10 @@ class Specific_employee extends Report
 			SUM(profit) AS profit,
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
-		$builder = $this->db->table('sales_items_temp');
 
-		$builder->where('employee_id', $inputs['employee_id']);
+		$builder->where('employee_id', $inputs['employee_id']);	//TODO: Duplicated code
 
+		//TODO: this needs to be converted to a switch statement
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
@@ -123,14 +136,15 @@ class Specific_employee extends Report
 		$data['details'] = [];
 		$data['rewards'] = [];
 
-		foreach($data['summary'] as $key=>$value)
+		foreach($data['summary'] as $key => $value)
 		{
-			$builder->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
 			$builder = $this->db->table('sales_items_temp');
+			$builder->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
 			$builder->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $builder->get()->getResultArray();
-			$builder->select('used, earned');
+
 			$builder = $this->db->table('sales_reward_points');
+			$builder->select('used, earned');
 			$builder->where('sale_id', $value['sale_id']);
 			$data['rewards'][$key] = $builder->get()->getResultArray();
 		}
@@ -138,13 +152,13 @@ class Specific_employee extends Report
 		return $data;
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$builder->where('employee_id', $inputs['employee_id']);	//TODO: Duplicated code
 
-		$builder->where('employee_id', $inputs['employee_id']);
-
+		//TODO: this needs to be converted to a switch statement
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);

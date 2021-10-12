@@ -2,13 +2,9 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_discounts extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
 			['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
@@ -17,28 +13,28 @@ class Summary_discounts extends Summary_report
 		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		if($inputs['discount_type'] == FIXED)
+		$builder = $this->db->table('sales_items AS sales_items');
+
+		if($inputs['discount_type'] == FIXED)	//TODO: if there are only two options for this if/else statement then it needs to be refactored to use ternary operators
 		{
-			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("'.$this->config->get('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
+			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("'.$this->appconfig->get('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
 			$builder->where('discount_type', FIXED);
 		}
 		elseif($inputs['discount_type'] == PERCENT)
 		{
 			$builder->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
 			$builder->where('discount_type', PERCENT);
-		}	
-		
+		}
+
 		$builder->where('discount >', 0);
 		$builder->groupBy('sales_items.discount');
 		$builder->orderBy('sales_items.discount');
-		
 
-		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
-		$this->_where($inputs);
+		$this->_where($inputs);	//TODO: Hungarian notation
 
 		return $builder->get()->getResultArray();
 	}

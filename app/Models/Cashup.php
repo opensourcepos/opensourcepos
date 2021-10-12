@@ -21,22 +21,21 @@ class Cashup extends Model
 		$this->employee = model('Employee');
 	}
 
-
-	/*
-	Determines if a given Cashup_id is an Cashup
+	/**
+	* Determines if a given Cashup_id is a Cashup
 	*/
-	public function exists($cashup_id)
+	public function exists(int $cashup_id): bool
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets employee info
+	/**
+	* Gets employee info
 	*/
-	public function get_employee($cashup_id)
+	public function get_employee(int $cashup_id)
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
@@ -44,7 +43,7 @@ class Cashup extends Model
 		return $this->employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
-	public function get_multiple_info($cashup_ids)
+	public function get_multiple_info(string $cashup_ids)
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->whereIn('cashup_id', $cashup_ids);

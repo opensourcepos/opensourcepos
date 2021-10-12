@@ -2,29 +2,31 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
+use app\Models\Sale;
 
 /**
  * Token_year_quote_count class
+ *
+ * @property sale sale
+ *
  */
-
 class Token_year_quote_count extends Token
 {
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->CI->sale = model('Sale');
+		$this->sale = model('Sale');
 	}
 
-	public function token_id()
+	public function token_id(): string
 	{
 		return 'QCO';
 	}
 
-	public function get_value()
+	public function get_value(): int
 	{
-		return $this->CI->Sale->get_quote_number_for_year();
+		return $this->sale->get_quote_number_for_year();
 	}
 }
 ?>

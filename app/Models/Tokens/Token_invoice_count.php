@@ -2,29 +2,31 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
+use app\Models\Sale;
 
 /**
  * Token_invoice_count class
+ *
+ * @property sale sale
+ *
  */
-
 class Token_invoice_count extends Token
 {
-	public function __construct($value = '')
+	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
 
-		$this->CI->sale = model('Sale');
+		$this->sale = model('Sale');
 	}
 
-	public function token_id()
+	public function token_id(): string
 	{
 		return 'CO';
 	}
 
-	public function get_value()
+	public function get_value(): int
 	{
-		return empty($value) ? $this->CI->Sale->get_invoice_count() : $value;
+		return empty($value) ? $this->sale->get_invoice_count() : $value;
 	}
 }
 ?>

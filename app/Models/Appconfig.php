@@ -7,7 +7,6 @@ use CodeIgniter\Model;
 /**
  * Appconfig class
  */
-
 class Appconfig extends Model
 {
 	public function exists(string $key): bool
@@ -42,10 +41,7 @@ class Appconfig extends Model
 
 	public function save(string $key, string $value): bool
 	{
-		$config_data = [
-			'key'   => $key,
-			'value' => $value
-		];
+		$config_data = ['key'   => $key, 'value' => $value];
 		
 		$builder = $this->db->table('app_config');
 		

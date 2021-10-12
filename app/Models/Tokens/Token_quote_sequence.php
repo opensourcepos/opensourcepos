@@ -10,7 +10,6 @@ use app\Models\Appconfig;
  * @property appconfig appconfig
  *
  */
-
 class Token_quote_sequence extends Token
 {
 	public function __construct()

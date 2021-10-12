@@ -2,27 +2,25 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_taxes extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array	//TODO: hungarian notation
 	{
 		return [
-			['tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'),
-			['report_count' => lang('Reports.sales')),
-			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'));
+			['tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'],
+			['report_count' => lang('Reports.sales')],
+			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+			['total' => lang('Reports.total'), 'sorter' => 'number_sorter']
+		];
 	}
 
-	protected function _where(array $inputs)
+	//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+	protected function _where(array $inputs)	//TODO: hungarian notation
 	{
 		$builder->where('sales.sale_status', COMPLETED);
 
-		if(empty($this->config->get('date_or_time_format')))
+		if(empty($this->appconfig->get('date_or_time_format')))
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -32,11 +30,11 @@ class Summary_taxes extends Summary_report
 		}
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$where = 'WHERE sale_status = ' . COMPLETED . ' ';
+		$where = 'WHERE sale_status = ' . COMPLETED . ' ';	//TODO: Duplicated code
 
-		if(empty($this->config->get('date_or_time_format')))
+		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: Ternary notation
 		{
 			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -46,7 +44,7 @@ class Summary_taxes extends Summary_report
 		}
 		$decimals = totals_decimals();
 
-		if($this->config->get('tax_included'))
+		if($this->appconfig->get('tax_included'))
 		{
 			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT
 				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"

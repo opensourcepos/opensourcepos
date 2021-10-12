@@ -2,14 +2,13 @@
 
 namespace app\Libraries;
 
-require_once(APPPATH . 'Models/tokens/Token.php');
+use app\Models\tokens\Token;
 
 /**
  * Token library
  *
  * Library with utilities to manage tokens
  */
-
 class Token_lib
 {
 	private $CI;

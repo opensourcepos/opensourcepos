@@ -10,7 +10,6 @@ use app\Models\Appconfig;
  * @property appconfig appconfig
  *
  */
-
 class Token_work_order_sequence extends Token
 {
 	public function __construct($value = '')
@@ -20,12 +19,12 @@ class Token_work_order_sequence extends Token
 		$this->appconfig = model('Appconfig');
 	}
 
-	public function token_id()
+	public function token_id(): string
 	{
 		return 'WSEQ';
 	}
 
-	public function get_value()
+	public function get_value(): string
 	{
 		return $this->appconfig->acquire_save_next_work_order_sequence();
 	}

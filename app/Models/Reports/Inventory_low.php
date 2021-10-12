@@ -2,25 +2,37 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Item;
 
-
-
+/**
+ *
+ *
+ * @property item item
+ *
+ */
 class Inventory_low extends Report
 {
-	public function getDataColumns()
+	public function __construct()
 	{
-		return [
-			['item_name' => lang('Reports.item_name')),
-			['item_number' => lang('Reports.item_number')),
-			['quantity' => lang('Reports.quantity')),
-			['reorder_level' => lang('Reports.reorder_level')),
-			['location_name' => lang('Reports.stock_location')));
+		parent::__construct();
+
+		$this->item = model('Item');
 	}
 
-	public function getData(array $inputs)
+	public function getDataColumns(): array
 	{
-		$query = $this->db->query("SELECT " . $this->Item->get_item_name('name') . ", 
+		return [
+			['item_name' => lang('Reports.item_name')],
+			['item_number' => lang('Reports.item_number')],
+			['quantity' => lang('Reports.quantity')],
+			['reorder_level' => lang('Reports.reorder_level')],
+			['location_name' => lang('Reports.stock_location')]
+		];
+	}
+
+	public function getData(array $inputs): array
+	{//TODO: we need to see if this can be converted into using QueryBuilder
+		$query = $this->db->query("SELECT " . $this->item->get_item_name('name') . ", 
 			items.item_number,
 			item_quantities.quantity, 
 			items.reorder_level, 
@@ -37,7 +49,7 @@ class Inventory_low extends Report
 		return $query->getResultArray();
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
 		return [];
 	}

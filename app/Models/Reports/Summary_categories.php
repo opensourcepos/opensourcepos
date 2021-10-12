@@ -2,13 +2,9 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_categories extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
 			['category' => lang('Reports.category')],
@@ -23,22 +19,22 @@ class Summary_categories extends Summary_report
 
 	protected function _select(array $inputs)
 	{
-		parent::_select($inputs);
-
+		parent::_select($inputs);	//TODO: hungarian notation
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->select('
-				items.category AS category,
-				SUM(sales_items.quantity_purchased) AS quantity_purchased
+			items.category AS category,
+			SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 	}
 
-	protected function _from()
+	protected function _from()	//TODO: hungarian notation
 	{
 		parent::_from();
 
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
-	protected function _group_order()
+	protected function _group_order()	//TODO: hungarian notation
 	{
 		$builder->groupBy('category');
 		$builder->orderBy('category');

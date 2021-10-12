@@ -2,25 +2,19 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
-
 /**
  * Token_barcode_price class
  */
-
 class Token_barcode_price extends Token
 {
-
-    public function token_id()
-    {
+    public function token_id(): string
+	{
         return 'P';
     }
 
-    public function get_value()
-    {
+    public function get_value(): string
+	{
         return '\d';
     }
-
 }
-
 ?>

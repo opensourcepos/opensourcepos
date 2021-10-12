@@ -2,6 +2,8 @@
 
 namespace App\Models\Enums;
 
+use ReflectionClass;
+
 class Rounding_mode
 {
 	const HALF_UP = PHP_ROUND_HALF_UP;
@@ -12,10 +14,13 @@ class Rounding_mode
 	const ROUND_DOWN = 6;
 	const HALF_FIVE = 7;
 
+	public function __construct()
+	{
+		helper('language');
+	}
+
 	public static function get_rounding_options(): array
 	{
-		$CI =& get_instance();
-		helper('language');
 		$class = new ReflectionClass(__CLASS__);
 		$result = [];
 
@@ -29,9 +34,6 @@ class Rounding_mode
 
 	public static function get_rounding_code_name($code)
 	{
-		$CI =& get_instance();
-		helper('language');
-
 		if(empty($code))
 		{
 			return lang('Common.unknown');
@@ -40,10 +42,8 @@ class Rounding_mode
 		return Rounding_mode::get_rounding_options()[$code];
 	}
 
-	public static function get_html_rounding_options()
+	public static function get_html_rounding_options(): string
 	{
-		$CI =& get_instance();
-		helper('language');
 		$x = '';
 
 		foreach(Rounding_mode::get_rounding_options() as $option => $label)
@@ -54,16 +54,16 @@ class Rounding_mode
 		return $x;
 	}
 
-	public static function round_number($rounding_mode, $amount, $decimals)
-	{
+	public static function round_number(int $rounding_mode, float $amount, int $decimals): float
+	{//TODO: this needs to be be replaced with a switch statement
 		if($rounding_mode == Rounding_mode::ROUND_UP)
 		{
-			$fig = pow(10,$decimals);
+			$fig = pow(10, $decimals);
 			$rounded_total = (ceil($fig*$amount) + ceil($fig*$amount - ceil($fig*$amount)))/$fig;
 		}
 		elseif($rounding_mode == Rounding_mode::ROUND_DOWN)
 		{
-			$fig = pow(10,$decimals);
+			$fig = pow(10, $decimals);
 			$rounded_total = (floor($fig*$amount) + floor($fig*$amount - floor($fig*$amount)))/$fig;
 		}
 		elseif($rounding_mode == Rounding_mode::HALF_FIVE)

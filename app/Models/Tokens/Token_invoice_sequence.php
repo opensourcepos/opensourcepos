@@ -12,8 +12,7 @@ use app\Models\Appconfig;
 
 class Token_invoice_sequence extends Token
 {
-
-	public function __construct($value = '')
+	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
 

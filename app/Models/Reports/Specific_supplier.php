@@ -2,19 +2,30 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Sale;
 
-
-
+/**
+ *
+ *
+ * @property sale sale
+ *
+ */
 class Specific_supplier extends Report
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->sale = model('Sale');
+	}
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table($inputs);
+		$this->sale->create_temp_table($inputs);
 	}
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
 		return [
 			['id' => lang('Reports.sale_id')],
@@ -33,9 +44,11 @@ class Specific_supplier extends Report
 		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$builder->select('sale_id,
+		$builder = $this->db->table('sales_items_temp');
+		$builder->select('
+			sale_id,
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
@@ -58,10 +71,10 @@ class Specific_supplier extends Report
 			SUM(profit) AS profit,
 			MAX(discount_type) AS discount_type,
 			MAX(discount) AS discount');
-		$builder = $this->db->table('sales_items_temp');
 
-		$builder->where('supplier_id', $inputs['supplier_id']);
+		$builder->where('supplier_id', $inputs['supplier_id']);	//TODO: Duplicated code
 
+		//TODO: this needs to be converted to a switch statement
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);
@@ -105,13 +118,13 @@ class Specific_supplier extends Report
 		return $builder->get()->getResultArray();
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
-
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder->where('supplier_id', $inputs['supplier_id']);
 
+		//TODO: this needs to be converted to a switch statement
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);

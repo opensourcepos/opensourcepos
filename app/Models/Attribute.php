@@ -347,6 +347,7 @@ class Attribute extends Model
 		$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$builder->where('definition_id', $definition_id);
 		$builder->where('attribute_value', $attribute_value);
+
 		return $builder->get()->getResultArray();
 	}
 
@@ -393,7 +394,7 @@ class Attribute extends Model
 		}
 		else if($from_type === DROPDOWN)
 		{
-			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))
+			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))	//TODO: This if statement is possibly unnecessary... unless we have it there so that later we can do something with TEXT types also.
 			{
 				if($to_type === CHECKBOX)	//TODO: Duplicated code.
 				{
@@ -438,7 +439,7 @@ class Attribute extends Model
 			$one_attribute_id = $this->save_value('1', $definition_id, FALSE, FALSE, CHECKBOX);
 		}
 
-		return [$zero_attribute_id, $one_attribute_id);
+		return [$zero_attribute_id, $one_attribute_id];
 	}
 
 	/*
@@ -538,9 +539,9 @@ class Attribute extends Model
 		return $this->db->transStatus();
 	}
 
-	public function delete_link(int $item_id, $definition_id = FALSE): bool
+	public function delete_link(int $item_id, bool $definition_id = FALSE): bool
 	{
-		$delete_data = ['item_id' => $item_id);
+		$delete_data = ['item_id' => $item_id];
 
 		//Exclude rows where sale_id or receiving_id has a value
 		$builder = $this->db->table('attribute_links');
@@ -552,7 +553,7 @@ class Attribute extends Model
 			$delete_data += ['definition_id' => $definition_id];
 		}
 
-		$success = $builder->delete($delete_data);
+		$success = $builder->delete($delete_data);	//TODO: This isn't necessary.  Just `return $builder->delete($delete_date);`
 
 		return $success;
 	}
@@ -596,7 +597,7 @@ class Attribute extends Model
 		return $builder->get('attribute_links');
 	}
 
-	public function get_attribute_value($item_id, $definition_id)
+	public function get_attribute_value(int $item_id, int $definition_id): object
 	{
 		$builder = $this->db->table('attribute_values');
 		$builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -608,7 +609,7 @@ class Attribute extends Model
 		return $builder->get()->getRowObject();
 	}
 
-	public function get_attribute_values($item_id): array
+	public function get_attribute_values(int $item_id): array	//TODO: Is this function used anywhere in the code?
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->select('attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
@@ -620,8 +621,7 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
-
-	public function copy_attribute_links($item_id, $sale_receiving_fk, $id)
+	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id)
 	{
 //TODO: this likely needs to be rewritten as two different queries rather than a subquery within a query.  Then use query_builder for both.
 		$query = 'INSERT INTO ' . $this->db->prefixTable('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')	';
@@ -632,7 +632,7 @@ class Attribute extends Model
 		$this->db->query($query);
 	}
 
-	public function get_suggestions($definition_id, $term): array
+	public function get_suggestions(int $definition_id, string $term): array
 	{
 		$suggestions = [];
 
@@ -647,14 +647,14 @@ class Attribute extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$row_array = (array) $row;
-			$suggestions[] = ['value' => $row_array['attribute_id'], 'label' => $row_array['attribute_value']);
+			$row_array = (array)$row;
+			$suggestions[] = ['value' => $row_array['attribute_id'], 'label' => $row_array['attribute_value']];
 		}
 
 		return $suggestions;
 	}
 
-	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
+	public function save_value(string $attribute_value, int $definition_id, $item_id = FALSE, $attribute_id = FALSE, string $definition_type = DROPDOWN): int
 	{
 		$this->db->transStart();
 
@@ -724,7 +724,7 @@ class Attribute extends Model
 		return $attribute_id;
 	}
 
-	public function delete_value($attribute_value, $definition_id)
+	public function delete_value(string $attribute_value, int $definition_id)
 	{
 		$query = 'DELETE atrv, atrl ';
 		$query .= 'FROM ' . $this->db->prefixTable('attribute_values') . ' atrv, ' . $this->db->prefixTable('attribute_links') .  ' atrl ';
@@ -739,7 +739,7 @@ class Attribute extends Model
 	 * @param	int		$definition_id	Attribute definition ID to remove.
 	 * @return 	boolean					TRUE if successful and FALSE if there is a failure
 	 */
-	public function delete_definition($definition_id): bool
+	public function delete_definition(int $definition_id): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
@@ -747,7 +747,7 @@ class Attribute extends Model
 		return $builder->update(['deleted' => 1]);
 	}
 
-	public function delete_definition_list($definition_ids): bool
+	public function delete_definition_list(string $definition_ids): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->whereIn('definition_id', $definition_ids);
@@ -761,7 +761,7 @@ class Attribute extends Model
 	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */
-	public function delete_orphaned_links($definition_id): bool
+	public function delete_orphaned_links(int $definition_id): bool
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->select('definition_type');
@@ -785,8 +785,9 @@ class Attribute extends Model
 		return true;	//TODO: if the definition type is a dropdown then this will return true.  Is that what we want here?
 	}
 
-	/*
+	/**
 	 * Deletes any orphaned values that do not have associated links
+	 *
 	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */
@@ -819,11 +820,12 @@ class Attribute extends Model
 
 	/**
 	 *
-	 * @param array 	attributes 			attributes that need to be fixed
-	 * @param int 		$definition_id
-	 * @param string	$definition_type	This dictates what column should be populated in any new attribute_values that are created
+	 * @param array $attributes attributes that need to be fixed
+	 * @param int $definition_id
+	 * @param string $definition_type This dictates what column should be populated in any new attribute_values that are created
+	 * @return bool
 	 */
-	public function attribute_cleanup($attributes, $definition_id, $definition_type): bool
+	public function attribute_cleanup(array $attributes, int $definition_id, string $definition_type): bool
 	{
 		$this->db->transBegin();
 
@@ -850,7 +852,7 @@ class Attribute extends Model
 	 * @param int $definition_id
 	 * @return array All attribute_id and item_id pairs in the attribute_links table with that attribute definition_id
 	 */
-	public function get_attributes_by_definition($definition_id): array
+	public function get_attributes_by_definition(int $definition_id): array
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->select('attribute_links.attribute_id, item_id, attribute_value, attribute_decimal, attribute_date');

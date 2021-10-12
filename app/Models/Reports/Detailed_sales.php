@@ -2,35 +2,47 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Sale;
 
-
-
+/**
+ *
+ *
+ * @property sale sale
+ *
+ */
 class Detailed_sales extends Report
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->sale = model('Sale');
+	}
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table($inputs);
+		$this->sale->create_temp_table($inputs);
 	}
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
-		return [
+		return [	//TODO: Duplicated code
 			'summary' => [
-				['id' => lang('Reports.sale_id')),
-				['type_code' => lang('Reports.code_type')),
-				['sale_date' => lang('Reports.date'), 'sortable' => FALSE),
-				['quantity' => lang('Reports.quantity')),
-				['employee_name' => lang('Reports.sold_by')),
-				['customer_name' => lang('Reports.sold_to')),
-				['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'),
-				['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'),
-				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-				['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'),
-				['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'),
-				['payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE),
-				['comment' => lang('Reports.comments'))),
+				['id' => lang('Reports.sale_id')],
+				['type_code' => lang('Reports.code_type')],
+				['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['quantity' => lang('Reports.quantity')],
+				['employee_name' => lang('Reports.sold_by')],
+				['customer_name' => lang('Reports.sold_to')],
+				['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+				['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+				['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+				['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+				['payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE],
+				['comment' => lang('Reports.comments')]
+			],
 			'details' => [
 				lang('Reports.name'),
 				lang('Reports.category'),
@@ -42,15 +54,18 @@ class Detailed_sales extends Report
 				lang('Reports.total'),
 				lang('Reports.cost'),
 				lang('Reports.profit'),
-				lang('Reports.discount')),
+				lang('Reports.discount')
+			],
 			'details_rewards' => [
 				lang('Reports.used'),
-				lang('Reports.earned'))
-		);
+				lang('Reports.earned')
+			]
+		];
 	}
 
-	public function getDataBySaleId($sale_id)
+	public function getDataBySaleId(int $sale_id): array
 	{
+		$builder = $this->db->table('sales_items_temp');
 		$builder->select('sale_id,
 			sale_date,
 			SUM(quantity_purchased) AS items_purchased,
@@ -64,14 +79,14 @@ class Detailed_sales extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(sale_status) AS sale_status,
 			comment');
-		$builder = $this->db->table('sales_items_temp');
 		$builder->where('sale_id', $sale_id);
 
 		return $builder->get()->getRowArray();
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
+		$builder = $this->db->table('sales_items_temp');
 		$builder->select('sale_id, 
 			MAX(CASE
 			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'			
@@ -94,14 +109,14 @@ class Detailed_sales extends Report
 			SUM(profit) AS profit,
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
-		$builder = $this->db->table('sales_items_temp');
 
-		if($inputs['location_id'] != 'all')
+		if($inputs['location_id'] != 'all')	//TODO: Duplicated code
 		{
 			$builder->where('item_location', $inputs['location_id']);
 		}
 
-		if($inputs['sale_type'] == 'complete')
+		//TODO: These if statements should be converted to a switch statement
+		if($inputs['sale_type'] == 'complete')	//TODO: Duplicated code
 		{
 			$builder->where('sale_status', COMPLETED);
 			$builder->groupStart();
@@ -146,8 +161,9 @@ class Detailed_sales extends Report
 		$data['details'] = [];
 		$data['rewards'] = [];
 
-		foreach($data['summary'] as $key=>$value)
+		foreach($data['summary'] as $key => $value)
 		{
+			$builder = $this->db->table('sales_items_temp');
 			$builder->select('
 				MAX(name) AS name, 
 				MAX(category) AS category, 
@@ -163,7 +179,7 @@ class Detailed_sales extends Report
 				MAX(discount) AS discount, 
 				MAX(discount_type) AS discount_type, 
 				MAX(sale_status) AS sale_status');
-			$builder = $this->db->table('sales_items_temp');
+
 			if(count($inputs['definition_ids']) > 0)
 			{
 				$format = $this->db->escape(dateformat_mysql());
@@ -173,6 +189,7 @@ class Detailed_sales extends Report
 				$builder->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
+
 			$builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id');
 			$builder->where('sales_items_temp.sale_id', $value['sale_id']);
 			$data['details'][$key] = $builder->get()->getResultArray();
@@ -186,16 +203,17 @@ class Detailed_sales extends Report
 		return $data;
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$builder = $this->db->table('sales_items_temp');
+		$builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 
-		if($inputs['location_id'] != 'all')
+		if($inputs['location_id'] != 'all')	//TODO: Duplicated code
 		{
 			$builder->where('item_location', $inputs['location_id']);
 		}
 
+		//TODO: This should be converted to a switch statement
 		if($inputs['sale_type'] == 'complete')
 		{
 			$builder->where('sale_status', COMPLETED);

@@ -2,13 +2,9 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_sales extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
 			['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
@@ -22,9 +18,10 @@ class Summary_sales extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs)	//TODO: hungarian notation
 	{
-		parent::_select($inputs);
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+		parent::_select($inputs);	//TODO: hungarian notation
 
 		$builder->select('
 				DATE(sales.sale_time) AS sale_date,
@@ -33,8 +30,9 @@ class Summary_sales extends Summary_report
 		');
 	}
 
-	protected function _group_order()
+	protected function _group_order()	//TODO: hungarian notation
 	{
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->groupBy('sale_date');
 		$builder->orderBy('sale_date');
 	}

@@ -2,28 +2,26 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_expenses_categories extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
-			['category_name' => lang('Reports.expenses_category')),
-			['count' => lang('Reports.count')),
-			['total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'),
-			['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter'));
+			['category_name' => lang('Reports.expenses_category')],
+			['count' => lang('Reports.count')],
+			['total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'],
+			['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter']
+		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
-		$builder->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
 		$builder = $this->db->table('expenses AS expenses');
+		$builder->select('expense_categories.category_name AS category_name, COUNT(expenses.expense_id) AS count, SUM(expenses.amount) AS total_amount, SUM(expenses.tax_amount) AS total_tax_amount');
 		$builder->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 
-		if(empty($this->config->get('date_or_time_format')))
+		//TODO: convert this to ternary notation
+		if(empty($this->config->get('date_or_time_format')))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -40,12 +38,12 @@ class Summary_expenses_categories extends Summary_report
 		return $builder->get()->getResultArray();
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
-		$builder->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
 		$builder = $this->db->table('expenses AS expenses');
+		$builder->select('SUM(expenses.amount) AS expenses_total_amount, SUM(expenses.tax_amount) AS expenses_total_tax_amount');
 
-		if(empty($this->config->get('date_or_time_format')))
+		if(empty($this->config->get('date_or_time_format')))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(expenses.date) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}

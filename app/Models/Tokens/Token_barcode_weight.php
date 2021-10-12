@@ -2,25 +2,19 @@
 
 namespace App\Models\Tokens;
 
-use CodeIgniter\Model;
-
 /**
  * Token_barcode_price class
  */
-
 class Token_barcode_weight extends Token
 {
-
-    public function token_id()
+    public function token_id(): string
     {
         return 'W';
     }
 
-    public function get_value()
+    public function get_value(): string
     {
         return '\d';
     }
-
 }
-
 ?>

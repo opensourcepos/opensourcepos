@@ -2,13 +2,9 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
-
-
-
 class Summary_customers extends Summary_report
 {
-	protected function _get_data_columns()
+	protected function _get_data_columns(): array
 	{
 		return [
 			['customer_name' => lang('Reports.customer')],
@@ -25,6 +21,7 @@ class Summary_customers extends Summary_report
 	protected function _select(array $inputs)
 	{
 		parent::_select($inputs);
+//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
 		$builder->select('
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,

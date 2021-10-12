@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->get('theme')) ? 'flatly' : $this->config->get('theme')) . '/bootstrap.min.css' ?>"/>
 
-	<?php if ($this->input->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
+	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />

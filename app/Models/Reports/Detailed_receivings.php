@@ -2,43 +2,57 @@
 
 namespace App\Models\Reports;
 
-use CodeIgniter\Model;
+use app\Models\Receiving;
 
-
-
+/**
+ * 
+ * 
+ * @property receiving receiving
+ * 
+ */
 class Detailed_receivings extends Report
 {
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->receiving = model('Receiving');
+	}
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
-		$this->Receiving->create_temp_table($inputs);
+		$this->receiving->create_temp_table($inputs);
 	}
 
-	public function getDataColumns()
+	public function getDataColumns(): array
 	{
 		return [
 			'summary' => [
-				['id' => lang('Reports.receiving_id')),
-				['receiving_date' => lang('Reports.date'), 'sortable' => FALSE),
-				['quantity' => lang('Reports.quantity')),
-				['employee_name' => lang('Reports.received_by')),
-				['supplier_name' => lang('Reports.supplied_by')),
-				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'),
-				['payment_type' => lang('Reports.payment_type')),
-				['comment' => lang('Reports.comments')),
-				['reference' => lang('Receivings.reference'))),
+				['id' => lang('Reports.receiving_id')],
+				['receiving_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['quantity' => lang('Reports.quantity')],
+				['employee_name' => lang('Reports.received_by')],
+				['supplier_name' => lang('Reports.supplied_by')],
+				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
+				['payment_type' => lang('Reports.payment_type')],
+				['comment' => lang('Reports.comments')],
+				['reference' => lang('Receivings.reference')]
+			],
 			'details' => [
 				lang('Reports.item_number'),
 				lang('Reports.name'),
 				lang('Reports.category'),
 				lang('Reports.quantity'),
 				lang('Reports.total'),
-				lang('Reports.discount'))
-		);
+				lang('Reports.discount')
+			]
+		];
 	}
 
 	public function getDataByReceivingId(string $receiving_id)
 	{
+		$builder = $this->db->table('receivings_items_temp');
 		$builder->select('receiving_id,
 			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
@@ -50,7 +64,6 @@ class Detailed_receivings extends Report
 			MAX(payment_type) as payment_type,
 			MAX(comment) as comment,
 			MAX(reference) as reference');
-		$builder = $this->db->table('receivings_items_temp');
 		$builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$builder->where('receiving_id', $receiving_id);
@@ -59,8 +72,9 @@ class Detailed_receivings extends Report
 		return $builder->get()->getRowArray();
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
+		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
 		$builder->select('receiving_id,
 			MAX(receiving_date) as receiving_date,
 			SUM(quantity_purchased) AS items_purchased,
@@ -71,7 +85,6 @@ class Detailed_receivings extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment,
 			MAX(reference) AS reference');
-		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
 		$builder->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$builder->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
@@ -80,7 +93,7 @@ class Detailed_receivings extends Report
 			$builder->where('item_location', $inputs['location_id']);
 		}
 
-		if($inputs['receiving_type'] == 'receiving')
+		if($inputs['receiving_type'] == 'receiving')	//TODO: These if statements should be replaced with a switch statement
 		{
 			$builder->where('quantity_purchased >', 0);
 		}
@@ -101,6 +114,7 @@ class Detailed_receivings extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
+			$builder = $this->db->table('receivings_items_temp');
 			$builder->select('
 				MAX(name) AS name, 
 				MAX(item_number) AS item_number, 
@@ -112,8 +126,8 @@ class Detailed_receivings extends Report
 				MAX(discount_type) AS discount_type, 
 				MAX(item_location) AS item_location, 
 				MAX(item_receiving_quantity) AS receiving_quantity');
-			$builder = $this->db->table('receivings_items_temp');
 			$builder->join('items', 'receivings_items_temp.item_id = items.item_id');
+
 			if(count($inputs['definition_ids']) > 0)
 			{
 				$format = $this->db->escape(dateformat_mysql());
@@ -123,6 +137,7 @@ class Detailed_receivings extends Report
 				$builder->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
+
 			$builder->where('receivings_items_temp.receiving_id', $value['receiving_id']);
 			$builder->groupBy('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
 			$data['details'][$key] = $builder->get()->getResultArray();
@@ -133,14 +148,15 @@ class Detailed_receivings extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$builder->select('SUM(total) AS total');
 		$builder = $this->db->table('receivings_items_temp');
+		$builder->select('SUM(total) AS total');
 
 		if($inputs['location_id'] != 'all')
 		{
 			$builder->where('item_location', $inputs['location_id']);
 		}
 
+		//TODO: These if statements should be replaced with a switch statement
 		if($inputs['receiving_type'] == 'receiving')
 		{
 			$builder->where('quantity_purchased >', 0);
