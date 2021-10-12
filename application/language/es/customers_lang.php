@@ -1,7 +1,9 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "Este número de cuenta ya esta en la base de datos.";
 $lang["customers_available_points"] = "Puntos Disponibles";
+$lang["customers_available_points_value"] = "Puntos Disponibles";
 $lang["customers_average"] = "Gasto promedio";
 $lang["customers_avg_discount"] = "Descuento promedio";
 $lang["customers_basic_information"] = "Información";
@@ -51,4 +53,3 @@ $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";
 $lang["rewards_package"] = "Paquete de premios";
-$lang["customers_available_points_value"] = "Puntos Disponibles";

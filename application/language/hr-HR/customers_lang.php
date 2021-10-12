@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "IBAN:";
 $lang["customers_account_number_duplicate"] = "Ovaj IBAN već postoji";
 $lang["customers_available_points"] = "";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";

@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "ใช้จ่ายเฉลี่ย";
 $lang["customers_avg_discount"] = "ส่วนลดเฉลี่ย";
 $lang["customers_basic_information"] = "ข้อมูล";

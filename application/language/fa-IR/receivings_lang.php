@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "لغو";
 $lang["receivings_cannot_be_deleted"] = "دریافت (ها) حذف نشد.";
 $lang["receivings_comments"] = "نظرات";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "پایان";
 $lang["receivings_confirm_cancel_receiving"] = "آیا مطمئن هستید که می خواهید این دریافت را پاک کنید؟ همه موارد پاک خواهند شد.";
 $lang["receivings_confirm_delete"] = "آیا مطمئن هستید که می خواهید این دریافت را حذف کنید؟ این عملکرد قابل بازگشت نیست.";
 $lang["receivings_confirm_finish_receiving"] = "آیا مطمئن هستید که می خواهید این دریافت را ارسال کنید؟ این قابل بازگشت نیست.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "هزینه";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "تاریخ دریافت";
 $lang["receivings_date_required"] = "یک تاریخ صحیح باید وارد شود.";
 $lang["receivings_date_type"] = "تاریخ یک زمینه ضروری است.";

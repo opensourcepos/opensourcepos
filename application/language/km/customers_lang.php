@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "លេខ​គណនី";
 $lang["customers_account_number_duplicate"] = "លេខគណនី មានវត្តមាននៅក្នុងមូលដ្ឋានទិន្នន័យរួចទៅហើយ";
 $lang["customers_available_points"] = "ពិន្ទុដែលប្រើប្រាស់បាន";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "ចំណាយជាមធ្យម";
 $lang["customers_avg_discount"] = "បញ្ចុះតម្លៃមធ្យម";
 $lang["customers_basic_information"] = "ព័ត៌មានមូលដ្ឋាន";

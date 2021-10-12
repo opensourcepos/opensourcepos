@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Group Seq";
 $lang["taxes_jurisdiction_name"] = "Jurisdiction Name";
 $lang["taxes_name"] = "Name";
 $lang["taxes_new"] = "New Tax";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "No Taxes Code available to display";
 $lang["taxes_reporting_authority"] = "Reporting Authority";
 $lang["taxes_round_half_down"] = "Half Down";

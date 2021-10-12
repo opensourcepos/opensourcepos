@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Groupe de Seq";
 $lang["taxes_jurisdiction_name"] = "Nom de la Juridiction";
 $lang["taxes_name"] = "Nom";
 $lang["taxes_new"] = "Nouvelle Taxe";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Aucun Code Fiscal à afficher";
 $lang["taxes_reporting_authority"] = "Autorité Concernée";
 $lang["taxes_round_half_down"] = "Arrondir au Nombre Inférieur";

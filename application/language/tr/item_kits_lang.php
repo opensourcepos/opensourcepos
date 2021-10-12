@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Ürün Ekle";
 $lang["item_kits_all"] = "Tümü";
 $lang["item_kits_cannot_be_deleted"] = "Ürün Takım(lar)ı silinemedi.";
@@ -16,6 +17,7 @@ $lang["item_kits_item"] = "Ürün";
 $lang["item_kits_item_kit_number"] = "Barkod";
 $lang["item_kits_item_kit_number_duplicate"] = "Ürün Takımı Numarası veri tabanında zaten var.";
 $lang["item_kits_item_number"] = "";
+$lang["item_kits_item_number_duplicate"] = "";
 $lang["item_kits_items"] = "Ürünler";
 $lang["item_kits_kit"] = "Takım Kimliği";
 $lang["item_kits_kit_and_components"] = "Takım ve Bileşenler";
@@ -34,4 +36,5 @@ $lang["item_kits_sequence"] = "Sıra";
 $lang["item_kits_successful_adding"] = "Ürün Takımını başarıyla eklediniz";
 $lang["item_kits_successful_deleted"] = "Başarıyla sildiniz";
 $lang["item_kits_successful_updating"] = "Ürün Takımını başarıyla güncellediniz";
+$lang["item_kits_unit_price"] = "";
 $lang["item_kits_update"] = "Ürün Takımını Güncelle";

@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "İptal";
 $lang["receivings_cannot_be_deleted"] = "Alma (lar) silinemedi.";
 $lang["receivings_comments"] = "Yorumlar";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Tamamla";
 $lang["receivings_confirm_cancel_receiving"] = "Bu alımı iptal etmek istiyor musunuz? Tüm ürünler çıkarılacak.";
 $lang["receivings_confirm_delete"] = "Bu alıcıyı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.";
 $lang["receivings_confirm_finish_receiving"] = "Alımı tamamlamak istediğinize emin misiniz? İşlem geri alınamaz.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Ücret";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Alma tarihi";
 $lang["receivings_date_required"] = "Doğru bir tarih girilmelidir.";
 $lang["receivings_date_type"] = "Tarih zorunlu bir alandır.";

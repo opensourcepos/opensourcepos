@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Інформація про працівників";
 $lang["employees_cannot_be_deleted"] = "Неможливо видалити вибраних працівника(ів), які вже здійснили продажі або ви намагаєтесь видалити свій обліковий запис.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Змінити пароль";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Ви впевнені, що хочете видалити обраного(их) працівника(ів)?";
 $lang["employees_confirm_restore"] = "Ви впевнені, що хочете відновити обраного(их) працівника(ів)?";
 $lang["employees_current_password"] = "Поточний пароль";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Ви не можете вида�
 $lang["employees_error_updating_demo_admin"] = "Ви не можете змінити аккаунт користувача.";
 $lang["employees_language"] = "Мова";
 $lang["employees_login_info"] = "Вхід";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Новий працівник";
 $lang["employees_none_selected"] = "Ви не вибрали працівника(ів) для видалення.";
 $lang["employees_one_or_multiple"] = "Працівник(и)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Мова системи";
 $lang["employees_unsuccessful_change_password"] = "Не вдалось змінити пароль.";
 $lang["employees_update"] = "Оновити працівника";
 $lang["employees_username"] = "Ім'я користувача";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Ім'я користувача повинно бути не менше 5 символів.";
 $lang["employees_username_required"] = "Ім'я користувача - обов'язкове поле.";

@@ -1,7 +1,12 @@
-<?php
+<?php 
+
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Información";
 $lang["employees_cannot_be_deleted"] = "No se puede borrar los empleados seleccionados, uno o más de ellos tienen ventas registradas ó intentas borrar tu propia cuenta.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Cambiar contraseña";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "¿Estás seguro que deseas borrar los empleados seleccionados?";
 $lang["employees_confirm_restore"] = "¿Estás seguro que deseas restaurar los empleados seleccionados?";
 $lang["employees_current_password"] = "Contraseña Actual";
@@ -12,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "No puede borrar el usuario demo 
 $lang["employees_error_updating_demo_admin"] = "No puede cambiar el usuario demo de administrador.";
 $lang["employees_language"] = "Idioma";
 $lang["employees_login_info"] = "Iniciar sesión";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Nuevo Empleado";
 $lang["employees_none_selected"] = "No ha seleccionado empleados a borrar.";
 $lang["employees_one_or_multiple"] = "Empleado(s)";
@@ -32,6 +38,6 @@ $lang["employees_system_language"] = "Idioma del sistema";
 $lang["employees_unsuccessful_change_password"] = "El cambio de contraseña ha fallado.";
 $lang["employees_update"] = "Actualizar Empleado";
 $lang["employees_username"] = "Nombre de Usuario";
+$lang["employees_username_duplicate"] = "El usuario del empleado ya esta en uso. Favor de escoger otro.";
 $lang["employees_username_minlength"] = "Nombre de usuario debe tener por lo menos 5 letras.";
 $lang["employees_username_required"] = "Es necesario el nombre de usuario.";
-$lang["employees_username_duplicate"] = "El usuario del empleado ya esta en uso. Favor de escoger otro.";

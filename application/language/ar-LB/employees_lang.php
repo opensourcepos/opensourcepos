@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "المعلومات الأساسية للموظف";
 $lang["employees_cannot_be_deleted"] = "لايمكن حذف الموظفين ، واحد أو أكثر من المظفين قام بإجراء مبيعات :).";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "تغيير كلمة المرور";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "هل أنت متأكد أنك تريد حذف الموظفين المختارين؟";
 $lang["employees_confirm_restore"] = "هل انت متاكد من استعادة الموظفين المحددين؟";
 $lang["employees_current_password"] = "كلمة المرور الحالية";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "لايمكن حذف المستخ
 $lang["employees_error_updating_demo_admin"] = "لايمكن تغيير بيانات المستخدم admin الخاص بنسخة العرض.";
 $lang["employees_language"] = "اللغة";
 $lang["employees_login_info"] = "معلومات دخول الموظف";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "موظف جديد";
 $lang["employees_none_selected"] = "لم تختار أى من الموظفين للحذف.";
 $lang["employees_one_or_multiple"] = "موظف/موظفين";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "لغة النظام";
 $lang["employees_unsuccessful_change_password"] = "فشل في تغيير كلمة المرور.";
 $lang["employees_update"] = "تحديث بيانات موظف";
 $lang["employees_username"] = "اسم المستخدم";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "اسم المستخدم يجب أن يكون 5 حروف على الأقل.";
 $lang["employees_username_required"] = "اسم المستخدم مطلوب.";

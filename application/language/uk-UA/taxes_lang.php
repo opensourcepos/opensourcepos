@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Група послідовностей";
 $lang["taxes_jurisdiction_name"] = "Назва юрисдикції";
 $lang["taxes_name"] = "Назва";
 $lang["taxes_new"] = "Новий податковий код";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Немає податкового коду для відображення.";
 $lang["taxes_reporting_authority"] = "Звітний орган";
 $lang["taxes_round_half_down"] = "Наполовину вниз";

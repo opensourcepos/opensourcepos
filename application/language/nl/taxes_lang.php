@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Groep volg";
 $lang["taxes_jurisdiction_name"] = "Jurisdictie naam";
 $lang["taxes_name"] = "Naam";
 $lang["taxes_new"] = "Nieuwe belasting";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Geen belastingcode beschikbaar om te weergeven";
 $lang["taxes_reporting_authority"] = "Rapportage instantie";
 $lang["taxes_round_half_down"] = "Halveren naar beneden";

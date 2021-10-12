@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Anulare";
 $lang["receivings_cannot_be_deleted"] = "Stergere Recptie/Receptii esuata.";
 $lang["receivings_comments"] = "Comentarii";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Finalizare";
 $lang["receivings_confirm_cancel_receiving"] = "Sigr doriti eliminarea acestei receptii? Toate articolele vor fi eliminate.";
 $lang["receivings_confirm_delete"] = "";
 $lang["receivings_confirm_finish_receiving"] = "";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "";
 $lang["receivings_date_required"] = "";
 $lang["receivings_date_type"] = "";

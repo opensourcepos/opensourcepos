@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Añadir excepción";
 $lang["taxes_cascade"] = "Cascada";
 $lang["taxes_cascade_sequence"] = "Secuencia en cascada";
@@ -13,6 +14,7 @@ $lang["taxes_group_seq"] = "Seq. de grupo";
 $lang["taxes_jurisdiction_name"] = "Nombre de jurisdicción";
 $lang["taxes_name"] = "Nombre";
 $lang["taxes_new"] = "Impuesto nuevo";
+$lang["taxes_no_taxes"] = "Sin Importe de Impuestos";
 $lang["taxes_no_taxes_to_display"] = "No hay impuestos para mostrar";
 $lang["taxes_reporting_authority"] = "Autoridad Informante";
 $lang["taxes_round_half_down"] = "Mitad abajo";
@@ -77,4 +79,3 @@ $lang["taxes_tax_rounding"] = "Redondeo de Impuestos";
 $lang["taxes_tax_type"] = "Tipo de Impuesto";
 $lang["taxes_update"] = "Actualizar Tasa de Impuesto";
 $lang["taxes_vat_tax"] = "IVA";
-$lang["taxes_no_taxes"] = "Sin Importe de Impuestos";

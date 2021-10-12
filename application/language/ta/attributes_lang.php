@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "பண்புக்கூறு மதிப்பு '_' அல்லது '|' கொண்டிருக்கக்கூடாது";
 $lang["attributes_confirm_delete"] = "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறு (களை) நீக்க விரும்புகிறீர்களா?";
 $lang["attributes_confirm_restore"] = "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறுகளை (களை) மீட்டெடுக்க விரும்புகிறீர்களா?";

@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
 $lang["taxes_name"] = "Tên";
 $lang["taxes_new"] = "Mã thuế mới";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Không sẵn có Mã thuế nào để mà hiển thị";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "0,5 làm tròn xuống";

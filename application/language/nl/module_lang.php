@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Kenmerken";
 $lang["module_attributes_desc"] = "Kenmerken toevoegen, bijwerken, verwijderen en zoeken.";
 $lang["module_both"] = "Beide";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Leveranciers";
 $lang["module_suppliers_desc"] = "Leveranciers toevoegen, bijwerken, verwijderen en zoeken.";
 $lang["module_taxes"] = "Belastingen";
 $lang["module_taxes_desc"] = "BTW configureren.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

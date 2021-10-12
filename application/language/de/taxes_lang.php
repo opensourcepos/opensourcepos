@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Gruppe Folge";
 $lang["taxes_jurisdiction_name"] = "Name der Gerichtsbarkeit";
 $lang["taxes_name"] = "Name";
 $lang["taxes_new"] = "Neue Steuer";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Kein Steuercode verfügbar, der angezeigt werden kann";
 $lang["taxes_reporting_authority"] = "Meldebehörde";
 $lang["taxes_round_half_down"] = "Halbe abrunden";

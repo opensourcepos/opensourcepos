@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Thông tin";
 $lang["employees_cannot_be_deleted"] = "Không thể xóa các nhân viên đã chọn, một hay nhiều nhân viên đã xử lý bán hàng hoặc bạn đang cố xóa tài khoản của mình.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Đổi mật khẩu";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Bạn chắc chắn muốn xóa các nhân viên được chọn không?";
 $lang["employees_confirm_restore"] = "Bạn chắc chắn muốn hoàn lại các nhân viên được chọn không?";
 $lang["employees_current_password"] = "Mật khẩu hiện tại";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Bạn không thể xóa người
 $lang["employees_error_updating_demo_admin"] = "Bạn không thể thay đổi người dùng demo admin.";
 $lang["employees_language"] = "Ngôn ngữ";
 $lang["employees_login_info"] = "Đăng nhập";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Nhân viên mới";
 $lang["employees_none_selected"] = "Bạn chưa chọn bất kỳ một nhân viên nào để mà xóa.";
 $lang["employees_one_or_multiple"] = "nhân viên";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Ngôn ngữ hệ thống";
 $lang["employees_unsuccessful_change_password"] = "Gặp lỗi khi thay đổi mật khẩu.";
 $lang["employees_update"] = "Cập nhật Nhân viên";
 $lang["employees_username"] = "Tài khoản";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Tài khoản phải dài ít nhất là 5 ký tự.";
 $lang["employees_username_required"] = "Trường tài khoản là bắt buộc.";

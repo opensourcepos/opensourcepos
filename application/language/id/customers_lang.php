@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Rata-rata yang dihabiskan";
 $lang["customers_avg_discount"] = "Rata-rata diskon";
 $lang["customers_basic_information"] = "Informasi";

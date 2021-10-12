@@ -1,14 +1,19 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
+$lang["common_admin"] = "";
 $lang["common_city"] = "อำเภอ";
+$lang["common_clerk"] = "";
 $lang["common_close"] = "ปิด";
+$lang["common_color"] = "";
 $lang["common_comments"] = "หมายเหตุ";
 $lang["common_common"] = "ธรรมดา";
 $lang["common_confirm_search"] = "คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?";
 $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "โปรดแก้ไขข้อผิดพลาดที่ระบุ ก่อนบันทึกข้อมูล";
 $lang["common_country"] = "ประเทศ";
+$lang["common_dashboard"] = "";
 $lang["common_date"] = "วันที่";
 $lang["common_delete"] = "ลบ";
 $lang["common_det"] = "รายละเอียด";
@@ -20,6 +25,7 @@ $lang["common_export_csv"] = "CSV Export";
 $lang["common_export_csv_no"] = "ไม่";
 $lang["common_export_csv_yes"] = "ใช่";
 $lang["common_fields_required_message"] = "ช่องสีแดง จำเป็นต้องป้อน";
+$lang["common_fields_required_message_unique"] = "";
 $lang["common_first_name"] = "ชื่อ";
 $lang["common_first_name_required"] = "ชื่อ จำเป็นต้องป้อน";
 $lang["common_first_page"] = "ลำดับแรก";
@@ -44,15 +50,18 @@ $lang["common_list_of"] = "รายการ";
 $lang["common_logo"] = "โลโก้";
 $lang["common_logo_mark"] = "เครื่องหมาย";
 $lang["common_logout"] = "ออกจากระบบ";
+$lang["common_manager"] = "";
 $lang["common_migration_needed"] = "การย้ายฐานข้อมูลไปยัง %1 จะเริ่มขึ้นหลังจากเข้าสู่ระบบ";
 $lang["common_new"] = "สร้างใหม่";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
 $lang["common_none_selected_text"] = "กรุณาเลือก";
 $lang["common_or"] = "หรือ";
+$lang["common_people"] = "";
 $lang["common_phone_number"] = "โทรศัพท์";
 $lang["common_phone_number_required"] = "ต้องกรอกเบอร์โทร";
 $lang["common_please_visit_my"] = "เยี่ยมชมที่";
+$lang["common_position"] = "";
 $lang["common_powered_by"] = "จัดทำโดย";
 $lang["common_price"] = "ราคา";
 $lang["common_print"] = "พิมพ์";

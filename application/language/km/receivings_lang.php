@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "បោះបង់";
 $lang["receivings_cannot_be_deleted"] = "លប់ការទទួលមិនបានជោគជ័យ។";
 $lang["receivings_comments"] = "មតិយោបល់";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "រួចរាល់";
 $lang["receivings_confirm_cancel_receiving"] = "អ្នកពិតជាចង់លប់ការទទួលនេះមែនទេ? រាល់ទំនិញទាំងអស់នឹងត្រូវបានលប់ចោល។";
 $lang["receivings_confirm_delete"] = "តើអ្នកពិតជាចង់លប់ទំនិញកំពង់ទទួលមែនទេ?​សកម្មភាពនេះមិនអាចត្រឡប់ក្រោយវិញបានទេ។";
 $lang["receivings_confirm_finish_receiving"] = "តើអ្នកប្រាកដថាអ្នកចង់បញ្ជូនការទទួលនេះមែនទេ? សកម្មភាពនេះមិនអាចត្រឡប់ក្រោយវេញបានទេ។";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "តំលៃ";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "ថ្ងៃខែទទួល";
 $lang["receivings_date_required"] = "ត្រូវបំពេញថ្ងៃខែអោយបានត្រឹមត្រូវ។";
 $lang["receivings_date_type"] = "តម្រូវអោយបំពេញថ្ងៃខែែ។";

@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Information";
 $lang["employees_cannot_be_deleted"] = "Det går inte att radera valda anställda, en eller flera av de behandlade försäljningarna eller du försöker radera ditt konto.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Ändra lösenord";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Är du säker på att du vill radera de valda arbetstagarna?";
 $lang["employees_confirm_restore"] = "Är du säker på att du vill återställa valda anställda (er)?";
 $lang["employees_current_password"] = "Nuvarande lösenord";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Du kan inte radera demo admin-an
 $lang["employees_error_updating_demo_admin"] = "Du kan inte ändra demo admin-användaren.";
 $lang["employees_language"] = "Språk";
 $lang["employees_login_info"] = "Login";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Ny anställd";
 $lang["employees_none_selected"] = "Du har inte valt någon anställd att radera.";
 $lang["employees_one_or_multiple"] = "Anställda";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "System Språk";
 $lang["employees_unsuccessful_change_password"] = "Lösenordsbyte misslyckades.";
 $lang["employees_update"] = "Uppdatera anställd";
 $lang["employees_username"] = "Användarnamn";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Användarnamnet måste vara minst 5 tecken långt.";
 $lang["employees_username_required"] = "Användarnamnet är ett obligatoriskt fält.";

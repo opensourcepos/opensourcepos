@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Tài khoản #";
 $lang["customers_account_number_duplicate"] = "Số tài khoản đã sẵn có trong cơ sở dữ liệu rồi.";
 $lang["customers_available_points"] = "Các điểm sẵn có";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Trả trung bình";
 $lang["customers_avg_discount"] = "Giảm giá trung bình";
 $lang["customers_basic_information"] = "Thông tin";

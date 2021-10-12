@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "בטל";
 $lang["receivings_cannot_be_deleted"] = "מחיקת החזרה(ות) נכשלה.";
 $lang["receivings_comments"] = "הערות";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "סיים";
 $lang["receivings_confirm_cancel_receiving"] = "האם אתה בטוח שברצונך לנקות את החזרה זו? כל הפריטים יימחקו.";
 $lang["receivings_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את החזרה זו? לא ניתן לבטל פעולה זו.";
 $lang["receivings_confirm_finish_receiving"] = "האם אתה בטוח שברצונך לשלוח את החזרה זו? לא ניתן לבטל פעולה זו.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "עלות";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "תאריך קבלה";
 $lang["receivings_date_required"] = "יש להזין תאריך נכון.";
 $lang["receivings_date_type"] = "תאריך הוא שדה חובה.";

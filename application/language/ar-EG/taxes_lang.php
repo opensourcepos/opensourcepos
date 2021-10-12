@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "تسلسل المجموعة";
 $lang["taxes_jurisdiction_name"] = "اسم الولاية القضائية";
 $lang["taxes_name"] = "الاسم";
 $lang["taxes_new"] = "ضريبة جديدة";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "لا يوجد أكواد ضريبية للعرض";
 $lang["taxes_reporting_authority"] = "السلطة الضريبية";
 $lang["taxes_round_half_down"] = "نصف الاسفل";

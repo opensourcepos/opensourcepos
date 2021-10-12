@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Grupa Sekv";
 $lang["taxes_jurisdiction_name"] = "Naziv nadležnosti";
 $lang["taxes_name"] = "Naziv";
 $lang["taxes_new"] = "Nova šifra poreza";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Nije dostupna nijedan šifra poreza";
 $lang["taxes_reporting_authority"] = "Organ za izvještavanje";
 $lang["taxes_round_half_down"] = "Half Down";

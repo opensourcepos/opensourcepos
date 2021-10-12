@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "செலவை சேர்க்கவும்";
 $lang["expenses_amount"] = "தொகை";
 $lang["expenses_amount_number"] = "தொகை ஒரு எண்ணாக இருக்க வேண்டும்";
@@ -28,9 +29,11 @@ $lang["expenses_error_adding_updating"] = "செலவைச் சேர்ப
 $lang["expenses_expense_id"] = "அடையாளம்";
 $lang["expenses_expenses_employee"] = "பணியாளர்";
 $lang["expenses_info"] = "செலவு தகவல்";
+$lang["expenses_ip_address"] = "";
 $lang["expenses_is_deleted"] = "நீக்கப்பட்டது";
 $lang["expenses_name_required"] = "செலவுக்கான பெயர் தேவை";
 $lang["expenses_new"] = "புதிய செலவு";
+$lang["expenses_new_supplier"] = "";
 $lang["expenses_no_expenses_to_display"] = "காண்பிக்க செலவுகள் எதுவும் இல்லை";
 $lang["expenses_none_selected"] = "நீங்கள் எந்த செலவையும் தேர்ந்தெடுக்கவில்லை";
 $lang["expenses_one_or_multiple"] = "செலவு(கள்)";
@@ -42,4 +45,5 @@ $lang["expenses_successful_updating"] = "செலவு வெற்றிக�
 $lang["expenses_supplier_name"] = "வழங்குபவர்";
 $lang["expenses_supplier_tax_code"] = "வரி குறியீடு";
 $lang["expenses_tax_amount"] = "வரி";
+$lang["expenses_tax_amount_number"] = "";
 $lang["expenses_update"] = "செலவுகள் புதுப்பிப்பு";

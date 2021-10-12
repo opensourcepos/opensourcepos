@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "חשבון מס #";
 $lang["customers_account_number_duplicate"] = "מספר החשבון כבר נמצא במסד הנתונים.";
 $lang["customers_available_points"] = "נקודות זמינות";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "הוצאה ממוצעת";
 $lang["customers_avg_discount"] = "הנחה ממוצעת";
 $lang["customers_basic_information"] = "מידע";

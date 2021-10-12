@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Račun #";
 $lang["customers_account_number_duplicate"] = "Ovaj broj računa već postoji";
 $lang["customers_available_points"] = "Dostupni bodovi";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Prosječna potrošnja";
 $lang["customers_avg_discount"] = "Prosječni popust";
 $lang["customers_basic_information"] = "Informacija";

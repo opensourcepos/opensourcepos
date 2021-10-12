@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Оба";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Поставщики";
 $lang["module_suppliers_desc"] = "Добавление, обновление, удаление и поиск suppliers.";
 $lang["module_taxes"] = "Нало́г";
 $lang["module_taxes_desc"] = "Настройте налоги с продаж.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

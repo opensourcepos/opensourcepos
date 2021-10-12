@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
 $lang["taxes_name"] = "";
 $lang["taxes_new"] = "";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "";

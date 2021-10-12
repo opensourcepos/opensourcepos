@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Küme Sırası";
 $lang["taxes_jurisdiction_name"] = "Yetki Adı";
 $lang["taxes_name"] = "Ad";
 $lang["taxes_new"] = "Yeni Vergi Kodu";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Görüntülenecek Vergi Kodu Yok";
 $lang["taxes_reporting_authority"] = "Rapor Makamı";
 $lang["taxes_round_half_down"] = "Yarım Aşağı";

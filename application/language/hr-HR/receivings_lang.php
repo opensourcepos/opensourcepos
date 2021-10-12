@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Otkaži";
 $lang["receivings_cannot_be_deleted"] = "Primka(e) ne mogu biti obrisane";
 $lang["receivings_comments"] = "Komentar";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Završi";
 $lang["receivings_confirm_cancel_receiving"] = "Želite li obrisati ovu primku? Sve stavke bit će obrisane.";
 $lang["receivings_confirm_delete"] = "Želite li obrisati ovu primku? To ne ne može vratiti.";
 $lang["receivings_confirm_finish_receiving"] = "Želite li potvrditi ovu primku? To ne ne može vratiti.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Cijena";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Datum";
 $lang["receivings_date_required"] = "Potrebno je unijeti ispravan datum";
 $lang["receivings_date_type"] = "Datum je potreban";

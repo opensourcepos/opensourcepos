@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Urutan grup";
 $lang["taxes_jurisdiction_name"] = "Nama Yuridiksi";
 $lang["taxes_name"] = "Nama";
 $lang["taxes_new"] = "Pajak baru";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Tidak ada Kode Pajak yang dapat ditampilkan";
 $lang["taxes_reporting_authority"] = "Otoritas Pelaporan";
 $lang["taxes_round_half_down"] = "Turun setengah";

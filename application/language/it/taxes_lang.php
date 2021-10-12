@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
 $lang["taxes_name"] = "";
 $lang["taxes_new"] = "Nuovo Codice Imposta";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Nessun Codice Imposta disponibile da mostrare.";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "Arrotonda in difetto";
