@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "ກຸ່ມ";
 $lang["taxes_jurisdiction_name"] = "ຊື່ເຂດອຳນາດສານ";
 $lang["taxes_name"] = "ຊື່";
 $lang["taxes_new"] = "ພາສີໃໝ່";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "ບໍມີລະຫັດພາສີທີ່ຈະສະແດງ";
 $lang["taxes_reporting_authority"] = "ລາຍງານສິດທິ";
 $lang["taxes_round_half_down"] = "ເຄິ່ງໜຶ່ງ";

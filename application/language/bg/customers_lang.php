@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Сметка #";
 $lang["customers_account_number_duplicate"] = "Номерът на сметката вече е в базата данни.";
 $lang["customers_available_points"] = "Налични точки";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Средно изразходвани";
 $lang["customers_avg_discount"] = "Средна отстъпка";
 $lang["customers_basic_information"] = "Информация";

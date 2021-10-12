@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
 $lang["taxes_name"] = "";
 $lang["taxes_new"] = "Нов данъчен код";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Няма код за данъци, който да се показва.";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "Половина надолу";

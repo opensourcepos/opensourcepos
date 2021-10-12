@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "取消";
 $lang["receivings_cannot_be_deleted"] = "進貨刪除失敗.";
 $lang["receivings_comments"] = "備註";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "完成";
 $lang["receivings_confirm_cancel_receiving"] = "您確定要刪除此進貨資料嗎？本資料中所有的產品資料也將會被清空。";
 $lang["receivings_confirm_delete"] = "您確定要刪除此進貨嗎？ 此操作無法還原.";
 $lang["receivings_confirm_finish_receiving"] = "您確定要提交此進貨資料嗎？一旦送出將不能撤消。";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "成本";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "收貨日期";
 $lang["receivings_date_required"] = "必須輸一個正確的日期.";
 $lang["receivings_date_type"] = "日期必須填寫.";

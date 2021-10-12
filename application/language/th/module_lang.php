@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "คุณลักษณะ";
 $lang["module_attributes_desc"] = "เพิ่ม, ปรับปรุง, ลบ และการค้นหา คุณลักษณะ";
 $lang["module_both"] = "ทั้งคู่";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "ผู้ผลิต";
 $lang["module_suppliers_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา ผู้ผลิต";
 $lang["module_taxes"] = "ภาษี";
 $lang["module_taxes_desc"] = "กำหนดค่าภาษีขาย";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

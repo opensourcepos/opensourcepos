@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["giftcards_allow_alt_description"] = "Dip Nota izin ver";
 $lang["giftcards_bulk_edit"] = "Çoklu Düzenleme";

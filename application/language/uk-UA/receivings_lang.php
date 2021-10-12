@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Скасувати";
 $lang["receivings_cannot_be_deleted"] = "Не вдалося видалити надходження.";
 $lang["receivings_comments"] = "Примітки";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Завершити";
 $lang["receivings_confirm_cancel_receiving"] = "Ви впевнені, що хочете очистити це надходження? Усі елементи будуть очищені.";
 $lang["receivings_confirm_delete"] = "Ви впевнені, що хочете видалити це надходження? Цю дію неможливо скасувати.";
 $lang["receivings_confirm_finish_receiving"] = "Ви впевнені, що хочете надіслати цей розписку? Це не може бути скасовано.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Вартість";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Дата надходження";
 $lang["receivings_date_required"] = "Необхідно ввести правильну дату.";
 $lang["receivings_date_type"] = "Дата - обов'язкове поле.";

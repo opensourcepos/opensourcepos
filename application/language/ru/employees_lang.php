@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Сотрудник Базовая Информация";
 $lang["employees_cannot_be_deleted"] = "Не возможно удалить выбранный сотрудников, одного или более работников обработал продаж или вы пытаетесь удалить себя.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "изменение пароля";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Вы уверены, что хотите удалить выбранную сотрудников?";
 $lang["employees_confirm_restore"] = "Вы уверены, что хотите восстановить выбранных сотрудников?";
 $lang["employees_current_password"] = "текущие пароли";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Вы не можете удал�
 $lang["employees_error_updating_demo_admin"] = "Вы не можете изменить пользователь демонстрация аккаунт.";
 $lang["employees_language"] = "Язык";
 $lang["employees_login_info"] = "Информация для сотрудников Входа";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Новый Сотрудник";
 $lang["employees_none_selected"] = "Вы не выбрали ни сотрудников для удаления.";
 $lang["employees_one_or_multiple"] = "сотрудник(ов)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "язык системы";
 $lang["employees_unsuccessful_change_password"] = "Не удалось изменить пароль.";
 $lang["employees_update"] = "Обновлять Сотрудник";
 $lang["employees_username"] = "Имя пользователя";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Имя пользователя должна быть не менее 5 символов.";
 $lang["employees_username_required"] = "Имя пользователи обязательный пробел.";

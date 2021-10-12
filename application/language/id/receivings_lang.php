@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Batal";
 $lang["receivings_cannot_be_deleted"] = "Tidak bisa dihapus.";
 $lang["receivings_comments"] = "Keterangan";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Selesai";
 $lang["receivings_confirm_cancel_receiving"] = "Apakah anda yakin untuk menghapus Pembelian Barang masuk ini? Semua item Akan dihapus.";
 $lang["receivings_confirm_delete"] = "Apakah Anda yakin akan hapus penerimaan ini? Tindakan ini tidak bisa dibatalkan.";
 $lang["receivings_confirm_finish_receiving"] = "Apakah anda yakin untuk memproses Pembelian Barang masuk ini? Proses ini tidak dapat dibatalkan.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Harga";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Tanggal";
 $lang["receivings_date_required"] = "Tanggal harus diisi.";
 $lang["receivings_date_type"] = "Kolom tanggal harus diisi.";

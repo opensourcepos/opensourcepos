@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "ຂໍ້ມູນ";
 $lang["employees_cannot_be_deleted"] = "ບໍ່ສາມາດລຶບພະນັກງານທີ່ເລືອກໄດ້, ຢ່າງໜ້ອຍມີ 1 ລາຍການຫຼືຫຼາຍກວ່ານັ້ນ ຍັງມີການຊື້ຂາຍກັນຢູ່ ຫຼື ທ່ານກຳລັງພະຍາຍາມລຶບບັນຊີຂອງຕົວເອງ.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "ປ່ຽນ Password";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "ທ່ານຈະລຶບພະນັກງານທີ່ເລືອກແທ້ບໍ່ ?";
 $lang["employees_confirm_restore"] = "";
 $lang["employees_current_password"] = "Password ປັດຈຸບັນ";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "ທ່ານບໍ່ສາມ�
 $lang["employees_error_updating_demo_admin"] = "ທ່ານບໍ່ສາມາດປ່ຽນແປງບັນຊີທົດລອງຜູ້ດູແລລະບົບໄດ້.";
 $lang["employees_language"] = "ພາສາ";
 $lang["employees_login_info"] = "ເຂົ້າລະບົບ";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "ພະນັກງານໃໝ່";
 $lang["employees_none_selected"] = "ທ່ານຍັງບໍ່ໄດ້ເລືອກພະນັກງານໃດເລີຍເພື່ອລຶບ.";
 $lang["employees_one_or_multiple"] = "ພະນັກງານ";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "ພາສາຂອງລະບົບ";
 $lang["employees_unsuccessful_change_password"] = "ປ່ຽນລະຫັດຜ່ານບໍ່ສຳເລັດ.";
 $lang["employees_update"] = "ແກ້ໄຂພະນັກງານ";
 $lang["employees_username"] = "ຊື່ຜູ້ໃຊ້";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Username ຕ້ອງໃສ່ຢ່າງໜ້ອຍ 5 ຕົວອັກສອນ.";
 $lang["employees_username_required"] = "Username ຈຳເປັນຕ້ອງໃສ່.";

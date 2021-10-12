@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Atributos";
 $lang["module_attributes_desc"] = "Adicionar, atualizar, excluir e pesquisar atributos.";
 $lang["module_both"] = "Ambos";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Fornecedores";
 $lang["module_suppliers_desc"] = "Adicionar,  atualizar,  excluir e Pesquisar fornecedores.";
 $lang["module_taxes"] = "Impostos";
 $lang["module_taxes_desc"] = "Configurar impostos sobre vendas.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

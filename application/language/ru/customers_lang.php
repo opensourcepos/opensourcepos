@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Номер счота";
 $lang["customers_account_number_duplicate"] = "Номер счета уже присутствует в базе данных.";
 $lang["customers_available_points"] = "Доступные баллы";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Среднее потраченное";
 $lang["customers_avg_discount"] = "Средняя скидка";
 $lang["customers_basic_information"] = "Информация";

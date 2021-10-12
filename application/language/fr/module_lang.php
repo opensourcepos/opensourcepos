@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Tous les deux";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Fournisseurs";
 $lang["module_suppliers_desc"] = "Ajouter, mettre à jour, supprimer et rechercher des fournisseurs.";
 $lang["module_taxes"] = "Taxe";
 $lang["module_taxes_desc"] = "Configurer les taxes de vente.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

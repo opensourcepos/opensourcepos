@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Informatie";
 $lang["employees_cannot_be_deleted"] = "Kon de geselecteerde gebruilker(s) niet verwijderen, één of meerdere die u probeert te verwijderen hebben aankopen verwerkt.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Wijzig Paswoord";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Bent u zeker dat u de geselecteerde werknemers wil verwijderen?";
 $lang["employees_confirm_restore"] = "Bent u zeker dat u de geselecteerde werknemers wil herstellen?";
 $lang["employees_current_password"] = "Huidig Paswoord";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Je kan de demo gebruilker niet v
 $lang["employees_error_updating_demo_admin"] = "Jij kan de demo gebruiker niet veranderen.";
 $lang["employees_language"] = "Taal";
 $lang["employees_login_info"] = "Login";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "N. Werknemer";
 $lang["employees_none_selected"] = "U hebt geen werknemers geselecteerd.";
 $lang["employees_one_or_multiple"] = "werknemer(s) verwijderd";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Systeem taal";
 $lang["employees_unsuccessful_change_password"] = "Paswoord wijziging gefaald.";
 $lang["employees_update"] = "Update Werknemer";
 $lang["employees_username"] = "Gebruikersnaam";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Gebruikersnaam moet minstens 5 characters lang zijn.";
 $lang["employees_username_required"] = "Gebruikersnaam moet ingevuld worden.";

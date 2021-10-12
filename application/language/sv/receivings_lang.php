@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Avbryt";
 $lang["receivings_cannot_be_deleted"] = "Mottagande (s) radering misslyckades.";
 $lang["receivings_comments"] = "Kommentarer";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Slutför";
 $lang["receivings_confirm_cancel_receiving"] = "Är du säker på att du vill rensa den här mottagningen? Alla objekt kommer att rensas.";
 $lang["receivings_confirm_delete"] = "Är du säker på att du vill ta bort den här mottagningen? Den här åtgärden kan inte ångras.";
 $lang["receivings_confirm_finish_receiving"] = "Är du säker på att du vill skicka in den här mottagaren? Detta kan inte göras ogjort.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Kostnad";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Inleveransdatum";
 $lang["receivings_date_required"] = "Ett korrekt datum måste anges.";
 $lang["receivings_date_type"] = "Datumet är ett obligatoriskt fält.";

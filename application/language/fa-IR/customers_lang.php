@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "حساب #";
 $lang["customers_account_number_duplicate"] = "شماره حساب قبلاً در بانک اطلاعاتی موجود است.";
 $lang["customers_available_points"] = "امتیازهای موجود";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "متوسط u200bu200bصرف شده";
 $lang["customers_avg_discount"] = "متوسط u200bu200bتخفیف";
 $lang["customers_basic_information"] = "اطلاعات";

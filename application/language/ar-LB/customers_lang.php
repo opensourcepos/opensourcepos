@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "رقم الحساب";
 $lang["customers_account_number_duplicate"] = "رقم الحساب هذا موجود فى قاعدة البيانات من قبل.";
 $lang["customers_available_points"] = "النقاط المتاحة";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "معدل الصرف";
 $lang["customers_avg_discount"] = "معدل الخصم";
 $lang["customers_basic_information"] = "معلومات الزبون";

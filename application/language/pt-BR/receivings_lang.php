@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Recebimento(s) não pode ser excluído.";
 $lang["receivings_comments"] = "Comentário";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Finalizado";
 $lang["receivings_confirm_cancel_receiving"] = "Tem certeza de que deseja apagar este recebimento? Todos os itens serão apagados.";
 $lang["receivings_confirm_delete"] = "Tem certeza de que deseja excluir este recebimento esta ação não pode ser desfeita.";
 $lang["receivings_confirm_finish_receiving"] = "Tem certeza de que deseja enviar este recebimento? Isto não pode ser desfeito.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Custo";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Data Recebimento";
 $lang["receivings_date_required"] = "A data correta precisa ser preenchida.";
 $lang["receivings_date_type"] = "Campo de data é obrigatório.";

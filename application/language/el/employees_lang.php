@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "";
 $lang["employees_cannot_be_deleted"] = "";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "";
 $lang["employees_confirm_restore"] = "";
 $lang["employees_current_password"] = "";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "";
 $lang["employees_error_updating_demo_admin"] = "";
 $lang["employees_language"] = "";
 $lang["employees_login_info"] = "";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "";
 $lang["employees_none_selected"] = "";
 $lang["employees_one_or_multiple"] = "";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "";
 $lang["employees_unsuccessful_change_password"] = "";
 $lang["employees_update"] = "";
 $lang["employees_username"] = "";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "";
 $lang["employees_username_required"] = "";

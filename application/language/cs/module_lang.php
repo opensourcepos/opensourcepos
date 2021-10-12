@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Oba";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Dodavatelé";
 $lang["module_suppliers_desc"] = "Slouží k přidání, úpravání, mazání a hledání dodavatelů.";
 $lang["module_taxes"] = "Daně";
 $lang["module_taxes_desc"] = "Slouží pro nastavení DPH.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

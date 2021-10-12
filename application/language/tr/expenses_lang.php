@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Gider ekle";
 $lang["expenses_amount"] = "Miktar";
 $lang["expenses_amount_number"] = "Miktar değeri sayı olmalı";
@@ -28,9 +29,11 @@ $lang["expenses_error_adding_updating"] = "Gider ekleme/güncelleme hatası";
 $lang["expenses_expense_id"] = "No";
 $lang["expenses_expenses_employee"] = "Personel";
 $lang["expenses_info"] = "Gider Bilgisi";
+$lang["expenses_ip_address"] = "";
 $lang["expenses_is_deleted"] = "Silinmiş";
 $lang["expenses_name_required"] = "Gider Adı gereklidir";
 $lang["expenses_new"] = "Yeni Gider";
+$lang["expenses_new_supplier"] = "";
 $lang["expenses_no_expenses_to_display"] = "Gösterilecek Gider Bilgisi yoktur";
 $lang["expenses_none_selected"] = "Seçili Gider yok";
 $lang["expenses_one_or_multiple"] = "Gider(ler)";
@@ -42,4 +45,5 @@ $lang["expenses_successful_updating"] = "Gider güncellendi";
 $lang["expenses_supplier_name"] = "Sağlayıcı";
 $lang["expenses_supplier_tax_code"] = "Vergi Kodu";
 $lang["expenses_tax_amount"] = "Vergi";
+$lang["expenses_tax_amount_number"] = "";
 $lang["expenses_update"] = "Gider Güncelle";

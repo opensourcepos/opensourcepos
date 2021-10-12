@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Fiche Employé";
 $lang["employees_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusieurs des employés à éffectué une vente, ou alors vous essayez de vous supprimer vous-meme.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Changer mot de passe";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Voulez-vous supprimer ces employés ?";
 $lang["employees_confirm_restore"] = "Êtes-vous sûrs de vouloir restaurer les employés selectionnés ?";
 $lang["employees_current_password"] = "Mot de passe actuel";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Vous ne pouvez pas effacer l'uti
 $lang["employees_error_updating_demo_admin"] = "Vous ne pouvez pas modifier l'utilisateur de démonstration admin.";
 $lang["employees_language"] = "Langue";
 $lang["employees_login_info"] = "Détails de Connexion Employé";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Nouvel Employé";
 $lang["employees_none_selected"] = "Aucun employé sélectionné pour la suppression.";
 $lang["employees_one_or_multiple"] = "employé(s)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Langue système";
 $lang["employees_unsuccessful_change_password"] = "Échec du changement de mot de passe.";
 $lang["employees_update"] = "Éditer Employé";
 $lang["employees_username"] = "Nom d'utilisateur";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Le Nom d'utilisateur doit etre long d'au moins 5 caractères.";
 $lang["employees_username_required"] = "Le Nom d'utilisateur est requis.";

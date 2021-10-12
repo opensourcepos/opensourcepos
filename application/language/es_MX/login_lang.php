@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["login_gcaptcha"] = "No soy un robot.";
 $lang["login_go"] = "Entrar";
 $lang["login_invalid_gcaptcha"] = "Por favor compruebe que usted no es un robot.";

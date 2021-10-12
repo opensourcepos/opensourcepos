@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Secuencia de Grupo";
 $lang["taxes_jurisdiction_name"] = "Nombre de la Jurisdicción";
 $lang["taxes_name"] = "Nombre";
 $lang["taxes_new"] = "Impuesto Nuevo";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Códigos de impuestos no disponible";
 $lang["taxes_reporting_authority"] = "Imformacion de Autoridad";
 $lang["taxes_round_half_down"] = "a número entero inferior";

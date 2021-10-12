@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Agregar Gasto";
 $lang["expenses_amount"] = "Monto";
 $lang["expenses_amount_number"] = "Monto debe ser numerico";
@@ -28,9 +29,11 @@ $lang["expenses_error_adding_updating"] = "Error añadiendo/actualizando";
 $lang["expenses_expense_id"] = "Id";
 $lang["expenses_expenses_employee"] = "Empleado";
 $lang["expenses_info"] = "Info de gasto";
+$lang["expenses_ip_address"] = "Dirección IP";
 $lang["expenses_is_deleted"] = "Borrado";
 $lang["expenses_name_required"] = "Nombre de gasto requerido";
 $lang["expenses_new"] = "Nuevo Gasto";
+$lang["expenses_new_supplier"] = "Nuevo Proveedor";
 $lang["expenses_no_expenses_to_display"] = "No hay gastos para mostrar";
 $lang["expenses_none_selected"] = "No ha seleccionado ningun gasto";
 $lang["expenses_one_or_multiple"] = "Gasto(s)";
@@ -42,7 +45,5 @@ $lang["expenses_successful_updating"] = "Gasto actualizado";
 $lang["expenses_supplier_name"] = "Proveedor";
 $lang["expenses_supplier_tax_code"] = "Codigo Imp";
 $lang["expenses_tax_amount"] = "Imp";
-$lang["expenses_update"] = "Actualizar Gasto";
 $lang["expenses_tax_amount_number"] = "Número de Importe de Impuestos";
-$lang["expenses_new_supplier"] = "Nuevo Proveedor";
-$lang["expenses_ip_address"] = "Dirección IP";
+$lang["expenses_update"] = "Actualizar Gasto";

@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "組序列";
 $lang["taxes_jurisdiction_name"] = "稅務裁決單位";
 $lang["taxes_name"] = "姓名";
 $lang["taxes_new"] = "新稅";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "沒有相關稅務編號";
 $lang["taxes_reporting_authority"] = "報告主管機關";
 $lang["taxes_round_half_down"] = "減半";

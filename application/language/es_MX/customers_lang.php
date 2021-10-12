@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "El Número de Cuenta ya se encuentra en la base de datos.";
 $lang["customers_available_points"] = "Puntos Disponibles";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Gasto Promedio";
 $lang["customers_avg_discount"] = "Descuento Promedio";
 $lang["customers_basic_information"] = "Información";

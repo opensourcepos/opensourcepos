@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["login_gcaptcha"] = "ฉันไม่ใช่หุ่นยนต์";
 $lang["login_go"] = "ไป";
 $lang["login_invalid_gcaptcha"] = "กรุณาแสดงตัวตนว่าคุณไม่ใช่หุ่นยนต์";

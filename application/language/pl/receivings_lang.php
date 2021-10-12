@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Anuluj";
 $lang["receivings_cannot_be_deleted"] = "";
 $lang["receivings_comments"] = "";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "";
 $lang["receivings_confirm_cancel_receiving"] = "";
 $lang["receivings_confirm_delete"] = "";
 $lang["receivings_confirm_finish_receiving"] = "";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "";
 $lang["receivings_date_required"] = "";
 $lang["receivings_date_type"] = "";
