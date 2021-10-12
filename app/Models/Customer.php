@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
 /**
  * Customer class
  *
  * @property appconfig appconfig
  *
  */
-
 class Customer extends Person
 {
-	public function __costruct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -32,10 +29,10 @@ class Customer extends Person
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	/*
-	Checks if account number exists
+	/**
+	* Checks if account number exists
 	*/
-	public function check_account_number_exists($account_number, $person_id = ''): bool
+	public function check_account_number_exists(string $account_number, string $person_id = ''): bool
 	{
 		$builder = $this->db->table('customers');
 		$builder->where('account_number', $account_number);
@@ -45,11 +42,11 @@ class Customer extends Person
 			$builder->where('person_id !=', $person_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets total of rows
+	/**
+	* Gets total of rows
 	*/
 	public function get_total_rows(): int
 	{
@@ -59,8 +56,8 @@ class Customer extends Person
 		return $builder->countAllResults();
 	}
 
-	/*
-	Returns all the customers
+	/**
+	* Returns all the customers
 	*/
 	public function get_all(int $limit = 0, int $offset = 0)
 	{
@@ -77,8 +74,8 @@ class Customer extends Person
 		return $builder->get();
 	}
 
-	/*
-	Gets information about a particular customer
+	/**
+	* Gets information about a particular customer
 	*/
 	public function get_info(int $person_id)
 	{
@@ -87,7 +84,7 @@ class Customer extends Person
 		$builder->where('customers.person_id', $person_id);
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -107,10 +104,10 @@ class Customer extends Person
 		}
 	}
 
-	/*
-	Gets stats about a particular customer
+	/**
+	* Gets stats about a particular customer
 	*/
-	public function get_stats($customer_id)
+	public function get_stats(int $customer_id): object
 	{
 		// create a temporary table to contain all the sum and average of items
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp');
@@ -156,8 +153,8 @@ class Customer extends Person
 		return $stat;
 	}
 
-	/*
-	Gets information about multiple customers
+	/**
+	* Gets information about multiple customers
 	*/
 	public function get_multiple_info(array $person_ids)
 	{
@@ -169,10 +166,10 @@ class Customer extends Person
 		return $builder->get();
 	}
 
-	/*
-	Checks if customer email exists
+	/**
+	* Checks if customer email exists
 	*/
-	public function check_email_exists($email, $customer_id = ''): bool
+	public function check_email_exists(string $email, string $customer_id = ''): bool
 	{
 		// if the email is empty return like it is not existing
 		if(empty($email))
@@ -190,17 +187,16 @@ class Customer extends Person
 			$builder->where('customers.person_id !=', $customer_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Inserts or updates a customer
+	/**
+	* Inserts or updates a customer
 	*/
 	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE)
 	{
 		$success = FALSE;
 
-		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
 		if(parent::save($person_data, $customer_id))
@@ -225,10 +221,10 @@ class Customer extends Person
 		return $success;
 	}
 
-	/*
-	Updates reward points value
+	/**
+	* Updates reward points value
 	*/
-	public function update_reward_points_value($customer_id, $value)
+	public function update_reward_points_value(int $customer_id, int $value)
 	{
 		$builder = $this->db->table('customers');
 		$builder->where('person_id', $customer_id);
@@ -236,8 +232,8 @@ class Customer extends Person
 	}
 
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	/*
-	Deletes one customer
+	/**
+	* Deletes one customer
 	*/
 	public function delete(int $customer_id = null, bool $purge = false): bool
 	{

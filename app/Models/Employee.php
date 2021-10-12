@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-use Config\Services;
-
 /**
  * Employee class
  *
@@ -16,6 +13,7 @@ class Employee extends Person
 {
 	public function __construct()
 	{
+		parent::__construct();
 		$this->session = session();
 	}
 

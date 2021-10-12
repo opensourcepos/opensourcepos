@@ -8,6 +8,7 @@ use stdClass;
 /**
  * Cashup class
  *
+ * @property appconfig appconfig
  * @property employee employee
  *
  */
@@ -18,6 +19,7 @@ class Cashup extends Model
 	{
 		parent::__construct();
 
+		$this->appconfig = model('Appconfig');
 		$this->employee = model('Employee');
 	}
 
@@ -55,7 +57,7 @@ class Cashup extends Model
 	/*
 	* Gets rows
 	*/
-	public function get_found_rows($search, $filters)
+	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}
@@ -63,7 +65,7 @@ class Cashup extends Model
 	/*
 	* Searches cashups
 	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'cashup_id', $order = 'asc', $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('cash_up AS cash_up');
 		
@@ -110,7 +112,7 @@ class Cashup extends Model
 
 		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
-		if(empty($this->config->get('date_or_time_format')))
+		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: convert this to ternary notation.
 		{
 			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -137,10 +139,10 @@ class Cashup extends Model
 		return $builder->get();
 	}
 
-	/*
+	/**
 	* Gets information about a particular cashup
 	*/
-	public function get_info($cashup_id)
+	public function get_info(int $cashup_id)
 	{
 		$builder = $this->db->table('cash_up AS cash_up');
 		$builder->select('
@@ -169,7 +171,7 @@ class Cashup extends Model
 		$builder->where('cashup_id', $cashup_id);
 
 		$query = $builder->get();
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -188,12 +190,12 @@ class Cashup extends Model
 		}
 	}
 //TODO: gotta fix this function.  It thinks it's an override of the BaseModel save
-	/*
+	/**
 	* Inserts or updates a cashup
 	*/
-	public function save(array &$cash_up_data, bool $cashup_id = FALSE): bool
+	public function save(array &$cash_up_data, $cashup_id = FALSE): bool
 	{
-		if(!$cashup_id == -1 || !$this->exists($cashup_id))
+		if(!$cashup_id == -1 || !$this->exists($cashup_id))	//TODO: Replace -1 with constant
 		{
 			$builder = $this->db->table('cash_up');
 			if($builder->insert($cash_up_data))
@@ -215,7 +217,7 @@ class Cashup extends Model
 	/*
 	* Deletes a list of cashups
 	*/
-	public function delete_list($cashup_ids): bool
+	public function delete_list(string $cashup_ids): bool	//TODO: we need to debug this and make sure that what is getting sent is a comma-separated list and not an array.
 	{
 		$success = FALSE;
 
