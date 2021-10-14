@@ -807,10 +807,10 @@ class Attribute extends Model
 		return $this->db->transStatus();
 	}
 
-	/*
-	Undeletes one attribute definition
-	*/
-	public function undelete($definition_id): bool
+	/**
+	 * Undeletes one attribute definition
+	 */
+	public function undelete(int $definition_id): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);

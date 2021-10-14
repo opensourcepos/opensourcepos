@@ -12,7 +12,6 @@ use stdClass;
  * @property inventory inventory
  * @property item_quantity item_quantity
  */
-
 class Item extends Model
 {
 	public function __construct()
@@ -23,10 +22,10 @@ class Item extends Model
 		$this->inventory = model('Inventory');
 		$this->item_quantity = model('Item_quantity');
 	}
-	/*
-	* Determines if a given item_id is an item
-	*/
 
+	/**
+	 * Determines if a given item_id is an item
+	 */
 	public function exists(int $item_id, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
 	{
 		// check if $item_id is a number and not a string starting with 0
@@ -47,9 +46,9 @@ class Item extends Model
 		return FALSE;
 	}
 
-	/*
-	* Determines if a given item_number exists
-	*/
+	/**
+	 * Determines if a given item_number exists
+	 */
 	public function item_number_exists(string $item_number, string $item_id = ''): bool
 	{
 		if($this->appconfig->get('allow_duplicate_barcodes') != FALSE)
@@ -59,9 +58,10 @@ class Item extends Model
 
 		$builder = $this->db->table('items');
 		$builder->where('item_number', (string) $item_number);
+
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')	//TODO: !==
 		{
 			$builder->where('item_id !=', intval($item_id));
 		}
@@ -69,10 +69,10 @@ class Item extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	/*
-	* Gets total of rows
-	*/
-	public function get_total_rows()
+	/**
+	 * Gets total of rows
+	 */
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('items');
 		$builder->where('deleted', 0);
@@ -88,23 +88,23 @@ class Item extends Model
 		return $builder->countAllResults();
 	}
 
-	/*
-	* Get number of rows
-	*/
+	/**
+	 * Get number of rows
+	 */
 	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
-	/*
-	* Perform a search on items
-	*/
+	/**
+	 * Perform a search on items
+	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
 		// get_found_rows case
-		if($count_only === TRUE)
+		if($count_only === TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(DISTINCT items.item_id) AS count');
 		}
@@ -158,7 +158,7 @@ class Item extends Model
 			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($this->appconfig->get('date_or_time_format')))
+		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: This needs to be replaced with Ternary notation
 		{
 			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -202,7 +202,7 @@ class Item extends Model
 
 		$builder->where('items.deleted', $filters['is_deleted']);
 
-		if($filters['empty_upc'] != FALSE)
+		if($filters['empty_upc'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['empty_upc'])`... same with below.
 		{
 			$builder->where('item_number', NULL);
 		}
@@ -224,12 +224,12 @@ class Item extends Model
 		}
 		else
 		{
-			$non_temp = [ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY);
+			$non_temp = [ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY];
 			$builder->whereIn('items.item_type', $non_temp);
 		}
 
 		// get_found_rows case
-		if($count_only === TRUE)
+		if($count_only === TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -248,14 +248,14 @@ class Item extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Returns all the items
-	*/
-	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0)
+	/**
+	 * Returns all the items
+	 */
+	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0)	//TODO: Replace -1 with a constant
 	{
 		$builder = $this->db->table('items');
 
-		if($stock_location_id > -1)
+		if($stock_location_id > -1)	//TODO: Replace -1 with a constant
 		{
 			$builder->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$builder->where('location_id', $stock_location_id);
@@ -274,9 +274,9 @@ class Item extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Gets information about a particular item
-	*/
+	/**
+	 * Gets information about a particular item
+	 */
 	public function get_info(int $item_id)
 	{
 		$builder = $this->db->table('items');
@@ -291,11 +291,11 @@ class Item extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			//Get empty base parent object, as $item_id is NOT an item
 			$item_obj = new stdClass();
@@ -310,9 +310,9 @@ class Item extends Model
 		}
 	}
 
-	/*
-	* Gets information about a particular item by item id or number
-	*/
+	/**
+	 * Gets information about a particular item by item id or number
+	 */
 	public function get_info_by_id_or_number(int $item_id, bool $include_deleted = TRUE)
 	{
 		$builder = $this->db->table('items');
@@ -347,14 +347,15 @@ class Item extends Model
 		return '';
 	}
 
-	/*
-	* Get an item id given an item number
-	*/
+	/**
+	 * Get an item id given an item number
+	 */
 	public function get_item_id(string $item_number, bool $ignore_deleted = FALSE, bool $deleted = FALSE)
 	{
 		$builder = $this->db->table('items');
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$builder->where('item_number', $item_number);
+
 		if($ignore_deleted == FALSE)
 		{
 			$builder->where('items.deleted', $deleted);
@@ -362,7 +363,7 @@ class Item extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow()->item_id;
 		}
@@ -370,9 +371,9 @@ class Item extends Model
 		return FALSE;
 	}
 
-	/*
-	Gets information about multiple items
-	*/
+	/**
+	 * Gets information about multiple items
+	 */
 	public function get_multiple_info(array $item_ids, int $location_id)
 	{
 		$format = $this->db->escape(dateformat_mysql());
@@ -398,9 +399,9 @@ class Item extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Inserts or updates an item
-	*/
+	/**
+	 * Inserts or updates an item
+	 */
 	public function save(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
@@ -410,7 +411,7 @@ class Item extends Model
 			if($builder->insert($item_data))
 			{
 				$item_data['item_id'] = $this->db->insertID();
-				if($item_data['low_sell_item_id'] == -1)
+				if($item_data['low_sell_item_id'] == -1)	//TODO: Replace -1 with a constant... === ?
 				{
 					$builder = $this->db->table('items');
 					$builder->where('item_id', $item_data['item_id']);
@@ -433,9 +434,9 @@ class Item extends Model
 		return $builder->update($item_data);
 	}
 
-	/*
-	* Updates multiple items at once
-	*/
+	/**
+	 * Updates multiple items at once
+	 */
 	public function update_multiple(array $item_data, string $item_ids): bool
 	{
 		$builder = $this->db->table('items');
@@ -444,12 +445,11 @@ class Item extends Model
 		return $builder->update($item_data);
 	}
 
-	/*
+	/**
 	* Deletes one item
 	*/
 	public function delete(int $item_id = null, bool $purge = false): bool	//TODO: need to figure out what to do with these override functions that don't match our signature.
 	{
-		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
 		// set to 0 quantities
@@ -468,9 +468,9 @@ class Item extends Model
 		return $success;
 	}
 
-	/*
-	* Undeletes one item
-	*/
+	/**
+	 * Undeletes one item
+	 */
 	public function undelete(int $item_id): bool
 	{
 		$builder = $this->db->table('items');
@@ -479,9 +479,9 @@ class Item extends Model
 		return $builder->update(['deleted' => 0]);
 	}
 
-	/*
-	* Deletes a list of items
-	*/
+	/**
+	 * Deletes a list of items
+	 */
 	public function delete_list(array $item_ids): bool
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -561,9 +561,9 @@ class Item extends Model
 		{
 			if($label == '')
 			{
-				if($item_field_name == 'name')
+				if($item_field_name == 'name')	//TODO: This needs to be replaced with Ternary notation if possible
 				{
-					$label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name));
+					$label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name]);	//TODO: no need for .= operator.  If it gets here then that means label is an empty string.
 				}
 				else
 				{
@@ -574,7 +574,7 @@ class Item extends Model
 			{
 				if($item_field_name == 'name')
 				{
-					$label .= implode(NAME_SEPARATOR, ['', $item_info->name, $item_info->pack_name));
+					$label .= implode(NAME_SEPARATOR, ['', $item_info->name, $item_info->pack_name]);
 				}
 				else
 				{
@@ -587,7 +587,7 @@ class Item extends Model
 	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
 
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -598,7 +598,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 		}
 
 		$builder = $this->db->table('items');
@@ -610,7 +610,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 		}
 
 		if(!$unique)
@@ -625,7 +625,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->category);
+				$suggestions[] = ['label' => $row->category];
 			}
 
 			$builder = $this->db->table('suppliers');
@@ -641,19 +641,20 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name];
 			}
 
 			//Search by description
 			$builder = $this->db->table('items');
 			$builder->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
 			$builder->where('deleted', $filters['is_deleted']);
-			$builder->like('description', $search);//TODO: duplicate code, refactor method.
+			$builder->like('description', $search);	//TODO: duplicate code, refactor method.
 			$builder->orderBy('description', 'asc');
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
+
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -673,7 +674,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 				}
 			}
 		}
@@ -691,7 +692,7 @@ class Item extends Model
 	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
 
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
@@ -703,7 +704,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 		}
 
 		$builder = $this->db->table('items');
@@ -716,7 +717,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 		}
 
 		if(!$unique)
@@ -733,7 +734,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->category);
+				$suggestions[] = ['label' => $row->category];
 			}
 
 			//Search by supplier
@@ -748,7 +749,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name];
 			}
 
 			//Search by description
@@ -762,7 +763,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -770,7 +771,7 @@ class Item extends Model
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] !== FALSE)	//TODO: duplicated code.  We should refactor out a method
+			if($filters['search_custom'] !== FALSE)	//TODO: duplicated code.  We should refactor out a method... this can be replaced with `if($filters['search_custom']`... no need for the double negative
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -782,7 +783,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 				}
 			}
 		}
@@ -799,7 +800,7 @@ class Item extends Model
 	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY);
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
 
 		$builder = $this->db->table('items');
 		$builder->select('item_id, name');
@@ -810,7 +811,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $row->name);
+			$suggestions[] = ['value' => $row->item_id, 'label' => $row->name];
 		}
 
 		$builder = $this->db->table('items');
@@ -822,7 +823,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $row->item_number);
+			$suggestions[] = ['value' => $row->item_id, 'label' => $row->item_number];
 		}
 
 		if(!$unique)
@@ -838,7 +839,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->category);
+				$suggestions[] = ['label' => $row->category];
 			}
 
 			//Search by supplier
@@ -853,7 +854,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['label' => $row->company_name);
+				$suggestions[] = ['label' => $row->company_name];
 			}
 
 			//Search by description
@@ -866,7 +867,7 @@ class Item extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$entry = ['value' => $row->item_id, 'label' => $row->name);
+				$entry = ['value' => $row->item_id, 'label' => $row->name];
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -874,7 +875,7 @@ class Item extends Model
 			}
 
 			//Search in attributes
-			if($filters['search_custom'] !== FALSE)	//TODO: Duplicate code
+			if($filters['search_custom'] !== FALSE)	//TODO: Duplicate code... same as above... no double negatives
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -886,7 +887,7 @@ class Item extends Model
 
 				foreach($builder->get()->getResult() as $row)
 				{
-					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+					$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 				}
 			}
 		}
@@ -913,7 +914,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+			$suggestions[] = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 		}
 
 		return $suggestions;
@@ -932,7 +933,7 @@ class Item extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['label' => $row->category);
+			$suggestions[] = ['label' => $row->category];
 		}
 
 		return $suggestions;
@@ -950,7 +951,7 @@ class Item extends Model
 		$builder->orderBy('location', 'asc');
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['label' => $row->location);
+			$suggestions[] = ['label' => $row->location];
 		}
 
 		return $suggestions;
@@ -997,7 +998,7 @@ class Item extends Model
 		$total_quantity = $old_total_quantity + $items_received;
 		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
 
-		$data = ['cost_price' => $average_price);
+		$data = ['cost_price' => $average_price];
 
 		return $this->save($data, $item_id);
 	}
@@ -1030,7 +1031,7 @@ class Item extends Model
 	 */
 	function get_item_name(string $as_name = NULL): string
 	{
-		if($as_name == NULL)
+		if($as_name == NULL)	//TODO: Replace with ternary notation
 		{
 			$as_name = '';
 		}
@@ -1039,7 +1040,7 @@ class Item extends Model
 			$as_name = ' AS ' . $as_name;
 		}
 
-		if($this->appconfig->get('multi_pack_enabled') == '1')
+		if($this->appconfig->get('multi_pack_enabled') == '1')	//TODO: Replace with ternary notation
 		{
 			$item_name = "concat(items.name,'" . NAME_SEPARATOR . '\', items.pack_name)' . $as_name;
 		}
@@ -1047,6 +1048,7 @@ class Item extends Model
 		{
 			$item_name = 'items.name' . $as_name;
 		}
+
 		return $item_name;
 	}
 }

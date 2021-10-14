@@ -7,12 +7,11 @@ use CodeIgniter\Model;
 /**
  * Item_taxes class
  */
-
 class Item_taxes extends Model
 {
-	/*
-	* Gets tax info for a particular item
-	*/
+	/**
+	 * Gets tax info for a particular item
+	 */
 	public function get_info(int $item_id): array
 	{
 		$builder = $this->db->table('items_taxes');
@@ -22,9 +21,9 @@ class Item_taxes extends Model
 		return $builder->get()->getResultArray();
 	}
 
-	/*
-	* Inserts or updates an item's taxes
-	*/
+	/**
+	 * Inserts or updates an item's taxes
+	 */
 	public function save(array &$items_taxes_data, int $item_id): bool
 	{
 		$success = TRUE;
@@ -48,9 +47,9 @@ class Item_taxes extends Model
 		return $success;
 	}
 
-	/*
-	* Saves taxes for multiple items
-	*/
+	/**
+	 * Saves taxes for multiple items
+	 */
 	public function save_multiple(array &$items_taxes_data, string $item_ids): bool	//TODO: investigate why this is sent as a : delimited string rather than an array.
 	{
 		$success = TRUE;
@@ -77,9 +76,9 @@ class Item_taxes extends Model
 		return $success;
 	}
 
-	/*
-	* Deletes taxes given an item
-	*/
+	/**
+	 * Deletes taxes given an item
+	 */
 	public function delete(int $item_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('items_taxes');

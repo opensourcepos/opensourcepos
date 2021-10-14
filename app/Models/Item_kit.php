@@ -10,7 +10,6 @@ use stdClass;
  *
  * @property appconfig appconfig
  */
-
 class Item_kit extends Model
 {
 	public function __construct()
@@ -20,20 +19,20 @@ class Item_kit extends Model
 		$this->appconfig = model('Appconfig');
 	}
 
-	/*
-	* Determines if a given item_id is an item kit
-	*/
+	/**
+	 * Determines if a given item_id is an item kit
+	 */
 	public function exists(int $item_kit_id): bool
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->where('item_kit_id', $item_kit_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	* Check if a given item_id is an item kit
-	*/
+	/**
+	 * Check if a given item_id is an item kit
+	 */
 	public function is_valid_item_kit(int $item_kit_id): bool
 	{
 		if(!empty($item_kit_id))
@@ -41,7 +40,7 @@ class Item_kit extends Model
 			//KIT #
 			$pieces = explode(' ', $item_kit_id);
 
-			if((count($pieces) == 2) && preg_match('/(KIT)/i', $pieces[0]))
+			if((count($pieces) == 2) && preg_match('/(KIT)/i', $pieces[0]))	//TODO: === ... perhaps think about converting this to ternary notation
 			{
 				return $this->exists($pieces[1]);
 			}
@@ -54,18 +53,19 @@ class Item_kit extends Model
 		return FALSE;
 	}
 
-	/*
-	* Determines if a given item_number exists
-	*/
+	/**
+	 * Determines if a given item_number exists
+	 */
 	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
 	{
-		if($this->appconfig->get('allow_duplicate_barcodes') != FALSE)
+		if($this->appconfig->get('allow_duplicate_barcodes') != FALSE)	//TODO: avoid double-negatives.
 		{
 			return FALSE;
 		}
 
 		$builder = $this->db->table('item_kits');
 		$builder->where('item_kit_number', (string) $item_kit_number);
+
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_kit_id) && substr($item_kit_id, 0, 1) !== '0')
@@ -76,9 +76,9 @@ class Item_kit extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	/*
-	* Gets total of rows
-	*/
+	/**
+	 * Gets total of rows
+	 */
 	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('item_kits');
@@ -86,9 +86,9 @@ class Item_kit extends Model
 		return $builder->countAllResults();
 	}
 
-	/*
-	* Gets information about a particular item kit
-	*/
+	/**
+	 * Gets information about a particular item kit
+	 */
 	public function get_info(int $item_kit_id)
 	{
 		$builder = $this->db->table('item_kits');
@@ -125,7 +125,7 @@ class Item_kit extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -144,9 +144,9 @@ class Item_kit extends Model
 		}
 	}
 
-	/*
-	* Gets information about multiple item kits
-	*/
+	/**
+	 * Gets information about multiple item kits
+	 */
 	public function get_multiple_info(array $item_kit_ids)
 	{
 		$builder = $this->db->table('item_kits');
@@ -156,9 +156,9 @@ class Item_kit extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Inserts or updates an item kit
-	*/
+	/**
+	 * Inserts or updates an item kit
+	 */
 	public function save(array &$item_kit_data, bool $item_kit_id = FALSE): bool
 	{
 		$builder = $this->db->table('item_kits');
@@ -179,18 +179,18 @@ class Item_kit extends Model
 		return $builder->update($item_kit_data);
 	}
 
-	/*
-	* Deletes one item kit
-	*/
+	/**
+	 * Deletes one item kit
+	 */
 	public function delete(int $item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kits');
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 
-	/*
-	* Deletes a list of item kits
-	*/
+	/**
+	 * Deletes a list of item kits
+	 */
 	public function delete_list(array $item_kit_ids): bool
 	{
 		$builder = $this->db->table('item_kits');
@@ -213,7 +213,7 @@ class Item_kit extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
+				$suggestions[] = ['value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id];
 			}
 		}
 		else
@@ -224,7 +224,7 @@ class Item_kit extends Model
 
 			foreach($builder->get()->getResult() as $row)
 			{
-				$suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
+				$suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name];
 			}
 		}
 
@@ -237,23 +237,23 @@ class Item_kit extends Model
 		return $suggestions;
 	}
 
- 	/*
-	* Gets rows
-	*/
+ 	/**
+	 * Gets rows
+	 */
 	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
 	}
 
-	/*
-	* Perform a search on items
-	*/
+	/**
+	 * Perform a search on items
+	 */
 	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(item_kits.item_kit_id) as count');
 		}
@@ -269,7 +269,7 @@ class Item_kit extends Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}

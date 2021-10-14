@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use CodeIgniter\Session\Session;
+
 /**
  * Employee class
  *
  * @property session session
  *
  */
-
 class Employee extends Person
 {
 	public function __construct()
@@ -17,30 +18,30 @@ class Employee extends Person
 		$this->session = session();
 	}
 
-	/*
-	Determines if a given person_id is an employee
-	*/
+	/**
+	 *Determines if a given person_id is an employee
+	 */
 	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
 		$builder->where('employees.person_id', $person_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	public function username_exists(int $employee_id, $username): bool
+	public function username_exists(int $employee_id, string $username): bool
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('employees.username', $username);
 		$builder->where('employees.person_id <>', $employee_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets total of rows
-	*/
+	/**
+	 * Gets total of rows
+	 */
 	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('employees');
@@ -49,9 +50,9 @@ class Employee extends Person
 		return $builder->countAllResults();
 	}
 
-	/*
-	Returns all the employees
-	*/
+	/**
+	 * Returns all the employees
+	 */
 	public function get_all(int $limit = 10000, int $offset = 0)
 	{
 		$builder = $this->db->table('employees');
@@ -64,9 +65,9 @@ class Employee extends Person
 		return $builder->get();
 	}
 
-	/*
-	Gets information about a particular employee
-	*/
+	/**
+	 * Gets information about a particular employee
+	 */
 	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('employees');
@@ -74,17 +75,17 @@ class Employee extends Person
 		$builder->where('employees.person_id', $person_id);
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			//Get empty base parent object, as $employee_id is NOT an employee
-			$person_obj = parent::get_info(-1);
+			$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
 
 			//Get all the fields from employee table
-			//append those fields to base parent object, we we have a complete empty object
+			//append those fields to base parent object, we have a complete empty object
 			foreach($this->db->getFieldNames('employees') as $field)
 			{
 				$person_obj->$field = '';
@@ -94,9 +95,9 @@ class Employee extends Person
 		}
 	}
 
-	/*
-	Gets information about multiple employees
-	*/
+	/**
+	 * Gets information about multiple employees
+	 */
 	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('employees');
@@ -107,10 +108,10 @@ class Employee extends Person
 		return $builder->get();
 	}
 
-	/*
-	Inserts or updates an employee
-	*/
-	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE)
+	/**
+	 * Inserts or updates an employee
+	 */
+	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE): bool
 	{
 		$success = FALSE;
 
@@ -163,9 +164,9 @@ class Employee extends Person
 		return $success;
 	}
 
-	/*
-	Deletes one employee
-	*/
+	/**
+	 * Deletes one employee
+	 */
 	public function delete(int $employee_id = null, bool $purge = false): bool
 	{
 		$success = FALSE;
@@ -181,6 +182,7 @@ class Employee extends Person
 
 		//Delete permissions
 		$builder = $this->db->table('grants');
+
 		if($builder->delete(['person_id' => $employee_id]))
 		{
 			$builder = $this->db->table('employees');
@@ -193,9 +195,9 @@ class Employee extends Person
 		return $success;
 	}
 
-	/*
-	Deletes a list of employees
-	*/
+	/**
+	 * Deletes a list of employees
+	 */
 	public function delete_list(array $person_ids): bool
 	{
 		$success = FALSE;
@@ -225,9 +227,9 @@ class Employee extends Person
 		return $success;	//TODO: need to add transStatus() to $success before returning
  	}
 
-	/*
-	Get search suggestions to find employees
-	*/
+	/**
+	 * Get search suggestions to find employees
+	 */
 	public function get_search_suggestions(string $search, bool $limit = FALSE): array	//TODO: The parent method doesn't take a bool for limit, but an int... need to fix that.
 	{
 		$suggestions = [];
@@ -239,14 +241,17 @@ class Employee extends Person
 			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
+
 		if($limit == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
+
 		$builder->orderBy('last_name', 'asc');
+
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name];
 		}
 
 		$builder = $this->db->table('employees');
@@ -259,9 +264,10 @@ class Employee extends Person
 
 		$builder->like('email', $search);
 		$builder->orderBy('email', 'asc');
+
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->person_id, 'label' => $row->email);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->email];
 		}
 
 		$builder = $this->db->table('employees');
@@ -277,7 +283,7 @@ class Employee extends Person
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->person_id, 'label' => $row->username);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->username];
 		}
 
 		$builder = $this->db->table('employees');
@@ -293,7 +299,7 @@ class Employee extends Person
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number);
+			$suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number];
 		}
 
 		//only return $limit suggestions
@@ -305,23 +311,23 @@ class Employee extends Person
 		return $suggestions;
 	}
 
- 	/*
-	* Gets rows
-	*/
-	public function get_found_rows($search)
+ 	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
 
-	/*
-	* Performs a search on employees
-	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Performs a search on employees
+	 */
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('employees AS employees');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(employees.person_id) as count');
 		}
@@ -338,7 +344,7 @@ class Employee extends Person
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -353,20 +359,20 @@ class Employee extends Person
 		return $builder->get();
 	}
 
-	/*
-	Attempts to login employee and set session. Returns boolean based on outcome.
-	*/
-	public function login($username, $password): bool
+	/**
+	 * Attempts to login employee and set session. Returns boolean based on outcome.
+	 */
+	public function login(string $username, string $password): bool
 	{
 		$builder = $this->db->table('employees');
 		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			$row = $query->getRow();
 
 			// compare passwords depending on the hash version
-			if($row->hash_version == 1 && $row->password == md5($password))
+			if($row->hash_version == 1 && $row->password == md5($password))	//TODO: === ?
 			{
 				$builder->where('person_id', $row->person_id);
 				$this->session->set_userdata('person_id', $row->person_id);
@@ -374,7 +380,7 @@ class Employee extends Person
 
 				return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
 			}
-			elseif($row->hash_version == 2 && password_verify($password, $row->password))
+			elseif($row->hash_version == 2 && password_verify($password, $row->password))	//TODO: === ?
 			{
 				$this->session->set_userdata('person_id', $row->person_id);
 
@@ -385,9 +391,9 @@ class Employee extends Person
 		return FALSE;
 	}
 
-	/*
-	Logs out a user by destroying all session data and redirect to login
-	*/
+	/**
+	 * Logs out a user by destroying all session data and redirect to login
+	 */
 	public function logout()
 	{
 		$this->session->sess_destroy();
@@ -395,17 +401,17 @@ class Employee extends Person
 		redirect('login');
 	}
 
-	/*
-	* Determines if a employee is logged in
-	*/
+	/**
+	 * Determines if an employee is logged in
+	 */
 	public function is_logged_in(): bool
 	{
 		return ($this->session->userdata('person_id') != FALSE);
 	}
 
-	/*
-	Gets information about the currently logged in employee.
-	*/
+	/**
+	 * Gets information about the currently logged in employee.
+	 */
 	public function get_logged_in_employee_info()
 	{
 		if($this->is_logged_in())
@@ -416,10 +422,10 @@ class Employee extends Person
 		return FALSE;
 	}
 
-	/*
-	* Determines whether the employee has access to at least one submodule
-	*/
-	public function has_module_grant($permission_id, $person_id): bool
+	/**
+	 * Determines whether the employee has access to at least one submodule
+	 */
+	public function has_module_grant(string $permission_id, int $person_id): bool
 	{
 		$builder = $this->db->table('grants');
 		$builder->like('permission_id', $permission_id, 'after');
@@ -434,21 +440,21 @@ class Employee extends Person
 		return $this->has_subpermissions($permission_id);
 	}
 
- 	/*
-	* Checks permissions
-	*/
-	public function has_subpermissions($permission_id): bool
+ 	/**
+	 * Checks permissions
+	 */
+	public function has_subpermissions(string $permission_id): bool
 	{
 		$builder = $this->db->table('permissions');
 		$builder->like('permission_id', $permission_id.'_', 'after');
 
-		return ($builder->get()->getNumRows() == 0);
+		return ($builder->get()->getNumRows() == 0);	//TODO: ===
 	}
 
 	/**
 	 * Determines whether the employee specified employee has access the specific module.
 	 */
-	public function has_grant($permission_id, $person_id): bool
+	public function has_grant(string $permission_id, int $person_id): bool
 	{
 		//if no module_id is null, allow access
 		if($permission_id == NULL)
@@ -459,13 +465,13 @@ class Employee extends Person
 		$builder = $this->db->table('grants');
 		$query = $builder->getWhere(['person_id' => $person_id, 'permission_id' => $permission_id], 1);
 
-		return ($query->getNumRows() == 1);
+		return ($query->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
 	 * Returns the menu group designation that this module is to appear in
 	 */
-	public function get_menu_group($permission_id, $person_id): string
+	public function get_menu_group(string $permission_id, int $person_id): string
 	{
 		$builder = $this->db->table('grants');
 		$builder->select('menu_group');
@@ -485,10 +491,10 @@ class Employee extends Person
 		}
 	}
 
-	/*
-	Gets employee permission grants
-	*/
-	public function get_employee_grants($person_id): array
+	/**
+	 * Gets employee permission grants
+	 */
+	public function get_employee_grants(int $person_id): array
 	{
 		$builder = $this->db->table('grants');
 		$builder->where('person_id', $person_id);
@@ -496,15 +502,15 @@ class Employee extends Person
 		return $builder->get()->getResultArray();
 	}
 
-	/*
-	Attempts to log in employee and set session. Returns boolean based on outcome.
-	*/
-	public function check_password($username, $password): bool
+	/**
+	 * Attempts to log in employee and set session. Returns boolean based on outcome.
+	 */
+	public function check_password(string $username, string $password): bool
 	{
 		$builder = $this->db->table('employees');
 		$query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			$row = $query->getRow();
 
@@ -513,16 +519,15 @@ class Employee extends Person
 			{
 				return TRUE;
 			}
-
 		}
 
 		return FALSE;
 	}
 
-	/*
-	Change password for the employee
-	*/
-	public function change_password($employee_data, $employee_id = FALSE)
+	/**
+	 * Change password for the employee
+	 */
+	public function change_password(array $employee_data, $employee_id = FALSE): bool
 	{
 		$success = FALSE;
 

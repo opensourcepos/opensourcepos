@@ -74,7 +74,6 @@ class Appconfig extends Model
 		return $success;
 	}
 
-	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function delete(string $key = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('app_config');

@@ -2,19 +2,16 @@
 
 namespace App\Models;
 
-use CodeIgniter\Model;
-
 /**
  * Supplier class
  */
-
 class Supplier extends Person
 {
-	const GOODS_SUPPLIER = 0;
+	const GOODS_SUPPLIER = 0;	//TODO: These constants need to be moved to global constants.php
 	const COST_SUPPLIER = 1;
 
-	/*
-	Determines if a given person_id is a customer
+	/**
+	* Determines if a given person_id is a customer
 	*/
 	public function exists(int $person_id): bool
 	{
@@ -22,12 +19,12 @@ class Supplier extends Person
 		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->where('suppliers.person_id', $person_id);
 		
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets total of rows
-	*/
+	/**
+	 * Gets total of rows
+	 */
 	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('suppliers');
@@ -36,9 +33,9 @@ class Supplier extends Person
 		return $builder->countAllResults();
 	}
 	
-	/*
-	Returns all the suppliers
-	*/
+	/**
+	 * Returns all the suppliers
+	 */
 	public function get_all(int $category = self::GOODS_SUPPLIER, int $offset = 0, int $limit = 0)
 	{
 		$builder = $this->db->table('suppliers');
@@ -55,9 +52,9 @@ class Supplier extends Person
 		return $builder->get();
 	}
 	
-	/*
-	Gets information about a particular supplier
-	*/
+	/**
+	 * Gets information about a particular supplier
+	 */
 	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('suppliers');	
@@ -65,7 +62,7 @@ class Supplier extends Person
 		$builder->where('suppliers.person_id', $person_id);
 		$query = $builder->get();
 		
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -85,22 +82,22 @@ class Supplier extends Person
 		}
 	}
 	
-	/*
-	Gets information about multiple suppliers
-	*/
+	/**
+	 * Gets information about multiple suppliers
+	 */
 	public function get_multiple_info(array $person_ids)
 	{
 		$builder = $this->db->table('suppliers');
-		$builder->join('people', 'people.person_id = suppliers.person_id');		
+		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->whereIn('suppliers.person_id', $person_ids);
 		$builder->orderBy('last_name', 'asc');
 
 		return $builder->get();
 	}
 	
-	/*
-	Inserts or updates a suppliers
-	*/
+	/**
+	 * Inserts or updates a suppliers
+	 */
 	public function save_supplier(array &$person_data, array &$supplier_data, bool $supplier_id = FALSE): bool
 	{
 		$success = FALSE;
@@ -130,9 +127,9 @@ class Supplier extends Person
 		return $success;
 	}
 	
-	/*
-	Deletes one supplier
-	*/
+	/**
+	 * Deletes one supplier
+	 */
 	public function delete(int $supplier_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('suppliers');
@@ -141,9 +138,9 @@ class Supplier extends Person
 		return $builder->update(['deleted' => 1]);
 	}
 	
-	/*
-	Deletes a list of suppliers
-	*/
+	/**
+	 * Deletes a list of suppliers
+	 */
 	public function delete_list(array $person_ids): bool
 	{
 		$builder = $this->db->table('suppliers');
@@ -152,9 +149,9 @@ class Supplier extends Person
 		return $builder->update(['deleted' => 1]);
  	}
  	
- 	/*
-	Get search suggestions to find suppliers
-	*/
+ 	/**
+	 * Get search suggestions to find suppliers
+	 */
 	public function get_search_suggestions(string $search, bool $limit = FALSE): array	//TODO: Parent is looking for the 2nd parameter to be an int
 	{
 		$suggestions = [];
@@ -243,23 +240,23 @@ class Supplier extends Person
 		return $suggestions;
 	}
 
- 	/*
-	* Gets rows
-	*/
+ 	/**
+	 * Gets rows
+	 */
 	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
 	
-	/*
-	* Perform a search on suppliers
-	*/
+	/**
+	 * Perform a search on suppliers
+	 */
 	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('suppliers AS suppliers');
 
-		// get_found_rows case
-		if($count_only == TRUE)
+		//get_found_rows case
+		if($count_only == TRUE)	//TODO: This needs to be replaced with `if($count_only)`
 		{
 			$builder->select('COUNT(suppliers.person_id) as count');
 		}
@@ -277,8 +274,7 @@ class Supplier extends Person
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		
-		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: This needs to be replaced with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -293,9 +289,9 @@ class Supplier extends Person
 		return $builder->get();
 	}
 
-	/*
-	Return supplier categories
-	*/
+	/**
+	 * Return supplier categories
+	 */
 	public function get_categories(): array
 	{
 		return [
@@ -304,9 +300,9 @@ class Supplier extends Person
 		];
 	}
 
-	/*
-	Return a category name given its id
-	*/
+	/**
+	 * Return a category name given its id
+	 */
 	public function get_category_name(int $id): string
 	{
 		if($id == self::GOODS_SUPPLIER)	//TODO: this should probably be ===

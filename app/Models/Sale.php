@@ -57,7 +57,7 @@ class Sale extends Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		if($this->appconfig->get('tax_included'))
+		if($this->appconfig->get('tax_included'))	//TODO: This needs to be replaced with Ternary notation
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 		}
@@ -189,7 +189,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales_items AS sales_items');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(DISTINCT sales.sale_id) AS count');
 		}
@@ -255,6 +255,7 @@ class Sale extends Model
 			$builder->where('sales_items.item_location', $filters['location_id']);
 		}
 
+		//TODO: Avoid double negatives.  This can be changed to `if($filters['only_invoices'])`... also below
 		if($filters['only_invoices'] != FALSE)
 		{
 			$builder->where('sales.invoice_number IS NOT NULL');
@@ -283,15 +284,15 @@ class Sale extends Model
 			$builder->like('payments.payment_type', lang('Sales.check'));
 		}
 
-		// get_found_rows case
-		if($count_only == TRUE)
+		//get_found_rows
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
 
 		$builder->groupBy('sales.sale_id');
 
-		// order by sale time by default
+		//order by sale time by default
 		$builder->orderBy($sort, $order);
 
 		if($rows > 0)
@@ -314,6 +315,7 @@ class Sale extends Model
 		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
 		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
+		//TODO: This needs to be replaced with Ternary notation
 		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
@@ -325,7 +327,7 @@ class Sale extends Model
 
 		if(!empty($search))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
-			if($filters['is_valid_receipt'] != FALSE)
+			if($filters['is_valid_receipt'] != FALSE)//TODO: Avoid double negatives
 			{
 				$pieces = explode(' ',$search);
 				$builder->where('sales.sale_id', $pieces[1]);
@@ -333,18 +335,15 @@ class Sale extends Model
 			else
 			{
 				$builder->groupStart();
-					// customer last name
-					$builder->like('customer_p.last_name', $search);
-					// customer first name
-					$builder->orLike('customer_p.first_name', $search);
-					// customer first and last name
-					$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
-					// customer company name
-					$builder->orLike('customer.company_name', $search);
+					$builder->like('customer_p.last_name', $search);	// customer last name
+					$builder->orLike('customer_p.first_name', $search);	// customer first name
+					$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);	// customer first and last name
+					$builder->orLike('customer.company_name', $search);	// customer company name
 				$builder->groupEnd();
 			}
 		}
 
+		//TODO: This needs to be converted to a switch statement
 		if($filters['sale_type'] == 'sales')	//TODO: we need to think about refactoring this block to a switch statement.
 		{
 			$builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
@@ -362,6 +361,7 @@ class Sale extends Model
 			$builder->where('sales.sale_status = ' . COMPLETED);
 		}
 
+		//TODO: Avoid the double negatives
 		if($filters['only_invoices'] != FALSE)
 		{
 			$builder->where('invoice_number IS NOT NULL');
@@ -402,14 +402,14 @@ class Sale extends Model
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
 
-				// remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
+				//remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
 				unset($payments[$key]);
 			}
 		}
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = ['payment_type' => lang('Sales.giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+			$payments[] = ['payment_type' => lang('Sales.giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount];
 		}
 
 		return $payments;
@@ -445,12 +445,12 @@ class Sale extends Model
 
 			foreach($builder->get()->getResultArray() as $result)
 			{
-				$suggestions[] = ['label' => $result['first_name'] . ' ' . $result['last_name']);
+				$suggestions[] = ['label' => $result['first_name'] . ' ' . $result['last_name']];
 			}
 		}
 		else
 		{
-			$suggestions[] = ['label' => $search);
+			$suggestions[] = ['label' => $search];
 		}
 
 		return $suggestions;
@@ -521,6 +521,7 @@ class Sale extends Model
 			elseif($this->appconfig->get('invoice_enable') == TRUE)
 			{
 				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
+
 				if($sale_info->getNumRows() > 0)
 				{
 					$receipt_sale_id = 'POS ' . $sale_info->getRow()->sale_id;
@@ -541,7 +542,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
@@ -553,7 +554,7 @@ class Sale extends Model
 		$builder->where('sale_id', $sale_id);
 		$success = $builder->update($sale_data);
 
-		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
+		//touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
 		if($success && !empty($payments))
 		{
 			//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -595,7 +596,7 @@ class Sale extends Model
 							'payment_amount' => $payment_amount,
 							'cash_refund' => $cash_refund,
 							'cash_adjustment' => $cash_adjustment
-						);
+						];
 
 						$builder->where('payment_id', $payment_id);
 						$success = $builder->update($sales_payments_data);
@@ -629,9 +630,9 @@ class Sale extends Model
 
 		$tax_decimals = tax_decimals();
 
-		if(count($items) == 0)
+		if(count($items) == 0)	//TODO: ===
 		{
-			return -1;
+			return -1;	//TODO: Replace -1 with a constant
 		}
 
 		$sales_data = [
@@ -723,12 +724,12 @@ class Sale extends Model
 				'item_unit_price' => $item['price'],
 				'item_location' => $item['item_location'],
 				'print_option' => $item['print_option']
-			);
+			];
 
 			$builder = $this->db->table('sales_items');
 			$builder->insert($sales_items_data);
 
-			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)
+			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)	//TODO: === ?
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
@@ -742,14 +743,13 @@ class Sale extends Model
 				);
 
 				// if an items was deleted but later returned it's restored with this rule
-
 				if($item['quantity'] < 0)
 				{
 					$this->item->undelete($item['item_id']);
 				}
 
 				// Inventory Count Details
-				$sale_remarks = 'POS '.$sale_id;
+				$sale_remarks = 'POS ' . $sale_id;	//TODO: Use string interpolation here.
 				$inv_data = [
 					'trans_date' => date('Y-m-d H:i:s'),
 					'trans_items' => $item['item_id'],
@@ -758,6 +758,7 @@ class Sale extends Model
 					'trans_comment' => $sale_remarks,
 					'trans_inventory' => -$item['quantity']
 				];
+
 				$this->inventory->insert($inv_data);	//TODO: Reflection exception needs to be caught if we keep the same inheritance in the insert function.
 			}
 
@@ -772,7 +773,7 @@ class Sale extends Model
 
 		if($this->appconfig->get('dinner_table_enable') == TRUE)
 		{
-			if($sale_status == COMPLETED)
+			if($sale_status == COMPLETED)	//TODO: === ?
 			{
 				$this->dinner_table->release($dinner_table);
 			}
@@ -923,7 +924,7 @@ class Sale extends Model
 						'trans_comment' => 'Deleting sale ' . $sale_id,
 						'trans_location' => $item['item_location'],
 						'trans_inventory' => $item['quantity_purchased']
-					);
+					];
 					// update inventory
 					$this->inventory->insert($inv_data);		//TODO: Probably need a try/catch for the reflection exception if we keep the inheritance of insert()
 
@@ -979,7 +980,7 @@ class Sale extends Model
 		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->appconfig->get('line_sequence') == '0')
+		if($this->appconfig->get('line_sequence') == '0')	//TODO: Replace these with constants and this should be converted to a switch.
 		{
 			$builder->orderBy('line', 'asc');
 		}
@@ -1074,12 +1075,13 @@ class Sale extends Model
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('quote_number', $quote_number);
+
 		if(!empty($sale_id))
 		{
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
@@ -1095,7 +1097,7 @@ class Sale extends Model
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
@@ -1110,7 +1112,7 @@ class Sale extends Model
 			$builder->where('sale_id !=', $sale_id);
 		}
 
-		return ($builder->get()->getNumRows() == 1);	//TODO: Probably should be === here.
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
@@ -1137,7 +1139,7 @@ class Sale extends Model
 	{
 		if(empty($inputs['sale_id']))
 		{
-			if(empty($this->appconfig->get('date_or_time_format')))
+			if(empty($this->appconfig->get('date_or_time_format')))	//TODO: This needs to be replaced with Ternary notation
 			{
 				$where = 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}
@@ -1165,7 +1167,7 @@ class Sale extends Model
 
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-		if($this4get('tax_included'))
+		if($this4get('tax_included'))	//TODO: This variable is never defined
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $internal_tax";
@@ -1286,7 +1288,7 @@ class Sale extends Model
 	/**
 	 * Retrieves all sales that are in a suspended state
 	 */
-	public function get_all_suspended($customer_id = NULL): array
+	public function get_all_suspended(int $customer_id = NULL): array
 	{
 		if($customer_id == -1)	//TODO: This should be converted to a global constant and stored in constants.php
 		{
@@ -1376,7 +1378,7 @@ class Sale extends Model
 
 		$row = $builder->get()->getRow();
 
-		if($row != NULL)
+		if($row != NULL)	//TODO: === ?
 		{
 			return $row->work_order_number;
 		}
@@ -1394,7 +1396,7 @@ class Sale extends Model
 
 		$row = $builder->get()->getRow();
 
-		if($row != NULL)
+		if($row != NULL)	//TODO: === ?
 		{
 			return $row->comment;
 		}
@@ -1481,10 +1483,10 @@ class Sale extends Model
 	}
 
 	/**
-	 * @param $customer_id
-	 * @param $sale_id
-	 * @param $total_amount
-	 * @param $total_amount_used
+	 * @param int $customer_id
+	 * @param int $sale_id
+	 * @param float $total_amount
+	 * @param float $total_amount_used
 	 */
 	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used)
 	{
@@ -1500,8 +1502,10 @@ class Sale extends Model
 				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
 				$total_amount_earned = ($total_amount * $points_percent / 100);
 				$points = $points + $total_amount_earned;
+
 				$this->customer->update_reward_points_value($customer_id, $points);
-				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
+
+				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used];
 
 				$this->rewards->save($rewards_data);		//TODO: probably should wrap this in a try/catch if we are going to keep the inheritance.
 			}

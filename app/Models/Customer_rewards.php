@@ -7,10 +7,9 @@ use CodeIgniter\Model;
 /**
  * Customer_rewards class
  */
-
 class Customer_rewards extends Model
 {
-	public function exists($package_id): bool
+	public function exists(int $package_id): bool
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
@@ -20,7 +19,11 @@ class Customer_rewards extends Model
 
 	public function save(array $package_data, int $package_id): bool	//TODO: Need to rename or bring this in line with the basemodel declaration.
 	{
-		$package_data_to_save = ['package_name' => $package_data['package_name'], 'deleted' => 0, 'points_percent' => $package_data['points_percent']);
+		$package_data_to_save = [
+			'package_name' => $package_data['package_name'],
+			'deleted' => 0,
+			'points_percent' => $package_data['points_percent']
+		];
 
 		if(!$this->exists($package_id))
 		{
@@ -34,7 +37,7 @@ class Customer_rewards extends Model
 		return $builder->update($package_data_to_save);
 	}
 
-	public function get_name($package_id)
+	public function get_name(int $package_id): string
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
@@ -42,7 +45,7 @@ class Customer_rewards extends Model
 		return $builder->get()->getRow()->package_name;
 	}
 
-	public function get_points_percent($package_id)
+	public function get_points_percent(int $package_id): float
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
@@ -57,9 +60,9 @@ class Customer_rewards extends Model
 
 		return $builder->get();
 	}
-//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
+
 	/**
-	Deletes one reward package
+	* Deletes one reward package
 	*/
 	public function delete(int $package_id = null, bool $purge = false): bool
 	{

@@ -8,7 +8,6 @@ use stdClass;
 /**
  * Tax class
  */
-
 class Tax extends Model
 {
 	/**
@@ -19,7 +18,7 @@ class Tax extends Model
 		$builder = $this->db->table('tax_rates');
 		$builder->where('tax_rate_id', $tax_rate_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**

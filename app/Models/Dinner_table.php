@@ -7,7 +7,6 @@ use CodeIgniter\Model;
 /**
  * Dinner_table class
  */
-
 class Dinner_table extends Model
 {
 	public function exists(int $dinner_table_id): bool
@@ -17,10 +16,11 @@ class Dinner_table extends Model
 
 		return ($builder->get()->getNumRows() >= 1);
 	}
-//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
+
+	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function save(array $table_data, int $dinner_table_id): bool
 	{
-		$table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0);
+		$table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0];
 
 		$builder = $this->db->table('dinner_tables');
 		if(!$this->exists($dinner_table_id))
@@ -34,7 +34,7 @@ class Dinner_table extends Model
 	}
 
 	/**
-	Get empty tables
+	* Get empty tables
 	*/
 	public function get_empty_tables(int $current_dinner_table_id): array
 	{
@@ -45,7 +45,7 @@ class Dinner_table extends Model
 
 		$empty_tables = $builder->get()->getResultArray();
 
-		$empty_tables_array = [];
+		$empty_tables_array = [];	//TODO: Variable names should not contain the name of the datatype.
 		foreach($empty_tables as $empty_table)
 		{
 			$empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];
@@ -54,13 +54,13 @@ class Dinner_table extends Model
 		return $empty_tables_array;
 	}
 
-	public function get_name($dinner_table_id): string
+	public function get_name(int $dinner_table_id): string
 	{
 		if(empty($dinner_table_id))
 		{
 			return '';
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			$builder = $this->db->table('dinner_tables');
 			$builder->where('dinner_table_id', $dinner_table_id);
@@ -75,12 +75,12 @@ class Dinner_table extends Model
 		{
 			return FALSE;
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			$builder = $this->db->table('dinner_tables');
 			$builder->where('dinner_table_id', $dinner_table_id);
 
-			return ($builder->get()->getRow()->status == 1);
+			return ($builder->get()->getRow()->status == 1);	//TODO: === ?
 		}
 	}
 
@@ -122,7 +122,7 @@ class Dinner_table extends Model
 	}
 
 	/**
-	Release table
+	 * Release table
 	 */
 	public function release(int $dinner_table_id): bool
 	{
@@ -139,7 +139,7 @@ class Dinner_table extends Model
 	}
 
 	/**
-	Swap tables
+	 * Swap tables
 	 */
 	public function swap_tables(int $release_dinner_table_id, int $occupy_dinner_table_id): bool
 	{

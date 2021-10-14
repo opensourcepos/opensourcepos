@@ -12,17 +12,18 @@ use CodeIgniter\Model;
  * @property session session
  *
  */
-
 class Stock_location extends Model
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->employee = model('Employee');
 		$this->item = model('Item');
 
 		$this->session = session();
 	}
-	public function exists(int $location_id = -1): bool
+	public function exists(int $location_id = -1): bool	//TODO: Replace -1 with a constant
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);
@@ -85,7 +86,7 @@ class Stock_location extends Model
 		$builder->where('stock_locations.location_id', $location_id);
 		$builder->where('deleted', 0);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	public function get_default_location_id(string $module_id = 'items'): int
@@ -139,7 +140,11 @@ class Stock_location extends Model
 			$items = $this->item->get_all();
 			foreach($items->getResultArray() as $item)
 			{
-				$quantity_data = ['item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0];
+				$quantity_data = [
+					'item_id' => $item['item_id'],
+					'location_id' => $location_id,
+					'quantity' => 0
+				];
 
 				$builder = $this->db->table('item_quantities');
 				$builder->insert($quantity_data);
@@ -172,8 +177,8 @@ class Stock_location extends Model
 	private function _insert_new_permission(string $module, int $location_id, string $location_name)	//TODO: refactor out hungarian notation
 	{
 		// insert new permission for stock location
-		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);
-		$permission_data = ['permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
+		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);	//TODO: String interpolation
+		$permission_data = ['permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id];
 
 		$builder = $this->db->table('permissions');
 		$builder->insert($permission_data);
@@ -193,10 +198,13 @@ class Stock_location extends Model
 		}
 	}
 
-	/*
-	 Deletes one item
+	/**
+	 * Deletes one item
+	 * @param int|null $location_id
+	 * @param bool $purge
+	 * @return bool
 	 */
-	public function delete(int $location_id): bool	//TODO: for these delete methods, it wants us to add a second parameter with a soft delete override... presumably for GDPR?
+	public function delete(int $location_id = null, bool $purge = FALSE): bool
 	{
 		$this->db->transStart();
 

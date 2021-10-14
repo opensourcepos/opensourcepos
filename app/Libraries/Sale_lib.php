@@ -2,27 +2,30 @@
 
 namespace app\Libraries;
 
+use app\Models\Appconfig;
 use app\Models\Attribute;
+use app\Models\Sale;
 
 /**
  * Sale library
  *
  * Library with utilities to manage sales
  *
+ * @property appconfig appconfig
  * @property attribute attribute
+ * @property sale sale
  */
 
 class Sale_lib
 {
-	private $CI;
-
 	public function __construct()
 	{
-		$this->CI =& get_instance();
-		$this->CI->tax_lib = new Tax_lib();
-		$this->CI->Rounding_mode = model('enums/Rounding_mode');
+		$this->tax_lib = new Tax_lib();
+		$this->Rounding_mode = model('enums/Rounding_mode');
 
+		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
+		$this->sale = model('Sale');
 	}
 
 	public function get_line_sequence_options()
@@ -37,7 +40,7 @@ class Sale_lib
 	public function get_register_mode_options()
 	{
 		$register_modes = [];
-		if($this->CI->config->get('invoice_enable') == '0')
+		if($this->appconfig->get('invoice_enable') == '0')
 		{
 			$register_modes['sale'] = lang('Sales.sale');
 		}
@@ -45,7 +48,7 @@ class Sale_lib
 		{
 			$register_modes['sale'] = lang('Sales.receipt');
 			$register_modes['sale_quote'] = lang('Sales.quote');
-			if($this->CI->config->get('work_order_enable') == '1')
+			if($this->appconfig->get('work_order_enable') == '1')
 			{
 				$register_modes['sale_work_order'] = lang('Sales.work_order');
 			}
@@ -67,12 +70,12 @@ class Sale_lib
 
 	public function get_cart()
 	{
-		if(!$this->CI->session->userdata('sales_cart'))
+		if(!$this->session->userdata('sales_cart'))
 		{
-			$this->set_cart ([));
+			$this->set_cart ([]);
 		}
 
-		return $this->CI->session->userdata('sales_cart');
+		return $this->session->userdata('sales_cart');
 	}
 
 	public function sort_and_filter_cart($cart)
@@ -97,7 +100,7 @@ class Sale_lib
 		}
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->CI->config->get('line_sequence') == '0')
+		if($this->appconfig->get('line_sequence') == '0')
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -107,7 +110,7 @@ class Sale_lib
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->CI->config->get('line_sequence') == '1')
+		elseif($this->appconfig->get('line_sequence') == '1')
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -119,7 +122,7 @@ class Sale_lib
 			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);
 		}
 		// Group by Item Category
-		elseif($this->CI->config->get('line_sequence') == '2')
+		elseif($this->appconfig->get('line_sequence') == '2')
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -146,12 +149,12 @@ class Sale_lib
 
 	public function set_cart($cart_data)
 	{
-		$this->CI->session->set_userdata('sales_cart', $cart_data);
+		$this->session->set_userdata('sales_cart', $cart_data);
 	}
 
 	public function empty_cart()
 	{
-		$this->CI->session->unset_userdata('sales_cart');
+		$this->session->unset_userdata('sales_cart');
 	}
 
 	public function remove_temp_items()
@@ -162,7 +165,7 @@ class Sale_lib
 		{
 			if($item['item_type'] == ITEM_TEMP)
 			{
-				$this->CI->Item->delete($item['item_id']);
+				$this->Item->delete($item['item_id']);
 			}
 		}
 	}
@@ -170,208 +173,208 @@ class Sale_lib
 	public function get_comment()
 	{
 		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
-		$comment = $this->CI->session->userdata('sales_comment');
+		$comment = $this->session->userdata('sales_comment');
 
 		return empty($comment) ? '' : $comment;
 	}
 
 	public function set_comment($comment)
 	{
-		$this->CI->session->set_userdata('sales_comment', $comment);
+		$this->session->set_userdata('sales_comment', $comment);
 	}
 
 	public function clear_comment()
 	{
-		$this->CI->session->unset_userdata('sales_comment');
+		$this->session->unset_userdata('sales_comment');
 	}
 
 	public function get_invoice_number()
 	{
-		return $this->CI->session->userdata('sales_invoice_number');
+		return $this->session->userdata('sales_invoice_number');
 	}
 
 	public function get_quote_number()
 	{
-		return $this->CI->session->userdata('sales_quote_number');
+		return $this->session->userdata('sales_quote_number');
 	}
 
 	public function get_work_order_number()
 	{
-		return $this->CI->session->userdata('sales_work_order_number');
+		return $this->session->userdata('sales_work_order_number');
 	}
 
 	public function get_sale_type()
 	{
-		return $this->CI->session->userdata('sale_type');
+		return $this->session->userdata('sale_type');
 	}
 
 	public function set_invoice_number($invoice_number, $keep_custom = FALSE)
 	{
-		$current_invoice_number = $this->CI->session->userdata('sales_invoice_number');
+		$current_invoice_number = $this->session->userdata('sales_invoice_number');
 		if(!$keep_custom || empty($current_invoice_number))
 		{
-			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
+			$this->session->set_userdata('sales_invoice_number', $invoice_number);
 		}
 	}
 
 	public function set_quote_number($quote_number, $keep_custom = FALSE)
 	{
-		$current_quote_number = $this->CI->session->userdata('sales_quote_number');
+		$current_quote_number = $this->session->userdata('sales_quote_number');
 		if(!$keep_custom || empty($current_quote_number))
 		{
-			$this->CI->session->set_userdata('sales_quote_number', $quote_number);
+			$this->session->set_userdata('sales_quote_number', $quote_number);
 		}
 	}
 
 	public function set_work_order_number($work_order_number, $keep_custom = FALSE)
 	{
-		$current_work_order_number = $this->CI->session->userdata('sales_work_order_number');
+		$current_work_order_number = $this->session->userdata('sales_work_order_number');
 		if(!$keep_custom || empty($current_work_order_number))
 		{
-			$this->CI->session->set_userdata('sales_work_order_number', $work_order_number);
+			$this->session->set_userdata('sales_work_order_number', $work_order_number);
 		}
 	}
 
 	public function set_sale_type($sale_type, $keep_custom = FALSE)
 	{
-		$current_sale_type = $this->CI->session->userdata('sale_type');
+		$current_sale_type = $this->session->userdata('sale_type');
 		if(!$keep_custom || empty($current_sale_type))
 		{
-			$this->CI->session->set_userdata('sale_type', $sale_type);
+			$this->session->set_userdata('sale_type', $sale_type);
 		}
 	}
 
 	public function clear_invoice_number()
 	{
-		$this->CI->session->unset_userdata('sales_invoice_number');
+		$this->session->unset_userdata('sales_invoice_number');
 	}
 
 	public function clear_quote_number()
 	{
-		$this->CI->session->unset_userdata('sales_quote_number');
+		$this->session->unset_userdata('sales_quote_number');
 	}
 
 	public function clear_work_order_number()
 	{
-		$this->CI->session->unset_userdata('sales_work_order_number');
+		$this->session->unset_userdata('sales_work_order_number');
 	}
 
 	public function clear_sale_type()
 	{
-		$this->CI->session->unset_userdata('sale_type');
+		$this->session->unset_userdata('sale_type');
 	}
 
 	public function set_suspended_id($suspended_id)
 	{
-		$this->CI->session->set_userdata('suspended_id', $suspended_id);
+		$this->session->set_userdata('suspended_id', $suspended_id);
 	}
 
 	public function get_suspended_id()
 	{
-		return $this->CI->session->userdata('suspended_id');
+		return $this->session->userdata('suspended_id');
 	}
 
 	public function is_invoice_mode()
 	{
-		return ($this->CI->session->userdata('sales_mode') == 'sale_invoice' &&
-					$this->CI->config->get('invoice_enable') == TRUE);
+		return ($this->session->userdata('sales_mode') == 'sale_invoice' &&
+					$this->appconfig->get('invoice_enable') == TRUE);
 	}
 
 	public function is_sale_by_receipt_mode()
 	{
-		return ($this->CI->session->userdata('sales_mode') == 'sale');
+		return ($this->session->userdata('sales_mode') == 'sale');
 	}
 
 	public function is_quote_mode()
 	{
-		return ($this->CI->session->userdata('sales_mode') == 'sale_quote');
+		return ($this->session->userdata('sales_mode') == 'sale_quote');
 	}
 
 	public function is_return_mode()
 	{
-		return ($this->CI->session->userdata('sales_mode') == 'return');
+		return ($this->session->userdata('sales_mode') == 'return');
 	}
 
 	public function is_work_order_mode()
 	{
-		return ($this->CI->session->userdata('sales_mode') == 'sale_work_order');
+		return ($this->session->userdata('sales_mode') == 'sale_work_order');
 	}
 
 	public function set_price_work_orders($price_work_orders)
 	{
-		return $this->CI->session->set_userdata('sales_price_work_orders', $price_work_orders);
+		return $this->session->set_userdata('sales_price_work_orders', $price_work_orders);
 	}
 
 	public function is_price_work_orders()
 	{
-		return ($this->CI->session->userdata('sales_price_work_orders') == 'true' ||
-				$this->CI->session->userdata('sales_price_work_orders') == '1');
+		return ($this->session->userdata('sales_price_work_orders') == 'true' ||
+				$this->session->userdata('sales_price_work_orders') == '1');
 	}
 
 	public function set_print_after_sale($print_after_sale)
 	{
-		return $this->CI->session->set_userdata('sales_print_after_sale', $print_after_sale);
+		return $this->session->set_userdata('sales_print_after_sale', $print_after_sale);
 	}
 
 	public function is_print_after_sale()
 	{
-		if($this->CI->config->get('print_receipt_check_behaviour') == 'always')
+		if($this->appconfig->get('print_receipt_check_behaviour') == 'always')
 		{
 			return TRUE;
 		}
-		elseif($this->CI->config->get('print_receipt_check_behaviour') == 'never')
+		elseif($this->appconfig->get('print_receipt_check_behaviour') == 'never')
 		{
 			return FALSE;
 		}
 		else // remember last setting, session based though
 		{
-			return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
-					$this->CI->session->userdata('sales_print_after_sale') == '1');
+			return ($this->session->userdata('sales_print_after_sale') == 'true' ||
+					$this->session->userdata('sales_print_after_sale') == '1');
 		}
 	}
 
 	public function set_email_receipt($email_receipt)
 	{
-		$this->CI->session->set_userdata('sales_email_receipt', $email_receipt);
+		$this->session->set_userdata('sales_email_receipt', $email_receipt);
 	}
 
 	public function clear_email_receipt()
 	{
-		$this->CI->session->unset_userdata('sales_email_receipt');
+		$this->session->unset_userdata('sales_email_receipt');
 	}
 
 	public function is_email_receipt()
 	{
-		if($this->CI->config->get('email_receipt_check_behaviour') == 'always')
+		if($this->appconfig->get('email_receipt_check_behaviour') == 'always')
 		{
 			return TRUE;
 		}
-		elseif($this->CI->config->get('email_receipt_check_behaviour') == 'never')
+		elseif($this->appconfig->get('email_receipt_check_behaviour') == 'never')
 		{
 			return FALSE;
 		}
 		else // remember last setting, session based though
 		{
-			return ($this->CI->session->userdata('sales_email_receipt') == 'true' ||
-					$this->CI->session->userdata('sales_email_receipt') == '1');
+			return ($this->session->userdata('sales_email_receipt') == 'true' ||
+					$this->session->userdata('sales_email_receipt') == '1');
 		}
 	}
 
 	// Multiple Payments
 	public function get_payments()
 	{
-		if(!$this->CI->session->userdata('sales_payments'))
+		if(!$this->session->userdata('sales_payments'))
 		{
 			$this->set_payments ([));
 		}
 
-		return $this->CI->session->userdata('sales_payments');
+		return $this->session->userdata('sales_payments');
 	}
 
 	// Multiple Payments
 	public function set_payments($payments_data)
 	{
-		$this->CI->session->set_userdata('sales_payments', $payments_data);
+		$this->session->set_userdata('sales_payments', $payments_data);
 	}
 
 	/**
@@ -398,11 +401,11 @@ class Sale_lib
 			$payments += $payment;
 		}
 
-		if($this->CI->session->userdata('cash_mode'))
+		if($this->session->userdata('cash_mode'))
 		{
-			if($this->CI->session->userdata('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
+			if($this->session->userdata('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
 			{
-				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+				$this->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 			}
 		}
 
@@ -453,7 +456,7 @@ class Sale_lib
 	// Multiple Payments
 	public function empty_payments()
 	{
-		$this->CI->session->unset_userdata('sales_payments');
+		$this->session->unset_userdata('sales_payments');
 	}
 
 	/**
@@ -477,9 +480,9 @@ class Sale_lib
 			}
 		}
 
-		if($cash_mode_eligible && $this->CI->session->userdata('cash_rounding'))
+		if($cash_mode_eligible && $this->session->userdata('cash_rounding'))
 		{
-			$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
+			$this->session->set_userdata('cash_mode', CASH_MODE_TRUE);
 		}
 
 		return $subtotal;
@@ -541,8 +544,8 @@ class Sale_lib
 
 		$payment_total = $this->get_payments_total();
 		$totals['payment_total'] = $payment_total;
-		$cash_rounding = $this->CI->session->userdata('cash_rounding');
-		$cash_mode = $this->CI->session->userdata('cash_mode');
+		$cash_rounding = $this->session->userdata('cash_rounding');
+		$cash_mode = $this->session->userdata('cash_mode');
 
 		if($cash_rounding)
 		{
@@ -591,7 +594,7 @@ class Sale_lib
 			$totals['cash_adjustment_amount'] = round($cash_total - $totals['total'], totals_decimals(), PHP_ROUND_HALF_UP);
 		}
 
-		$cash_mode = $this->CI->session->userdata('cash_mode');
+		$cash_mode = $this->session->userdata('cash_mode');
 
 		return $totals;
 	}
@@ -611,149 +614,149 @@ class Sale_lib
 
 	public function get_customer()
 	{
-		if(!$this->CI->session->userdata('sales_customer'))
+		if(!$this->session->userdata('sales_customer'))
 		{
 			$this->set_customer(-1);
 		}
 
-		return $this->CI->session->userdata('sales_customer');
+		return $this->session->userdata('sales_customer');
 	}
 
 	public function set_customer($customer_id)
 	{
-		$this->CI->session->set_userdata('sales_customer', $customer_id);
+		$this->session->set_userdata('sales_customer', $customer_id);
 	}
 
 	public function remove_customer()
 	{
-		$this->CI->session->unset_userdata('sales_customer');
+		$this->session->unset_userdata('sales_customer');
 	}
 
 	public function get_employee()
 	{
-		if(!$this->CI->session->userdata('sales_employee'))
+		if(!$this->session->userdata('sales_employee'))
 		{
 			$this->set_employee(-1);
 		}
 
-		return $this->CI->session->userdata('sales_employee');
+		return $this->session->userdata('sales_employee');
 	}
 
 	public function set_employee($employee_id)
 	{
-		$this->CI->session->set_userdata('sales_employee', $employee_id);
+		$this->session->set_userdata('sales_employee', $employee_id);
 	}
 
 	public function remove_employee()
 	{
-		$this->CI->session->unset_userdata('sales_employee');
+		$this->session->unset_userdata('sales_employee');
 	}
 
 	public function get_mode()
 	{
-		if(!$this->CI->session->userdata('sales_mode'))                                                                                                                                                                                                                     
+		if(!$this->session->userdata('sales_mode'))                                                                                                                                                                                                                     
 		{                                                                                                                                                                                                                                                                   
 			$this->set_mode('sale');                                                                                                                                                                                                                            
 		}      
-		return $this->CI->session->userdata('sales_mode');
+		return $this->session->userdata('sales_mode');
 	}
 
 	public function set_mode($mode)
 	{
-		$this->CI->session->set_userdata('sales_mode', $mode);
+		$this->session->set_userdata('sales_mode', $mode);
 	}
 
 	public function clear_mode()
 	{
-		$this->CI->session->unset_userdata('sales_mode');
+		$this->session->unset_userdata('sales_mode');
 	}
 
 	public function get_dinner_table()
 	{
-		if(!$this->CI->session->userdata('dinner_table'))
+		if(!$this->session->userdata('dinner_table'))
 		{
-			if($this->CI->config->get('dinner_table_enable') == TRUE)
+			if($this->appconfig->get('dinner_table_enable') == TRUE)
 			{
 				$this->set_dinner_table(1);
 			}
 		}
 
-		return $this->CI->session->userdata('dinner_table');
+		return $this->session->userdata('dinner_table');
 	}
 
 	public function set_dinner_table($dinner_table)
 	{
-		$this->CI->session->set_userdata('dinner_table', $dinner_table);
+		$this->session->set_userdata('dinner_table', $dinner_table);
 	}
 
 	public function clear_table()
 	{
-		$this->CI->session->unset_userdata('dinner_table');
+		$this->session->unset_userdata('dinner_table');
 	}
 
 	public function get_sale_location()
 	{
-		if(!$this->CI->session->userdata('sales_location'))
+		if(!$this->session->userdata('sales_location'))
 		{
-			$this->set_sale_location($this->CI->Stock_location->get_default_location_id('sales'));
+			$this->set_sale_location($this->Stock_location->get_default_location_id('sales'));
 		}
 
-		return $this->CI->session->userdata('sales_location');
+		return $this->session->userdata('sales_location');
 	}
 
 	public function set_sale_location($location)
 	{
-		$this->CI->session->set_userdata('sales_location', $location);
+		$this->session->set_userdata('sales_location', $location);
 	}
 
 	public function set_payment_type($payment_type)
 	{
-		$this->CI->session->set_userdata('payment_type', $payment_type);
+		$this->session->set_userdata('payment_type', $payment_type);
 	}
 
 	public function get_payment_type()
 	{
-		return $this->CI->session->userdata('payment_type');
+		return $this->session->userdata('payment_type');
 	}
 
 	public function clear_sale_location()
 	{
-		$this->CI->session->unset_userdata('sales_location');
+		$this->session->unset_userdata('sales_location');
 	}
 
 	public function set_giftcard_remainder($value)
 	{
-		$this->CI->session->set_userdata('sales_giftcard_remainder', $value);
+		$this->session->set_userdata('sales_giftcard_remainder', $value);
 	}
 
 	public function get_giftcard_remainder()
 	{
-		return $this->CI->session->userdata('sales_giftcard_remainder');
+		return $this->session->userdata('sales_giftcard_remainder');
 	}
 
 	public function clear_giftcard_remainder()
 	{
-		$this->CI->session->unset_userdata('sales_giftcard_remainder');
+		$this->session->unset_userdata('sales_giftcard_remainder');
 	}
 
 	public function set_rewards_remainder($value)
 	{
-		$this->CI->session->set_userdata('sales_rewards_remainder', $value);
+		$this->session->set_userdata('sales_rewards_remainder', $value);
 	}
 
 	public function get_rewards_remainder()
 	{
-		return $this->CI->session->userdata('sales_rewards_remainder');
+		return $this->session->userdata('sales_rewards_remainder');
 	}
 
 	public function clear_rewards_remainder()
 	{
-		$this->CI->session->unset_userdata('sales_rewards_remainder');
+		$this->session->unset_userdata('sales_rewards_remainder');
 	}
 
 	public function add_item(&$item_id, $quantity = 1, $item_location, &$discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL)
 	{
-		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id, $include_deleted);
+		$item_info = $this->Item->get_info_by_id_or_number($item_id, $include_deleted);
 		//make sure item exists
 		if(empty($item_info))
 		{
@@ -875,7 +878,7 @@ class Sale_lib
 		$total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type);
 		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, TRUE);
 
-		if($this->CI->config->get('multi_pack_enabled') == '1')
+		if($this->appconfig->get('multi_pack_enabled') == '1')
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
@@ -888,7 +891,7 @@ class Sale_lib
 			$item = [$insertkey => [
 					'item_id' => $item_id,
 					'item_location' => $item_location,
-					'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
+					'stock_name' => $this->Stock_location->get_location_name($item_location),
 					'line' => $insertkey,
 					'name' => $item_info->name,
 					'item_number' => $item_info->item_number,
@@ -901,7 +904,7 @@ class Sale_lib
 					'quantity' => $quantity,
 					'discount' => $applied_discount,
 					'discount_type' => $discount_type,
-					'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+					'in_stock' => $this->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 					'price' => $price,
 					'cost_price' => $cost_price,
 					'total' => $total,
@@ -934,11 +937,11 @@ class Sale_lib
 		//make sure item exists
 		if($item_id != -1)
 		{
-			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+			$item_info = $this->Item->get_info_by_id_or_number($item_id);
 
 			if($item_info->stock_type == HAS_STOCK)
 			{
-				$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
+				$item_quantity = $this->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
 				$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
 
 				if($item_quantity - $quantity_added < 0)
@@ -1020,7 +1023,7 @@ class Sale_lib
 		if($item_type == ITEM_TEMP)
 		{
 			$item_id = $items[$line]['item_id'];
-			$this->CI->Item->delete($item_id);
+			$this->Item->delete($item_id);
 		}
 		unset($items[$line]);
 		$this->set_cart($items);
@@ -1035,12 +1038,12 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->getResult() as $row)
+		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
 		}
 
-		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
+		$this->set_customer($this->sale->get_customer($sale_id)->person_id);
 	}
 
 	public function add_item_kit($external_item_kit_id, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, &$stock_warning)
@@ -1051,7 +1054,7 @@ class Sale_lib
 		$result = TRUE;
 		$applied_discount = $discount;
 
-		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
+		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
 
@@ -1069,18 +1072,18 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->getResult() as $row)
+		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
 		}
 
-		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+		$this->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 
 		// Establish cash_mode for this sale by inspecting the payments
-		if($this->CI->session->userdata('cash_rounding'))
+		if($this->session->userdata('cash_rounding'))
 		{
 			$cash_types_only = true;
-			foreach($this->CI->Sale->get_sale_payments($sale_id)->getResult() as $row)
+			foreach($this->sale->get_sale_payments($sale_id)->getResult() as $row)
 			{
 				if($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment'))
 				{
@@ -1090,38 +1093,38 @@ class Sale_lib
 			}
 			if($cash_types_only)
 			{
-				$this->CI->session->set_userdata('cash_mode', CASH_MODE_TRUE);
+				$this->session->set_userdata('cash_mode', CASH_MODE_TRUE);
 			}
 			else
 			{
-				$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+				$this->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 			}
 		}
 
 		// Now load payments
-		foreach($this->CI->Sale->get_sale_payments($sale_id)->getResult() as $row)
+		foreach($this->sale->get_sale_payments($sale_id)->getResult() as $row)
 		{
 			$this->add_payment($row->payment_type, $row->payment_amount, $row->cash_adjustment);
 		}
 
-		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
-		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
-		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
-		$this->set_work_order_number($this->CI->Sale->get_work_order_number($sale_id));
-		$this->set_sale_type($this->CI->Sale->get_sale_type($sale_id));
-		$this->set_comment($this->CI->Sale->get_comment($sale_id));
-		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
-		$this->CI->session->set_userdata('sale_id', $sale_id);
+		$this->set_customer($this->sale->get_customer($sale_id)->person_id);
+		$this->set_employee($this->sale->get_employee($sale_id)->person_id);
+		$this->set_quote_number($this->sale->get_quote_number($sale_id));
+		$this->set_work_order_number($this->sale->get_work_order_number($sale_id));
+		$this->set_sale_type($this->sale->get_sale_type($sale_id));
+		$this->set_comment($this->sale->get_comment($sale_id));
+		$this->set_dinner_table($this->sale->get_dinner_table($sale_id));
+		$this->session->set_userdata('sale_id', $sale_id);
 	}
 
 	public function get_sale_id()
 	{
-		return $this->CI->session->userdata('sale_id');
+		return $this->session->userdata('sale_id');
 	}
 
 	public function clear_all()
 	{
-		$this->CI->session->set_userdata('sale_id', -1);
+		$this->session->set_userdata('sale_id', -1);
 		$this->clear_mode();
 		$this->clear_table();
 		$this->empty_cart();
@@ -1139,9 +1142,9 @@ class Sale_lib
 
 	public function clear_cash_flags()
 	{
-		$this->CI->session->unset_userdata('cash_rounding');
-		$this->CI->session->unset_userdata('cash_mode');
-		$this->CI->session->unset_userdata('payment_type');
+		$this->session->unset_userdata('cash_rounding');
+		$this->session->unset_userdata('cash_mode');
+		$this->session->unset_userdata('payment_type');
 	}
 
 	/**
@@ -1151,7 +1154,7 @@ class Sale_lib
 	 */
 	public function reset_cash_rounding()
 	{
-		$cash_rounding_code = $this->CI->config->get('cash_rounding_code');
+		$cash_rounding_code = $this->appconfig->get('cash_rounding_code');
 
 		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)
 		{
@@ -1161,8 +1164,8 @@ class Sale_lib
 		{
 			$cash_rounding = 0;
 		}
-		$this->CI->session->set_userdata('cash_rounding', $cash_rounding);
-		$this->CI->session->set_userdata('cash_mode', CASH_MODE_FALSE);
+		$this->session->set_userdata('cash_rounding', $cash_rounding);
+		$this->session->set_userdata('cash_mode', CASH_MODE_FALSE);
 
 		return $cash_rounding;
 	}
@@ -1170,7 +1173,7 @@ class Sale_lib
 	public function is_customer_taxable()
 	{
 		$customer_id = $this->get_customer();
-		$customer = $this->CI->Customer->get_info($customer_id);
+		$customer = $this->Customer->get_info($customer_id);
 
 		//Do not charge sales tax if we have a customer that is not taxable
 		return $customer->taxable or $customer_id == -1;
@@ -1220,7 +1223,7 @@ class Sale_lib
 
 	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount, $discount_type, $include_discount = FALSE)
 	{
-		$tax_info = $this->CI->Item_taxes->get_info($item_id);
+		$tax_info = $this->Item_taxes->get_info($item_id);
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, $include_discount);
 		// only additive tax here
 		foreach($tax_info as $tax)
@@ -1234,7 +1237,7 @@ class Sale_lib
 
 	public function get_extended_total_tax_exclusive($item_id, $discounted_extended_amount, $quantity, $price, $discount = 0.0, $discount_type = 0)
 	{
-		$tax_info = $this->CI->Item_taxes->get_info($item_id);
+		$tax_info = $this->Item_taxes->get_info($item_id);
 		// only additive tax here
 		foreach($tax_info as $tax)
 		{
@@ -1298,7 +1301,7 @@ class Sale_lib
 	{
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
 
-		if($this->CI->config->get('tax_included'))
+		if($this->appconfig->get('tax_included'))
 		{
 			$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
 			$price_tax_excl = bcdiv($item_total, $tax_fraction);
@@ -1316,7 +1319,7 @@ class Sale_lib
 		$subtotal = 0.0;
 		foreach($this->get_cart() as $item)
 		{
-			if($exclude_tax && $this->CI->config->get('tax_included'))
+			if($exclude_tax && $this->appconfig->get('tax_included'))
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
 			}
@@ -1338,12 +1341,12 @@ class Sale_lib
 	{
 		$total = $this->calculate_subtotal(TRUE);
 
-		$cash_mode = $this->CI->session->userdata('cash_mode');
+		$cash_mode = $this->session->userdata('cash_mode');
 
-		if(!$this->CI->config->get('tax_included'))
+		if(!$this->appconfig->get('tax_included'))
 		{
 			$cart = $this->get_cart();
-			foreach($this->CI->tax_lib->get_taxes($cart)[0] as $tax)
+			foreach($this->tax_lib->get_taxes($cart)[0] as $tax)
 			{
 				$total = bcadd($total, $tax['sale_tax_amount']);
 			}
@@ -1359,13 +1362,13 @@ class Sale_lib
 
 	public function get_empty_tables($current_dinner_table_id)
 	{
-		return $this->CI->Dinner_table->get_empty_tables($current_dinner_table_id);
+		return $this->Dinner_table->get_empty_tables($current_dinner_table_id);
 	}
 
 	public function check_for_cash_rounding($total)
 	{
 		$cash_decimals = cash_decimals();
-		$cash_rounding_code = $this->CI->config->get('cash_rounding_code');
+		$cash_rounding_code = $this->appconfig->get('cash_rounding_code');
 
 		return Rounding_mode::round_number($cash_rounding_code, $total, $cash_decimals);
 	}

@@ -13,7 +13,6 @@ use stdClass;
  * @property expense_category expense_category
  *
  */
-
 class Expense extends Model
 {
 	public function __construct()
@@ -24,37 +23,38 @@ class Expense extends Model
 		$this->employee = model('Employee');
 		$this->expense_category = model('Expense_category');
 	}
-	/*
-	* Determines if a given Expense_id is an Expense
-	*/
+
+	/**
+	 * Determines if a given Expense_id is an Expense
+	 */
 	public function exists(int $expense_id): bool
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	Gets category info
-	*/
+	/**
+	 * Gets category info
+	 */
 	public function get_expense_category(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->expense_category->get_info($builder->get()->getRow()->expense_category_id);
+		return $this->expense_category->get_info($builder->get()->getRow()->expense_category_id);	//TODO: refactor out the nested function call.
 	}
 
-	/*
-	Gets employee info
-	*/
+	/**
+	 * Gets employee info
+	 */
 	public function get_employee(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->employee->get_info($builder->get()->getRow()->employee_id);
+		return $this->employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}
 
 	public function get_multiple_info(array $expense_ids)
@@ -66,22 +66,23 @@ class Expense extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Gets rows
-	*/
+	/**
+	 * Gets rows
+	 */
 	public function get_found_rows(string $search, array $filters)
 	{
 		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
 
-	/*
-	* Searches expenses
-	*/
-	public function search(string $search, array $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
+	/**
+	 * Searches expenses
+	 */
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('expenses AS expenses');
+
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
@@ -118,6 +119,11 @@ class Expense extends Model
 
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
+		/*	//TODO: Below needs to be replaced with Ternary notation
+		empty($this->appconfig->get('date_or_time_format'))
+			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
+			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+		*/
 		if(empty($this->appconfig->get('date_or_time_format')))
 		{
 			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
@@ -127,7 +133,7 @@ class Expense extends Model
 			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_debit'] != FALSE)
+		if($filters['only_debit'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_debit'])`... same with below.
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.debit'));
 		}
@@ -155,8 +161,7 @@ class Expense extends Model
 			$builder->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
-		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -173,10 +178,10 @@ class Expense extends Model
 		return $builder->get();
 	}
 
-	/*
-	Gets information about a particular expense
-	*/
-	public function get_info($expense_id)
+	/**
+	 * Gets information about a particular expense
+	 */
+	public function get_info(int $expense_id)
 	{
 		$builder = $this->db->table('expenses AS expenses');
 		$builder->select('
@@ -203,11 +208,12 @@ class Expense extends Model
 		$builder->where('expense_id', $expense_id);
 
 		$query = $builder->get();
-		if($query->getNumRows() == 1)
+
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
-		else
+		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
 			//Get empty base parent object
 			$expenses_obj = new stdClass();
@@ -224,9 +230,9 @@ class Expense extends Model
 		}
 	}
 
-	/*
-	Inserts or updates an expense
-	*/
+	/**
+	 * Inserts or updates an expense
+	 */
 	public function save(array &$expense_data, bool $expense_id = FALSE): bool
 	{
 		$builder = $this->db->table('expenses');
@@ -248,12 +254,12 @@ class Expense extends Model
 		return $builder->update($expense_data);
 	}
 
-	/*
-	Deletes a list of expense_category
-	*/
+	/**
+	 * Deletes a list of expense_category
+	 */
 	public function delete_list(array $expense_ids): bool
 	{
-		$success = FALSE;
+		$success = FALSE;	//TODO: unneeded variable instantiation here.  It gets overwritten immediately.
 		$builder = $this->db->table('expenses');
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -265,10 +271,10 @@ class Expense extends Model
 		return $success;	//TODO: add TransStatus() to $success with bitwise and assignment operator.
 	}
 
-	/*
-	Gets the payment summary for the expenses (expenses/manage) view
-	*/
-	public function get_payments_summary($search, $filters): array
+	/**
+	 * Gets the payment summary for the expenses (expenses/manage) view
+	 */
+	public function get_payments_summary(string $search, array $filters): array
 	{
 		// get payment summary
 		$builder = $this->db->table('expenses');
@@ -284,7 +290,7 @@ class Expense extends Model
 			$builder->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_cash'])`... same with below.
 		{
 			$builder->like('payment_type', lang('Expenses.cash'));
 		}
@@ -314,17 +320,17 @@ class Expense extends Model
 		return $builder->get()->getResultArray();
 	}
 
-	/*
-	Gets the payment options to show in the expense forms
-	*/
+	/**
+	 * Gets the payment options to show in the expense forms
+	 */
 	public function get_payment_options(): array
 	{
 		return get_payment_options();
 	}
 
-	/*
-	Gets the expense payment
-	*/
+	/**
+	 * Gets the expense payment
+	 */
 	public function get_expense_payment(int $expense_id)
 	{
 		$builder = $this->db->table('expenses');

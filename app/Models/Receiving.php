@@ -14,7 +14,6 @@ use CodeIgniter\Model;
  * @property item_quantity item_quantity
  * @property supplier supplier
  */
-
 class Receiving extends Model
 {
 	public function __construct()
@@ -87,7 +86,7 @@ class Receiving extends Model
 	{
 		if(count($items) == 0)
 		{
-			return -1;
+			return -1;	//TODO: Replace -1 with a constant
 		}
 
 		$receivings_data = [
@@ -198,9 +197,9 @@ class Receiving extends Model
 
 		if($update_inventory)
 		{
-			// defect, not all item deletions will be undone??
-			// get array with all the items involved in the sale to update the inventory tracking
+			//TODO: defect, not all item deletions will be undone? get array with all the items involved in the sale to update the inventory tracking
 			$items = $this->get_receiving_items($receiving_id)->getResultArray();
+
 			foreach($items as $item)
 			{
 				// create query to update inventory tracking
@@ -213,18 +212,18 @@ class Receiving extends Model
 					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				];
 				// update inventory
-				$this->inventory->insert($inv_data);
+				$this->inventory->insert($inv_data);	//TODO: Reflection exception
 
 				// update quantities
 				$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
 			}
 		}
 
-		// delete all items
+		//delete all items
 		$builder = $this->db->table('receivings_items');
 		$builder->delete(['receiving_id' => $receiving_id]);
-		// delete sale itself
 
+		//delete sale itself
 		$builder = $this->db->table('receivings');
 		$builder->delete(['receiving_id' => $receiving_id]);
 
@@ -261,9 +260,9 @@ class Receiving extends Model
 		];
 	}
 
-	/*
-	We create a temp table that allows us to do easy report/receiving queries
-	*/
+	/**
+	 * Create a temp table that allows us to do easy report/receiving queries
+	 */
 	public function create_temp_table(array $inputs)
 	{
 		if(empty($inputs['receiving_id']))

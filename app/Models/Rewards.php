@@ -10,9 +10,9 @@ use CodeIgniter\Model;
 
 class Rewards extends Model
 {
-	/*
-	Inserts or updates a rewards
-	*/
+	/**
+	 * Inserts or updates a rewards
+	 */
 	public function save(array &$rewards_data, bool $rewards_id = FALSE): bool
 	{
 		$builder = $this->db->table('sales_reward_points');

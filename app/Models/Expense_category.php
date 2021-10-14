@@ -8,24 +8,23 @@ use stdClass;
 /**
  * Expense_category class
  */
-
 class Expense_category extends Model
 {
-	/*
-	* Determines if a given Expense_id is an Expense category
-	*/
-	public function exists($expense_category_id): bool
+	/**
+	 * Determines if a given Expense_id is an Expense category
+	 */
+	public function exists(int $expense_category_id): bool
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->where('expense_category_id', $expense_category_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	/*
-	* Gets total of rows
-	*/
-	public function get_total_rows()
+	/**
+	 * Gets total of rows
+	 */
+	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->where('deleted', 0);
@@ -33,17 +32,17 @@ class Expense_category extends Model
 		return $builder->countAllResults();
 	}
 
-	/*
-	* Gets information about a particular category
-	*/
-	public function get_info($expense_category_id)
+	/**
+	 * Gets information about a particular category
+	 */
+	public function get_info(int $expense_category_id)
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->where('expense_category_id', $expense_category_id);
 		$builder->where('deleted', 0);
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
 		}
@@ -62,10 +61,10 @@ class Expense_category extends Model
 		}
 	}
 
-	/*
-	* Returns all the expense_categories
-	*/
-	public function get_all($rows = 0, $limit_from = 0, $no_deleted = FALSE)
+	/**
+	 * Returns all the expense_categories
+	 */
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = FALSE)
 	{
 		$builder = $this->db->table('expense_categories');
 
@@ -84,10 +83,10 @@ class Expense_category extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Gets information about multiple expense_category_id
-	*/
-	public function get_multiple_info($expense_category_ids)
+	/**
+	 * Gets information about multiple expense_category_id
+	 */
+	public function get_multiple_info(array $expense_category_ids)
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->whereIn('expense_category_id', $expense_category_ids);
@@ -96,16 +95,15 @@ class Expense_category extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Inserts or updates an expense_category
-	*/
+	/**
+	 * Inserts or updates an expense_category
+	 */
 	public function save(array &$expense_category_data, bool $expense_category_id = FALSE): bool
 	{
 		$builder = $this->db->table('expense_categories');
 
 		if(!$expense_category_id || !$this->exists($expense_category_id))
 		{
-
 			if($builder->insert($expense_category_data))
 			{
 				$expense_category_data['expense_category_id'] = $this->db->insertID();
@@ -121,9 +119,9 @@ class Expense_category extends Model
 		return $builder->update($expense_category_data);
 	}
 
-	/*
-	* Deletes a list of expense_category
-	*/
+	/**
+	 * Deletes a list of expense_category
+	 */
 	public function delete_list(array $expense_category_ids): bool
 	{
 		$builder = $this->db->table('expense_categories');
@@ -132,23 +130,23 @@ class Expense_category extends Model
 		return $builder->update(['deleted' => 1]);
  	}
 
-	/*
-	* Gets rows
-	*/
+	/**
+	 * Gets rows
+	 */
 	public function get_found_rows(string $search)
 	{
 		return $this->search($search, 0, 0, 'category_name', 'asc', TRUE);
 	}
 
-	/*
-	* Perform a search on expense_category
-	*/
+	/**
+	 * Perform a search on expense_category
+	 */
 	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('expense_categories AS expense_categories');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(expense_categories.expense_category_id) as count');
 		}
@@ -160,7 +158,7 @@ class Expense_category extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}

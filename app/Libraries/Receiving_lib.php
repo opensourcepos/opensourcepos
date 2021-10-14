@@ -2,176 +2,198 @@
 
 namespace app\Libraries;
 
+use App\Models\Appconfig;
 use App\Models\Attribute;
+use App\Models\Item;
+use App\Models\Item_kit_items;
+use App\Models\Item_quantity;
+use App\Models\Receiving;
+use App\Models\Stock_location;
+
+use CodeIgniter\Session\Session;
 
 /**
  * Receiving library
  *
  * Library with utilities to manage receivings
  *
+ * @property appconfig appconfig
  * @property attribute attribute
+ * @property item item
+ * @property item_kit_items item_kit_items
+ * @property item_quantity item_quantity
+ * @property receiving receiving
+ * @property stock_location stock_location
+ * 
+ * @property session session
+ *
  */
 class Receiving_lib
 {
-	private $CI;
-
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
+		$this->item = model('Item');
+		$this->item_kit_items = model('Item_kit_items');
+		$this->item_quantity = model('Item_quantity');
+		$this->receiving = model('Receiving');
+		$this->stock_location = model('Stock_location');
+		
+		$this->session = session();
 	}
 
 	public function get_cart()
 	{
-		if(!$this->CI->session->userdata('recv_cart'))
+		if(!$this->session->userdata('recv_cart'))
 		{
-			$this->set_cart ([));
+			$this->set_cart ([]);
 		}
 
-		return $this->CI->session->userdata('recv_cart');
+		return $this->session->userdata('recv_cart');
 	}
 
 	public function set_cart($cart_data)
 	{
-		$this->CI->session->set_userdata('recv_cart', $cart_data);
+		$this->session->set_userdata('recv_cart', $cart_data);
 	}
 
 	public function empty_cart()
 	{
-		$this->CI->session->unset_userdata('recv_cart');
+		$this->session->unset_userdata('recv_cart');
 	}
 
 	public function get_supplier()
 	{
-		if(!$this->CI->session->userdata('recv_supplier'))
+		if(!$this->session->userdata('recv_supplier'))
 		{
 			$this->set_supplier(-1);
 		}
 
-		return $this->CI->session->userdata('recv_supplier');
+		return $this->session->userdata('recv_supplier');
 	}
 
 	public function set_supplier($supplier_id)
 	{
-		$this->CI->session->set_userdata('recv_supplier', $supplier_id);
+		$this->session->set_userdata('recv_supplier', $supplier_id);
 	}
 
 	public function remove_supplier()
 	{
-		$this->CI->session->unset_userdata('recv_supplier');
+		$this->session->unset_userdata('recv_supplier');
 	}
 
 	public function get_mode()
 	{
-		if(!$this->CI->session->userdata('recv_mode'))
+		if(!$this->session->userdata('recv_mode'))
 		{
 			$this->set_mode('receive');
 		}
 
-		return $this->CI->session->userdata('recv_mode');
+		return $this->session->userdata('recv_mode');
 	}
 
 	public function set_mode($mode)
 	{
-		$this->CI->session->set_userdata('recv_mode', $mode);
+		$this->session->set_userdata('recv_mode', $mode);
 	}
 	
 	public function clear_mode()
 	{
-		$this->CI->session->unset_userdata('recv_mode');
+		$this->session->unset_userdata('recv_mode');
 	}
 
 	public function get_stock_source()
 	{
-		if(!$this->CI->session->userdata('recv_stock_source'))
+		if(!$this->session->userdata('recv_stock_source'))
 		{
-			$this->set_stock_source($this->CI->Stock_location->get_default_location_id('receivings'));
+			$this->set_stock_source($this->stock_location->get_default_location_id('receivings'));
 		}
 
-		return $this->CI->session->userdata('recv_stock_source');
+		return $this->session->userdata('recv_stock_source');
 	}
 	
 	public function get_comment()
 	{
 		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
-		$comment = $this->CI->session->userdata('recv_comment');
+		$comment = $this->session->userdata('recv_comment');
 
 		return empty($comment) ? '' : $comment;
 	}
 	
 	public function set_comment($comment)
 	{
-		$this->CI->session->set_userdata('recv_comment', $comment);
+		$this->session->set_userdata('recv_comment', $comment);
 	}
 	
 	public function clear_comment()
 	{
-		$this->CI->session->unset_userdata('recv_comment');
+		$this->session->unset_userdata('recv_comment');
 	}
    
 	public function get_reference()
 	{
-		return $this->CI->session->userdata('recv_reference');
+		return $this->session->userdata('recv_reference');
 	}
 	
 	public function set_reference($reference)
 	{
-		$this->CI->session->set_userdata('recv_reference', $reference);
+		$this->session->set_userdata('recv_reference', $reference);
 	}
 	
 	public function clear_reference()
 	{
-		$this->CI->session->unset_userdata('recv_reference');
+		$this->session->unset_userdata('recv_reference');
 	}
 	
 	public function is_print_after_sale()
 	{
-		return $this->CI->session->userdata('recv_print_after_sale') == 'true' ||
-				$this->CI->session->userdata('recv_print_after_sale') == '1';
+		return $this->session->userdata('recv_print_after_sale') == 'true' ||
+				$this->session->userdata('recv_print_after_sale') == '1';
 	}
 	
 	public function set_print_after_sale($print_after_sale)
 	{
-		return $this->CI->session->set_userdata('recv_print_after_sale', $print_after_sale);
+		return $this->session->set_userdata('recv_print_after_sale', $print_after_sale);
 	}
 	
 	public function set_stock_source($stock_source)
 	{
-		$this->CI->session->set_userdata('recv_stock_source', $stock_source);
+		$this->session->set_userdata('recv_stock_source', $stock_source);
 	}
 	
 	public function clear_stock_source()
 	{
-		$this->CI->session->unset_userdata('recv_stock_source');
+		$this->session->unset_userdata('recv_stock_source');
 	}
 	
 	public function get_stock_destination()
 	{
-		if(!$this->CI->session->userdata('recv_stock_destination'))
+		if(!$this->session->userdata('recv_stock_destination'))
 		{
-			$this->set_stock_destination($this->CI->Stock_location->get_default_location_id('receivings'));
+			$this->set_stock_destination($this->stock_location->get_default_location_id('receivings'));
 		}
 
-		return $this->CI->session->userdata('recv_stock_destination');
+		return $this->session->userdata('recv_stock_destination');
 	}
 
 	public function set_stock_destination($stock_destination)
 	{
-		$this->CI->session->set_userdata('recv_stock_destination', $stock_destination);
+		$this->session->set_userdata('recv_stock_destination', $stock_destination);
 	}
 	
 	public function clear_stock_destination()
 	{
-		$this->CI->session->unset_userdata('recv_stock_destination');
+		$this->session->unset_userdata('recv_stock_destination');
 	}
 
 	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $discount_type = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $receiving_id = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists in database.
-		if(!$this->CI->Item->exists($item_id, $include_deleted))
+		if(!$this->item->exists($item_id, $include_deleted))
 		{
 			//try to get item id given an item_number
-			$item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
+			$item_id = $this->item->get_item_id($item_id, $include_deleted);
 
 			if(!$item_id)
 			{
@@ -212,24 +234,25 @@ class Receiving_lib
 		}
 
 		$insertkey = $maxkey+1;
-		$item_info = $this->CI->Item->get_info($item_id,$item_location);
+		$item_info = $this->item->get_info($item_id,$item_location);
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
 
-		if($this->CI->config->get('multi_pack_enabled') == '1')
+		if($this->appconfig->get('multi_pack_enabled') == '1')
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
 		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)
 		{
-			$receiving_quantity_choices = [1  => 'x1');
+			$receiving_quantity_choices = [1  => 'x1'];
 		}
 		else
 		{
 			$receiving_quantity_choices = [
 				to_quantity_decimals($item_info->receiving_quantity) => 'x' . to_quantity_decimals($item_info->receiving_quantity),
-				1  => 'x1');
+				1  => 'x1'
+			];
 		}
 
 		if(is_null($receiving_quantity))
@@ -243,7 +266,7 @@ class Receiving_lib
 				'item_id' => $item_id,
 				'item_location' => $item_location,
 				'item_number' => $item_info->item_number,
-				'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
+				'stock_name' => $this->stock_location->get_location_name($item_location),
 				'line' => $insertkey,
 				'name' => $item_info->name,
 				'description' => $description != NULL ? $description: $item_info->description,
@@ -255,13 +278,13 @@ class Receiving_lib
 				'quantity' => $quantity,
 				'discount' => $discount,
 				'discount_type' => $discount_type,
-				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+				'in_stock' => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
 				'receiving_quantity' => $receiving_quantity,
 				'receiving_quantity_choices' => $receiving_quantity_choices,
 				'total' => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
-			)
-		);
+			]
+		];
 
 		//Item already exists
 		if($itemalreadyinsale)
@@ -320,19 +343,19 @@ class Receiving_lib
 		} 
 		else 
 		{
-			$receiving_id = $this->CI->Receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
+			$receiving_id = $this->receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
 		}
 
 		$this->empty_cart();
 		$this->remove_supplier();
 		$this->clear_comment();
 
-		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->getResult() as $row)
+		foreach($this->receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
 		}
 
-		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
+		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
 	}
 
 	public function add_item_kit($external_item_kit_id, $item_location, $discount, $discount_type)
@@ -341,7 +364,7 @@ class Receiving_lib
 		$pieces = explode(' ',$external_item_kit_id);
 		$item_kit_id = count($pieces) > 1 ? $pieces[1] : $external_item_kit_id;
 		
-		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
+		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type);
 		}
@@ -352,13 +375,13 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->remove_supplier();
 
-		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->getResult() as $row)
+		foreach($this->receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
 		}
 
-		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
-		//$this->set_reference($this->CI->Receiving->get_info($receiving_id)->getRow()->reference);
+		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
+		//$this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);	//TODO: If this code won't be added back in, then let's delete it.
 	}
 
 	public function clear_all()

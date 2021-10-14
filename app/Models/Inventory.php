@@ -10,7 +10,6 @@ use CodeIgniter\Model;
  * @property employee employee
  *
  */
-
 class Inventory extends Model
 {
 	public function __construct()
@@ -23,6 +22,7 @@ class Inventory extends Model
 	public function insert(array $inventory_data = null, bool $returnId = true): bool
 	{
 		$builder = $this->db->table('inventory');
+
 		return $builder->insert($inventory_data);
 	}
 
@@ -30,10 +30,11 @@ class Inventory extends Model
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_comment', $comment);
+
 		return $builder->update($inventory_data);
 	}
 
-	public function get_inventory_data_for_item(int $item_id, bool $location_id = FALSE)
+	public function get_inventory_data_for_item(int $item_id, $location_id = FALSE)
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
@@ -54,7 +55,7 @@ class Inventory extends Model
 		foreach($inventory_sums as $inventory_sum)
 		{
 			if($inventory_sum['sum'] > 0)
-			{
+			{//TODO: Reflection Exception
 				return $this->insert([
 					'trans_inventory' => -1 * $inventory_sum['sum'],
 					'trans_items' => $item_id,
@@ -68,7 +69,7 @@ class Inventory extends Model
 		return TRUE;
 	}
 
-	public function get_inventory_sum($item_id): array
+	public function get_inventory_sum(int $item_id): array
 	{
 		$builder = $this->db->table('inventory');
 		$builder->select('SUM(trans_inventory) AS sum, MAX(trans_location) AS location_id');

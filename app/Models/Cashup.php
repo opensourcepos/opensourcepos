@@ -217,7 +217,7 @@ class Cashup extends Model
 	/*
 	* Deletes a list of cashups
 	*/
-	public function delete_list(string $cashup_ids): bool	//TODO: we need to debug this and make sure that what is getting sent is a comma-separated list and not an array.
+	public function delete_list(array $cashup_ids): bool
 	{
 		$success = FALSE;
 

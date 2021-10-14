@@ -8,7 +8,6 @@ use stdClass;
 /**
  * Base class for People classes
  */
-
 class Person extends Model
 {
 	/**
@@ -23,16 +22,14 @@ class Person extends Model
 		$builder = $this->db->table('people');
 		$builder->where('people.person_id', $person_id);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
 	/**
 	 * Gets all people from the database table
 	 *
 	 * @param integer $limit limits the query return rows
-	 *
 	 * @param integer $offset offset the query
-	 *
 	 * @return array array of people table rows	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
 	public function get_all(int $limit = 10000, int $offset = 0)
@@ -108,9 +105,7 @@ class Person extends Model
 	 * Inserts or updates a person
 	 *
 	 * @param array $person_data array containing person information
-	 *
 	 * @param bool $person_id identifier of the person to update the information
-	 *
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
 	public function save(array &$person_data, bool $person_id = FALSE): bool
@@ -138,9 +133,7 @@ class Person extends Model
 	 * Get search suggestions to find person
 	 *
 	 * @param string $search string containing the term to search in the people table
-	 *
 	 * @param integer $limit limit the search
-	 *
 	 * @return array array with the suggestion strings
 	 */
 	public function get_search_suggestions(string $search, int $limit = 25): array
@@ -164,7 +157,7 @@ class Person extends Model
 
 		foreach($builder->get()->getResult() as $row)
 		{
-			$suggestions[] = ['label' => $row->person_id);
+			$suggestions[] = ['label' => $row->person_id];
 		}
 
 		//only return $limit suggestions
@@ -180,7 +173,6 @@ class Person extends Model
 	 * Deletes one Person (dummy base function)
 	 *
 	 * @param integer $person_id person identificator
-	 *
 	 * @return boolean always TRUE
 	 */
 	public function delete(int $person_id = null, bool $purge = false): bool
@@ -191,8 +183,7 @@ class Person extends Model
 	/**
 	 * Deletes a list of people (dummy base function)
 	 *
-	 * @param array $person_ids list of person identificators
-	 *
+	 * @param array $person_ids list of person identifiers
 	 * @return boolean always TRUE
 	 */
 	public function delete_list(array $person_ids): bool

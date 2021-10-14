@@ -7,12 +7,11 @@ use CodeIgniter\Model;
 /**
  * Item_kit_items class
  */
-
 class Item_kit_items extends Model
 {
-	/*
-	* Gets item kit items for a particular item kit
-	*/
+	/**
+	 * Gets item kit items for a particular item kit
+	 */
 	public function get_info(int $item_kit_id): array
 	{
 		$builder = $this->db->table('item_kit_items as item_kit_items');
@@ -27,10 +26,10 @@ class Item_kit_items extends Model
 		return $builder->get()->getResultArray();
 	}
 
-	/*
-	* Gets item kit items for a particular item kit
-	*/
-	public function get_info_for_sale(int $item_kit_id): array
+	/**
+	 * Gets item kit items for a particular item kit
+	 */
+	public function get_info_for_sale(int $item_kit_id): array	//TODO: This function does not seem to be called anywhere in the code
 	{
 		$builder = $this->db->table('item_kit_items');
 		$builder->where('item_kit_id', $item_kit_id);
@@ -40,14 +39,13 @@ class Item_kit_items extends Model
 		//return an array of item kit items for an item
 		return $builder->get()->getResultArray();
 	}
-	/*
-	* Inserts or updates an item kit's items
-	*/
+
+	/**
+	 * Inserts or updates an item kit's items
+	 */
 	public function save(array &$item_kit_items_data, int $item_kit_id): bool
 	{
 		$success = TRUE;
-
-		//Run these queries as a transaction, we want to make sure we do all or nothing
 
 		$this->db->transStart();
 
@@ -70,12 +68,13 @@ class Item_kit_items extends Model
 		return $success;
 	}
 
-	/*
-	* Deletes item kit items given an item kit
-	*/
+	/**
+	 * Deletes item kit items given an item kit
+	 */
 	public function delete(int $item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kit_items');
+
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 }

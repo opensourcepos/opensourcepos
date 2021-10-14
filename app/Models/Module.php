@@ -7,7 +7,6 @@ use CodeIgniter\Model;
 /**
  * Module class
  */
-
 class Module extends Model
 {
 	function __construct()
@@ -20,7 +19,7 @@ class Module extends Model
 		$builder = $this->db->table('modules');
 		$query = $builder->getWhere(['module_id' => $module_id], 1);
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			$row = $query->getRow();
 
@@ -30,12 +29,12 @@ class Module extends Model
 		return lang('Error.unknown');
 	}
 
-	public function get_module_desc(string $module_id): string
+	public function get_module_desc(string $module_id): string	//TODO: This method doesn't seem to be called in the code.  Is it needed?  Also, probably should change the name to get_module_description()
 	{
 		$builder = $this->db->table('modules');
 		$query = $builder->getWhere(['module_id' => $module_id], 1);
 
-		if($query->getNumRows() == 1)
+		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			$row = $query->getRow();
 
@@ -67,12 +66,13 @@ class Module extends Model
 	{
 		$builder = $this->db->table('modules');
 		$builder->orderBy('sort', 'asc');
+
 		return $builder->get();
 	}
 
 	public function get_allowed_home_modules(int $person_id)
 	{
-		$menus = ['home', 'both');
+		$menus = ['home', 'both'];
 		$builder = $this->db->table('modules');	//TODO: this is duplicated with the code below... probably refactor a method and just pass through whether home/office modules are needed.
 		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
 		$builder->join('grants', 'permissions.permission_id = grants.permission_id');
@@ -80,12 +80,13 @@ class Module extends Model
 		$builder->whereIn('menu_group', $menus);
 		$builder->where('sort !=', 0);
 		$builder->orderBy('sort', 'asc');
+
 		return $builder->get();
 	}
 
 	public function get_allowed_office_modules(int $person_id)
 	{
-		$menus = ['office', 'both');
+		$menus = ['office', 'both'];
 		$builder = $this->db->table('modules');	//TODO: Duplicated code
 		$builder->join('permissions', 'permissions.permission_id = modules.module_id');
 		$builder->join('grants', 'permissions.permission_id = grants.permission_id');
@@ -103,7 +104,7 @@ class Module extends Model
 	 */
 	public function set_show_office_group(bool $show_office_group)	//TODO: Should we return the value of update() as a bool for consistency?
 	{
-		if($show_office_group)
+		if($show_office_group)	//TODO: This should be replaced with ternary notation
 		{
 			$sort = 999;
 		}
