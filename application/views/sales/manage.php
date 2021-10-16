@@ -17,6 +17,15 @@ $(document).ready(function()
 
 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
+	table_support.query_params = function()
+	{
+		return {
+			start_date: start_date,
+			end_date: end_date,
+			filters: $("#filters").val() || [""]
+		}
+	};
+
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
@@ -29,11 +38,7 @@ $(document).ready(function()
 			}
 		},
 		queryParams: function() {
-			return $.extend(arguments[0], {
-				start_date: start_date,
-				end_date: end_date,
-				filters: $("#filters").val() || [""]
-			});
+			return $.extend(arguments[0], table_support.query_params());
 		},
 		columns: {
 			'invoice': {
