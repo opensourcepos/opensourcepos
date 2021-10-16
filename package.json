@@ -1,7 +1,11 @@
 {
-  "name": "opensourcepos",
+  "name": "@opensourcepos/opensourcepos",
   "version": "3.3.6",
   "description": "Open Source Point of Sale is a web-based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensourcepos/opensourcepos"
+  },
   "main": "index.php",
   "license": "MIT",
   "authors": [
@@ -9,14 +13,13 @@
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
   "scripts": {
-    "clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
     "install": "composer install & bower install",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "npm update & composer self-update & composer update"
+    "update": "npm update & composer self-update & composer update",
+    "clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/opensourcepos/opensourcepos"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "keywords": [
     "point-of-sale",
