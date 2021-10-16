@@ -209,6 +209,11 @@ $(document).ready(function()
 				{
 					dialog_support.hide();
 					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+
+					const params = $.param(table_support.query_params());
+					$.get("<?php echo site_url($controller_name); ?>/search?" + params, function(response) {
+						$("#payment_summary").html(response.payment_summary);
+					}, 'json');
 				},
 				dataType: 'json'
 			});
