@@ -21,6 +21,8 @@ script:
   - docker run --rm -v $(pwd):/app jekkos/composer composer install
   - docker run --rm -v $(pwd):/app jekkos/composer php bin/install.php translations develop
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
+  - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
+  - npm version "$version-$branch-$rev" --force
   - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
     sh -c "npm install && bower install && grunt package"
   - docker build . --target ospos -t ospos
@@ -33,23 +35,31 @@ env:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
-before_deploy:
-  - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - TRAVIS_TAG=$(echo $branch.$version)
-  - git tag -f "$branch.$version"
-  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$branch.$version.zip"
+  - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
+before_deploy:
+  - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"
 deploy:
-  provider: releases
-  file: "dist/opensourcepos.$branch.$version.zip"
-  name: "OpensourcePos Unstable"
-  release_notes_file: WHATS_NEW.txt
-  prerelease: true
-  skip_cleanup: true
+  - provider: npm
+    file: dist/opensourcepos.$version.$rev.tgz
+    registry: npm.pkg.github.com
+    email: jeroen@steganos.dev
+    skip_cleanup: true
+    api_key:
+      secure: U7dldktSgysAqFdsrr/epmWi5rC1rOZPOo+L85W5O70Kvm/m1P3DLuLoAMTIKRISu2Bgoo6KfJLQl+8TRpgfUA19nEy6uL2BwlEhmfOXKROWUBOgt3xOSmCFYQfIv/ubC2sznXVyvla6b+GIsNQb2QiFcYr0wFkc9RCca9Eum+k=
+    on:
+      all_branches: true
+  - provider: releases
+    file: dist/opensourcepos.$version.$rev.tgz
+    name: "OpensourcePos $version"
+    release_notes_file: WHATS_NEW.txt
+    prerelease: true
+    skip_cleanup: true
 
-  user: jekkos
-  overwrite: true
-  api_key:
-    secure: Ax25mMRDfHVf/HjRwqxYJe2oMnWC4sc2aKIiUxAOviVJJSCl4GMWhcFlUNnFsDcKIg2ofEGMVD6b9cTBuOwPDvymUDFnLNCCgDWve+vRDdWaTkTipn77Qk4c9UO9VvuzlPSKopChefPHlQ0n1rEmAMiKIXuqjUlNGqybW4FLP4E=
-  on:
-    all_branches: true
-
+    user: jekkos
+    overwrite: true
+    api_key:
+      secure: Ax25mMRDfHVf/HjRwqxYJe2oMnWC4sc2aKIiUxAOviVJJSCl4GMWhcFlUNnFsDcKIg2ofEGMVD6b9cTBuOwPDvymUDFnLNCCgDWve+vRDdWaTkTipn77Qk4c9UO9VvuzlPSKopChefPHlQ0n1rEmAMiKIXuqjUlNGqybW4FLP4E=
+    on:
+      tags: true
+      branch: master
