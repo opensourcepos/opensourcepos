@@ -2,107 +2,118 @@
 
 namespace app\Libraries;
 
-use emberlabs\Barcode\BarcodeBase;
-require APPPATH.'/views/barcodes/BarcodeBase.php';
-require APPPATH.'/views/barcodes/Code39.php';
-require APPPATH.'/views/barcodes/Code128.php';
-require APPPATH.'/views/barcodes/Ean13.php';
-require APPPATH.'/views/barcodes/Ean8.php';
+use app\Models\Appconfig;
+use emberlabs\Barcode\Code128;
+use emberlabs\Barcode\Code39;
+use emberlabs\Barcode\Ean13;
+use emberlabs\Barcode\Ean8;
 
 /**
  * Barcode library
  *
  * Library with utilities to manage barcodes
+ *
+ * @property appconfig appconfig
+ *
  */
 
 class Barcode_lib
 {
-	private $CI;
-	private $supported_barcodes = ['Code39' => 'Code 39', 'Code128' => 'Code 128', 'Ean8' => 'EAN 8', 'Ean13' => 'EAN 13');
+	private $supported_barcodes = [
+		'Code39' => 'Code 39',
+		'Code128' => 'Code 128',
+		'Ean8' => 'EAN 8',
+		'Ean13' => 'EAN 13'
+	];
 
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->appconfig = model('Appconfig');
 	}
 
-	public function get_list_barcodes()
+	public function get_list_barcodes(): array
 	{
 		return $this->supported_barcodes;
 	}
 
-	public function get_barcode_config()
+	public function get_barcode_config(): array
 	{
-		$data['company'] = $this->CI->config->get('company');
-		$data['barcode_content'] = $this->CI->config->get('barcode_content');
-		$data['barcode_type'] = $this->CI->config->get('barcode_type');
-		$data['barcode_font'] = $this->CI->config->get('barcode_font');
-		$data['barcode_font_size'] = $this->CI->config->get('barcode_font_size');
-		$data['barcode_height'] = $this->CI->config->get('barcode_height');
-		$data['barcode_width'] = $this->CI->config->get('barcode_width');
-		$data['barcode_first_row'] = $this->CI->config->get('barcode_first_row');
-		$data['barcode_second_row'] = $this->CI->config->get('barcode_second_row');
-		$data['barcode_third_row'] = $this->CI->config->get('barcode_third_row');
-		$data['barcode_num_in_row'] = $this->CI->config->get('barcode_num_in_row');
-		$data['barcode_page_width'] = $this->CI->config->get('barcode_page_width');
-		$data['barcode_page_cellspacing'] = $this->CI->config->get('barcode_page_cellspacing');
-		$data['barcode_generate_if_empty'] = $this->CI->config->get('barcode_generate_if_empty');
-		$data['barcode_formats'] = $this->CI->config->get('barcode_formats');
+		$data['company'] = $this->appconfig->get('company');
+		$data['barcode_content'] = $this->appconfig->get('barcode_content');
+		$data['barcode_type'] = $this->appconfig->get('barcode_type');
+		$data['barcode_font'] = $this->appconfig->get('barcode_font');
+		$data['barcode_font_size'] = $this->appconfig->get('barcode_font_size');
+		$data['barcode_height'] = $this->appconfig->get('barcode_height');
+		$data['barcode_width'] = $this->appconfig->get('barcode_width');
+		$data['barcode_first_row'] = $this->appconfig->get('barcode_first_row');
+		$data['barcode_second_row'] = $this->appconfig->get('barcode_second_row');
+		$data['barcode_third_row'] = $this->appconfig->get('barcode_third_row');
+		$data['barcode_num_in_row'] = $this->appconfig->get('barcode_num_in_row');
+		$data['barcode_page_width'] = $this->appconfig->get('barcode_page_width');
+		$data['barcode_page_cellspacing'] = $this->appconfig->get('barcode_page_cellspacing');
+		$data['barcode_generate_if_empty'] = $this->appconfig->get('barcode_generate_if_empty');
+		$data['barcode_formats'] = $this->appconfig->get('barcode_formats');
 
 		return $data;
 	}
 
-	public function validate_barcode($barcode)
+	public function validate_barcode(string $barcode): bool	//TODO: this function does not seem to be called anywhere in the code.
 	{
-		$barcode_type = $this->CI->config->get('barcode_type');
+		$barcode_type = $this->appconfig->get('barcode_type');
 		$barcode_instance = $this->get_barcode_instance($barcode_type);
 
 		return $barcode_instance->validate($barcode);
 	}
 
-	public static function barcode_instance($item, $barcode_config)
+	public static function barcode_instance(array $item, array $barcode_config): object
 	{
 		$barcode_instance = Barcode_lib::get_barcode_instance($barcode_config['barcode_type']);
-		$is_valid = empty($item['item_number']) && $barcode_config['barcode_generate_if_empty'] || $barcode_instance->validate($item['item_number']);
+		$is_valid = empty($item['item_number'])
+			&& $barcode_config['barcode_generate_if_empty']
+			|| $barcode_instance->validate($item['item_number']);
 
 		// if barcode validation does not succeed,
 		if(!$is_valid)
 		{
 			$barcode_instance = Barcode_lib::get_barcode_instance();
 		}
+
 		$seed = Barcode_lib::barcode_seed($item, $barcode_instance, $barcode_config);
 		$barcode_instance->setData($seed);
 
 		return $barcode_instance;
 	}
 
-	private static function get_barcode_instance($barcode_type='Code128')
+	private static function get_barcode_instance(string $barcode_type = 'Code128'): object
 	{
 		switch($barcode_type)
 		{
 			case 'Code39':
-				return new emberlabs\Barcode\Code39();
+				return new Code39();
 				break;
 
 			case 'Code128':
 			default:
-				return new emberlabs\Barcode\Code128();
+				return new Code128();
 				break;
 
 			case 'Ean8':
-				return new emberlabs\Barcode\Ean8();
+				return new Ean8();
 				break;
 
 			case 'Ean13':
-				return new emberlabs\Barcode\Ean13();
+				return new Ean13();
 				break;
 		}
 	}
 
-	private static function barcode_seed($item, $barcode_instance, $barcode_config)
+	private static function barcode_seed(array $item, object $barcode_instance, array $barcode_config)
 	{
-		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']) ? $item['item_number'] : $item['item_id'];
+		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number'])
+			? $item['item_number']
+			: $item['item_id'];
 
-		if($barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
+		if($barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))	//TODO: === ?
 		{
 			$seed = $item['item_number'];
 		}
@@ -121,7 +132,7 @@ class Barcode_lib
 		return $seed;
 	}
 
-	private function generate_barcode($item, $barcode_config)
+	private function generate_barcode(array $item, array $barcode_config): string
 	{
 		try
 		{
@@ -135,10 +146,11 @@ class Barcode_lib
 		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
+//TODO: Missing return statement here.
 		}
 	}
 
-	public function generate_receipt_barcode($barcode_content)
+	public function generate_receipt_barcode($barcode_content): string
 	{
 		try
 		{
@@ -159,26 +171,35 @@ class Barcode_lib
 		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
+//TODO: Missing return statement here.
 		}
 	}
 
-	public function display_barcode($item, $barcode_config)
+	/**
+	 * Displays the barcode.  Called in a View.
+	 *
+	 * @param array $item
+	 * @param array $barcode_config
+	 * @return string
+	 */
+	public function display_barcode(array $item, array $barcode_config): string
 	{
-		$display_table = "<table>";
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</td></tr>";
+		$display_table = '<table>';
+		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
 		$barcode = $this->generate_barcode($item, $barcode_config);
 		$display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</td></tr>";
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</td></tr>";
-		$display_table .= "</table>";
+		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+		$display_table .= '</table>';
 
 		return $display_table;
 	}
 
-	private function manage_display_layout($layout_type, $item, $barcode_config)
+	private function manage_display_layout($layout_type, array $item, array $barcode_config): string
 	{
 		$result = '';
 
+		//TODO: this needs to be converted to a switch statement.
 		if($layout_type == 'name')
 		{
 			$result = lang('Items.name') . " " . $item['name'];
@@ -207,9 +228,15 @@ class Barcode_lib
 		return character_limiter($result, 40);
 	}
 
-	public function listfonts($folder)
+	/**
+	 * Finds all acceptable fonts to be used. Called in a View.
+	 *
+	 * @param string $folder
+	 * @return array
+	 */
+	public function listfonts(string $folder): array	//TODO: This function does not follow naming conventions.
 	{
-		$array = [];
+		$array = [];	//TODO: Naming of this variable should be changed.  The variable should never be named the data type.  $fonts would be a better name.
 
 		if(($handle = opendir($folder)) !== FALSE)
 		{
@@ -229,10 +256,15 @@ class Barcode_lib
 		return $array;
 	}
 
-	public function get_font_name($font_file_name)
+	/**
+	 * Returns the name of the font from the file name.  Called in a View.
+	 *
+	 * @param string $font_file_name
+	 * @return string
+	 */
+	public function get_font_name(string $font_file_name): string
 	{
 		return substr($font_file_name, 0, -4);
 	}
 }
-
 ?>

@@ -32,25 +32,24 @@ class Secure_Controller extends BaseController
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
-		if(!$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
-			(isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
+		if(!$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
+			|| (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
 		{
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
 
 		// load up global data visible to all the loaded views
-
 		$this->session = session();
 		if($menu_group == NULL)
 		{
-			$menu_group = $this->session->userdata('menu_group');
+			$menu_group = $this->session->get('menu_group');
 		}
 		else
 		{
-			$this->session->set_userdata('menu_group', $menu_group);
+			$this->session->set('menu_group', $menu_group);
 		}
 
-		if($menu_group == 'home')
+		if($menu_group == 'home')	//TODO: Convert to ternary notation
 		{
 			$allowed_modules = $this->module->get_allowed_home_modules($logged_in_employee_info->person_id);
 		}
@@ -70,10 +69,10 @@ class Secure_Controller extends BaseController
 		$this->load->vars($data);	//TODO: need to find out how to convert this.
 	}
 	
-	/*
-	* Internal method to do XSS clean in the derived classes
-	*/
-	protected function xss_clean($str, $is_image = FALSE)
+	/**
+	 * Internal method to do XSS clean in the derived classes
+	 */
+	protected function xss_clean(string $str, bool $is_image = FALSE): string
 	{
 		// This setting is configurable in application/config/config.php.
 		// Users can disable the XSS clean for performance reasons

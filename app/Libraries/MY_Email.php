@@ -1,12 +1,13 @@
 <?php
 
 namespace app\Libraries;
+use CodeIgniter\Email\Email;
 
-class MY_Email extends CI_Email
+class MY_Email extends Email
 {
-	var $default_cc_address 	= "";
-	var $default_email_address 	= "";
-	var $default_sender_name 	= "";
+	var $default_cc_address = "";
+	var $default_email_address = "";
+	var $default_sender_name = "";
 	var $default_sender_address = "";
 	var $default_bounce_address = "";
 
@@ -15,12 +16,13 @@ class MY_Email extends CI_Email
 		parent::__construct($config);
 	}
 
-	function send_mail($subject, $body, $to = NULL, $reply_name = NULL, $reply_mail = NULL, $attachment = NULL) {
-		$this->reply_to($reply_mail, $reply_name);
-		$this->from($this->default_sender_address, $this->default_sender_name, $this->default_bounce_address);
-		$this->set_mailtype('html');
-		$this->subject($subject);
-		$this->message($body);
+	function sendMail(string $subject, string $body, string $to = NULL, string $reply_name = NULL, string $reply_mail = NULL, string $attachment = NULL): bool
+	{
+		$this->setReplyTo($reply_mail, $reply_name);
+		$this->setFrom($this->default_sender_address, $this->default_sender_name, $this->default_bounce_address);
+		$this->setMailtype('html');
+		$this->setSubject($subject);
+		$this->setMessage($body);
 		if ($to == NULL) {
 			$to = $this->default_email_address;
 			$this->cc($this->default_cc_address); 

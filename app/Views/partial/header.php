@@ -109,7 +109,7 @@
 
 				<div class="navbar-right" style="margin:0">
 					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password'))); ?>
-					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->userdata('session_sha1') . '  |  ' : ''); ?>
+					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : ''); ?>
 					<?php echo anchor('home/logout', lang('Login.logout')); ?>
 				</div>
 

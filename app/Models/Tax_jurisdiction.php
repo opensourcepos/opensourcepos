@@ -47,7 +47,7 @@ class Tax_jurisdiction extends Model
 		{
 			return $query->getRow();
 		}
-		else
+		else	//TODO: this else is not needed.  Just put everything below it without an else.
 		{
 			//Get empty base parent object
 			$tax_jurisdiction_obj = new stdClass();
@@ -140,7 +140,7 @@ class Tax_jurisdiction extends Model
 
 			$this->save($tax_jurisdiction_data, $value['jurisdiction_id']);
 
-			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant.
+			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant. Also === ?.  Also replace this with ternary notation.
 			{
 				$not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
 			}
@@ -203,7 +203,7 @@ class Tax_jurisdiction extends Model
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only == TRUE)	//TODO: Replace this with just count_only: `if($count_only)`
 		{
 			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
@@ -232,16 +232,18 @@ class Tax_jurisdiction extends Model
 
 	public function get_empty_row(): array
 	{
-		return ['0' => [
-			'jurisdiction_id' => -1,
-			'jurisdiction_name' => '',
-			'tax_group' => '',
-			'tax_type' => '1',
-			'reporting_authority' => '',
-			'tax_group_sequence' => '',
-			'cascade_sequence' => '',
-			'deleted' => ''
-		]];
+		return [
+			'0' => [
+				'jurisdiction_id' => -1,	//TODO: Replace -1 with a constant
+				'jurisdiction_name' => '',
+				'tax_group' => '',
+				'tax_type' => '1',
+				'reporting_authority' => '',
+				'tax_group_sequence' => '',
+				'cascade_sequence' => '',
+				'deleted' => ''
+			]
+		];
 	}
 }
 ?>

@@ -43,151 +43,150 @@ class Receiving_lib
 		$this->session = session();
 	}
 
-	public function get_cart()
+	public function get_cart(): array
 	{
-		if(!$this->session->userdata('recv_cart'))
+		if(!$this->session->get('recv_cart'))
 		{
 			$this->set_cart ([]);
 		}
 
-		return $this->session->userdata('recv_cart');
+		return $this->session->get('recv_cart');
 	}
 
-	public function set_cart($cart_data)
+	public function set_cart(array $cart_data)
 	{
-		$this->session->set_userdata('recv_cart', $cart_data);
+		$this->session->set('recv_cart', $cart_data);
 	}
 
 	public function empty_cart()
 	{
-		$this->session->unset_userdata('recv_cart');
+		$this->session->remove('recv_cart');
 	}
 
-	public function get_supplier()
+	public function get_supplier(): int
 	{
-		if(!$this->session->userdata('recv_supplier'))
+		if(!$this->session->get('recv_supplier'))
 		{
-			$this->set_supplier(-1);
+			$this->set_supplier(-1);	//TODO: Replace -1 with a constant.
 		}
 
-		return $this->session->userdata('recv_supplier');
+		return $this->session->get('recv_supplier');
 	}
 
-	public function set_supplier($supplier_id)
+	public function set_supplier(int $supplier_id)
 	{
-		$this->session->set_userdata('recv_supplier', $supplier_id);
+		$this->session->set('recv_supplier', $supplier_id);
 	}
 
 	public function remove_supplier()
 	{
-		$this->session->unset_userdata('recv_supplier');
+		$this->session->remove('recv_supplier');
 	}
 
-	public function get_mode()
+	public function get_mode(): string
 	{
-		if(!$this->session->userdata('recv_mode'))
+		if(!$this->session->get('recv_mode'))
 		{
 			$this->set_mode('receive');
 		}
 
-		return $this->session->userdata('recv_mode');
+		return $this->session->get('recv_mode');
 	}
 
-	public function set_mode($mode)
+	public function set_mode(string $mode)
 	{
-		$this->session->set_userdata('recv_mode', $mode);
+		$this->session->set('recv_mode', $mode);
 	}
 	
 	public function clear_mode()
 	{
-		$this->session->unset_userdata('recv_mode');
+		$this->session->remove('recv_mode');
 	}
 
-	public function get_stock_source()
+	public function get_stock_source(): int
 	{
-		if(!$this->session->userdata('recv_stock_source'))
+		if(!$this->session->get('recv_stock_source'))
 		{
 			$this->set_stock_source($this->stock_location->get_default_location_id('receivings'));
 		}
 
-		return $this->session->userdata('recv_stock_source');
+		return $this->session->get('recv_stock_source');
 	}
 	
-	public function get_comment()
+	public function get_comment(): string
 	{
-		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
-		$comment = $this->session->userdata('recv_comment');
+		$comment = $this->session->get('recv_comment');
 
 		return empty($comment) ? '' : $comment;
 	}
 	
-	public function set_comment($comment)
+	public function set_comment(string $comment)
 	{
-		$this->session->set_userdata('recv_comment', $comment);
+		$this->session->set('recv_comment', $comment);
 	}
 	
 	public function clear_comment()
 	{
-		$this->session->unset_userdata('recv_comment');
+		$this->session->remove('recv_comment');
 	}
    
-	public function get_reference()
+	public function get_reference(): string
 	{
-		return $this->session->userdata('recv_reference');
+		return $this->session->get('recv_reference');
 	}
 	
-	public function set_reference($reference)
+	public function set_reference(string $reference)
 	{
-		$this->session->set_userdata('recv_reference', $reference);
+		$this->session->set('recv_reference', $reference);
 	}
 	
 	public function clear_reference()
 	{
-		$this->session->unset_userdata('recv_reference');
+		$this->session->remove('recv_reference');
 	}
 	
-	public function is_print_after_sale()
+	public function is_print_after_sale(): bool
 	{
-		return $this->session->userdata('recv_print_after_sale') == 'true' ||
-				$this->session->userdata('recv_print_after_sale') == '1';
+		return $this->session->get('recv_print_after_sale') == 'true'
+			|| $this->session->get('recv_print_after_sale') == '1';
 	}
 	
-	public function set_print_after_sale($print_after_sale)
+	public function set_print_after_sale(bool $print_after_sale)
 	{
-		return $this->session->set_userdata('recv_print_after_sale', $print_after_sale);
+		$this->session->set('recv_print_after_sale', $print_after_sale);
 	}
 	
-	public function set_stock_source($stock_source)
+	public function set_stock_source(int $stock_source)
 	{
-		$this->session->set_userdata('recv_stock_source', $stock_source);
+		$this->session->set('recv_stock_source', $stock_source);
 	}
 	
 	public function clear_stock_source()
 	{
-		$this->session->unset_userdata('recv_stock_source');
+		$this->session->remove('recv_stock_source');
 	}
 	
-	public function get_stock_destination()
+	public function get_stock_destination(): string
 	{
-		if(!$this->session->userdata('recv_stock_destination'))
+		if(!$this->session->get('recv_stock_destination'))
 		{
 			$this->set_stock_destination($this->stock_location->get_default_location_id('receivings'));
 		}
 
-		return $this->session->userdata('recv_stock_destination');
+		return $this->session->get('recv_stock_destination');
 	}
 
-	public function set_stock_destination($stock_destination)
+	public function set_stock_destination(string $stock_destination)
 	{
-		$this->session->set_userdata('recv_stock_destination', $stock_destination);
+		$this->session->set('recv_stock_destination', $stock_destination);
 	}
 	
 	public function clear_stock_destination()
 	{
-		$this->session->unset_userdata('recv_stock_destination');
+		$this->session->remove('recv_stock_destination');
 	}
-
-	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $discount_type = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $receiving_id = NULL, $include_deleted = FALSE)
+	//TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
+	public function add_item(int $item_id, int $quantity = 1, int $item_location = NULL, float $discount = 0, int $discount_type = 0, float $price = NULL, string $description = NULL, string $serialnumber = NULL, float $receiving_quantity = NULL, int $receiving_id = NULL, bool $include_deleted = FALSE): bool
 	{
 		//make sure item exists in database.
 		if(!$this->item->exists($item_id, $include_deleted))
@@ -211,7 +210,7 @@ class Receiving_lib
 
 		$maxkey = 0;					//Highest key so far
 		$itemalreadyinsale = FALSE;		//We did not find the item yet.
-		$insertkey = 0;					//Key to use for new entry.
+		$insertkey = 0;					//Key to use for new entry.	//TODO: This variable is never used
 		$updatekey = 0;					//Key to use to update(quantity)
 
 		foreach($items as $item)
@@ -235,6 +234,7 @@ class Receiving_lib
 
 		$insertkey = $maxkey+1;
 		$item_info = $this->item->get_info($item_id,$item_location);
+
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
 
@@ -243,7 +243,7 @@ class Receiving_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
-		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)
+		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)	//TODO === ?
 		{
 			$receiving_quantity_choices = [1  => 'x1'];
 		}
@@ -262,7 +262,8 @@ class Receiving_lib
 
 		$attribute_links = $this->attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
-		$item = [$insertkey => [
+		$item = [
+			$insertkey => [
 				'item_id' => $item_id,
 				'item_location' => $item_location,
 				'item_number' => $item_info->item_number,
@@ -287,7 +288,7 @@ class Receiving_lib
 		];
 
 		//Item already exists
-		if($itemalreadyinsale)
+		if($itemalreadyinsale)	//TODO: This variable does not adhere to naming conventions.
 		{
 			$items[$updatekey]['quantity'] += $quantity;
 			$items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount, $discount_type, $items[$updatekey]['receiving_quantity']);
@@ -303,7 +304,7 @@ class Receiving_lib
 		return TRUE;
 	}
 
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity)
+	public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, int $discount_type, float $price, float $receiving_quantity): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
@@ -314,18 +315,23 @@ class Receiving_lib
 			$line['quantity'] = $quantity;
 			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
-			if(!is_null($discount_type))
+
+			if(!is_null($discount_type))	//TODO: $discount_type is an int which means it will never be null and this if statement will always evaluate to true.
 			{
 				$line['discount_type'] = $discount_type;
 			}
+
 			$line['price'] = $price;
 			$line['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity);
 			$this->set_cart($items);
 		}
 
-		return FALSE;
+		return FALSE;	//TODO: This function will always return false.
 	}
 
+	/**
+	 * @param $line int|string The item_number or item_id of the item to be removed from the receiving.
+	 */
 	public function delete_item($line)
 	{
 		$items = $this->get_cart();
@@ -333,11 +339,12 @@ class Receiving_lib
 		$this->set_cart($items);
 	}
 
-	public function return_entire_receiving($receipt_receiving_id)
+	public function return_entire_receiving(int $receipt_receiving_id)
 	{
 		//RECV #
 		$pieces = explode(' ', $receipt_receiving_id);
-		if(preg_match("/(RECV|KIT)/", $pieces[0]))
+
+		if(preg_match("/(RECV|KIT)/", $pieces[0]))	//TODO: this needs to be converted to ternary notation.
 		{
 			$receiving_id = $pieces[1];
 		} 
@@ -358,7 +365,7 @@ class Receiving_lib
 		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
 	}
 
-	public function add_item_kit($external_item_kit_id, $item_location, $discount, $discount_type)
+	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discount_type)
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -370,7 +377,7 @@ class Receiving_lib
 		}
 	}
 
-	public function copy_entire_receiving($receiving_id)
+	public function copy_entire_receiving(int $receiving_id)
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
@@ -393,12 +400,13 @@ class Receiving_lib
 		$this->clear_reference();
 	}
 
-	public function get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
+	public function get_item_total(float $quantity, float $price, float $discount, int $discount_type, float $receiving_quantity): string
 	{
 		$extended_quantity = bcmul($quantity, $receiving_quantity);
 		$total = bcmul($extended_quantity, $price);
 		$discount_amount = $discount;
-		if($discount_type == PERCENT)
+
+		if($discount_type == PERCENT)	//TODO: === ?
 		{
 			$discount_fraction = bcdiv($discount, 100);
 			$discount_amount = bcmul($total, $discount_fraction);
@@ -407,7 +415,7 @@ class Receiving_lib
 		return bcsub($total, $discount_amount);
 	}
 
-	public function get_total()
+	public function get_total(): string
 	{
 		$total = 0;
 		foreach($this->get_cart() as $item)

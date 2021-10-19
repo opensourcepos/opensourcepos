@@ -2,6 +2,10 @@
 
 namespace app\Libraries;
 
+use app\Models\Appconfig;
+use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\Encryption\Encryption;
+
 /**
  * MailChimp API v3 REST client Connector
  *
@@ -10,8 +14,11 @@ namespace app\Libraries;
  * Inspired by the work of:
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
  *   - Stefan Ashwell: https://github.com/stef686/codeigniter-mailchimp-api-v3
+ *
+ * @property appconfig $appconfig
+ * @property encryption encryption
+ * @property encrypterinterface encrypter
  */
-
 class MailchimpConnector
 {
 	/**
@@ -19,54 +26,55 @@ class MailchimpConnector
 	 *
 	 * @var	string[]
 	 */
-	private $_api_key = '';
+	private $_api_key = '';	//TODO: Hungarian notation
 
 	/**
 	 * API Endpoint
 	 *
 	 * @var	string[]
 	 */
-	private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
+	private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';	//TODO: Hungarian notation
 
 	/**
 	 * Constructor
 	 */
-	public function __construct($api_key = '')
+	public function __construct(string $api_key = '')
 	{
-		$CI =& get_instance();
+		$this->appconfig = model('Appconfig');
+		$this->encryption = new Encryption();
 
 		if(empty($api_key))
 		{
-			$this->_api_key = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_api_key'));
+			$this->_api_key = $this->encrypter->decrypt($this->appconfig->get('mailchimp_api_key'));	//TODO: Hungarian notation
 		}
 		else
 		{
-			$this->_api_key = $api_key;
+			$this->_api_key = $api_key;	//TODO: Hungarian notation
 		}
 
-		if(!empty($this->_api_key))
+		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{
 			// Replace <dc> with correct datacenter obtained from the last part of the api key
-			$strings = explode('-', $this->_api_key);
+			$strings = explode('-', $this->_api_key);	//TODO: Hungarian notation
 			if(is_array($strings) && !empty($strings[1]))
 			{
-				$this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);
+				$this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);	//TODO: Hungarian notation
 			}
 		}
 	}
 
 	/**
 	 * Call an API method. Every request needs the API key
-	 * @param  string $httpVerb The HTTP method to be used
-	 * @param  string $method   The API method to call, e.g. 'lists/list'
-	 * @param  array  $args     An array of arguments to pass to the method. Will be json-encoded for you.
-	 * @return array            Associative array of json decoded API response.
+	 * @param string $httpVerb The HTTP method to be used
+	 * @param string $method The API method to call, e.g. 'lists/list'
+	 * @param array $args An array of arguments to pass to the method. Will be json-encoded for you.
+	 * @return bool Associative array of json decoded API response.
 	 */
-	public function call($httpVerb = 'POST', $method, $args = [])
+	public function call($httpVerb = 'POST', $method, $args = []): bool	//TODO: The optional parameters must be last, not first.
 	{
-		if(!empty($this->_api_key))
+		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{
-			return $this->_request($httpVerb, $method, $args);
+			return $this->_request($httpVerb, $method, $args);	//TODO: Hungarian notation
 		}
 
 		return FALSE;
@@ -79,24 +87,24 @@ class MailchimpConnector
 	 * @param  array  $args     Assoc array of parameters to be passed
 	 * @return string           Request URL
 	 */
-	private function _build_request_url($httpVerb = 'POST', $method, $args = [])
+	private function _build_request_url(string $httpVerb = 'POST', string $method, array $args = []): string	//TODO: Hungarian notation. Also The optional parameters must be last, not first.
 	{
 		if($httpVerb == 'GET')
 		{
-			return $this->_api_endpoint . $method . '?' . http_build_query($args);
+			return $this->_api_endpoint . $method . '?' . http_build_query($args);	//TODO: Hungarian notation
 		}
 
-		return $this->_api_endpoint . $method;
+		return $this->_api_endpoint . $method;	//TODO: Hungarian notation
 	}
 
 	/**
 	 * Performs the underlying HTTP request.
-	 * @param  string $httpVerb The HTTP method to be used
-	 * @param  string $method   The API method to be called
-	 * @param  array  $args     Assoc array of parameters to be passed
-	 * @return array            Assoc array of decoded result
+	 * @param string $httpVerb The HTTP method to be used
+	 * @param string $method The API method to be called
+	 * @param array $args Assoc array of parameters to be passed
+	 * @return bool Assoc array of decoded result
 	 */
-	private function _request($httpVerb, $method, $args = [])
+	private function _request(string $httpVerb, string $method, array $args = []): bool	//TODO: Hungarian notation
 	{
 		$result = FALSE;
 
@@ -131,9 +139,9 @@ class MailchimpConnector
  * Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php
  */
 
-class Mailchimp_lib
+class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file principle.
 {
-	private $_connector;
+	private $_connector;	//TODO: Hungarian notation
 
 	public function __construct(array $params = [])
 	{
@@ -152,9 +160,9 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
 	*/
-	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'])
+	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool	//TODO: This function name does not follow naming conventions.
 	{
-		return $this->_connector->call('GET', '/lists', $parameters);
+		return $this->_connector->call('GET', '/lists', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -164,14 +172,11 @@ class Mailchimp_lib
 	*   The ID of the list.
 	* @param array $parameters
 	*   Associative array of optional request parameters.
-	*
-	* @return object
-	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
 	*/
-	public function getList($list_id, $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count'])
+	public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count']): bool	//TODO: This function name does not follow naming conventions.
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id, $parameters);
+		return $this->_connector->call('GET', '/lists/' . $list_id, $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -185,14 +190,14 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
 	*/
-	public function getMembers($list_id, $count, $offset, $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'])
+	public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields']): bool	//TODO: This function name does not follow naming conventions.
 	{
 		$parameters += [
 			'count' => $count,
 			'offset' => $offset
 		];
 
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members', $parameters);
+		return $this->_connector->call('GET', '/lists/' . $list_id . '/members', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -208,9 +213,9 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	*/
-	public function getMemberInfoById($list_id, $md5id, $parameters = ['fields' => 'email_address,status,merge_fields'])
+	public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields']): bool	//TODO: This function name does not follow naming conventions.
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);
+		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . $md5id, $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -226,7 +231,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	*/
-	public function getMemberInfo($list_id, $email, $parameters = [])
+	public function getMemberInfo(string $list_id, string $email, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
 	}
@@ -244,9 +249,9 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
 	*/
-	public function getMemberActivity($list_id, $email, $parameters = [])
+	public function getMemberActivity(string $list_id, string $email, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
 	{
-		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);
+		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -262,7 +267,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
 	*/
-	public function addMember($list_id, $email, $first_name, $last_name, $parameters = [])
+	public function addMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -273,7 +278,7 @@ class Mailchimp_lib
 			]
 		];
 
-		return $this->_connector->call('POST', '/lists/' . $list_id . '/members/', $parameters);
+		return $this->_connector->call('POST', '/lists/' . $list_id . '/members/', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -287,9 +292,9 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
 	*/
-	public function removeMember($list_id, $email)
+	public function removeMember(string $list_id, string $email): bool	//TODO: This function name does not follow naming conventions.
 	{
-		return $this->_connector->call('DELETE', '/lists/' . $list_id . '/members/' . md5(strtolower($email)));
+		return $this->_connector->call('DELETE', '/lists/' . $list_id . '/members/' . md5(strtolower($email)));	//TODO: Hungarian notation
 	}
 
 	/**
@@ -304,7 +309,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
 	*/
-	public function updateMember($list_id, $email, $first_name, $last_name, $parameters = [])
+	public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
 	{
 		$parameters += [
 			'status' => 'subscribed',
@@ -314,7 +319,7 @@ class Mailchimp_lib
 			]
 		];
 
-		return $this->_connector->call('PATCH', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
+		return $this->_connector->call('PATCH', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
@@ -330,7 +335,7 @@ class Mailchimp_lib
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
 	*/
-	public function addOrUpdateMember($list_id, $email, $first_name, $last_name, $status, $parameters = [])
+	public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -342,8 +347,7 @@ class Mailchimp_lib
 			]
 		];
 
-		return $this->_connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);
+		return $this->_connector->call('PUT', '/lists/' . $list_id . '/members/' . md5(strtolower($email)), $parameters);	//TODO: Hungarian notation
 	}
 }
-
 ?>

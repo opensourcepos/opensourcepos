@@ -80,9 +80,9 @@ abstract class BarcodeBase
 	 * @param $barcode The barcode to validate
 	 * @return bool true if it complies with the barcode formatting
 	 */
-	public function validate($barcode)
+	public function validate(string $barcode): bool
 	{
-		return TRUE;
+		return TRUE;	//TODO: This function is incomplete and will always return true, even if the barcode is invalid.
 	}
 
 	/**

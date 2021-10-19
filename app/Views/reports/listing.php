@@ -57,7 +57,7 @@ if(isset($error))
 			</div>
 			<div class="list-group">
 				<?php 			
-				$person_id = $this->session->userdata('person_id');
+				$person_id = $this->session->get('person_id');
 				show_report_if_allowed('detailed', 'sales', $person_id);
 				show_report_if_allowed('detailed', 'receivings', $person_id);
 				show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
@@ -69,7 +69,7 @@ if(isset($error))
 		</div>
 
 		<?php
-		if ($this->Employee->has_grant('reports_inventory', $this->session->userdata('person_id')))
+		if ($this->Employee->has_grant('reports_inventory', $this->session->get('person_id')))
 		{
 		?>
 			<div class="panel panel-primary">

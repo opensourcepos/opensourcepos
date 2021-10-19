@@ -138,7 +138,13 @@ class Tax_code extends Model
 		foreach($array_save as $key => $value)
 		{
 			// save or update
-			$tax_code_data = ['tax_code' => $value['tax_code'], 'tax_code_name' => $value['tax_code_name'], 'city' => $value['city'], 'state' => $value['state'], 'deleted' => '0');
+			$tax_code_data = [
+				'tax_code' => $value['tax_code'],
+				'tax_code_name' => $value['tax_code_name'],
+				'city' => $value['city'],
+				'state' => $value['state'],
+				'deleted' => '0'
+			];
 			$this->save($tax_code_data);
 			$not_to_delete[] = $tax_code_data['tax_code'];
 		}
@@ -242,7 +248,7 @@ class Tax_code extends Model
 		{
 			return $query->getRow()->tax_code_id;
 		}
-		else
+		else	//TODO: This can be gotten rid of an place everything outside of the else.
 		{
 			$builder = $this->db->table('tax_codes');
 			$builder->where('city', '');
@@ -260,7 +266,7 @@ class Tax_code extends Model
 				return $this->appconfig->get('default_tax_code');
 			}
 		}
-		return FALSE;
+		return FALSE;	//TODO: This return statement is unreachable.
 	}
 
 	public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
@@ -268,11 +274,13 @@ class Tax_code extends Model
 		$suggestions = [];
 
 		$builder = $this->db->table('tax_codes');
+
 		if(!empty($search))
 		{
 			$builder->like('tax_code', $search);
 			$builder->orLike('tax_code_name', $search);
 		}
+
 		$builder->where('deleted', 0);
 		$builder->orderBy('tax_code_name', 'asc');
 
@@ -292,14 +300,16 @@ class Tax_code extends Model
 
 	public function get_empty_row(): array
 	{
-		return ['0' => [
-			'tax_code_id' => -1,
-			'tax_code' => '',
-			'tax_code_name' => '',
-			'city' => '',
-			'state' => '',
-			'deleted' => 0
-		]];
+		return [
+			'0' => [
+				'tax_code_id' => -1,
+				'tax_code' => '',
+				'tax_code_name' => '',
+				'city' => '',
+				'state' => '',
+				'deleted' => 0
+			]
+		];
 	}
 }
 ?>

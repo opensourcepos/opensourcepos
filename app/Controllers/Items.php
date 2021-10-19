@@ -66,7 +66,7 @@ class Items extends Secure_Controller
 
 	public function index()
 	{
-		$this->session->set_userdata('allow_temp_items', 0);
+		$this->session->set('allow_temp_items', 0);
 
 		$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers());
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
@@ -249,7 +249,7 @@ class Items extends Secure_Controller
 		}
 
 		//allow_temp_items is set in the index function of items.php or sales.php
-		$data['allow_temp_item'] = $this->session->userdata('allow_temp_items');
+		$data['allow_temp_item'] = $this->session->get('allow_temp_items');
 		$data['item_tax_info'] = $this->xss_clean($this->item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';

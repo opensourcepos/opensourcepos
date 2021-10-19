@@ -375,14 +375,14 @@ class Employee extends Person
 			if($row->hash_version == 1 && $row->password == md5($password))	//TODO: === ?
 			{
 				$builder->where('person_id', $row->person_id);
-				$this->session->set_userdata('person_id', $row->person_id);
+				$this->session->set('person_id', $row->person_id);
 				$password_hash = password_hash($password, PASSWORD_DEFAULT);
 
 				return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
 			}
 			elseif($row->hash_version == 2 && password_verify($password, $row->password))	//TODO: === ?
 			{
-				$this->session->set_userdata('person_id', $row->person_id);
+				$this->session->set('person_id', $row->person_id);
 
 				return TRUE;
 			}
@@ -406,7 +406,7 @@ class Employee extends Person
 	 */
 	public function is_logged_in(): bool
 	{
-		return ($this->session->userdata('person_id') != FALSE);
+		return ($this->session->get('person_id') != FALSE);
 	}
 
 	/**
@@ -416,7 +416,7 @@ class Employee extends Person
 	{
 		if($this->is_logged_in())
 		{
-			return $this->get_info($this->session->userdata('person_id'));
+			return $this->get_info($this->session->get('person_id'));
 		}
 
 		return FALSE;

@@ -44,7 +44,7 @@
 				<?php echo form_label(lang('Config.barcode_font'), 'barcode_font', ['class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-sm-2'>
 					<?php echo form_dropdown('barcode_font',
-						$this->barcode_lib->listfonts("fonts"),
+						$this->barcode_lib->listfonts('fonts'),
 						$this->config->get('barcode_font'), ['class' => 'form-control input-sm required'));
 						?>
 				</div>

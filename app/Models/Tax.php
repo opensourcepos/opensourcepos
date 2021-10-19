@@ -88,8 +88,6 @@ class Tax extends Model
 			$tax_rate_obj->rate_jurisdiction_id = NULL;
 			$tax_rate_obj->jurisdiction_name = '';
 
-			//Get all the fields from tax_codes table
-
 			return $tax_rate_obj;
 		}
 	}
@@ -152,7 +150,7 @@ class Tax extends Model
 	/**
 	Inserts or updates a tax_rates entry
 	*/
-	public function save(array &$tax_rate_data, int $tax_rate_id = -1): bool	//the default value for $tax_rate_id should be made a constant and replaced here.
+	public function save(array &$tax_rate_data, int $tax_rate_id = -1): bool	//TODO: the default value for $tax_rate_id should be made a constant and replaced here.
 	{
 		$builder = $this->db->table('tax_rates');
 		if(!$this->exists($tax_rate_id))
@@ -259,7 +257,7 @@ class Tax extends Model
 
 	public function get_tax_code_type_name(string $tax_code_type): string	//TODO: if this is being called from the view and passed through GET params then it will come through as a string... better if we can get it as an int though.
 	{
-		if($tax_code_type == '0')
+		if($tax_code_type == '0')	//TODO: ===.  Also, replace this with ternary notation. The whole function becomes a nice one-liner.
 		{
 			return lang('Taxes.tax_included');
 		}

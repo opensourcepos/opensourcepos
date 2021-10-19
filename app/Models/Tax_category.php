@@ -250,11 +250,13 @@ class Tax_category extends Model
 
 	public function get_empty_row(): array
 	{
-		return ['0' => [
-			'tax_category_id' => -1,	//TODO: This should probably be a Constant instead of -1
-			'tax_category' => '',
-			'tax_group_sequence' => '',
-			'deleted' => '']
+		return [
+			'0' => [
+				'tax_category_id' => -1,	//TODO: This should probably be a Constant instead of -1
+				'tax_category' => '',
+				'tax_group_sequence' => '',
+				'deleted' => ''
+			]
 		];
 	}
 }

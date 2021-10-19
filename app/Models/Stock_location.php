@@ -44,7 +44,7 @@ class Stock_location extends Model
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$builder->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->get('person_id'));
 		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('deleted', 0);
 
@@ -81,7 +81,7 @@ class Stock_location extends Model
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$builder->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->get('person_id'));
 		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('stock_locations.location_id', $location_id);
 		$builder->where('deleted', 0);
@@ -94,7 +94,7 @@ class Stock_location extends Model
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
 		$builder->join('grants AS grants', 'grants.permission_id = permissions.permission_id');
-		$builder->where('person_id', $this->session->userdata('person_id'));
+		$builder->where('person_id', $this->session->get('person_id'));
 		$builder->like('permissions.permission_id', $module_id, 'after');
 		$builder->where('deleted', 0);
 		$builder->limit(1);

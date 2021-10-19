@@ -72,13 +72,13 @@ class Sales extends Secure_Controller
 
 	public function index()
 	{
-		$this->session->set_userdata('allow_temp_items', 1);
+		$this->session->set('allow_temp_items', 1);
 		$this->_reload();	//TODO: Hungarian Notation
 	}
 
 	public function manage()
 	{
-		$person_id = $this->session->userdata('person_id');
+		$person_id = $this->session->get('person_id');
 
 		if(!$this->Employee->has_grant('reports_sales', $person_id))
 		{
@@ -419,7 +419,7 @@ class Sales extends Secure_Controller
 				$cash_adjustment_amount = $amount_due - $sales_total;
 				if($cash_adjustment_amount <> 0)
 				{
-					$this->session->set_userdata('cash_mode', CASH_MODE_TRUE);
+					$this->session->set('cash_mode', CASH_MODE_TRUE);
 					$this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cash_adjustment_amount, CASH_ADJUSTMENT_TRUE);
 				}
 			}
@@ -653,8 +653,8 @@ class Sales extends Secure_Controller
 		$data['total'] = $totals['total'];
 		$data['payments_total'] = $totals['payment_total'];
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
-		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
-		$data['cash_mode'] = $this->session->userdata('cash_mode');	//TODO: Duplicated code
+		$data['cash_rounding'] = $this->session->get('cash_rounding');
+		$data['cash_mode'] = $this->session->get('cash_mode');	//TODO: Duplicated code
 		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
 		$data['cash_total'] = $totals['cash_total'];
 		$data['non_cash_total'] = $totals['total'];
@@ -1024,11 +1024,11 @@ class Sales extends Secure_Controller
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals($tax_details[0]);
-		$this->session->set_userdata('cash_adjustment_amount', $totals['cash_adjustment_amount']);
+		$this->session->set('cash_adjustment_amount', $totals['cash_adjustment_amount']);
 		$data['subtotal'] = $totals['subtotal'];
 		$data['payments_total'] = $totals['payment_total'];
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
-		$data['cash_mode'] = $this->session->userdata('cash_mode');	//TODO: Duplicated code.
+		$data['cash_mode'] = $this->session->get('cash_mode');	//TODO: Duplicated code.
 		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
 		$data['cash_total'] = $totals['cash_total'];
 		$data['non_cash_total'] = $totals['total'];
@@ -1108,12 +1108,12 @@ class Sales extends Secure_Controller
 
 	private function _reload($data = [])	//TODO: Hungarian notation
 	{
-		$sale_id = $this->session->userdata('sale_id');
+		$sale_id = $this->session->get('sale_id');
 
 		if($sale_id == '')
 		{
 			$sale_id = -1;
-			$this->session->set_userdata('sale_id', -1);
+			$this->session->set('sale_id', -1);
 		}
 		$cash_rounding = $this->sale_lib->reset_cash_rounding();
 
@@ -1146,7 +1146,7 @@ class Sales extends Secure_Controller
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
 
 		// cash_mode indicates whether this sale is going to be processed using cash_rounding
-		$cash_mode = $this->session->userdata('cash_mode');
+		$cash_mode = $this->session->get('cash_mode');
 		$data['cash_mode'] = $cash_mode;
 		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];	//TODO: Duplicated code.
 		$data['cash_total'] = $totals['cash_total'];
@@ -1496,7 +1496,7 @@ class Sales extends Secure_Controller
 			else
 			{
 				$this->sale->delete($sale_id, FALSE);
-				$this->session->set_userdata('sale_id', -1);	//TODO: Replace -1 with a constant
+				$this->session->set('sale_id', -1);	//TODO: Replace -1 with a constant
 			}
 		}
 		else
