@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Номер рахунку";
 $lang["customers_account_number_duplicate"] = "Такий номер рахунку вже є в базі данних.";
 $lang["customers_available_points"] = "Доступні бали";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Середнє витрачене";
 $lang["customers_avg_discount"] = "Середня знижка";
 $lang["customers_basic_information"] = "Інформація";

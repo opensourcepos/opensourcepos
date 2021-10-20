@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "اطلاعات";
 $lang["employees_cannot_be_deleted"] = "حذف کارمند (های) انتخابی امکان پذیر نیست ، یک یا چند مورد از فروش پردازش شده استفاده کرده یا می خواهید حساب خود را حذف کنید.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "تغییر رمز عبور";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "آیا مطمئن هستید که می خواهید کارمند (های) انتخاب شده را حذف کنید؟";
 $lang["employees_confirm_restore"] = "آیا مطمئن هستید که می خواهید کارمندان (های) انتخاب شده را بازیابی کنید؟";
 $lang["employees_current_password"] = "گذرواژه فعلی";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "شما نمی توانید کا�
 $lang["employees_error_updating_demo_admin"] = "شما نمی توانید کاربر مدیر نسخه ی نمایشی را تغییر دهید.";
 $lang["employees_language"] = "زبان";
 $lang["employees_login_info"] = "وارد شدن";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "کارمند جدید";
 $lang["employees_none_selected"] = "شما هیچ کارمندی را برای حذف انتخاب نکرده اید.";
 $lang["employees_one_or_multiple"] = "کارمند (ها)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "زبان سیستم";
 $lang["employees_unsuccessful_change_password"] = "تغییر رمز انجام نشد.";
 $lang["employees_update"] = "به روزرسانی کارمند";
 $lang["employees_username"] = "نام کاربری";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "نام کاربری باید حداقل 5 کاراکتر داشته باشد.";
 $lang["employees_username_required"] = "نام کاربری فیلد مورد نیاز است.";

@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "گروه Seq";
 $lang["taxes_jurisdiction_name"] = "نام صلاحیت";
 $lang["taxes_name"] = "نام";
 $lang["taxes_new"] = "مالیات جدید";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "هیچ کد مالیاتی برای نمایش موجود نیست";
 $lang["taxes_reporting_authority"] = "مرجع گزارشگری";
 $lang["taxes_round_half_down"] = "نیمه پایین";

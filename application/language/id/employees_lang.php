@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Informasi Karyawan";
 $lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Ubah kata kunci";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Apakah Anda yakin ingin menghapus karyawan yang dipilih?";
 $lang["employees_confirm_restore"] = "Anda yakin ingin mengembalikan karyawan terpilih?";
 $lang["employees_current_password"] = "Kata kunci sekarang";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Anda tidak dapat menghapus Demo 
 $lang["employees_error_updating_demo_admin"] = "Anda tidak dapat mengubah Demo admin user.";
 $lang["employees_language"] = "Bahasa";
 $lang["employees_login_info"] = "Info Login Karyawan";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Karyawan Baru";
 $lang["employees_none_selected"] = "Anda belum memilih karyawan untuk dihapus.";
 $lang["employees_one_or_multiple"] = "Karyawan";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Bahasa Sistem";
 $lang["employees_unsuccessful_change_password"] = "Gagal mengubah kata sandi.";
 $lang["employees_update"] = "Ubah Karyawan";
 $lang["employees_username"] = "Nama Pengguna";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Nama Pengguna minimal 5 huruf.";
 $lang["employees_username_required"] = "Nama Pengguna wajib diisi.";

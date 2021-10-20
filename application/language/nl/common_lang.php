@@ -1,14 +1,19 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
+$lang["common_admin"] = "";
 $lang["common_city"] = "Plaats";
+$lang["common_clerk"] = "";
 $lang["common_close"] = "Sluiten";
+$lang["common_color"] = "";
 $lang["common_comments"] = "Opmerkingen";
 $lang["common_common"] = "algemeen";
 $lang["common_confirm_search"] = "U heeft één of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na uw zoekopdracht. Weet u zeker dat u deze zoekopdracht wilt verzenden?";
 $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "Geïdentificeerd fouten oplossen voor het opslaan";
 $lang["common_country"] = "Land";
+$lang["common_dashboard"] = "";
 $lang["common_date"] = "Datum";
 $lang["common_delete"] = "Verwijderen";
 $lang["common_det"] = "details";
@@ -20,6 +25,7 @@ $lang["common_export_csv"] = "CSV exporteren";
 $lang["common_export_csv_no"] = "Nee";
 $lang["common_export_csv_yes"] = "Ja";
 $lang["common_fields_required_message"] = "Rode velden zijn vereist";
+$lang["common_fields_required_message_unique"] = "";
 $lang["common_first_name"] = "Voornaam";
 $lang["common_first_name_required"] = "Voornaam is een vereist veld.";
 $lang["common_first_page"] = "Eerste";
@@ -44,15 +50,18 @@ $lang["common_list_of"] = "Lijst van";
 $lang["common_logo"] = "Logo";
 $lang["common_logo_mark"] = "";
 $lang["common_logout"] = "Afmelden";
+$lang["common_manager"] = "";
 $lang["common_migration_needed"] = "Een databasemigratie naar %1 zal starten na aanmelding.";
 $lang["common_new"] = "Nieuw";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "Er zijn geen personen om te weergeven.";
 $lang["common_none_selected_text"] = "[Selecteren]";
 $lang["common_or"] = "OF";
+$lang["common_people"] = "";
 $lang["common_phone_number"] = "Telefoonnummer";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Bezoek de";
+$lang["common_position"] = "";
 $lang["common_powered_by"] = "Mogelijk gemaakt door";
 $lang["common_price"] = "Prijs";
 $lang["common_print"] = "Afdrukken";

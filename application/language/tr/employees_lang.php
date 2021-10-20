@@ -1,7 +1,12 @@
-<?php
+<?php 
+
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Personel Temel Bilgileri";
 $lang["employees_cannot_be_deleted"] = "Seçili personel silinemedi, personellerin satışları var yada kendinizi silmeye çalışıyorsunuz.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Parolayı Değiştir";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Seçili personelleri silmek istediğinize emin misiniz?";
 $lang["employees_confirm_restore"] = "Seçili çalışanları geri yüklemek istediğinizden emin misiniz?";
 $lang["employees_current_password"] = "Var Olan Parola";
@@ -12,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Admin güncellenemez.";
 $lang["employees_error_updating_demo_admin"] = "Admin silinemez.";
 $lang["employees_language"] = "Dil";
 $lang["employees_login_info"] = "Personel Giriş Bilgileri";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Yeni Personel";
 $lang["employees_none_selected"] = "Silmek için çalışan seçmediniz.";
 $lang["employees_one_or_multiple"] = "personel";
@@ -32,5 +38,6 @@ $lang["employees_system_language"] = "Sistem dili";
 $lang["employees_unsuccessful_change_password"] = "Parola değişikliği başarısız oldu.";
 $lang["employees_update"] = "Personeli Güncelle";
 $lang["employees_username"] = "Kullandı Adı";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Kullanıcı Adı en az 5 karakter olmalıdır.";
 $lang["employees_username_required"] = "Kullanıcı Adı zorunlu alandır.";

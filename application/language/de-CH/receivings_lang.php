@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Abbrechen";
 $lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden";
 $lang["receivings_comments"] = "Kommentare";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Abschliessen";
 $lang["receivings_confirm_cancel_receiving"] = "Wollen Siesen Wareneingang annullieren? Alle Einträge werden gelöscht.";
 $lang["receivings_confirm_delete"] = "Wollen Sie diesen Eingang wirklich löschen? Rückgängig nicht möglich";
 $lang["receivings_confirm_finish_receiving"] = "Wollen Sie diesen Wareneingang verabeiten? Dieser Schritt kann nicht rückgängig gemacht werden.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Kosten";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Eingangsdatum";
 $lang["receivings_date_required"] = "Ein korrektes Datum ist erforderlich";
 $lang["receivings_date_type"] = "Datum ist erforderlich";

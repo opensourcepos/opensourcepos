@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "屬性";
 $lang["module_attributes_desc"] = "新增、修改、刪除、搜尋 屬性.";
 $lang["module_both"] = "兩者";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "供應商";
 $lang["module_suppliers_desc"] = "添加，更新，刪除，搜索供應商.";
 $lang["module_taxes"] = "稅收";
 $lang["module_taxes_desc"] = "配置銷售稅。";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

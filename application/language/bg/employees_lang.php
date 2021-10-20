@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Информация";
 $lang["employees_cannot_be_deleted"] = "Невъзможно е да изтриете избрани служители, един или повече от тях са обработили продажби или се опитвате да изтриете профила си.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Промяна на паролата";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Наистина ли искате да изтриете избрания служител (и)?";
 $lang["employees_confirm_restore"] = "Наистина ли искате да възстановите избраните служители?";
 $lang["employees_current_password"] = "Настояща парола";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Не може да изтрие�
 $lang["employees_error_updating_demo_admin"] = "Не може да промените Пробният Администратор.";
 $lang["employees_language"] = "Език";
 $lang["employees_login_info"] = "Login";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Нов служител";
 $lang["employees_none_selected"] = "Не сте избрали служител (и), който да изтриете.";
 $lang["employees_one_or_multiple"] = "служител (и)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Системен език";
 $lang["employees_unsuccessful_change_password"] = "Промяната на паролата се провали.";
 $lang["employees_update"] = "Актуализиране на служителя";
 $lang["employees_username"] = "Потребител";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "Потребителското име трябва да е с дължина най-малко 5 знака.";
 $lang["employees_username_required"] = "Потребителското име е задължително поле.";

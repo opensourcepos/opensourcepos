@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "רצף קבוצות";
 $lang["taxes_jurisdiction_name"] = "שם תחום שיפוט";
 $lang["taxes_name"] = "שם";
 $lang["taxes_new"] = "מס חדש";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "אין קוד מסים זמין לתצוגה";
 $lang["taxes_reporting_authority"] = "רשות מדווחת";
 $lang["taxes_round_half_down"] = "חצי למטה";

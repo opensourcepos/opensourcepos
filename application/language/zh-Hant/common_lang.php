@@ -1,14 +1,19 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
+$lang["common_admin"] = "";
 $lang["common_city"] = "城市";
+$lang["common_clerk"] = "";
 $lang["common_close"] = "關閉";
+$lang["common_color"] = "";
 $lang["common_comments"] = "評論";
 $lang["common_common"] = "一般";
 $lang["common_confirm_search"] = "您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？";
 $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "請在保存前，更正已識別的錯誤";
 $lang["common_country"] = "國家";
+$lang["common_dashboard"] = "";
 $lang["common_date"] = "日期";
 $lang["common_delete"] = "刪除";
 $lang["common_det"] = "更多";
@@ -20,6 +25,7 @@ $lang["common_export_csv"] = "匯出至CSV";
 $lang["common_export_csv_no"] = "否";
 $lang["common_export_csv_yes"] = "是";
 $lang["common_fields_required_message"] = "紅色欄位為必填";
+$lang["common_fields_required_message_unique"] = "";
 $lang["common_first_name"] = "名字";
 $lang["common_first_name_required"] = "名字為必填。";
 $lang["common_first_page"] = "第一頁";
@@ -44,15 +50,18 @@ $lang["common_list_of"] = "列表";
 $lang["common_logo"] = "商標";
 $lang["common_logo_mark"] = "標記";
 $lang["common_logout"] = "登出";
+$lang["common_manager"] = "";
 $lang["common_migration_needed"] = "登錄後將啟動到％1的數據庫遷移.";
 $lang["common_new"] = "新";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示.";
 $lang["common_none_selected_text"] = "[選擇]";
 $lang["common_or"] = "或";
+$lang["common_people"] = "";
 $lang["common_phone_number"] = "電話號碼";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "請造訪";
+$lang["common_position"] = "";
 $lang["common_powered_by"] = "提供者";
 $lang["common_price"] = "價值";
 $lang["common_print"] = "列印";

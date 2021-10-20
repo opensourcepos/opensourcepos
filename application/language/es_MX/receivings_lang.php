@@ -1,4 +1,6 @@
-<?php
+<?php 
+
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Falló al borrar Entrada(s).";
 $lang["receivings_comments"] = "Comentarios";
@@ -6,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Completado";
 $lang["receivings_confirm_cancel_receiving"] = "Esta seguro que quiere eliminar esta recepción? Todos los items se borraran.";
 $lang["receivings_confirm_delete"] = "Esta seguro que quiere borrar esta recepción? Esta acción no se puede deshacer.";
 $lang["receivings_confirm_finish_receiving"] = "Esta seguro que quiere enviar esta recepción? Esto no se puede deshacer.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Costo";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Fecha de Recibido";
 $lang["receivings_date_required"] = "Se debe de agregar la fecha correcta.";
 $lang["receivings_date_type"] = "Fecha es un campo obligatorio.";

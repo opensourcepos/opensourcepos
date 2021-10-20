@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Mégsem";
 $lang["receivings_cannot_be_deleted"] = "Átvétel(ek) nem törölhető(ek)";
 $lang["receivings_comments"] = "Megjegyzések";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Befejez";
 $lang["receivings_confirm_cancel_receiving"] = "Biztos, hogy üriti az átvételt? MINDEN termék eltávolitásra kerül.";
 $lang["receivings_confirm_delete"] = "Biztos, hogy törli az átvételt? Nem lehet visszavonni!";
 $lang["receivings_confirm_finish_receiving"] = "Biztosan beküldi ezt az átvételt? Nem lehet visszavonni!";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Költség";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Beérkezés dátuma";
 $lang["receivings_date_required"] = "Korrekt dátumot kell megadni";
 $lang["receivings_date_type"] = "Dátum mező kötelező";

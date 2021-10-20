@@ -14,30 +14,32 @@
 			table_support.refresh();
 		});
 
-		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+	table_support.query_params = function()
+	{
+		return {
+			start_date: start_date,
+			end_date: end_date,
+			filters: $("#filters").val() || [""]
+		}
+	};
 
-		table_support.init({
-			resource: '<?= site_url($controller_name); ?>',
-			headers: <?= $table_headers; ?>,
-			pageSize: <?= $this->config->item('lines_per_page'); ?>,
-			uniqueId: 'sale_id',
-			onLoadSuccess: function(response) {
-				if ($("#table tbody tr").length > 1) {
-					$("#payment_summary").html(response.payment_summary);
-					$("#table tbody tr:last td:first").html("");
-				}
-			},
-			queryParams: function() {
-				return $.extend(arguments[0], {
-					start_date: start_date,
-					end_date: end_date,
-					filters: $("#filters").val() || [""]
-				});
-			},
-			columns: {
-				'invoice': {
-					align: 'center'
-				}
+	table_support.init({
+		resource: '<?php echo site_url($controller_name);?>',
+		headers: <?php echo $table_headers; ?>,
+		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+		uniqueId: 'sale_id',
+		onLoadSuccess: function(response) {
+			if($("#table tbody tr").length > 1) {
+				$("#payment_summary").html(response.payment_summary);
+				$("#table tbody tr:last td:first").html("");
+			}
+		},
+		queryParams: function() {
+			return $.extend(arguments[0], table_support.query_params());
+		},
+		columns: {
+			'invoice': {
+				align: 'center'
 			}
 		});
 	});

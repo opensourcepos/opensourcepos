@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Аннулировать";
 $lang["receivings_cannot_be_deleted"] = "Не удалось удалить получатели.";
 $lang["receivings_comments"] = "Примечание";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "заканчивать";
 $lang["receivings_confirm_cancel_receiving"] = "Вы уверены, что хотите удалить это получение? Все детали будут очищены.";
 $lang["receivings_confirm_delete"] = "Вы уверены, что хотите удалить этот прием? Это действие нельзя отменить.";
 $lang["receivings_confirm_finish_receiving"] = "Вы уверены, что хотите представить это получение? Это не может быть отменено.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "стоимость";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Дата Получения";
 $lang["receivings_date_required"] = "Необходимо ввести правильную дату.";
 $lang["receivings_date_type"] = "Дата-обязательное поле.";

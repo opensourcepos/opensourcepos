@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Məlumat";
 $lang["employees_cannot_be_deleted"] = "Seçilmiş əməkdaş (lar) silinə bilməz, bir və ya birdən çox əməkdaş satışlar edib, əks halda siz öz heasabınızı silməyə çalışırsınız.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Şifrəni Dəyiş";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Siz əminsiniz ki seçilmiş əməkdaşları silmək istəyirsiniz?";
 $lang["employees_confirm_restore"] = "Seçilmiş əməkdaşı (lar) yenidən bərpa etməyinizə əminsinizmi?";
 $lang["employees_current_password"] = "İndiki Şifrə";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Demo administrator istifadəçis
 $lang["employees_error_updating_demo_admin"] = "Demo administrator istifadəçisini dəyişə bilməzsiniz.";
 $lang["employees_language"] = "Dil";
 $lang["employees_login_info"] = "Daxil Ol";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Yeni Əməkdaş";
 $lang["employees_none_selected"] = "Silmək üçün heç bir işçi (lər) seçməmisiniz.";
 $lang["employees_one_or_multiple"] = "İşçi (lər)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Sistem Dili";
 $lang["employees_unsuccessful_change_password"] = "Şifrə dəyişməsi uğursuz oldu.";
 $lang["employees_update"] = "İşçini yeniləyin";
 $lang["employees_username"] = "İstifadəçi Adı";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "İstifadəçi adı ən azı 5 simvol olmalıdır.";
 $lang["employees_username_required"] = "İstifadəçi adı tələb olunan sahədir.";

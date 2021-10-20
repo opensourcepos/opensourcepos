@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "ميزات/مميزات";
 $lang["module_attributes_desc"] = "إضافة، تعديل، حذف، وبحث بالميزات.";
 $lang["module_both"] = "الاثنين";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "الموردين";
 $lang["module_suppliers_desc"] = "إضافة، تحديث ، بحث و حذف مجموعات الموردين.";
 $lang["module_taxes"] = "الضرائب";
 $lang["module_taxes_desc"] = "اعدادات ضريبة المبيعات.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

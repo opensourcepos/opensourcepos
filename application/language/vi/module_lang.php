@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Thuộc tính";
 $lang["module_attributes_desc"] = "Thêm, Cập nhật, Xóa và Tìm kiếm các thuộc tính.";
 $lang["module_both"] = "Cả hai";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Nhà cung cấp";
 $lang["module_suppliers_desc"] = "Thêm, Cập nhật, Xóa và Tìm kiếm Nhà cung cấp.";
 $lang["module_taxes"] = "Thuế";
 $lang["module_taxes_desc"] = "Cấu hình Thuế bán hàng.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

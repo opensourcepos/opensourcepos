@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "குழு வரிசை";
 $lang["taxes_jurisdiction_name"] = "அதிகார வரம்பு பெயர்";
 $lang["taxes_name"] = "பெயர்";
 $lang["taxes_new"] = "புதிய வரி";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "காண்பிக்க வரிக் குறியீடு இல்லை";
 $lang["taxes_reporting_authority"] = "அறிக்கை ஆணையம்";
 $lang["taxes_round_half_down"] = "பாதி வரை குறைத்து தோரயமாக்கு";

@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "ลำดับกลุ่ม";
 $lang["taxes_jurisdiction_name"] = "ชื่อหน่วยเขตภาษี";
 $lang["taxes_name"] = "ชื่อภาษี";
 $lang["taxes_new"] = "ภาษีใหม่";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "ไม่มีรหัสภาษีที่จะแสดงได้";
 $lang["taxes_reporting_authority"] = "ผู้มีอำนาจรายงาน";
 $lang["taxes_round_half_down"] = "ปัดหน่วยลง";

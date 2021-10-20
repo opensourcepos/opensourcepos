@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Konto #";
 $lang["customers_account_number_duplicate"] = "Kontonummer finns redan i databasen.";
 $lang["customers_available_points"] = "Tillgängliga poäng";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Genomsnittlig spenderad";
 $lang["customers_avg_discount"] = "Genomsnittlig rabatt";
 $lang["customers_basic_information"] = "Information";

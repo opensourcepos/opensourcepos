@@ -196,29 +196,37 @@
 			table_support.do_restore("<?= site_url($controller_name); ?>", <?= $sale_info['sale_id']; ?>);
 		});
 
-		$('#sales_edit_form').validate($.extend({
-			submitHandler: function(form) {
-				$(form).ajaxSubmit({
-					success: function(response) {
-						dialog_support.hide();
-						table_support.handle_submit("<?= site_url($controller_name); ?>", response);
-					},
-					dataType: 'json'
-				});
-			},
+	$('#sales_edit_form').validate($.extend( {
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 
-			errorLabelContainer: '#error_message_box',
+					const params = $.param(table_support.query_params());
+					$.get("<?php echo site_url($controller_name); ?>/search?" + params, function(response) {
+						$("#payment_summary").html(response.payment_summary);
+					}, 'json');
+				},
+				dataType: 'json'
+			});
+		},
 
-			rules: {
-				invoice_number: {
-					remote: {
-						url: "<?= site_url($controller_name . '/check_invoice_number') ?>",
-						type: 'POST',
-						data: {
-							'sale_id': <?= $sale_info['sale_id']; ?>,
-							'invoice_number': function() {
-								return $('#invoice_number').val();
-							}
+		errorLabelContainer: '#error_message_box',
+
+		rules:
+		{
+			invoice_number:
+			{
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
+					type: 'POST',
+					data: {
+						'sale_id': <?php echo $sale_info['sale_id']; ?>,
+						'invoice_number': function() {
+							return $('#invoice_number').val();
 						}
 					}
 				}

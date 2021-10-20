@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "إلغاء";
 $lang["receivings_cannot_be_deleted"] = "لايمكن حذف الإستلام/الإستلامات.";
 $lang["receivings_comments"] = "تعليقات";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "إنهاء";
 $lang["receivings_confirm_cancel_receiving"] = "هل أنت متاكد أنك تريد إلغاء هذا الإستلام؟ سيتم حذف كل الأصناف.";
 $lang["receivings_confirm_delete"] = "هل أنت متاكد أنك تريد حذف هذا الإستلام؟ سيتم حذف كل الأصناف. لايمكن التراجع بعد الحذف.";
 $lang["receivings_confirm_finish_receiving"] = "هل أنت متاكد أنك تريد تنفيذ هذا الإستلام؟ لايمكن التراجع بعد الإرسال.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "التكلفة";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "تاريخ الإستلام";
 $lang["receivings_date_required"] = "يجب إدخال تاريخ صحيح.";
 $lang["receivings_date_type"] = "التاريخ مطلوب.";

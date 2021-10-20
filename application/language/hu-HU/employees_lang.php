@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Munkavállaló alap információk";
 $lang["employees_cannot_be_deleted"] = "Nem lehet a kiválasztott munkavállaló(ka)t törölni, mert már van lezárt értékesítése vagy saját magát kívánja törölni! :)";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Biztos, hogy törölni kívánja a munkavállalót?";
 $lang["employees_confirm_restore"] = "";
 $lang["employees_current_password"] = "";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Nem tudja törölni a demo admin
 $lang["employees_error_updating_demo_admin"] = "Nem tudja módosítani a demo admin felhasználót";
 $lang["employees_language"] = "";
 $lang["employees_login_info"] = "Munkavállaló azonosító";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Új munkavállaló";
 $lang["employees_none_selected"] = "Nem választott ki munkavállalót a törléshez";
 $lang["employees_one_or_multiple"] = "munkavállaló(k)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "";
 $lang["employees_unsuccessful_change_password"] = "";
 $lang["employees_update"] = "Munkavállaló módosítása";
 $lang["employees_username"] = "Felhasználó név";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "A felhasználó névnek legalább 5 karakternek kell lennie";
 $lang["employees_username_required"] = "Felhasználó név kötelező";

@@ -111,29 +111,20 @@ if (isset($success)) {
 						<div class='alert alert-dismissible alert-info'><?= $this->lang->line('sales_no_items_in_cart'); ?></div>
 					</td>
 				</tr>
-				<?php
-			} else {
-				foreach (array_reverse($cart, TRUE) as $line => $item) {
-				?>
-					<?= form_open($controller_name . "/edit_item/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
-					<tr>
-						<td><?= anchor($controller_name . "/delete_item/$line", '<i class="bi bi-trash"></i>'); ?></td>
-						<td><?= $item['item_number']; ?></td>
-						<td style="align:center;">
-							<?= $item['name'] . ' ' . implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?><br /> <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
-							<?= form_hidden('location', $item['item_location']); ?>
-						</td>
-
-						<?php
-						if ($items_module_allowed && $mode != 'requisition') {
-						?>
-							<td><?= form_input(array('name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'onClick' => 'this.select();')); ?></td>
-						<?php
-						} else {
-						?>
-							<td>
-								<?= $item['price']; ?>
-								<?= form_hidden('price', to_currency_no_money($item['price'])); ?>
+			<?php
+			}
+			else
+			{
+				foreach(array_reverse($cart, TRUE) as $line=>$item)
+				{
+			?>
+					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+						<tr>
+							<td><span data-item-id="<?php echo $line;?>" class="delete_item_button"><span class="glyphicon glyphicon-trash"></span></span></td>
+							<td><?php echo $item['item_number']; ?></td>
+							<td style="align:center;">
+								<?php echo $item['name'] . ' '. implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
+								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 						<?php
 						}
@@ -242,12 +233,11 @@ if (isset($success)) {
 				}
 				?>
 			</table>
+			
+			<button class="btn btn-danger btn-sm" id="remove_supplier_button" title="<?php echo $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier')?>">
+				<span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier') ?>
+			</button>
 
-			<?= anchor(
-				$controller_name . "/remove_supplier",
-				'<i class="bi bi-x pe-1"></i>' . $this->lang->line('common_remove') . ' ' . $this->lang->line('suppliers_supplier'),
-				array('class' => 'btn btn-danger', 'id' => 'remove_supplier_button', 'title' => $this->lang->line('common_remove') . ' ' . $this->lang->line('suppliers_supplier'))
-			); ?>
 		<?php
 		} else {
 		?>
@@ -359,18 +349,68 @@ if (isset($success)) {
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#item").autocomplete({
-			source: '<?= site_url($controller_name . "/stock_item_search"); ?>',
-			minChars: 0,
-			delay: 10,
-			autoFocus: false,
-			select: function(a, ui) {
-				$(this).val(ui.item.value);
-				$("#add_item_form").submit();
-				return false;
-			}
-		});
+$(document).ready(function()
+{
+	const redirect = function() {
+		window.location.href = "<?php echo site_url('receivings'); ?>";
+	};
+
+	$("#remove_supplier_button").click(function()
+	{
+		$.post("<?php echo site_url('receivings/remove_supplier'); ?>", redirect);
+	});
+
+	$(".delete_item_button").click(function() {
+		const item_id = $(this).data('item-id');
+		$.post("<?php echo site_url('receivings/delete_item/'); ?>" + item_id, redirect);
+	});
+
+	$("#item").autocomplete(
+	{
+		source: '<?php echo site_url($controller_name."/stock_item_search"); ?>',
+		minChars:0,
+		delay:10,
+		autoFocus: false,
+		select:	function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#add_item_form").submit();
+			return false;
+		}
+	});
+
+	$('#item').focus();
+
+	$('#item').keypress(function (e) {
+		if (e.which == 13) {
+			$('#add_item_form').submit();
+			return false;
+		}
+	});
+
+	$('#item').blur(function()
+	{
+		$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+	});
+
+	$('#comment').keyup(function() 
+	{
+		$.post('<?php echo site_url($controller_name."/set_comment");?>', {comment: $('#comment').val()});
+	});
+
+	$('#recv_reference').keyup(function() 
+	{
+		$.post('<?php echo site_url($controller_name."/set_reference");?>', {recv_reference: $('#recv_reference').val()});
+	});
+
+	$("#recv_print_after_sale").change(function()
+	{
+		$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
+	});
+
+	$('#item,#supplier').click(function()
+	{
+		$(this).attr('value','');
+	});
 
 		$('#item').focus();
 

@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Informações do Funcionário";
 $lang["employees_cannot_be_deleted"] = "Não foi possível excluir funcionários selecionados, um ou mais dos funcionários processou vendas ou você está tentando excluir-se :).";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "Alterar senha";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "Tem certeza de que deseja excluir os funcionários selecionados?";
 $lang["employees_confirm_restore"] = "Tem certeza de que deseja restaurar o (s) empregado (s) selecionado (s)?";
 $lang["employees_current_password"] = "Senha atual";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "Você não pode excluir o usuár
 $lang["employees_error_updating_demo_admin"] = "Você não pode alterar o usuário de demonstração de administração.";
 $lang["employees_language"] = "Linguagem";
 $lang["employees_login_info"] = "Autenticação";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "Novo Funcionário";
 $lang["employees_none_selected"] = "Você não selecionou nenhum funcionário para excluir.";
 $lang["employees_one_or_multiple"] = "funcionário(s)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "Idioma do sistema";
 $lang["employees_unsuccessful_change_password"] = "Falha na mudança de senha.";
 $lang["employees_update"] = "Atualizar funcionário";
 $lang["employees_username"] = "Usuário";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "O nome de usuário deve ter pelo menos 5 caracteres.";
 $lang["employees_username_required"] = "Nome de Usuário é um campo obrigatório.";

@@ -34,10 +34,13 @@ class Messages extends Secure_Controller
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
-		if ($response) {
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone));
-		} else {
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone));
+		if($response)
+		{
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $this->xss_clean($phone)));
+		}
+		else
+		{
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $this->xss_clean($phone)));
 		}
 	}
 
@@ -48,10 +51,13 @@ class Messages extends Secure_Controller
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
-		if ($response) {
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone, 'person_id' => $this->xss_clean($person_id)));
-		} else {
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
+		if($response)
+		{
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $this->xss_clean($phone), 'person_id' => $this->xss_clean($person_id)));
+		}
+		else
+		{
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $this->xss_clean($phone), 'person_id' => -1));
 		}
 	}
 }

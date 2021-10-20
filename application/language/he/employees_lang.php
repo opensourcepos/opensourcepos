@@ -1,8 +1,12 @@
 <?php 
 
+$lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "מידע";
 $lang["employees_cannot_be_deleted"] = "לא ניתן למחוק עובדים נבחרים, לאחד או יותר יש מכירות בתהליך או שאתה מנסה למחוק את החשבון שלך.";
+$lang["employees_change_employee"] = "";
 $lang["employees_change_password"] = "שנה סיסמה";
+$lang["employees_clerk"] = "";
+$lang["employees_commission"] = "";
 $lang["employees_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את העובדים שנבחרו?";
 $lang["employees_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את העובדים שנבחרו?";
 $lang["employees_current_password"] = "סיסמה נוכחית";
@@ -13,6 +17,7 @@ $lang["employees_error_deleting_demo_admin"] = "לא ניתן למחוק את מ
 $lang["employees_error_updating_demo_admin"] = "לא ניתן לשנות את משתמש המנהל ההדגמה.";
 $lang["employees_language"] = "שפה";
 $lang["employees_login_info"] = "כניסה";
+$lang["employees_manager"] = "";
 $lang["employees_new"] = "עובד חדש";
 $lang["employees_none_selected"] = "לא בחרת עובדים שברצונך למחוק.";
 $lang["employees_one_or_multiple"] = "עובד(ים)";
@@ -33,5 +38,6 @@ $lang["employees_system_language"] = "שפת מערכת";
 $lang["employees_unsuccessful_change_password"] = "שינוי הסיסמה נכשל.";
 $lang["employees_update"] = "עדכן עובד";
 $lang["employees_username"] = "שם משתמש";
+$lang["employees_username_duplicate"] = "";
 $lang["employees_username_minlength"] = "על שם המשתמש להיות באורך של 5 תווים לפחות.";
 $lang["employees_username_required"] = "שם המשתמש הינו שדה חובה.";

@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "取消";
 $lang["receivings_cannot_be_deleted"] = "收获记录删除失败。";
 $lang["receivings_comments"] = "备注";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "完成";
 $lang["receivings_confirm_cancel_receiving"] = "您確定要刪除此進貨資料嗎？本資料中所有的產品資料也將會被清空。";
 $lang["receivings_confirm_delete"] = "你确定要删除这个收货记录吗？该操作不可恢复。";
 $lang["receivings_confirm_finish_receiving"] = "您確定要提交此進貨資料嗎？一旦送出將不能撤消。";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "成本";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "收货日期";
 $lang["receivings_date_required"] = "请输入正确的日期。";
 $lang["receivings_date_type"] = "日期是必填项。";

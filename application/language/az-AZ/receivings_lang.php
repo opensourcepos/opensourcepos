@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "İmtina";
 $lang["receivings_cannot_be_deleted"] = "Qəbul olunanlar silinmədi.";
 $lang["receivings_comments"] = "Rəylər";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Bitirmək";
 $lang["receivings_confirm_cancel_receiving"] = "Siz əminsinizmi bu qəbul olunanları silməyinizə? Bütün mallar təmizlənəcək.";
 $lang["receivings_confirm_delete"] = "Bu qəbuldan silmək istədiyinizə əminsiniz? Bu hərəkət geri qaytarıla bilməz.";
 $lang["receivings_confirm_finish_receiving"] = "Bu qəbulu təqdim etmək istədiyinizə əminsiniz? Bunu geri qaytarmaq mümkün deyil.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Xərc";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Qəbul olunma tarixi";
 $lang["receivings_date_required"] = "Düzgün bir tarix daxil olunmalıdır.";
 $lang["receivings_date_type"] = "Tarixi tələb olunan bir sahədir.";

@@ -66,12 +66,22 @@ if (isset($success)) {
 						array('class' => 'btn btn-primary', 'id' => 'sales_takings_button', 'title' => $this->lang->line('sales_takings'))
 					); ?>
 				</li>
-			<?php
-			}
-			?>
-		</ul>
-	</div>
-	<?= form_close(); ?>
+
+				<?php
+				if($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+				{
+				?>
+					<li class="pull-right">
+						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'),
+									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
+					</li>
+				<?php
+				}
+				?>
+
+			</ul>
+		</div>
+	<?php echo form_close(); ?>
 
 	<?php $tabindex = 0; ?>
 
@@ -120,35 +130,21 @@ if (isset($success)) {
 						<div class='alert alert-dismissible alert-info'><?= $this->lang->line('sales_no_items_in_cart'); ?></div>
 					</td>
 				</tr>
-				<?php
-			} else {
-				foreach (array_reverse($cart, TRUE) as $line => $item) {
-				?>
-					<?= form_open($controller_name . "/edit_item/$line", array('class' => 'form-horizontal', 'id' => 'cart_' . $line)); ?>
-					<tr>
-						<td>
-							<?php
-							echo anchor($controller_name . "/delete_item/$line", '<i class="bi bi-trash"></i>');
-							echo form_hidden('location', $item['item_location']);
-							echo form_input(array('type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']));
-							?>
-						</td>
-						<?php
-						if ($item['item_type'] == ITEM_TEMP) {
-						?>
-							<td><?= form_input(array('name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex)); ?></td>
-							<td style="align: center;">
-								<?= form_input(array('name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex)); ?>
-							</td>
-						<?php
-						} else {
-						?>
-							<td><?= $item['item_number']; ?></td>
-							<td style="align: center;">
-								<?= $item['name'] . ' ' . implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?>
-								<br />
-								<?php if ($item['stock_type'] == '0') : echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']';
-								endif; ?>
+			<?php
+			}
+			else
+			{
+				foreach(array_reverse($cart, TRUE) as $line=>$item)
+				{
+			?>
+					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+						<tr>
+							<td>
+								<span data-item-id="<?php echo $line; ?>" class="delete_item_button"><span class="glyphicon glyphicon-trash"></span></span>
+								<?php
+								echo form_hidden('location', $item['item_location']);
+								echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id']));
+								?>
 							</td>
 						<?php
 						}
@@ -342,27 +338,32 @@ if (isset($success)) {
 				?>
 			</table>
 
-			<?= anchor(
-				$controller_name . "/remove_customer",
-				'<i class="bi bi-x pe-1"></i>' . $this->lang->line('common_remove') . ' ' . $this->lang->line('customers_customer'),
-				array('class' => 'btn btn-danger', 'id' => 'remove_customer_button', 'title' => $this->lang->line('common_remove') . ' ' . $this->lang->line('customers_customer'))
-			); ?>
-		<?php
-		} else {
-		?>
-			<div class="form-group" id="select_customer">
-				<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?= $this->lang->line('sales_select_customer') . ' ' . $customer_required; ?></label>
-				<?= form_input(array('name' => 'customer', 'id' => 'customer', 'class' => 'form-control input-sm', 'value' => $this->lang->line('sales_start_typing_customer_name'))); ?>
-
-				<button class='btn btn-primary modal-dlg' data-btn-submit="<?= $this->lang->line('common_submit') ?>" data-href="<?= site_url("customers/view"); ?>" title="<?= $this->lang->line($controller_name . '_new_customer'); ?>">
-					<i class="bi bi-person pe-1"></i><?= $this->lang->line($controller_name . '_new_customer'); ?>
+				<button class="btn btn-danger btn-sm" id="remove_customer_button" title="<?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer')?>">
+					<span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer') ?>
 				</button>
 
-			</div>
-		<?php
-		}
-		?>
-		<?= form_close(); ?>
+			<?php
+			}
+			else
+			{
+			?>
+				<div class="form-group" id="select_customer">
+					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer') . ' ' . $customer_required; ?></label>
+					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name'))); ?>
+
+					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo $this->lang->line('common_submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
+							title="<?php echo $this->lang->line($controller_name. '_new_customer'); ?>">
+						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+					</button>					
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?php echo site_url("$controller_name/sales_keyboard_help"); ?>"
+							title="<?php echo $this->lang->line('sales_key_title'); ?>">
+						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?php echo $this->lang->line('sales_key_help'); ?>
+					</button>
+				</div>
+			<?php
+			}
+			?>
+		<?php echo form_close(); ?>
 
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
@@ -492,9 +493,9 @@ if (isset($success)) {
 							foreach ($payments as $payment_id => $payment) {
 							?>
 								<tr>
-									<td><?= anchor($controller_name . "/delete_payment/$payment_id", '<i class="bi bi-trash"></i>'); ?></td>
-									<td><?= $payment['payment_type']; ?></td>
-									<td style="text-align: right;"><?= to_currency($payment['payment_amount']); ?></td>
+									<td><span data-payment-id="<?php echo $payment_id; ?>" class="delete_payment_button"><span class="glyphicon glyphicon-trash"></span></span></td>
+									<td><?php echo $payment['payment_type']; ?></td>
+									<td style="text-align: right;"><?php echo to_currency($payment['payment_amount']); ?></td>
 								</tr>
 							<?php
 							}
@@ -603,19 +604,39 @@ if (isset($success)) {
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("input[name='item_number']").change(function() {
-			var item_id = $(this).parents('tr').find("input[name='item_id']").val();
-			var item_number = $(this).val();
-			$.ajax({
-				url: "<?= site_url('sales/change_item_number'); ?>",
-				method: 'post',
-				data: {
-					'item_id': item_id,
-					'item_number': item_number,
-				},
-				dataType: 'json'
-			});
+$(document).ready(function()
+{
+	const redirect = function() {
+		window.location.href = "<?php echo site_url('sales'); ?>";
+	};
+
+	$("#remove_customer_button").click(function()
+	{
+		$.post("<?php echo site_url('sales/remove_customer'); ?>", redirect);
+	});
+
+	$(".delete_item_button").click(function()
+	{
+		const item_id = $(this).data('item-id');
+		$.post("<?php echo site_url('sales/delete_item/'); ?>" + item_id, redirect);
+	});
+
+	$(".delete_payment_button").click(function() {
+		const item_id = $(this).data('payment-id');
+		$.post("<?php echo site_url('sales/delete_payment/'); ?>" + item_id, redirect);
+	});
+
+	$("input[name='item_number']").change(function() {
+		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
+		var item_number = $(this).val();
+		$.ajax({
+			url: "<?php echo site_url('sales/change_item_number'); ?>",
+			method: 'post',
+			data: {
+				'item_id': item_id,
+				'item_number': item_number,
+			},
+			dataType: 'json'
 		});
 
 		$("input[name='name']").change(function() {
@@ -861,6 +882,54 @@ if (isset($success)) {
 			$(".non-giftcard-input").attr('disabled', false);
 		}
 	}
+}
+
+// Add Keyboard Shortcuts/Hotkeys to Sale Register
+document.body.onkeyup = function(e)
+{
+	switch(event.altKey && event.keyCode) 
+	{
+        case 49: // Alt + 1 Items Seach
+			$("#item").focus();
+			$("#item").select();
+            break;
+        case 50: // Alt + 2 Customers Search
+			$("#customer").focus();
+			$("#customer").select();
+            break;
+		case 51: // Alt + 3 Suspend Current Sale
+			$("#suspend_sale_button").click();
+			break;
+		case 52: // Alt + 4 Check Suspended
+			$("#show_suspended_sales_button").click();
+			break;
+        case 53: // Alt + 5 Edit Amount Tendered Value
+			$("#amount_tendered").focus();
+			$("#amount_tendered").select();
+            break;
+		case 54: // Alt + 6 Add Payment
+			$("#add_payment_button").click();
+			break;	
+		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
+			$("#add_payment_button").click();
+			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			break; 
+		case 56: // Alt + 8 Finish Quote/Invoice without payment
+			$("#finish_invoice_quote_button").click();
+			break;
+		case 57: // Alt + 9 Open Shortcuts Help Modal
+			$("#show_keyboard_help").click();
+			break;
+	}
+	
+	switch(event.keyCode) 
+	{
+		case 27: // ESC Cancel Current Sale
+			$("#cancel_sale_button").click();
+			break;		  
+    }
+}
+
 </script>
 
 <?php $this->load->view("partial/footer"); ?>

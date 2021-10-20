@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "Importe Adeudado";
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Ingreso(s) no se borraron.";
 $lang["receivings_comments"] = "Comentarios";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Terminar";
 $lang["receivings_confirm_cancel_receiving"] = "¿Estás seguro(a) de querer limpiar esta entrada? Todos los artículos serán limpiados.";
 $lang["receivings_confirm_delete"] = "¿Seguro(a) que desea borrar este ingreso? Esta acción no se puede deshacer.";
 $lang["receivings_confirm_finish_receiving"] = "¿Estás seguro(a) de querer procesar esta entrada? Ésto no puede ser deshecho.";
+$lang["receivings_confirm_restore"] = "Seguro que quiere restaurar esta recepción? Éste será restaurado.";
 $lang["receivings_cost"] = "Costo";
+$lang["receivings_daily"] = "Recepción Diaria";
 $lang["receivings_date"] = "Fecha de Recepción";
 $lang["receivings_date_required"] = "Una fecha correcta debe ser ingresada.";
 $lang["receivings_date_type"] = "Campo Fecha es requerido.";
@@ -34,7 +37,7 @@ $lang["receivings_reference"] = "Referencia";
 $lang["receivings_register"] = "Entrada de Artículos";
 $lang["receivings_requisition"] = "Requisición";
 $lang["receivings_return"] = "Devolver";
-$lang["receivings_select_supplier"] = "Seleccionar Proveedor (Opcional)";
+$lang["receivings_select_supplier"] = "Seleccionar Proveedor (Requerido)";
 $lang["receivings_ship_pack"] = "Paquete de Envío";
 $lang["receivings_start_typing_supplier_name"] = "Empieza a escribir el nombre del proveedor...";
 $lang["receivings_stock"] = "Inventario";

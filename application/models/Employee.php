@@ -327,12 +327,12 @@ class Employee extends Person
 	{
 		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
 
-		if($query->num_rows() == 1)
+		if($query->num_rows() === 1)
 		{
 			$row = $query->row();
 
 			// compare passwords depending on the hash version
-			if($row->hash_version == 1 && $row->password == md5($password))
+			if($row->hash_version === '1' && $row->password === md5($password))
 			{
 				$this->db->where('person_id', $row->person_id);
 				$this->session->set_userdata('person_id', $row->person_id);
@@ -340,7 +340,7 @@ class Employee extends Person
 
 				return $this->db->update('employees', array('hash_version' => 2, 'password' => $password_hash));
 			}
-			elseif($row->hash_version == 2 && password_verify($password, $row->password))
+			elseif($row->hash_version === '2' && password_verify($password, $row->password))
 			{
 				$this->session->set_userdata('person_id', $row->person_id);
 

@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Account #";
 $lang["customers_account_number_duplicate"] = "Accountnummer is al aanwezig in de database.";
 $lang["customers_available_points"] = "Beschikbare punten";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Gemiddelde uitgave";
 $lang["customers_avg_discount"] = "Gemiddelde korting";
 $lang["customers_basic_information"] = "Informatie";
