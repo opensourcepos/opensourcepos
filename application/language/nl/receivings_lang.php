@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Annuleren";
 $lang["receivings_cannot_be_deleted"] = "Levering(en) verwijderen mislukt.";
 $lang["receivings_comments"] = "Opmerkingen";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Voltooien";
 $lang["receivings_confirm_cancel_receiving"] = "Weet u zeker dat u deze levering wilt wissen? Alle artikelen worden gewist.";
 $lang["receivings_confirm_delete"] = "Weet u zeker dat u deze levering wilt verwijderen? Dit kan niet ongedaan gemaakt worden.";
 $lang["receivings_confirm_finish_receiving"] = "Bent u zeker dat u dit order wil ingeven? Dit kan niet ongedaan gemaakt worden.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Kosten";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Leveringsdatum";
 $lang["receivings_date_required"] = "Een juiste datum moet worden ingevuld.";
 $lang["receivings_date_type"] = "Datum is vereist veld.";

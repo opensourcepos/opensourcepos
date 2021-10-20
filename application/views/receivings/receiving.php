@@ -133,7 +133,7 @@ if (isset($success))
 			?>
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
-							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+							<td><span data-item-id="<?php echo $line;?>" class="delete_item_button"><span class="glyphicon glyphicon-trash"></span></span></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align:center;">
 								<?php echo $item['name'] . ' '. implode(' ', array($item['attribute_values'], $item['attribute_dtvalues'])); ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
@@ -276,8 +276,10 @@ if (isset($success))
 				?>
 			</table>
 			
-			<?php echo anchor($controller_name."/remove_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
-								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'))); ?>
+			<button class="btn btn-danger btn-sm" id="remove_supplier_button" title="<?php echo $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier')?>">
+				<span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier') ?>
+			</button>
+
 		<?php
 		}
 		else
@@ -402,6 +404,20 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	const redirect = function() {
+		window.location.href = "<?php echo site_url('receivings'); ?>";
+	};
+
+	$("#remove_supplier_button").click(function()
+	{
+		$.post("<?php echo site_url('receivings/remove_supplier'); ?>", redirect);
+	});
+
+	$(".delete_item_button").click(function() {
+		const item_id = $(this).data('item-id');
+		$.post("<?php echo site_url('receivings/delete_item/'); ?>" + item_id, redirect);
+	});
+
 	$("#item").autocomplete(
 	{
 		source: '<?php echo site_url($controller_name."/stock_item_search"); ?>',

@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Atributlar";
 $lang["module_attributes_desc"] = "Atributları əlavə et, yenilə, sil və ya axtar.";
 $lang["module_both"] = "Hər ikizi";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Təchizatçılar";
 $lang["module_suppliers_desc"] = "Əlavə et, Yenilə, Sil və Təchizatçıları Axtar.";
 $lang["module_taxes"] = "Vergi";
 $lang["module_taxes_desc"] = "Satış üçün Vergiləri Ayarla.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

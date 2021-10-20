@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "税收管辖区名称";
 $lang["taxes_name"] = "税费名称";
 $lang["taxes_new"] = "新建税";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "没有可显示的税码";
 $lang["taxes_reporting_authority"] = "报告机关";
 $lang["taxes_round_half_down"] = "";

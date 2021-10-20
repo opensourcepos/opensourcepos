@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Zrušit";
 $lang["receivings_cannot_be_deleted"] = "Příjemku nelze smazat.";
 $lang["receivings_comments"] = "Poznámky";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Dokončit";
 $lang["receivings_confirm_cancel_receiving"] = "Opravdu chcete smazat všechny položky na příjemce? Vše bude smazáno.";
 $lang["receivings_confirm_delete"] = "Opravdu chcete smazat tuto příjemku? Tato akce je nevratná.";
 $lang["receivings_confirm_finish_receiving"] = "Opravdu chcete zpracovat příjemku? Tato akce je nevratná.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Cena";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Datum příjmu";
 $lang["receivings_date_required"] = "Musíte zadat správné datum.";
 $lang["receivings_date_type"] = "Musíte zadat datum.";

@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "ویژگی های";
 $lang["module_attributes_desc"] = "ویژگیهای جستجو ، افزودن ، به روزرسانی ، حذف و جستجو را اضافه کنید.";
 $lang["module_both"] = "هر دو";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "تهیه کنندگان";
 $lang["module_suppliers_desc"] = "افزودن ، به روزرسانی ، حذف و جستجوی تولید کنندگان.";
 $lang["module_taxes"] = "مالیات";
 $lang["module_taxes_desc"] = "پیکربندی مالیات های فروش.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

@@ -1,14 +1,19 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
+$lang["common_admin"] = "";
 $lang["common_city"] = "Şehir";
+$lang["common_clerk"] = "";
 $lang["common_close"] = "Kapat";
+$lang["common_color"] = "";
 $lang["common_comments"] = "Yorumlar";
 $lang["common_common"] = "genel";
 $lang["common_confirm_search"] = "Birden çok satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?";
 $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "Lütfen kaydetmeden önce tanımlanmış hataları düzeltin";
 $lang["common_country"] = "Ülke";
+$lang["common_dashboard"] = "";
 $lang["common_date"] = "Tarih";
 $lang["common_delete"] = "Sil";
 $lang["common_det"] = "ayrıntılar";
@@ -20,6 +25,7 @@ $lang["common_export_csv"] = "CSV Dışa Aktarımı";
 $lang["common_export_csv_no"] = "Hayır";
 $lang["common_export_csv_yes"] = "Evet";
 $lang["common_fields_required_message"] = "Kırmızı alanlar zorunludur";
+$lang["common_fields_required_message_unique"] = "";
 $lang["common_first_name"] = "Ad";
 $lang["common_first_name_required"] = "Ad zorunlu alandır.";
 $lang["common_first_page"] = "İlk";
@@ -44,15 +50,18 @@ $lang["common_list_of"] = "Liste";
 $lang["common_logo"] = "Logo";
 $lang["common_logo_mark"] = "İm";
 $lang["common_logout"] = "Çıkış";
+$lang["common_manager"] = "";
 $lang["common_migration_needed"] = "Giriş yapılınca %1 veritabanına geçiş başlar.";
 $lang["common_new"] = "Yeni";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "Gösterecek kişi yok.";
 $lang["common_none_selected_text"] = "[Seç]";
 $lang["common_or"] = "VEYA";
+$lang["common_people"] = "";
 $lang["common_phone_number"] = "Telefon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Şurayı ziyaret edin:";
+$lang["common_position"] = "";
 $lang["common_powered_by"] = "Destekleyen";
 $lang["common_price"] = "Fiyat";
 $lang["common_print"] = "Yazdır";

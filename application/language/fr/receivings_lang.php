@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Annuler";
 $lang["receivings_cannot_be_deleted"] = "L'arrivage(s) ne peu pas etre effacé.";
 $lang["receivings_comments"] = "Commentaires";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Fin";
 $lang["receivings_confirm_cancel_receiving"] = "Etes vous sûr(e) de vouloir annuler cet arrivage? tous les articles seront effacés.";
 $lang["receivings_confirm_delete"] = "Etes-vous sure de voiloir effacer cet arrivage? Cette action est IRREVERSIBLE.";
 $lang["receivings_confirm_finish_receiving"] = "Etes vous sûr(e) de vouloir valider cet arrivage (Irréversible)? Ça ne peut pas être annulé.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Cout";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Date d'arrivée";
 $lang["receivings_date_required"] = "Une date correct a besoin d'être saisie.";
 $lang["receivings_date_type"] = "Le champ date est requis.";

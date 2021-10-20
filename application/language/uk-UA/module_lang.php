@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Атрибути";
 $lang["module_attributes_desc"] = "Додавання/оновлення, видалення та пошук атрибутів.";
 $lang["module_both"] = "І те й інше";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Постачальники";
 $lang["module_suppliers_desc"] = "Додавання, оновлення, видалення та пошук постачальників.";
 $lang["module_taxes"] = "Податки";
 $lang["module_taxes_desc"] = "Налаштування податків з продажу.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

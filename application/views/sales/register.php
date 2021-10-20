@@ -73,6 +73,7 @@ if(isset($success))
 				<?php
 				}
 				?>
+
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
@@ -136,8 +137,8 @@ if(isset($success))
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td>
+								<span data-item-id="<?php echo $line; ?>" class="delete_item_button"><span class="glyphicon glyphicon-trash"></span></span>
 								<?php
-								echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');
 								echo form_hidden('location', $item['item_location']);
 								echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id']));
 								?>
@@ -382,8 +383,10 @@ if(isset($success))
 					?>
 				</table>
 
-				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
-								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
+				<button class="btn btn-danger btn-sm" id="remove_customer_button" title="<?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer')?>">
+					<span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer') ?>
+				</button>
+
 			<?php
 			}
 			else
@@ -396,8 +399,11 @@ if(isset($success))
 					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo $this->lang->line('common_submit') ?>" data-href="<?php echo site_url("customers/view"); ?>"
 							title="<?php echo $this->lang->line($controller_name. '_new_customer'); ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+					</button>					
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?php echo site_url("$controller_name/sales_keyboard_help"); ?>"
+							title="<?php echo $this->lang->line('sales_key_title'); ?>">
+						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?php echo $this->lang->line('sales_key_help'); ?>
 					</button>
-
 				</div>
 			<?php
 			}
@@ -544,7 +550,7 @@ if(isset($success))
 							{
 							?>
 								<tr>
-									<td><?php echo anchor($controller_name."/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
+									<td><span data-payment-id="<?php echo $payment_id; ?>" class="delete_payment_button"><span class="glyphicon glyphicon-trash"></span></span></td>
 									<td><?php echo $payment['payment_type']; ?></td>
 									<td style="text-align: right;"><?php echo to_currency($payment['payment_amount']); ?></td>
 								</tr>
@@ -662,6 +668,26 @@ if(isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	const redirect = function() {
+		window.location.href = "<?php echo site_url('sales'); ?>";
+	};
+
+	$("#remove_customer_button").click(function()
+	{
+		$.post("<?php echo site_url('sales/remove_customer'); ?>", redirect);
+	});
+
+	$(".delete_item_button").click(function()
+	{
+		const item_id = $(this).data('item-id');
+		$.post("<?php echo site_url('sales/delete_item/'); ?>" + item_id, redirect);
+	});
+
+	$(".delete_payment_button").click(function() {
+		const item_id = $(this).data('payment-id');
+		$.post("<?php echo site_url('sales/delete_payment/'); ?>" + item_id, redirect);
+	});
+
 	$("input[name='item_number']").change(function() {
 		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
 		var item_number = $(this).val();
@@ -924,6 +950,53 @@ function check_payment_type()
 		$(".non-giftcard-input").attr('disabled', false);
 	}
 }
+
+// Add Keyboard Shortcuts/Hotkeys to Sale Register
+document.body.onkeyup = function(e)
+{
+	switch(event.altKey && event.keyCode) 
+	{
+        case 49: // Alt + 1 Items Seach
+			$("#item").focus();
+			$("#item").select();
+            break;
+        case 50: // Alt + 2 Customers Search
+			$("#customer").focus();
+			$("#customer").select();
+            break;
+		case 51: // Alt + 3 Suspend Current Sale
+			$("#suspend_sale_button").click();
+			break;
+		case 52: // Alt + 4 Check Suspended
+			$("#show_suspended_sales_button").click();
+			break;
+        case 53: // Alt + 5 Edit Amount Tendered Value
+			$("#amount_tendered").focus();
+			$("#amount_tendered").select();
+            break;
+		case 54: // Alt + 6 Add Payment
+			$("#add_payment_button").click();
+			break;	
+		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
+			$("#add_payment_button").click();
+			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			break; 
+		case 56: // Alt + 8 Finish Quote/Invoice without payment
+			$("#finish_invoice_quote_button").click();
+			break;
+		case 57: // Alt + 9 Open Shortcuts Help Modal
+			$("#show_keyboard_help").click();
+			break;
+	}
+	
+	switch(event.keyCode) 
+	{
+		case 27: // ESC Cancel Current Sale
+			$("#cancel_sale_button").click();
+			break;		  
+    }
+}
+
 </script>
 
 <?php $this->load->view("partial/footer"); ?>

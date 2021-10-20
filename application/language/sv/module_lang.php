@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Attribut";
 $lang["module_attributes_desc"] = "Lägg till, uppdatera, ta bort och sök attribut.";
 $lang["module_both"] = "Båda";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Leverantörer";
 $lang["module_suppliers_desc"] = "Lägg till, uppdatera, ta bort och sök leverantörer.";
 $lang["module_taxes"] = "Skatt";
 $lang["module_taxes_desc"] = "Konfigurera försäljningsskatter.";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

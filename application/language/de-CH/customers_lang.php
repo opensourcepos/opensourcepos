@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "Konto-Nr.";
 $lang["customers_account_number_duplicate"] = "Diese Konto-Nr. existiert bereits";
 $lang["customers_available_points"] = "";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";

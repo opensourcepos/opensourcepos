@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "帳號已存在於數據庫中。";
 $lang["customers_available_points"] = "現有積分";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "平均花費";
 $lang["customers_avg_discount"] = "平均折扣";
 $lang["customers_basic_information"] = "基本資料";

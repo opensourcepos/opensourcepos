@@ -1,14 +1,19 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "முகவரி 1";
 $lang["common_address_2"] = "முகவரி 2";
+$lang["common_admin"] = "";
 $lang["common_city"] = "நகரம்";
+$lang["common_clerk"] = "";
 $lang["common_close"] = "மூடவும்";
+$lang["common_color"] = "";
 $lang["common_comments"] = "குறிப்பு";
 $lang["common_common"] = "பொது";
 $lang["common_confirm_search"] = "நீங்கள் ஒன்று அல்லது அதற்கு மேற்பட்ட வரிசைகளைத் தேர்ந்தெடுத்துள்ளீர்கள், இவை உங்கள் தேடலுக்குப் பிறகு தேர்ந்தெடுக்கப்படாது. இந்த தேடலை நீங்கள் சமர்ப்பிக்க விரும்புகிறீர்களா?";
 $lang["common_copyrights"] = "© 2010 - %1";
 $lang["common_correct_errors"] = "சேமிப்பதற்கு முன் அடையாளம் காணப்பட்ட பிழைகளை சரிசெய்யவும்";
 $lang["common_country"] = "நாடு";
+$lang["common_dashboard"] = "";
 $lang["common_date"] = "தேதி";
 $lang["common_delete"] = "நீக்கு";
 $lang["common_det"] = "விவரங்கள்";
@@ -20,6 +25,7 @@ $lang["common_export_csv"] = "CSV முறையில் வெளியீட
 $lang["common_export_csv_no"] = "இல்லை";
 $lang["common_export_csv_yes"] = "ஆம்";
 $lang["common_fields_required_message"] = "சிவப்பு நிறத்திலுள்ள தரவுகள் அத்தியாவிசயம்";
+$lang["common_fields_required_message_unique"] = "";
 $lang["common_first_name"] = "முதற்பெயர்";
 $lang["common_first_name_required"] = "முதற்பெயர் அத்தியாவசிய தரவு.";
 $lang["common_first_page"] = "முதல்";
@@ -44,15 +50,18 @@ $lang["common_list_of"] = "பட்டியல்";
 $lang["common_logo"] = "முத்திரை";
 $lang["common_logo_mark"] = "குறி";
 $lang["common_logout"] = "வெளியேறு";
+$lang["common_manager"] = "";
 $lang["common_migration_needed"] = "% 1 க்கு தரவுத்தள மாற்றம் உள்நுழைந்த பிறகு தொடங்கும்.";
 $lang["common_new"] = "புதியது";
 $lang["common_no"] = "";
 $lang["common_no_persons_to_display"] = "காண்பிக்க நபர்கள் இல்லை.";
 $lang["common_none_selected_text"] = "[தேர்ந்தெடு]";
 $lang["common_or"] = "அல்லது";
+$lang["common_people"] = "";
 $lang["common_phone_number"] = "தொலைபேசி எண்";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "தயவுசெய்து பார்வையிடவும்";
+$lang["common_position"] = "";
 $lang["common_powered_by"] = "மூலம் இயக்கப்படுகிறது";
 $lang["common_price"] = "விலை";
 $lang["common_print"] = "அச்சிடுக";

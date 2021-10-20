@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_admin_cashups"] = "";
+$lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "Atributi";
 $lang["module_attributes_desc"] = "Dodajte, ažurirajte, izbrišite i pretražite atribute.";
 $lang["module_both"] = "Oba";
@@ -39,3 +41,7 @@ $lang["module_suppliers"] = "Dobavljači";
 $lang["module_suppliers_desc"] = "Dodajte, ažurirajte, izbrišite ili pretražite dobavljače";
 $lang["module_taxes"] = "Porezi";
 $lang["module_taxes_desc"] = "Konfigurišite poreze na promet";
+$lang["module_timeclocks"] = "";
+$lang["module_timeclocks_categories"] = "";
+$lang["module_timeclocks_categories_desc"] = "";
+$lang["module_timeclocks_desc"] = "";

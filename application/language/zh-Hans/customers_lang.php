@@ -3,6 +3,7 @@
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "可用积分";
+$lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "个人信息";

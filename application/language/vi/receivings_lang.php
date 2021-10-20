@@ -1,5 +1,6 @@
 <?php 
 
+$lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Hủy";
 $lang["receivings_cannot_be_deleted"] = "Gặp lỗi khi xóa đơn nhập hàng.";
 $lang["receivings_comments"] = "Ghi chú";
@@ -7,7 +8,9 @@ $lang["receivings_complete_receiving"] = "Kết thúc";
 $lang["receivings_confirm_cancel_receiving"] = "Bạn có chắc chắn muốn làm trống đơn nhập hàng này? Mọi thông tin sẽ bị xóa.";
 $lang["receivings_confirm_delete"] = "Bạn có chắc muốn xóa đơn nhập hàng này? Thao tác này không thể hoàn lại.";
 $lang["receivings_confirm_finish_receiving"] = "Bạn có chắc muốn lưu đơn nhập hàng này? Thao tác này không thể hoàn lại.";
+$lang["receivings_confirm_restore"] = "";
 $lang["receivings_cost"] = "Chi phí";
+$lang["receivings_daily"] = "";
 $lang["receivings_date"] = "Ngày nhập hàng";
 $lang["receivings_date_required"] = "Ngày phải được nhập theo định dạng.";
 $lang["receivings_date_type"] = "Trường Ngày tháng là bắt buộc.";

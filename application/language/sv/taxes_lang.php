@@ -14,6 +14,7 @@ $lang["taxes_group_seq"] = "Grupp Seq";
 $lang["taxes_jurisdiction_name"] = "Jurisdiktionsnamn";
 $lang["taxes_name"] = "Namn";
 $lang["taxes_new"] = "Ny skattsatts";
+$lang["taxes_no_taxes"] = "";
 $lang["taxes_no_taxes_to_display"] = "Ingen skattesats tillgänglig för visning";
 $lang["taxes_reporting_authority"] = "Rapporteringsmyndighet";
 $lang["taxes_round_half_down"] = "Halv ner";
