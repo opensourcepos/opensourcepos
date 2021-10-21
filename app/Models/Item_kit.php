@@ -89,7 +89,7 @@ class Item_kit extends Model
 	/**
 	 * Gets information about a particular item kit
 	 */
-	public function get_info(int $item_kit_id)
+	public function get_info(int $item_kit_id): object
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->select('
@@ -159,7 +159,7 @@ class Item_kit extends Model
 	/**
 	 * Inserts or updates an item kit
 	 */
-	public function save(array &$item_kit_data, bool $item_kit_id = FALSE): bool
+	public function save(array &$item_kit_data, bool $item_kit_id = FALSE): bool	//TODO: incompatible with base save()
 	{
 		$builder = $this->db->table('item_kits');
 		if(!$item_kit_id || !$this->exists($item_kit_id))
@@ -185,6 +185,7 @@ class Item_kit extends Model
 	public function delete(int $item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kits');
+
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 

@@ -54,7 +54,7 @@ class Rounding_mode
 		return $x;
 	}
 
-	public static function round_number(int $rounding_mode, float $amount, int $decimals): float
+	public static function round_number(int $rounding_mode, float $amount, int $decimals): string
 	{//TODO: this needs to be be replaced with a switch statement
 		if($rounding_mode == Rounding_mode::ROUND_UP)
 		{

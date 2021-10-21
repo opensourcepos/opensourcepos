@@ -316,7 +316,7 @@ function totals_decimals(): int
 {
 	$config = get_instance()->config;
 
-	return $config->get('currency_decimals') ? $config->get('currency_decimals') : 0;
+	return $config->get('currency_decimals') ? (int)$config->get('currency_decimals') : 0;
 }
 
 function cash_decimals(): int

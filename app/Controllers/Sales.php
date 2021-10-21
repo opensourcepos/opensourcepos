@@ -12,6 +12,7 @@ use app\Models\Appconfig;
 use app\Models\Customer;
 use app\Models\Customer_rewards;
 use app\Models\Dinner_table;
+use app\Models\Employee;
 use app\Models\Giftcard;
 use app\Models\Inventory;
 use app\Models\Item;
@@ -36,6 +37,7 @@ use app\Models\Tokens\Token_invoice_sequence;
  * @property customer customer
  * @property customer_rewards customer_rewards
  * @property dinner_table dinner_table
+ * @property employee employee
  * @property giftcard giftcard
  * @property inventory inventory
  * @property item item
@@ -62,6 +64,7 @@ class Sales extends Secure_Controller
 		$this->customer = model('Customer');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
+		$this->employee = model('Employee');
 		$this->giftcard = model('Giftcard');
 		$this->inventory = model('Inventory');
 		$this->item = model('Item');
@@ -80,7 +83,7 @@ class Sales extends Secure_Controller
 	{
 		$person_id = $this->session->get('person_id');
 
-		if(!$this->Employee->has_grant('reports_sales', $person_id))
+		if(!$this->employee->has_grant('reports_sales', $person_id))
 		{
 			redirect('no_access/sales/reports_sales');
 		}
@@ -164,7 +167,7 @@ class Sales extends Secure_Controller
 		$suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-		$suggestions = $this->xss_clean($suggestions);
+		$suggestions = $this->xss_clean($suggestions);	//TODO: Need to fix this
 
 		echo json_encode($suggestions);
 	}
@@ -361,7 +364,7 @@ class Sales extends Secure_Controller
 				{
 					$data['error'] = lang('Giftcards.cannot_use', $giftcard_num);
 				}
-				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')
+				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')	//TODO ===?
 				{
 					$data['error'] = lang('Giftcards.remaining_balance', $giftcard_num, to_currency($cur_giftcard_value));
 				}
@@ -606,8 +609,8 @@ class Sales extends Secure_Controller
 		$data['transaction_date'] = to_date($__time);
 		$data['show_stock_locations'] = $this->stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$employee_info = $this->Employee->get_info($employee_id);
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		$employee_info = $this->employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
 		$data['company_info'] = implode("\n", [$this->appconfig->get('address'), $this->appconfig->get('phone')]);
@@ -1048,7 +1051,7 @@ class Sales extends Secure_Controller
 
 		$data['amount_change'] = $data['amount_due'] * -1;
 
-		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
+		$employee_info = $this->employee->get_info($this->sale_lib->get_employee());
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
@@ -1181,8 +1184,8 @@ class Sales extends Secure_Controller
 			$data['payment_options'] = $this->sale->get_payment_options();
 		}
 
-		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
-		$data['change_price'] = $this->Employee->has_grant('sales_change_price', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
+		$data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
 
 		$invoice_number = $this->sale_lib->get_invoice_number();
 
@@ -1255,7 +1258,7 @@ class Sales extends Secure_Controller
 		$sale_info = $this->xss_clean($this->sale->get_info($sale_id)->getRowArray());
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['selected_customer_name'] = $sale_info['customer_name'];
-		$employee_info = $this->Employee->get_info($sale_info['employee_id']);
+		$employee_info = $this->employee->get_info($sale_info['employee_id']);
 		$data['selected_employee_id'] = $sale_info['employee_id'];
 		$data['selected_employee_name'] = $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name);
 		$data['sale_info'] = $sale_info;
@@ -1302,8 +1305,8 @@ class Sales extends Secure_Controller
 
 	public function delete(int $sale_id = -1, bool $update_inventory = TRUE)	//TODO: Replace -1 with a constant
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$has_grant = $this->Employee->has_grant('sales_delete', $employee_id);
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
 		if(!$has_grant)
 		{
@@ -1330,8 +1333,8 @@ class Sales extends Secure_Controller
 
 	public function restore(int $sale_id = -1, bool $update_inventory = TRUE)	//TODO: Replace -1 with a constant
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$has_grant = $this->Employee->has_grant('sales_delete', $employee_id);
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
 		if(!$has_grant)
 		{
@@ -1364,7 +1367,7 @@ class Sales extends Secure_Controller
 	public function save(int $sale_id = -1)	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
 		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $newdate);
 		$sale_time = $date_formatter->format('Y-m-d H:i:s');
@@ -1527,7 +1530,7 @@ class Sales extends Secure_Controller
 		$dinner_table = $this->sale_lib->get_dinner_table();
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$customer_id = $this->sale_lib->get_customer();
 		$invoice_number = $this->sale_lib->get_invoice_number();
 		$work_order_number = $this->sale_lib->get_work_order_number();
