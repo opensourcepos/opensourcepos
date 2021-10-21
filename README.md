@@ -10,8 +10,8 @@
 <p align="center">
 <a href="https://travis-ci.org/opensourcepos/opensourcepos" target="_blank"><img src="https://travis-ci.com/opensourcepos/opensourcepos.svg?branch=master" alt="Build Status"></a>
 <a href="https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank"><img src="https://badges.gitter.im/jekkos/opensourcepos.svg" alt="Join the chat at https://gitter.im/opensourcepos"></a>
-<a href="https://badge.fury.io/gh/jekkos%2Fopensourcepos" target="_blank"><img src="https://badge.fury.io/gh/jekkos%2Fopensourcepos.svg" alt="GitHub version"></a>
-<a href="http://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Build Status"></a>
+<a href="https://badge.fury.io/gh/jekkos%2Fopensourcepos" target="_blank"><img src="https://badge.fury.io/gh/jekkos%2Fopensourcepos.svg" alt="Project Version"></a>
+<a href="http://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
 </p>
 
 ## 👋 Introduction
@@ -80,13 +80,15 @@ Only with the help of the community, we can keep language translations up to dat
 
 Before creating a new issue, you'll need copy and include the info under the `System Info` tab in the configuration section in most cases. If that information is not provided in full, your issue might be tagged as pending.
 
+If you're reporting a potential security issue, please refer to our security policy found in the [SECURITY.md](SECURITY.md) file.
+
 NOTE: If you're running non-release code, please make sure you always run the latest database upgrade script and you download the latest master code.
 
 ## 📖 FAQ
 
 - If you get the message `system folder missing`, then you have cloned the source using git and you need to run a build first. Check [INSTALL.md](INSTALL.md) for instructions or download latest zip file from [GitHub releases](https://github.com/opensourcepos/opensourcepos/releases) instead.
 
-- If at login time you read `The installation is not correct, check your php.ini file.`, please check the error_log in `public` folder to understand what's wrong and make sure you read the [INSTALL.md](INSTALL.md). To know how to enable `error_log`, please read the comment in [issue 1770](https://github.com/opensourcepos/opensourcepos/issues/1770#issuecomment-355177943).
+- If at login time you read `The installation is not correct, check your php.ini file.`, please check the error_log in `public` folder to understand what's wrong and make sure you read the [INSTALL.md](INSTALL.md). To know how to enable `error_log`, please read the comment in [issue #1770](https://github.com/opensourcepos/opensourcepos/issues/1770#issuecomment-355177943).
 
 - If you installed your OSPOS under a web server subdir, please edit `public/.htaccess` and go to the lines with the comments `if in web root` or `if in subdir`, uncomment one and replace `<OSPOS path>` with your path and follow the instruction on the second comment line. If you face more issues, please read [issue #920](https://github.com/opensourcepos/opensourcepos/issues/920) for more information.
 
@@ -106,7 +108,8 @@ NOTE: If you're running non-release code, please make sure you always run the la
 
 If you like our project, please consider buying us a coffee through the button below so we can keep adding features.
 
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)\
+Or refer to the [FUNDING.yml](.github/FUNDING.yml) file.
 
 If you choose to deploy OSPOS in the cloud, you can contribute to the project by using DigitalOcean and signing up through our referral link. You'll receive a [free $100, 60-day credit](https://m.do.co/c/ac38c262507b) if you run OSPOS in a DigitalOcean droplet through [our referral link](https://m.do.co/c/ac38c262507b).
 
@@ -120,7 +123,7 @@ Also worth noting:
 
 _The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software._
 
-For more details please read the file [LICENSE](LICENSE).
+For more details please read the [LICENSE](LICENSE) file.
 
 It's important to understand that although you are free to use the application the copyright has to stay and the license agreement applies in all cases. Therefore any actions like:
 
@@ -134,7 +137,7 @@ Any person or company found breaching the license agreement might find a bunch o
 
 ## 🙏 Credits
 
-| <div align="center">JetBrains</div>                                                                                                                                                 | <div align="center">Travis CI</div>                                                                                             |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| <div align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/IntelliJ_IDEA_Icon.svg" alt="IntelliJ IDEA Logo" height="50"></div>                               | <div align="center"><img src="https://secrethub.io/img/travis-ci.svg" alt="Travis CI Logo" height="50"></div>                   |
+| <div align="center">JetBrains</div> | <div align="center">Travis CI</div> |
+|--- | --- |
+| <div align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/IntelliJ_IDEA_Icon.svg" alt="IntelliJ IDEA Logo" height="50"></div> | <div align="center"><img src="https://secrethub.io/img/travis-ci.svg" alt="Travis CI Logo" height="50"></div> |
 | Many thanks to [JetBrains](https://www.jetbrains.com/) for providing a free license of [IntelliJ IDEA](https://www.jetbrains.com/idea/) to kindly support the development of OSPOS. | Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects. |
