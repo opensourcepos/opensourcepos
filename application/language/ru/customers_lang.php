@@ -1,6 +1,5 @@
-<?php 
-
-$lang["customers_account_number"] = "Номер счота";
+<?php
+$lang["customers_account_number"] = "Номер счета";
 $lang["customers_account_number_duplicate"] = "Номер счета уже присутствует в базе данных.";
 $lang["customers_available_points"] = "Доступные баллы";
 $lang["customers_available_points_value"] = "";
