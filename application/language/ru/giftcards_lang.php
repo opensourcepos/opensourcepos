@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "Инвентарь сложения/вычитания.";
 $lang["giftcards_allow_alt_description"] = "Разрешить альтернативные Описание";
 $lang["giftcards_bulk_edit"] = "Массовое изменение";
 $lang["giftcards_cannot_be_deleted"] = "Не удалось удалить выбранные подарочные карты, одну или несколько из выбранных подарочные карты имеет продаж.";
 $lang["giftcards_cannot_find_giftcard"] = "Не можете найти любую информацию о Подарочную карту.";
 $lang["giftcards_cannot_use"] = "Подарочная карта %1 не может быть использована для этой продажи. Неверный Клиент.";
-$lang["giftcards_card_value"] = "стоимость";
+$lang["giftcards_card_value"] = "Стоимость";
 $lang["giftcards_category"] = "категория";
 $lang["giftcards_change_all_to_allow_alt_desc"] = "Разрешить альтернативные Описание Для всех.";
 $lang["giftcards_change_all_to_not_allow_allow_desc"] = "Не позволяйте Альтернативные Описание Для всех.";
@@ -66,5 +65,5 @@ $lang["giftcards_unit_price"] = "Розничная Цена";
 $lang["giftcards_upc_database"] = "UPC база данных";
 $lang["giftcards_update"] = "Обновлять Подарочная карта";
 $lang["giftcards_use_inventory_menu"] = "Используйте меню инвентаря";
-$lang["giftcards_value"] = "стоимость Подарочную карту должна быть цифрая.";
-$lang["giftcards_value_required"] = "стоимость Подарочную карту обязательный пробел.";
+$lang["giftcards_value"] = "Стоимость подарочный карты должна быть числом.";
+$lang["giftcards_value_required"] = "Стоимость подарочный карты обязательна для заполнения.";
