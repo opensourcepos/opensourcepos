@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Доступные баллы";
 $lang["rewards_package"] = "награды";
 $lang["rewards_remaining_balance"] = "Оставшаяся ценность очков вознаграждения ";
@@ -126,7 +125,7 @@ $lang["sales_key_title"] = "Sales Keyboard Shortcuts";
 $lang["sales_mc"] = "";
 $lang["sales_mode"] = "режим журнала";
 $lang["sales_must_enter_numeric"] = "Сумма Тендер должен быть числом.";
-$lang["sales_must_enter_numeric_giftcard"] = "числовое значение необходимое для число подарочную карту.";
+$lang["sales_must_enter_numeric_giftcard"] = "Номер подарочной карты должен быть числом.";
 $lang["sales_new_customer"] = "Новый клиент";
 $lang["sales_new_item"] = "Новый Товар";
 $lang["sales_no_description"] = "Никто";
