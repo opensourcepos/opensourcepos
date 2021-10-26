@@ -7,6 +7,7 @@ use app\Models\Attribute;
 use app\Models\Customer;
 use app\Models\Dinner_table;
 use app\Models\Item;
+use app\Models\Item_kit_items;
 use app\Models\Item_quantity;
 use app\Models\Item_taxes;
 use app\Models\Enums\Rounding_mode;
@@ -24,6 +25,7 @@ use app\Models\Stock_location;
  * @property customer customer
  * @property dinner_table dinner_table
  * @property item item
+ * @property item_kit_items item_kit_items
  * @property item_quantity item_quantity
  * @property item_taxes item_taxes
  * @property rounding_mode rounding_mode
@@ -483,12 +485,12 @@ class Sale_lib
 
 		if($cash_rounding)
 		{
-			if($decoded_payment_id == lang('Sales.cash'))
+			if($decoded_payment_id == lang('Sales.cash'))	//TODO: === ?
 			{
 				unset($payments[lang('Sales.cash_adjustment')]);
 			}
 
-			if($decoded_payment_id == lang('Sales.cash_adjustment'))
+			if($decoded_payment_id == lang('Sales.cash_adjustment'))	//TODO: === ?
 			{
 				unset($payments[lang('Sales.cash')]);
 			}
@@ -617,7 +619,7 @@ class Sale_lib
 		}
 
 		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
-		$threshold = bcpow('10', -totals_decimals()) / 2;
+		$threshold = bcpow('10', (string)-totals_decimals()) / 2;
 
 		if($this->get_mode() == 'return')	//TODO: Convert to ternary notation.
 		{
@@ -630,7 +632,7 @@ class Sale_lib
 
 		$totals['item_count'] = $item_count;
 		$totals['total_units'] = $total_units;
-		$totals['cash_adjustment_amount'] = 0;
+		$totals['cash_adjustment_amount'] = 0.0;
 
 		if($totals['payments_cover_total'])
 		{
@@ -643,7 +645,7 @@ class Sale_lib
 	}
 
 	// Multiple Payments
-	public function get_amount_due(): float
+	public function get_amount_due(): string
 	{
 		// Payment totals need to be identified first so that we know whether or not there is a non-cash payment involved
 		$payment_total = $this->get_payments_total();
@@ -653,7 +655,7 @@ class Sale_lib
 		$rounded_due = bccomp((string)round((float)$amount_due, $precision, PHP_ROUND_HALF_UP), '0', $precision);	//TODO: Is round() currency safe?
 
 		// take care of rounding error introduced by round tripping payment amount to the browser
-		return $rounded_due == 0.0 ? 0.0 : $amount_due;
+		return $rounded_due == 0 ? '0' : $amount_due;	//TODO: ===
 	}
 
 	public function get_customer(): int
@@ -676,7 +678,7 @@ class Sale_lib
 		$this->session->remove('sales_customer');
 	}
 
-	public function get_employee()
+	public function get_employee(): int
 	{
 		if(!$this->session->get('sales_employee'))
 		{
@@ -728,7 +730,7 @@ class Sale_lib
 		return $this->session->get('dinner_table');
 	}
 
-	public function set_dinner_table(string $dinner_table)
+	public function set_dinner_table(int $dinner_table)
 	{
 		$this->session->set('dinner_table', $dinner_table);
 	}
@@ -768,12 +770,12 @@ class Sale_lib
 		$this->session->remove('sales_location');
 	}
 
-	public function set_giftcard_remainder(float $value)
+	public function set_giftcard_remainder(string $value)
 	{
 		$this->session->set('sales_giftcard_remainder', $value);
 	}
 
-	public function get_giftcard_remainder(): float
+	public function get_giftcard_remainder(): string
 	{
 		return $this->session->get('sales_giftcard_remainder');
 	}
@@ -783,12 +785,12 @@ class Sale_lib
 		$this->session->remove('sales_giftcard_remainder');
 	}
 
-	public function set_rewards_remainder(float $value)
+	public function set_rewards_remainder(string $value)
 	{
 		$this->session->set('sales_rewards_remainder', $value);
 	}
 
-	public function get_rewards_remainder(): float
+	public function get_rewards_remainder(): string
 	{
 		return $this->session->get('sales_rewards_remainder');
 	}
@@ -799,9 +801,10 @@ class Sale_lib
 	}
 
 	//TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
-	public function add_item(int &$item_id, string $quantity = '1', int $item_location, float &$discount = 0.0, int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, bool $kit_price_option = NULL, bool $kit_print_option = NULL, bool $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
+	public function add_item(int &$item_id, string $quantity = '1', int $item_location, string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = NULL, int $kit_print_option = NULL, string $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
 	{
 		$item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
+
 		//make sure item exists
 		if(empty($item_info))
 		{
@@ -827,14 +830,16 @@ class Sale_lib
 				|| $kit_price_option == PRICE_OPTION_KIT  && $item_type == ITEM_KIT
 				|| $kit_price_option == PRICE_OPTION_KIT_STOCK && $stock_type == HAS_STOCK))	//TODO: === ?
 			{
-				$price = 0.00;
-				$applied_discount = 0.00;
+				$price = '0.00';
+				$applied_discount = '0.00';
 			}
+
 			// If price is zero do not include a discount regardless of type
-			if($price == 0.00)	//TODO: === ?
+			if($price == '0.00')	//TODO: === ?
 			{
-				$applied_discount = 0.00;
+				$applied_discount = '0.00';
 			}
+
 			// If fixed discount then apply no more than the item price
 			if($discount_type == FIXED)	//TODO: === ?
 			{
@@ -861,8 +866,8 @@ class Sale_lib
 		//item to the cart. Since items can be deleted, we can't use a count. we use the highest key + 1.
 
 		$maxkey = 0;                       //Highest key so far
-		$itemalreadyinsale = FALSE;        //We did not find the item yet.
-		$insertkey = 0;                    //Key to use for new entry.
+		$itemalreadyinsale = FALSE;        //We did not find the item yet.	//TODO: variable naming here does not match the convention
+		$insertkey = 0;                    //Key to use for new entry.	//TODO: $insertkey is never used
 		$updatekey = 0;                    //Key to use to update(quantity)
 
 		foreach($items as $item)
@@ -870,7 +875,7 @@ class Sale_lib
 			//We primed the loop so maxkey is 0 the first time.
 			//Also, we have stored the key in the element itself so we can compare.
 
-			if($maxkey <= $item['line'])
+			if($maxkey <= $item['line'])	//TODO: variable naming here does not match the convention
 			{
 				$maxkey = $item['line'];
 			}
@@ -981,7 +986,7 @@ class Sale_lib
 	public function out_of_stock(int $item_id, int $item_location): string
 	{
 		//make sure item exists
-		if($item_id != -1)	//TODO: === ?.  Also Replace -1 with a constant
+		if($item_id != -1)	//TODO: !== ?.  Also Replace -1 with a constant
 		{
 			$item_info = $this->item->get_info_by_id_or_number($item_id);
 
@@ -1034,13 +1039,13 @@ class Sale_lib
 		return -1;	//TODO: Replace -1 with constant
 	}
 
-	public function edit_item(array $line, string $description, string $serialnumber, float $quantity, float $discount, string $discount_type, float $price, float $discounted_total = NULL): bool
+	public function edit_item(array $line, string $description, string $serialnumber, string $quantity, string $discount, string $discount_type, string $price, string $discounted_total = NULL): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
-			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])	//TODO: === ?
+			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])	//TODO: !== ?
 			{
 				// Note when entered the "discounted_total" is expected to be entered without a discount
 				$quantity = $this->get_quantity_sold($discounted_total, $price);
@@ -1061,7 +1066,7 @@ class Sale_lib
 			$this->set_cart($items);
 		}
 
-		return FALSE;
+		return FALSE;	//TODO: This function will always return false.
 	}
 
 	public function delete_item(array $line)
@@ -1080,7 +1085,7 @@ class Sale_lib
 		$this->set_cart($items);
 	}
 
-	public function return_entire_sale(int $receipt_sale_id)
+	public function return_entire_sale(string $receipt_sale_id)
 	{
 		//POS #
 		$pieces = explode(' ', $receipt_sale_id);
@@ -1105,7 +1110,7 @@ class Sale_lib
 		$result = TRUE;
 		$applied_discount = $discount;
 
-		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
+		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
 
@@ -1225,7 +1230,7 @@ class Sale_lib
 		return $cash_rounding;
 	}
 
-	public function is_customer_taxable(): bool
+	public function is_customer_taxable(): bool	//TODO: This function is never called in the code
 	{
 		$customer_id = $this->get_customer();
 		$customer = $this->customer->get_info($customer_id);
@@ -1234,7 +1239,7 @@ class Sale_lib
 		return $customer->taxable or $customer_id == -1;	//TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.
 	}
 
-	public function apply_customer_discount(float $discount, int $discount_type)
+	public function apply_customer_discount(string $discount, int $discount_type)
 	{
 		// Get all items in the cart so far...
 		$items = $this->get_cart();
@@ -1261,7 +1266,7 @@ class Sale_lib
 		$discount = '0.0';
 		foreach($this->get_cart() as $item)
 		{
-			if($item['discount'] > 0.0)
+			if($item['discount'] > '0.0')
 			{
 				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
 				$discount = bcadd($discount, $item_discount);
@@ -1271,12 +1276,12 @@ class Sale_lib
 		return $discount;
 	}
 
-	public function get_subtotal(bool $include_discount = FALSE, bool $exclude_tax = FALSE): float
+	public function get_subtotal(bool $include_discount = FALSE, bool $exclude_tax = FALSE): string
 	{
 		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
 
-	public function get_item_total_tax_exclusive(int $item_id, float $quantity, float $price, float $discount, int $discount_type, bool $include_discount = FALSE): string
+	public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = FALSE): string
 	{
 		$tax_info = $this->item_taxes->get_info($item_id);
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, $include_discount);
@@ -1292,7 +1297,7 @@ class Sale_lib
 	}
 
 	//TODO: This function doesn't seem to be called anywhere in the code.
-	public function get_extended_total_tax_exclusive(int $item_id, string $discounted_extended_amount, float $quantity, float $price, float $discount = 0.0, int $discount_type = 0): string
+	public function get_extended_total_tax_exclusive(int $item_id, string $discounted_extended_amount, string $quantity, string $price, string $discount = '0.0', int $discount_type = 0): string
 	{
 		$tax_info = $this->item_taxes->get_info($item_id);
 
@@ -1431,5 +1436,4 @@ class Sale_lib
 		return Rounding_mode::round_number($cash_rounding_code, (float)$total, $cash_decimals);
 	}
 }
-
 ?>

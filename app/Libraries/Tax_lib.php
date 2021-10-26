@@ -10,33 +10,33 @@ namespace app\Libraries;
 
 class Tax_lib
 {
-	const TAX_TYPE_EXCLUDED = '1';
+	const TAX_TYPE_EXCLUDED = '1';	//TODO: These constants need to be moved to constants.php
 	const TAX_TYPE_INCLUDED = '0';
 
 	private $CI;
 
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+
 	}
 
-	public function get_tax_types()
+	public function get_tax_types(): array
 	{
 		return [
 			Tax_lib::TAX_TYPE_EXCLUDED => lang('Taxes.tax_excluded'),
 			Tax_lib::TAX_TYPE_INCLUDED => lang('Taxes.tax_included')
-		);
+		];
 	}
 
-	/*
+	/**
 	 * Compute the tax basis and returns the tax amount
 	 */
-	public function get_item_sales_tax($quantity, $price, $discount, $discount_type, $tax_percentage, $rounding_code)
+	public function get_item_sales_tax(string $quantity, $price, $discount, $discount_type, $tax_percentage, $rounding_code)
 	{
 		$decimals = tax_decimals();
 
 		// The tax basis should be returned at the currency scale
-		$tax_basis = $this->CI->sale_lib->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+		$tax_basis = $this->sale_lib->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
 
 		return $this->get_tax_for_amount($tax_basis, $tax_percentage, $rounding_code, $decimals);
 	}
@@ -56,10 +56,10 @@ class Tax_lib
 	 */
 	public function get_taxes(&$cart, $sale_id = -1)
 	{
-		$register_mode = $this->CI->sale_lib->get_mode();
+		$register_mode = $this->sale_lib->get_mode();
 		$tax_decimals = tax_decimals();
-		$customer_id = $this->CI->sale_lib->get_customer();
-		$customer_info = $this->CI->Customer->get_info($customer_id);
+		$customer_id = $this->sale_lib->get_customer();
+		$customer_info = $this->Customer->get_info($customer_id);
 		$taxes = [];
 		$item_taxes = [];
 
@@ -70,17 +70,17 @@ class Tax_lib
 			{
 				$taxed = FALSE;
 
-				if(!($this->CI->config->get('use_destination_based_tax')))
+				if(!($this->appconfig->get('use_destination_based_tax')))
 				{
 					// Start of current Base System tax calculations
 
 					if($sale_id == -1)
 					{
-						$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+						$tax_info = $this->Item_taxes->get_info($item['item_id']);
 					}
 					else
 					{
-						$tax_info = $this->CI->Sale->get_sales_item_taxes($sale_id, $item['item_id']);
+						$tax_info = $this->Sale->get_sales_item_taxes($sale_id, $item['item_id']);
 
 					}
 					$tax_group_sequence = 0;
@@ -90,10 +90,10 @@ class Tax_lib
 					foreach($tax_info as $tax)
 					{
 						// This computes tax for each line item and adds it to the tax type total
-						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
+						$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = 0.0;
 
-						if($this->CI->config->get('tax_included'))
+						if($this->appconfig->get('tax_included'))
 						{
 							$tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 							$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP);
@@ -133,10 +133,10 @@ class Tax_lib
 
 					if($item['tax_category_id'] == NULL)
 					{
-						$item['tax_category_id'] = $this->CI->config->config['default_tax_category'];
+						$item['tax_category_id'] = $this->appconfig->config['default_tax_category'];
 					}
 
-					$taxed = $this->apply_destination_tax($item, $customer_info->city, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
+					$taxed = $this->apply_destination_tax($item, $customer_infoty, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
 				}
 
 				if($taxed)
@@ -160,7 +160,7 @@ class Tax_lib
 
 	public function get_included_tax($quantity, $price, $discount_percentage, $discount_type, $tax_percentage, $tax_decimal, $rounding_code)
 	{
-		$item_total = $this->CI->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, TRUE);
+		$item_total = $this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, TRUE);
 		$tax_fraction = bcdiv(bcadd(100, $tax_percentage), 100);
 		$price_tax_excl = bcdiv($item_total, $tax_fraction);
 		return bcsub($item_total, $price_tax_excl);
@@ -244,7 +244,7 @@ class Tax_lib
 		}
 
 		// If tax included then round decimal to tax decimals, otherwise round it to currency_decimals
-		if($this->CI->config->get('tax_included'))
+		if($this->appconfig->get('tax_included'))
 		{
 			$decimals = tax_decimals();
 		}
@@ -309,10 +309,10 @@ class Tax_lib
 		{
 			$tax_decimals = tax_decimals();
 
-			$tax_definition = $this->CI->Tax->get_taxes($tax_code_id, $item['tax_category_id']);
+			$tax_definition = $this->Tax->get_taxes($tax_code_id, $item['tax_category_id']);
 
 			// The tax basis should be returned at the currency scale
-			$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
+			$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 
 			$row = 0;
 
@@ -376,17 +376,17 @@ class Tax_lib
 	{
 		if($register_mode == "sale")
 		{
-			$sales_tax_code_id = $this->CI->config->config['default_tax_code']; // overrides customer assigned code
+			$sales_tax_code_id = $this->appconfig->config['default_tax_code']; // overrides customer assigned code
 		}
 		else
 		{
 			if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
 			{
-				$sales_tax_code_id = $this->CI->Tax_code->get_sales_tax_code($city, $state);
+				$sales_tax_code_id = $this->Tax_code->get_sales_tax_code($city, $state);
 
 				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
 				{
-					$sales_tax_code_id = $this->CI->config->config['default_tax_code']; // overrides customer assigned code
+					$sales_tax_code_id = $this->appconfig->config['default_tax_code']; // overrides customer assigned code
 				}
 			}
 		}
@@ -403,7 +403,7 @@ class Tax_lib
 
 	public function get_tax_code_options()
 	{
-		$tax_codes = $this->CI->Tax_code->get_all()->getResultArray();
+		$tax_codes = $this->Tax_code->get_all()->getResultArray();
 		$tax_code_options = [];
 		$tax_code_options[''] = '';
 		foreach($tax_codes as $tax_code)
@@ -418,7 +418,7 @@ class Tax_lib
 
 	public function get_tax_jurisdiction_options()
 	{
-		$tax_jurisdictions = $this->CI->Tax_jurisdiction->get_all()->getResultArray();
+		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->getResultArray();
 		$tax_jurisdiction_options = [];
 		$tax_jurisdiction_options[0] = '';
 		foreach($tax_jurisdictions as $tax_jurisdiction)
@@ -433,7 +433,7 @@ class Tax_lib
 
 	public function get_tax_category_options()
 	{
-		$tax_categories = $this->CI->Tax_category->get_all()->getResultArray();
+		$tax_categories = $this->Tax_category->get_all()->getResultArray();
 		$tax_category_options = [];
 		$tax_category_options[0] = '';
 		foreach($tax_categories as $tax_category)

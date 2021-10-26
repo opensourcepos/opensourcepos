@@ -388,7 +388,7 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
