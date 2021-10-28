@@ -6,7 +6,7 @@ use ReflectionClass;
 
 class Rounding_mode
 {
-	const HALF_UP = PHP_ROUND_HALF_UP;
+	const HALF_UP = PHP_ROUND_HALF_UP;  //TODO: These constants need to be moved to constants.php
 	const HALF_DOWN = PHP_ROUND_HALF_DOWN;
 	const HALF_EVEN = PHP_ROUND_HALF_EVEN;
 	const HALF_ODD = PHP_ROUND_HALF_ODD;
@@ -32,7 +32,7 @@ class Rounding_mode
 		return $result;
 	}
 
-	public static function get_rounding_code_name($code)
+	public static function get_rounding_code_name(int $code): string
 	{
 		if(empty($code))
 		{

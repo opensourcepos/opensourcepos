@@ -12,14 +12,7 @@ use app\Models\Sale;
  */
 class Specific_customer extends Report
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->sale = model('Sale');
-	}
-
-	public function create(array $inputs)
+	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
 		$this->sale->create_temp_table($inputs);
@@ -62,7 +55,7 @@ class Specific_customer extends Report
 		];
 	}
 
-	public function getData(array $inputs)
+	public function getData(array $inputs): array
 	{
 		$builder = $this->db->table('sales_items_temp');
 		$builder->select('

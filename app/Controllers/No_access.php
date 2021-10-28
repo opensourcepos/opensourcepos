@@ -21,7 +21,7 @@ class No_Access extends BaseController
 
 		$this->security = Services::security();
 	}
-	public function index(string $module_id = '', string $permission_id = '')
+	public function index(string $module_id = '', string $permission_id = ''): void
 	{
 		$data['module_name']   = $this->module->get_module_name($module_id);
 		$data['permission_id'] = $permission_id;

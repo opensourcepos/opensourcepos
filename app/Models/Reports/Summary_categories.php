@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_categories extends Summary_report
 {
-	protected function _get_data_columns(): array
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
 			['category' => lang('Reports.category')],
@@ -17,7 +17,7 @@ class Summary_categories extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs): void	//TODO: Hungarian notation
 	{
 		parent::_select($inputs);	//TODO: hungarian notation
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
@@ -27,14 +27,14 @@ class Summary_categories extends Summary_report
 		');
 	}
 
-	protected function _from()	//TODO: hungarian notation
+	protected function _from(): void	//TODO: hungarian notation
 	{
 		parent::_from();
 
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
-	protected function _group_order()	//TODO: hungarian notation
+	protected function _group_order():void	//TODO: hungarian notation
 	{
 		$builder->groupBy('category');
 		$builder->orderBy('category');

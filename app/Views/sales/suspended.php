@@ -61,7 +61,7 @@
 					<?php
 					if(isset($suspended_sale['employee_id']))
 					{
-						$employee = $this->Employee->get_info($suspended_sale['employee_id']);
+						$employee = $this->employee->get_info($suspended_sale['employee_id']);
 						echo $employee->first_name . ' ' . $employee->last_name;
 					}
 					else

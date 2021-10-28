@@ -22,7 +22,7 @@ class Giftcards extends Secure_Controller
 		$this->giftcard = model('Giftcard');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_giftcards_manage_table_headers());
 
@@ -32,7 +32,7 @@ class Giftcards extends Secure_Controller
 	/*
 	Returns Giftcards table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -56,28 +56,28 @@ class Giftcards extends Secure_Controller
 	Gives search suggestions based on what is being searched for
 	*/
 
-	public function suggest()
+	public function suggest(): void
 	{
 		$suggestions = $this->xss_clean($this->giftcard->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$suggestions = $this->xss_clean($this->giftcard->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		$data_row = $this->xss_clean(get_giftcard_data_row($this->giftcard->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $giftcard_id = -1)	//TODO: Need to replace -1 with a constant
+	public function view(int $giftcard_id = -1): void	//TODO: Need to replace -1 with a constant
 	{
 		$giftcard_info = $this->giftcard->get_info($giftcard_id);
 
@@ -100,7 +100,7 @@ class Giftcards extends Secure_Controller
 		echo view("giftcards/form", $data);
 	}
 
-	public function save(int $giftcard_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $giftcard_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$giftcard_number = $this->request->getPost('giftcard_number');
 
@@ -150,13 +150,13 @@ class Giftcards extends Secure_Controller
 		}
 	}
 
-	public function ajax_check_number_giftcard()
+	public function ajax_check_number_giftcard(): void
 	{
 		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount'));
 		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$giftcards_to_delete = $this->xss_clean($this->request->getPost('ids'));
 

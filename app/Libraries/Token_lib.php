@@ -3,25 +3,26 @@
 namespace app\Libraries;
 
 use app\Models\tokens\Token;
+use app\Models\Appconfig;
 
 /**
  * Token library
  *
  * Library with utilities to manage tokens
+ *
+ * @property appconfig appconfig
  */
 class Token_lib
 {
-	private $CI;
-
 	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->appconfig = Model('Appconfig');
 	}
 
 	/**
-	 * Expands all of the tokens found in a given text string and returns the results.
+	 * Expands all the tokens found in a given text string and returns the results.
 	 */
-	public function render($tokened_text, $tokens = [])
+	public function render(string $tokened_text, array $tokens = []): string
 	{
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
@@ -52,9 +53,9 @@ class Token_lib
 	}
 
 	/**
-	 * Parses out the all of the tokens enclosed in braces {} and subparses on the colon : character where supplied
+	 * Parses out the all the tokens enclosed in braces {} and subparses on the colon : character where supplied
 	 */
-	public function scan($text)
+	public function scan(string $text): array
 	{
 		// Matches tokens with the following pattern: [$token:$length]
 		preg_match_all('/
@@ -79,9 +80,9 @@ class Token_lib
 		return $token_tree;
 	}
 
-	public function parse_barcode(&$quantity, &$price,  &$item_id_or_number_or_item_kit_or_receipt)
+	public function parse_barcode(string &$quantity, string &$price,  string &$item_id_or_number_or_item_kit_or_receipt): void
 	{
-		$barcode_formats = json_decode($this->CI->config->get('barcode_formats'));
+		$barcode_formats = json_decode($this->appconfig->get('barcode_formats'));
 		$barcode_tokens = Token::get_barcode_tokens();
 
 		if(!empty($barcode_formats))
@@ -97,12 +98,11 @@ class Token_lib
 		}
 		else 
 		{
-			$quantity = 1;
+			$quantity = 1;	//TODO: Quantity is handled using bcmath functions so that it is precision safe.  This should be '1'
 		}
-	
 	}
 
-	public function parse($string, $pattern, $tokens = [])
+	public function parse(string $string, string $pattern, array $tokens = []): array	//TODO: $string is a poor name for this parameter.
 	{
 		$token_tree = $this->scan($pattern);
 
@@ -136,7 +136,7 @@ class Token_lib
 		return $results;
 	}
 
-	public function generate($used_tokens, &$tokens_to_replace, &$token_values, $tokens)
+	public function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, array $tokens): array	//TODO: $tokens
 	{
 		foreach($used_tokens as $token_code => $token_info)
 		{
@@ -160,7 +160,7 @@ class Token_lib
 		return $token_values;
 	}
 
-	private function resolve_token($token_code, $tokens = [])
+	private function resolve_token($token_code, array $tokens = []): string
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{
@@ -173,5 +173,4 @@ class Token_lib
 		return '';
 	}
 }
-
 ?>

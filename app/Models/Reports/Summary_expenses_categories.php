@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_expenses_categories extends Summary_report
 {
-	protected function _get_data_columns(): array
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
 			['category_name' => lang('Reports.expenses_category')],

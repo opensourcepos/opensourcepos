@@ -15,8 +15,6 @@ class Token_suspended_invoice_count extends Token
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->sale = model('Sale');
 	}
 
 	public function token_id(): string

@@ -64,7 +64,7 @@ class Items extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$this->session->set('allow_temp_items', 0);
 
@@ -89,7 +89,7 @@ class Items extends Secure_Controller
 	/*
 	 * Returns Items table data rows. This will be called with AJAX.
 	 */
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit');
@@ -135,7 +135,7 @@ class Items extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function pic_thumb($pic_filename)
+	public function pic_thumb($pic_filename): void
 	{
 		helper('file');
 
@@ -174,7 +174,7 @@ class Items extends Secure_Controller
 	/*
 	 Gives search suggestions based on what is being searched for
 	 */
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$options = [
 			'search_custom' => $this->request->getPost('search_custom'),
@@ -186,21 +186,21 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function suggest()
+	public function suggest(): void
 	{
 		$suggestions = $this->xss_clean($this->item->get_search_suggestions($this->request->getPostGet('term'),	['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_low_sell()
+	public function suggest_low_sell(): void
 	{
 		$suggestions = $this->xss_clean($this->item->get_low_sell_suggestions($this->request->getPostGet('name')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_kits()
+	public function suggest_kits(): void
 	{
 		$suggestions = $this->xss_clean($this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 
@@ -210,7 +210,7 @@ class Items extends Secure_Controller
 	/*
 	 Gives search suggestions based on what is being searched for
 	 */
-	public function suggest_category()
+	public function suggest_category(): void
 	{
 		$suggestions = $this->xss_clean($this->item->get_category_suggestions($this->request->getGet('term')));
 
@@ -220,14 +220,14 @@ class Items extends Secure_Controller
 	/*
 	 Gives search suggestions based on what is being searched for
 	 */
-	public function suggest_location()
+	public function suggest_location(): void
 	{
 		$suggestions = $this->xss_clean($this->item->get_location_suggestions($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(string $item_ids)	//TODO: It's possible an array would be better.
+	public function get_row(string $item_ids): void	//TODO: It's possible an array would be better.
 	{
 		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
@@ -241,7 +241,7 @@ class Items extends Secure_Controller
 		echo json_encode($result);
 	}
 
-	public function view(int $item_id = NEW_ITEM)	//TODO: Super long function.  Perhaps we need to refactor out some methods.
+	public function view(int $item_id = NEW_ITEM): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
 		if($item_id === NEW_ITEM)
 		{
@@ -253,7 +253,7 @@ class Items extends Secure_Controller
 		$data['item_tax_info'] = $this->xss_clean($this->item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
-		$data['item_kit_disabled'] = !$this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['item_kit_disabled'] = !$this->employee->has_grant('item_kits', $this->employee->get_logged_in_employee_info()->person_id);
 		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id);
 		$data['definition_names'] = $this->attribute->get_definition_names();
 
@@ -419,7 +419,7 @@ class Items extends Secure_Controller
 		echo view('items/form', $data);
 	}
 
-	public function inventory(int $item_id = NEW_ITEM)
+	public function inventory(int $item_id = NEW_ITEM): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
@@ -444,7 +444,7 @@ class Items extends Secure_Controller
 		echo view('items/form_inventory', $data);
 	}
 
-	public function count_details(int $item_id = NEW_ITEM)
+	public function count_details(int $item_id = NEW_ITEM): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
@@ -469,7 +469,7 @@ class Items extends Secure_Controller
 		echo view('items/form_count_details', $data);
 	}
 
-	public function generate_barcodes(string $item_ids)	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
+	public function generate_barcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
 	{
 		$item_ids = explode(':', $item_ids);
 		$result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
@@ -495,7 +495,7 @@ class Items extends Secure_Controller
 		echo view('barcodes/barcode_sheet', $data);
 	}
 
-	public function attributes(int $item_id = NEW_ITEM)
+	public function attributes(int $item_id = NEW_ITEM): void
 	{
 		$data['item_id'] = $item_id;
 		$definition_ids = json_decode($this->request->getPost('definition_ids'), TRUE);
@@ -529,7 +529,7 @@ class Items extends Secure_Controller
 		echo view('attributes/item', $data);
 	}
 
-	public function bulk_edit()
+	public function bulk_edit(): void
 	{
 		$suppliers = ['' => lang('Items.none')];
 
@@ -555,7 +555,7 @@ class Items extends Secure_Controller
 		echo view('items/form_bulk', $data);
 	}
 
-	public function save(int $item_id = NEW_ITEM)
+	public function save(int $item_id = NEW_ITEM): void
 	{
 		$upload_success = $this->handle_image_upload();
 		$upload_file = $this->request->getFile('image');
@@ -618,7 +618,7 @@ class Items extends Secure_Controller
 			}
 		}
 
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
 		if($this->item->save($item_data, $item_id))	//TODO: Reflection Exception
 		{
@@ -730,7 +730,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	public function check_item_number()
+	public function check_item_number(): void
 	{
 		$exists = $this->item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
 		echo !$exists ? 'true' : 'false';
@@ -739,7 +739,7 @@ class Items extends Secure_Controller
 	/*
 	 If adding a new item check to see if an item kit with the same name as the item already exists.
 	 */
-	public function check_kit_exists()
+	public function check_kit_exists(): void
 	{
 		if($this->request->getPost('item_number') === NEW_ITEM)
 		{
@@ -772,7 +772,7 @@ class Items extends Secure_Controller
 		return strlen($this->upload->display_errors()) === 0 || !strcmp($this->upload->display_errors(), '<p>' . lang('upload_no_file_selected') . '</p>');
 	}
 
-	public function remove_logo($item_id)
+	public function remove_logo($item_id): void
 	{
 		$item_data = ['pic_filename' => NULL];
 		$result = $this->item->save($item_data, $item_id);	//TODO: Reflection exception
@@ -780,9 +780,9 @@ class Items extends Secure_Controller
 		echo json_encode (['success' => $result]);
 	}
 
-	public function save_inventory($item_id = NEW_ITEM)
+	public function save_inventory($item_id = NEW_ITEM): void
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->item->get_info($item_id);
 		$location_id = $this->request->getPost('stock_location');
 		$inv_data = [
@@ -818,7 +818,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	public function bulk_update()
+	public function bulk_update(): void
 	{
 		$items_to_update = $this->request->getPost('item_ids');
 		$item_data = [];
@@ -866,7 +866,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$items_to_delete = $this->request->getPost('ids');
 
@@ -881,7 +881,7 @@ class Items extends Secure_Controller
 		}
 	}
 
-	public function generate_csv_file()
+	public function generate_csv_file(): void
 	{
 		$name = 'import_items.csv';
 		$allowed_locations = $this->stock_location->get_allowed_locations();
@@ -891,7 +891,7 @@ class Items extends Secure_Controller
 		force_download($name, $data, TRUE);
 	}
 
-	public function csv_import()
+	public function csv_import(): void
 	{
 		echo view('items/form_csv_import', NULL);
 	}
@@ -899,7 +899,7 @@ class Items extends Secure_Controller
 	/**
 	 * Imports items from CSV formatted file.
 	 */
-	public function import_csv_file()
+	public function import_csv_file(): void
 	{
 		if($_FILES['file_path']['error'] !== UPLOAD_ERR_OK)
 		{
@@ -913,7 +913,7 @@ class Items extends Secure_Controller
 
 				$failCodes = [];
 				$csv_rows = get_csv_file($_FILES['file_path']['tmp_name']);
-				$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+				$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 				$allowed_stock_locations = $this->stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->attribute->get_definition_names();
 
@@ -1198,7 +1198,7 @@ class Items extends Secure_Controller
 	 * @param	array	row
 	 * @param	array	item_data
 	 */
-	private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id)
+	private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): void
 	{
 		//Quantities & Inventory Section
 		$comment = lang('Items.inventory_CSV_import_quantity');
@@ -1243,7 +1243,7 @@ class Items extends Secure_Controller
 	 *
 	 * @param	array	row
 	 */
-	private function save_tax_data(array $row, array $item_data)
+	private function save_tax_data(array $row, array $item_data): void
 	{
 		$items_taxes_data = [];
 
@@ -1268,7 +1268,7 @@ class Items extends Secure_Controller
 	 *
 	 * @param $item object item to update
 	 */
-	private function update_pic_filename(object $item)
+	private function update_pic_filename(object $item): void
 	{
 		$filename = pathinfo($item->pic_filename, PATHINFO_FILENAME);
 

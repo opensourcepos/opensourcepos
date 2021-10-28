@@ -9,11 +9,6 @@ use CodeIgniter\Model;
  */
 class Module extends Model
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function get_module_name(string $module_id): string
 	{
 		$builder = $this->db->table('modules');

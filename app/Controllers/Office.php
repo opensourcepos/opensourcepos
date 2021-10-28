@@ -19,12 +19,12 @@ class Office extends Secure_Controller
 		$this->employee = model('Employee');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		echo view('home/office');
 	}
 
-	public function logout()
+	public function logout(): void
 	{
 		$this->employee->logout();
 	}

@@ -22,7 +22,7 @@ class Tax_jurisdictions extends Secure_Controller
 	}
 
 
-	public function index()
+	public function index(): void
 	{
 		 $data['table_headers'] = $this->xss_clean(get_tax_jurisdictions_table_headers());
 
@@ -32,7 +32,7 @@ class Tax_jurisdictions extends Secure_Controller
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	 */
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -52,14 +52,14 @@ class Tax_jurisdictions extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		$data_row = $this->xss_clean(get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $tax_jurisdiction_id = -1)	//TODO: Replace -1 with constant
+	public function view(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
@@ -67,7 +67,7 @@ class Tax_jurisdictions extends Secure_Controller
 	}
 
 
-	public function save(int $jurisdiction_id = -1)	//TODO: Replace -1 with constant
+	public function save(int $jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$tax_jurisdiction_data = [
 			'jurisdiction_name' => $this->request->getPost('jurisdiction_name'),
@@ -105,7 +105,7 @@ class Tax_jurisdictions extends Secure_Controller
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$tax_jurisdictions_to_delete = $this->request->getPost('ids');
 

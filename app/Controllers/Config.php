@@ -23,8 +23,8 @@ use DirectoryIterator;
 use NumberFormatter;
 
 /**
- * 
- * 
+ *
+ *
  * @property barcode_lib barcode_lib
  * @property mailchimp_lib mailchimp_lib
  * @property receiving_lib receiving_lib
@@ -250,7 +250,7 @@ class Config extends Secure_Controller
 		return $themes;
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
@@ -301,7 +301,7 @@ class Config extends Secure_Controller
 		echo view("configs/manage", $data);
 	}
 
-	public function save_info()
+	public function save_info(): void
 	{
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
@@ -333,7 +333,7 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => $message]);
 	}
 
-	public function save_general()
+	public function save_general(): void
 	{
 		$batch_save_data = [
 			'theme' => $this->request->getPost('theme'),
@@ -387,7 +387,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function ajax_check_number_locale()
+	public function ajax_check_number_locale(): void
 	{
 		$number_locale = $this->request->getPost('number_locale');
 		$save_number_locale = $this->request->getPost('save_number_locale');
@@ -422,7 +422,7 @@ class Config extends Secure_Controller
 		]);
 	}
 
-	public function save_locale()
+	public function save_locale(): void
 	{
 		$exploded = explode(":", $this->request->getPost('language'));
 		$batch_save_data = [
@@ -452,7 +452,7 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_email()
+	public function save_email(): void
 	{
 		$password = '';
 
@@ -478,7 +478,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_message()
+	public function save_message(): void
 	{
 		$password = '';
 
@@ -527,7 +527,7 @@ class Config extends Secure_Controller
 	/*
 	 AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
 	 */
-	public function ajax_check_mailchimp_api_key()
+	public function ajax_check_mailchimp_api_key(): void
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
@@ -540,7 +540,7 @@ class Config extends Secure_Controller
 		]);
 	}
 
-	public function save_mailchimp()
+	public function save_mailchimp(): void
 	{
 		$api_key = '';
 		$list_id = '';
@@ -559,7 +559,7 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function ajax_stock_locations()
+	public function ajax_stock_locations(): void
 	{
 		$stock_locations = $this->stock_location->get_all()->getResultArray();
 
@@ -568,7 +568,7 @@ class Config extends Secure_Controller
 		echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
 	}
 
-	public function ajax_dinner_tables()
+	public function ajax_dinner_tables(): void
 	{
 		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
@@ -577,7 +577,7 @@ class Config extends Secure_Controller
 		echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
 	}
 
-	public function ajax_tax_categories()
+	public function ajax_tax_categories(): void
 	{
 		$tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
@@ -586,7 +586,7 @@ class Config extends Secure_Controller
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
-	public function ajax_customer_rewards()
+	public function ajax_customer_rewards(): void
 	{
 		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
@@ -595,7 +595,7 @@ class Config extends Secure_Controller
 		echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
 	}
 
-	private function _clear_session_state()	//TODO: Hungarian notation
+	private function _clear_session_state(): void	//TODO: Hungarian notation
 	{
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_table();
@@ -606,7 +606,7 @@ class Config extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	public function save_locations()
+	public function save_locations(): void
 	{
 		$this->db->transStart();
 
@@ -647,7 +647,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_tables()
+	public function save_tables(): void
 	{
 		$this->db->transStart();
 
@@ -693,7 +693,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success,'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_tax()
+	public function save_tax(): void
 	{
 		$this->db->transStart();
 
@@ -721,7 +721,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => $message]);
 	}
 
-	public function save_rewards()
+	public function save_rewards(): void
 	{
 		$this->db->transStart();
 
@@ -777,7 +777,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_barcode()
+	public function save_barcode(): void
 	{
 		$batch_save_data = [
 			'barcode_type' => $this->request->getPost('barcode_type'),
@@ -803,7 +803,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_receipt()
+	public function save_receipt(): void
 	{
 		$batch_save_data = [
 			'receipt_template' => $this->request->getPost('receipt_template'),
@@ -832,7 +832,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function save_invoice()
+	public function save_invoice(): void
 	{
 		$batch_save_data = [
 			'invoice_enable' => $this->request->getPost('invoice_enable') != NULL,
@@ -871,7 +871,7 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function remove_logo()
+	public function remove_logo(): void
 	{
 		$result = $this->appconfig->batch_save (['company_logo' => '']);
 
@@ -944,10 +944,10 @@ class Config extends Secure_Controller
 		return TRUE;
 	}
 
-	public function backup_db()
+	public function backup_db(): void
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		if($this->Employee->has_module_grant('config', $employee_id))
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		if($this->employee->has_module_grant('config', $employee_id))
 		{
 			$this->load->dbutil();	//TODO: CI4 does not have this utility any longer https://forum.codeigniter.com/thread-78658-post-384595.html#pid384595
 

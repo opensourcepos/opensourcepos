@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_employees extends Summary_report
 {
-	protected function _get_data_columns(): array
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
 			['employee_name' => lang('Reports.employee')],

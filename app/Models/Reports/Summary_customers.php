@@ -18,9 +18,9 @@ class Summary_customers extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)
+	protected function _select(array $inputs)	//TODO: Hungarian notation
 	{
-		parent::_select($inputs);
+		parent::_select($inputs);	//TODO: Hungarian notation
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
 		$builder->select('
@@ -30,14 +30,14 @@ class Summary_customers extends Summary_report
 		');
 	}
 
-	protected function _from()
+	protected function _from()	//TODO: Hungarian notation
 	{
-		parent::_from();
+		parent::_from();	//TODO: Hungarian notation
 
 		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
-	protected function _group_order()
+	protected function _group_order()	//TODO: Hungarian notation
 	{
 		$builder->groupBy('sales.customer_id');
 		$builder->orderBy('customer_p.last_name');

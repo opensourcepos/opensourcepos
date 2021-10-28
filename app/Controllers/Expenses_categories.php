@@ -19,7 +19,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		$this->expense_category = model('Expense_category');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		 $data['table_headers'] = $this->xss_clean(get_expense_category_manage_table_headers());
 
@@ -29,7 +29,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	/*
 	Returns expense_category_manage table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -49,21 +49,21 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		$data_row = $this->xss_clean(get_expense_category_data_row($this->expense_category->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $expense_category_id = -1)	//TODO: Replace -1 with a constant
+	public function view(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
 
 		echo view("expenses_categories/form", $data);
 	}
 
-	public function save(int $expense_category_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$expense_category_data = [
 			'category_name' => $this->request->getPost('category_name'),
@@ -102,13 +102,14 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$expense_category_to_delete = $this->request->getPost('ids');
 
-		if($this->expense_category->delete_list($expense_category_to_delete))
+		if($this->expense_category->delete_list($expense_category_to_delete))	//TODO: Convert to ternary notation.
 		{
-			echo json_encode (['success' => TRUE,
+			echo json_encode([
+				'success' => TRUE,
 				'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
 			]);
 		}

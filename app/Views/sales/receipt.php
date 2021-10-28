@@ -39,7 +39,7 @@ if (isset($error_message))
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_receipt'); ?></div></a>
 	<?php endif; ?>
 	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php if($this->Employee->has_grant('reports_sales', $this->session->get('person_id'))): ?>
+	<?php if($this->employee->has_grant('reports_sales', $this->session->get('person_id'))): ?>
 		<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 	<?php endif; ?>
 </div>

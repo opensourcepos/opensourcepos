@@ -59,27 +59,15 @@ class Sales extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
-
-		$this->appconfig = model('Appconfig');
-		$this->customer = model('Customer');
-		$this->customer_rewards = model('Customer_rewards');
-		$this->dinner_table = model('Dinner_table');
-		$this->employee = model('Employee');
-		$this->giftcard = model('Giftcard');
-		$this->inventory = model('Inventory');
-		$this->item = model('Item');
-		$this->item_kit = model('Item_kit');
-		$this->sale = model('Sale');
-		$this->stock_location = model('Stock_location');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$this->session->set('allow_temp_items', 1);
 		$this->_reload();	//TODO: Hungarian Notation
 	}
 
-	public function manage()
+	public function manage(): void
 	{
 		$person_id = $this->session->get('person_id');
 
@@ -102,7 +90,7 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		$sale_info = $this->sale->get_info($row_id)->getRow();
 		$data_row = $this->xss_clean(get_sale_data_row($sale_info));
@@ -110,7 +98,7 @@ class Sales extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit');
@@ -154,7 +142,7 @@ class Sales extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
-	public function item_search()
+	public function item_search(): void
 	{
 		$suggestions = [];
 		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term') : NULL;
@@ -172,7 +160,7 @@ class Sales extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term') : NULL;
 
@@ -181,7 +169,7 @@ class Sales extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function select_customer()
+	public function select_customer(): void
 	{
 		$customer_id = $this->request->getPost('customer');
 		if($this->customer->exists($customer_id))
@@ -200,7 +188,7 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function change_mode()
+	public function change_mode(): void
 	{
 		$mode = $this->request->getPost('mode');
 		$this->sale_lib->set_mode($mode);
@@ -255,7 +243,7 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function change_register_mode(int $sale_type)
+	public function change_register_mode(int $sale_type): void
 	{//TODO: This set of if statements should be refactored to a switch
 		if($sale_type == SALE_TYPE_POS)
 		{
@@ -283,39 +271,39 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function set_comment()
+	public function set_comment(): void
 	{
 		$this->sale_lib->set_comment($this->request->getPost('comment'));
 	}
 
-	public function set_invoice_number()
+	public function set_invoice_number(): void
 	{
 		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number'));
 	}
 
-	public function set_payment_type()
+	public function set_payment_type(): void
 	{
 		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type'));
 		$this->_reload();	//TODO: Hungarian notation.
 	}
 
-	public function set_print_after_sale()
+	public function set_print_after_sale(): void
 	{
 		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale'));
 	}
 
-	public function set_price_work_orders()
+	public function set_price_work_orders(): void
 	{
 		$this->sale_lib->set_price_work_orders($this->request->getPost('price_work_orders'));
 	}
 
-	public function set_email_receipt()
+	public function set_email_receipt(): void
 	{
 		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt'));
 	}
 
 	// Multiple Payments
-	public function add_payment()
+	public function add_payment(): void
 	{
 		$data = [];
 
@@ -437,14 +425,14 @@ class Sales extends Secure_Controller
 	}
 
 	// Multiple Payments
-	public function delete_payment(string $payment_id)
+	public function delete_payment(string $payment_id): void
 	{
 		$this->sale_lib->delete_payment($payment_id);
 
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function add()
+	public function add(): void
 	{
 		$data = [];
 
@@ -539,7 +527,7 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
-	public function edit_item(int $item_id)
+	public function edit_item(int $item_id): void
 	{
 		$data = [];
 
@@ -573,7 +561,7 @@ class Sales extends Secure_Controller
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
-	public function delete_item(string $item_number)
+	public function delete_item(string $item_number): void
 	{
 		$this->sale_lib->delete_item($item_number);
 
@@ -582,7 +570,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function remove_customer()
+	public function remove_customer(): void
 	{
 		$this->sale_lib->clear_giftcard_remainder();
 		$this->sale_lib->clear_rewards_remainder();
@@ -594,7 +582,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function complete()	//TODO: this function is huge.  Probably should be refactored.
+	public function complete(): void	//TODO: this function is huge.  Probably should be refactored.
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		$sale_type = $this->sale_lib->get_sale_type();	//TODO: This variable gets overwritten way down below.
@@ -1003,7 +991,7 @@ class Sales extends Secure_Controller
 		return $customer_info;
 	}
 
-	private function _load_sale_data($sale_id)	//TODO: Hungarian notation
+	private function _load_sale_data($sale_id): array    //TODO: Hungarian notation
 	{
 		$this->sale_lib->clear_all();
 		$cash_rounding = $this->sale_lib->reset_cash_rounding();
@@ -1109,7 +1097,7 @@ class Sales extends Secure_Controller
 		return $this->xss_clean($data);
 	}
 
-	private function _reload($data = [])	//TODO: Hungarian notation
+	private function _reload($data = []): void	//TODO: Hungarian notation
 	{
 		$sale_id = $this->session->get('sale_id');
 
@@ -1236,14 +1224,14 @@ class Sales extends Secure_Controller
 		echo view("sales/register", $data);
 	}
 
-	public function receipt(int $sale_id)
+	public function receipt(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
 		echo view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 
-	public function invoice(int $sale_id)
+	public function invoice(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
 
@@ -1251,7 +1239,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 	}
 
-	public function edit(int $sale_id)
+	public function edit(int $sale_id): void
 	{
 		$data = [];
 
@@ -1303,7 +1291,7 @@ class Sales extends Secure_Controller
 		echo view('sales/form', $data);
 	}
 
-	public function delete(int $sale_id = -1, bool $update_inventory = TRUE)	//TODO: Replace -1 with a constant
+	public function delete(int $sale_id = -1, bool $update_inventory = TRUE): void	//TODO: Replace -1 with a constant
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
@@ -1331,7 +1319,7 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function restore(int $sale_id = -1, bool $update_inventory = TRUE)	//TODO: Replace -1 with a constant
+	public function restore(int $sale_id = -1, bool $update_inventory = TRUE): void	//TODO: Replace -1 with a constant
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
@@ -1364,7 +1352,7 @@ class Sales extends Secure_Controller
 	 * It only updates the sales table and payments.
 	 * @param int $sale_id
 	 */
-	public function save(int $sale_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $sale_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1479,7 +1467,7 @@ class Sales extends Secure_Controller
 	 * Completed sales (POS Sales or Invoiced Sales) can not be removed from the system
 	 * Work orders can be canceled but are not physically removed from the sales history
 	 */
-	public function cancel()
+	public function cancel(): void
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		if($sale_id != -1 && $sale_id != '')	//TODO: Replace -1 with a constant
@@ -1511,7 +1499,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function discard_suspended_sale()
+	public function discard_suspended_sale(): void
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
@@ -1524,7 +1512,7 @@ class Sales extends Secure_Controller
 	 * If the current sale is already suspended then update the existing suspended sale.
 	 * Otherwise create it as a new suspended sale
 	 */
-	public function suspend()
+	public function suspend(): void
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		$dinner_table = $this->sale_lib->get_dinner_table();
@@ -1565,7 +1553,7 @@ class Sales extends Secure_Controller
 	/**
 	 * List suspended sales
 	 */
-	public function suspended()
+	public function suspended(): void
 	{
 		$data = [];
 		$customer_id = $this->sale_lib->get_customer();
@@ -1577,7 +1565,7 @@ class Sales extends Secure_Controller
 	 * Unsuspended sales are now left in the tables and are only removed
 	 * when they are intentionally cancelled.
 	 */
-	public function unsuspend()
+	public function unsuspend(): void
 	{
 		$sale_id = $this->request->getPost('suspended_sale_id');
 		$this->sale_lib->clear_all();
@@ -1593,7 +1581,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function check_invoice_number()
+	public function check_invoice_number(): void
 	{
 		$sale_id = $this->request->getPost('sale_id');
 		$invoice_number = $this->request->getPost('invoice_number');
@@ -1620,7 +1608,7 @@ class Sales extends Secure_Controller
 		return $filtered_cart;
 	}
 
-	public function change_item_number()
+	public function change_item_number(): void
 	{
 		$item_id = $this->request->getPost('item_id');
 		$item_number = $this->request->getPost('item_number');
@@ -1634,7 +1622,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
-	public function change_item_name()
+	public function change_item_name(): void
 	{
 		$item_id = $this->request->getPost('item_id');
 		$name = $this->request->getPost('item_name');
@@ -1652,7 +1640,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
-	public function change_item_description()
+	public function change_item_description(): void
 	{
 		$item_id = $this->request->getPost('item_id');
 		$description = $this->request->getPost('item_description');

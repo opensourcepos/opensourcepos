@@ -19,10 +19,10 @@ class Employees extends Persons
 		$this->module = model('Module');
 	}
 
-	/*
-	Returns employee table data rows. This will be called with AJAX.
-	*/
-	public function search()
+	/**
+	 * Returns employee table data rows. This will be called with AJAX.
+	 */
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -30,8 +30,8 @@ class Employees extends Persons
 		$sort   = $this->request->getGet('sort');
 		$order  = $this->request->getGet('order');
 
-		$employees = $this->Employee->search($search, $limit, $offset, $sort, $order);
-		$total_rows = $this->Employee->get_found_rows($search);
+		$employees = $this->employee->search($search, $limit, $offset, $sort, $order);
+		$total_rows = $this->employee->get_found_rows($search);
 
 		$data_rows = [];
 		foreach($employees->getResult() as $person)
@@ -42,29 +42,29 @@ class Employees extends Persons
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	public function suggest()
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
+	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->xss_clean($this->employee->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->xss_clean($this->employee->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	/*
-	Loads the employee edit form
-	*/
-	public function view(int $employee_id = -1)//TODO: Replace -1 with a constant
+	/**
+	 * Loads the employee edit form
+	 */
+	public function view(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$person_info = $this->Employee->get_info($employee_id);
+		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
 			$person_info->$property = $this->xss_clean($value);
@@ -76,8 +76,8 @@ class Employees extends Persons
 		foreach($this->module->get_all_modules()->getResult() as $module)
 		{
 			$module->module_id = $this->xss_clean($module->module_id);
-			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
-			$module->menu_group = $this->xss_clean($this->Employee->get_menu_group($module->module_id, $person_info->person_id));
+			$module->grant = $this->xss_clean($this->employee->has_grant($module->module_id, $person_info->person_id));
+			$module->menu_group = $this->xss_clean($this->employee->get_menu_group($module->module_id, $person_info->person_id));
 
 			$modules[] = $module;
 		}
@@ -88,7 +88,7 @@ class Employees extends Persons
 		{
 			$permission->module_id = $this->xss_clean($permission->module_id);
 			$permission->permission_id = str_replace(' ', '_', $this->xss_clean($permission->permission_id));
-			$permission->grant = $this->xss_clean($this->Employee->has_grant($permission->permission_id, $person_info->person_id));
+			$permission->grant = $this->xss_clean($this->employee->has_grant($permission->permission_id, $person_info->person_id));
 
 			$permissions[] = $permission;
 		}
@@ -97,10 +97,10 @@ class Employees extends Persons
 		echo view('employees/form', $data);
 	}
 
-	/*
-	Inserts/updates an employee
-	*/
-	public function save(int $employee_id = -1)	//TODO: Replace -1 with a constant
+	/**
+	 * Inserts/updates an employee
+	 */
+	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: duplicated code
 		$last_name = $this->xss_clean($this->request->getPost('last_name'));
@@ -160,7 +160,7 @@ class Employees extends Persons
 			];
 		}
 
-		if($this->Employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
+		if($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
 		{
 			// New employee
 			if($employee_id == -1)
@@ -190,14 +190,14 @@ class Employees extends Persons
 		}
 	}
 
-	/*
-	This deletes employees from the employees table
-	*/
-	public function delete()
+	/**
+	 * This deletes employees from the employees table
+	 */
+	public function delete(): void
 	{
 		$employees_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
-		if($this->Employee->delete_list($employees_to_delete))
+		if($this->employee->delete_list($employees_to_delete))	//TODO: this is passing a string, but delete_list expects an array
 		{
 			echo json_encode ([
 				'success' => TRUE,
@@ -210,9 +210,9 @@ class Employees extends Persons
 		}
 	}
 
-	public function check_username($employee_id)
+	public function check_username($employee_id): void
 	{
-		$exists = $this->Employee->username_exists($employee_id, $this->request->getGet('username'));
+		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));
 		echo !$exists ? 'true' : 'false';
 	}
 }

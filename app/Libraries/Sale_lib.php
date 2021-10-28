@@ -98,7 +98,7 @@ class Sale_lib
 		return $invoice_types;
 	}
 
-	public function get_cart()
+	public function get_cart(): array
 	{
 		if(!$this->session->get('sales_cart'))
 		{
@@ -178,17 +178,17 @@ class Sale_lib
 		return $filtered_cart;
 	}
 
-	public function set_cart(array $cart_data)
+	public function set_cart(array $cart_data): void
 	{
 		$this->session->set('sales_cart', $cart_data);
 	}
 
-	public function empty_cart()
+	public function empty_cart(): void
 	{
 		$this->session->remove('sales_cart');
 	}
 
-	public function remove_temp_items()
+	public function remove_temp_items(): void
 	{
 		// Loop through the cart items and delete temporary items specific to this sale
 		$cart = $this->get_cart();
@@ -209,12 +209,12 @@ class Sale_lib
 		return empty($comment) ? '' : $comment;
 	}
 
-	public function set_comment(string $comment)
+	public function set_comment(string $comment): void
 	{
 		$this->session->set('sales_comment', $comment);
 	}
 
-	public function clear_comment()
+	public function clear_comment(): void
 	{
 		$this->session->remove('sales_comment');
 	}
@@ -239,7 +239,7 @@ class Sale_lib
 		return $this->session->get('sale_type');
 	}
 
-	public function set_invoice_number(int $invoice_number, bool $keep_custom = FALSE)
+	public function set_invoice_number(int $invoice_number, bool $keep_custom = FALSE): void
 	{
 		$current_invoice_number = $this->session->get('sales_invoice_number');
 
@@ -249,7 +249,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_quote_number(string $quote_number, bool $keep_custom = FALSE)
+	public function set_quote_number(string $quote_number, bool $keep_custom = FALSE): void
 	{
 		$current_quote_number = $this->session->get('sales_quote_number');
 
@@ -259,7 +259,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_work_order_number(string $work_order_number, bool $keep_custom = FALSE)
+	public function set_work_order_number(string $work_order_number, bool $keep_custom = FALSE): void
 	{
 		$current_work_order_number = $this->session->get('sales_work_order_number');
 
@@ -269,7 +269,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_sale_type(int $sale_type, bool $keep_custom = FALSE)
+	public function set_sale_type(int $sale_type, bool $keep_custom = FALSE): void
 	{
 		$current_sale_type = $this->session->get('sale_type');
 
@@ -279,32 +279,32 @@ class Sale_lib
 		}
 	}
 
-	public function clear_invoice_number()
+	public function clear_invoice_number(): void
 	{
 		$this->session->remove('sales_invoice_number');
 	}
 
-	public function clear_quote_number()
+	public function clear_quote_number(): void
 	{
 		$this->session->remove('sales_quote_number');
 	}
 
-	public function clear_work_order_number()
+	public function clear_work_order_number(): void
 	{
 		$this->session->remove('sales_work_order_number');
 	}
 
-	public function clear_sale_type()
+	public function clear_sale_type(): void
 	{
 		$this->session->remove('sale_type');
 	}
 
-	public function set_suspended_id(int $suspended_id)
+	public function set_suspended_id(int $suspended_id): void
 	{
 		$this->session->set('suspended_id', $suspended_id);
 	}
 
-	public function get_suspended_id()
+	public function get_suspended_id(): int
 	{
 		return $this->session->get('suspended_id');
 	}
@@ -335,9 +335,9 @@ class Sale_lib
 		return ($this->session->get('sales_mode') == 'sale_work_order');	//TODO: === ?
 	}
 
-	public function set_price_work_orders(string $price_work_orders)
+	public function set_price_work_orders(string $price_work_orders): void
 	{
-		return $this->session->set('sales_price_work_orders', $price_work_orders);	//TODO: session->set() is a void method but it's value is returned here.  Probably need to remove the `return`
+		$this->session->set('sales_price_work_orders', $price_work_orders);
 	}
 
 	public function is_price_work_orders(): bool
@@ -346,9 +346,9 @@ class Sale_lib
 			|| $this->session->get('sales_price_work_orders') == '1');	//TODO: === ?
 	}
 
-	public function set_print_after_sale(bool $print_after_sale)
+	public function set_print_after_sale(bool $print_after_sale): void
 	{
-		return $this->session->set('sales_print_after_sale', $print_after_sale);	//TODO: session->set() is a void method but it's value is returned here.  Probably need to remove the `return`
+		$this->session->set('sales_print_after_sale', $print_after_sale);
 	}
 
 	public function is_print_after_sale(): bool
@@ -368,12 +368,12 @@ class Sale_lib
 		}
 	}
 
-	public function set_email_receipt(string $email_receipt)
+	public function set_email_receipt(string $email_receipt): void
 	{
 		$this->session->set('sales_email_receipt', $email_receipt);
 	}
 
-	public function clear_email_receipt()
+	public function clear_email_receipt(): void
 	{
 		$this->session->remove('sales_email_receipt');
 	}
@@ -407,7 +407,7 @@ class Sale_lib
 	}
 
 	// Multiple Payments
-	public function set_payments(array $payments_data)
+	public function set_payments(array $payments_data): void
 	{
 		$this->session->set('sales_payments', $payments_data);
 	}
@@ -419,7 +419,7 @@ class Sale_lib
 	 * @param string $payment_amount
 	 * @param int $cash_adjustment
 	 */
-	public function add_payment(int $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE)
+	public function add_payment(int $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
 	{
 		$payments = $this->get_payments();
 		if(isset($payments[$payment_id]))
@@ -474,7 +474,7 @@ class Sale_lib
 	 * and the payment type is one of the cash types then automatically delete the other
 	 * @param $payment_id
 	 */
-	public function delete_payment(string $payment_id)
+	public function delete_payment(string $payment_id): void
 	{
 		$payments = $this->get_payments();
 		$decoded_payment_id = urldecode($payment_id);
@@ -499,7 +499,7 @@ class Sale_lib
 	}
 
 	// Multiple Payments
-	public function empty_payments()
+	public function empty_payments(): void	//TODO: function verbs are very inconsistent in these libraries.
 	{
 		$this->session->remove('sales_payments');
 	}
@@ -668,12 +668,12 @@ class Sale_lib
 		return $this->session->get('sales_customer');
 	}
 
-	public function set_customer(int $customer_id)
+	public function set_customer(int $customer_id): void
 	{
 		$this->session->set('sales_customer', $customer_id);
 	}
 
-	public function remove_customer()
+	public function remove_customer(): void
 	{
 		$this->session->remove('sales_customer');
 	}
@@ -688,12 +688,12 @@ class Sale_lib
 		return $this->session->get('sales_employee');
 	}
 
-	public function set_employee(int $employee_id)
+	public function set_employee(int $employee_id): void
 	{
 		$this->session->set('sales_employee', $employee_id);
 	}
 
-	public function remove_employee()
+	public function remove_employee(): void
 	{
 		$this->session->remove('sales_employee');
 	}
@@ -707,12 +707,12 @@ class Sale_lib
 		return $this->session->get('sales_mode');
 	}
 
-	public function set_mode(string $mode)
+	public function set_mode(string $mode): void
 	{
 		$this->session->set('sales_mode', $mode);
 	}
 
-	public function clear_mode()
+	public function clear_mode(): void
 	{
 		$this->session->remove('sales_mode');
 	}
@@ -730,12 +730,12 @@ class Sale_lib
 		return $this->session->get('dinner_table');
 	}
 
-	public function set_dinner_table(int $dinner_table)
+	public function set_dinner_table(int $dinner_table): void
 	{
 		$this->session->set('dinner_table', $dinner_table);
 	}
 
-	public function clear_table()
+	public function clear_table(): void
 	{
 		$this->session->remove('dinner_table');
 	}
@@ -750,12 +750,12 @@ class Sale_lib
 		return $this->session->get('sales_location');
 	}
 
-	public function set_sale_location(int $location)
+	public function set_sale_location(int $location): void
 	{
 		$this->session->set('sales_location', $location);
 	}
 
-	public function set_payment_type(string $payment_type)
+	public function set_payment_type(string $payment_type): void
 	{
 		$this->session->set('payment_type', $payment_type);
 	}
@@ -765,12 +765,12 @@ class Sale_lib
 		return $this->session->get('payment_type');
 	}
 
-	public function clear_sale_location()
+	public function clear_sale_location(): void
 	{
 		$this->session->remove('sales_location');
 	}
 
-	public function set_giftcard_remainder(string $value)
+	public function set_giftcard_remainder(string $value): void
 	{
 		$this->session->set('sales_giftcard_remainder', $value);
 	}
@@ -780,12 +780,12 @@ class Sale_lib
 		return $this->session->get('sales_giftcard_remainder');
 	}
 
-	public function clear_giftcard_remainder()
+	public function clear_giftcard_remainder(): void
 	{
 		$this->session->remove('sales_giftcard_remainder');
 	}
 
-	public function set_rewards_remainder(string $value)
+	public function set_rewards_remainder(string $value): void
 	{
 		$this->session->set('sales_rewards_remainder', $value);
 	}
@@ -795,7 +795,7 @@ class Sale_lib
 		return $this->session->get('sales_rewards_remainder');
 	}
 
-	public function clear_rewards_remainder()
+	public function clear_rewards_remainder(): void
 	{
 		$this->session->remove('sales_rewards_remainder');
 	}
@@ -1009,15 +1009,15 @@ class Sale_lib
 		return '';
 	}
 
-	public function get_quantity_already_added(int $item_id, int $item_location): float
+	public function get_quantity_already_added(int $item_id, int $item_location): string
 	{
 		$items = $this->get_cart();
-		$quantity_already_added = 0.0;
+		$quantity_already_added = '0.0';
 		foreach($items as $item)
 		{
 			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)	//TODO: === ?
 			{
-				$quantity_already_added += $item['quantity'];
+				$quantity_already_added += $item['quantity'];	//TODO: for precision we likely need to use bcadd() since we are using that everywhere else for quantity
 			}
 		}
 
@@ -1069,7 +1069,7 @@ class Sale_lib
 		return FALSE;	//TODO: This function will always return false.
 	}
 
-	public function delete_item(array $line)
+	public function delete_item(array $line): void
 	{
 		$items = $this->get_cart();
 		$item_type = $items[$line]['item_type'];
@@ -1085,7 +1085,7 @@ class Sale_lib
 		$this->set_cart($items);
 	}
 
-	public function return_entire_sale(string $receipt_sale_id)
+	public function return_entire_sale(string $receipt_sale_id): void
 	{
 		//POS #
 		$pieces = explode(' ', $receipt_sale_id);
@@ -1123,7 +1123,7 @@ class Sale_lib
 		return $result;
 	}
 
-	public function copy_entire_sale(int $sale_id)
+	public function copy_entire_sale(int $sale_id): void
 	{
 		$this->empty_cart();
 		$this->remove_customer();
@@ -1182,7 +1182,7 @@ class Sale_lib
 		return $this->session->get('sale_id');
 	}
 
-	public function clear_all()
+	public function clear_all(): void
 	{
 		$this->session->set('sale_id', -1);	//TODO: Replace -1 with constant
 		$this->clear_mode();
@@ -1200,7 +1200,7 @@ class Sale_lib
 		$this->clear_cash_flags();
 	}
 
-	public function clear_cash_flags()
+	public function clear_cash_flags(): void
 	{
 		$this->session->remove('cash_rounding');
 		$this->session->remove('cash_mode');
@@ -1239,7 +1239,7 @@ class Sale_lib
 		return $customer->taxable or $customer_id == -1;	//TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.
 	}
 
-	public function apply_customer_discount(string $discount, int $discount_type)
+	public function apply_customer_discount(string $discount, int $discount_type): void
 	{
 		// Get all items in the cart so far...
 		$items = $this->get_cart();

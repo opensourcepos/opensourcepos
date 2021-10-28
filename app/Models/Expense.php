@@ -15,15 +15,6 @@ use stdClass;
  */
 class Expense extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-		$this->employee = model('Employee');
-		$this->expense_category = model('Expense_category');
-	}
-
 	/**
 	 * Determines if a given Expense_id is an Expense
 	 */

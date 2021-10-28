@@ -10,16 +10,9 @@ namespace App\Models;
  */
 class Customer extends Person
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-	}
-
-	/*
-	Determines if a given person_id is a customer
-	*/
+	/**
+	 * Determines if a given person_id is a customer
+	 */
 	public function exists(int $person_id): bool
 	{
 		$builder = $this->db->table('customers');

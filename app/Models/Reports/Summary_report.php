@@ -12,13 +12,6 @@ use app\Models\Appconfig;
  */
 abstract class Summary_report extends Report
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-	}
-
 	/**
 	 * Private interface implementing the core basic functionality for all reports
 	 */

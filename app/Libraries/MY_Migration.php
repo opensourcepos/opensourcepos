@@ -21,12 +21,12 @@ class MY_Migration extends MigrationRunner {
 		return $last_version == $current_version;	//TODO: ===
 	}
 
-	public function up()
+	public function up(): void
 	{
 		// TODO: Implement up() method.
 	}
 
-	public function down()
+	public function down(): void
 	{
 		// TODO: Implement down() method.
 	}

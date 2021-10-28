@@ -12,14 +12,7 @@ use app\Models\Receiving;
  */
 class Detailed_receivings extends Report
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->receiving = model('Receiving');
-	}
-
-	public function create(array $inputs)
+	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
 		$this->receiving->create_temp_table($inputs);
@@ -50,7 +43,7 @@ class Detailed_receivings extends Report
 		];
 	}
 
-	public function getDataByReceivingId(string $receiving_id)
+	public function getDataByReceivingId(string $receiving_id): array
 	{
 		$builder = $this->db->table('receivings_items_temp');
 		$builder->select('receiving_id,
@@ -105,6 +98,7 @@ class Detailed_receivings extends Report
 		{
 			$builder->having('items_purchased = 0');
 		}
+
 		$builder->groupBy('receiving_id', 'receiving_date');
 		$builder->orderBy('receiving_id');
 
@@ -112,7 +106,7 @@ class Detailed_receivings extends Report
 		$data['summary'] = $builder->get()->getResultArray();
 		$data['details'] = [];
 
-		foreach($data['summary'] as $key=>$value)
+		foreach($data['summary'] as $key => $value)
 		{
 			$builder = $this->db->table('receivings_items_temp');
 			$builder->select('
@@ -146,7 +140,7 @@ class Detailed_receivings extends Report
 		return $data;
 	}
 
-	public function getSummaryData(array $inputs)
+	public function getSummaryData(array $inputs): array
 	{
 		$builder = $this->db->table('receivings_items_temp');
 		$builder->select('SUM(total) AS total');

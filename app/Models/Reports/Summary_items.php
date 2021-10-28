@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_items extends Summary_report
 {
-	protected function _get_data_columns(): array
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
 			['item_name' => lang('Reports.item')],

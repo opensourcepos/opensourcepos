@@ -15,14 +15,6 @@ use stdClass;
 
 class Cashup extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-		$this->employee = model('Employee');
-	}
-
 	/**
 	* Determines if a given Cashup_id is a Cashup
 	*/

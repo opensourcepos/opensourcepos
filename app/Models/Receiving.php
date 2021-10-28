@@ -16,18 +16,6 @@ use CodeIgniter\Model;
  */
 class Receiving extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->attribute = model('Attribute');
-		$this->appconfig = model('Appconfig');
-		$this->inventory = model('Inventory');
-		$this->item = model('Item');
-		$this->item_quantity = model('Item_quantity');
-		$this->supplier = model('Supplier');
-	}
-
 	public function get_info(int $receiving_id)
 	{
 		$builder = $this->db->table('receivings');

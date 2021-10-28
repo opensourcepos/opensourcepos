@@ -49,12 +49,12 @@ class Receivings extends Secure_Controller
 		$this->supplier = model('Supplier');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$this->_reload();
 	}
 
-	public function item_search()
+	public function item_search(): void
 	{
 		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
@@ -64,7 +64,7 @@ class Receivings extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function stock_item_search()
+	public function stock_item_search(): void
 	{
 		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
@@ -74,7 +74,7 @@ class Receivings extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function select_supplier()
+	public function select_supplier(): void
 	{
 		$supplier_id = $this->request->getPost('supplier');
 		if($this->supplier->exists($supplier_id))
@@ -82,10 +82,10 @@ class Receivings extends Secure_Controller
 			$this->receiving_lib->set_supplier($supplier_id);
 		}
 
-		$this->_reload();
+		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function change_mode()
+	public function change_mode(): void
 	{
 		$stock_destination = $this->request->getPost('stock_destination');
 		$stock_source = $this->request->getPost('stock_source');
@@ -103,25 +103,25 @@ class Receivings extends Secure_Controller
 			$this->receiving_lib->set_stock_destination($stock_destination);
 		}
 
-		$this->_reload();
+		$this->_reload();	//TODO: Hungarian notation
 	}
 	
-	public function set_comment()
+	public function set_comment(): void
 	{
 		$this->receiving_lib->set_comment($this->request->getPost('comment'));
 	}
 
-	public function set_print_after_sale()
+	public function set_print_after_sale(): void
 	{
 		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale'));
 	}
 	
-	public function set_reference()
+	public function set_reference(): void
 	{
 		$this->receiving_lib->set_reference($this->request->getPost('recv_reference'));
 	}
 	
-	public function add()
+	public function add(): void
 	{
 		$data = [];
 
@@ -146,10 +146,10 @@ class Receivings extends Secure_Controller
 			$data['error'] = lang('Receivings.unable_to_add_item');
 		}
 
-		$this->_reload($data);
+		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
-	public function edit_item($item_id)
+	public function edit_item($item_id): void
 	{
 		$data = [];
 
@@ -175,10 +175,10 @@ class Receivings extends Secure_Controller
 			$data['error']=lang('Receivings.error_editing_item');
 		}
 
-		$this->_reload($data);
+		$this->_reload($data);	//TODO: Hungarian notation
 	}
 	
-	public function edit($receiving_id)
+	public function edit($receiving_id): void
 	{
 		$data = [];
 
@@ -189,7 +189,7 @@ class Receivings extends Secure_Controller
 		}
 	
 		$data['employees'] = [];
-		foreach($this->Employee->get_all()->getResult() as $employee)
+		foreach($this->employee->get_all()->getResult() as $employee)
 		{
 			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
 		}
@@ -202,16 +202,16 @@ class Receivings extends Secure_Controller
 		echo view('receivings/form', $data);
 	}
 
-	public function delete_item($item_number)
+	public function delete_item($item_number): void
 	{
 		$this->receiving_lib->delete_item($item_number);
 
-		$this->_reload();
+		$this->_reload();	//TODO: Hungarian notation
 	}
 	
-	public function delete($receiving_id = -1, $update_inventory = TRUE) 
+	public function delete($receiving_id = -1, $update_inventory = TRUE) : void
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids') : [$receiving_id];	//TODO: Replace -1 with constant
 	
 		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
@@ -227,15 +227,15 @@ class Receivings extends Secure_Controller
 		}
 	}
 
-	public function remove_supplier()
+	public function remove_supplier(): void
 	{
 		$this->receiving_lib->clear_reference();
 		$this->receiving_lib->remove_supplier();
 
-		$this->_reload();
+		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function complete()
+	public function complete(): void
 	{
 		$data = [];
 		
@@ -254,8 +254,8 @@ class Receivings extends Secure_Controller
 			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
 		}
 		
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$employee_info = $this->Employee->get_info($employee_id);
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		$employee_info = $this->employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$supplier_info = '';
@@ -299,7 +299,7 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	public function requisition_complete()
+	public function requisition_complete(): void
 	{
 		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) 
 		{
@@ -316,11 +316,11 @@ class Receivings extends Secure_Controller
 		{
 			$data['error'] = lang('Receivings.error_requisition');
 
-			$this->_reload($data);	
+			$this->_reload($data);	//TODO: Hungarian notation
 		}
 	}
 	
-	public function receipt($receiving_id)
+	public function receipt($receiving_id): void
 	{
 		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
@@ -333,7 +333,7 @@ class Receivings extends Secure_Controller
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['receiving_id'] = 'RECV ' . $receiving_id;
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
-		$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
+		$employee_info = $this->employee->get_info($receiving_info['employee_id']);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$supplier_id = $this->receiving_lib->get_supplier();	//TODO: Duplicated code
@@ -364,7 +364,7 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	private function _reload($data = [])
+	private function _reload($data = []): void	//TODO: Hungarian notation
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];
@@ -379,7 +379,7 @@ class Receivings extends Secure_Controller
 		}
 
 		$data['total'] = $this->receiving_lib->get_total();
-		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
+		$data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_options'] = $this->receiving->get_payment_options();
@@ -411,7 +411,7 @@ class Receivings extends Secure_Controller
 		echo view("receivings/receiving", $data);
 	}
 	
-	public function save(int $receiving_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $receiving_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');	//TODO: newdate does not follow naming conventions
 		
@@ -445,7 +445,7 @@ class Receivings extends Secure_Controller
 		}
 	}
 
-	public function cancel_receiving()
+	public function cancel_receiving(): void
 	{
 		$this->receiving_lib->clear_all();
 

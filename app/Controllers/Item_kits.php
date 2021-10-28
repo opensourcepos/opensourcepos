@@ -17,7 +17,6 @@ use app\Models\Item_kit_items;
  * @property item_kit item_kit
  * @property item_kit_items item_kit_items
  *
- *
  */
 class Item_kits extends Secure_Controller
 {
@@ -30,9 +29,9 @@ class Item_kits extends Secure_Controller
 		$this->item_kit_items = model('Item_kit_items');
 	}
 	
-	/*
-	Add the total cost and retail price to a passed items kit retrieving the data from each singular item part of the kit
-	*/
+	/**
+	 * Add the total cost and retail price to a passed items kit retrieving the data from each singular item part of the kit
+	 */
 	private function _add_totals_to_item_kit(object $item_kit): object    //TODO: Hungarian notation
 	{
 		$kit_item_info = $this->item->get_info(isset($item_kit->kit_item_id) ? $item_kit->kit_item_id : $item_kit->item_id);
@@ -58,24 +57,24 @@ class Item_kits extends Secure_Controller
 			}
 		}
 
-		$discount_fraction = bcdiv($item_kit->kit_discount, 100);
+		$discount_fraction = bcdiv($item_kit->kit_discount, '100');
 
 		$item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)?bcmul($item_kit->total_unit_price, $discount_fraction): $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
 
 		return $item_kit;
 	}
 	
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_item_kits_manage_table_headers());
 
 		echo view('item_kits/manage', $data);
 	}
 
-	/*
-	Returns Item kits table data rows. This will be called with AJAX.
-	*/
-	public function search()
+	/**
+	 * Returns Item kits table data rows. This will be called with AJAX.
+	 */
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -97,14 +96,14 @@ class Item_kits extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$suggestions = $this->xss_clean($this->item_kit->get_search_suggestions($this->request->getPost('term')));
 
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
 		$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
@@ -112,7 +111,7 @@ class Item_kits extends Secure_Controller
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
 	
-	public function view(int $item_kit_id = -1)	//TODO: Replace -1 with a constant
+	public function view(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$info = $this->item_kit->get_info($item_kit_id);
 
@@ -123,6 +122,7 @@ class Item_kits extends Secure_Controller
 			$info->kit_item_id = 0;
 			$info->item_number = '';
 		}
+
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $this->xss_clean($value);
@@ -131,6 +131,7 @@ class Item_kits extends Secure_Controller
 		$data['item_kit_info']  = $info;
 
 		$items = [];
+
 		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
@@ -149,7 +150,7 @@ class Item_kits extends Secure_Controller
 		echo view("item_kits/form", $data);
 	}
 	
-	public function save(int $item_kit_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$item_kit_data = [
 			'name' => $this->request->getPost('name'),
@@ -221,7 +222,7 @@ class Item_kits extends Secure_Controller
 		}
 	}
 	
-	public function delete()
+	public function delete(): void
 	{
 		$item_kits_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
@@ -238,13 +239,13 @@ class Item_kits extends Secure_Controller
 		}
 	}
 
-	public function check_item_number()
+	public function check_item_number(): void
 	{
 		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number'), $this->request->getPost('item_kit_id'));
 		echo !$exists ? 'true' : 'false';
 	}
 	
-	public function generate_barcodes(string $item_kit_ids)
+	public function generate_barcodes(string $item_kit_ids): void
 	{
 		$this->barcode_lib = new Barcode_lib();
 		$result = [];

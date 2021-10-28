@@ -9,7 +9,7 @@ function show_report_if_allowed($report_prefix, $report_name, $person_id, $permi
 	$CI =& get_instance();
 
 	$permission_id = empty($permission_id) ? 'reports_' . $report_name : $permission_id;
-	if($CI->Employee->has_grant($permission_id, $person_id))
+	if($CI->employee->has_grant($permission_id, $person_id))
 	{
 		show_report($report_prefix, $report_name, $permission_id);
 	}

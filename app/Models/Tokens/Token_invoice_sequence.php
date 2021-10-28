@@ -15,8 +15,6 @@ class Token_invoice_sequence extends Token
 	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
-
-		$this->appconfig = model('Appconfig');
 	}
 
 	public function token_id(): string

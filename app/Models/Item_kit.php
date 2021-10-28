@@ -12,13 +12,6 @@ use stdClass;
  */
 class Item_kit extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-	}
-
 	/**
 	 * Determines if a given item_id is an item kit
 	 */

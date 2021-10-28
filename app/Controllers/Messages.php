@@ -25,12 +25,12 @@ class Messages extends Secure_Controller
 		$this->person = model('Person');
 	}
 	
-	public function index()
+	public function index(): void
 	{
 		echo view('messages/sms');
 	}
 
-	public function view(int $person_id = -1)	//TODO: Replace -1 with a constant
+	public function view(int $person_id = -1): void	//TODO: Replace -1 with a constant
 	{ 
 		$info = $this->person->get_info($person_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -42,8 +42,8 @@ class Messages extends Secure_Controller
 		echo view('messages/form_sms', $data);
 	}
 
-	public function send()
-	{	
+	public function send(): void
+	{
 		$phone   = $this->request->getPost('phone');
 		$message = $this->request->getPost('message');
 
@@ -59,7 +59,7 @@ class Messages extends Secure_Controller
 		}
 	}
 	
-	public function send_form(int $person_id = -1)	//TODO: Replace -1 with a constant
+	public function send_form(int $person_id = -1): void	//TODO: Replace -1 with a constant
 	{	
 		$phone   = $this->request->getPost('phone');
 		$message = $this->request->getPost('message');

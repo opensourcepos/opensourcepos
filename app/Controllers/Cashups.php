@@ -29,7 +29,7 @@ class Cashups extends Secure_Controller
 		$this->summary_payments = model('Reports/Summary_payments');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_cashups_manage_table_headers());
 
@@ -39,7 +39,7 @@ class Cashups extends Secure_Controller
 		echo view('cashups/manage', $data);
 	}
 
-	public function search()
+	public function search(): void
 	{
 		$cash_up = 0;	//TODO: Variable is declared but never used.
 		$search   = $this->request->getGet('search');
@@ -67,12 +67,12 @@ class Cashups extends Secure_Controller
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function view(int $cashup_id = -1)//TODO: Need to replace -1 with a constant in constants.php
+	public function view(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
 	{
 		$data = [];
 
 		$data['employees'] = [];
-		foreach($this->Employee->get_all()->getResult() as $employee)
+		foreach($this->employee->get_all()->getResult() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
 			{
@@ -94,8 +94,8 @@ class Cashups extends Secure_Controller
 		{
 			$cash_ups_info->open_date = date('Y-m-d H:i:s');
 			$cash_ups_info->close_date = $cash_ups_info->open_date;
-			$cash_ups_info->open_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-			$cash_ups_info->close_employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+			$cash_ups_info->open_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+			$cash_ups_info->close_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		}
 		// if all the amounts are null or 0 that means it's a close cashup
 		elseif(floatval($cash_ups_info->closed_amount_cash) == 0
@@ -183,7 +183,7 @@ class Cashups extends Secure_Controller
 		echo view("cashups/form", $data);
 	}
 
-	public function get_row(int $row_id)
+	public function get_row(int $row_id): void
 	{
 		$cash_ups_info = $this->cashup->get_info($row_id);
 		$data_row = $this->xss_clean(get_cash_up_data_row($cash_ups_info));
@@ -191,7 +191,7 @@ class Cashups extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function save(int $cashup_id = -1)	//TODO: Need to replace -1 with a constant in constants.php
+	public function save(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
 	{
 		$open_date = $this->request->getPost('open_date');
 		$open_date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $open_date);
@@ -236,7 +236,7 @@ class Cashups extends Secure_Controller
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$cash_ups_to_delete = $this->request->getPost('ids');
 
@@ -253,7 +253,7 @@ class Cashups extends Secure_Controller
 	/**
 	* AJAX call from cashup input form to calculate the total
 	*/
-	public function ajax_cashup_total()
+	public function ajax_cashup_total(): void
 	{
 		$open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
 		$transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));

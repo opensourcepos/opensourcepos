@@ -47,17 +47,17 @@ class Customers extends Persons
 		$this->_list_id = $this->encrypter->decrypt($this->appconfig->get('mailchimp_list_id'));
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_customer_manage_table_headers());
 
 		echo view('people/manage', $data);
 	}
 
-	/*
-	Gets one row for a customer manage table. This is called using AJAX to update one row.
-	*/
-	public function get_row(int $row_id)
+	/**
+	 * Gets one row for a customer manage table. This is called using AJAX to update one row.
+	 */
+	public function get_row(int $row_id): void
 	{
 		$person = $this->customer->get_info($row_id);
 
@@ -84,7 +84,7 @@ class Customers extends Persons
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -96,6 +96,7 @@ class Customers extends Persons
 		$total_rows = $this->customer->get_found_rows($search);
 
 		$data_rows = [];
+
 		foreach($customers->getResult() as $person)
 		{
 			// retrieve the total amount the customer spent so far together with min, max and average values
@@ -118,27 +119,27 @@ class Customers extends Persons
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	public function suggest()
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
+	public function suggest(): void
 	{
 		$suggestions = $this->xss_clean($this->customer->get_search_suggestions($this->request->getGet('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$suggestions = $this->xss_clean($this->customer->get_search_suggestions($this->request->getPost('term'), FALSE));
 
 		echo json_encode($suggestions);
 	}
 
-	/*
-	Loads the customer edit form
-	*/
-	public function view(int $customer_id = -1)	//TODO: replace -1 with a constant
+	/**
+	 * Loads the customer edit form
+	 */
+	public function view(int $customer_id = -1): void	//TODO: replace -1 with a constant
 	{
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -150,10 +151,10 @@ class Customers extends Persons
 		if(empty($info->person_id) || empty($info->date) || empty($info->employee_id))
 		{
 			$data['person_info']->date = date('Y-m-d H:i:s');
-			$data['person_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+			$data['person_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		}
 
-		$employee_info = $this->Employee->get_info($info->employee_id);
+		$employee_info = $this->employee->get_info($info->employee_id);
 		$data['employee'] = $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name);
 
 		$tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
@@ -257,7 +258,7 @@ class Customers extends Persons
 	/*
 	Inserts/updates a customer
 	*/
-	public function save(int $customer_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$first_name = $this->xss_clean($this->request->getPost('first_name'));
 		$last_name = $this->xss_clean($this->request->getPost('last_name'));
@@ -338,30 +339,30 @@ class Customers extends Persons
 		}
 	}
 
-	/*
-	AJAX call to verify if an email address already exists
-	*/
-	public function ajax_check_email()
+	/**
+	 * AJAX call to verify if an email address already exists
+	 */
+	public function ajax_check_email(): void
 	{
 		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id'));
 
 		echo !$exists ? 'true' : 'false';
 	}
 
-	/*
-	AJAX call to verify if an account number already exists
-	*/
-	public function ajax_check_account_number()
+	/**
+	 * AJAX call to verify if an account number already exists
+	 */
+	public function ajax_check_account_number(): void
 	{
 		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id'));
 
 		echo !$exists ? 'true' : 'false';
 	}
 
-	/*
-	This deletes customers from the customers table
-	*/
-	public function delete()
+	/**
+	 * This deletes customers from the customers table
+	 */
+	public function delete(): void
 	{
 		$customers_to_delete = $this->request->getPost('ids');
 		$customers_info = $this->customer->get_multiple_info($customers_to_delete);
@@ -391,21 +392,21 @@ class Customers extends Persons
 	}
 
 	/**
-	* Customers import from csv spreadsheet
-	*/
-	public function csv()
+	 * Customers import from csv spreadsheet
+	 */
+	public function csv(): void
 	{
 		$name = 'import_customers.csv';
 		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
 
-	public function csv_import()
+	public function csv_import(): void
 	{
 		echo view('customers/form_csv_import', NULL);
 	}
 
-	public function do_csv_import()
+	public function do_csv_import(): void
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
@@ -453,7 +454,7 @@ class Customers extends Persons
 							'discount_type' => $data[16],
 							'taxable' => $data[17] == '' ? 0 : 1,
 							'date' => date('Y-m-d H:i:s'),
-							'employee_id' => $this->Employee->get_logged_in_employee_info()->person_id
+							'employee_id' => $this->employee->get_logged_in_employee_info()->person_id
 						];
 						$account_number = $data[14];
 

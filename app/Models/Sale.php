@@ -28,18 +28,6 @@ class Sale extends Model
 	{
 		parent::__construct();
 
-		$this->attribute = model('Attribute');
-		$this->appconfig = model('Appconfig');
-		$this->customer = model('Customer');
-		$this->customer_rewards = model('Customer_rewards');
-		$this->dinner_table = model('Dinner_table');
-		$this->employee = model('Employee');
-		$this->giftcard = model('Giftcard');
-		$this->inventory = model('Inventory');
-		$this->item = model('Item');
-		$this->item_quantity = model('Item_quantity');
-		$this->rewards = model('Rewards');
-
 		$this->sale_lib = new Sale_lib();
 	}
 

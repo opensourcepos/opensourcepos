@@ -19,7 +19,7 @@ class Tax_categories extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
-	public function index()	//TODO: index() is inherited from Secure Controller but the signature is different.  Need to sort that out.
+	public function index(): void	//TODO: index() is inherited from Secure Controller but the signature is different.  Need to sort that out.
 	{
 		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
 
@@ -29,7 +29,7 @@ class Tax_categories extends Secure_Controller
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit');
@@ -49,14 +49,14 @@ class Tax_categories extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row($row_id)
+	public function get_row($row_id): void
 	{
 		$data_row = $this->xss_clean(get_tax_category_data_row($this->tax_category->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $tax_category_id = -1)	//TODO: Need to replace -1 with constant
+	public function view(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
 	{
 		$data['tax_category_info'] = $this->tax_category->get_info($tax_category_id);
 
@@ -64,7 +64,7 @@ class Tax_categories extends Secure_Controller
 	}
 
 
-	public function save(int $tax_category_id = -1)	//TODO: Need to replace -1 with constant
+	public function save(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
 	{
 		$tax_category_data = [
 			'tax_category' => $this->request->getPost('tax_category'),
@@ -104,7 +104,7 @@ class Tax_categories extends Secure_Controller
 		}
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$tax_categories_to_delete = $this->request->getPost('ids');
 

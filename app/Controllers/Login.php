@@ -23,7 +23,7 @@ class Login extends BaseController
 		$this->appconfig = model('Appconfig');
 		$this->employee = model('Employee');
 	}
-	public function index()
+	public function index(): void
 	{
 		if($this->employee->is_logged_in())
 		{

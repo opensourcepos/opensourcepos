@@ -14,13 +14,6 @@ use stdClass;
 
 class Tax_code extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-	}
-
 	/**
 	 *  Determines if it exists in the table
 	 */

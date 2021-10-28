@@ -14,15 +14,6 @@ use stdClass;
  */
 class Item extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-		$this->inventory = model('Inventory');
-		$this->item_quantity = model('Item_quantity');
-	}
-
 	/**
 	 * Determines if a given item_id is an item
 	 */

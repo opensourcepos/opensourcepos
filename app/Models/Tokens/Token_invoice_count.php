@@ -15,8 +15,6 @@ class Token_invoice_count extends Token
 	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
-
-		$this->sale = model('Sale');
 	}
 
 	public function token_id(): string

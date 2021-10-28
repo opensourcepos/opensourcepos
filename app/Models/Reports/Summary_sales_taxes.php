@@ -17,7 +17,7 @@ class Summary_sales_taxes extends Summary_report
 
 	protected function _where(array $inputs)	//TODO: hungarian notation
 	{
-		$builder->where('sales.sale_status', COMPLETED);
+		$builder->where('sales.sale_status', COMPLETED);	//TODO: This no longer works... likely need to pass $this->builder by reference
 
 		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: Duplicated code
 		{

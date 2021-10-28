@@ -30,9 +30,15 @@ abstract class Token Extends Model
 	static function get_tokens(): array
 	{
 		return [
-			new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
-			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(),
-			new Token_work_order_sequence(), new Token_year_invoice_count(), new Token_year_quote_count()
+			new Token_customer(),
+			new Token_invoice_count(),
+			new Token_invoice_sequence(),
+			new Token_quote_sequence(),
+			new Token_suspended_invoice_count(),
+			new Token_quote_sequence(),
+			new Token_work_order_sequence(),
+			new Token_year_invoice_count(),
+			new Token_year_quote_count()
 		];
 	}
 

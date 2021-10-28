@@ -9,22 +9,22 @@ class Home extends Secure_Controller
 		parent::__construct(NULL, NULL, 'home');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		echo view('home/home');
 	}
 
-	public function logout()
+	public function logout(): void
 	{
-		$this->Employee->logout();
+		$this->employee->logout();
 	}
 
 	/*
 	Load "change employee password" form
 	*/
-	public function change_password(int $employee_id = -1)	//TODO: Replace -1 with a constant
+	public function change_password(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$person_info = $this->Employee->get_info($employee_id);
+		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
 			$person_info->$property = $this->xss_clean($value);
@@ -37,11 +37,11 @@ class Home extends Secure_Controller
 	/*
 	Change employee password
 	*/
-	public function save(int $employee_id = -1)	//TODO: Replace -1 with a constant
+	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		if($this->request->getPost('current_password') != '' && $employee_id != -1)
 		{
-			if($this->Employee->check_password($this->request->getPost('username'), $this->request->getPost('current_password')))
+			if($this->employee->check_password($this->request->getPost('username'), $this->request->getPost('current_password')))
 			{
 				$employee_data = [
 					'username' => $this->request->getPost('username'),
@@ -49,7 +49,7 @@ class Home extends Secure_Controller
 					'hash_version' => 2
 				];
 
-				if($this->Employee->change_password($employee_data, $employee_id))
+				if($this->employee->change_password($employee_data, $employee_id))
 				{
 					echo json_encode ([
 						'success' => TRUE,

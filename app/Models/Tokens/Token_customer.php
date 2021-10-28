@@ -23,8 +23,6 @@ class Token_customer extends Token
 		parent::__construct();
 		$this->customer_info = $customer_info;
 		$this->sale_lib = new Sale_lib();
-
-		$this->customer = model('Customer');
 	}
 
 	public function token_id(): string

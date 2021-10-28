@@ -34,7 +34,7 @@ $(document).ready(function()
     <?php echo view('partial/bootstrap_tables_locale'); ?>
 
     table_support.init({
-        employee_id: <?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>,
+        employee_id: <?php echo $this->employee->get_logged_in_employee_info()->person_id; ?>,
         resource: '<?php echo site_url($controller_name);?>',
         headers: <?php echo $table_headers; ?>,
         pageSize: <?php echo $this->config->get('lines_per_page'); ?>,

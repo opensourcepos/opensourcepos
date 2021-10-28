@@ -18,13 +18,6 @@ class Attribute extends Model
 	const SHOW_IN_SALES = 2;
 	const SHOW_IN_RECEIVINGS = 4;
 
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->appconfig = model('Appconfig');
-	}
-
 	public static function get_definition_flags(): array
 	{
 		$class = new ReflectionClass(__CLASS__);
@@ -32,8 +25,8 @@ class Attribute extends Model
 		return array_flip($class->getConstants());
 	}
 
-	/*
-	 Determines if a given definition_id is an attribute
+	/**
+	 * Determines if a given definition_id is an attribute
 	 */
 	public function exists(int $definition_id, bool $deleted = FALSE): bool
 	{
@@ -41,7 +34,7 @@ class Attribute extends Model
 		$builder->where('definition_id', $definition_id);
 		$builder->where('deleted', $deleted);
 
-		return ($builder->get()->getNumRows() == 1);
+		return ($builder->get()->getNumRows() == 1);    //TODO: ===
 	}
 
 	/**

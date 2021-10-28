@@ -69,7 +69,7 @@ if(isset($error))
 		</div>
 
 		<?php
-		if ($this->Employee->has_grant('reports_inventory', $this->session->get('person_id')))
+		if ($this->employee->has_grant('reports_inventory', $this->session->get('person_id')))
 		{
 		?>
 			<div class="panel panel-primary">

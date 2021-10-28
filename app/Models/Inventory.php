@@ -12,13 +12,6 @@ use CodeIgniter\Model;
  */
 class Inventory extends Model
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->employee = model('Employee');
-	}
-
 	public function insert(array $inventory_data = null, bool $returnId = true): bool
 	{
 		$builder = $this->db->table('inventory');

@@ -53,12 +53,12 @@ class Receiving_lib
 		return $this->session->get('recv_cart');
 	}
 
-	public function set_cart(array $cart_data)
+	public function set_cart(array $cart_data): void
 	{
 		$this->session->set('recv_cart', $cart_data);
 	}
 
-	public function empty_cart()
+	public function empty_cart(): void
 	{
 		$this->session->remove('recv_cart');
 	}
@@ -73,12 +73,12 @@ class Receiving_lib
 		return $this->session->get('recv_supplier');
 	}
 
-	public function set_supplier(int $supplier_id)
+	public function set_supplier(int $supplier_id): void
 	{
 		$this->session->set('recv_supplier', $supplier_id);
 	}
 
-	public function remove_supplier()
+	public function remove_supplier(): void
 	{
 		$this->session->remove('recv_supplier');
 	}
@@ -93,12 +93,12 @@ class Receiving_lib
 		return $this->session->get('recv_mode');
 	}
 
-	public function set_mode(string $mode)
+	public function set_mode(string $mode): void
 	{
 		$this->session->set('recv_mode', $mode);
 	}
 	
-	public function clear_mode()
+	public function clear_mode(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_mode()
 	{
 		$this->session->remove('recv_mode');
 	}
@@ -120,12 +120,12 @@ class Receiving_lib
 		return empty($comment) ? '' : $comment;
 	}
 	
-	public function set_comment(string $comment)
+	public function set_comment(string $comment): void
 	{
 		$this->session->set('recv_comment', $comment);
 	}
 	
-	public function clear_comment()
+	public function clear_comment(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_comment()
 	{
 		$this->session->remove('recv_comment');
 	}
@@ -135,12 +135,12 @@ class Receiving_lib
 		return $this->session->get('recv_reference');
 	}
 	
-	public function set_reference(string $reference)
+	public function set_reference(string $reference): void
 	{
 		$this->session->set('recv_reference', $reference);
 	}
 	
-	public function clear_reference()
+	public function clear_reference(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_reference()
 	{
 		$this->session->remove('recv_reference');
 	}
@@ -151,17 +151,17 @@ class Receiving_lib
 			|| $this->session->get('recv_print_after_sale') == '1';
 	}
 	
-	public function set_print_after_sale(bool $print_after_sale)
+	public function set_print_after_sale(bool $print_after_sale): void
 	{
 		$this->session->set('recv_print_after_sale', $print_after_sale);
 	}
 	
-	public function set_stock_source(int $stock_source)
+	public function set_stock_source(int $stock_source): void
 	{
 		$this->session->set('recv_stock_source', $stock_source);
 	}
 	
-	public function clear_stock_source()
+	public function clear_stock_source(): void
 	{
 		$this->session->remove('recv_stock_source');
 	}
@@ -176,12 +176,12 @@ class Receiving_lib
 		return $this->session->get('recv_stock_destination');
 	}
 
-	public function set_stock_destination(string $stock_destination)
+	public function set_stock_destination(string $stock_destination): void
 	{
 		$this->session->set('recv_stock_destination', $stock_destination);
 	}
 	
-	public function clear_stock_destination()
+	public function clear_stock_destination(): void
 	{
 		$this->session->remove('recv_stock_destination');
 	}
@@ -232,7 +232,7 @@ class Receiving_lib
 			}
 		}
 
-		$insertkey = $maxkey+1;
+		$insertkey = $maxkey + 1;
 		$item_info = $this->item->get_info($item_id,$item_location);
 
 		//array records are identified by $insertkey and item_id is just another field.
@@ -332,14 +332,14 @@ class Receiving_lib
 	/**
 	 * @param $line int|string The item_number or item_id of the item to be removed from the receiving.
 	 */
-	public function delete_item($line)
+	public function delete_item($line): void
 	{
 		$items = $this->get_cart();
 		unset($items[$line]);
 		$this->set_cart($items);
 	}
 
-	public function return_entire_receiving(int $receipt_receiving_id)
+	public function return_entire_receiving(int $receipt_receiving_id): void
 	{
 		//RECV #
 		$pieces = explode(' ', $receipt_receiving_id);
@@ -365,7 +365,7 @@ class Receiving_lib
 		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
 	}
 
-	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discount_type)
+	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discount_type): void
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -377,7 +377,7 @@ class Receiving_lib
 		}
 	}
 
-	public function copy_entire_receiving(int $receiving_id)
+	public function copy_entire_receiving(int $receiving_id): void
 	{
 		$this->empty_cart();
 		$this->remove_supplier();
@@ -391,7 +391,7 @@ class Receiving_lib
 		//$this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);	//TODO: If this code won't be added back in, then let's delete it.
 	}
 
-	public function clear_all()
+	public function clear_all(): void
 	{
 		$this->clear_mode();
 		$this->empty_cart();

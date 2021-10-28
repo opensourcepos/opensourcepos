@@ -12,13 +12,6 @@ use app\Models\Item;
  */
 class Inventory_low extends Report
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->item = model('Item');
-	}
-
 	public function getDataColumns(): array
 	{
 		return [

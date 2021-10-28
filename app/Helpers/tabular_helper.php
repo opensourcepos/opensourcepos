@@ -195,7 +195,7 @@ function get_people_manage_table_headers()
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	if($CI->Employee->has_grant('messages', $CI->session->get('person_id')))
+	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
 	{
 		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}
@@ -257,7 +257,7 @@ function get_customer_manage_table_headers()
 		['total' => lang('Common.total_spent'), 'sortable' => FALSE]
 	];
 
-	if($CI->Employee->has_grant('messages', $CI->session->get('person_id')))
+	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
 	{
 		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}
@@ -323,7 +323,7 @@ function get_suppliers_manage_table_headers()
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	if($CI->Employee->has_grant('messages', $CI->session->get('person_id')))
+	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
 	{
 		$headers[] = ['messages' => ''];
 	}

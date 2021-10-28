@@ -18,9 +18,6 @@ class Stock_location extends Model
 	{
 		parent::__construct();
 
-		$this->employee = model('Employee');
-		$this->item = model('Item');
-
 		$this->session = session();
 	}
 	public function exists(int $location_id = -1): bool	//TODO: Replace -1 with a constant

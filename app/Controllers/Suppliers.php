@@ -19,7 +19,7 @@ class Suppliers extends Persons
 		$this->supplier = model('Supplier');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
 
@@ -29,7 +29,7 @@ class Suppliers extends Persons
 	/*
 	Gets one row for a supplier manage table. This is called using AJAX to update one row.
 	*/
-	public function get_row($row_id)
+	public function get_row($row_id): void
 	{
 		$data_row = $this->xss_clean(get_supplier_data_row($this->supplier->get_info($row_id)));
 		$data_row['category'] = $this->supplier->get_category_name($data_row['category']);
@@ -40,7 +40,7 @@ class Suppliers extends Persons
 	/*
 	Returns Supplier table data rows. This will be called with AJAX.
 	*/
-	public function search()
+	public function search(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit');
@@ -66,7 +66,7 @@ class Suppliers extends Persons
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	public function suggest()
+	public function suggest(): void
 	{
 		$suggestions = $this->xss_clean($this->supplier->get_search_suggestions($this->request->getGet('term'), TRUE));
 
@@ -83,7 +83,7 @@ class Suppliers extends Persons
 	/*
 	Loads the supplier edit form
 	*/
-	public function view(int $supplier_id = -1)	//TODO: Replace -1 with constant
+	public function view(int $supplier_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$info = $this->supplier->get_info($supplier_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -99,7 +99,7 @@ class Suppliers extends Persons
 	/*
 	Inserts/updates a supplier
 	*/
-	public function save(int $supplier_id = -1)	//TODO: Replace -1 with constant
+	public function save(int $supplier_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: Duplicate code
 		$last_name = $this->xss_clean($this->request->getPost('last_name'));
@@ -168,7 +168,7 @@ class Suppliers extends Persons
 	/*
 	This deletes suppliers from the suppliers table
 	*/
-	public function delete()
+	public function delete(): void
 	{
 		$suppliers_to_delete = $this->xss_clean($this->request->getPost('ids'));
 
@@ -184,6 +184,5 @@ class Suppliers extends Persons
 			echo json_encode (['success' => FALSE, 'message' => lang('Suppliers.cannot_be_deleted')]);
 		}
 	}
-	
 }
 ?>

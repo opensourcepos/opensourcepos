@@ -23,7 +23,7 @@ class Expenses extends Secure_Controller
 		$this->expense_category = model('Expense_category');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$data['table_headers'] = $this->xss_clean(get_expenses_manage_table_headers());
 
@@ -40,7 +40,7 @@ class Expenses extends Secure_Controller
 		echo view('expenses/manage', $data);
 	}
 
-	public function search()
+	public function search(): void
 	{
 		$payments = 0;	//TODO: this variable is never used.
 		$search   = $this->request->getGet('search');
@@ -81,12 +81,12 @@ class Expenses extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
-	public function view(int $expense_id = -1)	//TODO: Replace -1 with a constant
+	public function view(int $expense_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$data = [];	//TODO: Duplicated code
 
 		$data['employees'] = [];
-		foreach($this->Employee->get_all()->getResult() as $employee)
+		foreach($this->employee->get_all()->getResult() as $employee)
 		{
 			foreach(get_object_vars($employee) as $property => $value)
 			{
@@ -110,7 +110,7 @@ class Expenses extends Secure_Controller
 		if(empty($expense_id))
 		{
 			$data['expenses_info']->date = date('Y-m-d H:i:s');
-			$data['expenses_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+			$data['expenses_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		}
 
 		$data['payments'] = [];
@@ -138,7 +138,7 @@ class Expenses extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function save(int $expense_id = -1)//TODO: Replace -1 with a constant
+	public function save(int $expense_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');
 
@@ -177,14 +177,14 @@ class Expenses extends Secure_Controller
 		}
 	}
 
-	public function ajax_check_amount()
+	public function ajax_check_amount(): void
 	{
 		$value = $this->request->getPost();
 		$parsed_value = parse_decimals(array_pop($value));
 		echo json_encode (['success' => $parsed_value !== FALSE]);
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		$expenses_to_delete = $this->request->getPost('ids');
 

@@ -41,7 +41,7 @@ class Sms_lib
 		$response = FALSE;
 
 		// if any of the parameters is empty return with a FALSE
-		if(empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator))	//TODO: This if/else needs to be flipped. and shortened.
+		if(empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator))	//TODO: This if/else needs to be flipped. and shortened.  No else needed in the code example below.
 			//$parameters = [$username, $password, $phone, $message, $originator];
 			//if(count(array_filter($parameters)) === 5)
 			//{

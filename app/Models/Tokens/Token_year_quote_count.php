@@ -12,13 +12,6 @@ use app\Models\Sale;
  */
 class Token_year_quote_count extends Token
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->sale = model('Sale');
-	}
-
 	public function token_id(): string
 	{
 		return 'QCO';

@@ -63,7 +63,7 @@ if(isset($success))
 				</li>
 
 				<?php
-				if($this->Employee->has_grant('reports_sales', $this->session->get('person_id')))
+				if($this->employee->has_grant('reports_sales', $this->session->get('person_id')))
 				{
 				?>
 					<li class="pull-right">
