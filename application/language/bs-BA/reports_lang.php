@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Svi";
 $lang["reports_authority"] = "Ovlašćenja";
 $lang["reports_canceled"] = "Otkazano";
@@ -19,8 +18,8 @@ $lang["reports_complete"] = "Završena prodaja i povrat";
 $lang["reports_completed_sales"] = "Kompletirana prodaja";
 $lang["reports_confirm_delete"] = "Da li ste sigurni da želite da izbrišete izabrani unos?";
 $lang["reports_confirm_restore"] = "Da li ste sigurni da želite da vratite izabrani unos?";
-$lang["reports_cost"] = "Trošak";
-$lang["reports_cost_price"] = "FC";
+$lang["reports_cost"] = "Veleprodaja";
+$lang["reports_cost_price"] = "Veleprodajna cijena";
 $lang["reports_count"] = "Broj";
 $lang["reports_customer"] = "Kupac";
 $lang["reports_customers"] = "Kupci";
