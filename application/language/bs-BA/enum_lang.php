@@ -1,9 +1,8 @@
-<?php 
-
-$lang["enum_half_down"] = "Half Down";
-$lang["enum_half_even"] = "Half Even";
-$lang["enum_half_five"] = "Half Five";
-$lang["enum_half_odd"] = "Half Odd";
-$lang["enum_half_up"] = "Half Up";
-$lang["enum_round_down"] = "Round Down";
-$lang["enum_round_up"] = "Round Up";
+<?php
+$lang["enum_half_down"] = "Pola dolje";
+$lang["enum_half_even"] = "Napola izjednačeno";
+$lang["enum_half_five"] = "Polovina pet";
+$lang["enum_half_odd"] = "Pola neparno";
+$lang["enum_half_up"] = "Polovinu gore";
+$lang["enum_round_down"] = "Zaokruži naniže";
+$lang["enum_round_up"] = "Zaokruži naviše";
