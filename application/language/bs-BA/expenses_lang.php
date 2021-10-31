@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Dodaj trošak";
 $lang["expenses_amount"] = "Iznos";
 $lang["expenses_amount_number"] = "Iznos mora biti broj";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Kategorija";
 $lang["expenses_category_required"] = "kategorija je obavezno polje";
 $lang["expenses_check"] = "Ček";
 $lang["expenses_check_filter"] = "Ček";
-$lang["expenses_confirm_delete"] = "Da li ste sigurni da želite da izbrišete izabrani trošak?";
-$lang["expenses_confirm_restore"] = "Da li ste sigurni da želite da vratite izabrani trošak?";
+$lang["expenses_confirm_delete"] = "Da li ste sigurni da želite da izbrišete izabrane troškove?";
+$lang["expenses_confirm_restore"] = "Da li ste sigurni da želite da vratite izabrane troškove?";
 $lang["expenses_credit"] = "Kreditna kartica";
 $lang["expenses_credit_filter"] = "Kreditna kartica";
 $lang["expenses_date"] = "Datum";
