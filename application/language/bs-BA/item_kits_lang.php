@@ -1,16 +1,15 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Dodaj artikal";
 $lang["item_kits_all"] = "Sve";
-$lang["item_kits_cannot_be_deleted"] = "Brisanje kompleta nije uspjelo";
-$lang["item_kits_confirm_delete"] = "Da li ste sigurni da želite izbrisati izabrani komplet predmeta";
-$lang["item_kits_confirm_restore"] = "Da li ste sigurni da želite povratiti komplet";
+$lang["item_kits_cannot_be_deleted"] = "Brisanje kompleta artikala nije uspjelo.";
+$lang["item_kits_confirm_delete"] = "Da li ste sigurni da želite izbrisati izabrani komplet artikala?";
+$lang["item_kits_confirm_restore"] = "Da li ste sigurni da želite da vratite izabrane komplete stavki?";
 $lang["item_kits_description"] = "Opis kompleta";
 $lang["item_kits_discount"] = "Popust";
 $lang["item_kits_discount_fixed"] = "Fiksni popust";
 $lang["item_kits_discount_percent"] = "Procenat popusta";
 $lang["item_kits_discount_type"] = "Vrsta popusta";
-$lang["item_kits_error_adding_updating"] = "Dodavanje ili ažuriranje kompleta predmeta nije uspjelo";
+$lang["item_kits_error_adding_updating"] = "Dodavanje ili ažuriranje kompleta artikala nije uspjelo.";
 $lang["item_kits_find_kit_item"] = "Stavka kompleta";
 $lang["item_kits_info"] = "Informacije o kompletu";
 $lang["item_kits_item"] = "Artikal";
@@ -25,8 +24,8 @@ $lang["item_kits_kit_and_stock"] = "Komplet i zaliha";
 $lang["item_kits_kit_only"] = "Samo komplet";
 $lang["item_kits_name"] = "Naziv kompleta";
 $lang["item_kits_new"] = "Novi komplet";
-$lang["item_kits_no_item_kits_to_display"] = "Nema kompleta za prikaz";
-$lang["item_kits_none_selected"] = "Niste odabrali nijedan komplet";
+$lang["item_kits_no_item_kits_to_display"] = "Nema kompleta artikala za prikaz.";
+$lang["item_kits_none_selected"] = "Niste odabrali nijedan komplet artikala.";
 $lang["item_kits_one_or_multiple"] = "Stavka(e) kompleta";
 $lang["item_kits_price_option"] = "Opcija cijene";
 $lang["item_kits_priced_only"] = "Samo po cijeni";
