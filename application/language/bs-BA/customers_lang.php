@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Račun #";
 $lang["customers_account_number_duplicate"] = "Ovaj broj računa već postoji";
-$lang["customers_available_points"] = "Dostupni bodovi";
+$lang["customers_available_points"] = "Dostupni poeni";
 $lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Prosječna potrošnja";
 $lang["customers_avg_discount"] = "Prosječni popust";
@@ -33,7 +32,7 @@ $lang["customers_mailchimp_activity_open"] = "E-mail otvoren";
 $lang["customers_mailchimp_activity_total"] = "E-mail poslat";
 $lang["customers_mailchimp_activity_unopen"] = "E-mail nije otvoren";
 $lang["customers_mailchimp_email_client"] = "E-mail klijenta";
-$lang["customers_mailchimp_info"] = "Mailchimp";
+$lang["customers_mailchimp_info"] = "MailChimp";
 $lang["customers_mailchimp_member_rating"] = "Rejting";
 $lang["customers_mailchimp_status"] = "Status";
 $lang["customers_mailchimp_vip"] = "VIP";
