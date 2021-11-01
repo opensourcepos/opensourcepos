@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Puntos disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
@@ -147,7 +146,7 @@ $lang["sales_price"] = "Precio";
 $lang["sales_print_after_sale"] = "Imprimir recibo después de una venta";
 $lang["sales_quantity"] = "Cantidad";
 $lang["sales_quantity_less_than_reorder_level"] = "Advertencia. La cantidad deseada es insuficiente.";
-$lang["sales_quantity_less_than_zero"] = "Advertencia. La cantidad deseada está agotada en stock. Puedes procesar la venta pero audita el inventario.";
+$lang["sales_quantity_less_than_zero"] = "Advertencia. La cantidad deseada no tiene stock suficiente. Puedes procesar la venta pero revisa tu inventario.";
 $lang["sales_quantity_of_items"] = "Cantidad de %1 articulos";
 $lang["sales_quote"] = "Cotizar";
 $lang["sales_quote_number"] = "Número de Presupuesto";
@@ -205,7 +204,7 @@ $lang["sales_taxed_ind"] = "Ventas gravadas";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Sin impuesto";
 $lang["sales_transaction_failed"] = "La transacción de venta falló.";
-$lang["sales_unable_to_add_item"] = "Error al agregar artículo a la venta. Agotado";
+$lang["sales_unable_to_add_item"] = "Error al agregar artículo a la venta.  Stock Agotado";
 $lang["sales_unsuccessfully_deleted"] = "Ha fallado la eliminación de la Venta.";
 $lang["sales_unsuccessfully_restored"] = "Restaurar Venta fallida.";
 $lang["sales_unsuccessfully_suspended_sale"] = "Venta suspendida satisfactoriamente.";
