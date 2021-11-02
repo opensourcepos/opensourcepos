@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -82,7 +83,7 @@ class Item_kit extends Model
 	/**
 	 * Gets information about a particular item kit
 	 */
-	public function get_info(int $item_kit_id): object
+	public function get_info(int $item_kit_id)
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->select('
@@ -140,7 +141,7 @@ class Item_kit extends Model
 	/**
 	 * Gets information about multiple item kits
 	 */
-	public function get_multiple_info(array $item_kit_ids)
+	public function get_multiple_info(array $item_kit_ids): ResultInterface
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->whereIn('item_kit_id', $item_kit_ids);
@@ -234,7 +235,7 @@ class Item_kit extends Model
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
 	}
@@ -242,7 +243,7 @@ class Item_kit extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
 

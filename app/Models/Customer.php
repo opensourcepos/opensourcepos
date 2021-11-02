@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
+
 /**
  * Customer class
  *
@@ -23,8 +25,8 @@ class Customer extends Person
 	}
 
 	/**
-	* Checks if account number exists
-	*/
+	 * Checks if account number exists
+	 */
 	public function check_account_number_exists(string $account_number, string $person_id = ''): bool
 	{
 		$builder = $this->db->table('customers');
@@ -39,8 +41,8 @@ class Customer extends Person
 	}
 
 	/**
-	* Gets total of rows
-	*/
+	 * Gets total of rows
+	 */
 	public function get_total_rows(): int
 	{
 		$builder = $this->db->table('customers');
@@ -50,9 +52,9 @@ class Customer extends Person
 	}
 
 	/**
-	* Returns all the customers
-	*/
-	public function get_all(int $limit = 0, int $offset = 0)
+	 * Returns all the customers
+	 */
+	public function get_all(int $limit = 0, int $offset = 0): ResultInterface
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'customers.person_id = people.person_id');
@@ -68,8 +70,8 @@ class Customer extends Person
 	}
 
 	/**
-	* Gets information about a particular customer
-	*/
+	 * Gets information about a particular customer
+	 */
 	public function get_info(int $person_id)
 	{
 		$builder = $this->db->table('customers');
@@ -98,9 +100,9 @@ class Customer extends Person
 	}
 
 	/**
-	* Gets stats about a particular customer
-	*/
-	public function get_stats(int $customer_id): object
+	 * Gets stats about a particular customer
+	 */
+	public function get_stats(int $customer_id)
 	{
 		// create a temporary table to contain all the sum and average of items
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp');
@@ -147,9 +149,9 @@ class Customer extends Person
 	}
 
 	/**
-	* Gets information about multiple customers
-	*/
-	public function get_multiple_info(array $person_ids)
+	 * Gets information about multiple customers
+	 */
+	public function get_multiple_info(array $person_ids): ResultInterface
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
@@ -160,8 +162,8 @@ class Customer extends Person
 	}
 
 	/**
-	* Checks if customer email exists
-	*/
+	 * Checks if customer email exists
+	 */
 	public function check_email_exists(string $email, string $customer_id = ''): bool
 	{
 		// if the email is empty return like it is not existing
@@ -184,9 +186,9 @@ class Customer extends Person
 	}
 
 	/**
-	* Inserts or updates a customer
-	*/
-	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE)
+	 * Inserts or updates a customer
+	 */
+	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE): bool
 	{
 		$success = FALSE;
 
@@ -215,9 +217,9 @@ class Customer extends Person
 	}
 
 	/**
-	* Updates reward points value
-	*/
-	public function update_reward_points_value(int $customer_id, int $value)
+	 * Updates reward points value
+	 */
+	public function update_reward_points_value(int $customer_id, int $value): void
 	{
 		$builder = $this->db->table('customers');
 		$builder->where('person_id', $customer_id);
@@ -226,8 +228,8 @@ class Customer extends Person
 
 //TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	/**
-	* Deletes one customer
-	*/
+	 * Deletes one customer
+	 */
 	public function delete(int $customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
@@ -279,9 +281,9 @@ class Customer extends Person
 		return $result;
 	}
 
-	/*
-	Deletes a list of customers
-	*/
+	/**
+	 * Deletes a list of customers
+	 */
 	public function delete_list(array $person_ids): bool
 	{
 		$builder = $this->db->table('customers');
@@ -290,10 +292,10 @@ class Customer extends Person
 		return $builder->update(['deleted' => 1]);
  	}
 
- 	/*
-	Get search suggestions to find customers
-	*/
-	public function get_search_suggestions(string $search, bool $limit = TRUE): array	//TODO: The parent class has limit as an int and this overrides it as a bool.  No bueno.
+ 	/**
+	 * Get search suggestions to find customers
+	 */
+	public function get_search_suggestions(string $search, bool $limit = TRUE): array	//TODO: The parent class has limit as an int and this overrides it as a bool.
 	{
 		$suggestions = [];
 
@@ -303,6 +305,7 @@ class Customer extends Person
 			$builder->like('first_name', $search);
 			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+
 			if($limit)
 			{
 				$builder->orLike('email', $search);
@@ -312,6 +315,7 @@ class Customer extends Person
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
 		$builder->orderBy('last_name', 'asc');
+
 		foreach($builder->get()->getResult() as $row)
 		{
 			$suggestions[] = [
@@ -379,7 +383,7 @@ class Customer extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
@@ -387,7 +391,7 @@ class Customer extends Person
 	/**
 	 * Performs a search on customers
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('customers AS customers');
 

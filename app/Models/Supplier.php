@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
+
 /**
  * Supplier class
  */
@@ -36,7 +38,7 @@ class Supplier extends Person
 	/**
 	 * Returns all the suppliers
 	 */
-	public function get_all(int $category = self::GOODS_SUPPLIER, int $offset = 0, int $limit = 0)
+	public function get_all(int $category = self::GOODS_SUPPLIER, int $offset = 0, int $limit = 0): ResultInterface
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'suppliers.person_id = people.person_id');
@@ -85,7 +87,7 @@ class Supplier extends Person
 	/**
 	 * Gets information about multiple suppliers
 	 */
-	public function get_multiple_info(array $person_ids)
+	public function get_multiple_info(array $person_ids): ResultInterface
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'people.person_id = suppliers.person_id');
@@ -243,7 +245,7 @@ class Supplier extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
@@ -251,7 +253,7 @@ class Supplier extends Person
 	/**
 	 * Perform a search on suppliers
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('suppliers AS suppliers');
 

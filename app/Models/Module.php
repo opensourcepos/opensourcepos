@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -39,14 +40,14 @@ class Module extends Model
 		return lang('Error.unknown');
 	}
 
-	public function get_all_permissions()
+	public function get_all_permissions(): ResultInterface
 	{
 		$builder = $this->db->table('permissions');
 
 		return $builder->get();
 	}
 
-	public function get_all_subpermissions()
+	public function get_all_subpermissions(): ResultInterface
 	{
 		$builder = $this->db->table('permissions');
 		$builder->join('modules AS modules', 'modules.module_id = permissions.module_id');	//TODO: can the table parameter just be modules instead of modules AS modules?
@@ -57,7 +58,7 @@ class Module extends Model
 		return $builder->get();
 	}
 
-	public function get_all_modules()
+	public function get_all_modules(): ResultInterface
 	{
 		$builder = $this->db->table('modules');
 		$builder->orderBy('sort', 'asc');
@@ -65,7 +66,7 @@ class Module extends Model
 		return $builder->get();
 	}
 
-	public function get_allowed_home_modules(int $person_id)
+	public function get_allowed_home_modules(int $person_id): ResultInterface
 	{
 		$menus = ['home', 'both'];
 		$builder = $this->db->table('modules');	//TODO: this is duplicated with the code below... probably refactor a method and just pass through whether home/office modules are needed.
@@ -79,7 +80,7 @@ class Module extends Model
 		return $builder->get();
 	}
 
-	public function get_allowed_office_modules(int $person_id)
+	public function get_allowed_office_modules(int $person_id): ResultInterface
 	{
 		$menus = ['office', 'both'];
 		$builder = $this->db->table('modules');	//TODO: Duplicated code
@@ -97,7 +98,7 @@ class Module extends Model
 	 * This method is used to set the show the office navigation icon on the home page
 	 * which happens when the sort value is greater than zero
 	 */
-	public function set_show_office_group(bool $show_office_group)	//TODO: Should we return the value of update() as a bool for consistency?
+	public function set_show_office_group(bool $show_office_group): void	//TODO: Should we return the value of update() as a bool for consistency?
 	{
 		if($show_office_group)	//TODO: This should be replaced with ternary notation
 		{
@@ -119,7 +120,7 @@ class Module extends Model
 	 * This method is used to show the office navigation icon on the home page
 	 * which happens when the sort value is greater than zero
 	 */
-	public function get_show_office_group()
+	public function get_show_office_group(): int
 	{
 		$builder = $this->db->table('grants');
 		$builder->select('sort');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -64,7 +65,7 @@ class Tax_category extends Model
 	/**
 	 *  Returns all rows from the table
 	 *///TODO: I think we should work toward having all these get_all functions with the same signature.  It makes it easier to use them.  This signature is different from the others.
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE)	//TODO: $no_deleted needs a new name.  $not_deleted is the correct grammar, but it's a bit confusing by naming the variable a negative.  Probably better to name it is_deleted and flip the logic
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted needs a new name.  $not_deleted is the correct grammar, but it's a bit confusing by naming the variable a negative.  Probably better to name it is_deleted and flip the logic
 	{
 		$builder = $this->db->table('tax_categories');
 		if($no_deleted == TRUE)
@@ -86,7 +87,7 @@ class Tax_category extends Model
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info(array $tax_category_ids)
+	public function get_multiple_info(array $tax_category_ids): ResultInterface
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->whereIn('tax_category_id', $tax_category_ids);
@@ -189,7 +190,7 @@ class Tax_category extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'tax_category', 'asc', TRUE);
 	}
@@ -197,7 +198,7 @@ class Tax_category extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_category', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_category', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('tax_categories AS tax_categories');
 

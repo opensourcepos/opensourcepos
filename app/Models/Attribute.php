@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use DateTime;
 use stdClass;
@@ -130,7 +131,7 @@ class Attribute extends Model
 	/*
 	 Performs a search on attribute definitions
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc')
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc'): ResultInterface
 	{
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');
@@ -562,7 +563,7 @@ class Attribute extends Model
 		return $builder->get('attribute_links')->getRowObject();
 	}
 
-	public function get_link_values(int $item_id, $sale_receiving_fk, $id, int $definition_flags)
+	public function get_link_values(int $item_id, string $sale_receiving_fk, int $id, int $definition_flags): ResultInterface
 	{
 		$format = $this->db->escape(dateformat_mysql());
 
@@ -587,7 +588,7 @@ class Attribute extends Model
 
 		$builder->where('definition_flags & ', $definition_flags);
 
-		return $builder->get('attribute_links');
+		return $builder->get();
 	}
 
 	public function get_attribute_value(int $item_id, int $definition_id): object
@@ -614,7 +615,7 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
-	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id)
+	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id): void
 	{
 //TODO: this likely needs to be rewritten as two different queries rather than a subquery within a query.  Then use query_builder for both.
 		$query = 'INSERT INTO ' . $this->db->prefixTable('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')	';

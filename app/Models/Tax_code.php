@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -68,7 +69,7 @@ class Tax_code extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE)	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
 	{
 		$builder = $this->db->table('tax_codes');
 		if($no_deleted == TRUE)
@@ -89,7 +90,7 @@ class Tax_code extends Model
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info(array $tax_codes)
+	public function get_multiple_info(array $tax_codes): ResultInterface
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->whereIn('tax_code', $tax_codes);
@@ -182,7 +183,7 @@ class Tax_code extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -190,7 +191,7 @@ class Tax_code extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('tax_codes AS tax_codes');
 

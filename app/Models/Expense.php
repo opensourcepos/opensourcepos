@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -48,7 +49,7 @@ class Expense extends Model
 		return $this->employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}
 
-	public function get_multiple_info(array $expense_ids)
+	public function get_multiple_info(array $expense_ids): ResultInterface
 	{
 		$builder = $this->db->table('expenses');
 		$builder->whereIn('expenses.expense_id', $expense_ids);
@@ -60,7 +61,7 @@ class Expense extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search, array $filters)
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
@@ -68,7 +69,7 @@ class Expense extends Model
 	/**
 	 * Searches expenses
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('expenses AS expenses');
 
@@ -265,7 +266,7 @@ class Expense extends Model
 	/**
 	 * Gets the payment summary for the expenses (expenses/manage) view
 	 */
-	public function get_payments_summary(string $search, array $filters): array
+	public function get_payments_summary(string $search, array $filters): array	//TODO: $search is passed but never used in the function
 	{
 		// get payment summary
 		$builder = $this->db->table('expenses');
@@ -322,7 +323,7 @@ class Expense extends Model
 	/**
 	 * Gets the expense payment
 	 */
-	public function get_expense_payment(int $expense_id)
+	public function get_expense_payment(int $expense_id): ResultInterface
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);

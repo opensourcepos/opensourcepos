@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use app\Libraries\Sale_lib;
 
@@ -34,7 +35,7 @@ class Sale extends Model
 	/**
 	 * Get sale info
 	 */
-	public function get_info(int $sale_id)
+	public function get_info(int $sale_id): ResultInterface
 	{
 		$this->create_temp_table (['sale_id' => $sale_id]);
 
@@ -99,7 +100,7 @@ class Sale extends Model
 	/**
 	 * Get number of rows for the takings (sales/manage) view
 	 */
-	public function get_found_rows(string $search, array $filters)
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
@@ -107,7 +108,7 @@ class Sale extends Model
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE): ResultInterface
 	{
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
@@ -458,7 +459,7 @@ class Sale extends Model
 	/**
 	 * Gets sale by invoice number
 	 */
-	public function get_sale_by_invoice_number(string $invoice_number)
+	public function get_sale_by_invoice_number(string $invoice_number): ResultInterface
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number', $invoice_number);
@@ -784,7 +785,7 @@ class Sale extends Model
 	/**
 	 * Saves sale tax
 	 */
-	public function save_sales_tax(int $sale_id, array $sales_taxes)	//TODO: should we return the result of the insert here as a bool?
+	public function save_sales_tax(int $sale_id, array $sales_taxes): void	//TODO: should we return the result of the insert here as a bool?
 	{
 		foreach($sales_taxes as $line => $sales_tax)
 		{
@@ -801,7 +802,7 @@ class Sale extends Model
 	 * of VAT tax which becomes a price component.  VAT taxes must still be reported
 	 * as a separate tax entry on the invoice.
 	 */
-	public function save_sales_items_taxes(int $sale_id, array $sales_item_taxes)
+	public function save_sales_items_taxes(int $sale_id, array $sales_item_taxes): void
 	{
 		foreach($sales_item_taxes as $line => $tax_item)
 		{
@@ -933,7 +934,7 @@ class Sale extends Model
 	/**
 	 * Gets sale item
 	 */
-	public function get_sale_items(int $sale_id)
+	public function get_sale_items(int $sale_id): ResultInterface
 	{
 		$builder = $this->db->table('sales_items');
 		$builder->where('sale_id', $sale_id);
@@ -944,7 +945,7 @@ class Sale extends Model
 	/**
 	 * Used by the invoice and receipt programs
 	 */
-	public function get_sale_items_ordered(int $sale_id)
+	public function get_sale_items_ordered(int $sale_id): ResultInterface
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->select('
@@ -1000,7 +1001,7 @@ class Sale extends Model
 	/**
 	 * Gets sale payments
 	 */
-	public function get_sale_payments(int $sale_id)
+	public function get_sale_payments(int $sale_id): ResultInterface
 	{
 		$builder = $this->db->table('sales_payments');
 		$builder->where('sale_id', $sale_id);
@@ -1123,7 +1124,7 @@ class Sale extends Model
 	 * Creates sales temporary dimensional table
 	 * We create a temp table that allows us to do easy report/sales queries
 	 */
-	public function create_temp_table(array $inputs)
+	public function create_temp_table(array $inputs): void
 	{
 		if(empty($inputs['sale_id']))
 		{
@@ -1330,7 +1331,7 @@ class Sale extends Model
 		return $builder->get()->getRow()->sale_status;
 	}
 
-	public function update_sale_status(int $sale_id, int $sale_status)
+	public function update_sale_status(int $sale_id, int $sale_status): void
 	{
 		$builder = $this->db->table('sales');
 		
@@ -1460,7 +1461,7 @@ class Sale extends Model
 	/**
 	 * Gets suspended sale info
 	 */
-	public function get_suspended_sale_info(int $sale_id)
+	public function get_suspended_sale_info(int $sale_id): ResultInterface
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1476,7 +1477,7 @@ class Sale extends Model
 	 * @param float $total_amount
 	 * @param float $total_amount_used
 	 */
-	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used)
+	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used): void
 	{
 		if(!empty($customer_id) && $this->appconfig->get('customer_reward_enable') == TRUE)
 		{

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -64,7 +65,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 
@@ -86,7 +87,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Returns multiple rows
 	 */
-	public function get_multiple_info(array $jurisdiction_ids)
+	public function get_multiple_info(array $jurisdiction_ids): ResultInterface
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->whereIn('jurisdiction_id', $jurisdiction_ids);
@@ -190,7 +191,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
 	}
@@ -198,7 +199,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 

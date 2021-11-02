@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -100,7 +101,7 @@ class Giftcard extends Model
 	/**
 	 * Gets information about multiple giftcards
 	 */
-	public function get_multiple_info(array $giftcard_ids)
+	public function get_multiple_info(array $giftcard_ids): ResultInterface
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->whereIn('giftcard_id', $giftcard_ids);
@@ -138,7 +139,7 @@ class Giftcard extends Model
 	/**
 	 * Updates multiple giftcards at once
 	 */
-	public function update_multiple(array $giftcard_data, array $giftcard_ids): bool
+	public function update_multiple(array $giftcard_data, array $giftcard_ids): bool	//TODO: This function appears to never be used in the code.
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->whereIn('giftcard_id', $giftcard_ids);
@@ -212,7 +213,7 @@ class Giftcard extends Model
 	/**
 	 * Gets gift cards
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'giftcard_number', 'asc', TRUE);
 	}
@@ -220,7 +221,7 @@ class Giftcard extends Model
 	/**
 	 * Performs a search on giftcards
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('giftcards');
 
@@ -259,7 +260,7 @@ class Giftcard extends Model
 	/**
 	 * Gets gift card value
 	 */
-	public function get_giftcard_value(string $giftcard_number): float
+	public function get_giftcard_value(string $giftcard_number): float	//TODO: we may need to do a search for all float values and for currencies cast them to strings at the point where we get them from the database.
 	{
 		if(!$this->exists($this->get_giftcard_id($giftcard_number)))
 		{
@@ -275,7 +276,7 @@ class Giftcard extends Model
 	/**
 	 * Updates gift card value
 	 */
-	public function update_giftcard_value(string $giftcard_number, float $value)	//TODO: Should we return the value of update like other similar functions do?
+	public function update_giftcard_value(string $giftcard_number, float $value): void	//TODO: Should we return the value of update like other similar functions do?
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_number', $giftcard_number);

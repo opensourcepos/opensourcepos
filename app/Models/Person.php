@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -30,9 +31,8 @@ class Person extends Model
 	 *
 	 * @param integer $limit limits the query return rows
 	 * @param integer $offset offset the query
-	 * @return array array of people table rows	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
-	public function get_all(int $limit = 10000, int $offset = 0)
+	public function get_all(int $limit = 10000, int $offset = 0): ResultInterface
 	{
 		$builder = $this->db->table('people');
 		$builder->orderBy('last_name', 'asc');
@@ -90,9 +90,8 @@ class Person extends Model
 	 *
 	 * @param array $person_ids array of people identifiers
 	 *
-	 * @return array containing all the fields of the table row	//TODO: I don't think get() returns an array... I think we may need to use get_array() here.
 	 */
-	public function get_multiple_info(array $person_ids)
+	public function get_multiple_info(array $person_ids): ResultInterface
 	{
 		$builder = $this->db->table('people');
 		$builder->whereIn('person_id', $person_ids);
@@ -133,7 +132,7 @@ class Person extends Model
 	 * Get search suggestions to find person
 	 *
 	 * @param string $search string containing the term to search in the people table
-	 * @param integer $limit limit the search
+	 * @param int $limit limit the search
 	 * @return array array with the suggestion strings
 	 */
 	public function get_search_suggestions(string $search, int $limit = 25): array

@@ -19,7 +19,7 @@ class Summary_items extends Summary_report
 		];
 	}
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-	protected function _select(array $inputs)	//TODO: hungarian notation
+	protected function _select(array $inputs): void	//TODO: hungarian notation
 	{
 		parent::_select($inputs);	//TODO: hungarian notation
 
@@ -31,14 +31,14 @@ class Summary_items extends Summary_report
 		');
 	}
 
-	protected function _from()	//TODO: hungarian notation
+	protected function _from(): void	//TODO: hungarian notation
 	{
 		parent::_from();
 
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
-	protected function _group_order()	//TODO: hungarian notation
+	protected function _group_order(): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('items.item_id');
 		$builder->orderBy('name');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -16,8 +17,8 @@ use stdClass;
 class Cashup extends Model
 {
 	/**
-	* Determines if a given Cashup_id is a Cashup
-	*/
+	 * Determines if a given Cashup_id is a Cashup
+	 */
 	public function exists(int $cashup_id): bool
 	{
 		$builder = $this->db->table('cash_up');
@@ -27,9 +28,9 @@ class Cashup extends Model
 	}
 
 	/**
-	* Gets employee info
-	*/
-	public function get_employee(int $cashup_id)
+	 * Gets employee info
+	 */
+	public function get_employee(int $cashup_id)	//TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
@@ -37,7 +38,7 @@ class Cashup extends Model
 		return $this->employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
-	public function get_multiple_info(string $cashup_ids)
+	public function get_multiple_info(string $cashup_ids): ResultInterface
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->whereIn('cashup_id', $cashup_ids);
@@ -46,18 +47,18 @@ class Cashup extends Model
 		return $builder->get();
 	}
 
-	/*
-	* Gets rows
-	*/
-	public function get_found_rows(string $search, array $filters)
+	/**
+	 * Gets rows
+	 */
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}
 
-	/*
-	* Searches cashups
-	*/
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE)
+	/**
+	 * Searches cashups
+	 */
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('cash_up AS cash_up');
 		

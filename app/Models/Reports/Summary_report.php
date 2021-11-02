@@ -15,7 +15,7 @@ abstract class Summary_report extends Report
 	/**
 	 * Private interface implementing the core basic functionality for all reports
 	 */
-	private function __common_select(array $inputs)	//TODO: Hungarian notation
+	private function __common_select(array $inputs): void	//TODO: Hungarian notation
 	{
 		$where = '';	//TODO: Duplicated code
 
@@ -96,7 +96,7 @@ abstract class Summary_report extends Report
 		");
 	}
 
-	private function __common_from()	//TODO: hungarian notation
+	private function __common_from(): void	//TODO: hungarian notation
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
@@ -106,7 +106,7 @@ abstract class Summary_report extends Report
 		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 	}
 
-	private function __common_where(array $inputs)
+	private function __common_where(array $inputs): void
 	{
 		//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: Duplicated code
@@ -165,12 +165,12 @@ abstract class Summary_report extends Report
 	 * Protected class interface implemented by derived classes where required
 	 */
 
-	abstract protected function _get_data_columns();	//TODO: hungarian notation
+	abstract protected function _get_data_columns(): array;	//TODO: hungarian notation
 
-	protected function _select(array $inputs)	{ $this->__common_select($inputs); }	//TODO: hungarian notation
-	protected function _from()					{ $this->__common_from(); }	//TODO: hungarian notation
-	protected function _where(array $inputs)	{ $this->__common_where($inputs); }	//TODO: hungarian notation
-	protected function _group_order()			{}	//TODO: hungarian notation
+	protected function _select(array $inputs): void	{ $this->__common_select($inputs); }	//TODO: hungarian notation
+	protected function _from(): void					{ $this->__common_from(); }	//TODO: hungarian notation
+	protected function _where(array $inputs): void	{ $this->__common_where($inputs); }	//TODO: hungarian notation
+	protected function _group_order(): void			{}	//TODO: hungarian notation
 
 	/**
 	 * Public interface implementing the base abstract class, 

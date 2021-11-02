@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -82,7 +83,7 @@ class Item extends Model
 	/**
 	 * Get number of rows
 	 */
-	public function get_found_rows(string $search, array $filters)
+	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
 		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
@@ -90,7 +91,7 @@ class Item extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
@@ -242,7 +243,7 @@ class Item extends Model
 	/**
 	 * Returns all the items
 	 */
-	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0)	//TODO: Replace -1 with a constant
+	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0): ResultInterface	//TODO: Replace -1 with a constant
 	{
 		$builder = $this->db->table('items');
 
@@ -347,7 +348,7 @@ class Item extends Model
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$builder->where('item_number', $item_number);
 
-		if($ignore_deleted == FALSE)
+		if($ignore_deleted == FALSE)	//TODO: ===
 		{
 			$builder->where('items.deleted', $deleted);
 		}
@@ -365,7 +366,7 @@ class Item extends Model
 	/**
 	 * Gets information about multiple items
 	 */
-	public function get_multiple_info(array $item_ids, int $location_id)
+	public function get_multiple_info(array $item_ids, int $location_id): ResultInterface
 	{
 		$format = $this->db->escape(dateformat_mysql());
 
@@ -546,7 +547,7 @@ class Item extends Model
 		return $label;
 	}
 
-	private function append_label(string &$label, string $item_field_name, object $item_info)
+	private function append_label(string &$label, string $item_field_name, object $item_info): void
 	{
 		if($item_field_name !== '')
 		{
@@ -959,7 +960,7 @@ class Item extends Model
 		return $builder->get();
 	}
 
-	/*
+	/**
 	 * changes the cost price of a given item
 	 * calculates the average price between received items and items on stock
 	 * $item_id : the item which price should be changed
@@ -994,21 +995,21 @@ class Item extends Model
 		return $this->save($data, $item_id);
 	}
 
-	public function update_item_number(int $item_id, string $item_number)
+	public function update_item_number(int $item_id, string $item_number): void
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$builder->update(['item_number' => $item_number]);	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	}
 
-	public function update_item_name(int $item_id, string $item_name)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	public function update_item_name(int $item_id, string $item_name): void	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$builder->update(['name' => $item_name]);
 	}
 
-	public function update_item_description(int $item_id, string $item_description)	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	public function update_item_description(int $item_id, string $item_description): void	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);

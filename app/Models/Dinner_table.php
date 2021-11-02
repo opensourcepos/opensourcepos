@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -34,8 +35,8 @@ class Dinner_table extends Model
 	}
 
 	/**
-	* Get empty tables
-	*/
+	 * Get empty tables
+	 */
 	public function get_empty_tables(int $current_dinner_table_id): array
 	{
 		$builder = $this->db->table('dinner_tables');
@@ -84,7 +85,7 @@ class Dinner_table extends Model
 		}
 	}
 
-	public function get_all()
+	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('deleted', 0);
@@ -93,8 +94,8 @@ class Dinner_table extends Model
 	}
 
 	/**
-	* Deletes one dinner table
-	*/
+	 * Deletes one dinner table
+	 */
 	public function delete(int $dinner_table_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('dinner_tables');

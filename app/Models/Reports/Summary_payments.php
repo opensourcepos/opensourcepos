@@ -126,7 +126,7 @@ class Summary_payments extends Summary_report
 		return array_merge($sales, $separator, $payments);
 	}
 
-	protected function create_summary_payments_temp_tables($where)
+	protected function create_summary_payments_temp_tables(string $where): void
 	{
 		$decimals = totals_decimals();
 

@@ -30,7 +30,7 @@ class Token_customer extends Token
 		return 'CU';
 	}
 
-	public function get_value()
+	public function get_value(): string
 	{
 		// substitute customer info
 		$customer_id = $this->sale_lib->get_customer();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -64,7 +65,7 @@ class Expense_category extends Model
 	/**
 	 * Returns all the expense_categories
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = FALSE)
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('expense_categories');
 
@@ -86,7 +87,7 @@ class Expense_category extends Model
 	/**
 	 * Gets information about multiple expense_category_id
 	 */
-	public function get_multiple_info(array $expense_category_ids)
+	public function get_multiple_info(array $expense_category_ids): ResultInterface
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->whereIn('expense_category_id', $expense_category_ids);
@@ -133,7 +134,7 @@ class Expense_category extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'category_name', 'asc', TRUE);
 	}
@@ -141,7 +142,7 @@ class Expense_category extends Model
 	/**
 	 * Perform a search on expense_category
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('expense_categories AS expense_categories');
 

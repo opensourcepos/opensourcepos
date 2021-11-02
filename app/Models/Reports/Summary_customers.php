@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_customers extends Summary_report
 {
-	protected function _get_data_columns(): array
+	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
 			['customer_name' => lang('Reports.customer')],
@@ -18,7 +18,7 @@ class Summary_customers extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)	//TODO: Hungarian notation
+	protected function _select(array $inputs): void	//TODO: Hungarian notation
 	{
 		parent::_select($inputs);	//TODO: Hungarian notation
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
@@ -30,14 +30,14 @@ class Summary_customers extends Summary_report
 		');
 	}
 
-	protected function _from()	//TODO: Hungarian notation
+	protected function _from(): void	//TODO: Hungarian notation
 	{
 		parent::_from();	//TODO: Hungarian notation
 
 		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
-	protected function _group_order()	//TODO: Hungarian notation
+	protected function _group_order(): void	//TODO: Hungarian notation
 	{
 		$builder->groupBy('sales.customer_id');
 		$builder->orderBy('customer_p.last_name');

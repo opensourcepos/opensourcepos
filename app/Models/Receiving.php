@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -16,7 +17,7 @@ use CodeIgniter\Model;
  */
 class Receiving extends Model
 {
-	public function get_info(int $receiving_id)
+	public function get_info(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
 		$builder->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
@@ -26,7 +27,7 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
-	public function get_receiving_by_reference(string $reference)
+	public function get_receiving_by_reference(string $reference): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('reference', $reference);
@@ -221,7 +222,7 @@ class Receiving extends Model
 		return $this->db->transStatus();
 	}
 
-	public function get_receiving_items(int $receiving_id)
+	public function get_receiving_items(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings_items');
 		$builder->where('receiving_id', $receiving_id);
@@ -251,7 +252,7 @@ class Receiving extends Model
 	/**
 	 * Create a temp table that allows us to do easy report/receiving queries
 	 */
-	public function create_temp_table(array $inputs)
+	public function create_temp_table(array $inputs): void
 	{
 		if(empty($inputs['receiving_id']))
 		{

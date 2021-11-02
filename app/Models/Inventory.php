@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -12,7 +13,7 @@ use CodeIgniter\Model;
  */
 class Inventory extends Model
 {
-	public function insert(array $inventory_data = null, bool $returnId = true): bool
+	public function insert(array $inventory_data = null, bool $returnID = true): bool	//TODO: $returnID does not match variable naming conventions.  It's also never used in the function
 	{
 		$builder = $this->db->table('inventory');
 
@@ -27,7 +28,7 @@ class Inventory extends Model
 		return $builder->update($inventory_data);
 	}
 
-	public function get_inventory_data_for_item(int $item_id, $location_id = FALSE)
+	public function get_inventory_data_for_item(int $item_id, $location_id = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);

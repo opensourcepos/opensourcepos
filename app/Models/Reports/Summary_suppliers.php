@@ -17,7 +17,7 @@ class Summary_suppliers extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)	//TODO: hungarian notation
+	protected function _select(array $inputs): void	//TODO: hungarian notation
 	{
 		parent::_select($inputs);	//TODO: hungarian notation
 
@@ -28,7 +28,7 @@ class Summary_suppliers extends Summary_report
 		');
 	}
 
-	protected function _from()	//TODO: hungarian notation
+	protected function _from(): void	//TODO: hungarian notation
 	{
 		parent::_from();	//TODO: hungarian notation
 
@@ -38,7 +38,7 @@ class Summary_suppliers extends Summary_report
 		$builder->join('people AS supplier_p', 'items.supplier_id = supplier_p.person_id');
 	}
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-	protected function _group_order()	//TODO: hungarian notation
+	protected function _group_order(): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('items.supplier_id');
 		$builder->orderBy('MAX(CONCAT(supplier_c.company_name, " (", supplier_p.first_name, " ", supplier_p.last_name, ")"))');

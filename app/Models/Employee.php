@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 
 /**
@@ -19,7 +20,7 @@ class Employee extends Person
 	}
 
 	/**
-	 *Determines if a given person_id is an employee
+	 * Determines if a given person_id is an employee
 	 */
 	public function exists(int $person_id): bool
 	{
@@ -53,7 +54,7 @@ class Employee extends Person
 	/**
 	 * Returns all the employees
 	 */
-	public function get_all(int $limit = 10000, int $offset = 0)
+	public function get_all(int $limit = 10000, int $offset = 0): ResultInterface
 	{
 		$builder = $this->db->table('employees');
 		$builder->where('deleted', 0);
@@ -98,7 +99,7 @@ class Employee extends Person
 	/**
 	 * Gets information about multiple employees
 	 */
-	public function get_multiple_info(array $person_ids)
+	public function get_multiple_info(array $person_ids): ResultInterface
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');
@@ -314,7 +315,7 @@ class Employee extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
@@ -322,7 +323,7 @@ class Employee extends Person
 	/**
 	 * Performs a search on employees
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('employees AS employees');
 
@@ -394,7 +395,7 @@ class Employee extends Person
 	/**
 	 * Logs out a user by destroying all session data and redirect to login
 	 */
-	public function logout()
+	public function logout(): void
 	{
 		$this->session->sess_destroy();
 

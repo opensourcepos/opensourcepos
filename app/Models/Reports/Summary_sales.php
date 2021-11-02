@@ -18,7 +18,7 @@ class Summary_sales extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs)	//TODO: hungarian notation
+	protected function _select(array $inputs): void	//TODO: hungarian notation
 	{
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		parent::_select($inputs);	//TODO: hungarian notation
@@ -30,7 +30,7 @@ class Summary_sales extends Summary_report
 		');
 	}
 
-	protected function _group_order()	//TODO: hungarian notation
+	protected function _group_order(): void	//TODO: hungarian notation
 	{
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->groupBy('sale_date');

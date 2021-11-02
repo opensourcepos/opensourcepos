@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use stdClass;
 
@@ -199,7 +200,7 @@ class Tax extends Model
 	/**
 	 * Gets tax_codes
 	 */
-	public function get_found_rows(string $search)
+	public function get_found_rows(string $search): ResultInterface
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -207,7 +208,7 @@ class Tax extends Model
 	/**
 	 * Performs a search on tax_rates
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('tax_rates');
 
@@ -276,7 +277,7 @@ class Tax extends Model
 		return $builder->get()->getRow()->tax_category;
 	}
 
-	public function get_all_tax_categories()
+	public function get_all_tax_categories(): ResultInterface
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->orderBy('tax_category_id');
@@ -284,7 +285,7 @@ class Tax extends Model
 		return $builder->get();
 	}
 
-	public function get_tax_category_id(string $tax_category): int
+	public function get_tax_category_id(string $tax_category): int	//TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->select('tax_category_id');

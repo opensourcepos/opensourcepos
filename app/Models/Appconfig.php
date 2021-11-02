@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -17,7 +18,7 @@ class Appconfig extends Model
 		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
-	public function get_all()
+	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('app_config');
 		$builder->orderBy('key', 'asc');
@@ -26,7 +27,7 @@ class Appconfig extends Model
 	}
 
 	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function get(string $key, string $default = '')
+	public function get(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere('key', $key, 1);

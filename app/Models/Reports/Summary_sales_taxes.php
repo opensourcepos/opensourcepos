@@ -15,7 +15,7 @@ class Summary_sales_taxes extends Summary_report
 		];
 	}
 
-	protected function _where(array $inputs)	//TODO: hungarian notation
+	protected function _where(array $inputs): void	//TODO: hungarian notation
 	{
 		$builder->where('sales.sale_status', COMPLETED);	//TODO: This no longer works... likely need to pass $this->builder by reference
 

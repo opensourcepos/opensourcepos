@@ -42,7 +42,7 @@ abstract class Token Extends Model
 		];
 	}
 
-	abstract public function token_id();
+	abstract public function token_id(): string;
 
 	abstract public function get_value();
 
@@ -57,6 +57,7 @@ abstract class Token Extends Model
 		{
 			return str_replace($this->token_id(), $this->get_value(), $text);
 		}
+
 		return $text;
 	}
 }

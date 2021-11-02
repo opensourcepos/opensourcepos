@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -53,7 +54,7 @@ class Customer_rewards extends Model
 		return $builder->get()->getRow()->points_percent;
 	}
 
-	public function get_all()
+	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('deleted', 0);

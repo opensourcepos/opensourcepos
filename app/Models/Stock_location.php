@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 
 /**
@@ -28,7 +29,7 @@ class Stock_location extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	public function get_all()
+	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('deleted', 0);
@@ -36,7 +37,7 @@ class Stock_location extends Model
 		return $builder->get();
 	}
 
-	public function get_undeleted_all(string $module_id = 'items')
+	public function get_undeleted_all(string $module_id = 'items'): ResultInterface
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
@@ -171,7 +172,7 @@ class Stock_location extends Model
 		return $builder->update($location_data_to_save);
 	}
 
-	private function _insert_new_permission(string $module, int $location_id, string $location_name)	//TODO: refactor out hungarian notation
+	private function _insert_new_permission(string $module, int $location_id, string $location_name): void	//TODO: refactor out hungarian notation
 	{
 		// insert new permission for stock location
 		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);	//TODO: String interpolation
