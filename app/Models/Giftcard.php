@@ -24,9 +24,9 @@ class Giftcard extends Model
 	}
 
 	/**
-	 * Gets max gift card number
+	 * Gets max gift card number	//TODO: This isn't entirely accurate.  It returns the object and the results then pulls the giftcard_number.
 	 */
-	public function get_max_number()
+	public function get_max_number(): object
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
@@ -51,7 +51,7 @@ class Giftcard extends Model
 	/**
 	 * Gets information about a particular giftcard
 	 */
-	public function get_info(int $giftcard_id)
+	public function get_info(int $giftcard_id): object
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->join('people', 'people.person_id = giftcards.person_id', 'left');

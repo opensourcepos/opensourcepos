@@ -46,7 +46,7 @@ class Tax extends Model
 	/**
 	 * Gets the row for a particular id
 	 */
-	public function get_info(int $tax_rate_id)
+	public function get_info(int $tax_rate_id): object
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->select('tax_rate_id');
@@ -115,7 +115,7 @@ class Tax extends Model
 	/**
 	 * Gets information about a particular tax_code
 	 */
-	public function get_rate_info(int $tax_code_id, int $tax_category_id)
+	public function get_rate_info(int $tax_code_id, int $tax_category_id): object
 	{
 		$builder = $this->db->table('tax_rates');
 		$builder->join('tax_categories', 'rate_tax_category_id = tax_category_id');

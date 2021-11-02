@@ -1,10 +1,9 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * PDF helper
  */
-
-function create_pdf($html, $filename = '')
+function create_pdf(string $html, string $filename = ''): string
 {
     // need to enable magic quotes for the
     $dompdf = new Dompdf\Dompdf (["isRemoteEnabled" => TRUE, "isPhpEnabled" => TRUE]);
@@ -15,7 +14,7 @@ function create_pdf($html, $filename = '')
     {
         $dompdf->stream($filename . '.pdf');
     }
-    else
+    else//TODO: Not all paths return a value.
     {
         return $dompdf->output();
     }

@@ -100,7 +100,7 @@ class Attribute extends Model
 	/*
 	 Gets information about a particular attribute definition
 	 */
-	public function get_info(int $definition_id)
+	public function get_info(int $definition_id): object
 	{
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');

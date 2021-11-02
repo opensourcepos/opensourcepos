@@ -269,7 +269,7 @@ class Item extends Model
 	/**
 	 * Gets information about a particular item
 	 */
-	public function get_info(int $item_id)
+	public function get_info(int $item_id): object
 	{
 		$builder = $this->db->table('items');
 		$builder->select('items.*');

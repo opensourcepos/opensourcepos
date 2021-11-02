@@ -72,7 +72,7 @@ class Customer extends Person
 	/**
 	 * Gets information about a particular customer
 	 */
-	public function get_info(int $person_id)
+	public function get_info(int $person_id): object
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
@@ -391,7 +391,7 @@ class Customer extends Person
 	/**
 	 * Performs a search on customers
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
 	{
 		$builder = $this->db->table('customers AS customers');
 

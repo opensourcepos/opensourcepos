@@ -135,7 +135,7 @@ class Cashup extends Model
 	/**
 	* Gets information about a particular cashup
 	*/
-	public function get_info(int $cashup_id)
+	public function get_info(int $cashup_id): object
 	{
 		$builder = $this->db->table('cash_up AS cash_up');
 		$builder->select('

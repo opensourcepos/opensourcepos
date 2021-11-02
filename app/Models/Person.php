@@ -62,7 +62,7 @@ class Person extends Model
 	 *
 	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says array
 	 */
-	public function get_info(int $person_id)
+	public function get_info(int $person_id): object
 	{
 		$builder = $this->db->table('people');
 		$query = $builder->getWhere(['person_id' => $person_id], 1);

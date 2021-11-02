@@ -40,7 +40,7 @@ class Tax_code extends Model
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info(int $tax_code_id)
+	public function get_info(int $tax_code_id): object
 	{
 		$builder = $this->db->table('tax_codes');
 

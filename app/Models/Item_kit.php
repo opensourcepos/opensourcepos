@@ -83,7 +83,7 @@ class Item_kit extends Model
 	/**
 	 * Gets information about a particular item kit
 	 */
-	public function get_info(int $item_kit_id)
+	public function get_info(int $item_kit_id): object
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->select('

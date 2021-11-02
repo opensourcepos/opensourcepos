@@ -173,7 +173,7 @@ class Expense extends Model
 	/**
 	 * Gets information about a particular expense
 	 */
-	public function get_info(int $expense_id)
+	public function get_info(int $expense_id): object
 	{
 		$builder = $this->db->table('expenses AS expenses');
 		$builder->select('

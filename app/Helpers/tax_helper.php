@@ -1,12 +1,12 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * Tax Configuration tabular helpers
  */
 
-/*
-Get the header for the taxes tabular view
-*/
+/**
+ * Get the header for the taxes tabular view
+ */
 function get_tax_code_table_headers()
 {
 	$CI =& get_instance();

@@ -69,7 +69,7 @@ class Employee extends Person
 	/**
 	 * Gets information about a particular employee
 	 */
-	public function get_info(int $person_id)
+	public function get_info(int $person_id): object
 	{
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'people.person_id = employees.person_id');

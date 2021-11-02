@@ -36,7 +36,7 @@ class Expense_category extends Model
 	/**
 	 * Gets information about a particular category
 	 */
-	public function get_info(int $expense_category_id)
+	public function get_info(int $expense_category_id): object
 	{
 		$builder = $this->db->table('expense_categories');
 		$builder->where('expense_category_id', $expense_category_id);

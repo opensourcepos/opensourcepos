@@ -1,13 +1,16 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+use app\Models\Appconfig;
+use CodeIgniter\Database\ResultInterface;
 
 /**
  * Tabular views helper
  */
 
-/*
-Basic tabular headers function
-*/
-function transform_headers_readonly($array)
+/**
+ * Basic tabular headers function
+ */
+function transform_headers_readonly(array $array): string	//TODO: $array needs to be refactored to a new name.  Perhaps $headers?
 {
 	$result = [];
 
@@ -19,10 +22,10 @@ function transform_headers_readonly($array)
 	return json_encode($result);
 }
 
-/*
-Basic tabular headers function
-*/
-function transform_headers($array, $readonly = FALSE, $editable = TRUE)
+/**
+ * Basic tabular headers function
+ */
+function transform_headers(array $array, bool $readonly = FALSE, bool $editable = TRUE): string	//TODO: $array needs to be refactored to a new name.  Perhaps $headers?
 {
 	$result = [];
 
@@ -36,7 +39,7 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 		$array[] = ['edit' => ''];
 	}
 
-	foreach($array as $element)
+	foreach($array as $element)	//TODO: This might be clearer to refactor this to `foreach($headers as $header)`
 	{
 		reset($element);
 		$result[] = [
@@ -54,13 +57,13 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 }
 
 
-/*
-Get the header for the sales tabular view
-*/
-function get_sales_manage_table_headers()
+/**
+ * Get the header for the sales tabular view
+ *
+ * @property appconfig $appconfig
+ */
+function get_sales_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['sale_id' => lang('Common.id')],
 		['sale_time' => lang('Sales.sale_time')],
@@ -71,7 +74,9 @@ function get_sales_manage_table_headers()
 		['payment_type' => lang('Sales.payment_type')]
 	];
 
-	if($CI->config->get('invoice_enable') == TRUE)
+	$appconfig = model('Appconfig');
+
+	if($appconfig->get('invoice_enable') == TRUE)
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
 		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE];
@@ -82,14 +87,15 @@ function get_sales_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the sales
-*/
-function get_sale_data_row($sale)
+/**
+ * Get the html data row for the sales
+ *
+ * @property appconfig $appconfig
+ */
+function get_sale_data_row(object $sale): array
 {
-	$CI =& get_instance();
-
-	$controller_name = $CI->uri->segment(1);
+	$uri = current_url(true);
+	$controller_name = $uri->getSegment(1);
 
 	$row = [
 		'sale_id' => $sale->sale_id,
@@ -101,7 +107,9 @@ function get_sale_data_row($sale)
 		'payment_type' => $sale->payment_type
 	];
 
-	if($CI->config->get('invoice_enable'))
+	$appconfig = model('Appconfig');
+
+	if($appconfig->get('invoice_enable'))
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number)
@@ -113,7 +121,9 @@ function get_sale_data_row($sale)
 			);
 	}
 
-	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
+	$row['receipt'] = anchor(
+		$controller_name."/receipt/$sale->sale_id",
+		'<span class="glyphicon glyphicon-usd"></span>',
 		['title' => lang('Sales.show_receipt')]
 	);
 	$row['edit'] = anchor(
@@ -130,18 +140,16 @@ function get_sale_data_row($sale)
 	return $row;
 }
 
-/*
-Get the html data last row for the sales
-*/
-function get_sale_data_last_row($sales)
+/**
+ * Get the html data last row for the sales
+ */
+function get_sale_data_last_row(ResultInterface $sales): array
 {
-	$CI =& get_instance();
-
 	$sum_amount_due = 0;
 	$sum_amount_tendered = 0;
 	$sum_change_due = 0;
 
-	foreach($sales->getResult() as $key=>$sale)
+	foreach($sales->getResult() as $key => $sale)
 	{
 		$sum_amount_due += $sale->amount_due;
 		$sum_amount_tendered += $sale->amount_tendered;
@@ -157,36 +165,32 @@ function get_sale_data_last_row($sales)
 	];
 }
 
-/*
-Get the sales payments summary
-*/
-function get_sales_manage_payments_summary($payments)
+/**
+ * Get the sales payments summary
+ */
+function get_sales_manage_payments_summary(array $payments): string
 {
-	$CI =& get_instance();
-
 	$table = '<div id="report_summary">';
 	$total = 0;
 
-	foreach($payments as $key=>$payment)
+	foreach($payments as $key => $payment)
 	{
 		$amount = $payment['payment_amount'];
 		$total = bcadd($total, $amount);
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
+
 	$table .= '<div class="summary_row">' . lang('Sales.total') . ': ' . to_currency($total) . '</div>';
 	$table .= '</div>';
 
 	return $table;
 }
 
-
-/*
-Get the header for the people tabular view
-*/
-function get_people_manage_table_headers()
+/**
+ * Get the header for the people tabular view
+ */
+function get_people_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['people.person_id' => lang('Common.id')],
 		['last_name' => lang('Common.last_name')],
@@ -195,7 +199,7 @@ function get_people_manage_table_headers()
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
+	if($employee->has_grant('messages', $session->get('person_id')))
 	{
 		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}

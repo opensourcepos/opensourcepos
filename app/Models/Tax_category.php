@@ -37,7 +37,7 @@ class Tax_category extends Model
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info(int $tax_category_id)
+	public function get_info(int $tax_category_id): object
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->where('tax_category_id', $tax_category_id);

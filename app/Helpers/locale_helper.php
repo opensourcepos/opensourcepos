@@ -1,6 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-const DEFAULT_LANGUAGE = 'english';
+const DEFAULT_LANGUAGE = 'english';	//TODO: These constants all need to be moved to constants.php
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
 define('NOW', time());
@@ -12,13 +12,12 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 /**
  * Currency locale helper
  */
-
-function current_language_code($load_system_language = FALSE): string
+function current_language_code(bool $load_system_language = FALSE): string
 {
 	$employee = get_instance()->Employee;
 
 	// Returns the language code of the employee if set or system language code if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)
+	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
 
@@ -33,12 +32,12 @@ function current_language_code($load_system_language = FALSE): string
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
-function current_language($load_system_language = FALSE): string
+function current_language(bool $load_system_language = FALSE): string
 {
 	$employee = get_instance()->Employee;
 
 	// Returns the language of the employee if set or system language if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)
+	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
 		if(property_exists($employee_info, 'language') && !empty($employee_info->language))
@@ -97,10 +96,10 @@ function get_languages(): array
 		'vi:vietnamese' => 'Vietnamese',
 		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
 		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
-	);
+	];
 }
 
-function load_language($load_system_language = FALSE, array $lang_array)
+function load_language(bool $load_system_language = FALSE, array $lang_array): void	//TODO: The optional parameter needs to be placed after all mandatory ones.
 {
 	$lang = get_instance()->lang;
 
@@ -215,7 +214,7 @@ function get_timezones(): array
 		'Pacific/Chatham' => '(GMT+12:45) Chatham Islands',
 		'Pacific/Tongatapu' => '(GMT+13:00) Nuku\'alofa',
 		'Pacific/Kiritimati' => '(GMT+14:00) Kiritimati'
-	);
+	];
 }
 
 function get_dateformats(): array
@@ -228,7 +227,7 @@ function get_dateformats(): array
 		'd/m/y' => 'dd/mm/yy',
 		'm/d/y' => 'mm/dd/yy',
 		'y/m/d' => 'yy/mm/dd'
-	);
+	];
 }
 
 function get_timeformats(): array
@@ -237,46 +236,45 @@ function get_timeformats(): array
 		'H:i:s' => 'hh:mm:ss (24h)',
 		'h:i:s a' => 'hh:mm:ss am/pm',
 		'h:i:s A' => 'hh:mm:ss AM/PM'
-	);
+	];
 }
 
 
-/*
- Gets the payment options
+/**
+ * Gets the payment options
  */
 function get_payment_options(): array
 {
-	$config = get_instance()->config;
-	$lang = get_instance()->lang;
+	$appconfig = model('Appconfig');
 
 	$payments = [];
 
-
-	if($config->get('payment_options_order') == 'debitcreditcash')
+//TODO: This needs to be switched to a switch statement
+	if($appconfig->get('payment_options_order') == 'debitcreditcash')	//TODO: ===
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($config->get('payment_options_order') == 'debitcashcredit')
+	elseif($appconfig->get('payment_options_order') == 'debitcashcredit')	//TODO: ===
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 	}
-	elseif($config->get('payment_options_order') == 'creditdebitcash')
+	elseif($appconfig->get('payment_options_order') == 'creditdebitcash')	//TODO: ===
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($config->get('payment_options_order') == 'creditcashdebit')
+	elseif($appconfig->get('payment_options_order') == 'creditcashdebit')	//TODO: ===
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 	}
-	else // default: if($config->get('payment_options_order') == 'cashdebitcredit')
+	else // default: if($appconfig->get('payment_options_order') == 'cashdebitcredit')
 	{
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
@@ -297,71 +295,71 @@ function get_payment_options(): array
 
 function currency_side(): bool
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	$fmt = new \NumberFormatter($config->get('number_locale'), \NumberFormatter::CURRENCY);
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->get('currency_symbol'));
+	$fmt = new \NumberFormatter($appconfig->get('number_locale'), \NumberFormatter::CURRENCY);
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $appconfig->get('currency_symbol'));
 
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
 
 function quantity_decimals(): int
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return $config->get('quantity_decimals') ? $config->get('quantity_decimals') : 0;
+	return $appconfig->get('quantity_decimals') ? $appconfig->get('quantity_decimals') : 0;
 }
 
 function totals_decimals(): int
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return $config->get('currency_decimals') ? (int)$config->get('currency_decimals') : 0;
+	return $appconfig->get('currency_decimals') ? (int)$appconfig->get('currency_decimals') : 0;
 }
 
 function cash_decimals(): int
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return $config->get('cash_decimals') ? $config->get('cash_decimals') : 0;
+	return $appconfig->get('cash_decimals') ? $appconfig->get('cash_decimals') : 0;
 }
 
 function tax_decimals(): int
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return $config->get('tax_decimals') ? $config->get('tax_decimals') : 0;
+	return $appconfig->get('tax_decimals') ? $appconfig->get('tax_decimals') : 0;
 }
 
-function to_date($date = DEFAULT_DATE)
+function to_date(int $date = DEFAULT_DATE): string
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return date($config->get('dateformat'), $date);
+	return date($appconfig->get('dateformat'), $date);
 }
 
-function to_datetime($datetime = DEFAULT_DATETIME)
+function to_datetime(int $datetime = DEFAULT_DATETIME): string
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	return date($config->get('dateformat') . ' ' . $config->get('timeformat'), $datetime);
+	return date($appconfig->get('dateformat') . ' ' . $appconfig->get('timeformat'), $datetime);
 }
 
-function to_currency($number)
+function to_currency(float $number): string
 {
 	return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
 }
 
-function to_currency_no_money($number)
+function to_currency_no_money(float $number): string
 {
 	return to_decimals($number, 'currency_decimals');
 }
 
-function to_currency_tax($number)
+function to_currency_tax(float $number): string
 {
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
-	if($config->get('tax_included') == '1')
+	if($appconfig->get('tax_included') == '1')
 	{
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 	}
@@ -371,7 +369,7 @@ function to_currency_tax($number)
 	}
 }
 
-function to_tax_decimals($number)
+function to_tax_decimals(float $number): string
 {
 	// taxes that are NULL, '' or 0 don't need to be displayed
 	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
@@ -383,12 +381,12 @@ function to_tax_decimals($number)
 	return to_decimals($number, 'tax_decimals');
 }
 
-function to_quantity_decimals($number)
+function to_quantity_decimals(float $number): string
 {
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL): string
+function to_decimals(float $number, string $decimals = NULL, int $type = \NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -397,31 +395,31 @@ function to_decimals($number, $decimals = NULL, $type=\NumberFormatter::DECIMAL)
 		return $number;
 	}
 
-	$config = get_instance()->config;
-	$fmt = new \NumberFormatter($config->get('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->get($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config->get($decimals));
+	$appconfig = model('Appconfig');
+	$fmt = new \NumberFormatter($appconfig->get('number_locale'), $type);
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $appconfig->get($decimals));
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $appconfig->get($decimals));
 
-	if(empty($config->get('thousands_separator')))
+	if(empty($appconfig->get('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->get('currency_symbol'));
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $appconfig->get('currency_symbol'));
 
 	return $fmt->format($number);
 }
 
-function parse_quantity($number)
+function parse_quantity(string $number): float
 {
 	return parse_decimals($number, quantity_decimals());
 }
 
-function parse_tax($number)
+function parse_tax(string $number): float
 {
 	return parse_decimals($number, tax_decimals());
 }
 
-function parse_decimals($number, $decimals = NULL)
+function parse_decimals(string $number, int $decimals = NULL): float
 {
 	// ignore empty strings and return
 	if(empty($number))
@@ -439,16 +437,16 @@ function parse_decimals($number, $decimals = NULL)
 		return FALSE;
 	}
 
-	$config = get_instance()->config;
+	$appconfig = model('Appconfig');
 
 	if($decimals === NULL)
 	{
-		$decimals = $config->get('currency_decimals');
+		$decimals = $appconfig->get('currency_decimals');
 	}
 
-	$fmt = new \NumberFormatter($config->get('number_locale'), \NumberFormatter::DECIMAL);
+	$fmt = new \NumberFormatter($appconfig->get('number_locale'), \NumberFormatter::DECIMAL);
 
-	if(empty($config->get('thousands_separator')))
+	if(empty($appconfig->get('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
@@ -463,11 +461,10 @@ function parse_decimals($number, $decimals = NULL)
 	}
 }
 
-/*
+/**
  * Time locale conversion utility
  */
-
-function dateformat_momentjs($php_format): string
+function dateformat_momentjs(string $php_format): string
 {
 	$SYMBOLS_MATCHING = [
 		'd' => 'DD',
@@ -507,15 +504,15 @@ function dateformat_momentjs($php_format): string
 		'c' => '', // no equivalent
 		'r' => '', // no equivalent
 		'U' => 'X'
-	);
+	];
 
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
 function dateformat_mysql(): string
 {
-	$config = get_instance()->config;
-	$php_format = $config->get('dateformat');
+	$appconfig = model('Appconfig');
+	$php_format = $appconfig->get('dateformat');
 
 	$SYMBOLS_MATCHING = [
 		// Day
@@ -551,12 +548,12 @@ function dateformat_mysql(): string
 		'i' => '%i',
 		's' => '%S',
 		'u' => '%f'
-	);
+	];
 
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-function dateformat_bootstrap($php_format): string
+function dateformat_bootstrap(string $php_format): string
 {
 	$SYMBOLS_MATCHING = [
 		// Day
@@ -592,20 +589,19 @@ function dateformat_bootstrap($php_format): string
 		'i' => 'ii',
 		's' => 'ss',
 		'u' => ''
-	);
+	];
 
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-function valid_date($date)
+function valid_date(string $date): bool	//TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
-	$config = get_instance()->Appconfig;
-	return (DateTime::createFromFormat($config->get('dateformat'), $date));
+	$appconfig = model('Appconfig');
+	return (DateTime::createFromFormat($appconfig->get('dateformat'), $date));
 }
 
-function valid_decimal($decimal): bool
+function valid_decimal(string $decimal): bool	//TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
 {
 	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
-
 ?>

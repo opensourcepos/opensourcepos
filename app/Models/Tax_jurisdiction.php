@@ -34,10 +34,10 @@ class Tax_jurisdiction extends Model
 		return $builder->countAllResults();
 	}
 
-	/**
+	/***
 	 * Gets information about the particular record
 	 */
-	public function get_info(int $jurisdiction_id)
+	public function get_info(int $jurisdiction_id): object
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);
