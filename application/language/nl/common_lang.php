@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_admin"] = "";
@@ -33,7 +32,7 @@ $lang["common_gender"] = "Geslacht";
 $lang["common_gender_female"] = "V";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "Icoon";
+$lang["common_icon"] = "Pictogram";
 $lang["common_id"] = "ID";
 $lang["common_import"] = "Importeren";
 $lang["common_import_change_file"] = "Wijzigen";
