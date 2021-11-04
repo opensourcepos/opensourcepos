@@ -1,13 +1,17 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_database_optimizations extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_database_optimizations extends Migration
 {
 	public function __construct()
 	{
 		parent::__construct();
 	}
 
-	public function up()
+	public function up(): void
 	{
 		error_log('Migrating database_optimizations');
 		$CI =& get_instance();
@@ -116,7 +120,7 @@ class Migration_database_optimizations extends CI_Migration
 		}
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 }

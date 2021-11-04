@@ -787,10 +787,11 @@ class Sale extends Model
 	 */
 	public function save_sales_tax(int $sale_id, array $sales_taxes): void	//TODO: should we return the result of the insert here as a bool?
 	{
+		$builder = $this->db->table('sales_taxes');
+
 		foreach($sales_taxes as $line => $sales_tax)
 		{
 			$sales_tax['sale_id'] = $sale_id;
-			$builder = $this->db->table('sales_taxes');
 			$builder->insert($sales_tax);
 		}
 	}

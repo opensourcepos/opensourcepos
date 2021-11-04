@@ -9,7 +9,7 @@ class {class} extends Migration
 <?php if ($session): ?>
 	protected $DBGroup = '<?= $DBGroup ?>';
 
-	public function up()
+	public function up(): void
 	{
 		$this->forge->addField([
 			'id'         => ['type' => 'VARCHAR', 'constraint' => 128, 'null' => false],
@@ -26,17 +26,17 @@ class {class} extends Migration
 		$this->forge->createTable('<?= $table ?>', true);
 	}
 
-	public function down()
+	public function down(): void
 	{
 		$this->forge->dropTable('<?= $table ?>', true);
 	}
 <?php else: ?>
-	public function up()
+	public function up(): void
 	{
 		//
 	}
 
-	public function down()
+	public function down(): void
 	{
 		//
 	}

@@ -1,18 +1,16 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_RefundTracking extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_RefundTracking extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function up()
+	public function up(): void
 	{
 		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_refundtracking.sql');
 
 		// Add missing cash_refund amounts to payments table
-
 		$decimals = totals_decimals();
 
 		$trans_amount = 'ROUND(SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
@@ -65,7 +63,6 @@ class Migration_RefundTracking extends CI_Migration
 		// You may be asking yourself why the following is not creating a temporary table.
 		// It should be, it originallly was, but there is a bug in MySQL where temporary tables where some SQL statements fail.
 		//  The update statement that follows this CREATE TABLE is one of those statements.
-
 		$this->db->query('CREATE TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_refund') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
@@ -102,7 +99,7 @@ class Migration_RefundTracking extends CI_Migration
 		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('migrate_refund'));
 	}
 
-	public function down()
+	public function down(): void
 	{
 
 	}

@@ -1,13 +1,17 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Migration_remove_duplicate_links extends CI_Migration
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class Migration_remove_duplicate_links extends Migration
 {
 	public function __construct()
 	{
 		parent::__construct();
 	}
 
-	public function up()
+	public function up(): void
 	{
 		error_log('Migrating remove_duplicate_links');
 
@@ -49,7 +53,7 @@ class Migration_remove_duplicate_links extends CI_Migration
 		$this->db->transComplete();
 	}
 
-	public function down()
+	public function down(): void
 	{
 	}
 }

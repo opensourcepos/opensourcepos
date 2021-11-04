@@ -1,13 +1,17 @@
 <?php
 
-class Migration_move_expenses_categories extends CI_Migration {
+namespace App\Database\Migrations;
 
+use CodeIgniter\Database\Migration;
+
+class Migration_move_expenses_categories extends Migration
+{
 	public function __construct()
 	{
 		parent::__construct();
 	}
 
-	public function up()
+	public function up(): void
 	{
 		error_log('Migrating expense categories module');
 

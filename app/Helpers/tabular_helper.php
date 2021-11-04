@@ -1,7 +1,12 @@
 <?php
 
 use app\Models\Appconfig;
+use app\Models\Employee;
+use app\Models\Item_taxes;
+use app\Models\Tax_category;
+
 use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\Session\Session;
 
 /**
  * Tabular views helper
@@ -55,7 +60,6 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 
 	return json_encode($result);
 }
-
 
 /**
  * Get the header for the sales tabular view
@@ -188,6 +192,9 @@ function get_sales_manage_payments_summary(array $payments): string
 
 /**
  * Get the header for the people tabular view
+ *
+ * @property employee $employee
+ * @property session $session
  */
 function get_people_manage_table_headers(): string
 {
@@ -199,6 +206,9 @@ function get_people_manage_table_headers(): string
 		['phone_number' => lang('Common.phone_number')]
 	];
 
+	$employee = model('Employee');
+	$session = session();
+
 	if($employee->has_grant('messages', $session->get('person_id')))
 	{
 		$headers[] = ['messages' => '', 'sortable' => FALSE];
@@ -207,13 +217,13 @@ function get_people_manage_table_headers(): string
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the person
-*/
-function get_person_data_row($person)
+/**
+ * Get the html data row for the person
+ */
+function get_person_data_row(object $person): array
 {
-	$CI =& get_instance();
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'people.person_id' => $person->person_id,
@@ -233,25 +243,25 @@ function get_person_data_row($person)
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$person->person_id",
+			$controller_name."/view/$person->person_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 					'class'=>'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
-					'title'=>lang($controller_name . '.update')
+					'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
-
-/*
-Get the header for the customer tabular view
-*/
-function get_customer_manage_table_headers()
+/**
+ * Get the header for the customer tabular view
+ *
+ * @property employee $employee
+ * @property session $session
+ */
+function get_customer_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['people.person_id' => lang('Common.id')],
 		['last_name' => lang('Common.last_name')],
@@ -261,7 +271,10 @@ function get_customer_manage_table_headers()
 		['total' => lang('Common.total_spent'), 'sortable' => FALSE]
 	];
 
-	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
+	$employee = model('Employee');
+	$session = session();
+
+	if($employee->has_grant('messages', $session->get('person_id')))
 	{
 		$headers[] = ['messages' => '', 'sortable' => FALSE];
 	}
@@ -269,14 +282,13 @@ function get_customer_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the customer
-*/
-function get_customer_data_row($person, $stats)
+/**
+ * Get the html data row for the customer
+ */
+function get_customer_data_row(object $person, object $stats): array
 {
-	$CI =& get_instance();
-
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'people.person_id' => $person->person_id,
@@ -288,7 +300,7 @@ function get_customer_data_row($person, $stats)
 		'messages' => empty($person->phone_number)
 			? ''
 			: anchor(
-				"Messages/view/$person->person_id",
+				"Messages/view/$person->person_id",	//TODO: String interpolation
 				'<span class="glyphicon glyphicon-phone"></span>',
 				[
 					'class'=>'modal-dlg',
@@ -297,25 +309,25 @@ function get_customer_data_row($person, $stats)
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$person->person_id",
+			$controller_name."/view/$person->person_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
-
-/*
-Get the header for the suppliers tabular view
-*/
-function get_suppliers_manage_table_headers()
+/**
+ * Get the header for the suppliers tabular view
+ *
+ * @property employee $employee
+ * @property session $session
+ */
+function get_suppliers_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['people.person_id' => lang('Common.id')],
 		['company_name' => lang('Suppliers.company_name')],
@@ -327,7 +339,10 @@ function get_suppliers_manage_table_headers()
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	if($CI->employee->has_grant('messages', $CI->session->get('person_id')))
+	$employee = model('Employee');
+	$session = session();
+
+	if($employee->has_grant('messages', $session->get('person_id')))
 	{
 		$headers[] = ['messages' => ''];
 	}
@@ -335,14 +350,13 @@ function get_suppliers_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the supplier
-*/
-function get_supplier_data_row($supplier)
+/**
+ * Get the html data row for the supplier
+ */
+function get_supplier_data_row(object $supplier): array
 {
-	$CI =& get_instance();
-
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'people.person_id' => $supplier->person_id,
@@ -365,25 +379,27 @@ function get_supplier_data_row($supplier)
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$supplier->person_id",
+			$controller_name."/view/$supplier->person_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>"modal-dlg",
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
-
 /**
-* Get the header for the items tabular view
-*/
-function get_items_manage_table_headers()
+ * Get the header for the items tabular view
+ *
+ * @property attribute $attribute
+ * @property appconfig $appconfig
+ */
+function get_items_manage_table_headers(): string
 {
 	$attribute = model('Attribute');
-	$config = model('Appconfig');
+	$appconfig = model('Appconfig');
 
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
@@ -398,7 +414,7 @@ function get_items_manage_table_headers()
 		['quantity' => lang('Items.quantity')]
 	];
 
-	if($config->get('use_destination_based_tax') == '1')
+	if($appconfig->get('use_destination_based_tax') == '1')	//TODO: convert '1' to a constant in constants.php. Also, convert this to ternary notation.
 	{
 		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
 	}
@@ -421,19 +437,24 @@ function get_items_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the item
-*/
-function get_item_data_row($item)
+/**
+ * Get the html data row for the item
+ *
+ * @property attribute $attribute
+ * @property appconfig $appconfig
+ * @property item_taxes $item_taxes
+ * @property tax_category $tax_category
+ */
+function get_item_data_row(object $item): array
 {
 	$attribute = model('Attribute');
-	$config = model('Appconfig');
+	$appconfig = model('Appconfig');
 	$item_taxes = model('Item_taxes');
 	$tax_category = model('Tax_category');
 
-	if($config->get('use_destination_based_tax') == '1')
+	if($appconfig->get('use_destination_based_tax') == '1')	//TODO: === ?
 	{
-		if($item->tax_category_id == NULL)
+		if($item->tax_category_id == NULL)	//TODO: === ?
 		{
 			$tax_percents = '-';
 		}
@@ -451,7 +472,7 @@ function get_item_data_row($item)
 		{
 			$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
 		}
-		// remove ', ' from last item
+		// remove ', ' from last item	//TODO: if this won't be added back into the code then it should be deleted.
 		$tax_percents = substr($tax_percents, 0, -2);
 		$tax_percents = !$tax_percents ? '-' : $tax_percents;
 	}
@@ -460,10 +481,10 @@ function get_item_data_row($item)
 	$controller_name = strtolower($router->controllerName());
 
 	$image = NULL;
-	if($item->pic_filename != '')
+	if($item->pic_filename != '')	//TODO: !== ?
 	{
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
-		if($ext == '')
+		if($ext == '')	//TODO: Convert to ternary notation. Also === ?
 		{
 			// legacy
 			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
@@ -480,7 +501,7 @@ function get_item_data_row($item)
 		}
 	}
 
-	if($config->get('multi_pack_enabled') == '1')
+	if($appconfig->get('multi_pack_enabled') == '1')	//TODO: ===
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
@@ -502,29 +523,29 @@ function get_item_data_row($item)
 
 	$icons = [
 		'inventory' => anchor(
-			$controller_name."/inventory/$item->item_id",
+			$controller_name."/inventory/$item->item_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-pushpin"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang($controller_name . '.count')
+				'title' => lang($controller_name . '.count')	//TODO: String interpolation
 			]
 		),
 		'stock' => anchor(
-			$controller_name."/count_details/$item->item_id",
+			$controller_name."/count_details/$item->item_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-list-alt"></span>',
 			[
 				'class' => 'modal-dlg',
-				'title' => lang($controller_name . '.details_count')
+				'title' => lang($controller_name . '.details_count')	//TODO: String interpolation
 			]
 		),
 		'edit' => anchor(
-			$controller_name."/view/$item->item_id",
+			$controller_name."/view/$item->item_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang($controller_name . '.update')
+				'title' => lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
@@ -532,14 +553,11 @@ function get_item_data_row($item)
 	return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
 }
 
-
-/*
-Get the header for the giftcard tabular view
-*/
-function get_giftcards_manage_table_headers()
+/**
+ * Get the header for the giftcard tabular view
+ */
+function get_giftcards_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['giftcard_id' => lang('Common.id')],
 		['last_name' => lang('Common.last_name')],
@@ -551,14 +569,14 @@ function get_giftcards_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the giftcard
-*/
-function get_giftcard_data_row($giftcard)
+/**
+ * Get the html data row for the giftcard
+ */
+function get_giftcard_data_row(object $giftcard): array
 {
-	$CI =& get_instance();
 
-	$controller_name=strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'giftcard_id' => $giftcard->giftcard_id,
@@ -567,24 +585,22 @@ function get_giftcard_data_row($giftcard)
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor(
-			$controller_name."/view/$giftcard->giftcard_id",
+			$controller_name."/view/$giftcard->giftcard_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
-/*
-Get the header for the item kits tabular view
-*/
-function get_item_kits_manage_table_headers()
+/**
+ * Get the header for the item kits tabular view
+ */
+function get_item_kits_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['item_kit_id' => lang('Item_kits.kit')],
 		['item_kit_number' => lang('Item_kits.item_kit_number')],
@@ -597,14 +613,14 @@ function get_item_kits_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Get the html data row for the item kit
-*/
-function get_item_kit_data_row($item_kit)
+/**
+ * Get the html data row for the item kit
+ */
+function get_item_kit_data_row(object $item_kit): array
 {
-	$CI =& get_instance();
 
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'item_kit_id' => $item_kit->item_kit_id,
@@ -614,20 +630,22 @@ function get_item_kit_data_row($item_kit)
 		'total_cost_price' => to_currency($item_kit->total_cost_price),
 		'total_unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor(
-			$controller_name."/view/$item_kit->item_kit_id",
+			$controller_name."/view/$item_kit->item_kit_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
-function parse_attribute_values($columns, $row) {
+function parse_attribute_values(array $columns, array $row): array
+{
 	$attribute_values = [];
-	foreach($columns as $column) {
+	foreach($columns as $column)
+	{
 		if (array_key_exists($column, $row))
 		{
 			$attribute_value = explode('|', $row[$column]);
@@ -637,7 +655,7 @@ function parse_attribute_values($columns, $row) {
 	return $attribute_values;
 }
 
-function expand_attribute_values($definition_names, $row)
+function expand_attribute_values(array $definition_names, array $row): array
 {
 	$values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
 
@@ -664,10 +682,8 @@ function expand_attribute_values($definition_names, $row)
 	return $attribute_values;
 }
 
-function get_attribute_definition_manage_table_headers()
+function get_attribute_definition_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['definition_id' => lang('Attributes.definition_id')],
 		['definition_name' => lang('Attributes.definition_name')],
@@ -679,13 +695,13 @@ function get_attribute_definition_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_attribute_definition_data_row($attribute)
+function get_attribute_definition_data_row(object $attribute): array
 {
-	$CI =& get_instance();
 
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
-	if(count($attribute->definition_flags) == 0)
+	if(count($attribute->definition_flags) == 0)	//TODO: === ?
 	{
 		$definition_flags = lang('Common.none_selected_text');
 	}
@@ -716,13 +732,11 @@ function get_attribute_definition_data_row($attribute)
 	];
 }
 
-/*
-Get the header for the expense categories tabular view
-*/
-function get_expense_category_manage_table_headers()
+/**
+ * Get the header for the expense categories tabular view
+ */
+function get_expense_category_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['expense_category_id' => lang('Expenses_categories.category_id')],
 		['category_name' => lang('Expenses_categories.name')],
@@ -732,39 +746,36 @@ function get_expense_category_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Gets the html data row for the expenses category
-*/
-function get_expense_category_data_row($expense_category)
+/**
+ * Gets the html data row for the expenses category
+ */
+function get_expense_category_data_row(object $expense_category): array
 {
-	$CI =& get_instance();
-
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'expense_category_id' => $expense_category->expense_category_id,
 		'category_name' => $expense_category->category_name,
 		'category_description' => $expense_category->category_description,
 		'edit' => anchor(
-			$controller_name."/view/$expense_category->expense_category_id",
+			$controller_name."/view/$expense_category->expense_category_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
 		)
 	];
 }
 
 
-/*
-Get the header for the expenses tabular view
-*/
-function get_expenses_manage_table_headers()
+/**
+ * Get the header for the expenses tabular view
+ */
+function get_expenses_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['expense_id' => lang('Expenses.expense_id')],
 		['date' => lang('Expenses.date')],
@@ -781,14 +792,13 @@ function get_expenses_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Gets the html data row for the expenses
-*/
-function get_expenses_data_row($expense)
+/**
+ * Gets the html data row for the expenses
+ */
+function get_expenses_data_row(object $expense): array
 {
-	$CI =& get_instance();
-
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'expense_id' => $expense->expense_id,
@@ -813,18 +823,16 @@ function get_expenses_data_row($expense)
 	];
 }
 
-/*
-Get the html data last row for the expenses
-*/
-function get_expenses_data_last_row($expense)
+/**
+ * Get the html data last row for the expenses
+ */
+function get_expenses_data_last_row(object $expense): array
 {
-	$CI =& get_instance();
-
-	$table_data_rows = '';
+	$table_data_rows = '';	//TODO: This variable is never used
 	$sum_amount_expense = 0;
 	$sum_tax_amount_expense = 0;
 
-	foreach($expense->getResult() as $key=>$expense)
+	foreach($expense->getResult() as $key => $expense)
 	{
 		$sum_amount_expense += $expense->amount;
 		$sum_tax_amount_expense += $expense->tax_amount;
@@ -838,16 +846,14 @@ function get_expenses_data_last_row($expense)
 	];
 }
 
-/*
-Get the expenses payments summary
-*/
-function get_expenses_manage_payments_summary($payments, $expenses)
+/**
+ * Get the expenses payments summary
+ */
+function get_expenses_manage_payments_summary(array $payments, ResultInterface $expenses): string	//TODO: $expenses is passed but never used.
 {
-	$CI =& get_instance();
-
 	$table = '<div id="report_summary">';
 
-	foreach($payments as $key=>$payment)
+	foreach($payments as $key => $payment)
 	{
 		$amount = $payment['amount'];
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
@@ -859,18 +865,16 @@ function get_expenses_manage_payments_summary($payments, $expenses)
 }
 
 
-/*
-Get the header for the cashup tabular view
-*/
-function get_cashups_manage_table_headers()
+/**
+ * Get the header for the cashup tabular view
+ */
+function get_cashups_manage_table_headers(): string
 {
-	$CI =& get_instance();
-
 	$headers = [
 		['cashup_id' => lang('Cashups.id')],
 		['open_date' => lang('Cashups.opened_date')],
 		['open_employee_id' => lang('Cashups.open_employee')],
-	['open_amount_cash' => lang('Cashups.open_amount_cash')],
+		['open_amount_cash' => lang('Cashups.open_amount_cash')],
 		['transfer_amount_cash' => lang('Cashups.transfer_amount_cash')],
 		['close_date' => lang('Cashups.closed_date')],
 		['close_employee_id' => lang('Cashups.close_employee')],
@@ -885,14 +889,13 @@ function get_cashups_manage_table_headers()
 	return transform_headers($headers);
 }
 
-/*
-Gets the html data row for the cashups
-*/
-function get_cash_up_data_row($cash_up)
+/**
+ * Gets the html data row for the cashups
+ */
+function get_cash_up_data_row(object $cash_up): array
 {
-	$CI =& get_instance();
-
-	$controller_name = strtolower(get_class($CI));
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
 
 	return [
 		'cashup_id' => $cash_up->cashup_id,
