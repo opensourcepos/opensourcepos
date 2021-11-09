@@ -24,7 +24,7 @@ class Giftcards extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_giftcards_manage_table_headers());
+		$data['table_headers'] = get_giftcards_manage_table_headers();
 
 		echo view('giftcards/manage', $data);
 	}
@@ -46,7 +46,7 @@ class Giftcards extends Secure_Controller
 		$data_rows = [];
 		foreach($giftcards->getResult() as $giftcard)
 		{
-			$data_rows[] = $this->xss_clean(get_giftcard_data_row($giftcard));
+			$data_rows[] = get_giftcard_data_row($giftcard);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -58,21 +58,21 @@ class Giftcards extends Secure_Controller
 
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->giftcard->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getGet('term'), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->giftcard->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getPost('term'));
 
 		echo json_encode($suggestions);
 	}
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_giftcard_data_row($this->giftcard->get_info($row_id)));
+		$data_row = get_giftcard_data_row($this->giftcard->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -95,7 +95,7 @@ class Giftcards extends Secure_Controller
 		$data['giftcard_id'] = $giftcard_id;
 		$data['giftcard_value'] = $giftcard_info->value;
 
-		$data = $this->xss_clean($data);
+		$data = $data;
 
 		echo view("giftcards/form", $data);
 	}
@@ -118,7 +118,7 @@ class Giftcards extends Secure_Controller
 
 		if($this->giftcard->save($giftcard_data, $giftcard_id))	//TODO: Reflection exception
 		{
-			$giftcard_data = $this->xss_clean($giftcard_data);
+			$giftcard_data = $giftcard_data;
 
 			//New giftcard
 			if($giftcard_id == -1)	//TODO: Constant needed
@@ -140,7 +140,7 @@ class Giftcards extends Secure_Controller
 		}
 		else //failure
 		{
-			$giftcard_data = $this->xss_clean($giftcard_data);
+			$giftcard_data = $giftcard_data;
 			
 			echo json_encode ([
 				'success' => FALSE,
@@ -158,7 +158,7 @@ class Giftcards extends Secure_Controller
 
 	public function delete(): void
 	{
-		$giftcards_to_delete = $this->xss_clean($this->request->getPost('ids'));
+		$giftcards_to_delete = $this->request->getPost('ids');
 
 		if($this->giftcard->delete_list($giftcards_to_delete))
 		{

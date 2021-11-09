@@ -25,7 +25,7 @@ class Expenses extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_expenses_manage_table_headers());
+		$data['table_headers'] = get_expenses_manage_table_headers();
 
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = [
@@ -70,12 +70,12 @@ class Expenses extends Secure_Controller
 
 		foreach($expenses->getResult() as $expense)
 		{
-			$data_rows[] = $this->xss_clean(get_expenses_data_row($expense));
+			$data_rows[] = get_expenses_data_row($expense);
 		}
 
 		if($total_rows > 0)
 		{
-			$data_rows[] = $this->xss_clean(get_expenses_data_last_row($expenses));
+			$data_rows[] = get_expenses_data_last_row($expenses);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
@@ -90,7 +90,7 @@ class Expenses extends Secure_Controller
 		{
 			foreach(get_object_vars($employee) as $property => $value)
 			{
-				$employee->$property = $this->xss_clean($value);
+				$employee->$property = $value;
 			}
 
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
@@ -118,14 +118,14 @@ class Expenses extends Secure_Controller
 		{
 			foreach(get_object_vars($payment) as $property => $value)
 			{
-				$payment->$property = $this->xss_clean($value);
+				$payment->$property = $value;
 			}
 
 			$data['payments'][] = $payment;
 		}
 
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
-		$data['payment_options'] = $this->xss_clean($this->expense->get_payment_options(FALSE));
+		$data['payment_options'] = $this->expense->get_payment_options(FALSE);
 
 		echo view("expenses/form", $data);
 	}
@@ -133,7 +133,7 @@ class Expenses extends Secure_Controller
 	public function get_row(int $row_id)
 	{
 		$expense_info = $this->expense->get_info($row_id);
-		$data_row = $this->xss_clean(get_expenses_data_row($expense_info));
+		$data_row = get_expenses_data_row($expense_info);
 
 		echo json_encode($data_row);
 	}
@@ -159,7 +159,7 @@ class Expenses extends Secure_Controller
 
 		if($this->expense->save($expense_data, $expense_id))	//TODO: Reflection exception
 		{
-			$expense_data = $this->xss_clean($expense_data);
+			$expense_data = $expense_data;
 
 			//New expense_id
 			if($expense_id == -1)

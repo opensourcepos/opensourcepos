@@ -6,11 +6,6 @@ use CodeIgniter\Database\Migration;
 
 class Migration_modify_session_datatype extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function up(): void
 	{
 		error_log('Migrating modify_session_datatype');

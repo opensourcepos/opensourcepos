@@ -27,7 +27,7 @@ class Tax_codes extends Secure_Controller
 
 	public function get_data(): array
 	{
-		$data['table_headers'] = $this->xss_clean(get_tax_codes_table_headers());	//TODO: get_tax_codes_table_headers() doesn't exist anywhere in the code
+		$data['table_headers'] = get_tax_codes_table_headers();	//TODO: get_tax_codes_table_headers() doesn't exist anywhere in the code
 		return $data;
 	}
 
@@ -49,7 +49,7 @@ class Tax_codes extends Secure_Controller
 
 		foreach($tax_codes->getResult() as $tax_code)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_code_data_row($tax_code));
+			$data_rows[] = get_tax_code_data_row($tax_code);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -57,7 +57,7 @@ class Tax_codes extends Secure_Controller
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_code_data_row($this->tax_code->get_info($row_id)));
+		$data_row = get_tax_code_data_row($this->tax_code->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -81,8 +81,6 @@ class Tax_codes extends Secure_Controller
 
 		if($this->tax_code->save($tax_code_data))
 		{
-			$tax_code_data = $this->xss_clean($tax_code_data);
-
 			if($tax_code_id == -1)	//TODO: Need to replace -1 with constant
 			{
 				echo json_encode ([

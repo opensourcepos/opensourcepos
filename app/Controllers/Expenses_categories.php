@@ -21,7 +21,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 	public function index(): void
 	{
-		 $data['table_headers'] = $this->xss_clean(get_expense_category_manage_table_headers());
+		 $data['table_headers'] = get_expense_category_manage_table_headers();
 
 		 echo view('expenses_categories/manage', $data);
 	}
@@ -43,7 +43,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		$data_rows = [];
 		foreach($expense_categories->getResult() as $expense_category)
 		{
-			$data_rows[] = $this->xss_clean(get_expense_category_data_row($expense_category));
+			$data_rows[] = get_expense_category_data_row($expense_category);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -51,7 +51,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_expense_category_data_row($this->expense_category->get_info($row_id)));
+		$data_row = get_expense_category_data_row($this->expense_category->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -72,7 +72,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 		if($this->expense_category->save($expense_category_data, $expense_category_id))	//TODO: Reflection exception
 		{
-			$expense_category_data = $this->xss_clean($expense_category_data);
+			$expense_category_data = $expense_category_data;
 
 			// New expense_category_id
 			if($expense_category_id == -1)

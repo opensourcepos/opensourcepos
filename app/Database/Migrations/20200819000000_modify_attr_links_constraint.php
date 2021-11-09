@@ -6,11 +6,6 @@ use CodeIgniter\Database\Migration;
 
 class Migration_modify_attr_links_constraint extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function up(): void
 	{
 		error_log('Migrating modify_attr_links_constraint');

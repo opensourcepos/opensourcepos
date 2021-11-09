@@ -46,7 +46,6 @@ function get_csv_file(string $file_name): array
 
 	if(($csv_file = fopen($file_name,'r')) !== FALSE)
 	{
-		$CI =& get_instance();
 		helper('security');
 
 		$csv_rows = [];
@@ -64,7 +63,7 @@ function get_csv_file(string $file_name): array
 			//Skip empty lines
 			if($row !== [null])
 			{
-				$csv_rows[] = array_combine($headers, $CI->security->xss_clean($row));
+				$csv_rows[] = array_combine($headers, $row);
 			}
 		}
 

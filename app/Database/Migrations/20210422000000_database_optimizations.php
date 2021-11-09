@@ -3,25 +3,32 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use app\Models\Attribute;
+use CodeIgniter\Database\ResultInterface;
+use DateTime;
 
 class Migration_database_optimizations extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
+	/**
+	 *
+	 *
+	 * @property attribute $attribute
+	 *
+	 */
 	public function up(): void
 	{
 		error_log('Migrating database_optimizations');
-		$CI =& get_instance();
 
-		$CI->Attribute->delete_orphaned_values();
+		$attribute = model('Attribute');
+		$appconfig = model('Appconfig');
+
+		$attribute->delete_orphaned_values();
 
 		$this->migrate_duplicate_attribute_values(DECIMAL);
 		$this->migrate_duplicate_attribute_values(DATE);
 
 		//Select all attributes that have data in more than one column
+		$builder = $this->db->table('attribute_values');
 		$builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
 		$builder->groupStart();
 			$builder->where('attribute_value IS NOT NULL');
@@ -31,7 +38,7 @@ class Migration_database_optimizations extends Migration
 			$builder->where('attribute_value IS NOT NULL');
 			$builder->where('attribute_decimal IS NOT NULL');
 		$builder->groupEnd();
-		$attribute_values = $builder->get('attribute_values');
+		$attribute_values = $builder->get();
 
 		$this->db->transStart();
 
@@ -55,15 +62,15 @@ class Migration_database_optimizations extends Migration
 						$value = $attribute_value['attribute_decimal'];
 						break;
 					case DATE:
-						$attribute_date	= DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-						$value			= $attribute_date->format($CI->Appconfig->get('dateformat'));
+						$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
+						$value = $attribute_date->format($appconfig->get('dateformat'));
 						break;
 					default:
 						$value = $attribute_value['attribute_value'];
 						break;
 				}
 
-				$CI->Attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], FALSE, $attribute_link['definition_type']);
+				$attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], FALSE, $attribute_link['definition_type']);
 			}
 		}
 		$this->db->transComplete();
@@ -76,11 +83,12 @@ class Migration_database_optimizations extends Migration
 	 */
 	private function migrate_duplicate_attribute_values($attribute_type)
 	{
-	//Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
+		//Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
 		$this->db->transStart();
 
 		$column = 'attribute_' . strtolower($attribute_type);
 
+		$builder = $this->db->table('attribute_values');
 		$builder->select("$column, attribute_id");
 		$builder->groupBy($column);
 		$builder->having("COUNT($column) > 1");
@@ -90,7 +98,7 @@ class Migration_database_optimizations extends Migration
 		{
 			$builder->select('attribute_id');
 			$builder->where($column, $duplicated_value[$column]);
-			$attribute_ids_to_fix = $builder->get('attribute_values');
+			$attribute_ids_to_fix = $builder->get();
 
 			$this->reassign_duplicate_attribute_values($attribute_ids_to_fix, $duplicated_value);
 		}
@@ -100,22 +108,25 @@ class Migration_database_optimizations extends Migration
 
 	/**
 	 * Updates the attribute_id in all attribute_link rows with duplicated attribute_ids then deletes unneeded rows from attribute_values
-	 * @param attribute_ids_to_fix
-	 * @param decimal
+	 *
+	 * @param ResultInterface $attribute_ids_to_fix
+	 * @param array $attribute_value
 	 */
-	private function reassign_duplicate_attribute_values($attribute_ids_to_fix, $attribute_value)
+	private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value)
 	{
 		foreach($attribute_ids_to_fix->getResultArray() as $attribute_id)
 		{
 			//Update attribute_link with the attribute_id we are keeping
+			$builder = $this->db->table('attribute_links');
 			$builder->where('attribute_id', $attribute_id['attribute_id']);
-			$builder->update('attribute_links', ['attribute_id' => $attribute_value['attribute_id']));
+			$builder->update(['attribute_id' => $attribute_value['attribute_id']]);
 
 			//Delete the row from attribute_values if it isn't our keeper
 			if($attribute_id['attribute_id'] !== $attribute_value['attribute_id'])
 			{
+				$builder = $this->db->table('attribute_values');
 				$builder->where('attribute_id', $attribute_id['attribute_id']);
-				$builder->delete($this->db->prefixTable('attribute_values'));
+				$builder->delete();
 			}
 		}
 	}

@@ -21,7 +21,7 @@ abstract class Persons extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());	//TODO: Replace xss_clean
+		$data['table_headers'] = get_people_manage_table_headers();	//TODO: Replace xss_clean
 
 		echo view('people/manage', $data);
 	}
@@ -31,7 +31,7 @@ abstract class Persons extends Secure_Controller
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->person->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->person->get_search_suggestions($this->request->getPost('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -41,7 +41,7 @@ abstract class Persons extends Secure_Controller
 	 */
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_person_data_row($this->person->get_info($row_id)));
+		$data_row = get_person_data_row($this->person->get_info($row_id));
 
 		echo json_encode($data_row);
 	}

@@ -206,7 +206,7 @@ abstract class BarcodeBase
 	 * For ouput in-page
 	 * @return void
 	 */
-	public function base64()
+	public function base64(): string
 	{
 		ob_start();
 		$this->output();

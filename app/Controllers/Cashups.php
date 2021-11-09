@@ -31,7 +31,7 @@ class Cashups extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_cashups_manage_table_headers());
+		$data['table_headers'] = get_cashups_manage_table_headers();
 
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = ['is_deleted' => lang('Cashups.is_deleted')];
@@ -61,7 +61,7 @@ class Cashups extends Secure_Controller
 		$data_rows = [];
 		foreach($cash_ups->getResult() as $cash_up)
 		{
-			$data_rows[] = $this->xss_clean(get_cash_up_data_row($cash_up));
+			$data_rows[] = get_cash_up_data_row($cash_up);
 		}
 
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
@@ -76,7 +76,7 @@ class Cashups extends Secure_Controller
 		{
 			foreach(get_object_vars($employee) as $property => $value)
 			{
-				$employee->$property = $this->xss_clean($value);
+				$employee->$property = $value;
 			}
 
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
@@ -86,7 +86,7 @@ class Cashups extends Secure_Controller
 
 		foreach(get_object_vars($cash_ups_info) as $property => $value)
 		{
-			$cash_ups_info->$property = $this->xss_clean($value);
+			$cash_ups_info->$property = $value;
 		}
 
 		// open cashup
@@ -140,20 +140,20 @@ class Cashups extends Secure_Controller
 				{
 					if($row['trans_type'] == lang('Sales.cash'))
 					{
-						$cash_ups_info->closed_amount_cash += $this->xss_clean($row['trans_amount']);
+						$cash_ups_info->closed_amount_cash += $row['trans_amount'];
 					}
 					elseif($row['trans_type'] == lang('Sales.due'))
 					{
-						$cash_ups_info->closed_amount_due += $this->xss_clean($row['trans_amount']);
+						$cash_ups_info->closed_amount_due += $row['trans_amount'];
 					}
 					elseif($row['trans_type'] == lang('Sales.debit') ||
 						$row['trans_type'] == lang('Sales.credit'))
 					{
-						$cash_ups_info->closed_amount_card += $this->xss_clean($row['trans_amount']);
+						$cash_ups_info->closed_amount_card += $row['trans_amount'];
 					}
 					elseif($row['trans_type'] == lang('Sales.check'))
 					{
-						$cash_ups_info->closed_amount_check += $this->xss_clean($row['trans_amount']);
+						$cash_ups_info->closed_amount_check += $row['trans_amount'];
 					}
 				}
 			}
@@ -172,7 +172,7 @@ class Cashups extends Secure_Controller
 
 			foreach($payments as $row)
 			{
-				$cash_ups_info->closed_amount_cash -= $this->xss_clean($row['amount']);
+				$cash_ups_info->closed_amount_cash -= $row['amount'];
 			}
 
 			$cash_ups_info->closed_amount_total = $this->_calculate_total($cash_ups_info->open_amount_cash, $cash_ups_info->transfer_amount_cash, $cash_ups_info->closed_amount_cash, $cash_ups_info->closed_amount_due, $cash_ups_info->closed_amount_card, $cash_ups_info->closed_amount_check);
@@ -186,7 +186,7 @@ class Cashups extends Secure_Controller
 	public function get_row(int $row_id): void
 	{
 		$cash_ups_info = $this->cashup->get_info($row_id);
-		$data_row = $this->xss_clean(get_cash_up_data_row($cash_ups_info));
+		$data_row = get_cash_up_data_row($cash_ups_info);
 
 		echo json_encode($data_row);
 	}
@@ -218,7 +218,7 @@ class Cashups extends Secure_Controller
 
 		if($this->cashup->save($cash_up_data, $cashup_id))	//TODO: Reflection exception
 		{
-			$cash_up_data = $this->xss_clean($cash_up_data);
+			$cash_up_data = $cash_up_data;
 
 			//New cashup_id
 			if($cashup_id == -1)//TODO: Need to replace -1 with a constant in constants.php

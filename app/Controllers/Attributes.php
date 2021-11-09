@@ -23,7 +23,7 @@ class Attributes extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_attribute_definition_manage_table_headers());
+		$data['table_headers'] = get_attribute_definition_manage_table_headers();
 
 		echo view('attributes/manage', $data);
 	}
@@ -49,7 +49,7 @@ class Attributes extends Secure_Controller
 			$data_rows[] = get_attribute_definition_data_row($attribute, $this);
 		}
 
-		$data_rows = $this->xss_clean($data_rows);
+		$data_rows = $data_rows;
 
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
@@ -100,7 +100,7 @@ class Attributes extends Secure_Controller
 			$definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type')];
 		}
 
-		$definition_name = $this->xss_clean($definition_data['definition_name']);
+		$definition_name = $definition_data['definition_name'];
 
 		if($this->attribute->save_definition($definition_data, $definition_id))
 		{
@@ -135,7 +135,7 @@ class Attributes extends Secure_Controller
 		{
 			echo json_encode([
 				'success' => FALSE,
-				'message' => lang('Attributes.definition_error_adding_updating', $definition_name),
+				'message' => lang('Attributes.definition_error_adding_updating', ['definition_name' => $definition_name]),
 				'id' => -1
 			]);
 		}
@@ -143,7 +143,7 @@ class Attributes extends Secure_Controller
 
 	public function suggest_attribute(int $definition_id): void
 	{
-		$suggestions = $this->xss_clean($this->attribute->get_suggestions($definition_id, $this->request->getGet('term')));
+		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getGet('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -152,7 +152,7 @@ class Attributes extends Secure_Controller
 	{
 		$attribute_definition_info = $this->attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);
-		$data_row = $this->xss_clean(get_attribute_definition_data_row($attribute_definition_info));
+		$data_row = get_attribute_definition_data_row($attribute_definition_info);
 
 		echo json_encode($data_row);
 	}
@@ -175,7 +175,7 @@ class Attributes extends Secure_Controller
 		$info = $this->attribute->get_info($definition_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->xss_clean($value);
+			$info->$property = $value;
 		}
 
 		$data['definition_id'] = $definition_id;

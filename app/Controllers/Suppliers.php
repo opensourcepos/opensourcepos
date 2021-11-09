@@ -21,7 +21,7 @@ class Suppliers extends Persons
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
+		$data['table_headers'] = get_suppliers_manage_table_headers();
 
 		echo view('people/manage', $data);
 	}
@@ -31,7 +31,7 @@ class Suppliers extends Persons
 	*/
 	public function get_row($row_id): void
 	{
-		$data_row = $this->xss_clean(get_supplier_data_row($this->supplier->get_info($row_id)));
+		$data_row = get_supplier_data_row($this->supplier->get_info($row_id));
 		$data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
 		echo json_encode($data_row);
@@ -55,7 +55,7 @@ class Suppliers extends Persons
 
 		foreach($suppliers->getResult() as $supplier)
 		{
-			$row = $this->xss_clean(get_supplier_data_row($supplier));
+			$row = get_supplier_data_row($supplier);
 			$row['category'] = $this->supplier->get_category_name($row['category']);
 			$data_rows[] = $row;
 		}
@@ -68,14 +68,14 @@ class Suppliers extends Persons
 	*/
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->supplier->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getGet('term'), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->xss_clean($this->supplier->get_search_suggestions($this->request->getPost('term'), FALSE));
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term'), FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -88,7 +88,7 @@ class Suppliers extends Persons
 		$info = $this->supplier->get_info($supplier_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->xss_clean($value);
+			$info->$property = $value;
 		}
 		$data['person_info'] = $info;
 		$data['categories'] = $this->supplier->get_categories();
@@ -101,9 +101,9 @@ class Suppliers extends Persons
 	*/
 	public function save(int $supplier_id = -1): void	//TODO: Replace -1 with constant
 	{
-		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: Duplicate code
-		$last_name = $this->xss_clean($this->request->getPost('last_name'));
-		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
+		$first_name = $this->request->getPost('first_name');	//TODO: Duplicate code
+		$last_name = $this->request->getPost('last_name');
+		$email = strtolower($this->request->getPost('email'));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
@@ -134,8 +134,6 @@ class Suppliers extends Persons
 
 		if($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id))
 		{
-			$supplier_data = $this->xss_clean($supplier_data);
-
 			//New supplier
 			if($supplier_id == -1)	//TODO: Replace -1 with a constant
 			{
@@ -155,8 +153,6 @@ class Suppliers extends Persons
 		}
 		else//failure
 		{
-			$supplier_data = $this->xss_clean($supplier_data);
-
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
@@ -170,7 +166,7 @@ class Suppliers extends Persons
 	*/
 	public function delete(): void
 	{
-		$suppliers_to_delete = $this->xss_clean($this->request->getPost('ids'));
+		$suppliers_to_delete = $this->request->getPost('ids');
 
 		if($this->supplier->delete_list($suppliers_to_delete))
 		{

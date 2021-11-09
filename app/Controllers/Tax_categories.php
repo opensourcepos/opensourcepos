@@ -21,7 +21,7 @@ class Tax_categories extends Secure_Controller
 
 	public function index(): void	//TODO: index() is inherited from Secure Controller but the signature is different.  Need to sort that out.
 	{
-		 $data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+		 $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 
 		 echo view('taxes/tax_categories', $data);
 	}
@@ -43,7 +43,7 @@ class Tax_categories extends Secure_Controller
 		$data_rows = [];
 		foreach($tax_categories->getResult() as $tax_category)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_category_data_row($tax_category));	//TODO: get_tax_category_data_row() is a non-existent function.
+			$data_rows[] = get_tax_category_data_row($tax_category);	//TODO: get_tax_category_data_row() is a non-existent function.
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -51,7 +51,7 @@ class Tax_categories extends Secure_Controller
 
 	public function get_row($row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_category_data_row($this->tax_category->get_info($row_id)));
+		$data_row = get_tax_category_data_row($this->tax_category->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -74,8 +74,6 @@ class Tax_categories extends Secure_Controller
 
 		if($this->tax_category->save($tax_category_data, $tax_category_id))
 		{
-			$tax_category_data = $this->xss_clean($tax_category_data);
-
 			// New tax_category_id
 			if($tax_category_id == -1)	//TODO: Need to replace -1 with constant
 			{

@@ -27,7 +27,7 @@ class Home extends Secure_Controller
 		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
-			$person_info->$property = $this->xss_clean($value);
+			$person_info->$property = $value;
 		}
 		$data['person_info'] = $person_info;
 

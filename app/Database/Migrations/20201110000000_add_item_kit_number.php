@@ -6,11 +6,6 @@ use CodeIgniter\Database\Migration;
 
 class Migration_add_item_kit_number extends Migration
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function up(): void
 	{
 		error_log('Migrating add_item_kit_number');

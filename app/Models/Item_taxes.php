@@ -15,7 +15,7 @@ class Item_taxes extends Model
 	public function get_info(int $item_id): array
 	{
 		$builder = $this->db->table('items_taxes');
-		$builder->where('item_id',$item_id);
+		$builder->where('item_id', $item_id);
 
 		//return an array of taxes for an item
 		return $builder->get()->getResultArray();

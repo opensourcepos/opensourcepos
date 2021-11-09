@@ -44,23 +44,23 @@ class Taxes extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['tax_codes'] = $this->xss_clean($this->tax_code->get_all()->getResultArray());
+		$data['tax_codes'] = $this->tax_code->get_all()->getResultArray();
 		if (count($data['tax_codes']) == 0)
 		{
 			$data['tax_codes'] = $this->tax_code->get_empty_row();
 		}
-		$data['tax_categories'] = $this->xss_clean($this->tax_category->get_all()->getResultArray());
+		$data['tax_categories'] = $this->tax_category->get_all()->getResultArray();
 		if (count($data['tax_categories']) == 0)
 		{
 			$data['tax_categories'] = $this->tax_category->get_empty_row();
 		}
-		$data['tax_jurisdictions'] = $this->xss_clean($this->tax_jurisdiction->get_all()->getResultArray());
+		$data['tax_jurisdictions'] = $this->tax_jurisdiction->get_all()->getResultArray();
 		if (count($data['tax_jurisdictions']) == 0)
 		{
 			$data['tax_jurisdictions'] = $this->tax_jurisdiction->get_empty_row();
 		}
-		$data['tax_rate_table_headers'] = $this->xss_clean(get_tax_rates_manage_table_headers());
-		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+		$data['tax_rate_table_headers'] = get_tax_rates_manage_table_headers();
+		$data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
 
 		if($this->appconfig->get('tax_included') == '1')
@@ -96,7 +96,7 @@ class Taxes extends Secure_Controller
 		$data_rows = [];
 		foreach($tax_rates->getResult() as $tax_rate_row)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
+			$data_rows[] = get_tax_rates_data_row($tax_rate_row);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -107,7 +107,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->tax->get_search_suggestions($this->request->getPost('term')));	//TODO: There is no get_search_suggestions function in the tax model
+		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term'));	//TODO: There is no get_search_suggestions function in the tax model
 
 		echo json_encode($suggestions);
 	}
@@ -117,7 +117,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_tax_categories(): void
 	{
-		$suggestions = $this->xss_clean($this->tax_category->get_tax_category_suggestions($this->request->getPost('term')));
+		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -125,7 +125,7 @@ class Taxes extends Secure_Controller
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_rates_data_row($this->tax->get_info($row_id), $this));
+		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id), $this);
 
 		echo json_encode($data_row);
 	}
@@ -180,16 +180,14 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
 		$tax_rates = [];
 		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist
 		{
 			$tax_rate_row = [];
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
@@ -228,8 +226,6 @@ class Taxes extends Secure_Controller
 			$data['tax_rounding_code'] = $tax_rate_info->tax_rounding_code;
 			$data['tax_rate'] = $tax_rate_info->tax_rate;
 		}
-
-		$data = $this->xss_clean($data);
 
 		echo view('taxes/tax_rates_form', $data);
 	}
@@ -286,16 +282,14 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
 		$tax_rates = [];
 		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist in the tax model
 		{
 			$tax_rate_row = [];
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
@@ -355,16 +349,14 @@ class Taxes extends Secure_Controller
 			$data['rounding_code'] = $tax_rate_info->rounding_code;
 		}
 
-		$data = $this->xss_clean($data);
-
 		$tax_rates = [];
 		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist in the tax model
 		{
 			$tax_rate_row = [];
-			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
+			$tax_rate_row['tax_category'] = $tax_code_rate['tax_category'];
+			$tax_rate_row['tax_rate'] = $tax_code_rate['tax_rate'];
+			$tax_rate_row['rounding_code'] = $tax_code_rate['rounding_code'];
 
 			$tax_rates[] = $tax_rate_row;
 		}
@@ -416,7 +408,7 @@ class Taxes extends Secure_Controller
 
 	public function delete(): void
 	{
-		$tax_codes_to_delete = $this->xss_clean($this->request->getPost('ids'));
+		$tax_codes_to_delete = $this->request->getPost('ids');
 
 		if($this->tax->delete_list($tax_codes_to_delete))	//TODO: this needs to be replaced with ternary notation
 		{
@@ -429,7 +421,7 @@ class Taxes extends Secure_Controller
 
 	public function suggest_tax_codes(): void
 	{
-		$suggestions = $this->xss_clean($this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term')));
+		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -447,11 +439,11 @@ class Taxes extends Secure_Controller
 		foreach($tax_code_id as $key=>$val)
 		{
 			$array_save[] = [
-				'tax_code_id'=>$this->xss_clean($val),
-				'tax_code'=>$this->xss_clean($tax_code[$key]),
-				'tax_code_name'=>$this->xss_clean($tax_code_name[$key]),
-				'city'=>$this->xss_clean($city[$key]),
-				'state'=>$this->xss_clean($state[$key])
+				'tax_code_id'=>$val,
+				'tax_code'=>$tax_code[$key],
+				'tax_code_name'=>$tax_code_name[$key],
+				'city'=>$city[$key],
+				'state'=>$state[$key]
 			];
 		}
 
@@ -479,13 +471,13 @@ class Taxes extends Secure_Controller
 		foreach($jurisdiction_id as $key => $val)
 		{
 			$array_save[] = [
-				'jurisdiction_id'=>$this->xss_clean($val),
-				'jurisdiction_name'=>$this->xss_clean($jurisdiction_name[$key]),
-				'tax_group'=>$this->xss_clean($tax_group[$key]),
-				'tax_type'=>$this->xss_clean($tax_type[$key]),
-				'reporting_authority'=>$this->xss_clean($reporting_authority[$key]),
-				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]),
-				'cascade_sequence'=>$this->xss_clean($cascade_sequence[$key])
+				'jurisdiction_id'=>$val,
+				'jurisdiction_name'=>$jurisdiction_name[$key],
+				'tax_group'=>$tax_group[$key],
+				'tax_type'=>$tax_type[$key],
+				'reporting_authority'=>$reporting_authority[$key],
+				'tax_group_sequence'=>$tax_group_sequence[$key],
+				'cascade_sequence'=>$cascade_sequence[$key]
 			];
 
 			if (array_search($tax_group[$key], $unique_tax_groups) !== false)
@@ -521,9 +513,9 @@ class Taxes extends Secure_Controller
 		foreach($tax_category_id as $key => $val)
 		{
 			$array_save[] = [
-				'tax_category_id'=>$this->xss_clean($val),
-				'tax_category'=>$this->xss_clean($tax_category[$key]),
-				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key])
+				'tax_category_id'=>$val,
+				'tax_category'=>$tax_category[$key],
+				'tax_group_sequence'=>$tax_group_sequence[$key]
 			];
 		}
 
@@ -539,16 +531,12 @@ class Taxes extends Secure_Controller
 	{
 		$tax_codes = $this->tax_code->get_all()->getResultArray();
 
-		$tax_codes = $this->xss_clean($tax_codes);
-
 		echo view('partial/tax_codes', ['tax_codes' => $tax_codes]);
 	}
 
 	public function ajax_tax_categories(): void
 	{
 		$tax_categories = $this->tax_category->get_all()->getResultArray();
-
-		$tax_categories = $this->xss_clean($tax_categories);
 
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
@@ -566,7 +554,6 @@ class Taxes extends Secure_Controller
 			$default_tax_type = Tax_lib::TAX_TYPE_EXCLUDED;
 		}
 
-		$tax_jurisdictions = $this->xss_clean($tax_jurisdictions);
 		$tax_types = $this->tax_lib->get_tax_types();
 
 		echo view('partial/tax_jurisdictions', [

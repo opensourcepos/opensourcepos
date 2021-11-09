@@ -35,7 +35,7 @@ class Messages extends Secure_Controller
 		$info = $this->person->get_info($person_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->xss_clean($value);
+			$info->$property = $value;
 		}
 		$data['person_info'] = $info;
 
@@ -71,7 +71,7 @@ class Messages extends Secure_Controller
 			echo json_encode ([
 				'success' => TRUE,
 				'message' => lang('Messages.successfully_sent') . ' ' . $phone,
-				'person_id' => $this->xss_clean($person_id)	//TODO: Replace -1 with a constant
+				'person_id' => $person_id	//TODO: Replace -1 with a constant
 			]);
 		}
 		else

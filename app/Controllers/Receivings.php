@@ -59,7 +59,7 @@ class Receivings extends Secure_Controller
 		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-		$suggestions = $this->xss_clean($suggestions);
+		$suggestions = $suggestions;
 
 		echo json_encode($suggestions);
 	}
@@ -69,7 +69,7 @@ class Receivings extends Secure_Controller
 		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-		$suggestions = $this->xss_clean($suggestions);
+		$suggestions = $suggestions;
 
 		echo json_encode($suggestions);
 	}
@@ -185,16 +185,16 @@ class Receivings extends Secure_Controller
 		$data['suppliers'] = ['' => 'No Supplier'];
 		foreach($this->supplier->get_all()->getResult() as $supplier)
 		{
-			$data['suppliers'][$supplier->person_id] = $this->xss_clean($supplier->first_name . ' ' . $supplier->last_name);
+			$data['suppliers'][$supplier->person_id] = $supplier->first_name . ' ' . $supplier->last_name;
 		}
 	
 		$data['employees'] = [];
 		foreach($this->employee->get_all()->getResult() as $employee)
 		{
-			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
+			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
 		}
 	
-		$receiving_info = $this->xss_clean($this->receiving->get_info($receiving_id)->getRowArray());
+		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
 		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
@@ -281,7 +281,7 @@ class Receivings extends Secure_Controller
 		//SAVE receiving to database
 		$data['receiving_id'] = 'RECV ' . $this->receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);	//TODO: Reflection Exception
 
-		$data = $this->xss_clean($data);
+		$data = $data;
 
 		if($data['receiving_id'] == 'RECV -1')
 		{
@@ -357,8 +357,6 @@ class Receivings extends Secure_Controller
 
 		$data['print_after_sale'] = FALSE;
 
-		$data = $this->xss_clean($data);
-		
 		echo view("receivings/receipt", $data);
 
 		$this->receiving_lib->clear_all();
@@ -405,8 +403,6 @@ class Receivings extends Secure_Controller
 		}
 		
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
-
-		$data = $this->xss_clean($data);
 
 		echo view("receivings/receiving", $data);
 	}

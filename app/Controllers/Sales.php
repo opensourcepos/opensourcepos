@@ -93,7 +93,7 @@ class Sales extends Secure_Controller
 	public function get_row(int $row_id): void
 	{
 		$sale_info = $this->sale->get_info($row_id)->getRow();
-		$data_row = $this->xss_clean(get_sale_data_row($sale_info));
+		$data_row = get_sale_data_row($sale_info);
 
 		echo json_encode($data_row);
 	}
@@ -126,17 +126,17 @@ class Sales extends Secure_Controller
 		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->sale->get_found_rows($search, $filters);
 		$payments = $this->sale->get_payments_summary($search, $filters);
-		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments));
+		$payment_summary = get_sales_manage_payments_summary($payments);
 
 		$data_rows = [];
 		foreach($sales->getResult() as $sale)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
+			$data_rows[] = get_sale_data_row($sale);
 		}
 
 		if($total_rows > 0)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales));
+			$data_rows[] = get_sale_data_last_row($sales);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
@@ -155,7 +155,7 @@ class Sales extends Secure_Controller
 		$suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-		$suggestions = $this->xss_clean($suggestions);	//TODO: Need to fix this
+		$suggestions = $suggestions;	//TODO: Need to fix this
 
 		echo json_encode($suggestions);
 	}
@@ -164,7 +164,7 @@ class Sales extends Secure_Controller
 	{
 		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term') : NULL;
 
-		$suggestions = $this->xss_clean($this->sale->get_search_suggestions($search));
+		$suggestions = $this->sale->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
 	}
@@ -720,8 +720,6 @@ class Sales extends Secure_Controller
 				// Resort and filter cart lines for printing
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-				$data = $this->xss_clean($data);
-
 				if($data['sale_id_num'] == -1)
 				{
 					$data['error_message'] = lang('Sales.transaction_failed');
@@ -768,8 +766,6 @@ class Sales extends Secure_Controller
 
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-				$data = $this->xss_clean($data);
-
 				$data['barcode'] = NULL;
 
 				echo view('sales/work_order', $data);
@@ -804,9 +800,6 @@ class Sales extends Secure_Controller
 				$this->sale_lib->set_suspended_id($data['sale_id_num']);
 
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
-
-				$data = $this->xss_clean($data);
-
 				$data['barcode'] = NULL;
 
 				echo view('sales/quote', $data);
@@ -832,7 +825,6 @@ class Sales extends Secure_Controller
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
-			$data = $this->xss_clean($data);
 
 			if($data['sale_id_num'] == -1)	//TODO: Replace -1 with a constant
 			{
@@ -1094,7 +1086,7 @@ class Sales extends Secure_Controller
 		$invoice_type = $this->appconfig->get('invoice_type');
 		$data['invoice_view'] = $invoice_type;
 
-		return $this->xss_clean($data);
+		return $data;
 	}
 
 	private function _reload($data = []): void	//TODO: Hungarian notation
@@ -1219,8 +1211,6 @@ class Sales extends Secure_Controller
 			$data['customer_required'] = lang('Sales.customer_optional');
 		}
 
-		$data = $this->xss_clean($data);
-
 		echo view("sales/register", $data);
 	}
 
@@ -1243,12 +1233,12 @@ class Sales extends Secure_Controller
 	{
 		$data = [];
 
-		$sale_info = $this->xss_clean($this->sale->get_info($sale_id)->getRowArray());
+		$sale_info = $this->sale->get_info($sale_id)->getRowArray();
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['selected_customer_name'] = $sale_info['customer_name'];
 		$employee_info = $this->employee->get_info($sale_info['employee_id']);
 		$data['selected_employee_id'] = $sale_info['employee_id'];
-		$data['selected_employee_name'] = $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name);
+		$data['selected_employee_name'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$data['sale_info'] = $sale_info;
 		$balance_due = round($sale_info['amount_due'] - $sale_info['amount_tendered'] + $sale_info['cash_refund'], totals_decimals(), PHP_ROUND_HALF_UP);
 		
@@ -1263,7 +1253,7 @@ class Sales extends Secure_Controller
 		{
 			foreach(get_object_vars($payment) as $property => $value)
 			{
-				$payment->$property = $this->xss_clean($value);
+				$payment->$property = $value;
 			}
 			$data['payments'][] = $payment;
 		}
@@ -1281,12 +1271,12 @@ class Sales extends Secure_Controller
 			$payment_options[lang('Sales.cash_adjustment')] = lang('Sales.cash_adjustment');
 		}
 
-		$data['payment_options'] = $this->xss_clean($payment_options);
+		$data['payment_options'] = $payment_options;
 
 		// Set up a slightly modified list of payment types for new payment entry
 		$payment_options["--"] = lang('Common.none_selected_text');
 
-		$data['new_payment_options'] = $this->xss_clean($payment_options);
+		$data['new_payment_options'] = $payment_options;
 
 		echo view('sales/form', $data);
 	}
@@ -1557,7 +1547,7 @@ class Sales extends Secure_Controller
 	{
 		$data = [];
 		$customer_id = $this->sale_lib->get_customer();
-		$data['suspended_sales'] = $this->xss_clean($this->sale->get_all_suspended($customer_id));
+		$data['suspended_sales'] = $this->sale->get_all_suspended($customer_id);
 		echo view('sales/suspended', $data);
 	}
 

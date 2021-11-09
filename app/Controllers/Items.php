@@ -68,9 +68,9 @@ class Items extends Secure_Controller
 	{
 		$this->session->set('allow_temp_items', 0);
 
-		$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers());
-		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
-		$data['stock_locations'] = $this->xss_clean($this->stock_location->get_allowed_locations());
+		$data['table_headers'] = get_items_manage_table_headers();
+		$data['stock_location'] = $this->item_lib->get_item_location();
+		$data['stock_locations'] = $this->stock_location->get_allowed_locations();
 
 		//Filters that will be loaded in the multiselect dropdown
 		$data['filters'] = [
@@ -124,7 +124,7 @@ class Items extends Secure_Controller
 
 		foreach($items->getResult() as $item)
 		{
-			$data_rows[] = $this->xss_clean(get_item_data_row($item));
+			$data_rows[] = get_item_data_row($item);
 
 			if($item->pic_filename !== NULL)
 			{
@@ -181,28 +181,28 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
 		];
 
-		$suggestions = $this->xss_clean($this->item->get_search_suggestions($this->request->getPostGet('term'),	$options, FALSE));
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), $options, FALSE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->item->get_search_suggestions($this->request->getPostGet('term'),	['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_low_sell(): void
 	{
-		$suggestions = $this->xss_clean($this->item->get_low_sell_suggestions($this->request->getPostGet('name')));
+		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_kits(): void
 	{
-		$suggestions = $this->xss_clean($this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
+		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -212,7 +212,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_category(): void
 	{
-		$suggestions = $this->xss_clean($this->item->get_category_suggestions($this->request->getGet('term')));
+		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -222,7 +222,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_location(): void
 	{
-		$suggestions = $this->xss_clean($this->item->get_location_suggestions($this->request->getGet('term')));
+		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -235,7 +235,7 @@ class Items extends Secure_Controller
 
 		foreach($item_infos->getResult() as $item_info)
 		{
-			$result[$item_info->item_id] = $this->xss_clean(get_item_data_row($item_info));
+			$result[$item_info->item_id] = get_item_data_row($item_info);
 		}
 
 		echo json_encode($result);
@@ -250,7 +250,7 @@ class Items extends Secure_Controller
 
 		//allow_temp_items is set in the index function of items.php or sales.php
 		$data['allow_temp_item'] = $this->session->get('allow_temp_items');
-		$data['item_tax_info'] = $this->xss_clean($this->item_taxes->get_info($item_id));
+		$data['item_tax_info'] = $this->item_taxes->get_info($item_id);
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
 		$data['item_kit_disabled'] = !$this->employee->has_grant('item_kits', $this->employee->get_logged_in_employee_info()->person_id);
@@ -266,7 +266,7 @@ class Items extends Secure_Controller
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
-			$item_info->$property = $this->xss_clean($value);
+			$item_info->$property = $value;
 		}
 
 		if($data['allow_temp_item'] === 1)
@@ -335,7 +335,7 @@ class Items extends Secure_Controller
 
 		foreach($this->supplier->get_all()->getResultArray() as $row)
 		{
-			$suppliers[$this->xss_clean($row['person_id'])] = $this->xss_clean($row['company_name']);
+			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
 		$data['suppliers'] = $suppliers;
@@ -357,7 +357,7 @@ class Items extends Secure_Controller
 
 			foreach($this->tax_category->get_all()->getResultArray() as $row)
 			{
-				$tax_categories[$this->xss_clean($row['tax_category_id'])] = $this->xss_clean($row['tax_category']);
+				$tax_categories[$row['tax_category_id']] = $row['tax_category'];
 			}
 
 			$tax_category = '';
@@ -396,9 +396,9 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $this->xss_clean($location);
+			$location = $location;
 
-			$quantity = $this->xss_clean($this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity);
+			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 			$quantity = ($item_id === NEW_ITEM) ? 0 : $quantity;
 			$location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
 			$data['stock_locations'] = $location_array;
@@ -425,7 +425,7 @@ class Items extends Secure_Controller
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
-			$item_info->$property = $this->xss_clean($value);
+			$item_info->$property = $value;
 		}
 
 		$data['item_info'] = $item_info;
@@ -434,8 +434,8 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $this->xss_clean($location);
-			$quantity = $this->xss_clean($this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity);
+			$location = $location;
+			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
 			$data['stock_locations'][$location['location_id']] = $location['location_name'];
 			$data['item_quantities'][$location['location_id']] = $quantity;
@@ -450,7 +450,7 @@ class Items extends Secure_Controller
 
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
-			$item_info->$property = $this->xss_clean($value);
+			$item_info->$property = $value;
 		}
 
 		$data['item_info'] = $item_info;
@@ -459,8 +459,8 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $this->xss_clean($location);
-			$quantity = $this->xss_clean($this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity);
+			$location = $location;
+			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
 			$data['stock_locations'][$location['location_id']] = $location['location_name'];
 			$data['item_quantities'][$location['location_id']] = $quantity;
@@ -479,7 +479,7 @@ class Items extends Secure_Controller
 
 		foreach($result as &$item)
 		{
-			$item = $this->xss_clean($item);
+			$item = $item;
 
 			if(empty($item['item_number']) && $this->appconfig->get('barcode_generate_if_empty'))
 			{
@@ -535,7 +535,7 @@ class Items extends Secure_Controller
 
 		foreach($this->supplier->get_all()->getResultArray() as $row)
 		{
-			$row = $this->xss_clean($row);
+			$row = $row;
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
@@ -612,7 +612,7 @@ class Items extends Secure_Controller
 		$original_name = $upload_file->getFilename();
 		if(!empty($original_name))
 		{
-			if($this->xss_clean(original_name, TRUE) === TRUE)	//TODO: this needs to be thoroughly tested to make sure it's producing the correct results.
+			if($original_name === TRUE)	//TODO: this needs to be thoroughly tested to make sure it's producing the correct results.
 			{
 				$item_data['pic_filename'] = $original_name;
 			}
@@ -711,20 +711,20 @@ class Items extends Secure_Controller
 
 			if($success && $upload_success)
 			{
-				$message = $this->xss_clean(lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name']);
+				$message = lang('Items.successful_' . ($new_item ? 'adding' : 'updating')) . ' ' . $item_data['name'];
 
 				echo json_encode (['success' => TRUE, 'message' => $message, 'id' => $item_id]);
 			}
 			else
 			{
-				$message = $this->xss_clean($upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors()));	//TODO: Need to figure out what the analog to this->upload->display_errors() is.
+				$message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors());	//TODO: Need to figure out what the analog to this->upload->display_errors() is.
 
 				echo json_encode (['success' => FALSE, 'message' => $message, 'id' => $item_id]);
 			}
 		}
 		else
 		{
-			$message = $this->xss_clean(lang('Items.error_adding_updating') . ' ' . $item_data['name']);
+			$message = lang('Items.error_adding_updating') . ' ' . $item_data['name'];
 
 			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
 		}
@@ -806,13 +806,13 @@ class Items extends Secure_Controller
 
 		if($this->item_quantity->save($item_quantity_data, $item_id, $location_id))	//TODO: Reflection exception
 		{
-			$message = $this->xss_clean(lang('Items.successful_updating') . " $cur_item_info->name");
+			$message = lang('Items.successful_updating') . " $cur_item_info->name";
 
 			echo json_encode (['success' => TRUE, 'message' => $message, 'id' => $item_id]);
 		}
 		else
 		{
-			$message = $this->xss_clean(lang('Items.error_adding_updating') . " $cur_item_info->name");
+			$message = lang('Items.error_adding_updating') . " $cur_item_info->name";
 
 			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
 		}
@@ -858,7 +858,7 @@ class Items extends Secure_Controller
 				$this->item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode (['success' => TRUE, 'message' => lang('Items.successful_bulk_edit'), 'id' => $this->xss_clean($items_to_update)]);
+			echo json_encode (['success' => TRUE, 'message' => lang('Items.successful_bulk_edit'), 'id' => $items_to_update]);
 		}
 		else
 		{

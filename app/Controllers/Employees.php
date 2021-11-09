@@ -36,7 +36,7 @@ class Employees extends Persons
 		$data_rows = [];
 		foreach($employees->getResult() as $person)
 		{
-			$data_rows[] = $this->xss_clean(get_person_data_row($person));
+			$data_rows[] = get_person_data_row($person);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -47,14 +47,14 @@ class Employees extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->employee->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term'), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->employee->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getPost('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -67,7 +67,7 @@ class Employees extends Persons
 		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
-			$person_info->$property = $this->xss_clean($value);
+			$person_info->$property = $value;
 		}
 		$data['person_info'] = $person_info;
 		$data['employee_id'] = $employee_id;
@@ -75,9 +75,9 @@ class Employees extends Persons
 		$modules = [];
 		foreach($this->module->get_all_modules()->getResult() as $module)
 		{
-			$module->module_id = $this->xss_clean($module->module_id);
-			$module->grant = $this->xss_clean($this->employee->has_grant($module->module_id, $person_info->person_id));
-			$module->menu_group = $this->xss_clean($this->employee->get_menu_group($module->module_id, $person_info->person_id));
+			$module->module_id = $module->module_id;
+			$module->grant = $this->employee->has_grant($module->module_id, $person_info->person_id);
+			$module->menu_group = $this->employee->get_menu_group($module->module_id, $person_info->person_id);
 
 			$modules[] = $module;
 		}
@@ -86,9 +86,9 @@ class Employees extends Persons
 		$permissions = [];
 		foreach($this->module->get_all_subpermissions()->getResult() as $permission)	//TODO: subpermissions does not follow naming standards.
 		{
-			$permission->module_id = $this->xss_clean($permission->module_id);
-			$permission->permission_id = str_replace(' ', '_', $this->xss_clean($permission->permission_id));
-			$permission->grant = $this->xss_clean($this->employee->has_grant($permission->permission_id, $person_info->person_id));
+			$permission->module_id = $permission->module_id;
+			$permission->permission_id = str_replace(' ', '_', $permission->permission_id);
+			$permission->grant = $this->employee->has_grant($permission->permission_id, $person_info->person_id);
 
 			$permissions[] = $permission;
 		}
@@ -102,9 +102,9 @@ class Employees extends Persons
 	 */
 	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$first_name = $this->xss_clean($this->request->getPost('first_name'));	//TODO: duplicated code
-		$last_name = $this->xss_clean($this->request->getPost('last_name'));
-		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
+		$first_name = $this->request->getPost('first_name');	//TODO: duplicated code
+		$last_name = $this->request->getPost('last_name');
+		$email = strtolower($this->request->getPost('email'));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
@@ -168,7 +168,7 @@ class Employees extends Persons
 				echo json_encode ([
 					'success' => TRUE,
 					'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-					'id' => $this->xss_clean($employee_data['person_id'])
+					'id' => $employee_data['person_id']
 				]);
 			}
 			else // Existing employee
@@ -195,7 +195,7 @@ class Employees extends Persons
 	 */
 	public function delete(): void
 	{
-		$employees_to_delete = $this->xss_clean($this->request->getPost('ids'));
+		$employees_to_delete = $this->request->getPost('ids');
 
 		if($this->employee->delete_list($employees_to_delete))	//TODO: this is passing a string, but delete_list expects an array
 		{

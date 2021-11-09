@@ -45,7 +45,7 @@ class Item_kits extends Secure_Controller
 			$item_info = $this->item->get_info($item_kit_item['item_id']);
 			foreach(get_object_vars($item_info) as $property => $value)
 			{
-				$item_info->$property = $this->xss_clean($value);
+				$item_info->$property = $value;
 			}
 
 			$item_kit->total_cost_price += $item_info->cost_price * $item_kit_item['quantity'];
@@ -66,7 +66,7 @@ class Item_kits extends Secure_Controller
 	
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_item_kits_manage_table_headers());
+		$data['table_headers'] = get_item_kits_manage_table_headers();
 
 		echo view('item_kits/manage', $data);
 	}
@@ -90,7 +90,7 @@ class Item_kits extends Secure_Controller
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
 			$item_kit = $this->_add_totals_to_item_kit($item_kit);
-			$data_rows[] = $this->xss_clean(get_item_kit_data_row($item_kit));
+			$data_rows[] = get_item_kit_data_row($item_kit);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -98,7 +98,7 @@ class Item_kits extends Secure_Controller
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->item_kit->get_search_suggestions($this->request->getPost('term')));
+		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -125,7 +125,7 @@ class Item_kits extends Secure_Controller
 
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->xss_clean($value);
+			$info->$property = $value;
 		}
 
 		$data['item_kit_info']  = $info;
@@ -134,10 +134,10 @@ class Item_kits extends Secure_Controller
 
 		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
-			$item['name'] = $this->xss_clean($this->item->get_info($item_kit_item['item_id'])->name);
-			$item['item_id'] = $this->xss_clean($item_kit_item['item_id']);
-			$item['quantity'] = $this->xss_clean($item_kit_item['quantity']);
+			$item['kit_sequence'] = $item_kit_item['kit_sequence'];
+			$item['name'] = $this->item->get_info($item_kit_item['item_id'])->name;
+			$item['item_id'] = $item_kit_item['item_id'];
+			$item['quantity'] = $item_kit_item['quantity'];
 
 			$items[] = $item;
 		}
@@ -190,7 +190,7 @@ class Item_kits extends Secure_Controller
 
 			$success = $this->item_kit_items->save($item_kit_items, $item_kit_id);	//TODO: Reflection exception
 
-			$item_kit_data = $this->xss_clean($item_kit_data);
+			$item_kit_data = $item_kit_data;
 
 			if($new_item)
 			{
@@ -212,7 +212,7 @@ class Item_kits extends Secure_Controller
 		}
 		else//failure
 		{
-			$item_kit_data = $this->xss_clean($item_kit_data);
+			$item_kit_data = $item_kit_data;
 
 			echo json_encode ([
 				'success' => FALSE,
@@ -224,7 +224,7 @@ class Item_kits extends Secure_Controller
 	
 	public function delete(): void
 	{
-		$item_kits_to_delete = $this->xss_clean($this->request->getPost('ids'));
+		$item_kits_to_delete = $this->request->getPost('ids');
 
 		if($this->item_kit->delete_list($item_kits_to_delete))
 		{

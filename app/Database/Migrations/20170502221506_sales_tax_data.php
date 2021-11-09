@@ -103,7 +103,7 @@ class Migration_Sales_Tax_Data extends Migration
 		$builder->select('SIT.sale_id');
 		$builder->select('ST.sale_id as sales_taxes_sale_id');
 		$builder->join('sales_taxes as ST','SIT.sale_id = ST.sale_id', 'left');
-		$builder->where('ST.sale_id is null');
+		$builder->where('ST.sale_id', null);
 		$builder->groupBy('SIT.sale_id');
 		$builder->groupBy('ST.sale_id');
 		$builder->orderBy('SIT.sale_id');

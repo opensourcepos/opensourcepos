@@ -55,7 +55,7 @@ class Code128 extends BarcodeBase
 		10111101000, 10111100010, 11110101000, 11110100010, 10111011110, // 99
 		10111101110, 11101011110, 11110101110, 11010000100, 11010010000, // 104
 		11010011100, 1100011101011 // 106 (last char, also one bit longer)
-	);
+	];
 
 	/*
 	 * This map takes the charset from subtype A and PHP will index the array
@@ -83,7 +83,7 @@ class Code128 extends BarcodeBase
 		'FNC_3', 'FNC_2', 'SHIFT_B', 'CODE_C', 'CODE_B', // 100
 		'FNC_4', 'FNC_1', 'START_A', 'START_B', 'START_C', // 105
 		'STOP',	// 106
-	);
+	];
 
 	/*
 	 * Same idea from MapA applied here to B.
@@ -105,7 +105,7 @@ class Code128 extends BarcodeBase
 		'FNC_3', 'FNC_2', 'SHIFT_A', 'CODE_C', 'FNC_4', // 100
 		'CODE_A', 'FNC_1', 'START_A', 'START_B', 'START_C', // 105
 		'STOP',	// 106
-	);
+	];
 
 	/*
 	 * Map C works a little different. The index is the value when the mapping
@@ -116,7 +116,7 @@ class Code128 extends BarcodeBase
 		100 => 
 		'CODE_B', 'CODE_A', 'FNC_1', 'START_A', 'START_B', 
 		'START_C', 'STOP', // 106
-	);
+	];
 
 	/*
 	 * Subtypes
@@ -161,7 +161,7 @@ class Code128 extends BarcodeBase
 			break;
 
 			case self::TYPE_B:
-				return array_search($char, self::$mapB);			
+				return array_search($char, self::$mapB);
 			break;
 
 			case self::TYPE_C:

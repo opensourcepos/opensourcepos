@@ -19,7 +19,7 @@ class Load_config
 
         foreach($CI->Appconfig->get_all()->getResult() as $app_config)
         {
-            $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
+            $CI->config->set_item($app_config->key, $CI->security->xss_clean($app_config->value));
         }
 
         // fallback to English if language settings are not correct

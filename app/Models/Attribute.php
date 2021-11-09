@@ -48,13 +48,13 @@ class Attribute extends Model
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
-		$builder->where('sale_id');
-		$builder->where('receiving_id');
+		$builder->where('sale_id', null);
+		$builder->where('receiving_id', null);
 
 		if(empty($definition_id))
 		{
-			$builder->where('definition_id <>');	//TODO: WE NEED TO MAKE SURE THAT THESE ARE STILL GENERATING THE CODE WE THINK IT'S GENERATING
-			$builder->where('attribute_id');
+			$builder->where('definition_id IS NOT NULL');
+			$builder->where('attribute_id', null);
 		}
 		else
 		{
@@ -158,8 +158,8 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_definitions');
 		$builder->join('attribute_links', 'attribute_links.definition_id = attribute_definitions.definition_id');
 		$builder->where('item_id', $item_id);
-		$builder->where('sale_id');
-		$builder->where('receiving_id');
+		$builder->where('sale_id', null);
+		$builder->where('receiving_id', null);
 		$builder->where('deleted', 0);
 		$builder->orderBy('definition_name', 'ASC');
 
@@ -249,7 +249,7 @@ class Attribute extends Model
 		{
 			$builder = $this->db->table('attribute_links');
 			$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
-			$builder->where('item_id');
+			$builder->where('item_id', null);
 			$builder->where('definition_id', $definition_id);
 			$builder->orderBy('attribute_value','ASC');
 
@@ -515,8 +515,8 @@ class Attribute extends Model
 		{
 			$builder->where('definition_id', $definition_id);
 			$builder->where('item_id', $item_id);
-			$builder->where('sale_id');
-			$builder->where('receiving_id');
+			$builder->where('sale_id', null);
+			$builder->where('receiving_id', null);
 			$builder->update(['attribute_id' => $attribute_id]);
 		}
 		else
@@ -539,8 +539,8 @@ class Attribute extends Model
 
 		//Exclude rows where sale_id or receiving_id has a value
 		$builder = $this->db->table('attribute_links');
-		$builder->where('sale_id');
-		$builder->where('receiving_id');
+		$builder->where('sale_id', null);
+		$builder->where('receiving_id', null);
 
 		if(!empty($definition_id))
 		{
@@ -556,8 +556,8 @@ class Attribute extends Model
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
-		$builder->where('sale_id');
-		$builder->where('receiving_id');
+		$builder->where('sale_id', null);
+		$builder->where('receiving_id', null);
 		$builder->where('definition_id', $definition_id);
 
 		return $builder->get('attribute_links')->getRowObject();
@@ -582,8 +582,8 @@ class Attribute extends Model
 		}
 		else
 		{
-			$builder->where('sale_id');
-			$builder->where('receiving_id');
+			$builder->where('sale_id', null);
+			$builder->where('receiving_id', null);
 		}
 
 		$builder->where('definition_flags & ', $definition_flags);
@@ -596,8 +596,8 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_values');
 		$builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
 		$builder->where('item_id', intval($item_id));
-		$builder->where('sale_id');
-		$builder->where('receiving_id');
+		$builder->where('sale_id', null);
+		$builder->where('receiving_id', null);
 		$builder->where('definition_id', $definition_id);
 
 		return $builder->get()->getRowObject();
@@ -761,13 +761,13 @@ class Attribute extends Model
 		$builder->select('definition_type');
 		$builder->where('definition_id', $definition_id);
 
-		$definition = $builder->get('attribute_definitions')->getRow();
+		$definition = $builder->get('attribute_definitions')->getRow();//TODO: This get is incorrect.  Look at the original code to see what we are needing to do here. It can't pull from both attribute_links and attribute_definitions
 
 		if($definition->definition_type != DROPDOWN)
 		{
 			$this->db->transStart();
 
-			$builder->where('item_id');		//TODO: We need to make sure this is still the same as $builder->where('item_id', NULL) and produces 'WHERE item_id IS NULL' there are several other places where this syntax is used.
+			$builder->where('item_id', null);
 			$builder->where('definition_id', $definition_id);
 			$builder->delete();
 

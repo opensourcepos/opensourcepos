@@ -49,7 +49,7 @@ class Customers extends Persons
 
 	public function index(): void
 	{
-		$data['table_headers'] = $this->xss_clean(get_customer_manage_table_headers());
+		$data['table_headers'] = get_customer_manage_table_headers();
 
 		echo view('people/manage', $data);
 	}
@@ -76,7 +76,7 @@ class Customers extends Persons
 			$stats->quantity = 0;
 		}
 
-		$data_row = $this->xss_clean(get_customer_data_row($person, $stats));
+		$data_row = get_customer_data_row($person, $stats);
 
 		echo json_encode($data_row);
 	}
@@ -113,7 +113,7 @@ class Customers extends Persons
 				$stats->quantity = 0;
 			}
 
-			$data_rows[] = $this->xss_clean(get_customer_data_row($person, $stats));
+			$data_rows[] = get_customer_data_row($person, $stats);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -124,14 +124,14 @@ class Customers extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->xss_clean($this->customer->get_search_suggestions($this->request->getGet('term'), TRUE));
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->xss_clean($this->customer->get_search_suggestions($this->request->getPost('term'), FALSE));
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -144,7 +144,7 @@ class Customers extends Persons
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->xss_clean($value);
+			$info->$property = $value;
 		}
 		$data['person_info'] = $info;
 
@@ -155,14 +155,14 @@ class Customers extends Persons
 		}
 
 		$employee_info = $this->employee->get_info($info->employee_id);
-		$data['employee'] = $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name);
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
 		$tax_code_id = $tax_code_info->tax_code_id;
 
 		if($tax_code_info->tax_code != NULL)
 		{
-			$data['sales_tax_code_label'] = $this->xss_clean($tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name);
+			$data['sales_tax_code_label'] = $tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name;
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class Customers extends Persons
 		$packages = ['' => lang('Items.none')];
 		foreach($this->customer_rewards->get_all()->getResultArray() as $row)
 		{
-			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
+			$packages[$row['package_id']] = $row['package_name'];
 		}
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
@@ -192,7 +192,7 @@ class Customers extends Persons
 		{
 			foreach(get_object_vars($stats) as $property => $value)
 			{
-				$info->$property = $this->xss_clean($value);
+				$info->$property = $value;
 			}
 			$data['stats'] = $stats;
 		}
@@ -203,7 +203,7 @@ class Customers extends Persons
 			// collect mailchimp customer info
 			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE)
 			{
-				$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
+				$data['mailchimp_info'] = $mailchimp_info;
 
 				// collect customer mailchimp emails activities (stats)
 				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE)
@@ -260,9 +260,9 @@ class Customers extends Persons
 	*/
 	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$first_name = $this->xss_clean($this->request->getPost('first_name'));
-		$last_name = $this->xss_clean($this->request->getPost('last_name'));
-		$email = $this->xss_clean(strtolower($this->request->getPost('email')));
+		$first_name = $this->request->getPost('first_name');
+		$last_name = $this->request->getPost('last_name');
+		$email = strtolower($this->request->getPost('email'));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
@@ -317,7 +317,7 @@ class Customers extends Persons
 				echo json_encode ([
 					'success' => TRUE,
 					'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-					'id' => $this->xss_clean($customer_data['person_id'])
+					'id' => $customer_data['person_id']
 				]);
 			}
 			else // Existing customer
@@ -425,7 +425,7 @@ class Customers extends Persons
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{
 					// XSS file data sanity check
-					$data = $this->xss_clean($data);
+					$data = $data;
 
 					$consent = $data[3] == '' ? 0 : 1;
 

@@ -24,7 +24,7 @@ class Tax_jurisdictions extends Secure_Controller
 
 	public function index(): void
 	{
-		 $data['table_headers'] = $this->xss_clean(get_tax_jurisdictions_table_headers());
+		 $data['table_headers'] = get_tax_jurisdictions_table_headers();
 
 		 echo view('taxes/tax_jurisdictions', $data);
 	}
@@ -46,7 +46,7 @@ class Tax_jurisdictions extends Secure_Controller
 		$data_rows = [];
 		foreach($tax_jurisdictions->getResult() as $tax_jurisdiction)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_jurisdictions_data_row($tax_jurisdiction));
+			$data_rows[] = get_tax_jurisdictions_data_row($tax_jurisdiction);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -54,7 +54,7 @@ class Tax_jurisdictions extends Secure_Controller
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = $this->xss_clean(get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id)));
+		$data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -76,8 +76,6 @@ class Tax_jurisdictions extends Secure_Controller
 
 		if($this->tax_jurisdiction->save($tax_jurisdiction_data))
 		{
-			$tax_jurisdiction_data = $this->xss_clean($tax_jurisdiction_data);
-
 			if($jurisdiction_id == -1)	//TODO: Replace -1 with constant
 			{
 				echo json_encode ([

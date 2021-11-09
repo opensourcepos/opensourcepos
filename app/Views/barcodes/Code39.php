@@ -71,7 +71,7 @@ class Code39 extends BarcodeBase
 		'X'	=> '010010001',
 		'Y'	=> '110010000',
 		'Z'	=> '011010000',
-	);
+	];
 
 	/*
 	 * const bar proportions

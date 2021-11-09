@@ -69,25 +69,7 @@ class Secure_Controller extends BaseController
 		$this->load->vars($data);	//TODO: need to find out how to convert this.
 	}
 	
-	/**
-	 * Internal method to do XSS clean in the derived classes
-	 */
-	protected function xss_clean(string $str, bool $is_image = FALSE): string
-	{
-		// This setting is configurable in application/config/config.php.
-		// Users can disable the XSS clean for performance reasons
-		// (cases like intranet installation with no Internet access)
-		if($this->appconfig->get('ospos_xss_clean') == FALSE)
-		{
-			return $str;
-		}
-		else
-		{
-			return $this->security->xss_clean($str, $is_image);	//TODO: Need to replace this.  xss_clean is not considered reliable.
-		}
-	}
-
-	public function numeric($str)
+	public function numeric(string $str): float
 	{
 		return parse_decimals($str);
 	}
