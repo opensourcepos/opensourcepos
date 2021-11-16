@@ -10,7 +10,7 @@ Please make sure you tick (add an x between the square brackets with no spaces) 
 - [] Read the [FAQ](https://github.com/opensourcepos/opensourcepos#faq) for any known install and/or upgrade gotchas (in specific PHP extensions installed)
 - [] Read the [wiki](https://github.com/opensourcepos/opensourcepos/wiki)
 - [] Executed any database upgrade scripts if an upgrade pre 3.0.0 (e.g. database/2.4_to_3.0.sql)
-- [] Aware the installation code is in [bintray](https://bintray.com/jekkos/opensourcepos/opensourcepos/view/files?sort=updated&order=asc#files) (see README), and [GitHub master](https://github.com/opensourcepos/opensourcepos/tree/master) is for [developers only](https://github.com/opensourcepos/opensourcepos/wiki/Development-setup) and therefore not complete nor stable
+- [] Aware the installation code that [GitHub master](https://github.com/opensourcepos/opensourcepos/tree/master) is for [developers only](https://github.com/opensourcepos/opensourcepos/wiki/Development-setup) and therefore not complete nor stable.
 
 ### Installation information
 
