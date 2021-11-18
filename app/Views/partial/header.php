@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url();?>" />
-	<title><?php echo $this->config->get('company') . ' | ' . lang('Common.powered_by') . ' OSPOS ' . $this->config->get('application_version') ?></title>
+	<title><?php echo $this->appconfig->get('company') . ' | ' . lang('Common.powered_by') . ' OSPOS ' . $this->appconfig->get('application_version') ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->get('theme')) ? 'flatly' : $this->config->get('theme')) . '/bootstrap.min.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->appconfig->get('theme')) ? 'flatly' : $this->appconfig->get('theme')) . '/bootstrap.min.css' ?>"/>
 
 	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
@@ -80,8 +80,8 @@
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
-	<?php if ($this->config->get('theme') != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . $this->config->get('theme') . '.css')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . $this->config->get('theme') . '.css' ?>"/>
+	<?php if ($this->appconfig->get('theme') != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . $this->appconfig->get('theme') . '.css')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . $this->appconfig->get('theme') . '.css' ?>"/>
 	<?php } ?>
 
 		<!-- start minjs template tags -->
@@ -104,7 +104,7 @@
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
-					<div id="liveclock"><?php echo date($this->config->get('dateformat') . ' ' . $this->config->get('timeformat')) ?></div>
+					<div id="liveclock"><?php echo date($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat')) ?></div>
 				</div>
 
 				<div class="navbar-right" style="margin:0">
@@ -114,7 +114,7 @@
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?php echo $this->config->get('company'); ?></strong>
+					<strong><?php echo $this->appconfig->get('company'); ?></strong>
 				</div>
 			</div>
 		</div>

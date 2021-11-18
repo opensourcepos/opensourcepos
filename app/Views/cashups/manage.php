@@ -27,7 +27,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name), 'url');?>',
 		headers: <?php echo esc($table_headers, 'js'); ?>,
-		pageSize: <?php echo $this->config->get('lines_per_page'); ?>,
+		pageSize: <?php echo $this->appconfig->get('lines_per_page'); ?>,
 		uniqueId: 'cashup_id',
 		queryParams: function() {
 			return $.extend(arguments[0], {
@@ -47,7 +47,7 @@ $(document).ready(function()
 		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo lang('Common.print'); ?>
 	</button>
 	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url($controller_name."/view"); //TODO: String Interpolation ?>'
-			title='<?php echo lang(esc($controller_name) . '.new'); //TODO: String Interpolation?>'>
+			title='<?php echo lang(esc($controller_name, 'attr') . '.new'); //TODO: String Interpolation?>'>
 		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo lang(esc($controller_name) . '.new'); //TODO: String Interpolation ?>
 	</button>
 </div>
@@ -59,7 +59,7 @@ $(document).ready(function()
 		</button>
 
 		<?php echo form_input (['name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker']); ?>
-		<?php echo form_multiselect('filters[]', esc($filters), '', [	//TODO: SELECTED parameter expects an array or void, but a string was provided.
+		<?php echo form_multiselect('filters[]', esc($filters, 'attr'), '', [	//TODO: SELECTED parameter expects an array or void, but a string was provided.
 			'id'=>'filters',
 			'data-none-selected-text'=>lang('Common.none_selected_text'),
 			'class'=>'selectpicker show-menu-arrow',

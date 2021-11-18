@@ -19,7 +19,7 @@
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
-							'value' => esc($this->config->get('company'))
+							'value' => esc($this->appconfig->get('company'))
 						]); ?>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
 							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo'); ?>"
-								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . $this->config->get('company_logo')), 'url'); else echo ''; ?>"
+								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . $this->appconfig->get('company_logo')), 'url'); else echo ''; ?>"
 								 style="max-height: 100%; max-width: 100%;">
 						</div>
 						<div>
@@ -54,7 +54,8 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->get('address')]); ?>
+						'value'=> esc($this->appconfig->get('address'))
+					]); ?>
 				</div>
 			</div>
 
@@ -67,7 +68,8 @@
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->get('website')]); ?>
+							'value'=> esc($this->appconfig->get('website'))
+						]); ?>
 					</div>
 				</div>
 			</div>
@@ -82,7 +84,8 @@
 							'id' => 'email',
 							'type' => 'email',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->get('email')]); ?>
+							'value'=> esc($this->appconfig->get('email'))
+						]); ?>
 					</div>
 				</div>
 			</div>
@@ -96,7 +99,8 @@
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->get('phone')]); ?>
+							'value'=> esc($this->appconfig->get('phone'))
+						]); ?>
 					</div>
 				</div>
 			</div>
@@ -110,7 +114,8 @@
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
-							'value'=>$this->config->get('fax')]); ?>
+							'value'=> esc($this->appconfig->get('fax'))
+						]); ?>
 					</div>
 				</div>
 			</div>
@@ -122,7 +127,8 @@
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
-						'value'=>$this->config->get('return_policy')]); ?>
+						'value' => esc($this->appconfig->get('return_policy'))
+					]); ?>
 				</div>
 			</div>
 
@@ -142,7 +148,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'GET',
-			url: '<?php echo site_url("$controller_name/remove_logo"); ?>',
+			url: '<?php echo esc(site_url("$controller_name/remove_logo"), 'url'); ?>',
 			dataType: 'json'
 		})
 	});
@@ -157,7 +163,7 @@ $(document).ready(function()
 			address: "required",
 			phone: "required",
     		email: "email",
-    		return_policy: "required" 		
+    		return_policy: "required"
    		},
 
 		messages: 

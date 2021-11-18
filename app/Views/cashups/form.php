@@ -9,7 +9,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('cashups/save/'.$cash_ups_info->cashup_id, ['id'=>'cashups_edit_form', 'class'=>'form-horizontal']); ?>
+<?php echo form_open(esc('cashups/save/'.$cash_ups_info->cashup_id, 'attr'), ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']); //TODO: String Interpolation ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.info'), 'cash_ups_info', ['class'=>'control-label col-xs-3']); ?>
@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.open_employee'), 'open_employee', ['class'=>'control-label col-xs-3']); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('open_employee_id', esc($employees), $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"');?>
+				<?php echo form_dropdown('open_employee_id', esc($employees, 'attr'), $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"');?>
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'open_amount_cash',
@@ -53,7 +53,7 @@
 						]);
 					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'transfer_amount_cash',
@@ -74,7 +74,7 @@
 						]);
 					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.close_employee'), 'close_employee', ['class'=>'control-label col-xs-3']); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('close_employee_id', esc($employees), $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"');?>
+				<?php echo form_dropdown('close_employee_id', esc($employees, 'attr'), $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"');?>
 			</div>
 		</div>
 
@@ -107,7 +107,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'closed_amount_cash',
@@ -116,7 +116,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_cash)]
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -139,7 +139,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'closed_amount_due',
@@ -148,7 +148,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due)]
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -159,7 +159,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'closed_amount_card',
@@ -168,7 +168,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_card)]
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -179,7 +179,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'closed_amount_check',
@@ -188,7 +188,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_check)]
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -199,7 +199,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'closed_amount_total',
@@ -210,7 +210,7 @@
 						]
 					);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->config->get('currency_symbol')); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -257,12 +257,12 @@ $(document).ready(function()
 	<?php echo view('partial/datepicker_locale'); ?>
 
 	$('#open_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->get('dateformat')) . ' ' . dateformat_bootstrap($this->config->get('timeformat'));?>",
-		startDate: "<?php echo date($this->config->get('dateformat') . ' ' . esc($this->config->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		format: "<?php echo dateformat_bootstrap($this->appconfig->get('dateformat')) . ' ' . dateformat_bootstrap($this->appconfig->get('timeformat'));?>",
+		startDate: "<?php echo date($this->appconfig->get('dateformat') . ' ' . esc($this->appconfig->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
-		$t = $this->config->get('timeformat');
+		$t = $this->appconfig->get('timeformat');
 		$m = $t[strlen($t)-1];
-		if( strpos($this->config->get('timeformat'), 'a') !== false || strpos($this->config->get('timeformat'), 'A') !== false )
+		if( strpos($this->appconfig->get('timeformat'), 'a') !== false || strpos($this->appconfig->get('timeformat'), 'A') !== false )
 		{
 		?>
 			showMeridian: true,
@@ -284,12 +284,12 @@ $(document).ready(function()
 	});
 
 	$('#close_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->get('dateformat')) . ' ' . dateformat_bootstrap($this->config->get('timeformat'));?>",
-		startDate: "<?php echo date($this->config->get('dateformat') . ' ' . esc($this->config->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		format: "<?php echo dateformat_bootstrap($this->appconfig->get('dateformat')) . ' ' . dateformat_bootstrap($this->appconfig->get('timeformat'));?>",
+		startDate: "<?php echo date($this->appconfig->get('dateformat') . ' ' . esc($this->appconfig->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
-		$t = $this->config->get('timeformat');
+		$t = $this->appconfig->get('timeformat');
 		$m = $t[strlen($t)-1];
-		if( strpos($this->config->get('timeformat'), 'a') !== false || strpos($this->config->get('timeformat'), 'A') !== false )
+		if( strpos($this->appconfig->get('timeformat'), 'a') !== false || strpos($this->appconfig->get('timeformat'), 'A') !== false )
 		{
 		?>
 			showMeridian: true,

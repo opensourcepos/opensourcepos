@@ -45,7 +45,7 @@
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-				pageSize: <?php echo $this->config->get('lines_per_page'); ?>,
+				pageSize: <?php echo $this->appconfig->get('lines_per_page'); ?>,
 				sortable: true,
 				showExport: true,
 				exportDataType: 'all',

@@ -191,7 +191,7 @@ $(document).ready(function()
 			}
 		},
 		language : '<?php echo current_language_code();?>',
-		country_codes: '<?php echo $this->config->get('country_codes'); ?>'
+		country_codes: '<?php echo $this->appconfig->get('country_codes'); ?>'
 	});
 });
 </script>

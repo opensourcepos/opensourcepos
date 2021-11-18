@@ -71,7 +71,7 @@ $(document).ready(function()
 			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
-				<div id="company_name"><?php echo $this->config->get('company'); ?></div>
+				<div id="company_name"><?php echo $this->appconfig->get('company'); ?></div>
 			<?php
 			}
 			?>
@@ -233,11 +233,11 @@ $(document).ready(function()
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->config->get('payment_message')); ?></div>
+				<div><?php echo nl2br($this->appconfig->get('payment_message')); ?></div>
 				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . $comments; ?></div>
-				<div style='padding:4%;'><?php echo $this->config->get('invoice_default_comments'); ?></div>
+				<div style='padding:4%;'><?php echo $this->appconfig->get('invoice_default_comments'); ?></div>
 			</h5>
-			<div style='padding:2%;'><?php echo nl2br($this->config->get('return_policy')); ?></div>
+			<div style='padding:2%;'><?php echo nl2br($this->appconfig->get('return_policy')); ?></div>
 		</div>
 		<div id='barcode'>
 			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo $barcode; ?>' /><br>

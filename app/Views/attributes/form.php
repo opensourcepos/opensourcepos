@@ -13,7 +13,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('attributes/save_definition/' . esc($definition_id), ['id'=>'attribute_form', 'class'=>'form-horizontal']); //TODO: String Interpolation?>
+<?php echo form_open('attributes/save_definition/' . esc($definition_id, 'attr'), ['id'=>'attribute_form', 'class'=>'form-horizontal']); //TODO: String Interpolation?>
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
@@ -23,7 +23,7 @@
 					'name'=>'definition_name',
 					'id' => 'definition_name',
 					'class'=>'form-control input-sm',
-					'value'=>esc($definition_info->definition_name)
+					'value'=>esc($definition_info->definition_name, 'attr')
 				]
 			);?>
 		</div>
@@ -39,7 +39,7 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label(lang('Attributes.definition_group'), 'definition_group', ['class' => 'control-label col-xs-3']); ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_group', esc($definition_group), esc($definition_info->definition_fk), 'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : ''));?>
+			<?php echo form_dropdown('definition_group', esc($definition_group, 'attr'), esc($definition_info->definition_fk, 'attr'), 'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : ''));?>
 		</div>
 	</div>
 
@@ -47,7 +47,7 @@
 		<?php echo form_label(lang('Attributes.definition_flags'), 'definition_flags', ['class' => 'control-label col-xs-3']); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_multiselect('definition_flags[]', esc($definition_flags), esc(array_keys($selected_definition_flags)), [
+				<?php echo form_multiselect('definition_flags[]', esc($definition_flags, 'attr'), esc(array_keys($selected_definition_flags), 'attr'), [
 						'id'=>'definition_flags',
 						'class'=>'selectpicker show-menu-arrow',
 						'data-none-selected-text'=>lang('Common.none_selected_text'),
@@ -64,7 +64,7 @@
 		<?php echo form_label(lang('Attributes.definition_unit'), 'definition_units', ['class' => 'control-label col-xs-3']); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_input (['name'=>'definition_unit', 'value'=>esc($definition_info->definition_unit),'class'=>'form-control input-sm', 'id' => 'definition_unit']);?>
+				<?php echo form_input (['name'=>'definition_unit', 'value'=>esc($definition_info->definition_unit, 'attr'),'class'=>'form-control input-sm', 'id' => 'definition_unit']);?>
 			</div>
 		</div>
 	</div>

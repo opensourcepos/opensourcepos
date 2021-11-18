@@ -19,10 +19,10 @@
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if($this->config->get('company_logo') != '')
+				<?php if($this->appconfig->get('company_logo') != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->config->get('company_logo'); ?>" alt="company_logo" />
+					<img id="image" src="<?php echo 'uploads/' . $this->appconfig->get('company_logo'); ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -34,7 +34,7 @@
 		<tr>
 			<td id="company-title">
 				<div id="company">
-					<?php echo $this->config->get('company'); ?>
+					<?php echo $this->appconfig->get('company'); ?>
 					<?php echo nl2br($company_info); ?>
 				</div>
 			</td>
@@ -139,10 +139,10 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->config->get('payment_message')); ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->config->get('quote_default_comments') : $comments); ?></div>
+				<div><?php echo nl2br($this->appconfig->get('payment_message')); ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('quote_default_comments') : $comments); ?></div>
 			</h5>
-			<?php echo nl2br($this->config->get('return_policy')); ?>
+			<?php echo nl2br($this->appconfig->get('return_policy')); ?>
 		</div>
 		<div id='barcode'>
 			<?php echo $quote_number; ?>

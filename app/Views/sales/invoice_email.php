@@ -20,10 +20,10 @@ if(isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if($this->config->get('company_logo') != '')
+				<?php if($this->appconfig->get('company_logo') != '')
 				{
 				?>
-					<img id="image" src="data:<?=$mimetype?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . $this->config->get('company_logo'))); ?>" alt="company_logo" />
+					<img id="image" src="data:<?=$mimetype?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . $this->appconfig->get('company_logo'))); ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -32,7 +32,7 @@ if(isset($error_message))
 		</tr>
 		<tr>
 			<td id="company-title" id="company">
-				<?php echo $this->config->get('company'); ?><br/>
+				<?php echo $this->appconfig->get('company'); ?><br/>
 				<?php echo nl2br($company_info); ?>
 			</td>
 			<td id="meta">
@@ -181,10 +181,10 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->config->get('payment_message')); ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->config->get('invoice_default_comments') : $comments); ?></div>
+				<div><?php echo nl2br($this->appconfig->get('payment_message')); ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('invoice_default_comments') : $comments); ?></div>
 			</h5>
-			<?php echo nl2br($this->config->get('return_policy')); ?>
+			<?php echo nl2br($this->appconfig->get('return_policy')); ?>
 		</div>
 		<div id='barcode'>
 			<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>

@@ -186,7 +186,7 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>'.$this->config->get('currency_symbol').'</b>',
+											'data-on' => '<b>'.$this->appconfig->get('currency_symbol').'</b>',
 											'data-off' => '<b>%</b>',
 											'data-line' => $line,
 											'checked' => $item['discount_type']

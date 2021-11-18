@@ -19,7 +19,7 @@
 
 		<?php 
 		$class = '';
-		if($this->config->get('giftcard_number') == 'series')
+		if($this->appconfig->get('giftcard_number') == 'series')
 		{
 			$class = ' required';
 		}
@@ -41,7 +41,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><?php echo $this->config->get('currency_symbol'); ?></span>
+						<span class="input-group-addon input-sm"><?php echo $this->appconfig->get('currency_symbol'); ?></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name'=>'giftcard_amount',
@@ -50,7 +50,7 @@
 							'value'=>to_currency_no_money($giftcard_value))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -103,7 +103,7 @@ $(document).ready(function()
 		rules:
 		{
 			<?php
-			if($this->config->get('giftcard_number') == 'series')
+			if($this->appconfig->get('giftcard_number') == 'series')
 			{
 			?>
 			giftcard_number:
@@ -136,7 +136,7 @@ $(document).ready(function()
 		messages:
 		{
 			<?php
-			if($this->config->get('giftcard_number') == 'series')
+			if($this->appconfig->get('giftcard_number') == 'series')
 			{
 			?>
 				giftcard_number:

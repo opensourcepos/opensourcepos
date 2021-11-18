@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $mailchimp
+ * @var string $controller_name
+ */
+?>
 <?php echo form_open('config/save_mailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
@@ -14,13 +20,13 @@
 							'name' => 'mailchimp_api_key',
 							'id' => 'mailchimp_api_key',
 							'class' => 'form-control input-sm',
-							'value' => $mailchimp['api_key']
+							'value' => esc($mailchimp['api_key'])
 						]); ?>
 					</div>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.mailchimp_tooltip'); ?>"></span></a>
+						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.mailchimp_tooltip'); //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
 					</label>
 				</div>
 			</div>
@@ -31,8 +37,8 @@
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 						<?php echo form_dropdown('mailchimp_list_id',
-							$mailchimp['lists'],
-							$mailchimp['list_id'],
+							esc($mailchimp['lists']),
+							esc($mailchimp['list_id']),
 							array('id' => 'mailchimp_list_id', 'class' => 'form-control input-sm')); ?>
 					</div>
 				</div>
@@ -53,7 +59,7 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key')?>", {
+		$.post("<?php echo esc(site_url($controller_name . '/ajax_check_mailchimp_api_key'), 'url') ?>", {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {

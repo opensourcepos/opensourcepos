@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
 	<base href="<?php echo base_url(); ?>">
-	<title><?php echo $this->config->get('company') . '&nbsp;|&nbsp;' . lang('Common.software_short')  . '&nbsp;|&nbsp;' .  lang('Login.login'); ?></title>
+	<title><?php echo $this->appconfig->get('company') . '&nbsp;|&nbsp;' . lang('Common.software_short')  . '&nbsp;|&nbsp;' .  lang('Login.login'); ?></title>
 	<meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="noindex, nofollow" name="robots">
 	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
-  <link href="<?php echo 'dist/bootswatch-5/' . (empty($this->config->get('theme')) || 'paper' == $this->config->get('theme') || 'readable' == $this->config->get('theme') ? 'flatly' : $this->config->get('theme')) . '/bootstrap.min.css'; ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo 'dist/bootswatch-5/' . (empty($this->appconfig->get('theme')) || 'paper' == $this->appconfig->get('theme') || 'readable' == $this->appconfig->get('theme') ? 'flatly' : $this->appconfig->get('theme')) . '/bootstrap.min.css'; ?>" rel="stylesheet" type="text/css">
   <!-- start css template tags -->
   <link rel="stylesheet" type="text/css" href="css/login.min.css"/>
   <!-- end css template tags -->
@@ -20,7 +20,7 @@
     <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
       <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
       <?php if ($this->Appconfig->get('company_logo')): ?>
-        <img class="logo w-100" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . $this->config->get('company'); ?>">
+        <img class="logo w-100" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . $this->appconfig->get('company'); ?>">
       <?php else: ?>
         <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
           <title><?php echo lang('Common.software_title') . '&nbsp;' . lang('Common.logo'); ?></title>
@@ -39,10 +39,10 @@
         <?php endif; ?>
 				<?php if (!$this->migration->is_latest()): ?>
         <div class="alert alert-info mt-3">
-					<?php echo lang('Login.migration_needed', $this->config->get('application_version')); ?>
+					<?php echo lang('Login.migration_needed', $this->appconfig->get('application_version')); ?>
 				</div>
 				<?php endif; ?>
-        <?php if (empty($this->config->get('login_form')) || 'floating_labels'==($this->config->get('login_form'))): ?>
+        <?php if (empty($this->appconfig->get('login_form')) || 'floating_labels'==($this->appconfig->get('login_form'))): ?>
         <div class="form-floating mt-3">
           <input class="form-control" id="input-username" name="username" type="text" placeholder="<?php echo lang('Login.username'); ?>">
           <label for="input-username"><?php echo lang('Login.username'); ?></label>
@@ -51,7 +51,7 @@
           <input class="form-control" id="input-password" name="password" type="password" placeholder="<?php echo lang('Login.password'); ?>">
           <label for="input-password"><?php echo lang('Login.password'); ?></label>
         </div>
-      <?php elseif ('input_groups'==($this->config->get('login_form'))): ?>
+      <?php elseif ('input_groups'==($this->appconfig->get('login_form'))): ?>
         <div class="input-group mt-3">
           <span class="input-group-text" id="input-username">
             <svg class="bi" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -71,9 +71,9 @@
           <input class="form-control" name="password" type="password" placeholder="<?php echo lang('Login.password'); ?>" aria-label="<?php echo lang('Login.password'); ?>" aria-describedby="input-password">
         </div>
         <?php endif; ?>
-				<?php if($this->config->get('gcaptcha_enable')) {
+				<?php if($this->appconfig->get('gcaptcha_enable')) {
 					echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-					echo '<div class="g-recaptcha mb-3" align="center" data-sitekey="' . $this->config->get('gcaptcha_site_key') . '"></div>'; }
+					echo '<div class="g-recaptcha mb-3" align="center" data-sitekey="' . $this->appconfig->get('gcaptcha_site_key') . '"></div>'; }
         ?>
         <div class="d-grid">
           <button class="btn btn-lg btn-primary" name="login-button" type="submit" ><?php echo lang('Login.go'); ?></button>

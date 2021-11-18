@@ -5,7 +5,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $tax_rate_table_headers; ?>,
-		pageSize: <?php echo $this->config->get('lines_per_page'); ?>,
+		pageSize: <?php echo $this->appconfig->get('lines_per_page'); ?>,
 		uniqueId: 'tax_rate_id'
 	});
 });

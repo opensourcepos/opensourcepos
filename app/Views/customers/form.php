@@ -35,7 +35,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']); ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? (boolean)!$this->config->get('enforce_privacy') : (boolean)$person_info->consent); ?>
+						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? (boolean)!$this->appconfig->get('enforce_privacy') : (boolean)$person_info->consent); ?>
 					</div>
 				</div>
 
@@ -118,7 +118,7 @@
 					</div>
 				</div>
 
-				<?php if($this->config->get('customer_reward_enable') == TRUE): ?>
+				<?php if($this->appconfig->get('customer_reward_enable') == TRUE): ?>
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class'=>'control-label col-xs-3']); ?>
 						<div class='col-xs-8'>
@@ -214,7 +214,7 @@
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 								<?php echo form_input ([
 										'name'=>'total',
@@ -224,7 +224,7 @@
 										'disabled'=>''
 								]); ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -235,7 +235,7 @@
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 								<?php echo form_input ([
 										'name'=>'max',
@@ -245,7 +245,7 @@
 										'disabled'=>''
 									]); ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -256,7 +256,7 @@
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 								<?php echo form_input ([
 										'name'=>'min',
@@ -266,7 +266,7 @@
 										'disabled'=>''
 									]); ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -277,7 +277,7 @@
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 								<?php echo form_input ([
 										'name'=>'average',
@@ -287,7 +287,7 @@
 										'disabled'=>''
 									]); ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo $this->config->get('currency_symbol'); ?></b></span>
+									<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol'); ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>

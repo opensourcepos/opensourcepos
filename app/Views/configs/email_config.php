@@ -13,7 +13,7 @@
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc($this->config->get('protocol')),
+						esc($this->appconfig->get('protocol')),
 						['class' => 'form-control input-sm', 'id' => 'protocol']);
 					?>
 				</div>
@@ -26,7 +26,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->config->get('mailpath'))
+						'value' => esc($this->appconfig->get('mailpath'))
 					]); ?>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->config->get('smtp_host'))
+						'value' => esc($this->appconfig->get('smtp_host'))
 					]); ?>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 						'name' => 'smtp_port',
 						'id' => 'smtp_port',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->get('smtp_port')]); ?>
+						'value' => $this->appconfig->get('smtp_port')]); ?>
 				</div>
 			</div>
 
@@ -62,7 +62,7 @@
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc($this->config->get('smtp_crypto')),
+						esc($this->appconfig->get('smtp_crypto')),
 						['class' => 'form-control input-sm', 'id' => 'smtp_crypto']);
 					?>
 				</div>
@@ -75,7 +75,7 @@
 						'name' => 'smtp_timeout',
 						'id' => 'smtp_timeout',
 						'class' => 'form-control input-sm',
-						'value' => $this->config->get('smtp_timeout')]); ?>
+						'value' => $this->appconfig->get('smtp_timeout')]); ?>
 				</div>
 			</div>
 
@@ -88,7 +88,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->config->get('smtp_user'))
+							'value' => esc($this->appconfig->get('smtp_user'))
 						]); ?>
 					</div>
 				</div>
@@ -103,7 +103,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->config->get('smtp_pass'))
+							'value' => esc($this->appconfig->get('smtp_pass'))
 						]); ?>
 					</div>
 				</div>
