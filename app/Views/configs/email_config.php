@@ -13,7 +13,7 @@
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc($this->appconfig->get('protocol')),
+						esc($this->appconfig->get('protocol'), 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'protocol']);
 					?>
 				</div>
@@ -26,7 +26,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->appconfig->get('mailpath'))
+						'value' => esc($this->appconfig->get('mailpath'), 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->appconfig->get('smtp_host'))
+						'value' => esc($this->appconfig->get('smtp_host'), 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc($this->appconfig->get('smtp_crypto')),
+						esc($this->appconfig->get('smtp_crypto'), 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'smtp_crypto']);
 					?>
 				</div>
@@ -88,7 +88,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->appconfig->get('smtp_user'))
+							'value' => esc($this->appconfig->get('smtp_user'), 'attr')
 						]); ?>
 					</div>
 				</div>
@@ -103,7 +103,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->appconfig->get('smtp_pass'))
+							'value' => esc($this->appconfig->get('smtp_pass'), 'attr')
 						]); ?>
 					</div>
 				</div>

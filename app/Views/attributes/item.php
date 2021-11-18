@@ -6,9 +6,9 @@
  */
 ?>
 <div class="form-group form-group-sm">
-	<?php echo form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']); ?>
+	<?php echo form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
 	<div class='col-xs-8'>
-		<?php echo form_dropdown('definition_name', esc($definition_names, 'attr'), -1, ['id' => 'definition_name', 'class' => 'form-control']); ?>
+		<?php echo form_dropdown('definition_name', esc($definition_names, 'attr'), -1, ['id' => 'definition_name', 'class' => 'form-control']) ?>
 	</div>
 
 </div>
@@ -19,7 +19,7 @@ foreach($definition_values as $definition_id => $definition_value)
 ?>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label(esc($definition_value['definition_name']), esc($definition_value['definition_name'], 'attr'), ['class' => 'control-label col-xs-3']); ?>
+	<?php echo form_label(esc($definition_value['definition_name']), esc($definition_value['definition_name'], 'attr'), ['class' => 'control-label col-xs-3']) ?>
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<?php
@@ -85,7 +85,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
 (function() {
-		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->appconfig->get('dateformat') . '"}')]); ?>
+		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($this->appconfig->get('dateformat') . '"}')]) ?>
 
 		var enable_delete = function() {
 			$('.remove_attribute_btn').click(function() {
@@ -100,7 +100,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			$("input[name='attribute_ids[" + definition_id + "]']").val('');
 		}).autocomplete({
 			source: function(request, response) {
-				$.get('<?php echo site_url('attributes/suggest_attribute/');?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
+				$.get('<?php echo site_url('attributes/suggest_attribute/') ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
 					return response(data);
 				}, 'json');
 			},
@@ -125,7 +125,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			var definition_id = $("#definition_name option:selected").val();
 			var attribute_values = definition_values();
 			attribute_values[definition_id] = '';
-			$('#attributes').load('<?php echo esc(site_url("items/attributes/$item_id"), 'url');?>', {
+			$('#attributes').load('<?php echo esc(site_url("items/attributes/$item_id"), 'url') ?>', {
 				'definition_ids': JSON.stringify(attribute_values)
 			}, enable_delete);
 		};

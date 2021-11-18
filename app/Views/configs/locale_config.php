@@ -16,8 +16,8 @@
 				<?php echo form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']); ?>
 				<div class='row'>
 					<div class='col-xs-1'>
-						<?php echo form_input('number_locale', esc($this->appconfig->get('number_locale')), ['class' => 'form-control input-sm', 'id' => 'number_locale']); ?>
-						<?php echo form_hidden('save_number_locale', esc($this->appconfig->get('number_locale'))); ?>
+						<?php echo form_input('number_locale', esc($this->appconfig->get('number_locale'), 'attr'), ['class' => 'form-control input-sm', 'id' => 'number_locale']); ?>
+						<?php echo form_hidden('save_number_locale', esc($this->appconfig->get('number_locale'), 'attr')); ?>
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">
@@ -51,7 +51,7 @@
 						'name' => 'currency_symbol',
 						'id' => 'currency_symbol',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($this->appconfig->get('currency_symbol'))
+						'value' => esc($this->appconfig->get('currency_symbol'), 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 						'name' => 'currency_code',
 						'id' => 'currency_code',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($currency_code)
+						'value' => esc($currency_code, 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -140,7 +140,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options), $this->appconfig->get('cash_rounding_code'), ['class' => 'form-control input-sm']);
+					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options, 'attr'), $this->appconfig->get('cash_rounding_code'), ['class' => 'form-control input-sm']);
 					?>
 				</div>
 			</div>
@@ -157,7 +157,8 @@
 							'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
 							'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
 						],
-						esc($this->appconfig->get('payment_options_order')), ['class' => 'form-control input-sm']
+						esc($this->appconfig->get('payment_options_order'), 'attr'),
+						['class' => 'form-control input-sm']
 					); ?>
 				</div>
 			</div>
@@ -165,7 +166,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']); ?>
 				<div class='col-xs-1'>
-					<?php echo form_input('country_codes', esc($this->appconfig->get('country_codes')), ['class' => 'form-control input-sm']); ?>
+					<?php echo form_input('country_codes', esc($this->appconfig->get('country_codes'), 'attr'), ['class' => 'form-control input-sm']); ?>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
@@ -193,40 +194,42 @@
 				<?php echo form_dropdown(
 					'timezone',
 					get_timezones(),
-					$this->appconfig->get('timezone') ? $this->appconfig->get('timezone') : date_default_timezone_get(), ['class' => 'form-control input-sm']);
+					$this->appconfig->get('timezone') ? esc($this->appconfig->get('timezone'), 'attr') : date_default_timezone_get(), ['class' => 'form-control input-sm']);
 					?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-2']); ?>
+			<?php echo form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-sm-2'>
-				<?php echo form_dropdown('dateformat',
+				<?php echo form_dropdown(
+					'dateformat',
 					get_dateformats(),
-					$this->appconfig->get('dateformat'), ['class' => 'form-control input-sm'));
-					?>
+					esc($this->appconfig->get('dateformat'), 'attr'),
+					['class' => 'form-control input-sm']
+				) ?>
 				</div>
 				<div class='col-sm-2'>
 				<?php echo form_dropdown('timeformat',
 					get_timeformats(),
-					$this->appconfig->get('timeformat'), ['class' => 'form-control input-sm'));
-					?>
+					$this->appconfig->get('timeformat'), ['class' => 'form-control input-sm']
+				) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_checkbox ([
 						'name' => 'date_or_time_format',
 						'id' => 'date_or_time_format',
 						'value' => 'date_or_time_format',
-						'checked'=>$this->appconfig->get('date_or_time_format'))); ?>
+						'checked' => $this->appconfig->get('date_or_time_format')]); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.financial_year'), 'financial_year', ['class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label(lang('Config.financial_year'), 'financial_year', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown(
 						'financial_year',
@@ -290,7 +293,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
+					url: "<?php echo esc(site_url($controller_name . '/ajax_check_number_locale'), 'url') ?>",
 					type: 'POST',
 					data: {
 						'number_locale': function() { return $('#number_locale').val(); },

@@ -11,13 +11,13 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo lang('Items.generate_barcodes'); ?></title>
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/barcode_font.css" />
+	<title><?php echo lang('Items.generate_barcodes') ?></title>
+	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url() ?>css/barcode_font.css" />
 </head>
 
-<body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 
-      style="font-size:<?php echo $barcode_config['barcode_font_size']; ?>px">
-	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing']; ?> width='<?php echo $barcode_config['barcode_page_width']."%"; ?>' >
+<body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
+      style="font-size:<?php echo $barcode_config['barcode_font_size'] ?>px">
+	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing'] ?> width='<?php echo $barcode_config['barcode_page_width']."%" ?>' >
 		<tr>
 			<?php
 			$count = 0;

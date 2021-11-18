@@ -18,7 +18,7 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, esc($this->appconfig->get('theme')), ['class' => 'form-control input-sm', 'id' => 'theme-change']); ?>
+							<?php echo form_dropdown('theme', $themes, esc($this->appconfig->get('theme'), 'attr'), ['class' => 'form-control input-sm', 'id' => 'theme-change']); ?>
 						</div>
 						<div class="col-sm-7">
 							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($this->appconfig->get('theme')) ? 'default' : esc($this->appconfig->get('theme'))); ?>" target="_blank" rel=”noopener”>
@@ -32,11 +32,15 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']); ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('login_form', [
+					<?php echo form_dropdown(
+						'login_form',
+						[
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						],
-						esc($this->appconfig->get('login_form')), ['class' => 'form-control input-sm']); ?>
+						esc($this->appconfig->get('login_form'), 'attr'),
+						['class' => 'form-control input-sm']
+					); ?>
 				</div>
 			</div>
 
@@ -60,7 +64,7 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc($this->appconfig->get('currency_symbol')).'</b>',
+								'data-on' => '<b>' . esc($this->appconfig->get('currency_symbol'), 'attr').'</b>',
 								'data-off' => '<b>%</b>',
 								'checked' => $this->appconfig->get('default_sales_discount_type')]); ?>
 						</span>
@@ -88,7 +92,7 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc($this->appconfig->get('currency_symbol')) . '</b>',
+								'data-on' => '<b>' . esc($this->appconfig->get('currency_symbol'), 'attr') . '</b>',
 								'data-off' => '<b>%</b>',
 								'checked' => $this->appconfig->get('default_receivings_discount_type')]); ?>
 						</span>
@@ -143,18 +147,27 @@
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
-							<?php echo form_dropdown('notify_vertical_position', [
+							<?php echo form_dropdown(
+								'notify_vertical_position',
+								[
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								esc($this->appconfig->get('notify_vertical_position')), ['class' => 'form-control input-sm']); ?>
+								esc($this->appconfig->get('notify_vertical_position'), 'attr'),
+								['class' => 'form-control input-sm']
+							); ?>
 						</div>
 						<div class='col-sm-2'>
-							<?php echo form_dropdown('notify_horizontal_position', [
+							<?php echo form_dropdown(
+								'notify_horizontal_position',
+								[
 									'left' => lang('Config.left'),
 									'center' => lang('Config.center'),
-									'right' => lang('Config.right')],
-									esc($this->appconfig->get('notify_horizontal_position')), ['class' => 'form-control input-sm']); ?>
+									'right' => lang('Config.right')
+								],
+								esc($this->appconfig->get('notify_horizontal_position'), 'attr'),
+								['class' => 'form-control input-sm']
+							); ?>
 						</div>
 					</div>
 				</div>
@@ -177,8 +190,8 @@
 									'value' => $this->appconfig->get('image_max_width'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
-									'title' => lang('Config.image_max_width_tooltip')]);
-								?>
+									'title' => lang('Config.image_max_width_tooltip')
+								]); ?>
 							</div>
 						</div>
 						<div class='col-sm-2'>
@@ -194,8 +207,8 @@
 									'value' => $this->appconfig->get('image_max_height'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
-									'title' => lang('Config.image_max_height_tooltip')]);
-								?>
+									'title' => lang('Config.image_max_height_tooltip')
+								]);	?>
 							</div>
 						</div>
 						<div class='col-sm-2'>
@@ -211,8 +224,8 @@
 									'value' => $this->appconfig->get('image_max_size'),
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
-									'title' => lang('Config.image_max_size_tooltip')]);
-								?>
+									'title' => lang('Config.image_max_size_tooltip')
+								]); ?>
 							</div>
 						</div>
 						<div class='col-sm-4'>
@@ -224,8 +237,8 @@
 									'data-none-selected-text'=>lang('Common.none_selected_text'),
 									'data-selected-text-format'=>'count > 1',
 									'data-style'=>'btn-default btn-sm',
-									'data-width'=>'100%']);
-								?>
+									'data-width'=>'100%'
+								]); ?>
 							</div>
 						</div>
 					</div>
@@ -239,8 +252,8 @@
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
-						'checked' => $this->appconfig->get('gcaptcha_enable')]); ?>
-					&nbsp;
+						'checked' => $this->appconfig->get('gcaptcha_enable')
+					]); ?>
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
 							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.gcaptcha_tooltip'); ?>"></span>
@@ -256,7 +269,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($this->appconfig->get('gcaptcha_site_key'))
+						'value' => esc($this->appconfig->get('gcaptcha_site_key'), 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -268,7 +281,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($this->appconfig->get('gcaptcha_secret_key'))
+						'value' => esc($this->appconfig->get('gcaptcha_secret_key'), 'attr')
 						]); ?>
 				</div>
 			</div>
@@ -280,36 +293,51 @@
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_first_column'); ?></span>
-								<?php echo form_dropdown('suggestions_first_column', [
-									'name' => lang('Items.name'),
-									'item_number' => lang('Items.number_information'),
-									'unit_price' => lang('Items.unit_price'),
-									'cost_price' => lang('Items.cost_price')],
-									esc($this->appconfig->get('suggestions_first_column')), ['class' => 'form-control input-sm']); ?>
+								<?php echo form_dropdown(
+									'suggestions_first_column',
+									[
+										'name' => lang('Items.name'),
+										'item_number' => lang('Items.number_information'),
+										'unit_price' => lang('Items.unit_price'),
+										'cost_price' => lang('Items.cost_price')
+									],
+									esc($this->appconfig->get('suggestions_first_column'), 'attr'),
+									['class' => 'form-control input-sm']
+								); ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_second_column'); ?></span>
-								<?php echo form_dropdown('suggestions_second_column', [
-									'' => lang('Config.none'),
-									'name' => lang('Items.name'),
-									'item_number' => lang('Items.number_information'),
-									'unit_price' => lang('Items.unit_price'),
-									'cost_price' => lang('Items.cost_price')],
-									esc($this->appconfig->get('suggestions_second_column')), ['class' => 'form-control input-sm']); ?>
+								<?php echo form_dropdown(
+									'suggestions_second_column',
+									[
+										'' => lang('Config.none'),
+										'name' => lang('Items.name'),
+										'item_number' => lang('Items.number_information'),
+										'unit_price' => lang('Items.unit_price'),
+										'cost_price' => lang('Items.cost_price')
+									],
+									esc($this->appconfig->get('suggestions_second_column'), 'attr'),
+									['class' => 'form-control input-sm']
+								); ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_third_column'); ?></span>
-								<?php echo form_dropdown('suggestions_third_column', [
-									'' => lang('Config.none'),
-									'name' => lang('Items.name'),
-									'item_number' => lang('Items.number_information'),
-									'unit_price' => lang('Items.unit_price'),
-									'cost_price' => lang('Items.cost_price')],
-									esc($this->appconfig->get('suggestions_third_column')), ['class' => 'form-control input-sm']); ?>
+								<?php echo form_dropdown(
+									'suggestions_third_column',
+									[
+										'' => lang('Config.none'),
+										'name' => lang('Items.name'),
+										'item_number' => lang('Items.number_information'),
+										'unit_price' => lang('Items.unit_price'),
+										'cost_price' => lang('Items.cost_price')
+									],
+									esc($this->appconfig->get('suggestions_third_column'), 'attr'),
+									['class' => 'form-control input-sm']
+								); ?>
 							</div>
 						</div>
 					</div>

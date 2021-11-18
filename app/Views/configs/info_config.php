@@ -19,7 +19,7 @@
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
-							'value' => esc($this->appconfig->get('company'))
+							'value' => esc($this->appconfig->get('company'), 'attr')
 						]); ?>
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> esc($this->appconfig->get('address'))
+						'value'=> esc($this->appconfig->get('address'), 'attr')
 					]); ?>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
-							'value'=> esc($this->appconfig->get('website'))
+							'value'=> esc($this->appconfig->get('website'), 'url')
 						]); ?>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 							'id' => 'email',
 							'type' => 'email',
 							'class' => 'form-control input-sm',
-							'value'=> esc($this->appconfig->get('email'))
+							'value'=> esc($this->appconfig->get('email'), 'attr')
 						]); ?>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
-							'value'=> esc($this->appconfig->get('phone'))
+							'value'=> esc($this->appconfig->get('phone'), 'attr')
 						]); ?>
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
-							'value'=> esc($this->appconfig->get('fax'))
+							'value'=> esc($this->appconfig->get('fax'), 'attr')
 						]); ?>
 					</div>
 				</div>
@@ -127,7 +127,7 @@
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
-						'value' => esc($this->appconfig->get('return_policy'))
+						'value' => esc($this->appconfig->get('return_policy'), 'attr')
 					]); ?>
 				</div>
 			</div>
