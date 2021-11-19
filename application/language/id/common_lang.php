@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Alamat 1";
 $lang["common_address_2"] = "Alamat 2";
 $lang["common_admin"] = "";
@@ -33,8 +32,8 @@ $lang["common_gender"] = "Jenis Kelamin";
 $lang["common_gender_female"] = "P";
 $lang["common_gender_male"] = "L";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
-$lang["common_id"] = "Nomor";
+$lang["common_icon"] = "ikon";
+$lang["common_id"] = "Nomor ID";
 $lang["common_import"] = "Impor";
 $lang["common_import_change_file"] = "Ubah";
 $lang["common_import_csv"] = "Impor dari CSV";
@@ -47,8 +46,8 @@ $lang["common_last_name_required"] = "Nama belakang harus diisi.";
 $lang["common_last_page"] = "Akhir";
 $lang["common_learn_about_project"] = "Untuk mempelajari informasi terbaru tentang proyek ini.";
 $lang["common_list_of"] = "Daftar";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "Logo";
+$lang["common_logo_mark"] = "Tanda";
 $lang["common_logout"] = "Keluar";
 $lang["common_manager"] = "";
 $lang["common_migration_needed"] = "Migrasi data ke %1 akan dimulai setelah masuk.";
@@ -73,7 +72,7 @@ $lang["common_search"] = "Cari";
 $lang["common_search_options"] = "Pilihan pencarian";
 $lang["common_searched_for"] = "Mencari untuk";
 $lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_title"] = "Sumber Terbuka Titik Penjualan";
 $lang["common_state"] = "Provinsi";
 $lang["common_submit"] = "Kirim";
 $lang["common_total_spent"] = "Total";
