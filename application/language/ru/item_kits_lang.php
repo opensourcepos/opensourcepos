@@ -1,25 +1,24 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Добавить товар";
 $lang["item_kits_all"] = "Все";
 $lang["item_kits_cannot_be_deleted"] = "Не могу удалить Товара комплект (ы).";
 $lang["item_kits_confirm_delete"] = "Вы уверены, что хотите удалить выбранные товар комплекты?";
 $lang["item_kits_confirm_restore"] = "Вы уверены, что хотите восстановить выбранные комплекты?";
 $lang["item_kits_description"] = "Описание товара Комплект";
-$lang["item_kits_discount"] = "";
-$lang["item_kits_discount_fixed"] = "";
+$lang["item_kits_discount"] = "Скидка";
+$lang["item_kits_discount_fixed"] = "Фиксированная скидка";
 $lang["item_kits_discount_percent"] = "Процент Скидки";
-$lang["item_kits_discount_type"] = "";
+$lang["item_kits_discount_type"] = "Тип скидки";
 $lang["item_kits_error_adding_updating"] = "Ошибка при добавлении/обновлении товара комплекта.";
 $lang["item_kits_find_kit_item"] = "Деталь Набора";
 $lang["item_kits_info"] = "Информация о товаре комплекта";
 $lang["item_kits_item"] = "товар";
-$lang["item_kits_item_kit_number"] = "";
+$lang["item_kits_item_kit_number"] = "Штрихкод";
 $lang["item_kits_item_kit_number_duplicate"] = "";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_item_number_duplicate"] = "";
-$lang["item_kits_items"] = "товары";
-$lang["item_kits_kit"] = "Kit Id";
+$lang["item_kits_items"] = "Товары";
+$lang["item_kits_kit"] = "ID Набора";
 $lang["item_kits_kit_and_components"] = "Комплект и компоненты";
 $lang["item_kits_kit_and_stock"] = "Набор и запас";
 $lang["item_kits_kit_only"] = "Только Комплект";
@@ -31,10 +30,10 @@ $lang["item_kits_one_or_multiple"] = "Товара комплект (ы)";
 $lang["item_kits_price_option"] = "Цена Опциона";
 $lang["item_kits_priced_only"] = "Только По Цене";
 $lang["item_kits_print_option"] = "параметр печати";
-$lang["item_kits_quantity"] = "количество";
+$lang["item_kits_quantity"] = "Количество";
 $lang["item_kits_sequence"] = "Последовательность";
-$lang["item_kits_successful_adding"] = "Вы успешно добавлен товар комплекта";
-$lang["item_kits_successful_deleted"] = "Вы успешно удален";
-$lang["item_kits_successful_updating"] = "Вы успешно обновленного товар комплекта";
+$lang["item_kits_successful_adding"] = "Вы успешно добавили товар комплекта";
+$lang["item_kits_successful_deleted"] = "Вы успешно удалили";
+$lang["item_kits_successful_updating"] = "Вы успешно обновили товар комплекта";
 $lang["item_kits_unit_price"] = "";
 $lang["item_kits_update"] = "Обновить товар комплекта";
