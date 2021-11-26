@@ -65,5 +65,5 @@ $lang["giftcards_unit_price"] = "Розничная Цена";
 $lang["giftcards_upc_database"] = "UPC база данных";
 $lang["giftcards_update"] = "Обновлять Подарочная карта";
 $lang["giftcards_use_inventory_menu"] = "Используйте меню инвентаря";
-$lang["giftcards_value"] = "Стоимость подарочный карты должна быть числом.";
-$lang["giftcards_value_required"] = "Стоимость подарочный карты обязательна для заполнения.";
+$lang["giftcards_value"] = "Стоимость подарочной карты должна быть числом.";
+$lang["giftcards_value_required"] = "Стоимость подарочной карты обязательна для заполнения.";
