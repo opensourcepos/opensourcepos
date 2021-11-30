@@ -4,15 +4,15 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_mailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']); ?>
+<?php echo form_open('config/save_mailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
-			<div id="integrations_header"><?php echo lang('Config.mailchimp_configuration')?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+			<div id="integrations_header"><?php echo lang('Config.mailchimp_configuration') ?></div>
 			<ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-cloud"></span></span>
@@ -21,18 +21,18 @@
 							'id' => 'mailchimp_api_key',
 							'class' => 'form-control input-sm',
 							'value' => esc($mailchimp['api_key'], 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.mailchimp_tooltip'); //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
+						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.mailchimp_tooltip') //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-4'>
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -41,7 +41,7 @@
 							esc($mailchimp['lists'], 'attr'),
 							esc($mailchimp['list_id'], 'attr'),
 							['id' => 'mailchimp_list_id', 'class' => 'form-control input-sm']
-						); ?>
+						) ?>
 					</div>
 				</div>
 			</div>
@@ -51,10 +51,10 @@
 				'id' => 'submit_mailchimp',
 				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right'
-			]); ?>
+			]) ?>
 		</fieldset>
 	</div>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling

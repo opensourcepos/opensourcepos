@@ -3,7 +3,7 @@
  * @var array $licenses
  */
 ?>
-<?php echo form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']); ?>
+<?php echo form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset>
 			<?php
@@ -12,7 +12,7 @@
 			{
 			?>
 				<div class="form-group form-group-sm">
-					<?php echo form_label(esc($license['title'], 'attr'), 'license', ['class' => 'control-label col-xs-3']); ?>
+					<?php echo form_label(esc($license['title'], 'attr'), 'license', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-6'>
 						<?php echo form_textarea ([
 							'name' => 'license',
@@ -20,7 +20,7 @@
 							'class' => 'form-control',
 							'readonly' => '',
 							'value' => esc($license['text'], 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			<?php
@@ -28,4 +28,4 @@
 			?>
 		</fieldset>
 	</div>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>

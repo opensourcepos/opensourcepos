@@ -1,10 +1,10 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode($labels_1); ?>,
+		labels: <?php echo json_encode($labels_1) ?>,
 		series: [{
-			name: '<?php echo $yaxis_title; ?>',
-			data: <?php echo json_encode($series_data_1); ?>
+			name: '<?php echo $yaxis_title ?>',
+			data: <?php echo json_encode($series_data_1) ?>
 		}]
 	};
 
@@ -43,13 +43,13 @@
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo $this->appconfig->get('currency_symbol'); ?>';
+						return value + '<?php echo $this->appconfig->get('currency_symbol') ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo $this->appconfig->get('currency_symbol'); ?>' + value;				
+						return '<?php echo $this->appconfig->get('currency_symbol') ?>' + value;
 				<?php
 					}
 				}
@@ -67,7 +67,7 @@
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
 				axisX: {
-					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisTitle: '<?php echo $xaxis_title ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: -100,
@@ -76,7 +76,7 @@
 					textAnchor: 'middle'
 				},
 				axisY: {
-					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisTitle: '<?php echo $yaxis_title ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,

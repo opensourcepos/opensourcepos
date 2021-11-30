@@ -145,7 +145,7 @@
 							'id'=>'closed_amount_due',
 							'class'=>'form-control input-sm',
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due)]
-							)?>
+							) ?>
 					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
 					<?php endif; ?>
@@ -233,7 +233,7 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Cashups.is_deleted').':', 'deleted', ['class'=>'control-label col-xs-3']); ?>
+				<?php echo form_label(lang('Cashups.is_deleted').':', 'deleted', ['class'=>'control-label col-xs-3']) ?>
 				<div class='col-xs-5'>
 					<?php echo form_checkbox ([
 						'name'=>'deleted',

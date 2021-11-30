@@ -1,4 +1,4 @@
-<?php echo view("partial/header"); ?>
+<?php echo view("partial/header") ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -10,17 +10,17 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
-<?php echo view($chart_type); ?>
+<?php echo view($chart_type) ?>
 
 <div id="chart_report_summary">
 	<?php
 	foreach($summary_data_1 as $name=>$value)
 	{
 	?>
-		<div class="summary_row"><?php echo lang('Reports.' . $name). ': ' . to_currency($value); ?></div>
+		<div class="summary_row"><?php echo lang('Reports.' . $name). ': ' . to_currency($value) ?></div>
 	<?php
 	}
 	?>
 </div>
 
-<?php echo view("partial/footer"); ?>
+<?php echo view("partial/footer") ?>

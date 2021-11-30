@@ -5,10 +5,10 @@ function printdoc()
 	if (window.jsPrintSetup)
 	{
 		// set top margins in millimeters
-		jsPrintSetup.setOption('marginTop', '<?php echo $this->appconfig->get('print_top_margin'); ?>');
-		jsPrintSetup.setOption('marginLeft', '<?php echo $this->appconfig->get('print_left_margin'); ?>');
-		jsPrintSetup.setOption('marginBottom', '<?php echo $this->appconfig->get('print_bottom_margin'); ?>');
-		jsPrintSetup.setOption('marginRight', '<?php echo $this->appconfig->get('print_right_margin'); ?>');
+		jsPrintSetup.setOption('marginTop', '<?php echo $this->appconfig->get('print_top_margin') ?>');
+		jsPrintSetup.setOption('marginLeft', '<?php echo $this->appconfig->get('print_left_margin') ?>');
+		jsPrintSetup.setOption('marginBottom', '<?php echo $this->appconfig->get('print_bottom_margin') ?>');
+		jsPrintSetup.setOption('marginRight', '<?php echo $this->appconfig->get('print_right_margin') ?>');
 
 		<?php if (!$this->appconfig->get('print_header'))
 		{
@@ -33,7 +33,7 @@ function printdoc()
 		var printers = jsPrintSetup.getPrintersList().split(',');
 		// get right printer here..
 		for(var index in printers) {
-			var default_ticket_printer = window.localStorage && localStorage['<?php echo $selected_printer; ?>'];
+			var default_ticket_printer = window.localStorage && localStorage['<?php echo $selected_printer ?>'];
 			var selected_printer = printers[index];
 			if (selected_printer == default_ticket_printer) {
 				// select epson label printer
@@ -73,8 +73,8 @@ if($print_after_sale)
 
 		// after a delay, return to sales view
 		setTimeout(function () {
-				window.location.href = "<?php echo site_url('sales'); ?>";
-			}, <?php echo $this->appconfig->get('print_delay_autoreturn') * 1000; ?>);
+				window.location.href = "<?php echo site_url('sales') ?>";
+			}, <?php echo $this->appconfig->get('print_delay_autoreturn') * 1000 ?>);
 	});
 
 <?php

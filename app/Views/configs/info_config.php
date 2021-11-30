@@ -4,14 +4,14 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_info/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']); ?>
+<?php echo form_open('config/save_info/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('Common.fields_required_message'); ?></div>
+			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 			<ul id="info_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.company'), 'company', ['class' => 'control-label col-xs-2 required']); ?>
+				<?php echo form_label(lang('Config.company'), 'company', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-home"></span></span>
@@ -20,47 +20,47 @@
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
 							'value' => esc($this->appconfig->get('company'), 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.company_logo'), 'company_logo', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Config.company_logo'), 'company_logo', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-6'>
-					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
+					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
-							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo'); ?>"
-								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . $this->appconfig->get('company_logo')), 'url'); else echo ''; ?>"
+							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo') ?>"
+								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . $this->appconfig->get('company_logo')), 'url'); else echo '' ?>"
 								 style="max-height: 100%; max-width: 100%;">
 						</div>
 						<div>
 							<span class="btn btn-default btn-sm btn-file">
-								<span class="fileinput-new"><?php echo lang('Config.company_select_image'); ?></span>
-								<span class="fileinput-exists"><?php echo lang('Config.company_change_image'); ?></span>
+								<span class="fileinput-new"><?php echo lang('Config.company_select_image') ?></span>
+								<span class="fileinput-exists"><?php echo lang('Config.company_change_image') ?></span>
 								<input type="file" name="company_logo">
 							</span>
-							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo lang('Config.company_remove_image'); ?></a>
+							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo lang('Config.company_remove_image') ?></a>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.address'), 'address', ['class' => 'control-label col-xs-2 required']); ?>
+				<?php echo form_label(lang('Config.address'), 'address', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea ([
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
 						'value'=> esc($this->appconfig->get('address'), 'attr')
-					]); ?>
+					]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.website'), 'website', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Config.website'), 'website', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-globe"></span></span>
@@ -69,13 +69,13 @@
 							'id' => 'website',
 							'class' => 'form-control input-sm',
 							'value'=> esc($this->appconfig->get('website'), 'url')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-envelope"></span></span>
@@ -85,13 +85,13 @@
 							'type' => 'email',
 							'class' => 'form-control input-sm',
 							'value'=> esc($this->appconfig->get('email'), 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.phone'), 'phone', ['class' => 'control-label col-xs-2 required']); ?>
+				<?php echo form_label(lang('Config.phone'), 'phone', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
@@ -100,13 +100,13 @@
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
 							'value'=> esc($this->appconfig->get('phone'), 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.fax'), 'fax', ['class' => 'control-label col-xs-2']); ?>
+				<?php echo form_label(lang('Config.fax'), 'fax', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
@@ -115,20 +115,20 @@
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
 							'value'=> esc($this->appconfig->get('fax'), 'attr')
-						]); ?>
+						]) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Common.return_policy'), 'return_policy', ['class' => 'control-label col-xs-2 required']); ?>
+				<?php echo form_label(lang('Common.return_policy'), 'return_policy', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea ([
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
 						'value' => esc($this->appconfig->get('return_policy'), 'attr')
-					]); ?>
+					]) ?>
 				</div>
 			</div>
 
@@ -136,10 +136,10 @@
 				'name' => 'submit_info',
 				'id' => 'submit_info',
 				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right']); ?>
+				'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	</div>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -148,7 +148,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'GET',
-			url: '<?php echo esc(site_url("$controller_name/remove_logo"), 'url'); ?>',
+			url: '<?php echo esc(site_url("$controller_name/remove_logo"), 'url') ?>',
 			dataType: 'json'
 		})
 	});
@@ -168,11 +168,11 @@ $(document).ready(function()
 
 		messages: 
 		{
-			company: "<?php echo lang('Config.company_required'); ?>",
-			address: "<?php echo lang('Config.address_required'); ?>",
-			phone: "<?php echo lang('Config.phone_required'); ?>",
-			email: "<?php echo lang('Common.email_invalid_format'); ?>",
-			return_policy: "<?php echo lang('Config.return_policy_required'); ?>"
+			company: "<?php echo lang('Config.company_required') ?>",
+			address: "<?php echo lang('Config.address_required') ?>",
+			phone: "<?php echo lang('Config.phone_required') ?>",
+			email: "<?php echo lang('Common.email_invalid_format') ?>",
+			return_policy: "<?php echo lang('Config.return_policy_required') ?>"
 		}
 	}));
 });

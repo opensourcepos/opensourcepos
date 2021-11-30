@@ -170,47 +170,47 @@
 								'item_code' => lang('Items.item_number'),
 								'company_name' => lang('Suppliers.company_name')
 							],
-							$this->appconfig->get('barcode_third_row'), ['class' => 'form-control input-sm']); ?>
+							$this->appconfig->get('barcode_third_row'), ['class' => 'form-control input-sm']) ?>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', ['class' => 'control-label col-xs-2 required']); ?>
+				<?php echo form_label(lang('Config.barcode_number_in_row'), 'barcode_num_in_row', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_input ([
 						'name' => 'barcode_num_in_row',
 						'id' => 'barcode_num_in_row',
 						'class' => 'form-control input-sm required',
 						'value'=>$this->appconfig->get('barcode_num_in_row')
-					]); ?>
+					]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Config.barcode_page_width'), 'barcode_page_width', ['class' => 'control-label col-xs-2 required']); ?>
+			<?php echo form_label(lang('Config.barcode_page_width'), 'barcode_page_width', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class="col-sm-2">
 					<div class='input-group'>
 						<?php echo form_input ([
 							'name' => 'barcode_page_width',
 							'id' => 'barcode_page_width',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->appconfig->get('barcode_page_width')]); ?>
+							'value'=>$this->appconfig->get('barcode_page_width')]) ?>
 						<span class="input-group-addon input-sm">%</span>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Config.barcode_page_cellspacing'), 'barcode_page_cellspacing', ['class' => 'control-label col-xs-2 required']); ?>
+			<?php echo form_label(lang('Config.barcode_page_cellspacing'), 'barcode_page_cellspacing', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-sm-2'>
 					<div class="input-group">
 						<?php echo form_input ([
 							'name' => 'barcode_page_cellspacing',
 							'id' => 'barcode_page_cellspacing',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->appconfig->get('barcode_page_cellspacing')]); ?>
+							'value'=>$this->appconfig->get('barcode_page_cellspacing')]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
@@ -220,10 +220,10 @@
 				'name' => 'submit_barcode',
 				'id' => 'submit_barcode',
 				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right']); ?>
+				'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	</div>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
@@ -270,33 +270,33 @@ $(document).ready(function()
 		{
 			barcode_width:
 			{
-				required:"<?php echo lang('Config.default_barcode_width_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_width_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_width_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_width_number') ?>"
 			},
 			barcode_height:
 			{
-				required:"<?php echo lang('Config.default_barcode_height_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_height_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_height_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_height_number') ?>"
 			},
 			barcode_font_size:
 			{
-				required:"<?php echo lang('Config.default_barcode_font_size_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_font_size_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_font_size_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_font_size_number') ?>"
 			},
 			barcode_num_in_row:
 			{
-				required:"<?php echo lang('Config.default_barcode_num_in_row_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_num_in_row_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_num_in_row_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_num_in_row_number') ?>"
 			},
 			barcode_page_width:
 			{
-				required:"<?php echo lang('Config.default_barcode_page_width_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_page_width_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_page_width_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_page_width_number') ?>"
 			},
 			barcode_page_cellspacing:
 			{
-				required:"<?php echo lang('Config.default_barcode_page_cellspacing_required'); ?>",
-				number:"<?php echo lang('Config.default_barcode_page_cellspacing_number'); ?>"
+				required:"<?php echo lang('Config.default_barcode_page_cellspacing_required') ?>",
+				number:"<?php echo lang('Config.default_barcode_page_cellspacing_number') ?>"
 			}
 		}
 	}));

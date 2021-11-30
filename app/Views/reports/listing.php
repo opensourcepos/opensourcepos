@@ -1,4 +1,4 @@
-<?php echo view("partial/header"); ?>
+<?php echo view("partial/header") ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -15,7 +15,7 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo lang('Reports.graphical_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo lang('Reports.graphical_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php
@@ -34,7 +34,7 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang('Reports.summary_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang('Reports.summary_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php 
@@ -53,7 +53,7 @@ if(isset($error))
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?php echo lang('Reports.detailed_reports'); ?></h3>
+				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?php echo lang('Reports.detailed_reports') ?></h3>
 			</div>
 			<div class="list-group">
 				<?php 			
@@ -74,7 +74,7 @@ if(isset($error))
 		?>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp</span><?php echo lang('Reports.inventory_reports'); ?></h3>
+					<h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp</span><?php echo lang('Reports.inventory_reports') ?></h3>
 				</div>
 				<div class="list-group">
 				<?php 
@@ -89,4 +89,4 @@ if(isset($error))
 	</div>
 </div>
 
-<?php echo view("partial/footer"); ?>
+<?php echo view("partial/footer") ?>

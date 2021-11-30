@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<base href="<?php echo base_url();?>" />
+	<base href="<?php echo base_url() ?>" />
 	<title><?php echo $this->appconfig->get('company') . ' | ' . lang('Common.powered_by') . ' OSPOS ' . $this->appconfig->get('application_version') ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->appconfig->get('theme')) ? 'flatly' : $this->appconfig->get('theme')) . '/bootstrap.min.css' ?>"/>
@@ -89,8 +89,8 @@
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
-	<?php echo view('partial/header_js'); ?>
-	<?php echo view('partial/lang_lines'); ?>
+	<?php echo view('partial/header_js') ?>
+	<?php echo view('partial/lang_lines') ?>
 
 	<style type="text/css">
 		html {
@@ -108,13 +108,13 @@
 				</div>
 
 				<div class="navbar-right" style="margin:0">
-					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password'))); ?>
-					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : ''); ?>
-					<?php echo anchor('home/logout', lang('Login.logout')); ?>
+					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password'))) ?>
+					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
+					<?php echo anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?php echo $this->appconfig->get('company'); ?></strong>
+					<strong><?php echo $this->appconfig->get('company') ?></strong>
 				</div>
 			</div>
 		</div>
@@ -129,15 +129,15 @@
 						<span class="icon-bar"></span>
 					</button>
 
-					<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
+					<a class="navbar-brand hidden-sm" href="<?php echo site_url() ?>">OSPOS</a>
 				</div>
 
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php foreach($allowed_modules as $module): ?>
-							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : ''; ?>">
-								<a href="<?php echo site_url("$module->module_id"); ?>" title="<?php echo lang('Module.' . $module->module_id); ?>" class="menu-icon">
-									<img src="<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png'; ?>" border="0" alt="Module Icon"/><br/>
+							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : '' ?>">
+								<a href="<?php echo site_url("$module->module_id") ?>" title="<?php echo lang('Module.' . $module->module_id) ?>" class="menu-icon">
+									<img src="<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png' ?>" border="0" alt="Module Icon"/><br/>
 									<?php echo lang('Module.' . $module->module_id) ?>
 								</a>
 							</li>

@@ -8,26 +8,26 @@
 	clock_tick();
 
 	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->appconfig->get('dateformat').' '.$this->appconfig->get('timeformat'))?>");
+		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->appconfig->get('dateformat').' '.$this->appconfig->get('timeformat')) ?>");
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo $this->appconfig->get('notify_horizontal_position'); ?>",
-		from: "<?php echo $this->appconfig->get('notify_vertical_position'); ?>"
+		align: "<?php echo $this->appconfig->get('notify_horizontal_position') ?>",
+		from: "<?php echo $this->appconfig->get('notify_vertical_position') ?>"
 	}});
 
-	var cookie_name = "<?php echo $this->appconfig->get('cookie_prefix').$this->appconfig->get('csrf_cookie_name'); ?>";
+	var cookie_name = "<?php echo $this->appconfig->get('cookie_prefix').$this->appconfig->get('csrf_cookie_name') ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);
 	};
 
 	var csrf_form_base = function() {
-		return { <?php echo $this->security->get_csrf_token_name(); ?> : function () { return csrf_token();  } };
+		return { <?php echo $this->security->get_csrf_token_name() ?> : function () { return csrf_token();  } };
 	};
 
 	var setup_csrf_token = function() {
-		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
+		$('input[name="<?php echo $this->security->get_csrf_token_name() ?>"]').val(csrf_token());
 	};
 
 	var ajax = $.ajax;

@@ -1,8 +1,8 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode($labels_1); ?>,
-		series: <?php echo json_encode($series_data_1); ?>
+		labels: <?php echo json_encode($labels_1) ?>,
+		series: <?php echo json_encode($series_data_1) ?>
 	};
 	
 	// We are setting a few options for our chart and override the defaults
@@ -34,13 +34,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->appconfig->get('currency_symbol'); ?>';
+							return value + '<?php echo $this->appconfig->get('currency_symbol') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->appconfig->get('currency_symbol'); ?>' + value;				
+							return '<?php echo $this->appconfig->get('currency_symbol') ?>' + value;
 					<?php
 						}
 					}

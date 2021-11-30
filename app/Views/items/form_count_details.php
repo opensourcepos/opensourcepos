@@ -1,7 +1,7 @@
-<?php echo form_open('items', ['id'=>'item_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('items', ['id'=>'item_form', 'class'=>'form-horizontal')) ?>
 	<fieldset id="count_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.item_number'), 'name', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.item_number'), 'name', ['class'=>'control-label col-xs-3')) ?>
 			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
@@ -11,13 +11,13 @@
 							'class'=>'form-control input-sm',
 							'disabled'=>'',
 							'value'=>$item_info->item_number)
-							);?>
+							) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.name'), 'name', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.name'), 'name', ['class'=>'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
 				<?php echo form_input ([
 						'name'=>'name',
@@ -25,12 +25,12 @@
 						'class'=>'form-control input-sm',
 						'disabled'=>'',
 						'value'=>$item_info->name)
-						); ?>
+						) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.category'), 'category', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.category'), 'category', ['class'=>'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
@@ -40,20 +40,20 @@
 							'class'=>'form-control input-sm',
 							'disabled'=>'',
 							'value'=>$item_info->category)
-							);?>
+							) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class'=>'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange'=>'display_stock(this.value);', 'class'=>'form-control'));	?>
+				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange'=>'display_stock(this.value);', 'class'=>'form-control')) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.current_quantity'), 'quantity', ['class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label(lang('Items.current_quantity'), 'quantity', ['class'=>'control-label col-xs-3')) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
 						'name'=>'quantity',
@@ -61,22 +61,22 @@
 						'class'=>'form-control input-sm',
 						'disabled'=>'',
 						'value'=>to_quantity_decimals(current($item_quantities)))
-						); ?>
+						) ?>
 			</div>
 		</div>
 	</fieldset>
-<?php echo form_close(); ?>
+<?php echo form_close() ?>
 
 <table id="items_count_details" class="table table-striped table-hover">
 	<thead>
 		<tr style="background-color: #999 !important;">
-			<th colspan="4"><?php echo lang('Items.inventory_data_tracking'); ?></th>
+			<th colspan="4"><?php echo lang('Items.inventory_data_tracking') ?></th>
 		</tr>
 		<tr>
-			<th width="30%"><?php echo lang('Items.inventory_date'); ?></th>
-			<th width="20%"><?php echo lang('Items.inventory_employee'); ?></th>
-			<th width="20%"><?php echo lang('Items.inventory_in_out_quantity'); ?></th>
-			<th width="30%"><?php echo lang('Items.inventory_remarks'); ?></th>
+			<th width="30%"><?php echo lang('Items.inventory_date') ?></th>
+			<th width="20%"><?php echo lang('Items.inventory_employee') ?></th>
+			<th width="20%"><?php echo lang('Items.inventory_in_out_quantity') ?></th>
+			<th width="30%"><?php echo lang('Items.inventory_remarks') ?></th>
 		</tr>
 	</thead>
 	<tbody id="inventory_result">
@@ -100,16 +100,16 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-    display_stock(<?php echo json_encode(key($stock_locations)); ?>);
+    display_stock(<?php echo json_encode(key($stock_locations)) ?>);
 });
 
 function display_stock(location_id)
 {
-    var item_quantities = <?php echo json_encode($item_quantities); ?>;
-    document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals(); ?>);
+    var item_quantities = <?php echo json_encode($item_quantities) ?>;
+    document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals() ?>);
 
-    var inventory_data = <?php echo json_encode($inventory_array); ?>;
-    var employee_data = <?php echo json_encode($employee_name); ?>;
+    var inventory_data = <?php echo json_encode($inventory_array) ?>;
+    var employee_data = <?php echo json_encode($employee_name) ?>;
 
     var table = document.getElementById("inventory_result");
 
@@ -137,7 +137,7 @@ function display_stock(location_id)
             tr.appendChild(td);
 
             td = document.createElement('td');
-            td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals(); ?>)));
+            td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals() ?>)));
 			td.setAttribute("style", "text-align:center");
             tr.appendChild(td);
 
