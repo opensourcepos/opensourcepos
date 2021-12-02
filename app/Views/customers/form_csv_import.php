@@ -1,10 +1,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open_multipart('customers/do_csv_import/', ['id'=>'csv_form', 'class'=>'form-horizontal')) ?>
+<?php echo form_open_multipart('customers/do_csv_import/', ['id'=>'csv_form', 'class'=>'form-horizontal']) ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?php echo site_url('customers/csv') ?>"><?php echo lang('Common.download_import_template') ?></a>
+				<a href="<?php echo esc(site_url('customers/csv'), 'url') ?>"><?php echo lang('Common.download_import_template') ?></a>
 			</div>
 		</div>
 
@@ -30,7 +30,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url('customers') ?>', response);
+					table_support.handle_submit('<?php echo esc(site_url('customers'), 'url') ?>', response);
 				},
 				dataType: 'json'
 			});

@@ -78,7 +78,8 @@
 							'1' => '1',
 							'2' => '2'
 						],
-						$this->appconfig->get('currency_decimals'), ['class' => 'form-control input-sm']
+						$this->appconfig->get('currency_decimals'),
+						['class' => 'form-control input-sm']
 					) ?>
 				</div>
 			</div>
@@ -95,7 +96,8 @@
 							'3' => '3',
 							'4' => '4'
 						],
-						$this->appconfig->get('tax_decimals'), ['class' => 'form-control input-sm']
+						$this->appconfig->get('tax_decimals'),
+						['class' => 'form-control input-sm']
 					) ?>
 				</div>
 			</div>
@@ -111,7 +113,8 @@
 							'2' => '2',
 							'3' => '3'
 						],
-						$this->appconfig->get('quantity_decimals'), ['class' => 'form-control input-sm']
+						$this->appconfig->get('quantity_decimals'),
+						['class' => 'form-control input-sm']
 					) ?>
 				</div>
 			</div>
@@ -127,7 +130,8 @@
 							'1' => '1',
 							'2' => '2'
 						],
-						$this->appconfig->get('cash_decimals'), ['class' => 'form-control input-sm']
+						$this->appconfig->get('cash_decimals'),
+						['class' => 'form-control input-sm']
 					) ?>
 				</div>
 				<div class='col-xs-1'>

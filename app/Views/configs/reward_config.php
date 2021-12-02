@@ -1,29 +1,36 @@
-<?php echo form_open('config/save_rewards/', ['id' => 'reward_config_form', 'class' => 'form-horizontal')) ?>
+<?php
+/**
+ * @var array $customer_rewards
+ */
+?>
+<?php echo form_open('config/save_rewards/', ['id' => 'reward_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
             <ul id="reward_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.customer_reward_enable'), 'customer_reward_enable', ['class' => 'control-label col-xs-2')) ?>
+				<?php echo form_label(lang('Config.customer_reward_enable'), 'customer_reward_enable', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox ([
 						'name' => 'customer_reward_enable',
 						'value' => 'customer_reward_enable',
 						'id' => 'customer_reward_enable',
-						'checked' => $this->appconfig->get('customer_reward_enable'))) ?>
+						'checked' => $this->appconfig->get('customer_reward_enable')
+					]) ?>
 				</div>
 			</div>
 
             <div id="customer_rewards">
-				<?php echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards)) ?>
+				<?php echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]) ?>
 			</div>
             
             <?php echo form_submit ([
                 'name' => 'submit_reward',
                 'id' => 'submit_reward',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right')) ?>
+                'class' => 'btn btn-primary btn-sm pull-right'
+			]) ?>
         </fieldset>
     </div>
 <?php echo form_close() ?>
@@ -43,7 +50,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$(".add_customer_reward, .remove_customer_reward").hide();	
+			$(".add_customer_reward, .remove_customer_reward").hide();
 		}
 		return arguments.callee;
 	})();

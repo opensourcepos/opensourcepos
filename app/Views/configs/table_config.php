@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var array $dinner_tables
+ */
+?>
 <?php echo form_open('config/save_tables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
@@ -5,25 +10,27 @@
             <ul id="table_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2')) ?>
+				<?php echo form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox ([
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
-						'checked' => $this->appconfig->get('dinner_table_enable'))) ?>
+						'checked' => $this->appconfig->get('dinner_table_enable')
+					]) ?>
 				</div>
 			</div>
 
             <div id="dinner_tables">
-				<?php echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables)) ?>
+				<?php echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
 			</div>
             
             <?php echo form_submit ([
                 'name' => 'submit_table',
                 'id' => 'submit_table',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right')) ?>
+                'class' => 'btn btn-primary btn-sm pull-right'
+			]) ?>
         </fieldset>
     </div>
 <?php echo form_close() ?>
@@ -110,7 +117,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#dinner_tables").load('<?php echo site_url("config/ajax_dinner_tables") ?>', init_add_remove_tables);
+					$("#dinner_tables").load('<?php echo esc(site_url("config/ajax_dinner_tables"), 'url') ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});

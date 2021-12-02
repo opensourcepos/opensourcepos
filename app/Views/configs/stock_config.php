@@ -1,18 +1,24 @@
-<?php echo form_open('config/save_locations/', ['id' => 'location_config_form', 'class' => 'form-horizontal')) ?>
+<?php
+/**
+ * @var array $stock_locations
+ */
+?>
+<?php echo form_open('config/save_locations/', ['id' => 'location_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
             <ul id="stock_error_message_box" class="error_message_box"></ul>
 
             <div id="stock_locations">
-				<?php echo view('partial/stock_locations', ['stock_locations' => $stock_locations)) ?>
+				<?php echo view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
 			</div>
             
             <?php echo form_submit ([
                 'name' => 'submit_stock',
                 'id' => 'submit_stock',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right')) ?>
+                'class' => 'btn btn-primary btn-sm pull-right'
+			]) ?>
         </fieldset>
     </div>
 <?php echo form_close() ?>
@@ -87,7 +93,7 @@ $(document).ready(function()
 			<?php
 			$i = 0;
 
-			foreach($stock_locations as $location=>$location_data)
+			foreach($stock_locations as $location => $location_data)
 			{
 			?>
 				<?php echo 'stock_location_' . ++$i ?>:
@@ -106,7 +112,7 @@ $(document).ready(function()
 			<?php
 			$i = 0;
 
-			foreach($stock_locations as $location=>$location_data)
+			foreach($stock_locations as $location => $location_data)
 			{
 			?>
 				<?php echo 'stock_location_' . ++$i ?>: "<?php echo lang('Config.stock_location_required') ?>",

@@ -1,8 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+ * @var string $heading
+ * @var string $message
+ */
+?>
+<?php
 echo "\nDatabase error: ",
-	$heading,
+	esc($heading),
 	"\n\n",
-	$message,
+	esc($message),
 	"\n\n";

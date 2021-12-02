@@ -1,8 +1,17 @@
+<?php
+/**
+ * @var string $controller_name
+ * @var object $person_info
+ * @var array $all_modules
+ * @var array $all_subpermissions
+ * @var int $employee_id
+ */
+?>
 <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open($controller_name . '/save/' . $person_info->person_id, ['id'=>'employee_form', 'class'=>'form-horizontal']) ?>
+<?php echo form_open("$controller_name/save/$person_info->person_id", ['id'=>'employee_form', 'class'=>'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
 			<a data-toggle="tab" href="#employee_basic_info"><?php echo lang('Employees.basic_information') ?></a>
@@ -30,10 +39,10 @@
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 							<?php echo form_input ([
-								'name'=>'username',
-								'id'=>'username',
-								'class'=>'form-control input-sm',
-								'value'=>$person_info->username
+								'name' => 'username',
+								'id' => 'username',
+								'class' => 'form-control input-sm',
+								'value' => esc($person_info->username, 'attr')
 							]) ?>
 						</div>
 					</div>
@@ -42,28 +51,28 @@
 				<?php $password_label_attributes = $person_info->person_id == "" ? ['class'=>'required'] : []; ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])) ?>
+					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])), 'attr') ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password ([
-									'name'=>'password',
-									'id'=>'password',
-									'class'=>'form-control input-sm'
+									'name' => 'password',
+									'id' => 'password',
+									'class' => 'form-control input-sm'
 								]) ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])) ?>
+				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])), 'attr') ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password ([
-									'name'=>'repeat_password',
-									'id'=>'repeat_password',
-									'class'=>'form-control input-sm'
+									'name' => 'repeat_password',
+									'id' => 'repeat_password',
+									'class' => 'form-control input-sm'
 								]) ?>
 						</div>
 					</div>
@@ -88,8 +97,8 @@
 								
 								echo form_dropdown(
 									'language',
-									$languages,
-									$language_code . ':' . $language,
+									esc($languages, 'attr'),
+									esc("$language_code:$language", 'attr'),
 									['class' => 'form-control input-sm']
 									);
 							?>
@@ -109,25 +118,26 @@
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grant_".$module->module_id, $module->module_id, $module->grant, "class=\'module\'") ?>
+							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant, "class=\'module\'") ?>
 							<?php echo form_dropdown(
-								"menu_group_" . $module->module_id, [
+								"menu_group_$module->module_id", [
 									'home' => lang('Module.home'),
 									'office' => lang('Module.office'),
 									'both' => lang('Module.both')
 								],
-								$module->menu_group, "class=\'module\'"
+								$module->menu_group,
+								"class=\'module\'"
 							) ?>
 
-							<span class="medium"><?php echo lang('Module.' . $module->module_id) ?>:</span>
-							<span class="small"><?php echo lang('Module.' . $module->module_id . '_desc') ?></span>
+							<span class="medium"><?php echo lang("Module.$module->module_id") ?>:</span>
+							<span class="small"><?php echo lang("Module.$module->module_id" . '_desc') ?></span>
 							<?php
 								foreach($all_subpermissions as $permission)
 								{
 									$exploded_permission = explode('_', $permission->permission_id, 2);
 									if($permission->module_id == $module->module_id)
 									{
-										$lang_key = $module->module_id.'_' . $exploded_permission[1];
+										$lang_key = $module->module_id . '_' . $exploded_permission[1];
 										$lang_line = lang($lang_key);
 										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
 										if(!empty($lang_line))
@@ -135,8 +145,8 @@
 							?>
 											<ul>
 												<li>
-													<?php echo form_checkbox("grant_".$permission->permission_id, $permission->permission_id, $permission->grant) ?>
-													<?php echo form_hidden("menu_group_".$permission->permission_id, "--") ?>
+													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant) ?>
+													<?php echo form_hidden("menu_group_$permission->permission_id", "--") ?>
 													<span class="medium"><?php echo $lang_line ?></span>
 												</li>
 											</ul>
@@ -199,7 +209,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo site_url($controller_name) ?>", response);
+					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -216,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo site_url("$controller_name/check_username/$employee_id") ?>'
+				remote: '<?php echo esc(site_url("$controller_name/check_username/$employee_id"), 'url') ?>'
 			},
 			password:
 			{
