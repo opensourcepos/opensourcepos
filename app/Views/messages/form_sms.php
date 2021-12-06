@@ -2,33 +2,33 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 	
-<?php echo form_open("messages/send_form/".$person_info->person_id, ['id'=>'send_sms_form', 'class'=>'form-horizontal')) ?>
+<?php echo form_open("messages/send_form/".$person_info->person_id, ['id' => 'send_sms_form', 'class' => 'form-horizontal')) ?>
 	<fieldset>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Messages.first_name'), 'first_name_label', ['for'=>'first_name', 'class'=>'control-label col-xs-2')) ?>
+			<?php echo form_label(lang('Messages.first_name'), 'first_name_label', ['for' => 'first_name', 'class' => 'control-label col-xs-2')) ?>
 			<div class="col-xs-10">
-				<?php echo form_input (['class'=>'form-control input-sm', 'type'=>'text', 'name'=>'first_name', 'value'=>$person_info->first_name, 'readonly'=>'true')) ?>
+				<?php echo form_input (['class' => 'form-control input-sm', 'type' => 'text', 'name' => 'first_name', 'value'=>$person_info->first_name, 'readonly' => 'true')) ?>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Messages.last_name'), 'last_name_label', ['for'=>'last_name', 'class'=>'control-label col-xs-2')) ?>
+			<?php echo form_label(lang('Messages.last_name'), 'last_name_label', ['for' => 'last_name', 'class' => 'control-label col-xs-2')) ?>
 			<div class="col-xs-10">
-				<?php echo form_input (['class'=>'form-control input-sm', 'type'=>'text', 'name'=>'last_name', 'value'=>$person_info->last_name, 'readonly'=>'true')) ?>
+				<?php echo form_input (['class' => 'form-control input-sm', 'type' => 'text', 'name' => 'last_name', 'value'=>$person_info->last_name, 'readonly' => 'true')) ?>
 			</div>
 		</div> 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Messages.phone'), 'phone_label', ['for'=>'phone', 'class'=>'control-label col-xs-2 required')) ?>
+			<?php echo form_label(lang('Messages.phone'), 'phone_label', ['for' => 'phone', 'class' => 'control-label col-xs-2 required')) ?>
 			<div class="col-xs-10">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
-					<?php echo form_input (['class'=>'form-control input-sm required', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number)) ?>
+					<?php echo form_input (['class' => 'form-control input-sm required', 'type' => 'text', 'name' => 'phone', 'value'=>$person_info->phone_number)) ?>
 				</div>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Messages.message'), 'message_label', ['for'=>'message', 'class'=>'control-label col-xs-2 required')) ?>
+			<?php echo form_label(lang('Messages.message'), 'message_label', ['for' => 'message', 'class' => 'control-label col-xs-2 required')) ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea (['class'=>'form-control input-sm required', 'name'=>'message', 'id'=>'message', 'value'=>$this->appconfig->get('msg_msg'))) ?>
+				<?php echo form_textarea (['class' => 'form-control input-sm required', 'name' => 'message', 'id' => 'message', 'value'=>$this->appconfig->get('msg_msg'))) ?>
 			</div>
 		</div>
 	</fieldset>

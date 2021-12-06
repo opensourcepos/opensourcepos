@@ -38,7 +38,7 @@ function get_tax_code_data_row($tax_code_row): array
 			$controller_name."/view_tax_codes/$tax_code_row->tax_code",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update_tax_codes')	//TODO: String interpolation
 			]
@@ -76,7 +76,7 @@ function get_tax_categories_data_row($tax_categories_row): array
 			$controller_name."/view/$tax_categories_row->tax_category_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -113,7 +113,7 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
 			$controller_name."/view/$tax_jurisdiction_row->jurisdiction_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -159,7 +159,7 @@ function get_tax_rates_data_row($tax_rates_row): array
 			$controller_name."/view/$tax_rates_row->tax_rate_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]

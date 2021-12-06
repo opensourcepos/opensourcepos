@@ -232,12 +232,12 @@
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.image_allowed_file_types') ?></span>
 								<?php echo form_multiselect('image_allowed_types[]', esc($image_allowed_types), esc($selected_image_allowed_types), [
-									'id'=>'image_allowed_types',
-									'class'=>'selectpicker show-menu-arrow',
+									'id' => 'image_allowed_types',
+									'class' => 'selectpicker show-menu-arrow',
 									'data-none-selected-text'=>lang('Common.none_selected_text'),
-									'data-selected-text-format'=>'count > 1',
-									'data-style'=>'btn-default btn-sm',
-									'data-width'=>'100%'
+									'data-selected-text-format' => 'count > 1',
+									'data-style' => 'btn-default btn-sm',
+									'data-width' => '100%'
 								]) ?>
 							</div>
 						</div>

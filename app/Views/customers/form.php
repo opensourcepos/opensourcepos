@@ -13,7 +13,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("$controller_name/save/$person_info->person_id", ['id'=>'customer_form', 'class'=>'form-horizontal']) ?>
+<?php echo form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
 			<a data-toggle="tab" href="#customer_basic_info"><?php echo lang('Customers.basic_information') ?></a>
@@ -53,7 +53,7 @@
 				<?php echo view("people/form_basic_info") ?>
 				
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.discount_type'), 'discount_type', ['class'=>'control-label col-xs-3']) ?>
+					<?php echo form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>
 					<div class="col-xs-8">
 						<label class="radio-inline">
 							<?php echo form_radio ([
@@ -109,9 +109,9 @@
 					<?php echo form_label(lang('Customers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-4'>
 						<?php echo form_input ([
-								'name'=>'account_number',
-								'id'=>'account_number',
-								'class'=>'form-control input-sm',
+								'name' => 'account_number',
+								'id' => 'account_number',
+								'class' => 'form-control input-sm',
 								'value' => esc($person_info->account_number, 'attr')
 							]) ?>
 					</div>
@@ -121,9 +121,9 @@
 					<?php echo form_label(lang('Customers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-4'>
 						<?php echo form_input ([
-								'name'=>'tax_id',
-								'id'=>'tax_id',
-								'class'=>'form-control input-sm',
+								'name' => 'tax_id',
+								'id' => 'tax_id',
+								'class' => 'form-control input-sm',
 								'value' => esc($person_info->tax_id, 'attr')
 							]) ?>
 					</div>
@@ -131,9 +131,9 @@
 
 				<?php if($this->appconfig->get('customer_reward_enable') == TRUE): ?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class'=>'control-label col-xs-3']) ?>
+						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
-							<?php echo form_dropdown('package_id', esc($packages, 'attr'), $selected_package, ['class'=>'form-control']) ?>
+							<?php echo form_dropdown('package_id', esc($packages, 'attr'), $selected_package, ['class' => 'form-control']) ?>
 						</div>
 					</div>
 
@@ -163,7 +163,7 @@
 				{
 				?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class'=>'control-label col-xs-3']) ?>
+						<?php echo form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
 							<div class="input-group input-group-sm">
 								<?php echo form_input ([
@@ -182,7 +182,7 @@
 				?>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.date'), 'date', ['class'=>'control-label col-xs-3']) ?>
+					<?php echo form_label(lang('Customers.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -198,12 +198,12 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.employee'), 'employee', ['class'=>'control-label col-xs-3']) ?>
+					<?php echo form_label(lang('Customers.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<?php echo form_input ([
-								'name'=>'employee',
-								'id'=>'employee',
-								'class'=>'form-control input-sm',
+								'name' => 'employee',
+								'id' => 'employee',
+								'class' => 'form-control input-sm',
 								'value' => esc($employee, 'attr'),
 								'readonly' => 'true'
 							]) ?>

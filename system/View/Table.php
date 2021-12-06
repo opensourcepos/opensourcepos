@@ -227,7 +227,7 @@ class Table
 	{
 		// If there is no $args[0], skip this and treat as an associative array
 		// This can happen if there is only a single key, for example this is passed to table->generate
-		// [array('foo'=>'bar'))
+		// [array('foo' => 'bar'))
 		if (isset($args[0]) && count($args) === 1 && is_array($args[0]) && ! isset($args[0]['data']))
 		{
 			$args = $args[0];

@@ -1,54 +1,63 @@
+<?php
+/**
+ * @var object $item_info
+ * @var array $categories
+ * @var int $selected_category
+ * @var bool $standard_item_locked
+ * @var bool $item_kit_disabled
+ */
+?>
 <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('items/save/'.$item_info->item_id, ['id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')) ?>
+<?php echo form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.item_number'), 'item_number', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.item_number'), 'item_number', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
 					<?php echo form_input ([
-							'name'=>'item_number',
-							'id'=>'item_number',
-							'class'=>'form-control input-sm',
-							'value'=>$item_info->item_number)
-							) ?>
+						'name' => 'item_number',
+						'id' => 'item_number',
+						'class' => 'form-control input-sm',
+						'value' => esc($item_info->item_number, 'attr')
+					]) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.name'), 'name', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?php echo form_input ([
-						'name'=>'name',
-						'id'=>'name',
-						'class'=>'form-control input-sm',
-						'value'=>$item_info->name)
-						) ?>
+					'name' => 'name',
+					'id' => 'name',
+					'class' => 'form-control input-sm',
+					'value' => esc($item_info->name, 'attr')
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.category'), 'category', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php
 						if($this->Appconfig->get('category_dropdown'))
 						{
-							echo form_dropdown('category', $categories, $selected_category, ['class'=>'form-control'));
+							echo form_dropdown('category', esc($categories, 'attr'), $selected_category, ['class' => 'form-control']);
 						}
 						else
 						{
 							echo form_input ([
-								'name'=>'category',
-								'id'=>'category',
-								'class'=>'form-control input-sm',
-								'value'=>$item_info->category)
-								);
+								'name' => 'category',
+								'id' => 'category',
+								'class' => 'form-control input-sm',
+								'value' => esc($item_info->category, 'attr')
+							]);
 						}
 					?>
 				</div>
@@ -62,40 +71,42 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class'=>'required control-label col-xs-3') : ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
 					<?php echo form_radio ([
-							'name'=>'stock_type',
-							'type'=>'radio',
-							'id'=>'stock_type',
-							'value'=>0,
-							'checked'=>$item_info->stock_type == HAS_STOCK)
-					) ?> <?php echo lang('Items.stock') ?>
+						'name' => 'stock_type',
+						'type' => 'radio',
+						'id' => 'stock_type',
+						'value' => 0,
+						'checked' => $item_info->stock_type == HAS_STOCK
+					]) ?> <?php echo lang('Items.stock') ?>
 				</label>
 				<label class="radio-inline">
 					<?php echo form_radio ([
-							'name'=>'stock_type',
-							'type'=>'radio',
-							'id'=>'stock_type',
-							'value'=>1,
-							'checked'=>$item_info->stock_type == HAS_NO_STOCK)
-					) ?><?php echo lang('Items.nonstock') ?>
+						'name' => 'stock_type',
+						'type' => 'radio',
+						'id' => 'stock_type',
+						'value' => 1,
+						'checked' => $item_info->stock_type == HAS_NO_STOCK
+					]) ?><?php echo lang('Items.nonstock') ?>
 				</label>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class'=>'required control-label col-xs-3') : ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
 					<?php
 						$radio_button = [
-							'name'=>'item_type',
-							'type'=>'radio',
-							'id'=>'item_type',
-							'value'=>0,
-							'checked'=>$item_info->item_type == ITEM);
+							'name' => 'item_type',
+							'type' => 'radio',
+							'id' => 'item_type',
+							'value' => 0,
+							'checked' => $item_info->item_type == ITEM
+						];
+
 						if($standard_item_locked)
 						{
 							$radio_button['disabled'] = TRUE;
@@ -105,11 +116,13 @@
 				<label class="radio-inline">
 					<?php
 						$radio_button = [
-							'name'=>'item_type',
-							'type'=>'radio',
-							'id'=>'item_type',
+							'name' => 'item_type',
+							'type' => 'radio',
+							'id' => 'item_type',
 							'value'=>1,
-							'checked'=>$item_info->item_type == ITEM_KIT);
+							'checked'=>$item_info->item_type == ITEM_KIT
+						];
+
 						if($item_kit_disabled)
 						{
 							$radio_button['disabled'] = TRUE;
@@ -138,9 +151,9 @@
 				?>
 					<label class="radio-inline">
 						<?php echo form_radio ([
-								'name'=>'item_type',
-								'type'=>'radio',
-								'id'=>'item_type',
+								'name' => 'item_type',
+								'type' => 'radio',
+								'id' => 'item_type',
 								'value'=>3,
 								'checked'=>$item_info->item_type == ITEM_TEMP)
 						) ?> <?php echo lang('Items.temp') ?>
@@ -152,24 +165,24 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class'=>'form-control')) ?>
+				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control')) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.cost_price'), 'cost_price', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3')) ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
-							'name'=>'cost_price',
-							'id'=>'cost_price',
-							'class'=>'form-control input-sm',
-							'onClick'=>'this.select();',
+							'name' => 'cost_price',
+							'id' => 'cost_price',
+							'class' => 'form-control input-sm',
+							'onClick' => 'this.select();',
 							'value'=>to_currency_no_money($item_info->cost_price))
 							) ?>
 					<?php if (currency_side()): ?>
@@ -180,17 +193,17 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.unit_price'), 'unit_price', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3')) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
-							'name'=>'unit_price',
-							'id'=>'unit_price',
-							'class'=>'form-control input-sm',
-							'onClick'=>'this.select();',
+							'name' => 'unit_price',
+							'id' => 'unit_price',
+							'class' => 'form-control input-sm',
+							'onClick' => 'this.select();',
 							'value'=>to_currency_no_money($item_info->unit_price))
 							) ?>
 					<?php if (currency_side()): ?>
@@ -205,21 +218,21 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name'=>'tax_names[]',
-							'id'=>'tax_name_1',
-							'class'=>'form-control input-sm',
+							'name' => 'tax_names[]',
+							'id' => 'tax_name_1',
+							'class' => 'form-control input-sm',
 							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->appconfig->get('default_tax_1_name'))
 							) ?>
 				</div>
 				<div class="col-xs-4">
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name'=>'tax_percents[]',
-								'id'=>'tax_percent_name_1',
-								'class'=>'form-control input-sm',
+								'name' => 'tax_percents[]',
+								'id' => 'tax_percent_name_1',
+								'class' => 'form-control input-sm',
 								'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
 								) ?>
 						<span class="input-group-addon input-sm"><b>%</b></span>
@@ -228,21 +241,21 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name'=>'tax_names[]',
-							'id'=>'tax_name_2',
-							'class'=>'form-control input-sm',
+							'name' => 'tax_names[]',
+							'id' => 'tax_name_2',
+							'class' => 'form-control input-sm',
 							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->appconfig->get('default_tax_2_name'))
 							) ?>
 				</div>
 				<div class="col-xs-4">
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name'=>'tax_percents[]',
-								'class'=>'form-control input-sm',
-								'id'=>'tax_percent_name_2',
+								'name' => 'tax_percents[]',
+								'class' => 'form-control input-sm',
+								'id' => 'tax_percent_name_2',
 								'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
 								) ?>
 						<span class="input-group-addon input-sm"><b>%</b></span>
@@ -255,14 +268,14 @@
 
 		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Taxes.tax_category'), 'tax_category', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name'=>'tax_category',
-								'id'=>'tax_category',
-								'class'=>'form-control input-sm',
-								'size'=>'50',
+								'name' => 'tax_category',
+								'id' => 'tax_category',
+								'class' => 'form-control input-sm',
+								'size' => '50',
 								'value'=>$tax_category)
 						) ?>
 						<?php echo form_hidden('tax_category_id', $tax_category_id) ?>
@@ -273,13 +286,13 @@
 
 		<?php if($include_hsn): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.hsn_code'), 'category', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-8'>
 					<div class="input-group">
 						<?php echo form_input ([
-								'name'=>'hsn_code',
-								'id'=>'hsn_code',
-								'class'=>'form-control input-sm',
+								'name' => 'hsn_code',
+								'id' => 'hsn_code',
+								'class' => 'form-control input-sm',
 								'value'=>$hsn_code)
 						) ?>
 					</div>
@@ -292,13 +305,13 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.quantity').' '.$location_detail['location_name'], 'quantity_' . $key, ['class'=>'required control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.quantity').' '.$location_detail['location_name'], 'quantity_' . $key, ['class' => 'required control-label col-xs-3')) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name'=>'quantity_' . $key,
-							'id'=>'quantity_' . $key,
-							'class'=>'required quantity form-control',
-							'onClick'=>'this.select();',
+							'name' => 'quantity_' . $key,
+							'id' => 'quantity_' . $key,
+							'class' => 'required quantity form-control',
+							'onClick' => 'this.select();',
 							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
 							) ?>
 				</div>
@@ -308,45 +321,45 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3')) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
-						'name'=>'receiving_quantity',
-						'id'=>'receiving_quantity',
-						'class'=>'required form-control input-sm',
-						'onClick'=>'this.select();',
+						'name' => 'receiving_quantity',
+						'id' => 'receiving_quantity',
+						'class' => 'required form-control input-sm',
+						'onClick' => 'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
 						) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3')) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
-						'name'=>'reorder_level',
-						'id'=>'reorder_level',
-						'class'=>'form-control input-sm',
-						'onClick'=>'this.select();',
+						'name' => 'reorder_level',
+						'id' => 'reorder_level',
+						'class' => 'form-control input-sm',
+						'onClick' => 'this.select();',
 						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
 						) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.description'), 'description', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea ([
-						'name'=>'description',
-						'id'=>'description',
-						'class'=>'form-control input-sm',
+						'name' => 'description',
+						'id' => 'description',
+						'class' => 'form-control input-sm',
 						'value'=>$item_info->description)
 						) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.image'), 'items_image', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-8'>
 				<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
 					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
@@ -368,11 +381,11 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name'=>'allow_alt_description',
-						'id'=>'allow_alt_description',
+						'name' => 'allow_alt_description',
+						'id' => 'allow_alt_description',
 						'value'=>1,
 						'checked'=>($item_info->allow_alt_description) ? 1 : 0)
 						) ?>
@@ -380,11 +393,11 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name'=>'is_serialized',
-						'id'=>'is_serialized',
+						'name' => 'is_serialized',
+						'id' => 'is_serialized',
 						'value'=>1,
 						'checked'=>($item_info->is_serialized) ? 1 : 0)
 						) ?>
@@ -396,35 +409,35 @@
 		{
 			?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name'=>'qty_per_pack',
-							'id'=>'qty_per_pack',
-							'class'=>'form-control input-sm',
+							'name' => 'qty_per_pack',
+							'id' => 'qty_per_pack',
+							'class' => 'form-control input-sm',
 							'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0))
 					) ?>
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.pack_name'), 'name', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-8'>
 					<?php echo form_input ([
-							'name'=>'pack_name',
-							'id'=>'pack_name',
-							'class'=>'form-control input-sm',
+							'name' => 'pack_name',
+							'id' => 'pack_name',
+							'class' => 'form-control input-sm',
 							'value'=>$item_info->pack_name)
 					) ?>
 				</div>
 			</div>
 			<div class="form-group  form-group-sm">
-				<?php echo form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class'=>'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3')) ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name'=>'low_sell_item_name',
-								'id'=>'low_sell_item_name',
-								'class'=>'form-control input-sm',
+								'name' => 'low_sell_item_name',
+								'id' => 'low_sell_item_name',
+								'class' => 'form-control input-sm',
 								'value'=>$selected_low_sell_item)
 						) ?>
 						<?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
@@ -436,11 +449,11 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.is_deleted'), 'is_deleted', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name'=>'is_deleted',
-						'id'=>'is_deleted',
+						'name' => 'is_deleted',
+						'id' => 'is_deleted',
 						'value'=>1,
 						'checked'=>($item_info->deleted) ? 1 : 0)
 						) ?>

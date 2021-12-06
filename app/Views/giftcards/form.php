@@ -1,18 +1,28 @@
+<?php
+/**
+ * @var int $giftcard_id
+ * @var string $selected_person_name
+ * @var int $selected_person_id
+ * @var string $giftcard_number
+ * @var float $giftcard_value
+ * @var string $controller_name
+ */
+?>
 <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_id, ['id'=>'giftcard_form', 'class'=>'form-horizontal')) ?>
+<?php echo form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.person_id'), 'person_name', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?php echo form_input ([
-						'name'=>'person_name',
-						'id'=>'person_name',
-						'class'=>'form-control input-sm',
-						'value'=>$selected_person_name)
-						) ?>
+					'name' => 'person_name',
+					'id' => 'person_name',
+					'class' => 'form-control input-sm',
+					'value' => esc($selected_person_name, 'attr')
+				]) ?>
 				<?php echo form_hidden('person_id', $selected_person_id) ?>
 			</div>
 		</div>
@@ -25,32 +35,32 @@
 		}
 		?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class'=>'control-label col-xs-3'.$class)) ?>
-			<div class='col-xs-4'>
+			<?php echo form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class'=>"control-label col-xs-3$class"]) ?>
+			<div class="col-xs-4'>
 				<?php echo form_input ([
-						'name'=>'giftcard_number',
-						'id'=>'giftcard_number',
-						'class'=>'form-control input-sm',
-						'value'=>$giftcard_number)
-						) ?>
+					'name' => 'giftcard_number',
+					'id' => 'giftcard_number',
+					'class' => 'form-control input-sm',
+					'value' => esc($giftcard_number, 'attr')
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class'=>'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><?php echo $this->appconfig->get('currency_symbol') ?></span>
+						<span class="input-group-addon input-sm"><?php echo esc($this->appconfig->get('currency_symbol')) ?></span>
 					<?php endif; ?>
 					<?php echo form_input ([
-							'name'=>'giftcard_amount',
-							'id'=>'giftcard_amount',
-							'class'=>'form-control input-sm',
-							'value'=>to_currency_no_money($giftcard_value))
-							) ?>
+						'name' => 'giftcard_amount',
+						'id' => 'giftcard_amount',
+						'class' => 'form-control input-sm',
+						'value'=>to_currency_no_money($giftcard_value)
+					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -73,7 +83,7 @@ $(document).ready(function()
 	};
 
 	$('#person_name').autocomplete({
-		source: "<?php echo site_url('customers/suggest') ?>",
+		source: "<?php echo esc(site_url('customers/suggest'), 'url') ?>",
 		minChars: 0,
 		delay: 15, 
 	   	cacheLength: 1,
@@ -88,11 +98,11 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo site_url($controller_name) ?>", response);
+					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
 				},
 				error: function(jqXHR, textStatus, errorThrown) 
 				{
-					table_support.handle_submit("<?php echo site_url($controller_name) ?>", {message: errorThrown});
+					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", {message: errorThrown});
 				},
 				dataType: 'json'
 			});
@@ -119,7 +129,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard') ?>",
+					url: "<?php echo esc(site_url("$controller_name/ajax_check_number_giftcard"), 'url') ?>",
 					type: 'POST',
 					data: {
 						'amount': $('#giftcard_amount').val()

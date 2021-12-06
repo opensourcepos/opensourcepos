@@ -1,7 +1,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('taxes/save/'.$tax_rate_id, ['id'=>'tax_code_form', 'class'=>'form-horizontal')) ?>
+<?php echo form_open('taxes/save/'.$tax_rate_id, ['id' => 'tax_code_form', 'class' => 'form-horizontal')) ?>
 	<fieldset id="tax_rate_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3')) ?>
@@ -25,12 +25,12 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class'=>'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class' => 'control-label col-xs-3')) ?>
 			<div class='col-xs-5 input-group' style='padding-left:15px;' >
 				<?php echo form_input ([
-						'name'=>'tax_rate',
-						'id'=>'tax_rate',
-						'class'=>'form-control input-sm text-uppercase',
+						'name' => 'tax_rate',
+						'id' => 'tax_rate',
+						'class' => 'form-control input-sm text-uppercase',
 						'value'=>$tax_rate)
 				) ?>
 				<span class="input-group-addon input-sm">%</span>

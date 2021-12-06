@@ -40,7 +40,7 @@ $(document).ready(function()
 });
 </script>
 
-<?php echo view('partial/print_receipt', ['print_after_sale'=>false, 'selected_printer'=>'takings_printer']) ?>
+<?php echo view('partial/print_receipt', ['print_after_sale'=>false, 'selected_printer' => 'takings_printer']) ?>
 
 <div id="title_bar" class="print_hide btn-toolbar">
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
@@ -58,14 +58,14 @@ $(document).ready(function()
 			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo lang('Common.delete') ?>
 		</button>
 
-		<?php echo form_input (['name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker']) ?>
+		<?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		<?php echo form_multiselect('filters[]', esc($filters, 'attr'), '', [	//TODO: SELECTED parameter expects an array or void, but a string was provided.
-			'id'=>'filters',
+			'id' => 'filters',
 			'data-none-selected-text'=>lang('Common.none_selected_text'),
-			'class'=>'selectpicker show-menu-arrow',
-			'data-selected-text-format'=>'count > 1',
-			'data-style'=>'btn-default btn-sm',
-			'data-width'=>'fit'
+			'class' => 'selectpicker show-menu-arrow',
+			'data-selected-text-format' => 'count > 1',
+			'data-style' => 'btn-default btn-sm',
+			'data-width' => 'fit'
 		]) ?>
 	</div>
 </div>

@@ -237,7 +237,7 @@ function get_person_data_row(object $person): array
 				"Messages/view/$person->person_id",
 				'<span class="glyphicon glyphicon-phone"></span>',
 				[
-					'class'=>'modal-dlg',
+					'class' => 'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
 					'title'=>lang('Messages.sms_send')
 				]
@@ -246,7 +246,7 @@ function get_person_data_row(object $person): array
 			$controller_name."/view/$person->person_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-					'class'=>'modal-dlg',
+					'class' => 'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
 					'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -303,7 +303,7 @@ function get_customer_data_row(object $person, object $stats): array
 				"Messages/view/$person->person_id",	//TODO: String interpolation
 				'<span class="glyphicon glyphicon-phone"></span>',
 				[
-					'class'=>'modal-dlg',
+					'class' => 'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
 					'title'=>lang('Messages.sms_send')
 				]
@@ -312,7 +312,7 @@ function get_customer_data_row(object $person, object $stats): array
 			$controller_name."/view/$person->person_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -588,7 +588,7 @@ function get_giftcard_data_row(object $giftcard): array
 			$controller_name."/view/$giftcard->giftcard_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -633,7 +633,7 @@ function get_item_kit_data_row(object $item_kit): array
 			$controller_name."/view/$item_kit->item_kit_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -724,7 +724,7 @@ function get_attribute_definition_data_row(object $attribute): array
 			"$controller_name/view/$attribute->definition_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')
 			]
@@ -762,7 +762,7 @@ function get_expense_category_data_row(object $expense_category): array
 			$controller_name."/view/$expense_category->expense_category_id",	//TODO: String interpolation
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
 			]
@@ -815,7 +815,7 @@ function get_expenses_data_row(object $expense): array
 			$controller_name."/view/$expense->expense_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')
 			]
@@ -915,7 +915,7 @@ function get_cash_up_data_row(object $cash_up): array
 			$controller_name."/view/$cash_up->cashup_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
-				'class'=>'modal-dlg',
+				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
 				'title'=>lang($controller_name . '.update')
 			]

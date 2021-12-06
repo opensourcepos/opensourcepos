@@ -157,7 +157,7 @@ class BasicObject
     {
         switch ($this->operator) {
             case self::OPERATOR_ARRAY:
-                return '=>';
+                return ' => ';
             case self::OPERATOR_OBJECT:
                 return '->';
             case self::OPERATOR_STATIC:

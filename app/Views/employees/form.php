@@ -11,7 +11,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("$controller_name/save/$person_info->person_id", ['id'=>'employee_form', 'class'=>'form-horizontal']) ?>
+<?php echo form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
 			<a data-toggle="tab" href="#employee_basic_info"><?php echo lang('Employees.basic_information') ?></a>
@@ -34,7 +34,7 @@
 		<div class="tab-pane" id="employee_login_info">
 			<fieldset>
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.username'), 'username', ['class'=>'required control-label col-xs-3']) ?>
+					<?php echo form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
@@ -48,10 +48,10 @@
 					</div>
 				</div>
 
-				<?php $password_label_attributes = $person_info->person_id == "" ? ['class'=>'required'] : []; ?>
+				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])), 'attr') ?>
+					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])), 'attr') ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -65,7 +65,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class'=>'control-label col-xs-3'])), 'attr') ?>
+				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])), 'attr') ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>

@@ -11,12 +11,12 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 	++$i;
 ?>
 	<div class="form-group form-group-sm" style="<?php echo $tax_code_data['deleted'] ? 'display:none;' : 'display:block;' ?>">
-		<?php echo form_label(lang('Taxes.tax_code') . ' ' . $i, 'tax_code_' . $i, ['class'=>'control-label col-xs-2')) ?>
+		<?php echo form_label(lang('Taxes.tax_code') . ' ' . $i, 'tax_code_' . $i, ['class' => 'control-label col-xs-2')) ?>
 		<div class='col-xs-2'>
 			<?php $form_data = [
-					'name'=>'tax_code[]',
-					'id'=>'tax_code_' . $i,
-					'class'=>'valid_chars text-uppercase form-control input-sm',
+					'name' => 'tax_code[]',
+					'id' => 'tax_code_' . $i,
+					'class' => 'valid_chars text-uppercase form-control input-sm',
 					'placeholder'=>lang('Taxes.code'),
 					'value'=>$tax_code
 				);
@@ -25,8 +25,8 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 		</div>
 		<div class='col-xs-2'>
 			<?php $form_data = [
-				'name'=>'tax_code_name[]',
-				'class'=>'valid_chars form-control input-sm',
+				'name' => 'tax_code_name[]',
+				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.name'),
 				'value'=>$tax_code_name
 			);
@@ -35,8 +35,8 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 		</div>
 		<div class='col-xs-2'>
 			<?php $form_data = [
-				'name'=>'city[]',
-				'class'=>'valid_chars form-control input-sm',
+				'name' => 'city[]',
+				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.city'),
 				'value'=>$city
 			);
@@ -45,8 +45,8 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 		</div>
 		<div class='col-xs-2'>
 			<?php $form_data = [
-				'name'=>'state[]',
-				'class'=>'valid_chars form-control input-sm',
+				'name' => 'state[]',
+				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.state'),
 				'value'=>$state
 			);

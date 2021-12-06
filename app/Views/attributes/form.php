@@ -13,16 +13,16 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('attributes/save_definition/' . esc($definition_id, 'attr'), ['id'=>'attribute_form', 'class'=>'form-horizontal']) //TODO: String Interpolation?>
+<?php echo form_open('attributes/save_definition/' . esc($definition_id, 'attr'), ['id' => 'attribute_form', 'class' => 'form-horizontal']) //TODO: String Interpolation?>
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Attributes.definition_name'), 'definition_name', ['class'=>'required control-label col-xs-3']) ?>
+		<?php echo form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<?php echo form_input ([
-					'name'=>'definition_name',
+					'name' => 'definition_name',
 					'id' => 'definition_name',
-					'class'=>'form-control input-sm',
+					'class' => 'form-control input-sm',
 					'value'=>esc($definition_info->definition_name, 'attr')
 				]
 			) ?>
@@ -30,7 +30,7 @@
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Attributes.definition_type'), 'definition_type', ['class'=>'required control-label col-xs-3']) ?>
+		<?php echo form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, esc(array_search($definition_info->definition_type, DEFINITION_TYPES)), 'id="definition_type" class="form-control"') ?>
 		</div>
@@ -57,12 +57,12 @@
 					esc($definition_flags, 'attr'),
 					esc(array_keys($selected_definition_flags), 'attr'),
 					[
-						'id'=>'definition_flags',
-						'class'=>'selectpicker show-menu-arrow',
+						'id' => 'definition_flags',
+						'class' => 'selectpicker show-menu-arrow',
 						'data-none-selected-text'=>lang('Common.none_selected_text'),
-						'data-selected-text-format'=>'count > 1',
-						'data-style'=>'btn-default btn-sm',
-						'data-width'=>'fit'
+						'data-selected-text-format' => 'count > 1',
+						'data-style' => 'btn-default btn-sm',
+						'data-width' => 'fit'
 					]
 				) ?>
 			</div>
@@ -74,9 +74,9 @@
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<?php echo form_input ([
-					'name'=>'definition_unit',
+					'name' => 'definition_unit',
 					'value' => esc($definition_info->definition_unit, 'attr'),
-					'class'=>'form-control input-sm',
+					'class' => 'form-control input-sm',
 					'id' => 'definition_unit'
 				]) ?>
 			</div>
@@ -87,7 +87,7 @@
 		<?php echo form_label(lang('Attributes.definition_values'), 'definition_value', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_input (['name'=>'definition_value', 'class'=>'form-control input-sm', 'id' => 'definition_value']) ?>
+				<?php echo form_input (['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
 				<span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
 					<span class="glyphicon glyphicon-plus-sign"></span>
 				</span>
