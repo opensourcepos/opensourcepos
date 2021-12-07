@@ -5,6 +5,22 @@
  * @var int $selected_category
  * @var bool $standard_item_locked
  * @var bool $item_kit_disabled
+ * @var int $allow_temp_item
+ * @var array $suppliers
+ * @var int $selected_supplier
+ * @var bool $use_destination_based_tax
+ * @var float $default_tax_1_rate
+ * @var float $default_tax_2_rate
+ * @var string $tax_category
+ * @var int $tax_category_id
+ * @var bool $include_hsn
+ * @var string $hsn_code
+ * @var array $stock_locations
+ * @var bool $logo_exists
+ * @var string $image_path
+ * @var string $selected_low_sell_item
+ * @var int $selected_low_sell_item_id
+ * @var string $controller_name
  */
 ?>
 <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -119,8 +135,8 @@
 							'name' => 'item_type',
 							'type' => 'radio',
 							'id' => 'item_type',
-							'value'=>1,
-							'checked'=>$item_info->item_type == ITEM_KIT
+							'value' => 1,
+							'checked' => $item_info->item_type == ITEM_KIT
 						];
 
 						if($item_kit_disabled)
@@ -135,12 +151,12 @@
 				?>
 					<label class="radio-inline">
 						<?php echo form_radio ([
-								'name' => 'item_type',
-								'type' => 'radio',
-								'id' => 'item_type',
-								'value' => 2,
-								'checked' => $item_info->item_type == ITEM_AMOUNT_ENTRY)
-						) ?><?php echo lang('Items.amount_entry') ?>
+							'name' => 'item_type',
+							'type' => 'radio',
+							'id' => 'item_type',
+							'value' => 2,
+							'checked' => $item_info->item_type == ITEM_AMOUNT_ENTRY
+						]) ?><?php echo lang('Items.amount_entry') ?>
 					</label>
 				<?php
 				}
@@ -151,12 +167,12 @@
 				?>
 					<label class="radio-inline">
 						<?php echo form_radio ([
-								'name' => 'item_type',
-								'type' => 'radio',
-								'id' => 'item_type',
-								'value'=>3,
-								'checked'=>$item_info->item_type == ITEM_TEMP)
-						) ?> <?php echo lang('Items.temp') ?>
+							'name' => 'item_type',
+							'type' => 'radio',
+							'id' => 'item_type',
+							'value' => 3,
+							'checked' => $item_info->item_type == ITEM_TEMP
+						]) ?> <?php echo lang('Items.temp') ?>
 					</label>
 				<?php
 				}
@@ -165,49 +181,49 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control')) ?>
+				<?php echo form_dropdown('supplier_id', esc($suppliers, 'attr'), $selected_supplier, ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
-							'name' => 'cost_price',
-							'id' => 'cost_price',
-							'class' => 'form-control input-sm',
-							'onClick' => 'this.select();',
-							'value'=>to_currency_no_money($item_info->cost_price))
-							) ?>
+						'name' => 'cost_price',
+						'id' => 'cost_price',
+						'class' => 'form-control input-sm',
+						'onClick' => 'this.select();',
+						'value' => to_currency_no_money($item_info->cost_price)
+					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
-							'name' => 'unit_price',
-							'id' => 'unit_price',
-							'class' => 'form-control input-sm',
-							'onClick' => 'this.select();',
-							'value'=>to_currency_no_money($item_info->unit_price))
-							) ?>
+						'name' => 'unit_price',
+						'id' => 'unit_price',
+						'class' => 'form-control input-sm',
+						'onClick' => 'this.select();',
+						'value' => to_currency_no_money($item_info->unit_price)
+					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->appconfig->get('currency_symbol') ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -218,46 +234,46 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name' => 'tax_names[]',
-							'id' => 'tax_name_1',
-							'class' => 'form-control input-sm',
-							'value'=>isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->appconfig->get('default_tax_1_name'))
-							) ?>
+						'name' => 'tax_names[]',
+						'id' => 'tax_name_1',
+						'class' => 'form-control input-sm',
+						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name'], 'attr') : esc($this->appconfig->get('default_tax_1_name'), 'attr')
+					]) ?>
 				</div>
 				<div class="col-xs-4">
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name' => 'tax_percents[]',
-								'id' => 'tax_percent_name_1',
-								'class' => 'form-control input-sm',
-								'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
-								) ?>
+							'name' => 'tax_percents[]',
+							'id' => 'tax_percent_name_1',
+							'class' => 'form-control input-sm',
+							'value' => isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate)
+						]) ?>
 						<span class="input-group-addon input-sm"><b>%</b></span>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name' => 'tax_names[]',
-							'id' => 'tax_name_2',
-							'class' => 'form-control input-sm',
-							'value'=>isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->appconfig->get('default_tax_2_name'))
-							) ?>
+						'name' => 'tax_names[]',
+						'id' => 'tax_name_2',
+						'class' => 'form-control input-sm',
+						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name'], 'attr') : esc($this->appconfig->get('default_tax_2_name'), 'attr')
+					]) ?>
 				</div>
 				<div class="col-xs-4">
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name' => 'tax_percents[]',
-								'class' => 'form-control input-sm',
-								'id' => 'tax_percent_name_2',
-								'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
-								) ?>
+							'name' => 'tax_percents[]',
+							'class' => 'form-control input-sm',
+							'id' => 'tax_percent_name_2',
+							'value' => isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate)
+						]) ?>
 						<span class="input-group-addon input-sm"><b>%</b></span>
 					</div>
 				</div>
@@ -268,17 +284,16 @@
 
 		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name' => 'tax_category',
-								'id' => 'tax_category',
-								'class' => 'form-control input-sm',
-								'size' => '50',
-								'value'=>$tax_category)
-						) ?>
-						<?php echo form_hidden('tax_category_id', $tax_category_id) ?>
+							'name' => 'tax_category',
+							'id' => 'tax_category',
+							'class' => 'form-control input-sm',
+							'size' => '50',
+							'value' => esc($tax_category, 'attr')
+						]) ?><?php echo form_hidden('tax_category_id', $tax_category_id) ?>
 					</div>
 				</div>
 			</div>
@@ -286,34 +301,34 @@
 
 		<?php if($include_hsn): ?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<div class="input-group">
 						<?php echo form_input ([
-								'name' => 'hsn_code',
-								'id' => 'hsn_code',
-								'class' => 'form-control input-sm',
-								'value'=>$hsn_code)
-						) ?>
+							'name' => 'hsn_code',
+							'id' => 'hsn_code',
+							'class' => 'form-control input-sm',
+							'value' => esc($hsn_code, 'attr')
+						]) ?>
 					</div>
 				</div>
 			</div>
 		<?php endif; ?>
 
 		<?php
-		foreach($stock_locations as $key=>$location_detail)
+		foreach($stock_locations as $key => $location_detail)
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.quantity').' '.$location_detail['location_name'], 'quantity_' . $key, ['class' => 'required control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name' => 'quantity_' . $key,
-							'id' => 'quantity_' . $key,
-							'class' => 'required quantity form-control',
-							'onClick' => 'this.select();',
-							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
-							) ?>
+						'name' => "quantity_$key",
+						'id' => "quantity_$key",
+						'class' => 'required quantity form-control',
+						'onClick' => 'this.select();',
+						'value' => isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0)
+					]) ?>
 				</div>
 			</div>
 		<?php
@@ -321,51 +336,51 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
-						'name' => 'receiving_quantity',
-						'id' => 'receiving_quantity',
-						'class' => 'required form-control input-sm',
-						'onClick' => 'this.select();',
-						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
-						) ?>
+					'name' => 'receiving_quantity',
+					'id' => 'receiving_quantity',
+					'class' => 'required form-control input-sm',
+					'onClick' => 'this.select();',
+					'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0)
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
-						'name' => 'reorder_level',
-						'id' => 'reorder_level',
-						'class' => 'form-control input-sm',
-						'onClick' => 'this.select();',
-						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
-						) ?>
+					'name' => 'reorder_level',
+					'id' => 'reorder_level',
+					'class' => 'form-control input-sm',
+					'onClick' => 'this.select();',
+					'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0)
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea ([
 						'name' => 'description',
 						'id' => 'description',
 						'class' => 'form-control input-sm',
-						'value'=>$item_info->description)
-						) ?>
+						'value' => esc($item_info->description, 'attr')
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
 					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
 					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
 						<img data-src="holder.js/100%x100%" alt="<?php echo lang('Items.image') ?>"
-							 src="<?php echo $image_path ?>"
+							 src="<?php echo esc($image_path, 'url') ?>"
 							 style="max-height: 100%; max-width: 100%;">
 					</div>
 					<div>
@@ -381,26 +396,26 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name' => 'allow_alt_description',
-						'id' => 'allow_alt_description',
-						'value'=>1,
-						'checked'=>($item_info->allow_alt_description) ? 1 : 0)
-						) ?>
+					'name' => 'allow_alt_description',
+					'id' => 'allow_alt_description',
+					'value' => 1,
+					'checked' => ($item_info->allow_alt_description) ? 1 : 0
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name' => 'is_serialized',
-						'id' => 'is_serialized',
-						'value'=>1,
-						'checked'=>($item_info->is_serialized) ? 1 : 0)
-						) ?>
+					'name' => 'is_serialized',
+					'id' => 'is_serialized',
+					'value' => 1,
+					'checked' => ($item_info->is_serialized) ? 1 : 0
+				]) ?>
 			</div>
 		</div>
 
@@ -409,38 +424,37 @@
 		{
 			?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php echo form_input ([
-							'name' => 'qty_per_pack',
-							'id' => 'qty_per_pack',
-							'class' => 'form-control input-sm',
-							'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0))
-					) ?>
+						'name' => 'qty_per_pack',
+						'id' => 'qty_per_pack',
+						'class' => 'form-control input-sm',
+						'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0)
+					]) ?>
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<?php echo form_input ([
-							'name' => 'pack_name',
-							'id' => 'pack_name',
-							'class' => 'form-control input-sm',
-							'value'=>$item_info->pack_name)
-					) ?>
+						'name' => 'pack_name',
+						'id' => 'pack_name',
+						'class' => 'form-control input-sm',
+						'value' => esc($item_info->pack_name, 'attr')
+					]) ?>
 				</div>
 			</div>
 			<div class="form-group  form-group-sm">
-				<?php echo form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3')) ?>
+				<?php echo form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<div class="input-group input-group-sm">
 						<?php echo form_input ([
-								'name' => 'low_sell_item_name',
-								'id' => 'low_sell_item_name',
-								'class' => 'form-control input-sm',
-								'value'=>$selected_low_sell_item)
-						) ?>
-						<?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
+							'name' => 'low_sell_item_name',
+							'id' => 'low_sell_item_name',
+							'class' => 'form-control input-sm',
+							'value' => esc($selected_low_sell_item, 'attr')
+						]) ?><?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
 					</div>
 				</div>
 			</div>
@@ -449,14 +463,14 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox ([
-						'name' => 'is_deleted',
-						'id' => 'is_deleted',
-						'value'=>1,
-						'checked'=>($item_info->deleted) ? 1 : 0)
-						) ?>
+					'name' => 'is_deleted',
+					'id' => 'is_deleted',
+					'value'=>1,
+					'checked' => ($item_info->deleted) ? 1 : 0
+				]) ?>
 			</div>
 		</div>
 
@@ -521,7 +535,7 @@ $(document).ready(function()
 	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: '<?php echo site_url("$controller_name/remove_logo/$item_info->item_id") ?>',
+			url: '<?php echo esc(site_url("$controller_name/remove_logo/$item_info->item_id"), 'url') ?>',
 			dataType: 'json'
 		})
 	});
@@ -568,7 +582,7 @@ $(document).ready(function()
 					required: false,
 					remote:
 					{
-						url: "<?php echo site_url($controller_name . '/check_item_number') ?>",
+						url: "<?php echo esc(site_url("$controller_name/check_item_number"), 'url') ?>",
 						type: 'POST',
 						data: {
 							'item_id' : "<?php echo $item_info->item_id ?>",
@@ -582,12 +596,12 @@ $(document).ready(function()
 				cost_price:
 				{
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 				},
 				unit_price:
 				{
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -596,7 +610,7 @@ $(document).ready(function()
 				<?php echo 'quantity_' . $key ?>:
 					{
 						required: true,
-						remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+						remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 					},
 				<?php
 				}
@@ -604,17 +618,17 @@ $(document).ready(function()
 				receiving_quantity:
 				{
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 				},
 				reorder_level:
 				{
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 				},
 				tax_percent:
 				{
 					required: true,
-					remote: "<?php echo site_url($controller_name . '/check_numeric') ?>"
+					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
 				}
 			},
 
@@ -630,14 +644,14 @@ $(document).ready(function()
 				},
 				unit_price:
 				{
-					required: "<?php echo lang('Items.unit_price_required' ?>",
-					number: "<?php echo lang('Items.unit_price_number' ?>"
+					required: "<?php echo lang('Items.unit_price_required') ?>",
+					number: "<?php echo lang('Items.unit_price_number') ?>"
 				},
 				<?php
-				foreach($stock_locations as $key=>$location_detail)
+				foreach($stock_locations as $key => $location_detail)
 				{
 				?>
-				<?php echo 'quantity_' . $key ?>:
+				<?php echo esc("quantity_$key", 'js') ?>:
 					{
 						required: "<?php echo lang('Items.quantity_required') ?>",
 						number: "<?php echo lang('Items.quantity_number') ?>"
@@ -647,13 +661,13 @@ $(document).ready(function()
 				?>
 				receiving_quantity:
 				{
-					required: "<?php echo lang('Items.quantity_required' ?>",
+					required: "<?php echo lang('Items.quantity_required') ?>",
 					number: "<?php echo lang('Items.quantity_number') ?>"
 				},
 				reorder_level:
 				{
 					required: "<?php echo lang('Items.reorder_level_required') ?>",
-					number: "<?php echo lang('Items.reorder_level_number' ?>"
+					number: "<?php echo lang('Items.reorder_level_number') ?>"
 				},
 				tax_percent:
 				{

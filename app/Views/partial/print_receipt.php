@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var string $selected_printer
+ * @var bool $print_after_sale
+ */
+?>
 <script type="text/javascript">
 function printdoc()
 {
@@ -33,7 +39,7 @@ function printdoc()
 		var printers = jsPrintSetup.getPrintersList().split(',');
 		// get right printer here..
 		for(var index in printers) {
-			var default_ticket_printer = window.localStorage && localStorage['<?php echo $selected_printer ?>'];
+			var default_ticket_printer = window.localStorage && localStorage['<?php echo esc($selected_printer, 'js') ?>'];
 			var selected_printer = printers[index];
 			if (selected_printer == default_ticket_printer) {
 				// select epson label printer

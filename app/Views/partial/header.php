@@ -1,11 +1,17 @@
+<?php
+/**
+ * @var object $user_info
+ * @var array $allowed_modules
+ */
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
-	<title><?php echo $this->appconfig->get('company') . ' | ' . lang('Common.powered_by') . ' OSPOS ' . $this->appconfig->get('application_version') ?></title>
+	<title><?php echo esc($this->appconfig->get('company')) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc($this->appconfig->get('application_version')) ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->appconfig->get('theme')) ? 'flatly' : $this->appconfig->get('theme')) . '/bootstrap.min.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->appconfig->get('theme')) ? 'flatly' : esc($this->appconfig->get('theme'))) . '/bootstrap.min.css' ?>"/>
 
 	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
@@ -80,8 +86,8 @@
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
-	<?php if ($this->appconfig->get('theme') != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . $this->appconfig->get('theme') . '.css')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . $this->appconfig->get('theme') . '.css' ?>"/>
+	<?php if ($this->appconfig->get('theme') != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($this->appconfig->get('theme')) . '.css')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc($this->appconfig->get('theme')) . '.css' ?>"/>
 	<?php } ?>
 
 		<!-- start minjs template tags -->
@@ -108,13 +114,13 @@
 				</div>
 
 				<div class="navbar-right" style="margin:0">
-					<?php echo anchor('home/change_password/'.$user_info->person_id, $user_info->first_name . ' ' . $user_info->last_name, ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password'))) ?>
+					<?php echo anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
 					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
 					<?php echo anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?php echo $this->appconfig->get('company') ?></strong>
+					<strong><?php echo esc($this->appconfig->get('company')) ?></strong>
 				</div>
 			</div>
 		</div>
@@ -136,8 +142,9 @@
 					<ul class="nav navbar-nav navbar-right">
 						<?php foreach($allowed_modules as $module): ?>
 							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : '' ?>">
-								<a href="<?php echo site_url("$module->module_id") ?>" title="<?php echo lang('Module.' . $module->module_id) ?>" class="menu-icon">
-									<img src="<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png' ?>" border="0" alt="Module Icon"/><br/>
+								<a href="<?php echo esc(site_url($module->module_id), 'url') ?>" title="<?php echo lang("Module.$module->module_id") ?>" class="menu-icon">
+
+									<img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" border="0" alt="Module Icon"/><br/>
 									<?php echo lang('Module.' . $module->module_id) ?>
 								</a>
 							</li>

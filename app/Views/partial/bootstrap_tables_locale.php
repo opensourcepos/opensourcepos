@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $controller_name
+ */
+?>
 (function ($) {
 	'use strict';
 
@@ -15,8 +20,10 @@
 			return "<?php echo lang('Common.search') ?>";
 		},
 		formatNoMatches: function () {
-			return "<?php echo lang(preg_match('(customers|suppliers|employees)', $controller_name) ?
-				'common_no_persons_to_display' : $controller_name . '.no_' . $controller_name .'_to_display') ?>";
+			return "<?php echo lang(preg_match('(customers|suppliers|employees)', $controller_name)
+				? 'common_no_persons_to_display'
+				: "$controller_name.no_$controller_name" . '_to_display')
+			?>";
 		},
 		formatPaginationSwitch: function () {
 			return "<?php echo lang('Bootstrap_tables.hide_show_pagination') ?>";

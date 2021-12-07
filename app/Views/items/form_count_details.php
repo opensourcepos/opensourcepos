@@ -1,67 +1,74 @@
-<?php echo form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal')) ?>
+<?php
+/**
+ * @var object $item_info
+ * @var array $stock_locations
+ * @var array $item_quantities
+ */
+?>
+<?php echo form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="count_item_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
 					<?php echo form_input ([
-							'name' => 'item_number',
-							'id' => 'item_number',
-							'class' => 'form-control input-sm',
-							'disabled' => '',
-							'value'=>$item_info->item_number)
-							) ?>
+						'name' => 'item_number',
+						'id' => 'item_number',
+						'class' => 'form-control input-sm',
+						'disabled' => '',
+						'value' => esc($item_info->item_number, 'attr')
+					]) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?php echo form_input ([
-						'name' => 'name',
-						'id' => 'name',
-						'class' => 'form-control input-sm',
-						'disabled' => '',
-						'value'=>$item_info->name)
-						) ?>
+					'name' => 'name',
+					'id' => 'name',
+					'class' => 'form-control input-sm',
+					'disabled' => '',
+					'value' => esc($item_info->name, 'attr')
+				]) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php echo form_input ([
-							'name' => 'category',
-							'id' => 'category',
-							'class' => 'form-control input-sm',
-							'disabled' => '',
-							'value'=>$item_info->category)
-							) ?>
+						'name' => 'category',
+						'id' => 'category',
+						'class' => 'form-control input-sm',
+						'disabled' => '',
+						'value' => esc($item_info->category, 'attr')
+					]) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control')) ?>
+				<?php echo form_dropdown('stock_location', esc($stock_locations, 'attr'), current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3')) ?>
+			<?php echo form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<?php echo form_input ([
-						'name' => 'quantity',
-						'id' => 'quantity',
-						'class' => 'form-control input-sm',
-						'disabled' => '',
-						'value'=>to_quantity_decimals(current($item_quantities)))
-						) ?>
+					'name' => 'quantity',
+					'id' => 'quantity',
+					'class' => 'form-control input-sm',
+					'disabled' => '',
+					'value' => to_quantity_decimals(current($item_quantities))
+				]) ?>
 			</div>
 		</div>
 	</fieldset>
@@ -100,16 +107,16 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-    display_stock(<?php echo json_encode(key($stock_locations)) ?>);
+    display_stock(<?php echo json_encode(key(esc($stock_locations), 'raw')) ?>);
 });
 
 function display_stock(location_id)
 {
-    var item_quantities = <?php echo json_encode($item_quantities) ?>;
+    var item_quantities = <?php echo json_encode(esc($item_quantities, 'raw')) ?>;
     document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals() ?>);
 
-    var inventory_data = <?php echo json_encode($inventory_array) ?>;
-    var employee_data = <?php echo json_encode($employee_name) ?>;
+    var inventory_data = <?php echo json_encode(esc($inventory_array), 'raw') ?>;
+    var employee_data = <?php echo json_encode(esc($employee_name, 'raw')) ?>;
 
     var table = document.getElementById("inventory_result");
 

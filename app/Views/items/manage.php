@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var string $controller_name
+ * @var string $table_headers
+ * @var array $filters
+ * @var array $stock_locations
+ * @var int $stock_location
+ */
+?>
 <?php echo view('partial/header') ?>
 
 <script type="text/javascript">
@@ -35,8 +44,8 @@ $(document).ready(function()
 
     table_support.init({
         employee_id: <?php echo $this->employee->get_logged_in_employee_info()->person_id ?>,
-        resource: '<?php echo site_url($controller_name) ?>',
-        headers: <?php echo $table_headers ?>,
+        resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
+        headers: <?php echo esc($table_headers, 'js') ?>,
         pageSize: <?php echo $this->appconfig->get('lines_per_page') ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {
@@ -58,14 +67,14 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar print_hide">
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url("$controller_name/csv_import") ?>'
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/csv_import"), 'url') ?>'
             title='<?php echo lang('Items.import_items_csv') ?>'>
         <span class="glyphicon glyphicon-import">&nbsp;</span><?php echo lang('Common.import_csv') ?>
     </button>
 
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo lang('Common.new') ?>' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url("$controller_name/view") ?>'
-            title='<?php echo lang($controller_name . '.new') ?>'>
-        <span class="glyphicon glyphicon-tag">&nbsp;</span><?php echo lang($controller_name . '.new') ?>
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo lang('Common.new') ?>' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/view"), 'url') ?>'
+            title='<?php echo lang("$controller_name.new") ?>'>
+        <span class="glyphicon glyphicon-tag">&nbsp;</span><?php echo lang("$controller_name.new") ?>
     </button>
 </div>
 
@@ -74,19 +83,40 @@ $(document).ready(function()
         <button id="delete" class="btn btn-default btn-sm print_hide">
             <span class="glyphicon glyphicon-trash">&nbsp;</span><?php echo lang('Common.delete') ?>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide", data-btn-submit='<?php echo lang('Common.submit') ?>', data-href='<?php echo site_url("$controller_name/bulk_edit") ?>'
+        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide", data-btn-submit='<?php echo lang('Common.submit') ?>', data-href='<?php echo esc(site_url("$controller_name/bulk_edit"), 'url') ?>'
 				title='<?php echo lang('Items.edit_multiple_items') ?>'>
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?php echo lang('Items.bulk_edit') ?>
         </button>
-        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo site_url("$controller_name/generate_barcodes") ?>' title='<?php echo lang('Items.generate_barcodes') ?>'>
+        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo esc(site_url("$controller_name/generate_barcodes"), 'url') ?>' title='<?php echo lang('Items.generate_barcodes') ?>'>
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?php echo lang('Items.generate_barcodes') ?>
         </button>
-        <?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker')) ?>
-        <?php echo form_multiselect('filters[]', $filters, '', ['id' => 'filters', 'class' => 'selectpicker show-menu-arrow', 'data-none-selected-text'=>lang('Common.none_selected_text'), 'data-selected-text-format' => 'count > 1', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit')) ?>
+        <?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+        <?php echo form_multiselect(
+			'filters[]',
+			esc($filters, 'attr'),
+			'',
+			[
+				'id' => 'filters',
+				'class' => 'selectpicker show-menu-arrow',
+				'data-none-selected-text' => lang('Common.none_selected_text'),
+				'data-selected-text-format' => 'count > 1',
+				'data-style' => 'btn-default btn-sm',
+				'data-width' => 'fit'
+			]) ?>
         <?php
         if (count($stock_locations) > 1)
         {
-            echo form_dropdown('stock_location', $stock_locations, $stock_location, ['id' => 'stock_location', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit'));
+            echo form_dropdown(
+			'stock_location',
+				esc($stock_locations, 'attr'),
+				$stock_location,
+				[
+					'id' => 'stock_location',
+					'class' => 'selectpicker show-menu-arrow',
+					'data-style' => 'btn-default btn-sm',
+					'data-width' => 'fit'
+				]
+			);
         }
         ?>
     </div>
