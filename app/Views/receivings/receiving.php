@@ -1,19 +1,32 @@
+<?php
+/**
+ * @var string $controller_name
+ * @var array $modes
+ * @var string $mode
+ * @var bool $show_stock_locations
+ * @var array $stock_locations
+ * @var int $stock_source
+ * @var string $stock_destination
+ * @var array $cart
+ * @var bool $items_module_allowed
+ */
+?>
 <?php echo view("partial/header") ?>
 
 <?php
 if (isset($error))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
+	echo esc("<div class='alert alert-dismissible alert-danger'>$error</div>");
 }
 
 if (!empty($warning))
 {
-	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
+	echo esc("<div class='alert alert-dismissible alert-warning'>$warning</div>");
 }
 
 if (isset($success))
 {
-	echo "<div class='alert alert-dismissible alert-success'>".$success."</div>";
+	echo esc("<div class='alert alert-dismissible alert-success'>$success</div>");
 }
 ?>
 
@@ -21,14 +34,14 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?php echo form_open($controller_name."/change_mode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?php echo form_open(esc("$controller_name/change_mode", 'attr'), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
 					<label class="control-label"><?php echo lang('Receivings.mode') ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_dropdown('mode', $modes, $mode, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+					<?php echo form_dropdown('mode', esc($modes, 'attr'), esc($mode, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 
 				<?php 
@@ -39,7 +52,7 @@ if (isset($success))
 						<label class="control-label"><?php echo lang('Receivings.stock_source') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('stock_source', esc($stock_locations, 'attr'), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 					
 					<?php
@@ -50,7 +63,7 @@ if (isset($success))
 							<label class="control-label"><?php echo lang('Receivings.stock_destination') ?></label>
 						</li>
 						<li class="pull-left">
-							<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+							<?php echo form_dropdown('stock_destination', esc($stock_locations, 'attr'), esc($stock_destination, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 						</li>
 				<?php
 					}
@@ -128,20 +141,20 @@ if (isset($success))
 			}
 			else
 			{
-				foreach(array_reverse($cart, TRUE) as $line=>$item)
+				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open($controller_name."/edit_item/$line", ['class' => 'form-horizontal', 'id' => 'cart_'.$line]) ?>
+					<?php echo form_open(esc("$controller_name/edit_item/$line", 'attr'), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
-							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
-							<td><?php echo $item['item_number'] ?></td>
+							<td><?php echo anchor(esc("$controller_name/delete_item/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+							<td><?php echo esc($item['item_number']) ?></td>
 							<td style="align:center;">
-								<?php echo $item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']]) ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
+								<?php echo esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
 								<?php echo form_hidden('location', $item['item_location']) ?>
 							</td>
 
 							<?php 
-							if ($items_module_allowed && $mode !='requisition')
+							if ($items_module_allowed && $mode != 'requisition')
 							{
 							?>
 								<td><?php echo form_input ([
@@ -163,21 +176,21 @@ if (isset($success))
 							}
 							?>
 							
-							<td><?php echo form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
+							<td><?php echo form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
 							<td><?php echo form_dropdown(
 									'receiving_quantity',
-									$item['receiving_quantity_choices'],
+									esc($item['receiving_quantity_choices'], 'attr'),
 									$item['receiving_quantity'],
 									['class' => 'form-control input-sm']
 								) ?></td>
 
 							<?php       
-							if ($items_module_allowed && $mode!='requisition')
+							if ($items_module_allowed && $mode != 'requisition')
 							{
 							?>
 								<td>
 								<div class="input-group">
-									<?php echo form_input (['name' => 'discount', 'class' => 'form-control input-sm', 'value'=>$item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
+									<?php echo form_input (['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
 									<span class="input-group-btn">
 										<?php echo form_checkbox ([
 											'id' => 'discount_toggle',
@@ -186,9 +199,9 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>'.$this->appconfig->get('currency_symbol').'</b>',
+											'data-on' => '<b>' . esc($this->appconfig->get('currency_symbol'), 'attr') .'</b>',
 											'data-off' => '<b>%</b>',
-											'data-line' => $line,
+											'data-line' => esc($line, 'attr'),
 											'checked' => $item['discount_type']
 										]) ?>
 									</span>
@@ -200,17 +213,17 @@ if (isset($success))
 							{
 							?>
 								<td><?php echo $item['discount'] ?></td>
-								<?php echo form_hidden('discount',$item['discount']) ?>
+								<?php echo form_hidden('discount', $item['discount']) ?>
 							<?php
 							}
 							?>
 							<td>
 							<?php echo to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']) ?></td>
-							<td><a href="javascript:$('#<?php echo 'cart_'.$line ?>').submit();" title=<?php echo lang('Receivings.update') ?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:$('#<?php echo esc("cart_$line", 'js') ?>').submit();" title=<?php echo lang('Receivings.update') ?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 
-							if($item['allow_alt_description']==1)
+							if($item['allow_alt_description'] == 1)	//TODO: ===?
 							{
 							?>
 								<td style="color: #2F4F4F;"><?php echo lang('Sales.description_abbrv').':' ?></td>
@@ -219,24 +232,24 @@ if (isset($success))
 							?>
 							<td colspan='2' style="text-align: left;">
 								<?php
-								if($item['allow_alt_description']==1)
+								if($item['allow_alt_description'] == 1)	//TODO: ===?
 								{
 									echo form_input ([
 										'name' => 'description',
 										'class' => 'form-control input-sm',
-										'value' => $item['description']
+										'value' => esc($item['description'], 'attr')
 									]);
 								}
 								else
 								{
-									if ($item['description']!='')
+									if ($item['description'] != '')	//TODO: !==?
 									{
 										echo $item['description'];
-										echo form_hidden('description',$item['description']);
+										echo form_hidden('description', esc($item['description'], 'attr'));
 									}
 									else
 									{
-										echo "<i>".lang('Sales.no_description')."</i>";
+										echo '<i>'.lang('Sales.no_description').'</i>';
 										echo form_hidden('description','');
 									}
 								}
@@ -264,7 +277,7 @@ if (isset($success))
 			<table class="sales_table_100">
 				<tr>
 					<th style='width: 55%;'><?php echo lang('Receivings.supplier') ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo $supplier ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo esc($supplier) ?></th>
 				</tr>
 				<?php
 				if(!empty($supplier_email))
@@ -272,7 +285,7 @@ if (isset($success))
 				?>
 					<tr>
 						<th style='width: 55%;'><?php echo lang('Receivings.supplier_email') ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $supplier_email ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo esc($supplier_email) ?></th>
 					</tr>
 				<?php
 				}
@@ -283,7 +296,7 @@ if (isset($success))
 				?>
 					<tr>
 						<th style='width: 55%;'><?php echo lang('Receivings.supplier_address') ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $supplier_address ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo esc($supplier_address) ?></th>
 					</tr>
 				<?php
 				}
@@ -294,7 +307,7 @@ if (isset($success))
 				?>
 					<tr>
 						<th style='width: 55%;'><?php echo lang('Receivings.supplier_location') ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $supplier_location ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo esc($supplier_location) ?></th>
 					</tr>
 				<?php
 				}
@@ -314,7 +327,7 @@ if (isset($success))
 		else
 		{
 		?>
-			<?php echo form_open($controller_name."/select_supplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+			<?php echo form_open(esc("$controller_name/select_supplier", 'attr'), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Receivings.select_supplier') ?></label>
 					<?php echo form_input ([

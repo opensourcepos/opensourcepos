@@ -21,7 +21,7 @@ abstract class Persons extends Secure_Controller
 
 	public function index(): void
 	{
-		$data['table_headers'] = get_people_manage_table_headers();	//TODO: Replace xss_clean
+		$data['table_headers'] = get_people_manage_table_headers();
 
 		echo view('people/manage', $data);
 	}
