@@ -1,4 +1,4 @@
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -21,17 +21,17 @@
 
 <div class="tab-content">
 	<div class="tab-pane fade in active" id="tax_codes_tab">
-		<?php echo view("taxes/tax_codes") ?>
+		<?php echo view('taxes/tax_codes') ?>
 	</div>
 	<div class="tab-pane" id="tax_jurisdictions_tab">
-		<?php echo view("taxes/tax_jurisdictions") ?>
+		<?php echo view('taxes/tax_jurisdictions') ?>
 	</div>
 	<div class="tab-pane" id="tax_categories_tab">
-		<?php echo view("taxes/tax_categories") ?>
+		<?php echo view('taxes/tax_categories') ?>
 	</div>
 	<div class="tab-pane" id="tax_rates_tab">
-		<?php echo view("taxes/tax_rates") ?>
+		<?php echo view('taxes/tax_rates') ?>
 	</div>
 </div>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

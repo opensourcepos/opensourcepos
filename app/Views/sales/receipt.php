@@ -1,4 +1,4 @@
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <?php
 if (isset($error_message))
@@ -44,6 +44,6 @@ if (isset($error_message))
 	<?php endif; ?>
 </div>
 
-<?php echo view("sales/" . $this->appconfig->get('receipt_template')) ?>
+<?php echo view('sales/' . $this->appconfig->get('receipt_template')) ?>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

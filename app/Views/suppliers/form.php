@@ -35,7 +35,7 @@
 			</div>
 		</div>
 
-		<?php echo view("people/form_basic_info") ?>
+		<?php echo view('people/form_basic_info') ?>
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'control-label col-xs-3')) ?>
@@ -44,7 +44,7 @@
 					'name' => 'account_number',
 					'id' => 'account_number',
 					'class' => 'form-control input-sm',
-					'value'=>$person_info->account_number)
+					'value' => $person_info->account_number)
 					) ?>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 <?php
-	echo view("partial/header")
+	echo view('partial/header')
 
 /**
  * @var string $controller_name
@@ -41,4 +41,4 @@
 	<table id="table"></table>
 </div>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

@@ -1,4 +1,9 @@
-<?php echo view("partial/header") ?>
+<?php
+/**
+ * @var array $grants
+ */
+?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -7,7 +12,7 @@
 <?php
 if(isset($error))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
+	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 ?>
 
@@ -89,4 +94,4 @@ if(isset($error))
 	</div>
 </div>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

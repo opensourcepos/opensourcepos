@@ -3,7 +3,7 @@
  * @var array $allowed_modules
  */
 ?>
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
@@ -25,4 +25,4 @@
 	?>
 </div>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

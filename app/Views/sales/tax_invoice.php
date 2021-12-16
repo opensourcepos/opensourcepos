@@ -1,4 +1,4 @@
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <?php
 if(isset($error_message))
@@ -278,4 +278,4 @@ $(window).on("load", function()
 });
 </script>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

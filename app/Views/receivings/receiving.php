@@ -9,14 +9,19 @@
  * @var string $stock_destination
  * @var array $cart
  * @var bool $items_module_allowed
+ * @var float $total
+ * @var string $comment
+ * @var bool $print_after_sale
+ * @var string $reference
+ * @var array $payment_options
  */
 ?>
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <?php
 if (isset($error))
 {
-	echo esc("<div class='alert alert-dismissible alert-danger'>$error</div>");
+	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 
 if (!empty($warning))
@@ -378,7 +383,7 @@ if (isset($success))
 				if($mode == 'requisition')
 				{
 				?>
-					<?php echo form_open($controller_name."/requisition_complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/requisition_complete", 'attr'), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo lang('Common.comments') ?></label>
 							<?php echo form_textarea ([
@@ -406,7 +411,7 @@ if (isset($success))
 								'name' => 'comment',
 								'id' => 'comment',
 								'class' => 'form-control input-sm',
-								'value' => $comment,
+								'value' => esc($comment, 'attr'),
 								'rows' => '4'
 							]) ?>
 							<div id="payment_details" >
@@ -434,7 +439,7 @@ if (isset($success))
 													'name' => 'recv_reference',
 													'id' => 'recv_reference',
 													'class' => 'form-control input-sm',
-													'value' => $reference,
+													'value' => esc($reference, 'attr'),
 													'size' => 5
 												]) ?>
 											</td>
@@ -445,11 +450,15 @@ if (isset($success))
 									<tr>
 										<td><?php echo lang('Sales.payment') ?></td>
 										<td>
-											<?php echo form_dropdown('payment_type', $payment_options, [], [
-												'id' => 'payment_types',
-												'class' => 'selectpicker show-menu-arrow',
-												'data-style' => 'btn-default btn-sm',
-												'data-width' => 'auto'
+											<?php echo form_dropdown(
+												'payment_type',
+												esc($payment_options, 'attr'),
+												[],
+												[
+													'id' => 'payment_types',
+													'class' => 'selectpicker show-menu-arrow',
+													'data-style' => 'btn-default btn-sm',
+													'data-width' => 'auto'
 											]) ?>
 										</td>
 									</tr>
@@ -487,7 +496,7 @@ $(document).ready(function()
 {
 	$("#item").autocomplete(
 	{
-		source: '<?php echo site_url($controller_name."/stock_item_search") ?>',
+		source: '<?php echo esc(site_url("$controller_name/stock_item_search"), 'url') ?>',
 		minChars:0,
 		delay:10,
 		autoFocus: false,
@@ -514,17 +523,17 @@ $(document).ready(function()
 
 	$('#comment').keyup(function() 
 	{
-		$.post('<?php echo site_url($controller_name."/set_comment") ?>', {comment: $('#comment').val()});
+		$.post('<?php echo esc(site_url("$controller_name/set_comment"), 'url') ?>', {comment: $('#comment').val()});
 	});
 
 	$('#recv_reference').keyup(function() 
 	{
-		$.post('<?php echo site_url($controller_name."/set_reference") ?>', {recv_reference: $('#recv_reference').val()});
+		$.post('<?php echo esc(site_url("$controller_name/set_reference"), 'url') ?>', {recv_reference: $('#recv_reference').val()});
 	});
 
 	$("#recv_print_after_sale").change(function()
 	{
-		$.post('<?php echo site_url($controller_name."/set_print_after_sale") ?>', {recv_print_after_sale: $(this).is(":checked")});
+		$.post('<?php echo esc(site_url("$controller_name/set_print_after_sale"), 'url') ?>', {recv_print_after_sale: $(this).is(":checked")});
 	});
 
 	$('#item,#supplier').click(function()
@@ -559,7 +568,7 @@ $(document).ready(function()
 	{
 		if (confirm('<?php echo lang('Receivings.confirm_cancel_receiving') ?>'))
 		{
-			$('#finish_receiving_form').attr('action', '<?php echo site_url($controller_name."/cancel_receiving") ?>');
+			$('#finish_receiving_form').attr('action', '<?php echo esc(site_url("$controller_name/cancel_receiving"), 'url') ?>');
 			$('#finish_receiving_form').submit();
 		}
 	});
@@ -610,4 +619,4 @@ $(document).ready(function()
 
 </script>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

@@ -27,7 +27,7 @@
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="employee_basic_info">
 			<fieldset>
-				<?php echo view("people/form_basic_info") ?>
+				<?php echo view('people/form_basic_info') ?>
 			</fieldset>
 		</div>
 

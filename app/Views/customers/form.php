@@ -50,7 +50,7 @@
 					</div>
 				</div>
 
-				<?php echo view("people/form_basic_info") ?>
+				<?php echo view('people/form_basic_info') ?>
 				
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>

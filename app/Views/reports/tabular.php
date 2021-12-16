@@ -1,12 +1,21 @@
-<?php echo view("partial/header") ?>
+<?php
+/**
+ * @var string $title
+ * @var string $subtitle
+ * @var array $summary_data
+ * @var array $headers
+ * @var array $data
+ */
+?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 
-<div id="page_title"><?php echo $title ?></div>
+<div id="page_title"><?php echo esc($title) ?></div>
 
-<div id="page_subtitle"><?php echo $subtitle ?></div>
+<div id="page_subtitle"><?php echo esc($subtitle) ?></div>
 
 <div id="table_holder">
 	<table id="table"></table>
@@ -19,13 +28,13 @@
 		if($name == "total_quantity")
 		{
 	?>
-			<div class="summary_row"><?php echo lang('Reports.' . $name) . ': ' .$value ?></div>
+			<div class="summary_row"><?php echo lang("Reports.$name") . ": $value" ?></div>
 	<?php
 		}
 		else
 		{
 	?>
-			<div class="summary_row"><?php echo lang('Reports.' . $name) . ': ' . to_currency($value) ?></div>
+			<div class="summary_row"><?php echo lang("Reports.$name") . ': ' . to_currency($value) ?></div>
 	<?php
 		}
 	}
@@ -41,7 +50,7 @@
 			.addClass("table-striped")
 			.addClass("table-bordered")
 			.bootstrapTable({
-				columns: <?php echo transform_headers($headers, TRUE, FALSE) ?>,
+				columns: <?php echo transform_headers(esc($headers, 'js'), TRUE, FALSE) ?>,
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
@@ -52,7 +61,7 @@
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 				pagination: true,
 				showColumns: true,
-				data: <?php echo json_encode($data) ?>,
+				data: <?php echo json_encode(esc($data, 'js')) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
 				escape: false
@@ -62,4 +71,4 @@
 	});
 </script>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

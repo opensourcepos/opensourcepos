@@ -1,4 +1,4 @@
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <?php
 if(isset($error_message))
@@ -225,4 +225,4 @@ if(isset($error_message))
 	});
 </script>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

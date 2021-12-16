@@ -1,10 +1,19 @@
+<?php
+/**
+ * @var array $labels_1
+ * @var string $yaxis_title
+ * @var array $series_data_1
+ * @var bool $show_currency
+ * @var string $xaxis_title
+ */
+?>
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode($labels_1) ?>,
+		labels: <?php echo json_encode(esc($labels_1, 'js')) ?>,
 		series: [{
-			name: '<?php echo $yaxis_title ?>',
-			data: <?php echo json_encode($series_data_1) ?>
+			name: '<?php echo esc($yaxis_title, 'js') ?>',
+			data: <?php echo json_encode(esc($series_data_1, 'js')) ?>
 		}]
 	};
 
@@ -54,18 +63,18 @@
 			// used for the labels on each axis.
 			labelInterpolationFnc: function(value) {
 				<?php
-				if( $show_currency )
+				if($show_currency)
 				{
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo $this->appconfig->get('currency_symbol') ?>';
+						return value + '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo $this->appconfig->get('currency_symbol') ?>' + value;
+						return '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>' + value;
 						<?php
 					}
 				}
@@ -83,7 +92,7 @@
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
 				axisX: {
-					axisTitle: '<?php echo $xaxis_title ?>',
+					axisTitle: '<?php echo esc($xaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: -100,
@@ -92,7 +101,7 @@
 					textAnchor: 'middle'
 				},
 				axisY: {
-					axisTitle: '<?php echo $yaxis_title ?>',
+					axisTitle: '<?php echo esc($yaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,
@@ -112,13 +121,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->appconfig->get('currency_symbol') ?>';
+							return value + '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->appconfig->get('currency_symbol') ?>' + value;
+							return '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>' + value;
 					<?php
 						}
 					}
@@ -141,13 +150,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo $this->appconfig->get('currency_symbol') ?>';
+							return value + '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo $this->appconfig->get('currency_symbol') ?>' + value;
+							return '<?php echo esc($this->appconfig->get('currency_symbol'), 'js') ?>' + value;
 					<?php
 						}
 					}

@@ -14,12 +14,12 @@
  * @var string $barcode
  */
 ?>
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <?php
 	if (isset($error_message))
 	{
-		echo esc("<div class='alert alert-dismissible alert-danger'>$error_message</div>");
+		echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error_message) . '</div>';
 		exit;
 	}
 
@@ -166,4 +166,4 @@
 		<?php echo $receiving_id ?>
 	</div>
 </div>
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>

@@ -5,7 +5,7 @@
  * @var array $filters
  */
 ?>
-<?php echo view("partial/header") ?>
+<?php echo view('partial/header') ?>
 
 <script type="text/javascript">
 $(document).ready(function()
@@ -76,4 +76,4 @@ $(document).ready(function()
 <div id="payment_summary">
 </div>
 
-<?php echo view("partial/footer") ?>
+<?php echo view('partial/footer') ?>
