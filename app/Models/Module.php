@@ -122,10 +122,9 @@ class Module extends Model
 	 */
 	public function get_show_office_group(): int
 	{
-		$builder = $this->db->table('grants');
+		$builder = $this->db->table('modules');
 		$builder->select('sort');
 		$builder->where('module_id', 'office');
-		$builder = $this->db->table('modules');		//TODO: this needs to be sorted out.  In the original code this was a second call to $this->db->from() without it being a second query.  I'm not sure what the original query was producing but this doesn't look right.
 
 		return $builder->get()->getRow()->sort;
 	}
