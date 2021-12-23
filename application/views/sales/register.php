@@ -302,7 +302,7 @@ if(isset($success))
 			{
 			?>
 				<div id="payment_details" style="width: 100%; text-align: center">
-						<?php echo $mog_name .' | Email: ' . $customer_email; ?><br/>
+						<?php echo $customer_name .' | Email: ' . $customer_email; ?><br/>
 						<b style="text-transform: uppercase"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('customers_update'))); ?></b><br/>
 						<?php echo $customer_address; ?><br/>
 						<?php echo $this->lang->line("sales_customer_discount"); ?>:&nbsp;<?php echo ($customer_discount_type == FIXED)?to_currency($customer_discount):$customer_discount . '%'; ?><br/>
