@@ -189,3 +189,211 @@ label.required
 	padding-right:0;
 	padding-left: 0;
 }
+
+
+/*!
+ * Mogsama Responsive Custom (in 3.3.4 it's in /public/public/dist/opensourcepos.min.css
+ * Combine with viewport in partial/header and login page
+/*! 
+
+
+/* General */
+
+.wrapper {
+	background: #e9ebee;
+}
+
+#add_item_form ul li, #mode_form ul li {
+  margin-left: 0.5em;
+}
+
+.panel {
+	border-radius: 6px;
+	box-shadow: none;
+}
+
+.panel-default {
+	border: none;
+}
+
+
+.alert-info {
+	background:#fff;
+	border: none;
+	font-weight: 900;
+	font-size: 18px;
+}
+
+.module_item a {
+    font-size:  16px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.btn-info {
+	background: #F2FFED;
+	border: 1px solid #85EF60;
+	color: darkred;
+}
+
+.form-control {
+	box-shadow: none;
+}
+
+#select_customer {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+/* Sales box */
+
+#register {
+	border-bottom: 1px solid #d7dce5;
+}
+
+
+#register th {
+	color: #FFF;
+	background-color: #006EA6;
+	height: 48px;
+}
+
+#register td {
+	background-color: #FFF;
+	padding: 10px 3px;
+	text-align: center;
+}
+
+#register tr:hover td {
+	background: #D0DAFD;
+}
+
+#register_wrapper {
+  font-size: 15px;
+}
+
+#overall_sale {
+	float: right;
+	padding-bottom: 0;
+	font-size: 14px;
+}
+
+.sales_table_100 {
+    font-size: 14px;
+}
+
+.input-sm {
+	padding: 0 0 0 5px;
+	margin-top: 1px;
+	font-size: 14px;
+}
+
+.ui-menu .ui-menu-item-wrapper {
+	font-size: 15px;
+}
+
+.btn-sm, .btn-group-sm>.btn {
+	font-size: 13px;
+}
+
+#add_item_form {
+    border-radius: 6px 6px 0 0;
+    margin-top: 10px;
+}
+
+#add_item_form, #overall_sale {
+    background-color: #fff;
+}
+
+#payment_details, #payment_totals, #sale_totals {
+    line-height: 2.0;
+	margin-top: 5px 0;
+    border-top: 1px dashed #D0D3D8;
+}
+
+#payment_details {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+	margin-bottom: 10px;
+}
+
+#mode_form, #payment_details {
+    background-color: #f1ffec;
+	color: #67676C;
+	font-weight: 500;
+}
+
+/* Receipt printing */
+#receipt_wrapper #barcode {
+	visibility: hidden;
+}
+
+#receipt_items td {
+	border-bottom: 1px solid #CCC;
+	padding: 5px 0;
+}
+
+#receipt_items th {
+	border-bottom: 1px solid #CCC;	
+}
+
+
+.jumbotron.push-spaces {
+    padding: 10px;
+}
+
+#footer {
+    margin: 0;
+    padding: 0;
+	margin-top: 150px;
+}
+
+
+@media screen and (min-width: 240px) and (max-width: 991px) {
+	.container {
+		width: 100%;
+	}
+
+	.topbar {
+		height: 0px;
+		padding: 0;
+	}
+	
+	.navbar .navbar-nav>li>a, .navbar-brand {
+		float: right;
+	}
+
+	label {
+		line-height: 36px;
+	}
+	
+	#register_wrapper {
+		width: 100%;
+		margin-bottom: 50px;
+		padding: 0 10px;
+	}
+
+	#overall_sale {
+		width: 90%;
+		margin-right: 5%;
+	}
+
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 98%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 95%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    width: 90%;
+  }
+}
