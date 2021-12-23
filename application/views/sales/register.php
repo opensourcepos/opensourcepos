@@ -24,10 +24,7 @@ if(isset($success))
 	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="pull-left first_li">
-					<label class="control-label"><?php echo $this->lang->line('sales_mode'); ?></label>
-				</li>
-				<li class="pull-left">
+				<li class="pull-left" style="margin-left: 0;">
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 				<?php
@@ -83,11 +80,8 @@ if(isset($success))
 	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="pull-left first_li">
-					<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
-				</li>
-				<li class="pull-left">
-					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>++$tabindex)); ?>
+				<li class="pull-left" style="margin-left: 0; width: 80%;">
+					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'40', 'tabindex'=>++$tabindex)); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
@@ -106,14 +100,13 @@ if(isset($success))
 	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
-				<th style="width: 5%; "><?php echo $this->lang->line('common_delete'); ?></th>
-				<th style="width: 15%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
-				<th style="width: 30%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
+				<th style="width: 4%; "><?php echo '-'; ?></th>
+				<th style="width: 10%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
+				<th style="width: 38%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_price'); ?></th>
-				<th style="width: 10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-				<th style="width: 15%;"><?php echo $this->lang->line('sales_discount'); ?></th>
-				<th style="width: 10%;"><?php echo $this->lang->line('sales_total'); ?></th>
-				<th style="width: 5%; "><?php echo $this->lang->line('sales_update'); ?></th>
+				<th style="width: 17%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+				<th style="width: 17%;"><?php echo $this->lang->line('sales_total'); ?></th>
+				<th style="width: 4%; font-size: 16px;"><?php echo '*'; ?></th>
 			</tr>
 		</thead>
 
@@ -178,6 +171,14 @@ if(isset($success))
 									echo form_hidden('price', to_currency_no_money($item['price']));
 								}
 								?>
+								
+								<div class="input-group" style="padding-top: 5px;">
+									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
+									<span class="input-group-btn">
+										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
+									</span>
+								</div>
+								
 							</td>
 
 							<td>
@@ -194,14 +195,7 @@ if(isset($success))
 								?>
 							</td>
 
-							<td>
-								<div class="input-group">
-									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
-									<span class="input-group-btn">
-										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
-									</span>
-								</div>
-							</td>
+
 
 							<td>
 								<?php
@@ -307,81 +301,15 @@ if(isset($success))
 			if(isset($customer))
 			{
 			?>
-				<table class="sales_table_100">
-					<tr>
-						<th style="width: 55%;"><?php echo $this->lang->line("sales_customer"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('customers_update'))); ?></th>
-					</tr>
-					<?php
-					if(!empty($customer_email))
-					{
-					?>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_email"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $customer_email; ?></th>
-						</tr>
-					<?php
-					}
-					?>
-					<?php
-					if(!empty($customer_address))
-					{
-					?>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_address"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $customer_address; ?></th>
-						</tr>
-					<?php
-					}
-					?>
-					<?php
-					if(!empty($customer_location))
-					{
-					?>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_location"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $customer_location; ?></th>
-						</tr>
-					<?php
-					}
-					?>
-					<tr>
-						<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_discount"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo ($customer_discount_type == FIXED)?to_currency($customer_discount):$customer_discount . '%'; ?></th>
-					</tr>
-					<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
-					<?php
-					if(!empty($customer_rewards))
-					{
-					?>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("rewards_package"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['package_name']; ?></th>
-						</tr>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("customers_available_points"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['points']; ?></th>
-						</tr>
-					<?php
-					}
-					?>
-					<?php endif; ?>
-					<tr>
-						<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_total"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
-					</tr>
-					<?php
-					if(!empty($mailchimp_info))
-					{
-					?>
-						<tr>
-							<th style="width: 55%;"><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?></th>
-							<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
-						</tr>
-					<?php
-					}
-					?>
-				</table>
+				<div id="payment_details" style="width: 100%; text-align: center">
+						<?php echo $mog_name .' | Email: ' . $customer_email; ?><br/>
+						<b style="text-transform: uppercase"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('customers_update'))); ?></b><br/>
+						<?php echo $customer_address; ?><br/>
+						<?php echo $this->lang->line("sales_customer_discount"); ?>:&nbsp;<?php echo ($customer_discount_type == FIXED)?to_currency($customer_discount):$customer_discount . '%'; ?><br/>
+						<b style="text-transform: uppercase"><?php echo $this->lang->line("sales_sums"); ?>:&nbsp;<?php echo to_currency($customer_total); ?></b>
+						<hr></hr>
+						<b><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?>:&nbsp;</b><?php echo $mailchimp_info['status']; ?><?php echo $customer_account_number; ?>
+				</div>
 
 				<button class="btn btn-danger btn-sm" id="remove_customer_button" title="<?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer')?>">
 					<span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('common_remove').' '.$this->lang->line('customers_customer') ?>
@@ -524,7 +452,7 @@ if(isset($success))
 							</tr>
 						</table>
 					<?php echo form_close(); ?>
-
+				
 					<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
 				<?php
 				}
