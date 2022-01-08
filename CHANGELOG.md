@@ -31,6 +31,24 @@ List of changes in the `master` branch.
 
 - N/A
 
+## [3.3.6] - 2022-01-08
+
+- Translation updates (Hungarian, Indonesian, Bosnian, Ukranian, Vietnamese, Spanish)
+- Make footer revision clickable (ref to github)
+- Minor reporting adjustments
+- Introduced new global keyboard shortcuts (see overview below)
+
+### Fixes
+
+- reCaptcha issue fix
+- Username verification bugfix
+- Clickjacking security mitigations
+- Fixes for the payment summary after refresh
+- Hardening against XSS by introducing a CSP header in the HTTP headers
+- Several CSRF and XSS fixes
+- Type juggling password fix for old logins
+
+
 ## [3.3.5] - 2021-08-26
 
 - Translation updates (Romanian, Ukrainian, Vietnamese, Thai, Polish, Swedish, Portuguese, Arabic, French, Chinese, Dutch, Tamil, Turkish, Spanish)
