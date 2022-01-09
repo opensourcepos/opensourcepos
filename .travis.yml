@@ -30,12 +30,12 @@ script:
 env:
   global:
   - DOCKER_COMPOSE_VERSION=1.29.1
-  - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
+  - BRANCH=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
 after_success:
+  - TAG=${TRAVIS_TAG:-$BRANCH}
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
-  - TRAVIS_TAG=$(echo $branch.$version)
   - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"
