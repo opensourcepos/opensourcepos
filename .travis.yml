@@ -46,7 +46,7 @@ deploy:
     email: jeroen@steganos.dev
     skip_cleanup: true
     api_key:
-      secure: U7dldktSgysAqFdsrr/epmWi5rC1rOZPOo+L85W5O70Kvm/m1P3DLuLoAMTIKRISu2Bgoo6KfJLQl+8TRpgfUA19nEy6uL2BwlEhmfOXKROWUBOgt3xOSmCFYQfIv/ubC2sznXVyvla6b+GIsNQb2QiFcYr0wFkc9RCca9Eum+k=
+      secure: DrPHytC9xmhOQHhTrsbvMo7BQ9wAhqJ2jW0Q0CAfYObS1t/ayjk9mqSm1Nhj3NKD94UatM/sz8Yo5rcpt7O5lxFaFKf1gXW7hL4xSkJXybG+uBzNoSZA7+2agmuHfqc9sv6IAb4LdNIqiarvB8B3X0Vf1re7yEm9ac4bUioej5U=
     on:
       all_branches: true
   - provider: releases
