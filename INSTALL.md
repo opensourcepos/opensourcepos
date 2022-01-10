@@ -10,7 +10,7 @@
 
 First of all, if you're seeing the message `system folder missing` after launching your browser, that most likely means you have cloned the repository and have not built the project.
 
-1. Download the latest stable or pre-release for a specific branch [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
+1. Download the a [pre-release for a specific branch](https://github.com/opensourcepos/opensourcepos/packages) or the latest stable [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
 3. Execute the file `database/database.sql` to create the tables needed.
 4. Unzip and upload Open Source Point of Sale files to the web-server.
