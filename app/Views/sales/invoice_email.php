@@ -1,3 +1,22 @@
+<?php
+/**
+ * @var string $mimetype
+ * @var string $customer_info
+ * @var string $company_info
+ * @var string $invoice_number
+ * @var string $transaction_date
+ * @var float $amount_due
+ * @var float $total
+ * @var float $discount
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ * @var array $payments
+ * @var float $amount_change
+ * @var string $barcode
+ * @var int $sale_id
+ */
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,7 +29,7 @@
 <?php
 if(isset($error_message))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
 	exit;
 }
 ?>
@@ -23,27 +42,27 @@ if(isset($error_message))
 				<?php if($this->appconfig->get('company_logo') != '')
 				{
 				?>
-					<img id="image" src="data:<?=$mimetype?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . $this->appconfig->get('company_logo'))) ?>" alt="company_logo" />
+					<img id="image" src="data:<?php echo esc($mimetype) ?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . esc($this->appconfig->get('company_logo')))) ?>" alt="company_logo" />
 				<?php
 				}
 				?>
 			</td>
-			<td id="customer-title" id="customer"><?php if(isset($customer)) { echo nl2br($customer_info) } ?></td>
+			<td id="customer-title" id="customer"><?php if(isset($customer)) { echo nl2br(esc($customer_info)); } ?></td>
 		</tr>
 		<tr>
 			<td id="company-title" id="company">
-				<?php echo $this->appconfig->get('company') ?><br/>
-				<?php echo nl2br($company_info) ?>
+				<?php echo esc($this->appconfig->get('company')) ?><br/>
+				<?php echo nl2br(esc($company_info)) ?>
 			</td>
 			<td id="meta">
 				<table id="meta-content"  align="right">
 				<tr>
 					<td class="meta-head"><?php echo lang('Sales.invoice_number') ?></td>
-					<td><?php echo $invoice_number ?></td>
+					<td><?php echo esc($invoice_number) ?></td>
 				</tr>
 				<tr>
 					<td class="meta-head"><?php echo lang('Common.date') ?></td>
-					<td><?php echo $transaction_date ?></td>
+					<td><?php echo esc($transaction_date) ?></td>
 				</tr>
 				<?php
 				if($amount_due > 0)
@@ -89,7 +108,7 @@ if(isset($error_message))
 		?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number'] ?></td>
-					<td class="item-name"><?php echo $item['name'] ?></td>
+					<td class="item-name"><?php echo esc($item['name']) ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
 					<td><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
@@ -114,7 +133,7 @@ if(isset($error_message))
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$tax)
+		foreach($taxes as $tax_group_index => $tax)
 		{
 		?>
 			<tr>
@@ -139,7 +158,7 @@ if(isset($error_message))
 		foreach($payments as $payment_id=>$payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-			$splitpayment = explode(':', $payment['payment_type']);
+			$splitpayment = explode(':', $payment['payment_type']);	//TODO: $splitpayment does not meet the variable naming conventions for this project
 			$show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
 		?>
 			<tr>
@@ -187,7 +206,7 @@ if(isset($error_message))
 			<?php echo nl2br($this->appconfig->get('return_policy')) ?>
 		</div>
 		<div id='barcode'>
-			<img src='data:image/png;base64,<?php echo $barcode ?>' /><br>
+			<img src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

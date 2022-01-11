@@ -1,3 +1,17 @@
+<?php
+/**
+ * @var string $customer_info
+ * @var string $company_info
+ * @var string $quote_number
+ * @var string $transaction_date
+ * @var float $amount_due
+ * @var float $total
+ * @var float $discount
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ */
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +23,7 @@
 <?php
 	if(isset($error_message))
 	{
-		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+		echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
 		exit;
 	}
 ?>
@@ -22,27 +36,27 @@
 				<?php if($this->appconfig->get('company_logo') != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->appconfig->get('company_logo') ?>" alt="company_logo" />
+					<img id="image" src="<?php echo 'uploads/' . esc($this->appconfig->get('company_logo'),'url') ?>" alt="company_logo" />
 				<?php
 				}
 				?>
 			</td>
 			<td id="customer-title">
-				<pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
+				<pre><?php if(isset($customer)) { echo esc($customer_info); } ?></pre>
 			</td>
 		</tr>
 		<tr>
 			<td id="company-title">
 				<div id="company">
-					<?php echo $this->appconfig->get('company') ?>
-					<?php echo nl2br($company_info) ?>
+					<?php echo esc($this->appconfig->get('company')) ?>
+					<?php echo nl2br(esc($company_info)) ?>
 				</div>
 			</td>
 			<td id="meta">
 				<table id="meta-content"  align="right">
 					<tr>
 						<td class="meta-head"><?php echo lang('Sales.quote_number') ?> </td>
-						<td><?php echo $quote_number ?></td>
+						<td><?php echo esc(quote_number) ?></td>
 					</tr>
 					<tr>
 						<td class="meta-head"><?php echo lang('Common.date') ?></td>
@@ -85,14 +99,14 @@
 		</tr>
 
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
 			if($item['print_option'] == PRINT_YES)
 			{
 			?>
 				<tr class="item-row">
-					<td><?php echo $item['item_number'] ?></td>
-					<td class="item-name"><?php echo $item['name'] ?></td>
+					<td><?php echo esc($item['item_number']) ?></td>
+					<td class="item-name"><?php echo esc($item['name']) ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
 					<td><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
@@ -107,7 +121,7 @@
 		?>
 
 		<tr>
-			<td colspan="<?php echo $quote_columns ?>" align="center"><?php echo '&nbsp;' ?></td>
+			<td colspan="<?php echo $quote_columns ?>" align="center"><?php echo '&nbsp;' //TODO: Replace the php echo for nbsp with just straight html? ?></td>
 		</tr>
 
 		<tr>
@@ -117,7 +131,7 @@
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$tax)
+		foreach($taxes as $tax_group_index => $tax)
 		{
 		?>
 			<tr>
@@ -139,10 +153,10 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->appconfig->get('payment_message')) ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('quote_default_comments') : $comments) ?></div>
+				<div><?php echo nl2br(esc($this->appconfig->get('payment_message'))) ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('quote_default_comments') : esc($comments)) ?></div>
 			</h5>
-			<?php echo nl2br($this->appconfig->get('return_policy')) ?>
+			<?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?>
 		</div>
 		<div id='barcode'>
 			<?php echo $quote_number ?>

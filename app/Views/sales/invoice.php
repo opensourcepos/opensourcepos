@@ -1,9 +1,29 @@
+<?php
+/**
+ * @var string $sale_id_num
+ * @var bool $print_after_sale
+ * @var string $customer_info
+ * @var string $company_info
+ * @var string $invoice_number
+ * @var string $transaction_date
+ * @var float $total
+ * @var bool $include_hsn
+ * @var string $discount
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ * @var array $payments
+ * @var float $amount_change
+ * @var string $barcode
+ * @var int $sale_id
+ */
+?>
 <?php echo view('partial/header') ?>
 
 <?php
 if(isset($error_message))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
 	exit;
 }
 ?>
@@ -31,16 +51,16 @@ $(document).ready(function()
 </script>
 <?php endif; ?>
 
-<?php echo view('partial/print_receipt', ['print_after_sale'=>$print_after_sale, 'selected_printer' => 'invoice_printer')) ?>
+<?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();')); */ ?>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor('sales', '<span class=\'glyphicon glyphicon-print\'>&nbsp</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();')); */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_invoice') ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')) ?>
-	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button')) ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 </div>
 
 <div id="page-wrap">
@@ -51,7 +71,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<div id="customer"><?php echo nl2br($customer_info) ?></div>
+				<div id="customer"><?php echo nl2br(esc($customer_info)) ?></div>
 			<?php
 			}
 			?>
@@ -79,15 +99,15 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<div id="company-title"><?php echo nl2br($company_info) ?></div>
+		<div id="company-title"><?php echo nl2br(esc($company_info)) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo lang('Sales.invoice_number') ?> </td>
-				<td><?php echo $invoice_number ?></td>
+				<td><?php echo esc($invoice_number) ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo lang('Common.date') ?></td>
-				<td><?php echo $transaction_date ?></td>
+				<td><?php echo esc($transaction_date) ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo lang('Sales.invoice_total') ?></td>
@@ -126,20 +146,20 @@ $(document).ready(function()
 		</tr>
 
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
 			if($item['print_option'] == PRINT_YES)
 			{
 			?>
 				<tr class="item-row">
-					<td><?php echo $item['item_number'] ?></td>
+					<td><?php echo esc($item['item_number']) ?></td>
 					<?php if($include_hsn): ?>
-						<td style='text-align:center;'><?php echo $item['hsn_code'] ?></td>
+						<td style='text-align:center;'><?php echo esc($item['hsn_code']) ?></td>
 					<?php endif; ?>
 					<td class="item-name"><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values'] ?></td>
 					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
-					<td style='text-align:center;'><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):to_decimals($item['discount']) . '%' ?></td>
+					<td style='text-align:center;'><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
 					<?php if($discount > 0): ?>
 					<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']) ?></td>
 					<?php endif; ?>
@@ -151,7 +171,7 @@ $(document).ready(function()
 				?>
 					<tr class="item-row">
 						<td class="item-description" colspan="<?php echo $invoice_columns-1 ?>"></td>
-						<td style='text-align:center;'><?php echo $item['serialnumber'] ?></td>
+						<td style='text-align:center;'><?php echo $item['serialnumber'] //TODO: serialnumber does not match variable naming conventions for this project. ?></td>
 					</tr>
 				<?php
 				}
@@ -160,7 +180,7 @@ $(document).ready(function()
 		?>
 
 		<tr>
-			<td class="blank" colspan="<?php echo $invoice_columns ?>" align="center"><?php echo '&nbsp;' ?></td>
+			<td class="blank" colspan="<?php echo $invoice_columns ?>" align="center"><?php echo '&nbsp;' //TODO: align is deprecated and should be replaced. Also, why the echo statement?  Why not just put that in the html? ?></td>
 		</tr>
 
 		<tr>
@@ -191,10 +211,10 @@ $(document).ready(function()
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-			$splitpayment = explode(':', $payment['payment_type']);
+			$splitpayment = explode(':', $payment['payment_type']);	//TODO: $splitpayment does not meet variable naming standards for this project.
 			$show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
 		?>
 			<tr>
@@ -233,14 +253,14 @@ $(document).ready(function()
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->appconfig->get('payment_message')) ?></div>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . $comments ?></div>
-				<div style='padding:4%;'><?php echo $this->appconfig->get('invoice_default_comments') ?></div>
+				<div><?php echo nl2br(esc($this->appconfig->get('payment_message'))) ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></div>
+				<div style='padding:4%;'><?php echo esc($this->appconfig->get('invoice_default_comments')) ?></div>
 			</h5>
-			<div style='padding:2%;'><?php echo nl2br($this->appconfig->get('return_policy')) ?></div>
+			<div style='padding:2%;'><?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?></div>
 		</div>
 		<div id='barcode'>
-			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo $barcode ?>' /><br>
+			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

@@ -1,11 +1,26 @@
-<div id="receipt_wrapper" style="font-size:<?php echo $this->appconfig->get('receipt_font_size') ?>px">
+<?php
+/**
+ * @var string $transaction_time
+ * @var int $sale_id
+ * @var string $employee
+ * @var float $discount
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ * @var float $total
+ * @var array $payments
+ * @var float $amount_change
+ * @var string $barcode
+ */
+?>
+<div id="receipt_wrapper" style="font-size:<?php echo esc($this->appconfig->get('receipt_font_size')) ?>px">
 	<div id="receipt_header">
 		<?php
 		if($this->appconfig->get('company_logo') != '')
 		{
 		?>
 			<div id="company_name">
-				<img id="image" src="<?php echo base_url('uploads/' . $this->appconfig->get('company_logo')) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo base_url('uploads/' . esc($this->appconfig->get('company_logo'), 'url')) ?>" alt="company_logo" />
 			</div>
 		<?php
 		}
@@ -15,15 +30,15 @@
 		if($this->appconfig->get('receipt_show_company_name'))
 		{
 		?>
-			<div id="company_name"><?php echo $this->appconfig->get('company') ?></div>
+			<div id="company_name"><?php echo esc($this->appconfig->get('company')) ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo nl2br($this->appconfig->get('address')) ?></div>
-		<div id="company_phone"><?php echo $this->appconfig->get('phone') ?></div>
+		<div id="company_address"><?php echo nl2br(esc($this->appconfig->get('address'))) ?></div>
+		<div id="company_phone"><?php echo esc($this->appconfig->get('phone')) ?></div>
 		<div id="sale_receipt"><?php echo lang('Sales.receipt') ?></div>
-		<div id="sale_time"><?php echo $transaction_time ?></div>
+		<div id="sale_time"><?php echo esc($transaction_time) ?></div>
 	</div>
 
 	<div id="receipt_general_info">
@@ -31,12 +46,12 @@
 		if(isset($customer))
 		{
 		?>
-			<div id="customer"><?php echo lang('Customers.customer') . ": $customer" ?></div>
+			<div id="customer"><?php echo lang('Customers.customer') . esc(": $customer") ?></div>
 		<?php
 		}
 		?>
 
-		<div id="sale_id"><?php echo lang('Sales.id') . ": $sale_id" ?></div>
+		<div id="sale_id"><?php echo lang('Sales.id') . esc(": $sale_id") ?></div>
 
 		<?php
 		if(!empty($invoice_number))
@@ -47,7 +62,7 @@
 		}
 		?>
 
-		<div id="employee"><?php echo lang('Employees.employee') . ": $employee" ?></div>
+		<div id="employee"><?php echo lang('Employees.employee') . esc(": $employee") ?></div>
 	</div>
 
 	<table id="receipt_items">
@@ -57,11 +72,11 @@
 			<th colspan="4" style="width:25%;" class="total-value"><?php echo lang('Sales.total') ?></th>
 		</tr>
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
 		?>
 			<tr>
-				<td><?php echo ucfirst($item['name'] . ' ' . $item['attribute_values']) ?></td>
+				<td><?php echo esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']) ?></td>
 				<td class="total-value"><?php echo to_currency($item[($this->appconfig->get('receipt_show_total_discount') ? 'total' : 'discounted_total')]) ?></td>
 			</tr>
@@ -70,7 +85,7 @@
 				if($this->appconfig->get('receipt_show_description'))
 				{
 				?>
-					<td colspan="2"><?php echo $item['description'] ?></td>
+					<td colspan="2"><?php echo esc($item['description']) ?></td>
 				<?php
 				}
 				?>
@@ -78,7 +93,7 @@
 				if($this->appconfig->get('receipt_show_serialnumber'))
 				{
 				?>
-					<td><?php echo $item['serialnumber'] ?></td>
+					<td><?php echo esc($item['serialnumber']) ?></td>
 				<?php
 				}
 				?>
@@ -137,7 +152,7 @@
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal) ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $tax_group_index=>$tax)
+			foreach($taxes as $tax_group_index => $tax)
 			{
 			?>
 				<tr>
@@ -164,7 +179,7 @@
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
 			$splitpayment = explode(':', $payment['payment_type']);
@@ -196,11 +211,11 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo nl2br($this->appconfig->get('return_policy')) ?>
+		<?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?>
 	</div>
 
 	<div id="barcode">
-		<img src='data:image/png;base64,<?php echo $barcode ?>' /><br>
+		<img src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 		<?php echo $sale_id ?>
 	</div>
 </div>

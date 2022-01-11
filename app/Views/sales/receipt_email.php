@@ -1,3 +1,18 @@
+<?php
+/**
+ * @var string $transaction_time
+ * @var int $sale_id
+ * @var string $employee
+ * @var array $cart
+ * @var float $discount
+ * @var float $subtotal
+ * @var array $taxes
+ * @var float $total
+ * @var array $payments
+ * @var float $amount_change
+ * @var string $barcode
+ */
+?>
 <div id="receipt_wrapper" style="width:100%;">
 	<div id="receipt_header" style="text-align:center;">
 		<?php
@@ -15,16 +30,16 @@
 		if($this->appconfig->get('receipt_show_company_name'))
 		{
 		?>
-			<div id="company_name" style="font-size:150%; font-weight:bold;"><?php echo $this->appconfig->get('company') ?></div>
+			<div id="company_name" style="font-size:150%; font-weight:bold;"><?php echo esc($this->appconfig->get('company')) ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo nl2br($this->appconfig->get('address')) ?></div>
-		<div id="company_phone"><?php echo $this->appconfig->get('phone') ?></div>
+		<div id="company_address"><?php echo nl2br(esc($this->appconfig->get('address'))) ?></div>
+		<div id="company_phone"><?php echo esc($this->appconfig->get('phone')) ?></div>
 		<br>
 		<div id="sale_receipt"><?php echo lang('Sales.receipt') ?></div>
-		<div id="sale_time"><?php echo $transaction_time ?></div>
+		<div id="sale_time"><?php echo esc($transaction_time) ?></div>
 	</div>
 
 	<br>
@@ -34,13 +49,13 @@
 		if(isset($customer))
 		{
 		?>
-			<div id="customer"><?php echo lang('Customers.customer').": $customer" ?></div>
+			<div id="customer"><?php echo lang('Customers.customer') . esc(": $customer") ?></div>
 		<?php
 		}
 		?>
 
-		<div id="sale_id"><?php echo lang('Sales.id').": $sale_id" ?></div>
-		<div id="employee"><?php echo lang('Employees.employee').": $employee" ?></div>
+		<div id="sale_id"><?php echo lang('Sales.id') . esc(": $sale_id") ?></div>
+		<div id="employee"><?php echo lang('Employees.employee') . esc(": $employee") ?></div>
 	</div>
 
 	<br>
@@ -53,13 +68,13 @@
 			<th style="width:20%;text-align:right;"><?php echo lang('Sales.total') ?></th>
 		</tr>
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
 			if($item['print_option'] == PRINT_YES)
 			{
 			?>
 				<tr>
-					<td><?php echo ucfirst($item['name'] . ' ' . $item['attribute_values']) ?></td>
+					<td><?php echo esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td style="text-align:right;"><?php echo to_currency($item[($this->appconfig->get('receipt_show_total_discount') ? 'total' : 'discounted_total')]) ?></td>
@@ -69,14 +84,14 @@
 					if($this->appconfig->get('receipt_show_description'))
 					{
 					?>
-						<td colspan="2"><?php echo $item['description'] ?></td>
+						<td colspan="2"><?php echo esc($item['description']) ?></td>
 					<?php
 					}
 
 					if($this->appconfig->get('receipt_show_serialnumber'))
 					{
 					?>
-						<td><?php echo $item['serialnumber'] ?></td>
+						<td><?php echo esc($item['serialnumber']) ?></td>
 					<?php
 					}
 					?>
@@ -131,7 +146,7 @@
 				<td style="text-align:right;border-top:2px solid #000000;"><?php echo to_currency($subtotal) ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $tax_group_index=>$tax)
+			foreach($taxes as $tax_group_index => $tax)
 			{
 			?>
 				<tr>
@@ -161,7 +176,7 @@
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
 			$splitpayment = explode(':', $payment['payment_type']);
@@ -201,13 +216,13 @@
 	</table>
 
 	<div id="sale_return_policy" style="text-align:center">
-		<?php echo nl2br($this->appconfig->get('return_policy')) ?>
+		<?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?>
 	</div>
 
 	<br>
 
 	<div id="barcode" style="text-align:center">
-		<img src='data:image/png;base64,<?php echo $barcode ?>' /><br>
+		<img src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 		<?php echo $sale_id ?>
 	</div>
 </div>

@@ -699,7 +699,7 @@ class Sales extends Secure_Controller
 			}
 
 
-			if($sale_id == -1 && $this->sale->check_invoice_number_exists($invoice_number))
+			if($sale_id == -1 && $this->sale->check_invoice_number_exists($invoice_number))	//TODO: Replace -1 with constant
 			{
 				$data['error'] = lang('Sales.invoice_number_duplicate', $invoice_number);
 				$this->_reload($data);
