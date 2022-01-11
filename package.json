@@ -43,7 +43,7 @@
     "grunt-contrib-uglify": "~5.0.1",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-license-bower": "~1.0.1",
-    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
+    "grunt-script-link-tags": "https://github.com/jekkos/grunt-script-link-tags.git#master",
     "grunt-wiredep": "^2.0.0",
     "load-grunt-tasks": "^3.4.0",
     "npm": "^6.14.15"
