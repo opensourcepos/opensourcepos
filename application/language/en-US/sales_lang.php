@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
@@ -105,7 +104,7 @@ $lang["sales_item_out_of_stock"] = "Item is out of stock.";
 $lang["sales_key_browser"] = "Helpful Shortcuts";
 $lang["sales_key_cancel"] = "Cancels Current Quote/Invoice/Sale";
 $lang["sales_key_customer_search"] = "Customer Search";
-$lang["sales_key_finish_quote"] = "Finish Quote/Invoice witdout payment";
+$lang["sales_key_finish_quote"] = "Finish Quote/Invoice without payment";
 $lang["sales_key_finish_sale"] = "Add Payment and Complete Invoice/Sale";
 $lang["sales_key_full"] = "Open in Full Screen Mode";
 $lang["sales_key_function"] = "Function";
