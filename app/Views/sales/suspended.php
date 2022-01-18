@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var array $suspended_sales
+ */
+?>
 <style>
 @media (min-width: 768px)
 {
@@ -38,7 +43,7 @@
 				if($this->appconfig->get('dinner_table_enable') == TRUE)
 				{
 				?>
-					<td><?php echo $this->Dinner_table->get_name($suspended_sale['dinner_table_id']) ?></td>
+					<td><?php echo esc($this->Dinner_table->get_name($suspended_sale['dinner_table_id'])) ?></td>
 				<?php
 				}
 				?>
@@ -47,7 +52,7 @@
 					if(isset($suspended_sale['customer_id']))
 					{
 						$customer = $this->Customer->get_info($suspended_sale['customer_id']);
-						echo $customer->first_name . ' ' . $customer->last_name;
+						echo esc("$customer->first_name $customer->last_name");
 					}
 					else
 					{
@@ -62,7 +67,7 @@
 					if(isset($suspended_sale['employee_id']))
 					{
 						$employee = $this->employee->get_info($suspended_sale['employee_id']);
-						echo $employee->first_name . ' ' . $employee->last_name;
+						echo esc("$employee->first_name $employee->last_name");
 					}
 					else
 					{
@@ -72,7 +77,7 @@
 					}
 					?>
 				</td>
-				<td><?php echo $suspended_sale['comment'] ?></td>
+				<td><?php echo esc($suspended_sale['comment']) ?></td>
 				<td>
 					<?php echo form_open('sales/unsuspend') ?>
 						<?php echo form_hidden('suspended_sale_id', $suspended_sale['sale_id']) ?>

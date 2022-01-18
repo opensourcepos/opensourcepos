@@ -1,9 +1,29 @@
+<?php
+/**
+ * @var int $sale_id_num
+ * @var bool $print_after_sale
+ * @var string $customer_info
+ * @var string $company_info
+ * @var string $invoice_number
+ * @var string $transaction_date
+ * @var float $total
+ * @var bool $include_hsn
+ * @var string $discount
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ * @var array $payments
+ * @var string $amount_change
+ * @var string $barcode
+ * @var int $sale_id
+ */
+?>
 <?php echo view('partial/header') ?>
 
 <?php
 if(isset($error_message))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
 	exit;
 }
 ?>
@@ -14,7 +34,7 @@ $(document).ready(function()
 {
 	var send_email = function()
 	{
-		$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num ?>',
+		$.get('<?php echo esc(site_url("/sales/send_pdf/$sale_id_num"), 'url') ?>',
 			function(response)
 			{
 				$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -31,7 +51,7 @@ $(document).ready(function()
 </script>
 <?php endif; ?>
 
-<?php echo view('partial/print_receipt', ['print_after_sale'=>$print_after_sale, 'selected_printer' => 'invoice_printer')) ?>
+<?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
@@ -39,8 +59,8 @@ $(document).ready(function()
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_invoice') ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')) ?>
-	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button')) ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 </div>
 
 <div id="page-wrap">
@@ -51,7 +71,7 @@ $(document).ready(function()
 			if(isset($customer))
 			{
 			?>
-				<div id="customer"><?php echo nl2br($customer_info) ?></div>
+				<div id="customer"><?php echo nl2br(esc($customer_info)) ?></div>
 			<?php
 			}
 			?>
@@ -62,7 +82,7 @@ $(document).ready(function()
 			if($this->Appconfig->get('company_logo') != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo esc(base_url('uploads/' . $this->Appconfig->get('company_logo')), 'url') ?>" alt="company_logo" />
 			<?php
 			}
 			?>
@@ -71,7 +91,7 @@ $(document).ready(function()
 			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
-				<div id="company_name"><?php echo $this->appconfig->get('company') ?></div>
+				<div id="company_name"><?php echo esc($this->appconfig->get('company')) ?></div>
 			<?php
 			}
 			?>
@@ -79,15 +99,15 @@ $(document).ready(function()
 	</div>
 
 	<div id="block2">
-		<div id="company-title"><?php echo nl2br($company_info) ?></div>
+		<div id="company-title"><?php echo nl2br(esc($company_info)) ?></div>
 		<table id="meta">
 			<tr>
 				<td class="meta-head"><?php echo lang('Sales.invoice_number') ?> </td>
-				<td><?php echo $invoice_number ?></td>
+				<td><?php echo esc($invoice_number) ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo lang('Common.date') ?></td>
-				<td><?php echo $transaction_date ?></td>
+				<td><?php echo esc($transaction_date) ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo lang('Sales.amount_due') ?></td>
@@ -103,7 +123,7 @@ $(document).ready(function()
 				$invoice_columns = 6;
 				if($include_hsn)
 				{
-					$invoice_columns += 1;
+					$invoice_columns += 1;	//TODO: $invoice_columns++; ?
 					?>
 					<th><?php echo lang('Sales.hsn') ?></th>
 					<?php
@@ -116,7 +136,7 @@ $(document).ready(function()
 			<?php
 			if($discount > 0)
 			{
-				$invoice_columns += 1;
+				$invoice_columns += 1;	//TODO: $invoice_columns++; ?
 				?>
 				<th><?php echo lang('Sales.customer_discount') ?></th>
 			<?php
@@ -126,20 +146,20 @@ $(document).ready(function()
 		</tr>
 
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
-			if($item['print_option'] == PRINT_YES)
+			if($item['print_option'] == PRINT_YES)	//TODO: === ?
 			{
 			?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number'] ?></td>
 					<?php if($include_hsn): ?>
-						<td style='text-align:center;'><?php echo $item['hsn_code'] ?></td>
+						<td style='text-align:center;'><?php echo esc($item['hsn_code']) ?></td>
 					<?php endif; ?>
-					<td class="item-name"><?php echo $item['name'] ?></td>
+					<td class="item-name"><?php echo esc($item['name']) ?></td>
 					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
-					<td style='text-align:center;'><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):to_decimals($item['discount']) . '%' ?></td>
+					<td style='text-align:center;'><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
 					<?php if($discount > 0): ?>
 						<td style='text-align:center;'><?php echo to_currency($item['discounted_total'] / $item['quantity']) ?></td>
 					<?php endif; ?>
@@ -150,11 +170,11 @@ $(document).ready(function()
 				{
 				?>
 					<tr class="item-row">
-						<td><?php echo $item['hsn_code'] ?></td>
+						<td><?php echo esc($item['hsn_code']) ?></td>
 						<td class="item-description" colspan="<?php echo $invoice_columns-2 ?>">
-							<?php echo $item['description'] ?>
+							<?php echo esc($item['description']) ?>
 						</td>
-						<td style='text-align:center;'><?php echo $item['serialnumber'] ?></td>
+						<td style='text-align:center;'><?php echo esc($item['serialnumber']) //TODO: serialnumber does not meet naming conventions for this project ?></td>
 					</tr>
 				<?php
 				}
@@ -194,7 +214,7 @@ $(document).ready(function()
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
 			$splitpayment = explode(':', $payment['payment_type']);
@@ -236,13 +256,13 @@ $(document).ready(function()
 		<div id="sale_return_policy">
 			<h5>
 				<div><?php echo nl2br($this->appconfig->get('payment_message')) ?></div>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ": $comments" ?></div>
-				<div style='padding:4%;'><?php echo $this->appconfig->get('invoice_default_comments') ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></div>
+				<div style='padding:4%;'><?php echo esc($this->appconfig->get('invoice_default_comments')) ?></div>
 			</h5>
-			<div style='padding:2%;'><?php echo nl2br($this->appconfig->get('return_policy')) ?></div>
+			<div style='padding:2%;'><?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?></div>
 		</div>
 		<div id='barcode'>
-			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo $barcode ?>' /><br>
+			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

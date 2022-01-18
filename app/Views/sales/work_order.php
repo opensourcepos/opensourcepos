@@ -1,9 +1,16 @@
+<?php
+/**
+ * @var int $sale_id_num
+ * @var bool $print_after_sale
+ * @var string $sales_work_order
+ */
+?>
 <?php echo view('partial/header') ?>
 
 <?php
 if(isset($error_message))
 {
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
 	exit;
 }
 ?>
@@ -14,7 +21,7 @@ if(isset($error_message))
 		{
 			var send_email = function()
 			{
-				$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num . "/work_order" ?>',
+				$.get('<?php echo esc(site_url("/sales/send_pdf/$sale_id_num/work_order")) ?>',
 					function(response)
 					{
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -31,7 +38,7 @@ if(isset($error_message))
 	</script>
 <?php endif; ?>
 
-<?php echo view('partial/print_receipt', ['print_after_sale'=>$print_after_sale, 'selected_printer' => 'invoice_printer')) ?>
+<?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
@@ -39,8 +46,8 @@ if(isset($error_message))
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_work_order') ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button')) ?>
-	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_work_order_button')) ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_work_order_button']) ?>
 </div>
 
 <div id="page-wrap">
