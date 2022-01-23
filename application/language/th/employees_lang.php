@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "ข้อมูลพื้นฐานของพนักงาน";
 $lang["employees_cannot_be_deleted"] = "ไม่สามารถลบพนักงานที่เลือกไว้ได้ เนื่องจากมีการทำรายการขายหรือคุณกำลังพยายามที่จะลบบัญชีของคุณเอง";
@@ -38,6 +37,6 @@ $lang["employees_system_language"] = "ภาษาของระบบ";
 $lang["employees_unsuccessful_change_password"] = "เปลี่ยนรหัสผ่านไม่สำเร็จ";
 $lang["employees_update"] = "แก้ไขข้อมูลพนักงาน";
 $lang["employees_username"] = "ชื่อผู้ใช้งาน";
-$lang["employees_username_duplicate"] = "";
+$lang["employees_username_duplicate"] = "ชื่อผู้ใช้งานพนักงานถูกใช้งานแล้ว กรุณาเลือกใช้งานชื่ออื่น";
 $lang["employees_username_minlength"] = "ชื่อผู้ใช้งานต้องยาวอย่างน้อย 5 อักษร";
 $lang["employees_username_required"] = "จำเป็นต้องระบุชื่อผู้ใช้งาน";

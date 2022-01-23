@@ -105,7 +105,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'public/dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'public/css/*.css', '!public/css/login.css', '!public/css/login.min.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/darkly.css'],
+					'public/dist/opensourcepos.min.css': ['tmp/opensourcepos_bower.css', 'public/css/*.css', '!public/css/login.css', '!public/css/login.min.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/darkly.css'],
 					'public/css/login.min.css': ['public/css/login.css']
 				}
 			}
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
 					separator: ';'
 				},
 				files: {
-					'tmp/<%= pkg.name %>.js': ['public/dist/jquery/jquery.js', 'tmp/opensourcepos_bower.js', 'public/js/*.js']
+					'tmp/opensourcepos.js': ['public/dist/jquery/jquery.js', 'tmp/opensourcepos_bower.js', 'public/js/*.js']
 				}
 			},
 			sql: {
@@ -131,11 +131,11 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+				banner: '/*! opensourcepos <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 			},
 			dist: {
 				files: {
-					'public/dist/<%= pkg.name %>.min.js': ['tmp/<%= pkg.name %>.js']
+					'public/dist/opensourcepos.min.js': ['tmp/opensourcepos.js']
 				}
 			}
 		},
@@ -261,8 +261,9 @@ module.exports = function(grunt) {
 		compress: {
 			main: {
 				options: {
-					mode: 'zip',
-					archive: 'dist/opensourcepos.zip'
+					mode: 'tar',
+					archive: 'dist/opensourcepos.tgz',
+					level: 2
 				},
 				files: [
 					{
