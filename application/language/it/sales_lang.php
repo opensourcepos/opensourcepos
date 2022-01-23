@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Punti Disponibili";
 $lang["rewards_package"] = "Punti Fedeltà";
 $lang["rewards_remaining_balance"] = "Valore Punti Rimanenti è ";
@@ -14,11 +13,11 @@ $lang["sales_cash_1"] = "";
 $lang["sales_cash_2"] = "";
 $lang["sales_cash_3"] = "";
 $lang["sales_cash_4"] = "";
-$lang["sales_cash_adjustment"] = "";
+$lang["sales_cash_adjustment"] = "Adeguamento in contanti";
 $lang["sales_cash_deposit"] = "Deposito Contanti";
 $lang["sales_cash_filter"] = "Contanti";
 $lang["sales_change_due"] = "Resto Dovuto";
-$lang["sales_change_price"] = "";
+$lang["sales_change_price"] = "Cambio prezzo di vendita";
 $lang["sales_check"] = "Assegno";
 $lang["sales_check_balance"] = "Promemoria Assegno";
 $lang["sales_check_filter"] = "Assegno";
