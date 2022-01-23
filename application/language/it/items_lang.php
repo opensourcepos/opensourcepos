@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventario da aggiungere o sottrarre.";
 $lang["items_allow_alt_description"] = "Permetti Descrizione alternativa";
 $lang["items_amount_entry"] = "Importo Inserito";
@@ -29,7 +28,7 @@ $lang["items_csv_import_nodata_wrongformat"] = "L'upload del file non ha dati o 
 $lang["items_csv_import_partially_failed"] = "L'importazione di articoli è avvenuta con successo con alcuni fallimenti:";
 $lang["items_csv_import_success"] = "Importazione degli Articoli riuscita.";
 $lang["items_current_quantity"] = "Quantità Corrente";
-$lang["items_default_pack_name"] = "";
+$lang["items_default_pack_name"] = "Ogni";
 $lang["items_description"] = "Descrizione";
 $lang["items_details_count"] = "Dettagli Conteggio Inventario";
 $lang["items_do_nothing"] = "Nessuna azione";
