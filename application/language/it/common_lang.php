@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Indirizzo 1";
 $lang["common_address_2"] = "Indirizzo 2";
 $lang["common_admin"] = "";
@@ -11,7 +10,7 @@ $lang["common_comments"] = "Commenti";
 $lang["common_common"] = "comune";
 $lang["common_confirm_search"] = "Hai selezionato una o più righe, queste non saranno più selezionate dopo la tua ricerca. Sei sicuro di voler procedere alla ricerca?";
 $lang["common_copyrights"] = "© 2010 - %1";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Correggi gli errori identificati prima di salvare";
 $lang["common_country"] = "Paese";
 $lang["common_dashboard"] = "";
 $lang["common_date"] = "Data";
