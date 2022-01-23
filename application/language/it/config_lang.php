@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Indirizzo Azienda";
 $lang["config_address_required"] = "Il campo Indirizzo Azienda è obbligatorio.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -27,7 +26,7 @@ $lang["config_barcode_page_width"] = "Mostra larghezza pagina";
 $lang["config_barcode_price"] = "Prezzo";
 $lang["config_barcode_second_row"] = "Riga 2";
 $lang["config_barcode_third_row"] = "Riga 3";
-$lang["config_barcode_tooltip"] = "Attenzione: Questa funzionalità può causare la duplicazione dei prodotti da essere importati o creati.  Non usarla se non vuoi codi a barra duplicati.";
+$lang["config_barcode_tooltip"] = "Attenzione: Questa funzionalità può causare la duplicazione dei prodotti da essere importati o creati.  Non usarla se non vuoi codici a barre duplicati.";
 $lang["config_barcode_type"] = "Tipo Codice a Barre";
 $lang["config_barcode_width"] = "Larghezza (px)";
 $lang["config_bottom"] = "Parte inferiore";
