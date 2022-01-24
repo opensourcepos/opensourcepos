@@ -11,9 +11,9 @@ class Token_work_order_sequence extends Token
 		return 'WSEQ';
 	}
 
-	public function get_value()
+	public function get_value($save = TRUE)
 	{
-		return $this->CI->Appconfig->acquire_save_next_work_order_sequence();
+		return $this->CI->Appconfig->acquire_next_work_order_sequence($save);
 	}
 }
 ?>
