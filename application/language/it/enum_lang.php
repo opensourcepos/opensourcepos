@@ -1,6 +1,5 @@
-<?php 
-
-$lang["enum_half_down"] = "Half Down";
+<?php
+$lang["enum_half_down"] = "Arrotondamento difetto";
 $lang["enum_half_even"] = "Half Even";
 $lang["enum_half_five"] = "Half Five";
 $lang["enum_half_odd"] = "Half Odd";
