@@ -1,4 +1,3 @@
-<?php 
-
-$lang["error_no_permission_module"] = "Non disponi dei permessi per accedere al seguente modulo";
+<?php
+$lang["error_no_permission_module"] = "Non hai l'autorizzazione per accedere al modulo denominato";
 $lang["error_unknown"] = "Errore sconosciuto";
