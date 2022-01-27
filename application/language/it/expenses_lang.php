@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Aggiungi Spesa";
 $lang["expenses_amount"] = "Importo";
 $lang["expenses_amount_number"] = "Importo deve essere un numero";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Categoria";
 $lang["expenses_category_required"] = "Categoria è un campo obbligatorio";
 $lang["expenses_check"] = "Controlla";
 $lang["expenses_check_filter"] = "Controlla";
-$lang["expenses_confirm_delete"] = "Sei sicuro di voler eliminare la Spesa Selezionata?";
-$lang["expenses_confirm_restore"] = "Sei sicuro di voler ripristinare le Spese selezionate?";
+$lang["expenses_confirm_delete"] = "Sei sicuro di voler eliminare le spese selezionate?";
+$lang["expenses_confirm_restore"] = "Sei sicuro di voler ripristinare le spese selezionate?";
 $lang["expenses_credit"] = "Carta di Credito";
 $lang["expenses_credit_filter"] = "Carta di Credito";
 $lang["expenses_date"] = "Data";
@@ -38,7 +37,7 @@ $lang["expenses_no_expenses_to_display"] = "Non ci sono Spese da mostrare";
 $lang["expenses_none_selected"] = "Non hai selezionato alcuna Spesa";
 $lang["expenses_one_or_multiple"] = "Spesa/e";
 $lang["expenses_payment"] = "Tipo di Pagamento";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Inizia a digitare il nome del fornitore...";
 $lang["expenses_successful_adding"] = "Spesa aggiunta correttamente";
 $lang["expenses_successful_deleted"] = "Spesa eliminata correttamente";
 $lang["expenses_successful_updating"] = "Spesa aggiornata correttamente";
