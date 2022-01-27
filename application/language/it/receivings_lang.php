@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "Cancella";
 $lang["receivings_cannot_be_deleted"] = "Eliminazione Ricezione(i) fallita.";
@@ -38,9 +37,9 @@ $lang["receivings_register"] = "Articoli Ricevuti";
 $lang["receivings_requisition"] = "Requisizione";
 $lang["receivings_return"] = "Reso";
 $lang["receivings_select_supplier"] = "Seleziona Fornitore (Opzionale)";
-$lang["receivings_ship_pack"] = "";
+$lang["receivings_ship_pack"] = "Imballo";
 $lang["receivings_start_typing_supplier_name"] = "Incomincia a digitare il nome del Fornitore...";
-$lang["receivings_stock"] = "Stock";
+$lang["receivings_stock"] = "Scorta";
 $lang["receivings_stock_destination"] = "Destinazione Stock";
 $lang["receivings_stock_locaiton"] = "Luogo di Stock";
 $lang["receivings_stock_source"] = "Provenienza Stock";
