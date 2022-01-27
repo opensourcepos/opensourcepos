@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Codice Fiscale";
 $lang["customers_account_number_duplicate"] = "Il numero dell'account è già presente nel database.";
-$lang["customers_available_points"] = "Punti Disponibili";
+$lang["customers_available_points"] = "Punti Dispnibili";
 $lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Spesa media";
 $lang["customers_avg_discount"] = "Sconto medio";
