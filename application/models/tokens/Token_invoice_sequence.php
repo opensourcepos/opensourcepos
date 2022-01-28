@@ -17,9 +17,9 @@ class Token_invoice_sequence extends Token
 		return 'ISEQ';
 	}
 
-	public function get_value()
+	public function get_value($save = TRUE)
 	{
-		return $this->CI->Appconfig->acquire_save_next_invoice_sequence();
+		return $this->CI->Appconfig->acquire_next_invoice_sequence($save);
 	}
 }
 ?>

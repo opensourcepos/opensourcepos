@@ -203,6 +203,7 @@ class Sale_lib
 		if(!$keep_custom || empty($current_invoice_number))
 		{
 			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
+
 		}
 	}
 

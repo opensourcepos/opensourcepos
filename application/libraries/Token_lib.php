@@ -20,7 +20,7 @@ class Token_lib
 	/**
 	 * Expands all of the tokens found in a given text string and returns the results.
 	 */
-	public function render($tokened_text, $tokens = array())
+	public function render($tokened_text, $tokens = array(), $save = TRUE)
 	{
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
@@ -45,7 +45,7 @@ class Token_lib
 
 		$token_values = array();
 		$tokens_to_replace = array();
-		$this->generate($token_tree, $tokens_to_replace, $token_values, $tokens);
+		$this->generate($token_tree, $tokens_to_replace, $token_values, $tokens, $save);
 
 		return str_replace($tokens_to_replace, $token_values, $tokened_text);
 	}
@@ -135,12 +135,12 @@ class Token_lib
 		return $results;
 	}
 
-	public function generate($used_tokens, &$tokens_to_replace, &$token_values, $tokens)
+	public function generate($used_tokens, &$tokens_to_replace, &$token_values, $tokens, $save = TRUE)
 	{
 		foreach($used_tokens as $token_code => $token_info)
 		{
 			// Generate value here based on the key value
-			$token_value = $this->resolve_token($token_code);
+			$token_value = $this->resolve_token($token_code, array(), $save);
 
 			foreach($token_info as $length => $token_spec)
 			{
@@ -159,13 +159,13 @@ class Token_lib
 		return $token_values;
 	}
 
-	private function resolve_token($token_code, $tokens = array())
+	private function resolve_token($token_code, $tokens = array(), $save = TRUE)
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{
 			if($token->token_id() == $token_code)
 			{
-				return $token->get_value();
+				return $token->get_value($save);
 			}
 		}
 
