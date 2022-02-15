@@ -1,10 +1,16 @@
+<?php
+/**
+ * @var string $controller_name
+ * @var string $tax_rate_table_headers
+ */
+?>
 <script type="text/javascript">
 $(document).ready(function()
 {
 	<?php echo view('partial/bootstrap_tables_locale') ?>
 	table_support.init({
-		resource: '<?php echo site_url($controller_name) ?>',
-		headers: <?php echo $tax_rate_table_headers ?>,
+		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
+		headers: <?php echo esc($tax_rate_table_headers, 'js') ?>,
 		pageSize: <?php echo $this->appconfig->get('lines_per_page') ?>,
 		uniqueId: 'tax_rate_id'
 	});
@@ -12,9 +18,9 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar">
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url($controller_name."/view") ?>'
-			title='<?php echo lang($controller_name . '.new') ?>'>
-		<span class="glyphicon glyphicon-usd">&nbsp</span><?php echo lang($controller_name . '.new') ?>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/view"), 'url') ?>'
+			title='<?php echo lang("$controller_name.new") ?>'>
+		<span class="glyphicon glyphicon-usd">&nbsp</span><?php echo lang("$controller_name.new") ?>
 	</button>
 </div>
 

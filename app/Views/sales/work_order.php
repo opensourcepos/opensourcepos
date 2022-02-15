@@ -3,6 +3,17 @@
  * @var int $sale_id_num
  * @var bool $print_after_sale
  * @var string $sales_work_order
+ * @var string $customer_info
+ * @var string $company_info
+ * @var string $work_order_number_label
+ * @var string $work_order_number
+ * @var string $transaction_date
+ * @var bool $print_price_info
+ * @var string $total
+ * @var array $cart
+ * @var float $subtotal
+ * @var array $taxes
+ * @var array $payments
  */
 ?>
 <?php echo view('partial/header') ?>
@@ -58,7 +69,7 @@ if(isset($error_message))
 			if(isset($customer))
 			{
 			?>
-				<div id="customer"><?php echo nl2br($customer_info) ?></div>
+				<div id="customer"><?php echo esc(nl2br($customer_info)) ?></div>
 			<?php
 			}
 			?>
@@ -78,7 +89,7 @@ if(isset($error_message))
 			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
-				<div id="company_name"><?php echo $this->appconfig->get('company') ?></div>
+				<div id="company_name"><?php echo esc($this->appconfig->get('company')) ?></div>
 			<?php
 			}
 			?>
@@ -86,15 +97,15 @@ if(isset($error_message))
 	</div>
 
 	<div id="block2">
-		<div id="company-title"><?php echo nl2br($company_info) ?></div>
+		<div id="company-title"><?php echo esc(nl2br($company_info)) ?></div>
 		<table id="meta">
 			<tr>
-				<td class="meta-head"><?php echo $work_order_number_label ?> </td>
-				<td><?php echo $work_order_number ?></td>
+				<td class="meta-head"><?php echo esc($work_order_number_label) ?> </td>
+				<td><?php echo esc($work_order_number) ?></td>
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo lang('Common.date') ?></td>
-				<td><?php echo $transaction_date ?></td>
+				<td><?php echo esc($transaction_date) ?></td>
 			</tr>
 			<?php
 			if($print_price_info)
@@ -102,7 +113,7 @@ if(isset($error_message))
 			?>
 				<tr>
 					<td class="meta-head"><?php echo lang('Sales.amount_due') ?></td>
-					<td><?php echo to_currency($total) ?></td>
+					<td><?php echo to_currency(esc($total)) ?></td>
 				</tr>
 			<?php
 			}
@@ -120,17 +131,17 @@ if(isset($error_message))
 			<th><?php echo lang('Sales.total') ?></th>
 		</tr>
 		<?php
-		foreach($cart as $line=>$item)
+		foreach($cart as $line => $item)
 		{
 			if($item['print_option'] == PRINT_YES)
 			{
 			?>
 				<tr class="item-row">
-					<td><?php echo $item['item_number'] ?></td>
-					<td class="item-name"><?php echo $item['name'] ?></td>
+					<td><?php echo esc($item['item_number']) ?></td>
+					<td class="item-name"><?php echo esc($item['name']) ?></td>
 					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php if($print_price_info) echo to_currency($item['price']) ?></td>
-					<td style='text-align:center;'><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):to_decimals($item['discount']) . '%' ?></td>
+					<td style='text-align:center;'><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
 					<td style='border-right: solid 1px; text-align:right;'><?php if($print_price_info) echo to_currency($item['discounted_total']) ?></td>
 				</tr>
 
@@ -140,8 +151,8 @@ if(isset($error_message))
 				?>
 					<tr class="item-row">
 						<td></td>
-						<td class="item-name" colspan="4"><?php echo $item['description'] ?></td>
-						<td style='text-align:center;'><?php echo $item['serialnumber'] ?></td>
+						<td class="item-name" colspan="4"><?php echo esc($item['description']) ?></td>
+						<td style='text-align:center;'><?php echo esc($item['serialnumber']) ?></td>
 					</tr>
 				<?php
 				}
@@ -158,7 +169,7 @@ if(isset($error_message))
 				<td class="total-value" id="subtotal"><?php echo to_currency($subtotal) ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $tax_group_index=>$tax)
+			foreach($taxes as $tax_group_index => $tax)
 			{
 				?>
 				<tr>
@@ -178,10 +189,10 @@ if(isset($error_message))
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
-		foreach($payments as $payment_id=>$payment)
+		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
-			$splitpayment = explode(':', $payment['payment_type']);
+			$splitpayment = explode(':', $payment['payment_type']);	//TODO: $splitpayment does not match naming conventions for the project
 			$show_giftcard_remainder |= $splitpayment[0] == lang('Sales.giftcard');
 			?>
 			<tr>
@@ -196,7 +207,7 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ": $comments" ?></div>
+				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></div>
 			</h5>
 		</div>
 	</div>

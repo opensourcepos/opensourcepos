@@ -1,4 +1,10 @@
-<?php echo form_open('taxes/save_tax_jurisdictions/', ['id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal')) ?>
+<?php
+/**
+ * @var array $tax_jurisdictions
+ * @var string $tax_type_options
+ */
+?>
+<?php echo form_open('taxes/save_tax_jurisdictions/', ['id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal']) ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
 		<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -12,7 +18,7 @@
 			'name' => 'submit_tax_jurisdictions',
 			'id' => 'submit_tax_jurisdictions',
 			'value' => lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm pull-right')) ?>
+			'class' => 'btn btn-primary btn-sm pull-right']) ?>
 	</fieldset>
 </div>
 <?php echo form_close() ?>
@@ -25,7 +31,7 @@
 		if (tax_jurisdictions_count == 0) {
 			tax_jurisdictions_count = 1;
 		}
-		var tax_type_options = '<?php echo $tax_type_options ?>';
+		var tax_type_options = '<?php echo esc($tax_type_options, 'js') ?>';
 
 		var hide_show_remove_tax_jurisdiction = function() {
 			if ($("input[name*='tax_jurisdiction']:enabled").length > 1)
@@ -102,7 +108,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_jurisdictions").load('<?php echo site_url("taxes/ajax_tax_jurisdictions") ?>', init_add_remove_tax_jurisdiction);
+						$("#tax_jurisdictions").load('<?php echo esc(site_url("taxes/ajax_tax_jurisdictions"), 'url') ?>', init_add_remove_tax_jurisdiction);
 					},
 					dataType: 'json'
 				});
@@ -115,7 +121,7 @@
 
 		<?php
 		$i = 0;
-		foreach($tax_jurisdictions as $tax_jurisdiction=>$tax_jurisdiction_data)
+		foreach($tax_jurisdictions as $tax_jurisdiction => $tax_jurisdiction_data)
 		{
 		?>
 		$('<?php echo '#jurisdiction_name_' . ++$i ?>').rules( "add", {

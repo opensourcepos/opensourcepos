@@ -1,18 +1,23 @@
-<?php echo form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal')) ?>
+<?php
+/**
+ * @var array $tax_codes
+ */
+?>
+<?php echo form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
 		<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_codes">
-			<?php echo view('partial/tax_codes', ['tax_codes' => $tax_codes)) ?>
+			<?php echo view('partial/tax_codes', ['tax_codes' => $tax_codes]) ?>
 		</div>
 
 		<?php echo form_submit ([
 			'name' => 'submit_tax_codes',
 			'id' => 'submit_tax_codes',
 			'value' => lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm pull-right')) ?>
+			'class' => 'btn btn-primary btn-sm pull-right']) ?>
 	</fieldset>
 </div>
 <?php echo form_close() ?>
@@ -112,7 +117,7 @@
 
 		<?php
 		$i = 0;
-		foreach($tax_codes as $tax_code=>$tax_code_data)
+		foreach($tax_codes as $tax_code => $tax_code_data)
 		{
 		?>
 		$('<?php echo '#tax_code_' . ++$i ?>').rules( "add", {
