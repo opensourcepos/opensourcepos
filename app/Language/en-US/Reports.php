@@ -1,5 +1,6 @@
-//Language/en-US/Reports.php
 <?php
+//Language/en-US/Reports.php
+
 return [
 'all' => 'All',
 'authority' => 'Authority',

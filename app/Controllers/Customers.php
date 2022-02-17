@@ -491,7 +491,7 @@ class Customers extends Persons
 
 				if(count($failCodes) > 0)
 				{
-					$message = lang('Customers.csv_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = lang('Customers.csv_import_partially_failed', ['failures' => count($failCodes), 'fail_rows' => implode(', ', $failCodes)]);
 
 					echo json_encode (['success' => FALSE, 'message' => $message]);
 				}

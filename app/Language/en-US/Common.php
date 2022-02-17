@@ -1,3 +1,4 @@
+<?php
 //Language/en-US/Common.php
 
 return [
@@ -8,7 +9,7 @@ return [
 'comments' => 'Comments',
 'common' => 'common',
 'confirm_search' => 'You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?',
-'copyrights' => '© 2010 - {0}',
+'copyrights' => '© 2010 - {current_year, number, integer}',
 'correct_errors' => 'Please correct identified errors before saving',
 'country' => 'Country',
 'date' => 'Date',

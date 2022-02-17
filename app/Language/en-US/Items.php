@@ -1,3 +1,4 @@
+<?php
 //Language/en-US/Items.php
 
 return [
@@ -25,7 +26,7 @@ return [
 'count' => 'Update Inventory',
 'csv_import_failed' => 'CSV import failed',
 'csv_import_nodata_wrongformat' => 'The uploaded CSV file has no data or is formatted incorrectly.',
-'csv_import_partially_failed' => 'There were %1 item import failure(s) on line(s): %2. No rows were imported.',
+'csv_import_partially_failed' => 'There were {failures, number, integer} item import failure(s) on line(s): {fail_rows}. No rows were imported.',
 'csv_import_success' => 'Item CSV import successful.',
 'current_quantity' => 'Current Quantity',
 'default_pack_name' => 'Each',

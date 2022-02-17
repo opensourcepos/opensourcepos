@@ -1,3 +1,4 @@
+<?php
 //Language/en-US/Customers.php
 
 return [

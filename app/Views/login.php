@@ -31,7 +31,7 @@
       </div>
       <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
 				<?php echo form_open('login') ?>
-        <h3 class="text-center m-0"><?php echo lang('Login.welcome', lang('Common.software_short')) ?></h3>
+        <h3 class="text-center m-0"><?php echo lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
         <?php if (validation_errors()): ?>
         <div class="alert alert-danger mt-3">
           <?php echo validation_errors() ?>
@@ -39,7 +39,7 @@
         <?php endif; ?>
 				<?php if (!$this->migration->is_latest()): ?>
         <div class="alert alert-info mt-3">
-					<?php echo lang('Login.migration_needed', $this->appconfig->get('application_version')) ?>
+					<?php echo lang('Login.migration_needed', ['version' => $this->appconfig->get('application_version')]) ?>
 				</div>
 				<?php endif; ?>
         <?php if (empty($this->appconfig->get('login_form')) || 'floating_labels'==($this->appconfig->get('login_form'))): ?>

@@ -1,3 +1,4 @@
+<?php
 //Language/en-US/Item_kits.php
 
 return [

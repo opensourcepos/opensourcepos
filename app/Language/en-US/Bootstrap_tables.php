@@ -1,3 +1,4 @@
+<?php
 //Language/en-US/Bootstrap_tables.php
 
 return [

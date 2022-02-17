@@ -1,12 +1,13 @@
-//Language/en-US/Giftcards.php
 <?php
+//Language/en-US/Giftcards.php
+
 return [
 'add_minus' => 'Inventory to add or subtract.',
 'allow_alt_description' => 'Allow Alternate Description',
 'bulk_edit' => 'Bulk Edit',
 'cannot_be_deleted' => 'Could not delete selected Gift Card(s), one or more of the selected Gift Cards has sales.',
 'cannot_find_giftcard' => 'Gift Card not found.',
-'cannot_use' => 'Gift Card %1 cannot be used for this sale: invalid Customer.',
+'cannot_use' => 'Gift Card {giftcard_num} cannot be used for this sale: invalid Customer.',
 'card_value' => 'Value',
 'category' => 'Category',
 'change_all_to_allow_alt_desc' => 'Allow alternate description for all.',
@@ -48,9 +49,9 @@ return [
 'person_id' => 'Customer',
 'quantity' => 'Quantity',
 'quantity_required' => 'Quantity is a required field. Please close (X) to cancel.',
-'remaining_balance' => 'Gift Card %1 remaining value is %2!',
+'remaining_balance' => 'Gift Card {giftcard_num} remaining value is {balance}!',
 'reorder_level' => 'Reorder Level',
-'retrive_giftcard_info' => 'Retrieve Gift Card Info',
+'retrive_giftcard_info' => 'Retrieve Gift Card Info',	//TODO: Misspelling in variable name
 'sales_tax_1' => 'Sales Tax',
 'sales_tax_2' => 'Sales Tax 2',
 'serialized_giftcards' => 'Serialized Gift Cards',
