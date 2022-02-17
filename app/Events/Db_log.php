@@ -6,7 +6,6 @@ class Db_log
 {
 	public function db_log_queries()
 	{
-		$CI = & get_instance();
 		$config = config('Config\\App');
 
 		// check if database logging is enabled (see config/config.php)
@@ -18,8 +17,8 @@ class Db_log
 			$handle = fopen($filepath, "a+");
 
 			// Get execution time of all the queries executed by controller
-			$times = $CI->db->query_times;
-			foreach($CI->db->queries as $key => $query)
+			$times = $config->db->query_times;
+			foreach($config->db->queries as $key => $query)
 			{
 				// Generating SQL file along with execution time
 				$sql = $query . " \n Execution Time:" . $times[$key];

@@ -2,6 +2,11 @@
 
 namespace App\Events;
 
+use app\Libraries\MY_Migration;
+
+/**
+ * @property my_migration migration;
+ */
 class Load_config
 {
     /**
@@ -9,34 +14,33 @@ class Load_config
      */
     public function load_config()
     {
-        $CI =& get_instance();
+        $this->migration = new My_Migration();  //TODO: add the $config MigrationsConfig parameter
 
-        $CI->migration = new Migration();
-        if (!$CI->migration->is_latest())
+        if (!$this->migration->is_latest())
         {
-            $CI->session->sess_destroy();
+            $this->session->sess_destroy();
         }
 
-        foreach($CI->Appconfig->get_all()->getResult() as $app_config)
+        foreach($this->Appconfig->get_all()->getResult() as $app_config)
         {
-            $CI->config->set_item($app_config->key, $CI->security->xss_clean($app_config->value));
+            $this->config->set_item($app_config->key, $app_config->value);
         }
 
         // fallback to English if language settings are not correct
         $file_exists = !file_exists('../application/language/' . current_language_code());
         if(current_language_code() == null || current_language() == null || $file_exists)
         {
-            $CI->config->set_item('language', 'english');
-            $CI->config->set_item('language_code', 'en-US');
+            $this->config->set_item('language', 'english');
+            $this->config->set_item('language_code', 'en-US');
         }
 
-        $this->load_language_files($CI, '../vendor/codeigniter/framework/system/language', current_language(), FALSE);
-        $this->load_language_files($CI, '../application/language', current_language_code(), TRUE);
+        $this->load_language_files('../vendor/codeigniter/framework/system/language', current_language(), FALSE);
+        $this->load_language_files('../application/language', current_language_code(), TRUE);
 
         //Set timezone from config database
-        if($CI->config->get('timezone'))
+        if($this->config->get('timezone'))
         {
-            date_default_timezone_set($CI->config->get('timezone'));
+            date_default_timezone_set($this->config->get('timezone'));
         }
         else
         {
@@ -47,12 +51,11 @@ class Load_config
     }
 
     /**
-     * @param $CI
      * @param $path
      * @param $language
      * @param $fallback
      */
-    private function load_language_files($CI, $path, $language, $fallback)
+    private function load_language_files($path, $language, $fallback)
     {
         $map = directory_map($path . DIRECTORY_SEPARATOR . $language);
 
@@ -63,19 +66,19 @@ class Load_config
                 $filename = strtr($file, '', '.php');
                 if ($fallback)
                 {
-                    $CI->lang->load($filename, 'en-US');
+                    $this->lang->load($filename, 'en-US');
 
-                    $array = $CI->lang->load($filename, $language, TRUE);
+                    $array = $this->lang->load($filename, $language, TRUE);
                     foreach($array as $lang_key => $lang_value)
                     {
                         if ($lang_value !== '') {
-                            $CI->lang->language[$lang_key] = $lang_value;
+                            $this->lang->language[$lang_key] = $lang_value;
                         }
                     }
                 }
                 else
                 {
-                    $CI->lang->load($filename, $language);
+                    $this->lang->load($filename, $language);
                 }
             }
         }

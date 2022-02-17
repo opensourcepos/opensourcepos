@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\Enums\Rounding_mode;
+
 /**
  * @backupGlobals disabled
  */
@@ -9,7 +12,7 @@ class Rounding_mode_test extends UnitTestCase
     public function setUp()
     {
         $this->resetInstance();
-        $this->CI->rounding_mode = model('enums/Rounding_mode');
+        $this->rounding_mode = model('enums/Rounding_mode');
     }
 
     public function test_rounding()

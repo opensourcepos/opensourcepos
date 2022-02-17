@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @backupGlobals disabled
  */
@@ -17,6 +18,4 @@ class Locale_helper_test extends UnitTestCase
 
         $this->assertEquals(5.00, $decimals);
     }
-
-
 }
