@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adress 1";
 $lang["common_address_2"] = "Adress 2";
 $lang["common_admin"] = "";
@@ -33,8 +32,8 @@ $lang["common_gender"] = "Kön";
 $lang["common_gender_female"] = "Kvinna";
 $lang["common_gender_male"] = "Man";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
-$lang["common_id"] = "Id";
+$lang["common_icon"] = "Ikon";
+$lang["common_id"] = "ID";
 $lang["common_import"] = "Import";
 $lang["common_import_change_file"] = "Ändra";
 $lang["common_import_csv"] = "CSV-import";
@@ -47,7 +46,7 @@ $lang["common_last_name_required"] = "Efternamn är ett obligatoriskt fält.";
 $lang["common_last_page"] = "Sista";
 $lang["common_learn_about_project"] = "för att lära sig den senaste informationen om projektet.";
 $lang["common_list_of"] = "Lista av";
-$lang["common_logo"] = "";
+$lang["common_logo"] = "Logga";
 $lang["common_logo_mark"] = "";
 $lang["common_logout"] = "Logga ut";
 $lang["common_manager"] = "";
