@@ -22,8 +22,7 @@ use CodeIgniter\Exceptions\FrameworkException;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
-Events::on('pre_system', function ()
-{
+Events::on('pre_system', function () use ($config_path) {
 	if (ENVIRONMENT !== 'testing')
 	{
 		if (ini_get('zlib.output_compression'))

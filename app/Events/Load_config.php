@@ -3,49 +3,54 @@
 namespace App\Events;
 
 use app\Libraries\MY_Migration;
+use app\Models\Appconfig;
+use CodeIgniter\Session\Session;
 
 /**
  * @property my_migration migration;
+ * @property session session;
+ * @property appconfig appconfig;
+ * @property mixed $migration_config
+ * @property mixed $config
  */
 class Load_config
 {
     /**
-     * Loads configuration from database into global CI config
+     * Loads configuration from database into App CI config
      */
     public function load_config()
     {
-        $this->migration = new My_Migration();  //TODO: add the $config MigrationsConfig parameter
+        $this->migration_config = config('Migrations');
+        $this->migration = new My_Migration($this->migration_config);
+
+        $this->session = session();
+
+        $this->config = config('App');  //TODO: is this the best place to dump the database app configuration values?
+        $this->appconfig = model('Appconfig');
 
         if (!$this->migration->is_latest())
         {
             $this->session->sess_destroy();
         }
 
-        foreach($this->Appconfig->get_all()->getResult() as $app_config)
+        foreach($this->appconfig->get_all()->getResult() as $app_config)
         {
-            $this->config->set_item($app_config->key, $app_config->value);
+            $this->config[$app_config->key] = $app_config->value;
         }
 
         // fallback to English if language settings are not correct
-        $file_exists = !file_exists('../application/language/' . current_language_code());
+        $file_exists = !file_exists('../app/Language/' . current_language_code());
         if(current_language_code() == null || current_language() == null || $file_exists)
         {
-            $this->config->set_item('language', 'english');
-            $this->config->set_item('language_code', 'en-US');
+            $this->config->language = 'english';
+            $this->config->language_code = 'en-US';
         }
 
-        $this->load_language_files('../vendor/codeigniter/framework/system/language', current_language(), FALSE);
-        $this->load_language_files('../application/language', current_language_code(), TRUE);
+        $this->load_language_files('../vendor/codeigniter4/framework/system/Language', current_language(), FALSE);
+        $this->load_language_files('../app/Language', current_language_code(), TRUE);
 
         //Set timezone from config database
-        if($this->config->get('timezone'))
-        {
-            date_default_timezone_set($this->config->get('timezone'));
-        }
-        else
-        {
-            date_default_timezone_set('America/New_York');
-        }
+        date_default_timezone_set($this->config->timezone ?? 'America/New_York');
 
         bcscale(max(2, totals_decimals() + tax_decimals()));
     }
@@ -68,7 +73,7 @@ class Load_config
                 {
                     $this->lang->load($filename, 'en-US');
 
-                    $array = $this->lang->load($filename, $language, TRUE);
+                    $array = $this->lang->load($filename, $language, TRUE); //TODO: need to figure out how to do this now or if it's even necessary
                     foreach($array as $lang_key => $lang_value)
                     {
                         if ($lang_value !== '') {

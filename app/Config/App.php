@@ -21,16 +21,6 @@ class App extends BaseConfig
 	public $commit_sha1 = 'dev';
 
 	/**
-	 * This is to indicated whether we want XSS clean to be performed or not
-	 * By default it's enabled as it's assumed the installation has Internet access and needs to be protected,
-	 * however intranet only installations may not need this so they can set FALSE to improve performance
-	 *
-	 * @var bool
-	 */
-	public $ospos_xss_clean = true;
-	//TODO: This may need to be replaced with CI4's implementation.
-
-	/**
 	 * Logs are stored in writable/logs
 	 *
 	 * @var bool
