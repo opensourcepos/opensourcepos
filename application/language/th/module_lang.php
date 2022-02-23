@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_admin_cashups"] = "";
 $lang["module_admin_cashups_desc"] = "";
 $lang["module_attributes"] = "คุณลักษณะ";
@@ -19,14 +18,14 @@ $lang["module_expenses_categories_desc"] = "เพิ่ม, ปรับปร�
 $lang["module_expenses_desc"] = "เพิ่ม, ปรับปรุง, ลบ และค้นหาค่าใช้จ่าย";
 $lang["module_giftcards"] = "บัตรกำนัล";
 $lang["module_giftcards_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา บัตรกำนัล";
-$lang["module_home"] = "Home";
+$lang["module_home"] = "หนัาหลัก";
 $lang["module_home_desc"] = "แสดงรายการเมนูหลักของโมดูล";
 $lang["module_item_kits"] = "สินค้าหมู่";
 $lang["module_item_kits_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้าหมู่";
 $lang["module_items"] = "สินค้า";
 $lang["module_items_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้า";
 $lang["module_messages"] = "Messages";
-$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
+$lang["module_messages_desc"] = "ส่งข้อความถึง ลูกค้า ผู้ผลิต และพนักงาน";
 $lang["module_migrate"] = "โยกย้าย";
 $lang["module_migrate_desc"] = "ปรับปรุงฐานข้อมูล OSPOS";
 $lang["module_office"] = "สำนักงาน";
