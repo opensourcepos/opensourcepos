@@ -8,7 +8,6 @@ use app\Libraries\Receiving_lib;
 use app\Libraries\Sale_lib;
 use app\Libraries\Tax_lib;
 
-use app\Models\Appconfig;
 use app\Models\Attribute;
 use app\Models\Customer_rewards;
 use app\Models\Dinner_table;
@@ -34,7 +33,6 @@ use NumberFormatter;
  * @property encryption encryption
  * @property encrypterinterface encrypter
  *
- * @property appconfig appconfig
  * @property attribute attribute
  * @property customer_rewards customer_rewards
  * @property dinner_table dinner_table
@@ -56,7 +54,6 @@ class Config extends Secure_Controller
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
 		
-		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
@@ -79,7 +76,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = [];
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->appconfig->get('application_version');
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('OSPOSConfig')->application_version;
 
 		if(file_exists('license/LICENSE'))
 		{
@@ -256,7 +253,7 @@ class Config extends Secure_Controller
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = $this->appconfig->get('company_logo') != '';
+		$data['logo_exists'] = config('OSPOS')->company_logo != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
