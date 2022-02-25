@@ -3,24 +3,16 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
-use app\Models\Attribute;
 use CodeIgniter\Database\ResultInterface;
 use DateTime;
 
 class Migration_database_optimizations extends Migration
 {
-	/**
-	 *
-	 *
-	 * @property attribute $attribute
-	 *
-	 */
 	public function up(): void
 	{
 		error_log('Migrating database_optimizations');
 
 		$attribute = model('Attribute');
-		$appconfig = model('Appconfig');
 
 		$attribute->delete_orphaned_values();
 
@@ -34,7 +26,7 @@ class Migration_database_optimizations extends Migration
 			$builder->where('attribute_value IS NOT NULL');
 			$builder->where('attribute_date IS NOT NULL');
 		$builder->groupEnd();
-		$this->db->or_group_start();
+		$builder->orGroupStart();
 			$builder->where('attribute_value IS NOT NULL');
 			$builder->where('attribute_decimal IS NOT NULL');
 		$builder->groupEnd();
@@ -63,7 +55,7 @@ class Migration_database_optimizations extends Migration
 						break;
 					case DATE:
 						$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-						$value = $attribute_date->format($appconfig->get('dateformat'));
+						$value = $attribute_date->format(config('OSPOS')->dateformat);
 						break;
 					default:
 						$value = $attribute_value['attribute_value'];

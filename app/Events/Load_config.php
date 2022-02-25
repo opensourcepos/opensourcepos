@@ -4,7 +4,6 @@ namespace App\Events;
 
 use app\Libraries\MY_Migration;
 use app\Models\Appconfig;
-use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\Session\Session;
 use Config\Services;
 

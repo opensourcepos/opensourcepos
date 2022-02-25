@@ -5,7 +5,6 @@ namespace App\Controllers;
 use app\Libraries\Barcode_lib;
 use app\Libraries\Item_lib;
 
-use app\Models\Appconfig;
 use app\Models\Attribute;
 use app\Models\Inventory;
 use app\Models\Item;
@@ -29,7 +28,6 @@ require_once('Secure_Controller.php');
  * @property barcode_lib barcode_lib
  * @property item_lib item_lib
  *
- * @property appconfig appconfig
  * @property attribute attribute
  * @property inventory inventory
  * @property item item
@@ -52,7 +50,6 @@ class Items extends Secure_Controller
 		$this->barcode_lib = new Barcode_lib();
 		$this->item_lib = new Item_lib();
 
-		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
 		$this->inventory = model('Inventory');
 		$this->item = model('Item');
@@ -287,9 +284,9 @@ class Items extends Secure_Controller
 			}
 		}
 
-		$use_destination_based_tax = (boolean)$this->appconfig->get('use_destination_based_tax');
-		$data['include_hsn'] = $this->appconfig->get('include_hsn') === '1';
-		$data['category_dropdown'] = $this->appconfig->get('category_dropdown');
+		$use_destination_based_tax = (boolean)config('OSPOS')->use_destination_based_tax;
+		$data['include_hsn'] = config('OSPOS')->include_hsn === '1';
+		$data['category_dropdown'] = config('OSPOS')->category_dropdown;
 
 		if($data['category_dropdown'] === '1')
 		{
@@ -303,8 +300,8 @@ class Items extends Secure_Controller
 
 		if($item_id === NEW_ITEM)
 		{
-			$data['default_tax_1_rate'] = $this->appconfig->get('default_tax_1_rate');
-			$data['default_tax_2_rate'] = $this->appconfig->get('default_tax_2_rate');
+			$data['default_tax_1_rate'] = config('OSPOS')->default_tax_1_rate;
+			$data['default_tax_2_rate'] = config('OSPOS')->default_tax_2_rate;
 
 			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 1;
@@ -318,7 +315,7 @@ class Items extends Secure_Controller
 
 			if($use_destination_based_tax)
 			{
-				$item_info->tax_category_id = $this->appconfig->get('default_tax_category');
+				$item_info->tax_category_id = config('OSPOS')->default_tax_category;
 			}
 		}
 
@@ -326,7 +323,7 @@ class Items extends Secure_Controller
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
 			&& !$data['allow_temp_item']
-			&& !($this->appconfig->get('derive_sale_quantity') === '1')
+			&& !(config('OSPOS')->derive_sale_quantity === '1')
 		);
 
 		$data['item_info'] = $item_info;
@@ -481,7 +478,7 @@ class Items extends Secure_Controller
 		{
 			$item = $item;
 
-			if(empty($item['item_number']) && $this->appconfig->get('barcode_generate_if_empty'))
+			if(empty($item['item_number']) && config('OSPOS')->barcode_generate_if_empty)
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
@@ -631,7 +628,7 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$use_destination_based_tax = (boolean)$this->appconfig->get('use_destination_based_tax');
+			$use_destination_based_tax = (boolean)config('OSPOS')->use_destination_based_tax;
 
 			if(!$use_destination_based_tax)
 			{
@@ -760,10 +757,10 @@ class Items extends Secure_Controller
 	//Load upload library
 		$config = [
 			'upload_path' => './uploads/item_pics/',
-			'allowed_types' => $this->appconfig->get('image_allowed_types'),
-			'max_size' => $this->appconfig->get('image_max_size'),
-			'max_width' => $this->appconfig->get('image_max_width'),
-			'max_height' => $this->appconfig->get('image_max_height')
+			'allowed_types' => config('OSPOS')->image_allowed_types,
+			'max_size' => config('OSPOS')->image_max_size,
+			'max_width' => config('OSPOS')->image_max_width,
+			'max_height' => config('OSPOS')->image_max_height
 		];
 
 		$this->upload = new Upload($config);	//TODO: This needs to be converted to CI4 analog

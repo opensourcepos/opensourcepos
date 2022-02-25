@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use app\Libraries\Mailchimp_lib;
 
-use app\Models\Appconfig;
 use app\Models\Customer;
 use app\Models\Customer_rewards;
 use app\Models\Tax_code;
@@ -18,7 +17,6 @@ use stdClass;
  *
  * @property mailchimp_lib mailchimp_lib
  *
- * @property appconfig appconfig
  * @property customer customer
  * @property customer_rewards customer_rewards
  * @property tax_code tax_code
@@ -37,14 +35,13 @@ class Customers extends Persons
 
 		$this->mailchimp_lib = new Mailchimp_lib();
 
-		$this->appconfig = model('Appconfig');
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
 
 		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
 		$this->encrypter = $this->encryption->initialize();
 
-		$this->_list_id = $this->encrypter->decrypt($this->appconfig->get('mailchimp_list_id'));
+		$this->_list_id = $this->encrypter->decrypt(config('OSPOS')->mailchimp_list_id);
 	}
 
 	public function index(): void
@@ -177,7 +174,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($this->appconfig->get('use_destination_based_tax') == '1')
+		if(config('OSPOS')->use_destination_based_tax == '1')
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
@@ -283,7 +280,7 @@ class Customers extends Persons
 			'comments' => $this->request->getPost('comments')
 		];
 
-		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $this->request->getPost('date'));
+		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $this->request->getPost('date'));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,

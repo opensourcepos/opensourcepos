@@ -2,25 +2,18 @@
 
 namespace App\Controllers;
 
-use app\Models\Appconfig;
 use app\Models\Employee;
 use Config\Services;
 
 /**
- * 
- *
- * @property appconfig appconfig
  * @property employee employee
- *
  * @property mixed migration
- *
  */
 class Login extends BaseController
 {
 	public function __construct()
 	{
 		$this->migration = Services::migrations();
-		$this->appconfig = model('Appconfig');
 		$this->employee = model('Employee');
 	}
 	public function index(): void
@@ -36,7 +29,7 @@ class Login extends BaseController
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
 
 
-			if($this->appconfig->get('gcaptcha_enable'))
+			if(config('OSPOS')->gcaptcha_enable)
 			{
 				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
 			}
@@ -78,7 +71,7 @@ class Login extends BaseController
 
 	public function gcaptcha_check(string $recaptchaResponse): bool
 	{
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->appconfig->get('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . config('OSPOS')->gcaptcha_secret_key . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);

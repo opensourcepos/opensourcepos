@@ -5,8 +5,6 @@ namespace App\Controllers;
 use app\Libraries\Receiving_lib;
 use app\Libraries\Token_lib;
 use app\Libraries\Barcode_lib;
-
-use app\Models\Appconfig;
 use app\Models\Inventory;
 use app\Models\Item;
 use app\Models\Item_kit;
@@ -15,20 +13,15 @@ use app\Models\Stock_location;
 use app\Models\Supplier;
 
 /**
- * 
- * 
  * @property receiving_lib receiving_lib
  * @property token_lib token_lib
  * @property barcode_lib barcode_lib
- *
- * @property appconfig appconfig
  * @property inventory inventory
  * @property item item
  * @property item_kit item_kit
  * @property receiving receiving
  * @property stock_location stock_location
  * @property supplier supplier
- * 
  */
 class Receivings extends Secure_Controller
 {
@@ -40,7 +33,6 @@ class Receivings extends Secure_Controller
 		$this->token_lib = new Token_lib();
 		$this->barcode_lib = new Barcode_lib();
 
-		$this->appconfig = model('Appconfig');
 		$this->inventory = model('Inventory');
 		$this->item_kit = model('Item_kit');
 		$this->item = model('Item');
@@ -59,7 +51,7 @@ class Receivings extends Secure_Controller
 		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-		$suggestions = $suggestions;
+			$suggestions = $suggestions;	//TODO: needed?
 
 		echo json_encode($suggestions);
 	}
@@ -69,7 +61,7 @@ class Receivings extends Secure_Controller
 		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-		$suggestions = $suggestions;
+			$suggestions = $suggestions;	//TODO: needed?
 
 		echo json_encode($suggestions);
 	}
@@ -130,8 +122,8 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = $this->appconfig->get('default_receivings_discount');
-		$discount_type = $this->appconfig->get('default_receivings_discount_type');
+		$discount = config('OSPOS')->default_receivings_discount;
+		$discount_type = config('OSPOS')->default_receivings_discount_type;
 
 		if($mode == 'return' && $this->receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -411,7 +403,7 @@ class Receivings extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date');	//TODO: newdate does not follow naming conventions
 		
-		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $newdate);
+		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = [

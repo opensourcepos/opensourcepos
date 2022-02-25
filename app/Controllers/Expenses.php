@@ -5,12 +5,8 @@ namespace App\Controllers;
 use app\Models\Expense;
 
 /**
- *
- *
- * @property appconfig appconfig
  * @property expense expense
  * @property expense_category expense_category
- *
  */
 class Expenses extends Secure_Controller
 {
@@ -18,7 +14,6 @@ class Expenses extends Secure_Controller
 	{
 		parent::__construct('expenses');
 
-		$this->appconfig = model('Appconfig');
 		$this->expense = model('Expense');
 		$this->expense_category = model('Expense_category');
 	}
@@ -142,7 +137,7 @@ class Expenses extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date');
 
-		$date_formatter = date_create_from_format($this->appconfig->get('dateformat') . ' ' . $this->appconfig->get('timeformat'), $newdate);
+		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
@@ -159,7 +154,7 @@ class Expenses extends Secure_Controller
 
 		if($this->expense->save($expense_data, $expense_id))	//TODO: Reflection exception
 		{
-			$expense_data = $expense_data;
+			$expense_data = $expense_data;	//TODO: Is this line needed?
 
 			//New expense_id
 			if($expense_id == -1)

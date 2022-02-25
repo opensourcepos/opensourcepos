@@ -245,30 +245,28 @@ function get_timeformats(): array
  */
 function get_payment_options(): array
 {
-	$appconfig = model('Appconfig');
-
 	$payments = [];
 
 //TODO: This needs to be switched to a switch statement
-	if($appconfig->get('payment_options_order') == 'debitcreditcash')	//TODO: ===
+	if(config('OSPOS')->payment_options_order == 'debitcreditcash')	//TODO: ===
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($appconfig->get('payment_options_order') == 'debitcashcredit')	//TODO: ===
+	elseif(config('OSPOS')->payment_options_order == 'debitcashcredit')	//TODO: ===
 	{
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 	}
-	elseif($appconfig->get('payment_options_order') == 'creditdebitcash')	//TODO: ===
+	elseif(config('OSPOS')->payment_options_order == 'creditdebitcash')	//TODO: ===
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 	}
-	elseif($appconfig->get('payment_options_order') == 'creditcashdebit')	//TODO: ===
+	elseif(config('OSPOS')->payment_options_order == 'creditcashdebit')	//TODO: ===
 	{
 		$payments[lang('Sales.credit')] = lang('Sales.credit');
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
@@ -295,54 +293,40 @@ function get_payment_options(): array
 
 function currency_side(): bool
 {
-	$appconfig = model('Appconfig');
-
-	$fmt = new \NumberFormatter($appconfig->get('number_locale'), \NumberFormatter::CURRENCY);
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $appconfig->get('currency_symbol'));
+	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, \NumberFormatter::CURRENCY);
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
 
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
 
 function quantity_decimals(): int
 {
-	$appconfig = model('Appconfig');
-
-	return $appconfig->get('quantity_decimals') ? $appconfig->get('quantity_decimals') : 0;
+	return config('OSPOS')->quantity_decimals ? config('OSPOS')->quantity_decimals : 0;
 }
 
 function totals_decimals(): int
 {
-	$appconfig = model('Appconfig');
-
-	return $appconfig->get('currency_decimals') ? (int)$appconfig->get('currency_decimals') : 0;
+	return config('OSPOS')->currency_decimals ? (int)config('OSPOS')->currency_decimals : 0;
 }
 
 function cash_decimals(): int
 {
-	$appconfig = model('Appconfig');
-
-	return $appconfig->get('cash_decimals') ? $appconfig->get('cash_decimals') : 0;
+	return config('OSPOS')->cash_decimals ? config('OSPOS')->cash_decimals : 0;
 }
 
 function tax_decimals(): int
 {
-	$appconfig = model('Appconfig');
-
-	return $appconfig->get('tax_decimals') ? $appconfig->get('tax_decimals') : 0;
+	return config('OSPOS')->tax_decimals ? config('OSPOS')->tax_decimals : 0;
 }
 
 function to_date(int $date = DEFAULT_DATE): string
 {
-	$appconfig = model('Appconfig');
-
-	return date($appconfig->get('dateformat'), $date);
+	return date(config('OSPOS')->dateformat, $date);
 }
 
 function to_datetime(int $datetime = DEFAULT_DATETIME): string
 {
-	$appconfig = model('Appconfig');
-
-	return date($appconfig->get('dateformat') . ' ' . $appconfig->get('timeformat'), $datetime);
+	return date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $datetime);
 }
 
 function to_currency(float $number): string
@@ -357,9 +341,7 @@ function to_currency_no_money(float $number): string
 
 function to_currency_tax(float $number): string
 {
-	$appconfig = model('Appconfig');
-
-	if($appconfig->get('tax_included') == '1')
+	if(config('OSPOS')->tax_included == '1')
 	{
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 	}
@@ -395,16 +377,15 @@ function to_decimals(float $number, string $decimals = NULL, int $type = \Number
 		return $number;
 	}
 
-	$appconfig = model('Appconfig');
-	$fmt = new \NumberFormatter($appconfig->get('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $appconfig->get($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $appconfig->get($decimals));
+	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, $type);
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
 
-	if(empty($appconfig->get('thousands_separator')))
+	if(empty(config('OSPOS')->thousands_separator))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $appconfig->get('currency_symbol'));
+	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
 
 	return $fmt->format($number);
 }
@@ -437,16 +418,14 @@ function parse_decimals(string $number, int $decimals = NULL): float
 		return FALSE;
 	}
 
-	$appconfig = model('Appconfig');
-
 	if($decimals === NULL)
 	{
-		$decimals = $appconfig->get('currency_decimals');
+		$decimals = config('OSPOS')->currency_decimals;
 	}
 
-	$fmt = new \NumberFormatter($appconfig->get('number_locale'), \NumberFormatter::DECIMAL);
+	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, \NumberFormatter::DECIMAL);
 
-	if(empty($appconfig->get('thousands_separator')))
+	if(empty(config('OSPOS')->thousands_separator))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
@@ -511,8 +490,7 @@ function dateformat_momentjs(string $php_format): string
 
 function dateformat_mysql(): string
 {
-	$appconfig = model('Appconfig');
-	$php_format = $appconfig->get('dateformat');
+	$php_format = config('OSPOS')->dateformat;
 
 	$SYMBOLS_MATCHING = [
 		// Day
@@ -596,8 +574,7 @@ function dateformat_bootstrap(string $php_format): string
 
 function valid_date(string $date): bool	//TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
-	$appconfig = model('Appconfig');
-	return (DateTime::createFromFormat($appconfig->get('dateformat'), $date));
+	return (DateTime::createFromFormat(config('OSPOS')->dateformat, $date));
 }
 
 function valid_decimal(string $decimal): bool	//TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()

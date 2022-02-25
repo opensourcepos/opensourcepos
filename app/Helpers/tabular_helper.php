@@ -1,10 +1,8 @@
 <?php
 
-use app\Models\Appconfig;
 use app\Models\Employee;
 use app\Models\Item_taxes;
 use app\Models\Tax_category;
-
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 
@@ -78,9 +76,7 @@ function get_sales_manage_table_headers(): string
 		['payment_type' => lang('Sales.payment_type')]
 	];
 
-	$appconfig = model('Appconfig');
-
-	if($appconfig->get('invoice_enable') == TRUE)
+	if(config('OSPOS')->invoice_enable == TRUE)
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
 		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE];
@@ -111,9 +107,7 @@ function get_sale_data_row(object $sale): array
 		'payment_type' => $sale->payment_type
 	];
 
-	$appconfig = model('Appconfig');
-
-	if($appconfig->get('invoice_enable'))
+	if(config('OSPOS')->invoice_enable)
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number)
@@ -399,7 +393,6 @@ function get_supplier_data_row(object $supplier): array
 function get_items_manage_table_headers(): string
 {
 	$attribute = model('Attribute');
-	$appconfig = model('Appconfig');
 
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
@@ -414,7 +407,7 @@ function get_items_manage_table_headers(): string
 		['quantity' => lang('Items.quantity')]
 	];
 
-	if($appconfig->get('use_destination_based_tax') == '1')	//TODO: convert '1' to a constant in constants.php. Also, convert this to ternary notation.
+	if(config('OSPOS')->use_destination_based_tax == '1')	//TODO: convert '1' to a constant in constants.php. Also, convert this to ternary notation.
 	{
 		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
 	}
@@ -448,11 +441,10 @@ function get_items_manage_table_headers(): string
 function get_item_data_row(object $item): array
 {
 	$attribute = model('Attribute');
-	$appconfig = model('Appconfig');
 	$item_taxes = model('Item_taxes');
 	$tax_category = model('Tax_category');
 
-	if($appconfig->get('use_destination_based_tax') == '1')	//TODO: === ?
+	if(config('OSPOS')->use_destination_based_tax == '1')	//TODO: === ?
 	{
 		if($item->tax_category_id == NULL)	//TODO: === ?
 		{
@@ -501,7 +493,7 @@ function get_item_data_row(object $item): array
 		}
 	}
 
-	if($appconfig->get('multi_pack_enabled') == '1')	//TODO: ===
+	if(config('OSPOS')->multi_pack_enabled == '1')	//TODO: ===
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}

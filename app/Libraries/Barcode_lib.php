@@ -2,7 +2,6 @@
 
 namespace app\Libraries;
 
-use app\Models\Appconfig;
 use emberlabs\Barcode\Code128;
 use emberlabs\Barcode\Code39;
 use emberlabs\Barcode\Ean13;
@@ -12,9 +11,6 @@ use emberlabs\Barcode\Ean8;
  * Barcode library
  *
  * Library with utilities to manage barcodes
- *
- * @property appconfig appconfig
- *
  */
 
 class Barcode_lib
@@ -26,11 +22,6 @@ class Barcode_lib
 		'Ean13' => 'EAN 13'
 	];
 
-	public function __construct()
-	{
-		$this->appconfig = model('Appconfig');
-	}
-
 	public function get_list_barcodes(): array
 	{
 		return $this->supported_barcodes;
@@ -38,28 +29,28 @@ class Barcode_lib
 
 	public function get_barcode_config(): array
 	{
-		$data['company'] = $this->appconfig->get('company');
-		$data['barcode_content'] = $this->appconfig->get('barcode_content');
-		$data['barcode_type'] = $this->appconfig->get('barcode_type');
-		$data['barcode_font'] = $this->appconfig->get('barcode_font');
-		$data['barcode_font_size'] = $this->appconfig->get('barcode_font_size');
-		$data['barcode_height'] = $this->appconfig->get('barcode_height');
-		$data['barcode_width'] = $this->appconfig->get('barcode_width');
-		$data['barcode_first_row'] = $this->appconfig->get('barcode_first_row');
-		$data['barcode_second_row'] = $this->appconfig->get('barcode_second_row');
-		$data['barcode_third_row'] = $this->appconfig->get('barcode_third_row');
-		$data['barcode_num_in_row'] = $this->appconfig->get('barcode_num_in_row');
-		$data['barcode_page_width'] = $this->appconfig->get('barcode_page_width');
-		$data['barcode_page_cellspacing'] = $this->appconfig->get('barcode_page_cellspacing');
-		$data['barcode_generate_if_empty'] = $this->appconfig->get('barcode_generate_if_empty');
-		$data['barcode_formats'] = $this->appconfig->get('barcode_formats');
+		$data['company'] = config('OSPOS')->company;
+		$data['barcode_content'] = config('OSPOS')->barcode_content;
+		$data['barcode_type'] = config('OSPOS')->barcode_type;
+		$data['barcode_font'] = config('OSPOS')->barcode_font;
+		$data['barcode_font_size'] = config('OSPOS')->barcode_font_size;
+		$data['barcode_height'] = config('OSPOS')->barcode_height;
+		$data['barcode_width'] = config('OSPOS')->barcode_width;
+		$data['barcode_first_row'] = config('OSPOS')->barcode_first_row;
+		$data['barcode_second_row'] = config('OSPOS')->barcode_second_row;
+		$data['barcode_third_row'] = config('OSPOS')->barcode_third_row;
+		$data['barcode_num_in_row'] = config('OSPOS')->barcode_num_in_row;
+		$data['barcode_page_width'] = config('OSPOS')->barcode_page_width;
+		$data['barcode_page_cellspacing'] = config('OSPOS')->barcode_page_cellspacing;
+		$data['barcode_generate_if_empty'] = config('OSPOS')->barcode_generate_if_empty;
+		$data['barcode_formats'] = config('OSPOS')->barcode_formats;
 
 		return $data;
 	}
 
 	public function validate_barcode(string $barcode): bool	//TODO: this function does not seem to be called anywhere in the code.
 	{
-		$barcode_type = $this->appconfig->get('barcode_type');
+		$barcode_type = config('OSPOS')->barcode_type;
 		$barcode_instance = $this->get_barcode_instance($barcode_type);
 
 		return $barcode_instance->validate($barcode);

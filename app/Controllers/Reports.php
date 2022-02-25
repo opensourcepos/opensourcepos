@@ -2,12 +2,10 @@
 
 namespace App\Controllers;
 
-use app\Models\Appconfig;
 use app\Models\Attribute;
 use app\Models\Customer;
 use app\Models\Stock_location;
 use app\Models\Supplier;
-
 use app\Models\Reports\Detailed_receivings;
 use app\Models\Reports\Detailed_sales;
 use app\Models\Reports\Inventory_low;
@@ -29,14 +27,10 @@ use app\Models\Reports\Summary_suppliers;
 use app\Models\Reports\Summary_taxes;
 
 /**
- *
- *
- * @property appconfig appconfig
  * @property attribute attribute
  * @property customer customer
  * @property stock_location stock_location
  * @property supplier supplier
- *
  * @property detailed_receivings detailed_receivings
  * @property detailed_sales detailed_sales
  * @property inventory_low inventory_low
@@ -56,7 +50,6 @@ use app\Models\Reports\Summary_taxes;
  * @property summary_sales_taxes summary_sales_taxes
  * @property summary_suppliers summary_suppliers
  * @property summary_taxes summary_taxes
- *
  */
 class Reports extends Secure_Controller
 {
@@ -1532,10 +1525,10 @@ class Reports extends Secure_Controller
 		$sale_type_options = [];
 		$sale_type_options['complete'] = lang('Reports.complete');
 		$sale_type_options['sales'] = lang('Reports.completed_sales');
-		if($this->appconfig->get('invoice_enable') == '1')
+		if(config('OSPOS')->invoice_enable == '1')
 		{
 			$sale_type_options['quotes'] = lang('Reports.quotes');
-			if($this->appconfig->get('work_order_enable') == '1')
+			if(config('OSPOS')->work_order_enable == '1')
 			{
 				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}
@@ -1866,13 +1859,13 @@ class Reports extends Secure_Controller
 	{
 		$subtitle = '';
 
-		if(empty($this->appconfig->get('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
-			$subtitle .= date($this->appconfig->get('dateformat'), strtotime($inputs['start_date'])) . ' - ' .date($this->appconfig->get('dateformat'), strtotime($inputs['end_date']));
+			$subtitle .= date(config('OSPOS')->dateformat, strtotime($inputs['start_date'])) . ' - ' . date(config('OSPOS')->dateformat, strtotime($inputs['end_date']));
 		}
 		else
 		{
-			$subtitle .= date($this->appconfig->get('dateformat').' '.$this->appconfig->get('timeformat'), strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->appconfig->get('dateformat').' '.$this->appconfig->get('timeformat'), strtotime(rawurldecode($inputs['end_date'])));
+			$subtitle .= date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, strtotime(rawurldecode($inputs['end_date'])));
 		}
 
 		return $subtitle;

@@ -2,13 +2,11 @@
 
 namespace App\Controllers;
 
-use app\Models\Appconfig;
 use app\Models\Giftcard;
 
 /**
  *
  *
- * @property appconfig appconfig
  * @property giftcard giftcard
  *
  */
@@ -18,7 +16,6 @@ class Giftcards extends Secure_Controller
 	{
 		parent::__construct('giftcards');
 
-		$this->appconfig = model('Appconfig');
 		$this->giftcard = model('Giftcard');
 	}
 
@@ -83,7 +80,7 @@ class Giftcards extends Secure_Controller
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person_id'] = $giftcard_info->person_id;
-		if($this->appconfig->get('giftcard_number') == "random")
+		if(config('OSPOS')->giftcard_number == 'random')
 		{
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
 		}

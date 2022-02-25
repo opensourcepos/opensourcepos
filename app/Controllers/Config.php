@@ -262,7 +262,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
-		$data['currency_code'] = $this->appconfig->get('currency_code');
+		$data['currency_code'] = config('OSPOS')->currency_code;
 
 		$data = $data;
 
@@ -276,15 +276,15 @@ class Config extends Secure_Controller
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] = explode('|',$this->appconfig->get('image_allowed_types'));
+		$data['selected_image_allowed_types'] = explode('|',config('OSPOS')->image_allowed_types);
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$data['mailchimp']['api_key'] = $this->encrypter->decrypt($this->appconfig->get('mailchimp_api_key'));
-			$data['mailchimp']['list_id'] = $this->encrypter->decrypt($this->appconfig->get('mailchimp_list_id'));
+			$data['mailchimp']['api_key'] = $this->encrypter->decrypt(config('OSPOS')->mailchimp_api_key);
+			$data['mailchimp']['list_id'] = $this->encrypter->decrypt(config('OSPOS')->mailchimp_list_id);
 		}
 		else
 		{
@@ -855,7 +855,7 @@ class Config extends Secure_Controller
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if($this->appconfig->get('invoice_enable') == '1')
+			if(config('OSPOS')->invoice_enable == '1')
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
@@ -895,7 +895,7 @@ class Config extends Secure_Controller
 
 	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
-		$encryption_key = $this->appconfig->get('encryption_key');
+		$encryption_key = config('OSPOS')->encryption_key;
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')

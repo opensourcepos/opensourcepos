@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use app\Models\Appconfig;
 use app\Models\Employee;
 use app\Models\Module;
 
@@ -12,7 +11,6 @@ use CodeIgniter\Session\Session;
  * Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
  * be set to also check if a user can access a particular module in the system.
  *
- * @property appconfig appconfig
  * @property employee employee
  * @property module module
  * 
