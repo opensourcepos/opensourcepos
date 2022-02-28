@@ -628,7 +628,7 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$use_destination_based_tax = (boolean)config('OSPOS')->use_destination_based_tax;
+			$use_destination_based_tax = (bool)config('OSPOS')->use_destination_based_tax;
 
 			if(!$use_destination_based_tax)
 			{

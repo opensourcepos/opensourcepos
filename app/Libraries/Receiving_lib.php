@@ -2,7 +2,6 @@
 
 namespace app\Libraries;
 
-use App\Models\Appconfig;
 use App\Models\Attribute;
 use App\Models\Item;
 use App\Models\Item_kit_items;
@@ -17,7 +16,6 @@ use CodeIgniter\Session\Session;
  *
  * Library with utilities to manage receivings
  *
- * @property appconfig appconfig
  * @property attribute attribute
  * @property item item
  * @property item_kit_items item_kit_items
@@ -32,7 +30,6 @@ class Receiving_lib
 {
 	public function __construct()
 	{
-		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
 		$this->item = model('Item');
 		$this->item_kit_items = model('Item_kit_items');
@@ -238,7 +235,7 @@ class Receiving_lib
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
 
-		if($this->appconfig->get('multi_pack_enabled') == '1')
+		if(config('OSPOS')->multi_pack_enabled)
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}

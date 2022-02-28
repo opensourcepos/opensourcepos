@@ -119,7 +119,7 @@ class Receiving extends Model
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
-			if($cur_item_info->cost_price != $item['price'] && $this->appconfig->get('receiving_calculate_average_price') != FALSE)
+			if($cur_item_info->cost_price != $item['price'] && config('OSPOS')->receiving_calculate_average_price)
 			{
 				$this->item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
 			}
@@ -256,7 +256,7 @@ class Receiving extends Model
 	{
 		if(empty($inputs['receiving_id']))
 		{
-			if(empty($this->appconfig->get('date_or_time_format')))
+			if(empty(config('OSPOS')->date_or_time_format))
 			{
 				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}

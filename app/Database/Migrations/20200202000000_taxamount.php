@@ -32,11 +32,11 @@ class Migration_TaxAmount extends Migration
 
 	public function up(): void
 	{
-		$tax_included = ($this->appconfig->get('tax_included', Migration_TaxAmount::YES) == Migration_TaxAmount::YES);	//TODO: === ?
+		$tax_included = ($this->appconfig->get('tax_included', Migration_TaxAmount::YES) == Migration_TaxAmount::YES);	//TODO: === ? //TODO: Figure out how to replace this with config('OSPOS')->[variablename]
 
 		if($tax_included)
 		{
-			$tax_decimals = $this->appconfig->get('tax_decimals', 2);
+			$tax_decimals = $this->appconfig->get('tax_decimals', 2);	//TODO: Figure out how to replace this with config('OSPOS')->[variablename]
 			$number_of_unmigrated = $this->get_count_of_unmigrated();
 
 			error_log('Migrating sales tax fixing. The number of sales that will be migrated is ' . $number_of_unmigrated);

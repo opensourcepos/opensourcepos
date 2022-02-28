@@ -34,9 +34,9 @@ class Sms_lib
 	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
-		$username = $this->appconfig->get('msg_uid');
-		$password = $this->encrypter->decrypt($this->appconfig->get('msg_pwd'));
-		$originator = $this->appconfig->get('msg_src');
+		$username = config('OSPOS')->msg_uid;
+		$password = $this->encrypter->decrypt(config('OSPOS')->msg_pwd);
+		$originator = config('OSPOS')->msg_src;
 
 		$response = FALSE;
 

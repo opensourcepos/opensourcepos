@@ -28,7 +28,7 @@ var pickerconfig = function(config) {
     }, <?php echo isset($config) ? $config : '{}' ?>);
 };
 
-$.fn.datetimepicker.dates['<?php echo $this->appconfig->get("language") ?>'] = {
+$.fn.datetimepicker.dates['<?php echo $this->appconfig->get('language') ?>'] = {
     days: [
 		"<?php echo lang('Cal.sunday') ?>",
         "<?php echo lang('Cal.monday') ?>",

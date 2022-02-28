@@ -174,7 +174,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if(config('OSPOS')->use_destination_based_tax == '1')
+		if(config('OSPOS')->use_destination_based_tax)	//TODO: This can be shortened for ternary notation
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}

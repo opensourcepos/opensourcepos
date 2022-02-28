@@ -276,7 +276,7 @@ class Config extends Secure_Controller
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] = explode('|',config('OSPOS')->image_allowed_types);
+		$data['selected_image_allowed_types'] = explode('|', config('OSPOS')->image_allowed_types);
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
@@ -295,7 +295,7 @@ class Config extends Secure_Controller
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$data['mailchimp']['lists'] = $this->_mailchimp();
 
-		echo view("configs/manage", $data);
+		echo view('configs/manage', $data);
 	}
 
 	public function save_info(): void
@@ -855,7 +855,7 @@ class Config extends Secure_Controller
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if(config('OSPOS')->invoice_enable == '1')
+			if(config('OSPOS')->invoice_enable)
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}

@@ -76,7 +76,7 @@ function get_sales_manage_table_headers(): string
 		['payment_type' => lang('Sales.payment_type')]
 	];
 
-	if(config('OSPOS')->invoice_enable == TRUE)
+	if(config('OSPOS')->invoice_enable)
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
 		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE];
@@ -407,7 +407,7 @@ function get_items_manage_table_headers(): string
 		['quantity' => lang('Items.quantity')]
 	];
 
-	if(config('OSPOS')->use_destination_based_tax == '1')	//TODO: convert '1' to a constant in constants.php. Also, convert this to ternary notation.
+	if(config('OSPOS')->use_destination_based_tax)
 	{
 		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
 	}
@@ -444,7 +444,7 @@ function get_item_data_row(object $item): array
 	$item_taxes = model('Item_taxes');
 	$tax_category = model('Tax_category');
 
-	if(config('OSPOS')->use_destination_based_tax == '1')	//TODO: === ?
+	if(config('OSPOS')->use_destination_based_tax)
 	{
 		if($item->tax_category_id == NULL)	//TODO: === ?
 		{
@@ -493,7 +493,7 @@ function get_item_data_row(object $item): array
 		}
 	}
 
-	if(config('OSPOS')->multi_pack_enabled == '1')	//TODO: ===
+	if(config('OSPOS')->multi_pack_enabled)
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}

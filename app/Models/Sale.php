@@ -46,7 +46,7 @@ class Sale extends Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		if($this->appconfig->get('tax_included'))	//TODO: This needs to be replaced with Ternary notation
+		if(config('OSPOS')->tax_included)	//TODO: This needs to be replaced with Ternary notation
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 		}
@@ -113,7 +113,7 @@ class Sale extends Model
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
 
-		if(empty($this->appconfig->get('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
 			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']);
 		}
@@ -305,7 +305,7 @@ class Sale extends Model
 		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
 		//TODO: This needs to be replaced with Ternary notation
-		if(empty($this->appconfig->get('date_or_time_format')))	//TODO: duplicated code.  We should think about refactoring out a method.
+		if(empty(config('OSPOS')->date_or_time_format))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -507,7 +507,7 @@ class Sale extends Model
 			{
 				return $this->exists($pieces[1]);
 			}
-			elseif($this->appconfig->get('invoice_enable') == TRUE)
+			elseif(config('OSPOS')->invoice_enable)
 			{
 				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
 
@@ -760,7 +760,7 @@ class Sale extends Model
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
-		if($this->appconfig->get('dinner_table_enable') == TRUE)
+		if(config('OSPOS')->dinner_table_enable)
 		{
 			if($sale_status == COMPLETED)	//TODO: === ?
 			{
@@ -970,12 +970,12 @@ class Sale extends Model
 		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->appconfig->get('line_sequence') == '0')	//TODO: Replace these with constants and this should be converted to a switch.
+		if(config('OSPOS')->line_sequence == '0')	//TODO: Replace these with constants and this should be converted to a switch.
 		{
 			$builder->orderBy('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->appconfig->get('line_sequence') == '1')
+		elseif(config('OSPOS')->line_sequence == '1')
 		{
 			$builder->orderBy('stock_type', 'desc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -983,7 +983,7 @@ class Sale extends Model
 			$builder->orderBy('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
-		elseif($this->appconfig->get('line_sequence') == '2')
+		elseif(config('OSPOS')->line_sequence == '2')
 		{
 			$builder->orderBy('category', 'asc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -1129,7 +1129,7 @@ class Sale extends Model
 	{
 		if(empty($inputs['sale_id']))
 		{
-			if(empty($this->appconfig->get('date_or_time_format')))	//TODO: This needs to be replaced with Ternary notation
+			if(empty(config('OSPOS')->date_or_time_format))	//TODO: This needs to be replaced with Ternary notation
 			{
 				$where = 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}
@@ -1415,7 +1415,7 @@ class Sale extends Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		if($this->appconfig->get('dinner_table_enable') == TRUE)
+		if(config('OSPOS')->dinner_table_enable)
 		{
 			$dinner_table = $this->get_dinner_table($sale_id);
 			$this->dinner_table->release($dinner_table);
@@ -1436,7 +1436,7 @@ class Sale extends Model
 	{
 		$this->db->transStart();
 
-		if($this->appconfig->get('dinner_table_enable') == TRUE)
+		if(config('OSPOS')->dinner_table_enable)
 		{
 			$dinner_table = $this->get_dinner_table($sale_id);
 			$this->dinner_table->release($dinner_table);
@@ -1480,7 +1480,7 @@ class Sale extends Model
 	 */
 	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used): void
 	{
-		if(!empty($customer_id) && $this->appconfig->get('customer_reward_enable') == TRUE)
+		if(!empty($customer_id) && config('OSPOS')->customer_reward_enable)
 		{
 			$package_id = $this->customer->get_info($customer_id)->package_id;
 

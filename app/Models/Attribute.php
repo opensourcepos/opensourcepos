@@ -73,7 +73,7 @@ class Attribute extends Model
 		{
 			case DATE:
 				$data_type = 'date';
-				$attribute_date_value = DateTime::createFromFormat($this->appconfig->get('dateformat'), $attribute_value);
+				$attribute_date_value = DateTime::createFromFormat(config('OSPOS')->dateformat, $attribute_value);
 				$attribute_value = $attribute_date_value->format('Y-m-d');
 				break;
 			case DECIMAL:
@@ -652,7 +652,7 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$locale_date_format = $this->appconfig->get('dateformat');
+		$locale_date_format = config('OSPOS')->dateformat;
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))

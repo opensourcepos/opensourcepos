@@ -257,7 +257,7 @@ class Tax_code extends Model
 			}
 			else
 			{
-				return $this->appconfig->get('default_tax_code');
+				return config('OSPOS')->default_tax_code;
 			}
 		}
 		return FALSE;	//TODO: This return statement is unreachable.

@@ -116,7 +116,7 @@ class Expense extends Model
 			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
 			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		*/
-		if(empty($this->appconfig->get('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
 			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -273,7 +273,7 @@ class Expense extends Model
 		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder->where('deleted', $filters['is_deleted']);
 
-		if(empty($this->appconfig->get('date_or_time_format')))
+		if(empty(config('OSPOS')->date_or_time_format))
 		{
 			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}

@@ -66,7 +66,7 @@
 				],
 			},
 			"locale": {
-				"format": '<?php echo dateformat_momentjs($this->appconfig->get("dateformat")) ?>',
+				"format": '<?php echo dateformat_momentjs($this->appconfig->get('dateformat')) ?>',
 				"separator": " - ",
 				"applyLabel": "<?php echo lang('Datepicker.apply') ?>",
 				"cancelLabel": "<?php echo lang('Datepicker.cancel') ?>",
@@ -176,7 +176,7 @@
 				],
 			},
 			"locale": {
-				"format": '<?php echo dateformat_momentjs($this->appconfig->get("dateformat")." ".$this->appconfig->get('timeformat')) ?>',
+				"format": '<?php echo dateformat_momentjs($this->appconfig->get('dateformat')." ".$this->appconfig->get('timeformat')) ?>',
 				"separator": " - ",
 				"applyLabel": "<?php echo lang('Datepicker.apply') ?>",
 				"cancelLabel": "<?php echo lang('Datepicker.cancel') ?>",

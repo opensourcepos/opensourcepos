@@ -206,7 +206,7 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
-		if(config('OSPOS')->dinner_table_enable == TRUE)
+		if(config('OSPOS')->dinner_table_enable)
 		{
 			$occupied_dinner_table = $this->request->getPost('dinner_table');
 			$released_dinner_table = $this->sale_lib->get_dinner_table();
@@ -583,7 +583,7 @@ class Sales extends Secure_Controller
 
 		$data['cart'] = $this->sale_lib->get_cart();
 
-		$data['include_hsn'] = (config('OSPOS')->include_hsn == '1');
+		$data['include_hsn'] = (bool)config('OSPOS')->include_hsn;
 		$__time = time();
 		$data['transaction_time'] = to_datetime($__time);
 		$data['transaction_date'] = to_date($__time);
@@ -995,7 +995,7 @@ class Sales extends Secure_Controller
 		$data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->stock_location->show_locations('sales');
 
-		$data['include_hsn'] = (config('OSPOS')->include_hsn == '1');
+		$data['include_hsn'] = (bool)config('OSPOS')->include_hsn;
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals($tax_details[0]);
@@ -1147,7 +1147,7 @@ class Sales extends Secure_Controller
 		$data['comment'] = $this->sale_lib->get_comment();
 		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 
-		if($customer_info && config('OSPOS')->customer_reward_enable == TRUE)
+		if($customer_info && config('OSPOS')->customer_reward_enable)
 		{
 			$data['payment_options'] = $this->sale->get_payment_options(TRUE, TRUE);
 		}
@@ -1456,7 +1456,7 @@ class Sales extends Secure_Controller
 		{
 			$sale_type = $this->sale_lib->get_sale_type();
 
-			if(config('OSPOS')->dinner_table_enable == TRUE)
+			if(config('OSPOS')->dinner_table_enable)
 			{
 				$dinner_table = $this->sale_lib->get_dinner_table();
 				$this->dinner_table->release($dinner_table);

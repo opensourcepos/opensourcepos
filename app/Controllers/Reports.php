@@ -1525,10 +1525,10 @@ class Reports extends Secure_Controller
 		$sale_type_options = [];
 		$sale_type_options['complete'] = lang('Reports.complete');
 		$sale_type_options['sales'] = lang('Reports.completed_sales');
-		if(config('OSPOS')->invoice_enable == '1')
+		if(config('OSPOS')->invoice_enable)
 		{
 			$sale_type_options['quotes'] = lang('Reports.quotes');
-			if(config('OSPOS')->work_order_enable == '1')
+			if(config('OSPOS')->work_order_enable)
 			{
 				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}

@@ -341,7 +341,7 @@ function to_currency_no_money(float $number): string
 
 function to_currency_tax(float $number): string
 {
-	if(config('OSPOS')->tax_included == '1')
+	if(config('OSPOS')->tax_included)	//TODO: ternary notation
 	{
 		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 	}
