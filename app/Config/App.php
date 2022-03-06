@@ -11,7 +11,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $application_version = '3.5.0-dev';
+	public $application_version = '4.0.0-dev';
 
 	/**
 	 * This is the commit hash for the version you are currently using.
@@ -178,7 +178,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $appTimezone = 'America/Chicago';
+	public $appTimezone = 'Asia/Kathmandu';
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -537,7 +537,7 @@ class App extends BaseConfig
 	{
 		$this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
 		$this->baseURL = $this->https_on ? 'https' : 'http';
-		$this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
+		$this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost');
 		$this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 	}
 }
