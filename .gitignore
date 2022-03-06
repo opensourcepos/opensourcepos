@@ -38,3 +38,7 @@ auth.json
 /docker/data/database/db/*
 /docker/data/certbot/conf/*
 /docker/data/ospos/app/*
+
+*.png
+*.jpg
+*.jpeg
