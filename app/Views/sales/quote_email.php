@@ -33,10 +33,10 @@
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if($this->appconfig->get('company_logo') != '')
+				<?php if(config('OSPOS')->company_logo != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . esc($this->appconfig->get('company_logo'),'url') ?>" alt="company_logo" />
+					<img id="image" src="<?php echo 'uploads/' . esc(config('OSPOS')->company_logo,'url') ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -48,7 +48,7 @@
 		<tr>
 			<td id="company-title">
 				<div id="company">
-					<?php echo esc($this->appconfig->get('company')) ?>
+					<?php echo esc(config('OSPOS')->company) ?>
 					<?php echo nl2br(esc($company_info)) ?>
 				</div>
 			</td>
@@ -153,10 +153,10 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br(esc($this->appconfig->get('payment_message'))) ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('quote_default_comments') : esc($comments)) ?></div>
+				<div><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->quote_default_comments : esc($comments)) ?></div>
 			</h5>
-			<?php echo nl2br(esc($this->appconfig->get('return_policy'))) ?>
+			<?php echo nl2br(esc(config('OSPOS')->return_policy)) ?>
 		</div>
 		<div id='barcode'>
 			<?php echo $quote_number ?>

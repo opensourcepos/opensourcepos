@@ -11,12 +11,12 @@ function printdoc()
 	if (window.jsPrintSetup)
 	{
 		// set top margins in millimeters
-		jsPrintSetup.setOption('marginTop', '<?php echo $this->appconfig->get('print_top_margin') ?>');
-		jsPrintSetup.setOption('marginLeft', '<?php echo $this->appconfig->get('print_left_margin') ?>');
-		jsPrintSetup.setOption('marginBottom', '<?php echo $this->appconfig->get('print_bottom_margin') ?>');
-		jsPrintSetup.setOption('marginRight', '<?php echo $this->appconfig->get('print_right_margin') ?>');
+		jsPrintSetup.setOption('marginTop', '<?php echo config('OSPOS')->print_top_margin ?>');
+		jsPrintSetup.setOption('marginLeft', '<?php echo config('OSPOS')->print_left_margin ?>');
+		jsPrintSetup.setOption('marginBottom', '<?php echo config('OSPOS')->print_bottom_margin ?>');
+		jsPrintSetup.setOption('marginRight', '<?php echo config('OSPOS')->print_right_margin ?>');
 
-		<?php if (!$this->appconfig->get('print_header'))
+		<?php if (!config('OSPOS')->print_header)
 		{
 		?>
 			// set page header
@@ -25,7 +25,7 @@ function printdoc()
 			jsPrintSetup.setOption('headerStrRight', '');
 		<?php
 		}
-		if (!$this->appconfig->get('print_footer'))
+		if (!config('OSPOS')->print_footer)
 		{
 		?>
 			// set empty page footer
@@ -47,7 +47,7 @@ function printdoc()
 				// clears user preferences always silent print value
 				// to enable using 'printSilent' option
 				jsPrintSetup.clearSilentPrint();
-				<?php if (!$this->appconfig->get('print_silently'))
+				<?php if (!config('OSPOS')->print_silently)
 				{
 				?>
 					// Suppress print dialog (for this context only)
@@ -80,7 +80,7 @@ if($print_after_sale)
 		// after a delay, return to sales view
 		setTimeout(function () {
 				window.location.href = "<?php echo site_url('sales') ?>";
-			}, <?php echo $this->appconfig->get('print_delay_autoreturn') * 1000 ?>);
+			}, <?php echo config('OSPOS')->print_delay_autoreturn * 1000 ?>);
 	});
 
 <?php

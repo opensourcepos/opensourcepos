@@ -43,7 +43,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'open_amount_cash',
@@ -52,7 +52,7 @@
 						'value' => to_currency_no_money($cash_ups_info->open_amount_cash)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'transfer_amount_cash',
@@ -73,7 +73,7 @@
 						])
 					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_cash',
@@ -115,7 +115,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_cash)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -138,7 +138,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_due',
@@ -147,7 +147,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -158,7 +158,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_card',
@@ -167,7 +167,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_card)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -178,7 +178,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_check',
@@ -187,7 +187,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_check)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -198,7 +198,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_total',
@@ -209,7 +209,7 @@
 						]
 					) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc($this->appconfig->get('currency_symbol')) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -256,12 +256,12 @@ $(document).ready(function()
 	<?php echo view('partial/datepicker_locale') ?>
 
 	$('#open_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->appconfig->get('dateformat')) . ' ' . dateformat_bootstrap($this->appconfig->get('timeformat')) ?>",
-		startDate: "<?php echo date($this->appconfig->get('dateformat') . ' ' . esc($this->appconfig->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
+		format: "<?php echo dateformat_bootstrap(config('OSPOS')->dateformat) . ' ' . dateformat_bootstrap(config('OSPOS')->timeformat) ?>",
+		startDate: "<?php echo date(config('OSPOS')->dateformat . ' ' . esc(config('OSPOS')->timeformat, 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
 		<?php
-		$t = $this->appconfig->get('timeformat');
+		$t = config('OSPOS')->timeformat;
 		$m = $t[strlen($t)-1];
-		if( strpos($this->appconfig->get('timeformat'), 'a') !== false || strpos($this->appconfig->get('timeformat'), 'A') !== false )
+		if( strpos(config('OSPOS')->timeformat, 'a') !== false || strpos(config('OSPOS')->timeformat, 'A') !== false )
 		{
 		?>
 			showMeridian: true,
@@ -283,12 +283,12 @@ $(document).ready(function()
 	});
 
 	$('#close_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->appconfig->get('dateformat')) . ' ' . dateformat_bootstrap($this->appconfig->get('timeformat')) ?>",
-		startDate: "<?php echo date($this->appconfig->get('dateformat') . ' ' . esc($this->appconfig->get('timeformat'), 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
+		format: "<?php echo dateformat_bootstrap(config('OSPOS')->dateformat) . ' ' . dateformat_bootstrap(config('OSPOS')->timeformat) ?>",
+		startDate: "<?php echo date(config('OSPOS')->dateformat . ' ' . esc(config('OSPOS')->timeformat, 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
 		<?php
-		$t = $this->appconfig->get('timeformat');
+		$t = config('OSPOS')->timeformat;
 		$m = $t[strlen($t)-1];
-		if( strpos($this->appconfig->get('timeformat'), 'a') !== false || strpos($this->appconfig->get('timeformat'), 'A') !== false )
+		if( strpos(config('OSPOS')->timeformat, 'a') !== false || strpos(config('OSPOS')->timeformat, 'A') !== false )
 		{
 		?>
 			showMeridian: true,

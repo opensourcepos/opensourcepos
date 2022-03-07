@@ -13,7 +13,7 @@
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc($this->appconfig->get('protocol'), 'attr'),
+						esc(config('OSPOS')->protocol, 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'protocol'])
 					?>
 				</div>
@@ -26,7 +26,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->appconfig->get('mailpath'), 'attr')
+						'value' => esc(config('OSPOS')->mailpath, 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($this->appconfig->get('smtp_host'), 'attr')
+						'value' => esc(config('OSPOS')->smtp_host, 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 						'name' => 'smtp_port',
 						'id' => 'smtp_port',
 						'class' => 'form-control input-sm',
-						'value' => $this->appconfig->get('smtp_port')]) ?>
+						'value' => config('OSPOS')->smtp_port]) ?>
 				</div>
 			</div>
 
@@ -62,7 +62,7 @@
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc($this->appconfig->get('smtp_crypto'), 'attr'),
+						esc(config('OSPOS')->smtp_crypto, 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'smtp_crypto'])
 					?>
 				</div>
@@ -75,7 +75,7 @@
 						'name' => 'smtp_timeout',
 						'id' => 'smtp_timeout',
 						'class' => 'form-control input-sm',
-						'value' => $this->appconfig->get('smtp_timeout')]) ?>
+						'value' => config('OSPOS')->smtp_timeout]) ?>
 				</div>
 			</div>
 
@@ -88,7 +88,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->appconfig->get('smtp_user'), 'attr')
+							'value' => esc(config('OSPOS')->smtp_user, 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -103,7 +103,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($this->appconfig->get('smtp_pass'), 'attr')
+							'value' => esc(config('OSPOS')->smtp_pass, 'attr')
 						]) ?>
 					</div>
 				</div>
