@@ -2,7 +2,6 @@
 
 namespace app\Libraries;
 
-use app\Models\Appconfig;
 use app\Models\Customer;
 use app\Models\Item_taxes;
 use app\Models\Enums\Rounding_mode;
@@ -19,7 +18,6 @@ use app\Models\Tax_jurisdiction;
  * Library with utilities to manage taxes
  *
  * @property sale_lib sale_lib
- * @property appconfig appconfig
  * @property customer customer
  * @property item_taxes item_taxes
  * @property rounding_mode rounding_mode
@@ -40,7 +38,6 @@ class Tax_lib
 	{
 		$this->sale_lib = new Sale_lib();
 
-		$this->appconfig = Model('Appconfig');
 		$this->customer = Model('Customer');
 		$this->item_taxes = Model('Item_taxes');
 		$this->rounding_mode = Model('Rounding_mode');

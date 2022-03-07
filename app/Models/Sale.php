@@ -10,7 +10,6 @@ use app\Libraries\Sale_lib;
  * Sale class
  *
  * @property attribute attribute
- * @property appconfig appconfig
  * @property customer customer
  * @property customer_rewards customer_rewards
  * @property dinner_table dinner_table

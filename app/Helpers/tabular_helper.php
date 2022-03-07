@@ -61,8 +61,6 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 
 /**
  * Get the header for the sales tabular view
- *
- * @property appconfig $appconfig
  */
 function get_sales_manage_table_headers(): string
 {
@@ -89,8 +87,6 @@ function get_sales_manage_table_headers(): string
 
 /**
  * Get the html data row for the sales
- *
- * @property appconfig $appconfig
  */
 function get_sale_data_row(object $sale): array
 {
@@ -388,7 +384,6 @@ function get_supplier_data_row(object $supplier): array
  * Get the header for the items tabular view
  *
  * @property attribute $attribute
- * @property appconfig $appconfig
  */
 function get_items_manage_table_headers(): string
 {
@@ -434,7 +429,6 @@ function get_items_manage_table_headers(): string
  * Get the html data row for the item
  *
  * @property attribute $attribute
- * @property appconfig $appconfig
  * @property item_taxes $item_taxes
  * @property tax_category $tax_category
  */

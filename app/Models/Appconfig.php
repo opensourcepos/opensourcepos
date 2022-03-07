@@ -26,7 +26,6 @@ class Appconfig extends Model
 		return $builder->get();
 	}
 
-	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function get(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');

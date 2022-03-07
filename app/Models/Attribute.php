@@ -10,8 +10,6 @@ use ReflectionClass;
 
 /**
  * Attribute class
- *
- * @property appconfig appconfig
  */
 class Attribute extends Model
 {

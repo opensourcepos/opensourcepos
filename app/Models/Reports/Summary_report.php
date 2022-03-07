@@ -2,14 +2,6 @@
 
 namespace App\Models\Reports;
 
-use app\Models\Appconfig;
-
-/**
- *
- *
- * @property appconfig appconfig
- *
- */
 abstract class Summary_report extends Report
 {
 	/**

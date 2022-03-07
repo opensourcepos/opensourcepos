@@ -9,10 +9,8 @@ use stdClass;
 /**
  * Expense class
  *
- * @property appconfig appconfig
  * @property employee employee
  * @property expense_category expense_category
- *
  */
 class Expense extends Model
 {

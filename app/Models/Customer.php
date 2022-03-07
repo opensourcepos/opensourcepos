@@ -6,9 +6,6 @@ use CodeIgniter\Database\ResultInterface;
 
 /**
  * Customer class
- *
- * @property appconfig appconfig
- *
  */
 class Customer extends Person
 {

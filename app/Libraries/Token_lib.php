@@ -3,22 +3,14 @@
 namespace app\Libraries;
 
 use app\Models\tokens\Token;
-use app\Models\Appconfig;
 
 /**
  * Token library
  *
  * Library with utilities to manage tokens
- *
- * @property appconfig appconfig
  */
 class Token_lib
 {
-	public function __construct()
-	{
-		$this->appconfig = Model('Appconfig');
-	}
-
 	/**
 	 * Expands all the tokens found in a given text string and returns the results.
 	 */
