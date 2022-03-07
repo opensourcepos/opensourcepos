@@ -8,6 +8,7 @@ use app\Libraries\Receiving_lib;
 use app\Libraries\Sale_lib;
 use app\Libraries\Tax_lib;
 
+use app\Models\Appconfig;
 use app\Models\Attribute;
 use app\Models\Customer_rewards;
 use app\Models\Dinner_table;
@@ -20,6 +21,7 @@ use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
 use DirectoryIterator;
 use NumberFormatter;
+use ReflectionException;
 
 /**
  *
@@ -29,10 +31,9 @@ use NumberFormatter;
  * @property receiving_lib receiving_lib
  * @property sale_lib sale_lib
  * @property tax_lib tax_lib
- *
  * @property encryption encryption
  * @property encrypterinterface encrypter
- *
+ * @property appconfig appconfig
  * @property attribute attribute
  * @property customer_rewards customer_rewards
  * @property dinner_table dinner_table
@@ -298,6 +299,9 @@ class Config extends Secure_Controller
 		echo view('configs/manage', $data);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_info(): void
 	{
 		$upload_success = $this->_handle_logo_upload();
@@ -323,13 +327,16 @@ class Config extends Secure_Controller
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $upload_success && $result ? TRUE : FALSE;	//TODO: This can be simplified to just `$upload_success && $result`
+		$success = $upload_success && $result;
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
 
 		echo json_encode(['success' => $success, 'message' => $message]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_general(): void
 	{
 		$batch_save_data = [
@@ -378,8 +385,7 @@ class Config extends Secure_Controller
 			$this->attribute->delete_definition(CATEGORY_DEFINITION_ID);
 		}
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -419,6 +425,9 @@ class Config extends Secure_Controller
 		]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_locale(): void
 	{
 		$exploded = explode(":", $this->request->getPost('language'));
@@ -443,12 +452,14 @@ class Config extends Secure_Controller
 			'financial_year' => $this->request->getPost('financial_year')
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE; //TODO: this can be replaced with (bool) $result;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_email(): void
 	{
 		$password = '';
@@ -469,12 +480,14 @@ class Config extends Secure_Controller
 			'smtp_crypto' => $this->request->getPost('smtp_crypto')
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;//TODO: this can be replaced with (bool) $result;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_message(): void
 	{
 		$password = '';
@@ -491,8 +504,7 @@ class Config extends Secure_Controller
 			'msg_src' => $this->request->getPost('msg_src')
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;	//TODO: this can be replaced with (bool) $result;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -512,7 +524,6 @@ class Config extends Secure_Controller
 			{
 				foreach($lists['lists'] as $list)
 				{
-					$list = $list;
 					$result[$list['id']] = $list['name'] . ' [' . $list['stats']['member_count'] . ']';
 				}
 			}
@@ -537,6 +548,9 @@ class Config extends Secure_Controller
 		]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_mailchimp(): void
 	{
 		$api_key = '';
@@ -550,8 +564,7 @@ class Config extends Secure_Controller
 
 		$batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;	//TODO: this can be replaced with (bool) $result;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
@@ -560,16 +573,12 @@ class Config extends Secure_Controller
 	{
 		$stock_locations = $this->stock_location->get_all()->getResultArray();
 
-		$stock_locations = $stock_locations;
-
 		echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
 	}
 
 	public function ajax_dinner_tables(): void
 	{
 		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
-
-		$dinner_tables = $dinner_tables;
 
 		echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
 	}
@@ -578,16 +587,12 @@ class Config extends Secure_Controller
 	{
 		$tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
-		$tax_categories = $tax_categories;
-
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
 	public function ajax_customer_rewards(): void
 	{
 		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
-
-		$customer_rewards = $customer_rewards;
 
 		echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
 	}
@@ -644,13 +649,16 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_tables(): void
 	{
 		$this->db->transStart();
 
 		$dinner_table_enable = $this->request->getPost('dinner_table_enable') != NULL;
 
-		$this->appconfig->save('dinner_table_enable', $dinner_table_enable);	//TODO: reflection exception
+		$this->appconfig->save(['dinner_table_enable' => $dinner_table_enable]);
 
 		if($dinner_table_enable)
 		{
@@ -664,7 +672,7 @@ class Config extends Secure_Controller
 
 					// save or update
 					$table_data = ['name' => $value];
-					if($this->dinner_table->save($table_data, $dinner_table_id))		//TODO: reflection exception
+					if($this->dinner_table->save($table_data, $dinner_table_id))
 					{
 						$this->_clear_session_state();
 					}
@@ -707,7 +715,7 @@ class Config extends Secure_Controller
 			'tax_id' => $this->request->getPost('tax_id')
 		];
 
-		$success = $this->appconfig->batch_save($batch_save_data) ? TRUE : FALSE;	//TODO: This can be replaced with `$this->appconfig->batch_save($batch_save_data);`
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		$this->db->transComplete();
 
@@ -718,13 +726,16 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => $message]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_rewards(): void
 	{
 		$this->db->transStart();
 
 		$customer_reward_enable = $this->request->getPost('customer_reward_enable') != NULL;
 
-		$this->appconfig->save('customer_reward_enable', $customer_reward_enable);		//TODO: reflection exception
+		$this->appconfig->save(['customer_reward_enable' => $customer_reward_enable]);
 
 		if($customer_reward_enable)
 		{
@@ -774,6 +785,9 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_barcode(): void
 	{
 		$batch_save_data = [
@@ -794,12 +808,14 @@ class Config extends Secure_Controller
 			'barcode_formats' => json_encode($this->request->getPost('barcode_formats'))
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;	//TODO: This can be replaced with $result since that will be a bool;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_receipt(): void
 	{
 		$batch_save_data = [
@@ -823,12 +839,14 @@ class Config extends Secure_Controller
 			'print_right_margin' => $this->request->getPost('print_right_margin')
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);	//TODO: This and the line below can be replaced with `return $this->appconfig->batch_save($batch_save_data); since that will be a bool;
-		$success = $result ? TRUE : FALSE;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_invoice(): void
 	{
 		$batch_save_data = [
@@ -848,8 +866,7 @@ class Config extends Secure_Controller
 			'invoice_type' => $this->request->getPost('invoice_type')
 		];
 
-		$result = $this->appconfig->batch_save($batch_save_data);//TODO: This and the line below can be replaced with `return $this->appconfig->batch_save($batch_save_data); since that will be a bool;
-		$success = $result ? TRUE : FALSE;
+		$success = $this->appconfig->batch_save($batch_save_data);
 
 		// Update the register mode with the latest change so that if the user
 		// switches immediately back to the register the mode reflects the change
@@ -868,11 +885,14 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function remove_logo(): void
 	{
-		$result = $this->appconfig->batch_save (['company_logo' => '']);
+		$success = $this->appconfig->save(['company_logo' => '']);
 
-		echo json_encode (['success' => $result]);
+		echo json_encode (['success' => $success]);
 	}
 
 	private function _handle_logo_upload(): bool    //TODO: Remove hungarian notation.
@@ -893,6 +913,9 @@ class Config extends Secure_Controller
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');	//TODO: this should probably be broken up into
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
 		$encryption_key = config('OSPOS')->encryption_key;
@@ -910,7 +933,7 @@ class Config extends Secure_Controller
 			$key = bin2hex($this->encryption->createKey(32));
 
 			// set the encryption key in the config item
-			$this->appconfig->save('encryption_key', $key);		//TODO: reflection exception
+			$this->appconfig->save(['encryption_key' => $key]);
 
 			// replace the empty placeholder with a real randomly generated encryption key
 			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
