@@ -9,7 +9,6 @@ use stdClass;
 /**
  * Item class
  *
- * @property appconfig appconfig
  * @property inventory inventory
  * @property item_quantity item_quantity
  */

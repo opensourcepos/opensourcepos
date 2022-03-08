@@ -50,6 +50,6 @@ if (isset($error_message))
 	<?php endif; ?>
 </div>
 
-<?php echo view('sales/' . $this->appconfig->get('receipt_template')) ?>
+<?php echo view('sales/' . config('OSPOS')->receipt_template) ?>
 
 <?php echo view('partial/footer') ?>

@@ -14,7 +14,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
 		headers: <?php echo esc($table_headers) ?>,
-		pageSize: <?php echo $this->appconfig->get('lines_per_page') ?>,
+		pageSize: <?php echo config('OSPOS')->lines_per_page ?>,
 		uniqueId: 'expense_category_id',
 		
 	});

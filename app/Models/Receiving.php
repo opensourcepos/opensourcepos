@@ -9,7 +9,6 @@ use CodeIgniter\Model;
  * Receiving class
  *
  * @property attribute attribute
- * @property appconfig appconfig
  * @property inventory inventory
  * @property item item
  * @property item_quantity item_quantity

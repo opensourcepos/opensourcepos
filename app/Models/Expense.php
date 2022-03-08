@@ -9,10 +9,8 @@ use stdClass;
 /**
  * Expense class
  *
- * @property appconfig appconfig
  * @property employee employee
  * @property expense_category expense_category
- *
  */
 class Expense extends Model
 {
@@ -112,7 +110,7 @@ class Expense extends Model
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
 		/*	//TODO: Below needs to be replaced with Ternary notation
-		empty($this->appconfig->get('date_or_time_format'))
+		empty(config('OSPOS')->date_or_time_format)
 			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
 			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		*/

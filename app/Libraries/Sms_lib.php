@@ -2,7 +2,6 @@
 
 namespace app\Libraries;
 
-use app\Models\Appconfig;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
 
@@ -12,7 +11,6 @@ use CodeIgniter\Encryption\EncrypterInterface;
  *
  * Library with utilities to send texts via SMS Gateway (requires proxy implementation)
  *
- * @property appconfig appconfig
  * @property encryption encryption
  * @property encrypterinterface encrypter
  *
@@ -22,8 +20,6 @@ class Sms_lib
 {
   	public function __construct()
 	{
-		$this->appconfig = Model('Appconfig');
-
 		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
 		$this->encrypter = $this->encryption->initialize();
 	}

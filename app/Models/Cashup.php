@@ -9,9 +9,7 @@ use stdClass;
 /**
  * Cashup class
  *
- * @property appconfig appconfig
  * @property employee employee
- *
  */
 
 class Cashup extends Model

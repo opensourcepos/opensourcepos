@@ -8,8 +8,6 @@ use stdClass;
 
 /**
  * Item_kit class
- *
- * @property appconfig appconfig
  */
 class Item_kit extends Model
 {

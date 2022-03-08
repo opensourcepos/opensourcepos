@@ -272,7 +272,7 @@ function get_payment_options(): array
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');
 	}
-	else // default: if($appconfig->get('payment_options_order') == 'cashdebitcredit')
+	else // default: if(config('OSPOS')->payment_options_order == 'cashdebitcredit')
 	{
 		$payments[lang('Sales.cash')] = lang('Sales.cash');
 		$payments[lang('Sales.debit')] = lang('Sales.debit');

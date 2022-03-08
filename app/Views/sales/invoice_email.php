@@ -39,10 +39,10 @@ if(isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if($this->appconfig->get('company_logo') != '')
+				<?php if(config('OSPOS')->company_logo != '')
 				{
 				?>
-					<img id="image" src="data:<?php echo esc($mimetype) ?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . esc($this->appconfig->get('company_logo')))) ?>" alt="company_logo" />
+					<img id="image" src="data:<?php echo esc($mimetype) ?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . esc(config('OSPOS')->company_logo))) ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -51,7 +51,7 @@ if(isset($error_message))
 		</tr>
 		<tr>
 			<td id="company-title" id="company">
-				<?php echo esc($this->appconfig->get('company')) ?><br/>
+				<?php echo esc(config('OSPOS')->company) ?><br/>
 				<?php echo nl2br(esc($company_info)) ?>
 			</td>
 			<td id="meta">
@@ -200,10 +200,10 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->appconfig->get('payment_message')) ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $this->appconfig->get('invoice_default_comments') : $comments) ?></div>
+				<div><?php echo nl2br(config('OSPOS')->payment_message) ?></div>
+				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->invoice_default_comments : $comments) ?></div>
 			</h5>
-			<?php echo nl2br($this->appconfig->get('return_policy')) ?>
+			<?php echo nl2br(config('OSPOS')->return_policy) ?>
 		</div>
 		<div id='barcode'>
 			<img src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>

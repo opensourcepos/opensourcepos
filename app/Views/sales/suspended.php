@@ -18,7 +18,7 @@
 			<th><?php echo lang('Sales.suspended_doc_id') ?></th>
 			<th><?php echo lang('Sales.date') ?></th>
 			<?php
-			if($this->appconfig->get('dinner_table_enable') == TRUE)
+			if(config('OSPOS')->dinner_table_enable == TRUE)
 			{
 			?>
 				<th><?php echo lang('Sales.table') ?></th>
@@ -38,9 +38,9 @@
 		?>
 			<tr>
 				<td><?php echo $suspended_sale['doc_id'] ?></td>
-				<td><?php echo date($this->appconfig->get('dateformat'), strtotime($suspended_sale['sale_time'])) ?></td>
+				<td><?php echo date(config('OSPOS')->dateformat, strtotime($suspended_sale['sale_time'])) ?></td>
 				<?php
-				if($this->appconfig->get('dinner_table_enable') == TRUE)
+				if(config('OSPOS')->dinner_table_enable == TRUE)
 				{
 				?>
 					<td><?php echo esc($this->Dinner_table->get_name($suspended_sale['dinner_table_id'])) ?></td>

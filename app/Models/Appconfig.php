@@ -4,9 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use ReflectionException;
 
 /**
  * Appconfig class
+ *
+ * @property mixed config
  */
 class Appconfig extends Model
 {
@@ -26,7 +29,6 @@ class Appconfig extends Model
 		return $builder->get();
 	}
 
-	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
 	public function get(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
@@ -40,22 +42,30 @@ class Appconfig extends Model
 		return $default;
 	}
 
-	public function save(string $key, string $value): bool
+	/**
+	 * Calls the parent save() from BaseModel but additionally updates the cached array value.
+	 * @param $data
+	 * @return bool
+	 * @throws ReflectionException
+	 */
+	public function save($data): bool
 	{
-		$config_data = ['key'   => $key, 'value' => $value];
-		
-		$builder = $this->db->table('app_config');
-		
-		if(!$this->exists($key))
+		$this->config = config('OSPOS');
+		$success = parent::save($data);
+
+		$key = array_keys($data)[0];
+
+		if($success)
 		{
-			return $builder->insert($config_data);
+			$this->config[$key] = $data[$key];
 		}
 
-		$builder->where('key', $key);
-
-		return $builder->update($config_data);
+		return $success;
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function batch_save(array $data): bool
 	{
 		$success = TRUE;
@@ -63,9 +73,9 @@ class Appconfig extends Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		foreach($data as $key=>$value)
+		foreach($data as $element)
 		{
-			$success &= $this->save($key, $value);	//TODO: Reflection Exception
+			$success &= $this->save($element);
 		}
 
 		$this->db->transComplete();
@@ -87,25 +97,31 @@ class Appconfig extends Model
 		return $builder->emptyTable();
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function acquire_save_next_invoice_sequence(): string
 	{
-		$last_used = $this->get('last_used_invoice_number') + 1;	//TODO: Get returns a string... make sure that this will work properly and not need to be cast to an int first.
-		$this->save('last_used_invoice_number', $last_used);	//TODO: Reflection Exception
+		$last_used = (int)$this->get('last_used_invoice_number') + 1;
+		$this->save('last_used_invoice_number', $last_used);
 
 		return $last_used;
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function acquire_save_next_quote_sequence(): string
 	{
-		$last_used = $this->get('last_used_quote_number') + 1;
-		$this->save('last_used_quote_number', $last_used);	//TODO: Reflection Exception
+		$last_used = (int)$this->get('last_used_quote_number') + 1;
+		$this->save('last_used_quote_number', $last_used);
 
 		return $last_used;
 	}
 
 	public function acquire_save_next_work_order_sequence(): string
 	{
-		$last_used = $this->get('last_used_work_order_number') + 1;
+		$last_used = (int)$this->get('last_used_work_order_number') + 1;
 		$this->save('last_used_work_order_number', $last_used);	//TODO: Reflection Exception
 
 		return $last_used;

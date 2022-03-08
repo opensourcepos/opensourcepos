@@ -196,7 +196,7 @@ $(document).ready(function()
 			}
 		},
 		language : '<?php echo current_language_code() ?>',
-		country_codes: '<?php echo esc($this->appconfig->get('country_codes'), 'js') ?>'
+		country_codes: '<?php echo esc(config('OSPOS')->country_codes, 'js') ?>'
 	});
 });
 </script>

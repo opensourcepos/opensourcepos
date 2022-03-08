@@ -8,11 +8,7 @@ use stdClass;
 
 /**
  * Tax Code class
- *
- * @property appconfig appconfig
- *
  */
-
 class Tax_code extends Model
 {
 	/**
