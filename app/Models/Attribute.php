@@ -545,9 +545,7 @@ class Attribute extends Model
 			$delete_data += ['definition_id' => $definition_id];
 		}
 
-		$success = $builder->delete($delete_data);	//TODO: This isn't necessary.  Just `return $builder->delete($delete_date);`
-
-		return $success;
+		return $builder->delete($delete_data);
 	}
 
 	public function get_link_value(int $item_id, int $definition_id): object
@@ -572,7 +570,7 @@ class Attribute extends Model
 		$builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$builder->where('definition_type <>', GROUP);
 		$builder->where('deleted', 0);
-		$builder->where('item_id', intval($item_id));
+		$builder->where('item_id', $item_id);
 
 		if(!empty($id))
 		{
@@ -593,7 +591,7 @@ class Attribute extends Model
 	{
 		$builder = $this->db->table('attribute_values');
 		$builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
-		$builder->where('item_id', intval($item_id));
+		$builder->where('item_id', $item_id);
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
 		$builder->where('definition_id', $definition_id);
@@ -606,7 +604,7 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_links');
 		$builder->select('attribute_values.attribute_value, attribute_values.attribute_decimal, attribute_values.attribute_date, attribute_links.definition_id');
 		$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
-		$builder->where('item_id', intval($item_id));
+		$builder->where('item_id', $item_id);
 
 		$results = $builder->get()->getResultArray();
 
@@ -774,13 +772,12 @@ class Attribute extends Model
 			return $this->db->transStatus();
 		}
 
-		return true;	//TODO: if the definition type is a dropdown then this will return true.  Is that what we want here?
+		return true;	//Return true when definition_type is DROPDOWN
 	}
 
 	/**
 	 * Deletes any orphaned values that do not have associated links
 	 *
-	 * @param int $definition_id
 	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
 	 */
 	public function delete_orphaned_values(): bool
