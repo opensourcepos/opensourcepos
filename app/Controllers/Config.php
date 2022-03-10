@@ -666,9 +666,9 @@ class Config extends Secure_Controller
 
 					// save or update
 					$table_data = ['name' => $value];
-					if($this->dinner_table->save($table_data, $dinner_table_id))
+					if($this->dinner_table->save_value($table_data, $dinner_table_id))
 					{
-						$this->_clear_session_state();
+						$this->_clear_session_state();	//TODO: Remove hungarian notation.
 					}
 				}
 			}

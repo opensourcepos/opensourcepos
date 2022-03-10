@@ -18,8 +18,7 @@ class Dinner_table extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	public function save(array $table_data, int $dinner_table_id): bool
+	public function save_value(array $table_data, int $dinner_table_id): bool
 	{
 		$table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0];
 
@@ -96,7 +95,7 @@ class Dinner_table extends Model
 	/**
 	 * Deletes one dinner table
 	 */
-	public function delete(int $dinner_table_id = null, bool $purge = false): bool
+	public function delete($dinner_table_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('dinner_table_id', $dinner_table_id);
@@ -147,4 +146,3 @@ class Dinner_table extends Model
 		return $this->release($release_dinner_table_id) && $this->occupy($occupy_dinner_table_id);
 	}
 }
-?>
