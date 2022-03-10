@@ -99,7 +99,7 @@ class Expense_category extends Model
 	/**
 	 * Inserts or updates an expense_category
 	 */
-	public function save(array &$expense_category_data, bool $expense_category_id = FALSE): bool
+	public function save_value(array &$expense_category_data, bool $expense_category_id = FALSE): bool
 	{
 		$builder = $this->db->table('expense_categories');
 
@@ -147,7 +147,7 @@ class Expense_category extends Model
 		$builder = $this->db->table('expense_categories AS expense_categories');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(expense_categories.expense_category_id) as count');
 		}
@@ -159,7 +159,7 @@ class Expense_category extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -174,4 +174,3 @@ class Expense_category extends Model
 		return $builder->get();
 	}
 }
-?>

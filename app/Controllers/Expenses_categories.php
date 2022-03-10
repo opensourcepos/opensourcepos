@@ -5,10 +5,7 @@ namespace App\Controllers;
 use app\Models\Expense_category;
 
 /**
- *
- *
  * @property expense_category expense_category
- *
  */
 class Expenses_categories extends Secure_Controller	//TODO: Is this class ever used?
 {
@@ -70,12 +67,10 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			'category_description' => $this->request->getPost('category_description')
 		];
 
-		if($this->expense_category->save($expense_category_data, $expense_category_id))	//TODO: Reflection exception
+		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
 		{
-			$expense_category_data = $expense_category_data;
-
-			// New expense_category_id
-			if($expense_category_id == -1)
+			// New expense_category
+			if($expense_category_id == -1)	//TODO: Replace -1 with a constant.
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -119,4 +114,3 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		}
 	}
 }
-?>
