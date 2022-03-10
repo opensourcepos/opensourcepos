@@ -18,7 +18,7 @@ class Customer_rewards extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
-	public function save(array $package_data, int $package_id): bool	//TODO: Need to rename or bring this in line with the basemodel declaration.
+	public function save_value(array $package_data, int $package_id): bool
 	{
 		$package_data_to_save = [
 			'package_name' => $package_data['package_name'],
@@ -65,7 +65,7 @@ class Customer_rewards extends Model
 	/**
 	* Deletes one reward package
 	*/
-	public function delete(int $package_id = null, bool $purge = false): bool
+	public function delete($package_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('customers_packages');
 		$builder->where('package_id', $package_id);
@@ -73,4 +73,3 @@ class Customer_rewards extends Model
 		return $builder->update(['deleted' => 1]);
 	}
 }
-?>
