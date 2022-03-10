@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use ReflectionException;
 
 /**
  * Inventory class
@@ -28,7 +29,13 @@ class Inventory extends Model
 		return $builder->update($inventory_data);
 	}
 
-	public function get_inventory_data_for_item(int $item_id, $location_id = FALSE): ResultInterface
+	/**
+	 * Retrieves inventory data given an item_id.  Called in the view.
+	 * @param int $item_id
+	 * @param bool $location_id
+	 * @return ResultInterface
+	 */
+	public function get_inventory_data_for_item(int $item_id, bool $location_id = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
@@ -43,6 +50,9 @@ class Inventory extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function reset_quantity(int $item_id): bool
 	{
 		$inventory_sums = $this->get_inventory_sum($item_id);
@@ -73,4 +83,3 @@ class Inventory extends Model
 		return $builder->get()->getResultArray();
 	}
 }
-?>
