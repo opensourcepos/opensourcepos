@@ -33,7 +33,7 @@ class Load_config
 
         if (!$this->migration->is_latest())
         {
-            $this->session->sess_destroy();
+            $this->session->destroy();
         }
 
         foreach($this->appconfig->get_all()->getResult() as $app_config)

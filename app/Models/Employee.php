@@ -231,7 +231,7 @@ class Employee extends Person
 	/**
 	 * Get search suggestions to find employees
 	 */
-	public function get_search_suggestions(string $search, bool $limit = FALSE): array	//TODO: The parent method doesn't take a bool for limit, but an int... need to fix that.
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = FALSE): array
 	{
 		$suggestions = [];
 
@@ -243,7 +243,7 @@ class Employee extends Person
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
 
-		if($limit == FALSE)
+		if($unique == FALSE)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -258,7 +258,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($limit == FALSE)
+		if(!$unique)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -274,7 +274,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($limit == FALSE)
+		if(!$unique)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -290,7 +290,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees');
 		$builder->join('people', 'employees.person_id = people.person_id');
 
-		if($limit == FALSE)
+		if(!$unique)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -397,7 +397,7 @@ class Employee extends Person
 	 */
 	public function logout(): void
 	{
-		$this->session->sess_destroy();
+		$this->session->destroy();
 
 		redirect('login');
 	}
@@ -549,4 +549,3 @@ class Employee extends Person
 		return $success;
 	}
 }
-?>

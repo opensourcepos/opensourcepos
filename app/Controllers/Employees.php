@@ -47,7 +47,7 @@ class Employees extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term'), TRUE);
+		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term'), 25, TRUE);
 
 		echo json_encode($suggestions);
 	}
