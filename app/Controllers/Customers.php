@@ -121,14 +121,14 @@ class Customers extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), FALSE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -421,9 +421,6 @@ class Customers extends Persons
 
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{
-					// XSS file data sanity check
-					$data = $data;
-
 					$consent = $data[3] == '' ? 0 : 1;
 
 					if(sizeof($data) >= 16 && $consent)
