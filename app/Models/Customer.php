@@ -223,11 +223,7 @@ class Customer extends Person
 		$builder->update(['points' => $value]);
 	}
 
-//TODO: need to fix this function so it either isn't overriding the basemodel function or get it in line
-	/**
-	 * Deletes one customer
-	 */
-	public function delete(int $customer_id = null, bool $purge = false): bool
+	public function delete($customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
 
@@ -237,34 +233,34 @@ class Customer extends Person
 			$builder = $this->db->table('people');
 			$builder->where('person_id', $customer_id);
 			$result &= $builder->update([
-					'first_name'	=> $customer_id,
-					'last_name'		=> $customer_id,
-					'phone_number'	=> '',
-					'email'			=> '',
-					'gender'		=> NULL,
-					'address_1'		=> '',
-					'address_2'		=> '',
-					'city'			=> '',
-					'state'			=> '',
-					'zip'			=> '',
-					'country'		=> '',
-					'comments'		=> ''
+					'first_name' => $customer_id,
+					'last_name' => $customer_id,
+					'phone_number' => '',
+					'email' => '',
+					'gender' => NULL,
+					'address_1' => '',
+					'address_2' => '',
+					'city' => '',
+					'state' => '',
+					'zip' => '',
+					'country' => '',
+					'comments' => ''
 				]);
 
 			$builder = $this->db->table('customers');
 			$builder->where('person_id', $customer_id);
 			$result &= $builder->update([
-					'consent'			=> 0,
-					'company_name'		=> NULL,
-					'account_number'	=> NULL,
-					'tax_id'			=> '',
-					'taxable'			=> 0,
-					'discount'			=> 0.00,
-					'discount_type'		=> 0,
-					'package_id'		=> NULL,
-					'points'			=> NULL,
-					'sales_tax_code_id'	=> NULL,
-					'deleted'			=> 1
+					'consent' => 0,
+					'company_name' => NULL,
+					'account_number' => NULL,
+					'tax_id' => '',
+					'taxable' => 0,
+					'discount' => 0.00,
+					'discount_type' => 0,
+					'package_id' => NULL,
+					'points' => NULL,
+					'sales_tax_code_id' => NULL,
+					'deleted' => 1
 				]);
 		}
 		else
@@ -292,7 +288,7 @@ class Customer extends Person
  	/**
 	 * Get search suggestions to find customers
 	 */
-	public function get_search_suggestions(string $search, bool $limit = TRUE): array	//TODO: The parent class has limit as an int and this overrides it as a bool.
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = true): array
 	{
 		$suggestions = [];
 
@@ -303,7 +299,7 @@ class Customer extends Person
 			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 
-			if($limit)
+			if($unique)
 			{
 				$builder->orLike('email', $search);
 				$builder->orLike('phone_number', $search);
@@ -321,7 +317,7 @@ class Customer extends Person
 			];
 		}
 
-		if(!$limit)
+		if(!$unique)
 		{
 			$builder = $this->db->table('customers');
 			$builder->join('people', 'customers.person_id = people.person_id');
@@ -393,7 +389,7 @@ class Customer extends Person
 		$builder = $this->db->table('customers AS customers');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: ===... This can be replaced with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(customers.person_id) as count');
 		}
@@ -426,4 +422,3 @@ class Customer extends Person
 		return $builder->get();
 	}
 }
-?>
