@@ -212,10 +212,8 @@ class Cashups extends Secure_Controller
 			'deleted' => $this->request->getPost('deleted') != NULL
 		];
 
-		if($this->cashup->save($cash_up_data, $cashup_id))	//TODO: Reflection exception
+		if($this->cashup->save_value($cash_up_data, $cashup_id))
 		{
-			$cash_up_data = $cash_up_data;
-
 			//New cashup_id
 			if($cashup_id == -1)//TODO: Need to replace -1 with a constant in constants.php
 			{

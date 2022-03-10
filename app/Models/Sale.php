@@ -1049,7 +1049,7 @@ class Sale extends Model
 	/**
 	 * Gets sale employee name
 	 */
-	public function get_employee(int $sale_id)
+	public function get_employee(int $sale_id): object
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);

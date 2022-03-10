@@ -29,7 +29,7 @@ class Appconfig extends Model
 		return $builder->get();
 	}
 
-	public function get(string $key, string $default = ''): string
+	public function get_value(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere('key', $key, 1);
@@ -91,7 +91,7 @@ class Appconfig extends Model
 		return $builder->delete('key', $key);
 	}
 
-	public function delete_all(): bool
+	public function delete_all(): bool	//TODO: This function is never used in the code. Consider removing it.
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->emptyTable();
@@ -102,8 +102,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_save_next_invoice_sequence(): string
 	{
-		$last_used = (int)$this->get('last_used_invoice_number') + 1;
-		$this->save('last_used_invoice_number', $last_used);
+		$last_used = (int)config('OSPOS')->last_used_invoice_number + 1;
+		$this->save(['last_used_invoice_number' => $last_used]);
 
 		return $last_used;
 	}
@@ -113,16 +113,19 @@ class Appconfig extends Model
 	 */
 	public function acquire_save_next_quote_sequence(): string
 	{
-		$last_used = (int)$this->get('last_used_quote_number') + 1;
-		$this->save('last_used_quote_number', $last_used);
+		$last_used = (int)config('OSPOS')->last_used_quote_number + 1;
+		$this->save(['last_used_quote_number' => $last_used]);
 
 		return $last_used;
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function acquire_save_next_work_order_sequence(): string
 	{
-		$last_used = (int)$this->get('last_used_work_order_number') + 1;
-		$this->save('last_used_work_order_number', $last_used);	//TODO: Reflection Exception
+		$last_used = (int)config('OSPOS')->last_used_work_order_number + 1;
+		$this->save(['last_used_work_order_number' => $last_used]);
 
 		return $last_used;
 	}
