@@ -28,7 +28,7 @@ class Cashup extends Model
 	/**
 	 * Gets employee info
 	 */
-	public function get_employee(int $cashup_id)	//TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
+	public function get_employee(int $cashup_id): object    //TODO: This function is never called and if it were called, would not yield proper results.  There is no employee_id field in the cash_up table.
 	{
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
@@ -180,11 +180,11 @@ class Cashup extends Model
 			return $cash_up_obj;
 		}
 	}
-//TODO: gotta fix this function.  It thinks it's an override of the BaseModel save
+
 	/**
 	* Inserts or updates a cashup
 	*/
-	public function save(array &$cash_up_data, $cashup_id = FALSE): bool
+	public function save_value(array &$cash_up_data, $cashup_id = FALSE): bool
 	{
 		if(!$cashup_id == -1 || !$this->exists($cashup_id))	//TODO: Replace -1 with constant
 		{
@@ -205,13 +205,11 @@ class Cashup extends Model
 		return $builder->update($cash_up_data);
 	}
 
-	/*
-	* Deletes a list of cashups
-	*/
+	/**
+	 * Deletes a list of cashups
+	 */
 	public function delete_list(array $cashup_ids): bool
 	{
-		$success = FALSE;
-
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 			$builder = $this->db->table('cash_up');
@@ -222,4 +220,3 @@ class Cashup extends Model
 		return $success;
 	}
 }
-?>
