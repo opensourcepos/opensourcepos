@@ -4,7 +4,7 @@
 		setInterval('update_clock();', 1000);
 	}
 
-	// start the clock immediatly
+	// start the clock immediately
 	clock_tick();
 
 	var update_clock = function update_clock() {
@@ -12,7 +12,7 @@
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo esc(config('OSPOS')->notify_horizontal_position), 'js') ?>",
+		align: "<?php echo esc(config('OSPOS')->notify_horizontal_position, 'js') ?>",
 		from: "<?php echo esc(config('OSPOS')->notify_vertical_position, 'js') ?>"
 	}});
 
@@ -23,7 +23,7 @@
 	};
 
 	var csrf_form_base = function() {
-		return { <?php echo esc($this->security->get_csrf_token_name(), 'js') ?> : function () { return csrf_token();  } };
+		return { <?php echo esc($this->security->get_csrf_token_name(), 'js') ?> : function () { return csrf_token() } }
 	};
 
 	var setup_csrf_token = function() {
