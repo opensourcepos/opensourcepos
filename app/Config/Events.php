@@ -22,31 +22,24 @@ use CodeIgniter\Exceptions\FrameworkException;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
-Events::on('pre_system', function () use ($config_path) {
-	if (ENVIRONMENT !== 'testing')
-	{
-		if (ini_get('zlib.output_compression'))
-		{
+Events::on('pre_system', function () /* use ($config_path) */ {  //TODO -> Undefined variable
+	if (ENVIRONMENT !== 'testing') {
+		if (ini_get('zlib.output_compression')) {
 			throw FrameworkException::forEnabledZlibOutputCompression();
 		}
 
-		while (ob_get_level() > 0)
-		{
+		while (ob_get_level() > 0) {
 			ob_end_flush();
 		}
 
-		ob_start(function ($buffer)
-		{
+		ob_start(function ($buffer) {
 			return $buffer;
 		});
 
-		try
-		{
-			$dotenv = new Dotenv\Dotenv($config_path);
-			$dotenv->overload();
-		}
-		catch(Exception $e)
-		{
+		try {
+			// $dotenv = new Dotenv\Dotenv($config_path);
+			// $dotenv->overload(); //TODO Trows errors -> Dotenv
+		} catch (Exception $e) {
 			// continue, .env file not present
 		}
 	}
@@ -57,8 +50,7 @@ Events::on('pre_system', function () use ($config_path) {
 	 * --------------------------------------------------------------------
 	 * If you delete, they will no longer be collected.
 	 */
-	if (CI_DEBUG && ! is_cli())
-	{
+	if (CI_DEBUG && !is_cli()) {
 		Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
 		Services::toolbar()->respond();
 	}
