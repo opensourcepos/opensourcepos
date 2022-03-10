@@ -53,8 +53,8 @@ class Migration_Sales_Tax_Data extends Migration
 
 	private function upgrade_tax_history_for_sale(int $sale_id): void
 	{
-		$tax_decimals = $this->appconfig->get('tax_decimals', 2);	//TODO: Figure out how to replace this with config('OSPOS')->[variablename]
-		$tax_included = $this->appconfig->get('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
+		$tax_decimals = $this->appconfig->get_value('tax_decimals', 2);
+		$tax_included = $this->appconfig->get_value('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
 		$customer_sales_tax_support = FALSE;
 
 		if($tax_included)	//TODO: Convert to ternary notation.
@@ -183,7 +183,7 @@ class Migration_Sales_Tax_Data extends Migration
 
 	public function get_item_tax(string $quantity, string $price, string $discount_percentage, string $tax_percentage): string
 	{
-		$tax_included = $this->appconfig->get('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;	//TODO: Figure out how to replace this with config('OSPOS')->[variablename]
+		$tax_included = $this->appconfig->get_value('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
 
 		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
 
