@@ -362,7 +362,7 @@ class Employee extends Person
 	}
 
 	/**
-	 * Attempts to login employee and set session. Returns boolean based on outcome.
+	 * Attempts to log in employee and set session. Returns boolean based on outcome.
 	 */
 	public function login(string $username, string $password): bool
 	{
@@ -394,7 +394,7 @@ class Employee extends Person
 	}
 
 	/**
-	 * Logs out a user by destroying all session data and redirect to login
+	 * Logs out a user by destroying all session data and redirect to log in
 	 */
 	public function logout(): void
 	{
