@@ -5,10 +5,7 @@ namespace App\Controllers;
 use app\Models\Giftcard;
 
 /**
- *
- *
  * @property giftcard giftcard
- *
  */
 class Giftcards extends Secure_Controller
 {
@@ -92,8 +89,6 @@ class Giftcards extends Secure_Controller
 		$data['giftcard_id'] = $giftcard_id;
 		$data['giftcard_value'] = $giftcard_info->value;
 
-		$data = $data;
-
 		echo view("giftcards/form", $data);
 	}
 
@@ -113,10 +108,8 @@ class Giftcards extends Secure_Controller
 			'person_id' => $this->request->getPost('person_id') == '' ? NULL : $this->request->getPost('person_id')
 		];
 
-		if($this->giftcard->save($giftcard_data, $giftcard_id))	//TODO: Reflection exception
+		if($this->giftcard->save_value($giftcard_data, $giftcard_id))
 		{
-			$giftcard_data = $giftcard_data;
-
 			//New giftcard
 			if($giftcard_id == -1)	//TODO: Constant needed
 			{
@@ -137,8 +130,6 @@ class Giftcards extends Secure_Controller
 		}
 		else //failure
 		{
-			$giftcard_data = $giftcard_data;
-			
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Giftcards.error_adding_updating') . ' ' . $giftcard_data['giftcard_number'],
@@ -147,6 +138,11 @@ class Giftcards extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Function called in the view to check the giftcard.
+	 *
+	 * @return void
+	 */
 	public function ajax_check_number_giftcard(): void
 	{
 		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount'));
@@ -170,4 +166,3 @@ class Giftcards extends Secure_Controller
 		}
 	}
 }
-?>

@@ -114,7 +114,7 @@ class Giftcard extends Model
 	/**
 	 * Inserts or updates a giftcard
 	 */
-	public function save(array &$giftcard_data, $giftcard_id = FALSE): bool
+	public function save_value(array &$giftcard_data, $giftcard_id = FALSE): bool
 	{
 		$builder = $this->db->table('giftcards');
 
@@ -150,7 +150,7 @@ class Giftcard extends Model
 	/**
 	 * Deletes one giftcard
 	 */
-	public function delete(int $giftcard_id = null, bool $purge = false): bool
+	public function delete($giftcard_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->where('giftcard_id', $giftcard_id);
@@ -304,7 +304,7 @@ class Giftcard extends Model
 	{
 		$value = str_replace('.', 'DE', $value);
 		$random = bin2hex(openssl_random_pseudo_bytes(3));
-		$giftcard_name = (string)$random . '-' . $value;
+		$giftcard_name = "$random-$value";
 
 		if($this->exists_giftcard_name($giftcard_name))
 		{
@@ -330,4 +330,3 @@ class Giftcard extends Model
 		return $builder->get()->getRow()->person_id;
 	}
 }
-?>
