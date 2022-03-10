@@ -120,6 +120,6 @@ class Cookie extends BaseConfig
 	function __construct()
 	{
 		$config = config('Config\\App');
-		$this->secure = $config->https_on;
+		// $this->secure = $config->https_on;  //TODO -> Throw errors ->  Cannot access private property Config\App::$https_on
 	}
 }
