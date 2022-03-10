@@ -516,7 +516,6 @@ class Employee extends Person
 		{
 			$row = $query->getRow();
 
-			// compare passwords
 			if(password_verify($password, $row->password))
 			{
 				return TRUE;
@@ -535,7 +534,6 @@ class Employee extends Person
 
 		if(ENVIRONMENT != 'testing')
 		{
-			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->transStart();
 
 			$builder = $this->db->table('employees');
