@@ -168,7 +168,7 @@ class Employee extends Person
 	/**
 	 * Deletes one employee
 	 */
-	public function delete(int $employee_id = null, bool $purge = false): bool
+	public function delete($employee_id = null, bool $purge = false): bool
 	{
 		$success = FALSE;
 
@@ -224,8 +224,9 @@ class Employee extends Person
 		}
 
 		$this->db->transComplete();
+		$success &= $this->db->transStatus();
 
-		return $success;	//TODO: need to add transStatus() to $success before returning
+		return $success;
  	}
 
 	/**
@@ -328,7 +329,7 @@ class Employee extends Person
 		$builder = $this->db->table('employees AS employees');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(employees.person_id) as count');
 		}
@@ -345,7 +346,7 @@ class Employee extends Person
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
