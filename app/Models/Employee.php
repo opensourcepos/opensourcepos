@@ -362,7 +362,7 @@ class Employee extends Person
 	}
 
 	/**
-	 * Attempts to login employee and set session. Returns boolean based on outcome.
+	 * Attempts to log in employee and set session. Returns boolean based on outcome.
 	 */
 	public function login(string $username, string $password): bool
 	{
@@ -394,7 +394,7 @@ class Employee extends Person
 	}
 
 	/**
-	 * Logs out a user by destroying all session data and redirect to login
+	 * Logs out a user by destroying all session data and redirect to log in
 	 */
 	public function logout(): void
 	{
@@ -516,7 +516,6 @@ class Employee extends Person
 		{
 			$row = $query->getRow();
 
-			// compare passwords
 			if(password_verify($password, $row->password))
 			{
 				return TRUE;
@@ -535,7 +534,6 @@ class Employee extends Person
 
 		if(ENVIRONMENT != 'testing')
 		{
-			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->transStart();
 
 			$builder = $this->db->table('employees');
