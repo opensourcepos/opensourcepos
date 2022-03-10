@@ -28,7 +28,7 @@ class Expense extends Model
 	/**
 	 * Gets category info
 	 */
-	public function get_expense_category(int $expense_id)
+	public function get_expense_category(int $expense_id): object	//TODO: This function is never called in the code
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
@@ -39,7 +39,7 @@ class Expense extends Model
 	/**
 	 * Gets employee info
 	 */
-	public function get_employee(int $expense_id)
+	public function get_employee(int $expense_id): object	//TODO: This function is never called in the code
 	{
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
@@ -223,7 +223,7 @@ class Expense extends Model
 	/**
 	 * Inserts or updates an expense
 	 */
-	public function save(array &$expense_data, bool $expense_id = FALSE): bool
+	public function save_value(array &$expense_data, bool $expense_id = FALSE): bool
 	{
 		$builder = $this->db->table('expenses');
 
@@ -249,16 +249,16 @@ class Expense extends Model
 	 */
 	public function delete_list(array $expense_ids): bool
 	{
-		$success = FALSE;	//TODO: unneeded variable instantiation here.  It gets overwritten immediately.
 		$builder = $this->db->table('expenses');
 
-		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 			$builder->whereIn('expense_id', $expense_ids);
 			$success = $builder->update(['deleted' => 1]);
 		$this->db->transComplete();
 
-		return $success;	//TODO: add TransStatus() to $success with bitwise and assignment operator.
+		$success &= $this->db->transStatus();
+
+		return $success;
 	}
 
 	/**
@@ -329,4 +329,3 @@ class Expense extends Model
 		return $builder->get();
 	}
 }
-?>

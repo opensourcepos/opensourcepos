@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use app\Models\Expense;
+use app\Models\Expense_category;
 
 /**
  * @property expense expense
@@ -37,7 +38,6 @@ class Expenses extends Secure_Controller
 
 	public function search(): void
 	{
-		$payments = 0;	//TODO: this variable is never used.
 		$search   = $this->request->getGet('search');
 		$limit    = $this->request->getGet('limit');
 		$offset   = $this->request->getGet('offset');
@@ -120,7 +120,7 @@ class Expenses extends Secure_Controller
 		}
 
 		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
-		$data['payment_options'] = $this->expense->get_payment_options(FALSE);
+		$data['payment_options'] = $this->expense->get_payment_options();
 
 		echo view("expenses/form", $data);
 	}
@@ -152,11 +152,9 @@ class Expenses extends Secure_Controller
 			'deleted' => $this->request->getPost('deleted') != NULL
 		];
 
-		if($this->expense->save($expense_data, $expense_id))	//TODO: Reflection exception
+		if($this->expense->save_value($expense_data, $expense_id))
 		{
-			$expense_data = $expense_data;	//TODO: Is this line needed?
-
-			//New expense_id
+			//New Expense
 			if($expense_id == -1)
 			{
 				echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);

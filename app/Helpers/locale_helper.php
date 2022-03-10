@@ -4,8 +4,8 @@ const DEFAULT_LANGUAGE = 'english';	//TODO: These constants all need to be moved
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
 define('NOW', time());
-define('MAX_PRECISION', 1e14);
-define('DEFAULT_PRECISION', 2);
+const MAX_PRECISION = 1e14;
+const DEFAULT_PRECISION = 2;
 define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
@@ -99,11 +99,11 @@ function get_languages(): array
 	];
 }
 
-function load_language(bool $load_system_language = FALSE, array $lang_array): void	//TODO: The optional parameter needs to be placed after all mandatory ones.
+function load_language(array $lang_array, bool $load_system_language = FALSE): void	//TODO: this is not called anywhere in the code.
 {
 	$lang = get_instance()->lang;
 
-	if($load_system_language = TRUE)
+	if($load_system_language)
 	{
 		foreach($lang_array as $language_file)
 		{
@@ -293,8 +293,8 @@ function get_payment_options(): array
 
 function currency_side(): bool
 {
-	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, \NumberFormatter::CURRENCY);
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
+	$fmt = new NumberFormatter(config('OSPOS')->number_locale, NumberFormatter::CURRENCY);
+	$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
 
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
@@ -331,7 +331,7 @@ function to_datetime(int $datetime = DEFAULT_DATETIME): string
 
 function to_currency(float $number): string
 {
-	return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+	return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
 function to_currency_no_money(float $number): string
@@ -343,18 +343,18 @@ function to_currency_tax(float $number): string
 {
 	if(config('OSPOS')->tax_included)	//TODO: ternary notation
 	{
-		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'tax_decimals', NumberFormatter::CURRENCY);
 	}
 	else
 	{
-		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 	}
 }
 
 function to_tax_decimals(float $number): string
 {
 	// taxes that are NULL, '' or 0 don't need to be displayed
-	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
+	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0, and it will save it
 	if(empty($number))
 	{
 		return $number;
@@ -368,7 +368,7 @@ function to_quantity_decimals(float $number): string
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals(float $number, string $decimals = NULL, int $type = \NumberFormatter::DECIMAL): string
+function to_decimals(float $number, string $decimals = NULL, int $type = NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -377,15 +377,15 @@ function to_decimals(float $number, string $decimals = NULL, int $type = \Number
 		return $number;
 	}
 
-	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
+	$fmt = new NumberFormatter(config('OSPOS')->number_locale, $type);
+	$fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
+	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->$decimals);
 
 	if(empty(config('OSPOS')->thousands_separator))
 	{
-		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+		$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
+	$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, config('OSPOS')->currency_symbol);
 
 	return $fmt->format($number);
 }
@@ -400,7 +400,12 @@ function parse_tax(string $number): float
 	return parse_decimals($number, tax_decimals());
 }
 
-function parse_decimals(string $number, int $decimals = NULL): float
+/**
+ * @param string $number
+ * @param int|NULL $decimals
+ * @return false|float|int|mixed|string
+ */
+function parse_decimals(string $number, int $decimals = NULL)
 {
 	// ignore empty strings and return
 	if(empty($number))
@@ -420,14 +425,14 @@ function parse_decimals(string $number, int $decimals = NULL): float
 
 	if($decimals === NULL)
 	{
-		$decimals = config('OSPOS')->currency_decimals;
+		$decimals = config('OSPOS')->currency_decimals;	//TODO: $decimals is never used.
 	}
 
-	$fmt = new \NumberFormatter(config('OSPOS')->number_locale, \NumberFormatter::DECIMAL);
+	$fmt = new NumberFormatter(config('OSPOS')->number_locale, NumberFormatter::DECIMAL);
 
 	if(empty(config('OSPOS')->thousands_separator))
 	{
-		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+		$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
 
 	try
@@ -581,4 +586,3 @@ function valid_decimal(string $decimal): bool	//TODO: need a better name for $de
 {
 	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
-?>
