@@ -25,6 +25,7 @@ git-svn-diff.py
 .project
 .settings/*
 vendor/
+system/
 *.swp
 *.rej
 *.orig
