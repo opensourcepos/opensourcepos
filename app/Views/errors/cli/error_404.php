@@ -1,12 +1,7 @@
 <?php
-/**
- * @var string $heading
- * @var string $message
- */
-?>
-<?php
-echo "\nERROR: ",
-	esc($heading),
-	"\n\n",
-	esc($message),
-	"\n\n";
+
+use CodeIgniter\CLI\CLI;
+
+CLI::error('ERROR: ' . $code);
+CLI::write($message);
+CLI::newLine();
