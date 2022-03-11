@@ -1,85 +1,83 @@
 <?php
+
+namespace Config;
+
+// Create a new instance of our RouteCollection class.
+$routes = Services::routes();
+
+// Load the system's routing file first, so that the app and ENVIRONMENT
+// can override as needed.
+if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
+    require SYSTEMPATH . 'Config/Routes.php';
+}
+
 /*
-| -------------------------------------------------------------------------
-| URI ROUTING
-| -------------------------------------------------------------------------
-| This file lets you re-map URI requests to specific controller functions.
-|
-| Typically there is a one-to-one relationship between a URL string
-| and its corresponding controller class/method. The segments in a
-| URL normally follow this pattern:
-|
-|	example.com/class/method/id/
-|
-| In some instances, however, you may want to remap this relationship
-| so that a different class/function is called than the one
-| corresponding to the URL.
-|
-| Please see the user guide for complete details:
-|
-|	https://codeigniter.com/user_guide/general/routing.html
-|
-| -------------------------------------------------------------------------
-| RESERVED ROUTES
-| -------------------------------------------------------------------------
-|
-| There are three reserved routes:
-|
-|	$route['default_controller'] = 'welcome';
-|
-| This route indicates which controller class should be loaded if the
-| URI contains no data. In the above example, the "welcome" class
-| would be loaded.
-|
-|	$route['404_override'] = 'errors/page_missing';
-|
-| This route will tell the Router which controller/method to use if those
-| provided in the URL cannot be matched to a valid route.
-|
-|	$route['translate_uri_dashes'] = FALSE;
-|
-| This is not exactly a route, but allows you to automatically route
-| controller and method names that contain dashes. '-' isn't a valid
-| class or method name character, so it requires translation.
-| When you set this option to TRUE, it will replace ALL dashes in the
-| controller and method URI segments.
-|
-| Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
-*/
+ * --------------------------------------------------------------------
+ * Router Setup
+ * --------------------------------------------------------------------
+ */
+$routes->setDefaultNamespace('App\Controllers');
+$routes->setDefaultController('Login');
+$routes->setDefaultMethod('index');
+$routes->setTranslateURIDashes(false);
+$routes->set404Override();
+$routes->setAutoRoute(true);
 
-$route['default_controller'] = 'login';
-$route['no_access/([^/]+)'] = 'no_access/index/$1';
-$route['no_access/([^/]+)/([^/]+)'] = 'no_access/index/$1/$2';
+/*
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
 
-$route['sales/index/([^/]+)'] = 'sales/manage/$1';
-$route['sales/index/([^/]+)/([^/]+)'] = 'sales/manage/$1/$2';
-$route['sales/index/([^/]+)/([^/]+)/([^/]+)'] = 'sales/manage/$1/$2/$3';
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Login::index');
 
-$route['reports/(summary_:any)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
-$route['reports/summary_expenses_categories'] = 'reports/date_input_only';
-$route['reports/summary_payments'] = 'reports/date_input_only';
-$route['reports/summary_discounts'] = 'reports/summary_discounts_input';
-$route['reports/summary_:any'] = 'reports/date_input';
+$routes->add('no_access/([^/]+)', 'No_access::index/$1');
+$routes->add('no_access/([^/]+)/([^/]+)', 'No_access::index/$1/$2');
 
-$route['reports/(graphical_:any)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
-$route['reports/graphical_summary_expenses_categories'] = 'reports/date_input_only';
-$route['reports/graphical_summary_discounts'] = 'reports/summary_discounts_input';
-$route['reports/graphical_:any'] = 'reports/date_input';
+$routes->add('sales/index/([^/]+)', 'Sales::manage/$1');
+$routes->add('sales/index/([^/]+)/([^/]+)', 'Sales::manage/$1/$2');
+$routes->add('sales/index/([^/]+)/([^/]+)/([^/]+)', 'Sales::manage/$1/$2/$3');
 
-$route['reports/(inventory_:any)/([^/]+)'] = 'reports/$1/$2';
-$route['reports/inventory_summary'] = 'reports/inventory_summary_input';
-$route['reports/(inventory_summary)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2';
+$routes->add('reports/(summary_:any)/([^/]+)/([^/]+)', 'Reports::summary_(.+)/$1/$2/$3/$4'); //TODO - double check all TODOs
+$routes->add('reports/summary_expenses_categories', 'Reports::date_input_only');
+$routes->add('reports/summary_payments', 'Reports::date_input_only');
+$routes->add('reports/summary_discounts', 'Reports::summary_discounts_input');
+$routes->add('reports/summary_:any', 'Reports::date_input');
 
-$route['reports/(detailed_:any)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
-$route['reports/detailed_sales'] = 'reports/date_input_sales';
-$route['reports/detailed_receivings'] = 'reports/date_input_recv';
+$routes->add('reports/(graphical_:any)/([^/]+)/([^/]+)', 'Reports::/$1/$2/$3/$4'); //TODO
+$routes->add('reports/graphical_summary_expenses_categories', 'Reports::date_input_only');
+$routes->add('reports/graphical_summary_discounts', 'Reports::summary_discounts_input');
+$routes->add('reports/graphical_:any', 'Reports::date_input');
 
-$route['reports/(specific_:any)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
-$route['reports/specific_customer'] = 'reports/specific_customer_input';
-$route['reports/specific_employee'] = 'reports/specific_employee_input';
-$route['reports/specific_discount'] = 'reports/specific_discount_input';
-$route['reports/specific_supplier'] = 'reports/specific_supplier_input';
+$routes->add('reports/(inventory_:any)/([^/]+)', 'Reports::/$1/$2'); //TODO
+$routes->add('reports/inventory_summary', 'Reports::inventory_summary_input');
+$routes->add('reports/(inventory_summary)/([^/]+)/([^/]+)/([^/]+)', 'Reports::/$1/$2'); //TODO
 
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$routes->add('reports/(detailed_:any)/([^/]+)/([^/]+)/([^/]+)', 'Reports::/$1/$2/$3/$4'); //TODO
+$routes->add('reports/detailed_sales', 'Reports::date_input_sales');
+$routes->add('reports/detailed_receivings', 'Reports::date_input_recv');
+
+$routes->add('reports/(specific_:any)/([^/]+)/([^/]+)/([^/]+)', 'Reports::/$1/$2/$3/$4'); //TODO
+$routes->add('reports/specific_customer', 'Reports::specific_customer_input');
+$routes->add('reports/specific_employee', 'Reports::specific_employee_input');
+$routes->add('reports/specific_discount', 'Reports::specific_discount_input');
+$routes->add('reports/specific_supplier', 'Reports::specific_supplier_input');
+
+/*
+ * --------------------------------------------------------------------
+ * Additional Routing
+ * --------------------------------------------------------------------
+ *
+ * There will often be times that you need additional routing and you
+ * need it to be able to override any defaults in this file. Environment
+ * based routes is one such time. require() additional route files here
+ * to make that happen.
+ *
+ * You will have access to the $routes object within that file without
+ * needing to reload it.
+ */
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+}
