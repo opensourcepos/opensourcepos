@@ -125,7 +125,7 @@ class Receiving extends Model
 
 			//Update stock quantity
 			$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->item_quantity->save([
+			$this->item_quantity->save_value([
 				'quantity' => $item_quantity->quantity + $items_received,
 				'item_id' => $item['item_id'],
 				'location_id' => $item['item_location']],

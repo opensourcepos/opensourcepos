@@ -19,7 +19,7 @@ class Item_quantity extends Model
         return ($builder->get()->getNumRows() == 1);	//TODO: ===
     }
 
-    public function save(array $location_detail, int $item_id, int $location_id): bool
+    public function save_value(array $location_detail, int $item_id, int $location_id): bool
     {
         if(!$this->exists($item_id, $location_id))
         {
@@ -69,7 +69,7 @@ class Item_quantity extends Model
 		$quantity_new = $quantity_old->quantity + $quantity_change;
 		$location_detail = ['item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new];
 
-		return $this->save($location_detail, $item_id, $location_id);	//TODO: need to sort out the unhandled reflection exception error.  Probably needs to be placed in a try catch to catch the exception  and do something with it.
+		return $this->save_value($location_detail, $item_id, $location_id);
 	}
 
 	/**

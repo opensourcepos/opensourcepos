@@ -722,7 +722,7 @@ class Sale extends Model
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
 
-				$this->item_quantity->save([
+				$this->item_quantity->save_value([
 					'quantity'	=> $item_quantity->quantity - $item['quantity'],
 					'item_id' => $item['item_id'],
 					'location_id' => $item['item_location']],

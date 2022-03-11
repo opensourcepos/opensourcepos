@@ -22,12 +22,9 @@ use CodeIgniter\Images\Image;
 require_once('Secure_Controller.php');
 
 /**
- *
  * @property image image
- *
  * @property barcode_lib barcode_lib
  * @property item_lib item_lib
- *
  * @property attribute attribute
  * @property inventory inventory
  * @property item item
@@ -37,7 +34,6 @@ require_once('Secure_Controller.php');
  * @property stock_location stock_location
  * @property supplier supplier
  * @property tax_category tax_category
- *
  */
 class Items extends Secure_Controller
 {
@@ -132,6 +128,11 @@ class Items extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * Processes thumbnail of image.  Called via the tabular_helper
+	 * @param $pic_filename
+	 * @return void
+	 */
 	public function pic_thumb($pic_filename): void
 	{
 		helper('file');
@@ -144,7 +145,7 @@ class Items extends Secure_Controller
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
-			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;
+			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;	//TODO:  This needs to be rewritten a la https://codeigniter.com/user_guide/libraries/images.html since thumb_marker doesn't exist in CI4
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
@@ -204,8 +205,8 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	/*
-	 Gives search suggestions based on what is being searched for
+	/**
+	 * Gives search suggestions based on what is being searched for. Called from the view.
 	 */
 	public function suggest_category(): void
 	{
@@ -214,8 +215,8 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	/*
-	 Gives search suggestions based on what is being searched for
+	/**
+	 * Gives search suggestions based on what is being searched for.  Called from the view.
 	 */
 	public function suggest_location(): void
 	{
@@ -311,7 +312,6 @@ class Items extends Secure_Controller
 			$item_info->tax_category_id = NULL;
 			$item_info->qty_per_pack = 1;
 			$item_info->pack_name = lang('Items.default_pack_name');
-			$data['hsn_code'] = '';
 
 			if($use_destination_based_tax)
 			{
@@ -338,7 +338,7 @@ class Items extends Secure_Controller
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
 
-		if($data['include_hsn'])
+		if($data['include_hsn'])	//TODO: Transform this to ternary notation
 		{
 			$data['hsn_code'] = $item_info->hsn_code;
 		}
@@ -393,8 +393,6 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $location;
-
 			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 			$quantity = ($item_id === NEW_ITEM) ? 0 : $quantity;
 			$location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
@@ -431,7 +429,6 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $location;
 			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
 			$data['stock_locations'][$location['location_id']] = $location['location_name'];
@@ -456,7 +453,6 @@ class Items extends Secure_Controller
 
 		foreach($stock_locations as $location)
 		{
-			$location = $location;
 			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
 
 			$data['stock_locations'][$location['location_id']] = $location['location_name'];
@@ -476,15 +472,13 @@ class Items extends Secure_Controller
 
 		foreach($result as &$item)
 		{
-			$item = $item;
-
 			if(empty($item['item_number']) && config('OSPOS')->barcode_generate_if_empty)
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
 				$save_item = ['item_number' => $item['item_number']];
 
-				$this->item->save($save_item, $item['item_id']);	//TODO: Reflection exception
+				$this->item->save_value($save_item, $item['item_id']);
 			}
 		}
 		$data['items'] = $result;
@@ -532,7 +526,6 @@ class Items extends Secure_Controller
 
 		foreach($this->supplier->get_all()->getResultArray() as $row)
 		{
-			$row = $row;
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
@@ -552,6 +545,9 @@ class Items extends Secure_Controller
 		echo view('items/form_bulk', $data);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function save(int $item_id = NEW_ITEM): void
 	{
 		$upload_success = $this->handle_image_upload();
@@ -559,7 +555,7 @@ class Items extends Secure_Controller
 		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
 		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type');
 
-		if($receiving_quantity === 0 && $item_type !== ITEM_TEMP)
+		if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
 		{
 			$receiving_quantity = 1;
 		}
@@ -607,9 +603,9 @@ class Items extends Secure_Controller
 		}
 
 		$original_name = $upload_file->getFilename();
-		if(!empty($original_name))
+		if(!empty($original_name))	//TODO: this and the if below it probably need to be combined.
 		{
-			if($original_name === TRUE)	//TODO: this needs to be thoroughly tested to make sure it's producing the correct results.
+			if((bool)$original_name === TRUE)	//TODO: this needs to be thoroughly tested to make sure it's producing the correct results.
 			{
 				$item_data['pic_filename'] = $original_name;
 			}
@@ -617,7 +613,7 @@ class Items extends Secure_Controller
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
-		if($this->item->save($item_data, $item_id))	//TODO: Reflection Exception
+		if($this->item->save_value($item_data, $item_id))
 		{
 			$success = TRUE;
 			$new_item = FALSE;
@@ -673,7 +669,7 @@ class Items extends Secure_Controller
 
 				if($item_quantity->quantity != $updated_quantity || $new_item)
 				{
-					$success &= $this->item_quantity->save($location_detail, $item_id, $location['location_id']);	//TODO: Reflection Exception
+					$success &= $this->item_quantity->save_value($location_detail, $item_id, $location['location_id']);
 
 					$inv_data = [
 						'trans_date' => date('Y-m-d H:i:s'),
@@ -684,7 +680,7 @@ class Items extends Secure_Controller
 						'trans_inventory' => $updated_quantity - $item_quantity->quantity
 					];
 
-					$success &= $this->inventory->insert($inv_data);	//TODO: Reflection exception
+					$success &= $this->inventory->insert($inv_data);
 				}
 			}
 
@@ -772,7 +768,7 @@ class Items extends Secure_Controller
 	public function remove_logo($item_id): void
 	{
 		$item_data = ['pic_filename' => NULL];
-		$result = $this->item->save($item_data, $item_id);	//TODO: Reflection exception
+		$result = $this->item->save_value($item_data, $item_id);
 
 		echo json_encode (['success' => $result]);
 	}
@@ -801,7 +797,7 @@ class Items extends Secure_Controller
 			'quantity' => $item_quantity->quantity + parse_quantity($this->request->getPost('newquantity'))
 		];
 
-		if($this->item_quantity->save($item_quantity_data, $item_id, $location_id))	//TODO: Reflection exception
+		if($this->item_quantity->save_value($item_quantity_data, $item_id, $location_id))
 		{
 			$message = lang('Items.successful_updating') . " $cur_item_info->name";
 
@@ -976,7 +972,7 @@ class Items extends Secure_Controller
 					//Remove FALSE, NULL, '' and empty strings but keep 0
 					$item_data = array_filter($item_data, 'strlen');
 
-					if(!$is_failed_row && $this->item->save($item_data, $item_id))	//TODO: Reflection Exception
+					if(!$is_failed_row && $this->item->save_value($item_data, $item_id))
 					{
 						$this->save_tax_data($row, $item_data);
 						$this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
@@ -1215,7 +1211,7 @@ class Items extends Secure_Controller
 			if(!empty($row["location_$location_name"]) || $row["location_$location_name"] === '0')
 			{
 				$item_quantity_data['quantity'] = $row["location_$location_name"];
-				$this->item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);	//TODO: Reflection Exception
+				$this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
 				$csv_data['trans_inventory'] = $row["location_$location_name"];
 				$this->inventory->insert($csv_data);	//TODO: Reflection Exception
@@ -1227,7 +1223,7 @@ class Items extends Secure_Controller
 			else
 			{
 				$item_quantity_data['quantity'] = 0;
-				$this->item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);	//TODO: Reflection Exception
+				$this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
 				$csv_data['trans_inventory'] = 0;
 				$this->inventory->insert($csv_data);	//TODO: Reflection Exception
@@ -1280,7 +1276,7 @@ class Items extends Secure_Controller
 				{
 					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
 					$item_data = ['pic_filename' => $new_pic_filename];
-					$this->item->save($item_data, $item->item_id);	//TODO: Reflection Exception
+					$this->item->save_value($item_data, $item->item_id);
 				}
 			}
 		}

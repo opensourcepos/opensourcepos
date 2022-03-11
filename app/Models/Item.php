@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use ReflectionException;
 use stdClass;
 
 /**
@@ -24,7 +25,7 @@ class Item extends Model
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) !== '0')
 		{
 			$builder = $this->db->table('items');
-			$builder->where('item_id', intval($item_id));
+			$builder->where('item_id', $item_id);
 
 			if($ignore_deleted === FALSE)
 			{
@@ -48,7 +49,7 @@ class Item extends Model
 		}
 
 		$builder = $this->db->table('items');
-		$builder->where('item_number', (string) $item_number);
+		$builder->where('item_number', $item_number);
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -71,7 +72,7 @@ class Item extends Model
 		return $builder->countAllResults();
 	}
 
-	public function get_tax_category_usage(int $tax_category_id): int
+	public function get_tax_category_usage(int $tax_category_id): int	//TODO: This function is never called in the code.
 	{
 		$builder = $this->db->table('items');
 		$builder->where('tax_category_id', $tax_category_id);
@@ -314,7 +315,7 @@ class Item extends Model
 		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
-			$builder->orWhere('items.item_id', intval($item_id));
+			$builder->orWhere('items.item_id', $item_id);
 		}
 
 		$builder->groupEnd();
@@ -341,7 +342,7 @@ class Item extends Model
 	/**
 	 * Get an item id given an item number
 	 */
-	public function get_item_id(string $item_number, bool $ignore_deleted = FALSE, bool $deleted = FALSE)
+	public function get_item_id(string $item_number, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
 	{
 		$builder = $this->db->table('items');
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -393,7 +394,7 @@ class Item extends Model
 	/**
 	 * Inserts or updates an item
 	 */
-	public function save(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
+	public function save_value(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
 
@@ -437,8 +438,9 @@ class Item extends Model
 	}
 
 	/**
-	* Deletes one item
-	*/
+	 * Deletes one item
+	 * @throws ReflectionException
+	 */
 	public function delete(int $item_id = null, bool $purge = false): bool	//TODO: need to figure out what to do with these override functions that don't match our signature.
 	{
 		$this->db->transStart();
@@ -472,6 +474,7 @@ class Item extends Model
 
 	/**
 	 * Deletes a list of items
+	 * @throws ReflectionException
 	 */
 	public function delete_list(array $item_ids): bool
 	{
@@ -791,7 +794,7 @@ class Item extends Model
 	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];	//TODO: This variable is never used.
 
 		$builder = $this->db->table('items');
 		$builder->select('item_id, name');
@@ -899,7 +902,7 @@ class Item extends Model
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, pack_name'));
 		$builder->where('deleted', '0');
-		$builder->where('stock_type', '0'); // stocked items only
+		$builder->where('stock_type', '0'); // stocked items only	//TODO: '0' should be replaced with a constant.
 		$builder->like('name', $search);
 		$builder->orderBy('name', 'asc');
 
@@ -948,7 +951,7 @@ class Item extends Model
 		return $suggestions;
 	}
 
-	public function get_categories()
+	public function get_categories()	//TODO: This function is never called in the code.
 	{
 		$builder = $this->db->table('items');
 		$builder->select('category');
@@ -991,7 +994,7 @@ class Item extends Model
 
 		$data = ['cost_price' => $average_price];
 
-		return $this->save($data, $item_id);
+		return $this->save_value($data, $item_id);
 	}
 
 	public function update_item_number(int $item_id, string $item_number): void
@@ -1043,4 +1046,3 @@ class Item extends Model
 		return $item_name;
 	}
 }
-?>
