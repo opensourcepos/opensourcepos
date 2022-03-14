@@ -107,7 +107,7 @@ class Supplier extends Person
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 		
-		if(parent::save($person_data,$supplier_id))
+		if(parent::save_value($person_data,$supplier_id))
 		{
 			$builder = $this->db->table('suppliers');
 			if(!$supplier_id || !$this->exists($supplier_id))

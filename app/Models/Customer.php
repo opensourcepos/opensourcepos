@@ -191,7 +191,7 @@ class Customer extends Person
 
 		$this->db->transStart();
 
-		if(parent::save($person_data, $customer_id))
+		if(parent::save_value($person_data, $customer_id))
 		{
 			$builder = $this->db->table('customers');
 			if(!$customer_id || !$this->exists($customer_id))

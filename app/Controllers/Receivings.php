@@ -271,7 +271,7 @@ class Receivings extends Secure_Controller
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);	//TODO: Reflection Exception
+		$data['receiving_id'] = 'RECV ' . $this->receiving->save_value($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);	//TODO: Reflection Exception
 
 		$data = $data;
 
@@ -398,7 +398,10 @@ class Receivings extends Secure_Controller
 
 		echo view("receivings/receiving", $data);
 	}
-	
+
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function save(int $receiving_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date');	//TODO: newdate does not follow naming conventions
@@ -414,8 +417,8 @@ class Receivings extends Secure_Controller
 			'reference' => $this->request->getPost('reference') != '' ? $this->request->getPost('reference') : NULL
 		];
 
-		$this->inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);	//TODO: Reflection Exception
-		if($this->receiving->update($receiving_data, $receiving_id))	//TODO: Reflection Exception
+		$this->inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);
+		if($this->receiving->update($receiving_id, $receiving_data))
 		{
 			echo json_encode ([
 				'success' => TRUE,

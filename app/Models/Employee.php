@@ -119,7 +119,7 @@ class Employee extends Person
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		if(ENVIRONMENT != 'testing' && parent::save($person_data, $employee_id))
+		if(ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id))
 		{
 			$builder = $this->db->table('employees');
 			if(!$employee_id || !$this->exists($employee_id))

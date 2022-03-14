@@ -30,11 +30,11 @@ class Item_kits extends Secure_Controller
 	}
 	
 	/**
-	 * Add the total cost and retail price to a passed items kit retrieving the data from each singular item part of the kit
+	 * Add the total cost and retail price to a passed item_kit retrieving the data from each singular item part of the kit
 	 */
 	private function _add_totals_to_item_kit(object $item_kit): object    //TODO: Hungarian notation
 	{
-		$kit_item_info = $this->item->get_info(isset($item_kit->kit_item_id) ? $item_kit->kit_item_id : $item_kit->item_id);
+		$kit_item_info = $this->item->get_info($item_kit->kit_item_id ?? $item_kit->item_id);
 
 		$item_kit->total_cost_price = 0;
 		$item_kit->total_unit_price = (float)$kit_item_info->unit_price;
@@ -72,7 +72,7 @@ class Item_kits extends Secure_Controller
 	}
 
 	/**
-	 * Returns Item kits table data rows. This will be called with AJAX.
+	 * Returns Item_kit table data rows. This will be called with AJAX.
 	 */
 	public function search(): void
 	{
@@ -88,7 +88,7 @@ class Item_kits extends Secure_Controller
 		$data_rows = [];
 		foreach($item_kits->getResult() as $item_kit)
 		{
-			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
+			// calculate the total cost and retail price of the Kit, so it can be printed out in the manage table
 			$item_kit = $this->_add_totals_to_item_kit($item_kit);
 			$data_rows[] = get_item_kit_data_row($item_kit);
 		}
@@ -105,7 +105,7 @@ class Item_kits extends Secure_Controller
 
 	public function get_row(int $row_id): void
 	{
-		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
+		// calculate the total cost and retail price of the Kit, so it can be added to the table refresh
 		$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
 
 		echo json_encode(get_item_kit_data_row($item_kit));
@@ -163,7 +163,7 @@ class Item_kits extends Secure_Controller
 			'description' => $this->request->getPost('description')
 		];
 		
-		if($this->item_kit->save($item_kit_data, $item_kit_id))	//TODO: Reflection exception
+		if($this->item_kit->save_value($item_kit_data, $item_kit_id))
 		{
 			$new_item = FALSE;
 			//New item kit
@@ -188,9 +188,7 @@ class Item_kits extends Secure_Controller
 
 			}
 
-			$success = $this->item_kit_items->save($item_kit_items, $item_kit_id);	//TODO: Reflection exception
-
-			$item_kit_data = $item_kit_data;
+			$success = $this->item_kit_items->save_value($item_kit_items, $item_kit_id);
 
 			if($new_item)
 			{
@@ -212,8 +210,6 @@ class Item_kits extends Secure_Controller
 		}
 		else//failure
 		{
-			$item_kit_data = $item_kit_data;
-
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
@@ -253,7 +249,7 @@ class Item_kits extends Secure_Controller
 		$item_kit_ids = explode(':', $item_kit_ids);
 		foreach($item_kit_ids as $item_kid_id)
 		{		
-			// calculate the total cost and retail price of the Kit so it can be added to the barcode text at the bottom
+			// calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
 			$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
 			
 			$item_kid_id = 'KIT '. urldecode($item_kid_id);
@@ -281,4 +277,3 @@ class Item_kits extends Secure_Controller
 		echo view("barcodes/barcode_sheet", $data);
 	}
 }
-?>

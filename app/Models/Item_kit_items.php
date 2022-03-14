@@ -43,7 +43,7 @@ class Item_kit_items extends Model
 	/**
 	 * Inserts or updates an item kit's items
 	 */
-	public function save(array &$item_kit_items_data, int $item_kit_id): bool
+	public function save_value(array &$item_kit_items_data, int $item_kit_id): bool
 	{
 		$success = TRUE;
 
@@ -78,4 +78,3 @@ class Item_kit_items extends Model
 		return $builder->delete(['item_kit_id' => $item_kit_id]);
 	}
 }
-?>

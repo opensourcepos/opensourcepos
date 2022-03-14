@@ -24,7 +24,7 @@ class Item_taxes extends Model
 	/**
 	 * Inserts or updates an item's taxes
 	 */
-	public function save(array &$items_taxes_data, int $item_id): bool
+	public function save_value(array &$items_taxes_data, int $item_id): bool
 	{
 		$success = TRUE;
 
@@ -85,4 +85,3 @@ class Item_taxes extends Model
 		return $builder->delete(['item_id' => $item_id]);
 	}
 }
-?>

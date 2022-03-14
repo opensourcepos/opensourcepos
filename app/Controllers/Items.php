@@ -18,6 +18,7 @@ use app\Models\Tax_category;
 use Config\Services;
 use CodeIgniter\Files\File;
 use CodeIgniter\Images\Image;
+use ReflectionException;
 
 require_once('Secure_Controller.php');
 
@@ -546,7 +547,7 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function save(int $item_id = NEW_ITEM): void
 	{
@@ -645,7 +646,7 @@ class Items extends Secure_Controller
 
 					$tax_name_index++;
 				}
-				$success &= $this->item_taxes->save($items_taxes_data, $item_id);	//TODO: Reflection exception
+				$success &= $this->item_taxes->save_value($items_taxes_data, $item_id);
 			}
 
 			//Save item quantity
@@ -773,6 +774,9 @@ class Items extends Secure_Controller
 		echo json_encode (['success' => $result]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_inventory($item_id = NEW_ITEM): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -859,6 +863,9 @@ class Items extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function delete(): void
 	{
 		$items_to_delete = $this->request->getPost('ids');
@@ -891,6 +898,7 @@ class Items extends Secure_Controller
 
 	/**
 	 * Imports items from CSV formatted file.
+	 * @throws ReflectionException
 	 */
 	public function import_csv_file(): void
 	{
@@ -911,6 +919,8 @@ class Items extends Secure_Controller
 				$attribute_definition_names	= $this->attribute->get_definition_names();
 
 				unset($attribute_definition_names[-1]);	//Removes the common_none_selected_text from the array
+
+				$attribute_data = [];
 
 				foreach($attribute_definition_names as $definition_name)
 				{
@@ -976,7 +986,7 @@ class Items extends Secure_Controller
 					{
 						$this->save_tax_data($row, $item_data);
 						$this->save_inventory_quantities($row, $item_data, $allowed_stock_locations, $employee_id);
-						$is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);
+						$is_failed_row = $this->save_attribute_data($row, $item_data, $attribute_data);	//TODO: $is_failed_row never gets used after this.
 
 						if($is_update)
 						{
@@ -1018,15 +1028,17 @@ class Items extends Secure_Controller
 	/**
 	 * Checks the entire line of data in an import file for errors
 	 *
-	 * @param	array	$line
-	 * @param 	array	$item_data
-	 *
-	 * @return	bool	Returns FALSE if all data checks out and TRUE when there is an error in the data
+	 * @param array $row
+	 * @param array $item_data
+	 * @param array $allowed_locations
+	 * @param array $definition_names
+	 * @param array $attribute_data
+	 * @return    bool    Returns FALSE if all data checks out and TRUE when there is an error in the data
 	 */
 	private function data_error_check(array $row, array $item_data, array $allowed_locations, array $definition_names, array $attribute_data): bool	//TODO: Long function and large number of parameters in the declaration... perhaps refactoring is needed.
 	{
 		$item_id = $row['Id'];
-		$is_update = $item_id ? TRUE : FALSE; //TODO: This can be replaced with $is_update = (bool)$item_id;
+		$is_update = (bool)$item_id;
 
 		//Check for empty required fields
 		$check_for_empty = [
@@ -1188,14 +1200,15 @@ class Items extends Secure_Controller
 	/**
 	 * Saves inventory quantities for the row in the appropriate stock locations.
 	 *
-	 * @param	array	row
-	 * @param	array	item_data
+	 * @param array    row
+	 * @param array    item_data
+	 * @throws ReflectionException
 	 */
 	private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): void
 	{
 		//Quantities & Inventory Section
 		$comment = lang('Items.inventory_CSV_import_quantity');
-		$is_update = $row['Id'] ? TRUE : FALSE;	//TODO: This can be replaced with $is_update = (bool) $row['Id'];
+		$is_update = (bool)$row['Id'];
 
 		foreach($allowed_locations as $location_id => $location_name)
 		{
@@ -1252,7 +1265,7 @@ class Items extends Secure_Controller
 
 		if(isset($items_taxes_data))
 		{
-			$this->item_taxes->save($items_taxes_data, $item_data['item_id']);	//TODO: Reflection Exception
+			$this->item_taxes->save_value($items_taxes_data, $item_data['item_id']);
 		}
 	}
 
@@ -1282,4 +1295,3 @@ class Items extends Secure_Controller
 		}
 	}
 }
-?>

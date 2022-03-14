@@ -56,7 +56,7 @@ class Item_kit extends Model
 		}
 
 		$builder = $this->db->table('item_kits');
-		$builder->where('item_kit_number', (string) $item_kit_number);
+		$builder->where('item_kit_number', $item_kit_number);
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
@@ -151,7 +151,7 @@ class Item_kit extends Model
 	/**
 	 * Inserts or updates an item kit
 	 */
-	public function save(array &$item_kit_data, bool $item_kit_id = FALSE): bool	//TODO: incompatible with base save()
+	public function save_value(array &$item_kit_data, bool $item_kit_id = FALSE): bool
 	{
 		$builder = $this->db->table('item_kits');
 		if(!$item_kit_id || !$this->exists($item_kit_id))
@@ -277,4 +277,3 @@ class Item_kit extends Model
 		return $builder->get();
 	}
 }
-?>

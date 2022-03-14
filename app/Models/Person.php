@@ -60,7 +60,7 @@ class Person extends Model
 	 *
 	 * @param integer $person_id identifier of the person
 	 *
-	 * @return array containing all the fields of the table row	//TODO: $person_obj is of type stdClass but the PHPDoc here says array
+	 * @return object containing all the fields of the table row
 	 */
 	public function get_info(int $person_id): object
 	{
@@ -107,7 +107,7 @@ class Person extends Model
 	 * @param bool $person_id identifier of the person to update the information
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
-	public function save(array &$person_data, bool $person_id = FALSE): bool
+	public function save_value(array &$person_data, bool $person_id = FALSE): bool
 	{
 		$builder = $this->db->table('people');
 
@@ -171,7 +171,7 @@ class Person extends Model
 	/**
 	 * Deletes one Person (dummy base function)
 	 *
-	 * @param integer $person_id person identificator
+	 * @param integer $person_id person identifier
 	 * @return boolean always TRUE
 	 */
 	public function delete($person_id = null, bool $purge = false): bool
@@ -190,4 +190,3 @@ class Person extends Model
 		return TRUE;
  	}
 }
-?>

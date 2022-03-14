@@ -94,4 +94,3 @@ class Item_quantity extends Model
         return $builder->update(['quantity' => 0]);
 	}
 }
-?>

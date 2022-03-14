@@ -129,4 +129,3 @@ class Module extends Model
 		return $builder->get()->getRow()->sort;
 	}
 }
-?>

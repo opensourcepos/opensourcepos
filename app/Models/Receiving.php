@@ -62,7 +62,7 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update(array $receiving_data, int $receiving_id): bool
+	public function update(int $receiving_id = NULL, array $receiving_data = NULL): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -70,7 +70,7 @@ class Receiving extends Model
 		return $builder->update($receiving_data);
 	}
 
-	public function save(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: the base model is expecting the return type to be a bool.  We need to either override this function properly or rename it, unless there is another solution
+	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int
 	{
 		if(count($items) == 0)
 		{
