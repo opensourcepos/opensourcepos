@@ -151,7 +151,7 @@ class Tax extends Model
 	/**
 	Inserts or updates a tax_rates entry
 	*/
-	public function save(array &$tax_rate_data, int $tax_rate_id = -1): bool	//TODO: the default value for $tax_rate_id should be made a constant and replaced here.
+	public function save_value(array &$tax_rate_data, int $tax_rate_id = -1): bool	//TODO: the default value for $tax_rate_id should be made a constant and replaced here.
 	{
 		$builder = $this->db->table('tax_rates');
 		if(!$this->exists($tax_rate_id))
@@ -293,4 +293,3 @@ class Tax extends Model
 		return $builder->get()->getRow()->tax_category_id;
 	}
 }
-?>

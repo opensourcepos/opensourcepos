@@ -98,7 +98,7 @@ class Tax_code extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(array &$tax_code_data): bool
+	public function save($tax_code_data): bool
 	{
 		$builder = $this->db->table('tax_codes');
 
@@ -238,25 +238,22 @@ class Tax_code extends Model
 		{
 			return $query->getRow()->tax_code_id;
 		}
-		else	//TODO: This can be gotten rid of an place everything outside of the else.
+
+		$builder = $this->db->table('tax_codes');
+		$builder->where('city', '');
+		$builder->where('state', $state);
+		$builder->where('deleted', 0);
+
+		$query = $builder->get();
+
+		if($query->getNumRows() == 1)		//TODO: this should be ===
 		{
-			$builder = $this->db->table('tax_codes');
-			$builder->where('city', '');
-			$builder->where('state', $state);
-			$builder->where('deleted', 0);
-
-			$query = $builder->get();
-
-			if($query->getNumRows() == 1)		//TODO: this should be ===
-			{
-				return $query->getRow()->tax_code_id;
-			}
-			else
-			{
-				return config('OSPOS')->default_tax_code;
-			}
+			return $query->getRow()->tax_code_id;
 		}
-		return FALSE;	//TODO: This return statement is unreachable.
+		else
+		{
+			return config('OSPOS')->default_tax_code;
+		}
 	}
 
 	public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
@@ -302,4 +299,3 @@ class Tax_code extends Model
 		];
 	}
 }
-?>

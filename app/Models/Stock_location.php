@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use CodeIgniter\Session\Session;
 
 /**
  * Stock_location class
@@ -116,7 +117,7 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_id;
 	}
 
-	public function save(array &$location_data, int $location_id): bool
+	public function save_value(array &$location_data, int $location_id): bool
 	{
 		$location_name = $location_data['location_name'];
 
@@ -219,4 +220,3 @@ class Stock_location extends Model
 		return $this->db->transStatus();
 	}
 }
-?>

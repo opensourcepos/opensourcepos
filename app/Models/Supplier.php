@@ -38,7 +38,7 @@ class Supplier extends Person
 	/**
 	 * Returns all the suppliers
 	 */
-	public function get_all(int $category = self::GOODS_SUPPLIER, int $offset = 0, int $limit = 0): ResultInterface
+	public function get_all(int $limit = 0, int $offset = 0, int $category = self::GOODS_SUPPLIER): ResultInterface
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'suppliers.person_id = people.person_id');
@@ -70,7 +70,7 @@ class Supplier extends Person
 		}
 		else
 		{
-			//Get empty base parent object, as $supplier_id is NOT an supplier
+			//Get empty base parent object, as $supplier_id is NOT a supplier
 			$person_obj = parent::get_info(-1);	//TODO: need to replace with a constant instead of -1
 			
 			//Get all the fields from supplier table		
@@ -154,7 +154,7 @@ class Supplier extends Person
  	/**
 	 * Get search suggestions to find suppliers
 	 */
-	public function get_search_suggestions(string $search, bool $limit = FALSE): array	//TODO: Parent is looking for the 2nd parameter to be an int
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = FALSE): array	//TODO: Parent is looking for the 2nd parameter to be an int
 	{
 		$suggestions = [];
 
@@ -197,7 +197,7 @@ class Supplier extends Person
 			$suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name];
 		}
 
-		if(!$limit)
+		if(!$unique)
 		{
 			$builder = $this->db->table('suppliers');
 			$builder->join('people', 'suppliers.person_id = people.person_id');
@@ -234,7 +234,7 @@ class Supplier extends Person
 		}
 
 		//only return $limit suggestions
-		if(count($suggestions) > $limit)
+		if(count($suggestions) > $limit)	//TODO: this can be replaced with return count($suggestions) > $limit ? array_slice($suggestions, 0, $limit) : $suggestions
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
@@ -318,4 +318,3 @@ class Supplier extends Person
 		//TODO: This is missing a return statement.  Perhaps the above needs to be else instead of elseif?
 	}
 }
-?>

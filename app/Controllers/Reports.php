@@ -57,12 +57,12 @@ class Reports extends Secure_Controller
 	{
 		parent::__construct('reports');
 
-		$method_name = $this->uri->segment(2);
+		$method_name = $this->uri->segment(2);	//TODO: uri does not exist... need to figure out the CI4 version of this.
 		$exploder = explode('_', $method_name);
 
 		if(sizeof($exploder) > 1)
 		{
-			preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
+			preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);	//TODO: Unnecessary non-capturing group '(?:inventory)'
 			preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
 			$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
@@ -452,7 +452,6 @@ class Reports extends Secure_Controller
 
 	public function summary_discounts_input(): void
 	{
-		$data = [];
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -566,7 +565,6 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input(): void
 	{//TODO: Duplicated Code
-		$data = [];
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -580,14 +578,12 @@ class Reports extends Secure_Controller
 	public function date_input_only(): void
 	{
 		$data = [];
-
 		echo view('reports/date_input', $data);
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_sales(): void
 	{//TODO: Duplicated Code
-		$data = [];
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -599,7 +595,6 @@ class Reports extends Secure_Controller
 
 	public function date_input_recv(): void
 	{
-		$data = [];
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -1155,9 +1150,9 @@ class Reports extends Secure_Controller
 		}
 
 		$customer_info = $this->customer->get_info($customer_id);
-		if(!empty($customer_info->company_name))
+		if(!empty($customer_info->company_name))	//TODO: this needs to be converted to ternary notation.
 		{
-			$customer_name ='[ '.$customer_info->company_name.' ]';
+			$customer_name ='[ '.$customer_info->company_name.' ]';	//TODO: $customer_name isn't used anywhere in this function.
 		}
 		else
 		{
@@ -1871,4 +1866,3 @@ class Reports extends Secure_Controller
 		return $subtitle;
 	}
 }
-?>

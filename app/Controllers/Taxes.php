@@ -384,7 +384,7 @@ class Taxes extends Secure_Controller
 			'tax_rounding_code' => $this->request->getPost('tax_rounding_code')
 		];
 
-		if($this->tax->save($tax_rate_data, $tax_rate_id))
+		if($this->tax->save_value($tax_rate_data, $tax_rate_id))
 		{
 			if($tax_rate_id == -1)	//TODO: Replace -1 with constant
 			{//TODO: this needs to be replaced with ternary notation

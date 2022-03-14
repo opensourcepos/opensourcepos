@@ -5,6 +5,7 @@ namespace App\Models;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use app\Libraries\Sale_lib;
+use ReflectionException;
 
 /**
  * Sale class
@@ -416,7 +417,7 @@ class Sale extends Model
 	/**
 	 * Gets search suggestions
 	 */
-	public function get_search_suggestions(string $search, int $limit = 25): array
+	public function get_search_suggestions(string $search, int $limit = 25): array	//TODO: $limit is never used.
 	{
 		$suggestions = [];
 
@@ -536,7 +537,7 @@ class Sale extends Model
 	/**
 	 * Update sale
 	 */
-	public function update(int $sale_id, array $sale_data, array $payments): bool
+	public function update($sale_id = NULL, array $sale_data = NULL, array $payments = NULL): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -607,8 +608,9 @@ class Sale extends Model
 	/**
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
+	 * @throws ReflectionException
 	 */
-	public function save(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
+	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
 							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
 		if($sale_id != -1)
@@ -616,7 +618,7 @@ class Sale extends Model
 			$this->clear_suspended_sale_detail($sale_id);
 		}
 
-		$tax_decimals = tax_decimals();
+		$tax_decimals = tax_decimals();	//TODO: $tax_decimals is never used.
 
 		if(count($items) == 0)	//TODO: ===
 		{
@@ -659,7 +661,7 @@ class Sale extends Model
 		{
 			if(!empty(strstr($payment['payment_type'], lang('Sales.giftcard'))))
 			{
-				// We have a gift card and we have to deduct the used value from the total value of the card.
+				// We have a gift card, and we have to deduct the used value from the total value of the card.
 				$splitpayment = explode( ':', $payment['payment_type'] );	//TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
 				$cur_giftcard_value = $this->giftcard->get_giftcard_value( $splitpayment[1] );	//TODO: this should be refactored to $current_giftcard_value
 				$this->giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
@@ -690,7 +692,7 @@ class Sale extends Model
 
 		$customer = $this->customer->get_info($customer_id);
 
-		foreach($items as $line=>$item)
+		foreach($items as $line => $item)
 		{
 			$cur_item_info = $this->item->get_info($item['item_id']);
 
@@ -747,7 +749,7 @@ class Sale extends Model
 					'trans_inventory' => -$item['quantity']
 				];
 
-				$this->inventory->insert($inv_data);	//TODO: Reflection exception needs to be caught if we keep the same inheritance in the insert function.
+				$this->inventory->insert($inv_data);
 			}
 
 			$this->attribute->copy_attribute_links($item['item_id'], 'sale_id', $sale_id);
@@ -856,6 +858,7 @@ class Sale extends Model
 
 	/**
 	 * Deletes list of sales
+	 * @throws ReflectionException
 	 */
 	public function delete_list(array $sale_ids, int $employee_id, bool $update_inventory = TRUE): bool
 	{
@@ -863,7 +866,7 @@ class Sale extends Model
 
 		foreach($sale_ids as $sale_id)
 		{
-			$result &= $this->delete($sale_id, $employee_id, $update_inventory);
+			$result &= $this->delete($sale_id, FALSE, $update_inventory, $employee_id);
 		}
 
 		return $result;
@@ -886,8 +889,9 @@ class Sale extends Model
 	 * Delete sale.  Hard deletes are not supported for sales transactions.
 	 * When a sale is "deleted" it is simply changed to a status of canceled.
 	 * However, if applicable the inventory still needs to be updated
+	 * @throws ReflectionException
 	 */
-	public function delete(int $sale_id, int $employee_id, bool $update_inventory = TRUE): bool
+	public function delete($sale_id = NULL, bool $purge = FALSE, bool $update_inventory = TRUE, $employee_id = null): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -915,7 +919,7 @@ class Sale extends Model
 						'trans_inventory' => $item['quantity_purchased']
 					];
 					// update inventory
-					$this->inventory->insert($inv_data);		//TODO: Probably need a try/catch for the reflection exception if we keep the inheritance of insert()
+					$this->inventory->insert($inv_data);
 
 					// update quantities
 					$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
@@ -1038,7 +1042,7 @@ class Sale extends Model
 	/**
 	 * Gets sale customer name
 	 */
-	public function get_customer(int $sale_id)
+	public function get_customer(int $sale_id): object
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1156,7 +1160,7 @@ class Sale extends Model
 
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-		if($this4get('tax_included'))	//TODO: This variable is never defined
+		if(config('OSPOS')->tax_included)
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $internal_tax";
@@ -1496,9 +1500,8 @@ class Sale extends Model
 
 				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used];
 
-				$this->rewards->save($rewards_data);		//TODO: probably should wrap this in a try/catch if we are going to keep the inheritance.
+				$this->rewards->save_value($rewards_data);
 			}
 		}
 	}
 }
-?>

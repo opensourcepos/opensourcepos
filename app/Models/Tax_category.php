@@ -99,7 +99,7 @@ class Tax_category extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(array &$tax_category_data, bool $tax_category_id = FALSE): bool
+	public function save_value(array &$tax_category_data, bool $tax_category_id = FALSE): bool
 	{
 		$builder = $this->db->table('tax_categories');
 
@@ -138,7 +138,7 @@ class Tax_category extends Model
 				'deleted' => '0'
 			];
 
-			$this->save($tax_category_data, $value['tax_category_id']);
+			$this->save_value($tax_category_data, $value['tax_category_id']);
 
 			if($value['tax_category_id'] == -1)	//TODO: -1 should be converted into a constant for code readability.  Perhaps NO_TAX_CATEGORY?
 			{
@@ -168,7 +168,7 @@ class Tax_category extends Model
 	/**
 	 * Soft delete a specific row
 	 */
-	public function delete(int $tax_category_id = null, bool $purge = false): bool
+	public function delete($tax_category_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('tax_categories');
 		$builder->where('tax_category_id', $tax_category_id);
@@ -261,4 +261,3 @@ class Tax_category extends Model
 		];
 	}
 }
-?>

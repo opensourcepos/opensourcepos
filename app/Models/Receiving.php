@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use ReflectionException;
 
 /**
  * Receiving class
@@ -70,7 +71,10 @@ class Receiving extends Model
 		return $builder->update($receiving_data);
 	}
 
-	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int
+	/**
+	 * @throws ReflectionException
+	 */
+	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
 		if(count($items) == 0)
 		{
@@ -93,7 +97,7 @@ class Receiving extends Model
 		$builder->insert($receivings_data);
 		$receiving_id = $this->db->insertID();
 
-		foreach($items as $line=>$item)
+		foreach($items as $line => $item)
 		{
 			$cur_item_info = $this->item->get_info($item['item_id']);
 
@@ -158,6 +162,9 @@ class Receiving extends Model
 		return $receiving_id;
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function delete_list(array $receiving_ids, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		$success = TRUE;
@@ -167,7 +174,7 @@ class Receiving extends Model
 
 		foreach($receiving_ids as $receiving_id)
 		{
-			$success &= $this->delete($receiving_id, $employee_id, $update_inventory);
+			$success &= $this->delete_value($receiving_id, $employee_id, $update_inventory);
 		}
 
 		// execute transaction
@@ -178,7 +185,10 @@ class Receiving extends Model
 		return $success;
 	}
 
-	public function delete(int $receiving_id, int $employee_id, bool $update_inventory = TRUE): bool
+	/**
+	 * @throws ReflectionException
+	 */
+	public function delete_value(int $receiving_id, int $employee_id, bool $update_inventory = TRUE): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -200,7 +210,7 @@ class Receiving extends Model
 					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				];
 				// update inventory
-				$this->inventory->insert($inv_data);	//TODO: Reflection exception
+				$this->inventory->insert($inv_data);
 
 				// update quantities
 				$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
@@ -229,7 +239,7 @@ class Receiving extends Model
 		return $builder->get();
 	}
 	
-	public function get_supplier(int $receiving_id)
+	public function get_supplier(int $receiving_id): object
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -310,4 +320,3 @@ class Receiving extends Model
 		$this->db->query($sql);
 	}
 }
-?>

@@ -615,7 +615,7 @@ class Config extends Secure_Controller
 				foreach ($value as $location_id => $location_name)
 				{
 					$location_data = ['location_name' => $location_name];
-					if($this->stock_location->save($location_data, $location_id))	//TODO: Reflection Exception
+					if($this->stock_location->save_value($location_data, $location_id))
 					{
 						$location_id = $this->stock_location->get_location_id($location_name);
 						$not_to_delete[] = $location_id;

@@ -99,7 +99,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
+	public function save_value(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
@@ -139,7 +139,7 @@ class Tax_jurisdiction extends Model
 				'cascade_sequence' => $value['cascade_sequence'],
 				'deleted' => '0'];
 
-			$this->save($tax_jurisdiction_data, $value['jurisdiction_id']);
+			$this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
 
 			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant. Also === ?.  Also replace this with ternary notation.
 			{
@@ -247,4 +247,3 @@ class Tax_jurisdiction extends Model
 		];
 	}
 }
-?>

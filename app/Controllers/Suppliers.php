@@ -181,4 +181,3 @@ class Suppliers extends Persons
 		}
 	}
 }
-?>

@@ -74,7 +74,7 @@ class Tax_jurisdictions extends Secure_Controller
 			'reporting_authority' => $this->request->getPost('reporting_authority')
 		];
 
-		if($this->tax_jurisdiction->save($tax_jurisdiction_data))
+		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))
 		{
 			if($jurisdiction_id == -1)	//TODO: Replace -1 with constant
 			{

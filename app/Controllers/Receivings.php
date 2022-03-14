@@ -201,7 +201,7 @@ class Receivings extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 	
-	public function delete($receiving_id = -1, $update_inventory = TRUE) : void
+	public function delete(int $receiving_id = -1, bool $update_inventory = TRUE) : void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids') : [$receiving_id];	//TODO: Replace -1 with constant

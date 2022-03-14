@@ -72,7 +72,7 @@ class Tax_categories extends Secure_Controller
 			'tax_group_sequence' => $this->request->getPost('tax_group_sequence')
 		];
 
-		if($this->tax_category->save($tax_category_data, $tax_category_id))
+		if($this->tax_category->save_value($tax_category_data, $tax_category_id))
 		{
 			// New tax_category_id
 			if($tax_category_id == -1)	//TODO: Need to replace -1 with constant
