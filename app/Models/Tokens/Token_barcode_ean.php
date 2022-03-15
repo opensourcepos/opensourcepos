@@ -17,4 +17,3 @@ class Token_barcode_ean extends Token
         return '\w';
     }
 }
-?>

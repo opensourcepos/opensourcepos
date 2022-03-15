@@ -27,4 +27,3 @@ class Token_suspended_invoice_count extends Token
 		return $this->sale->get_suspended_invoice_count();
 	}
 }
-?>

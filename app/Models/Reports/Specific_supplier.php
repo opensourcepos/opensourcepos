@@ -158,4 +158,3 @@ class Specific_supplier extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>

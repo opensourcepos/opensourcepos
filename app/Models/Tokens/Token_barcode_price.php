@@ -17,4 +17,3 @@ class Token_barcode_price extends Token
         return '\d';
     }
 }
-?>

@@ -47,4 +47,3 @@ class Inventory_low extends Report
 		return [];
 	}
 }
-?>

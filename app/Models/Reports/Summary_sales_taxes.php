@@ -15,9 +15,9 @@ class Summary_sales_taxes extends Summary_report
 		];
 	}
 
-	protected function _where(array $inputs): void	//TODO: hungarian notation
+	protected function _where(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
-		$builder->where('sales.sale_status', COMPLETED);	//TODO: This no longer works... likely need to pass $this->builder by reference
+		$builder->where('sales.sale_status', COMPLETED);
 
 		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Duplicated code
 		{
@@ -56,4 +56,3 @@ class Summary_sales_taxes extends Summary_report
 		return $query->getResultArray();
 	}
 }
-?>

@@ -34,9 +34,8 @@ class Summary_discounts extends Summary_report
 
 		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
-		$this->_where($inputs);	//TODO: Hungarian notation
+		$this->_where($inputs, $builder);	//TODO: Hungarian notation
 
 		return $builder->get()->getResultArray();
 	}
 }
-?>

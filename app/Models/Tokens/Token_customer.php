@@ -43,7 +43,6 @@ class Token_customer extends Token
 			}
 		}
 
-		return $value;	//TODO: $value is neither declared nor set
+		return $value;	//TODO: $value is neither declared nor set. If it gets here that means that either the $customer_id = -1 or $this->customer_info is empty or $customer_info inside the if statement above is ''
 	}
 }
-?>

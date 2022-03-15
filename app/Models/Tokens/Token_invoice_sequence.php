@@ -3,6 +3,7 @@
 namespace App\Models\Tokens;
 
 use app\Models\Appconfig;
+use ReflectionException;
 
 /**
  * Token_invoice_sequence class
@@ -22,9 +23,11 @@ class Token_invoice_sequence extends Token
 		return 'ISEQ';
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function get_value(): string
 	{
 		return $this->appconfig->acquire_save_next_invoice_sequence();
 	}
 }
-?>

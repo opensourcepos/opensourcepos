@@ -15,8 +15,7 @@ class Summary_taxes extends Summary_report
 		];
 	}
 
-	//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-	protected function _where(array $inputs): void	//TODO: hungarian notation
+	protected function _where(array $inputs, &$builder): void	//TODO: hungarian notation
 	{
 		$builder->where('sales.sale_status', COMPLETED);
 
@@ -86,4 +85,3 @@ class Summary_taxes extends Summary_report
 		return $query->getResultArray();
 	}
 }
-?>

@@ -192,4 +192,3 @@ class Specific_employee extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>

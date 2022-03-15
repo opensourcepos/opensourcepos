@@ -18,10 +18,9 @@ class Summary_customers extends Summary_report
 		];
 	}
 
-	protected function _select(array $inputs): void	//TODO: Hungarian notation
+	protected function _select(array $inputs, object &$builder): void	//TODO: Hungarian notation
 	{
-		parent::_select($inputs);	//TODO: Hungarian notation
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+		parent::_select($inputs, $builder);	//TODO: Hungarian notation
 
 		$builder->select('
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
@@ -30,17 +29,16 @@ class Summary_customers extends Summary_report
 		');
 	}
 
-	protected function _from(): void	//TODO: Hungarian notation
+	protected function _from(object &$builder): void	//TODO: Hungarian notation
 	{
-		parent::_from();	//TODO: Hungarian notation
+		parent::_from($builder);	//TODO: Hungarian notation
 
 		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
 	}
 
-	protected function _group_order(): void	//TODO: Hungarian notation
+	protected function _group_order(object &$builder): void	//TODO: Hungarian notation
 	{
 		$builder->groupBy('sales.customer_id');
 		$builder->orderBy('customer_p.last_name');
 	}
 }
-?>

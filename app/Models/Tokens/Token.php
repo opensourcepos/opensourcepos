@@ -51,7 +51,7 @@ abstract class Token Extends Model
 		return $this->token_id() == $token_id;
 	}
 
-	function replace(string $text): string	//TODO: This function declaration doesn't match the parent signature
+	function replace_token(string $text): string
 	{
 		if(strstr($text, $this->token_id()))
 		{
@@ -61,4 +61,3 @@ abstract class Token Extends Model
 		return $text;
 	}
 }
-?>

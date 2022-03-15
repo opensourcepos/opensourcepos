@@ -48,7 +48,7 @@ class Inventory_summary extends Report
 		$builder->where('items.stock_type', 0);
 		$builder->where('stock_locations.deleted', 0);
 
-		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
+		// should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns...
 		if($inputs['item_count'] == 'zero_and_less')
 		{
 			$builder->where('item_quantities.quantity <=', 0);
@@ -110,4 +110,3 @@ class Inventory_summary extends Report
 		];
 	}
 }
-?>

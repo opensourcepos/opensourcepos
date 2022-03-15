@@ -17,4 +17,3 @@ class Token_barcode_weight extends Token
         return '\d';
     }
 }
-?>

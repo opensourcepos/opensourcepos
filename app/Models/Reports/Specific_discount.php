@@ -197,4 +197,3 @@ class Specific_discount extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>

@@ -7,7 +7,7 @@ abstract class Summary_report extends Report
 	/**
 	 * Private interface implementing the core basic functionality for all reports
 	 */
-	private function __common_select(array $inputs): void	//TODO: Hungarian notation
+	private function __common_select(array $inputs, &$builder): void	//TODO: Hungarian notation
 	{
 		$where = '';	//TODO: Duplicated code
 
@@ -98,7 +98,7 @@ abstract class Summary_report extends Report
 		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 	}
 
-	private function __common_where(array $inputs): void
+	private function __common_where(array $inputs, &$builder): void
 	{
 		//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Duplicated code
@@ -156,13 +156,12 @@ abstract class Summary_report extends Report
 	/**
 	 * Protected class interface implemented by derived classes where required
 	 */
-
 	abstract protected function _get_data_columns(): array;	//TODO: hungarian notation
 
-	protected function _select(array $inputs): void	{ $this->__common_select($inputs); }	//TODO: hungarian notation
-	protected function _from(): void					{ $this->__common_from(); }	//TODO: hungarian notation
-	protected function _where(array $inputs): void	{ $this->__common_where($inputs); }	//TODO: hungarian notation
-	protected function _group_order(): void			{}	//TODO: hungarian notation
+	protected function _select(array $inputs, object &$builder): void { $this->__common_select($inputs, $builder); }	//TODO: hungarian notation
+	protected function _from(object &$builder): void { $this->__common_from(); }	//TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
+	protected function _where(array $inputs, object &$builder): void { $this->__common_where($inputs, $builder); }	//TODO: hungarian notation
+	protected function _group_order(object &$builder): void {}	//TODO: hungarian notation
 
 	/**
 	 * Public interface implementing the base abstract class, 
@@ -177,12 +176,10 @@ abstract class Summary_report extends Report
 
 	public function getData(array $inputs): array
 	{
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-
-		$this->_select($inputs);
-		$this->_from();
-		$this->_where($inputs);
-		$this->_group_order();
+		$this->_select($inputs, $builder);
+		$this->_from($builder);
+		$this->_where($inputs, $builder);
+		$this->_group_order($builder);
 
 		return $builder->get()->getResultArray();
 	}
@@ -190,11 +187,10 @@ abstract class Summary_report extends Report
 	public function getSummaryData(array $inputs): array
 	{
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-		$this->__common_select($inputs);
+		$this->__common_select($inputs, $builder);
 		$this->__common_from();
-		$this->_where($inputs);
+		$this->_where($inputs, $builder);
 
 		return $builder->get()->getRowArray();
 	}
 }
-?>

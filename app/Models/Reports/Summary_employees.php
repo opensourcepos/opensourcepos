@@ -19,9 +19,9 @@ class Summary_employees extends Summary_report
 	}
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
-	protected function _select(array $inputs): void	//TODO: hungarian notation
+	protected function _select(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
-		parent::_select($inputs);
+		parent::_select($inputs, $builder);
 
 		$builder->select('
 				MAX(CONCAT(employee_p.first_name, " ", employee_p.last_name)) AS employee,
@@ -30,17 +30,16 @@ class Summary_employees extends Summary_report
 		');
 	}
 
-	protected function _from(): void	//TODO: hungarian notation
+	protected function _from(object &$builder): void	//TODO: hungarian notation
 	{
-		parent::_from();
+		parent::_from($builder);
 
 		$builder->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
 	}
 
-	protected function _group_order(): void	//TODO: hungarian notation
+	protected function _group_order(object &$builder): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('sales.employee_id');
 		$builder->orderBy('employee_p.last_name');
 	}
 }
-?>

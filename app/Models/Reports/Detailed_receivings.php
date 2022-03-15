@@ -167,4 +167,3 @@ class Detailed_receivings extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>

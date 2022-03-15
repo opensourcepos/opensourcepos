@@ -18,10 +18,10 @@ class Summary_items extends Summary_report
 			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
 		];
 	}
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-	protected function _select(array $inputs): void	//TODO: hungarian notation
+
+	protected function _select(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
-		parent::_select($inputs);	//TODO: hungarian notation
+		parent::_select($inputs, $builder);	//TODO: hungarian notation
 
 		$builder->select('
 				MAX(items.name) AS name,
@@ -31,17 +31,16 @@ class Summary_items extends Summary_report
 		');
 	}
 
-	protected function _from(): void	//TODO: hungarian notation
+	protected function _from(object &$builder): void	//TODO: hungarian notation
 	{
-		parent::_from();
+		parent::_from($builder);
 
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
-	protected function _group_order(): void	//TODO: hungarian notation
+	protected function _group_order(object &$builder): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('items.item_id');
 		$builder->orderBy('name');
 	}
 }
-?>

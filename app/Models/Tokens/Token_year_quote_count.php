@@ -22,4 +22,3 @@ class Token_year_quote_count extends Token
 		return $this->sale->get_quote_number_for_year();
 	}
 }
-?>

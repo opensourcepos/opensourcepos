@@ -3,6 +3,7 @@
 namespace App\Models\Tokens;
 
 use app\Models\Appconfig;
+use ReflectionException;
 
 /**
  * Token_work_order_sequence class
@@ -22,9 +23,11 @@ class Token_work_order_sequence extends Token
 		return 'WSEQ';
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function get_value(): string
 	{
 		return $this->appconfig->acquire_save_next_work_order_sequence();
 	}
 }
-?>

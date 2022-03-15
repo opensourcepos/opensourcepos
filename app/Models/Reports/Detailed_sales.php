@@ -247,4 +247,3 @@ class Detailed_sales extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>

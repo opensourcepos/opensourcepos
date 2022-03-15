@@ -4,7 +4,7 @@ namespace App\Models\Reports;
 
 class Summary_payments extends Summary_report
 {
-	protected function _get_data_columns(): array	//TODO: Hungarian notation
+	protected function _get_data_columns(): array    //TODO: Hungarian notation
 	{
 		return [
 			['trans_group' => lang('Reports.trans_group')],
@@ -19,7 +19,7 @@ class Summary_payments extends Summary_report
 
 	public function getData(array $inputs): array
 	{
-		$cash_payment = lang('Sales.cash');	//TODO: This is never used.  Should it be?
+		$cash_payment = lang('Sales.cash');    //TODO: This is never used.  Should it be?
 
 		$separator[] = [
 			'trans_group' => '<HR>',
@@ -31,15 +31,12 @@ class Summary_payments extends Summary_report
 			'trans_due' => ''
 		];
 
-		$where = '';	//TODO: Duplicated code
+		$where = '';    //TODO: Duplicated code
 
 		//TODO: this needs to be converted to ternary notation
-		if(empty(config('OSPOS')->date_or_time_format))
-		{
+		if(empty(config('OSPOS')->date_or_time_format)) {
 			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-		}
-		else
-		{
+		} else {
 			$where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
@@ -61,7 +58,7 @@ class Summary_payments extends Summary_report
 		$builder->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
 		$builder->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
 		$builder->where('sales.sale_status', COMPLETED);
-		$this->_where($inputs);
+		$this->_where($inputs, $builder);
 
 		$builder->groupBy('trans_type');
 
@@ -69,10 +66,8 @@ class Summary_payments extends Summary_report
 
 		// At this point in time refunds are assumed to be cash refunds.
 		$total_cash_refund = 0;
-		foreach($sales as $key => $sale_summary)
-		{
-			if($sale_summary['trans_refunded'] <> 0)
-			{
+		foreach($sales as $key => $sale_summary) {
+			if($sale_summary['trans_refunded'] <> 0) {
 				$total_cash_refund += $sale_summary['trans_refunded'];
 			}
 		}
@@ -89,7 +84,7 @@ class Summary_payments extends Summary_report
 		$builder->select($select);
 		$builder->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id', 'left outer');
 		$builder->where('sales.sale_status', COMPLETED);
-		$this->_where($inputs);
+		$this->_where($inputs, $builder);
 
 		$builder->groupBy('sales_payments.payment_type');
 
@@ -98,11 +93,9 @@ class Summary_payments extends Summary_report
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
-		foreach($payments as $key => $payment)
-		{
-			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== FALSE)
-			{
-				$gift_card_count  += $payment['trans_sales'];
+		foreach($payments as $key => $payment) {
+			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== FALSE) {
+				$gift_card_count += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
 
 				// Remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
@@ -110,8 +103,7 @@ class Summary_payments extends Summary_report
 			}
 		}
 
-		if($gift_card_count > 0)
-		{
+		if($gift_card_count > 0) {
 			$payments[] = [
 				'trans_group' => lang('Reports.trans_payments'),
 				'trans_type' => lang('Sales.giftcard'),
@@ -149,7 +141,7 @@ class Summary_payments extends Summary_report
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_items_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(
-				SELECT sales.sale_id, '. $trans_amount
+				SELECT sales.sale_id, ' . $trans_amount
 			. ' FROM ' . $this->db->prefixTable('sales') . ' AS sales '
 			. 'LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items '
 			. 'ON sales.sale_id = sales_items.sale_id '
@@ -179,4 +171,3 @@ class Summary_payments extends Summary_report
 		);
 	}
 }
-?>

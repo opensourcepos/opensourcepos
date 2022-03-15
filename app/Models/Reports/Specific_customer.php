@@ -210,4 +210,3 @@ class Specific_customer extends Report
 		return $builder->get()->getRowArray();
 	}
 }
-?>
