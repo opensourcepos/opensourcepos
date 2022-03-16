@@ -37,16 +37,15 @@ class Cashups extends Secure_Controller
 
 	public function search(): void
 	{
-		$cash_up = 0;	//TODO: Variable is declared but never used.
-		$search   = $this->request->getGet('search');
-		$limit    = $this->request->getGet('limit');
-		$offset   = $this->request->getGet('offset');
-		$sort     = $this->request->getGet('sort');
-		$order    = $this->request->getGet('order');
-		$filters  = [
-					 'start_date' => $this->request->getGet('start_date'),
-					 'end_date' => $this->request->getGet('end_date'),
-					 'is_deleted' => FALSE
+		$search = $this->request->getGet('search');
+		$limit = $this->request->getGet('limit');
+		$offset = $this->request->getGet('offset');
+		$sort = $this->request->getGet('sort');
+		$order = $this->request->getGet('order');
+		$filters = [
+			 'start_date' => $this->request->getGet('start_date'),
+			 'end_date' => $this->request->getGet('end_date'),
+			 'is_deleted' => FALSE
 		];
 
 		// check if any filter is set in the multiselect dropdown
@@ -245,8 +244,8 @@ class Cashups extends Secure_Controller
 	}
 
 	/**
-	* AJAX call from cashup input form to calculate the total
-	*/
+	 * AJAX call from cashup input form to calculate the total. Called in the view.
+	 */
 	public function ajax_cashup_total(): void
 	{
 		$open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
@@ -269,4 +268,3 @@ class Cashups extends Secure_Controller
 		return ($closed_amount_cash - $open_amount_cash - $transfer_amount_cash + $closed_amount_due + $closed_amount_card + $closed_amount_check);
 	}
 }
-?>

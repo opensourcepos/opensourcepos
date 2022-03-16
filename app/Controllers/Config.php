@@ -24,8 +24,6 @@ use NumberFormatter;
 use ReflectionException;
 
 /**
- *
- *
  * @property barcode_lib barcode_lib
  * @property mailchimp_lib mailchimp_lib
  * @property receiving_lib receiving_lib
@@ -42,7 +40,6 @@ use ReflectionException;
  * @property stock_location stock_location
  * @property tax tax
  * @property upload upload
- * 
  */
 class Config extends Secure_Controller
 {

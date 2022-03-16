@@ -3,10 +3,12 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -19,8 +21,7 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  *
- * @property db db
- *
+ * @property BaseConnection db
  */
 
 class BaseController extends Controller
@@ -46,7 +47,7 @@ class BaseController extends Controller
 	 *
 	 * @param RequestInterface  $request
 	 * @param ResponseInterface $response
-	 * @param LoggerInterface   $logger
+	 * @param LoggerInterface   $logger	//TODO: Need to sort this out. Multiple definitions exist for class 'LoggerInterface'
 	 */
 	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
 	{
@@ -57,6 +58,6 @@ class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
-		$this->db = \Config\Database::connect(); //Load database connection
+		$this->db = Database::connect();
 	}
 }

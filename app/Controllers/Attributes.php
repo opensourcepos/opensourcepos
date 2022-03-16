@@ -46,10 +46,8 @@ class Attributes extends Secure_Controller
 		foreach($attributes->getResult() as $attribute)
 		{
 			$attribute->definition_flags = $this->get_attributes($attribute->definition_flags);
-			$data_rows[] = get_attribute_definition_data_row($attribute, $this);
+			$data_rows[] = get_attribute_definition_data_row($attribute);
 		}
-
-		$data_rows = $data_rows;
 
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
@@ -194,7 +192,7 @@ class Attributes extends Secure_Controller
 
 	public function delete_value(int $attribute_id): bool	//TODO: This function appears to never be used in the codebase.  Is it needed?
 	{
-		return $this->attribute->delete_value($attribute_id);	//TODO: It wants the required definition_id here... maybe making the definition_id default to NO_DEFINITION_ID when not provided?
+		return $this->attribute->delete_value($attribute_id, NO_DEFINITION_ID);
 	}
 
 	public function delete(): void
