@@ -216,5 +216,3 @@ class Employees extends Persons
 		echo !$exists ? 'true' : 'false';
 	}
 }
-//TODO: PSR-2 Coding standard says that we need to ditch the closing tag when the file only contains PHP
-?>

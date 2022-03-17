@@ -7,12 +7,9 @@ use app\Models\Expense;
 use app\Models\Reports\Summary_payments;
 
 /**
- * 
- * 
  * @property cashup cashup
  * @property expense expense
  * @property summary_payments summary_payments
- * 
  */
 class Cashups extends Secure_Controller
 {

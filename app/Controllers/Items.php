@@ -521,7 +521,7 @@ class Items extends Secure_Controller
 		echo view('attributes/item', $data);
 	}
 
-	public function bulk_edit(): void
+	public function bulk_edit(): void	//TODO: This function may not be called in the code. Need to confirm
 	{
 		$suppliers = ['' => lang('Items.none')];
 
@@ -733,7 +733,7 @@ class Items extends Secure_Controller
 	/*
 	 If adding a new item check to see if an item kit with the same name as the item already exists.
 	 */
-	public function check_kit_exists(): void
+	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
 		if($this->request->getPost('item_number') === NEW_ITEM)
 		{

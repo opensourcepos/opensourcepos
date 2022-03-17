@@ -52,6 +52,9 @@ class Attributes extends Secure_Controller
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function save_attribute_value(): void
 	{
 		$success = $this->attribute->save_value(
@@ -64,6 +67,9 @@ class Attributes extends Secure_Controller
 		echo json_encode(['success' => $success != 0]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function delete_attribute_value(): void
 	{
 		$success = $this->attribute->delete_value(
@@ -74,6 +80,10 @@ class Attributes extends Secure_Controller
 		echo json_encode(['success' => $success]);
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @return void
+	 */
 	public function save_definition(int $definition_id = NO_DEFINITION_ID): void
 	{
 		$definition_flags = 0;
@@ -139,6 +149,10 @@ class Attributes extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @return void
+	 */
 	public function suggest_attribute(int $definition_id): void
 	{
 		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getGet('term'));

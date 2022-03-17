@@ -191,4 +191,3 @@ class Expenses extends Secure_Controller
 		}
 	}
 }
-?>

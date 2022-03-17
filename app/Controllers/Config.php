@@ -39,7 +39,6 @@ use ReflectionException;
  * @property rounding_mode rounding_mode
  * @property stock_location stock_location
  * @property tax tax
- * @property upload upload
  */
 class Config extends Secure_Controller
 {
@@ -60,7 +59,7 @@ class Config extends Secure_Controller
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
 
-		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
+		$this->encryption = new Encryption();
 		$this->encrypter = $this->encryption->initialize();
 	}
 
@@ -142,32 +141,32 @@ class Config extends Secure_Controller
 					{
 						if(is_array($val1))
 						{
-							$license[$i]['text'] .= 'component: ' . $key1 . "\n";	//TODO: Duplicated Code
+							$license[$i]['text'] .= "component: $key1\n";	//TODO: Duplicated Code
 
 							foreach($val1 as $key2 => $val2)
 							{
 								if(is_array($val2))
 								{
-									$license[$i]['text'] .= $key2 . ': ';
+									$license[$i]['text'] .= "$key2: ";
 
 									foreach($val2 as $key3 => $val3)
 									{
-										$license[$i]['text'] .= $val3 . ' ';
+										$license[$i]['text'] .= "$val3 ";
 									}
 
-									$license[$i]['text'] .= "\n";
+									$license[$i]['text'] .= '\n';
 								}
 								else
 								{
-									$license[$i]['text'] .= $key2 . ': ' . $val2 . "\n";
+									$license[$i]['text'] .= "$key2: $val2\n";
 								}
 							}
 
-							$license[$i]['text'] .= "\n";
+							$license[$i]['text'] .= '\n';
 						}
 						else
 						{
-							$license[$i]['text'] .= $key1 . ': ' . $val1 . "\n";
+							$license[$i]['text'] .= "$key1: $val1\n";
 						}
 					}
 				}
@@ -188,28 +187,28 @@ class Config extends Secure_Controller
 			{
 				if(is_array($val))
 				{
-					$license[$i]['text'] .= 'component: ' . $key . "\n";	//TODO: Duplicated Code.
+					$license[$i]['text'] .= "component: $key\n";	//TODO: Duplicated Code.
 
 					foreach($val as $key1 => $val1)
 					{
 						if(is_array($val1))
 						{
-							$license[$i]['text'] .= $key1 . ': ';
+							$license[$i]['text'] .= "$key1: ";
 
 							foreach($val1 as $key2 => $val2)
 							{
-								$license[$i]['text'] .= $val2 . ' ';
+								$license[$i]['text'] .= "$val2 ";
 							}
 
-							$license[$i]['text'] .= "\n";
+							$license[$i]['text'] .= '\n';
 						}
 						else
 						{
-							$license[$i]['text'] .= $key1 . ': ' . $val1 . "\n";
+							$license[$i]['text'] .= "$key1: $val1\n";
 						}
 					}
 
-					$license[$i]['text'] .= "\n";
+					$license[$i]['text'] .= '\n';
 				}
 			}
 		}
@@ -241,6 +240,9 @@ class Config extends Secure_Controller
 		return $themes;
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function index(): void
 	{
 		$data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
@@ -381,6 +383,9 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ajax_check_number_locale(): void
 	{
 		$number_locale = $this->request->getPost('number_locale');
@@ -523,14 +528,16 @@ class Config extends Secure_Controller
 		return $result;
 	}
 
-	/*
-	 AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
+	/**
+	 * AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
+	 *
+	 * @return void
 	 */
 	public function ajax_check_mailchimp_api_key(): void
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
-		$success = count($lists) > 0 ? TRUE : FALSE;	//TODO: This can be replaced with `count($lists) > 0;`
+		$success = count($lists) > 0;
 
 		echo json_encode ([
 			'success' => $success,
@@ -689,6 +696,9 @@ class Config extends Secure_Controller
 		echo json_encode (['success' => $success,'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function save_tax(): void
 	{
 		$this->db->transStart();
@@ -888,20 +898,45 @@ class Config extends Secure_Controller
 
 	private function _handle_logo_upload(): bool    //TODO: Remove hungarian notation.
 	{
-		helper('directory');
+//		helper('directory');
+//
+//		// load upload library
+//		$config = ['upload_path' => './uploads/',
+//			'allowed_types' => 'gif|jpg|png',
+//			'max_size' => '1024',
+//			'max_width' => '800',
+//			'max_height' => '680',
+//			'file_name' => 'company_logo'
+//		];
+//		$this->upload = new Upload($config);	//TODO: Need to find the CI4 equivalent to the upload class. https://codeigniter4.github.io/userguide/installation/upgrade_file_upload.html?highlight=upload
+//		$this->upload->do_upload('company_logo');
+//
+//		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');
 
-		// load upload library
-		$config = ['upload_path' => './uploads/',
-			'allowed_types' => 'gif|jpg|png',
-			'max_size' => '1024',
-			'max_width' => '800',
-			'max_height' => '680',
-			'file_name' => 'company_logo'
+		$validation_rule = [
+			'company_logo' => [
+				'label' => 'Company logo',
+				'rules' => [
+					'uploaded[company_logo]'
+					. 'is_image[company_logo]'
+					. '|max_size[company_logo,1024]'
+					. '|mime_in[company_logo,image/png,image/jpg,image/gif]'
+					. '|ext_in[company_logo,png,jpg,gif]'
+					. '|max_dims[company_logo,800,680'
+				]
+			]
 		];
-		$this->upload = new Upload($config);	//TODO: Need to find the CI4 equivalent to the upload class.
-		$this->upload->do_upload('company_logo');
 
-		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');	//TODO: this should probably be broken up into
+		$this->validate($validation_rule);
+
+		$file = $this->request->getFile('company_logo');
+
+		if(!file->hasMoved())
+		{
+			$file_path = WRITEPATH . 'uploads/';
+			$data = ['uploaded_fileinfo' => new File($file_path)];
+		}
+		return false; //TODO: needs to be replaced with proper values
 	}
 
 	/**
@@ -921,7 +956,7 @@ class Config extends Secure_Controller
 			$config = file_get_contents($config_path);
 
 			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
-			$key = bin2hex($this->encryption->createKey(32));
+			$key = bin2hex($this->encryption->createKey());
 
 			// set the encryption key in the config item
 			$this->appconfig->save(['encryption_key' => $key]);
@@ -941,7 +976,7 @@ class Config extends Secure_Controller
 				$handle = @fopen($config_path, 'w+');
 
 				// Write the file
-				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;	//TODO: This can be replaced with `(fwrite($handle, $config) === FALSE);`
+				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;	//TODO: This can be replaced with `!(fwrite($handle, $config) === FALSE);`
 
 				fclose($handle);
 			}
@@ -961,13 +996,13 @@ class Config extends Secure_Controller
 		if($this->employee->has_module_grant('config', $employee_id))
 		{
 			$this->load->dbutil();	//TODO: CI4 does not have this utility any longer https://forum.codeigniter.com/thread-78658-post-384595.html#pid384595
-
+			//TODO: It appears that CI4 no longer has a built-in utility to dump the database.  Need to use mysqldump probably, so this function needs to be rewritten.
 			$prefs = ['format' => 'zip', 'filename' => 'ospos.sql'];
 
 			$backup = $this->dbutil->backup($prefs);	//TODO: We need a new method for backing up the database.
 
-			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
-			$save = 'uploads/' . $file_name;
+			$file_name = 'ospos-' . date("Y-m-d-H-i-s") . '.zip';
+			$save = "uploads/$file_name";	//TODO: This variable isn't used anywhere.
 			helper('download');
 			while(ob_get_level())
 			{
@@ -982,4 +1017,3 @@ class Config extends Secure_Controller
 		}
 	}
 }
-?>
