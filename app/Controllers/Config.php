@@ -19,6 +19,7 @@ use app\Models\Tax;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\Files\File;
 use DirectoryIterator;
 use NumberFormatter;
 use ReflectionException;
@@ -298,7 +299,7 @@ class Config extends Secure_Controller
 	public function save_info(): void
 	{
 		$upload_success = $this->_handle_logo_upload();
-		$upload_data = $this->upload->data();
+		$upload_data = $this->upload->data();	//TODO: This needs to be upgraded to CI4 style
 
 		$batch_save_data = [
 			'company' => $this->request->getPost('company'),
@@ -312,8 +313,7 @@ class Config extends Secure_Controller
 
 		if(!empty($upload_data['orig_name']))
 		{
-			// XSS file image sanity check
-			if($upload_data['raw_name'] === TRUE)
+			if($upload_data['raw_name'] === TRUE)	//TODO: This and the parent if statement can be merged.
 			{
 				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 			}
@@ -322,7 +322,7 @@ class Config extends Secure_Controller
 		$result = $this->appconfig->batch_save($batch_save_data);
 		$success = $upload_success && $result;
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
-		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
+		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());	//TODO: upgrade this to the CI4 style
 
 		echo json_encode(['success' => $success, 'message' => $message]);
 	}
@@ -931,7 +931,7 @@ class Config extends Secure_Controller
 
 		$file = $this->request->getFile('company_logo');
 
-		if(!file->hasMoved())
+		if(!$file->hasMoved())
 		{
 			$file_path = WRITEPATH . 'uploads/';
 			$data = ['uploaded_fileinfo' => new File($file_path)];

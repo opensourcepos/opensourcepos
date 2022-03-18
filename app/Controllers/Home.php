@@ -85,4 +85,3 @@ class Home extends Secure_Controller
 		}
 	}
 }
-?>

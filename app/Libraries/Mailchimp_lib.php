@@ -65,9 +65,9 @@ class MailchimpConnector
 	 * @param string $httpVerb The HTTP method to be used
 	 * @param string $method The API method to call, e.g. 'lists/list'
 	 * @param array $args An array of arguments to pass to the method. Will be json-encoded for you.
-	 * @return bool Associative array of json decoded API response.
+	 * @return array|bool Associative array of json decoded API response or false on error.
 	 */
-	public function call($httpVerb = 'POST', $method, $args = []): bool	//TODO: The optional parameters must be last, not first.
+	public function call($httpVerb = 'POST', $method, $args = [])	//TODO: The optional parameters must be last, not first.
 	{
 		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{
@@ -99,9 +99,9 @@ class MailchimpConnector
 	 * @param string $httpVerb The HTTP method to be used
 	 * @param string $method The API method to be called
 	 * @param array $args Assoc array of parameters to be passed
-	 * @return bool Assoc array of decoded result
+	 * @return bool|array Assoc array of decoded result or False
 	 */
-	private function _request(string $httpVerb, string $method, array $args = []): bool	//TODO: Hungarian notation
+	private function _request(string $httpVerb, string $method, array $args = [])	//TODO: Hungarian notation
 	{
 		$result = FALSE;
 
@@ -236,17 +236,14 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	/**
 	* Gets activity related to a member of a MailChimp list.
 	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
+	* @param string $list_id The ID of the list.
+	* @param string $email The member's email address.
+	* @param array $parameters Associative array of optional request parameters.
+	* @return array|bool Associative array of results or false.
 	*
 	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
 	*/
-	public function getMemberActivity(string $list_id, string $email, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
+	public function getMemberActivity(string $list_id, string $email, array $parameters = [])	//TODO: This function name does not follow naming conventions.
 	{
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members/' . md5(strtolower($email)) . '/activity', $parameters);	//TODO: Hungarian notation
 	}

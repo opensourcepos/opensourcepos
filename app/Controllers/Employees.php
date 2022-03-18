@@ -75,7 +75,6 @@ class Employees extends Persons
 		$modules = [];
 		foreach($this->module->get_all_modules()->getResult() as $module)
 		{
-			$module->module_id = $module->module_id;
 			$module->grant = $this->employee->has_grant($module->module_id, $person_info->person_id);
 			$module->menu_group = $this->employee->get_menu_group($module->module_id, $person_info->person_id);
 
@@ -86,7 +85,6 @@ class Employees extends Persons
 		$permissions = [];
 		foreach($this->module->get_all_subpermissions()->getResult() as $permission)	//TODO: subpermissions does not follow naming standards.
 		{
-			$permission->module_id = $permission->module_id;
 			$permission->permission_id = str_replace(' ', '_', $permission->permission_id);
 			$permission->grant = $this->employee->has_grant($permission->permission_id, $person_info->person_id);
 
@@ -210,6 +208,10 @@ class Employees extends Persons
 		}
 	}
 
+	/**
+	 * @param $employee_id
+	 * @return void
+	 */
 	public function check_username($employee_id): void
 	{
 		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));

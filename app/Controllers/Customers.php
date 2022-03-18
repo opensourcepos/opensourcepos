@@ -155,7 +155,7 @@ class Customers extends Persons
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
-		$tax_code_id = $tax_code_info->tax_code_id;
+		$tax_code_id = $tax_code_info->tax_code_id;	//TODO: This variable is never used after this.
 
 		if($tax_code_info->tax_code != NULL)
 		{
@@ -252,9 +252,9 @@ class Customers extends Persons
 		echo view("customers/form", $data);
 	}
 
-	/*
-	Inserts/updates a customer
-	*/
+	/**
+	 * Inserts/updates a customer
+	 */
 	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$first_name = $this->request->getPost('first_name');
@@ -501,4 +501,3 @@ class Customers extends Persons
 		}
 	}
 }
-?>
