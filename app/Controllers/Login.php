@@ -24,19 +24,19 @@ class Login extends BaseController
 		}
 		else
 		{
-			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');	//TODO: Form Validation needs to be upgraded https://codeigniter4.github.io/CodeIgniter4/installation/upgrade_validations.html
+			$this->validator->set_error_delimiters('<div class="error">', '</div>');	//TODO: Form Validation needs to be upgraded https://codeigniter4.github.io/CodeIgniter4/installation/upgrade_validations.html
 
-			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
+			$this->validator->setRule('username', 'lang:login_username', 'required|callback_login_check');	//TODO: There are no callbacks in CI4 form validation so we need to convert that.
 
 
 			if(config('OSPOS')->gcaptcha_enable)
 			{
-				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
+				$this->validator->setRule('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
 			}
 
-			if($this->form_validation->run() == FALSE)
+			if (!$this->validate([]))
 			{
-				echo view('login');
+				echo view('login', ['validation' => $this->validator,]);
 			}
 			else
 			{
@@ -45,13 +45,19 @@ class Login extends BaseController
 		}
 	}
 
+	/**
+	 * Checks to make sure that the user is logged in or not.  Called in a validator callback.
+	 *
+	 * @param string $username
+	 * @return bool
+	 */
 	public function login_check(string $username): bool
 	{
 		$password = $this->request->getPost('password');
 
 		if(!$this->_installation_check())	//TODO: Hungarian notation
 		{
-			$this->form_validation->set_message('login_check', lang('Login.invalid_installation'));
+			$this->validator->set_message('login_check', lang('Login.invalid_installation'));
 
 			return FALSE;
 		}
@@ -61,7 +67,7 @@ class Login extends BaseController
 
 		if(!$this->employee->login($username, $password))
 		{
-			$this->form_validation->set_message('login_check', lang('Login.invalid_username_and_password'));
+			$this->validator->set_message('login_check', lang('Login.invalid_username_and_password'));
 
 			return FALSE;
 		}
@@ -69,6 +75,12 @@ class Login extends BaseController
 		return TRUE;
 	}
 
+	/**
+	 * Processes gCaptcha response and returns result. Called in a validator callback.
+	 *
+	 * @param string $recaptchaResponse
+	 * @return bool
+	 */
 	public function gcaptcha_check(string $recaptchaResponse): bool
 	{
 		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . config('OSPOS')->gcaptcha_secret_key . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
@@ -123,4 +135,3 @@ class Login extends BaseController
 		return $result;
 	}
 }
-?>

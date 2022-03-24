@@ -162,6 +162,7 @@ class Receiving extends Model
 		return $receiving_id;
 	}
 
+
 	/**
 	 * @throws ReflectionException
 	 */

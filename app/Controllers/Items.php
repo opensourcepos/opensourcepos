@@ -1194,6 +1194,7 @@ class Items extends Secure_Controller
 		{
 			return FALSE;
 		}
+
 		return $attribute_id;
 	}
 

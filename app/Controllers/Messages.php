@@ -58,7 +58,13 @@ class Messages extends Secure_Controller
 			echo json_encode (['success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . $phone]);
 		}
 	}
-	
+
+	/**
+	 * Sends an SMS message to a user. Called in the view.
+	 *
+	 * @param int $person_id
+	 * @return void
+	 */
 	public function send_form(int $person_id = -1): void	//TODO: Replace -1 with a constant
 	{	
 		$phone   = $this->request->getPost('phone');
@@ -84,4 +90,3 @@ class Messages extends Secure_Controller
 		}
 	}
 }
-?>

@@ -5,10 +5,7 @@ namespace App\Controllers;
 use app\Models\Employee;
 
 /**
- *
- *
  * @property employee employee
- *
  */
 class Office extends Secure_Controller
 {
@@ -29,4 +26,3 @@ class Office extends Secure_Controller
 		$this->employee->logout();
 	}
 }
-?>

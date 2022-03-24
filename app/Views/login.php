@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var object $validation
+ */
+?>
+
 <!doctype html>
 <html lang="<?php echo current_language_code() ?>">
 
@@ -32,9 +38,9 @@
       <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
 				<?php echo form_open('login') ?>
         <h3 class="text-center m-0"><?php echo lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
-        <?php if (validation_errors()): ?>
+        <?php if ($validation->hasError()): ?>
         <div class="alert alert-danger mt-3">
-          <?php echo validation_errors() ?>
+          <?php echo $validation->listErrors() ?>
         </div>
         <?php endif; ?>
 				<?php if (!$this->migration->is_latest()): ?>

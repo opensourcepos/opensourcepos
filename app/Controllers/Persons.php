@@ -5,10 +5,7 @@ namespace App\Controllers;
 use app\Models\Person;
 
 /**
- *
- *
  * @property person person
- *
  */
 abstract class Persons extends Secure_Controller
 {
@@ -56,9 +53,8 @@ abstract class Persons extends Secure_Controller
 	 *
 	 * returns John O'Grady-Smith
 	 */
-	protected function nameize(string $string): string	//TODO: The parameter should not be named $string.  Should also think about renaming the function.  The term is Proper Noun Capitalization, so perhaps something more reflective of that.
+	protected function nameize(string $string): string    //TODO: The parameter should not be named $string.  Should also think about renaming the function.  The term is Proper Noun Capitalization, so perhaps something more reflective of that.
 	{
 		return str_name_case($string);
 	}
 }
-?>

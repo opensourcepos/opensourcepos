@@ -5,10 +5,10 @@ namespace App\Controllers;
 use app\Models\Module;
 
 /**
- *
+ * Part of the grants mechanism to restrict access to modules that the user doesn't have permission for.
+ * Instantiated in the views.
  *
  * @property module module
- *
  */
 class No_Access extends BaseController
 {
@@ -24,4 +24,3 @@ class No_Access extends BaseController
 		echo view('no_access', $data);
 	}
 }
-?>

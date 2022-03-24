@@ -82,7 +82,7 @@ if (isset($success))
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label for="item", class='control-label'>
+					<label for="item" class='control-label'>
 						<?php
 						if($mode=='receive' or $mode=='requisition')
 						{
@@ -320,7 +320,7 @@ if (isset($success))
 			</table>
 			
 			<?php echo anchor(
-					$controller_name."/remove_supplier",
+					"$controller_name/remove_supplier",
 					'<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Common.remove').' '.lang('Suppliers.supplier'),
 						[
 							'class' => 'btn btn-danger btn-sm',

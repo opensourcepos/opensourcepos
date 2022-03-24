@@ -11,6 +11,7 @@ use app\Models\Item_kit;
 use app\Models\Receiving;
 use app\Models\Stock_location;
 use app\Models\Supplier;
+use ReflectionException;
 
 /**
  * @property receiving_lib receiving_lib
@@ -46,26 +47,34 @@ class Receivings extends Secure_Controller
 		$this->_reload();
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function item_search(): void
 	{
 		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-			$suggestions = $suggestions;	//TODO: needed?
-
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function stock_item_search(): void
 	{
 		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term')));
 
-			$suggestions = $suggestions;	//TODO: needed?
-
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function select_supplier(): void
 	{
 		$supplier_id = $this->request->getPost('supplier');
@@ -103,6 +112,10 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->set_comment($this->request->getPost('comment'));
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function set_print_after_sale(): void
 	{
 		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale'));
@@ -141,13 +154,19 @@ class Receivings extends Secure_Controller
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
+	/**
+	 * Called in the view.
+	 *
+	 * @param $item_id
+	 * @return void
+	 */
 	public function edit_item($item_id): void
 	{
 		$data = [];
 
-		$this->form_validation->set_rules('price', 'lang:items_price', 'required|callback_numeric');	//TODO: need to upgrade form_validation
-		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
-		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|callback_numeric');
+		$this->validator->setRule('price', 'lang:items_price', 'required|callback_numeric');	//TODO: need to upgrade form_validation.  There is no callback in the validator in CI4, so we need to figure out how to do this.
+		$this->validator->setRule('quantity', 'lang:items_quantity', 'required|callback_numeric');
+		$this->validator->setRule('discount', 'lang:items_discount', 'required|callback_numeric');
 
 		$description = $this->request->getPost('description');	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber');
@@ -158,7 +177,7 @@ class Receivings extends Secure_Controller
 
 		$receiving_quantity = $this->request->getPost('receiving_quantity');
 
-		if($this->form_validation->run() != FALSE)	//TODO Form validation
+		if(!$this->validate([]))
 		{
 			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity);
 		}
@@ -194,19 +213,28 @@ class Receivings extends Secure_Controller
 		echo view('receivings/form', $data);
 	}
 
+	/**
+	 * Called in the view.
+	 *
+	 * @param $item_number
+	 * @return void
+	 */
 	public function delete_item($item_number): void
 	{
 		$this->receiving_lib->delete_item($item_number);
 
 		$this->_reload();	//TODO: Hungarian notation
 	}
-	
+
+	/**
+	 * @throws ReflectionException
+	 */
 	public function delete(int $receiving_id = -1, bool $update_inventory = TRUE) : void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids') : [$receiving_id];	//TODO: Replace -1 with constant
 	
-		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
+		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))	//TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
 		{
 			echo json_encode ([
 				'success' => TRUE,
@@ -227,6 +255,9 @@ class Receivings extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function complete(): void
 	{
 		$data = [];
@@ -251,6 +282,7 @@ class Receivings extends Secure_Controller
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$supplier_info = '';
+
 		$supplier_id = $this->receiving_lib->get_supplier();
 		if($supplier_id != -1)
 		{
@@ -271,9 +303,7 @@ class Receivings extends Secure_Controller
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->receiving->save_value($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);	//TODO: Reflection Exception
-
-		$data = $data;
+		$data['receiving_id'] = 'RECV ' . $this->receiving->save_value($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);
 
 		if($data['receiving_id'] == 'RECV -1')
 		{
@@ -291,6 +321,9 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function requisition_complete(): void
 	{
 		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) 
@@ -376,6 +409,7 @@ class Receivings extends Secure_Controller
 
 		$supplier_id = $this->receiving_lib->get_supplier();
 		$supplier_info = '';
+
 		if($supplier_id != -1)	//TODO: Duplicated Code... replace -1 with a constant
 		{
 			$supplier_info = $this->supplier->get_info($supplier_id);
@@ -400,7 +434,7 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function save(int $receiving_id = -1): void	//TODO: Replace -1 with a constant
 	{
@@ -443,4 +477,3 @@ class Receivings extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian Notation
 	}
 }
-?>
