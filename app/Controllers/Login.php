@@ -46,7 +46,7 @@ class Login extends BaseController
 	}
 
 	/**
-	 * Checks to make sure that the user is logged in or not.  Called in a validator callback.
+	 * Checks to make sure that the user is logged in or not.  Called in a validator callback. //TODO: Probably needs to be moved to a custom validator class
 	 *
 	 * @param string $username
 	 * @return bool
@@ -57,7 +57,7 @@ class Login extends BaseController
 
 		if(!$this->_installation_check())	//TODO: Hungarian notation
 		{
-			$this->validator->set_message('login_check', lang('Login.invalid_installation'));
+			$this->validator->set_message('login_check', lang('Login.invalid_installation'));	//TODO: https://codeigniter4.github.io/CodeIgniter4/libraries/validation.html#creating-custom-rules
 
 			return FALSE;
 		}
@@ -76,7 +76,7 @@ class Login extends BaseController
 	}
 
 	/**
-	 * Processes gCaptcha response and returns result. Called in a validator callback.
+	 * Processes gCaptcha response and returns result. Called in a validator callback. //TODO: probably needs to be moved to a custom validator class
 	 *
 	 * @param string $recaptchaResponse
 	 * @return bool
@@ -96,7 +96,7 @@ class Login extends BaseController
 
 		if(empty($status['success']))
 		{
-			$this->form_validation->set_message('gcaptcha_check', lang('Login.invalid_gcaptcha'));
+			$this->validator->set_message('gcaptcha_check', lang('Login.invalid_gcaptcha'));	//TODO: https://codeigniter4.github.io/CodeIgniter4/libraries/validation.html#creating-custom-rules
 
 			return FALSE;
 		}

@@ -25,6 +25,7 @@ use app\Models\Reports\Summary_sales;
 use app\Models\Reports\Summary_sales_taxes;
 use app\Models\Reports\Summary_suppliers;
 use app\Models\Reports\Summary_taxes;
+use CodeIgniter\HTTP\Uri;
 
 /**
  * @property attribute attribute
@@ -50,6 +51,7 @@ use app\Models\Reports\Summary_taxes;
  * @property summary_sales_taxes summary_sales_taxes
  * @property summary_suppliers summary_suppliers
  * @property summary_taxes summary_taxes
+ * @property URI uri
  */
 class Reports extends Secure_Controller
 {
@@ -57,7 +59,8 @@ class Reports extends Secure_Controller
 	{
 		parent::__construct('reports');
 
-		$method_name = $this->uri->segment(2);	//TODO: uri does not exist... need to figure out the CI4 version of this.
+		$this->uri->setURI(uri_string());
+		$method_name = $this->uri->getSegment(2);
 		$exploder = explode('_', $method_name);
 
 		if(sizeof($exploder) > 1)
@@ -84,7 +87,14 @@ class Reports extends Secure_Controller
 		echo view('reports/listing', $data);
 	}
 
-	//Summary sales report
+	/**
+	 * Summary Sales Report.  Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void	//TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
 	{//TODO: Duplicated code
 		$inputs = [
@@ -126,7 +136,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Categories report
+	/**
+	 * Summary Categories report. Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated code
 		$inputs = [
@@ -167,7 +184,13 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Expenses by Categories report
+	/**
+	 * Summary Expenses by Categories report.  Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @return void
+	 */
 	public function summary_expenses_categories(string $start_date, string $end_date, string $sale_type): void
 	{
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];	//TODO: Duplicated Code

@@ -66,7 +66,12 @@ class Secure_Controller extends BaseController
 
 		$this->load->vars($data);	//TODO: need to find out how to convert this.
 	}
-	
+
+	/**
+	 * Validation function used in controllers.  Likely needs to be moved to a CI4 custom validator class.
+	 * @param string $str
+	 * @return float
+	 */
 	public function numeric(string $str): float
 	{
 		return parse_decimals($str);

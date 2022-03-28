@@ -247,6 +247,10 @@ class Receivings extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function remove_supplier(): void
 	{
 		$this->receiving_lib->clear_reference();
@@ -280,8 +284,6 @@ class Receivings extends Secure_Controller
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-
-		$supplier_info = '';
 
 		$supplier_id = $this->receiving_lib->get_supplier();
 		if($supplier_id != -1)
@@ -322,6 +324,8 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Called in the view.
+	 *
 	 * @throws ReflectionException
 	 */
 	public function requisition_complete(): void
@@ -408,7 +412,6 @@ class Receivings extends Secure_Controller
 		$data['payment_options'] = $this->receiving->get_payment_options();
 
 		$supplier_id = $this->receiving_lib->get_supplier();
-		$supplier_info = '';
 
 		if($supplier_id != -1)	//TODO: Duplicated Code... replace -1 with a constant
 		{
@@ -470,6 +473,10 @@ class Receivings extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function cancel_receiving(): void
 	{
 		$this->receiving_lib->clear_all();
