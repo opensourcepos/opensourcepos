@@ -164,9 +164,9 @@ class Receivings extends Secure_Controller
 	{
 		$data = [];
 
-		$this->validator->setRule('price', 'lang:items_price', 'required|callback_numeric');	//TODO: need to upgrade form_validation.  There is no callback in the validator in CI4, so we need to figure out how to do this.
-		$this->validator->setRule('quantity', 'lang:items_quantity', 'required|callback_numeric');
-		$this->validator->setRule('discount', 'lang:items_discount', 'required|callback_numeric');
+		$this->validator->setRule('price', 'lang:items_price', 'required|numeric');
+		$this->validator->setRule('quantity', 'lang:items_quantity', 'required|numeric');
+		$this->validator->setRule('discount', 'lang:items_discount', 'required|numeric');
 
 		$description = $this->request->getPost('description');	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber');

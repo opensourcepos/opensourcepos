@@ -304,14 +304,14 @@ class Sales extends Secure_Controller
 		//TODO: See the code block below.  This too needs to be ternary notation.
 		if($payment_type !== lang('Sales.giftcard'))
 		{
-			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');	//TODO: Form validation needs to be reworked to be CI4 compatible.
+			$this->validator->setRule('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|numeric');
 		}
 		else
 		{
-			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
+			$this->validator->setRule('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
 		}
 
-		if($this->form_validation->run() == FALSE)
+		if(!$this->validate([]))
 		{//TODO: the code below should be refactored to the following since it's much more readable and concise:
 			//$data['error'] = $payment_type === lang('Sales.giftcard')
 			//	? $data['error'] = lang('Sales.must_enter_numeric_giftcard')
@@ -371,7 +371,6 @@ class Sales extends Secure_Controller
 					$points = ($points == NULL ? 0 : $points);
 
 					$payments = $this->sale_lib->get_payments();
-					$payment_type = $payment_type;	//TODO: hmmmm.  Assigning the variable to itself.  I'm not sure this was intended.
 					$current_payments_with_rewards = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
 					$cur_rewards_value = $points;
 
@@ -523,9 +522,9 @@ class Sales extends Secure_Controller
 	{
 		$data = [];
 
-		$this->form_validation->set_rules('price', 'lang:sales_price', 'required|callback_numeric');	//TODO: Form Validation
-		$this->form_validation->set_rules('quantity', 'lang:sales_quantity', 'required|callback_numeric');
-		$this->form_validation->set_rules('discount', 'lang:sales_discount', 'required|callback_numeric');
+		$this->validator->setRule('price', 'lang:sales_price', 'required|numeric');
+		$this->validator->setRule('quantity', 'lang:sales_quantity', 'required|numeric');
+		$this->validator->setRule('discount', 'lang:sales_discount', 'required|numeric');
 
 		$description = $this->request->getPost('description');
 		$serialnumber = $this->request->getPost('serialnumber');
@@ -537,7 +536,7 @@ class Sales extends Secure_Controller
 		$item_location = $this->request->getPost('location');
 		$discounted_total = $this->request->getPost('discounted_total') != '' ? $this->request->getPost('discounted_total') : NULL;
 
-		if($this->form_validation->run() != FALSE)
+		if(!$this->validate([]))
 		{
 			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 			

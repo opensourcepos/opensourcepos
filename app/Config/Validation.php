@@ -6,6 +6,7 @@ use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
+use app\Libraries\MY_Validation;
 
 class Validation
 {
@@ -24,6 +25,7 @@ class Validation
 		FormatRules::class,
 		FileRules::class,
 		CreditCardRules::class,
+		MY_Validation::class
 	];
 
 	/**
@@ -33,6 +35,7 @@ class Validation
 	 * @var array<string, string>
 	 */
 	public $templates = [
+		'error'  => 'app\Views\errors\error.php',
 		'list'   => 'CodeIgniter\Validation\Views\list',
 		'single' => 'CodeIgniter\Validation\Views\single',
 	];

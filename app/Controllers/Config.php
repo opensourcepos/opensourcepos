@@ -913,19 +913,16 @@ class Config extends Secure_Controller
 			]
 		];
 
-		if (!$this->validate($validation_rule)) {
-			return (["validation" => $this->validator]); //New
-			//TODO:Old return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.lang('upload_no_file_selected').'</p>');
-		} else {
+		if (!$this->validate($validation_rule))
+		{
+			return (['validation' => $this->validator]);
+		}
+		else
+		{
 			$file = $this->request->getFile('company_logo');
 			$file->move(WRITEPATH . 'uploads');
 			return (['uploaded_fileinfo' => $file->getName()]);
 		}
-		// if (!$file->hasMoved()) {
-		// 	$file_path = WRITEPATH . 'uploads/';
-		// 	$data = ['uploaded_fileinfo' => new File($file_path)];
-		// }
-		return false; //TODO: needs to be replaced with proper values
 	}
 
 	/**
