@@ -12,8 +12,6 @@ class Office extends Secure_Controller
 	function __construct()
 	{
 		parent::__construct('office', NULL, 'office');
-
-		$this->employee = model('Employee');
 	}
 
 	public function index(): void
@@ -23,6 +21,8 @@ class Office extends Secure_Controller
 
 	public function logout(): void
 	{
+		$this->employee = model('Employee');
+
 		$this->employee->logout();
 	}
 }

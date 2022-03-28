@@ -147,8 +147,6 @@ class Sales extends Secure_Controller
 		$suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE));
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-		$suggestions = $suggestions;	//TODO: Need to fix this
-
 		echo json_encode($suggestions);
 	}
 
@@ -221,6 +219,7 @@ class Sales extends Secure_Controller
 		}
 
 		$stock_location = $this->request->getPost('stock_location');
+
 		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
 //TODO: This has an empty body.  What to do here?
@@ -518,7 +517,7 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
-	public function edit_item(int $item_id): void
+	public function edit_item(array $line): void
 	{
 		$data = [];
 
@@ -538,7 +537,7 @@ class Sales extends Secure_Controller
 
 		if(!$this->validate([]))
 		{
-			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
+			$this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 			
 			$this->sale_lib->empty_payments();
 		}
@@ -547,7 +546,7 @@ class Sales extends Secure_Controller
 			$data['error'] = lang('Sales.error_editing_item');
 		}
 
-		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($item_id), $item_location);
+		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
 
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
@@ -556,7 +555,7 @@ class Sales extends Secure_Controller
 	{
 		$this->sale_lib->delete_item($item_number);
 
-		$this->sale_lib->empty_payments();		
+		$this->sale_lib->empty_payments();
 
 		$this->_reload();	//TODO: Hungarian notation
 	}

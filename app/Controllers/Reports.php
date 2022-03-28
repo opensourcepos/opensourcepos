@@ -65,7 +65,7 @@ class Reports extends Secure_Controller
 
 		if(sizeof($exploder) > 1)
 		{
-			preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);	//TODO: Unnecessary non-capturing group '(?:inventory)'
+			preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
 			preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
 			$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
@@ -223,7 +223,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Customers report
+	/**
+	 * Summary Customers report. Called in the view
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
 		$inputs = [	//TODO: Duplicated Code
@@ -266,7 +273,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Suppliers report
+	/**
+	 * Summary Suppliers report. Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
 		$inputs = [
@@ -307,7 +321,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Items report
+	/**
+	 * Summary Items report. Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
 		$inputs = [
@@ -351,7 +372,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Employees report
+	/**
+	 * Summary Employees report. Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
 		$inputs = [
@@ -394,7 +422,14 @@ class Reports extends Secure_Controller
 		echo view('reports/tabular', $data);
 	}
 
-	//Summary Taxes report
+	/**
+	 * Summary Taxes report. Called in the view.
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
+	 */
 	public function summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicate Code
 		$inputs = [
@@ -1081,16 +1116,15 @@ class Reports extends Secure_Controller
 
 	public function get_payment_type(): array
 	{
-			$payment_type = [
-				'all' => lang('Common.none_selected_text'),
-				'cash' => lang('Sales.cash'),
-				'due' => lang('Sales.due'),
-				'check' => lang('Sales.check'),
-				'credit' => lang('Sales.credit'),
-				'debit' => lang('Sales.debit'),
-				'invoices' => lang('Sales.invoice')
-			];
-			return $payment_type;	//TODO: This can just be return [...]... no need for the variable.
+		return [
+			'all' => lang('Common.none_selected_text'),
+			'cash' => lang('Sales.cash'),
+			'due' => lang('Sales.due'),
+			'check' => lang('Sales.check'),
+			'credit' => lang('Sales.credit'),
+			'debit' => lang('Sales.debit'),
+			'invoices' => lang('Sales.invoice')
+		];
 	}
 
 	public function specific_customer(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): void
@@ -1173,14 +1207,10 @@ class Reports extends Secure_Controller
 		}
 
 		$customer_info = $this->customer->get_info($customer_id);
-		if(!empty($customer_info->company_name))	//TODO: this needs to be converted to ternary notation.
-		{
-			$customer_name ='[ '.$customer_info->company_name.' ]';	//TODO: $customer_name isn't used anywhere in this function.
-		}
-		else
-		{
-			$customer_name = $customer_info->company_name;
-		}
+		$customer_name = !empty($customer_info->company_name)	//TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
+			? "[ $customer_info->company_name ]"
+			: $customer_info->company_name;
+
 		//TODO: Duplicated Code
 		$data = [
 			'title' => $customer_info->first_name . ' ' . $customer_info->last_name . ' ' . lang('Reports.report'),
@@ -1479,7 +1509,7 @@ class Reports extends Secure_Controller
 		$data = [];
 		$data['specific_input_name'] = lang('Reports.supplier');
 
-		$supplier = [];	//TODO: It appears this local variable is never used as it gets replaced in the foreach loop with $supplier.  $suppliers maybe?
+		$suppliers = [];
 		foreach($this->supplier->get_all()->getResult() as $supplier)
 		{
 			$suppliers[$supplier->person_id] = $supplier->company_name . ' (' . $supplier->first_name . ' ' . $supplier->last_name . ')';
