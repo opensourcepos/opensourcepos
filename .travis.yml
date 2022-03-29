@@ -1,5 +1,4 @@
 sudo: required
-if: tag IS blank
 
 branches:
   except:
