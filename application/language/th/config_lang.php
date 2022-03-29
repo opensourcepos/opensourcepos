@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_all_set"] = "การตั้งค่าอนุญาตไฟล์ทั้งหมดถูกต้อง!";
@@ -144,7 +143,7 @@ $lang["config_financial_year_may"] = "วันที่ 1 พฤษภาคม
 $lang["config_financial_year_nov"] = "วันที่ 1 พฤศจิกายน";
 $lang["config_financial_year_oct"] = "วันที่ 1 ตุลาคม";
 $lang["config_financial_year_sep"] = "วันที่ 1 กันยายน";
-$lang["config_floating_labels"] = "Floating Labels";
+$lang["config_floating_labels"] = "แสดงตัวเลข";
 $lang["config_gcaptcha_enable"] = "ขอรหัสยืนยันใหม่ เพื่อเข้าระบบ";
 $lang["config_gcaptcha_secret_key"] = "รหัสลับ สำหรับรหัสยืนยัน";
 $lang["config_gcaptcha_secret_key_required"] = "จำเป็นต้องระบุ รหัสลับ สำหรับรหัสยืนยัน";
@@ -164,7 +163,7 @@ $lang["config_image_restrictions"] = "ข้อจำกัดของไฟล
 $lang["config_include_hsn"] = "เพิ่มการรองรับ HSN Codes";
 $lang["config_info"] = "ข้อมูลร้านค้า";
 $lang["config_info_configuration"] = "ข้อมูลร้านค้า";
-$lang["config_input_groups"] = "Input Groups";
+$lang["config_input_groups"] = "นำเข้าแบบกลุ่ม";
 $lang["config_integrations"] = "การเข้าร่วม";
 $lang["config_integrations_configuration"] = "การเข้าร่วมกับบุคคลภายนอก";
 $lang["config_invoice"] = "ใบแจ้งหนี้";
@@ -271,7 +270,7 @@ $lang["config_receipt_show_tax_ind"] = "แสดงอัตราภาษี"
 $lang["config_receipt_show_taxes"] = "แสดงภาษี";
 $lang["config_receipt_show_total_discount"] = "แสดงส่วนลดทั้งหมด";
 $lang["config_receipt_template"] = "ต้นแบบใบเสร็จ";
-$lang["config_receiving_calculate_average_price"] = "คำนวณราคาเฉลี่ย (รับมา)";
+$lang["config_receiving_calculate_average_price"] = "คำนวณราคาเฉลี่ย (ได้รับมา)";
 $lang["config_recv_invoice_format"] = "ใบส่งของ";
 $lang["config_register_mode_default"] = "ค่าปริยายรูปแบบการลงทะเบียน";
 $lang["config_report_an_issue"] = "รายงานปัญหา";
