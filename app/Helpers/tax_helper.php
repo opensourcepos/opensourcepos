@@ -9,7 +9,7 @@ use app\Models\Enums\Rounding_mode;
 /**
  * Get the header for the taxes tabular view
  */
-function get_tax_code_table_headers(): string	//TODO: It does not appear that this function is called anywhere in the code.
+function get_tax_code_table_headers(): string
 {
 	$headers = [
 		['tax_code' => lang('Taxes.tax_code')],

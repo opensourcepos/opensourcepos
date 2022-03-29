@@ -29,7 +29,8 @@
 		"ext-intl": "*",
 		"ext-curl": "*",
 		"ext-mbstring": "*",
-		"ext-gd": "*"
+		"ext-gd": "*",
+		"ext-fileinfo": "*"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",

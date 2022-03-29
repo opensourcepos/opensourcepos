@@ -87,4 +87,3 @@ class Secure_Controller extends BaseController
 	public function save(int $data_item_id = -1) { return FALSE; }
 	public function delete() { return FALSE; }
 }
-?>

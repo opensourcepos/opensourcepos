@@ -20,6 +20,8 @@ use app\Models\Stock_location;
 use app\Models\Tokens\Token_invoice_count;
 use app\Models\Tokens\Token_customer;
 use app\Models\Tokens\Token_invoice_sequence;
+use CodeIgniter\Config\Services;
+use ReflectionException;
 
 /**
  * @property barcode_lib barcode_lib
@@ -134,6 +136,10 @@ class Sales extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function item_search(): void
 	{
 		$suggestions = [];
@@ -267,17 +273,25 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_comment($this->request->getPost('comment'));
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function set_invoice_number(): void
 	{
 		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number'));
 	}
 
-	public function set_payment_type(): void
+	public function set_payment_type(): void	//TODO: This function does not appear to be called anywhere in the code.
 	{
 		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type'));
 		$this->_reload();	//TODO: Hungarian notation.
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function set_print_after_sale(): void
 	{
 		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale'));
@@ -288,12 +302,19 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_price_work_orders($this->request->getPost('price_work_orders'));
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function set_email_receipt(): void
 	{
 		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt'));
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments. Called in the view.
+	 * @return void
+	 */
 	public function add_payment(): void
 	{
 		$data = [];
@@ -350,7 +371,7 @@ class Sales extends Secure_Controller
 				else
 				{
 					$new_giftcard_value = $this->giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
-					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;
+					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;	//TODO: can be replaced with max($new_giftcard_value, 0);
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
 					$data['warning'] = lang('Giftcards.remaining_balance', $giftcard_num, $new_giftcard_value);
@@ -365,7 +386,7 @@ class Sales extends Secure_Controller
 				$package_id = $this->customer->get_info($customer_id)->package_id;
 				if(!empty($package_id))
 				{
-					$package_name = $this->customer_rewards->get_name($package_id);
+					$package_name = $this->customer_rewards->get_name($package_id);	//TODO: this variable is never used.
 					$points = $this->customer->get_info($customer_id)->points;
 					$points = ($points == NULL ? 0 : $points);
 
@@ -380,7 +401,7 @@ class Sales extends Secure_Controller
 					else
 					{
 						$new_reward_value = $points - $this->sale_lib->get_amount_due();
-						$new_reward_value = $new_reward_value >= 0 ? $new_reward_value : 0;
+						$new_reward_value = $new_reward_value >= 0 ? $new_reward_value : 0;	//TODO: can be replaced by max($new_reward_value, 0);
 						$this->sale_lib->set_rewards_remainder($new_reward_value);
 						$new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
 						$data['warning'] = lang('Sales.rewards_remaining_balance'). $new_reward_value;
@@ -414,7 +435,11 @@ class Sales extends Secure_Controller
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments. Called in the view.
+	 * @param string $payment_id
+	 * @return void
+	 */
 	public function delete_payment(string $payment_id): void
 	{
 		$this->sale_lib->delete_payment($payment_id);
@@ -477,7 +502,7 @@ class Sales extends Secure_Controller
 				$discount_type = $item_kit_info->kit_discount_type;
 			}
 
-			$print_option = PRINT_ALL; // Always include in list of items on invoice
+			$print_option = PRINT_ALL; // Always include in list of items on invoice //TODO: This variable is never used in the code
 
 			if(!empty($kit_item_id))
 			{
@@ -517,6 +542,11 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
+	/**
+	 * Called in the view.
+	 * @param array $line
+	 * @return void
+	 */
 	public function edit_item(array $line): void
 	{
 		$data = [];
@@ -565,6 +595,10 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function remove_customer(): void
 	{
 		$this->sale_lib->clear_giftcard_remainder();
@@ -577,10 +611,14 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 * @throws ReflectionException
+	 */
 	public function complete(): void	//TODO: this function is huge.  Probably should be refactored.
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
-		$sale_type = $this->sale_lib->get_sale_type();	//TODO: This variable gets overwritten way down below.
+		$sale_type = $this->sale_lib->get_sale_type();	//TODO: This variable gets overwritten way down below before being used.
 		$data = [];
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 
@@ -834,6 +872,12 @@ class Sales extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Called in the view.
+	 * @param int $sale_id
+	 * @param string $type
+	 * @return bool
+	 */
 	public function send_pdf(int $sale_id, string $type = 'invoice'): bool
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
@@ -847,17 +891,18 @@ class Sales extends Secure_Controller
 			$number = $sale_data[$type."_number"];
 			$subject = lang('Sales.' . $type) . ' ' . $number;
 
-			$text = invoice_email_message;
+			$text = config('OSPOS')->invoice_email_message;
 			$tokens = [
 				new Token_invoice_sequence($sale_data['invoice_number']),
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
 				new Token_customer((object)$sale_data)
 			];
 			$text = $this->token_lib->render($text, $tokens);
-			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . config('OSPOS')->company_logo);	//TODO: Need to replace get_mime_by_extension
+			$sale_data['mimetype'] = mime_content_type('uploads/' . config('OSPOS')->company_logo);
 
 			// generate email attachment: invoice in pdf format
-			$html = view("sales/$type" . '_email', $sale_data, TRUE);	//TODO: view is expecting the last param to be an array
+			$view = Services::renderer();
+			$html = $view->render("sales/$type" . '_email', $sale_data);
 
 			// load pdf helper
 			helper (['dompdf', 'file']);
@@ -891,7 +936,8 @@ class Sales extends Secure_Controller
 			$to = $sale_data['customer_email'];
 			$subject = lang('Sales.receipt');
 
-			$text = view('sales/receipt_email', $sale_data, TRUE);	//TODO: view is expecting the last param to be an array
+			$view = Services::renderer();
+			$text = $view->render('sales/receipt_email', $sale_data);
 
 			$result = $this->email_lib->sendEmail($to, $subject, $text);
 
@@ -1086,12 +1132,12 @@ class Sales extends Secure_Controller
 
 	private function _reload($data = []): void	//TODO: Hungarian notation
 	{
-		$sale_id = $this->session->get('sale_id');
+		$sale_id = $this->session->get('sale_id');	//TODO: This variable is never used
 
 		if($sale_id == '')
 		{
 			$sale_id = -1;
-			$this->session->set('sale_id', -1);
+			$this->session->set('sale_id', -1);	//TODO: replace -1 with a constant
 		}
 		$cash_rounding = $this->sale_lib->reset_cash_rounding();
 
@@ -1276,6 +1322,9 @@ class Sales extends Secure_Controller
 		echo view('sales/form', $data);
 	}
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public function delete(int $sale_id = -1, bool $update_inventory = TRUE): void	//TODO: Replace -1 with a constant
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1336,6 +1385,7 @@ class Sales extends Secure_Controller
 	 * This saves the sale from the update sale view (sales/form).
 	 * It only updates the sales table and payments.
 	 * @param int $sale_id
+	 * @throws ReflectionException
 	 */
 	public function save(int $sale_id = -1): void	//TODO: Replace -1 with a constant
 	{
@@ -1451,6 +1501,7 @@ class Sales extends Secure_Controller
 	 * This is used to cancel a suspended pos sale, quote.
 	 * Completed sales (POS Sales or Invoiced Sales) can not be removed from the system
 	 * Work orders can be canceled but are not physically removed from the sales history
+	 * @throws ReflectionException
 	 */
 	public function cancel(): void
 	{
@@ -1494,8 +1545,9 @@ class Sales extends Secure_Controller
 
 	/**
 	 * Suspend the current sale.
-	 * If the current sale is already suspended then update the existing suspended sale.
-	 * Otherwise create it as a new suspended sale
+	 * If the current sale is already suspended then update the existing suspended sale otherwise create
+	 * it as a new suspended sale.
+	 * @throws ReflectionException
 	 */
 	public function suspend(): void
 	{
@@ -1656,4 +1708,3 @@ class Sales extends Secure_Controller
 		return NULL;
 	}
 }
-?>

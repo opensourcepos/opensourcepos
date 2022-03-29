@@ -5,10 +5,7 @@ namespace App\Controllers;
 use app\Models\Tax_code;
 
 /**
- * 
- * 
  * @property tax_code tax_code
- * 
  */
 class Tax_codes extends Secure_Controller
 {
@@ -17,17 +14,19 @@ class Tax_codes extends Secure_Controller
 		parent::__construct('tax_codes');
 		
 		$this->tax_code = model('Tax_code');
+		helper('tax_helper');
 	}
 
 
 	public function index(): void
 	{
-		 echo view('taxes/tax_codes', get_data());
+		 echo view('taxes/tax_codes', $this->get_data());
 	}
 
 	public function get_data(): array
 	{
-		$data['table_headers'] = get_tax_codes_table_headers();	//TODO: get_tax_codes_table_headers() doesn't exist anywhere in the code
+
+		$data['table_headers'] = get_tax_code_table_headers();
 		return $data;
 	}
 

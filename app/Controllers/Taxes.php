@@ -120,7 +120,7 @@ class Taxes extends Secure_Controller
 
 	public function get_row(int $row_id): void
 	{
-		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id), $this);
+		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
@@ -130,7 +130,7 @@ class Taxes extends Secure_Controller
 		$tax_code_info = $this->tax->get_info($tax_code);
 
 		$default_tax_category_id = 1; // Tax category id is always the default tax category	//TODO: Replace 1 with constant
-		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);
+		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);	//TODO: this variable is never used in the code.
 
 		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
@@ -176,7 +176,7 @@ class Taxes extends Secure_Controller
 		}
 
 		$tax_rates = [];
-		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist
+		foreach($this->tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)	//TODO: get_tax_code_rate_exceptions doesn't exist.  This was deleted by @steveireland in https://github.com/opensourcepos/opensourcepos/commit/32204698379c230f2a6756655f40334308023de9#diff-e746bab6720cf5dbf855de6cda68f7aca9ecea7ddd5a39bb852e9b9047a7a838L435 but it's unclear if that was on purpose or accidental.
 		{
 			$tax_rate_row = [];
 			$tax_rate_row['rate_tax_category_id'] = $tax_code_rate['rate_tax_category_id'];
@@ -225,13 +225,11 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_rates_form', $data);
 	}
 
-
-
-	public function view_tax_categories(int $tax_code = -1): void	//TODO: Replace -1 with constant
+	public function view_tax_categories(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated Code
 
-		$default_tax_category_id = 1; // Tax category id is always the default tax category
+		$default_tax_category_id = 1; // Tax category id is always the default tax category	//TODO: replace with a constant.
 		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);
 
 		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
@@ -294,12 +292,12 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_category_form', $data);
 	}
 
-	public function view_tax_jurisdictions(int $tax_code = -1): void	//TODO: Replace -1 with constant
+	public function view_tax_jurisdictions(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated code
 
 		$default_tax_category_id = 1; // Tax category id is always the default tax category
-		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);
+		$default_tax_category = $this->tax->get_tax_category($default_tax_category_id);	//TODO: This variable is not used anywhere in the code
 
 		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
@@ -373,7 +371,7 @@ class Taxes extends Secure_Controller
 
 		if ($tax_rate == 0)	//TODO: Replace 0 with constant?
 		{
-			$tax_category_info = $this->tax_category->get_info($tax_category_id);
+			$tax_category_info = $this->tax_category->get_info($tax_category_id);	//TODO: this variable is not used anywhere in the code
 		}
 
 		$tax_rate_data = [
@@ -414,6 +412,10 @@ class Taxes extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function suggest_tax_codes(): void
 	{
 		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term'));
@@ -421,12 +423,15 @@ class Taxes extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function save_tax_codes(): void
 	{
 		$tax_code_id = $this->request->getPost('tax_code_id');
 		$tax_code = $this->request->getPost('tax_code');
 		$tax_code_name = $this->request->getPost('tax_code_name');
-		$tax_code_id = $this->request->getPost('tax_code_id');
 		$city = $this->request->getPost('city');
 		$state = $this->request->getPost('state');
 
@@ -475,7 +480,7 @@ class Taxes extends Secure_Controller
 				'cascade_sequence'=>$cascade_sequence[$key]
 			];
 
-			if (array_search($tax_group[$key], $unique_tax_groups) !== false)
+			if (array_search($tax_group[$key], $unique_tax_groups) !== false)	//TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
 			{
 				echo json_encode ([
 					'success' => FALSE,
@@ -522,6 +527,10 @@ class Taxes extends Secure_Controller
 		]);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function ajax_tax_codes(): void
 	{
 		$tax_codes = $this->tax_code->get_all()->getResultArray();
@@ -529,6 +538,10 @@ class Taxes extends Secure_Controller
 		echo view('partial/tax_codes', ['tax_codes' => $tax_codes]);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function ajax_tax_categories(): void
 	{
 		$tax_categories = $this->tax_category->get_all()->getResultArray();
@@ -536,6 +549,10 @@ class Taxes extends Secure_Controller
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
+	/**
+	 * Called in the view.
+	 * @return void
+	 */
 	public function ajax_tax_jurisdictions(): void
 	{
 		$tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
@@ -558,4 +575,3 @@ class Taxes extends Secure_Controller
 		]);
 	}
 }
-?>

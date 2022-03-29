@@ -26,9 +26,11 @@ class Suppliers extends Persons
 		echo view('people/manage', $data);
 	}
 
-	/*
-	Gets one row for a supplier manage table. This is called using AJAX to update one row.
-	*/
+	/**
+	 * Gets one row for a supplier manage table. This is called using AJAX to update one row.
+	 * @param $row_id
+	 * @return void
+	 */
 	public function get_row($row_id): void
 	{
 		$data_row = get_supplier_data_row($this->supplier->get_info($row_id));
@@ -36,10 +38,11 @@ class Suppliers extends Persons
 
 		echo json_encode($data_row);
 	}
-	
-	/*
-	Returns Supplier table data rows. This will be called with AJAX.
-	*/
+
+	/**
+	 * Returns Supplier table data rows. This will be called with AJAX.
+	 * @return void
+	 */
 	public function search(): void
 	{
 		$search = $this->request->getGet('search');
