@@ -1065,14 +1065,14 @@ class Sale_lib
 		return FALSE;	//TODO: This function will always return false.
 	}
 
-	public function delete_item(array $line): void
+	public function delete_item(int $item_id): void
 	{
 		$items = $this->get_cart();
-		$item_type = $items[$line]['item_type'];
+		$item_type = $items[$item_id]['item_type'];
 
 		if($item_type == ITEM_TEMP)	//TODO: === ?
 		{
-			$item_id = $items[$line]['item_id'];
+			$item_id = $items[$item_id]['item_id'];
 			$this->item->delete($item_id);
 		}
 

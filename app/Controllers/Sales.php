@@ -551,9 +551,14 @@ class Sales extends Secure_Controller
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
-	public function delete_item(string $item_number): void
+	/**
+	 * Deletes an item specified in the parameter from the shopping cart. Called in the view.
+	 * @param int $item_id
+	 * @return void
+	 */
+	public function delete_item(int $item_id): void
 	{
-		$this->sale_lib->delete_item($item_number);
+		$this->sale_lib->delete_item($item_id);
 
 		$this->sale_lib->empty_payments();
 
@@ -852,7 +857,7 @@ class Sales extends Secure_Controller
 			$sale_data['mimetype'] = get_mime_by_extension('uploads/' . config('OSPOS')->company_logo);	//TODO: Need to replace get_mime_by_extension
 
 			// generate email attachment: invoice in pdf format
-			$html = view("sales/" . $type . "_email", $sale_data, TRUE);	//TODO: view is expecting the last param to be an array
+			$html = view("sales/$type" . '_email', $sale_data, TRUE);	//TODO: view is expecting the last param to be an array
 
 			// load pdf helper
 			helper (['dompdf', 'file']);
