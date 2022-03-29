@@ -1,5 +1,5 @@
 <?php
-$lang["login_gcaptcha"] = "ฉันไม่ใช่หุ่นยนต์";
+$lang["login_gcaptcha"] = "ฉันไม่ใช่หุ่นยนต์นะ";
 $lang["login_go"] = "เข้าสู่ระบบ";
 $lang["login_invalid_gcaptcha"] = "กรุณาแสดงตัวตนว่าคุณไม่ใช่หุ่นยนต์";
 $lang["login_invalid_installation"] = "การติดตั้งไม่ถูกต้องตรวจสอบการตั้งค่าที่ไฟล์ php.ini ของคุณ";
