@@ -24,7 +24,7 @@ use RuntimeException;
  */
 class Code39 extends BarcodeBase
 {
-	/*
+	/**
 	 * Binary map
 	 * @var array binMap
 	 */
@@ -76,19 +76,19 @@ class Code39 extends BarcodeBase
 		'Z'	=> '011010000',
 	];
 
-	/*
+	/**
 	 * const bar proportions
 	 */
 	const NARROW_BAR	= 20;
 	const WIDE_BAR		= 55;
 	const QUIET_BAR		= 35;
 
-	/*
+	/**
 	 * Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @param string|int data - (int or string) Data to be encoded
+	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
+	 * @throws OverflowException
 	 */
 	public function setData($data)
 	{
@@ -98,9 +98,9 @@ class Code39 extends BarcodeBase
 	/*
 	 * Get a binary map value
 	 */
-	private function getMap($char): string
+	private function getMap(string $char): string
 	{
-		return self::$binMap[$char] ?: self::$this->binMap[' '];
+		return self::$binMap[$char] ?: self::$binMap[' '];
 	}
 
 	/*

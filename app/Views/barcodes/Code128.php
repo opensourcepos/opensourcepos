@@ -180,11 +180,11 @@ class Code128 extends BarcodeBase
 		}
 	}
 
-	/*
+	/**
 	 * Get the bar
-	 * @return int - pattern
+	 * @return int pattern
 	 */
-	private function getBar($char)
+	private function getBar($char): int
 	{
 		$key = $this->getKey($char);
 

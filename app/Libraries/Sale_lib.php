@@ -797,7 +797,7 @@ class Sale_lib
 	}
 
 	//TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
-	public function add_item(int &$item_id, string $quantity = '1', int $item_location, string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = NULL, int $kit_print_option = NULL, string $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
+	public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = NULL, int $kit_print_option = NULL, string $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
 	{
 		$item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -1020,13 +1020,13 @@ class Sale_lib
 		return $quantity_already_added;
 	}
 
-	public function get_item_id(array $line_to_get): int
+	public function get_item_id(string $line_to_get): int
 	{
 		$items = $this->get_cart();
 
 		foreach($items as $line => $item)
 		{
-			if($line == $line_to_get)	//TODO: === ?
+			if($line == $line_to_get)
 			{
 				return $item['item_id'];
 			}
@@ -1035,13 +1035,24 @@ class Sale_lib
 		return -1;	//TODO: Replace -1 with constant
 	}
 
-	public function edit_item(array $line, string $description, string $serialnumber, string $quantity, string $discount, string $discount_type, string $price, string $discounted_total = NULL): bool
+	/**
+	 * @param string $line
+	 * @param string $description
+	 * @param string $serialnumber
+	 * @param string $quantity
+	 * @param string $discount
+	 * @param string $discount_type
+	 * @param string $price
+	 * @param string|NULL $discounted_total
+	 * @return bool
+	 */
+	public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, string $discount_type, string $price, string $discounted_total = NULL): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
-			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])	//TODO: !== ?
+			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])
 			{
 				// Note when entered the "discounted_total" is expected to be entered without a discount
 				$quantity = $this->get_quantity_sold($discounted_total, $price);
@@ -1051,7 +1062,7 @@ class Sale_lib
 			$line['quantity'] = $quantity;
 			$line['discount'] = $discount;
 
-			if(!is_null($discount_type))
+			if(!empty($discount_type))
 			{
 				$line['discount_type'] = $discount_type;
 			}
@@ -1092,7 +1103,7 @@ class Sale_lib
 
 		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
+			$this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
 		}
 
 		$this->set_customer($this->sale->get_customer($sale_id)->person_id);
@@ -1108,7 +1119,7 @@ class Sale_lib
 
 		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
+			$result &= $this->add_item($item_kit_item['item_id'], $item_location, $item_kit_item['quantity'], $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
 
 			if($stock_warning == NULL)
 			{
@@ -1126,7 +1137,7 @@ class Sale_lib
 
 		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
+			$this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
 		}
 
 		$this->session->set('cash_mode', CASH_MODE_FALSE);

@@ -169,7 +169,7 @@ if(isset($success))
 			}
 			else
 			{
-				foreach(array_reverse($cart, TRUE) as $line=>$item)
+				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
 					<?php echo form_open(esc("$controller_name/edit_item/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>

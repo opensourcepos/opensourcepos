@@ -11,6 +11,7 @@
 
 namespace emberlabs\Barcode;
 
+use OverflowException;
 use RuntimeException;
 
 /**
@@ -56,21 +57,19 @@ abstract class BarcodeBase
 	 */
 	protected $jpgQuality = 85;
 
-	/*
+	/**
 	 * (Abstract) Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @param string|int $data - (int or string) Data to be encoded
+	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
+	 * @throws OverflowException
 	 */
 	abstract public function setData($data);
 
-	/*
+	/**
 	 * Get the data
-	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
+	 * @throws OverflowException
 	 */
 	public function getData(): string
 	{
@@ -105,14 +104,13 @@ abstract class BarcodeBase
 	 */
 	abstract public function draw();
 
-	/*
+	/**
 	 * Set the Dimensions
-	 *
-	 * @param int x
-	 * @param int y
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 * @param int|string x
+	 * @param int|string y
+	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function setDimensions($x, $y)
+	public function setDimensions($x, $y): object
 	{
 		$this->x = (int) $x;
 		$this->y = (int) $y;
@@ -120,36 +118,37 @@ abstract class BarcodeBase
 		return $this;
 	}
 
-	/*
+	/**
 	 * Set Quality
-	 * @param int q - jpeg quality 
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 * @param int|string $q jpeg quality
+	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function setQuality($q)
+	public function setQuality($q): object
 	{
-		$this->jpgQuality = (int) $q;
+		$this->jpgQuality = (int)$q;
 
 		return $this;
 	}
 
-	/*
+	/**
 	 * Display human readable text below the code
-	 * @param boolean enable - Enable the human readable text
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 * @param boolean $enable - Enable the human readable text
+	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function enableHumanText($enable = true)
+	public function enableHumanText(bool $enable = true): object
 	{
-		$this->humanText = (boolean) $enable;
+		$this->humanText = (boolean)$enable;
 
 		return $this;
 	}
 
-	/*
+	/**
 	 * Output Image to the buffer
 	 *
+	 * @param string $type
 	 * @return void
 	 */
-	public function output($type = 'png')
+	public function output(string $type = 'png')
 	{
 		switch($type)
 		{
@@ -175,7 +174,7 @@ abstract class BarcodeBase
 	 * @return void
 	 * @throws RuntimeException - If the file could not be written or some other I/O error.
 	 */
-	public function save($filename)
+	public function save(string $filename)
 	{
 		$type = strtolower(substr(strrchr($filename, '.'), 1));
 

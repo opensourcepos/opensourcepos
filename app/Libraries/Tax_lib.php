@@ -355,7 +355,7 @@ class Tax_lib
 				if($cascade_sequence != $last_cascade_sequence)
 				{
 					$last_cascade_sequence = $cascade_sequence;
-					$tax_basis = $tax_basis + $cascade_tax_amount;	//TODO: I think we should be using bcadd() here.
+					$tax_basis = bcadd($tax_basis, $cascade_tax_amount);
 				}
 
 				$tax_rate = $tax['tax_rate'];
@@ -364,14 +364,14 @@ class Tax_lib
 				// This computes tax for each line item and adds it to the tax type total
 				$tax_type = $tax['tax_type'];
 
-				if($tax_type == Tax_lib::TAX_TYPE_INCLUDED)	//TODO: === ?
+				if($tax_type == Tax_lib::TAX_TYPE_INCLUDED)
 				{
 					$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax_rate, $tax_decimals, $rounding_code);
 				}
 				else
 				{
 					$tax_amount = $this->get_tax_for_amount($tax_basis, $tax_rate, $rounding_code, $tax_decimals);
-					$cascade_tax_amount = $cascade_tax_amount + $tax_amount;	//TODO: I think we should be using bcadd() here because this is a currency operation.
+					$cascade_tax_amount = bcadd($cascade_tax_amount,$tax_amount);
 				}
 
 				if($tax_amount != 0)
@@ -403,17 +403,17 @@ class Tax_lib
 
 	public function get_applicable_tax_code(string $register_mode, string $city, string $state, int $sales_tax_code_id): int
 	{
-		if($register_mode == 'sale')	//TODO: === ?
+		if($register_mode == 'sale')
 		{
 			$sales_tax_code_id = config('OSPOS')->default_tax_code; // overrides customer assigned code
 		}
 		else
 		{
-			if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)	//TODO: ===?
+			if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
 			{
 				$sales_tax_code_id = $this->tax_code->get_sales_tax_code($city, $state);
 
-				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)	//TODO: ===?
+				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
 				{
 					$sales_tax_code_id = config('OSPOS')->default_tax_code; // overrides customer assigned code
 				}

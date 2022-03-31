@@ -65,14 +65,11 @@ class Format extends BaseConfig
 
 	/**
 	 * A Factory method to return the appropriate formatter for the given mime type.
-	 *
 	 * @param string $mime
-	 *
 	 * @return FormatterInterface
-	 *
 	 * @deprecated This is an alias of `\CodeIgniter\Format\Format::getFormatter`. Use that instead.
 	 */
-	public function getFormatter(string $mime)
+	public function getFormatter(string $mime): FormatterInterface
 	{
 		return Services::format()->getFormatter($mime);
 	}

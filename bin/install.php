@@ -92,7 +92,7 @@ class Installer
         ];
     }
 
-    public function usage($self)
+    public function usage($self): string
     {
         $msg = 'You can install:' . PHP_EOL;
         
@@ -227,17 +227,20 @@ class Installer
     /**
      * Recursive Copy
      *
-     * @param string $src
-     * @param string $dst
+     * @param string|array $src
+     * @param string|array $dst
      */
     private function recursiveCopy($src, $dst)
     {
-        if ($src === false) {
+        if ($src === false)
+		{
             return;
         }
 
-        if (is_array($src)) {
-            foreach ($src as $key => $source) {
+        if (is_array($src))
+		{
+            foreach ($src as $key => $source)
+			{
                 $this->recursiveCopy($source, $dst[$key]);
             }
             
@@ -269,7 +272,7 @@ class Installer
      *
      * @param string $dir
      */
-    private function recursiveUnlink($dir)
+    private function recursiveUnlink(string $dir)
     {
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),

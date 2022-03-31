@@ -506,7 +506,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
+				if(!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
 				{
 					$data['error'] = lang('Sales.unable_to_add_item');
 				}
@@ -529,7 +529,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
 			{
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
@@ -544,10 +544,10 @@ class Sales extends Secure_Controller
 
 	/**
 	 * Called in the view.
-	 * @param array $line
+	 * @param string $line
 	 * @return void
 	 */
-	public function edit_item(array $line): void
+	public function edit_item(string $line): void
 	{
 		$data = [];
 
