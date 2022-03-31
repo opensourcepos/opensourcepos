@@ -94,7 +94,7 @@ $(document).ready(function()
         <?php echo form_multiselect(
 			'filters[]',
 			esc($filters, 'attr'),
-			'',
+			[''],
 			[
 				'id' => 'filters',
 				'class' => 'selectpicker show-menu-arrow',

@@ -25,12 +25,12 @@ class MY_Email extends Email
 		$this->setMessage($body);
 		if ($to == NULL) {
 			$to = $this->default_email_address;
-			$this->cc($this->default_cc_address); 
+			$this->setCc($this->default_cc_address);
 		}
 		if ($attachment) {
 			$this->attach($attachment);
 		}
-		$this->to($to);
+		$this->setTo($to);
 		return $this->send();
 	}
 }

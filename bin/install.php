@@ -113,8 +113,8 @@ class Installer
         return $msg;
     }
 
-    public function install($package, $version)
-    {
+    public function install($package, $version): string
+	{
         if (! isset($this->packages[$package]))
         {
             return 'Error! no such package: ' . $package . PHP_EOL;
@@ -143,8 +143,8 @@ class Installer
         return $msg;
     }
 
-    private function downloadFromGithub($package, $version)
-    {
+    private function downloadFromGithub($package, $version): array
+	{
         $user = $this->packages[$package]['user'];
         $repos = $this->packages[$package]['repos'];
         $url = "https://github.com/$user/$repos/archive/$version.zip";
@@ -169,8 +169,8 @@ class Installer
         return [$src, $dst];
     }
 
-    private function downloadFromBitbucket($package, $version)
-    {
+    private function downloadFromBitbucket($package, $version): array
+	{
         $user = $this->packages[$package]['user'];
         $repos = $this->packages[$package]['repos'];
         // https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc/get/codeigniter-3.x.zip
@@ -194,8 +194,8 @@ class Installer
         return [$src, $dst];
     }
 
-    private function download($url)
-    {
+    private function download($url): string
+	{
         $file = file_get_contents($url);
         if ($file === false) {
             throw new RuntimeException("Can't download: $url");
@@ -250,17 +250,22 @@ class Installer
         @mkdir($dst, 0755, TRUE);
         
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($src, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+			new RecursiveDirectoryIterator($src, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
         
-        foreach ($iterator as $file) {
-            if ($file->isDir()) {
+        foreach ($iterator as $file)
+		{
+            if ($file->isDir())
+			{
                 @mkdir($dst . '/' . $iterator->getSubPathName(), 0775, TRUE);
-            } else {
+            }
+			else
+			{
 
                 $success = copy($file, $dst . '/' . $iterator->getSubPathName());
-                if ($success) {
+                if ($success)
+				{
                     echo 'copied: ' . $dst . '/' . $iterator->getSubPathName() . PHP_EOL;
                 }
             }
@@ -274,19 +279,23 @@ class Installer
      */
     private function recursiveUnlink(string $dir)
     {
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-        
-        foreach ($iterator as $file) {
-            if ($file->isDir()) {
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+        foreach ($iterator as $file)
+		{
+            if ($file->isDir())
+			{
                 rmdir($file);
-            } else {
+            }
+			else
+			{
                 unlink($file);
             }
         }
-        
+
         rmdir($dir);
     }
 }

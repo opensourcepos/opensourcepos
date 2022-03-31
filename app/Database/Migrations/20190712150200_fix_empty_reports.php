@@ -16,7 +16,7 @@ class Migration_fix_empty_reports extends Migration
 
 		$location_name = str_replace(' ', '_', $location_name);
 		$builder = $this->db->table('permissions');
-		$this->db->set('location_id',1);
+		$builder->set('location_id', 1);
 		$builder->where('permission_id','receivings_' . $location_name);
 		$builder->orWhere('permission_id', 'sales_' . $location_name);
 		$builder->update();

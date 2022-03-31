@@ -19,7 +19,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_code_id',esc($tax_code_options, attr), esc($rate_tax_code_id, 'attr'), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_tax_code_id',esc($tax_code_options, 'attr'), esc($rate_tax_code_id, 'attr'), ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 

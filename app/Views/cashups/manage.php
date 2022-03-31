@@ -59,7 +59,7 @@ $(document).ready(function()
 		</button>
 
 		<?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-		<?php echo form_multiselect('filters[]', esc($filters, 'attr'), '', [	//TODO: SELECTED parameter expects an array or void, but a string was provided.
+		<?php echo form_multiselect('filters[]', esc($filters, 'attr'), [''], [
 			'id' => 'filters',
 			'data-none-selected-text'=>lang('Common.none_selected_text'),
 			'class' => 'selectpicker show-menu-arrow',

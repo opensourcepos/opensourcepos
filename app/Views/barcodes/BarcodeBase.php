@@ -89,7 +89,7 @@ abstract class BarcodeBase
 	/**
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
-	 * @param string $number The seed to generate a barcode for
+	 * @param string $number Seed to generate a barcode for
 	 * @return string|null The generated barcode
 	 */
 	public function generate(string $number): ?string

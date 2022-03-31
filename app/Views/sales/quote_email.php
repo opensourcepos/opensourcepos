@@ -56,7 +56,7 @@
 				<table id="meta-content"  align="right">
 					<tr>
 						<td class="meta-head"><?php echo lang('Sales.quote_number') ?> </td>
-						<td><?php echo esc(quote_number) ?></td>
+						<td><?php echo esc($quote_number) ?></td>
 					</tr>
 					<tr>
 						<td class="meta-head"><?php echo lang('Common.date') ?></td>

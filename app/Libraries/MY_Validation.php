@@ -2,6 +2,7 @@
 
 namespace app\Libraries;
 
+use CodeIgniter\Database\Migration;
 use Config\Services;
 use app\Models\Employee;
 
@@ -23,7 +24,7 @@ class MY_Validation
 		$this->migration = Services::migrations();
 		$this->employee = model('Employee');
 
-		$password = $this->request->getPost('password');
+		$password = $this->request->getPost('password');	//TODO: This needs to get passed as a parameter in some way
 
 		if(!$this->_installation_check())	//TODO: Hungarian notation
 		{

@@ -19,7 +19,7 @@
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" align="left"><br>
 				<?php echo lang('Config.ospos_info') . ':' ?>
-				<?php echo esc(config('OSPOS')->application_version) ?> - <?php echo esc(substr(config('OSPOS')->commit_sha1), 0, 6) ?><br>
+				<?php echo esc(config('OSPOS')->application_version) ?> - <?php echo esc(substr(config('OSPOS')->commit_sha1, 0, 6)) ?><br>
 				Language Code: <?php echo current_language_code() ?><br><br>
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>
@@ -34,7 +34,7 @@
 				User Configuration:<br>
 				.Browser:
 					<?php
-						function get_browser_name($user_agent)
+						function get_browser_name(string $user_agent): string
 						{
 							if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
 							elseif (strpos($user_agent, 'Edge')) return 'Edge';

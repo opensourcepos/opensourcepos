@@ -163,9 +163,7 @@ class Items extends Secure_Controller
 				$thumb_path = $this->image->full_dst_path;
 			}
 
-			$file = new File($thumb_path);
-
-			$this->response->setContentType($file->getMimeType());
+			$this->response->setContentType(mime_content_type($thumb_path));
 			$this->response->setBody(file_get_contents($thumb_path));	//TODO: figure out the CI4 counterpart to output->set_output(). https://codeigniter4.github.io/CodeIgniter4/outgoing/response.html#setting-the-output
 		}
 	}
@@ -730,8 +728,8 @@ class Items extends Secure_Controller
 		echo !$exists ? 'true' : 'false';
 	}
 
-	/*
-	 If adding a new item check to see if an item kit with the same name as the item already exists.
+	/**
+	 * If adding a new item check to see if an item kit with the same name as the item already exists.
 	 */
 	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
@@ -760,7 +758,7 @@ class Items extends Secure_Controller
 			'max_height' => config('OSPOS')->image_max_height
 		];
 
-		$this->upload = new Upload($config);	//TODO: This needs to be converted to CI4 analog
+		$this->upload = new Upload($config);	//TODO: This needs to be converted to CI4 analog https://codeigniter4.github.io/userguide/libraries/uploaded_files.html#the-controller
 		$this->upload->do_upload('item_image');
 
 		return strlen($this->upload->display_errors()) === 0 || !strcmp($this->upload->display_errors(), '<p>' . lang('upload_no_file_selected') . '</p>');

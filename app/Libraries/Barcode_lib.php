@@ -133,7 +133,7 @@ class Barcode_lib
 		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
-//TODO: Missing return statement here.
+			//TODO: Missing return statement here.
 		}
 	}
 

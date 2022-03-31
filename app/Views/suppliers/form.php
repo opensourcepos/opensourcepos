@@ -66,7 +66,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc($person_info->tax_id, attr)
+						'value' => esc($person_info->tax_id, 'attr')
 					])
 				?>
 			</div>
