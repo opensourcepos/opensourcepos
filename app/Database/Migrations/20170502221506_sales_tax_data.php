@@ -339,4 +339,3 @@ class Migration_Sales_Tax_Data extends Migration
 		}
 	}
 }
-?>

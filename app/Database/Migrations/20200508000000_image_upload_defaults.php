@@ -26,4 +26,3 @@ class Migration_image_upload_defaults extends Migration
 		$builder->delete();
 	}
 }
-?>

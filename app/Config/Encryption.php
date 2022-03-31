@@ -67,6 +67,7 @@ class Encryption extends BaseConfig
 
 	function __construct()
 	{
+		parent::__construct();
 		$this->key = getenv('ENCRYPTION_KEY') ? getenv('ENCRYPTION_KEY') : '';
 	}
 }

@@ -16,4 +16,3 @@ class Migration_decimal_attribute_type extends Migration
 
 	}
 }
-?>

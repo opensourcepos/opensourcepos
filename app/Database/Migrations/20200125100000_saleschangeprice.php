@@ -16,4 +16,3 @@ class Migration_SalesChangePrice extends Migration
 
 	}
 }
-?>

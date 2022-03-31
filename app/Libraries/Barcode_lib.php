@@ -81,20 +81,16 @@ class Barcode_lib
 		{
 			case 'Code39':
 				return new Code39();
-				break;
 
 			case 'Code128':
 			default:
 				return new Code128();
-				break;
 
 			case 'Ean8':
 				return new Ean8();
-				break;
 
 			case 'Ean13':
 				return new Ean13();
-				break;
 		}
 	}
 
@@ -258,4 +254,3 @@ class Barcode_lib
 		return substr($font_file_name, 0, -4);
 	}
 }
-?>

@@ -37,4 +37,3 @@ function execute_script(string $path): void
 
 	error_log("Migrated to $version");
 }
-?>

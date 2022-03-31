@@ -16,4 +16,3 @@ class Migration_DBFix extends Migration
 
 	}
 }
-?>

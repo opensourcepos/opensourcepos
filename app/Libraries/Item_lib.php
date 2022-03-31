@@ -43,5 +43,3 @@ class Item_lib
 		$this->session->remove('item_location');
 	}
 }
-
-?>

@@ -27,4 +27,3 @@ class Migration_fix_empty_reports extends Migration
 
 	}
 }
-?>

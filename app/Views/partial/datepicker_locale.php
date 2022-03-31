@@ -25,7 +25,7 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?php echo current_language_code() ?>"
-    }, <?php echo isset($config) ? $config : '{}' ?>);
+    }, <?php echo $config ?? '{}' ?>);
 };
 
 $.fn.datetimepicker.dates['<?php echo config('OSPOS')->language ?>'] = {

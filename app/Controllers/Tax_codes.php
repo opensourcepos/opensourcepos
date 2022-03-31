@@ -124,4 +124,3 @@ class Tax_codes extends Secure_Controller
 		}
 	}
 }
-?>

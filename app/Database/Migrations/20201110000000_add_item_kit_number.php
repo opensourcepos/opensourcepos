@@ -19,4 +19,3 @@ class Migration_add_item_kit_number extends Migration
 	{
 	}
 }
-?>

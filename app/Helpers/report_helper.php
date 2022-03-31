@@ -7,7 +7,7 @@ use app\Models\Employee;
  *
  * @param string $report_prefix
  * @param string $report_name
- * @param $person_id
+ * @param int $person_id
  * @param string $permission_id
  *
  * @property employee $employee

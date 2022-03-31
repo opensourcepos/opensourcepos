@@ -48,11 +48,11 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 		$result[] = [
 			'field' => key($element),
 			'title' => current($element),
-			'switchable' => isset($element['switchable']) ? $element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
-			'sortable' => isset($element['sortable']) ? $element['sortable'] : current($element) != '',
-			'checkbox' => isset($element['checkbox']) ? $element['checkbox'] : FALSE,
+			'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
+			'sortable' => $element['sortable'] ?? current($element) != '',
+			'checkbox' => $element['checkbox'] ?? FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
-			'sorter' => isset($element['sorter']) ? $element ['sorter'] : ''
+			'sorter' => $element ['sorter'] ?? ''
 		];
 	}
 
@@ -483,7 +483,7 @@ function get_item_data_row(object $item): array
 
 		if(sizeof($images) > 0)
 		{
-			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
+			$image .= '<a class=\'rollover\' href=\''. base_url($images[0]) .'\'><img alt=\'Image thumbnail\' src=\''.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '\'></a>';
 		}
 	}
 
@@ -908,4 +908,3 @@ function get_cash_up_data_row(object $cash_up): array
 		)
 	];
 }
-?>

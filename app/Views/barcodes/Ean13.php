@@ -32,6 +32,8 @@
 
 namespace emberlabs\Barcode;
 
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Ean13
  *           Generate Ean13 Barcodes
@@ -215,7 +217,7 @@ class Ean13 extends BarcodeBase
 		
 		if (!$this->img)
 		{
-			throw new \RuntimeException("Ean13: Image failed to initialize");
+			throw new RuntimeException("Ean13: Image failed to initialize");
 		}
 		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
@@ -367,4 +369,3 @@ class Ean13 extends BarcodeBase
 		);
 	}
 }
-?>

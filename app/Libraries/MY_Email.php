@@ -34,4 +34,3 @@ class MY_Email extends Email
 		return $this->send();
 	}
 }
-?>

@@ -30,44 +30,44 @@ class Installer
                 'dir'   => 'language',
                 'dst'   => 'system',
                 'example_branch' => '3.0.0',
-             ),
+             ],
             'restserver' => [
                 'site'  => 'github',
                 'user'  => 'chriskacerguis',
                 'repos' => 'codeigniter-restserver',
                 'name'  => 'CodeIgniter Rest Server',
-                'dir'   => ['config', 'controllers', 'language', 'libraries', 'views'),
+                'dir'   => ['config', 'controllers', 'language', 'libraries', 'views'],
                 'pre'   => 'application/',
                 'msg'   => 'See https://github.com/chriskacerguis/codeigniter-restserver',
                 'example_branch' => '2.7.2',
-            ),
+            ],
             'matches-cli' => [
                 'site'  => 'github',
                 'user'  => 'avenirer',
                 'repos' => 'codeigniter-matches-cli',
                 'name'  => 'Codeigniter Matches CLI',
-                'dir'   => ['config', 'controllers', 'views'),
+                'dir'   => ['config', 'controllers', 'views'],
                 'msg'   => 'See http://avenirer.github.io/codeigniter-matches-cli/',
                 'example_branch' => 'master',
-            ),
+            ],
             'hmvc-modules' => [
                 'site'  => 'github',
                 'user'  => 'jenssegers',
                 'repos' => 'codeigniter-hmvc-modules',
                 'name'  => 'CodeIgniter HMVC Modules (jenssegers)',
-                'dir'   => ['core', 'third_party'),
+                'dir'   => ['core', 'third_party'],
                 'msg'   => 'See https://github.com/jenssegers/codeigniter-hmvc-modules#installation',
                 'example_branch' => 'master',
-            ),
+            ],
             'modular-extensions-hmvc' => [
                 'site'  => 'bitbucket',
                 'user'  => 'wiredesignz',
                 'repos' => 'codeigniter-modular-extensions-hmvc',
                 'name'  => 'Modular Extensions - HMVC (wiredesignz)',
-                'dir'   => ['core', 'third_party'),
+                'dir'   => ['core', 'third_party'],
                 'msg'   => 'See https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc',
                 'example_branch' => 'codeigniter-3.x',
-            ),
+            ],
             'ion-auth' => [
                 'site'  => 'github',
                 'user'  => 'benedmunds',
@@ -76,10 +76,10 @@ class Installer
                 'dir'   => [
                     'config', 'controllers', 'language', 'libraries',
                     'migrations', 'models', 'sql', 'views'
-                ),
+                ],
                 'msg'   => 'See http://benedmunds.com/ion_auth/',
                 'example_branch' => '2',
-            ),
+            ],
             'filename-checker' => [
                 'site'  => 'github',
                 'user'  => 'kenjis',
@@ -88,8 +88,8 @@ class Installer
                 'dir'   => 'controllers',
                 'msg'   => 'See https://github.com/kenjis/codeigniter3-filename-checker',
                 'example_branch' => 'master',
-            ),
-        );
+            ],
+        ];
     }
 
     public function usage($self)
@@ -158,7 +158,7 @@ class Installer
             $src = realpath(dirname($filepath) . "/$repos-$version/$pre$dir");
             $dstfolder = empty($this->packages[$package]['dst']) ? 'application' : 'vendor/codeigniter/framework/system';
             $dst = realpath(__DIR__ . "/../$dstfolder/$dir");
-            return [$src, $dst);
+            return [$src, $dst];
         }
         
         foreach ($dir as $directory) {
@@ -166,7 +166,7 @@ class Installer
             @mkdir(__DIR__ . "/../app/$directory");
             $dst[] = realpath(__DIR__ . "/../app/$directory");
         }
-        return [$src, $dst);
+        return [$src, $dst];
     }
 
     private function downloadFromBitbucket($package, $version)
@@ -183,7 +183,7 @@ class Installer
         if (is_string($dir)) {
             $src = realpath(dirname($filepath) . "/$dirname/$dir");
             $dst = realpath(__DIR__ . "/../app/$dir");
-            return [$src, $dst);
+            return [$src, $dst];
         }
         
         foreach ($dir as $directory) {
@@ -191,7 +191,7 @@ class Installer
             @mkdir(__DIR__ . "/../app/$directory");
             $dst[] = realpath(__DIR__ . "/../app/$directory");
         }
-        return [$src, $dst);
+        return [$src, $dst];
     }
 
     private function download($url)
@@ -246,9 +246,9 @@ class Installer
 
         @mkdir($dst, 0755, TRUE);
         
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($src, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::SELF_FIRST
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($src, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
         );
         
         foreach ($iterator as $file) {
@@ -271,9 +271,9 @@ class Installer
      */
     private function recursiveUnlink($dir)
     {
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
         );
         
         foreach ($iterator as $file) {

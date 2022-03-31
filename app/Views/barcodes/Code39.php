@@ -11,6 +11,9 @@
 
 namespace emberlabs\Barcode;
 
+use OverflowException;
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Code39
  * 	     Generate Code39 Barcodes
@@ -95,7 +98,7 @@ class Code39 extends BarcodeBase
 	/*
 	 * Get a binary map value
 	 */
-	private function getMap($char)
+	private function getMap($char): string
 	{
 		return self::$binMap[$char] ?: self::$this->binMap[' '];
 	}
@@ -128,7 +131,7 @@ class Code39 extends BarcodeBase
 		// Do we have degenerate rectangles?
 		if ($narrowBar < 1 || $wideBar < 1 || $quietBar < 1 || $narrowBar == $quietBar || $narrowBar == $wideBar || $wideBar == $quietBar)
 		{
-			throw new \OverflowException("You need to specify a bigger width to properly display this barcode");
+			throw new OverflowException("You need to specify a bigger width to properly display this barcode");
 		}
 
 		$currentBarX = (int)(($this->x - $imageWidth) / 2);
@@ -138,7 +141,7 @@ class Code39 extends BarcodeBase
 
 		if (!$this->img)
 		{
-			throw new \RuntimeException("Code39: Image failed to initialize");
+			throw new RuntimeException("Code39: Image failed to initialize");
 		}
 		
 		// Grab our colors
@@ -181,4 +184,3 @@ class Code39 extends BarcodeBase
 		}
 	}
 }
-?>

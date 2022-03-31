@@ -11,6 +11,9 @@
 
 namespace emberlabs\Barcode;
 
+use CodeIgniter\Log\Exceptions\LogException;
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Code128
  * 	     Generate Code128 Barcodes
@@ -158,11 +161,9 @@ class Code128 extends BarcodeBase
 		{
 			case self::TYPE_A:
 				return array_search($char, self::$mapA);
-			break;
 
 			case self::TYPE_B:
 				return array_search($char, self::$mapB);
-			break;
 
 			case self::TYPE_C:
 				$charInt = (int) $char;
@@ -172,12 +173,10 @@ class Code128 extends BarcodeBase
 				}
 
 				return array_search($char, self::$mapC);
-			break;
-	
+
 			default:
 				$this->resolveSubtype();
 				return $this->getKey($char); // recursion!
-			break;
 		}
 	}
 
@@ -228,15 +227,14 @@ class Code128 extends BarcodeBase
 
 		switch($this->type)
 		{
-			case self::TYPE_A: return 'START_A'; break;
-			case self::TYPE_B: return 'START_B'; break;
-			case self::TYPE_C: return 'START_C'; break;
+			case self::TYPE_A: return 'START_A';
+			case self::TYPE_B: return 'START_B';
+			case self::TYPE_C: return 'START_C';
 		}
 	}
 
-	/*
+	/**
 	 * Draw the image
-	 *
 	 * @return void
 	 */
 	public function draw()
@@ -253,7 +251,7 @@ class Code128 extends BarcodeBase
 
 		if ($pxPerBar < 1)
 		{
-			throw new \LogicException("Not enough space on this barcode for this message, increase the width of the barcode");
+			throw new LogException("Not enough space on this barcode for this message, increase the width of the barcode");
 		}
 
 		if ($this->type == self::TYPE_C)
@@ -290,7 +288,7 @@ class Code128 extends BarcodeBase
 		
 		if (!$this->img)
 		{
-			throw new \RuntimeException("Code128: Image failed to initialize");
+			throw new RuntimeException("Code128: Image failed to initialize");
 		}
 		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
@@ -322,4 +320,3 @@ class Code128 extends BarcodeBase
 		}
 	}
 }
-?>

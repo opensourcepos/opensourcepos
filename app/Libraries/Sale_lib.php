@@ -147,7 +147,7 @@ class Sale_lib
 				$sort['description'][$k] = $v['description'];
 				$sort['name'][$k] = $v['name'];
 			}
-			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);
+			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);	//TODO: Not sure what's going on here.  $filtered_cart is an array but is being concatenated with a string here.
 		}
 		// Group by Item Category
 		elseif(config('OSPOS')->line_sequence == '2')	//TODO: ===.  Also need to change these to constants
@@ -468,7 +468,7 @@ class Sale_lib
 	/**
 	 * Delete the selected payment from the payment array and if cash rounding is enabled
 	 * and the payment type is one of the cash types then automatically delete the other
-	 * @param $payment_id
+	 * @param string $payment_id
 	 */
 	public function delete_payment(string $payment_id): void
 	{

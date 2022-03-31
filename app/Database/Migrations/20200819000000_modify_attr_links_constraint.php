@@ -20,4 +20,3 @@ class Migration_modify_attr_links_constraint extends Migration
 	{
 	}
 }
-?>

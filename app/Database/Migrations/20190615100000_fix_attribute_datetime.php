@@ -16,4 +16,3 @@ class Migration_fix_attribute_datetime extends Migration
 
 	}
 }
-?>

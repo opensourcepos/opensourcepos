@@ -16,4 +16,3 @@ class Migration_taxgroupconstraint extends Migration
 		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('tax_jurisdictions') . ' DROP INDEX tax_jurisdictions_uq1');
 	}
 }
-?>

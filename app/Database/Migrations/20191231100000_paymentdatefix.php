@@ -16,4 +16,3 @@ class Migration_PaymentDateFix extends Migration
 
 	}
 }
-?>

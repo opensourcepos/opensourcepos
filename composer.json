@@ -30,7 +30,9 @@
 		"ext-curl": "*",
 		"ext-mbstring": "*",
 		"ext-gd": "*",
-		"ext-fileinfo": "*"
+		"ext-fileinfo": "*",
+		"ext-zip": "*",
+		"ext-mysqli": "*"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",

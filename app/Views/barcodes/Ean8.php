@@ -32,6 +32,8 @@
 
 namespace emberlabs\Barcode;
 
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Ean8
  *           Generate Ean8 Barcodes
@@ -217,7 +219,7 @@ class Ean8 extends BarcodeBase
 		
 		if (!$this->img)
 		{
-			throw new \RuntimeException("Ean8: Image failed to initialize");
+			throw new RuntimeException("Ean8: Image failed to initialize");
 		}
 		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
@@ -366,4 +368,3 @@ class Ean8 extends BarcodeBase
 		);
 	}
 }
-?>

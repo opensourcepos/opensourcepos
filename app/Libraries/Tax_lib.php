@@ -499,4 +499,3 @@ class Tax_lib
 			. '</option><option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
 	}
 }
-?>

@@ -31,4 +31,3 @@ class Db_log
 		}
 	}
 }
-?>

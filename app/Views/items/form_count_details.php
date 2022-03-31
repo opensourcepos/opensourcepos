@@ -98,7 +98,7 @@
 		foreach($inventory_array as $row)
 		{
 			$employee = $this->employee->get_info($row['trans_user']);
-			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);
+			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);	//TODO: in php 7.3 this doesn't work.  Needs to be fixed.
 		}
 		?>
 	</tbody>

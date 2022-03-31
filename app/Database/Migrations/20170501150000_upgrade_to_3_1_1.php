@@ -21,4 +21,3 @@ class Migration_Upgrade_To_3_1_1 extends Migration
 
 	}
 }
-?>

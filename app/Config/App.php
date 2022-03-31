@@ -535,6 +535,7 @@ class App extends BaseConfig
 
 	function __construct()
 	{
+		parent::__construct();
 		$this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
 		$this->baseURL = $this->https_on ? 'https' : 'http';
 		$this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost');

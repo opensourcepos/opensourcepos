@@ -16,4 +16,3 @@ class Migration_cashrounding extends Migration
 		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_payments') . ' DROP COLUMN `cash_adjustment`');
 	}
 }
-?>

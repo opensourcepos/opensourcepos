@@ -127,4 +127,3 @@ class Migration_database_optimizations extends Migration
 	{
 	}
 }
-?>

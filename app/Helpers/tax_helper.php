@@ -166,4 +166,3 @@ function get_tax_rates_data_row($tax_rates_row): array
 		)
 	];
 }
-?>

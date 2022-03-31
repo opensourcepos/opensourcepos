@@ -11,6 +11,8 @@
 
 namespace emberlabs\Barcode;
 
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Barcode Base
  * 	     Abstract Base
@@ -70,14 +72,14 @@ abstract class BarcodeBase
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
 	 * @return throws \OverflowException
 	 */
-	public function getData()
+	public function getData(): string
 	{
 		return $this->data;
 	}
 
 	/**
 	 * Validate the given barcode.
-	 * @param $barcode The barcode to validate
+	 * @param string $barcode The barcode to validate
 	 * @return bool true if it complies with the barcode formatting
 	 */
 	public function validate(string $barcode): bool
@@ -88,10 +90,10 @@ abstract class BarcodeBase
 	/**
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
-	 * @param $number The seed to generate a barcode for
-	 * @return mixed The generated barcode
+	 * @param string $number The seed to generate a barcode for
+	 * @return string|null The generated barcode
 	 */
-	public function generate($number)
+	public function generate(string $number): ?string
 	{
 		return $number;
 	}
@@ -167,14 +169,11 @@ abstract class BarcodeBase
 		}
 	}
 
-	/*
+	/**
 	 * Save Image
-	 *
-	 * @param string filename - File to write to (needs to have .png, .gif, or 
-	 *	.jpg extension)
+	 * @param string filename - File to write to (needs to have .png, .gif, or .jpg extension)
 	 * @return void
-	 * @throws \RuntimeException - If the file could not be written or some 
-	 *	other I/O error. 
+	 * @throws RuntimeException - If the file could not be written or some other I/O error.
 	 */
 	public function save($filename)
 	{
@@ -196,8 +195,8 @@ abstract class BarcodeBase
 			break;
 
 			default:
-				throw new \RuntimeException("Could not determine file type.");
-			break;
+				throw new RuntimeException("Could not determine file type.");
+
 		}
 	}
 
@@ -214,4 +213,3 @@ abstract class BarcodeBase
 		return base64_encode(ob_get_clean());
 	}
 }
-?>

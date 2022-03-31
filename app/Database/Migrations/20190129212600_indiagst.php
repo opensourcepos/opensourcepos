@@ -146,4 +146,3 @@ class Migration_IndiaGST extends Migration
 		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('tax_code_rates_backup'));
 	}
 }
-?>

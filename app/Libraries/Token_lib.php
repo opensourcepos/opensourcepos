@@ -165,4 +165,3 @@ class Token_lib
 		return '';
 	}
 }
-?>

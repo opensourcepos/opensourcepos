@@ -6,8 +6,8 @@
 function create_pdf(string $html, string $filename = ''): string
 {
     // need to enable magic quotes for the
-    $dompdf = new Dompdf\Dompdf (["isRemoteEnabled" => TRUE, "isPhpEnabled" => TRUE]);
-    $dompdf->loadHtml(str_replace (["\n", "\r"], '', $html));
+    $dompdf = new Dompdf\Dompdf (['isRemoteEnabled' => TRUE, 'isPhpEnabled' => TRUE]);
+    $dompdf->loadHtml(str_replace (['\n', '\r'], '', $html));
     $dompdf->render();
     
     if($filename != '')
@@ -18,5 +18,6 @@ function create_pdf(string $html, string $filename = ''): string
     {
         return $dompdf->output();
     }
+
+    return '';
 }
-?>

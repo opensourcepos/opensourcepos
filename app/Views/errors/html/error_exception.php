@@ -1,4 +1,17 @@
-<?php $error_id = uniqid('error', true); ?>
+<?php
+use CodeIgniter\CodeIgniter;
+use Config\Services;
+
+/**
+ * @var string $title
+ * @var object $exception
+ * @var string $file
+ * @var int $line
+ * @var array $trace
+ */
+
+	$error_id = uniqid('error', true);
+?>
 <!doctype html>
 <html>
 <head>
@@ -86,7 +99,7 @@
                                         $params = null;
                                         // Reflection by name is not available for closure function
                                         if (substr($row['function'], -1) !== '}') {
-                                            $mirror = isset($row['class']) ? new \ReflectionMethod($row['class'], $row['function']) : new \ReflectionFunction($row['function']);
+                                            $mirror = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
                                             $params = $mirror->getParameters();
                                         }
 
@@ -189,7 +202,7 @@
 
 			<!-- Request -->
 			<div class="content" id="request">
-				<?php $request = \Config\Services::request(); ?>
+				<?php $request = Services::request(); ?>
 
 				<table>
 					<tbody>
@@ -307,7 +320,7 @@
 
 			<!-- Response -->
 			<?php
-                $response = \Config\Services::response();
+                $response = Services::response();
                 $response->setStatusCode(http_response_code());
             ?>
 			<div class="content" id="response">
@@ -387,7 +400,7 @@
 			<p>
 				Displayed at <?= esc(date('H:i:sa')) ?> &mdash;
 				PHP: <?= esc(PHP_VERSION) ?>  &mdash;
-				CodeIgniter: <?= esc(\CodeIgniter\CodeIgniter::CI_VERSION) ?>
+				CodeIgniter: <?= esc(CodeIgniter::CI_VERSION) ?>
 			</p>
 
 		</div>

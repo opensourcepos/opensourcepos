@@ -19,4 +19,3 @@ class Migration_modify_session_datatype extends Migration
 	{
 	}
 }
-?>

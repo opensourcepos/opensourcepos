@@ -89,4 +89,3 @@ function bom_exists(&$file_handle): bool
 
 	return $result;
 }
-?>

@@ -79,5 +79,3 @@ class Sms_lib
 		return $response;
 	}
 }
-
-?>

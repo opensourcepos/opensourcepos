@@ -16,4 +16,3 @@ class Migration_add_iso_4217 extends Migration
 
 	}
 }
-?>

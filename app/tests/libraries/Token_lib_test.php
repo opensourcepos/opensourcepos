@@ -72,5 +72,3 @@ class Token_lib_test extends UnitTestCase
         $this->assertEquals("021234565000110", $item_number);
     }
 }
-
-?>

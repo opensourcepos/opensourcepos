@@ -56,4 +56,3 @@ class Migration_remove_duplicate_links extends Migration
 	{
 	}
 }
-?>

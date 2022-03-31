@@ -117,4 +117,3 @@ class Tax_jurisdictions extends Secure_Controller
 		}
 	}
 }
-?>

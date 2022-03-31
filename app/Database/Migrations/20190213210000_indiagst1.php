@@ -20,4 +20,3 @@ class Migration_IndiaGST1 extends Migration
 	}
 
 }
-?>

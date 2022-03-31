@@ -130,4 +130,3 @@ class Appconfig extends Model
 		return $last_used;
 	}
 }
-?>

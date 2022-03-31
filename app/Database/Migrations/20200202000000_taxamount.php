@@ -316,4 +316,3 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 }
-?>
