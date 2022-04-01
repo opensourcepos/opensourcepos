@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Semua";
 $lang["reports_authority"] = "Otoritas";
 $lang["reports_canceled"] = "Dibatalkan";
@@ -20,7 +19,7 @@ $lang["reports_completed_sales"] = "Penjualan yang Sukses";
 $lang["reports_confirm_delete"] = "Anda yakin ingin menghapus masukan terpilih?";
 $lang["reports_confirm_restore"] = "Anda yakin ingin mengembalikan entri terpilih?";
 $lang["reports_cost"] = "Grosir";
-$lang["reports_cost_price"] = "Harga Pokok";
+$lang["reports_cost_price"] = "Harga Beli";
 $lang["reports_count"] = "Jumlah";
 $lang["reports_customer"] = "Pelanggan";
 $lang["reports_customers"] = "Pelanggan";
@@ -115,14 +114,14 @@ $lang["reports_sold_to"] = "Dijual Kepada";
 $lang["reports_stock_location"] = "Lokasi Stock";
 $lang["reports_sub_total_value"] = "Sub-total";
 $lang["reports_subtotal"] = "SubTotal";
-$lang["reports_summary_reports"] = "Ringkasan Laporan";
+$lang["reports_summary_reports"] = "Laporan Ringkas";
 $lang["reports_supplied_by"] = "Pemasok";
 $lang["reports_supplier"] = "Pemasok";
 $lang["reports_suppliers"] = "Pemasok";
 $lang["reports_suppliers_summary_report"] = "Laporan Ringkasan Pemasok";
 $lang["reports_tax"] = "Pajak";
 $lang["reports_tax_category"] = "Kategori Pajak";
-$lang["reports_tax_name"] = "";
+$lang["reports_tax_name"] = "Nama Pajak";
 $lang["reports_tax_percent"] = "Persentase Pajak";
 $lang["reports_tax_rate"] = "Tarif Pajak";
 $lang["reports_taxes"] = "Pajak";
