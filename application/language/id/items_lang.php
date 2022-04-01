@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Menambah atau mengurangi Inventori.";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amount_entry"] = "Jumlah entri";
@@ -20,7 +19,7 @@ $lang["items_confirm_bulk_edit"] = "Apakah Anda yakin ingin merubah semua item y
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "Semua item informasi pajak akan diganti.";
 $lang["items_confirm_delete"] = "Apakah Anda yakin ingin menghapus item yang dipilih?";
 $lang["items_confirm_restore"] = "Anda yakin ingin mengembalikan item terpilih?";
-$lang["items_cost_price"] = "Harga Pokok";
+$lang["items_cost_price"] = "Harga Beli";
 $lang["items_cost_price_number"] = "Harga beli harus berupa angka.";
 $lang["items_cost_price_required"] = "Harga beli harus diisi.";
 $lang["items_count"] = "Mutasi/Penyesuaian Inventori";
@@ -89,7 +88,7 @@ $lang["items_reorder_level_required"] = "Batas pesan ulang wajib diisi.";
 $lang["items_retrive_item_info"] = "Dapatkan Info Barang";
 $lang["items_sales_tax_1"] = "Pajak Penjualan1";
 $lang["items_sales_tax_2"] = "Pajak Penjualan2";
-$lang["items_search_attributes"] = "Cari secara manual";
+$lang["items_search_attributes"] = "Cari Atribut";
 $lang["items_select_image"] = "Pilih Gambar";
 $lang["items_serialized_items"] = "Serial Item";
 $lang["items_standard"] = "Standar";
