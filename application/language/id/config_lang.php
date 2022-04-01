@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Alamat Perusahaan";
 $lang["config_address_required"] = "Alamat Perusahaan wajib diisi.";
 $lang["config_all_set"] = "Semua perizinan file diatur dengan benar!";
@@ -144,7 +143,7 @@ $lang["config_financial_year_may"] = "1 Mei";
 $lang["config_financial_year_nov"] = "1 November";
 $lang["config_financial_year_oct"] = "1 Oktober";
 $lang["config_financial_year_sep"] = "1 September";
-$lang["config_floating_labels"] = "";
+$lang["config_floating_labels"] = "Label mengambang";
 $lang["config_gcaptcha_enable"] = "Halaman login reCHAPTCHA";
 $lang["config_gcaptcha_secret_key"] = "Kunci Rahasia reCHAPTCHA";
 $lang["config_gcaptcha_secret_key_required"] = "Kunci Rahasia reCHAPTCHA adalah bidang yang harus diisi";
@@ -164,7 +163,7 @@ $lang["config_image_restrictions"] = "Pembatasan Pengunggahan Gambar";
 $lang["config_include_hsn"] = "Termasuk dukungan kode HSN";
 $lang["config_info"] = "Informasi";
 $lang["config_info_configuration"] = "Informasi Toko";
-$lang["config_input_groups"] = "";
+$lang["config_input_groups"] = "Grup masukan";
 $lang["config_integrations"] = "Integrasi";
 $lang["config_integrations_configuration"] = "Integrasi pihak ketiga";
 $lang["config_invoice"] = "Faktur";
@@ -195,7 +194,7 @@ $lang["config_locale_info"] = "Informasi Konfigurasi Terjemahan";
 $lang["config_location"] = "Lokasi Stock";
 $lang["config_location_configuration"] = "Lokasi Stock";
 $lang["config_location_info"] = "Informasi konfigurasi lokasi stock";
-$lang["config_login_form"] = "";
+$lang["config_login_form"] = "Gaya Formulir Log Masuk";
 $lang["config_logout"] = "Apakah Anda akan membuat cadangan sebelum anda keluar? Klik [OK] untuk pencadangan, [Batal] untuk keluar.";
 $lang["config_mailchimp"] = "MailChimp";
 $lang["config_mailchimp_api_key"] = "Kunci API MailChimp";
@@ -316,7 +315,7 @@ $lang["config_tax_decimals"] = "Pajak Decimals";
 $lang["config_tax_id"] = "Id Pajak";
 $lang["config_tax_included"] = "Dikenakan Pajak";
 $lang["config_theme"] = "Tema";
-$lang["config_theme_preview"] = "";
+$lang["config_theme_preview"] = "Pratinjau Tema:";
 $lang["config_thousands_separator"] = "Pemisah Ribuan";
 $lang["config_timezone"] = "Zona Waktu";
 $lang["config_timezone_error"] = "Zona Waktu OSPOS berbeda dari Zona Waktu Anda.";
