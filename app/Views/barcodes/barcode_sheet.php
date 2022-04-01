@@ -7,7 +7,7 @@
  */
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $this->request->getLocale() ?>">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />

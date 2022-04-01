@@ -222,7 +222,7 @@
 	<br>
 
 	<div id="barcode" style="text-align:center">
-		<img src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
+		<img alt='<?php echo esc($barcode, 'attr') ?>' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
 		<?php echo $sale_id ?>
 	</div>
 </div>

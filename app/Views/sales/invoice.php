@@ -260,7 +260,7 @@ $(document).ready(function()
 			<div style='padding:2%;'><?php echo nl2br(esc(config('OSPOS')->return_policy)) ?></div>
 		</div>
 		<div id='barcode'>
-			<img style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
+			<img alt='<?php echo esc($barcode, 'attr') ?>' style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

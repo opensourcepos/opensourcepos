@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="<?php echo $this->request->getLocale() ?>">
 <head>
 	<meta charset="UTF-8">
 	<meta name="robots" content="noindex">
