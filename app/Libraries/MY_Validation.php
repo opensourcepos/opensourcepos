@@ -3,6 +3,7 @@
 namespace app\Libraries;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Validation\Validation;
 use Config\Services;
 use app\Models\Employee;
 
@@ -10,7 +11,7 @@ use app\Models\Employee;
  * @property migration migration
  * @property employee employee
  */
-class MY_Validation
+class MY_Validation extends Validation
 {
 	/**
 	 * Checks to make sure that the user is logged in or not.  Called as a validator rule.

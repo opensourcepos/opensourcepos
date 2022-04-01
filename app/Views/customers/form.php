@@ -154,7 +154,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable) ?>
+						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' || $person_info->taxable) ?>
 					</div>
 				</div>
 
@@ -364,7 +364,7 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-1'>
-							<?php echo form_checkbox('mailchimp_vip', '1', $mailchimp_info['vip'] == '' ? FALSE : (boolean)$mailchimp_info['vip']) ?>
+							<?php echo form_checkbox('mailchimp_vip', '1', !($mailchimp_info['vip'] == '') && $mailchimp_info['vip']) ?>
 						</div>
 					</div>
 

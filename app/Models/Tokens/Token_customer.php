@@ -32,7 +32,7 @@ class Token_customer extends Token
 
 	public function get_value(): string
 	{
-		// substitute customer info
+		//substitute customer info
 		$customer_id = $this->sale_lib->get_customer();
 		if($customer_id != -1 && empty($this->customer_info))	//TODO: Replace -1 with a Constant
 		{
@@ -43,6 +43,6 @@ class Token_customer extends Token
 			}
 		}
 
-		return $value;	//TODO: $value is neither declared nor set. If it gets here that means that either the $customer_id = -1 or $this->customer_info is empty or $customer_info inside the if statement above is ''
+		return $value;
 	}
 }

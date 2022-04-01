@@ -15,7 +15,7 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Migration_TaxAmount extends Migration
 {
-	const ROUND_UP = 5;	//TODO: These need to be converted to constants in the constants.php
+	const ROUND_UP = 5;
 	const ROUND_DOWN = 6;
 	const HALF_FIVE = 7;
 	const YES = '1';

@@ -11,13 +11,9 @@
 
 namespace emberlabs\Barcode;
 
-use OverflowException;
-use RuntimeException;
-
 /**
  * emberlabs Barcode Creator - Barcode Base
  * 	     Abstract Base
- *
  *
  * @license     http://opensource.org/licenses/mit-license.php The MIT License
  * @link        https://github.com/samt/barcode
@@ -34,7 +30,7 @@ abstract class BarcodeBase
 	 * @var data - to be set
 	 */
 	protected $data = '';
-	
+
 	/*
 	 * @var int x (width)
 	 */
@@ -57,19 +53,21 @@ abstract class BarcodeBase
 	 */
 	protected $jpgQuality = 85;
 
-	/**
+	/*
 	 * (Abstract) Set the data
 	 *
-	 * @param string|int $data - (int or string) Data to be encoded
-	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
-	 * @throws OverflowException
+	 * @param mixed data - (int or string) Data to be encoded
+	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @return throws \OverflowException
 	 */
 	abstract public function setData($data);
 
-	/**
+	/*
 	 * Get the data
-	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
-	 * @throws OverflowException
+	 *
+	 * @param mixed data - (int or string) Data to be encoded
+	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @return throws \OverflowException
 	 */
 	public function getData(): string
 	{
@@ -78,21 +76,21 @@ abstract class BarcodeBase
 
 	/**
 	 * Validate the given barcode.
-	 * @param string $barcode The barcode to validate
+	 * @param $barcode The barcode to validate
 	 * @return bool true if it complies with the barcode formatting
 	 */
-	public function validate(string $barcode): bool
+	public function validate($barcode): bool
 	{
-		return TRUE;	//TODO: This function is incomplete and will always return true, even if the barcode is invalid.
+		return TRUE;
 	}
 
 	/**
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
-	 * @param string $number Seed to generate a barcode for
-	 * @return string|null The generated barcode
+	 * @param $number The seed to generate a barcode for
+	 * @return mixed The generated barcode
 	 */
-	public function generate(string $number): ?string
+	public function generate($number)
 	{
 		return $number;
 	}
@@ -104,13 +102,14 @@ abstract class BarcodeBase
 	 */
 	abstract public function draw();
 
-	/**
+	/*
 	 * Set the Dimensions
-	 * @param int|string x
-	 * @param int|string y
-	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
+	 *
+	 * @param int x
+	 * @param int y
+	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function setDimensions($x, $y): object
+	public function setDimensions($x, $y): BarcodeBase
 	{
 		$this->x = (int) $x;
 		$this->y = (int) $y;
@@ -118,63 +117,65 @@ abstract class BarcodeBase
 		return $this;
 	}
 
-	/**
+	/*
 	 * Set Quality
-	 * @param int|string $q jpeg quality
-	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
+	 * @param int q - jpeg quality
+	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function setQuality($q): object
+	public function setQuality($q): BarcodeBase
 	{
-		$this->jpgQuality = (int)$q;
+		$this->jpgQuality = (int) $q;
 
 		return $this;
 	}
 
-	/**
-	 * Display human readable text below the code
-	 * @param boolean $enable - Enable the human readable text
-	 * @return BarcodeBase instance of \emberlabs\Barcode\BarcodeBase
+	/*
+	 * Display human-readable text below the code
+	 * @param boolean enable - Enable the human-readable text
+	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
-	public function enableHumanText(bool $enable = true): object
+	public function enableHumanText($enable = true): BarcodeBase
 	{
-		$this->humanText = (boolean)$enable;
+		$this->humanText = (boolean) $enable;
 
 		return $this;
 	}
 
-	/**
+	/*
 	 * Output Image to the buffer
 	 *
-	 * @param string $type
 	 * @return void
 	 */
-	public function output(string $type = 'png')
+	public function output($type = 'png')
 	{
 		switch($type)
 		{
 			case 'jpg':
 			case 'jpeg':
 				imagejpeg($this->img, null, $this->jpgQuality);
-			break;
+				break;
 
 			case 'gif':
 				imagegif($this->img);
-			break;
+				break;
 
 			case 'png':
 			default:
 				imagepng($this->img);
-			break;
+				break;
 		}
 	}
 
-	/**
+	/*
 	 * Save Image
-	 * @param string filename - File to write to (needs to have .png, .gif, or .jpg extension)
+	 *
+	 * @param string filename - File to write to (needs to have .png, .gif, or
+	 *	.jpg extension)
 	 * @return void
-	 * @throws RuntimeException - If the file could not be written or some other I/O error.
+	 * @throws \RuntimeException - If the file could not be written or some
+	 *	other I/O error.
 	 */
-	public function save(string $filename)
+	public function save($filename)
 	{
 		$type = strtolower(substr(strrchr($filename, '.'), 1));
 
@@ -183,25 +184,25 @@ abstract class BarcodeBase
 			case 'jpg':
 			case 'jpeg':
 				imagejpeg($this->img, $filename, $this->jpgQuality);
-			break;
+				break;
 
 			case 'gif':
 				imagegif($this->img, $filename);
-			break;
+				break;
 
 			case 'png':
 				imagepng($this->img, $filename);
-			break;
+				break;
 
 			default:
-				throw new RuntimeException("Could not determine file type.");
-
+				throw new \RuntimeException("Could not determine file type.");
+				break;
 		}
 	}
 
 	/*
-	 * Base64 Encoded 
-	 * For ouput in-page
+	 * Base64 Encoded
+	 * For output in-page
 	 * @return void
 	 */
 	public function base64(): string

@@ -130,10 +130,10 @@ class Barcode_lib
 
 			return $barcode_instance->base64();
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
-			//TODO: Missing return statement here.
+			return '';
 		}
 	}
 
@@ -155,10 +155,10 @@ class Barcode_lib
 
 			return $barcode->base64();
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
-//TODO: Missing return statement here.
+			return '';
 		}
 	}
 

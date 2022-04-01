@@ -134,7 +134,7 @@ class Items extends Secure_Controller
 	 * @param $pic_filename
 	 * @return void
 	 */
-	public function pic_thumb($pic_filename): void
+	public function pic_thumb($pic_filename): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3453
 	{
 		helper('file');
 
@@ -146,7 +146,7 @@ class Items extends Secure_Controller
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
-			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;	//TODO:  This needs to be rewritten a la https://codeigniter.com/user_guide/libraries/images.html since thumb_marker doesn't exist in CI4
+			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
@@ -164,7 +164,7 @@ class Items extends Secure_Controller
 			}
 
 			$this->response->setContentType(mime_content_type($thumb_path));
-			$this->response->setBody(file_get_contents($thumb_path));	//TODO: figure out the CI4 counterpart to output->set_output(). https://codeigniter4.github.io/CodeIgniter4/outgoing/response.html#setting-the-output
+			$this->response->setBody(file_get_contents($thumb_path));
 		}
 	}
 

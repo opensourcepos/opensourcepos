@@ -675,9 +675,9 @@ class Attribute extends Model
 
 				$builder = $this->db->table('attribute_values');
 				$builder->insert(["attribute_$data_type" => $attribute_value]);
-			}
 
-			$attribute_id = $attribute_id ? $attribute_id : $this->db->insertID();
+				$attribute_id = $this->db->insertID();
+			}
 
 			$builder = $this->db->table('attribute_links');
 			$builder->insert([

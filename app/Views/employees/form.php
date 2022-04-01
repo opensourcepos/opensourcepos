@@ -51,7 +51,7 @@
 				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])), 'attr') ?>
+					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']), 'attr'))?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -65,7 +65,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])), 'attr') ?>
+				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']), 'attr')) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>

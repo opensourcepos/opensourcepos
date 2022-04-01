@@ -85,12 +85,9 @@ class Code39 extends BarcodeBase
 
 	/**
 	 * Set the data
-	 *
-	 * @param string|int data - (int or string) Data to be encoded
-	 * @return BarcodeInterface instance of \emberlabs\Barcode\BarcodeInterface
-	 * @throws OverflowException
+	 * @param string|int $data - (int or string) Data to be encoded
 	 */
-	public function setData($data)
+	public function setData($data): void
 	{
 		$this->data = $data;
 	}

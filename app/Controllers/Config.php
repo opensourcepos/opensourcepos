@@ -296,7 +296,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_info(): void
+	public function save_info(): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3452
 	{
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();	//TODO: This needs to be upgraded to CI4 style // _handle_logo_upload already given upload info. This is not needed. 
@@ -897,7 +897,7 @@ class Config extends Secure_Controller
 	}
 
 	private function _handle_logo_upload(): bool    //TODO: Remove hungarian notation. Do we need bool or string?
-	{
+	{//TODO: https://github.com/opensourcepos/opensourcepos/issues/3452
 		helper(['form']);
 		$validation_rule = [
 			'company_logo' => [
@@ -962,7 +962,7 @@ class Config extends Secure_Controller
 				$handle = @fopen($config_path, 'w+');
 
 				// Write the file
-				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;	//TODO: This can be replaced with `!(fwrite($handle, $config) === FALSE);`
+				$result = !(fwrite($handle, $config) === FALSE);
 
 				fclose($handle);
 			}
@@ -976,19 +976,17 @@ class Config extends Secure_Controller
 		return TRUE;
 	}
 
-	public function backup_db(): void
+	public function backup_db(): void //TODO:https://github.com/opensourcepos/opensourcepos/issues/3451
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		if($this->employee->has_module_grant('config', $employee_id))
 		{
-			$this->load->dbutil();	//TODO: CI4 does not have this utility any longer https://forum.codeigniter.com/thread-78658-post-384595.html#pid384595
-			//TODO: It appears that CI4 no longer has a built-in utility to dump the database.  Need to use mysqldump probably, so this function needs to be rewritten.
+			$this->load->dbutil();
+
 			$prefs = ['format' => 'zip', 'filename' => 'ospos.sql'];
-
-			$backup = $this->dbutil->backup($prefs);	//TODO: We need a new method for backing up the database.
-
+			$backup = $this->dbutil->backup($prefs);
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") . '.zip';
-			$save = "uploads/$file_name";	//TODO: This variable isn't used anywhere.
+
 			helper('download');
 			while(ob_get_level())
 			{

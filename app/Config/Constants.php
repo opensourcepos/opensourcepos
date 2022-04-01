@@ -81,68 +81,67 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 /*
  | Attribute Related Constants.
  */
-define('GROUP', 'GROUP');
-define('DROPDOWN', 'DROPDOWN');
-define('DECIMAL', 'DECIMAL');
-define('DATE', 'DATE');
-define('TEXT', 'TEXT');
-define('CHECKBOX', 'CHECKBOX');
-define('NO_DEFINITION_ID', 0);
-define('CATEGORY_DEFINITION_ID', -1);
-
+const GROUP = 'GROUP';
+const DROPDOWN = 'DROPDOWN';
+const DECIMAL = 'DECIMAL';
+const DATE = 'DATE';
+const TEXT = 'TEXT';
+const CHECKBOX = 'CHECKBOX';
+const NO_DEFINITION_ID = 0;
+const CATEGORY_DEFINITION_ID = -1;
 const DEFINITION_TYPES = [GROUP, DROPDOWN, DECIMAL, TEXT, DATE, CHECKBOX];
 
 /*
  | Item Related Constants.
  */
-define('HAS_STOCK', 0);
-define('HAS_NO_STOCK', 1);
+const HAS_STOCK = 0;
+const HAS_NO_STOCK = 1;
 
-define('ITEM', 0);
-define('ITEM_KIT', 1);
-define('ITEM_AMOUNT_ENTRY', 2);
-define('ITEM_TEMP', 3);
-define('NEW_ITEM', -1);
+const ITEM = 0;
+const ITEM_KIT = 1;
+const ITEM_AMOUNT_ENTRY = 2;
+const ITEM_TEMP = 3;
+const NEW_ITEM = -1;
 
-define('PRINT_ALL', 0);
-define('PRINT_PRICED', 1);
-define('PRINT_KIT', 2);
+const PRINT_ALL = 0;
+const PRINT_PRICED = 1;
+const PRINT_KIT = 2;
 
-define('PRINT_YES', 0);
-define('PRINT_NO', 1);
+const PRINT_YES = 0;
+const PRINT_NO = 1;
 
-define('PRICE_ALL', 0);
-define('PRICE_KIT', 1);
-define('PRICE_KIT_ITEMS', 2);
+const PRICE_ALL = 0;
+const PRICE_KIT = 1;
+const PRICE_KIT_ITEMS = 2;
 
-define('PRICE_OPTION_ALL', 0);
-define('PRICE_OPTION_KIT', 1);
-define('PRICE_OPTION_KIT_STOCK', 2);
+const PRICE_OPTION_ALL = 0;
+const PRICE_OPTION_KIT = 1;
+const PRICE_OPTION_KIT_STOCK = 2;
 
-define('NAME_SEPARATOR', ' | ');
+const NAME_SEPARATOR = ' | ';
 
 /*
  | Sale Related Constants.
  */
-define('COMPLETED', 0);
-define('SUSPENDED', 1);
-define('CANCELED', 2);
+const COMPLETED = 0;
+const SUSPENDED = 1;
+const CANCELED = 2;
 
-define('SALE_TYPE_POS', 0);
-define('SALE_TYPE_INVOICE', 1);
-define('SALE_TYPE_WORK_ORDER', 2);
-define('SALE_TYPE_QUOTE', 3);
-define('SALE_TYPE_RETURN', 4);
+const SALE_TYPE_POS = 0;
+const SALE_TYPE_INVOICE = 1;
+const SALE_TYPE_WORK_ORDER = 2;
+const SALE_TYPE_QUOTE = 3;
+const SALE_TYPE_RETURN = 4;
 
-define('PERCENT', 0);
-define('FIXED', 1);
+const PERCENT = 0;
+const FIXED = 1;
 
-define('PRICE_MODE_STANDARD', 0);
-define('PRICE_MODE_KIT', 1);
+const PRICE_MODE_STANDARD = 0;
+const PRICE_MODE_KIT = 1;
 
-define('PAYMENT_TYPE_UNASSIGNED', '--');
+const PAYMENT_TYPE_UNASSIGNED = '--';
 
-define('CASH_ADJUSTMENT_TRUE', 1);
-define('CASH_ADJUSTMENT_FALSE', 0);
-define('CASH_MODE_TRUE', 1);
-define('CASH_MODE_FALSE', 0);
+const CASH_ADJUSTMENT_TRUE = 1;
+const CASH_ADJUSTMENT_FALSE = 0;
+const CASH_MODE_TRUE = 1;
+const CASH_MODE_FALSE = 0;

@@ -217,16 +217,17 @@ class Code128 extends BarcodeBase
 		}
 	}
 
-	/*
+	/**
 	 * Get the name of a start char fr te current subtype
 	 * @return string
 	 */
-	private function getStartChar()
+	private function getStartChar(): string
 	{
 		$this->resolveSubtype();
 
 		switch($this->type)
 		{
+			default:
 			case self::TYPE_A: return 'START_A';
 			case self::TYPE_B: return 'START_B';
 			case self::TYPE_C: return 'START_C';

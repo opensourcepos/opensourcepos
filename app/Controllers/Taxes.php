@@ -97,9 +97,9 @@ class Taxes extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term'));	//TODO: There is no get_search_suggestions function in the tax model

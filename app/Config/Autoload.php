@@ -2,7 +2,6 @@
 
 namespace Config;
 
-use App\Models\Tax_jurisdiction;
 use CodeIgniter\Config\AutoloadConfig;
 
 /**

@@ -283,23 +283,21 @@ class Item extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if($query->getNumRows() == 1)
 		{
 			return $query->getRow();
 		}
-		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
+
+		//Get empty base parent object, as $item_id is NOT an item
+		$item_obj = new stdClass();
+
+		//Get all the fields from items table
+		foreach($this->db->getFieldNames('items') as $field)
 		{
-			//Get empty base parent object, as $item_id is NOT an item
-			$item_obj = new stdClass();
-
-			//Get all the fields from items table
-			foreach($this->db->getFieldNames('items') as $field)
-			{
-				$item_obj->$field = '';
-			}
-
-			return $item_obj;
+			$item_obj->$field = '';
 		}
+
+		return $item_obj;
 	}
 
 	/**

@@ -230,7 +230,7 @@ class Receiving_lib
 		}
 
 		$insertkey = $maxkey + 1;
-		$item_info = $this->item->get_info($item_id,$item_location);
+		$item_info = $this->item->get_info($item_id, $item_location);	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3457
 
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
@@ -240,7 +240,7 @@ class Receiving_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
-		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)	//TODO === ?
+		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)
 		{
 			$receiving_quantity_choices = [1  => 'x1'];
 		}

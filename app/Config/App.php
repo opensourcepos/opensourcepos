@@ -533,7 +533,7 @@ class App extends BaseConfig
 	 */
 	public $CSPEnabled = false;
 
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');

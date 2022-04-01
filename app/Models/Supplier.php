@@ -303,18 +303,20 @@ class Supplier extends Person
 	}
 
 	/**
-	 * Return a category name given its id
+	 * Return a category name given its id.
+	 * @param int $id
+	 * @return string
 	 */
 	public function get_category_name(int $id): string
 	{
-		if($id == self::GOODS_SUPPLIER)	//TODO: this should probably be ===
+		if($id == self::GOODS_SUPPLIER)
 		{
 			return lang('Suppliers.goods');
 		}
-		elseif($id == self::COST_SUPPLIER)	//TODO: same here
+		elseif($id == self::COST_SUPPLIER)
 		{
 			return lang('Suppliers.cost');
 		}
-		//TODO: This is missing a return statement.  Perhaps the above needs to be else instead of elseif?
+		//TODO: https://github.com/opensourcepos/opensourcepos/issues/3456
 	}
 }

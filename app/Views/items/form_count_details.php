@@ -107,7 +107,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-    display_stock(<?php echo json_encode(key(esc($stock_locations), 'raw')) ?>);
+    display_stock(<?php echo json_encode(key(esc($stock_locations, 'raw'))) ?>);
 });
 
 function display_stock(location_id)

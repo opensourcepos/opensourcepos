@@ -13,6 +13,7 @@ use app\Models\Enums\Rounding_mode;
 use app\Models\Sale;
 use CodeIgniter\Session\Session;
 use app\Models\Stock_location;
+use ReflectionException;
 
 /**
  * Sale library
@@ -128,7 +129,7 @@ class Sale_lib
 
 		//TODO: This set of if/elseif/else needs to be converted to a switch statement
 		// Entry sequence (this will render kits in the expected sequence)
-		if(config('OSPOS')->line_sequence == '0')	//TODO: ===. Also need to change these to constants
+		if(config('OSPOS')->line_sequence == '0')
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -138,7 +139,7 @@ class Sale_lib
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif(config('OSPOS')->line_sequence == '1')	//TODO: ===.  Also need to change these to constants
+		elseif(config('OSPOS')->line_sequence == '1')	//TODO: Need to change these to constants
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -150,7 +151,7 @@ class Sale_lib
 			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);	//TODO: Not sure what's going on here.  $filtered_cart is an array but is being concatenated with a string here.
 		}
 		// Group by Item Category
-		elseif(config('OSPOS')->line_sequence == '2')	//TODO: ===.  Also need to change these to constants
+		elseif(config('OSPOS')->line_sequence == '2')	//TODO: Need to change these to constants
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -1076,19 +1077,23 @@ class Sale_lib
 		return FALSE;	//TODO: This function will always return false.
 	}
 
-	public function delete_item(int $item_id): void
+	/**
+	 * @param int $line
+	 * @return void
+	 * @throws ReflectionException
+	 */
+	public function delete_item(int $line): void
 	{
 		$items = $this->get_cart();
-		$item_type = $items[$item_id]['item_type'];
+		$item_type = $items[$line]['item_type'];
 
-		if($item_type == ITEM_TEMP)	//TODO: === ?
+		if($item_type == ITEM_TEMP)
 		{
-			$item_id = $items[$item_id]['item_id'];
+			$item_id = $items[$line]['item_id'];
 			$this->item->delete($item_id);
 		}
 
 		unset($items[$line]);
-
 		$this->set_cart($items);
 	}
 
@@ -1340,9 +1345,7 @@ class Sale_lib
 	 */
 	public function get_quantity_sold(string $total, string $price): string
 	{
-		$quantity = bcdiv($total, $price, quantity_decimals());
-
-		return $quantity;
+		return bcdiv($total, $price, quantity_decimals());
 	}
 
 	public function get_extended_amount(string $quantity, string $price, string $discount_amount = '0.0'): string
