@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Informasi Karyawan";
 $lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri.";
@@ -38,6 +37,6 @@ $lang["employees_system_language"] = "Bahasa Sistem";
 $lang["employees_unsuccessful_change_password"] = "Gagal mengubah kata sandi.";
 $lang["employees_update"] = "Ubah Karyawan";
 $lang["employees_username"] = "Nama Pengguna";
-$lang["employees_username_duplicate"] = "";
+$lang["employees_username_duplicate"] = "Nama pengguna karyawan sudah digunakan. Silakan pilih yang lain.";
 $lang["employees_username_minlength"] = "Nama Pengguna minimal 5 huruf.";
 $lang["employees_username_required"] = "Nama Pengguna wajib diisi.";
