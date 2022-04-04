@@ -13,7 +13,7 @@
 	<title><?php echo config('OSPOS')->company . '&nbsp;|&nbsp;' . lang('Common.software_short')  . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 	<meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="noindex, nofollow" name="robots">
-	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+	<link href="<?php echo base_url() ?>favicon.ico" rel="shortcut icon" type="image/x-icon">
   <link href="<?php echo 'dist/bootswatch-5/' . (empty(config('OSPOS')->theme) || 'paper' == config('OSPOS')->theme || 'readable' == config('OSPOS')->theme ? 'flatly' : config('OSPOS')->theme) . '/bootstrap.min.css' ?>" rel="stylesheet" type="text/css">
   <!-- start css template tags -->
   <link rel="stylesheet" type="text/css" href="css/login.min.css"/>
@@ -79,7 +79,7 @@
         <?php endif; ?>
 				<?php if(config('OSPOS')->gcaptcha_enable) {
 					echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-					echo '<div class="g-recaptcha mb-3" align="center" data-sitekey="' . config('OSPOS')->gcaptcha_site_key . '"></div>'; }
+					echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->gcaptcha_site_key . '"></div>'; }
         ?>
         <div class="d-grid">
           <button class="btn btn-lg btn-primary" name="login-button" type="submit" ><?php echo lang('Login.go') ?></button>

@@ -51,7 +51,7 @@ abstract class Token Extends Model
 		return $this->token_id() == $token_id;
 	}
 
-	function replace_token(string $text): string
+	function replace_token(string $text): string	//TODO: This function is never called in the code
 	{
 		if(strstr($text, $this->token_id()))
 		{

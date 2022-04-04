@@ -75,24 +75,21 @@ class Migration_Sales_Tax_Data extends Migration
 			// This computes tax for each line item and adds it to the tax type total
 			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
 			$tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], TRUE);
-			$item_tax_amount = 0;	//TODO: This is not needed because $item_tax_amount gets replaced in the code below.
-			if($tax_included)	//TODO: convert to ternary notation.
-			{
-				$item_tax_amount = $this->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent']);
-			}
-			else
-			{
-				$item_tax_amount = $this->get_sales_tax_for_amount($tax_basis, $item['percent'], PHP_ROUND_HALF_UP, $tax_decimals);
-			}
+
+			$item_tax_amount = $tax_included
+				? $this->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent'])
+				: $this->get_sales_tax_for_amount($tax_basis, $item['percent'], PHP_ROUND_HALF_UP, $tax_decimals);
+
 			$this->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percent'], $tax_type, $item_tax_amount);
 			$this->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, PHP_ROUND_HALF_UP, $sale_id, $item['name']);
-			$tax_group_sequence += 1;	//TODO: $tax_group_sequence++;
+			$tax_group_sequence++;
 		}
 		//Not sure when this would ever kick in, but this is technically the correct logic.
 		if($customer_sales_tax_support)	//TODO: This will always evaluate to false
 		{
 			$this->apply_invoice_taxing($sales_taxes);
 		}
+
 		$this->round_sales_taxes($sales_taxes);
 		$this->save_sales_tax($sales_taxes);
 	}

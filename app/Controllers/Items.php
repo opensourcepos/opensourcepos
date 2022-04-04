@@ -1106,7 +1106,7 @@ class Items extends Secure_Controller
 						$dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
 						$dropdown_values[] = '';
 
-						if(!empty($attribute_value) && in_array($attribute_value, $dropdown_values) === FALSE)	//TODO: !empty($attribute_value) will always be true?
+						if(!empty($attribute_value) && in_array($attribute_value, $dropdown_values) === FALSE)
 						{
 							log_message('Error',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
 							return TRUE;

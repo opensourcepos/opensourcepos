@@ -71,5 +71,3 @@ class Email_lib
 		return $result;
 	}
 }
-
-?>

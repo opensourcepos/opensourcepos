@@ -201,8 +201,8 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br(config('OSPOS')->payment_message) ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->invoice_default_comments : $comments) ?></div>
+				<span><?php echo nl2br(config('OSPOS')->payment_message) ?></span>
+				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->invoice_default_comments : $comments) ?></span>
 			</h5>
 			<?php echo nl2br(config('OSPOS')->return_policy) ?>
 		</div>

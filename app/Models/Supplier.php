@@ -9,9 +9,6 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Supplier extends Person
 {
-	const GOODS_SUPPLIER = 0;	//TODO: These constants need to be moved to global constants.php
-	const COST_SUPPLIER = 1;
-
 	/**
 	* Determines if a given person_id is a customer
 	*/
@@ -38,7 +35,7 @@ class Supplier extends Person
 	/**
 	 * Returns all the suppliers
 	 */
-	public function get_all(int $limit = 0, int $offset = 0, int $category = self::GOODS_SUPPLIER): ResultInterface
+	public function get_all(int $limit = 0, int $offset = 0, int $category = GOODS_SUPPLIER): ResultInterface
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'suppliers.person_id = people.person_id');
@@ -297,8 +294,8 @@ class Supplier extends Person
 	public function get_categories(): array
 	{
 		return [
-			self::GOODS_SUPPLIER => lang('Suppliers.goods'),
-			self::COST_SUPPLIER => lang('Suppliers.cost')
+			GOODS_SUPPLIER => lang('Suppliers.goods'),
+			COST_SUPPLIER => lang('Suppliers.cost')
 		];
 	}
 
@@ -309,11 +306,11 @@ class Supplier extends Person
 	 */
 	public function get_category_name(int $id): string
 	{
-		if($id == self::GOODS_SUPPLIER)
+		if($id == GOODS_SUPPLIER)
 		{
 			return lang('Suppliers.goods');
 		}
-		elseif($id == self::COST_SUPPLIER)
+		elseif($id == COST_SUPPLIER)
 		{
 			return lang('Suppliers.cost');
 		}

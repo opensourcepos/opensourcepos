@@ -12,7 +12,7 @@
  * this class mainly acts as a passthru to the framework itself.
  */
 
-define('SPARKED', true);
+const SPARKED = true;
 
 /*
  *---------------------------------------------------------------
@@ -29,7 +29,7 @@ if (strpos(PHP_SAPI, 'cgi') === 0) {
 }
 
 // Path to the front controller
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
+const FCPATH = __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR;
 
 // Load our paths config file
 $pathsConfig = 'app/Config/Paths.php';

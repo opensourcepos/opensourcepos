@@ -495,7 +495,7 @@ class Tax_lib
 			$s2 = $selected;
 		}
 
-		return '<option value=\"' . Tax_lib::TAX_TYPE_EXCLUDED . '\" ' . $s1 . '> ' . lang('Taxes.sales_tax')
-			. '</option><option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
+		return '<option value=\"' . Tax_lib::TAX_TYPE_EXCLUDED . '\" ' . $s1 . '> ' . lang('Taxes.sales_tax'). '</option>'
+			. '<option value=\"' . Tax_lib::TAX_TYPE_INCLUDED . '\" ' . $s2 . '> ' . lang('Taxes.vat_tax') . '</option>';
 	}
 }

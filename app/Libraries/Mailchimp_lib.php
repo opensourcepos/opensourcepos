@@ -147,47 +147,45 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	}
 
 	/**
-	* Gets information about all lists owned by the authenticated account.
-	*
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*   By the default it places a simple query to list name & id and count of members & merge_fields
-	*   NOTE: no space between , and next word is allowed. You will not get the filter to work in full but just the first tag
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
-	*/
-	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool	//TODO: This function name does not follow naming conventions.
+	 * Gets information about all lists owned by the authenticated account.
+	 *
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 *   By the default it places a simple query to list name & id and count of members & merge_fields
+	 *   NOTE: no space between , and next word is allowed. You will not get the filter to work in full but just the first tag
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
+	 */
+	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'])
 	{
 		return $this->_connector->call('/lists', 'GET', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
-	* Gets a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
-	*/
-	public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count']): bool	//TODO: This function name does not follow naming conventions.
+	 * Gets a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param array $parameters Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
+	 */
+	public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count'])
 	{
 		return $this->_connector->call("/lists/$list_id", 'GET', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
-	* Gets information about all members of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
-	*/
-	public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields']): bool	//TODO: This function name does not follow naming conventions.
+	 * Gets information about all members of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
+	 */
+	public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'])
 	{
 		$parameters += [
 			'count' => $count,
@@ -198,70 +196,66 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	}
 
 	/**
-	* Gets information about a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $md5id
-	*   The member's email address md5 hash which is the id.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
-	*/
-	public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields']): bool	//TODO: This function name does not follow naming conventions.
+	 * Gets information about a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $md5id
+	 *   The member's email address md5 hash which is the id.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
+	 */
+	public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields'])
 	{
 		return $this->_connector->call("/lists/$list_id/members/$md5id", 'GET', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
-	* Gets information about a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
-	*/
-	public function getMemberInfo(string $list_id, string $email, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
+	 * Gets information about a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
+	 */
+	public function getMemberInfo(string $list_id, string $email, array $parameters = [])
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'GET', $parameters);
 	}
 
 	/**
-	* Gets activity related to a member of a MailChimp list.
-	*
-	* @param string $list_id The ID of the list.
-	* @param string $email The member's email address.
-	* @param array $parameters Associative array of optional request parameters.
-	* @return array|bool Associative array of results or false.
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
-	*/
-	public function getMemberActivity(string $list_id, string $email, array $parameters = [])	//TODO: This function name does not follow naming conventions.
+	 * Gets activity related to a member of a MailChimp list.
+	 *
+	 * @param string $list_id The ID of the list.
+	 * @param string $email The member's email address.
+	 * @param array $parameters Associative array of optional request parameters.
+	 * @return array|bool Associative array of results or false.
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
+	 */
+	public function getMemberActivity(string $list_id, string $email, array $parameters = [])
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)) . '/activity', 'GET', $parameters);	//TODO: Hungarian notation
 	}
 
 	/**
-	* Adds a new member to a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The email address to add.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
-	*/
-	public function addMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
+	 * Adds a new member to a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The email address to add.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
+	 */
+	public function addMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = [])
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -276,34 +270,33 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	}
 
 	/**
-	* Removes a member from a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
-	*/
-	public function removeMember(string $list_id, string $email): bool	//TODO: This function name does not follow naming conventions.
+	 * Removes a member from a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
+	 */
+	public function removeMember(string $list_id, string $email)
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'DELETE');	//TODO: Hungarian notation
 	}
 
 	/**
-	* Updates a member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
-	*/
-	public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
+	 * Updates a member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
+	 */
+	public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = [])
 	{
 		$parameters += [
 			'status' => 'subscribed',
@@ -317,19 +310,18 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	}
 
 	/**
-	* Adds a new or update an existing member of a MailChimp list.
-	*
-	* @param string $list_id
-	*   The ID of the list.
-	* @param string $email
-	*   The member's email address.
-	* @param array $parameters
-	*   Associative array of optional request parameters.
-	*
-	*
-	* @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
-	*/
-	public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = []): bool	//TODO: This function name does not follow naming conventions.
+	 * Adds a new or update an existing member of a MailChimp list.
+	 *
+	 * @param string $list_id
+	 *   The ID of the list.
+	 * @param string $email
+	 *   The member's email address.
+	 * @param array $parameters
+	 *   Associative array of optional request parameters.
+	 * @return array|bool
+	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
+	 */
+	public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = [])
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -344,4 +336,3 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PUT', $parameters);	//TODO: Hungarian notation
 	}
 }
-?>

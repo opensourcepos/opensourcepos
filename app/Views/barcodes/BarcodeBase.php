@@ -11,6 +11,8 @@
 
 namespace emberlabs\Barcode;
 
+use RuntimeException;
+
 /**
  * emberlabs Barcode Creator - Barcode Base
  * 	     Abstract Base
@@ -195,7 +197,7 @@ abstract class BarcodeBase
 				break;
 
 			default:
-				throw new \RuntimeException("Could not determine file type.");
+				throw new RuntimeException("Could not determine file type.");
 				break;
 		}
 	}

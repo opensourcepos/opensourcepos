@@ -50,10 +50,10 @@ if (isset($error_message))
 <?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor('sales', '<span class=\'glyphicon glyphicon-print\'>&nbsp</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();']); */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_quote') ?></div></a>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_quote') ?></div></a>
 	<?php endif; ?>
 	<?php echo anchor('sales', '<span class=\'glyphicon glyphicon-shopping-cart\'>&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
 	<?php echo anchor('sales/discard_suspended_sale', '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_quote_button']) ?>
@@ -164,7 +164,7 @@ if (isset($error_message))
 		?>
 
 		<tr>
-			<td class="blank" colspan="<?php echo $quote_columns ?>" align="center"><?php echo '&nbsp;' //TODO: align is deprecated.  Also should replace the php echo for nbsp with simple html?></td>
+			<td class="blank" colspan="<?php echo $quote_columns ?>" style="text-align: center;"><?php echo '&nbsp;' //TODO: align is deprecated.  Also should replace the php echo for nbsp with simple html?></td>
 		</tr>
 
 		<tr>
@@ -214,8 +214,8 @@ if (isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></div>
-				<div style='padding:4%;'><?php echo esc(config('OSPOS')->quote_default_comments) ?></div>
+				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></span>
+				<span style='padding:4%;'><?php echo esc(config('OSPOS')->quote_default_comments) ?></span>
 			</h5>
 		</div>
 	</div>

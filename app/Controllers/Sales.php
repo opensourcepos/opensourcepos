@@ -371,7 +371,7 @@ class Sales extends Secure_Controller
 				else
 				{
 					$new_giftcard_value = $this->giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
-					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;	//TODO: can be replaced with max($new_giftcard_value, 0);
+					$new_giftcard_value = max($new_giftcard_value, 0);
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
 					$data['warning'] = lang('Giftcards.remaining_balance', $giftcard_num, $new_giftcard_value);
@@ -401,7 +401,7 @@ class Sales extends Secure_Controller
 					else
 					{
 						$new_reward_value = $points - $this->sale_lib->get_amount_due();
-						$new_reward_value = $new_reward_value >= 0 ? $new_reward_value : 0;	//TODO: can be replaced by max($new_reward_value, 0);
+						$new_reward_value = max($new_reward_value, 0);
 						$this->sale_lib->set_rewards_remainder($new_reward_value);
 						$new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
 						$data['warning'] = lang('Sales.rewards_remaining_balance'). $new_reward_value;

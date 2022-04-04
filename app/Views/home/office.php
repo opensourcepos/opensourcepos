@@ -17,7 +17,7 @@
 	{
 	?>
 		<div class="module_item" title="<?php echo lang("Module.$module->module_id" . '_desc') ?>">
-			<a href="<?php echo esc(site_url($module->module_id), 'url') ?>"><img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" border="0" alt="Menubar Image" /></a>
+			<a href="<?php echo esc(site_url($module->module_id), 'url') ?>"><img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" style="border-width: 0;" alt="Menubar Image" /></a>
 			<a href="<?php echo esc(site_url($module->module_id), 'url') ?>"><?php echo lang("Module.$module->module_id") ?></a>
 		</div>
 	<?php

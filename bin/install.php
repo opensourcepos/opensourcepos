@@ -152,7 +152,7 @@ class Installer
         $this->unzip($filepath);
 
         $dir = $this->packages[$package]['dir'];
-        $pre = isset($this->packages[$package]['pre']) ? $this->packages[$package]['pre'] : '';
+        $pre = $this->packages[$package]['pre'] ?? '';
         
         if (is_string($dir)) {
             $src = realpath(dirname($filepath) . "/$repos-$version/$pre$dir");
@@ -248,7 +248,7 @@ class Installer
         }
 
         @mkdir($dst, 0755, TRUE);
-        
+		//TODO: https://github.com/opensourcepos/opensourcepos/issues/3458
         $iterator = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator($src, RecursiveDirectoryIterator::SKIP_DOTS),
 			RecursiveIteratorIterator::SELF_FIRST
@@ -278,7 +278,7 @@ class Installer
      * @param string $dir
      */
     private function recursiveUnlink(string $dir)
-    {
+    {//TODO: https://github.com/opensourcepos/opensourcepos/issues/3458
 		$iterator = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
 			RecursiveIteratorIterator::CHILD_FIRST

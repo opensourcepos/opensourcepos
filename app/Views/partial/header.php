@@ -10,7 +10,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
 	<title><?php echo esc(config('OSPOS')->company) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('OSPOS')->application_version) ?></title>
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->theme) ? 'flatly' : esc(config('OSPOS')->theme)) . '/bootstrap.min.css' ?>"/>
 
 	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
@@ -39,35 +39,35 @@
 		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
-		<script src="bower_components/jquery/dist/jquery.js"></script>
-		<script src="bower_components/jquery-form/src/jquery.form.js"></script>
-		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
-		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
-		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
-		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-		<script src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
-		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
-		<script src="bower_components/moment/moment.js"></script>
-		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<script src="bower_components/es6-promise/es6-promise.js"></script>
-		<script src="bower_components/file-saver/dist/FileSaver.min.js"></script>
-		<script src="bower_components/html2canvas/build/html2canvas.js"></script>
-		<script src="bower_components/jspdf/dist/jspdf.debug.js"></script>
-		<script src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
-		<script src="bower_components/tableExport.jquery.plugin/tableExport.js"></script>
-		<script src="bower_components/chartist/dist/chartist.min.js"></script>
-		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
-		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
-		<script src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
-		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
-		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
-		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-		<script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+		<script type="application/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+		<script type="application/javascript" src="bower_components/jquery-form/src/jquery.form.js"></script>
+		<script type="application/javascript" src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
+		<script type="application/javascript" src="bower_components/jquery-ui/jquery-ui.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+		<script type="application/javascript" src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+		<script type="application/javascript" src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
+		<script type="application/javascript" src="bower_components/moment/moment.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script type="application/javascript" src="bower_components/es6-promise/es6-promise.js"></script>
+		<script type="application/javascript" src="bower_components/file-saver/dist/FileSaver.min.js"></script>
+		<script type="application/javascript" src="bower_components/html2canvas/build/html2canvas.js"></script>
+		<script type="application/javascript" src="bower_components/jspdf/dist/jspdf.debug.js"></script>
+		<script type="application/javascript" src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
+		<script type="application/javascript" src="bower_components/tableExport.jquery.plugin/tableExport.js"></script>
+		<script type="application/javascript" src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script type="application/javascript" src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
+		<script type="application/javascript" src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
+		<script type="application/javascript" src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
+		<script type="application/javascript" src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
+		<script type="application/javascript" src="bower_components/js-cookie/src/js.cookie.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+		<script type="application/javascript" src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="dist/bootstrap/js/bootstrap.min.js"></script>
@@ -144,7 +144,7 @@
 							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : '' ?>">
 								<a href="<?php echo esc(site_url($module->module_id), 'url') ?>" title="<?php echo lang("Module.$module->module_id") ?>" class="menu-icon">
 
-									<img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" border="0" alt="Module Icon"/><br/>
+									<img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" style="border: none;" alt="Module Icon"/><br/>
 									<?php echo lang('Module.' . $module->module_id) ?>
 								</a>
 							</li>

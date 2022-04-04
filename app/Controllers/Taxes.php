@@ -480,7 +480,7 @@ class Taxes extends Secure_Controller
 				'cascade_sequence'=>$cascade_sequence[$key]
 			];
 
-			if (array_search($tax_group[$key], $unique_tax_groups) !== false)	//TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
+			if (in_array($tax_group[$key], $unique_tax_groups))	//TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
 			{
 				echo json_encode ([
 					'success' => FALSE,

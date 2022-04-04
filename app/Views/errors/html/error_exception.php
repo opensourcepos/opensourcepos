@@ -19,7 +19,7 @@ use Config\Services;
 	<meta name="robots" content="noindex">
 
 	<title><?= esc($title) ?></title>
-	<style type="text/css">
+	<style>
 		<?= preg_replace('#[\r\n\t ]+#', ' ', file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'debug.css')) ?>
 	</style>
 
@@ -93,13 +93,13 @@ use Config\Services;
 									<?php $args_id = $error_id . 'args' . $index ?>
 									( <a href="#" onclick="return toggle('<?= esc($args_id, 'attr') ?>');">arguments</a> )
 									<div class="args" id="<?= esc($args_id, 'attr') ?>">
-										<table cellspacing="0">
+										<table style="border-spacing: 0;">
 
 										<?php
                                         $params = null;
                                         // Reflection by name is not available for closure function
                                         if (substr($row['function'], -1) !== '}') {
-                                            $mirror = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
+                                            $mirror = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);	//TODO: isset($row['class']) will always evaluate to true at this point.
                                             $params = $mirror->getParameters();
                                         }
 

@@ -207,13 +207,12 @@ class Receiving_lib
 
 		$maxkey = 0;					//Highest key so far
 		$itemalreadyinsale = FALSE;		//We did not find the item yet.
-		$insertkey = 0;					//Key to use for new entry.	//TODO: This variable is never used
 		$updatekey = 0;					//Key to use to update(quantity)
 
 		foreach($items as $item)
 		{
 			//We primed the loop so maxkey is 0 the first time.
-			//Also, we have stored the key in the element itself so we can compare.
+			//Also, we have stored the key in the element itself, so we can compare.
 			//There is an array public function to get the associated key for an element, but I like it better
 			//like that!
 
@@ -230,7 +229,7 @@ class Receiving_lib
 		}
 
 		$insertkey = $maxkey + 1;
-		$item_info = $this->item->get_info($item_id, $item_location);	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3457
+		$item_info = $this->item->get_info($item_id);
 
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;

@@ -154,8 +154,8 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></div>
-				<div><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->quote_default_comments : esc($comments)) ?></div>
+				<span><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></span>
+				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->quote_default_comments : esc($comments)) ?></span>
 			</h5>
 			<?php echo nl2br(esc(config('OSPOS')->return_policy)) ?>
 		</div>

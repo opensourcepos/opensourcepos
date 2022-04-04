@@ -11,7 +11,7 @@
 			<div class="form-group form-group-sm">
 				<label for="phone" class="col-xs-3 control-label"><?php echo lang('Messages.phone') ?></label>
 				<div class="col-xs-9">
-					<input class="form-control input-sm", type="text", name="phone", placeholder="<?php echo lang('Messages.phone_placeholder') ?>" />
+					<input class="form-control input-sm" type="text" name="phone" placeholder="<?php echo lang('Messages.phone_placeholder') ?>" />
 					<span class="help-block" style="text-align:center;"><?php echo lang('Messages.multiple_phones') ?></span>
 				</div>
 			</div>

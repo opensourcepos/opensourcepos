@@ -6,6 +6,7 @@ use emberlabs\Barcode\Code128;
 use emberlabs\Barcode\Code39;
 use emberlabs\Barcode\Ean13;
 use emberlabs\Barcode\Ean8;
+use Exception;
 
 /**
  * Barcode library
@@ -130,7 +131,7 @@ class Barcode_lib
 
 			return $barcode_instance->base64();
 		}
-		catch(\Exception $e)
+		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
 			return '';
@@ -155,7 +156,7 @@ class Barcode_lib
 
 			return $barcode->base64();
 		}
-		catch(\Exception $e)
+		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
 			return '';
@@ -172,11 +173,11 @@ class Barcode_lib
 	public function display_barcode(array $item, array $barcode_config): string
 	{
 		$display_table = '<table>';
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
 		$barcode = $this->generate_barcode($item, $barcode_config);
-		$display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+		$display_table .= "<tr><td style=\"text-align=center;\"><img src='data:image/png;base64,$barcode' /></td></tr>";
+		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
 		$display_table .= '</table>';
 
 		return $display_table;

@@ -54,10 +54,10 @@ $(document).ready(function()
 <?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor('sales', '<span class=\'glyphicon glyphicon-print\'>&nbsp</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();')); */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_invoice') ?></div></a>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_invoice') ?></div></a>
 	<?php endif; ?>
 	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
@@ -180,7 +180,7 @@ $(document).ready(function()
 		?>
 
 		<tr>
-			<td class="blank" colspan="<?php echo $invoice_columns ?>" align="center"><?php echo '&nbsp;' //TODO: align is deprecated and should be replaced. Also, why the echo statement?  Why not just put that in the html? ?></td>
+			<td class="blank" colspan="<?php echo $invoice_columns ?>" style="text-align: center;"><?php echo '&nbsp;' ?></td>
 		</tr>
 
 		<tr>
@@ -253,9 +253,9 @@ $(document).ready(function()
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></div>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></div>
-				<div style='padding:4%;'><?php echo esc(config('OSPOS')->invoice_default_comments) ?></div>
+				<span><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></span>
+				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></span>
+				<span style='padding:4%;'><?php echo esc(config('OSPOS')->invoice_default_comments) ?></span>
 			</h5>
 			<div style='padding:2%;'><?php echo nl2br(esc(config('OSPOS')->return_policy)) ?></div>
 		</div>

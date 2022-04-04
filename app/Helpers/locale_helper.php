@@ -395,7 +395,11 @@ function parse_quantity(string $number): float
 	return parse_decimals($number, quantity_decimals());
 }
 
-function parse_tax(string $number): float
+/**
+ * @param string $number
+ * @return false|float|int|mixed|string
+ */
+function parse_tax(string $number)
 {
 	return parse_decimals($number, tax_decimals());
 }

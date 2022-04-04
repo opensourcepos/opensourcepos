@@ -32,7 +32,7 @@ class Migration_TaxAmount extends Migration
 
 	public function up(): void
 	{
-		$tax_included = ($this->appconfig->get_value('tax_included', Migration_TaxAmount::YES) == Migration_TaxAmount::YES);	//TODO: === ?
+		$tax_included = ($this->appconfig->get_value('tax_included', Migration_TaxAmount::YES) == Migration_TaxAmount::YES);
 
 		if($tax_included)
 		{
@@ -49,7 +49,7 @@ class Migration_TaxAmount extends Migration
 
 				foreach($unmigrated_invoices as $key => $unmigrated_invoice)
 				{
-					$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id'], $tax_decimals, $tax_included);	//TODO: $tax_included will always be true here because it has to be to get into the if() block.
+					$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id'], $tax_decimals, TRUE);
 				}
 				$this->db->query('DROP TABLE ' . $this->db->prefixTable('sales_taxes_backup'));
 			}
@@ -82,7 +82,6 @@ class Migration_TaxAmount extends Migration
 			$tax_group_sequence += 1;
 		}
 
-		// Not sure when this would ever kick in, but this is technically the correct logic.
 		if($customer_sales_tax_support)	//TODO: This will always evaluate to false.
 		{
 			$this->apply_invoice_taxing($sales_taxes);

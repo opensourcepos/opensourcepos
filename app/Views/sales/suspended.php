@@ -14,7 +14,7 @@
 </style>
 <table id="suspended_sales_table" class="table table-striped table-hover">
 	<thead>
-		<tr bgcolor="#CCC">
+		<tr style="background-color: #ccc;">
 			<th><?php echo lang('Sales.suspended_doc_id') ?></th>
 			<th><?php echo lang('Sales.date') ?></th>
 			<?php

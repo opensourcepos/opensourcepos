@@ -13,7 +13,7 @@
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="<?php echo $this->request->getLocale() ?>">
-<head>
+<head title="<?php echo lang('Sales.work_order') ?>">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'css/invoice_email.css' ?>"/>
 </head>
@@ -138,7 +138,7 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></div>
+				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></span>
 			</h5>
 		</div>
 	</div>

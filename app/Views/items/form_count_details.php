@@ -80,26 +80,25 @@
 			<th colspan="4"><?php echo lang('Items.inventory_data_tracking') ?></th>
 		</tr>
 		<tr>
-			<th width="30%"><?php echo lang('Items.inventory_date') ?></th>
-			<th width="20%"><?php echo lang('Items.inventory_employee') ?></th>
-			<th width="20%"><?php echo lang('Items.inventory_in_out_quantity') ?></th>
-			<th width="30%"><?php echo lang('Items.inventory_remarks') ?></th>
+			<th style="width: 30%;"><?php echo lang('Items.inventory_date') ?></th>
+			<th style="width: 20%;"><?php echo lang('Items.inventory_employee') ?></th>
+			<th style="width: 20%;"><?php echo lang('Items.inventory_in_out_quantity') ?></th>
+			<th style="width: 30%;"><?php echo lang('Items.inventory_remarks') ?></th>
 		</tr>
 	</thead>
 	<tbody id="inventory_result">
 		<?php
-		/*
-		 * the tbody content of the table will be filled in by the javascript (see bottom of page)
-		*/
+			/**
+			 * the tbody content of the table will be filled in by the javascript (see bottom of page)
+			 */
+			$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+			$employee_name = [];
 
-		$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
-		$employee_name = [];
-
-		foreach($inventory_array as $row)
-		{
-			$employee = $this->employee->get_info($row['trans_user']);
-			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);	//TODO: in php 7.3 this doesn't work.  Needs to be fixed.
-		}
+			foreach($inventory_array as $row)
+			{
+				$employee = $this->employee->get_info($row['trans_user']);
+				$employee_name[] = $employee->first_name . ' ' . $employee->last_name;
+			}
 		?>
 	</tbody>
 </table>

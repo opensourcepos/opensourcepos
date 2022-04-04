@@ -148,7 +148,7 @@ class Sale_lib
 				$sort['description'][$k] = $v['description'];
 				$sort['name'][$k] = $v['name'];
 			}
-			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);	//TODO: Not sure what's going on here.  $filtered_cart is an array but is being concatenated with a string here.
+			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Item Category
 		elseif(config('OSPOS')->line_sequence == '2')	//TODO: Need to change these to constants
@@ -1446,4 +1446,3 @@ class Sale_lib
 		return Rounding_mode::round_number($cash_rounding_code, (float)$total, $cash_decimals);
 	}
 }
-?>

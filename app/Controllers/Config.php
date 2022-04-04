@@ -514,7 +514,8 @@ class Config extends Secure_Controller
 
 		$result = [];
 
-		if(($lists = $this->mailchimp_lib->getLists()) !== FALSE)
+		$lists = $this->mailchimp_lib->getLists();
+		if($lists !== FALSE)
 		{
 			if(is_array($lists) && !empty($lists['lists']) && is_array($lists['lists']))
 			{

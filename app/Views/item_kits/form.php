@@ -184,10 +184,10 @@
 		<table id="item_kit_items" class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th width="10%"><?php echo lang('Common.delete') ?></th>
-					<th width="10%"><?php echo lang('Item_kits.sequence') ?></th>
-					<th width="60%"><?php echo lang('Item_kits.item') ?></th>
-					<th width="20%"><?php echo lang('Item_kits.quantity') ?></th>
+					<th style="width: 10%;"><?php echo lang('Common.delete') ?></th>
+					<th style="width: 10%;"><?php echo lang('Item_kits.sequence') ?></th>
+					<th style="width: 60%;"><?php echo lang('Item_kits.item') ?></th>
+					<th style="width: 20%;"><?php echo lang('Item_kits.quantity') ?></th>
 				</tr>
 			</thead>
 			<tbody>
