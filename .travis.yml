@@ -26,6 +26,7 @@ script:
     sh -c "npm install && bower install && grunt package"
   - docker build . --target ospos -t ospos
   - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+  - docker build database/ -t jekkos/opensourcepos:sqlscript
 env:
   global:
   - DOCKER_COMPOSE_VERSION=1.29.1
@@ -34,7 +35,7 @@ env:
 after_success:
   - TAG=${TRAVIS_TAG:-$BRANCH}
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
-    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"
+    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sqlscript"
   - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"

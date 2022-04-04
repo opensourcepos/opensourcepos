@@ -13,6 +13,9 @@ networks:
     db_net:
 
 services:
+    sqlscript:
+        image: jekkos/opensourcepos:sqlscript
+        command: /bin/sh -c 'exit 0'
     ospos:
         image: jekkos/opensourcepos:3.3.7
         restart: always
@@ -43,8 +46,9 @@ services:
           - "3306"
         networks:
           - db_net
+        volumes_from:
+          - sqlscript
         volumes:
-          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
           - mysql:/var/lib/mysql:rw
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale
