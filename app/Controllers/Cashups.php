@@ -34,19 +34,19 @@ class Cashups extends Secure_Controller
 
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort = $this->request->getGet('sort');
-		$order = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 		$filters = [
-			 'start_date' => $this->request->getGet('start_date'),
-			 'end_date' => $this->request->getGet('end_date'),
+			 'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),	//TODO: Is this the best way to filter dates
+			 'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
 			 'is_deleted' => FALSE
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);	//TODO: $filledup doesn't follow variable naming patterns we are using.
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: $filledup doesn't follow variable naming patterns we are using.
 		$filters = array_merge($filters, $filledup);
 		$cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->cashup->get_found_rows($search, $filters);
@@ -185,26 +185,26 @@ class Cashups extends Secure_Controller
 
 	public function save(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
 	{
-		$open_date = $this->request->getPost('open_date');
+		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_STRING);
 		$open_date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $open_date);
 
-		$close_date = $this->request->getPost('close_date');
+		$close_date = $this->request->getPost('close_date', FILTER_SANITIZE_NUMBER_INT);
 		$close_date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $close_date);
 
 		$cash_up_data = [
 			'open_date' => $open_date_formatter->format('Y-m-d H:i:s'),
 			'close_date' => $close_date_formatter->format('Y-m-d H:i:s'),
-			'open_amount_cash' => parse_decimals($this->request->getPost('open_amount_cash')),
-			'transfer_amount_cash' => parse_decimals($this->request->getPost('transfer_amount_cash')),
-			'closed_amount_cash' => parse_decimals($this->request->getPost('closed_amount_cash')),
-			'closed_amount_due' => parse_decimals($this->request->getPost('closed_amount_due')),
-			'closed_amount_card' => parse_decimals($this->request->getPost('closed_amount_card')),
-			'closed_amount_check' => parse_decimals($this->request->getPost('closed_amount_check')),
-			'closed_amount_total' => parse_decimals($this->request->getPost('closed_amount_total')),
+			'open_amount_cash' => parse_decimals($this->request->getPost('open_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'transfer_amount_cash' => parse_decimals($this->request->getPost('transfer_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'closed_amount_cash' => parse_decimals($this->request->getPost('closed_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'closed_amount_due' => parse_decimals($this->request->getPost('closed_amount_due', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'closed_amount_card' => parse_decimals($this->request->getPost('closed_amount_card', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'closed_amount_check' => parse_decimals($this->request->getPost('closed_amount_check', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'closed_amount_total' => parse_decimals($this->request->getPost('closed_amount_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'note' => $this->request->getPost('note') != NULL,
-			'description' => $this->request->getPost('description'),
-			'open_employee_id' => $this->request->getPost('open_employee_id'),
-			'close_employee_id' => $this->request->getPost('close_employee_id'),
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING),
+			'open_employee_id' => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
+			'close_employee_id' => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
 			'deleted' => $this->request->getPost('deleted') != NULL
 		];
 
@@ -228,7 +228,7 @@ class Cashups extends Secure_Controller
 
 	public function delete(): void
 	{
-		$cash_ups_to_delete = $this->request->getPost('ids');
+		$cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
 		if($this->cashup->delete_list($cash_ups_to_delete))
 		{
@@ -245,12 +245,12 @@ class Cashups extends Secure_Controller
 	 */
 	public function ajax_cashup_total(): void
 	{
-		$open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
-		$transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));
-		$closed_amount_cash = parse_decimals($this->request->getPost('closed_amount_cash'));
-		$closed_amount_due = parse_decimals($this->request->getPost('closed_amount_due'));
-		$closed_amount_card = parse_decimals($this->request->getPost('closed_amount_card'));
-		$closed_amount_check = parse_decimals($this->request->getPost('closed_amount_check'));
+		$open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$closed_amount_cash = parse_decimals($this->request->getPost('closed_amount_cash', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$closed_amount_due = parse_decimals($this->request->getPost('closed_amount_due', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$closed_amount_card = parse_decimals($this->request->getPost('closed_amount_card', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$closed_amount_check = parse_decimals($this->request->getPost('closed_amount_check', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
 		$total = $this->_calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check);	//TODO: hungarian notation
 

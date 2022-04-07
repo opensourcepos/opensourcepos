@@ -83,11 +83,11 @@ class Customers extends Persons
 	*/
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
@@ -121,14 +121,14 @@ class Customers extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, FALSE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING), 25, FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -257,9 +257,9 @@ class Customers extends Persons
 	 */
 	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$first_name = $this->request->getPost('first_name');
-		$last_name = $this->request->getPost('last_name');
-		$email = strtolower($this->request->getPost('email'));
+		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);
+		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
 		$first_name = $this->nameize($first_name);
@@ -268,32 +268,32 @@ class Customers extends Persons
 		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->request->getPost('gender'),
+			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
 			'email' => $email,
-			'phone_number' => $this->request->getPost('phone_number'),
-			'address_1' => $this->request->getPost('address_1'),
-			'address_2' => $this->request->getPost('address_2'),
-			'city' => $this->request->getPost('city'),
-			'state' => $this->request->getPost('state'),
-			'zip' => $this->request->getPost('zip'),
-			'country' => $this->request->getPost('country'),
-			'comments' => $this->request->getPost('comments')
+			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
+			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
+			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
+			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
+			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
+			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
 		];
 
-		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $this->request->getPost('date'));
+		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $this->request->getPost('date', FILTER_SANITIZE_STRING));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number'),
-			'tax_id' => $this->request->getPost('tax_id'),
-			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name'),
-			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount'),
-			'discount_type' => $this->request->getPost('discount_type') == NULL ? PERCENT : $this->request->getPost('discount_type'),
-			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id'),
+			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_STRING),
+			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_STRING),
+			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name', FILTER_SANITIZE_STRING),
+			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'discount_type' => $this->request->getPost('discount_type') == NULL ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
+			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id', FILTER_SANITIZE_STRING),
 			'taxable' => $this->request->getPost('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'employee_id' => $this->request->getPost('employee_id'),
-			'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? NULL : $this->request->getPost('sales_tax_code_id')
+			'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+			'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? NULL : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
 		if($this->customer->save_customer($person_data, $customer_data, $customer_id))
@@ -304,7 +304,7 @@ class Customers extends Persons
 				$email,
 				$first_name,
 				$last_name,
-				$this->request->getPost('mailchimp_status'),
+				$this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING),
 				['vip' => $this->request->getPost('mailchimp_vip') != NULL]
 			);
 
@@ -341,7 +341,7 @@ class Customers extends Persons
 	 */
 	public function ajax_check_email(): void
 	{
-		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id'));
+		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
 		echo !$exists ? 'true' : 'false';
 	}
@@ -351,7 +351,7 @@ class Customers extends Persons
 	 */
 	public function ajax_check_account_number(): void
 	{
-		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id'));
+		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
 		echo !$exists ? 'true' : 'false';
 	}
@@ -361,7 +361,7 @@ class Customers extends Persons
 	 */
 	public function delete(): void
 	{
-		$customers_to_delete = $this->request->getPost('ids');
+		$customers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 		$customers_info = $this->customer->get_multiple_info($customers_to_delete);
 
 		$count = 0;

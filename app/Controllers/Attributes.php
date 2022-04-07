@@ -33,11 +33,11 @@ class Attributes extends Secure_Controller
 	 */
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$attributes = $this->attribute->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->attribute->get_found_rows($search);
@@ -58,10 +58,10 @@ class Attributes extends Secure_Controller
 	public function save_attribute_value(): void
 	{
 		$success = $this->attribute->save_value(
-			$this->request->getPost('attribute_value'),
-			$this->request->getPost('definition_id'),
-			$this->request->getPost('item_id'),
-			$this->request->getPost('attribute_id')
+			$this->request->getPost('attribute_value', FILTER_SANITIZE_STRING),
+			$this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
+			$this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT),
+			$this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT)
 		);
 
 		echo json_encode(['success' => $success != 0]);
@@ -73,8 +73,8 @@ class Attributes extends Secure_Controller
 	public function delete_attribute_value(): void
 	{
 		$success = $this->attribute->delete_value(
-			$this->request->getPost('attribute_value'),
-			$this->request->getPost('definition_id')
+			$this->request->getPost('attribute_value', FILTER_SANITIZE_STRING),
+			$this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
 		);
 
 		echo json_encode(['success' => $success]);
@@ -88,7 +88,7 @@ class Attributes extends Secure_Controller
 	{
 		$definition_flags = 0;
 
-		$flags = (empty($this->request->getPost('definition_flags'))) ? [] : $this->request->getPost('definition_flags');
+		$flags = (empty($this->request->getPost('definition_flags'))) ? [] : $this->request->getPost('definition_flags', FILTER_SANITIZE_STRING);
 
 		foreach($flags as $flag)
 		{
@@ -97,15 +97,15 @@ class Attributes extends Secure_Controller
 
 	//Save definition data
 		$definition_data = [
-			'definition_name' => $this->request->getPost('definition_name'),
-			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : NULL,
+			'definition_name' => $this->request->getPost('definition_name', FILTER_SANITIZE_STRING),
+			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit', FILTER_SANITIZE_STRING) : NULL,
 			'definition_flags' => $definition_flags,
-			'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : NULL
+			'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group', FILTER_SANITIZE_STRING) : NULL
 		];
 
-		if ($this->request->getPost('definition_type') != null)
+		if ($this->request->getPost('definition_type') != NULL)
 		{
-			$definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type')];
+			$definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type', FILTER_SANITIZE_STRING)];
 		}
 
 		$definition_name = $definition_data['definition_name'];
@@ -115,7 +115,7 @@ class Attributes extends Secure_Controller
 		//New definition
 			if($definition_id == 0)
 			{
-				$definition_values = json_decode($this->request->getPost('definition_values'));
+				$definition_values = json_decode($this->request->getPost('definition_values', FILTER_SANITIZE_STRING));
 
 				foreach($definition_values as $definition_value)
 				{
@@ -155,7 +155,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function suggest_attribute(int $definition_id): void
 	{
-		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getGet('term'));
+		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -211,7 +211,7 @@ class Attributes extends Secure_Controller
 
 	public function delete(): void
 	{
-		$attributes_to_delete = $this->request->getPost('ids');
+		$attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
 		if($this->attribute->delete_definition_list($attributes_to_delete))
 		{

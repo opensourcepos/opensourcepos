@@ -28,11 +28,11 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	*/
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense_category->get_found_rows($search);
@@ -63,8 +63,8 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	public function save(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$expense_category_data = [
-			'category_name' => $this->request->getPost('category_name'),
-			'category_description' => $this->request->getPost('category_description')
+			'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_STRING),
+			'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_STRING)
 		];
 
 		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
@@ -99,7 +99,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 	public function delete(): void
 	{
-		$expense_category_to_delete = $this->request->getPost('ids');
+		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
 		if($this->expense_category->delete_list($expense_category_to_delete))	//TODO: Convert to ternary notation.
 		{
