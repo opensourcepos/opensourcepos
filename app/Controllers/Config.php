@@ -976,29 +976,4 @@ class Config extends Secure_Controller
 
 		return TRUE;
 	}
-
-	public function backup_db(): void //TODO:https://github.com/opensourcepos/opensourcepos/issues/3451
-	{
-		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-		if($this->employee->has_module_grant('config', $employee_id))
-		{
-			$this->load->dbutil();
-
-			$prefs = ['format' => 'zip', 'filename' => 'ospos.sql'];
-			$backup = $this->dbutil->backup($prefs);
-			$file_name = 'ospos-' . date("Y-m-d-H-i-s") . '.zip';
-
-			helper('download');
-			while(ob_get_level())
-			{
-				ob_end_clean();
-			}
-
-			force_download($file_name, $backup);
-		}
-		else
-		{
-			redirect('no_access/config');
-		}
-	}
 }

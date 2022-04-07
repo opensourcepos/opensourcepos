@@ -423,15 +423,6 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.backup_database'), 'config_backup_database', ['class' => 'control-label col-xs-2']) ?>
-				<div class='col-xs-2'>
-					<div id="backup_db" class="btn btn-default btn-sm">
-						<span style="top:22%;"><?php echo lang('Config.backup_button') ?></span>
-					</div>
-				</div>
-			</div>
-
 			<?php echo form_submit ([
 				'name' => 'submit_general',
 				'id' => 'submit_general',
@@ -462,10 +453,6 @@ $(document).ready(function()
 	})();
 
 	$("#gcaptcha_enable").change(enable_disable_gcaptcha_enable);
-
-	$("#backup_db").click(function() {
-		window.location='<?php echo site_url('config/backup_db') ?>';
-	});
 
 	$('#general_config_form').validate($.extend(form_support.handler, {
 
