@@ -52,7 +52,7 @@
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 				pagination: true,
 				showColumns: true,
-				data: <?php echo json_encode($data); ?>,
+				data: <?php echo json_encode($data, JSON_PARTIAL_OUTPUT_ON_ERROR+JSON_THROW_ON_ERROR); ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
 				escape: false
