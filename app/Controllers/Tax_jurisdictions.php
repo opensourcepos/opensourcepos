@@ -31,11 +31,11 @@ class Tax_jurisdictions extends Secure_Controller
 	 */
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
@@ -67,8 +67,8 @@ class Tax_jurisdictions extends Secure_Controller
 	public function save(int $jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$tax_jurisdiction_data = [
-			'jurisdiction_name' => $this->request->getPost('jurisdiction_name'),
-			'reporting_authority' => $this->request->getPost('reporting_authority')
+			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING),
+			'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_STRING)
 		];
 
 		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))
@@ -102,7 +102,7 @@ class Tax_jurisdictions extends Secure_Controller
 
 	public function delete(): void
 	{
-		$tax_jurisdictions_to_delete = $this->request->getPost('ids');
+		$tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
 		if($this->tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
 		{

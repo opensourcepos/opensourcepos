@@ -35,11 +35,11 @@ class Tax_codes extends Secure_Controller
 	 */
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$tax_codes = $this->tax_code->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_code->get_found_rows($search);
@@ -72,10 +72,10 @@ class Tax_codes extends Secure_Controller
 	public function save(int $tax_code_id = -1): void		//TODO: Need to replace -1 with constant
 	{
 		$tax_code_data = [
-			'tax_code' => $this->request->getPost('tax_code'),
-			'tax_code_name' => $this->request->getPost('tax_code_name'),
-			'city' => $this->request->getPost('city'),
-			'state' => $this->request->getPost('state')
+			'tax_code' => $this->request->getPost('tax_code', FILTER_SANITIZE_STRING),
+			'tax_code_name' => $this->request->getPost('tax_code_name', FILTER_SANITIZE_STRING),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING)
 		];
 
 		if($this->tax_code->save($tax_code_data))
@@ -109,7 +109,7 @@ class Tax_codes extends Secure_Controller
 
 	public function delete(): void
 	{
-		$tax_codes_to_delete = $this->request->getPost('ids');
+		$tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
 		if($this->tax_code->delete_list($tax_codes_to_delete))
 		{

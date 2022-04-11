@@ -85,19 +85,19 @@ class Items extends Secure_Controller
 	 */
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort = $this->request->getGet('sort');
-		$order = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$this->item_lib->set_item_location($this->request->getGet('stock_location'));
+		$this->item_lib->set_item_location($this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT));
 
 		$definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
 		$filters = [
-			'start_date' => $this->request->getGet('start_date'),
-			'end_date' => $this->request->getGet('end_date'),
+			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),
+			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
 			'stock_location_id' => $this->item_lib->get_item_location(),
 			'empty_upc' => FALSE,
 			'low_inventory' => FALSE,
@@ -110,7 +110,7 @@ class Items extends Secure_Controller
 		];
 
 		//Check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);	//TODO: filled up does not meet naming standards
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
 		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->item->get_found_rows($search, $filters);
@@ -178,28 +178,28 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
 		];
 
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), $options, FALSE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), $options, FALSE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest(): void
 	{
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_low_sell(): void
 	{
-		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
+		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_kits(): void
 	{
-		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -209,7 +209,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_category(): void
 	{
-		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term'));
+		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -219,7 +219,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_location(): void
 	{
-		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term'));
+		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -488,7 +488,7 @@ class Items extends Secure_Controller
 	public function attributes(int $item_id = NEW_ITEM): void
 	{
 		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->request->getPost('definition_ids'), TRUE);
+		$definition_ids = json_decode($this->request->getPost('definition_ids', FILTER_SANITIZE_STRING), TRUE);
 		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
 		$data['definition_names'] = $this->attribute->get_definition_names();
 
@@ -550,9 +550,9 @@ class Items extends Secure_Controller
 	public function save(int $item_id = NEW_ITEM): void
 	{
 		$upload_success = $this->handle_image_upload();
-		$upload_file = $this->request->getFile('image');
-		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
-		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type');
+		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
+		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type', FILTER_SANITIZE_NUMBER_INT);
 
 		if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
 		{
@@ -563,24 +563,24 @@ class Items extends Secure_Controller
 
 		//Save item data
 		$item_data = [
-			'name' => $this->request->getPost('name'),
-			'description' => $this->request->getPost('description'),
-			'category' => $this->request->getPost('category'),
+			'name' => $this->request->getPost('name', FILTER_SANITIZE_STRING),
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING),
+			'category' => $this->request->getPost('category', FILTER_SANITIZE_STRING),
 			'item_type' => $item_type,
-			'stock_type' => $this->request->getPost('stock_type') === NULL ? HAS_STOCK : intval($this->request->getPost('stock_type')),
-			'supplier_id' => empty($this->request->getPost('supplier_id')) ? NULL : intval($this->request->getPost('supplier_id')),
-			'item_number' => empty($this->request->getPost('item_number')) ? NULL : $this->request->getPost('item_number'),
-			'cost_price' => parse_decimals($this->request->getPost('cost_price')),
-			'unit_price' => parse_decimals($this->request->getPost('unit_price')),
-			'reorder_level' => parse_quantity($this->request->getPost('reorder_level')),
+			'stock_type' => $this->request->getPost('stock_type') === NULL ? HAS_STOCK : intval($this->request->getPost('stock_type', FILTER_SANITIZE_NUMBER_INT)),
+			'supplier_id' => empty($this->request->getPost('supplier_id')) ? NULL : intval($this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT)),
+			'item_number' => empty($this->request->getPost('item_number')) ? NULL : $this->request->getPost('item_number', FILTER_SANITIZE_NUMBER_INT),
+			'cost_price' => parse_decimals($this->request->getPost('cost_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'unit_price' => parse_decimals($this->request->getPost('unit_price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'reorder_level' => parse_quantity($this->request->getPost('reorder_level', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'receiving_quantity' => $receiving_quantity,
 			'allow_alt_description' => $this->request->getPost('allow_alt_description') !== NULL,
 			'is_serialized' => $this->request->getPost('is_serialized') !== NULL,
-			'qty_per_pack' => $this->request->getPost('qty_per_pack') === NULL ? 1 : $this->request->getPost('qty_per_pack'),
-			'pack_name' => $this->request->getPost('pack_name') === NULL ? $default_pack_name : $this->request->getPost('pack_name'),
-			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === NULL ? $item_id : $this->request->getPost('low_sell_item_id'),
+			'qty_per_pack' => $this->request->getPost('qty_per_pack') === NULL ? 1 : $this->request->getPost('qty_per_pack', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'pack_name' => $this->request->getPost('pack_name') === NULL ? $default_pack_name : $this->request->getPost('pack_name', FILTER_SANITIZE_STRING),
+			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === NULL ? $item_id : $this->request->getPost('low_sell_item_id', FILTER_SANITIZE_NUMBER_INT),
 			'deleted' => $this->request->getPost('is_deleted') !== NULL,
-			'hsn_code' => $this->request->getPost('hsn_code') === NULL ? '' : $this->request->getPost('hsn_code')
+			'hsn_code' => $this->request->getPost('hsn_code') === NULL ? '' : $this->request->getPost('hsn_code', FILTER_SANITIZE_STRING)
 		];
 
 		if($item_data['item_type'] == ITEM_TEMP)
@@ -590,7 +590,7 @@ class Items extends Secure_Controller
 			$item_data['reorder_level'] = 0;
 		}
 
-		$tax_category_id = $this->request->getPost('tax_category_id');
+		$tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
 
 		if(!isset($tax_category_id))
 		{
@@ -598,7 +598,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? NULL : $this->request->getPost('tax_category_id');
+			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? NULL : $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
 		}
 
 		$original_name = $upload_file->getFilename();
@@ -628,8 +628,8 @@ class Items extends Secure_Controller
 			if(!$use_destination_based_tax)
 			{
 				$items_taxes_data = [];
-				$tax_names = $this->request->getPost('tax_names');
-				$tax_percents = $this->request->getPost('tax_percents');
+				$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_STRING);
+				$tax_percents = $this->request->getPost('tax_percents', FILTER_SANITIZE_NUMBER_FLOAT);
 
 				$tax_name_index = 0;
 
@@ -651,7 +651,7 @@ class Items extends Secure_Controller
 			$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 			foreach($stock_locations as $location)
 			{
-				$updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
+				$updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
 				if($item_data['item_type'] == ITEM_TEMP)
 				{
@@ -684,8 +684,8 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links') : [];
-			$attribute_ids = $this->request->getPost('attribute_ids');
+			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links', FILTER_SANITIZE_NUMBER_INT) : [];
+			$attribute_ids = $this->request->getPost('attribute_ids', FILTER_SANITIZE_NUMBER_INT);
 
 			$this->attribute->delete_link($item_id);
 
@@ -724,7 +724,7 @@ class Items extends Secure_Controller
 
 	public function check_item_number(): void
 	{
-		$exists = $this->item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
+		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
 
@@ -733,9 +733,9 @@ class Items extends Secure_Controller
 	 */
 	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
-		if($this->request->getPost('item_number') === NEW_ITEM)
+		if($this->request->getPost('item_number', FILTER_SANITIZE_STRING) === NEW_ITEM)
 		{
-			$exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name'));	//TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
+			$exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name', FILTER_SANITIZE_STRING));	//TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
 		}
 		else
 		{
@@ -779,14 +779,14 @@ class Items extends Secure_Controller
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->item->get_info($item_id);
-		$location_id = $this->request->getPost('stock_location');
+		$location_id = $this->request->getPost('stock_location', FILTER_SANITIZE_NUMBER_INT);
 		$inv_data = [
 			'trans_date' => date('Y-m-d H:i:s'),
 			'trans_items' => $item_id,
 			'trans_user' => $employee_id,
 			'trans_location' => $location_id,
-			'trans_comment' => $this->request->getPost('trans_comment'),
-			'trans_inventory' => parse_quantity($this->request->getPost('newquantity'))
+			'trans_comment' => $this->request->getPost('trans_comment', FILTER_SANITIZE_STRING),
+			'trans_inventory' => parse_quantity($this->request->getPost('newquantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
 		];
 
 		$this->inventory->insert($inv_data);
@@ -796,7 +796,7 @@ class Items extends Secure_Controller
 		$item_quantity_data = [
 			'item_id' => $item_id,
 			'location_id' => $location_id,
-			'quantity' => $item_quantity->quantity + parse_quantity($this->request->getPost('newquantity'))
+			'quantity' => $item_quantity->quantity + parse_quantity($this->request->getPost('newquantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
 		];
 
 		if($this->item_quantity->save_value($item_quantity_data, $item_id, $location_id))
@@ -815,7 +815,7 @@ class Items extends Secure_Controller
 
 	public function bulk_update(): void
 	{
-		$items_to_update = $this->request->getPost('item_ids');
+		$items_to_update = $this->request->getPost('item_ids', FILTER_SANITIZE_NUMBER_INT);
 		$item_data = [];
 
 		foreach($_POST as $key => $value)
@@ -835,8 +835,8 @@ class Items extends Secure_Controller
 		if(empty($item_data) || $this->item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = [];
-			$tax_names = $this->request->getPost('tax_names');
-			$tax_percents = $this->request->getPost('tax_percents');
+			$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_STRING);
+			$tax_percents = $this->request->getPost('tax_percents', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 			$tax_updated = FALSE;
 
 			foreach($tax_percents as $tax_percent)
@@ -866,7 +866,7 @@ class Items extends Secure_Controller
 	 */
 	public function delete(): void
 	{
-		$items_to_delete = $this->request->getPost('ids');
+		$items_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
 		if($this->item->delete_list($items_to_delete))
 		{

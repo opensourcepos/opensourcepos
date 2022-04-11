@@ -76,11 +76,11 @@ class Item_kits extends Secure_Controller
 	 */
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->item_kit->get_found_rows($search);
@@ -98,7 +98,7 @@ class Item_kits extends Secure_Controller
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term'));
+		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -153,14 +153,14 @@ class Item_kits extends Secure_Controller
 	public function save(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$item_kit_data = [
-			'name' => $this->request->getPost('name'),
-			'item_kit_number' => $this->request->getPost('item_kit_number'),
-			'item_id' => $this->request->getPost('kit_item_id'),
-			'kit_discount' => $this->request->getPost('kit_discount'),
-			'kit_discount_type' => $this->request->getPost('kit_discount_type') == NULL ? PERCENT : $this->request->getPost('kit_discount_type'),
-			'price_option' => $this->request->getPost('price_option'),
-			'print_option' => $this->request->getPost('print_option'),
-			'description' => $this->request->getPost('description')
+			'name' => $this->request->getPost('name', FILTER_SANITIZE_STRING),
+			'item_kit_number' => $this->request->getPost('item_kit_number', FILTER_SANITIZE_STRING),
+			'item_id' => $this->request->getPost('kit_item_id', FILTER_SANITIZE_NUMBER_INT),
+			'kit_discount' => $this->request->getPost('kit_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'kit_discount_type' => $this->request->getPost('kit_discount_type') == NULL ? PERCENT : $this->request->getPost('kit_discount_type', FILTER_SANITIZE_NUMBER_INT),
+			'price_option' => $this->request->getPost('price_option', FILTER_SANITIZE_NUMBER_INT),
+			'print_option' => $this->request->getPost('print_option', FILTER_SANITIZE_NUMBER_INT),
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING)
 		];
 		
 		if($this->item_kit->save_value($item_kit_data, $item_kit_id))
@@ -176,9 +176,9 @@ class Item_kits extends Secure_Controller
 			if($this->request->getPost('item_kit_qty') != NULL)
 			{
 				$item_kit_items = [];
-				foreach($this->request->getPost('item_kit_qty') as $item_id => $quantity)
+				foreach($this->request->getPost('item_kit_qty', FILTER_FLAG_ALLOW_FRACTION, FILTER_FLAG_ALLOW_FRACTION) as $item_id => $quantity)
 				{
-					$seq = $this->request->getPost('item_kit_seq[' . $item_id . ']');
+					$seq = $this->request->getPost("item_kit_seq[$item_id]", FILTER_SANITIZE_NUMBER_INT);
 					$item_kit_items[] = [
 						'item_id' => $item_id,
 						'quantity' => $quantity,
@@ -220,7 +220,7 @@ class Item_kits extends Secure_Controller
 	
 	public function delete(): void
 	{
-		$item_kits_to_delete = $this->request->getPost('ids');
+		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
 		if($this->item_kit->delete_list($item_kits_to_delete))
 		{
@@ -237,7 +237,7 @@ class Item_kits extends Secure_Controller
 
 	public function check_item_number(): void
 	{
-		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number'), $this->request->getPost('item_kit_id'));
+		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
 	

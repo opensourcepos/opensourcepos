@@ -94,27 +94,27 @@ class Sales extends Secure_Controller
 
 	public function search(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort = $this->request->getGet('sort');
-		$order = $this->request->getGet('order');
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
 		$filters = [
 			'sale_type' => 'all',
 			'location_id' => 'all',
-			'start_date' => $this->request->getGet('start_date'),
-			'end_date' => $this->request->getGet('end_date'),
+			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),
+			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
 			'only_cash' => FALSE,
 			'only_due' => FALSE,
 			'only_check' => FALSE,
 			'only_creditcard' => FALSE,
-			'only_invoices' => config('OSPOS')->invoice_enable && $this->request->getGet('only_invoices'),
+			'only_invoices' => config('OSPOS')->invoice_enable && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
 			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters'), TRUE);	//TODO: Variable does not meet naming conventions
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: Variable does not meet naming conventions
 		$filters = array_merge($filters, $filledup);
 
 		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
@@ -143,7 +143,7 @@ class Sales extends Secure_Controller
 	public function item_search(): void
 	{
 		$suggestions = [];
-		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term') : NULL;
+		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term', FILTER_SANITIZE_STRING) : NULL;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
 		{
@@ -158,7 +158,7 @@ class Sales extends Secure_Controller
 
 	public function suggest_search(): void
 	{
-		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term') : NULL;
+		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term', FILTER_SANITIZE_STRING) : NULL;
 
 		$suggestions = $this->sale->get_search_suggestions($search);
 
@@ -167,7 +167,7 @@ class Sales extends Secure_Controller
 
 	public function select_customer(): void
 	{
-		$customer_id = $this->request->getPost('customer');
+		$customer_id = $this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
 		if($this->customer->exists($customer_id))
 		{
 			$this->sale_lib->set_customer($customer_id);
@@ -186,7 +186,7 @@ class Sales extends Secure_Controller
 
 	public function change_mode(): void
 	{
-		$mode = $this->request->getPost('mode');
+		$mode = $this->request->getPost('mode', FILTER_SANITIZE_STRING);
 		$this->sale_lib->set_mode($mode);
 
 		if($mode == 'sale')
@@ -212,7 +212,7 @@ class Sales extends Secure_Controller
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$occupied_dinner_table = $this->request->getPost('dinner_table');
+			$occupied_dinner_table = $this->request->getPost('dinner_table', FILTER_SANITIZE_NUMBER_INT);
 			$released_dinner_table = $this->sale_lib->get_dinner_table();
 			$occupied = $this->dinner_table->is_occupied($released_dinner_table);
 
@@ -224,7 +224,7 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_dinner_table($occupied_dinner_table);
 		}
 
-		$stock_location = $this->request->getPost('stock_location');
+		$stock_location = $this->request->getPost('stock_location', FILTER_SANITIZE_NUMBER_INT);
 
 		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
@@ -270,7 +270,7 @@ class Sales extends Secure_Controller
 
 	public function set_comment(): void
 	{
-		$this->sale_lib->set_comment($this->request->getPost('comment'));
+		$this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_STRING));
 	}
 
 	/**
@@ -279,12 +279,12 @@ class Sales extends Secure_Controller
 	 */
 	public function set_invoice_number(): void
 	{
-		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number'));
+		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
 	}
 
 	public function set_payment_type(): void	//TODO: This function does not appear to be called anywhere in the code.
 	{
-		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type'));
+		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_STRING));
 		$this->_reload();	//TODO: Hungarian notation.
 	}
 
@@ -294,12 +294,12 @@ class Sales extends Secure_Controller
 	 */
 	public function set_print_after_sale(): void
 	{
-		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale'));
+		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
 	}
 
 	public function set_price_work_orders(): void
 	{
-		$this->sale_lib->set_price_work_orders($this->request->getPost('price_work_orders'));
+		$this->sale_lib->set_price_work_orders($this->request->getPost('price_work_orders', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 	}
 
 	/**
@@ -308,7 +308,7 @@ class Sales extends Secure_Controller
 	 */
 	public function set_email_receipt(): void
 	{
-		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt'));
+		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt', FILTER_SANITIZE_STRING));
 	}
 
 	/**
@@ -319,7 +319,7 @@ class Sales extends Secure_Controller
 	{
 		$data = [];
 
-		$payment_type = $this->request->getPost('payment_type');
+		$payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_STRING);
 
 		//TODO: See the code block below.  This too needs to be ternary notation.
 		if($payment_type !== lang('Sales.giftcard'))
@@ -351,7 +351,7 @@ class Sales extends Secure_Controller
 			if($payment_type === lang('Sales.giftcard'))
 			{
 				// in case of giftcard payment the register input amount_tendered becomes the giftcard number
-				$giftcard_num = $this->request->getPost('amount_tendered');
+				$giftcard_num = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
@@ -416,7 +416,7 @@ class Sales extends Secure_Controller
 				$amount_due = $this->sale_lib->get_total();
 				$sales_total = $this->sale_lib->get_total(FALSE);
 
-				$amount_tendered = $this->request->getPost('amount_tendered');
+				$amount_tendered = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				$cash_adjustment_amount = $amount_due - $sales_total;
 				if($cash_adjustment_amount <> 0)
@@ -427,7 +427,7 @@ class Sales extends Secure_Controller
 			}
 			else
 			{
-				$amount_tendered = $this->request->getPost('amount_tendered');
+				$amount_tendered = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 			}
 		}
@@ -468,7 +468,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$item_id_or_number_or_item_kit_or_receipt = $this->request->getPost('item');
+		$item_id_or_number_or_item_kit_or_receipt = $this->request->getPost('item', FILTER_SANITIZE_STRING);
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$mode = $this->sale_lib->get_mode();
 		$quantity = ($mode == 'return') ? -$quantity : $quantity;
@@ -555,15 +555,15 @@ class Sales extends Secure_Controller
 		$this->validator->setRule('quantity', 'lang:sales_quantity', 'required|numeric');
 		$this->validator->setRule('discount', 'lang:sales_discount', 'required|numeric');
 
-		$description = $this->request->getPost('description');
-		$serialnumber = $this->request->getPost('serialnumber');
-		$price = parse_decimals($this->request->getPost('price'));
-		$quantity = parse_quantity($this->request->getPost('quantity'));
-		$discount_type = $this->request->getPost('discount_type');
-		$discount = $discount_type ? parse_quantity($this->request->getPost('discount')) : parse_decimals($this->request->getPost('discount'));
+		$description = $this->request->getPost('description', FILTER_SANITIZE_STRING);
+		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_STRING);
+		$price = parse_decimals($this->request->getPost('price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$quantity = parse_quantity($this->request->getPost('quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_STRING);
+		$discount = $discount_type ? parse_quantity($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) : parse_decimals($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
-		$item_location = $this->request->getPost('location');
-		$discounted_total = $this->request->getPost('discounted_total') != '' ? $this->request->getPost('discounted_total') : NULL;
+		$item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
+		$discounted_total = $this->request->getPost('discounted_total') != '' ? $this->request->getPost('discounted_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : NULL;
 
 		if(!$this->validate([]))
 		{
@@ -1336,7 +1336,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids') : [$sale_id];	//TODO: Replace -1 with a constant
+			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];	//TODO: Replace -1 with a constant
 
 			if($this->sale->delete_list($sale_ids, $employee_id, $update_inventory))
 			{
@@ -1364,7 +1364,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids') : [$sale_id];	//TODO: Replace -1 with a constant
+			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];	//TODO: Replace -1 with a constant
 
 			if($this->sale->restore_list($sale_ids, $employee_id, $update_inventory))
 			{
@@ -1389,7 +1389,7 @@ class Sales extends Secure_Controller
 	 */
 	public function save(int $sale_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		$newdate = $this->request->getPost('date');
+		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
 		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
@@ -1397,32 +1397,25 @@ class Sales extends Secure_Controller
 
 		$sale_data = [
 			'sale_time' => $sale_time,
-			'customer_id' => $this->request->getPost('customer_id') != '' ? $this->request->getPost('customer_id') : NULL,
-			'employee_id' => $this->request->getPost('employee_id') != '' ? $this->request->getPost('employee_id') : NULL,
-			'comment' => $this->request->getPost('comment'),
-			'invoice_number' => $this->request->getPost('invoice_number') != '' ? $this->request->getPost('invoice_number') : NULL
+			'customer_id' => $this->request->getPost('customer_id') != '' ? $this->request->getPost('customer_id', FILTER_SANITIZE_NUMBER_INT) : NULL,
+			'employee_id' => $this->request->getPost('employee_id') != '' ? $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT) : NULL,
+			'comment' => $this->request->getPost('comment', FILTER_SANITIZE_STRING),
+			'invoice_number' => $this->request->getPost('invoice_number') != '' ? $this->request->getPost('invoice_number', FILTER_SANITIZE_STRING) : NULL
 		];
 
 		// In order to maintain tradition the only element that can change on prior payments is the payment type
 		$payments = [];
 		$amount_tendered = 0;
-		$number_of_payments = $this->request->getPost('number_of_payments');
+		$number_of_payments = $this->request->getPost('number_of_payments', FILTER_SANITIZE_NUMBER_INT);
 		for($i = 0; $i < $number_of_payments; ++$i)
 		{
-			$payment_id = $this->request->getPost('payment_id_' . $i);
-			$payment_type = $this->request->getPost('payment_type_' . $i);
-			$payment_amount = $this->request->getPost('payment_amount_' . $i);
-			$refund_type = $this->request->getPost('refund_type_' . $i);
-			$cash_refund = $this->request->getPost('refund_amount_' . $i);
+			$payment_id = $this->request->getPost("payment_id_$i", FILTER_SANITIZE_NUMBER_INT);
+			$payment_type = $this->request->getPost("payment_type_$i", FILTER_SANITIZE_STRING);
+			$payment_amount = $this->request->getPost("payment_amount_$i", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$refund_type = $this->request->getPost("refund_type_$i", FILTER_SANITIZE_STRING);
+			$cash_refund = $this->request->getPost("refund_amount_$i", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-			if($payment_type == lang('Sales.cash_adjustment'))
-			{
-				$cash_adjustment = CASH_ADJUSTMENT_TRUE;
-			}
-			else
-			{
-				$cash_adjustment = CASH_ADJUSTMENT_FALSE;
-			}
+			$cash_adjustment = $payment_type == lang('Sales.cash_adjustment') ? CASH_ADJUSTMENT_TRUE : CASH_ADJUSTMENT_FALSE;
 
 			if(!$cash_adjustment)
 			{
@@ -1454,8 +1447,8 @@ class Sales extends Secure_Controller
 		}
 
 		$payment_id = -1;	//TODO: Replace -1 with a constant
-		$payment_amount = $this->request->getPost('payment_amount_new');
-		$payment_type = $this->request->getPost('payment_type_new');
+		$payment_amount = $this->request->getPost('payment_amount_new', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+		$payment_type = $this->request->getPost('payment_type_new', FILTER_SANITIZE_STRING);
 
 		if($payment_type != PAYMENT_TYPE_UNASSIGNED && $payment_amount <> 0)
 		{
@@ -1604,7 +1597,7 @@ class Sales extends Secure_Controller
 	 */
 	public function unsuspend(): void
 	{
-		$sale_id = $this->request->getPost('suspended_sale_id');
+		$sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
 		$this->sale_lib->clear_all();
 
 		if($sale_id > 0)
@@ -1620,8 +1613,8 @@ class Sales extends Secure_Controller
 
 	public function check_invoice_number(): void
 	{
-		$sale_id = $this->request->getPost('sale_id');
-		$invoice_number = $this->request->getPost('invoice_number');
+		$sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
+		$invoice_number = $this->request->getPost('invoice_number', FILTER_SANITIZE_STRING);
 		$exists = !empty($invoice_number) && $this->sale->check_invoice_number_exists($invoice_number, $sale_id);
 		echo !$exists ? 'true' : 'false';
 	}
@@ -1647,8 +1640,8 @@ class Sales extends Secure_Controller
 
 	public function change_item_number(): void
 	{
-		$item_id = $this->request->getPost('item_id');
-		$item_number = $this->request->getPost('item_number');
+		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+		$item_number = $this->request->getPost('item_number', FILTER_SANITIZE_STRING);
 		$this->item->update_item_number($item_id, $item_number);
 		$cart = $this->sale_lib->get_cart();
 		$x = $this->search_cart_for_item_id($item_id, $cart);
@@ -1661,8 +1654,8 @@ class Sales extends Secure_Controller
 
 	public function change_item_name(): void
 	{
-		$item_id = $this->request->getPost('item_id');
-		$name = $this->request->getPost('item_name');
+		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+		$name = $this->request->getPost('item_name', FILTER_SANITIZE_STRING);
 
 		$this->item->update_item_name($item_id, $name);
 
@@ -1679,8 +1672,8 @@ class Sales extends Secure_Controller
 
 	public function change_item_description(): void
 	{
-		$item_id = $this->request->getPost('item_id');
-		$description = $this->request->getPost('item_description');
+		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
+		$description = $this->request->getPost('item_description', FILTER_SANITIZE_STRING);
 
 		$this->item->update_item_description($item_id, $description);
 
