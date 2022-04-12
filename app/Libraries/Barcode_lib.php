@@ -2,10 +2,6 @@
 
 namespace app\Libraries;
 
-use emberlabs\Barcode\Code128;
-use emberlabs\Barcode\Code39;
-use emberlabs\Barcode\Ean13;
-use emberlabs\Barcode\Ean8;
 use Exception;
 
 /**
