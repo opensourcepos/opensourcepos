@@ -10,9 +10,9 @@ return [
 'company_name_required' => 'Company Name is a required field.',
 'confirm_delete' => 'Are you sure you want to delete the selected Supplier(s)?',
 'confirm_restore' => 'Are you sure you want to restore selected Supplier(s)?',
-'cost' => 'Cost Supplier',
+COST_SUPPLIER => 'Cost Supplier',
 'error_adding_updating' => 'Supplier update or add failed.',
-'goods' => 'Goods Supplier',
+GOODS_SUPPLIER => 'Goods Supplier',	//TODO: This needs to be tested with both weblate and CI4. I'm not sure if it will work.
 'new' => 'New Supplier',
 'none_selected' => 'You have not selected Supplier(s) to delete.',
 'one_or_multiple' => 'Supplier(s)',

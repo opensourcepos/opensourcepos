@@ -301,19 +301,11 @@ class Supplier extends Person
 
 	/**
 	 * Return a category name given its id.
-	 * @param int $id
-	 * @return string
+	 * @param int $supplier_type Constant representing the type of supplier.
+	 * @return string Language string for the given supplier type.
 	 */
-	public function get_category_name(int $id): string
+	public function get_category_name(int $supplier_type): string
 	{
-		if($id == GOODS_SUPPLIER)
-		{
-			return lang('Suppliers.goods');
-		}
-		elseif($id == COST_SUPPLIER)
-		{
-			return lang('Suppliers.cost');
-		}
-		//TODO: https://github.com/opensourcepos/opensourcepos/issues/3456
+		return lang("Suppliers.$supplier_type");
 	}
 }
