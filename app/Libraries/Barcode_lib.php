@@ -45,14 +45,6 @@ class Barcode_lib
 		return $data;
 	}
 
-	public function validate_barcode(string $barcode): bool	//TODO: this function does not seem to be called anywhere in the code.
-	{
-		$barcode_type = config('OSPOS')->barcode_type;
-		$barcode_instance = $this->get_barcode_instance($barcode_type);
-
-		return $barcode_instance->validate($barcode);
-	}
-
 	public static function barcode_instance(array $item, array $barcode_config): object
 	{
 		$barcode_instance = Barcode_lib::get_barcode_instance($barcode_config['barcode_type']);
