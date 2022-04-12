@@ -43,6 +43,6 @@ class Token_customer extends Token
 			}
 		}
 
-		return $value;	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3454
+		return '';
 	}
 }
