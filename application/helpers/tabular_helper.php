@@ -42,6 +42,7 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 		$result[] = array('field' => key($element),
 			'title' => current($element),
 			'switchable' => isset($element['switchable']) ? $element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
+			'escape' => key($element) != "edit" && !(isset($element['escape']) && !$element['escape']),
 			'sortable' => isset($element['sortable']) ? $element['sortable'] : current($element) != '',
 			'checkbox' => isset($element['checkbox']) ? $element['checkbox'] : FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
@@ -72,10 +73,10 @@ function get_sales_manage_table_headers()
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
-		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
+		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE);
 	}
 
-	$headers[] = array('receipt' => '&nbsp', 'sortable' => FALSE);
+	$headers[] = array('receipt' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE);
 
 	return transform_headers($headers);
 }
@@ -350,8 +351,8 @@ function get_items_manage_table_headers()
 		$headers[] = array($definition_id => $definition_name, 'sortable' => FALSE);
 	}
 
-	$headers[] = array('inventory' => '');
-	$headers[] = array('stock' => '');
+	$headers[] = array('inventory' => '', 'escape' => FALSE);
+	$headers[] = array('stock' => '', 'escape' => FALSE);
 
 	return transform_headers($headers);
 }
