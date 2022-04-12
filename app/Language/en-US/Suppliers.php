@@ -12,7 +12,7 @@ return [
 'confirm_restore' => 'Are you sure you want to restore selected Supplier(s)?',
 COST_SUPPLIER => 'Cost Supplier',
 'error_adding_updating' => 'Supplier update or add failed.',
-GOODS_SUPPLIER => 'Goods Supplier',	//TODO: This needs to be tested with both weblate and CI4. I'm not sure if it will work.
+GOODS_SUPPLIER => 'Goods Supplier',	//TODO: This needs to be tested with both Weblate and CI4. I'm not sure if it will work.
 'new' => 'New Supplier',
 'none_selected' => 'You have not selected Supplier(s) to delete.',
 'one_or_multiple' => 'Supplier(s)',
