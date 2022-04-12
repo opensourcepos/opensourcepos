@@ -1,13 +1,15 @@
 #!/usr/bin/env php
 <?php
-
 $installer = new Installer();
 
-if ($argc === 3) {
+if ($argc === 3)
+{
     $package = $argv[1];
     $version = $argv[2];
     echo $installer->install($package, $version);
-} else {
+}
+else
+{
     echo $installer->usage($argv[0]);
 }
 
@@ -96,7 +98,8 @@ class Installer
     {
         $msg = 'You can install:' . PHP_EOL;
         
-        foreach ($this->packages as $key => $value) {
+        foreach ($this->packages as $key => $value)
+		{
             $msg .= '  ' . $value['name'] . ' (' . $key . ')' . PHP_EOL;
         }
         
@@ -250,7 +253,7 @@ class Installer
         @mkdir($dst, 0755, TRUE);
 		//TODO: https://github.com/opensourcepos/opensourcepos/issues/3458
         $iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($src, RecursiveDirectoryIterator::SKIP_DOTS),
+			new RecursiveDirectoryIterator($src, FilesystemIterator::SKIP_DOTS),
 			RecursiveIteratorIterator::SELF_FIRST
 		);
         
@@ -280,7 +283,7 @@ class Installer
     private function recursiveUnlink(string $dir)
     {//TODO: https://github.com/opensourcepos/opensourcepos/issues/3458
 		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+			new RecursiveDirectoryIterator($dir, FileSystemIterator::SKIP_DOTS),
 			RecursiveIteratorIterator::CHILD_FIRST
 		);
 
