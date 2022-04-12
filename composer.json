@@ -38,7 +38,8 @@
 		"ext-gd": "*",
 		"ext-fileinfo": "*",
 		"ext-zip": "*",
-		"ext-mysqli": "*"
+		"ext-mysqli": "*",
+		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",
