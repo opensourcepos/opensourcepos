@@ -37,7 +37,7 @@ http {
 		location / {
 			proxy_pass          http://ospos:80;
 			proxy_redirect      off;
-			proxy_set_header    Host                ${ESC}host;
+			proxy_set_header    Host                ospos;
 			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
 			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
 			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
@@ -58,7 +58,7 @@ http {
 		location / {
 			proxy_pass          http://phpmyadmin:80;
 			proxy_redirect      off;
-			proxy_set_header    Host                ${ESC}host;
+			proxy_set_header    Host                p;
 			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
 			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
 			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
