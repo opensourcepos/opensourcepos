@@ -3,6 +3,7 @@
 namespace app\Libraries;
 
 use Exception;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 /**
  * Barcode library
@@ -112,6 +113,7 @@ class Barcode_lib
 	{
 		try
 		{
+			$generator = new BarcodeGeneratorPNG();
 			$barcode_instance = Barcode_lib::barcode_instance($item, $barcode_config);
 			$barcode_instance->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
 
