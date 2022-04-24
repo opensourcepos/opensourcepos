@@ -138,10 +138,10 @@ function get_sale_data_last_row($sales)
 
 	return array(
 		'sale_id' => '-',
-		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
-		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
-		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
-		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
+		'sale_time' => $CI->lang->line('sales_total'),
+		'amount_due' => to_currency($sum_amount_due),
+		'amount_tendered' => to_currency($sum_amount_tendered),
+		'change_due' => to_currency($sum_change_due)
 	);
 }
 
