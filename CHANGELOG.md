@@ -1,4 +1,5 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.5...HEAD
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...HEAD
+[3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
 [3.3.5]: https://github.com/opensourcepos/opensourcepos/compare/3.3.4...3.3.5
 [3.3.4]: https://github.com/opensourcepos/opensourcepos/compare/3.3.3...3.3.4
 [3.3.3]: https://github.com/opensourcepos/opensourcepos/compare/3.3.2...3.3.3
@@ -30,6 +31,13 @@ All notable changes to this project will be documented here.
 List of changes in the `master` branch.
 
 - N/A
+
+## [3.3.7] - 2022-04-26
+
+- Translation updates (Thai, Indonesian, Swedish, Italian)
+- XSS fixes in bootstrap datatables
+- Invoice numbering fixes
+- Docker compose database scripts are now mounted from a container volume
 
 ## [3.3.6] - 2022-01-08
 
