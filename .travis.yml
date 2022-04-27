@@ -21,7 +21,7 @@ script:
   - docker run --rm -v $(pwd):/app jekkos/composer php bin/install.php translations develop
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
   - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
-  - npm version "$version-$branch-$rev" --force
+  - npm version "$version-$branch-$rev" --force || true
   - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
     sh -c "npm install && bower install && grunt package"
   - docker build . --target ospos -t ospos
@@ -46,7 +46,8 @@ deploy:
     email: jeroen@steganos.dev
     skip_cleanup: true
     api_key:
-      secure: DrPHytC9xmhOQHhTrsbvMo7BQ9wAhqJ2jW0Q0CAfYObS1t/ayjk9mqSm1Nhj3NKD94UatM/sz8Yo5rcpt7O5lxFaFKf1gXW7hL4xSkJXybG+uBzNoSZA7+2agmuHfqc9sv6IAb4LdNIqiarvB8B3X0Vf1re7yEm9ac4bUioej5U=
+      secure: "bmOfMoGBi+wTEdTbIB7wPenNTCZrmHAa05xZnMxZSOjxplZpnZSO4Tvnnkihz9LpbF3xT1hm76AJJuZonu2HKtUez+6L4Fg+i/jS8Ij/BZlbvKBVTeB+2yN09ncXNmObnl1bShtm90d2WYQJKk3NJGuEboFQNxwJLYJXg33iMhc="
+
     on:
       all_branches: true
   - provider: releases
