@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "現有積分";
 $lang["rewards_package"] = "獎賞";
 $lang["rewards_remaining_balance"] = "剩餘獎賞積分 ";
@@ -103,12 +102,12 @@ $lang["sales_item_name"] = "產品名稱";
 $lang["sales_item_number"] = "產品 #";
 $lang["sales_item_out_of_stock"] = "產品缺貨.";
 $lang["sales_key_browser"] = "";
-$lang["sales_key_cancel"] = "Cancels Current Quote/Invoice/Sale";
-$lang["sales_key_customer_search"] = "Customer Search";
-$lang["sales_key_finish_quote"] = "Finish Quote/Invoice witdout payment";
-$lang["sales_key_finish_sale"] = "Add Payment and Complete Invoice/Sale";
+$lang["sales_key_cancel"] = "取消目前詢價/收據/銷售";
+$lang["sales_key_customer_search"] = "搜尋顧客";
+$lang["sales_key_finish_quote"] = "完成詢價/收據 尚未付款";
+$lang["sales_key_finish_sale"] = "增加付款及完成收據/販售";
 $lang["sales_key_full"] = "";
-$lang["sales_key_function"] = "Function";
+$lang["sales_key_function"] = "功能";
 $lang["sales_key_help"] = "Shortcuts";
 $lang["sales_key_help_modal"] = "Open Shortcuts Window";
 $lang["sales_key_in"] = "";
