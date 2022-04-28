@@ -21,6 +21,7 @@ script:
   - docker run --rm -v $(pwd):/app jekkos/composer php bin/install.php translations develop
   - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
   - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
+  - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
   - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
     sh -c "npm install && bower install && grunt package"
