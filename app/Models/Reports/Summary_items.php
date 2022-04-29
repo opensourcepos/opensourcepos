@@ -9,6 +9,7 @@ class Summary_items extends Summary_report
 		return [
 			['item_name' => lang('Reports.item')],
 			['category' => lang('Reports.category')],
+			['cost_price' => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
 			['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
 			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
 			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
@@ -26,6 +27,7 @@ class Summary_items extends Summary_report
 		$builder->select('
 				MAX(items.name) AS name,
 				MAX(items.category) AS category,
+				MAX(items.cost_price) AS cost_price,
 				MAX(items.unit_price) AS unit_price,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
