@@ -1,0 +1,9 @@
+- name: Delete Package Versions
+  uses: actions/delete-package-versions@v2.0.1
+  with: 
+    owner: 'github'
+    repo: 'opensourcepos'
+    package-name: 'opensourcepos'
+    token: ${{ secrets.GITHUB_PAT }}
+    min-versions-to-keep: 10
+    delete-only-pre-release-versions: "true"
