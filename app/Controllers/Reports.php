@@ -351,6 +351,7 @@ class Reports extends Secure_Controller
 			$tabular_data[] = [
 				'item_name' => $row['name'],
 				'category' => $row['category'],
+				'cost_price' => $row['cost_price'],
 				'unit_price' => $row['unit_price'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
