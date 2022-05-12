@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "İnventar + Topla və ya - Çıx.";
 $lang["items_allow_alt_description"] = "Alternativ təsvirə icazə verin";
 $lang["items_amount_entry"] = "Məbləğ Əlavəsi";
@@ -8,7 +7,7 @@ $lang["items_buy_price_required"] = "Alış qiyməti tələb olunan sahədir.";
 $lang["items_cannot_be_deleted"] = "Seçilmiş Mal (lar) silmək mükün deyil, bir və ya birdən çox Mallarda Satışlar var.";
 $lang["items_cannot_find_item"] = "Mal Tapılmadı.";
 $lang["items_categories"] = "";
-$lang["items_category"] = "kateqoriya";
+$lang["items_category"] = "Bolmə";
 $lang["items_category_new"] = "";
 $lang["items_category_required"] = "Bölmə sahəsi boş qala bilməz.";
 $lang["items_change_all_to_allow_alt_desc"] = "Hamısı üçün Alternativ Təsvirə İcazə Verin.";
@@ -17,12 +16,12 @@ $lang["items_change_all_to_serialized"] = "Hamısını Seriyalaşdırılmışa g
 $lang["items_change_all_to_unserialized"] = "Qeyri Seriyalara görə dəyiş";
 $lang["items_change_image"] = "Şəkili Dəyiş";
 $lang["items_confirm_bulk_edit"] = "Siz əminsinizmi ki işarələnmiş butun malları redaktə etmək istəyirsiniz?";
-$lang["items_confirm_bulk_edit_wipe_taxes"] = "Bütün Vergi haqqında olan Məlumatların  yerləri  dəyişəcək.";
-$lang["items_confirm_delete"] = "siz əminsiniz ki seçilmiş malları silmək istəyirsiniz?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Bütün Məhsul Vergisi məlumatları dəyişdiriləcək.";
+$lang["items_confirm_delete"] = "Seçilmiş element(ləri) silmək istədiyinizə əminsiniz?";
 $lang["items_confirm_restore"] = "Seçilmiş element (lər) bərpa etmək istədiyinizə əminsinizmi?";
-$lang["items_cost_price"] = "Alış qiyməti";
-$lang["items_cost_price_number"] = "Topdan satış rəqəmlə olmalıdır.";
-$lang["items_cost_price_required"] = "Topdan satiış - yazılması vacib sahə.";
+$lang["items_cost_price"] = "Topdan Satış qiyməti";
+$lang["items_cost_price_number"] = "Topdansatış qiyməti rəqəm olmalıdır.";
+$lang["items_cost_price_required"] = "Topdan satiış - doldurulması vacib sahə.";
 $lang["items_count"] = "inventorun yenilənməsi";
 $lang["items_csv_import_failed"] = "səhv csv import";
 $lang["items_csv_import_nodata_wrongformat"] = "Yüklənmiş faylda məlumat yoxdur və ya düzgün formatlanmır.";
@@ -74,7 +73,7 @@ $lang["items_none"] = "Heçnə";
 $lang["items_none_selected"] = "Siz redaktə etmək üçün hər hansı bir mal seçməmisiniz";
 $lang["items_nonstock"] = "Əldə Olmayan";
 $lang["items_number_information"] = "Malın Nömrəsi";
-$lang["items_number_required"] = "Barkod sahəsi boş qala bilməz.";
+$lang["items_number_required"] = "Barkod tələb olunan sahədir.";
 $lang["items_one_or_multiple"] = "Mal (lar)";
 $lang["items_pack_name"] = "Paket Adı";
 $lang["items_qty_per_pack"] = "Paketin miqdarı";
