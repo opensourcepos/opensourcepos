@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Xərc Əlavə Et";
 $lang["expenses_amount"] = "Məbləğ";
 $lang["expenses_amount_number"] = "Məbləğ rəqəm ilə olmalıdır";
@@ -12,7 +11,7 @@ $lang["expenses_categories_name"] = "Kategoriya";
 $lang["expenses_category_required"] = "Kategoriya bölməsi boş qala bilməz";
 $lang["expenses_check"] = "Çek";
 $lang["expenses_check_filter"] = "Çek";
-$lang["expenses_confirm_delete"] = "Seçilmiş xərci silmək istədiyinizə əminsinizmi?";
+$lang["expenses_confirm_delete"] = "Siz əminsinizmi ki işarələnmiş butun malları redaktə etmək istəyirsiniz?";
 $lang["expenses_confirm_restore"] = "Seçilmiş xərci (lər) bərpa etmək istədiyinizə əminsinizmi?";
 $lang["expenses_credit"] = "Kredit Kartı";
 $lang["expenses_credit_filter"] = "Kredit Kartı";
