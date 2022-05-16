@@ -8,8 +8,6 @@ if [ ! -e ".env" ]; then
   exit 1
 fi
 
-. ./.env
-
-docker-compose -f ../docker-compose.nginx.yml build
+docker-compose -f ../docker-compose.nginx.yml --env-file .env build
 
 /bin/bash ./init-letsencrypt.sh
