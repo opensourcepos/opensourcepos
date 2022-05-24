@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "Informatie";
 $lang["employees_cannot_be_deleted"] = "Kon de geselecteerde gebruilker(s) niet verwijderen, één of meerdere die u probeert te verwijderen hebben aankopen verwerkt.";
@@ -38,6 +37,6 @@ $lang["employees_system_language"] = "Systeem taal";
 $lang["employees_unsuccessful_change_password"] = "Paswoord wijziging gefaald.";
 $lang["employees_update"] = "Update Werknemer";
 $lang["employees_username"] = "Gebruikersnaam";
-$lang["employees_username_duplicate"] = "";
+$lang["employees_username_duplicate"] = "Werknemer gebruikersnaam is al in gebruik. Gelieve een andere te kiezen.";
 $lang["employees_username_minlength"] = "Gebruikersnaam moet minstens 5 characters lang zijn.";
 $lang["employees_username_required"] = "Gebruikersnaam moet ingevuld worden.";
