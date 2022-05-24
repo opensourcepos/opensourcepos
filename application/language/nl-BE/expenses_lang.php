@@ -1,19 +1,18 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Voeg kosten toe";
 $lang["expenses_amount"] = "Bedrag";
 $lang["expenses_amount_number"] = "Hoeveelheid moet een getal zijn";
 $lang["expenses_amount_required"] = "Kost bedrag verplicht";
 $lang["expenses_by_category"] = "Categorie";
 $lang["expenses_cannot_be_deleted"] = "Kan Categorie Kosten niet verwijderen";
-$lang["expenses_cash"] = "Cash";
-$lang["expenses_cash_filter"] = "Cash";
+$lang["expenses_cash"] = "Contant";
+$lang["expenses_cash_filter"] = "Contant";
 $lang["expenses_categories_name"] = "Categorie";
 $lang["expenses_category_required"] = "Categorie is een verplicht veld";
 $lang["expenses_check"] = "Cheque";
 $lang["expenses_check_filter"] = "Cheque";
-$lang["expenses_confirm_delete"] = "Bent u zeker dat u de geselecteerde onkosten wil verwijderen?";
-$lang["expenses_confirm_restore"] = "Ben u zeker dat u de geselecteerde onkost(en) wil herstellen?";
+$lang["expenses_confirm_delete"] = "Weet u zeker dat u de geselecteerde uitgave(n) wilt verwijderen?";
+$lang["expenses_confirm_restore"] = "Weet u zeker dat u de geselecteerde uitgave(n) wilt herstellen?";
 $lang["expenses_credit"] = "Creditcard";
 $lang["expenses_credit_filter"] = "Creditcard";
 $lang["expenses_date"] = "Datum";
@@ -38,7 +37,7 @@ $lang["expenses_no_expenses_to_display"] = "Er zijn geen onkosten weer te geven"
 $lang["expenses_none_selected"] = "U heb geen onkosten geselecteerd";
 $lang["expenses_one_or_multiple"] = "Onkost(en)";
 $lang["expenses_payment"] = "Betaalwijze";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Begin de naam van de Leverancier te Typen...";
 $lang["expenses_successful_adding"] = "Onkosten toevoegen geslaagd";
 $lang["expenses_successful_deleted"] = "Onkosten verwijderen geslaagd";
 $lang["expenses_successful_updating"] = "Onkosten updaten geslaagd";
