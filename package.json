@@ -26,7 +26,7 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "^1.5.2",
+    "grunt": "^1.5.3",
     "grunt-bower": "^0.21.4",
     "grunt-bower-concat": "^1.0.0",
     "grunt-bower-licensechecker": "^0.1.2",
