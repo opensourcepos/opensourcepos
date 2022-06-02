@@ -1,14 +1,13 @@
-<?php 
-
+<?php
 $lang["cashups_amount"] = "Tổng số";
 $lang["cashups_amount_number"] = "Tổng số phải là dạng số";
-$lang["cashups_amount_required"] = "";
+$lang["cashups_amount_required"] = "Tổng số là trường bắt buộc.";
 $lang["cashups_cancel_cashups"] = "";
 $lang["cashups_cancel_cashups_enter"] = "";
-$lang["cashups_cannot_be_deleted"] = "";
+$lang["cashups_cannot_be_deleted"] = "Không thể xóa doanh số ngày";
 $lang["cashups_cash_difference"] = "";
-$lang["cashups_close_date"] = "";
-$lang["cashups_close_employee"] = "";
+$lang["cashups_close_date"] = "Đóng ngày";
+$lang["cashups_close_employee"] = "Đóng bởi";
 $lang["cashups_closed_amount_card"] = "";
 $lang["cashups_closed_amount_cash"] = "";
 $lang["cashups_closed_amount_check"] = "";
