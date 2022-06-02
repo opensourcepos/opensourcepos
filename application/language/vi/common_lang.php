@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Địa chỉ 1";
 $lang["common_address_2"] = "Địa chỉ 2";
 $lang["common_admin"] = "";
@@ -33,7 +32,7 @@ $lang["common_gender"] = "Giới tính";
 $lang["common_gender_female"] = "Nữ";
 $lang["common_gender_male"] = "Nam";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
+$lang["common_icon"] = "Biểu tượng";
 $lang["common_id"] = "Mã số";
 $lang["common_import"] = "Nhập";
 $lang["common_import_change_file"] = "Thay đổi";
