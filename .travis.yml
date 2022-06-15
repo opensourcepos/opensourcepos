@@ -38,6 +38,7 @@ after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sqlscript"
   - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
+  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"
 deploy:
@@ -52,7 +53,7 @@ deploy:
     on:
       all_branches: true
   - provider: releases
-    file: dist/opensourcepos.$version.$rev.tgz
+    file: dist/opensourcepos.$version.$rev.zip
     name: "OpensourcePos $version"
     release_notes_file: WHATS_NEW.txt
     prerelease: true

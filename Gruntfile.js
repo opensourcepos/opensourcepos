@@ -1,5 +1,30 @@
 module.exports = function(grunt) {
 
+    dist_files = [
+        {
+            src: [
+                'public/**',
+                'vendor/**',
+                'application/**',
+                '!/application/tests',
+                '!/public/images/menubar/png/',
+                '!/public/dist/bootswatch/',
+                '/public/dist/bootswatch/*/*.css',
+                '!/public/dist/bootswatch-5/',
+                '/public/dist/bootswatch-5/*/*.css',
+                'database/**',
+                '*.txt',
+                '*.md',
+                'LICENSE',
+                'docker*',
+                'docker/**',
+                'Dockerfile',
+                '**/.htaccess',
+                '*.csv'
+            ]
+        }
+    ];
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		wiredep: {
@@ -258,39 +283,23 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		compress: {
-			main: {
-				options: {
-					mode: 'tar',
-					archive: 'dist/opensourcepos.tgz',
-					level: 2
-				},
-				files: [
-					{
-						src: [
-							'public/**',
-							'vendor/**',
-							'application/**',
-							'!/application/tests',
-							'!/public/images/menubar/png/',
-							'!/public/dist/bootswatch/',
-							'/public/dist/bootswatch/*/*.css',
-							'!/public/dist/bootswatch-5/',
-							'/public/dist/bootswatch-5/*/*.css',
-							'database/**',
-							'*.txt',
-							'*.md',
-							'LICENSE',
-							'docker*',
-							'docker/**',
-							'Dockerfile',
-							'**/.htaccess',
-							'*.csv'
-						]
-					}
-				]
-			}
-		}
+        compress: {
+            tar: {
+                options: {
+                    mode: 'tar',
+                    archive: 'dist/opensourcepos.tgz',
+                    level: 2,
+                },
+                files: dist_files
+            },
+            zip: {
+                options: {
+                    mode: 'zip',
+                    archive: 'dist/opensourcepos.zip',
+                },
+                files: dist_files
+            }
+        }
 	});
 
 	require('load-grunt-tasks')(grunt);
