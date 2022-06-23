@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Dirección 1";
 $lang["common_address_2"] = "Dirección 2";
 $lang["common_admin"] = "";
@@ -33,7 +32,7 @@ $lang["common_gender"] = "Género";
 $lang["common_gender_female"] = "M";
 $lang["common_gender_male"] = "H";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
+$lang["common_icon"] = "Ícono";
 $lang["common_id"] = "Id";
 $lang["common_import"] = "Importar";
 $lang["common_import_change_file"] = "Cambiar";
@@ -47,8 +46,8 @@ $lang["common_last_name_required"] = "El/Los Apellido(s) es un campo requerido."
 $lang["common_last_page"] = "Último";
 $lang["common_learn_about_project"] = "para conocer la última información sobre el proyecto.";
 $lang["common_list_of"] = "Lista de";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "Logo";
+$lang["common_logo_mark"] = "Marca";
 $lang["common_logout"] = "Cerrar Sesión";
 $lang["common_manager"] = "";
 $lang["common_migration_needed"] = "La migración de la base de datos a %1 comenzará luego de acceder.";
@@ -72,8 +71,8 @@ $lang["common_return_policy"] = "Política de Devoluciones";
 $lang["common_search"] = "Buscar";
 $lang["common_search_options"] = "Opciones de búsqueda";
 $lang["common_searched_for"] = "Buscado por";
-$lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_short"] = "OSPOS";
+$lang["common_software_title"] = "Punto de Venta de Código Abierto (Open Source Point of Sale)";
 $lang["common_state"] = "Estado";
 $lang["common_submit"] = "Enviar";
 $lang["common_total_spent"] = "Total Gastado";
@@ -81,7 +80,7 @@ $lang["common_unknown"] = "Desconocido";
 $lang["common_view_recent_sales"] = "Ver Ventas Recientes";
 $lang["common_website"] = "sitio web";
 $lang["common_welcome"] = "Bienvenido(a)";
-$lang["common_welcome_message"] = "Bienvenido(a) a OSPOS, haga clic en algún módulo para comenzar.";
+$lang["common_welcome_message"] = "Bienvenido(a) a OSPOS, haga clic en un módulo para comenzar.";
 $lang["common_yes"] = "";
 $lang["common_you_are_using_ospos"] = "Está utilizando la versión de Código Abierto de Punto de Venta";
 $lang["common_zip"] = "CP";
