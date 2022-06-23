@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventario a agregar o disminuir.";
 $lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["items_amount_entry"] = "Ingrese Cantidad";
@@ -16,9 +15,9 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "No permitir Descripción Al
 $lang["items_change_all_to_serialized"] = "Cambiar todo a Serializado";
 $lang["items_change_all_to_unserialized"] = "Cambiar todo a No-Serializado";
 $lang["items_change_image"] = "Cambiar Imagen";
-$lang["items_confirm_bulk_edit"] = "";
-$lang["items_confirm_bulk_edit_wipe_taxes"] = "";
-$lang["items_confirm_delete"] = "";
+$lang["items_confirm_bulk_edit"] = "¿Esta seguro que quiere editar los artículos seleccionados?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Toda la información de Impuestos de los Artículos será reemplazada.";
+$lang["items_confirm_delete"] = "¿Esta seguro que quiere eliminar los artículos seleccionados?";
 $lang["items_confirm_restore"] = "";
 $lang["items_cost_price"] = "";
 $lang["items_cost_price_number"] = "";
