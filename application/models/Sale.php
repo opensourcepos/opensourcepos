@@ -644,11 +644,12 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_payments', $sales_payments_data);
 
-			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
+			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
+
 		}
-
+		
 		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
-
+		
 		$customer = $this->Customer->get_info($customer_id);
 
 		foreach($items as $line=>$item)
