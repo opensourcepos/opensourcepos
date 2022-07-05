@@ -516,6 +516,7 @@ class Items extends Secure_Controller
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),
 			'category' => $this->input->post('category'),
+			'manufacturer' => $this->input->post('manufacturer'),
 			'item_type' => $item_type,
 			'stock_type' => $this->input->post('stock_type') === NULL ? HAS_STOCK : intval($this->input->post('stock_type')),
 			'supplier_id' => empty($this->input->post('supplier_id')) ? NULL : intval($this->input->post('supplier_id')),

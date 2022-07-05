@@ -55,6 +55,18 @@
 			</div>
 		</div>
 
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_manufacturer'), 'manufacturer', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array(
+						'name'=>'manufacturer',
+						'id'=>'manufacturer',
+						'class'=>'form-control input-sm',
+						'value'=>$item_info->manufacturer)
+						);?>
+			</div>
+		</div>
+
 		<div id="attributes">
 			<script type="text/javascript">
 				$('#attributes').load('<?php echo site_url("items/attributes/$item_info->item_id");?>');

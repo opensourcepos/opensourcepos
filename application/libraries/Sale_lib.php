@@ -903,7 +903,8 @@ class Sale_lib
 					'stock_type' => $stock_type,
 					'item_type' => $item_type,
 					'hsn_code' => $item_info->hsn_code,
-					'tax_category_id' => $item_info->tax_category_id
+					'tax_category_id' => $item_info->tax_category_id,
+					'manufacturer' => $item_info->manufacturer
 				)
 			);
 			//add to existing array

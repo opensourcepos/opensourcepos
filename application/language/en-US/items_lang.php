@@ -9,6 +9,7 @@ $lang["items_cannot_be_deleted"] = "Could not delete selected Item(s), one or mo
 $lang["items_cannot_find_item"] = "Item not found.";
 $lang["items_categories"] = "";
 $lang["items_category"] = "Category";
+$lang["items_manufacturer"] = "Manufacturer";
 $lang["items_category_new"] = "";
 $lang["items_category_required"] = "Category is a required field.";
 $lang["items_change_all_to_allow_alt_desc"] = "Allow Alternate Description for all.";
