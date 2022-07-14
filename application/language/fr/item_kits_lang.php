@@ -1,13 +1,12 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Ajouter un article";
 $lang["item_kits_all"] = "Tous";
 $lang["item_kits_cannot_be_deleted"] = "Impossible de supprimer.";
 $lang["item_kits_confirm_delete"] = "Ètes vous sûr(e) de vouloir supprimer le(s) Kits sélectionnés ?";
 $lang["item_kits_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le (s) kit (s) sélectionné (s) ?";
 $lang["item_kits_description"] = "Description du groupes";
-$lang["item_kits_discount"] = "";
-$lang["item_kits_discount_fixed"] = "";
+$lang["item_kits_discount"] = "Rabais";
+$lang["item_kits_discount_fixed"] = "Rabais fixe";
 $lang["item_kits_discount_percent"] = "Pourcentage d'escompte";
 $lang["item_kits_discount_type"] = "";
 $lang["item_kits_error_adding_updating"] = "Érreur d'ajout/édition de groupes.";
