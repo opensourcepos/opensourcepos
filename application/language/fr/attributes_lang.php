@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "La valeur de l'attribut ne doit pas contenir '_' ou '|'";
 $lang["attributes_confirm_delete"] = "Êtes-vous certain que vous voulez supprimer le(s) attribut(s) sélectionné(s)?";
 $lang["attributes_confirm_restore"] = "Êtes-vous certain que vous voulez restaurer le(s) attribut(s) sélectionné(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Le(s) attribut(s) sélectionné(s) n'ont pas pu être supprimé(s)";
-$lang["attributes_definition_error_adding_updating"] = "L'attribut %1 n'a pas pu être ajouté ou mis-à-jour. Veuillez vérifier le journal des erreurs.";
+$lang["attributes_definition_error_adding_updating"] = "L'attribut %1 n'a pas pu être ajouté ou mis à jour. Veuillez vérifier le journal d'erreurs.";
 $lang["attributes_definition_flags"] = "Visibilité de l'attribut";
 $lang["attributes_definition_group"] = "Groupe";
 $lang["attributes_definition_id"] = "ID";
