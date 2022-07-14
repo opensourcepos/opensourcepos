@@ -1,7 +1,6 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Tous";
-$lang["reports_authority"] = "";
+$lang["reports_authority"] = "Autorité";
 $lang["reports_canceled"] = "Annulé";
 $lang["reports_categories"] = "Catégories";
 $lang["reports_categories_summary_report"] = "Rapport: Résumé des catégories";
