@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l'Inventaire.";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";
 $lang["items_amount_entry"] = "Montant Entrée";
@@ -20,16 +19,16 @@ $lang["items_confirm_bulk_edit"] = "Etes vous sûre de vouloir éditer toute la 
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "Les informations de taxe vont être remplacé pour tous les articles.";
 $lang["items_confirm_delete"] = "Etes vous sûre de vouloir supprimer la sélection ?";
 $lang["items_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le (s) élément (s) sélectionné (s) ?";
-$lang["items_cost_price"] = "Prix de Gros";
-$lang["items_cost_price_number"] = "Le Prix d'achat doit etre un nombre.";
-$lang["items_cost_price_required"] = "Le Prix de gros est requis.";
+$lang["items_cost_price"] = "Prix de gros";
+$lang["items_cost_price_number"] = "Le prix d'achat doit être un nombre.";
+$lang["items_cost_price_required"] = "Le prix de gros est requis.";
 $lang["items_count"] = "Mise à jour Inventaire";
 $lang["items_csv_import_failed"] = "Echec d'import CSV";
 $lang["items_csv_import_nodata_wrongformat"] = "Le fichier envoyé ne contient aucune donnée ou elles sont dans un format erroné.";
 $lang["items_csv_import_partially_failed"] = "Importation d'élément réussie avec quelques échecs :";
 $lang["items_csv_import_success"] = "Import des articles réussi.";
 $lang["items_current_quantity"] = "Quantité Actuelle";
-$lang["items_default_pack_name"] = "";
+$lang["items_default_pack_name"] = "Chacun";
 $lang["items_description"] = "Description";
 $lang["items_details_count"] = "Détais Inventaire";
 $lang["items_do_nothing"] = "Ne rien faire";
@@ -104,12 +103,12 @@ $lang["items_supplier"] = "Fournisseur";
 $lang["items_tax_1"] = "Taxe 1";
 $lang["items_tax_2"] = "Taxe 2";
 $lang["items_tax_3"] = "";
-$lang["items_tax_category"] = "";
+$lang["items_tax_category"] = "Catégorie fiscale";
 $lang["items_tax_percent"] = "Pourcentage d'imposition";
 $lang["items_tax_percent_number"] = "Le pourcentage d'imposition doit être une valeur numérique";
 $lang["items_tax_percent_required"] = "Le pourcentage d'imposition est requis.";
 $lang["items_tax_percents"] = "Pourcents(s) de taxes";
-$lang["items_temp"] = "";
+$lang["items_temp"] = "Temporaire";
 $lang["items_type"] = "Type d'élément";
 $lang["items_unit_price"] = "Prix au détail";
 $lang["items_unit_price_number"] = "Le prix unitaire doit etre un nombre.";
