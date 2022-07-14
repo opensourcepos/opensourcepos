@@ -9,4 +9,4 @@ $lang["login_logout"] = "Déconnexion";
 $lang["login_migration_needed"] = "Une migration de base de données vers %1 débutera après l'ouverture de session.";
 $lang["login_password"] = "Mot de passe";
 $lang["login_username"] = "Nom d'utilisateur";
-$lang["login_welcome"] = "";
+$lang["login_welcome"] = "Bienvenue à %1";
