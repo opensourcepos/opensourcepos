@@ -1,5 +1,5 @@
 <?php
-$lang["tables_all"] = "Tous";
+$lang["tables_all"] = "tous";
 $lang["tables_columns"] = "Colonnes";
 $lang["tables_hide_show_pagination"] = "Masquer/Afficher la pagination";
 $lang["tables_loading"] = "Chargement en cours, patientez, s'il vous plaît ...";
