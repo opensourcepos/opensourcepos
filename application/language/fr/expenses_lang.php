@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Ajouter des dépenses";
 $lang["expenses_amount"] = "Montant";
 $lang["expenses_amount_number"] = "Le montant doit être un nombre";
@@ -12,8 +11,8 @@ $lang["expenses_categories_name"] = "Catégorie";
 $lang["expenses_category_required"] = "La catégorie est un champ obligatoire";
 $lang["expenses_check"] = "Chèque";
 $lang["expenses_check_filter"] = "Chèque";
-$lang["expenses_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer les dépenses sélectionnées ?";
-$lang["expenses_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer les dépenses sélectionnées ?";
+$lang["expenses_confirm_delete"] = "Êtes-vous certain de vouloir supprimer les dépenses sélectionnées ?";
+$lang["expenses_confirm_restore"] = "Êtes-vous certain de vouloir restaurer les dépenses sélectionnées ?";
 $lang["expenses_credit"] = "Carte de crédit";
 $lang["expenses_credit_filter"] = "Carte de crédit";
 $lang["expenses_date"] = "Date";
@@ -38,7 +37,7 @@ $lang["expenses_no_expenses_to_display"] = "Il n'y a pas de dépenses à affiche
 $lang["expenses_none_selected"] = "Vous n'avez sélectionné aucune dépense";
 $lang["expenses_one_or_multiple"] = "Dépense (s)";
 $lang["expenses_payment"] = "Type de paiement";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Commencez à taper le nom du fournisseur...";
 $lang["expenses_successful_adding"] = "Les dépenses ajoutent avec succès";
 $lang["expenses_successful_deleted"] = "La suppression des dépenses a réussi";
 $lang["expenses_successful_updating"] = "Actualiser des dépenses réussie";
