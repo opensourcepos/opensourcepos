@@ -1,33 +1,32 @@
-<?php 
-
-$lang["config_address"] = "Addresse de l'entreprise";
+<?php
+$lang["config_address"] = "Adresse de l'entreprise";
 $lang["config_address_required"] = "L'adresse de l'entreprise est un champ obligatoire.";
-$lang["config_all_set"] = "All file permissions are set correctly!";
+$lang["config_all_set"] = "Toutes les permissions de fichier sont correctement configurées !";
 $lang["config_allow_duplicate_barcodes"] = "Autoriser les codes à barres en double";
-$lang["config_apostrophe"] = "Apostrophe";
+$lang["config_apostrophe"] = "apostrophe";
 $lang["config_backup_button"] = "Sauvegarde";
 $lang["config_backup_database"] = "Sauvegarder la base de données";
 $lang["config_barcode"] = "Code à barre";
-$lang["config_barcode_company"] = "Nome de l'Entreprise";
-$lang["config_barcode_configuration"] = "Configuration du Code à barre";
-$lang["config_barcode_content"] = "Contenu du Code à barre";
-$lang["config_barcode_first_row"] = "Ligne numéro 1";
-$lang["config_barcode_font"] = "Police";
+$lang["config_barcode_company"] = "Nom de l'entreprise";
+$lang["config_barcode_configuration"] = "Configuration du code à barre";
+$lang["config_barcode_content"] = "Contenu du code à barre";
+$lang["config_barcode_first_row"] = "Ligne 1";
+$lang["config_barcode_font"] = "Police d'écriture";
 $lang["config_barcode_formats"] = "Formats d'entrée";
 $lang["config_barcode_generate_if_empty"] = "Générer si vide.";
 $lang["config_barcode_height"] = "Hauteur (px)";
-$lang["config_barcode_id"] = "Id/Nom Article";
+$lang["config_barcode_id"] = "Id/Nom d'article";
 $lang["config_barcode_info"] = "Configuration des informations du code à barre";
 $lang["config_barcode_layout"] = "Disposition du code à barre";
 $lang["config_barcode_name"] = "Nom";
 $lang["config_barcode_number"] = "Code à barre";
 $lang["config_barcode_number_in_row"] = "Numéro dans la ligne";
-$lang["config_barcode_page_cellspacing"] = "Afficher le cellpacing de la page.";
+$lang["config_barcode_page_cellspacing"] = "Afficher l'espacement de cellules de la page.";
 $lang["config_barcode_page_width"] = "Afficher la largeur de la page";
 $lang["config_barcode_price"] = "Prix";
 $lang["config_barcode_second_row"] = "Ligne 2";
 $lang["config_barcode_third_row"] = "Ligne 3";
-$lang["config_barcode_tooltip"] = "Avertissement: cette fonctionnalité peut entraîner l'importation ou la création d'éléments en double. Ne pas utiliser si vous ne voulez pas de codes à barres en double.";
+$lang["config_barcode_tooltip"] = "Avertissement: cette fonctionnalité peut entraîner l'importation ou la création de doublons. Ne pas utiliser si vous ne voulez pas de codes à barres en double.";
 $lang["config_barcode_type"] = "Type de Code à barre";
 $lang["config_barcode_width"] = "Largeur (px)";
 $lang["config_bottom"] = "Pied de page";
