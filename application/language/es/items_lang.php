@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventario a agregar/substraer.";
 $lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["items_amount_entry"] = "Monto entrada";
@@ -20,9 +19,9 @@ $lang["items_confirm_bulk_edit"] = "¿Estás seguro(a) de querer editar los art�
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "Toda la información de impuesto del articulo sera cambiada.";
 $lang["items_confirm_delete"] = "¿Estás seguro(a) de querer borrar los artículos seleccionados?";
 $lang["items_confirm_restore"] = "Esta seguro de querer restaurar lo(s) articulo(s) seleccionada(s)?";
-$lang["items_cost_price"] = "Precio de Costo";
-$lang["items_cost_price_number"] = "Precio de Costo debe ser un número.";
-$lang["items_cost_price_required"] = "Precio de Costo es requerido.";
+$lang["items_cost_price"] = "Precio al Por Mayor";
+$lang["items_cost_price_number"] = "Precio al Por Mayor debe ser un número.";
+$lang["items_cost_price_required"] = "Precio al Por Mayor es un campo requerido.";
 $lang["items_count"] = "Actualizar Inventario";
 $lang["items_csv_import_failed"] = "Falló la importación de Hoja de Cálculo";
 $lang["items_csv_import_nodata_wrongformat"] = "El archivo subido no tiene datos o el formato es incorrecto.";
@@ -74,7 +73,7 @@ $lang["items_none"] = "Ninguno";
 $lang["items_none_selected"] = "No has seleccionado artículos para editar";
 $lang["items_nonstock"] = "Sin stock";
 $lang["items_number_information"] = "Número del Artículo";
-$lang["items_number_required"] = "UPC/EAN/ISBN es requerido";
+$lang["items_number_required"] = "UPC/EAN/ISBN es un campo requerido.";
 $lang["items_one_or_multiple"] = "articulo(s)";
 $lang["items_pack_name"] = "Nombre del Paquete";
 $lang["items_qty_per_pack"] = "Cantidad por Paquete";
@@ -89,7 +88,7 @@ $lang["items_reorder_level_required"] = "Cantidad Mínima es requerido.";
 $lang["items_retrive_item_info"] = "Obtener Información de Artículo";
 $lang["items_sales_tax_1"] = "Impuesto de Ventas 1";
 $lang["items_sales_tax_2"] = "Impuesto de Ventas 2";
-$lang["items_search_attributes"] = "Atributos de búsqueda. Formato de fecha Y-m-d";
+$lang["items_search_attributes"] = "Atributos de Búsqueda";
 $lang["items_select_image"] = "Seleccionar Imagen";
 $lang["items_serialized_items"] = "Artículos Serializados";
 $lang["items_standard"] = "Estándar";
