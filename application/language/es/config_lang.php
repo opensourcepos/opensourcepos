@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
 $lang["config_all_set"] = "¡Todos los permisos de archivo están configurados correctamente!";
@@ -271,7 +270,7 @@ $lang["config_receipt_show_tax_ind"] = "Mostrar indicador de impuestos";
 $lang["config_receipt_show_taxes"] = "Mostrar impuestos";
 $lang["config_receipt_show_total_discount"] = "Mostrar Descuento Total";
 $lang["config_receipt_template"] = "Formato de recibo";
-$lang["config_receiving_calculate_average_price"] = "Cambiar precio de coste. (Recepción)";
+$lang["config_receiving_calculate_average_price"] = "Calcular Promedio de Precio. (Recepción)";
 $lang["config_recv_invoice_format"] = "Formato de Factura de Recepción";
 $lang["config_register_mode_default"] = "Modo de registro por defecto";
 $lang["config_report_an_issue"] = "Informe de algún problema";
