@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Agregar Artículo";
 $lang["item_kits_all"] = "Todo";
 $lang["item_kits_cannot_be_deleted"] = "Borrado de Kit(s) de Artículos fallido.";
@@ -14,8 +13,8 @@ $lang["item_kits_error_adding_updating"] = "Error agregando/actualizando Kit de 
 $lang["item_kits_find_kit_item"] = "Kit de Artículos";
 $lang["item_kits_info"] = "Información del kit de artículos";
 $lang["item_kits_item"] = "Artículo";
-$lang["item_kits_item_kit_number"] = "";
-$lang["item_kits_item_kit_number_duplicate"] = "";
+$lang["item_kits_item_kit_number"] = "Código de barras";
+$lang["item_kits_item_kit_number_duplicate"] = "El Número del Kit de Artículo ya está presente en la base de datos.";
 $lang["item_kits_item_number"] = "";
 $lang["item_kits_item_number_duplicate"] = "";
 $lang["item_kits_items"] = "Artículos";
