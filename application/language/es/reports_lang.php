@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Todo";
 $lang["reports_authority"] = "Autorización";
 $lang["reports_canceled"] = "Cancelado";
@@ -19,8 +18,8 @@ $lang["reports_complete"] = "Ventas y Devoluciones Completadas";
 $lang["reports_completed_sales"] = "Ventas Completas";
 $lang["reports_confirm_delete"] = "Esta seguro de querer borrar la(s) entrada(s) seleccionada(s)?";
 $lang["reports_confirm_restore"] = "Esta seguro de querer restaurar la(s) entrada(s) seleccionada(s)?";
-$lang["reports_cost"] = "Costo";
-$lang["reports_cost_price"] = "Precio de Compra";
+$lang["reports_cost"] = "al por Mayor";
+$lang["reports_cost_price"] = "Precio al Por Mayor";
 $lang["reports_count"] = "Cuenta";
 $lang["reports_customer"] = "Cliente";
 $lang["reports_customers"] = "Clientes";
@@ -115,14 +114,14 @@ $lang["reports_sold_to"] = "Vendido A";
 $lang["reports_stock_location"] = "Ubicación de Inventario";
 $lang["reports_sub_total_value"] = "SubTotal";
 $lang["reports_subtotal"] = "Sub-total";
-$lang["reports_summary_reports"] = "Reportes Resumidos de Ventas";
+$lang["reports_summary_reports"] = "Reportes Resumidos";
 $lang["reports_supplied_by"] = "Provisto por";
 $lang["reports_supplier"] = "Proveedor";
 $lang["reports_suppliers"] = "Proveedores";
 $lang["reports_suppliers_summary_report"] = "Reporte de Resumen de Proveedores";
 $lang["reports_tax"] = "Impuesto";
 $lang["reports_tax_category"] = "Categoría de Impuesto";
-$lang["reports_tax_name"] = "Nombres de Impuestos";
+$lang["reports_tax_name"] = "Nombre de Impuesto";
 $lang["reports_tax_percent"] = "Porcentaje de Impuestos";
 $lang["reports_tax_rate"] = "Tasa de Impuesto";
 $lang["reports_taxes"] = "Impuestos";
