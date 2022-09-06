@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "អាសយដ្ឋាន ១";
 $lang["common_address_2"] = "អាសយដ្ឋាន ២";
 $lang["common_admin"] = "";
@@ -33,7 +32,7 @@ $lang["common_gender"] = "ភេទ";
 $lang["common_gender_female"] = "ស";
 $lang["common_gender_male"] = "ប";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
+$lang["common_icon"] = "រូបតំណាង";
 $lang["common_id"] = "លេខសម្គាល់";
 $lang["common_import"] = "នាំចូល";
 $lang["common_import_change_file"] = "ផ្លាស់ប្តូរ";
@@ -47,8 +46,8 @@ $lang["common_last_name_required"] = "នាមត្រកូលត្រូវ
 $lang["common_last_page"] = "ចុងក្រោយ";
 $lang["common_learn_about_project"] = "ដើម្បីរៀនព័ត៌មានចុងក្រោយអំពីគម្រោងនេះ";
 $lang["common_list_of"] = "បញ្ជី​នៃ";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "ឡូហ្គោល";
+$lang["common_logo_mark"] = "ម៉ាក";
 $lang["common_logout"] = "ចាកចេញ";
 $lang["common_manager"] = "";
 $lang["common_migration_needed"] = "ការ​ប្ដូរមូលដ្ឋានទិន្នន័យទៅ %1 នឹងចាប់ផ្តើមបន្ទាប់ពីចូល";
@@ -73,7 +72,7 @@ $lang["common_search"] = "ស្វែងរក";
 $lang["common_search_options"] = "ជម្រើសស្វែងរក";
 $lang["common_searched_for"] = "ស្វែងរក";
 $lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_title"] = "ប្រព័ន្ធគ្រប់គ្រងការលក់ដូរ";
 $lang["common_state"] = "រដ្ឋ";
 $lang["common_submit"] = "បញ្ជូន";
 $lang["common_total_spent"] = "ចំណាយសរុប";
