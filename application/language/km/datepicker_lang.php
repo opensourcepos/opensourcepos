@@ -1,19 +1,18 @@
-<?php 
-
-$lang["datepicker_all_time"] = "";
-$lang["datepicker_apply"] = "";
-$lang["datepicker_cancel"] = "";
+<?php
+$lang["datepicker_all_time"] = "គ្រប់ពេល";
+$lang["datepicker_apply"] = "ដាក់បញ្ជូល";
+$lang["datepicker_cancel"] = "បោះបង់";
 $lang["datepicker_custom"] = "";
-$lang["datepicker_from"] = "";
-$lang["datepicker_last_30"] = "";
-$lang["datepicker_last_7"] = "";
-$lang["datepicker_last_financial_year"] = "";
-$lang["datepicker_last_month"] = "";
-$lang["datepicker_last_year"] = "";
-$lang["datepicker_same_month_last_year"] = "";
-$lang["datepicker_same_month_to_same_day_last_year"] = "";
-$lang["datepicker_this_financial_year"] = "";
-$lang["datepicker_this_month"] = "";
+$lang["datepicker_from"] = "ពី";
+$lang["datepicker_last_30"] = "ត្រឹម 30 ថ្ងៃមុន";
+$lang["datepicker_last_7"] = "ត្រឹម 7 ថ្ងៃមុន";
+$lang["datepicker_last_financial_year"] = "គិតថ្ងៃខែពន្ធដារ";
+$lang["datepicker_last_month"] = "ខែមុន";
+$lang["datepicker_last_year"] = "ឆ្នាំមុន";
+$lang["datepicker_same_month_last_year"] = "ខែដដែល ឆ្នាំទៅ";
+$lang["datepicker_same_month_to_same_day_last_year"] = "ពីខែដដែល ទៅថ្ងៃដដែល ឆ្នាំទៅ";
+$lang["datepicker_this_financial_year"] = "ឆ្នាំនេះ";
+$lang["datepicker_this_month"] = "ខែនេះ";
 $lang["datepicker_this_year"] = "";
 $lang["datepicker_to"] = "";
 $lang["datepicker_today"] = "";
