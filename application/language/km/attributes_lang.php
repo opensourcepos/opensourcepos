@@ -1,16 +1,15 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "";
-$lang["attributes_confirm_delete"] = "";
-$lang["attributes_confirm_restore"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "";
-$lang["attributes_definition_error_adding_updating"] = "";
-$lang["attributes_definition_flags"] = "";
-$lang["attributes_definition_group"] = "";
-$lang["attributes_definition_id"] = "";
-$lang["attributes_definition_name"] = "";
-$lang["attributes_definition_name_required"] = "";
-$lang["attributes_definition_one_or_multiple"] = "";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "ព៌តមានបន្ថែម មិនអាចមានអក្សរ '_' រឺ '|'";
+$lang["attributes_confirm_delete"] = "តើអ្នកពិតជាចង់លុប ព៌តមានបន្ថែម ដែលបានជ្រើសរើស?";
+$lang["attributes_confirm_restore"] = "តើអ្នកពិតជាដាក់ឡើងវិញនៅ ព៌តមានបន្ថែម ដែលបានជ្រើសរើស?";
+$lang["attributes_definition_cannot_be_deleted"] = "មិនអាចលុបព៌តមានបន្ថែមដែលបានជ្រើសរើស";
+$lang["attributes_definition_error_adding_updating"] = "ព៌តមានបន្ថែម %1 មិនអាចថែម រឺកែប្រែបានឡើយ។​ សូមចូលទៅឆែករបាយការណ៍កំហុស។";
+$lang["attributes_definition_flags"] = "ដាក់បង្ហាញព៌តមានបន្ថែម";
+$lang["attributes_definition_group"] = "ក្រុម";
+$lang["attributes_definition_id"] = "លេខរៀង";
+$lang["attributes_definition_name"] = "បន្ថែម ព៌តមាន";
+$lang["attributes_definition_name_required"] = "ឈ្មោះនៃព៌តមានបន្ថែម​ គឺត្រូវការចាំបាច់ត្រូវបំពេញ";
+$lang["attributes_definition_one_or_multiple"] = "ព៌តមានបន្ថែម";
 $lang["attributes_definition_successful_adding"] = "";
 $lang["attributes_definition_successful_deleted"] = "";
 $lang["attributes_definition_successful_updating"] = "";
