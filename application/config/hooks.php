@@ -35,7 +35,7 @@ $hook['pre_controller'][] = array(
 
 
 $hook['pre_system'] = function() {
-    $config_path = APPPATH . (ENVIRONMENT == 'testing') ? 'tests/' : 'config/';
+    $config_path = APPPATH . (ENVIRONMENT == 'testing' ? 'tests/' : 'config/');
 	try {
 		$dotenv = new Dotenv\Dotenv($config_path);
 		$dotenv->overload();
