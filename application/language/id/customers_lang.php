@@ -1,6 +1,6 @@
 <?php
-$lang["customers_account_number"] = "No Pelanggan";
-$lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
+$lang["customers_account_number"] = "Akun #";
+$lang["customers_account_number_duplicate"] = "Nomor akun ini telah ada di basis data.";
 $lang["customers_available_points"] = "Poin yang tersedia";
 $lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Rata-rata yang dihabiskan";
