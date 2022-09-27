@@ -173,10 +173,10 @@ class Item_kits extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			if($this->request->getPost('item_kit_qty') != NULL)
+			if($this->request->getPost('item_kit_qty', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != NULL)
 			{
 				$item_kit_items = [];
-				foreach($this->request->getPost('item_kit_qty', FILTER_FLAG_ALLOW_FRACTION, FILTER_FLAG_ALLOW_FRACTION) as $item_id => $quantity)
+				foreach($this->request->getPost('item_kit_qty', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) as $item_id => $quantity)
 				{
 					$seq = $this->request->getPost("item_kit_seq[$item_id]", FILTER_SANITIZE_NUMBER_INT);
 					$item_kit_items[] = [
