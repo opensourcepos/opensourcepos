@@ -132,7 +132,9 @@ class Barcode_lib
 	{
 		try
 		{
-			// Code128 is the default and used in this case for the receipts
+			$generator = new BarcodeGeneratorPNG();
+
+			//Code128 is the default and used in this case for the receipts
 			$barcode = $this->get_barcode_instance();
 
 			// set the receipt number to generate the barcode for
