@@ -29,16 +29,6 @@
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
 		"vlucas/phpdotenv": "^2.4",
-		"ext-openssl": "*",
-		"ext-json": "*",
-		"ext-bcmath": "*",
-		"ext-intl": "*",
-		"ext-curl": "*",
-		"ext-mbstring": "*",
-		"ext-gd": "*",
-		"ext-fileinfo": "*",
-		"ext-zip": "*",
-		"ext-mysqli": "*",
 		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
