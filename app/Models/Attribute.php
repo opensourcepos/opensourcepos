@@ -753,16 +753,17 @@ class Attribute extends Model
 	 */
 	public function delete_orphaned_links(int $definition_id): bool
 	{
-		$builder = $this->db->table('attribute_links');
+		$builder = $this->db->table('attribute_definitions');
 		$builder->select('definition_type');
 		$builder->where('definition_id', $definition_id);
 
-		$definition = $builder->get('attribute_definitions')->getRow();//TODO: This get is incorrect.  Look at the original code to see what we are needing to do here. It can't pull from both attribute_links and attribute_definitions
+		$definition = $builder->get()->getRow();
 
 		if($definition->definition_type != DROPDOWN)
 		{
 			$this->db->transStart();
 
+			$builder = $this->db->table('attribute_links');
 			$builder->where('item_id', null);
 			$builder->where('definition_id', $definition_id);
 			$builder->delete();
