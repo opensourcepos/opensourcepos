@@ -156,18 +156,19 @@ class Stock_location extends Model
 
 		$original_location_name = $this->get_location_name($location_id);
 
-		$builder = $this->db->table('stock_locations');
+
 
 		if($original_location_name != $location_name)
 		{
-			$builder->where('location_id', $location_id);
-			$builder->delete('permissions');
+			$builder = $this->db->table('permissions');
+			$builder->delete(['location_id' => $location_id]);
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
 			$this->_insert_new_permission('sales', $location_id, $location_name);
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 		}
 
+		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);
 
 		return $builder->update($location_data_to_save);
@@ -212,8 +213,7 @@ class Stock_location extends Model
 		$builder->update(['deleted' => 1]);
 
 		$builder = $this->db->table('permissions');
-		$builder->where('location_id', $location_id);
-		$builder->delete();
+		$builder->delete(['location_id' => $location_id]);
 
 		$this->db->transComplete();
 

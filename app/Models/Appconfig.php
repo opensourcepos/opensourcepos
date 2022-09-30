@@ -88,7 +88,7 @@ class Appconfig extends Model
 	public function delete(string $key = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('app_config');
-		return $builder->delete('key', $key);
+		return $builder->delete(['key' => $key]);
 	}
 
 	public function delete_all(): bool	//TODO: This function is never used in the code. Consider removing it.

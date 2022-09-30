@@ -40,11 +40,12 @@ class Migration_remove_duplicate_links extends Migration
 
 		foreach($duplicated_links->getResultArray() as $duplicated_link)
 		{
+			$builder = $this->db->table('attribute_links');
 			$builder->where('sale_id', null);
 			$builder->where('receiving_id', null);
 			$builder->where('item_id', $duplicated_link['item_id']);
 			$builder->where('definition_id', $duplicated_link['definition_id']);
-			$builder->delete('attribute_links');
+			$builder->delete();
 
 			$attribute->save_link($duplicated_link['item_id'], $duplicated_link['definition_id'], $duplicated_link['attribute_id']);
 		}

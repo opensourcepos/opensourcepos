@@ -37,16 +37,19 @@ class Migration_database_optimizations extends Migration
 		//Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
 		foreach($attribute_values->getResultArray() as $attribute_value)
 		{
-			$attribute_links = $this->db->query('SELECT links.definition_id, links.item_id, links.attribute_id, defs.definition_type FROM ospos_attribute_links links JOIN ospos_attribute_definitions defs ON defs.definition_id = links.definition_id where attribute_id = '. $attribute_value['attribute_id']);
+			$builder = $this->db->table('attribute_values');
+			$builder->delete(['attribute_id' => $attribute_value['attribute_id']]);
 
-			$builder->where('attribute_id', $attribute_value['attribute_id']);
-			$builder->delete('attribute_values');
+			$query = 'SELECT links.definition_id, links.item_id, links.attribute_id, defs.definition_type FROM ospos_attribute_links links JOIN ospos_attribute_definitions defs ON defs.definition_id = links.definition_id where attribute_id = ';
+			$query .= $attribute_value['attribute_id'];
+			$attribute_links = $this->db->query($query);
 
 			foreach($attribute_links->getResultArray() as $attribute_link)
 			{
-				$builder->where('attribute_id',$attribute_link['attribute_id']);
-				$builder->where('item_id',$attribute_link['item_id']);
-				$builder->delete('attribute_links');
+				$builder = $this->db->table('attribute_links');
+				$builder->where('attribute_id', $attribute_link['attribute_id']);
+				$builder->where('item_id', $attribute_link['item_id']);
+				$builder->delete();
 
 				switch($attribute_link['definition_type'])
 				{
@@ -117,8 +120,7 @@ class Migration_database_optimizations extends Migration
 			if($attribute_id['attribute_id'] !== $attribute_value['attribute_id'])
 			{
 				$builder = $this->db->table('attribute_values');
-				$builder->where('attribute_id', $attribute_id['attribute_id']);
-				$builder->delete();
+				$builder->delete(['attribute_id' => $attribute_id['attribute_id']]);
 			}
 		}
 	}

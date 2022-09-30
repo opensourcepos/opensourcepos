@@ -183,7 +183,7 @@ class Tax extends Model
 	{
 		$builder = $this->db->table('tax_rates');
 
-		return $builder->delete(['tax_rate_id' => $tax_rate_id]);	//TODO: Make sure that this is still acceptable in CI4 to combine the where with the delete.
+		return $builder->delete(['tax_rate_id' => $tax_rate_id]);
 	}
 
 	/**

@@ -82,6 +82,7 @@ class Item_taxes extends Model
 	public function delete(int $item_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('items_taxes');
+
 		return $builder->delete(['item_id' => $item_id]);
 	}
 }
