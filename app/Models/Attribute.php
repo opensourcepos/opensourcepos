@@ -680,11 +680,12 @@ class Attribute extends Model
 			}
 
 			$builder = $this->db->table('attribute_links');
-			$builder->insert([
+			$data = [
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id
-			]);
+			];
+			$builder->insert($data);
 		}
 		//Existing Attribute
 		else

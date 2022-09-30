@@ -33,10 +33,11 @@ class Item_taxes extends Model
 
 		$this->delete($item_id);
 
+		$builder = $this->db->table('items_taxes');
+
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$builder = $this->db->table('items_taxes');
 			$success &= $builder->insert($row);
 		}
 
@@ -61,10 +62,11 @@ class Item_taxes extends Model
 		{
 			$this->delete($item_id);
 
+			$builder = $this->db->table('items_taxes');
+
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$builder = $this->db->table('items_taxes');
 				$success &= $builder->insert($row);
 			}
 		}

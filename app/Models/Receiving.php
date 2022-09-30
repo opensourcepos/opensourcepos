@@ -97,6 +97,8 @@ class Receiving extends Model
 		$builder->insert($receivings_data);
 		$receiving_id = $this->db->insertID();
 
+		$builder = $this->db->table('receivings_items');
+
 		foreach($items as $line => $item)
 		{
 			$cur_item_info = $this->item->get_info($item['item_id']);
@@ -116,7 +118,6 @@ class Receiving extends Model
 				'item_location' => $item['item_location']
 			];
 
-			$builder = $this->db->table('receivings_items');
 			$builder->insert($receivings_items_data);
 
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];

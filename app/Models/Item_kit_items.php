@@ -53,10 +53,11 @@ class Item_kit_items extends Model
 
 		if($item_kit_items_data != NULL)
 		{
+			$builder = $this->db->table('item_kit_items');
+
 			foreach($item_kit_items_data as $row)
 			{
 				$row['item_kit_id'] = $item_kit_id;
-				$builder = $this->db->table('item_kit_items');
 				$success &= $builder->insert($row);
 			}
 		}

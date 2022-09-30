@@ -44,9 +44,10 @@ class Migration_database_optimizations extends Migration
 			$query .= $attribute_value['attribute_id'];
 			$attribute_links = $this->db->query($query);
 
+			$builder = $this->db->table('attribute_links');
+
 			foreach($attribute_links->getResultArray() as $attribute_link)
 			{
-				$builder = $this->db->table('attribute_links');
 				$builder->where('attribute_id', $attribute_link['attribute_id']);
 				$builder->where('item_id', $attribute_link['item_id']);
 				$builder->delete();

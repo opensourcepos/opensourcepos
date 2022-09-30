@@ -549,6 +549,8 @@ class Sale extends Model
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->transStart();
 
+			$builder = $this->db->table('sales_payments');
+
 			// add new payments
 			foreach($payments as $payment)
 			{
@@ -570,13 +572,10 @@ class Sale extends Model
 						'cash_adjustment' => $cash_adjustment,
 						'employee_id'  => $employee_id
 					];
-					$builder = $this->db->table('sales_payments');
 					$success = $builder->insert($sales_payments_data);
 				}
 				elseif($payment_id != -1)
 				{
-					$builder = $this->db->table('sales_payments');
-
 					if($payment_amount != 0)
 					{
 						// Update existing payment transactions (payment_type only)
@@ -657,6 +656,8 @@ class Sale extends Model
 		$total_amount = 0;
 		$total_amount_used = 0;
 
+		$builder = $this->db->table('sales_payments');
+
 		foreach($payments as $payment_id => $payment)
 		{
 			if(!empty(strstr($payment['payment_type'], lang('Sales.giftcard'))))
@@ -682,7 +683,6 @@ class Sale extends Model
 				'employee_id' => $employee_id
 			];
 
-			$builder = $this->db->table('sales_payments');
 			$builder->insert($sales_payments_data);
 
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
@@ -691,6 +691,8 @@ class Sale extends Model
 		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
 		$customer = $this->customer->get_info($customer_id);
+
+		$builder = $this->db->table('sales_items');
 
 		foreach($items as $line => $item)
 		{
@@ -716,7 +718,6 @@ class Sale extends Model
 				'print_option' => $item['print_option']
 			];
 
-			$builder = $this->db->table('sales_items');
 			$builder->insert($sales_items_data);
 
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)	//TODO: === ?
@@ -806,6 +807,8 @@ class Sale extends Model
 	 */
 	public function save_sales_items_taxes(int $sale_id, array $sales_item_taxes): void
 	{
+		$builder = $this->db->table('sales_items_taxes');
+
 		foreach($sales_item_taxes as $line => $tax_item)
 		{
 			$sales_items_taxes = [
@@ -823,7 +826,6 @@ class Sale extends Model
 				'jurisdiction_id' => $tax_item['jurisdiction_id']
 			];
 
-			$builder = $this->db->table('sales_items_taxes');
 			$builder->insert($sales_items_taxes);
 		}
 	}

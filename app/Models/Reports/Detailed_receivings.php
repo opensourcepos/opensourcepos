@@ -106,9 +106,10 @@ class Detailed_receivings extends Report
 		$data['summary'] = $builder->get()->getResultArray();
 		$data['details'] = [];
 
+		$builder = $this->db->table('receivings_items_temp');
+
 		foreach($data['summary'] as $key => $value)
 		{
-			$builder = $this->db->table('receivings_items_temp');
 			$builder->select('
 				MAX(name) AS name, 
 				MAX(item_number) AS item_number, 
