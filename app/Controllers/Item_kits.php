@@ -37,7 +37,7 @@ class Item_kits extends Secure_Controller
 		$kit_item_info = $this->item->get_info($item_kit->kit_item_id ?? $item_kit->item_id);
 
 		$item_kit->total_cost_price = 0;
-		$item_kit->total_unit_price = (float)$kit_item_info->unit_price;
+		$item_kit->total_unit_price = $kit_item_info->unit_price;
 		$total_quantity = 0;
 
 		foreach($this->item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
