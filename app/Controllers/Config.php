@@ -296,10 +296,10 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_info(): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3452
+	public function save_info(): void
 	{
-		$upload_success = $this->_handle_logo_upload();
-		$upload_data = $this->upload->data();	//TODO: This needs to be upgraded to CI4 style // _handle_logo_upload already given upload info. This is not needed. 
+		$upload_data = $this->upload_logo();
+		$upload_success = !empty($upload_data['error']);
 
 		$batch_save_data = [
 			'company' => $this->request->getPost('company', FILTER_SANITIZE_STRING),
@@ -311,20 +311,57 @@ class Config extends Secure_Controller
 			'return_policy' => $this->request->getPost('return_policy', FILTER_SANITIZE_STRING)
 		];
 
-		if(!empty($upload_data['orig_name']))
+		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'] === TRUE)
 		{
-			if($upload_data['raw_name'] === TRUE)	//TODO: This and the parent if statement can be merged.
-			{
-				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
-			}
+			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
 		$success = $upload_success && $result;
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
-		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());	//TODO: upgrade this to the CI4 style
+		$message = $upload_success ? $message : strip_tags($upload_data['error']);
 
 		echo json_encode(['success' => $success, 'message' => $message]);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function upload_logo(): array
+	{
+		helper(['form']);
+		$validation_rule = [
+			'company_logo' => [
+				'label' => 'Company logo',
+				'rules' => [
+					'uploaded[company_logo]',
+					'is_image[company_logo]',
+					'max_size[company_logo,1024]',
+					'mime_in[company_logo,image/png,image/jpg,image/gif]',
+					'ext_in[company_logo,png,jpg,gif]',
+					'max_dims[company_logo,800,680]',
+				]
+			]
+		];
+
+		if (!$this->validate($validation_rule))
+		{
+			return (['error' => $this->validator->getError('company_logo')]);
+		}
+		else
+		{
+			$file = $this->request->getFile('company_logo');
+			$file->move(WRITEPATH . 'uploads');
+
+			$file_info = [
+				'orig_name' => $file->getClientName(),
+				'raw_name' => $file->getName(),
+				'file_ext' => $file->guessExtension()
+			];
+
+			return ($file_info);
+		}
 	}
 
 	/**
@@ -895,35 +932,6 @@ class Config extends Secure_Controller
 		$success = $this->appconfig->save(['company_logo' => '']);
 
 		echo json_encode (['success' => $success]);
-	}
-
-	private function _handle_logo_upload(): bool    //TODO: Remove hungarian notation. Do we need bool or string?
-	{//TODO: https://github.com/opensourcepos/opensourcepos/issues/3452
-		helper(['form']);
-		$validation_rule = [
-			'company_logo' => [
-				'label' => 'Company logo',
-				'rules' => [
-					'uploaded[company_logo]',
-					'is_image[company_logo]',
-					'max_size[company_logo,1024]',
-					'mime_in[company_logo,image/png,image/jpg,image/gif]',
-					'ext_in[company_logo,png,jpg,gif]',
-					'max_dims[company_logo,800,680]',
-				]
-			]
-		];
-
-		if (!$this->validate($validation_rule))
-		{
-			return (['validation' => $this->validator]);
-		}
-		else
-		{
-			$file = $this->request->getFile('company_logo');
-			$file->move(WRITEPATH . 'uploads');
-			return (['uploaded_fileinfo' => $file->getName()]);
-		}
 	}
 
 	/**
