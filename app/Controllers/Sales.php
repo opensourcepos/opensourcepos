@@ -332,7 +332,7 @@ class Sales extends Secure_Controller
 		}
 
 		if(!$this->validate([]))
-		{//TODO: the code below should be refactored to the following since it's much more readable and concise:
+		{//TODO: the code below should be refactored to the following ternary notation since it's much more readable and concise:
 			//$data['error'] = $payment_type === lang('Sales.giftcard')
 			//	? $data['error'] = lang('Sales.must_enter_numeric_giftcard')
 			//	: $data['error'] = lang('Sales.must_enter_numeric');

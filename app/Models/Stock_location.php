@@ -156,8 +156,6 @@ class Stock_location extends Model
 
 		$original_location_name = $this->get_location_name($location_id);
 
-
-
 		if($original_location_name != $location_name)
 		{
 			$builder = $this->db->table('permissions');

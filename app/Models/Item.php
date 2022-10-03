@@ -972,7 +972,7 @@ class Item extends Model
 	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
-	public function change_cost_price(int $item_id, int $items_received, float $new_price, float $old_price = NULL): bool
+	public function change_cost_price(int $item_id, float $items_received, float $new_price, float $old_price = NULL): bool
 	{
 		if($old_price === NULL)
 		{
@@ -988,7 +988,7 @@ class Item extends Model
 		$old_total_quantity = $builder->get()->getRow()->quantity;
 
 		$total_quantity = $old_total_quantity + $items_received;
-		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
+		$average_price = bcdiv(bcadd(bcmul((string)$items_received, (string)$new_price), bcmul((string)$old_total_quantity, (string)$old_price)), (string)$total_quantity);
 
 		$data = ['cost_price' => $average_price];
 
