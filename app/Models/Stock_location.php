@@ -136,7 +136,9 @@ class Stock_location extends Model
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 
 			// insert quantities for existing items
+			$builder = $this->db->table('item_quantities');
 			$items = $this->item->get_all();
+
 			foreach($items->getResultArray() as $item)
 			{
 				$quantity_data = [
@@ -144,8 +146,6 @@ class Stock_location extends Model
 					'location_id' => $location_id,
 					'quantity' => 0
 				];
-
-				$builder = $this->db->table('item_quantities');
 				$builder->insert($quantity_data);
 			}
 
@@ -186,6 +186,8 @@ class Stock_location extends Model
 		// insert grants for new permission
 		$employees = $this->employee->get_all();
 
+		$builder = $this->db->table('grants');
+
 		foreach($employees->getResultArray() as $employee)
 		{
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
@@ -193,7 +195,6 @@ class Stock_location extends Model
 
 			$grants_data = ['permission_id' => $permission_id, 'person_id' => $employee['person_id'], 'menu_group' => $menu_group];
 
-			$builder = $this->db->table('grants');
 			$builder->insert($grants_data);
 		}
 	}
