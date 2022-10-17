@@ -1,15 +1,17 @@
 <?php
+namespace App\Libraries;
 
 use app\Models\Appconfig;
 use app\Libraries\Token_lib;
 use App\Models\Tokens\Token;
+use CodeIgniter\Test\CIUnitTestCase;
 
 /**
  * @backupGlobals disabled
  * @property appconfig appconfig
  * @property token_lib token_lib
  */
-class Token_lib_test extends UnitTestCase
+class TokenLibTest extends CIUnitTestCase
 {
 
     public function setUp(): void
