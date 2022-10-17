@@ -549,7 +549,7 @@ class Items extends Secure_Controller
 	 */
 	public function save(int $item_id = NEW_ITEM): void
 	{
-		$upload_success = $this->handle_image_upload();
+		$upload_success = $this->upload_image();
 		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
 		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type', FILTER_SANITIZE_NUMBER_INT);
@@ -602,12 +602,9 @@ class Items extends Secure_Controller
 		}
 
 		$original_name = $upload_file->getFilename();
-		if(!empty($original_name))	//TODO: this and the if below it probably need to be combined.
+		if(!empty($original_name))
 		{
-			if((bool)$original_name === TRUE)	//TODO: this needs to be thoroughly tested to make sure it's producing the correct results.
-			{
-				$item_data['pic_filename'] = $original_name;
-			}
+			$item_data['pic_filename'] = $original_name;
 		}
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -722,6 +719,47 @@ class Items extends Secure_Controller
 		}
 	}
 
+	/**
+	 * Let files be uploaded with their original name
+	 * @return array
+	 */
+	private function upload_image(): array
+	{
+		//Load upload library
+		helper(['form']);
+		$validation_rule = [
+			'items_image' => [
+				'label' => 'Item Image',
+				'rules' => [
+					'uploaded[items_image]',
+					'is_image[items_image]',
+					'max_size[items_image,' . config('OSPOS')->image_max_size.']',
+					'max_dims[items_image,' . config('OSPOS')->image_max_width . ',' . config('OSPOS')->image_max_height . ']',
+					'ext_in[items_image,' . config('OSPOS')->image_allowed_types . ']'
+				]
+			]
+		];
+
+		if (!$this->validate($validation_rule))
+		{
+			return (['error' => $this->validator->getError('items_image')]);
+		}
+		else
+		{
+			$file = $this->request->getFile('company_logo');
+			$file->move(WRITEPATH . 'uploads/item_pics');
+
+			$file_info = [
+				'orig_name' => $file->getClientName(),
+				'raw_name' => $file->getName(),
+				'file_ext' => $file->guessExtension()
+			];
+
+			return ($file_info);
+		}
+	}
+
+
 	public function check_item_number(): void
 	{
 		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));
@@ -742,26 +780,6 @@ class Items extends Secure_Controller
 			$exists = FALSE;
 		}
 		echo !$exists ? 'true' : 'false';
-	}
-
-	/*
-	 * Let files be uploaded with their original name
-	 */
-	private function handle_image_upload(): bool
-	{
-	//Load upload library
-		$config = [
-			'upload_path' => './uploads/item_pics/',
-			'allowed_types' => config('OSPOS')->image_allowed_types,
-			'max_size' => config('OSPOS')->image_max_size,
-			'max_width' => config('OSPOS')->image_max_width,
-			'max_height' => config('OSPOS')->image_max_height
-		];
-
-		$this->upload = new Upload($config);	//TODO: This needs to be converted to CI4 analog https://codeigniter4.github.io/userguide/libraries/uploaded_files.html#the-controller
-		$this->upload->do_upload('item_image');
-
-		return strlen($this->upload->display_errors()) === 0 || !strcmp($this->upload->display_errors(), '<p>' . lang('upload_no_file_selected') . '</p>');
 	}
 
 	public function remove_logo($item_id): void
