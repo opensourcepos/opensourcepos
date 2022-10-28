@@ -38,14 +38,14 @@ class Tax_lib
 	{
 		$this->sale_lib = new Sale_lib();
 
-		$this->customer = Model('Customer');
-		$this->item_taxes = Model('Item_taxes');
-		$this->rounding_mode = Model('Rounding_mode');
-		$this->sale = Model('Sale');
-		$this->tax = Model('Tax');
-		$this->tax_category = Model('Tax_category');
-		$this->tax_code = Model('Tax_code');
-		$this->tax_jurisdiction = Model('Tax_jurisdiction');
+		$this->customer = model('Customer');
+		$this->item_taxes = model('Item_taxes');
+		$this->rounding_mode = model('Rounding_mode');
+		$this->sale = model('Sale');
+		$this->tax = model('Tax');
+		$this->tax_category = model('Tax_category');
+		$this->tax_code = model('Tax_code');
+		$this->tax_jurisdiction = model('Tax_jurisdiction');
 	}
 
 	public function get_tax_types(): array

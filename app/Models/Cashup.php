@@ -33,7 +33,9 @@ class Cashup extends Model
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		return $this->employee->get_info($builder->get()->getRow()->employee_id);
+		$employee = model('Employee');
+
+		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	public function get_multiple_info(string $cashup_ids): ResultInterface

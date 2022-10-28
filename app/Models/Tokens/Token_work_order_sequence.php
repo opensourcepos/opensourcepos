@@ -16,6 +16,7 @@ class Token_work_order_sequence extends Token
 	public function __construct($value = '')
 	{
 		parent::__construct($value);
+		$this->appconfig = model('AppConfig');
 	}
 
 	public function token_id(): string

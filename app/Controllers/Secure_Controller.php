@@ -22,7 +22,7 @@ class Secure_Controller extends BaseController
 	public function __construct(string $module_id = NULL, string $submodule_id = NULL, string $menu_group = NULL)
 	{
 		$this->employee = model('Employee');
-		$this->module = model("Module");
+		$this->module = model('Module');
 
 		if(!$this->employee->is_logged_in())
 		{

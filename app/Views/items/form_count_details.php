@@ -94,10 +94,12 @@
 			$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
 			$employee_name = [];
 
+			$employee = model('Employee');
+
 			foreach($inventory_array as $row)
 			{
-				$employee = $this->employee->get_info($row['trans_user']);
-				$employee_name[] = $employee->first_name . ' ' . $employee->last_name;
+				$employee_data = $employee->get_info($row['trans_user']);
+				$employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
 			}
 		?>
 	</tbody>

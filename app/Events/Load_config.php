@@ -22,38 +22,38 @@ class Load_config
     public function load_config()
     {
         //Migrations
-        $this->migration_config = config('Migrations');
-        $this->migration = new My_Migration($this->migration_config);
+        $migration_config = config('Migrations');
+        $migration = new My_Migration($migration_config);
 
         $this->session = session();
 
         //Database Configuration
-        $this->config = config('OSPOS');
-        $this->appconfig = model('Appconfig');
+        $config = config('OSPOS');
+        $appconfig = model('Appconfig');
 
-        if (!$this->migration->is_latest())
+        if (!$migration->is_latest())
         {
             $this->session->destroy();
         }
 
-        foreach($this->appconfig->get_all()->getResult() as $app_config)
+        foreach($appconfig->get_all()->getResult() as $app_config)
         {
-            $this->config[$app_config->key] = $app_config->value;
+            $config[$app_config->key] = $app_config->value;
         }
 
         //Language
         $language_exists = file_exists('../app/Language/' . current_language_code());
         if(current_language_code() == null || current_language() == null || !$language_exists)
         {
-            $this->config->language = 'english';
-            $this->config->language_code = 'en-US';
+            $config->language = 'english';
+            $config->language_code = 'en-US';
         }
 
         $language = Services::language();
-        $language->setLocale($this->config->language_code);
+        $language->setLocale($config->language_code);
 
         //Time Zone
-        date_default_timezone_set($this->config->timezone ?? 'America/New_York');
+        date_default_timezone_set($config->timezone ?? 'America/New_York');
 
         bcscale(max(2, totals_decimals() + tax_decimals()));
     }

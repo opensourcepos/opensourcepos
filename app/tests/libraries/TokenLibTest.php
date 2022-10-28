@@ -17,7 +17,7 @@ class TokenLibTest extends CIUnitTestCase
     public function setUp(): void
     {
         parent::setUp();
-		$this->appconfig = Model('Appconfig');
+		$this->appconfig = model('Appconfig');
         $this->token_lib = new Token_lib();
     }
 

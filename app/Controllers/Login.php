@@ -11,7 +11,7 @@ class Login extends BaseController
 {
 	public function index(): void
 	{
-		$this->employee = Model('Employee');
+		$this->employee = model('Employee');
 
 		if($this->employee->is_logged_in())
 		{

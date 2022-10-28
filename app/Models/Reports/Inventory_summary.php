@@ -30,8 +30,10 @@ class Inventory_summary extends Report
 
 	public function getData(array $inputs): array
 	{
+		$item = model('Item');
+
 		$builder = $this->db->table('items AS items');
-		$builder->select($this->item->get_item_name('name') . ',
+		$builder->select($item->get_item_name('name') . ',
 			items.item_number,
 			items.category,
 			item_quantities.quantity,

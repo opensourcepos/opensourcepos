@@ -51,8 +51,9 @@
 					<?php
 					if(isset($suspended_sale['customer_id']))
 					{
-						$customer = $this->Customer->get_info($suspended_sale['customer_id']);
-						echo esc("$customer->first_name $customer->last_name");
+						$customer = model('Customer');	//TODO: Should we be accessing a model in a view rather than passing this data to the view via the controller?
+						$customer_data = $customer->get_info($suspended_sale['customer_id']);
+						echo esc("$customer_data->first_name $customer_data->last_name");
 					}
 					else
 					{
@@ -66,8 +67,9 @@
 					<?php
 					if(isset($suspended_sale['employee_id']))
 					{
-						$employee = $this->employee->get_info($suspended_sale['employee_id']);
-						echo esc("$employee->first_name $employee->last_name");
+						$employee = model('Employee');
+						$employee_data = $employee->get_info($suspended_sale['employee_id']);
+						echo esc("$employee_data->first_name $employee_data->last_name");
 					}
 					else
 					{

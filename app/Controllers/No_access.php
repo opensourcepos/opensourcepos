@@ -14,7 +14,7 @@ class No_Access extends BaseController
 {
 	public function __construct()
 	{
-		$this->module = model("Module");
+		$this->module = model('Module');
 	}
 	public function index(string $module_id = '', string $permission_id = ''): void
 	{

@@ -76,6 +76,11 @@ class Receiving extends Model
 	 */
 	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
+		$attribute = model('Attribute');
+		$inventory = model('Inventory');
+		$item = model('Item');
+		$item_quantity = model('Item_quantity');
+
 		if(count($items) == 0)
 		{
 			return -1;	//TODO: Replace -1 with a constant
@@ -99,57 +104,57 @@ class Receiving extends Model
 
 		$builder = $this->db->table('receivings_items');
 
-		foreach($items as $line => $item)
+		foreach($items as $line => $item_data)
 		{
-			$cur_item_info = $this->item->get_info($item['item_id']);
+			$cur_item_info = $item->get_info($item['item_id']);
 
 			$receivings_items_data = [
 				'receiving_id' => $receiving_id,
-				'item_id' => $item['item_id'],
-				'line' => $item['line'],
-				'description' => $item['description'],
-				'serialnumber' => $item['serialnumber'],
-				'quantity_purchased' => $item['quantity'],
-				'receiving_quantity' => $item['receiving_quantity'],
-				'discount' => $item['discount'],
-				'discount_type' => $item['discount_type'],
+				'item_id' => $item_data['item_id'],
+				'line' => $item_data['line'],
+				'description' => $item_data['description'],
+				'serialnumber' => $item_data['serialnumber'],
+				'quantity_purchased' => $item_data['quantity'],
+				'receiving_quantity' => $item_data['receiving_quantity'],
+				'discount' => $item_data['discount'],
+				'discount_type' => $item_data['discount_type'],
 				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price' => $item['price'],
-				'item_location' => $item['item_location']
+				'item_unit_price' => $item_data['price'],
+				'item_location' => $item_data['item_location']
 			];
 
 			$builder->insert($receivings_items_data);
 
-			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
+			$items_received = $item_data['receiving_quantity'] != 0 ? $item_data['quantity'] * $item_data['receiving_quantity'] : $item_data['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
-			if($cur_item_info->cost_price != $item['price'] && config('OSPOS')->receiving_calculate_average_price)
+			if($cur_item_info->cost_price != $item_data['price'] && config('OSPOS')->receiving_calculate_average_price)
 			{
-				$this->item->change_cost_price($item['item_id'], $items_received, $item['price'], $cur_item_info->cost_price);
+				$item->change_cost_price($item_data['item_id'], $items_received, $item_data['price'], $cur_item_info->cost_price);
 			}
 
 			//Update stock quantity
-			$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->item_quantity->save_value([
+			$item_quantity = $item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+			$item_quantity->save_value([
 				'quantity' => $item_quantity->quantity + $items_received,
-				'item_id' => $item['item_id'],
-				'location_id' => $item['item_location']],
-				$item['item_id'],
-				$item['item_location']
+				'item_id' => $item_data['item_id'],
+				'location_id' => $item_data['item_location']],
+				$item_data['item_id'],
+				$item_data['item_location']
 			);
 
 			$recv_remarks = 'RECV ' . $receiving_id;
 			$inv_data = [
 				'trans_date' => date('Y-m-d H:i:s'),
-				'trans_items' => $item['item_id'],
+				'trans_items' => $item_data['item_id'],
 				'trans_user' => $employee_id,
 				'trans_location' => $item['item_location'],
 				'trans_comment' => $recv_remarks,
 				'trans_inventory' => $items_received
 			];
 
-			$this->inventory->insert($inv_data);
-			$this->attribute->copy_attribute_links($item['item_id'], 'receiving_id', $receiving_id);
+			$inventory->insert($inv_data);
+			$attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
 			$supplier = $this->supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
@@ -200,6 +205,9 @@ class Receiving extends Model
 			//TODO: defect, not all item deletions will be undone? get array with all the items involved in the sale to update the inventory tracking
 			$items = $this->get_receiving_items($receiving_id)->getResultArray();
 
+			$inventory = model('Inventory');
+			$item_quantity = model('Item_quantity');
+
 			foreach($items as $item)
 			{
 				// create query to update inventory tracking
@@ -212,10 +220,10 @@ class Receiving extends Model
 					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				];
 				// update inventory
-				$this->inventory->insert($inv_data);
+				$inventory->insert($inv_data);
 
 				// update quantities
-				$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
+				$item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));
 			}
 		}
 

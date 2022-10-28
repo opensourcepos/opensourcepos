@@ -102,7 +102,8 @@ if(isset($success))
 				</li>
 
 				<?php
-				if($this->employee->has_grant('reports_sales', $this->session->get('person_id')))
+				$employee = model('Employee');
+				if($employee->has_grant('reports_sales', $this->session->get('person_id')))
 				{
 				?>
 					<li class="pull-right">

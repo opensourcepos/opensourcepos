@@ -74,7 +74,9 @@ if(isset($error))
 		</div>
 
 		<?php
-		if ($this->employee->has_grant('reports_inventory', $this->session->get('person_id')))
+			$employee = model("Employee");
+
+		if ($employee->has_grant('reports_inventory', $this->session->get('person_id')))
 		{
 		?>
 			<div class="panel panel-primary">

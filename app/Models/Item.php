@@ -444,13 +444,15 @@ class Item extends Model
 		$this->db->transStart();
 
 		// set to 0 quantities
-		$this->item_quantity->reset_quantity($item_id);
+		$item_quantity = model('Item_quantity');
+		$item_quantity->reset_quantity($item_id);
 
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$success = $builder->update(['deleted' => 1]);
 
-		$success &= $this->inventory->reset_quantity($item_id);
+		$inventory = model('Inventory');
+		$success &= $inventory->reset_quantity($item_id);
 
 		$this->db->transComplete();
 
@@ -480,15 +482,18 @@ class Item extends Model
 		$this->db->transStart();
 
 		// set to 0 quantities
-		$this->item_quantity->reset_quantity_list($item_ids);
+		$item_quantity = model('Item_quantity');
+		$item_quantity->reset_quantity_list($item_ids);
 
 		$builder = $this->db->table('items');
 		$builder->whereIn('item_id', $item_ids);
 		$success = $builder->update(['deleted' => 1]);
 
+		$inventory = model('Inventory');
+
 		foreach($item_ids as $item_id)
 		{
-			$success &= $this->inventory->reset_quantity($item_id);
+			$success &= $inventory->reset_quantity($item_id);
 		}
 
 		$this->db->transComplete();

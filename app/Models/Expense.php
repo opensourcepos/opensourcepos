@@ -33,7 +33,8 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->expense_category->get_info($builder->get()->getRow()->expense_category_id);	//TODO: refactor out the nested function call.
+		$expense_category = model('Expense_category');
+		return $expense_category->get_info($builder->get()->getRow()->expense_category_id);	//TODO: refactor out the nested function call.
 	}
 
 	/**
@@ -44,7 +45,9 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		return $this->employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
+		$employee = model('Employee');
+
+		return $employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}
 
 	public function get_multiple_info(array $expense_ids): ResultInterface

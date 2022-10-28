@@ -610,8 +610,14 @@ class Sale extends Model
 	 * @throws ReflectionException
 	 */
 	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
-							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
+							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table_id, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
+		$attribute = model('Attribute');
+		$customer = model('Customer');
+		$giftcard = model('Giftcard');
+		$inventory = model('Inventory');
+		$item = model('Item');
+
 		if($sale_id != -1)
 		{
 			$this->clear_suspended_sale_detail($sale_id);
@@ -626,14 +632,14 @@ class Sale extends Model
 
 		$sales_data = [
 			'sale_time' => date('Y-m-d H:i:s'),
-			'customer_id' => $this->customer->exists($customer_id) ? $customer_id : NULL,
+			'customer_id' => $customer->exists($customer_id) ? $customer_id : NULL,
 			'employee_id' => $employee_id,
 			'comment' => $comment,
 			'sale_status' => $sale_status,
 			'invoice_number' => $invoice_number,
 			'quote_number' => $quote_number,
 			'work_order_number'=> $work_order_number,
-			'dinner_table_id' => $dinner_table,
+			'dinner_table_id' => $dinner_table_id,
 			'sale_type' => $sale_type
 		];
 
@@ -664,13 +670,13 @@ class Sale extends Model
 			{
 				// We have a gift card, and we have to deduct the used value from the total value of the card.
 				$splitpayment = explode( ':', $payment['payment_type'] );	//TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
-				$cur_giftcard_value = $this->giftcard->get_giftcard_value( $splitpayment[1] );	//TODO: this should be refactored to $current_giftcard_value
-				$this->giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
+				$cur_giftcard_value = $giftcard->get_giftcard_value( $splitpayment[1] );	//TODO: this should be refactored to $current_giftcard_value
+				$giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
 			elseif(!empty(strstr($payment['payment_type'], lang('Sales.rewards'))))
 			{
-				$cur_rewards_value = $this->customer->get_info($customer_id)->points;
-				$this->customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
+				$cur_rewards_value = $customer->get_info($customer_id)->points;
+				$customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
 				$total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
 			}
 
@@ -690,70 +696,72 @@ class Sale extends Model
 
 		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
-		$customer = $this->customer->get_info($customer_id);
+		$customer = $customer->get_info($customer_id);
 
 		$builder = $this->db->table('sales_items');
 
-		foreach($items as $line => $item)
+		foreach($items as $line => $item_data)
 		{
-			$cur_item_info = $this->item->get_info($item['item_id']);
+			$cur_item_info = $item->get_info($item_data['item_id']);
 
-			if($item['price'] == 0.00)
+			if($item_data['price'] == 0.00)
 			{
-				$item['discount'] = 0.00;
+				$item_data['discount'] = 0.00;
 			}
 
 			$sales_items_data = [
 				'sale_id' => $sale_id,
-				'item_id' => $item['item_id'],
-				'line' => $item['line'],
-				'description' => character_limiter($item['description'], 255),
-				'serialnumber' => character_limiter($item['serialnumber'], 30),
-				'quantity_purchased' => $item['quantity'],
-				'discount' => $item['discount'],
-				'discount_type' => $item['discount_type'],
-				'item_cost_price' => $item['cost_price'],
-				'item_unit_price' => $item['price'],
-				'item_location' => $item['item_location'],
-				'print_option' => $item['print_option']
+				'item_id' => $item_data['item_id'],
+				'line' => $item_data['line'],
+				'description' => character_limiter($item_data['description'], 255),
+				'serialnumber' => character_limiter($item_data['serialnumber'], 30),
+				'quantity_purchased' => $item_data['quantity'],
+				'discount' => $item_data['discount'],
+				'discount_type' => $item_data['discount_type'],
+				'item_cost_price' => $item_data['cost_price'],
+				'item_unit_price' => $item_data['price'],
+				'item_location' => $item_data['item_location'],
+				'print_option' => $item_data['print_option']
 			];
 
 			$builder->insert($sales_items_data);
 
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)	//TODO: === ?
 			{
-				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
-				$item_quantity = $this->item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+				$item_quantity = model('Item_quantity');
 
-				$this->item_quantity->save_value([
-					'quantity'	=> $item_quantity->quantity - $item['quantity'],
-					'item_id' => $item['item_id'],
-					'location_id' => $item['item_location']],
-					$item['item_id'],
-					$item['item_location']
+				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
+				$item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
+
+				$item_quantity->save_value([
+					'quantity'	=> $item_quantity_data->quantity - $item_data['quantity'],
+					'item_id' => $item_data['item_id'],
+					'location_id' => $item_data['item_location']],
+					$item_data['item_id'],
+					$item_data['item_location']
 				);
 
 				// if an items was deleted but later returned it's restored with this rule
-				if($item['quantity'] < 0)
+				if($item_data['quantity'] < 0)
 				{
-					$this->item->undelete($item['item_id']);
+					$item->undelete($item_data['item_id']);
 				}
 
 				// Inventory Count Details
 				$sale_remarks = 'POS ' . $sale_id;	//TODO: Use string interpolation here.
 				$inv_data = [
 					'trans_date' => date('Y-m-d H:i:s'),
-					'trans_items' => $item['item_id'],
+					'trans_items' => $item_data['item_id'],
 					'trans_user' => $employee_id,
-					'trans_location' => $item['item_location'],
+					'trans_location' => $item_data['item_location'],
 					'trans_comment' => $sale_remarks,
-					'trans_inventory' => -$item['quantity']
+					'trans_inventory' => -$item_data['quantity']
 				];
 
-				$this->inventory->insert($inv_data);
+				$inventory->insert($inv_data);
 			}
 
-			$this->attribute->copy_attribute_links($item['item_id'], 'sale_id', $sale_id);
+			$attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
 		}
 
 		if($customer_id == -1 || $customer->taxable)	//TODO: Need a NEW_CUSTOMER constant in constants.php instead of -1
@@ -764,13 +772,14 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
+			$dinner_table = model('Dinner_table');
 			if($sale_status == COMPLETED)	//TODO: === ?
 			{
-				$this->dinner_table->release($dinner_table);
+				$dinner_table->release($dinner_table_id);
 			}
 			else
 			{
-				$this->dinner_table->occupy($dinner_table);
+				$dinner_table->occupy($dinner_table_id);
 			}
 		}
 
@@ -904,27 +913,32 @@ class Sale extends Model
 		{
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
+			$inventory = model('Inventory');
+			$item = model('Item');
+			$item_quantity = model('Item_quantity');
+
 			$items = $this->get_sale_items($sale_id)->getResultArray();
-			foreach($items as $item)
+
+			foreach($items as $item_data)
 			{
-				$cur_item_info = $this->item->get_info($item['item_id']);
+				$cur_item_info = $item->get_info($item_data['item_id']);
 
 				if($cur_item_info->stock_type == HAS_STOCK)
 				{
 					// create query to update inventory tracking
 					$inv_data = [
 						'trans_date' => date('Y-m-d H:i:s'),
-						'trans_items' => $item['item_id'],
+						'trans_items' => $item_data['item_id'],
 						'trans_user' => $employee_id,
 						'trans_comment' => 'Deleting sale ' . $sale_id,
-						'trans_location' => $item['item_location'],
-						'trans_inventory' => $item['quantity_purchased']
+						'trans_location' => $item_data['item_location'],
+						'trans_inventory' => $item_data['quantity_purchased']
 					];
 					// update inventory
-					$this->inventory->insert($inv_data);
+					$inventory->insert($inv_data);
 
 					// update quantities
-					$this->item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
+					$item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
 				}
 			}
 		}
@@ -953,6 +967,7 @@ class Sale extends Model
 	 */
 	public function get_sale_items_ordered(int $sale_id): ResultInterface
 	{
+		$item = model('Item');
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->select('
 			sales_items.sale_id,
@@ -967,7 +982,7 @@ class Sale extends Model
 			discount_type,
 			item_location,
 			print_option,
-			' . $this->item->get_item_name('name') . ',
+			' . $item->get_item_name('name') . ',
 			category,
 			item_type,
 			stock_type');
@@ -1046,10 +1061,12 @@ class Sale extends Model
 	 */
 	public function get_customer(int $sale_id): object
 	{
+		$customer = model('Customer');
+
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $this->customer->get_info($builder->get()->getRow()->customer_id);
+		return $customer->get_info($builder->get()->getRow()->customer_id);
 	}
 
 	/**
@@ -1060,7 +1077,9 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		return $this->employee->get_info($builder->get()->getRow()->employee_id);
+		$employee = model('Employee');
+
+		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
 	/**
@@ -1115,7 +1134,9 @@ class Sale extends Model
 	 */
 	public function get_giftcard_value(string $giftcardNumber): float
 	{
-		if(!$this->giftcard->exists($this->giftcard->get_giftcard_id($giftcardNumber)))	//TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
+		$giftcard = model('Giftcard');
+
+		if(!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber)))	//TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
 		{
 			return 0;
 		}
@@ -1211,7 +1232,7 @@ class Sale extends Model
 			)';
 		
 		$this->db->query($sql);
-
+		$item = model('Item');
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp') .
 			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
@@ -1234,7 +1255,7 @@ class Sale extends Model
 					MAX(sales.employee_id) AS employee_id,
 					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id AS item_id,
-					MAX(' . $this->item->get_item_name() . ') AS name,
+					MAX(' . $item->get_item_name() . ') AS name,
 					MAX(items.item_number) AS item_number,
 					MAX(items.category) AS category,
 					MAX(items.supplier_id) AS supplier_id,
@@ -1422,8 +1443,9 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$dinner_table = $this->get_dinner_table($sale_id);
-			$this->dinner_table->release($dinner_table);
+			$dinner_table = model('Dinner_table');
+			$dinner_table_id = $this->get_dinner_table($sale_id);
+			$dinner_table->release($dinner_table_id);
 		}
 
 		$this->update_sale_status($sale_id, CANCELED);
@@ -1443,8 +1465,9 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$dinner_table = $this->get_dinner_table($sale_id);
-			$this->dinner_table->release($dinner_table);
+			$dinner_table = model('Dinner_table');
+			$dinner_table_id = $this->get_dinner_table($sale_id);
+			$dinner_table->release($dinner_table_id);
 		}
 
 		$builder = $this->db->table('sales_payments');
@@ -1487,18 +1510,21 @@ class Sale extends Model
 	{
 		if(!empty($customer_id) && config('OSPOS')->customer_reward_enable)
 		{
-			$package_id = $this->customer->get_info($customer_id)->package_id;
+			$customer = model('Customer');
+			$customer_rewards = model('Customer_rewards');
+
+			$package_id = $customer->get_info($customer_id)->package_id;
 
 			if(!empty($package_id))
 			{
-				$points_percent = $this->customer_rewards->get_points_percent($package_id);
-				$points = $this->customer->get_info($customer_id)->points;
+				$points_percent = $customer_rewards->get_points_percent($package_id);
+				$points = $customer->get_info($customer_id)->points;
 				$points = ($points == NULL ? 0 : $points);
 				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
 				$total_amount_earned = ($total_amount * $points_percent / 100);
 				$points = $points + $total_amount_earned;
 
-				$this->customer->update_reward_points_value($customer_id, $points);
+				$customer->update_reward_points_value($customer_id, $points);
 
 				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used];
 

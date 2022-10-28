@@ -22,8 +22,8 @@ class MY_Validation extends Validation
 	 */
 	public function login_check(string $username, string &$error = null): bool
 	{
-		$this->migration = Services::migrations();
-		$this->employee = model('Employee');
+		$migration = Services::migrations();
+		$employee = model('Employee');
 
 		$password = $this->request->getPost('password');	//TODO: This needs to get passed as a parameter in some way
 
@@ -35,9 +35,9 @@ class MY_Validation extends Validation
 		}
 
 		set_time_limit(3600);
-		$this->migration->latest();
+		$migration->latest();
 
-		if(!$this->employee->login($username, $password))
+		if(!$employee->login($username, $password))
 		{
 			$error = lang('Login.invalid_username_and_password');
 

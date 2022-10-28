@@ -684,6 +684,7 @@ function get_attribute_definition_manage_table_headers(): string
 function get_attribute_definition_data_row(object $attribute): array
 {
 
+	$attribute = model('Attribute');
 	$router = service('router');
 	$controller_name = strtolower($router->controllerName());
 

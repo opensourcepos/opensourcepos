@@ -25,7 +25,8 @@ class Inventory_low extends Report
 
 	public function getData(array $inputs): array
 	{//TODO: we need to see if this can be converted into using QueryBuilder
-		$query = $this->db->query("SELECT " . $this->item->get_item_name('name') . ", 
+		$item = model('Item');
+		$query = $this->db->query("SELECT " . $item->get_item_name('name') . ", 
 			items.item_number,
 			item_quantities.quantity, 
 			items.reorder_level, 

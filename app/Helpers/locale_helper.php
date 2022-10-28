@@ -14,7 +14,7 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
  */
 function current_language_code(bool $load_system_language = FALSE): string
 {
-	$employee = get_instance()->Employee;
+	$employee = model('Employee');
 
 	// Returns the language code of the employee if set or system language code if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
@@ -34,12 +34,13 @@ function current_language_code(bool $load_system_language = FALSE): string
 
 function current_language(bool $load_system_language = FALSE): string
 {
-	$employee = get_instance()->Employee;
+	$employee = model('Employee');
 
 	// Returns the language of the employee if set or system language if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
+
 		if(property_exists($employee_info, 'language') && !empty($employee_info->language))
 		{
 			return $employee_info->language;
