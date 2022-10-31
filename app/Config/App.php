@@ -32,7 +32,7 @@ class App extends BaseConfig
 	 *
 	 * @var bool
 	 */
-	private $https_on;	//Set in the constructor
+	public $https_on;	//Set in the constructor
 
 	/**
 	 * --------------------------------------------------------------------------

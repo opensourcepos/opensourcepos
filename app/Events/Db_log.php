@@ -6,7 +6,7 @@ class Db_log
 {
 	public function db_log_queries()
 	{
-		$config = config('Config\\App');
+		$config = config('App');
 
 		// check if database logging is enabled (see config/config.php)
 		if($config->db_log_enabled)
