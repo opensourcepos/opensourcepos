@@ -15,7 +15,8 @@ class Detailed_receivings extends Report
 	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
-		$this->receiving->create_temp_table($inputs);
+		$receiving = model('Receiving');
+		$receiving->create_temp_table($inputs);
 	}
 
 	public function getDataColumns(): array

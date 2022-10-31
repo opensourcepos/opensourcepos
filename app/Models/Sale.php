@@ -1512,6 +1512,7 @@ class Sale extends Model
 		{
 			$customer = model('Customer');
 			$customer_rewards = model('Customer_rewards');
+			$rewards = model('Rewards');
 
 			$package_id = $customer->get_info($customer_id)->package_id;
 
@@ -1528,7 +1529,7 @@ class Sale extends Model
 
 				$rewards_data = ['sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used];
 
-				$this->rewards->save_value($rewards_data);
+				$rewards->save_value($rewards_data);
 			}
 		}
 	}

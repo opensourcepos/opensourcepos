@@ -19,6 +19,7 @@ class Token_year_quote_count extends Token
 
 	public function get_value(): int
 	{
-		return $this->sale->get_quote_number_for_year();
+		$sale = model('Sale');
+		return $sale->get_quote_number_for_year();
 	}
 }

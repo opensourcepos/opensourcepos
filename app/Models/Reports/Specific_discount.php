@@ -15,7 +15,8 @@ class Specific_discount extends Report
 	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
-		$this->sale->create_temp_table($inputs);
+		$sale = model('Sale');
+		$sale->create_temp_table($inputs);
 	}
 
 	public function getDataColumns(): array

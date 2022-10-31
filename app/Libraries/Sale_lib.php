@@ -50,6 +50,7 @@ class Sale_lib
 		$this->item_taxes = model('Item_taxes');
 		$this->rounding_mode = model('enums/Rounding_mode');
 		$this->sale = model('Sale');
+		$this->stock_location = model('Stock_location');
 	}
 
 	public function get_line_sequence_options(): array

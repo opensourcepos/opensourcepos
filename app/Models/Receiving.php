@@ -80,6 +80,7 @@ class Receiving extends Model
 		$inventory = model('Inventory');
 		$item = model('Item');
 		$item_quantity = model('Item_quantity');
+		$supplier = model('Supplier');
 
 		if(count($items) == 0)
 		{
@@ -88,7 +89,7 @@ class Receiving extends Model
 
 		$receivings_data = [
 			'receiving_time' => date('Y-m-d H:i:s'),
-			'supplier_id' => $this->supplier->exists($supplier_id) ? $supplier_id : NULL,
+			'supplier_id' => $supplier->exists($supplier_id) ? $supplier_id : NULL,
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
@@ -155,7 +156,7 @@ class Receiving extends Model
 
 			$inventory->insert($inv_data);
 			$attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
-			$supplier = $this->supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
+			$supplier = $supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
 		$this->db->transComplete();
@@ -254,7 +255,8 @@ class Receiving extends Model
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
 
-		return $this->supplier->get_info($builder->get()->getRow()->supplier_id);
+		$supplier = model('Supplier');
+		return $supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 
 	public function get_payment_options(): array

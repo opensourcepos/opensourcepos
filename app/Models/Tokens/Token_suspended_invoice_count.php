@@ -24,6 +24,7 @@ class Token_suspended_invoice_count extends Token
 
 	public function get_value(): int
 	{
-		return $this->sale->get_suspended_invoice_count();
+		$sale = model('Sale');
+		return $sale->get_suspended_invoice_count();
 	}
 }
