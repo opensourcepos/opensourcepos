@@ -585,6 +585,7 @@ class Sales extends Secure_Controller
 	 * Deletes an item specified in the parameter from the shopping cart. Called in the view.
 	 * @param int $item_id
 	 * @return void
+	 * @throws ReflectionException
 	 */
 	public function delete_item(int $item_id): void
 	{
