@@ -25,13 +25,15 @@
 	"require": {
 		"php": "^7.3 || ^8.0",
 		"codeigniter4/framework": "^4.1.3",
-		"dompdf/dompdf": "^0.8.5",
+		"dompdf/dompdf": "^2.0.1",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
 		"vlucas/phpdotenv": "^2.4",
 		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
+        "roave/security-advisories": "dev-latest",
+		"codeigniter4/devkit": "v1.1.0",
 		"fakerphp/faker": "^1.9",
 		"mikey179/vfsstream": "^1.6",
 		"phpunit/phpunit": "^9.1",
