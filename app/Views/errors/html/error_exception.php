@@ -202,7 +202,7 @@ use Config\Services;
 
 			<!-- Request -->
 			<div class="content" id="request">
-				<?php $request = Services::request(); ?>
+				<?php $request = service('request'); ?>
 
 				<table>
 					<tbody>
@@ -320,7 +320,7 @@ use Config\Services;
 
 			<!-- Response -->
 			<?php
-                $response = Services::response();
+                $response = service('response');
                 $response->setStatusCode(http_response_code());
             ?>
 			<div class="content" id="response">
