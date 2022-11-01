@@ -2,6 +2,9 @@
 /**
  * @var array $grants
  */
+
+use app\Models\Employee;
+
 ?>
 <?php echo view('partial/header') ?>
 
@@ -74,8 +77,7 @@ if(isset($error))
 		</div>
 
 		<?php
-			$employee = model("Employee");
-
+		$employee = model(Employee::class);
 		if ($employee->has_grant('reports_inventory', $this->session->get('person_id')))
 		{
 		?>

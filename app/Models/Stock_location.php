@@ -136,7 +136,7 @@ class Stock_location extends Model
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 
 			// insert quantities for existing items
-			$item = model('Item');
+			$item = model(Item::class);
 			$builder = $this->db->table('item_quantities');
 			$items = $item->get_all();
 
@@ -183,7 +183,7 @@ class Stock_location extends Model
 		$builder->insert($permission_data);
 
 		// insert grants for new permission
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 		$employees = $employee->get_all();
 
 		$builder = $this->db->table('grants');

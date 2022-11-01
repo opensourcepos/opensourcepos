@@ -29,7 +29,7 @@ class Load_config
 
         //Database Configuration
         $config = config('OSPOS');
-        $appconfig = model('Appconfig');
+        $appconfig = model(Appconfig::class);
 
         if (!$migration->is_latest())
         {

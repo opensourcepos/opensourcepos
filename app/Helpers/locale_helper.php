@@ -1,4 +1,5 @@
 <?php
+use app\Models\Employee;
 
 const DEFAULT_LANGUAGE = 'english';	//TODO: These constants all need to be moved to constants.php
 const DEFAULT_LANGUAGE_CODE = 'en-US';
@@ -14,7 +15,7 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
  */
 function current_language_code(bool $load_system_language = FALSE): string
 {
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 
 	// Returns the language code of the employee if set or system language code if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
@@ -34,7 +35,7 @@ function current_language_code(bool $load_system_language = FALSE): string
 
 function current_language(bool $load_system_language = FALSE): string
 {
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 
 	// Returns the language of the employee if set or system language if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==

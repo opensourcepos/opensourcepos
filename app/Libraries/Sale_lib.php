@@ -937,7 +937,7 @@ class Sale_lib
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
-			$item_quantity = model('Item_quantity');
+			$item_quantity = model(Item_quantity::class);
 
 			$item = [
 				$insertkey => [
@@ -993,7 +993,7 @@ class Sale_lib
 
 			if($item_info->stock_type == HAS_STOCK)	//TODO: === ?
 			{
-				$item_quantity = model('Item_quantity');
+				$item_quantity = model(Item_quantity::class);
 				$item_quantity = $item_quantity->get_item_quantity($item_id, $item_location)->quantity;
 				$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
 

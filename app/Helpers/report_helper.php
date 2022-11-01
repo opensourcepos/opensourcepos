@@ -15,7 +15,7 @@ use app\Models\Employee;
 function show_report_if_allowed(string $report_prefix, string $report_name, int $person_id, string $permission_id = ''): void
 {
 	$permission_id = empty($permission_id) ? 'reports_' . $report_name : $permission_id;    //TODO: Use String Interpolation here.
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 
 	if($employee->has_grant($permission_id, $person_id))
 	{

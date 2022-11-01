@@ -15,7 +15,7 @@ class Specific_supplier extends Report
 	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
-		$sale = model('Sale');
+		$sale = model(Sale::class);
 		$sale->create_temp_table($inputs);
 	}
 

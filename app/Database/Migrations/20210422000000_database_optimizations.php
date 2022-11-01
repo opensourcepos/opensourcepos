@@ -4,6 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
+use app\Models\Attribute;
 use DateTime;
 
 class Migration_database_optimizations extends Migration
@@ -12,7 +13,7 @@ class Migration_database_optimizations extends Migration
 	{
 		error_log('Migrating database_optimizations');
 
-		$attribute = model('Attribute');
+		$attribute = model(Attribute::class);
 
 		$attribute->delete_orphaned_values();
 

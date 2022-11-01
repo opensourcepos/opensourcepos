@@ -33,7 +33,7 @@ class Cashup extends Model
 		$builder = $this->db->table('cash_up');
 		$builder->where('cashup_id', $cashup_id);
 
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 
 		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}

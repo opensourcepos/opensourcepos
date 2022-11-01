@@ -24,7 +24,7 @@ class Token_invoice_count extends Token
 
 	public function get_value(): int
 	{
-		$sale = model('Sale');
+		$sale = model(Sale::class);
 		return empty($value) ? $sale->get_invoice_count() : $value;
 	}
 }

@@ -23,7 +23,7 @@ class MY_Validation extends Validation
 	public function login_check(string $username, string &$error = null): bool
 	{
 		$migration = Services::migrations();
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 
 		$password = $this->request->getPost('password');	//TODO: This needs to get passed as a parameter in some way
 

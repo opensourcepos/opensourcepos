@@ -1,5 +1,6 @@
 <?php
 
+use app\Models\Attribute;
 use app\Models\Employee;
 use app\Models\Item_taxes;
 use app\Models\Tax_category;
@@ -196,7 +197,7 @@ function get_people_manage_table_headers(): string
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 	$session = session();
 
 	if($employee->has_grant('messages', $session->get('person_id')))
@@ -261,7 +262,7 @@ function get_customer_manage_table_headers(): string
 		['total' => lang('Common.total_spent'), 'sortable' => FALSE]
 	];
 
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 	$session = session();
 
 	if($employee->has_grant('messages', $session->get('person_id')))
@@ -329,7 +330,7 @@ function get_suppliers_manage_table_headers(): string
 		['phone_number' => lang('Common.phone_number')]
 	];
 
-	$employee = model('Employee');
+	$employee = model(Employee::class);
 	$session = session();
 
 	if($employee->has_grant('messages', $session->get('person_id')))
@@ -387,7 +388,7 @@ function get_supplier_data_row(object $supplier): array
  */
 function get_items_manage_table_headers(): string
 {
-	$attribute = model('Attribute');
+	$attribute = model(Attribute::class);
 
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
@@ -434,9 +435,9 @@ function get_items_manage_table_headers(): string
  */
 function get_item_data_row(object $item): array
 {
-	$attribute = model('Attribute');
-	$item_taxes = model('Item_taxes');
-	$tax_category = model('Tax_category');
+	$attribute = model(Attribute::class);
+	$item_taxes = model(Item_taxes::class);
+	$tax_category = model(Tax_category::class);
 
 	if(config('OSPOS')->use_destination_based_tax)
 	{

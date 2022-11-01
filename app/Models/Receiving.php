@@ -76,11 +76,11 @@ class Receiving extends Model
 	 */
 	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
-		$attribute = model('Attribute');
+		$attribute = model(Attribute::class);
 		$inventory = model('Inventory');
-		$item = model('Item');
-		$item_quantity = model('Item_quantity');
-		$supplier = model('Supplier');
+		$item = model(Item::class);
+		$item_quantity = model(Item_quantity::class);
+		$supplier = model(Supplier::class);
 
 		if(count($items) == 0)
 		{
@@ -207,7 +207,7 @@ class Receiving extends Model
 			$items = $this->get_receiving_items($receiving_id)->getResultArray();
 
 			$inventory = model('Inventory');
-			$item_quantity = model('Item_quantity');
+			$item_quantity = model(Item_quantity::class);
 
 			foreach($items as $item)
 			{
@@ -255,7 +255,7 @@ class Receiving extends Model
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
 
-		$supplier = model('Supplier');
+		$supplier = model(Supplier::class);
 		return $supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 

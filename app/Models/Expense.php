@@ -33,7 +33,7 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		$expense_category = model('Expense_category');
+		$expense_category = model(Expense_category::class);
 		return $expense_category->get_info($builder->get()->getRow()->expense_category_id);	//TODO: refactor out the nested function call.
 	}
 
@@ -45,7 +45,7 @@ class Expense extends Model
 		$builder = $this->db->table('expenses');
 		$builder->where('expense_id', $expense_id);
 
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 
 		return $employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}

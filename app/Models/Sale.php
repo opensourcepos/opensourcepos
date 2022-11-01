@@ -612,11 +612,12 @@ class Sale extends Model
 	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
 							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table_id, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
-		$attribute = model('Attribute');
-		$customer = model('Customer');
-		$giftcard = model('Giftcard');
+		$attribute = model(Attribute::class);
+		$customer = model(Customer::class);
+		$giftcard = model(Giftcard::class);
 		$inventory = model('Inventory');
-		$item = model('Item');
+		$item = model(Item::class);
+		$item_quantity = model(Item_quantity::class);
 
 		if($sale_id != -1)
 		{
@@ -728,8 +729,6 @@ class Sale extends Model
 
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)	//TODO: === ?
 			{
-				$item_quantity = model('Item_quantity');
-
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 
@@ -772,7 +771,7 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$dinner_table = model('Dinner_table');
+			$dinner_table = model(Dinner_table::class);
 			if($sale_status == COMPLETED)	//TODO: === ?
 			{
 				$dinner_table->release($dinner_table_id);
@@ -914,8 +913,8 @@ class Sale extends Model
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
 			$inventory = model('Inventory');
-			$item = model('Item');
-			$item_quantity = model('Item_quantity');
+			$item = model(Item::class);
+			$item_quantity = model(Item_quantity::class);
 
 			$items = $this->get_sale_items($sale_id)->getResultArray();
 
@@ -967,7 +966,7 @@ class Sale extends Model
 	 */
 	public function get_sale_items_ordered(int $sale_id): ResultInterface
 	{
-		$item = model('Item');
+		$item = model(Item::class);
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->select('
 			sales_items.sale_id,
@@ -1061,7 +1060,7 @@ class Sale extends Model
 	 */
 	public function get_customer(int $sale_id): object
 	{
-		$customer = model('Customer');
+		$customer = model(Customer::class);
 
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -1077,7 +1076,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 
 		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}
@@ -1134,7 +1133,7 @@ class Sale extends Model
 	 */
 	public function get_giftcard_value(string $giftcardNumber): float
 	{
-		$giftcard = model('Giftcard');
+		$giftcard = model(Giftcard::class);
 
 		if(!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber)))	//TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
 		{
@@ -1232,7 +1231,7 @@ class Sale extends Model
 			)';
 		
 		$this->db->query($sql);
-		$item = model('Item');
+		$item = model(Item::class);
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp') .
 			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
@@ -1443,7 +1442,7 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$dinner_table = model('Dinner_table');
+			$dinner_table = model(Dinner_table::class);
 			$dinner_table_id = $this->get_dinner_table($sale_id);
 			$dinner_table->release($dinner_table_id);
 		}
@@ -1465,7 +1464,7 @@ class Sale extends Model
 
 		if(config('OSPOS')->dinner_table_enable)
 		{
-			$dinner_table = model('Dinner_table');
+			$dinner_table = model(Dinner_table::class);
 			$dinner_table_id = $this->get_dinner_table($sale_id);
 			$dinner_table->release($dinner_table_id);
 		}
@@ -1510,9 +1509,9 @@ class Sale extends Model
 	{
 		if(!empty($customer_id) && config('OSPOS')->customer_reward_enable)
 		{
-			$customer = model('Customer');
-			$customer_rewards = model('Customer_rewards');
-			$rewards = model('Rewards');
+			$customer = model(Customer::class);
+			$customer_rewards = model(Customer_rewards::class);
+			$rewards = model(Rewards::class);
 
 			$package_id = $customer->get_info($customer_id)->package_id;
 

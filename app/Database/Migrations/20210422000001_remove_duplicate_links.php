@@ -23,7 +23,7 @@ class Migration_remove_duplicate_links extends Migration
 	 */
 	private function migrate_duplicate_attribute_links()
 	{
-		$attribute = model('Attribute');
+		$attribute = model(Attribute::class);
 
 		//Remove duplicate attribute links
 		$this->db->transStart();

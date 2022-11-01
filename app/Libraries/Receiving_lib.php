@@ -258,7 +258,7 @@ class Receiving_lib
 
 		$attribute_links = $this->attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
-		$item_quantity = model('Item_quantity');
+		$item_quantity = model(Item_quantity::class);
 
 		$item = [
 			$insertkey => [

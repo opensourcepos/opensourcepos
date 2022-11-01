@@ -37,6 +37,9 @@
  * @var float $non_cash_total
  * @var float $cash_amount_due
  */
+
+use app\Models\Employee;
+
 ?>
 <?php echo view('partial/header') ?>
 
@@ -102,7 +105,7 @@ if(isset($success))
 				</li>
 
 				<?php
-				$employee = model('Employee');
+				$employee = model(Employee::class);
 				if($employee->has_grant('reports_sales', $this->session->get('person_id')))
 				{
 				?>

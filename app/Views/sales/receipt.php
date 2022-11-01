@@ -3,6 +3,9 @@
  * @var int $sale_id_num
  * @var bool $print_after_sale
  */
+
+use app\Models\Employee;
+
 ?>
 <?php echo view('partial/header') ?>
 
@@ -46,7 +49,7 @@ if (isset($error_message))
 	<?php endif; ?>
 	<?php echo anchor('sales', '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
 	<?php
-		$employee = model('Employee');
+		$employee = model(Employee::class);
 		if($employee->has_grant('reports_sales', $this->session->get('person_id'))): ?>
 		<?php echo anchor('sales/manage', '<span class=\'glyphicon glyphicon-list-alt\'>&nbsp</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 	<?php endif; ?>

@@ -60,7 +60,7 @@ class Inventory extends Model
 		{
 			if($inventory_sum['sum'] > 0)
 			{//TODO: Reflection Exception
-				$employee = model('Employee');
+				$employee = model(Employee::class);
 
 				return $this->insert([
 					'trans_inventory' => -1 * $inventory_sum['sum'],

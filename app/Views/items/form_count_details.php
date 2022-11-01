@@ -4,6 +4,9 @@
  * @var array $stock_locations
  * @var array $item_quantities
  */
+
+use app\Models\Employee;
+
 ?>
 <?php echo form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="count_item_basic_info">
@@ -94,7 +97,7 @@
 			$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
 			$employee_name = [];
 
-			$employee = model('Employee');
+			$employee = model(Employee::class);
 
 			foreach($inventory_array as $row)
 			{

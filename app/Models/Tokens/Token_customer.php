@@ -36,7 +36,7 @@ class Token_customer extends Token
 		$customer_id = $this->sale_lib->get_customer();
 		if($customer_id != -1 && empty($this->customer_info))	//TODO: Replace -1 with a Constant
 		{
-			$customer = model('Customer');
+			$customer = model(Customer::class);
 			$customer_info = $customer->get_info($customer_id);
 
 			if($customer_info != '')

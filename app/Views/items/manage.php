@@ -6,6 +6,9 @@
  * @var array $stock_locations
  * @var int $stock_location
  */
+
+use app\Models\Employee;
+
 ?>
 <?php echo view('partial/header') ?>
 
@@ -42,7 +45,7 @@ $(document).ready(function()
 
     <?php
 		echo view('partial/bootstrap_tables_locale');
-		$employee = model("Employee");
+		$employee = model(Employee::class);
 	?>
 
     table_support.init({
