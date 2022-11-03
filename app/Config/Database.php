@@ -30,7 +30,7 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-	public $default;	//Set in the constructor
+	public $default;
 
 	/**
 	 * This database connection is used when
@@ -38,61 +38,91 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-	public $tests;	//Set in the constructor
+	public $tests;
 
-	//--------------------------------------------------------------------
+	/**
+	 * This database connection is used when
+	 * developing against non-production data.
+	 *
+	 * @var array
+	 */
+	public $development;
 
 	public function __construct()
 	{
 		parent::__construct();
 
+		$this->default = [
+			'DSN' => '',
+			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
+			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
+			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
+			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
+			'DBDriver' => 'MySQLi',
+			'DBPrefix' => 'ospos_',
+			'pConnect' => false,
+			'DBDebug' => (ENVIRONMENT !== 'production'),
+			'charset' => 'utf8',
+			'DBCollat' => 'utf8_general_ci',
+			'swapPre' => '',
+			'encrypt' => false,
+			'compress' => false,
+			'strictOn' => false,
+			'failover' => [],
+			'port' => 3306
+		];
+
+		$this->development = [
+			'DSN' => '',
+			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
+			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
+			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
+			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
+			'DBDriver' => 'MySQLi',
+			'DBPrefix' => 'ospos_',
+			'pConnect' => false,
+			'DBDebug' => (ENVIRONMENT !== 'production'),
+			'charset' => 'utf8',
+			'DBCollat' => 'utf8_general_ci',
+			'swapPre' => '',
+			'encrypt' => false,
+			'compress' => false,
+			'strictOn' => false,
+			'failover' => [],
+			'port' => 3306
+		];
+
+		$this->tests = [
+			'DSN' => '',
+			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
+			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
+			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
+			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
+			'DBDriver' => 'MySQLi',
+			'DBPrefix' => 'ospos_',
+			'pConnect' => false,
+			'DBDebug' => (ENVIRONMENT !== 'production'),
+			'charset' => 'utf8',
+			'DBCollat' => 'utf8_general_ci',
+			'swapPre' => '',
+			'encrypt' => false,
+			'compress' => false,
+			'strictOn' => false,
+			'failover' => [],
+			'port' => 3306
+		];
+
 		// Ensure that we always set the database group to 'tests' if
 		// we are currently running an automated test suite, so that
 		// we don't overwrite live data on accident.
-		if (ENVIRONMENT === 'testing') {
-			$this->defaultGroup = 'tests';
-			$this->tests = [
-				'DSN' => '',
-				'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
-				'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
-				'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
-				'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
-				'DBDriver' => 'MySQLi',
-				'DBPrefix' => 'ospos_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
-				'pConnect' => false,
-				'DBDebug' => (ENVIRONMENT !== 'production'),
-				'charset' => 'utf8',
-				'DBCollat' => 'utf8_general_ci',
-				'swapPre' => '',
-				'encrypt' => false,
-				'compress' => false,
-				'strictOn' => false,
-				'failover' => [],
-				'port' => 3306
-			];
-		} else {
-			$this->default = [
-				'DSN' => '',
-				'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
-				'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
-				'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
-				'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
-				'DBDriver' => 'MySQLi',
-				'DBPrefix' => 'ospos_',
-				'pConnect' => false,
-				'DBDebug' => (ENVIRONMENT !== 'production'),
-				'charset' => 'utf8',
-				'DBCollat' => 'utf8_general_ci',
-				'swapPre' => '',
-				'encrypt' => false,
-				'compress' => false,
-				'strictOn' => false,
-				'failover' => [],
-				'port' => 3306
-			];
+		switch(ENVIRONMENT)
+		{
+			case 'testing':
+				$this->defaultGroup = 'tests';
+				break;
+			case 'development';
+				$this->defaultGroup = 'development';
+				break;
 		}
 	}
-
-	//--------------------------------------------------------------------
-
 }

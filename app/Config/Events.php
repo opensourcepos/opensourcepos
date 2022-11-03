@@ -4,6 +4,8 @@ namespace Config;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
+use Exception;
+use Dotenv\Dotenv;
 
 /*
  * --------------------------------------------------------------------
@@ -22,24 +24,30 @@ use CodeIgniter\Exceptions\FrameworkException;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
-Events::on('pre_system', function () /* use ($config_path) */ {  //TODO -> Undefined variable
-	if (ENVIRONMENT !== 'testing') {
-		if (ini_get('zlib.output_compression')) {
+Events::on('pre_system', function ()
+{
+	if (ENVIRONMENT !== 'testing')
+	{
+		if (ini_get('zlib.output_compression'))
+		{
 			throw FrameworkException::forEnabledZlibOutputCompression();
 		}
 
-		while (ob_get_level() > 0) {
+		while (ob_get_level() > 0)
+		{
 			ob_end_flush();
 		}
 
-		ob_start(function ($buffer) {
-			return $buffer;
-		});
+		ob_start(static function ($buffer) { return $buffer; });
 
-		try {
-			// $dotenv = new Dotenv\Dotenv($config_path);
-			// $dotenv->overload(); //TODO Trows errors -> Dotenv
-		} catch (Exception $e) {
+		try
+		{
+			$config_path = APPPATH . 'config/config.php';
+			$dotenv = new Dotenv($config_path);
+			$dotenv->overload();
+		}
+		catch (Exception $e)
+		{
 			// continue, .env file not present
 		}
 	}
@@ -50,13 +58,14 @@ Events::on('pre_system', function () /* use ($config_path) */ {  //TODO -> Undef
 	 * --------------------------------------------------------------------
 	 * If you delete, they will no longer be collected.
 	 */
-	if (CI_DEBUG && !is_cli()) {
+	if (CI_DEBUG && !is_cli())
+	{
 		Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
 		Services::toolbar()->respond();
 	}
 });
 
-Events::on('post_controller_constructor', ['Load_config', 'load_config']);
+Events::on('post_controller_constructor', ['Load_config', 'load_config']);	//TODO: This fails. Load_config not found
 
 Events::on('post_controller', ['Db_log', 'db_log_queries']);
 
