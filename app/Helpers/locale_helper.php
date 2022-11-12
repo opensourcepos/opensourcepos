@@ -186,6 +186,7 @@ function get_timezones(): array
 		'Asia/Kabul' => '(GMT+04:30) Kabul',
 		'Asia/Baku' => '(GMT+04:00) Baku',
 		'Asia/Yekaterinburg' => '(GMT+05:00) Ekaterinburg',
+		'Asia/Karachi' => '(GMT+05:00) Karachi, Islamabad',
 		'Asia/Tashkent' => '(GMT+05:00) Tashkent',
 		'Asia/Kolkata' => '(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi',
 		'Asia/Katmandu' => '(GMT+05:45) Kathmandu',
