@@ -24,6 +24,15 @@ $(document).ready(function()
 
 	<?php echo view('partial/bootstrap_tables_locale') ?>
 
+	table_support.query_params = function()
+	{
+		return {
+			start_date: start_date,
+			end_date: end_date,
+			filters: $("#filters").val() || [""]
+		}
+	};
+
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name),'url') ?>',
 		headers: <?php echo esc($table_headers, 'js') ?>,
@@ -33,14 +42,11 @@ $(document).ready(function()
 			if($("#table tbody tr").length > 1) {
 				$("#payment_summary").html(response.payment_summary);
 				$("#table tbody tr:last td:first").html("");
+				$("#table tbody tr:last").css('font-weight', 'bold');
 			}
 		},
 		queryParams: function() {
-			return $.extend(arguments[0], {
-				start_date: start_date,
-				end_date: end_date,
-				filters: $("#filters").val() || [""]
-			});
+			return $.extend(arguments[0], table_support.query_params());
 		},
 		columns: {
 			'invoice': {

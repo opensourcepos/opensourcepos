@@ -64,7 +64,8 @@
 				data: <?php echo json_encode(esc($data, 'js')) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
-				escape: false
+				escape: false,
+				search: true
 		});
 
 
