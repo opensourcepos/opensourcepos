@@ -24,7 +24,7 @@ class Detailed_receivings extends Report
 		return [
 			'summary' => [
 				['id' => lang('Reports.receiving_id')],
-				['receiving_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['receiving_time' => lang('Reports.date'), 'sortable' => FALSE],
 				['quantity' => lang('Reports.quantity')],
 				['employee_name' => lang('Reports.received_by')],
 				['supplier_name' => lang('Reports.supplied_by')],
@@ -48,7 +48,7 @@ class Detailed_receivings extends Report
 	{
 		$builder = $this->db->table('receivings_items_temp');
 		$builder->select('receiving_id,
-			MAX(receiving_date) as receiving_date,
+			MAX(receiving_time) as receiving_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -70,7 +70,7 @@ class Detailed_receivings extends Report
 	{
 		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
 		$builder->select('receiving_id,
-			MAX(receiving_date) as receiving_date,
+			MAX(receiving_time) as receiving_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name,
 			MAX(supplier.company_name) AS supplier_name,
@@ -100,7 +100,7 @@ class Detailed_receivings extends Report
 			$builder->having('items_purchased = 0');
 		}
 
-		$builder->groupBy('receiving_id', 'receiving_date');
+		$builder->groupBy('receiving_id', 'receiving_time');
 		$builder->orderBy('receiving_id');
 
 		$data = [];
