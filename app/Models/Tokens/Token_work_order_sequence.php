@@ -27,8 +27,8 @@ class Token_work_order_sequence extends Token
 	/**
 	 * @throws ReflectionException
 	 */
-	public function get_value(): string
+	public function get_value(bool $save = TRUE): string
 	{
-		return $this->appconfig->acquire_save_next_work_order_sequence();
+		return $this->appconfig->acquire_next_work_order_sequence($save);
 	}
 }

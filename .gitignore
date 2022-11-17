@@ -1,33 +1,18 @@
 # Dependency directories
-/node_modules
-/vendor
-/public/bower_components
+node_modules
+vendor
+public/bower_components
 app/Config/email.php
 app/sessions/*
 app/logs/*
 app/uploads/*
 npm-debug.log*
 
-# Build generated
-/tmp
-/public/license/.licenses
-/public/license/bower.LICENSES
-/public/dist
-
 # Docker
-!/docker/.env
-/docker/data/database/db/*
-/docker/data/certbot/conf/*
-/docker/data/ospos/app/*
-
-# Database
-/database/database.sql
-/database/migrate_phppos_dist.sql
-
-# Use files
-/application/config/email.php
-/application/sessions/*
-/application/uploads/*
+!docker/.env
+docker/data/database/db/*
+docker/data/certbot/conf/*
+docker/data/ospos/app/*
 
 # Editors
 ## SublimeText
@@ -69,11 +54,11 @@ $RECYCLE.BIN/
 .com.apple.timemachine.donotpresent
 
 # Other
-/generate_langauges.php
-/dist
-/docs
+generate_languages.php
+dist
+docs
 /patches
-/translations
+translations
 /.buildpath
 /.project
 /.settings/*
