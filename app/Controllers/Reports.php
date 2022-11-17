@@ -1162,6 +1162,7 @@ class Reports extends Secure_Controller
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
 				'sale_time' => to_datetime(strtotime($row['sale_time'])),
+				'sale_date' => to_date(strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'subtotal' => to_currency($row['subtotal']),
@@ -1276,7 +1277,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = [
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_time' => to_datetime(strtotime($row['sale_time'])),
+				'sale_date' => to_date(strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
@@ -1394,7 +1395,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = [
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_time' => to_datetime(strtotime($row['sale_time'])),
+				'sale_date' => to_date(strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
@@ -1544,7 +1545,7 @@ class Reports extends Secure_Controller
 			$tabular_data[] = [
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_time' => to_datetime(strtotime($row['sale_time'])),
+				'sale_date' => to_date(strtotime($row['sale_date'])),
 				'name' => $row['name'],
 				'category' => $row['category'],
 				'item_number' => $row['item_number'],
@@ -1635,7 +1636,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = [
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_time' => to_datetime(strtotime($row['sale_time'])),
+				'sale_date' => to_date(strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
@@ -1768,7 +1769,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = [
 				'id' => $row['receiving_id'],
-				'receiving_time' => to_datetime(strtotime($row['receiving_time'])),
+				'receiving_date' => to_date(strtotime($row['receiving_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'supplier_name' => $row['supplier_name'],
