@@ -6,7 +6,8 @@
   "license": "MIT",
   "authors": [
     "jekkos <jekkos - at - opensourcepos.org>",
-    "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
+    "FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
+    "objecttothis <objecttothis - at - gmail.com>"
   ],
   "scripts": {
     "install": "composer install & bower install",

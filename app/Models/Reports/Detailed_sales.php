@@ -25,7 +25,7 @@ class Detailed_sales extends Report
 			'summary' => [
 				['id' => lang('Reports.sale_id')],
 				['type_code' => lang('Reports.code_type')],
-				['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
 				['quantity' => lang('Reports.quantity')],
 				['employee_name' => lang('Reports.sold_by')],
 				['customer_name' => lang('Reports.sold_to')],
@@ -61,7 +61,7 @@ class Detailed_sales extends Report
 	{
 		$builder = $this->db->table('sales_items_temp');
 		$builder->select('sale_id,
-			sale_date,
+			sale_time as sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
@@ -83,7 +83,7 @@ class Detailed_sales extends Report
 		$builder = $this->db->table('sales_items_temp');
 		$builder->select('sale_id, 
 			MAX(CASE
-			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'			
+			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_pos') . '\'
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . lang('Reports.code_invoice') . '\'
 			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_work_order') . '\'
 			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . lang('Reports.code_quote') . '\'
@@ -92,7 +92,7 @@ class Detailed_sales extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_date) AS sale_date,
+			MAX(sale_time) AS sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
@@ -148,7 +148,7 @@ class Detailed_sales extends Report
 		}
 
 		$builder->groupBy('sale_id');
-		$builder->orderBy('MAX(sale_date)');
+		$builder->orderBy('MAX(sale_time)');
 
 		$data = [];
 		$data['summary'] = $builder->get()->getResultArray();
