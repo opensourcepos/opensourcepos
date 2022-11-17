@@ -65,7 +65,7 @@
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg>
           </span>
-          <input class="form-control" name="username" type="text" placeholder="<?php echo lang('Login.username'); ?>" aria-label="<?php echo lang('Login.username'); ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo "value='admin'"; ?>>
+          <input class="form-control" name="username" type="text" placeholder="<?php echo lang('Login.username'); ?>" aria-label="<?php echo lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo "value='admin'"; ?>>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="input-password">
@@ -74,6 +74,7 @@
               <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
             </svg>
           </span>
+
           <input class="form-control" name="password" type="password" placeholder="<?php echo lang('Login.password') ?>" aria-label="<?php echo lang('Login.password'); ?>" <?php if (ENVIRONMENT == "testing") echo "value='pointofsale'"; ?>" aria-describedby="input-password">
         </div>
         <?php endif; ?>

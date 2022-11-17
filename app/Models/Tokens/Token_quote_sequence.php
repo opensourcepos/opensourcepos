@@ -28,8 +28,8 @@ class Token_quote_sequence extends Token
 	/**
 	 * @throws ReflectionException
 	 */
-	public function get_value(): string
+	public function get_value(bool $save = TRUE): string
 	{
-		return $this->appconfig->acquire_save_next_quote_sequence();
+		return $this->appconfig->acquire_next_quote_sequence($save);
 	}
 }
