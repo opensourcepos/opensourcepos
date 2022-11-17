@@ -28,18 +28,12 @@
 
 All notable changes to this project will be documented here.
 
-## [Unreleased]
+## [3.4.0]
 
 List of changes in the `master` branch.
 
-- N/A
-
-## [3.3.9] - 2023-11-06
-
--  Translation updates (Spanish, Croatian, Russian, English, Indonesian, Thai, Central Khmer)
--  Fix logout race condition issue
--  Fix docker compose file
--  Minor report fixes
+- Bump framework to CodeIgniter 4.1.3
+- Improve security performance against bots.
 
 ## [3.3.8] - 2022-04-26
 

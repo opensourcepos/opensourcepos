@@ -2,13 +2,13 @@
 
 namespace App\Events;
 
-class Save
+class Method
 {
-	public static function validate_save()
+	public static function validate_method()
 	{
 		$url = $_SERVER['REQUEST_URI'];
 
-		$post_required = preg_match('/\/(logout|save|delete*|remove*)\/?\d*?/', $url);
+		$post_required = preg_match('/(save|delete*|remove*)\/?\d*?/', $url);
 
 		if($post_required && $_SERVER["REQUEST_METHOD"] != "POST" && empty($_POST))
 		{

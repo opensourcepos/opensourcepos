@@ -25,7 +25,7 @@ class Specific_discount extends Report
 			'summary' => [
 				['id' => lang('Reports.sale_id')],
 				['type_code' => lang('Reports.code_type')],
-				['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
 				['quantity' => lang('Reports.quantity')],
 				['employee_name' => lang('Reports.sold_by')],
 				['customer_name' => lang('Reports.sold_to')],
@@ -72,7 +72,7 @@ class Specific_discount extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_date) AS sale_date,
+			MAX(sale_time) AS sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
@@ -126,7 +126,7 @@ class Specific_discount extends Report
 		}
 
 		$builder->groupBy('sale_id');	//TODO: Duplicated code
-		$builder->orderBy('MAX(sale_date)');
+		$builder->orderBy('MAX(sale_time)');
 
 		$data = [];
 		$data['summary'] = $builder->get()->getResultArray();
