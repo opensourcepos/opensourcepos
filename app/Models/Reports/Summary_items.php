@@ -10,7 +10,7 @@ class Summary_items extends Summary_report
 			['item_name' => lang('Reports.item')],
 			['category' => lang('Reports.category')],
 			['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
-			['quantity' => lang('Reports.quantity')],
+			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
 			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
 			['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
 			['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
