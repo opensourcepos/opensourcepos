@@ -69,4 +69,4 @@ Events::on('post_controller_constructor', ['Load_config', 'load_config']);	//TOD
 
 Events::on('post_controller', ['Db_log', 'db_log_queries']);
 
-Events::on('pre_controller', ['Save', 'validate_save']);
+Events::on('pre_controller', ['Method', 'validate_method']);
