@@ -968,7 +968,7 @@ class Items extends Secure_Controller
 						'pic_filename' => $row['Image']
 					];
 
-					if(!empty($row['supplier_id']))
+					if(!empty($row['supplier ID']))
 					{
 						$item_data['supplier_id'] = $this->supplier->exists($row['Supplier ID']) ? $row['Supplier ID'] : NULL;
 					}

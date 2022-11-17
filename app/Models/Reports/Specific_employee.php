@@ -25,7 +25,7 @@ class Specific_employee extends Report
 			'summary' => [
 				['id' => lang('Reports.sale_id')],
 				['type_code' => lang('Reports.code_type')],
-				['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+				['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
 				['quantity' => lang('Reports.quantity')],
 				['customer_name' => lang('Reports.sold_to')],
 				['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
@@ -71,7 +71,7 @@ class Specific_employee extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_date) AS sale_date,
+			MAX(sale_time) AS sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(customer_name) AS customer_name,
 			SUM(subtotal) AS subtotal,
@@ -123,7 +123,7 @@ class Specific_employee extends Report
 		}
 
 		$builder->groupBy('sale_id');
-		$builder->orderBy('MAX(sale_date)');
+		$builder->orderBy('MAX(sale_time)');
 
 		$data = [];
 		$data['summary'] = $builder->get()->getResultArray();
