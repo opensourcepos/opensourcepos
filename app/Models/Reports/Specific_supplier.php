@@ -24,7 +24,7 @@ class Specific_supplier extends Report
 		return [
 			['id' => lang('Reports.sale_id')],
 			['type_code' => lang('Reports.code_type')],
-			['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+			['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
 			['name' => lang('Reports.name')],
 			['category' => lang('Reports.category')],
 			['item_number' => lang('Reports.item_number')],
@@ -53,7 +53,7 @@ class Specific_supplier extends Report
 			ELSE \'\'
 			END) AS type_code,
 			MAX(sale_status) as sale_status,
-			MAX(sale_date) AS sale_date,
+			MAX(sale_time) AS sale_time,
 			MAX(name) AS name,
 			MAX(category) AS category,
 			MAX(item_number) AS item_number,
