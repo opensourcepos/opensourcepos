@@ -709,6 +709,26 @@ if(isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	const redirect = function() {
+		window.location.href = "<?php echo site_url('sales'); ?>";
+	};
+
+	$("#remove_customer_button").click(function()
+	{
+		$.post("<?php echo site_url('sales/remove_customer'); ?>", redirect);
+	});
+
+	$(".delete_item_button").click(function()
+	{
+		const item_id = $(this).data('item-id');
+		$.post("<?php echo site_url('sales/delete_item/'); ?>" + item_id, redirect);
+	});
+
+	$(".delete_payment_button").click(function() {
+		const item_id = $(this).data('payment-id');
+		$.post("<?php echo site_url('sales/delete_payment/'); ?>" + item_id, redirect);
+	});
+
 	$("input[name='item_number']").change(function() {
 		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
 		var item_number = $(this).val();
@@ -971,6 +991,53 @@ function check_payment_type()
 		$(".non-giftcard-input").attr('disabled', false);
 	}
 }
+
+// Add Keyboard Shortcuts/Hotkeys to Sale Register
+document.body.onkeyup = function(e)
+{
+	switch(event.altKey && event.keyCode) 
+	{
+        case 49: // Alt + 1 Items Seach
+			$("#item").focus();
+			$("#item").select();
+            break;
+        case 50: // Alt + 2 Customers Search
+			$("#customer").focus();
+			$("#customer").select();
+            break;
+		case 51: // Alt + 3 Suspend Current Sale
+			$("#suspend_sale_button").click();
+			break;
+		case 52: // Alt + 4 Check Suspended
+			$("#show_suspended_sales_button").click();
+			break;
+        case 53: // Alt + 5 Edit Amount Tendered Value
+			$("#amount_tendered").focus();
+			$("#amount_tendered").select();
+            break;
+		case 54: // Alt + 6 Add Payment
+			$("#add_payment_button").click();
+			break;	
+		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
+			$("#add_payment_button").click();
+			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			break; 
+		case 56: // Alt + 8 Finish Quote/Invoice without payment
+			$("#finish_invoice_quote_button").click();
+			break;
+		case 57: // Alt + 9 Open Shortcuts Help Modal
+			$("#show_keyboard_help").click();
+			break;
+	}
+	
+	switch(event.keyCode) 
+	{
+		case 27: // ESC Cancel Current Sale
+			$("#cancel_sale_button").click();
+			break;		  
+    }
+}
+
 </script>
 
 <?php echo view('partial/footer') ?>
