@@ -1612,6 +1612,11 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	public function sales_keyboard_help()
+	{
+		$this->load->view('sales/help');
+	}
+
 	public function check_invoice_number(): void
 	{
 		$sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
