@@ -2,10 +2,9 @@
 
 namespace Config;
 
+use App\Events\Load_config;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
-use Exception;
-use Dotenv\Dotenv;
 
 /*
  * --------------------------------------------------------------------
@@ -38,18 +37,7 @@ Events::on('pre_system', function ()
 			ob_end_flush();
 		}
 
-		ob_start(static function ($buffer) { return $buffer; });
-
-		try
-		{
-			$config_path = APPPATH . 'config/config.php';
-			$dotenv = new Dotenv($config_path);
-			$dotenv->overload();
-		}
-		catch (Exception $e)
-		{
-			// continue, .env file not present
-		}
+		ob_start(static function ($buffer){ return $buffer; });
 	}
 
 	/*
@@ -65,8 +53,9 @@ Events::on('pre_system', function ()
 	}
 });
 
-Events::on('post_controller_constructor', ['Load_config', 'load_config']);	//TODO: This fails. Load_config not found
+$config = new Load_config();	//TODO: Not 100% sure this is the best way to do this, but without instantiating the class, the event engine tries to run the function as if it were static.
+Events::on('post_controller_constructor', [$config, 'load_config']);
 
-Events::on('post_controller', ['Db_log', 'db_log_queries']);
+Events::on('post_controller', ['\App\Events\Db_log', 'db_log_queries']);
 
-Events::on('pre_controller', ['Method', 'validate_method']);
+Events::on('pre_controller', ['\App\Events\Method', 'validate_method']);

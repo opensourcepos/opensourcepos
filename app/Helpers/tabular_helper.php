@@ -50,6 +50,7 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 			'field' => key($element),
 			'title' => current($element),
 			'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
+			'escape' => !preg_match("/(edit|phone_number|email|messages)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
 			'sortable' => $element['sortable'] ?? current($element) != '',
 			'checkbox' => $element['checkbox'] ?? FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
@@ -78,10 +79,10 @@ function get_sales_manage_table_headers(): string
 	if(config('OSPOS')->invoice_enable)
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
-		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE];
+		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE];
 	}
 
-	$headers[] = ['receipt' => '&nbsp', 'sortable' => FALSE];
+	$headers[] = ['receipt' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE];
 
 	return transform_headers($headers);
 }
@@ -420,8 +421,8 @@ function get_items_manage_table_headers(): string
 		$headers[] = [$definition_id => $definition_name, 'sortable' => FALSE];
 	}
 
-	$headers[] = ['inventory' => ''];
-	$headers[] = ['stock' => ''];
+	$headers[] = ['inventory' => '', 'escape' => FALSE];
+	$headers[] = ['stock' => '', 'escape' => FALSE];
 
 	return transform_headers($headers);
 }

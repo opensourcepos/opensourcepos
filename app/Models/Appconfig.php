@@ -100,10 +100,14 @@ class Appconfig extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function acquire_save_next_invoice_sequence(): string
+	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
 		$last_used = (int)config('OSPOS')->last_used_invoice_number + 1;
-		$this->save(['last_used_invoice_number' => $last_used]);
+
+		if($save)
+		{
+			$this->save(['last_used_invoice_number'=> $last_used]);
+		}
 
 		return $last_used;
 	}
@@ -111,10 +115,14 @@ class Appconfig extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function acquire_save_next_quote_sequence(): string
+	public function acquire_next_quote_sequence(bool $save = true): string
 	{
 		$last_used = (int)config('OSPOS')->last_used_quote_number + 1;
-		$this->save(['last_used_quote_number' => $last_used]);
+
+		if($save)
+		{
+			$this->save(['last_used_quote_number' => $last_used]);
+		}
 
 		return $last_used;
 	}
@@ -122,10 +130,14 @@ class Appconfig extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function acquire_save_next_work_order_sequence(): string
+	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
 		$last_used = (int)config('OSPOS')->last_used_work_order_number + 1;
-		$this->save(['last_used_work_order_number' => $last_used]);
+
+		if($save)
+		{
+			$this->save(['last_used_work_order_number' => $last_used]);
+		}
 
 		return $last_used;
 	}
