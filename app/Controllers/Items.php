@@ -614,7 +614,7 @@ class Items extends Secure_Controller
 			$success = TRUE;
 			$new_item = FALSE;
 
-			if($item_id == NEW_ITEM)
+			if($item_id === NEW_ITEM)
 			{
 				$item_id = $item_data['item_id'];
 				$new_item = TRUE;
