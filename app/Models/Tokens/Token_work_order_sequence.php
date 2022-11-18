@@ -13,7 +13,7 @@ use ReflectionException;
  */
 class Token_work_order_sequence extends Token
 {
-	public function __construct($value = '')
+	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
 		$this->appconfig = model('AppConfig');

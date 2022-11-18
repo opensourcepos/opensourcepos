@@ -184,7 +184,7 @@ class Detailed_sales extends Report
 				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 			}
 
-			$builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id');
+			$builder->groupBy('sales_items_temp.sale_id, sales_items_temp.item_id, sales_items_temp.line');
 			$builder->where('sales_items_temp.sale_id', $value['sale_id']);
 			$data['details'][$key] = $builder->get()->getResultArray();
 

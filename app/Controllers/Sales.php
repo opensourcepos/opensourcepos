@@ -1209,14 +1209,15 @@ class Sales extends Secure_Controller
 		$data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
 		$data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
 
-		$invoice_number = $this->sale_lib->get_invoice_number();
+		$temp_invoice_number = $this->sale_lib->get_invoice_number();
+		$invoice_format = config('OSPOS')->sales_invoice_format;
 
-		if ($this->sale_lib->get_invoice_number() == NULL)
+		if ($temp_invoice_number == NULL || $temp_invoice_number == '')
 		{
-			$invoice_number = config('OSPOS')->sales_invoice_format;
+			$temp_invoice_number = $this->token_lib->render($invoice_format, [], FALSE);
 		}
 
-		$data['invoice_number'] = $invoice_number;
+		$data['invoice_number'] = $temp_invoice_number;
 
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
@@ -1610,6 +1611,11 @@ class Sales extends Secure_Controller
 		$this->change_register_mode($this->sale_lib->get_sale_type());
 
 		$this->_reload();	//TODO: Hungarian notation
+	}
+
+	public function sales_keyboard_help()
+	{
+		$this->load->view('sales/help');
 	}
 
 	public function check_invoice_number(): void
