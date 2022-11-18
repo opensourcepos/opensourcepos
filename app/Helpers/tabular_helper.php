@@ -153,7 +153,7 @@ function get_sale_data_last_row(ResultInterface $sales): array
 
 	return [
 		'sale_id' => '-',
-		'sale_time' => '<b>'.lang('Sales.total').'</b>',
+		'sale_time' => lang('Sales.total'),
 		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
@@ -828,9 +828,9 @@ function get_expenses_data_last_row(object $expense): array
 
 	return [
 		'expense_id' => '-',
-		'date' => '<b>'.lang('Sales.total').'</b>',
-		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
-		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
+		'date' => lang('Sales.total'),
+		'amount' => to_currency($sum_amount_expense),
+		'tax_amount' => to_currency($sum_tax_amount_expense)
 	];
 }
 
