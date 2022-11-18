@@ -444,6 +444,10 @@ if(isset($success))
 							title="<?php echo lang("$controller_name.new_customer") ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang("$controller_name.new_customer") ?>
 					</button>
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?php echo site_url("$controller_name/sales_keyboard_help") ?>"
+							title="<?php echo lang('Sales.key_title'); ?>">
+						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?php echo lang('Sales.key_help'); ?>
+					</button>
 
 				</div>
 			<?php
@@ -995,33 +999,33 @@ function check_payment_type()
 // Add Keyboard Shortcuts/Hotkeys to Sale Register
 document.body.onkeyup = function(e)
 {
-	switch(event.altKey && event.keyCode) 
+	switch(event.altKey && event.keyCode)
 	{
-        case 49: // Alt + 1 Items Seach
+		case 49: // Alt + 1 Items Seach
 			$("#item").focus();
 			$("#item").select();
-            break;
-        case 50: // Alt + 2 Customers Search
+			break;
+		case 50: // Alt + 2 Customers Search
 			$("#customer").focus();
 			$("#customer").select();
-            break;
+			break;
 		case 51: // Alt + 3 Suspend Current Sale
 			$("#suspend_sale_button").click();
 			break;
 		case 52: // Alt + 4 Check Suspended
 			$("#show_suspended_sales_button").click();
 			break;
-        case 53: // Alt + 5 Edit Amount Tendered Value
+		case 53: // Alt + 5 Edit Amount Tendered Value
 			$("#amount_tendered").focus();
 			$("#amount_tendered").select();
-            break;
+			break;
 		case 54: // Alt + 6 Add Payment
 			$("#add_payment_button").click();
-			break;	
+			break;
 		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
 			$("#add_payment_button").click();
 			window.location.href = "<?php echo site_url('sales/complete'); ?>";
-			break; 
+			break;
 		case 56: // Alt + 8 Finish Quote/Invoice without payment
 			$("#finish_invoice_quote_button").click();
 			break;
@@ -1029,13 +1033,13 @@ document.body.onkeyup = function(e)
 			$("#show_keyboard_help").click();
 			break;
 	}
-	
-	switch(event.keyCode) 
+
+	switch(event.keyCode)
 	{
 		case 27: // ESC Cancel Current Sale
 			$("#cancel_sale_button").click();
-			break;		  
-    }
+			break;
+	}
 }
 
 </script>
