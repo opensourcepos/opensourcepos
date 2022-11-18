@@ -692,7 +692,7 @@ class Sale extends Model
 
 			$builder->insert($sales_payments_data);
 
-			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
+			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
 		}
 
 		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
