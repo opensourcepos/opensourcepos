@@ -106,7 +106,7 @@ class Appconfig extends Model
 
 		if($save)
 		{
-			$this->save('last_used_invoice_number', $last_used);
+			$this->save(['last_used_invoice_number'=> $last_used]);
 		}
 
 		return $last_used;
@@ -121,7 +121,7 @@ class Appconfig extends Model
 
 		if($save)
 		{
-			$this->save('last_used_quote_number', $last_used);
+			$this->save(['last_used_quote_number' => $last_used]);
 		}
 
 		return $last_used;
@@ -136,7 +136,7 @@ class Appconfig extends Model
 
 		if($save)
 		{
-			$this->save('last_used_work_order_number', $last_used);
+			$this->save(['last_used_work_order_number' => $last_used]);
 		}
 
 		return $last_used;

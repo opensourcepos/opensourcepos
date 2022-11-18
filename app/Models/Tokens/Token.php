@@ -11,7 +11,7 @@ abstract class Token Extends Model
 {
 	protected $value = '';
 
-	public function __construct($value = '')
+	public function __construct(string $value = '')
 	{
 		parent::__construct();
 
