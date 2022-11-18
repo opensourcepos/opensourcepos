@@ -4,8 +4,6 @@ namespace Config;
 
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
-use Exception;
-use Dotenv\Dotenv;
 
 /*
  * --------------------------------------------------------------------
@@ -38,18 +36,7 @@ Events::on('pre_system', function ()
 			ob_end_flush();
 		}
 
-		ob_start(static function ($buffer) { return $buffer; });
-
-		try
-		{
-			$config_path = APPPATH . 'config/config.php';
-			$dotenv = new Dotenv($config_path);
-			$dotenv->overload();
-		}
-		catch (Exception $e)
-		{
-			// continue, .env file not present
-		}
+		ob_start(static function ($buffer){ return $buffer; });
 	}
 
 	/*
@@ -65,7 +52,7 @@ Events::on('pre_system', function ()
 	}
 });
 
-Events::on('post_controller_constructor', ['Load_config', 'load_config']);	//TODO: This fails. Load_config not found
+Events::on('post_controller_constructor', ['Load_config', 'load_config']);
 
 Events::on('post_controller', ['Db_log', 'db_log_queries']);
 
