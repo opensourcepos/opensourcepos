@@ -23,7 +23,7 @@ class Load_config
     {
         //Migrations
         $migration_config = config('Migrations');
-        $migration = new My_Migration($migration_config);
+        $migration = new MY_Migration($migration_config);	//TODO: This errors out.  We need to figure out how to automatically check and run latest migrations in CI4... the CI3 method is different.
 
         $this->session = session();
 
