@@ -30,7 +30,26 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-	public $default;
+	public $default = [
+			'DSN' => '',
+			'hostname' => 'localhost',
+			'username' => 'admin',
+			'password' => 'pointofsale',
+			'database' => 'ospos',
+			'DBDriver' => 'MySQLi',
+			'DBPrefix' => 'ospos_',
+			'pConnect' => false,
+			'DBDebug' => (ENVIRONMENT !== 'production'),
+			'charset' => 'utf8',
+			'DBCollat' => 'utf8_general_ci',
+			'swapPre' => '',
+			'encrypt' => false,
+			'compress' => false,
+			'strictOn' => false,
+			'failover' => [],
+			'port' => 3306
+		];
+
 
 	/**
 	 * This database connection is used when
@@ -38,7 +57,25 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-	public $tests;
+	public $tests = [
+		'DSN' => '',
+		'hostname' => 'localhost',
+		'username' => 'admin',
+		'password' => 'pointofsale',
+		'database' => 'ospos',
+		'DBDriver' => 'MySQLi',
+		'DBPrefix' => 'ospos_',
+		'pConnect' => false,
+		'DBDebug' => (ENVIRONMENT !== 'production'),
+		'charset' => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre' => '',
+		'encrypt' => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		'port' => 3306
+	];
 
 	/**
 	 * This database connection is used when
@@ -46,71 +83,29 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-	public $development;
+	public $development = [
+		'DSN' => '',
+		'hostname' => 'localhost',
+		'username' => 'admin',
+		'password' => 'pointofsale',
+		'database' => 'ospos',
+		'DBDriver' => 'MySQLi',
+		'DBPrefix' => 'ospos_',
+		'pConnect' => false,
+		'DBDebug' => (ENVIRONMENT !== 'production'),
+		'charset' => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre' => '',
+		'encrypt' => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		'port' => 3306
+	];
 
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->default = [
-			'DSN' => '',
-			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
-			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
-			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
-			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
-			'DBDriver' => 'MySQLi',
-			'DBPrefix' => 'ospos_',
-			'pConnect' => false,
-			'DBDebug' => (ENVIRONMENT !== 'production'),
-			'charset' => 'utf8',
-			'DBCollat' => 'utf8_general_ci',
-			'swapPre' => '',
-			'encrypt' => false,
-			'compress' => false,
-			'strictOn' => false,
-			'failover' => [],
-			'port' => 3306
-		];
-
-		$this->development = [
-			'DSN' => '',
-			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
-			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
-			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
-			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
-			'DBDriver' => 'MySQLi',
-			'DBPrefix' => 'ospos_',
-			'pConnect' => false,
-			'DBDebug' => (ENVIRONMENT !== 'production'),
-			'charset' => 'utf8',
-			'DBCollat' => 'utf8_general_ci',
-			'swapPre' => '',
-			'encrypt' => false,
-			'compress' => false,
-			'strictOn' => false,
-			'failover' => [],
-			'port' => 3306
-		];
-
-		$this->tests = [
-			'DSN' => '',
-			'hostname' => !empty(getenv('MYSQL_HOST_NAME')) ? getenv('MYSQL_HOST_NAME') : 'localhost',
-			'username' => !empty(getenv('MYSQL_USERNAME')) ? getenv('MYSQL_USERNAME') : 'admin',
-			'password' => !empty(getenv('MYSQL_PASSWORD')) ? getenv('MYSQL_PASSWORD') : 'pointofsale',
-			'database' => !empty(getenv('MYSQL_DB_NAME')) ? getenv('MYSQL_DB_NAME') : 'ospos',
-			'DBDriver' => 'MySQLi',
-			'DBPrefix' => 'ospos_',
-			'pConnect' => false,
-			'DBDebug' => (ENVIRONMENT !== 'production'),
-			'charset' => 'utf8',
-			'DBCollat' => 'utf8_general_ci',
-			'swapPre' => '',
-			'encrypt' => false,
-			'compress' => false,
-			'strictOn' => false,
-			'failover' => [],
-			'port' => 3306
-		];
 
 		// Ensure that we always set the database group to 'tests' if
 		// we are currently running an automated test suite, so that
