@@ -155,9 +155,9 @@ function get_sale_data_last_row(ResultInterface $sales): array
 	return [
 		'sale_id' => '-',
 		'sale_time' => lang('Sales.total'),
-		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
-		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
-		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
+		'amount_due' => to_currency($sum_amount_due),
+		'amount_tendered' => to_currency($sum_amount_tendered),
+		'change_due' => to_currency($sum_change_due)
 	];
 }
 
