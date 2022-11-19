@@ -83,7 +83,7 @@ class Items extends Secure_Controller
 	public function pic_thumb($pic_filename)
 	{
 		$this->load->helper('file');
-		$this->load->library('image_lib');
+		// $this->load->library('image_lib');
 
 		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
 		$images = glob('./uploads/item_pics/' . $pic_filename);
@@ -97,17 +97,18 @@ class Items extends Secure_Controller
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
-				$config['image_library'] = 'gd2';
-				$config['source_image']  = $image_path;
-				$config['maintain_ratio'] = TRUE;
-				$config['create_thumb'] = TRUE;
-				$config['width'] = 52;
-				$config['height'] = 32;
 
-				$this->image_lib->initialize($config);
-				$this->image_lib->resize();
+				$image_library = 'gd';
+				$source_image  = $image_path;
+				$maintain_ratio = TRUE;
+				$width = 52;
+				$height = 32;
 
-				$thumb_path = $this->image_lib->full_dst_path;
+				\Config\Services::image($image_library)
+				->withFile($source_image)
+				->resize($width, $height, $maintain_ratio)
+				->save($thumb_path);
+
 			}
 			$this->output->set_content_type(get_mime_by_extension($thumb_path));
 			$this->output->set_output(file_get_contents($thumb_path));
