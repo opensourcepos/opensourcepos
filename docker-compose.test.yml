@@ -15,7 +15,7 @@ services:
           - MYSQL_DATABASE=ospos
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
-        command: ["/bin/wait-for-it.sh", "mysql:3306", "--", "/app/vendor/phpunit/phpunit/phpunit"]
+        command: ["/bin/wait-for-it.sh", "mysql:3306", "--", "/app/vendor/bin/phpunit", "/app/app/tests"]
         ports:
           - "80:80"
 

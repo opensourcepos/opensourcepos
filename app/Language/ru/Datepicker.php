@@ -1,0 +1,23 @@
+<?php
+return [
+	'datepicker_all_time' => 'за все время',
+	'datepicker_apply' => '',
+	'datepicker_cancel' => '',
+	'datepicker_custom' => '',
+	'datepicker_from' => '',
+	'datepicker_last_30' => 'Последние 30 дней',
+	'datepicker_last_7' => 'Последние 7 дней',
+	'datepicker_last_financial_year' => '',
+	'datepicker_last_month' => 'Последний месяц',
+	'datepicker_last_year' => 'в прошлом году',
+	'datepicker_same_month_last_year' => '',
+	'datepicker_same_month_to_same_day_last_year' => '',
+	'datepicker_this_financial_year' => '',
+	'datepicker_this_month' => 'В этом месяце',
+	'datepicker_this_year' => 'В этом году',
+	'datepicker_to' => '',
+	'datepicker_today' => 'сегодня',
+	'datepicker_today_last_year' => '',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'вчера',
+];

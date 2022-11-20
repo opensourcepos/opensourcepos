@@ -1,0 +1,23 @@
+<?php
+return [
+	'datepicker_all_time' => 'เวลาทั้งหมด',
+	'datepicker_apply' => 'นำไปใช้',
+	'datepicker_cancel' => 'ยกเลิก',
+	'datepicker_custom' => 'กำหนดเอง',
+	'datepicker_from' => 'จาก',
+	'datepicker_last_30' => '30 วันสุดท้าย',
+	'datepicker_last_7' => '7 วันสุดท้าย',
+	'datepicker_last_financial_year' => 'ปีบัญชีที่ผ่านมา',
+	'datepicker_last_month' => 'เดือนที่แล้ว',
+	'datepicker_last_year' => 'ปีที่แล้ว',
+	'datepicker_same_month_last_year' => 'เดือนเดียวกันของปีที่แล้ว',
+	'datepicker_same_month_to_same_day_last_year' => 'เดือนเดียวกันกับวันเดียวกันของปีที่แล้ว',
+	'datepicker_this_financial_year' => 'ปีบัญชีปัจจุบัน',
+	'datepicker_this_month' => 'เดือนนี้',
+	'datepicker_this_year' => 'ปีนี้',
+	'datepicker_to' => 'ถึง',
+	'datepicker_today' => 'วันนี้',
+	'datepicker_today_last_year' => 'วันนี้ปีที่แล้ว',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'เมื่อวานนี้',
+];
