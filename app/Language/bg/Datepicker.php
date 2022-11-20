@@ -1,0 +1,23 @@
+<?php
+return [
+	'datepicker_all_time' => 'All Time',
+	'datepicker_apply' => 'Apply',
+	'datepicker_cancel' => 'Cancel',
+	'datepicker_custom' => 'Custom',
+	'datepicker_from' => 'From',
+	'datepicker_last_30' => 'Last 30 Days',
+	'datepicker_last_7' => 'Last 7 Days',
+	'datepicker_last_financial_year' => 'Last Fiscal Year',
+	'datepicker_last_month' => 'Last Month',
+	'datepicker_last_year' => 'Last Year',
+	'datepicker_same_month_last_year' => 'Same Month Last Year',
+	'datepicker_same_month_to_same_day_last_year' => 'Same Month To Same Day Last Year',
+	'datepicker_this_financial_year' => 'Current Fiscal Year',
+	'datepicker_this_month' => 'Current Month',
+	'datepicker_this_year' => 'Current Year',
+	'datepicker_to' => 'To',
+	'datepicker_today' => 'Today',
+	'datepicker_today_last_year' => 'Today Last Year',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'Yesterday',
+];

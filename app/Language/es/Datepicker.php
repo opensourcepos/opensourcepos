@@ -1,0 +1,23 @@
+<?php
+return [
+	'datepicker_all_time' => 'Todos',
+	'datepicker_apply' => 'Aplicar',
+	'datepicker_cancel' => 'Cancelar',
+	'datepicker_custom' => 'Personalizar',
+	'datepicker_from' => 'Desde',
+	'datepicker_last_30' => 'Últimos 30 Días',
+	'datepicker_last_7' => 'Últimos 7 Días',
+	'datepicker_last_financial_year' => 'Último año fiscal',
+	'datepicker_last_month' => 'Mes Anterior',
+	'datepicker_last_year' => 'Año Anterior',
+	'datepicker_same_month_last_year' => 'Este Mes hace un año',
+	'datepicker_same_month_to_same_day_last_year' => 'Este mes hasta hoy, del año pasado',
+	'datepicker_this_financial_year' => 'Este año fiscal',
+	'datepicker_this_month' => 'Este Mes',
+	'datepicker_this_year' => 'Este Año',
+	'datepicker_to' => 'Hasta',
+	'datepicker_today' => 'Hoy',
+	'datepicker_today_last_year' => 'Hoy el año pasado',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'Ayer',
+];

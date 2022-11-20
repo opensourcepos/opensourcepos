@@ -1,0 +1,23 @@
+<?php
+return [
+	'datepicker_all_time' => 'All Tid',
+	'datepicker_apply' => 'Skicka',
+	'datepicker_cancel' => 'Avbryt',
+	'datepicker_custom' => 'Anpassa',
+	'datepicker_from' => 'Från',
+	'datepicker_last_30' => 'Senaste 30 dagar',
+	'datepicker_last_7' => 'Senaste 7 dagar',
+	'datepicker_last_financial_year' => 'Senaste bokföringsår',
+	'datepicker_last_month' => 'Senaste månaden',
+	'datepicker_last_year' => 'Senaste året',
+	'datepicker_same_month_last_year' => 'Samma månad föregående år',
+	'datepicker_same_month_to_same_day_last_year' => 'Samma månad till dag förra året',
+	'datepicker_this_financial_year' => 'Nuvarande bokföringsår',
+	'datepicker_this_month' => 'Nuvarande månad',
+	'datepicker_this_year' => 'Nuvarande år',
+	'datepicker_to' => 'Till',
+	'datepicker_today' => 'Idag',
+	'datepicker_today_last_year' => 'Idag föregående år',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'I går',
+];
