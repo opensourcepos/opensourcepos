@@ -17,9 +17,7 @@ before_install:
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker run --rm -v $(pwd):/app jekkos/composer composer install
-  - docker run --rm -v $(pwd):/app jekkos/composer php bin/install.php translations develop
-  - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
+  - docker run --rm -v $(pwd):/app opensourcepos/composer composer install
   - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true

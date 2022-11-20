@@ -1,4 +1,4 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...HEAD
+[3.4.0]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.4.0
 [3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
 [3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
 [3.3.5]: https://github.com/opensourcepos/opensourcepos/compare/3.3.4...3.3.5
@@ -27,11 +27,12 @@
 
 All notable changes to this project will be documented here.
 
-## [Unreleased]
+## [3.4.0]
 
 List of changes in the `master` branch.
 
-- N/A
+- Bump framework to CodeIgniter 4.1.3
+- Improve security performance against bots.
 
 ## [3.3.8] - 2022-04-26
 
