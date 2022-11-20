@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Events\Load_config;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 
@@ -52,8 +53,9 @@ Events::on('pre_system', function ()
 	}
 });
 
-Events::on('post_controller_constructor', ['Load_config', 'load_config']);
+$config = new Load_config();	//TODO: Not 100% sure this is the best way to do this, but without instantiating the class, the event engine tries to run the function as if it were static.
+Events::on('post_controller_constructor', [$config, 'load_config']);
 
-Events::on('post_controller', ['Db_log', 'db_log_queries']);
+Events::on('post_controller', ['\App\Events\Db_log', 'db_log_queries']);
 
-Events::on('pre_controller', ['Method', 'validate_method']);
+Events::on('pre_controller', ['\App\Events\Method', 'validate_method']);
