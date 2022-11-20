@@ -1,22 +1,23 @@
-<?php 
-
-$lang["datepicker_all_time"] = "Tüm Zamanlar";
-$lang["datepicker_apply"] = "Uygula";
-$lang["datepicker_cancel"] = "İptal Et";
-$lang["datepicker_custom"] = "Özel";
-$lang["datepicker_from"] = "Şundan";
-$lang["datepicker_last_30"] = "Son 30 Gün";
-$lang["datepicker_last_7"] = "Son 7 Gün";
-$lang["datepicker_last_financial_year"] = "Son Mali Yıl";
-$lang["datepicker_last_month"] = "Geçen Ay";
-$lang["datepicker_last_year"] = "Geçen Yıl";
-$lang["datepicker_same_month_last_year"] = "Geçen Yıl Aynı Ay";
-$lang["datepicker_same_month_to_same_day_last_year"] = "Geçen Yıl Aynı Aydan Aynı Güne";
-$lang["datepicker_this_financial_year"] = "Cari Mali Yıl";
-$lang["datepicker_this_month"] = "Bu Ay";
-$lang["datepicker_this_year"] = "Bu Yıl";
-$lang["datepicker_to"] = "Şuna";
-$lang["datepicker_today"] = "Bugün";
-$lang["datepicker_today_last_year"] = "Geçen Yıl Bugün";
-$lang["datepicker_weekstart"] = "0";
-$lang["datepicker_yesterday"] = "Dün";
+<?php
+return [
+	'datepicker_all_time' => 'Tüm Zamanlar',
+	'datepicker_apply' => 'Uygula',
+	'datepicker_cancel' => 'İptal Et',
+	'datepicker_custom' => 'Özel',
+	'datepicker_from' => 'Şundan',
+	'datepicker_last_30' => 'Son 30 Gün',
+	'datepicker_last_7' => 'Son 7 Gün',
+	'datepicker_last_financial_year' => 'Son Mali Yıl',
+	'datepicker_last_month' => 'Geçen Ay',
+	'datepicker_last_year' => 'Geçen Yıl',
+	'datepicker_same_month_last_year' => 'Geçen Yıl Aynı Ay',
+	'datepicker_same_month_to_same_day_last_year' => 'Geçen Yıl Aynı Aydan Aynı Güne',
+	'datepicker_this_financial_year' => 'Cari Mali Yıl',
+	'datepicker_this_month' => 'Bu Ay',
+	'datepicker_this_year' => 'Bu Yıl',
+	'datepicker_to' => 'Şuna',
+	'datepicker_today' => 'Bugün',
+	'datepicker_today_last_year' => 'Geçen Yıl Bugün',
+	'datepicker_weekstart' => '0',
+	'datepicker_yesterday' => 'Dün',
+];

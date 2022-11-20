@@ -1,22 +1,23 @@
-<?php 
-
-$lang["datepicker_all_time"] = "Kezdetektől";
-$lang["datepicker_apply"] = "Elfogad";
-$lang["datepicker_cancel"] = "Mégsem";
-$lang["datepicker_custom"] = "Egyedi";
-$lang["datepicker_from"] = "Tól";
-$lang["datepicker_last_30"] = "Utolsó 30 nap";
-$lang["datepicker_last_7"] = "Utolsó 7 nap";
-$lang["datepicker_last_financial_year"] = "";
-$lang["datepicker_last_month"] = "Múlt hónap";
-$lang["datepicker_last_year"] = "Múlt év";
-$lang["datepicker_same_month_last_year"] = "Ez a hónap, múlt évben";
-$lang["datepicker_same_month_to_same_day_last_year"] = "Ez a hónap, mai nap, múlt évben";
-$lang["datepicker_this_financial_year"] = "";
-$lang["datepicker_this_month"] = "Ez a hónap";
-$lang["datepicker_this_year"] = "Ezév";
-$lang["datepicker_to"] = "Ig";
-$lang["datepicker_today"] = "Ma";
-$lang["datepicker_today_last_year"] = "Mai nap, elmúlt évben";
-$lang["datepicker_weekstart"] = "1";
-$lang["datepicker_yesterday"] = "Tegnap";
+<?php
+return [
+	'datepicker_all_time' => 'Kezdetektől',
+	'datepicker_apply' => 'Elfogad',
+	'datepicker_cancel' => 'Mégsem',
+	'datepicker_custom' => 'Egyedi',
+	'datepicker_from' => 'Tól',
+	'datepicker_last_30' => 'Utolsó 30 nap',
+	'datepicker_last_7' => 'Utolsó 7 nap',
+	'datepicker_last_financial_year' => '',
+	'datepicker_last_month' => 'Múlt hónap',
+	'datepicker_last_year' => 'Múlt év',
+	'datepicker_same_month_last_year' => 'Ez a hónap, múlt évben',
+	'datepicker_same_month_to_same_day_last_year' => 'Ez a hónap, mai nap, múlt évben',
+	'datepicker_this_financial_year' => '',
+	'datepicker_this_month' => 'Ez a hónap',
+	'datepicker_this_year' => 'Ezév',
+	'datepicker_to' => 'Ig',
+	'datepicker_today' => 'Ma',
+	'datepicker_today_last_year' => 'Mai nap, elmúlt évben',
+	'datepicker_weekstart' => '1',
+	'datepicker_yesterday' => 'Tegnap',
+];

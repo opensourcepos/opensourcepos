@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "Я не робот.";
-$lang["login_go"] = "ходите";
-$lang["login_invalid_gcaptcha"] = "Неверный Логин";
-$lang["login_invalid_installation"] = "Настройки неверные, проверьте php.ini";
-$lang["login_invalid_username_and_password"] = "Неправильное Имя или Пароль";
-$lang["login_login"] = "Логин";
-$lang["login_logout"] = "";
-$lang["login_migration_needed"] = "";
-$lang["login_password"] = "Пароль";
-$lang["login_username"] = "Имя пользователя";
-$lang["login_welcome"] = "";
+<?php
+return [
+	'login_gcaptcha' => 'Я не робот.',
+	'login_go' => 'ходите',
+	'login_invalid_gcaptcha' => 'Неверный Логин',
+	'login_invalid_installation' => 'Настройки неверные, проверьте php.ini',
+	'login_invalid_username_and_password' => 'Неправильное Имя или Пароль',
+	'login_login' => 'Логин',
+	'login_logout' => '',
+	'login_migration_needed' => '',
+	'login_password' => 'Пароль',
+	'login_username' => 'Имя пользователя',
+	'login_welcome' => '',
+];

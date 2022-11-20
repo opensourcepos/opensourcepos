@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "Nejsem robot.";
-$lang["login_go"] = "Přihlásit";
-$lang["login_invalid_gcaptcha"] = "Špatné zadání.";
-$lang["login_invalid_installation"] = "Instalace není v pořádku, zkontrolujte soubor php.ini.";
-$lang["login_invalid_username_and_password"] = "Neplatné jméno nebo heslo.";
-$lang["login_login"] = "Login";
-$lang["login_logout"] = "";
-$lang["login_migration_needed"] = "";
-$lang["login_password"] = "Heslo";
-$lang["login_username"] = "Uživatelské jméno";
-$lang["login_welcome"] = "";
+<?php
+return [
+	'login_gcaptcha' => 'Nejsem robot.',
+	'login_go' => 'Přihlásit',
+	'login_invalid_gcaptcha' => 'Špatné zadání.',
+	'login_invalid_installation' => 'Instalace není v pořádku, zkontrolujte soubor php.ini.',
+	'login_invalid_username_and_password' => 'Neplatné jméno nebo heslo.',
+	'login_login' => 'Login',
+	'login_logout' => '',
+	'login_migration_needed' => '',
+	'login_password' => 'Heslo',
+	'login_username' => 'Uživatelské jméno',
+	'login_welcome' => '',
+];

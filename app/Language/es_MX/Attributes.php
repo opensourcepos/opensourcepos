@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "El valor del atributo no puede contener ':' or '|'";
-$lang["attributes_confirm_delete"] = "¿Está seguro de eliminar el/los atributo(s) seleccionado(s)?";
-$lang["attributes_confirm_restore"] = "¿Está seguro que quiere restaurar los atributos seleccionados?";
-$lang["attributes_definition_cannot_be_deleted"] = "No ha sido posible eliminar el/los atributo(s) seleccionado(s)";
-$lang["attributes_definition_error_adding_updating"] = "El atributo %1 no pudo ser agregado o actualizado. Favor de revisar el registro de errorres.";
-$lang["attributes_definition_flags"] = "Visibilidad del atributo";
-$lang["attributes_definition_group"] = "Grupo";
-$lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Agregar Atributo";
-$lang["attributes_definition_name_required"] = "El nombre del atributo es un campo requerido";
-$lang["attributes_definition_one_or_multiple"] = "atributo(s)";
-$lang["attributes_definition_successful_adding"] = "Has agregado un atributo correctamente";
-$lang["attributes_definition_successful_deleted"] = "El atributo se ha eliminado correctamente";
-$lang["attributes_definition_successful_updating"] = "El atributo se ha actualizado correctamente";
-$lang["attributes_definition_type"] = "Tipo de atributo";
-$lang["attributes_definition_type_required"] = "El tipo de atributo es un campo requerido";
-$lang["attributes_definition_unit"] = "Unidad de Medida";
-$lang["attributes_definition_values"] = "Valores del atributo";
-$lang["attributes_new"] = "Nuevo atributo";
-$lang["attributes_no_attributes_to_display"] = "Sin artículos para mostrar";
-$lang["attributes_receipt_visibility"] = "Recibo";
-$lang["attributes_show_in_items"] = "Mostrar en artículos";
-$lang["attributes_show_in_items_visibility"] = "Artículos";
-$lang["attributes_show_in_receipt"] = "Mostrar en recibo";
-$lang["attributes_show_in_receivings"] = "Mostrar en recepciones";
-$lang["attributes_show_in_receivings_visibility"] = "Recepciones";
-$lang["attributes_show_in_sales"] = "Mostrar en Ventas";
-$lang["attributes_show_in_sales_visibility"] = "Ventas";
-$lang["attributes_update"] = "Actualizar atributo";
+<?php
+return [
+	'attributes_attribute_value_invalid_chars' => 'El valor del atributo no puede contener ':' or '|'',
+	'attributes_confirm_delete' => '¿Está seguro de eliminar el/los atributo(s) seleccionado(s)?',
+	'attributes_confirm_restore' => '¿Está seguro que quiere restaurar los atributos seleccionados?',
+	'attributes_definition_cannot_be_deleted' => 'No ha sido posible eliminar el/los atributo(s) seleccionado(s)',
+	'attributes_definition_error_adding_updating' => 'El atributo %1 no pudo ser agregado o actualizado. Favor de revisar el registro de errorres.',
+	'attributes_definition_flags' => 'Visibilidad del atributo',
+	'attributes_definition_group' => 'Grupo',
+	'attributes_definition_id' => 'Id',
+	'attributes_definition_name' => 'Agregar Atributo',
+	'attributes_definition_name_required' => 'El nombre del atributo es un campo requerido',
+	'attributes_definition_one_or_multiple' => 'atributo(s)',
+	'attributes_definition_successful_adding' => 'Has agregado un atributo correctamente',
+	'attributes_definition_successful_deleted' => 'El atributo se ha eliminado correctamente',
+	'attributes_definition_successful_updating' => 'El atributo se ha actualizado correctamente',
+	'attributes_definition_type' => 'Tipo de atributo',
+	'attributes_definition_type_required' => 'El tipo de atributo es un campo requerido',
+	'attributes_definition_unit' => 'Unidad de Medida',
+	'attributes_definition_values' => 'Valores del atributo',
+	'attributes_new' => 'Nuevo atributo',
+	'attributes_no_attributes_to_display' => 'Sin artículos para mostrar',
+	'attributes_receipt_visibility' => 'Recibo',
+	'attributes_show_in_items' => 'Mostrar en artículos',
+	'attributes_show_in_items_visibility' => 'Artículos',
+	'attributes_show_in_receipt' => 'Mostrar en recibo',
+	'attributes_show_in_receivings' => 'Mostrar en recepciones',
+	'attributes_show_in_receivings_visibility' => 'Recepciones',
+	'attributes_show_in_sales' => 'Mostrar en Ventas',
+	'attributes_show_in_sales_visibility' => 'Ventas',
+	'attributes_update' => 'Actualizar atributo',
+];

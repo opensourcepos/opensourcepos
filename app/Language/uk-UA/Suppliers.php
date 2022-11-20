@@ -1,23 +1,24 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Номер рахунку";
-$lang["suppliers_agency_name"] = "Назва агентства";
-$lang["suppliers_cannot_be_deleted"] = "Не вдалось видалити вибраних постачальників, один або більше з них має активні продажі.";
-$lang["suppliers_category"] = "Категорія";
-$lang["suppliers_company_name"] = "Назва організації";
-$lang["suppliers_company_name_required"] = "Назва організації - обов'язкове поле.";
-$lang["suppliers_confirm_delete"] = "Ви впевнені, що хочете видалити вибраних постачальників?";
-$lang["suppliers_confirm_restore"] = "Ви впевнені, що хочете відновити вибраних постачальників?";
-$lang["suppliers_cost"] = "Витрати постачальника";
-$lang["suppliers_error_adding_updating"] = "Помилка при додаванні/оновленні постачальників.";
-$lang["suppliers_goods"] = "Товари постачальників";
-$lang["suppliers_new"] = "Новий постачальник";
-$lang["suppliers_none_selected"] = "Ви не обрали ні одного постачальника для видалення.";
-$lang["suppliers_one_or_multiple"] = "Постачальник(и)";
-$lang["suppliers_successful_adding"] = "Ви успішно додали постачальника";
-$lang["suppliers_successful_deleted"] = "Ви успішно видалили постачальника";
-$lang["suppliers_successful_updating"] = "Ви успішно оновили постачальника";
-$lang["suppliers_supplier"] = "Постачальник";
-$lang["suppliers_supplier_id"] = "ІН";
-$lang["suppliers_tax_id"] = "Податковий ІН";
-$lang["suppliers_update"] = "Оновити постачальника";
+<?php
+return [
+	'suppliers_account_number' => 'Номер рахунку',
+	'suppliers_agency_name' => 'Назва агентства',
+	'suppliers_cannot_be_deleted' => 'Не вдалось видалити вибраних постачальників, один або більше з них має активні продажі.',
+	'suppliers_category' => 'Категорія',
+	'suppliers_company_name' => 'Назва організації',
+	'suppliers_company_name_required' => 'Назва організації - обов'язкове поле.',
+	'suppliers_confirm_delete' => 'Ви впевнені, що хочете видалити вибраних постачальників?',
+	'suppliers_confirm_restore' => 'Ви впевнені, що хочете відновити вибраних постачальників?',
+	'suppliers_cost' => 'Витрати постачальника',
+	'suppliers_error_adding_updating' => 'Помилка при додаванні/оновленні постачальників.',
+	'suppliers_goods' => 'Товари постачальників',
+	'suppliers_new' => 'Новий постачальник',
+	'suppliers_none_selected' => 'Ви не обрали ні одного постачальника для видалення.',
+	'suppliers_one_or_multiple' => 'Постачальник(и)',
+	'suppliers_successful_adding' => 'Ви успішно додали постачальника',
+	'suppliers_successful_deleted' => 'Ви успішно видалили постачальника',
+	'suppliers_successful_updating' => 'Ви успішно оновили постачальника',
+	'suppliers_supplier' => 'Постачальник',
+	'suppliers_supplier_id' => 'ІН',
+	'suppliers_tax_id' => 'Податковий ІН',
+	'suppliers_update' => 'Оновити постачальника',
+];

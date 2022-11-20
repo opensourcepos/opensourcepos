@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Tulajdonság értéke nem tartalmazhat '_' vagy '|' karaktert";
-$lang["attributes_confirm_delete"] = "Biztosan törli szeretné a kijelölt tulajdonságokat?";
-$lang["attributes_confirm_restore"] = "Biztosan visszaállítja a kijelölt tulajdonságokat?";
-$lang["attributes_definition_cannot_be_deleted"] = "Nem sikerült törölni a kijelölt tulajdonságokat";
-$lang["attributes_definition_error_adding_updating"] = "% 1 attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.";
-$lang["attributes_definition_flags"] = "Tulajdonság láthatósága";
-$lang["attributes_definition_group"] = "Csoport";
-$lang["attributes_definition_id"] = "Azonosító";
-$lang["attributes_definition_name"] = "Tulajdonság hozzáadása";
-$lang["attributes_definition_name_required"] = "Tulajdonság név kötelező mező";
-$lang["attributes_definition_one_or_multiple"] = "tulajdonságok";
-$lang["attributes_definition_successful_adding"] = "Sikeresen hozzáadta az elemet";
-$lang["attributes_definition_successful_deleted"] = "Sikeresen törölte";
-$lang["attributes_definition_successful_updating"] = "Sikeresen frissítette a tulajdonságot";
-$lang["attributes_definition_type"] = "Tulajdonság típus";
-$lang["attributes_definition_type_required"] = "Tulajdonság típusa kötelező mező";
-$lang["attributes_definition_unit"] = "Mértkékegység";
-$lang["attributes_definition_values"] = "Tulajdonság értékei";
-$lang["attributes_new"] = "Új tulajdnoság";
-$lang["attributes_no_attributes_to_display"] = "Nincs megjelenítendő elem";
-$lang["attributes_receipt_visibility"] = "Nyugta";
-$lang["attributes_show_in_items"] = "Megjelenítés a termékekben";
-$lang["attributes_show_in_items_visibility"] = "Termékek";
-$lang["attributes_show_in_receipt"] = "Nyugta megjelenítése";
-$lang["attributes_show_in_receivings"] = "Meglenesítés árúátvételekben";
-$lang["attributes_show_in_receivings_visibility"] = "Áruátvételek";
-$lang["attributes_show_in_sales"] = "Megjelenítés az értékesítésekben";
-$lang["attributes_show_in_sales_visibility"] = "Értékesítések";
-$lang["attributes_update"] = "Tulajdonság frissítése";
+<?php
+return [
+	'attributes_attribute_value_invalid_chars' => 'Tulajdonság értéke nem tartalmazhat '_' vagy '|' karaktert',
+	'attributes_confirm_delete' => 'Biztosan törli szeretné a kijelölt tulajdonságokat?',
+	'attributes_confirm_restore' => 'Biztosan visszaállítja a kijelölt tulajdonságokat?',
+	'attributes_definition_cannot_be_deleted' => 'Nem sikerült törölni a kijelölt tulajdonságokat',
+	'attributes_definition_error_adding_updating' => '% 1 attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.',
+	'attributes_definition_flags' => 'Tulajdonság láthatósága',
+	'attributes_definition_group' => 'Csoport',
+	'attributes_definition_id' => 'Azonosító',
+	'attributes_definition_name' => 'Tulajdonság hozzáadása',
+	'attributes_definition_name_required' => 'Tulajdonság név kötelező mező',
+	'attributes_definition_one_or_multiple' => 'tulajdonságok',
+	'attributes_definition_successful_adding' => 'Sikeresen hozzáadta az elemet',
+	'attributes_definition_successful_deleted' => 'Sikeresen törölte',
+	'attributes_definition_successful_updating' => 'Sikeresen frissítette a tulajdonságot',
+	'attributes_definition_type' => 'Tulajdonság típus',
+	'attributes_definition_type_required' => 'Tulajdonság típusa kötelező mező',
+	'attributes_definition_unit' => 'Mértkékegység',
+	'attributes_definition_values' => 'Tulajdonság értékei',
+	'attributes_new' => 'Új tulajdnoság',
+	'attributes_no_attributes_to_display' => 'Nincs megjelenítendő elem',
+	'attributes_receipt_visibility' => 'Nyugta',
+	'attributes_show_in_items' => 'Megjelenítés a termékekben',
+	'attributes_show_in_items_visibility' => 'Termékek',
+	'attributes_show_in_receipt' => 'Nyugta megjelenítése',
+	'attributes_show_in_receivings' => 'Meglenesítés árúátvételekben',
+	'attributes_show_in_receivings_visibility' => 'Áruátvételek',
+	'attributes_show_in_sales' => 'Megjelenítés az értékesítésekben',
+	'attributes_show_in_sales_visibility' => 'Értékesítések',
+	'attributes_update' => 'Tulajdonság frissítése',
+];
