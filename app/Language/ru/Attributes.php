@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Значение атрибута не может содержать ':' or '|'";
-$lang["attributes_confirm_delete"] = "Вы уверены, что хотите удалить выбранные атрибут(ы)?";
-$lang["attributes_confirm_restore"] = "Вы уверены, что хотите восстановить выбранные атрибут(ы)?";
-$lang["attributes_definition_cannot_be_deleted"] = "Не удалось удалить выбранные атрибут(ы)";
-$lang["attributes_definition_error_adding_updating"] = "Атрибут %1 не может быть добавлен или обновлен. Пожалуйста, проверьте журнал ошибок.";
-$lang["attributes_definition_flags"] = "Видимость атрибута";
-$lang["attributes_definition_group"] = "Группа";
-$lang["attributes_definition_id"] = "№";
-$lang["attributes_definition_name"] = "Добавить атрибут";
-$lang["attributes_definition_name_required"] = "Имя атрибута является обязательным полем";
-$lang["attributes_definition_one_or_multiple"] = "атрибут(ы)";
-$lang["attributes_definition_successful_adding"] = "Вы успешно добавили товар";
-$lang["attributes_definition_successful_deleted"] = "Успешно удалено";
-$lang["attributes_definition_successful_updating"] = "Обновлено успешно";
-$lang["attributes_definition_type"] = "Тип атрибута";
-$lang["attributes_definition_type_required"] = "Имя атрибута является обязательным полем";
-$lang["attributes_definition_unit"] = "Единица измерения";
-$lang["attributes_definition_values"] = "Значения атрибута";
-$lang["attributes_new"] = "Новый атрибут";
-$lang["attributes_no_attributes_to_display"] = "Нет объектов для отображения";
-$lang["attributes_receipt_visibility"] = "Чек";
-$lang["attributes_show_in_items"] = "Показать в товарах";
-$lang["attributes_show_in_items_visibility"] = "Товары";
-$lang["attributes_show_in_receipt"] = "Показать в квитанции";
-$lang["attributes_show_in_receivings"] = "Показать в закупках";
-$lang["attributes_show_in_receivings_visibility"] = "Закупки";
-$lang["attributes_show_in_sales"] = "Показать в продажах";
-$lang["attributes_show_in_sales_visibility"] = "Продажи";
-$lang["attributes_update"] = "Обновить атрибут";
+<?php
+return [
+	'attributes_attribute_value_invalid_chars' => 'Значение атрибута не может содержать ':' or '|'',
+	'attributes_confirm_delete' => 'Вы уверены, что хотите удалить выбранные атрибут(ы)?',
+	'attributes_confirm_restore' => 'Вы уверены, что хотите восстановить выбранные атрибут(ы)?',
+	'attributes_definition_cannot_be_deleted' => 'Не удалось удалить выбранные атрибут(ы)',
+	'attributes_definition_error_adding_updating' => 'Атрибут %1 не может быть добавлен или обновлен. Пожалуйста, проверьте журнал ошибок.',
+	'attributes_definition_flags' => 'Видимость атрибута',
+	'attributes_definition_group' => 'Группа',
+	'attributes_definition_id' => '№',
+	'attributes_definition_name' => 'Добавить атрибут',
+	'attributes_definition_name_required' => 'Имя атрибута является обязательным полем',
+	'attributes_definition_one_or_multiple' => 'атрибут(ы)',
+	'attributes_definition_successful_adding' => 'Вы успешно добавили товар',
+	'attributes_definition_successful_deleted' => 'Успешно удалено',
+	'attributes_definition_successful_updating' => 'Обновлено успешно',
+	'attributes_definition_type' => 'Тип атрибута',
+	'attributes_definition_type_required' => 'Имя атрибута является обязательным полем',
+	'attributes_definition_unit' => 'Единица измерения',
+	'attributes_definition_values' => 'Значения атрибута',
+	'attributes_new' => 'Новый атрибут',
+	'attributes_no_attributes_to_display' => 'Нет объектов для отображения',
+	'attributes_receipt_visibility' => 'Чек',
+	'attributes_show_in_items' => 'Показать в товарах',
+	'attributes_show_in_items_visibility' => 'Товары',
+	'attributes_show_in_receipt' => 'Показать в квитанции',
+	'attributes_show_in_receivings' => 'Показать в закупках',
+	'attributes_show_in_receivings_visibility' => 'Закупки',
+	'attributes_show_in_sales' => 'Показать в продажах',
+	'attributes_show_in_sales_visibility' => 'Продажи',
+	'attributes_update' => 'Обновить атрибут',
+];

@@ -1,23 +1,24 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Számla #";
-$lang["suppliers_agency_name"] = "Ügynökség neve";
-$lang["suppliers_cannot_be_deleted"] = "Nem lehet törölni a beszállítót, mert már van eladásuk.";
-$lang["suppliers_category"] = "";
-$lang["suppliers_company_name"] = "Cégnév";
-$lang["suppliers_company_name_required"] = "Cégnév kötelező mező";
-$lang["suppliers_confirm_delete"] = "Biztos, hogy törölni kívánja a kiválasztott beszállítókat?";
-$lang["suppliers_confirm_restore"] = "";
-$lang["suppliers_cost"] = "";
-$lang["suppliers_error_adding_updating"] = "Hiba beszállító hozzáadásánál/módosításánál";
-$lang["suppliers_goods"] = "";
-$lang["suppliers_new"] = "Új beszállító";
-$lang["suppliers_none_selected"] = "Nem választott ki beszállítót a törléshez";
-$lang["suppliers_one_or_multiple"] = "beszállító(k)";
-$lang["suppliers_successful_adding"] = "Sikeresen hozzáadott beszállítót";
-$lang["suppliers_successful_deleted"] = "Sikeres törlés";
-$lang["suppliers_successful_updating"] = "Sikeresen módosította a beszállítót";
-$lang["suppliers_supplier"] = "Beszállító információ";
-$lang["suppliers_supplier_id"] = "ID";
-$lang["suppliers_tax_id"] = "";
-$lang["suppliers_update"] = "Bezsállító módosítása";
+<?php
+return [
+	'suppliers_account_number' => 'Számla #',
+	'suppliers_agency_name' => 'Ügynökség neve',
+	'suppliers_cannot_be_deleted' => 'Nem lehet törölni a beszállítót, mert már van eladásuk.',
+	'suppliers_category' => '',
+	'suppliers_company_name' => 'Cégnév',
+	'suppliers_company_name_required' => 'Cégnév kötelező mező',
+	'suppliers_confirm_delete' => 'Biztos, hogy törölni kívánja a kiválasztott beszállítókat?',
+	'suppliers_confirm_restore' => '',
+	'suppliers_cost' => '',
+	'suppliers_error_adding_updating' => 'Hiba beszállító hozzáadásánál/módosításánál',
+	'suppliers_goods' => '',
+	'suppliers_new' => 'Új beszállító',
+	'suppliers_none_selected' => 'Nem választott ki beszállítót a törléshez',
+	'suppliers_one_or_multiple' => 'beszállító(k)',
+	'suppliers_successful_adding' => 'Sikeresen hozzáadott beszállítót',
+	'suppliers_successful_deleted' => 'Sikeres törlés',
+	'suppliers_successful_updating' => 'Sikeresen módosította a beszállítót',
+	'suppliers_supplier' => 'Beszállító információ',
+	'suppliers_supplier_id' => 'ID',
+	'suppliers_tax_id' => '',
+	'suppliers_update' => 'Bezsállító módosítása',
+];

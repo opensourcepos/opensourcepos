@@ -1,23 +1,24 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Hesap No";
-$lang["suppliers_agency_name"] = "Ajans Adı";
-$lang["suppliers_cannot_be_deleted"] = "Sağlayıcı silinemedi, bazı sağlayıcıların satışı var.";
-$lang["suppliers_category"] = "Kategori";
-$lang["suppliers_company_name"] = "Şirket Adı";
-$lang["suppliers_company_name_required"] = "Şirket Adı zorunlu alandır.";
-$lang["suppliers_confirm_delete"] = "Seçili sağlayıcıları silmek istiyor musunuz?";
-$lang["suppliers_confirm_restore"] = "Seçili sağlayıcıları onarmak istiyor musunuz?";
-$lang["suppliers_cost"] = "Maliyet Tedarikçisi";
-$lang["suppliers_error_adding_updating"] = "Sağlayıcı ekleme/düzenleme hatası.";
-$lang["suppliers_goods"] = "Mal Tedarikçisi";
-$lang["suppliers_new"] = "Yeni Sağlayıcı";
-$lang["suppliers_none_selected"] = "Silmek için sağlayıcı seçmediniz.";
-$lang["suppliers_one_or_multiple"] = "sağlayıcılar";
-$lang["suppliers_successful_adding"] = "Sağlayıcı eklendi";
-$lang["suppliers_successful_deleted"] = "Sağlayıcı silindi";
-$lang["suppliers_successful_updating"] = "Sağlayıcı güncellendi";
-$lang["suppliers_supplier"] = "Sağlayıcı";
-$lang["suppliers_supplier_id"] = "Kimlik";
-$lang["suppliers_tax_id"] = "Vergi numarası";
-$lang["suppliers_update"] = "Sağlayıcıyı Düzenle";
+<?php
+return [
+	'suppliers_account_number' => 'Hesap No',
+	'suppliers_agency_name' => 'Ajans Adı',
+	'suppliers_cannot_be_deleted' => 'Sağlayıcı silinemedi, bazı sağlayıcıların satışı var.',
+	'suppliers_category' => 'Kategori',
+	'suppliers_company_name' => 'Şirket Adı',
+	'suppliers_company_name_required' => 'Şirket Adı zorunlu alandır.',
+	'suppliers_confirm_delete' => 'Seçili sağlayıcıları silmek istiyor musunuz?',
+	'suppliers_confirm_restore' => 'Seçili sağlayıcıları onarmak istiyor musunuz?',
+	'suppliers_cost' => 'Maliyet Tedarikçisi',
+	'suppliers_error_adding_updating' => 'Sağlayıcı ekleme/düzenleme hatası.',
+	'suppliers_goods' => 'Mal Tedarikçisi',
+	'suppliers_new' => 'Yeni Sağlayıcı',
+	'suppliers_none_selected' => 'Silmek için sağlayıcı seçmediniz.',
+	'suppliers_one_or_multiple' => 'sağlayıcılar',
+	'suppliers_successful_adding' => 'Sağlayıcı eklendi',
+	'suppliers_successful_deleted' => 'Sağlayıcı silindi',
+	'suppliers_successful_updating' => 'Sağlayıcı güncellendi',
+	'suppliers_supplier' => 'Sağlayıcı',
+	'suppliers_supplier_id' => 'Kimlik',
+	'suppliers_tax_id' => 'Vergi numarası',
+	'suppliers_update' => 'Sağlayıcıyı Düzenle',
+];

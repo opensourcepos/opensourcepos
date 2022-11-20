@@ -1,23 +1,24 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Numer konta";
-$lang["suppliers_agency_name"] = "";
-$lang["suppliers_cannot_be_deleted"] = "";
-$lang["suppliers_category"] = "";
-$lang["suppliers_company_name"] = "";
-$lang["suppliers_company_name_required"] = "";
-$lang["suppliers_confirm_delete"] = "";
-$lang["suppliers_confirm_restore"] = "";
-$lang["suppliers_cost"] = "";
-$lang["suppliers_error_adding_updating"] = "";
-$lang["suppliers_goods"] = "";
-$lang["suppliers_new"] = "";
-$lang["suppliers_none_selected"] = "";
-$lang["suppliers_one_or_multiple"] = "";
-$lang["suppliers_successful_adding"] = "";
-$lang["suppliers_successful_deleted"] = "";
-$lang["suppliers_successful_updating"] = "";
-$lang["suppliers_supplier"] = "";
-$lang["suppliers_supplier_id"] = "";
-$lang["suppliers_tax_id"] = "";
-$lang["suppliers_update"] = "";
+<?php
+return [
+	'suppliers_account_number' => 'Numer konta',
+	'suppliers_agency_name' => '',
+	'suppliers_cannot_be_deleted' => '',
+	'suppliers_category' => '',
+	'suppliers_company_name' => '',
+	'suppliers_company_name_required' => '',
+	'suppliers_confirm_delete' => '',
+	'suppliers_confirm_restore' => '',
+	'suppliers_cost' => '',
+	'suppliers_error_adding_updating' => '',
+	'suppliers_goods' => '',
+	'suppliers_new' => '',
+	'suppliers_none_selected' => '',
+	'suppliers_one_or_multiple' => '',
+	'suppliers_successful_adding' => '',
+	'suppliers_successful_deleted' => '',
+	'suppliers_successful_updating' => '',
+	'suppliers_supplier' => '',
+	'suppliers_supplier_id' => '',
+	'suppliers_tax_id' => '',
+	'suppliers_update' => '',
+];

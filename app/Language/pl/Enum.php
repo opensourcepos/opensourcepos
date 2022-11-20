@@ -1,9 +1,10 @@
-<?php 
-
-$lang["enum_half_down"] = "";
-$lang["enum_half_even"] = "";
-$lang["enum_half_five"] = "";
-$lang["enum_half_odd"] = "";
-$lang["enum_half_up"] = "";
-$lang["enum_round_down"] = "";
-$lang["enum_round_up"] = "";
+<?php
+return [
+	'enum_half_down' => '',
+	'enum_half_even' => '',
+	'enum_half_five' => '',
+	'enum_half_odd' => '',
+	'enum_half_up' => '',
+	'enum_round_down' => '',
+	'enum_round_up' => '',
+];

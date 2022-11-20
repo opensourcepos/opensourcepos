@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "";
-$lang["login_go"] = "Ulaz";
-$lang["login_invalid_gcaptcha"] = "";
-$lang["login_invalid_installation"] = "";
-$lang["login_invalid_username_and_password"] = "Neispravno ime/lozinka";
-$lang["login_login"] = "Prijava";
-$lang["login_logout"] = "";
-$lang["login_migration_needed"] = "";
-$lang["login_password"] = "Lozinka";
-$lang["login_username"] = "Korisničko ime";
-$lang["login_welcome"] = "";
+<?php
+return [
+	'login_gcaptcha' => '',
+	'login_go' => 'Ulaz',
+	'login_invalid_gcaptcha' => '',
+	'login_invalid_installation' => '',
+	'login_invalid_username_and_password' => 'Neispravno ime/lozinka',
+	'login_login' => 'Prijava',
+	'login_logout' => '',
+	'login_migration_needed' => '',
+	'login_password' => 'Lozinka',
+	'login_username' => 'Korisničko ime',
+	'login_welcome' => '',
+];
