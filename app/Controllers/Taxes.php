@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Tax_lib;
-use app\Models\enums\Rounding_mode;
-use app\Models\Tax;
-use app\Models\Tax_category;
-use app\Models\Tax_code;
-use app\Models\Tax_jurisdiction;
+use App\Libraries\Tax_lib;
+use App\Models\enums\Rounding_mode;
+use App\Models\Tax;
+use App\Models\Tax_category;
+use App\Models\Tax_code;
+use App\Models\Tax_jurisdiction;
 
 /**
  * @property tax_lib tax_lib
@@ -34,7 +34,7 @@ class Taxes extends Secure_Controller
 		helper('tax_helper');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['tax_codes'] = $this->tax_code->get_all()->getResultArray();
 		if (count($data['tax_codes']) == 0)
@@ -58,7 +58,7 @@ class Taxes extends Secure_Controller
 		$data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
 
-		if(config('OSPOS')->tax_included)
+		if(config('OSPOS')->settings['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -134,7 +134,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		if(config('OSPOS')->tax_included)
+		if(config('OSPOS')->settings['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -206,9 +206,9 @@ class Taxes extends Secure_Controller
 
 		if($tax_rate_id == -1)	//TODO: Replace -1 with constant
 		{
-			$data['rate_tax_code_id'] = config('OSPOS')->default_tax_code;
-			$data['rate_tax_category_id'] = config('OSPOS')->default_tax_category;
-			$data['rate_jurisdiction_id'] = config('OSPOS')->default_tax_jurisdiction;
+			$data['rate_tax_code_id'] = config('OSPOS')->settings['default_tax_code'];
+			$data['rate_tax_category_id'] = config('OSPOS')->settings['default_tax_category'];
+			$data['rate_jurisdiction_id'] = config('OSPOS')->settings['default_tax_jurisdiction'];
 			$data['tax_rounding_code'] = rounding_mode::HALF_UP;
 			$data['tax_rate'] = '0.0000';
 		}
@@ -237,7 +237,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if(config('OSPOS')->tax_included)
+		if(config('OSPOS')->settings['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -304,7 +304,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if(config('OSPOS')->tax_included)
+		if(config('OSPOS')->settings['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -557,7 +557,7 @@ class Taxes extends Secure_Controller
 	{
 		$tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
 
-		if(config('OSPOS')->tax_included)	//TODO: ternary notation
+		if(config('OSPOS')->settings['tax_included'])	//TODO: ternary notation
 		{
 			$default_tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 		}

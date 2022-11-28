@@ -2,18 +2,18 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
-use app\Libraries\Item_lib;
+use App\Libraries\Barcode_lib;
+use App\Libraries\Item_lib;
 
-use app\Models\Attribute;
-use app\Models\Inventory;
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Item_quantity;
-use app\Models\Item_taxes;
-use app\Models\Stock_location;
-use app\Models\Supplier;
-use app\Models\Tax_category;
+use App\Models\Attribute;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Item_quantity;
+use App\Models\Item_taxes;
+use App\Models\Stock_location;
+use App\Models\Supplier;
+use App\Models\Tax_category;
 
 use Config\Services;
 use CodeIgniter\Files\File;
@@ -58,7 +58,7 @@ class Items extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$this->session->set('allow_temp_items', 0);
 
@@ -284,9 +284,9 @@ class Items extends Secure_Controller
 			}
 		}
 
-		$use_destination_based_tax = (boolean)config('OSPOS')->use_destination_based_tax;
-		$data['include_hsn'] = config('OSPOS')->include_hsn === '1';
-		$data['category_dropdown'] = config('OSPOS')->category_dropdown;
+		$use_destination_based_tax = (boolean)config('OSPOS')->settings['use_destination_based_tax'];
+		$data['include_hsn'] = config('OSPOS')->settings['include_hsn'] === '1';
+		$data['category_dropdown'] = config('OSPOS')->settings['category_dropdown'];
 
 		if($data['category_dropdown'] === '1')
 		{
@@ -300,8 +300,8 @@ class Items extends Secure_Controller
 
 		if($item_id === NEW_ITEM)
 		{
-			$data['default_tax_1_rate'] = config('OSPOS')->default_tax_1_rate;
-			$data['default_tax_2_rate'] = config('OSPOS')->default_tax_2_rate;
+			$data['default_tax_1_rate'] = config('OSPOS')->settings['default_tax_1_rate'];
+			$data['default_tax_2_rate'] = config('OSPOS')->settings['default_tax_2_rate'];
 
 			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 1;
@@ -314,7 +314,7 @@ class Items extends Secure_Controller
 
 			if($use_destination_based_tax)
 			{
-				$item_info->tax_category_id = config('OSPOS')->default_tax_category;
+				$item_info->tax_category_id = config('OSPOS')->settings['default_tax_category'];
 			}
 		}
 
@@ -322,7 +322,7 @@ class Items extends Secure_Controller
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
 			&& !$data['allow_temp_item']
-			&& !(config('OSPOS')->derive_sale_quantity === '1')
+			&& !(config('OSPOS')->settings['derive_sale_quantity'] === '1')
 		);
 
 		$data['item_info'] = $item_info;
@@ -471,7 +471,7 @@ class Items extends Secure_Controller
 
 		foreach($result as &$item)
 		{
-			if(empty($item['item_number']) && config('OSPOS')->barcode_generate_if_empty)
+			if(empty($item['item_number']) && config('OSPOS')->settings['barcode_generate_if_empty'])
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
@@ -620,7 +620,7 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$use_destination_based_tax = (bool)config('OSPOS')->use_destination_based_tax;
+			$use_destination_based_tax = (bool)config('OSPOS')->settings['use_destination_based_tax'];
 
 			if(!$use_destination_based_tax)
 			{
@@ -733,9 +733,9 @@ class Items extends Secure_Controller
 				'rules' => [
 					'uploaded[items_image]',
 					'is_image[items_image]',
-					'max_size[items_image,' . config('OSPOS')->image_max_size.']',
-					'max_dims[items_image,' . config('OSPOS')->image_max_width . ',' . config('OSPOS')->image_max_height . ']',
-					'ext_in[items_image,' . config('OSPOS')->image_allowed_types . ']'
+					'max_size[items_image,' . config('OSPOS')->settings['image_max_size'] . ']',
+					'max_dims[items_image,' . config('OSPOS')->settings['image_max_width'] . ',' . config('OSPOS')->settings['image_max_height'] . ']',
+					'ext_in[items_image,' . config('OSPOS')->settings['image_allowed_types'] . ']'
 				]
 			]
 		];

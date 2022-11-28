@@ -2,20 +2,20 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
-use app\Libraries\Mailchimp_lib;
-use app\Libraries\Receiving_lib;
-use app\Libraries\Sale_lib;
-use app\Libraries\Tax_lib;
+use App\Libraries\Barcode_lib;
+use App\Libraries\Mailchimp_lib;
+use App\Libraries\Receiving_lib;
+use App\Libraries\Sale_lib;
+use App\Libraries\Tax_lib;
 
-use app\Models\Appconfig;
-use app\Models\Attribute;
-use app\Models\Customer_rewards;
-use app\Models\Dinner_table;
-use app\Models\Module;
-use app\Models\Enums\Rounding_mode;
-use app\Models\Stock_location;
-use app\Models\Tax;
+use App\Models\Appconfig;
+use App\Models\Attribute;
+use App\Models\Customer_rewards;
+use App\Models\Dinner_table;
+use App\Models\Module;
+use App\Models\Enums\Rounding_mode;
+use App\Models\Stock_location;
+use App\Models\Tax;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
@@ -244,13 +244,13 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = config('OSPOS')->company_logo != '';
+		$data['logo_exists'] = config('OSPOS')->settings['company_logo'] != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
@@ -259,7 +259,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
-		$data['currency_code'] = config('OSPOS')->currency_code;
+		$data['currency_code'] = config('OSPOS')->settings['currency_code'];
 
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
@@ -271,15 +271,15 @@ class Config extends Secure_Controller
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] = explode('|', config('OSPOS')->image_allowed_types);
+		$data['selected_image_allowed_types'] = explode('|', config('OSPOS')->settings['image_allowed_types']);
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$data['mailchimp']['api_key'] = $this->encrypter->decrypt(config('OSPOS')->mailchimp_api_key);
-			$data['mailchimp']['list_id'] = $this->encrypter->decrypt(config('OSPOS')->mailchimp_list_id);
+			$data['mailchimp']['api_key'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);
+			$data['mailchimp']['list_id'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
 		}
 		else
 		{
@@ -649,7 +649,7 @@ class Config extends Secure_Controller
 		$this->db->transStart();
 
 		$not_to_delete = [];
-		foreach($this->request->getPost(NULL, FILTER_SANITIZE_STRING) as $key => $value)	//TODO: Not sure if this is the best way to sanitize this array.
+		foreach($this->request->getPost(NULL, FILTER_SANITIZE_STRING) as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
 			{
@@ -911,7 +911,7 @@ class Config extends Secure_Controller
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if(config('OSPOS')->invoice_enable)
+			if(config('OSPOS')->settings['invoice_enable'])
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
@@ -939,7 +939,7 @@ class Config extends Secure_Controller
 	 */
 	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
-		$encryption_key = config('OSPOS')->encryption_key;
+		$encryption_key = config('OSPOS')->settings['encryption_key'];
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')

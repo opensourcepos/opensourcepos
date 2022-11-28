@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use app\Models\Cashup;
-use app\Models\Expense;
-use app\Models\Reports\Summary_payments;
+use App\Models\Cashup;
+use App\Models\Expense;
+use App\Models\Reports\Summary_payments;
 
 /**
  * @property cashup cashup
@@ -22,7 +22,7 @@ class Cashups extends Secure_Controller
 		$this->summary_payments = model('Reports/Summary_payments');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_cashups_manage_table_headers();
 
@@ -102,7 +102,7 @@ class Cashups extends Secure_Controller
 			$cash_ups_info->closed_amount_cash = $cash_ups_info->open_amount_cash + $cash_ups_info->transfer_amount_cash;
 
 			// if it's date mode only and not date & time truncate the open and end date to date only
-			if(empty(config('OSPOS')->date_or_time_format))
+			if(empty(config('OSPOS')->settings['date_or_time_format']))
 			{
 				// search for all the payments given the time range
 				$inputs = [
@@ -186,10 +186,10 @@ class Cashups extends Secure_Controller
 	public function save(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
 	{
 		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_STRING);
-		$open_date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $open_date);
+		$open_date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $open_date);
 
 		$close_date = $this->request->getPost('close_date', FILTER_SANITIZE_NUMBER_INT);
-		$close_date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $close_date);
+		$close_date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $close_date);
 
 		$cash_up_data = [
 			'open_date' => $open_date_formatter->format('Y-m-d H:i:s'),

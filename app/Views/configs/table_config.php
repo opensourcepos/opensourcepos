@@ -16,7 +16,7 @@
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
-						'checked' => config('OSPOS')->dinner_table_enable
+						'checked' => config('OSPOS')->settings['dinner_table_enable']
 					]) ?>
 				</div>
 			</div>

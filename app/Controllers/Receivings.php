@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Receiving_lib;
-use app\Libraries\Token_lib;
-use app\Libraries\Barcode_lib;
-use app\Models\Inventory;
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Receiving;
-use app\Models\Stock_location;
-use app\Models\Supplier;
+use App\Libraries\Receiving_lib;
+use App\Libraries\Token_lib;
+use App\Libraries\Barcode_lib;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Receiving;
+use App\Models\Stock_location;
+use App\Models\Supplier;
 use ReflectionException;
 
 /**
@@ -42,7 +42,7 @@ class Receivings extends Secure_Controller
 		$this->supplier = model('Supplier');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$this->_reload();
 	}
@@ -135,8 +135,8 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = config('OSPOS')->default_receivings_discount;
-		$discount_type = config('OSPOS')->default_receivings_discount_type;
+		$discount = config('OSPOS')->settings['default_receivings_discount'];
+		$discount_type = config('OSPOS')->settings['default_receivings_discount_type'];
 
 		if($mode == 'return' && $this->receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -445,7 +445,7 @@ class Receivings extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);	//TODO: newdate does not follow naming conventions
 		
-		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
+		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = [

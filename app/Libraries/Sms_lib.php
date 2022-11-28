@@ -30,9 +30,9 @@ class Sms_lib
 	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
-		$username = config('OSPOS')->msg_uid;
-		$password = $this->encrypter->decrypt(config('OSPOS')->msg_pwd);
-		$originator = config('OSPOS')->msg_src;
+		$username = config('OSPOS')->settings['msg_uid'];
+		$password = $this->encrypter->decrypt(config('OSPOS')->settings['msg_pwd']);
+		$originator = config('OSPOS')->settings['msg_src'];
 
 		$response = FALSE;
 

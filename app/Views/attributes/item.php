@@ -85,7 +85,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
 (function() {
-		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap(config('OSPOS')->dateformat . '"}')]) ?>
+		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap(config('OSPOS')->settings['dateformat'] . '"}')]) ?>
 
 		var enable_delete = function() {
 			$('.remove_attribute_btn').click(function() {

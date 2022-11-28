@@ -5,7 +5,7 @@
  * @var array $item_quantities
  */
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 ?>
 <?php echo form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>

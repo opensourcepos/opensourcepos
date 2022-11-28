@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Person;
+use App\Models\Person;
 
 /**
  * @property person person
@@ -16,7 +16,7 @@ abstract class Persons extends Secure_Controller
 		$this->person = model('Person');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_people_manage_table_headers();
 

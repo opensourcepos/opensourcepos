@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Giftcard;
+use App\Models\Giftcard;
 
 /**
  * @property giftcard giftcard
@@ -16,7 +16,7 @@ class Giftcards extends Secure_Controller
 		$this->giftcard = model('Giftcard');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_giftcards_manage_table_headers();
 
@@ -77,7 +77,7 @@ class Giftcards extends Secure_Controller
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person_id'] = $giftcard_info->person_id;
-		if(config('OSPOS')->giftcard_number == 'random')
+		if(config('OSPOS')->settings['giftcard_number'] == 'random')
 		{
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
 		}

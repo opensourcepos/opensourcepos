@@ -8,26 +8,26 @@
 	clock_tick();
 
 	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat) ?>");
+		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?>");
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo esc(config('OSPOS')->notify_horizontal_position, 'js') ?>",
-		from: "<?php echo esc(config('OSPOS')->notify_vertical_position, 'js') ?>"
+		align: "<?php echo esc(config('OSPOS')->settings['notify_horizontal_position'], 'js') ?>",
+		from: "<?php echo esc(config('OSPOS')->settings['notify_vertical_position'], 'js') ?>"
 	}});
 
-	var cookie_name = "<?php echo esc(config('OSPOS')->cookie_prefix, 'js') . esc(config('OSPOS')->csrf_cookie_name, 'js') ?>";
+	var cookie_name = "<?php echo esc(config('Cookie')->prefix, 'js') . esc(config('Security')->cookieName, 'js') ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);
 	};
 
 	var csrf_form_base = function() {
-		return { <?php echo esc($this->security->get_csrf_token_name(), 'js') ?> : function () { return csrf_token() } }
+		return { <?php echo esc(config('Security')->tokenName, 'js') ?> : function () { return csrf_token() } }
 	};
 
 	var setup_csrf_token = function() {
-		$('input[name="<?php echo esc($this->security->get_csrf_token_name(), 'js') ?>"]').val(csrf_token());
+		$('input[name="<?php echo esc(config('Security')->tokenName, 'js') ?>"]').val(csrf_token());
 	};
 
 	var ajax = $.ajax;
@@ -55,7 +55,7 @@
 			$.ajax({
 				url: "<?php echo site_url('home/logout'); ?>", 
 				data: { 
-					"<?php echo $this->security->get_csrf_token_name(); ?>": csrf_token()
+					"<?php echo esc(config('Security')->tokenName, 'js'); ?>": csrf_token()
 				},
 				success: function() {
 					window.location.href = '<?php echo site_url(); ?>';

@@ -11,5 +11,5 @@ use CodeIgniter\Config\BaseConfig;
  */
 class OSPOS extends BaseConfig
 {
-
+	public $settings = [];
 }

@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use app\Models\Employee;
-use app\Models\Module;
+use App\Models\Employee;
+use App\Models\Module;
 
 use CodeIgniter\Session\Session;
 
@@ -26,7 +26,7 @@ class Secure_Controller extends BaseController
 
 		if(!$this->employee->is_logged_in())
 		{
-			redirect('login');
+			return redirect()->to('login');
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
@@ -64,7 +64,7 @@ class Secure_Controller extends BaseController
 		$data['user_info'] = $logged_in_employee_info;
 		$data['controller_name'] = $module_id;
 
-		$this->load->vars($data);	//TODO: need to find out how to convert this.
+		echo view('viewData', $data);
 	}
 
 	public function check_numeric()
@@ -80,7 +80,7 @@ class Secure_Controller extends BaseController
 	}
 
 	// this is the basic set of methods most OSPOS Controllers will implement
-	public function index() { return FALSE; }
+	public function getIndex() { return FALSE; }
 	public function search() { return FALSE; }
 	public function suggest_search() { return FALSE; }
 	public function view(int $data_item_id = -1) { return FALSE; }

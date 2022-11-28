@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use app\Models\Expense;
-use app\Models\Expense_category;
+use App\Models\Expense;
+use App\Models\Expense_category;
 
 /**
  * @property expense expense
@@ -19,7 +19,7 @@ class Expenses extends Secure_Controller
 		$this->expense_category = model('Expense_category');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_expenses_manage_table_headers();
 
@@ -137,7 +137,7 @@ class Expenses extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
 
-		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
+		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),

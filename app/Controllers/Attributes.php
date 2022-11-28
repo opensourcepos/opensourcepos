@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Attribute;
+use App\Models\Attribute;
 
 require_once('Secure_Controller.php');
 
@@ -21,7 +21,7 @@ class Attributes extends Secure_Controller
 		$this->attribute = model('Attribute');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_attribute_definition_manage_table_headers();
 

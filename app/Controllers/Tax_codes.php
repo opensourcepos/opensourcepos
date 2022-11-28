@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Tax_code;
+use App\Models\Tax_code;
 
 /**
  * @property tax_code tax_code
@@ -18,7 +18,7 @@ class Tax_codes extends Secure_Controller
 	}
 
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		 echo view('taxes/tax_codes', $this->get_data());
 	}

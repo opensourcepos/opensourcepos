@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
+use App\Libraries\Barcode_lib;
 
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Item_kit_items;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Item_kit_items;
 
 /**
  *
@@ -64,7 +64,7 @@ class Item_kits extends Secure_Controller
 		return $item_kit;
 	}
 	
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_item_kits_manage_table_headers();
 

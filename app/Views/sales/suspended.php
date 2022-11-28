@@ -3,8 +3,8 @@
  * @var array $suspended_sales
  */
 
-use app\Models\Employee;
-use app\Models\Customer;
+use App\Models\Employee;
+use App\Models\Customer;
 
 ?>
 <style>
@@ -22,7 +22,7 @@ use app\Models\Customer;
 			<th><?php echo lang('Sales.suspended_doc_id') ?></th>
 			<th><?php echo lang('Sales.date') ?></th>
 			<?php
-			if(config('OSPOS')->dinner_table_enable == TRUE)
+			if(config('OSPOS')->settings['dinner_table_enable'] == TRUE)
 			{
 			?>
 				<th><?php echo lang('Sales.table') ?></th>
@@ -42,9 +42,9 @@ use app\Models\Customer;
 		?>
 			<tr>
 				<td><?php echo $suspended_sale['doc_id'] ?></td>
-				<td><?php echo date(config('OSPOS')->dateformat, strtotime($suspended_sale['sale_time'])) ?></td>
+				<td><?php echo date(config('OSPOS')->settings['dateformat'], strtotime($suspended_sale['sale_time'])) ?></td>
 				<?php
-				if(config('OSPOS')->dinner_table_enable == TRUE)
+				if(config('OSPOS')->settings['dinner_table_enable'] == TRUE)
 				{
 				?>
 					<td><?php echo esc($this->Dinner_table->get_name($suspended_sale['dinner_table_id'])) ?></td>
