@@ -2,8 +2,8 @@
 
 namespace App\Database\Migrations;
 
-use app\Libraries\Tax_lib;
-use app\Models\Appconfig;
+use App\Libraries\Tax_lib;
+use App\Models\Appconfig;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 

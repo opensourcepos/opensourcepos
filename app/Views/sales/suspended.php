@@ -3,8 +3,8 @@
  * @var array $suspended_sales
  */
 
-use app\Models\Employee;
-use app\Models\Customer;
+use App\Models\Employee;
+use App\Models\Customer;
 
 ?>
 <style>

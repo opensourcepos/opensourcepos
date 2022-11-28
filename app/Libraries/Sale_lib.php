@@ -2,17 +2,17 @@
 
 namespace app\Libraries;
 
-use app\Models\Attribute;
-use app\Models\Customer;
-use app\Models\Dinner_table;
-use app\Models\Item;
-use app\Models\Item_kit_items;
-use app\Models\Item_quantity;
-use app\Models\Item_taxes;
-use app\Models\Enums\Rounding_mode;
-use app\Models\Sale;
+use App\Models\Attribute;
+use App\Models\Customer;
+use App\Models\Dinner_table;
+use App\Models\Item;
+use App\Models\Item_kit_items;
+use App\Models\Item_quantity;
+use App\Models\Item_taxes;
+use App\Models\Enums\Rounding_mode;
+use App\Models\Sale;
 use CodeIgniter\Session\Session;
-use app\Models\Stock_location;
+use App\Models\Stock_location;
 use ReflectionException;
 
 /**

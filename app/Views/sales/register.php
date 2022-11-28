@@ -38,7 +38,7 @@
  * @var float $cash_amount_due
  */
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 ?>
 <?php echo view('partial/header') ?>

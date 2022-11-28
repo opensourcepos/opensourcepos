@@ -5,7 +5,7 @@ namespace app\Libraries;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Validation\Validation;
 use Config\Services;
-use app\Models\Employee;
+use App\Models\Employee;
 
 /**
  * @property migration migration

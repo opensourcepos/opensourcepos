@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Module;
+use App\Models\Module;
 
 /**
  *

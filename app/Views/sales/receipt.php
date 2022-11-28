@@ -4,7 +4,7 @@
  * @var bool $print_after_sale
  */
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 ?>
 <?php echo view('partial/header') ?>

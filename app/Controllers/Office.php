@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 /**
  * @property employee employee

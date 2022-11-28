@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Expense_category;
+use App\Models\Expense_category;
 
 /**
  * @property expense_category expense_category

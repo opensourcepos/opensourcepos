@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
-use app\Models\Attribute;
+use App\Models\Attribute;
 use DateTime;
 
 class Migration_database_optimizations extends Migration

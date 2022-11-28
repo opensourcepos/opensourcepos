@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Tax_category;
+use App\Models\Tax_category;
 
 /**
  * @property tax_category tax_category

@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Attribute;
+use App\Models\Attribute;
 
 require_once('Secure_Controller.php');
 

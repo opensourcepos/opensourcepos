@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Sms_lib;
+use App\Libraries\Sms_lib;
 
-use app\Models\Person;
+use App\Models\Person;
 
 /**
  *

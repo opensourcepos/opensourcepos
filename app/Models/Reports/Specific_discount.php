@@ -2,7 +2,7 @@
 
 namespace App\Models\Reports;
 
-use app\Models\Sale;
+use App\Models\Sale;
 
 /**
  *

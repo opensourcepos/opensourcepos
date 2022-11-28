@@ -1,9 +1,9 @@
 <?php
 
-use app\Models\Attribute;
-use app\Models\Employee;
-use app\Models\Item_taxes;
-use app\Models\Tax_category;
+use App\Models\Attribute;
+use App\Models\Employee;
+use App\Models\Item_taxes;
+use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 

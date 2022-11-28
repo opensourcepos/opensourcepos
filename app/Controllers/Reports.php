@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use app\Models\Attribute;
-use app\Models\Customer;
-use app\Models\Stock_location;
-use app\Models\Supplier;
-use app\Models\Reports\Detailed_receivings;
-use app\Models\Reports\Detailed_sales;
-use app\Models\Reports\Inventory_low;
-use app\Models\Reports\Inventory_summary;
-use app\Models\Reports\Specific_customer;
-use app\Models\Reports\Specific_discount;
-use app\Models\Reports\Specific_employee;
-use app\Models\Reports\Specific_supplier;
-use app\Models\Reports\Summary_categories;
-use app\Models\Reports\Summary_customers;
-use app\Models\Reports\Summary_discounts;
-use app\Models\Reports\Summary_employees;
-use app\Models\Reports\Summary_expenses_categories;
-use app\Models\Reports\Summary_items;
-use app\Models\Reports\Summary_payments;
-use app\Models\Reports\Summary_sales;
-use app\Models\Reports\Summary_sales_taxes;
-use app\Models\Reports\Summary_suppliers;
-use app\Models\Reports\Summary_taxes;
+use App\Models\Attribute;
+use App\Models\Customer;
+use App\Models\Stock_location;
+use App\Models\Supplier;
+use App\Models\Reports\Detailed_receivings;
+use App\Models\Reports\Detailed_sales;
+use App\Models\Reports\Inventory_low;
+use App\Models\Reports\Inventory_summary;
+use App\Models\Reports\Specific_customer;
+use App\Models\Reports\Specific_discount;
+use App\Models\Reports\Specific_employee;
+use App\Models\Reports\Specific_supplier;
+use App\Models\Reports\Summary_categories;
+use App\Models\Reports\Summary_customers;
+use App\Models\Reports\Summary_discounts;
+use App\Models\Reports\Summary_employees;
+use App\Models\Reports\Summary_expenses_categories;
+use App\Models\Reports\Summary_items;
+use App\Models\Reports\Summary_payments;
+use App\Models\Reports\Summary_sales;
+use App\Models\Reports\Summary_sales_taxes;
+use App\Models\Reports\Summary_suppliers;
+use App\Models\Reports\Summary_taxes;
 use CodeIgniter\HTTP\Uri;
 
 /**

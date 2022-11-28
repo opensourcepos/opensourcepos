@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use app\Models\Employee;
-use app\Models\Module;
+use App\Models\Employee;
+use App\Models\Module;
 
 use CodeIgniter\Session\Session;
 

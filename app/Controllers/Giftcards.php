@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Giftcard;
+use App\Models\Giftcard;
 
 /**
  * @property giftcard giftcard
