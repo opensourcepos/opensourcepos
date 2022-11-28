@@ -2,7 +2,7 @@
 
 namespace App\Models\Tokens;
 
-use app\Models\Sale;
+use App\Models\Sale;
 
 /**
  * Token_invoice_count class

@@ -10,7 +10,8 @@ class Migration_add_item_kit_number extends Migration
 	{
 		error_log('Migrating add_item_kit_number');
 
-		execute_script(APPPATH . 'migrations/sqlscripts/3.3.3_add_kits_item_number.sql');
+		helper('migration');
+		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.3_add_kits_item_number.sql');
 
 		error_log('Migrating add_item_kit_number');
 	}

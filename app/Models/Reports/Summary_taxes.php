@@ -20,7 +20,7 @@ class Summary_taxes extends Summary_report
 	{
 		$builder->where('sales.sale_status', COMPLETED);
 
-		if(empty(config('OSPOS')->date_or_time_format))
+		if(empty(config('OSPOS')->settings['date_or_time_format']))
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -34,7 +34,7 @@ class Summary_taxes extends Summary_report
 	{
 		$where = 'WHERE sale_status = ' . COMPLETED . ' ';	//TODO: Duplicated code
 
-		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Ternary notation
+		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: Ternary notation
 		{
 			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -44,7 +44,7 @@ class Summary_taxes extends Summary_report
 		}
 		$decimals = totals_decimals();
 
-		if(config('OSPOS')->tax_included)
+		if(config('OSPOS')->settings['tax_included'])
 		{
 			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT
 				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"

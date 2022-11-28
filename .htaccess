@@ -1,9 +1,15 @@
 # redirect to public page
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{REQUEST_URI} !^public$
-  RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
-  RewriteRule "^(.*)$" "/public/" [R=301,L]
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_URI} !^public$
+    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
+    RewriteRule "^(.*)$" "/public/" [R=301,L]
+
+    # If you installed CodeIgniter in a subfolder, you will need to
+    # change the following line to match the subfolder you need. Uncomment
+    # the line below and comment the line above.
+    #RewriteRule "^(.*)$"  "/[SUBDIRECTORY]/public/" [R=301,L]
 </IfModule>
 
 # disable directory browsing
@@ -17,7 +23,6 @@ IndexIgnore *
   Header always set X-Frame-Options "SAMEORIGIN"
 </Ifmodule>
 
-# Apache 2.4
 <IfModule authz_core_module>
   # secure htaccess file
   <Files .htaccess>
@@ -37,36 +42,5 @@ IndexIgnore *
   # prevent access to csv, txt and md files
   <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
     Require all denied
-  </FilesMatch>
-</IfModule>
-
-# Apache 2.2
-<IfModule !authz_core_module>
-  # secure htaccess file
-  <Files .htaccess>
-    Order allow,deny
-    Deny from all
-    Satisfy all
-  </Files>
-
-  # prevent access to PHP error log
-  <Files error_log>
-    Order allow,deny
-    Deny from all
-    Satisfy all
-  </Files>
-
-  # prevent access to LICENSE
-  <Files LICENSE>
-    Order allow,deny
-    Deny from all
-    Satisfy all
-  </Files>
-
-  # prevent access to csv, txt and md files
-  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
-    Order allow,deny
-    Deny from all
-    Satisfy all
   </FilesMatch>
 </IfModule>

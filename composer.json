@@ -23,20 +23,28 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.3 || ^8.0",
-		"codeigniter4/framework": "^4.1.3",
-		"dompdf/dompdf": "^2.0.1",
-		"tamtamchik/namecase": "^1.0",
-		"paragonie/random_compat": "^2.0",
-		"vlucas/phpdotenv": "^2.4",
+		"php": "^7.4||^8.0",
+		"codeigniter4/framework": "^4.3.1",
+		"dompdf/dompdf": "^2.0.2",
+		"tamtamchik/namecase": "^1.0.6",
+		"paragonie/random_compat": "^2.0.21",
 		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
-        "roave/security-advisories": "dev-latest",
-		"codeigniter4/devkit": "v1.1.0",
-		"fakerphp/faker": "^1.9",
-		"mikey179/vfsstream": "^1.6",
-		"phpunit/phpunit": "^9.1",
-		"kenjis/ci-phpunit-test": "0.18.0"
+		"kint-php/kint": "^5.0.3",
+		"codeigniter/coding-standard": "^1.7.1",
+		"fakerphp/faker": "^1.21.0",
+		"friendsofphp/php-cs-fixer": "3.13.0",
+		"mikey179/vfsstream": "^1.6.11",
+		"nexusphp/cs-config": "^3.8.0",
+		"phpunit/phpunit": "^9.6.3",
+		"predis/predis": "^1.1 || ^2.1.1",
+		"roave/security-advisories": "dev-latest",
+		"codeigniter4/devkit": "v1.1.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
 	}
 }

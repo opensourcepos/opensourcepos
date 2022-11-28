@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Sms_lib;
+use App\Libraries\Sms_lib;
 
-use app\Models\Person;
+use App\Models\Person;
 
 /**
  *
@@ -25,7 +25,7 @@ class Messages extends Secure_Controller
 		$this->person = model('Person');
 	}
 	
-	public function index(): void
+	public function getIndex(): void
 	{
 		echo view('messages/sms');
 	}

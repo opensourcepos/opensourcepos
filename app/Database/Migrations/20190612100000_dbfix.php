@@ -8,7 +8,8 @@ class Migration_DBFix extends Migration
 {
 	public function up(): void
 	{
-		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_dbfix.sql');
+		helper('migration');
+		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_dbfix.sql');
 	}
 
 	public function down(): void

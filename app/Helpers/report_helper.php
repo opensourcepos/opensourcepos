@@ -1,6 +1,6 @@
 <?php
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 /**
  * Report helper

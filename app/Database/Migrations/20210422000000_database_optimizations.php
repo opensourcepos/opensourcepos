@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
-use app\Models\Attribute;
+use App\Models\Attribute;
 use DateTime;
 
 class Migration_database_optimizations extends Migration
@@ -60,7 +60,7 @@ class Migration_database_optimizations extends Migration
 						break;
 					case DATE:
 						$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-						$value = $attribute_date->format(config('OSPOS')->dateformat);
+						$value = $attribute_date->format(config('OSPOS')->settings['dateformat']);
 						break;
 					default:
 						$value = $attribute_value['attribute_value'];
@@ -72,7 +72,8 @@ class Migration_database_optimizations extends Migration
 		}
 		$this->db->transComplete();
 
-		execute_script(APPPATH . 'migrations/sqlscripts/3.4.0_database_optimizations.sql');
+		helper('migration');
+		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
 		error_log('Migrating database_optimizations completed');
 	}
 	/**
@@ -89,7 +90,7 @@ class Migration_database_optimizations extends Migration
 		$builder->select("$column, attribute_id");
 		$builder->groupBy($column);
 		$builder->having("COUNT($column) > 1");
-		$duplicated_values = $builder->get('attribute_values');
+		$duplicated_values = $builder->get();
 
 		foreach($duplicated_values->getResultArray() as $duplicated_value)
 		{

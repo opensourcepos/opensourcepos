@@ -3,7 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
-use app\Models\Attribute;
+use App\Models\Attribute;
 
 class Migration_remove_duplicate_links extends Migration
 {

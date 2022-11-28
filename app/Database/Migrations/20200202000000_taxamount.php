@@ -3,8 +3,8 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
-use app\Libraries\Tax_lib;
-use app\Models\Appconfig;
+use App\Libraries\Tax_lib;
+use App\Models\Appconfig;
 use CodeIgniter\Database\ResultInterface;
 
 /**
@@ -27,7 +27,6 @@ class Migration_TaxAmount extends Migration
 		parent::__construct();
 
 		$this->appconfig = model('Appconfig');
-		$this->tax_lib = new Tax_lib();
 	}
 
 	public function up(): void

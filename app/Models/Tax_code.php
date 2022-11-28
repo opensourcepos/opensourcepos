@@ -252,7 +252,7 @@ class Tax_code extends Model
 		}
 		else
 		{
-			return config('OSPOS')->default_tax_code;
+			return config('OSPOS')->settings['default_tax_code'];
 		}
 	}
 
