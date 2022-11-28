@@ -4,14 +4,7 @@
 <p align="center">
   <a href="#-introduction">Introduction</a> · <a href="#-live-demo">Demo</a> · <a href="#-installation">Installation</a> · 
   <a href="#-contributing">Contributing</a> · <a href="#-reporting-bugs">Bugs</a> · <a href="#-faq">FAQ</a> · 
-  <a href="#-keep-the-machine-running">Donate</a
-
-
-              
-    
-
-            
-> · <a href="#-license">License</a> · <a href="#-credits">Credits</a>
+  <a href="#-keep-the-machine-running">Donate</a> · <a href="#-license">License</a> · <a href="#-credits">Credits</a>
 </p>
 
 <p align="center">
