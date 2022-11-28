@@ -4,21 +4,14 @@
 <p align="center">
   <a href="#-introduction">Introduction</a> · <a href="#-live-demo">Demo</a> · <a href="#-installation">Installation</a> · 
   <a href="#-contributing">Contributing</a> · <a href="#-reporting-bugs">Bugs</a> · <a href="#-faq">FAQ</a> · 
-  <a href="#-keep-the-machine-running">Donate</a
-
-
-              
-    
-
-            
-> · <a href="#-license">License</a> · <a href="#-credits">Credits</a>
+  <a href="#-keep-the-machine-running">Donate</a> · <a href="#-license">License</a> · <a href="#-credits">Credits</a>
 </p>
 
 <p align="center">
 <a href="https://travis-ci.org/opensourcepos/opensourcepos" target="_blank"><img src="https://travis-ci.com/opensourcepos/opensourcepos.svg?branch=master" alt="Build Status"></a>
 <a href="https://gitter.im/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank"><img src="https://badges.gitter.im/jekkos/opensourcepos.svg" alt="Join the chat at https://gitter.im/opensourcepos"></a>
 <a href="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos" target="_blank"><img src="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos.svg" alt="Project Version"></a>
-<a href="http://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="http://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
+<a href="https://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="https://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
 </p>
 
 ## 👋 Introduction
