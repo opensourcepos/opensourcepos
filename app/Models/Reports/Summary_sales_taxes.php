@@ -19,7 +19,7 @@ class Summary_sales_taxes extends Summary_report
 	{
 		$builder->where('sales.sale_status', COMPLETED);
 
-		if(empty(config('OSPOS')->date_or_time_format))	//TODO: Duplicated code
+		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -33,7 +33,7 @@ class Summary_sales_taxes extends Summary_report
 	{
 		$where = 'WHERE sale_status = ' . COMPLETED . ' ';
 
-		if(empty(config('OSPOS')->date_or_time_format))
+		if(empty(config('OSPOS')->settings['date_or_time_format']))
 		{
 			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date'])
 			. ' AND ' . $this->db->escape($inputs['end_date']);

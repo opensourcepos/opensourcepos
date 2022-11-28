@@ -2,7 +2,7 @@
 
 namespace App\Models\Tokens;
 
-use app\Models\Appconfig;
+use App\Models\Appconfig;
 use ReflectionException;
 
 /**

@@ -4,7 +4,7 @@
  * @var bool $print_after_sale
  */
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 ?>
 <?php echo view('partial/header') ?>
@@ -55,6 +55,6 @@ if (isset($error_message))
 	<?php endif; ?>
 </div>
 
-<?php echo view('sales/' . config('OSPOS')->receipt_template) ?>
+<?php echo view('sales/' . config('OSPOS')->settings['receipt_template']) ?>
 
 <?php echo view('partial/footer') ?>

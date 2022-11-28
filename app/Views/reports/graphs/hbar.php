@@ -49,13 +49,13 @@
 					if(currency_side())
 					{
 				?>
-						return value + '<?php echo esc(config('OSPOS')->currency_symbol, 'js') ?>';
+						return value + '<?php echo esc(config('OSPOS')->settings['currency_symbol'], 'js') ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo esc(config('OSPOS')->currency_symbol, 'js') ?>' + value;
+						return '<?php echo esc(config('OSPOS')->settings['currency_symbol'], 'js') ?>' + value;
 				<?php
 					}
 				}

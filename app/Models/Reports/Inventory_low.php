@@ -2,7 +2,7 @@
 
 namespace App\Models\Reports;
 
-use app\Models\Item;
+use App\Models\Item;
 
 /**
  *

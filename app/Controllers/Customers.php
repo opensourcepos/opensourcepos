@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Mailchimp_lib;
+use App\Libraries\Mailchimp_lib;
 
-use app\Models\Customer;
-use app\Models\Customer_rewards;
-use app\Models\Tax_code;
+use App\Models\Customer;
+use App\Models\Customer_rewards;
+use App\Models\Tax_code;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
@@ -38,13 +38,13 @@ class Customers extends Persons
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
 
-		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
+		$this->encryption = new Encryption();
 		$this->encrypter = $this->encryption->initialize();
 
-		$this->_list_id = $this->encrypter->decrypt(config('OSPOS')->mailchimp_list_id);
+		$this->_list_id = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_customer_manage_table_headers();
 
@@ -174,7 +174,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if(config('OSPOS')->use_destination_based_tax)	//TODO: This can be shortened for ternary notation
+		if(config('OSPOS')->settings['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
@@ -280,7 +280,7 @@ class Customers extends Persons
 			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
 		];
 
-		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $this->request->getPost('date', FILTER_SANITIZE_STRING));
+		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,

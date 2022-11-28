@@ -2,15 +2,15 @@
 
 namespace app\Libraries;
 
-use app\Models\Customer;
-use app\Models\Item_taxes;
-use app\Models\Enums\Rounding_mode;
-use app\Models\Sale;
-use app\Models\Tax;
-use app\Models\Tax_category;
-use app\Models\Tax_code;
-use app\Models\Tax_jurisdiction;
-
+use App\Models\Customer;
+use App\Models\Item_taxes;
+use App\Models\Enums\Rounding_mode;
+use App\Models\Sale;
+use App\Models\Tax;
+use App\Models\Tax_category;
+use App\Models\Tax_code;
+use App\Models\Tax_jurisdiction;
+use App\Libraries\Sale_lib;
 
 /**
  * Tax library
@@ -98,7 +98,7 @@ class Tax_lib
 			{
 				$taxed = FALSE;
 
-				if(!config('OSPOS')->use_destination_based_tax)
+				if(!config('OSPOS')->settings['use_destination_based_tax'])
 				{
 					// Start of current Base System tax calculations
 
@@ -121,7 +121,7 @@ class Tax_lib
 						$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
 						$tax_amount = '0.0';
 
-						if(config('OSPOS')->tax_included)
+						if(config('OSPOS')->settings['tax_included'])
 						{
 							$tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 							$tax_amount = $this->get_included_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent'], $tax_decimals, Rounding_mode::HALF_UP);
@@ -161,7 +161,7 @@ class Tax_lib
 					// Start of destination based tax calculations
 					if($item['tax_category_id'] == NULL)	//TODO: === ?
 					{
-						$item['tax_category_id'] = config('OSPOS')->default_tax_category;
+						$item['tax_category_id'] = config('OSPOS')->settings['default_tax_category'];
 					}
 
 					$taxed = $this->apply_destination_tax($item, $customer_info->city, $customer_info->state, $customer_info->sales_tax_code_id, $register_mode, 0, $taxes, $item_taxes, $item['line']);
@@ -274,7 +274,7 @@ class Tax_lib
 		}
 
 		// If tax included then round decimal to tax decimals, otherwise round it to currency_decimals
-		if(config('OSPOS')->tax_included)	//TODO: Convert to ternary notation
+		if(config('OSPOS')->settings['tax_included'])	//TODO: Convert to ternary notation
 		{
 			$decimals = tax_decimals();
 		}
@@ -405,7 +405,7 @@ class Tax_lib
 	{
 		if($register_mode == 'sale')
 		{
-			$sales_tax_code_id = config('OSPOS')->default_tax_code; // overrides customer assigned code
+			$sales_tax_code_id = config('OSPOS')->settings['default_tax_code']; // overrides customer assigned code
 		}
 		else
 		{
@@ -415,7 +415,7 @@ class Tax_lib
 
 				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
 				{
-					$sales_tax_code_id = config('OSPOS')->default_tax_code; // overrides customer assigned code
+					$sales_tax_code_id = config('OSPOS')->settings['default_tax_code']; // overrides customer assigned code
 				}
 			}
 		}

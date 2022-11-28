@@ -79,19 +79,19 @@ $(document).ready(function()
 
 		<div id="logo">
 			<?php
-			if(config('OSPOS')->company_logo != '')
+			if(config('OSPOS')->settings['company_logo'] != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . config('OSPOS')->company_logo) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo base_url('uploads/' . config('OSPOS')->settings['company_logo']) ?>" alt="company_logo" />
 			<?php
 			}
 			?>
 			<div>&nbsp</div>
 			<?php
-			if(config('OSPOS')->receipt_show_company_name)
+			if(config('OSPOS')->settings['receipt_show_company_name'])
 			{
 			?>
-				<div id="company_name"><?php echo config('OSPOS')->company ?></div>
+				<div id="company_name"><?php echo config('OSPOS')->settings['company'] ?></div>
 			<?php
 			}
 			?>
@@ -253,11 +253,11 @@ $(document).ready(function()
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<span><?php echo nl2br(esc(config('OSPOS')->payment_message)) ?></span>
+				<span><?php echo nl2br(esc(config('OSPOS')->settings['payment_message'])) ?></span>
 				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></span>
-				<span style='padding:4%;'><?php echo esc(config('OSPOS')->invoice_default_comments) ?></span>
+				<span style='padding:4%;'><?php echo esc(config('OSPOS')->settings['invoice_default_comments']) ?></span>
 			</h5>
-			<div style='padding:2%;'><?php echo nl2br(esc(config('OSPOS')->return_policy)) ?></div>
+			<div style='padding:2%;'><?php echo nl2br(esc(config('OSPOS')->settings['return_policy'])) ?></div>
 		</div>
 		<div id='barcode'>
 			<img alt='<?php echo esc($barcode, 'attr') ?>' style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
@@ -272,7 +272,7 @@ $(window).on("load", function()
 	// install firefox addon in order to use this plugin
 	if(window.jsPrintSetup)
 	{
-		<?php if(!config('OSPOS')->print_header)
+		<?php if(!config('OSPOS')->settings['print_header'])
 		{
 		?>
 			// set page header
@@ -282,7 +282,7 @@ $(window).on("load", function()
 		<?php
 		}
 
-		if(!config('OSPOS')->print_footer)
+		if(!config('OSPOS')->settings['print_footer'])
 		{
 		?>
 			// set empty page footer

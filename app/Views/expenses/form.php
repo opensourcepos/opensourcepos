@@ -73,7 +73,7 @@
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'amount',
@@ -82,7 +82,7 @@
 						'value' => to_currency_no_money($expenses_info->amount)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -93,7 +93,7 @@
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'tax_amount',
@@ -102,7 +102,7 @@
 						'value' => to_currency_no_money($expenses_info->tax_amount)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>

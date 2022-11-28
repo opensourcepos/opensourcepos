@@ -29,7 +29,7 @@
 
 		<?php 
 		$class = '';
-		if(config('OSPOS')->giftcard_number == 'series')
+		if(config('OSPOS')->settings['giftcard_number'] == 'series')
 		{
 			$class = ' required';
 		}
@@ -51,7 +51,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><?php echo esc(config('OSPOS')->currency_symbol) ?></span>
+						<span class="input-group-addon input-sm"><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'giftcard_amount',
@@ -60,7 +60,7 @@
 						'value'=>to_currency_no_money($giftcard_value)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -113,7 +113,7 @@ $(document).ready(function()
 		rules:
 		{
 			<?php
-			if(config('OSPOS')->giftcard_number == 'series')
+			if(config('OSPOS')->settings['giftcard_number'] == 'series')
 			{
 			?>
 			giftcard_number:
@@ -146,7 +146,7 @@ $(document).ready(function()
 		messages:
 		{
 			<?php
-			if(config('OSPOS')->giftcard_number == 'series')
+			if(config('OSPOS')->settings['giftcard_number'] == 'series')
 			{
 			?>
 				giftcard_number:

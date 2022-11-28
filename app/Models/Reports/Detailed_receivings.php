@@ -2,7 +2,7 @@
 
 namespace App\Models\Reports;
 
-use app\Models\Receiving;
+use App\Models\Receiving;
 
 /**
  * 

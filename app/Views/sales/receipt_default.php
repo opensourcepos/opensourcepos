@@ -16,30 +16,30 @@
  */
 ?>
 
-<div id="receipt_wrapper" style="font-size:<?php echo config('OSPOS')->receipt_font_size ?>px">
+<div id="receipt_wrapper" style="font-size:<?php echo config('OSPOS')->settings['receipt_font_size'] ?>px">
 	<div id="receipt_header">
 		<?php
-		if(config('OSPOS')->company_logo != '')
+		if(config('OSPOS')->settings['company_logo'] != '')
 		{
 		?>
 			<div id="company_name">
-				<img id="image" src="<?php echo base_url('uploads/' . esc(config('OSPOS')->company_logo, 'url')) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo base_url('uploads/' . esc(config('OSPOS')->settings['company_logo'], 'url')) ?>" alt="company_logo" />
 			</div>
 		<?php
 		}
 		?>
 
 		<?php
-		if(config('OSPOS')->receipt_show_company_name)
+		if(config('OSPOS')->settings['receipt_show_company_name'])
 		{
 		?>
-			<div id="company_name"><?php echo config('OSPOS')->company ?></div>
+			<div id="company_name"><?php echo config('OSPOS')->settings['company'] ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo nl2br(esc(config('OSPOS')->address)) ?></div>
-		<div id="company_phone"><?php echo esc(config('OSPOS')->phone) ?></div>
+		<div id="company_address"><?php echo nl2br(esc(config('OSPOS')->settings['address'])) ?></div>
+		<div id="company_phone"><?php echo esc(config('OSPOS')->settings['phone']) ?></div>
 		<div id="sale_receipt"><?php echo lang('Sales.receipt') ?></div>
 		<div id="sale_time"><?php echo($transaction_time) ?></div>
 	</div>
@@ -75,7 +75,7 @@
 			<th style="width:20%;"><?php echo lang('Sales.quantity') ?></th>
 			<th style="width:20%;" class="total-value"><?php echo lang('Sales.total') ?></th>
 			<?php
-			if(config('OSPOS')->receipt_show_tax_ind)
+			if(config('OSPOS')->settings['receipt_show_tax_ind'])
 			{
 			?>
 				<th style="width:20%;"></th>
@@ -93,9 +93,9 @@
 					<td><?php echo esc(ucfirst($item['name'] . ' ' . $item['attribute_values'])) ?></td>
 					<td><?php echo to_currency($item['price']) ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']) ?></td>
-					<td class="total-value"><?php echo to_currency($item[(config('OSPOS')->receipt_show_total_discount ? 'total' : 'discounted_total')]) ?></td>
+					<td class="total-value"><?php echo to_currency($item[(config('OSPOS')->settings['receipt_show_total_discount'] ? 'total' : 'discounted_total')]) ?></td>
 					<?php
-					if(config('OSPOS')->receipt_show_tax_ind)
+					if(config('OSPOS')->settings['receipt_show_tax_ind'])
 					{
 					?>
 						<td><?php echo $item['taxed_flag'] ?></td>
@@ -105,14 +105,14 @@
 				</tr>
 				<tr>
 					<?php
-					if(config('OSPOS')->receipt_show_description)
+					if(config('OSPOS')->settings['receipt_show_description'])
 					{
 					?>
 						<td colspan="2"><?php echo esc($item['description']) ?></td>
 					<?php
 					}
 
-					if(config('OSPOS')->receipt_show_serialnumber)
+					if(config('OSPOS')->settings['receipt_show_serialnumber'])
 					{
 					?>
 						<td><?php echo esc($item['serialnumber']) ?></td>
@@ -148,7 +148,7 @@
 		?>
 
 		<?php
-		if(config('OSPOS')->receipt_show_total_discount && $discount > 0)
+		if(config('OSPOS')->settings['receipt_show_total_discount'] && $discount > 0)
 		{
 		?>
 			<tr>
@@ -164,7 +164,7 @@
 		?>
 
 		<?php
-		if(config('OSPOS')->receipt_show_taxes)
+		if(config('OSPOS')->settings['receipt_show_taxes'])
 		{
 		?>
 			<tr>
@@ -189,7 +189,7 @@
 		<tr>
 		</tr>
 
-		<?php $border = (!config('OSPOS')->receipt_show_taxes && !(config('OSPOS')->receipt_show_total_discount && $discount > 0)); ?>
+		<?php $border = (!config('OSPOS')->settings['receipt_show_taxes'] && !(config('OSPOS')->settings['receipt_show_total_discount'] && $discount > 0)); ?>
 		<tr>
 			<td colspan="3" style="text-align:right;<?php echo $border ? 'border-top: 2px solid black;' : '' ?>"><?php echo lang('Sales.total') ?></td>
 			<td style="text-align:right;<?php echo $border ? 'border-top: 2px solid black;' : '' ?>"><?php echo to_currency($total) ?></td>
@@ -238,7 +238,7 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo nl2br(config('OSPOS')->return_policy) ?>
+		<?php echo nl2br(config('OSPOS')->settings['return_policy']) ?>
 	</div>
 
 	<div id="barcode">

@@ -3,7 +3,7 @@
 namespace app\Libraries;
 
 use CodeIgniter\Session\Session;
-use app\Models\Stock_location;
+use App\Models\Stock_location;
 
 /**
  * Item library

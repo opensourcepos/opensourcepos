@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use app\Libraries\MY_Migration;
-use app\Models\Appconfig;
+use App\Libraries\MY_Migration;
+use App\Models\Appconfig;
 use CodeIgniter\Session\Session;
 use Config\Services;
 
@@ -23,7 +23,7 @@ class Load_config
     {
         //Migrations
         $migration_config = config('Migrations');
-        $migration = new MY_Migration($migration_config);	//TODO: This errors out.  We need to figure out how to automatically check and run latest migrations in CI4... the CI3 method is different.
+        $migration = new MY_Migration($migration_config);
 
         $this->session = session();
 
@@ -31,26 +31,29 @@ class Load_config
         $config = config('OSPOS');
         $appconfig = model(Appconfig::class);
 
-        if (!$migration->is_latest())
+		if (!$migration->is_latest())
         {
             $this->session->destroy();
         }
 
+		$config->settings['application_version'] = $migration->get_current_version();
         foreach($appconfig->get_all()->getResult() as $app_config)
         {
-            $config[$app_config->key] = $app_config->value;
+            $config->settings[$app_config->key] = $app_config->value;
         }
 
         //Language
+		helper('locale');
         $language_exists = file_exists('../app/Language/' . current_language_code());
-        if(current_language_code() == null || current_language() == null || !$language_exists)
+
+        if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
         {
             $config->language = 'english';
             $config->language_code = 'en-US';
         }
 
         $language = Services::language();
-        $language->setLocale($config->language_code);
+        $language->setLocale($config->settings['language_code']);
 
         //Time Zone
         date_default_timezone_set($config->timezone ?? 'America/New_York');

@@ -42,7 +42,7 @@ class MailchimpConnector
 
 		if(empty($api_key))
 		{
-			$this->_api_key = $this->encrypter->decrypt(config('OSPOS')->mailchimp_api_key);	//TODO: Hungarian notation
+			$this->_api_key = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);	//TODO: Hungarian notation
 		}
 		else
 		{

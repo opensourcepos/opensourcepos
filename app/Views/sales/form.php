@@ -34,7 +34,7 @@
 		</div>
 
 		<?php
-		if(config('OSPOS')->invoice_enable == TRUE)	//TODO: Replace this with just `if(config('OSPOS')->invoice_enable'))`
+		if(config('OSPOS')->settings['invoice_enable'] == TRUE)	//TODO: Replace this with just `if(config('OSPOS')->settings['invoice_enable']))`
 		{
 		?>
 			<div class="form-group form-group-sm">
@@ -64,11 +64,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input(['name' => 'payment_amount_new', 'value' => $payment_amount_new, 'id' => 'payment_amount_new', 'class' => 'form-control input-sm']) //TODO: potentially we need to add type to be float/decimal/numeric to reduce improper data entry ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -96,11 +96,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol, 'attr') ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol'], 'attr') ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input (['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])	//TODO: add type attribute ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -119,11 +119,11 @@
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input (['name' => "refund_amount_$i", 'value' => $row->cash_refund, 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->currency_symbol) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>

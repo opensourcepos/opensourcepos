@@ -32,7 +32,7 @@ class Appconfig extends Model
 	public function get_value(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
-		$query = $builder->getWhere('key', $key, 1);
+		$query = $builder->getWhere(['key' => $key], 1, 1);
 
 		if($query->getNumRows() == 1)	//TODO: ===
 		{
@@ -85,10 +85,10 @@ class Appconfig extends Model
 		return $success;
 	}
 
-	public function delete(string $key = null, bool $purge = false): bool
+	public function delete($id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('app_config');
-		return $builder->delete(['key' => $key]);
+		return $builder->delete(['key' => $id]);
 	}
 
 	public function delete_all(): bool	//TODO: This function is never used in the code. Consider removing it.
@@ -102,7 +102,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_invoice_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_invoice_number'] + 1;
 
 		if($save)
 		{
@@ -117,7 +117,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_quote_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_quote_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_quote_number'] + 1;
 
 		if($save)
 		{
@@ -132,7 +132,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_work_order_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_work_order_number'] + 1;
 
 		if($save)
 		{
