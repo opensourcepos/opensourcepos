@@ -3,7 +3,7 @@
  * @var array $grants
  */
 
-use app\Models\Employee;
+use App\Models\Employee;
 
 ?>
 <?php echo view('partial/header') ?>

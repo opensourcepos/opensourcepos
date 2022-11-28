@@ -2,18 +2,18 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
-use app\Libraries\Item_lib;
+use App\Libraries\Barcode_lib;
+use App\Libraries\Item_lib;
 
-use app\Models\Attribute;
-use app\Models\Inventory;
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Item_quantity;
-use app\Models\Item_taxes;
-use app\Models\Stock_location;
-use app\Models\Supplier;
-use app\Models\Tax_category;
+use App\Models\Attribute;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Item_quantity;
+use App\Models\Item_taxes;
+use App\Models\Stock_location;
+use App\Models\Supplier;
+use App\Models\Tax_category;
 
 use Config\Services;
 use CodeIgniter\Files\File;

@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Receiving_lib;
-use app\Libraries\Token_lib;
-use app\Libraries\Barcode_lib;
-use app\Models\Inventory;
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Receiving;
-use app\Models\Stock_location;
-use app\Models\Supplier;
+use App\Libraries\Receiving_lib;
+use App\Libraries\Token_lib;
+use App\Libraries\Barcode_lib;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Receiving;
+use App\Models\Stock_location;
+use App\Models\Supplier;
 use ReflectionException;
 
 /**

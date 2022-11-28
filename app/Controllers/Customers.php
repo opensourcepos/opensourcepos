@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Mailchimp_lib;
+use App\Libraries\Mailchimp_lib;
 
-use app\Models\Customer;
-use app\Models\Customer_rewards;
-use app\Models\Tax_code;
+use App\Models\Customer;
+use App\Models\Customer_rewards;
+use App\Models\Tax_code;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;

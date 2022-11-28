@@ -2,24 +2,24 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
-use app\Libraries\Email_lib;
-use app\Libraries\Sale_lib;
-use app\Libraries\Tax_lib;
-use app\Libraries\Token_lib;
-use app\Models\Customer;
-use app\Models\Customer_rewards;
-use app\Models\Dinner_table;
-use app\Models\Employee;
-use app\Models\Giftcard;
-use app\Models\Inventory;
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Sale;
-use app\Models\Stock_location;
-use app\Models\Tokens\Token_invoice_count;
-use app\Models\Tokens\Token_customer;
-use app\Models\Tokens\Token_invoice_sequence;
+use App\Libraries\Barcode_lib;
+use App\Libraries\Email_lib;
+use App\Libraries\Sale_lib;
+use App\Libraries\Tax_lib;
+use App\Libraries\Token_lib;
+use App\Models\Customer;
+use App\Models\Customer_rewards;
+use App\Models\Dinner_table;
+use App\Models\Employee;
+use App\Models\Giftcard;
+use App\Models\Inventory;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Sale;
+use App\Models\Stock_location;
+use App\Models\Tokens\Token_invoice_count;
+use App\Models\Tokens\Token_customer;
+use App\Models\Tokens\Token_invoice_sequence;
 use CodeIgniter\Config\Services;
 use ReflectionException;
 

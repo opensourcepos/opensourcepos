@@ -2,9 +2,9 @@
 
 namespace App\Models\Tokens;
 
-use app\Libraries\Sale_lib;
+use App\Libraries\Sale_lib;
 
-use app\Models\Customer;
+use App\Models\Customer;
 
 /**
  * Token_customer class

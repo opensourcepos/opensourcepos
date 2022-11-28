@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Module;
+use App\Models\Module;
 
 /**
  * Part of the grants mechanism to restrict access to modules that the user doesn't have permission for.

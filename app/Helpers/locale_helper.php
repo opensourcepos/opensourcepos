@@ -1,5 +1,5 @@
 <?php
-use app\Models\Employee;
+use App\Models\Employee;
 
 const DEFAULT_LANGUAGE = 'english';	//TODO: These constants all need to be moved to constants.php
 const DEFAULT_LANGUAGE_CODE = 'en-US';

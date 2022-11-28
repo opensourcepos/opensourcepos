@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
-use app\Libraries\Sale_lib;
+use App\Libraries\Sale_lib;
 use ReflectionException;
 
 /**

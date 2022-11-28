@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Person;
+use App\Models\Person;
 
 /**
  * @property person person

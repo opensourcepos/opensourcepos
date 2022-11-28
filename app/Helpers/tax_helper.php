@@ -1,6 +1,6 @@
 <?php
 
-use app\Models\Enums\Rounding_mode;
+use App\Models\Enums\Rounding_mode;
 
 /**
  * Tax Configuration tabular helpers

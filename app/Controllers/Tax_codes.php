@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Tax_code;
+use App\Models\Tax_code;
 
 /**
  * @property tax_code tax_code

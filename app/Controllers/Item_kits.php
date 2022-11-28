@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
+use App\Libraries\Barcode_lib;
 
-use app\Models\Item;
-use app\Models\Item_kit;
-use app\Models\Item_kit_items;
+use App\Models\Item;
+use App\Models\Item_kit;
+use App\Models\Item_kit_items;
 
 /**
  *

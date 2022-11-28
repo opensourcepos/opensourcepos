@@ -2,20 +2,20 @@
 
 namespace App\Controllers;
 
-use app\Libraries\Barcode_lib;
-use app\Libraries\Mailchimp_lib;
-use app\Libraries\Receiving_lib;
-use app\Libraries\Sale_lib;
-use app\Libraries\Tax_lib;
+use App\Libraries\Barcode_lib;
+use App\Libraries\Mailchimp_lib;
+use App\Libraries\Receiving_lib;
+use App\Libraries\Sale_lib;
+use App\Libraries\Tax_lib;
 
-use app\Models\Appconfig;
-use app\Models\Attribute;
-use app\Models\Customer_rewards;
-use app\Models\Dinner_table;
-use app\Models\Module;
-use app\Models\Enums\Rounding_mode;
-use app\Models\Stock_location;
-use app\Models\Tax;
+use App\Models\Appconfig;
+use App\Models\Attribute;
+use App\Models\Customer_rewards;
+use App\Models\Dinner_table;
+use App\Models\Module;
+use App\Models\Enums\Rounding_mode;
+use App\Models\Stock_location;
+use App\Models\Tax;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;

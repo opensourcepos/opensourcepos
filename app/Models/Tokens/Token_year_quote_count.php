@@ -2,7 +2,7 @@
 
 namespace App\Models\Tokens;
 
-use app\Models\Sale;
+use App\Models\Sale;
 
 /**
  * Token_year_quote_count class

@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use app\Models\Supplier;
+use App\Models\Supplier;
 
 /**
  *

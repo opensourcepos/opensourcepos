@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use app\Models\Cashup;
-use app\Models\Expense;
-use app\Models\Reports\Summary_payments;
+use App\Models\Cashup;
+use App\Models\Expense;
+use App\Models\Reports\Summary_payments;
 
 /**
  * @property cashup cashup

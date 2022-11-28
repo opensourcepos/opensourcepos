@@ -2,14 +2,14 @@
 
 namespace app\Libraries;
 
-use app\Models\Customer;
-use app\Models\Item_taxes;
-use app\Models\Enums\Rounding_mode;
-use app\Models\Sale;
-use app\Models\Tax;
-use app\Models\Tax_category;
-use app\Models\Tax_code;
-use app\Models\Tax_jurisdiction;
+use App\Models\Customer;
+use App\Models\Item_taxes;
+use App\Models\Enums\Rounding_mode;
+use App\Models\Sale;
+use App\Models\Tax;
+use App\Models\Tax_category;
+use App\Models\Tax_code;
+use App\Models\Tax_jurisdiction;
 
 
 /**
