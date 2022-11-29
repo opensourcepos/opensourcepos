@@ -38,7 +38,7 @@ class Load_config
 
         foreach($appconfig->get_all()->getResult() as $app_config)
         {
-            $config[$app_config->key] = $app_config->value;
+            $config[$app_config->key] = $app_config->value;	//TODO: This is broken.  We need to figure out the proper way to load database settings into a config
         }
 
         //Language
