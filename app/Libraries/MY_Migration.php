@@ -9,7 +9,7 @@ class MY_Migration extends MigrationRunner {
 	public function get_last_migration(): string
 	{
 		$migrations = $this->findMigrations();
-		return basename(end($migrations));
+		return basename(end($migrations)->version);
 	}
 
 	public function get_current_version(): string
@@ -21,8 +21,7 @@ class MY_Migration extends MigrationRunner {
 
 	public function is_latest(): bool
 	{
-		$last_migration = $this->get_last_migration();
-		$last_version = $this->getMigrationNumber($last_migration);
+		$last_version = $this->get_last_migration();
 		$current_version = $this->get_current_version();
 
 		return $last_version == $current_version;
