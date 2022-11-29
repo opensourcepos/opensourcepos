@@ -16,8 +16,8 @@
 				<?php echo form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
 				<div class='row'>
 					<div class='col-xs-1'>
-						<?php echo form_input('number_locale', esc(config('OSPOS')->number_locale, 'attr'), ['class' => 'form-control input-sm', 'id' => 'number_locale']) ?>
-						<?php echo form_hidden('save_number_locale', esc(config('OSPOS')->number_locale, 'attr')) ?>
+						<?php echo form_input('number_locale', esc(config('OSPOS')->settings['number_locale'], 'attr'), ['class' => 'form-control input-sm', 'id' => 'number_locale']) ?>
+						<?php echo form_hidden('save_number_locale', esc(config('OSPOS')->settings['number_locale'], 'attr')) ?>
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">
@@ -39,7 +39,7 @@
 						'name' => 'thousands_separator',
 						'id' => 'thousands_separator',
 						'value' => 'thousands_separator',
-						'checked' => config('OSPOS')->thousands_separator
+						'checked' => config('OSPOS')->settings['thousands_separator']
 					]) ?>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 						'name' => 'currency_symbol',
 						'id' => 'currency_symbol',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc(config('OSPOS')->currency_symbol, 'attr')
+						'value' => esc(config('OSPOS')->settings['currency_symbol'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 							'1' => '1',
 							'2' => '2'
 						],
-						config('OSPOS')->currency_decimals,
+						config('OSPOS')->settings['currency_decimals'],
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -96,7 +96,7 @@
 							'3' => '3',
 							'4' => '4'
 						],
-						config('OSPOS')->tax_decimals,
+						config('OSPOS')->settings['tax_decimals'],
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -113,7 +113,7 @@
 							'2' => '2',
 							'3' => '3'
 						],
-						config('OSPOS')->quantity_decimals,
+						config('OSPOS')->settings['quantity_decimals'],
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -130,7 +130,7 @@
 							'1' => '1',
 							'2' => '2'
 						],
-						config('OSPOS')->cash_decimals,
+						config('OSPOS')->settings['cash_decimals'],
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -144,7 +144,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options, 'attr'), config('OSPOS')->cash_rounding_code, ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options, 'attr'), config('OSPOS')->settings['cash_rounding_code'], ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -160,7 +160,7 @@
 							'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
 							'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
 						],
-						esc(config('OSPOS')->payment_options_order, 'attr'),
+						esc(config('OSPOS')->settings['payment_options_order'], 'attr'),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -169,7 +169,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_input('country_codes', esc(config('OSPOS')->country_codes, 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_input('country_codes', esc(config('OSPOS')->settings['country_codes'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
@@ -197,7 +197,7 @@
 				<?php echo form_dropdown(
 					'timezone',
 					get_timezones(),
-					config('OSPOS')->timezone ? esc(config('OSPOS')->timezone, 'attr') : date_default_timezone_get(), ['class' => 'form-control input-sm']) ?>
+					config('OSPOS')->settings['timezone'] ? esc(config('OSPOS')->settings['timezone'], 'attr') : date_default_timezone_get(), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -207,14 +207,14 @@
 				<?php echo form_dropdown(
 					'dateformat',
 					get_dateformats(),
-					esc(config('OSPOS')->dateformat, 'attr'),
+					esc(config('OSPOS')->settings['dateformat'], 'attr'),
 					['class' => 'form-control input-sm']
 				) ?>
 				</div>
 				<div class='col-sm-2'>
 				<?php echo form_dropdown('timeformat',
 					get_timeformats(),
-					config('OSPOS')->timeformat, ['class' => 'form-control input-sm']
+					config('OSPOS')->settings['timeformat'], ['class' => 'form-control input-sm']
 				) ?>
 				</div>
 			</div>
@@ -226,7 +226,8 @@
 						'name' => 'date_or_time_format',
 						'id' => 'date_or_time_format',
 						'value' => 'date_or_time_format',
-						'checked' => config('OSPOS')->date_or_time_format]) ?>
+						'checked' => config('OSPOS')->settings['date_or_time_format']
+						]) ?>
 				</div>
 			</div>
 
@@ -249,7 +250,7 @@
 							'11' => lang('Config.financial_year_nov'),
 							'12' => lang('Config.financial_year_dec')
 						],
-						config('OSPOS')->financial_year, ['class' => 'form-control input-sm']
+						config('OSPOS')->settings['financial_year'], ['class' => 'form-control input-sm']
 					) ?>
 				</div>
 			</div>

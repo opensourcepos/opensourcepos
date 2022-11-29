@@ -55,7 +55,7 @@ class Login extends BaseController
 			return FALSE;
 		}
 
-		if(config('OSPOS')->gcaptcha_enable)
+		if(config('OSPOS')->settings['gcaptcha_enable'])
 		{
 			$g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
 
@@ -75,7 +75,7 @@ class Login extends BaseController
 		if(!empty($response))
 		{
 			$check = array(
-				'secret'   => config('OSPOS')->gcaptcha_secret_key,
+				'secret'   => config('OSPOS')->settings['gcaptcha_secret_key'],
 				'response' => $response,
 				'remoteip' => $this->request->getIPAddress()
 			);

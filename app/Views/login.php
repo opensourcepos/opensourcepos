@@ -10,11 +10,11 @@
 <head>
   <meta charset="utf-8">
 	<base href="<?php echo base_url() ?>">
-	<title><?php echo config('OSPOS')->company . '&nbsp;|&nbsp;' . lang('Common.software_short')  . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
+	<title><?php echo config('OSPOS')->settings['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short')  . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 	<meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="noindex, nofollow" name="robots">
 	<link href="<?php echo base_url() ?>favicon.ico" rel="shortcut icon" type="image/x-icon">
-  <link href="<?php echo 'dist/bootswatch-5/' . (empty(config('OSPOS')->theme) || 'paper' == config('OSPOS')->theme || 'readable' == config('OSPOS')->theme ? 'flatly' : config('OSPOS')->theme) . '/bootstrap.min.css' ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo 'dist/bootswatch-5/' . (empty(config('OSPOS')->settings['theme']) || 'paper' == config('OSPOS')->settings['theme'] || 'readable' == config('OSPOS')->settings['theme'] ? 'flatly' : config('OSPOS')->settings['theme']) . '/bootstrap.min.css' ?>" rel="stylesheet" type="text/css">
   <!-- start css template tags -->
   <link rel="stylesheet" type="text/css" href="css/login.min.css"/>
   <!-- end css template tags -->
@@ -25,8 +25,8 @@
   <main class="d-flex justify-content-around align-items-center flex-grow-1">
     <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
       <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
-      <?php if (config('OSPOS')->company_logo): ?>
-        <img class="logo w-100" src="<?php echo base_url('uploads/' . config('OSPOS')->company_logo) ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . config('OSPOS')->company ?>">
+      <?php if (config('OSPOS')->settings['company_logo']): ?>
+        <img class="logo w-100" src="<?php echo base_url('uploads/' . config('OSPOS')->settings['company_logo']) ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
       <?php else: ?>
         <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
           <title><?php echo lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
@@ -45,10 +45,10 @@
         <?php endif; ?>
 				<?php if (!$this->migration->is_latest()): ?>
         <div class="alert alert-info mt-3">
-					<?php echo lang('Login.migration_needed', ['version' => config('OSPOS')->application_version]) ?>
+					<?php echo lang('Login.migration_needed', ['version' => config('OSPOS')->settings['application_version']]) ?>
 				</div>
 				<?php endif; ?>
-        <?php if (empty(config('OSPOS')->login_form) || 'floating_labels'==(config('OSPOS')->login_form)): ?>
+        <?php if (empty(config('OSPOS')->settings['login_form']) || 'floating_labels'==(config('OSPOS')->settings['login_form'])): ?>
         <div class="form-floating mt-3">
           <input class="form-control" id="input-username" name="username" type="text" placeholder="<?php echo lang('Login.username') ?>">
           <label for="input-username"><?php echo lang('Login.username') ?></label>
@@ -57,7 +57,7 @@
           <input class="form-control" id="input-password" name="password" type="password" placeholder="<?php echo lang('Login.password') ?>">
           <label for="input-password"><?php echo lang('Login.password') ?></label>
         </div>
-      <?php elseif ('input_groups'==(config('OSPOS')->login_form)): ?>
+      <?php elseif ('input_groups'==(config('OSPOS')->settings['login_form'])): ?>
         <div class="input-group mt-3">
           <span class="input-group-text" id="input-username">
             <svg class="bi" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -78,9 +78,9 @@
           <input class="form-control" name="password" type="password" placeholder="<?php echo lang('Login.password') ?>" aria-label="<?php echo lang('Login.password'); ?>" <?php if (ENVIRONMENT == "testing") echo "value='pointofsale'"; ?>" aria-describedby="input-password">
         </div>
         <?php endif; ?>
-				<?php if(config('OSPOS')->gcaptcha_enable) {
+				<?php if(config('OSPOS')->settings['gcaptcha_enable']) {
 					echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-					echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->gcaptcha_site_key . '"></div>'; }
+					echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->settings['gcaptcha_site_key'] . '"></div>'; }
         ?>
         <div class="d-grid">
           <button class="btn btn-lg btn-primary" name="login-button" type="submit" ><?php echo lang('Login.go') ?></button>

@@ -38,19 +38,19 @@ class Load_config
 
         foreach($appconfig->get_all()->getResult() as $app_config)
         {
-            $config[$app_config->key] = $app_config->value;	//TODO: This is broken.  We need to figure out the proper way to load database settings into a config
+            $config->settings[$app_config->key] = $app_config->value;
         }
 
         //Language
         $language_exists = file_exists('../app/Language/' . current_language_code());
-        if(current_language_code() == null || current_language() == null || !$language_exists)
+        if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
         {
             $config->language = 'english';
             $config->language_code = 'en-US';
         }
 
         $language = Services::language();
-        $language->setLocale($config->language_code);
+        $language->setLocale($config->settings['language_code']);
 
         //Time Zone
         date_default_timezone_set($config->timezone ?? 'America/New_York');

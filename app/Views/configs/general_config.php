@@ -18,11 +18,11 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, esc(config('OSPOS')->theme, 'attr'), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
+							<?php echo form_dropdown('theme', $themes, esc(config('OSPOS')->settings['theme'], 'attr'), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
 						</div>
 						<div class="col-sm-7">
-							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == (config('OSPOS')->theme) ? 'default' : esc(config('OSPOS')->theme)) ?>" target="_blank" rel=”noopener”>
-								<span><?php echo lang('Config.theme_preview') . ' ' . ucfirst(esc(config('OSPOS')->theme)) . ' ' ?></span><span class="glyphicon glyphicon-new-window"></span>
+							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == (config('OSPOS')->settings['theme']) ? 'default' : esc(config('OSPOS')->settings['theme'])) ?>" target="_blank" rel=”noopener”>
+								<span><?php echo lang('Config.theme_preview') . ' ' . ucfirst(esc(config('OSPOS')->settings['theme'])) . ' ' ?></span><span class="glyphicon glyphicon-new-window"></span>
 							</a>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						],
-						esc(config('OSPOS')->login_form, 'attr'),
+						esc(config('OSPOS')->settings['login_form'], 'attr'),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -55,7 +55,8 @@
 							'type' => 'number',
 							'min' => 0,
 							'max' => 100,
-							'value' => config('OSPOS')->default_sales_discount]) ?>
+							'value' => config('OSPOS')->settings['default_sales_discount']
+							]) ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox ([
 								'id' => 'default_sales_discount_type',
@@ -64,9 +65,10 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc(config('OSPOS')->currency_symbol, 'attr').'</b>',
+								'data-on' => '<b>' . esc(config('OSPOS')->settings['currency_symbol'], 'attr').'</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => config('OSPOS')->default_sales_discount_type]) ?>
+								'checked' => config('OSPOS')->settings['default_sales_discount_type']
+								]) ?>
 						</span>
 					</div>
 				</div>
@@ -83,7 +85,8 @@
 							'type' => 'number',
 							'min' => 0,
 							'max' => 100,
-							'value' => config('OSPOS')->default_receivings_discount]) ?>
+							'value' => config('OSPOS')->settings['default_receivings_discount']
+							]) ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox ([
 								'id' => 'default_receivings_discount_type',
@@ -92,9 +95,10 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc(config('OSPOS')->currency_symbol, 'attr') . '</b>',
+								'data-on' => '<b>' . esc(config('OSPOS')->settings['currency_symbol'], 'attr') . '</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => config('OSPOS')->default_receivings_discount_type]) ?>
+								'checked' => config('OSPOS')->settings['default_receivings_discount_type']
+								]) ?>
 						</span>
 					</div>
 				</div>
@@ -107,7 +111,8 @@
 						'name' => 'enforce_privacy',
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
-						'checked' => config('OSPOS')->enforce_privacy]) ?>
+						'checked' => config('OSPOS')->settings['enforce_privacy']
+					]) ?>
 					&nbsp
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.enforce_privacy_tooltip') ?>"></span>
@@ -122,7 +127,8 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => config('OSPOS')->receiving_calculate_average_price]) ?>
+						'checked' => config('OSPOS')->settings['receiving_calculate_average_price']
+						]) ?>
 				</div>
 			</div>
 
@@ -136,9 +142,8 @@
 						'type' => 'number',
 						'min' => 10,
 						'max' => 1000,
-						'value' => config('OSPOS')->lines_per_page
-						]
-					) ?>
+						'value' => config('OSPOS')->settings['lines_per_page']
+						]) ?>
 				</div>
 			</div>
 
@@ -153,7 +158,7 @@
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								esc(config('OSPOS')->notify_vertical_position, 'attr'),
+								esc(config('OSPOS')->settings['notify_vertical_position'], 'attr'),
 								['class' => 'form-control input-sm']
 							) ?>
 						</div>
@@ -165,7 +170,7 @@
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')
 								],
-								esc(config('OSPOS')->notify_horizontal_position, 'attr'),
+								esc(config('OSPOS')->settings['notify_horizontal_position'], 'attr'),
 								['class' => 'form-control input-sm']
 							) ?>
 						</div>
@@ -187,7 +192,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => config('OSPOS')->image_max_width,
+									'value' => config('OSPOS')->settings['image_max_width'],
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_width_tooltip')
@@ -204,7 +209,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 3840,
-									'value' => config('OSPOS')->image_max_height,
+									'value' => config('OSPOS')->settings['image_max_height'],
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_height_tooltip')
@@ -221,7 +226,7 @@
 									'type' => 'number',
 									'min' => 128,
 									'max' => 2048,
-									'value' => config('OSPOS')->image_max_size,
+									'value' => config('OSPOS')->settings['image_max_size'],
 									'data-toggle' => 'tooltip',
 									'data-placement' => 'top',
 									'title' => lang('Config.image_max_size_tooltip')
@@ -252,7 +257,7 @@
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
-						'checked' => config('OSPOS')->gcaptcha_enable
+						'checked' => config('OSPOS')->settings['gcaptcha_enable']
 					]) ?>
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
@@ -269,7 +274,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc(config('OSPOS')->gcaptcha_site_key, 'attr')
+						'value' => esc(config('OSPOS')->settings['gcaptcha_site_key'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -281,7 +286,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc(config('OSPOS')->gcaptcha_secret_key, 'attr')
+						'value' => esc(config('OSPOS')->settings['gcaptcha_secret_key'], 'attr')
 						]) ?>
 				</div>
 			</div>
@@ -301,7 +306,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc(config('OSPOS')->suggestions_first_column, 'attr'),
+									esc(config('OSPOS')->settings['suggestions_first_column'], 'attr'),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -318,7 +323,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc(config('OSPOS')->suggestions_second_column, 'attr'),
+									esc(config('OSPOS')->settings['suggestions_second_column'], 'attr'),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -335,7 +340,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc(config('OSPOS')->suggestions_third_column, 'attr'),
+									esc(config('OSPOS')->settings['suggestions_third_column'], 'attr'),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -351,14 +356,14 @@
 						<?php echo form_radio ([
 							'name' => 'giftcard_number',
 							'value' => 'series',
-							'checked' => config('OSPOS')->giftcard_number == 'series']) ?>
+							'checked' => config('OSPOS')->settings['giftcard_number'] == 'series']) ?>
 						<?php echo lang('Config.giftcard_series') ?>
 					</label>
 					<label class="radio-inline">
 						<?php echo form_radio ([
 							'name' => 'giftcard_number',
 							'value' => 'random',
-							'checked' => config('OSPOS')->giftcard_number == 'random']) ?>
+							'checked' => config('OSPOS')->settings['giftcard_number'] == 'random']) ?>
 						<?php echo lang('Config.giftcard_random') ?>
 					</label>
 				</div>
@@ -371,7 +376,8 @@
 					'name' => 'derive_sale_quantity',
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
-					'checked' => config('OSPOS')->derive_sale_quantity]) ?>
+					'checked' => config('OSPOS')->settings['derive_sale_quantity']
+					]) ?>
 					&nbsp
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.derive_sale_quantity_tooltip') ?>"></span>
@@ -386,7 +392,8 @@
 						'name' => 'show_office_group',
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
-						'checked' => $show_office_group]) ?>
+						'checked' => $show_office_group
+					]) ?>
 				</div>
 			</div>
 
@@ -397,7 +404,8 @@
 						'name' => 'multi_pack_enabled',
 						'id' => 'multi_pack_enabled',
 						'value' => 'multi_pack_enabled',
-						'checked' => config('OSPOS')->multi_pack_enabled]) ?>
+						'checked' => config('OSPOS')->settings['multi_pack_enabled']
+					]) ?>
 				</div>
 			</div>
 
@@ -408,7 +416,8 @@
 						'name' => 'include_hsn',
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
-						'checked' => config('OSPOS')->include_hsn]) ?>
+						'checked' => config('OSPOS')->settings['include_hsn']
+						]) ?>
 				</div>
 			</div>
 
@@ -419,7 +428,8 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => config('OSPOS')->category_dropdown]) ?>
+						'checked' => config('OSPOS')->settings['category_dropdown']
+					]) ?>
 				</div>
 			</div>
 

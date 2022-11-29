@@ -19,7 +19,7 @@
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
-							'value' => esc(config('OSPOS')->company, 'attr')
+							'value' => esc(config('OSPOS')->settings['company'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
 							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo') ?>"
-								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . config('OSPOS')->company_logo), 'url'); else echo '' ?>"
+								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . config('OSPOS')->settings['company_logo']), 'url'); else echo '' ?>"
 								 style="max-height: 100%; max-width: 100%;">
 						</div>
 						<div>
@@ -54,7 +54,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> esc(config('OSPOS')->address, 'attr')
+						'value'=> esc(config('OSPOS')->settings['address'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
-							'value'=> esc(config('OSPOS')->website, 'url')
+							'value'=> esc(config('OSPOS')->settings['website'], 'url')
 						]) ?>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 							'id' => 'email',
 							'type' => 'email',
 							'class' => 'form-control input-sm',
-							'value'=> esc(config('OSPOS')->email, 'attr')
+							'value'=> esc(config('OSPOS')->settings['email'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
-							'value'=> esc(config('OSPOS')->phone, 'attr')
+							'value'=> esc(config('OSPOS')->settings['phone'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
-							'value'=> esc(config('OSPOS')->fax, 'attr')
+							'value'=> esc(config('OSPOS')->settings['fax'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -127,7 +127,7 @@
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
-						'value' => esc(config('OSPOS')->return_policy, 'attr')
+						'value' => esc(config('OSPOS')->settings['return_policy'], 'attr')
 					]) ?>
 				</div>
 			</div>

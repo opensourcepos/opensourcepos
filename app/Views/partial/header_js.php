@@ -8,15 +8,15 @@
 	clock_tick();
 
 	var update_clock = function update_clock() {
-		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat) ?>");
+		document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?>");
 	}
 
 	$.notifyDefaults({ placement: {
-		align: "<?php echo esc(config('OSPOS')->notify_horizontal_position, 'js') ?>",
-		from: "<?php echo esc(config('OSPOS')->notify_vertical_position, 'js') ?>"
+		align: "<?php echo esc(config('OSPOS')->settings['notify_horizontal_position'], 'js') ?>",
+		from: "<?php echo esc(config('OSPOS')->settings['notify_vertical_position'], 'js') ?>"
 	}});
 
-	var cookie_name = "<?php echo esc(config('OSPOS')->cookie_prefix, 'js') . esc(config('OSPOS')->csrf_cookie_name, 'js') ?>";
+	var cookie_name = "<?php echo esc(config('OSPOS')->settings['cookie_prefix'], 'js') . esc(config('OSPOS')->settings['csrf_cookie_name'], 'js') ?>";
 
 	var csrf_token = function() {
 		return Cookies.get(cookie_name);
