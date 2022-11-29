@@ -85,10 +85,10 @@ class Appconfig extends Model
 		return $success;
 	}
 
-	public function delete(string $key = null, bool $purge = false): bool
+	public function delete($id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('app_config');
-		return $builder->delete(['key' => $key]);
+		return $builder->delete(['key' => $id]);
 	}
 
 	public function delete_all(): bool	//TODO: This function is never used in the code. Consider removing it.
