@@ -9,9 +9,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
-	<title><?php echo esc(config('OSPOS')->company) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('OSPOS')->application_version) ?></title>
+	<title><?php echo esc(config('OSPOS')->settings['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('OSPOS')->settings['application_version']) ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->theme) ? 'flatly' : esc(config('OSPOS')->theme)) . '/bootstrap.min.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->settings['theme']) ? 'flatly' : esc(config('OSPOS')->settings['theme'])) . '/bootstrap.min.css' ?>"/>
 
 	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
@@ -86,8 +86,8 @@
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
-	<?php if (config('OSPOS')->theme != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc(config('OSPOS')->theme) . '.css')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc(config('OSPOS')->theme) . '.css' ?>"/>
+	<?php if (config('OSPOS')->settings['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc(config('OSPOS')->settings['theme']) . '.css')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc(config('OSPOS')->settings['theme']) . '.css' ?>"/>
 	<?php } ?>
 
 		<!-- start minjs template tags -->
@@ -110,7 +110,7 @@
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
-					<div id="liveclock"><?php echo date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat) ?></div>
+					<div id="liveclock"><?php echo date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?></div>
 				</div>
 
 				<div class="navbar-right" style="margin:0">
@@ -120,7 +120,7 @@
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?php echo esc(config('OSPOS')->company) ?></strong>
+					<strong><?php echo esc(config('OSPOS')->settings['company']) ?></strong>
 				</div>
 			</div>
 		</div>

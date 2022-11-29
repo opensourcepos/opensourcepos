@@ -27,21 +27,21 @@ class Barcode_lib
 
 	public function get_barcode_config(): array
 	{
-		$data['company'] = config('OSPOS')->company;
-		$data['barcode_content'] = config('OSPOS')->barcode_content;
-		$data['barcode_type'] = config('OSPOS')->barcode_type;
-		$data['barcode_font'] = config('OSPOS')->barcode_font;
-		$data['barcode_font_size'] = config('OSPOS')->barcode_font_size;
-		$data['barcode_height'] = config('OSPOS')->barcode_height;
-		$data['barcode_width'] = config('OSPOS')->barcode_width;
-		$data['barcode_first_row'] = config('OSPOS')->barcode_first_row;
-		$data['barcode_second_row'] = config('OSPOS')->barcode_second_row;
-		$data['barcode_third_row'] = config('OSPOS')->barcode_third_row;
-		$data['barcode_num_in_row'] = config('OSPOS')->barcode_num_in_row;
-		$data['barcode_page_width'] = config('OSPOS')->barcode_page_width;
-		$data['barcode_page_cellspacing'] = config('OSPOS')->barcode_page_cellspacing;
-		$data['barcode_generate_if_empty'] = config('OSPOS')->barcode_generate_if_empty;
-		$data['barcode_formats'] = config('OSPOS')->barcode_formats;
+		$data['company'] = config('OSPOS')->settings['company'];
+		$data['barcode_content'] = config('OSPOS')->settings['barcode_content'];
+		$data['barcode_type'] = config('OSPOS')->settings['barcode_type'];
+		$data['barcode_font'] = config('OSPOS')->settings['barcode_font'];
+		$data['barcode_font_size'] = config('OSPOS')->settings['barcode_font_size'];
+		$data['barcode_height'] = config('OSPOS')->settings['barcode_height'];
+		$data['barcode_width'] = config('OSPOS')->settings['barcode_width'];
+		$data['barcode_first_row'] = config('OSPOS')->settings['barcode_first_row'];
+		$data['barcode_second_row'] = config('OSPOS')->settings['barcode_second_row'];
+		$data['barcode_third_row'] = config('OSPOS')->settings['barcode_third_row'];
+		$data['barcode_num_in_row'] = config('OSPOS')->settings['barcode_num_in_row'];
+		$data['barcode_page_width'] = config('OSPOS')->settings['barcode_page_width'];
+		$data['barcode_page_cellspacing'] = config('OSPOS')->settings['barcode_page_cellspacing'];
+		$data['barcode_generate_if_empty'] = config('OSPOS')->settings['barcode_generate_if_empty'];
+		$data['barcode_formats'] = config('OSPOS')->settings['barcode_formats'];
 
 		return $data;
 	}

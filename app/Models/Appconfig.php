@@ -102,7 +102,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_invoice_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_invoice_number'] + 1;
 
 		if($save)
 		{
@@ -117,7 +117,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_quote_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_quote_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_quote_number'] + 1;
 
 		if($save)
 		{
@@ -132,7 +132,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->last_used_work_order_number + 1;
+		$last_used = (int)config('OSPOS')->settings['last_used_work_order_number'] + 1;
 
 		if($save)
 		{
