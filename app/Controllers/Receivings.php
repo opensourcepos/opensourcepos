@@ -135,8 +135,8 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = config('OSPOS')->default_receivings_discount;
-		$discount_type = config('OSPOS')->default_receivings_discount_type;
+		$discount = config('OSPOS')->settings['default_receivings_discount'];
+		$discount_type = config('OSPOS')->settings['default_receivings_discount_type'];
 
 		if($mode == 'return' && $this->receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -445,7 +445,7 @@ class Receivings extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);	//TODO: newdate does not follow naming conventions
 		
-		$date_formatter = date_create_from_format(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, $newdate);
+		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = [

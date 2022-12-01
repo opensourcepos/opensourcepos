@@ -234,7 +234,7 @@ class Receiving_lib
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
 
-		if(config('OSPOS')->multi_pack_enabled)
+		if(config('OSPOS')->settings['multi_pack_enabled'])
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}

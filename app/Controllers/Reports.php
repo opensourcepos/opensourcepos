@@ -1576,10 +1576,10 @@ class Reports extends Secure_Controller
 		$sale_type_options = [];
 		$sale_type_options['complete'] = lang('Reports.complete');
 		$sale_type_options['sales'] = lang('Reports.completed_sales');
-		if(config('OSPOS')->invoice_enable)
+		if(config('OSPOS')->settings['invoice_enable'])
 		{
 			$sale_type_options['quotes'] = lang('Reports.quotes');
-			if(config('OSPOS')->work_order_enable)
+			if(config('OSPOS')->settings['work_order_enable'])
 			{
 				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}
@@ -1910,13 +1910,13 @@ class Reports extends Secure_Controller
 	{
 		$subtitle = '';
 
-		if(empty(config('OSPOS')->date_or_time_format))
+		if(empty(config('OSPOS')->settings['date_or_time_format']))
 		{
-			$subtitle .= date(config('OSPOS')->dateformat, strtotime($inputs['start_date'])) . ' - ' . date(config('OSPOS')->dateformat, strtotime($inputs['end_date']));
+			$subtitle .= date(config('OSPOS')->settings['dateformat'], strtotime($inputs['start_date'])) . ' - ' . date(config('OSPOS')->settings['dateformat'], strtotime($inputs['end_date']));
 		}
 		else
 		{
-			$subtitle .= date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date(config('OSPOS')->dateformat . ' ' . config('OSPOS')->timeformat, strtotime(rawurldecode($inputs['end_date'])));
+			$subtitle .= date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], strtotime(rawurldecode($inputs['end_date'])));
 		}
 
 		return $subtitle;
