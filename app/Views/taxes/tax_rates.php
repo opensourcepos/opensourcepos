@@ -11,7 +11,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
 		headers: <?php echo esc($tax_rate_table_headers, 'js') ?>,
-		pageSize: <?php echo config('OSPOS')->lines_per_page ?>,
+		pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
 		uniqueId: 'tax_rate_id'
 	});
 });

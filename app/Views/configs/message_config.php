@@ -13,7 +13,7 @@
 							'name' => 'msg_uid',
 							'id' => 'msg_uid',
 							'class' => 'form-control input-sm required',
-							'value' => esc(config('OSPOS')->msg_uid, 'attr')
+							'value' => esc(config('OSPOS')->settings['msg_uid'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 							'name' => 'msg_pwd',
 							'id' => 'msg_pwd',
 							'class' => 'form-control input-sm required',
-							'value' => esc(config('OSPOS')->msg_pwd, 'attr')
+							'value' => esc(config('OSPOS')->settings['msg_pwd'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 							'name' => 'msg_src',
 							'id' => 'msg_src',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->msg_src == NULL ? esc(config('OSPOS')->company, 'attr') : esc(config('OSPOS')->msg_src, 'attr')
+							'value' => config('OSPOS')->settings['msg_src'] == NULL ? esc(config('OSPOS')->settings['company'], 'attr') : esc(config('OSPOS')->settings['msg_src'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 						'name' => 'msg_msg',
 						'id' => 'msg_msg',
 						'class' => 'form-control input-sm',
-						'value' => config('OSPOS')->msg_msg,
+						'value' => config('OSPOS')->settings['msg_msg'],
 						'placeholder' => lang('Config.msg_msg_placeholder')
 					]) ?>
 				</div>

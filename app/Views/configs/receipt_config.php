@@ -12,7 +12,7 @@
 							'receipt_default' => lang('Config.receipt_default'),
 							'receipt_short' => lang('Config.receipt_short')
 						],
-						esc(config('OSPOS')->receipt_template, 'attr'),
+						esc(config('OSPOS')->settings['receipt_template'], 'attr'),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -29,7 +29,7 @@
 							'name' => 'receipt_font_size',
 							'id' => 'receipt_font_size',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->receipt_font_size
+							'value' => config('OSPOS')->settings['receipt_font_size']
 						]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -47,7 +47,7 @@
 							'name' => 'print_delay_autoreturn',
 							'id' => 'print_delay_autoreturn',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->print_delay_autoreturn
+							'value' => config('OSPOS')->settings['print_delay_autoreturn']
 						]) ?>
 						<span class="input-group-addon input-sm">s</span>
 					</div>
@@ -61,7 +61,7 @@
 						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'always',
-							'checked' => config('OSPOS')->email_receipt_check_behaviour == 'always'
+							'checked' => config('OSPOS')->settings['email_receipt_check_behaviour'] == 'always'
 						]) ?>
 						<?php echo lang('Config.email_receipt_check_behaviour_always') ?>
 					</label>
@@ -69,7 +69,7 @@
 						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'never',
-							'checked' => config('OSPOS')->email_receipt_check_behaviour == 'never'
+							'checked' => config('OSPOS')->settings['email_receipt_check_behaviour'] == 'never'
 						]) ?>
 						<?php echo lang('Config.email_receipt_check_behaviour_never') ?>
 					</label>
@@ -77,7 +77,7 @@
 						<?php echo form_radio ([
 							'name' => 'email_receipt_check_behaviour',
 							'value' => 'last',
-							'checked' => config('OSPOS')->email_receipt_check_behaviour == 'last'
+							'checked' => config('OSPOS')->settings['email_receipt_check_behaviour'] == 'last'
 						]) ?>
 						<?php echo lang('Config.email_receipt_check_behaviour_last') ?>
 					</label>
@@ -91,7 +91,7 @@
 						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'always',
-							'checked' => config('OSPOS')->print_receipt_check_behaviour == 'always'
+							'checked' => config('OSPOS')->settings['print_receipt_check_behaviour'] == 'always'
 						]) ?>
 						<?php echo lang('Config.print_receipt_check_behaviour_always') ?>
 					</label>
@@ -99,7 +99,7 @@
 						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'never',
-							'checked' => config('OSPOS')->print_receipt_check_behaviour == 'never'
+							'checked' => config('OSPOS')->settings['print_receipt_check_behaviour'] == 'never'
 						]) ?>
 						<?php echo lang('Config.print_receipt_check_behaviour_never') ?>
 					</label>
@@ -107,7 +107,7 @@
 						<?php echo form_radio ([
 							'name' => 'print_receipt_check_behaviour',
 							'value' => 'last',
-							'checked' => config('OSPOS')->print_receipt_check_behaviour == 'last'
+							'checked' => config('OSPOS')->settings['print_receipt_check_behaviour'] == 'last'
 						]) ?>
 						<?php echo lang('Config.print_receipt_check_behaviour_last') ?>
 					</label>
@@ -121,7 +121,7 @@
 						'name' => 'receipt_show_company_name',
 						'value' => 'receipt_show_company_name',
 						'id' => 'receipt_show_company_name',
-						'checked' => config('OSPOS')->receipt_show_company_name
+						'checked' => config('OSPOS')->settings['receipt_show_company_name']
 					]) ?>
 				</div>
 			</div>
@@ -133,7 +133,7 @@
 						'name' => 'receipt_show_taxes',
 						'value' => 'receipt_show_taxes',
 						'id' => 'receipt_show_taxes',
-						'checked' => config('OSPOS')->receipt_show_taxes
+						'checked' => config('OSPOS')->settings['receipt_show_taxes']
 					]) ?>
 				</div>
 			</div>
@@ -145,7 +145,7 @@
 						'name' => 'receipt_show_tax_ind',
 						'value' => 'receipt_show_tax_ind',
 						'id' => 'receipt_show_tax_ind',
-						'checked' => config('OSPOS')->receipt_show_tax_ind
+						'checked' => config('OSPOS')->settings['receipt_show_tax_ind']
 					]) ?>
 				</div>
 			</div>
@@ -157,7 +157,7 @@
 						'name' => 'receipt_show_total_discount',
 						'value' => 'receipt_show_total_discount',
 						'id' => 'receipt_show_total_discount',
-						'checked' => config('OSPOS')->receipt_show_total_discount
+						'checked' => config('OSPOS')->settings['receipt_show_total_discount']
 					]) ?>
 				</div>
 			</div>
@@ -169,7 +169,7 @@
 						'name' => 'receipt_show_description',
 						'value' => 'receipt_show_description',
 						'id' => 'receipt_show_description',
-						'checked' => config('OSPOS')->receipt_show_description
+						'checked' => config('OSPOS')->settings['receipt_show_description']
 					]) ?>
 				</div>
 			</div>
@@ -181,7 +181,7 @@
 						'name' => 'receipt_show_serialnumber',
 						'value' => 'receipt_show_serialnumber',
 						'id' => 'receipt_show_serialnumber',
-						'checked' => config('OSPOS')->receipt_show_serialnumber
+						'checked' => config('OSPOS')->settings['receipt_show_serialnumber']
 					]) ?>
 				</div>
 			</div>
@@ -193,7 +193,7 @@
 						'name' => 'print_silently',
 						'id' => 'print_silently',
 						'value' => 'print_silently',
-						'checked' => config('OSPOS')->print_silently
+						'checked' => config('OSPOS')->settings['print_silently']
 					]) ?>
 				</div>
 			</div>
@@ -205,7 +205,7 @@
 						'name' => 'print_header',
 						'id' => 'print_header',
 						'value' => 'print_header',
-						'checked' => config('OSPOS')->print_header
+						'checked' => config('OSPOS')->settings['print_header']
 					]) ?>
 				</div>
 			</div>
@@ -217,7 +217,7 @@
 						'name' => 'print_footer',
 						'id' => 'print_footer',
 						'value' => 'print_footer',
-						'checked' => config('OSPOS')->print_footer
+						'checked' => config('OSPOS')->settings['print_footer']
 					]) ?>
 				</div>
 			</div>
@@ -254,7 +254,7 @@
 							'name' => 'print_top_margin',
 							'id' => 'print_top_margin',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->print_top_margin
+							'value' => config('OSPOS')->settings['print_top_margin']
 						]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -272,7 +272,7 @@
 							'name' => 'print_left_margin',
 							'id' => 'print_left_margin',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->print_left_margin
+							'value' => config('OSPOS')->settings['print_left_margin']
 						]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -290,7 +290,7 @@
 							'name' => 'print_bottom_margin',
 							'id' => 'print_bottom_margin',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->print_bottom_margin
+							'value' => config('OSPOS')->settings['print_bottom_margin']
 						]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -308,7 +308,7 @@
 							'name' => 'print_right_margin',
 							'id' => 'print_right_margin',
 							'class' => 'form-control input-sm required',
-							'value' => config('OSPOS')->print_right_margin
+							'value' => config('OSPOS')->settings['print_right_margin']
 						]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>

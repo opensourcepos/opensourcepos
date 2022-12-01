@@ -87,7 +87,7 @@ class MY_Validation extends Validation
 	 */
 	public function gcaptcha_check(string $recaptchaResponse, &$error = null): bool
 	{
-		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . config('OSPOS')->gcaptcha_secret_key . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . config('OSPOS')->settings['gcaptcha_secret_key'] . '&response=' . $recaptchaResponse . '&remoteip=' . $this->request->getIPAddress();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);

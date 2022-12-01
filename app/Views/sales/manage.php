@@ -36,7 +36,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name),'url') ?>',
 		headers: <?php echo esc($table_headers, 'js') ?>,
-		pageSize: <?php echo config('OSPOS')->lines_per_page ?>,
+		pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
 		uniqueId: 'sale_id',
 		onLoadSuccess: function(response) {
 			if($("#table tbody tr").length > 1) {
