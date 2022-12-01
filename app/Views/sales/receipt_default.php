@@ -16,10 +16,10 @@
  */
 ?>
 
-<div id="receipt_wrapper" style="font-size:<?php echo config('OSPOS')->settings['receipt_font_size ?>px">
+<div id="receipt_wrapper" style="font-size:<?php echo config('OSPOS')->settings['receipt_font_size'] ?>px">
 	<div id="receipt_header">
 		<?php
-		if(config('OSPOS')->settings['company_logo != '')
+		if(config('OSPOS')->settings['company_logo'] != '')
 		{
 		?>
 			<div id="company_name">
