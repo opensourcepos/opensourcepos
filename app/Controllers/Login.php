@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use Config\Migrations;
 use Config\Services;
 
 /**
@@ -17,16 +18,13 @@ class Login extends BaseController
 	{
 		$this->employee = model('Employee');
 
-		if($this->employee->is_logged_in())
+		if(!$this->employee->is_logged_in())
 		{
-			redirect('home');
-		}
-		else
-		{
-			$migration = new MY_Migration();
+			$migration = new MY_Migration(config('Migrations'));
 			$data = [
 				'validation' => Services::validation(),
-				'latest_version' => $migration->is_latest()];
+				'latest_version' => $migration->is_latest()
+			];
 
 			if(strtolower($this->request->getMethod()) !== 'post')
 			{
@@ -37,11 +35,9 @@ class Login extends BaseController
 			{
 				echo view('login', ['validation' => $this->validator->getErrors()]);
 			}
-			else
-			{
-				redirect('home');
-			}
 		}
+
+		redirect('home');
 	}
 
 /*	public function login_check(string $username): bool
