@@ -20,7 +20,7 @@ class MY_Validation extends Validation
 	 * @param string|null $error
 	 * @return bool
 	 */
-	public function login_check(string $username, string &$error = null): bool
+	public function login_check(string $username, string $fields, array $data, string &$error = null): bool
 	{
 		$migration = Services::migrations();
 		$employee = model(Employee::class);
