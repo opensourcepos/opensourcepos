@@ -9,11 +9,6 @@ use App\Models\Employee;
  */
 class Login extends BaseController
 {
-	public function __construct()
-	{
-		$this->employee = model('Employee');
-	}
-
 	public function index()
 	{
 		$this->employee = model('Employee');
@@ -24,11 +19,9 @@ class Login extends BaseController
 		}
 		else
 		{
-			$this->validator->setRule('username', 'lang:login_username', 'required|callback_login_check');
-
-			if(!$this->validate([]))
+			if(!$this->validate(['username' => 'required']))
 			{
-				echo view('login', ['validation' => $this->validator]);
+				echo view('login', ['validation' => $this->validator->getErrors()]);
 			}
 			else
 			{
@@ -37,7 +30,7 @@ class Login extends BaseController
 		}
 	}
 
-	public function login_check($username)
+	public function login_check($username): bool
 	{
 		if(!$this->installation_check())
 		{
@@ -50,7 +43,7 @@ class Login extends BaseController
 
 		if(!$this->employee->login($username, $password))
 		{
-			$this->validatior->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
+			$this->validator->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
 
 			return FALSE;
 		}
@@ -66,7 +59,6 @@ class Login extends BaseController
 				return FALSE;
 			}
 		}
-
 		return TRUE;
 	}
 
