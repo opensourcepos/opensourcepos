@@ -25,9 +25,9 @@ class MY_Validation extends Validation
 		$migration = Services::migrations();
 		$employee = model(Employee::class);
 
-		$password = $this->request->getPost('password');	//TODO: This needs to get passed as a parameter in some way
+		$password = $this->request->getPost('password');
 
-		if(!$this->_installation_check())	//TODO: Hungarian notation
+		if(!$this->installation_check())
 		{
 			$error = lang('Login.invalid_installation');
 
@@ -44,10 +44,22 @@ class MY_Validation extends Validation
 			return FALSE;
 		}
 
+		if(config('OSPOS')->settings['gcaptcha_enable'])
+		{
+			$g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
+
+			if(!$this->gcaptcha_check($g_recaptcha_response))
+			{
+				$this->validator->setMessage('login_check', lang('login_invalid_gcaptcha'));
+
+				return FALSE;
+			}
+		}
+
 		return TRUE;
 	}
 
-	private function _installation_check()	//TODO: Hungarian Notation
+	private function installation_check()	//TODO: Hungarian Notation
 	{
 		// get PHP extensions and check that the required ones are installed
 		$extensions = implode(', ', get_loaded_extensions());

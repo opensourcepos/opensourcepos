@@ -2,13 +2,17 @@
 
 namespace App\Controllers;
 
+use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use Config\Services;
 
 /**
  * @property employee employee
  */
 class Login extends BaseController
 {
+	protected $helpers = ['form'];
+
 	public function index()
 	{
 		$this->employee = model('Employee');
@@ -19,7 +23,17 @@ class Login extends BaseController
 		}
 		else
 		{
-			if(!$this->validate(['username' => 'required']))
+			$migration = new MY_Migration();
+			$data = [
+				'validation' => Services::validation(),
+				'latest_version' => $migration->is_latest()];
+
+			if(strtolower($this->request->getMethod()) !== 'post')
+			{
+				echo view('login', $data);
+			}
+
+			if(!$this->validate(['username' => 'required|login_check']))
 			{
 				echo view('login', ['validation' => $this->validator->getErrors()]);
 			}
@@ -30,7 +44,7 @@ class Login extends BaseController
 		}
 	}
 
-	public function login_check($username): bool
+/*	public function login_check(string $username): bool
 	{
 		if(!$this->installation_check())
 		{
@@ -115,5 +129,5 @@ class Login extends BaseController
 		}
 
 		return $result;
-	}
+	}*/
 }

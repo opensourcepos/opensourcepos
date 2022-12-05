@@ -42,7 +42,9 @@ class Load_config
         }
 
         //Language
+		helper('locale');
         $language_exists = file_exists('../app/Language/' . current_language_code());
+
         if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
         {
             $config->language = 'english';
