@@ -22,7 +22,7 @@ $routes->setDefaultController('Login');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(true);	//TODO: Legacy auto routing is not working.
 
 /*
  * --------------------------------------------------------------------
@@ -32,8 +32,8 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Login::index');
-
+//$routes->get('/', 'Login::index');
+//$routes->get('home/', 'Home::index');
 $routes->add('no_access/([^/]+)', 'No_access::index/$1');
 $routes->add('no_access/([^/]+)/([^/]+)', 'No_access::index/$1/$2');
 
