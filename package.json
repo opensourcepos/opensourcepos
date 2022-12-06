@@ -41,7 +41,7 @@
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~5.0.1",
-    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-watch": "~1.1.0",
     "grunt-license-bower": "~1.0.1",
     "grunt-script-link-tags": "https://github.com/jekkos/grunt-script-link-tags.git#master",
     "grunt-wiredep": "^2.0.0",
