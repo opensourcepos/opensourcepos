@@ -26,7 +26,7 @@ class Login extends BaseController
 				'latest_version' => $migration->is_latest(),
 				'application_version' => $migration->get_current_version()
 			];
-
+//TODO: Validation isn't working. #3595
 //			if(strtolower($this->request->getMethod()) != 'post')
 //			{
 				echo view('login', $data);
@@ -38,7 +38,7 @@ class Login extends BaseController
 //			}
 		}
 
-//		redirect('home');
+		return redirect('home');
 	}
 
 /*	public function login_check(string $username): bool
