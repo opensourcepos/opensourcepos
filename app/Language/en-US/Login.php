@@ -10,5 +10,5 @@ return [
 	"login_migration_needed" => "A database migration to %1 will start after login.",
 	"login_password" => "Password",
 	"login_username" => "Username",
-	"login_welcome" => "Welcome to %1!",
+	"login_welcome" => "Welcome to {install_name}",
 ];
