@@ -31,6 +31,8 @@ class Load_config
         $config = config('OSPOS');
         $appconfig = model(Appconfig::class);
 
+		$config->settings['application_version'] = $migration->get_current_version();
+
         if (!$migration->is_latest())
         {
             $this->session->destroy();

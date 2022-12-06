@@ -23,21 +23,22 @@ class Login extends BaseController
 			$migration = new MY_Migration(config('Migrations'));
 			$data = [
 				'validation' => Services::validation(),
-				'latest_version' => $migration->is_latest()
+				'latest_version' => $migration->is_latest(),
+				'application_version' => $migration->get_current_version()
 			];
 
-			if(strtolower($this->request->getMethod()) !== 'post')
-			{
+//			if(strtolower($this->request->getMethod()) != 'post')
+//			{
 				echo view('login', $data);
-			}
+//			}
 
-			if(!$this->validate(['username' => 'required|login_check']))
-			{
-				echo view('login', ['validation' => $this->validator->getErrors()]);
-			}
+//			if(!$this->validate(['username' => 'required|login_check']))
+//			{
+//				echo view('login', ['validation' => $this->validator->getErrors()]);
+//			}
 		}
 
-		redirect('home');
+//		redirect('home');
 	}
 
 /*	public function login_check(string $username): bool

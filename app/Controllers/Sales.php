@@ -899,7 +899,7 @@ class Sales extends Secure_Controller
 				new Token_customer((object)$sale_data)
 			];
 			$text = $this->token_lib->render($text, $tokens);
-			$sale_data['mimetype'] = mime_content_type('uploads/' . config('OSPOS')->settings['company_logo']);
+			$sale_data['mimetype'] = mime_content_type(WRITEPATH . 'uploads/' . config('OSPOS')->settings['company_logo']);
 
 			// generate email attachment: invoice in pdf format
 			$view = Services::renderer();

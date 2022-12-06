@@ -26,7 +26,7 @@
     <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
       <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
       <?php if (config('OSPOS')->settings['company_logo']): ?>
-        <img class="logo w-100" src="<?php echo base_url('uploads/' . config('OSPOS')->settings['company_logo']) ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
+		  <img class="logo w-100" src="<?php echo 'uploads/' . config('OSPOS')->settings['company_logo'] ?>" alt="<?php echo lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
       <?php else: ?>
         <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
           <title><?php echo lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
@@ -43,11 +43,11 @@
           <?php echo $validation->listErrors() ?>
         </div>
         <?php endif; ?>
-				<?php if(!$latest_version): ?>
+				<?php /*if(!$latest_version):*/ ?>
         <div class="alert alert-info mt-3">
 					<?php echo lang('Login.migration_needed', ['version' => config('OSPOS')->settings['application_version']]) ?>
 				</div>
-				<?php endif; ?>
+				<?php /*endif;*/ ?>
         <?php if (empty(config('OSPOS')->settings['login_form']) || 'floating_labels'==(config('OSPOS')->settings['login_form'])): ?>
         <div class="form-floating mt-3">
           <input class="form-control" id="input-username" name="username" type="text" placeholder="<?php echo lang('Login.username') ?>">
