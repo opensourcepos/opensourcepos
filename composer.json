@@ -38,5 +38,10 @@
 		"mikey179/vfsstream": "^1.6",
 		"phpunit/phpunit": "^9.1",
 		"kenjis/ci-phpunit-test": "0.18.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
 	}
 }
