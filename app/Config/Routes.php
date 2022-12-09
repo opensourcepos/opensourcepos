@@ -7,9 +7,8 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
-{
-	require SYSTEMPATH . 'Config/Routes.php';
+if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
+    require SYSTEMPATH . 'Config/Routes.php';
 }
 
 /*
@@ -22,7 +21,11 @@ $routes->setDefaultController('Login');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);	//TODO: Legacy auto routing is not working.
+// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
+// where controller filters or CSRF protection are bypassed.
+// If you don't want to define all routes, please use the Auto Routing (Improved).
+// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
+$routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -32,8 +35,7 @@ $routes->setAutoRoute(true);	//TODO: Legacy auto routing is not working.
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-//$routes->get('/', 'Login::index');
-//$routes->get('home/', 'Home::index');
+$routes->get('/', 'Login::index');
 $routes->add('no_access/([^/]+)', 'No_access::index/$1');
 $routes->add('no_access/([^/]+)/([^/]+)', 'No_access::index/$1/$2');
 
@@ -79,7 +81,6 @@ $routes->add('reports/specific_supplier', 'Reports::specific_supplier_input');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
-	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
