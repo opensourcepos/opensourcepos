@@ -23,8 +23,8 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.3 || ^8.0",
-		"codeigniter4/framework": "^4.1.3",
+		"php": "^7.4 || ^8.1",
+		"codeigniter4/framework": "^4.2.10",
 		"dompdf/dompdf": "^2.0.1",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
