@@ -36,7 +36,7 @@
 		"codeigniter4/devkit": "v1.1.0",
 		"fakerphp/faker": "^1.9",
 		"mikey179/vfsstream": "^1.6",
-		"phpunit/phpunit": "^9.1",
+		"phpunit/phpunit": "^9.1"
 	},
 	"config": {
 		"allow-plugins": {
