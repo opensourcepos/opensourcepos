@@ -1,6 +1,6 @@
 {
     "name": "OpenSourcePOS",
-    "version": "3.3.3",
+    "version": "3.4.0",
     "license": [
         "MIT"
     ],
@@ -14,7 +14,7 @@
         "dompdf/dompdf": {
             "version": "v0.8.6",
             "license": [
-                "LGPL-2.1"
+                "LGPL-2.1-or-later"
             ]
         },
         "mikey179/vfsStream": {
@@ -32,13 +32,13 @@
         "phenx/php-font-lib": {
             "version": "0.5.2",
             "license": [
-                "LGPL-3.0"
+                "LGPL-3.0-or-later"
             ]
         },
         "phenx/php-svg-lib": {
             "version": "0.3.3",
             "license": [
-                "LGPL-3.0"
+                "LGPL-3.0-or-later"
             ]
         },
         "tamtamchik/namecase": {
