@@ -8,7 +8,7 @@
     "packages": [
         {
             "name": "codeigniter4/framework",
-            "version": "v4.2.9",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeigniter4/framework.git",
@@ -27,7 +27,7 @@
                 "ext-mbstring": "*",
                 "kint-php/kint": "^4.2",
                 "laminas/laminas-escaper": "^2.9",
-                "php": "^7.4 || ^8.0",
+                "php": "^7.4||^8.1",
                 "psr/log": "^1.1"
             },
             "require-dev": {
