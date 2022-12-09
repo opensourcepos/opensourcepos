@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ff7aec97db7292b460f225ddf61fba3",
+    "content-hash": "95b462d32c9ca90260eb93fcddde1f27",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -1982,56 +1982,6 @@
             "time": "2022-10-31T19:28:50+00:00"
         },
         {
-            "name": "kenjis/ci-phpunit-test",
-            "version": "v0.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "0b501b0f33056a46519f7ed1a659d84b64aeffa3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/0b501b0f33056a46519f7ed1a659d84b64aeffa3",
-                "reference": "0b501b0f33056a46519f7ed1a659d84b64aeffa3",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^2.1|^3.0|^4.2",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kenji Suzuki",
-                    "homepage": "https://github.com/kenjis"
-                }
-            ],
-            "description": "An easier way to use PHPUnit with CodeIgniter 3.x",
-            "homepage": "http://kenjis.github.io/ci-phpunit-test/",
-            "keywords": [
-                "codeigniter",
-                "monkey patch",
-                "phpunit",
-                "test",
-                "unit testing"
-            ],
-            "support": {
-                "forum": "http://forum.codeigniter.com/thread-61725.html",
-                "issues": "https://github.com/kenjis/ci-phpunit-test/issues",
-                "source": "https://github.com/kenjis/ci-phpunit-test/tree/v0.18.0"
-            },
-            "time": "2020-05-17T10:52:24+00:00"
-        },
-        {
             "name": "mikey179/vfsstream",
             "version": "v1.6.11",
             "source": {
@@ -3489,12 +3439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "a5d6404aa779f8c718f5e90164da5c37a6065aaf"
+                "reference": "cd9af30140f6f34d9132986f4c6f04cf5e90cdc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a5d6404aa779f8c718f5e90164da5c37a6065aaf",
-                "reference": "a5d6404aa779f8c718f5e90164da5c37a6065aaf",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/cd9af30140f6f34d9132986f4c6f04cf5e90cdc8",
+                "reference": "cd9af30140f6f34d9132986f4c6f04cf5e90cdc8",
                 "shasum": ""
             },
             "conflict": {
@@ -3503,6 +3453,7 @@
                 "adodb/adodb-php": "<=5.20.20|>=5.21,<=5.21.3",
                 "aheinze/cockpit": "<=2.2.1",
                 "akaunting/akaunting": "<2.1.13",
+                "akeneo/pim-community-dev": "<5.0.119|>=6,<6.0.53",
                 "alextselegidis/easyappointments": "<=1.4.3",
                 "alterphp/easyadmin-extension-bundle": ">=1.2,<1.2.11|>=1.3,<1.3.1",
                 "amazing/media2click": ">=1,<1.3.3",
@@ -4025,7 +3976,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-09T00:16:03+00:00"
+            "time": "2022-12-09T21:04:12+00:00"
         },
         {
             "name": "sebastian/cli-parser",
