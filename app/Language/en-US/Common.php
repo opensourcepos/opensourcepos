@@ -10,7 +10,7 @@ return [
 	"comments" => "Comments",
 	"common" => "common",
 	"confirm_search" => "You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "Please correct identified errors before saving",
 	"country" => "Country",
 	"dashboard" => "",
