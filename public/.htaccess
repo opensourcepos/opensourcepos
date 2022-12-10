@@ -66,6 +66,10 @@ Options All -Indexes
   </FilesMatch>
 </IfModule>
 
+# disable directory browsing
+# For security reasons, Option all cannot be overridden.
+Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+
 <IfModule mod_headers.c>
   Header always set X-Frame-Options "SAMEORIGIN"
   Header add Content-Security-Policy "default-src 'self' www.google.com; connect-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google.com www.gstatic.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.googleapis.com fonts.gstatic.com; img-src 'self' data:; object-src 'none'; form-action 'self'"
@@ -87,7 +91,3 @@ IndexIgnore *
     Require all denied
   </Files>
 </IfModule>
-
-# disable directory browsing
-# For security reasons, Option all cannot be overridden.
-Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
