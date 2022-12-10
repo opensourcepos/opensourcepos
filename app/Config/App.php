@@ -532,7 +532,7 @@ class App extends BaseConfig
 	 *
 	 * @var bool
 	 */
-	public $CSPEnabled = false;
+	public $CSPEnabled = false;	//TODO: We need to enable this either as part of 3.4.0 release or shortly after.  It will be an undertaking to whitelist everything, but it's imperative to block XSS attacks
 
 	public function __construct()
 	{
