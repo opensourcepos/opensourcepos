@@ -7,8 +7,8 @@
     RewriteRule "^(.*)$" "/public/" [R=301,L]
 
     # If you installed CodeIgniter in a subfolder, you will need to
-    # change the following line to match the subfolder you need.
-    # http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
+    # change the following line to match the subfolder you need. Uncomment
+    # the line below and comment the line above.
     #RewriteRule "^(.*)$"  "/[SUBDIRECTORY]/public/" [R=301,L]
 </IfModule>
 
