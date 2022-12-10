@@ -1,5 +1,6 @@
 # Disable directory browsing
-Options All -Indexes
+# For security reasons, Option all cannot be overridden.
+Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
 
 # ----------------------------------------------------------------------
 # Rewrite engine
@@ -8,7 +9,6 @@ Options All -Indexes
 # Turning on the rewrite engine is necessary for the following rules and features.
 # FollowSymLinks must be enabled for this to work.
 <IfModule mod_rewrite.c>
-	Options +SymLinksIfOwnerMatch
 	RewriteEngine On
 
 	# If you installed CodeIgniter in a subfolder, you will need to
@@ -65,10 +65,6 @@ Options All -Indexes
     ExpiresDefault "access plus 1 week"
   </FilesMatch>
 </IfModule>
-
-# disable directory browsing
-# For security reasons, Option all cannot be overridden.
-Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
 
 <IfModule mod_headers.c>
   Header always set X-Frame-Options "SAMEORIGIN"
