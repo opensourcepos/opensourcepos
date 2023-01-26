@@ -1,6 +1,5 @@
 # Disable directory browsing
-# For security reasons, Option all cannot be overridden.
-Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+Options All -Indexes
 
 # ----------------------------------------------------------------------
 # Rewrite engine
@@ -9,12 +8,13 @@ Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
 # Turning on the rewrite engine is necessary for the following rules and features.
 # FollowSymLinks must be enabled for this to work.
 <IfModule mod_rewrite.c>
+	Options +SymLinksIfOwnerMatch
 	RewriteEngine On
 
 	# If you installed CodeIgniter in a subfolder, you will need to
 	# change the following line to match the subfolder you need.
 	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
-	# RewriteBase "/"
+	# RewriteBase /
 
 	# Redirect Trailing Slashes...
 	RewriteCond %{REQUEST_FILENAME} !-d
