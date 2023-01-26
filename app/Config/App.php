@@ -49,70 +49,74 @@ class App extends BaseConfig
 	 * and path to your installation. However, you should always configure this
 	 * explicitly and never rely on auto-guessing, especially in production
 	 * environments.
-	 *
-	 * @var string
 	 */
-	public $baseURL;	//Defined in the constructor
+	public string $baseURL;	//Defined in the constructor
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Index File
-	 * --------------------------------------------------------------------------
-	 *
-	 * Typically this will be your index.php file, unless you've renamed it to
-	 * something else. If you are using mod_rewrite to remove the page set this
-	 * variable so that it is blank.
-	 *
-	 * @var string
-	 */
-	public $indexPage = '';
+    /**
+     * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
+     * If you want to accept multiple Hostnames, set this.
+     *
+     * E.g. When your site URL ($baseURL) is 'http://example.com/', and your site
+     *      also accepts 'http://media.example.com/' and
+     *      'http://accounts.example.com/':
+     *          ['media.example.com', 'accounts.example.com']
+     *
+     * @var string[]
+     * @phpstan-var list<string>
+     */
+    public array $allowedHostnames = [];
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * URI PROTOCOL
-	 * --------------------------------------------------------------------------
-	 *
-	 * This item determines which getServer global should be used to retrieve the
-	 * URI string.  The default setting of 'REQUEST_URI' works for most servers.
-	 * If your links do not seem to work, try one of the other delicious flavors:
-	 *
-	 * 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
-	 * 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']
-	 * 'PATH_INFO'      Uses $_SERVER['PATH_INFO']
-	 *
-	 * WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
-	 *
-	 * @var string
-	 */
-	public $uriProtocol = 'REQUEST_URI';
+    /**
+     * --------------------------------------------------------------------------
+     * Index File
+     * --------------------------------------------------------------------------
+     *
+     * Typically this will be your index.php file, unless you've renamed it to
+     * something else. If you are using mod_rewrite to remove the page set this
+     * variable so that it is blank.
+     */
+    public string $indexPage = '';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Default Locale
-	 * --------------------------------------------------------------------------
-	 *
-	 * The Locale roughly represents the language and location that your visitor
-	 * is viewing the site from. It affects the language strings and other
-	 * strings (like currency markers, numbers, etc), that your program
-	 * should run under for this request.
-	 *
-	 * @var string
-	 */
-	public $defaultLocale = 'en-US';
+    /**
+     * --------------------------------------------------------------------------
+     * URI PROTOCOL
+     * --------------------------------------------------------------------------
+     *
+     * This item determines which server global should be used to retrieve the
+     * URI string.  The default setting of 'REQUEST_URI' works for most servers.
+     * If your links do not seem to work, try one of the other delicious flavors:
+     *
+     * 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
+     * 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']
+     * 'PATH_INFO'      Uses $_SERVER['PATH_INFO']
+     *
+     * WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
+     */
+    public string $uriProtocol = 'REQUEST_URI';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Negotiate Locale
-	 * --------------------------------------------------------------------------
-	 *
-	 * If true, the current Request object will automatically determine the
-	 * language to use based on the value of the Accept-Language header.
-	 *
-	 * If false, no automatic detection will be performed.
-	 *
-	 * @var bool
-	 */
-	public $negotiateLocale = true;
+    /**
+     * --------------------------------------------------------------------------
+     * Default Locale
+     * --------------------------------------------------------------------------
+     *
+     * The Locale roughly represents the language and location that your visitor
+     * is viewing the site from. It affects the language strings and other
+     * strings (like currency markers, numbers, etc), that your program
+     * should run under for this request.
+     */
+    public string $defaultLocale = 'en-US';
+
+    /**
+     * --------------------------------------------------------------------------
+     * Negotiate Locale
+     * --------------------------------------------------------------------------
+     *
+     * If true, the current Request object will automatically determine the
+     * language to use based on the value of the Accept-Language header.
+     *
+     * If false, no automatic detection will be performed.
+     */
+    public bool $negotiateLocale = true;
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -125,7 +129,7 @@ class App extends BaseConfig
 	 *
 	 * @var string[]
 	 */
-	public $supportedLocales = [
+	public array $supportedLocales = [
 		'ar-EG',
 		'ar-LB',
 		'az-AZ',
@@ -176,109 +180,103 @@ class App extends BaseConfig
      *
      * The default timezone that will be used in your application to display
      * dates with the date helper, and can be retrieved through app_timezone()
-     *
-     * @var string
      */
-    public $appTimezone = 'America/Chicago';
+    public string $appTimezone = 'UTC';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Default Character Set
-	 * --------------------------------------------------------------------------
-	 *
-	 * This determines which character set is used by default in various methods
-	 * that require a character set to be provided.
-	 *
-	 * @see http://php.net/htmlspecialchars for a list of supported charsets.
-	 *
-	 * @var string
-	 */
-	public $charset = 'UTF-8';
+    /**
+     * --------------------------------------------------------------------------
+     * Default Character Set
+     * --------------------------------------------------------------------------
+     *
+     * This determines which character set is used by default in various methods
+     * that require a character set to be provided.
+     *
+     * @see http://php.net/htmlspecialchars for a list of supported charsets.
+     */
+    public string $charset = 'UTF-8';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * URI PROTOCOL
-	 * --------------------------------------------------------------------------
-	 *
-	 * If true, this will force every request made to this application to be
-	 * made via a secure connection (HTTPS). If the incoming request is not
-	 * secure, the user will be redirected to a secure version of the page
-	 * and the HTTP Strict Transport Security header will be set.
-	 *
-	 * @var bool
-	 */
-	public $forceGlobalSecureRequests = true;
+    /**
+     * --------------------------------------------------------------------------
+     * URI PROTOCOL
+     * --------------------------------------------------------------------------
+     *
+     * If true, this will force every request made to this application to be
+     * made via a secure connection (HTTPS). If the incoming request is not
+     * secure, the user will be redirected to a secure version of the page
+     * and the HTTP Strict Transport Security header will be set.
+     */
+    public bool $forceGlobalSecureRequests = false;
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Session Driver
-	 * --------------------------------------------------------------------------
-	 *
-	 * The session storage driver to use:
-	 * - `CodeIgniter\Session\Handlers\FileHandler`
-	 * - `CodeIgniter\Session\Handlers\DatabaseHandler`
-	 * - `CodeIgniter\Session\Handlers\MemcachedHandler`
-	 * - `CodeIgniter\Session\Handlers\RedisHandler`
-	 *
-	 * @var string
-	 */
-	public $sessionDriver = DatabaseHandler::class;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Driver
+     * --------------------------------------------------------------------------
+     *
+     * The session storage driver to use:
+     * - `CodeIgniter\Session\Handlers\FileHandler`
+     * - `CodeIgniter\Session\Handlers\DatabaseHandler`
+     * - `CodeIgniter\Session\Handlers\MemcachedHandler`
+     * - `CodeIgniter\Session\Handlers\RedisHandler`
+     *
+     * @deprecated use Config\Session::$driver instead.
+     */
+    public string $sessionDriver = DatabaseHandler::class;
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Session Cookie Name
-	 * --------------------------------------------------------------------------
-	 *
-	 * The session cookie name, must contain only [0-9a-z_-] characters
-	 *
-	 * @var string
-	 */
-	public $sessionCookieName = 'ospos_session';
+    /**
+     * --------------------------------------------------------------------------
+     * Session Cookie Name
+     * --------------------------------------------------------------------------
+     *
+     * The session cookie name, must contain only [0-9a-z_-] characters
+     *
+     * @deprecated use Config\Session::$cookieName  instead.
+     */
+    public string $sessionCookieName = 'ospos_session';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Session Expiration
-	 * --------------------------------------------------------------------------
-	 *
-	 * The number of SECONDS you want the session to last.
-	 * Setting to 0 (zero) means expire when the browser is closed.
-	 *
-	 * @var int
-	 */
-	public $sessionExpiration = 7200;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Expiration
+     * --------------------------------------------------------------------------
+     *
+     * The number of SECONDS you want the session to last.
+     * Setting to 0 (zero) means expire when the browser is closed.
+     *
+     * @deprecated use Config\Session::$expiration instead.
+     */
+    public int $sessionExpiration = 7200;
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Session Save Path
-	 * --------------------------------------------------------------------------
-	 *
-	 * The location to save sessions to and is driver dependent.
-	 *
-	 * For the 'files' driver, it's a path to a writable directory.
-	 * WARNING: Only absolute paths are supported!
-	 *
-	 * For the 'database' driver, it's a table name.
-	 * Please read up the manual for the format with other session drivers.
-	 *
-	 * IMPORTANT: You are REQUIRED to set a valid save path!
-	 *
-	 * @var string
-	 */
-	public $sessionSavePath = 'sessions';
+    /**
+     * --------------------------------------------------------------------------
+     * Session Save Path
+     * --------------------------------------------------------------------------
+     *
+     * The location to save sessions to and is driver dependent.
+     *
+     * For the 'files' driver, it's a path to a writable directory.
+     * WARNING: Only absolute paths are supported!
+     *
+     * For the 'database' driver, it's a table name.
+     * Please read up the manual for the format with other session drivers.
+     *
+     * IMPORTANT: You are REQUIRED to set a valid save path!
+     *
+     * @deprecated use Config\Session::$savePath instead.
+     */
+    public string $sessionSavePath = 'sessions';
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Session Match IP
-	 * --------------------------------------------------------------------------
-	 *
-	 * Whether to match the user's IP address when reading the session data.
-	 *
-	 * WARNING: If you're using the database driver, don't forget to update
-	 *          your session table's PRIMARY KEY when changing this setting.
-	 *
-	 * @var bool
-	 */
-	public $sessionMatchIP = true;
+    /**
+     * --------------------------------------------------------------------------
+     * Session Match IP
+     * --------------------------------------------------------------------------
+     *
+     * Whether to match the user's IP address when reading the session data.
+     *
+     * WARNING: If you're using the database driver, don't forget to update
+     *          your session table's PRIMARY KEY when changing this setting.
+     *
+     * @deprecated use Config\Session::$matchIP instead.
+     */
+    public bool $sessionMatchIP = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -287,9 +285,9 @@ class App extends BaseConfig
      *
      * How many seconds between CI regenerating the session ID.
      *
-     * @var int
+     * @deprecated use Config\Session::$timeToUpdate instead.
      */
-    public $sessionTimeToUpdate = 300;
+    public int $sessionTimeToUpdate = 300;
 
     /**
      * --------------------------------------------------------------------------
@@ -300,9 +298,20 @@ class App extends BaseConfig
      * when auto-regenerating the session ID. When set to FALSE, the data
      * will be later deleted by the garbage collector.
      *
-     * @var bool
+     * @deprecated use Config\Session::$regenerateDestroy instead.
      */
-    public $sessionRegenerateDestroy = false;
+    public bool $sessionRegenerateDestroy = false;
+
+    /**
+     * --------------------------------------------------------------------------
+     * Session Database Group
+     * --------------------------------------------------------------------------
+     *
+     * DB Group for the database session.
+     *
+     * @deprecated use Config\Session::$DBGroup instead.
+     */
+    public ?string $sessionDBGroup = null;
 
     /**
      * --------------------------------------------------------------------------
@@ -311,11 +320,9 @@ class App extends BaseConfig
      *
      * Set a cookie name prefix if you need to avoid collisions.
      *
-     * @var string
-     *
      * @deprecated use Config\Cookie::$prefix property instead.
      */
-    public $cookiePrefix;
+    public string $cookiePrefix = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -324,11 +331,9 @@ class App extends BaseConfig
      *
      * Set to `.your-domain.com` for site-wide cookies.
      *
-     * @var string
-     *
      * @deprecated use Config\Cookie::$domain property instead.
      */
-    public $cookieDomain;
+    public string $cookieDomain = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -337,11 +342,9 @@ class App extends BaseConfig
      *
      * Typically will be a forward slash.
      *
-     * @var string
-     *
      * @deprecated use Config\Cookie::$path property instead.
      */
-    public $cookiePath;
+    public string $cookiePath = '/';
 
     /**
      * --------------------------------------------------------------------------
@@ -350,11 +353,9 @@ class App extends BaseConfig
      *
      * Cookie will only be set if a secure HTTPS connection exists.
      *
-     * @var bool
-     *
      * @deprecated use Config\Cookie::$secure property instead.
      */
-    public $cookieSecure;
+    public bool $cookieSecure = false;
 
     /**
      * --------------------------------------------------------------------------
@@ -363,11 +364,9 @@ class App extends BaseConfig
      *
      * Cookie will only be accessible via HTTP(S) (no JavaScript).
      *
-     * @var bool
-     *
      * @deprecated use Config\Cookie::$httponly property instead.
      */
-    public $cookieHTTPOnly;
+    public bool $cookieHTTPOnly = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -389,11 +388,9 @@ class App extends BaseConfig
      * (empty string) means default SameSite attribute set by browsers (`Lax`)
      * will be set on cookies. If set to `None`, `$cookieSecure` must also be set.
      *
-     * @var string|null
-     *
      * @deprecated use Config\Cookie::$samesite property instead.
      */
-    public $cookieSameSite = 'Lax';
+    public ?string $cookieSameSite = 'Lax';
 
     /**
      * --------------------------------------------------------------------------
@@ -402,18 +399,21 @@ class App extends BaseConfig
      *
      * If your server is behind a reverse proxy, you must whitelist the proxy
      * IP addresses from which CodeIgniter should trust headers such as
-     * HTTP_X_FORWARDED_FOR and HTTP_CLIENT_IP in order to properly identify
+     * X-Forwarded-For or Client-IP in order to properly identify
      * the visitor's IP address.
      *
-     * You can use both an array or a comma-separated list of proxy addresses,
-     * as well as specifying whole subnets. Here are a few examples:
+     * You need to set a proxy IP address or IP address with subnets and
+     * the HTTP header for the client IP address.
      *
-     * Comma-separated:	'10.0.1.200,192.168.5.0/24'
-     * Array: ['10.0.1.200', '192.168.5.0/24']
+     * Here are some examples:
+     *     [
+     *         '10.0.1.200'     => 'X-Forwarded-For',
+     *         '192.168.5.0/24' => 'X-Real-IP',
+     *     ]
      *
-     * @var string|string[]
+     * @var array<string, string>
      */
-    public $proxyIPs = '';
+    public array $proxyIPs = [];
 
     /**
      * --------------------------------------------------------------------------
@@ -423,10 +423,8 @@ class App extends BaseConfig
      * The token name.
      *
      * @deprecated Use `Config\Security` $tokenName property instead of using this property.
-     *
-     * @var string
      */
-    public $CSRFTokenName;
+    public string $CSRFTokenName = 'csrf_ospos_v4';
 
     /**
      * --------------------------------------------------------------------------
@@ -436,10 +434,8 @@ class App extends BaseConfig
      * The header name.
      *
      * @deprecated Use `Config\Security` $headerName property instead of using this property.
-     *
-     * @var string
      */
-    public $CSRFHeaderName = 'X-CSRF-TOKEN';
+    public string $CSRFHeaderName = 'X-CSRF-TOKEN';
 
     /**
      * --------------------------------------------------------------------------
@@ -449,10 +445,8 @@ class App extends BaseConfig
      * The cookie name.
      *
      * @deprecated Use `Config\Security` $cookieName property instead of using this property.
-     *
-     * @var string
      */
-    public $CSRFCookieName;
+    public string $CSRFCookieName = 'csrf_cookie_ospos_v4';
 
     /**
      * --------------------------------------------------------------------------
@@ -462,10 +456,8 @@ class App extends BaseConfig
      * The number in seconds the token should expire.
      *
      * @deprecated Use `Config\Security` $expire property instead of using this property.
-     *
-     * @var int
      */
-    public $CSRFExpire;
+    public int $CSRFExpire = 7200;
 
     /**
      * --------------------------------------------------------------------------
@@ -475,10 +467,8 @@ class App extends BaseConfig
      * Regenerate token on every submission?
      *
      * @deprecated Use `Config\Security` $regenerate property instead of using this property.
-     *
-     * @var bool
      */
-    public $CSRFRegenerate;
+    public bool $CSRFRegenerate = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -488,10 +478,8 @@ class App extends BaseConfig
      * Redirect to previous page with error on failure?
      *
      * @deprecated Use `Config\Security` $redirect property instead of using this property.
-     *
-     * @var bool
      */
-    public $CSRFRedirect;
+    public bool $CSRFRedirect = false;
 
     /**
      * --------------------------------------------------------------------------
@@ -509,10 +497,8 @@ class App extends BaseConfig
      * @see https://portswigger.net/web-security/csrf/samesite-cookies
      *
      * @deprecated `Config\Cookie` $samesite property is used.
-     *
-     * @var string
      */
-    public $CSRFSameSite;
+    public string $CSRFSameSite = 'Lax';
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -529,10 +515,8 @@ class App extends BaseConfig
 	 *
 	 * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
 	 * @see http://www.w3.org/TR/CSP/
-	 *
-	 * @var bool
 	 */
-	public $CSPEnabled = false;	//TODO: We need to enable this either as part of 3.4.0 release or shortly after.  It will be an undertaking to whitelist everything, but it's imperative to block XSS attacks
+	public bool $CSPEnabled = false;	//TODO: We need to enable this either as part of 3.4.0 release or shortly after.  It will be an undertaking to whitelist everything, but it's imperative to block XSS attacks
 
 	public function __construct()
 	{
