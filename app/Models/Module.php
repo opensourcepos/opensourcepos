@@ -22,7 +22,7 @@ class Module extends Model
 			return lang($row->name_lang_key);
 		}
 
-		return lang('Error.unknown');
+		return lang('Errors.unknown');
 	}
 
 	public function get_module_desc(string $module_id): string	//TODO: This method doesn't seem to be called in the code.  Is it needed?  Also, probably should change the name to get_module_description()
@@ -37,7 +37,7 @@ class Module extends Model
 			return lang($row->desc_lang_key);
 		}
 
-		return lang('Error.unknown');
+		return lang('Errors.unknown');
 	}
 
 	public function get_all_permissions(): ResultInterface

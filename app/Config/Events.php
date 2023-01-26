@@ -7,6 +7,7 @@ use App\Events\Load_config;
 use App\Events\Method;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
+
 /*
  * --------------------------------------------------------------------
  * Application Events
