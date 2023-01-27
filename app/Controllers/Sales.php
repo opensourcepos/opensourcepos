@@ -55,7 +55,7 @@ class Sales extends Secure_Controller
 		$this->token_lib = new Token_lib();
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$this->session->set('allow_temp_items', 1);
 		$this->_reload();	//TODO: Hungarian Notation

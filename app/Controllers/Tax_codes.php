@@ -18,7 +18,7 @@ class Tax_codes extends Secure_Controller
 	}
 
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		 echo view('taxes/tax_codes', $this->get_data());
 	}

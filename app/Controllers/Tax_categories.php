@@ -16,7 +16,7 @@ class Tax_categories extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		 $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 

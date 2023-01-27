@@ -16,7 +16,7 @@ class Giftcards extends Secure_Controller
 		$this->giftcard = model('Giftcard');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_giftcards_manage_table_headers();
 

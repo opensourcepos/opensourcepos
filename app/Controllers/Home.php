@@ -9,7 +9,7 @@ class Home extends Secure_Controller
 		parent::__construct(NULL, NULL, 'home');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		echo view('home/home');
 	}

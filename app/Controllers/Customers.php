@@ -44,7 +44,7 @@ class Customers extends Persons
 		$this->_list_id = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_customer_manage_table_headers();
 

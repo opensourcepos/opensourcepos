@@ -19,7 +19,7 @@ class Suppliers extends Persons
 		$this->supplier = model('Supplier');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_suppliers_manage_table_headers();
 

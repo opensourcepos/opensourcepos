@@ -58,7 +58,7 @@ class Items extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$this->session->set('allow_temp_items', 0);
 

@@ -25,7 +25,7 @@ class Messages extends Secure_Controller
 		$this->person = model('Person');
 	}
 	
-	public function index(): void
+	public function getIndex(): void
 	{
 		echo view('messages/sms');
 	}

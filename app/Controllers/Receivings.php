@@ -42,7 +42,7 @@ class Receivings extends Secure_Controller
 		$this->supplier = model('Supplier');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$this->_reload();
 	}
