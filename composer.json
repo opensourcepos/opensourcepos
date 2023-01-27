@@ -32,12 +32,16 @@
 		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
-        "roave/security-advisories": "dev-latest",
-		"codeigniter4/devkit": "v1.1.0",
+		"kint-php/kint": "^5.0.1",
 		"codeigniter/coding-standard": "^1.5",
 		"fakerphp/faker": "^1.9",
+		"friendsofphp/php-cs-fixer": "3.13.0",
 		"mikey179/vfsstream": "^1.6",
-		"phpunit/phpunit": "^9.1"
+		"nexusphp/cs-config": "^3.6",
+		"phpunit/phpunit": "^9.1",
+		"predis/predis": "^1.1 || ^2.0",
+		"roave/security-advisories": "dev-latest",
+		"codeigniter4/devkit": "v1.1.0"
 	},
 	"config": {
 		"allow-plugins": {
