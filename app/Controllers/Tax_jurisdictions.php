@@ -19,7 +19,7 @@ class Tax_jurisdictions extends Secure_Controller
 	}
 
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		 $data['table_headers'] = get_tax_jurisdictions_table_headers();
 

@@ -80,7 +80,7 @@ class Secure_Controller extends BaseController
 	}
 
 	// this is the basic set of methods most OSPOS Controllers will implement
-	public function index() { return FALSE; }
+	public function getIndex() { return FALSE; }
 	public function search() { return FALSE; }
 	public function suggest_search() { return FALSE; }
 	public function view(int $data_item_id = -1) { return FALSE; }

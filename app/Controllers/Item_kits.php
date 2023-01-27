@@ -64,7 +64,7 @@ class Item_kits extends Secure_Controller
 		return $item_kit;
 	}
 	
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_item_kits_manage_table_headers();
 

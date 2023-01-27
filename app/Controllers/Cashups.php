@@ -22,7 +22,7 @@ class Cashups extends Secure_Controller
 		$this->summary_payments = model('Reports/Summary_payments');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_cashups_manage_table_headers();
 

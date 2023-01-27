@@ -34,7 +34,7 @@ class Taxes extends Secure_Controller
 		helper('tax_helper');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['tax_codes'] = $this->tax_code->get_all()->getResultArray();
 		if (count($data['tax_codes']) == 0)

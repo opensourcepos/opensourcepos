@@ -14,7 +14,7 @@ class Office extends Secure_Controller
 		parent::__construct('office', NULL, 'office');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		echo view('home/office');
 	}

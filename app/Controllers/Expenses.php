@@ -19,7 +19,7 @@ class Expenses extends Secure_Controller
 		$this->expense_category = model('Expense_category');
 	}
 
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['table_headers'] = get_expenses_manage_table_headers();
 

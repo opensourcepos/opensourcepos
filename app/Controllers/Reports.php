@@ -80,7 +80,7 @@ class Reports extends Secure_Controller
 	}
 
 	//Initial Report listing screen
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['grants'] = $this->employee->get_employee_grants($this->session->get('person_id'));
 
