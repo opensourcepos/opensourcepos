@@ -11,7 +11,7 @@ class Migration_modify_attr_links_constraint extends Migration
 		error_log('Migrating modify_attr_links_constraint');
 
 
-		execute_script(APPPATH . 'migrations/sqlscripts/3.3.2_modify_attr_links_constraint.sql');
+		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.2_modify_attr_links_constraint.sql');
 
 		error_log('Migrating modify_attr_links_constraint');
 	}
