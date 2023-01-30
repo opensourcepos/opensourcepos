@@ -400,7 +400,7 @@ class Employee extends Person
 	{
 		$this->session->destroy();
 
-		redirect('login');
+		redirect()->to('login');
 	}
 
 	/**

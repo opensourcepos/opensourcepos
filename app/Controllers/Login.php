@@ -26,19 +26,20 @@ class Login extends BaseController
 				'latest_version' => $migration->is_latest(),
 				'application_version' => $migration->get_current_version()
 			];
-//TODO: Validation isn't working. #3595
-//			if(strtolower($this->request->getMethod()) != 'post')
-//			{
-				echo view('login', $data);
-//			}
 
+			if($this->request->getMethod() != 'post')
+			{
+				echo view('login', $data);
+			}
+
+//TODO: Validation isn't working. #3595
 //			if(!$this->validate(['username' => 'required|login_check']))
 //			{
 //				echo view('login', ['validation' => $this->validator->getErrors()]);
 //			}
 		}
 
-		return redirect('home');
+//		return redirect()->to('home');
 	}
 
 /*	public function login_check(string $username): bool
