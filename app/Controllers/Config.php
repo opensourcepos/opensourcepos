@@ -244,7 +244,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function index(): void
+	public function getIndex(): void
 	{
 		$data['stock_locations'] = $this->stock_location->get_all()->getResultArray();
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
