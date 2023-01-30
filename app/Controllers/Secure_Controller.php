@@ -26,7 +26,7 @@ class Secure_Controller extends BaseController
 
 		if(!$this->employee->is_logged_in())
 		{
-			redirect('login');
+			redirect()->to('login');
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
