@@ -64,7 +64,7 @@ class Secure_Controller extends BaseController
 		$data['user_info'] = $logged_in_employee_info;
 		$data['controller_name'] = $module_id;
 
-		$this->load->vars($data);	//TODO: need to find out how to convert this.
+		echo view('viewData', $data);
 	}
 
 	public function check_numeric()
