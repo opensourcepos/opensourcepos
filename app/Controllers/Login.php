@@ -14,7 +14,7 @@ class Login extends BaseController
 {
 	protected $helpers = ['form'];
 
-	public function getIndex()
+	public function index()
 	{
 		$this->employee = model('Employee');
 
