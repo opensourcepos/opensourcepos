@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use CodeIgniter\HTTP\RedirectResponse;
 use Config\Migrations;
 use Config\Services;
 
@@ -14,7 +15,7 @@ class Login extends BaseController
 {
 	protected $helpers = ['form'];
 
-	public function index()
+	public function index(): RedirectResponse
 	{
 		$this->employee = model('Employee');
 
@@ -39,10 +40,10 @@ class Login extends BaseController
 //			}
 		}
 
-//		return redirect()->to('home');
+		return redirect()->to('home');
 	}
 
-/*	public function login_check(string $username): bool
+	public function login_check(string $username): bool
 	{
 		if(!$this->installation_check())
 		{
@@ -127,5 +128,5 @@ class Login extends BaseController
 		}
 
 		return $result;
-	}*/
+	}
 }
