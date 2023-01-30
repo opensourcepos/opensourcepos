@@ -24,8 +24,8 @@ class Login extends BaseController
 			$migration = new MY_Migration(config('Migrations'));
 			$data = [
 				'validation' => Services::validation(),
-				'latest_version' => $migration->is_latest(),
-				'application_version' => $migration->get_current_version()
+				'is_latest' => $migration->is_latest(),
+				'latest_version' => $migration->get_last_migration()
 			];
 
 			if($this->request->getMethod() != 'post')

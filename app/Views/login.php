@@ -1,6 +1,8 @@
 <?php
 /**
  * @var object $validation
+ * @var bool $is_latest
+ * @var string $latest_version
  */
 helper('form');
 ?>
@@ -47,11 +49,11 @@ helper('form');
 						</div>
 					<?php endif; ?>
 
-					<?php /*if(!$latest_version):*/ //TODO: This needs to be uncommented and fixed. CI4 does the latest version check differently, so we need to create a function that assigns a bool to $latest_version and includes it in view $data ?>
+					<?php if(!$is_latest): ?>
 					<div class="alert alert-info mt-3">
-						<?php echo lang('Login.migration_needed', ['version' => config('OSPOS')->settings['application_version']]) ?>
+						<?php echo lang('Login.migration_needed', ['version' => $latest_version]) ?>
 					</div>
-					<?php /*endif;*/ ?>
+					<?php endif; ?>
 
 					<?php if (empty(config('OSPOS')->settings['login_form']) || 'floating_labels'==(config('OSPOS')->settings['login_form'])): ?>
 						<div class="form-floating mt-3">
