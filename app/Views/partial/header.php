@@ -2,10 +2,14 @@
 /**
  * @var object $user_info
  * @var array $allowed_modules
+ * @var CodeIgniter\HTTP\IncomingRequest $request
  */
+
+$request = \Config\Services::request();
+helper('cookie');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $this->request->getLocale() ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $request->getLocale() ?>">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
@@ -13,7 +17,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->settings['theme']) ? 'flatly' : esc(config('OSPOS')->settings['theme'])) . '/bootstrap.min.css' ?>"/>
 
-	<?php if ($this->request->cookie('debug') == 'true' || $this->request->getGet('debug') == 'true') : ?>
+	<?php if (get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
@@ -115,7 +119,7 @@
 
 				<div class="navbar-right" style="margin:0">
 					<?php echo anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-					<?php echo '  |  ' . ($this->request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
+					<?php echo '  |  ' . ($request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
 					<?php echo anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
