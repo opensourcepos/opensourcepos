@@ -2,6 +2,7 @@
 /**
  * @var object $validation
  */
+helper('form');
 ?>
 
 <!doctype html>
@@ -37,7 +38,7 @@
       </div>
       <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
 				<?php echo form_open('login') ?>
-        <h3 class="text-center m-0"><?php echo lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
+		<h3 class="text-center m-0"><?php echo lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
         <?php if (!empty($validation->getErrors())): ?>
         <div class="alert alert-danger mt-3">
           <?php echo $validation->listErrors() ?>

@@ -15,7 +15,7 @@ class Login extends BaseController
 {
 	protected $helpers = ['form'];
 
-	public function index(): RedirectResponse
+	public function index()
 	{
 		$this->employee = model('Employee');
 
@@ -40,7 +40,7 @@ class Login extends BaseController
 //			}
 		}
 
-		return redirect()->to('home');
+		//return redirect()->to('home');
 	}
 
 	public function login_check(string $username): bool
@@ -56,7 +56,7 @@ class Login extends BaseController
 
 		if(!$this->employee->login($username, $password))
 		{
-			$this->validator->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
+			$this->validator->setMessage('login_check', $this->lang->line('login_invalid_username_and_password'));
 
 			return FALSE;
 		}
