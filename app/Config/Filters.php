@@ -30,7 +30,7 @@ class Filters extends BaseConfig
     public array $globals = [
         'before' => [
             'honeypot',
-            'csrf' => ['except' => 'login'],
+            //'csrf' => ['except' => 'login'],	//TODO: Temporarily disable CSRF until we get everything sorted.
             'invalidchars',
         ],
         'after' => [
