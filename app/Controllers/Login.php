@@ -41,8 +41,13 @@ class Login extends BaseController
 				return view('login', $data);
 			}
 
+			if(!$data['is_latest'])
+			{
+				set_time_limit(3600);
+
+				$migration->setNamespace('App')->latest();
+			}
 		}
-		echo "validated";
 		return redirect()->to('home');
 	}
 }

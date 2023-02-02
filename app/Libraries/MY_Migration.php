@@ -6,7 +6,6 @@ use CodeIgniter\Database\MigrationRunner;
 
 class MY_Migration extends MigrationRunner
 {
-
 	public function get_last_migration(): string
 	{
 		$migrations = $this->findMigrations();
