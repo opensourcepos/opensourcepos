@@ -11,6 +11,15 @@ use Config\Services;
  */
 class OSPOSRules
 {
+	/**
+	 * Validates the username and password sent to the login view. User is logged in on successful validation.
+	 *
+	 * @param string $username Username to check against.
+	 * @param string $fields Comma separated string of the fields for validation.
+	 * @param array $data Data sent to the view.
+	 * @param string|null $error The error sent back to the validation handler on failure.
+	 * @return bool True if validation passes or false if there are errors.
+	 */
 	public function login_check(string $username, string $fields , array $data, ?string &$error = null): bool
 	{
 		$this->employee = model('Employee');
