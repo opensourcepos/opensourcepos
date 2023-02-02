@@ -1,10 +1,9 @@
 <?php
 /**
- * @var object $validation
+ * @var bool $has_errors
  * @var bool $is_latest
  * @var string $latest_version
  */
-helper('form');
 ?>
 
 <!doctype html>
@@ -43,9 +42,9 @@ helper('form');
 				<section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
 					<?php echo form_open('login') ?>
 					<h3 class="text-center m-0"><?php echo lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
-					<?php if (!empty($validation->getErrors())): ?>
+					<?php if ($has_errors): ?>
 						<div class="alert alert-danger mt-3">
-							<?php echo $validation->listErrors() ?>
+							<?php echo validation_list_errors(); ?>
 						</div>
 					<?php endif; ?>
 
