@@ -31,6 +31,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 
 $routes->get('/', 'Login::index');
+$routes->get('login', 'Login::index');
+$routes->post('login', 'Login::index');
+
 $routes->add('no_access/([^/]+)', 'No_access::getIndex/$1');
 $routes->add('no_access/([^/]+)/([^/]+)', 'No_access::getIndex/$1/$2');
 
