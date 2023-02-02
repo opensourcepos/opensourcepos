@@ -84,10 +84,11 @@
 						</div>
 					<?php endif; ?>
 
-					<?php if(config('OSPOS')->settings['gcaptcha_enable']) {
+					<?php if(config('OSPOS')->settings['gcaptcha_enable'])
+					{
 						echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-						echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->settings['gcaptcha_site_key'] . '"></div>'; }
-					?>
+						echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->settings['gcaptcha_site_key'] . '"></div>';
+					} ?>
 					<div class="d-grid">
 						<button class="btn btn-lg btn-primary" name="login-button" type="submit" ><?php echo lang('Login.go') ?></button>
 					</div>
