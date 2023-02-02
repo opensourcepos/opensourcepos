@@ -26,8 +26,7 @@ class Validation extends BaseConfig
         Rules::class,
         FormatRules::class,
         FileRules::class,
-        CreditCardRules::class,
-		MY_Validation::class
+        CreditCardRules::class
 	];
 
     /**
