@@ -3,6 +3,7 @@
  * @var bool $has_errors
  * @var bool $is_latest
  * @var string $latest_version
+ * @var bool $gcaptcha_enabled
  */
 ?>
 
@@ -84,7 +85,7 @@
 						</div>
 					<?php endif; ?>
 
-					<?php if(config('OSPOS')->settings['gcaptcha_enable'])
+					<?php if($gcaptcha_enabled)
 					{
 						echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
 						echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->settings['gcaptcha_site_key'] . '"></div>';

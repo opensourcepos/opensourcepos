@@ -10,6 +10,7 @@ class Convert_to_ci4 extends Migration
 	{
 		error_log('Migrating database to CodeIgniter4 formats');
 
+		helper('migration');
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_ci4_conversion.sql');
 
 		error_log('Migrating to CodeIgniter4 formats completed');

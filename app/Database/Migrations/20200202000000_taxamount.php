@@ -27,7 +27,6 @@ class Migration_TaxAmount extends Migration
 		parent::__construct();
 
 		$this->appconfig = model('Appconfig');
-		$this->tax_lib = new Tax_lib();
 	}
 
 	public function up(): void

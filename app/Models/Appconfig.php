@@ -32,7 +32,7 @@ class Appconfig extends Model
 	public function get_value(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
-		$query = $builder->getWhere('key', $key, 1);
+		$query = $builder->getWhere(['key' => $key], 1, 1);
 
 		if($query->getNumRows() == 1)	//TODO: ===
 		{
