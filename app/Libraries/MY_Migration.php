@@ -14,9 +14,14 @@ class MY_Migration extends MigrationRunner
 
 	public function get_current_version(): string
 	{
-		$builder = $this->db->table('migrations');
-		$builder->select('version');
-		return $builder->get()->getRow()->version;
+		if($this->db->tableExists('migrations'))
+		{
+			$builder = $this->db->table('migrations');
+			$builder->select('version');
+			return $builder->get()->getRow()->version;
+		}
+
+		return 0;
 	}
 
 	public function is_latest(): bool

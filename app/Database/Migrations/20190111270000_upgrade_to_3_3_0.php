@@ -8,6 +8,7 @@ class Migration_Upgrade_To_3_3_0 extends Migration
 {
 	public function up(): void
 	{
+		helper('migration');
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.2.1_to_3.3.0.sql');
 	}
 

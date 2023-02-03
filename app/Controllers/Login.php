@@ -19,10 +19,17 @@ class Login extends BaseController
 		if(!$this->employee->is_logged_in())
 		{
 			$migration = new MY_Migration(config('Migrations'));
+
+			//The gcaptcha_enable key was not added to app settings until 3.1.1. Without this check we get an error
+			$gcaptcha_enabled = array_key_exists('gcaptcha_enable', config('OSPOS')->settings)
+				? config('OSPOS')->settings['gcaptcha_enable']
+				: false;
+
 			$data = [
 				'has_errors' => false,
 				'is_latest' => $migration->is_latest(),
-				'latest_version' => $migration->get_last_migration()
+				'latest_version' => $migration->get_last_migration(),
+				'gcaptcha_enabled' => $gcaptcha_enabled
 			];
 
 			if(strtolower($this->request->getMethod()) !== 'post')

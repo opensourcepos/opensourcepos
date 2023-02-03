@@ -14,6 +14,7 @@ class Migration_IndiaGST extends Migration
 		}
 
 		// If number of entries is greater than zero then the tax data needs to be migrated
+		helper('migration');
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_indiagst.sql');
 
 		error_log('Migrating tax configuration');

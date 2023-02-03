@@ -8,6 +8,7 @@ class Migration_RefundTracking extends Migration
 {
 	public function up(): void
 	{
+		helper(['migration', 'locale']);
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_refundtracking.sql');
 
 		// Add missing cash_refund amounts to payments table

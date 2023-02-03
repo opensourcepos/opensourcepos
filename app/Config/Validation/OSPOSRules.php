@@ -43,7 +43,11 @@ class OSPOSRules
 		}
 
 		//GCaptcha Check
-		if(config('OSPOS')->settings['gcaptcha_enable'])
+		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', config('OSPOS')->settings)
+			? config('OSPOS')->settings['gcaptcha_enable']
+			: false;
+
+		if($gcaptcha_enabled)
 		{
 			$g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
 

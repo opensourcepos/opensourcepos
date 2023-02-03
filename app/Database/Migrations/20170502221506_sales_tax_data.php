@@ -8,8 +8,6 @@ use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 
 /**
- * 
- * 
  * @property tax_lib tax_lib
  * @property appconfig appconfig
  */
@@ -25,19 +23,18 @@ class Migration_Sales_Tax_Data extends Migration
 	public function __construct()
 	{
 		parent::__construct();
-		$this->tax_lib = new Tax_lib();
 		$this->appconfig = model('Appconfig');
 	}
-
+//TODO: we need to figure out why we get a server error when uncommented portions of this migration run
 	public function up(): void
 	{
 		$number_of_unmigrated = $this->get_count_of_unmigrated();
-		error_log("Migrating sales tax history. The number of sales that will be migrated is $number_of_unmigrated");		//TODO: String interpolation
-		
+		error_log("Migrating sales tax history. The number of sales that will be migrated is $number_of_unmigrated");
+
 		if($number_of_unmigrated > 0)
 		{
 			$unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->getResultArray();
-			
+
 			foreach($unmigrated_invoices as $key => $unmigrated_invoice)
 			{
 				$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
