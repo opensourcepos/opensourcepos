@@ -90,7 +90,7 @@ class Migration_database_optimizations extends Migration
 		$builder->select("$column, attribute_id");
 		$builder->groupBy($column);
 		$builder->having("COUNT($column) > 1");
-		$duplicated_values = $builder->get('attribute_values');
+		$duplicated_values = $builder->get();
 
 		foreach($duplicated_values->getResultArray() as $duplicated_value)
 		{
