@@ -784,13 +784,14 @@ class Attribute extends Model
 	 */
 	public function delete_orphaned_values(): bool
 	{
-		$builder = $this->db->table('attribute_values');
-		$builder->distinct()->select('attribute_id');
-		$attribute_ids = $builder->getCompiledSelect('attribute_links');
+		$subquery = $this->db->table('attribute_links')
+			->distinct()
+			->select('attribute_id');
 
 		$this->db->transStart();
 
-		$builder->whereNotIn('attribute_id', $attribute_ids, FALSE);
+		$builder = $this->db->table('attribute_values');
+		$builder->whereNotIn('attribute_id', $subquery, FALSE);
 		$builder->delete();
 
 		$this->db->transComplete();
