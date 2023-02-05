@@ -36,7 +36,7 @@ class MY_Migration extends MigrationRunner
 			return $builder->get()->getRow()->version;
 		}
 
-		return '';
+		return 0;
 	}
 
 	public function migrate_to_ci4(): void
