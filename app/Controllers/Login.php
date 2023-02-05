@@ -25,6 +25,8 @@ class Login extends BaseController
 				? config('OSPOS')->settings['gcaptcha_enable']
 				: false;
 
+			$migration->migrate_to_ci4();
+
 			$data = [
 				'has_errors' => false,
 				'is_latest' => $migration->is_latest(),

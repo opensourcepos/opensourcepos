@@ -10,19 +10,13 @@ class MY_Migration extends MigrationRunner
 {
 	public function is_latest(): bool
 	{
-		$ci3_migrations_version = $this->ci3_migrations_exists();
-		if($ci3_migrations_version)
-		{
-			$this->migrate_to_ci4_migrations($ci3_migrations_version);
-		}
-
 		$latest_version = $this->get_latest_migration();
 		$current_version = $this->get_current_version();
 
-		return $latest_version == $current_version;
+		return $latest_version === $current_version;
 	}
 
-	public function get_latest_migration(): string
+	public function get_latest_migration(): int
 	{
 		$migrations = $this->findMigrations();
 		return basename(end($migrations)->version);
@@ -33,7 +27,7 @@ class MY_Migration extends MigrationRunner
 	 *
 	 * @return string The version number of the last successfully run database migration.
 	 */
-	public function get_current_version(): string
+	public function get_current_version(): int
 	{
 		if($this->db->tableExists('migrations'))
 		{
@@ -43,6 +37,15 @@ class MY_Migration extends MigrationRunner
 		}
 
 		return '';
+	}
+
+	public function migrate_to_ci4(): void
+	{
+		$ci3_migrations_version = $this->ci3_migrations_exists();
+		if($ci3_migrations_version)
+		{
+			$this->migrate_table($ci3_migrations_version);
+		}
 	}
 
 	/**
@@ -62,7 +65,7 @@ class MY_Migration extends MigrationRunner
 		return false;
 	}
 
-	private function migrate_to_ci4_migrations(string $ci3_migrations_version)
+	private function migrate_table(string $ci3_migrations_version)
 	{
 		$this->convert_table();
 
