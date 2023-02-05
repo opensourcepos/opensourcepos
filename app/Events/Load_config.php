@@ -31,13 +31,12 @@ class Load_config
         $config = config('OSPOS');
         $appconfig = model(Appconfig::class);
 
-		$config->settings['application_version'] = $migration->get_current_version();
-
-        if (!$migration->is_latest())
+		if (!$migration->is_latest())
         {
             $this->session->destroy();
         }
 
+		$config->settings['application_version'] = $migration->get_current_version();
         foreach($appconfig->get_all()->getResult() as $app_config)
         {
             $config->settings[$app_config->key] = $app_config->value;
