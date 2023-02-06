@@ -28,7 +28,6 @@
 		"dompdf/dompdf": "^2.0.2",
 		"tamtamchik/namecase": "^1.0.6",
 		"paragonie/random_compat": "^2.0.21",
-		"vlucas/phpdotenv": "^2.6.9",
 		"picqer/php-barcode-generator": "*"
 	},
 	"require-dev": {
