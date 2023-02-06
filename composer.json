@@ -25,7 +25,7 @@
 	"require": {
 		"php": "^7.4||^8.0",
 		"codeigniter4/framework": "^4.3.1",
-		"dompdf/dompdf": "^2.0.1",
+		"dompdf/dompdf": "^2.0.2",
 		"tamtamchik/namecase": "^1.0",
 		"paragonie/random_compat": "^2.0",
 		"vlucas/phpdotenv": "^2.4",
