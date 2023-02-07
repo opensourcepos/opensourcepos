@@ -1,13 +1,12 @@
--- creating new column of TIMESTAMP type
-ALTER TABLE `ospos_sessions`
-    ADD COLUMN `temp_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP();
 
--- Use FROM_UNIXTIME() to convert from the INT timestamp to a proper datetime type
--- assigning value from old INT column to it, in hope that it will be recognized as timestamp
-UPDATE `ospos_sessions` SET `temp_timestamp` = FROM_UNIXTIME(`timestamp`);
+DROP TABLE `ospos_sessions`;
 
--- dropping the old INT column
-ALTER TABLE `ospos_sessions` DROP COLUMN `timestamp`;
+CREATE TABLE IF NOT EXISTS `ospos_sessions` (
+	`id` varchar(128) NOT null,
+	`ip_address` varchar(45) NOT null,
+	`timestamp` timestamp DEFAULT CURRENT_TIMESTAMP NOT null,
+	`data` blob NOT null,
+	KEY `ospos_sessions_timestamp` (`timestamp`)
+	);
 
--- changing the name of the column
-ALTER TABLE `ospos_sessions` CHANGE `temp_timestamp` `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP();
+ALTER TABLE ospos_sessions ADD PRIMARY KEY (id, ip_address);
