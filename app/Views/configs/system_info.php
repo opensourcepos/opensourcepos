@@ -52,10 +52,10 @@
 				.Server Port: <?php echo esc($_SERVER['SERVER_PORT']) ?><br>
 				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>
-						&#187; [application/logs:]
-						<?php $logs = '../application/logs/'; 
-							$uploads = '../public/uploads/'; 
-							$images = '../public/uploads/item_pics/'; 
+						&#187; [writeable/logs:]
+						<?php $logs = '../writeable/logs/';
+							$uploads = '../writeable/uploads/';
+							$images = '../writeable/uploads/item_pics/';
 							$import = '../import_items.csv';
 							$importcustomers = '../import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
 							
@@ -162,7 +162,7 @@
 
 							if(substr(decoct(fileperms($logs)), -4) != 750)
 							{
-								echo '<br><span style="color: red;"> &#187; [application/logs:] ' . lang('Config.is_writable') . '</span>';
+								echo '<br><span style="color: red;"> &#187; [writeable/logs:] ' . lang('Config.is_writable') . '</span>';
 							}
 
 							if(substr(decoct(fileperms($uploads)), -4) != 750)
