@@ -33,60 +33,59 @@ helper('cookie');
 		<link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
-		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
-		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
-		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
-		<link rel="stylesheet" type="text/css" href="css/register.css"/>
-		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/bootstrap.autocomplete.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/ospos.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/popupbox.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/receipt.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/reports.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
-		<script type="application/javascript" src="bower_components/jquery/dist/jquery.js"></script>
-		<script type="application/javascript" src="bower_components/jquery-form/src/jquery.form.js"></script>
-		<script type="application/javascript" src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
-		<script type="application/javascript" src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
-		<script type="application/javascript" src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
-		<script type="application/javascript" src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
-		<script type="application/javascript" src="bower_components/moment/moment.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<script type="application/javascript" src="bower_components/es6-promise/es6-promise.js"></script>
-		<script type="application/javascript" src="bower_components/file-saver/dist/FileSaver.min.js"></script>
-		<script type="application/javascript" src="bower_components/html2canvas/build/html2canvas.js"></script>
-		<script type="application/javascript" src="bower_components/jspdf/dist/jspdf.debug.js"></script>
-		<script type="application/javascript" src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
-		<script type="application/javascript" src="bower_components/tableExport.jquery.plugin/tableExport.js"></script>
-		<script type="application/javascript" src="bower_components/chartist/dist/chartist.min.js"></script>
-		<script type="application/javascript" src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
-		<script type="application/javascript" src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
-		<script type="application/javascript" src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
-		<script type="application/javascript" src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
-		<script type="application/javascript" src="bower_components/js-cookie/src/js.cookie.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-		<script type="application/javascript" src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="bower_components/jquery-form/src/jquery.form.js"></script>
+		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
+		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+		<script src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
+		<script src="bower_components/moment/moment.js"></script>
+		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="bower_components/es6-promise/es6-promise.js"></script>
+		<script src="bower_components/file-saver/dist/FileSaver.min.js"></script>
+		<script src="bower_components/html2canvas/build/html2canvas.js"></script>
+		<script src="bower_components/jspdf/dist/jspdf.debug.js"></script>
+		<script src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
+		<script src="bower_components/tableExport.jquery.plugin/tableExport.js"></script>
+		<script src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
+		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
+		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
+		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
+		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+		<script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="dist/bootstrap/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/clipboard.min.js"></script>
-		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
-		<script type="text/javascript" src="js/manage_tables.js"></script>
-		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
+		<script type="text/javascript" src="../../../public/js/clipboard.min.js"></script>
+		<script type="text/javascript" src="../../../public/js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="../../../public/js/manage_tables.js"></script>
+		<script type="text/javascript" src="../../../public/js/nominatim.autocomplete.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=88e63d8098"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/dist/jquery-ui/jquery-ui.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../public/dist/opensourcepos.min.css?rel=77a4efd3b0"/>
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -95,7 +94,7 @@ helper('cookie');
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=64a537c419"></script>
+		<script type="text/javascript" src="../../../public/dist/opensourcepos.min.js?rel=58213e1611"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
