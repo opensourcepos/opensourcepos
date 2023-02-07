@@ -57,6 +57,7 @@ class Login extends BaseController
 				$migration->setNamespace('App')->latest();
 			}
 		}
+
 		return redirect()->to('home');
 	}
 }
