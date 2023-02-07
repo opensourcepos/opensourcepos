@@ -25,10 +25,10 @@
 	"require": {
 		"php": "^7.4||^8.0",
 		"codeigniter4/framework": "^4.3.1",
-		"dompdf/dompdf": "^2.0.2",
+		"dompdf/dompdf": "^2.0.3",
 		"tamtamchik/namecase": "^1.0.6",
 		"paragonie/random_compat": "^2.0.21",
-		"picqer/php-barcode-generator": "*"
+		"picqer/php-barcode-generator": "2.2.4"
 	},
 	"require-dev": {
 		"kint-php/kint": "^5.0.3",
