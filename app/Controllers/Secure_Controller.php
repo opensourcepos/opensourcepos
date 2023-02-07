@@ -13,13 +13,15 @@ use CodeIgniter\Session\Session;
  *
  * @property employee employee
  * @property module module
- * 
+ * @property array global_view_data
  * @property session session
  *
  */
 class Secure_Controller extends BaseController
 {
-	public function __construct(string $module_id = NULL, string $submodule_id = NULL, string $menu_group = NULL)
+	public array $global_view_data;
+
+	public function __construct(string $module_id = '', string $submodule_id = NULL, string $menu_group = NULL)
 	{
 		$this->employee = model('Employee');
 		$this->module = model('Module');
@@ -36,7 +38,7 @@ class Secure_Controller extends BaseController
 			redirect("no_access/$module_id/$submodule_id");
 		}
 
-		// load up global data visible to all the loaded views
+		// load up global global_view_data visible to all the loaded views
 		$this->session = session();
 		if($menu_group == NULL)
 		{
@@ -58,13 +60,11 @@ class Secure_Controller extends BaseController
 
 		foreach($allowed_modules->getResult() as $module)
 		{
-			$data['allowed_modules'][] = $module;
+			$global_view_data['allowed_modules'][] = $module;
 		}
 
-		$data['user_info'] = $logged_in_employee_info;
-		$data['controller_name'] = $module_id;
-
-		echo view('viewData', $data);
+		$global_view_data['user_info'] = $logged_in_employee_info;
+		$global_view_data['controller_name'] = $module_id;
 	}
 
 	public function check_numeric()

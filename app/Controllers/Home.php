@@ -6,11 +6,12 @@ class Home extends Secure_Controller
 {
 	public function __construct()
 	{
-		parent::__construct(NULL, NULL, 'home');
+		parent::__construct('home', NULL, 'home');
 	}
 
 	public function getIndex(): void
 	{
+		$logged_in = $this->employee->is_logged_in();
 		echo view('home/home');
 	}
 
