@@ -34,7 +34,7 @@
 			<div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
 				<div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
 					<?php if (config('OSPOS')->settings['company_logo']): ?>
-						<img class="logo w-100" src="<?= base_url('../writable/uploads/' . config('OSPOS')->settings['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
+						<img class="logo w-100" src="<?= base_url('images/' . config('OSPOS')->settings['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
 					<?php else: ?>
 						<svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
 							<title><?= lang('common_software_title') . '&nbsp;' . lang('common_logo') ?></title>
