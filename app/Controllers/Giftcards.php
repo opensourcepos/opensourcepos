@@ -18,6 +18,7 @@ class Giftcards extends Secure_Controller
 
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$data['table_headers'] = get_giftcards_manage_table_headers();
 
 		echo view('giftcards/manage', $data);
@@ -73,11 +74,12 @@ class Giftcards extends Secure_Controller
 
 	public function view(int $giftcard_id = -1): void	//TODO: Need to replace -1 with a constant
 	{
+		$config = config('OSPOS')->settings;
 		$giftcard_info = $this->giftcard->get_info($giftcard_id);
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person_id'] = $giftcard_info->person_id;
-		if(config('OSPOS')->settings['giftcard_number'] == 'random')
+		if($config['giftcard_number'] == 'random')
 		{
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
 		}

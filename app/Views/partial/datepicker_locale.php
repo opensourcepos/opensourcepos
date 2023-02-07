@@ -2,11 +2,11 @@
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?php echo dateformat_bootstrap(config('OSPOS')->settings['dateformat']) . ' ' . dateformat_bootstrap(config('OSPOS')->settings['timeformat']) ?>",
+        format: "<?php echo dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
         <?php
-        $t = config('OSPOS')->settings['timeformat'];
+        $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
-        if( strpos(config('OSPOS')->settings['timeformat'], 'a') !== false || strpos(config('OSPOS')->settings['timeformat'], 'A') !== false )
+        if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
         {
             ?>
             showMeridian: true,
@@ -28,7 +28,7 @@ var pickerconfig = function(config) {
     }, <?php echo $config ?? '{}' ?>);
 };
 
-$.fn.datetimepicker.dates['<?php echo config('OSPOS')->settings['language'] ?>'] = {
+$.fn.datetimepicker.dates['<?php echo $config['language'] ?>'] = {
     days: [
 		"<?php echo lang('Cal.sunday') ?>",
         "<?php echo lang('Cal.monday') ?>",
@@ -87,13 +87,13 @@ $.fn.datetimepicker.dates['<?php echo config('OSPOS')->settings['language'] ?>']
 		],
     today: "<?php echo lang('Datepicker.today') ?>",
     <?php
-        if( strpos(config('OSPOS')->settings['timeformat'], 'a') !== false )
+        if( strpos($config['timeformat'], 'a') !== false )
         {
     ?>
     meridiem: ["am", "pm"],
     <?php
         }
-        elseif( strpos(config('OSPOS')->settings['timeformat'], 'A') !== false )
+        elseif( strpos($config['timeformat'], 'A') !== false )
         {
     ?>
     meridiem: ["AM", "PM"],

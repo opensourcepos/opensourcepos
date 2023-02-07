@@ -4,6 +4,7 @@ namespace app\Libraries;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\Services;
 
 
 /**
@@ -18,21 +19,18 @@ use CodeIgniter\Encryption\EncrypterInterface;
 
 class Sms_lib
 {
-  	public function __construct()
-	{
-		$this->encryption = new Encryption();	//TODO: Is this the correct way to load the encryption service now?
-		$this->encrypter = $this->encryption->initialize();
-	}
-
 	/*
 	 * SMS sending function
 	 * Example of use: $response = sendSMS('4477777777', 'My test message');
 	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
-		$username = config('OSPOS')->settings['msg_uid'];
-		$password = $this->encrypter->decrypt(config('OSPOS')->settings['msg_pwd']);
-		$originator = config('OSPOS')->settings['msg_src'];
+		$config = config('OSPOS')->settings;
+		$encrypter = Services::encrypter();
+
+		$username = $config['msg_uid'];
+		$password = $encrypter->decrypt($config['msg_pwd']);
+		$originator = $config['msg_src'];
 
 		$response = FALSE;
 

@@ -66,6 +66,7 @@ class Item_kits extends Secure_Controller
 	
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$data['table_headers'] = get_item_kits_manage_table_headers();
 
 		echo view('item_kits/manage', $data);

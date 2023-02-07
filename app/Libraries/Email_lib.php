@@ -5,6 +5,7 @@ namespace app\Libraries;
 use CodeIgniter\Email\Email;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\Services;
 
 
 /**
@@ -15,6 +16,7 @@ use CodeIgniter\Encryption\EncrypterInterface;
  * @property email email
  * @property encryption encryption
  * @property encrypterinterface encrypter
+ * @property array config
  */
 
 class Email_lib
@@ -22,25 +24,25 @@ class Email_lib
   	public function __construct()
 	{
 		$this->email = new Email();
-		$this->encryption = new Encryption();
-		$this->encrypter = $this->encryption->initialize();
-
-
-		$config = [
+		$this->config = config('OSPOS')->settings;
+		$encrypter = Services::encrypter();
+		
+		
+		$email_config = [
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',
 			'validate' => TRUE,
-			'protocol' => config('OSPOS')->settings['protocol'],
-			'mailpath' => config('OSPOS')->settings['mailpath'],
-			'smtp_host' => config('OSPOS')->settings['smtp_host'],
-			'smtp_user' => config('OSPOS')->settings['smtp_user'],
-			'smtp_pass' => $this->encrypter->decrypt(config('OSPOS')->settings['smtp_pass']),
-			'smtp_port' => config('OSPOS')->settings['smtp_port'],
-			'smtp_timeout' => config('OSPOS')->settings['smtp_timeout'],
-			'smtp_crypto' => config('OSPOS')->settings['smtp_crypto']
+			'protocol' => $this->config['protocol'],
+			'mailpath' => $this->config['mailpath'],
+			'smtp_host' => $this->config['smtp_host'],
+			'smtp_user' => $this->config['smtp_user'],
+			'smtp_pass' => $encrypter->decrypt($this->config['smtp_pass']),
+			'smtp_port' => $this->config['smtp_port'],
+			'smtp_timeout' => $this->config['smtp_timeout'],
+			'smtp_crypto' => $this->config['smtp_crypto']
 		];
 
-		$this->email->initialize($config);
+		$this->email->initialize($email_config);
 	}
 
 	/**
@@ -51,7 +53,7 @@ class Email_lib
 	{
 		$email = $this->email;
 
-		$email->setFrom(config('OSPOS')->settings['email'], config('OSPOS')->settings['company']);
+		$email->setFrom($this->config['email'], $this->config['company']);
 		$email->setTo($to);
 		$email->setSubject($subject);
 		$email->setMessage($message);

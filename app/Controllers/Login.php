@@ -11,18 +11,16 @@ use Config\Services;
  */
 class Login extends BaseController
 {
-	protected $helpers = ['form'];
-
 	public function index()
 	{
 		$this->employee = model('Employee');
 		if(!$this->employee->is_logged_in())
 		{
 			$migration = new MY_Migration(config('Migrations'));
+			$config = config('OSPOS')->settings;
 
-			//The gcaptcha_enable key was not added to app settings until 3.1.1. Without this check we get an error on new instances.
-			$gcaptcha_enabled = array_key_exists('gcaptcha_enable', config('OSPOS')->settings)
-				? config('OSPOS')->settings['gcaptcha_enable']
+			$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
+				? $config['gcaptcha_enable']
 				: false;
 
 			$migration->migrate_to_ci4();
@@ -31,7 +29,8 @@ class Login extends BaseController
 				'has_errors' => false,
 				'is_latest' => $migration->is_latest(),
 				'latest_version' => $migration->get_latest_migration(),
-				'gcaptcha_enabled' => $gcaptcha_enabled
+				'gcaptcha_enabled' => $gcaptcha_enabled,
+				'config' => $config
 			];
 
 			if(strtolower($this->request->getMethod()) !== 'post')
@@ -55,8 +54,10 @@ class Login extends BaseController
 				set_time_limit(3600);
 
 				$migration->setNamespace('App')->latest();
+				return redirect()->to('login');
 			}
 		}
+
 		return redirect()->to('home');
 	}
 }

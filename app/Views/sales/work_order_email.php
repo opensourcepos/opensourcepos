@@ -33,10 +33,10 @@
 		<tr>
 			<td id="logo">
 				<?php
-				if(config('OSPOS')->settings['company_logo'] != '')
+				if($config['company_logo'] != '')
 				{
 				?>
-					<img id="image" src="<?php echo esc('uploads/' . config('OSPOS')->settings['company_logo'], 'url') ?>" alt="company_logo" />
+					<img id="image" src="<?php echo esc('uploads/' . $config['company_logo'], 'url') ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -47,7 +47,7 @@
 		</tr>
 		<tr>
 			<td id="company-title">
-				<pre><?php echo esc(config('OSPOS')->settings['company']) ?></pre>
+				<pre><?php echo esc($config['company']) ?></pre>
 				<pre><?php echo esc($company_info) ?></pre>
 			</td>
 			<td id="meta">

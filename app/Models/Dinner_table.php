@@ -10,6 +10,16 @@ use CodeIgniter\Model;
  */
 class Dinner_table extends Model
 {
+	protected $table = 'dinner_tables';
+	protected $primaryKey = 'dinner_table_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'name',
+		'status',
+		'deleted'
+	];
+
 	public function exists(int $dinner_table_id): bool
 	{
 		$builder = $this->db->table('dinner_tables');

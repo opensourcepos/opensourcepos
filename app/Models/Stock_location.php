@@ -16,6 +16,15 @@ use CodeIgniter\Session\Session;
  */
 class Stock_location extends Model
 {
+	protected $table = 'stock_locations';
+	protected $primaryKey = 'location_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'location_name',
+		'deleted'
+	];
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -207,7 +216,7 @@ class Stock_location extends Model
 	 * @param bool $purge
 	 * @return bool
 	 */
-	public function delete(int $location_id = null, bool $purge = FALSE): bool
+	public function delete($location_id = null, bool $purge = FALSE): bool
 	{
 		$this->db->transStart();
 

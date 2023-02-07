@@ -75,8 +75,9 @@ function get_sales_manage_table_headers(): string
 		['change_due' => lang('Sales.change_due')],
 		['payment_type' => lang('Sales.payment_type')]
 	];
+	$config = config('OSPOS')->settings;
 
-	if(config('OSPOS')->settings['invoice_enable'])
+	if($config['invoice_enable'])
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
 		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE];
@@ -105,7 +106,9 @@ function get_sale_data_row(object $sale): array
 		'payment_type' => $sale->payment_type
 	];
 
-	if(config('OSPOS')->settings['invoice_enable'])
+	$config = config('OSPOS')->settings;
+
+	if($config['invoice_enable'])
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number)
@@ -390,7 +393,7 @@ function get_supplier_data_row(object $supplier): array
 function get_items_manage_table_headers(): string
 {
 	$attribute = model(Attribute::class);
-
+	$config = config('OSPOS')->settings;
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
 	$headers = [
@@ -404,7 +407,7 @@ function get_items_manage_table_headers(): string
 		['quantity' => lang('Items.quantity')]
 	];
 
-	if(config('OSPOS')->settings['use_destination_based_tax'])
+	if($config['use_destination_based_tax'])
 	{
 		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
 	}
@@ -439,8 +442,9 @@ function get_item_data_row(object $item): array
 	$attribute = model(Attribute::class);
 	$item_taxes = model(Item_taxes::class);
 	$tax_category = model(Tax_category::class);
+	$config = config('OSPOS')->settings;
 
-	if(config('OSPOS')->settings['use_destination_based_tax'])
+	if($config['use_destination_based_tax'])
 	{
 		if($item->tax_category_id == NULL)	//TODO: === ?
 		{
@@ -489,7 +493,7 @@ function get_item_data_row(object $item): array
 		}
 	}
 
-	if(config('OSPOS')->settings['multi_pack_enabled'])
+	if($config['multi_pack_enabled'])
 	{
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}

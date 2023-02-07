@@ -12,6 +12,16 @@ use stdClass;
 
 class Tax_category extends Model
 {
+	protected $table = 'tax_categories';
+	protected $primaryKey = 'tax_category_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'tax_category',
+		'tax_group_sequence',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */
@@ -68,7 +78,7 @@ class Tax_category extends Model
 	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted needs a new name.  $not_deleted is the correct grammar, but it's a bit confusing by naming the variable a negative.  Probably better to name it is_deleted and flip the logic
 	{
 		$builder = $this->db->table('tax_categories');
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -203,7 +213,7 @@ class Tax_category extends Model
 		$builder = $this->db->table('tax_categories AS tax_categories');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: This should probably be === since $count_only is a bool
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_categories.tax_category_id) as count');
 		}
@@ -212,7 +222,7 @@ class Tax_category extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: This should probably be === since $count_only is a bool
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Session\Session;
 
 /**
@@ -13,6 +14,19 @@ use CodeIgniter\Session\Session;
  */
 class Employee extends Person
 {
+	protected $table = 'Employees';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'username',
+		'password',
+		'deleted',
+		'hashversion',
+		'language',
+		'language_code'
+	];
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -80,20 +94,18 @@ class Employee extends Person
 		{
 			return $query->getRow();
 		}
-		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
+
+		//Get empty base parent object, as $employee_id is NOT an employee
+		$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
+
+		//Get all the fields from employee table
+		//append those fields to base parent object, we have a complete empty object
+		foreach($this->db->getFieldNames('employees') as $field)
 		{
-			//Get empty base parent object, as $employee_id is NOT an employee
-			$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
-
-			//Get all the fields from employee table
-			//append those fields to base parent object, we have a complete empty object
-			foreach($this->db->getFieldNames('employees') as $field)
-			{
-				$person_obj->$field = '';
-			}
-
-			return $person_obj;
+			$person_obj->$field = '';
 		}
+
+		return $person_obj;
 	}
 
 	/**
@@ -244,7 +256,7 @@ class Employee extends Person
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
 
-		if($unique == FALSE)
+		if(!$unique)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -396,11 +408,11 @@ class Employee extends Person
 	/**
 	 * Logs out a user by destroying all session data and redirect to log in
 	 */
-	public function logout(): void
+	public function logout(): RedirectResponse
 	{
-		$this->session->destroy();
+		session()->destroy();
 
-		redirect()->to('login');
+		return redirect()->to('login');
 	}
 
 	/**

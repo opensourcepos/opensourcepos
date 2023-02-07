@@ -13,7 +13,7 @@
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc(config('OSPOS')->settings['protocol'], 'attr'),
+						esc($config['protocol'], 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'protocol'])
 					?>
 				</div>
@@ -26,7 +26,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['mailpath'], 'attr')
+						'value' => esc($config['mailpath'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['smtp_host'], 'attr')
+						'value' => esc($config['smtp_host'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 						'name' => 'smtp_port',
 						'id' => 'smtp_port',
 						'class' => 'form-control input-sm',
-						'value' => config('OSPOS')->settings['smtp_port']
+						'value' => $config['smtp_port']
 					]) ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc(config('OSPOS')->settings['smtp_crypto'], 'attr'),
+						esc($config['smtp_crypto'], 'attr'),
 						['class' => 'form-control input-sm', 'id' => 'smtp_crypto'])
 					?>
 				</div>
@@ -76,7 +76,7 @@
 						'name' => 'smtp_timeout',
 						'id' => 'smtp_timeout',
 						'class' => 'form-control input-sm',
-						'value' => config('OSPOS')->settings['smtp_timeout']
+						'value' => $config['smtp_timeout']
 					]) ?>
 				</div>
 			</div>
@@ -90,7 +90,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc(config('OSPOS')->settings['smtp_user'], 'attr')
+							'value' => esc($config['smtp_user'], 'attr')
 						]) ?>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc(config('OSPOS')->settings['smtp_pass'], 'attr')
+							'value' => esc($config['smtp_pass'], 'attr')
 						]) ?>
 					</div>
 				</div>

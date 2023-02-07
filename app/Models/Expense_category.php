@@ -11,6 +11,16 @@ use stdClass;
  */
 class Expense_category extends Model
 {
+	protected $table = 'expense_categories';
+	protected $primaryKey = 'expense_category_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'category_name',
+		'category_description',
+		'deleted'
+	];
+
 	/**
 	 * Determines if a given Expense_id is an Expense category
 	 */
@@ -69,7 +79,7 @@ class Expense_category extends Model
 	{
 		$builder = $this->db->table('expense_categories');
 
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}

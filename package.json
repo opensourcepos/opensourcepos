@@ -5,48 +5,51 @@
   "main": "index.php",
   "license": "MIT",
   "authors": [
-    "jekkos <jekkos - at - opensourcepos.org>",
-    "FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
-    "objecttothis <objecttothis - at - gmail.com>"
+	"jekkos <jekkos - at - opensourcepos.org>",
+	"FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
+	"objecttothis <objecttothis - at - gmail.com>"
   ],
   "scripts": {
-    "install": "composer install & bower install",
-    "update": "npm update & composer self-update & composer update",
-    "clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
-    "test": "echo \\\"Error: no tests specified\\\" && exit 1"
+	"install": "composer install & bower install",
+	"update": "npm update & composer self-update & composer update",
+	"clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
+	"test": "echo \\\"Error: no tests specified\\\" && exit 1"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+	"registry": "https://npm.pkg.github.com/"
   },
   "keywords": [
-    "point-of-sale",
-    "POS"
+	"point-of-sale",
+	"POS"
   ],
   "devDependencies": {
-    "grunt": "^1.5.3",
-    "grunt-bower": "^0.21.4",
-    "grunt-bower-concat": "^1.0.0",
-    "grunt-bower-licensechecker": "^0.1.2",
-    "grunt-bowercopy": "^1.2.5",
-    "grunt-cache-breaker": "^2.0.1",
-    "grunt-cli": "^1.4.3",
-    "grunt-composer": "^0.4.5",
-    "grunt-contrib-clean": "~1.0.0",
-    "grunt-contrib-compress": "^1.4.1",
-    "grunt-contrib-concat": "~0.5.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-jshint": "^3.0.0",
-    "grunt-contrib-uglify": "~5.0.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-license-bower": "~1.0.1",
-    "load-grunt-tasks": "^3.4.0",
-    "grunt-script-link-tags": "https://github.com/jekkos/grunt-script-link-tags.git#master",
-    "grunt-wiredep": "^3.0.1"
+	"grunt": "^1.6.1",
+	"grunt-bower": "^0.5.0",
+	"grunt-bower-concat": "^0.1.1",
+	"grunt-bower-licensechecker": "^0.1.2",
+	"grunt-bowercopy": "^1.2.5",
+	"grunt-cache-breaker": "^0.5.6",
+	"grunt-cli": "^1.4.3",
+	"grunt-composer": "^0.2.0",
+	"grunt-contrib-clean": "~2.0.1",
+	"grunt-contrib-compress": "^2.0.0",
+	"grunt-contrib-concat": "~2.1.0",
+	"grunt-contrib-copy": "^1.0.0",
+	"grunt-contrib-cssmin": "^4.0.0",
+	"grunt-contrib-jshint": "^3.2.0",
+	"grunt-contrib-uglify": "~5.2.2",
+	"grunt-contrib-watch": "^1.1.0",
+	"grunt-license-bower": "~1.0.1",
+	"grunt-script-link-tags": "^1.0.2",
+	"grunt-wiredep": "^3.0.1",
+	"load-grunt-tasks": "^5.1.0",
+	"npm-check-updates": "^16.6.5"
   },
   "dependencies": {
-    "bootstrap-5": "npm:bootstrap@^5.1.3",
-    "bootswatch-5": "npm:bootswatch@^5.1.3",
-	"npm": "^9.4.1"
+	"bootstrap-5": "npm:bootstrap@^5.2.3",
+	"bootswatch-5": "npm:bootswatch@^5.2.3",
+	"coffeescript": "^2.7.0",
+	"npm": "^9.4.2",
+	"npm-check-updates": "^16.6.5"
   }
 }

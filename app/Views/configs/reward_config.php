@@ -16,7 +16,7 @@
 						'name' => 'customer_reward_enable',
 						'value' => 'customer_reward_enable',
 						'id' => 'customer_reward_enable',
-						'checked' => config('OSPOS')->settings['customer_reward_enable']
+						'checked' => $config['customer_reward_enable']
 					]) ?>
 				</div>
 			</div>

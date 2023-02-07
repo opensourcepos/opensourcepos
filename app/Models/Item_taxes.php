@@ -9,6 +9,15 @@ use CodeIgniter\Model;
  */
 class Item_taxes extends Model
 {
+	protected $table = 'item_taxes';
+	protected $primaryKey = 'item_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'name',
+		'percent'
+	];
+
 	/**
 	 * Gets tax info for a particular item
 	 */
@@ -81,7 +90,7 @@ class Item_taxes extends Model
 	/**
 	 * Deletes taxes given an item
 	 */
-	public function delete(int $item_id = null, bool $purge = false): bool
+	public function delete($item_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('items_taxes');
 

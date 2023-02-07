@@ -39,6 +39,7 @@ use ReflectionException;
  * @property item_kit item_kit
  * @property sale sale
  * @property stock_location stock_location
+ * @property array config
  */
 class Sales extends Secure_Controller
 {
@@ -53,6 +54,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
+		$this->config = config('OSPOS')->settings;
 	}
 
 	public function getIndex(): void
@@ -109,7 +111,7 @@ class Sales extends Secure_Controller
 			'only_due' => FALSE,
 			'only_check' => FALSE,
 			'only_creditcard' => FALSE,
-			'only_invoices' => config('OSPOS')->settings['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+			'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
 			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
 		];
 
@@ -210,7 +212,7 @@ class Sales extends Secure_Controller
 			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
-		if(config('OSPOS')->settings['dinner_table_enable'])
+		if($this->config['dinner_table_enable'])
 		{
 			$occupied_dinner_table = $this->request->getPost('dinner_table', FILTER_SANITIZE_NUMBER_INT);
 			$released_dinner_table = $this->sale_lib->get_dinner_table();
@@ -451,8 +453,8 @@ class Sales extends Secure_Controller
 	{
 		$data = [];
 
-		$discount = config('OSPOS')->settings['default_sales_discount'];
-		$discount_type = config('OSPOS')->settings['default_sales_discount_type'];
+		$discount = $this->config['default_sales_discount'];
+		$discount_type = $this->config['default_sales_discount_type'];
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
@@ -625,7 +627,7 @@ class Sales extends Secure_Controller
 
 		$data['cart'] = $this->sale_lib->get_cart();
 
-		$data['include_hsn'] = (bool)config('OSPOS')->settings['include_hsn'];
+		$data['include_hsn'] = (bool)$this->config['include_hsn'];
 		$__time = time();
 		$data['transaction_time'] = to_datetime($__time);
 		$data['transaction_date'] = to_date($__time);
@@ -635,16 +637,16 @@ class Sales extends Secure_Controller
 		$employee_info = $this->employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
-		$data['company_info'] = implode("\n", [config('OSPOS')->settings['address'], config('OSPOS')->settings['phone']]);
+		$data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);
 
-		if(config('OSPOS')->settings['account_number'])
+		if($this->config['account_number'])
 		{
-			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . config('OSPOS')->settings['account_number'];
+			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config['account_number'];
 		}
 
-		if(config('OSPOS')->settings['tax_id'] != '')
+		if($this->config['tax_id'] != '')
 		{
-			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . config('OSPOS')->settings['tax_id'];
+			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
 		}
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
@@ -723,7 +725,7 @@ class Sales extends Secure_Controller
 
 		if($this->sale_lib->is_invoice_mode())
 		{
-			$invoice_format = config('OSPOS')->settings['sales_invoice_format'];
+			$invoice_format = $this->config['sales_invoice_format'];
 
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
 			if(!empty($invoice_format) && $invoice_number == NULL)
@@ -745,7 +747,7 @@ class Sales extends Secure_Controller
 				$sale_type = SALE_TYPE_INVOICE;
 
 				// The PHP file name is the same as the invoice_type key
-				$invoice_view = config('OSPOS')->settings['invoice_type'];
+				$invoice_view = $this->config['invoice_type'];
 
 				// Save the data to the sales table
 				$data['sale_id_num'] = $this->sale->save_value($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $tax_details);
@@ -780,7 +782,7 @@ class Sales extends Secure_Controller
 			if($work_order_number == NULL)
 			{
 				// generate work order number
-				$work_order_format = config('OSPOS')->settings['work_order_format'];
+				$work_order_format = $this->config['work_order_format'];
 				$work_order_number = $this->token_lib->render($work_order_format);
 			}
 
@@ -815,7 +817,7 @@ class Sales extends Secure_Controller
 			if($quote_number == NULL)
 			{
 				// generate quote number
-				$quote_format = config('OSPOS')->settings['sales_quote_format'];
+				$quote_format = $this->config['sales_quote_format'];
 				$quote_number = $this->token_lib->render($quote_format);
 			}
 
@@ -892,14 +894,14 @@ class Sales extends Secure_Controller
 			$number = $sale_data[$type."_number"];
 			$subject = lang('Sales.' . $type) . ' ' . $number;
 
-			$text = config('OSPOS')->settings['invoice_email_message'];
+			$text = $this->config['invoice_email_message'];
 			$tokens = [
 				new Token_invoice_sequence($sale_data['invoice_number']),
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
 				new Token_customer((object)$sale_data)
 			];
 			$text = $this->token_lib->render($text, $tokens);
-			$sale_data['mimetype'] = mime_content_type(WRITEPATH . 'uploads/' . config('OSPOS')->settings['company_logo']);
+			$sale_data['mimetype'] = mime_content_type(WRITEPATH . 'uploads/' . $this->config['company_logo']);
 
 			// generate email attachment: invoice in pdf format
 			$view = Services::renderer();
@@ -1045,7 +1047,7 @@ class Sales extends Secure_Controller
 		$data['transaction_date'] = to_date(strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->stock_location->show_locations('sales');
 
-		$data['include_hsn'] = (bool)config('OSPOS')->settings['include_hsn'];
+		$data['include_hsn'] = (bool)$this->config['include_hsn'];
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals($tax_details[0]);
@@ -1084,15 +1086,15 @@ class Sales extends Secure_Controller
 		$data['quote_number'] = $sale_info['quote_number'];
 		$data['sale_status'] = $sale_info['sale_status'];
 
-		$data['company_info'] = implode('\n', [config('OSPOS')->settings['address'], config('OSPOS')->settings['phone']]);	//TODO: Duplicated code.
+		$data['company_info'] = implode('\n', [$this->config['address'], $this->config['phone']]);	//TODO: Duplicated code.
 
-		if(config('OSPOS')->settings['account_number'])
+		if($this->config['account_number'])
 		{
-			$data['company_info'] .= '\n' . lang('Sales.account_number') . ": " . config('OSPOS')->settings['account_number'];
+			$data['company_info'] .= '\n' . lang('Sales.account_number') . ": " . $this->config['account_number'];
 		}
-		if(config('OSPOS')->settings['tax_id'] != '')
+		if($this->config['tax_id'] != '')
 		{
-			$data['company_info'] .= '\n' . lang('Sales.tax_id') . ": " . config('OSPOS')->settings['tax_id'];
+			$data['company_info'] .= '\n' . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
 		}
 
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
@@ -1125,7 +1127,7 @@ class Sales extends Secure_Controller
 			$data['customer_required'] = lang('Sales.customer_optional');
 		}
 
-		$invoice_type = config('OSPOS')->settings['invoice_type'];
+		$invoice_type = $this->config['invoice_type'];
 		$data['invoice_view'] = $invoice_type;
 
 		return $data;
@@ -1197,7 +1199,7 @@ class Sales extends Secure_Controller
 		$data['comment'] = $this->sale_lib->get_comment();
 		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 
-		if($customer_info && config('OSPOS')->settings['customer_reward_enable'])
+		if($customer_info && $this->config['customer_reward_enable'])
 		{
 			$data['payment_options'] = $this->sale->get_payment_options(TRUE, TRUE);
 		}
@@ -1210,7 +1212,7 @@ class Sales extends Secure_Controller
 		$data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
 
 		$temp_invoice_number = $this->sale_lib->get_invoice_number();
-		$invoice_format = config('OSPOS')->settings['sales_invoice_format'];
+		$invoice_format = $this->config['sales_invoice_format'];
 
 		if ($temp_invoice_number == NULL || $temp_invoice_number == '')
 		{
@@ -1394,7 +1396,7 @@ class Sales extends Secure_Controller
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
-		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
+		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
 		$sale_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$sale_data = [
@@ -1471,7 +1473,7 @@ class Sales extends Secure_Controller
 				}
 			}
 
-			$payments[] = [
+			$sale_data['payments'] = [
 				'payment_id' => $payment_id,
 				'payment_type' => $payment_type,
 				'payment_amount' => $payment_amount,
@@ -1482,7 +1484,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->inventory->update('POS '.$sale_id, ['trans_date' => $sale_time]);	//TODO: Reflection Exception
-		if($this->sale->update($sale_id, $sale_data, $payments))
+		if($this->sale->update($sale_id, $sale_data))
 		{
 			echo json_encode (['success' => TRUE, 'message' => lang('Sales.successfully_updated'), 'id' => $sale_id]);
 		}
@@ -1505,7 +1507,7 @@ class Sales extends Secure_Controller
 		{
 			$sale_type = $this->sale_lib->get_sale_type();
 
-			if(config('OSPOS')->settings['dinner_table_enable'])
+			if($this->config['dinner_table_enable'])
 			{
 				$dinner_table = $this->sale_lib->get_dinner_table();
 				$this->dinner_table->release($dinner_table);

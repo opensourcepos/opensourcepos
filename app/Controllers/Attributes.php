@@ -23,6 +23,7 @@ class Attributes extends Secure_Controller
 
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$data['table_headers'] = get_attribute_definition_manage_table_headers();
 
 		echo view('attributes/manage', $data);
