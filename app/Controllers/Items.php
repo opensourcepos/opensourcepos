@@ -35,6 +35,7 @@ require_once('Secure_Controller.php');
  * @property stock_location stock_location
  * @property supplier supplier
  * @property tax_category tax_category
+ * @property array config
  */
 class Items extends Secure_Controller
 {
@@ -56,10 +57,12 @@ class Items extends Secure_Controller
 		$this->stock_location = model('Stock_location');
 		$this->supplier = model('Supplier');
 		$this->tax_category = model('Tax_category');
+		$this->config = config('OSPOS')->settings;
 	}
 
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$this->session->set('allow_temp_items', 0);
 
 		$data['table_headers'] = get_items_manage_table_headers();
@@ -150,14 +153,14 @@ class Items extends Secure_Controller
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
-				$config['image_library'] = 'gd2';
-				$config['source_image']  = $image_path;
-				$config['maintain_ratio'] = TRUE;
-				$config['create_thumb'] = TRUE;
-				$config['width'] = 52;
-				$config['height'] = 32;
+				$gd2_config['image_library'] = 'gd2';
+				$gd2_config['source_image']  = $image_path;
+				$gd2_config['maintain_ratio'] = TRUE;
+				$gd2_config['create_thumb'] = TRUE;
+				$gd2_config['width'] = 52;
+				$gd2_config['height'] = 32;
 
-				$this->image->initialize($config);
+				$this->image->initialize($gd2_config);
 				$this->image->resize();
 
 				$thumb_path = $this->image->full_dst_path;
@@ -284,9 +287,9 @@ class Items extends Secure_Controller
 			}
 		}
 
-		$use_destination_based_tax = (boolean)config('OSPOS')->settings['use_destination_based_tax'];
-		$data['include_hsn'] = config('OSPOS')->settings['include_hsn'] === '1';
-		$data['category_dropdown'] = config('OSPOS')->settings['category_dropdown'];
+		$use_destination_based_tax = (boolean)$this->config['use_destination_based_tax'];
+		$data['include_hsn'] = $this->config['include_hsn'] === '1';
+		$data['category_dropdown'] = $this->config['category_dropdown'];
 
 		if($data['category_dropdown'] === '1')
 		{
@@ -300,8 +303,8 @@ class Items extends Secure_Controller
 
 		if($item_id === NEW_ITEM)
 		{
-			$data['default_tax_1_rate'] = config('OSPOS')->settings['default_tax_1_rate'];
-			$data['default_tax_2_rate'] = config('OSPOS')->settings['default_tax_2_rate'];
+			$data['default_tax_1_rate'] = $this->config['default_tax_1_rate'];
+			$data['default_tax_2_rate'] = $this->config['default_tax_2_rate'];
 
 			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 1;
@@ -314,7 +317,7 @@ class Items extends Secure_Controller
 
 			if($use_destination_based_tax)
 			{
-				$item_info->tax_category_id = config('OSPOS')->settings['default_tax_category'];
+				$item_info->tax_category_id = $this->config['default_tax_category'];
 			}
 		}
 
@@ -322,7 +325,7 @@ class Items extends Secure_Controller
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
 			&& !$data['allow_temp_item']
-			&& !(config('OSPOS')->settings['derive_sale_quantity'] === '1')
+			&& !($this->config['derive_sale_quantity'] === '1')
 		);
 
 		$data['item_info'] = $item_info;
@@ -471,7 +474,7 @@ class Items extends Secure_Controller
 
 		foreach($result as &$item)
 		{
-			if(empty($item['item_number']) && config('OSPOS')->settings['barcode_generate_if_empty'])
+			if(empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
 			{
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
@@ -620,7 +623,7 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$use_destination_based_tax = (bool)config('OSPOS')->settings['use_destination_based_tax'];
+			$use_destination_based_tax = (bool)$this->config['use_destination_based_tax'];
 
 			if(!$use_destination_based_tax)
 			{
@@ -733,9 +736,9 @@ class Items extends Secure_Controller
 				'rules' => [
 					'uploaded[items_image]',
 					'is_image[items_image]',
-					'max_size[items_image,' . config('OSPOS')->settings['image_max_size'] . ']',
-					'max_dims[items_image,' . config('OSPOS')->settings['image_max_width'] . ',' . config('OSPOS')->settings['image_max_height'] . ']',
-					'ext_in[items_image,' . config('OSPOS')->settings['image_allowed_types'] . ']'
+					'max_size[items_image,' . $this->config['image_max_size'] . ']',
+					'max_dims[items_image,' . $this->config['image_max_width'] . ',' . $this->config['image_max_height'] . ']',
+					'ext_in[items_image,' . $this->config['image_allowed_types'] . ']'
 				]
 			]
 		];

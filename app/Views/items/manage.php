@@ -32,7 +32,7 @@ $(document).ready(function()
 	// load the preset daterange picker
 	<?php echo view('partial/daterangepicker') ?>
     // set the beginning of time as starting date
-    $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date(config('OSPOS')->settings['dateformat'], mktime(0,0,0,01,01,2010)) ?>");
+    $('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($config['dateformat'], mktime(0,0,0,01,01,2010)) ?>");
 	// update the hidden inputs with the selected dates before submitting the search data
     var start_date = "<?php echo date('Y-m-d', mktime(0,0,0,01,01,2010)) ?>";
 	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
@@ -52,7 +52,7 @@ $(document).ready(function()
         employee_id: <?php echo $employee->get_logged_in_employee_info()->person_id ?>,
         resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
         headers: <?php echo esc($table_headers, 'js') ?>,
-        pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
+        pageSize: <?php echo $config['lines_per_page'] ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {
             return $.extend(arguments[0], {

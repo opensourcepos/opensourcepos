@@ -27,11 +27,12 @@ class MY_Migration extends MigrationRunner
 	 *
 	 * @return string The version number of the last successfully run database migration.
 	 */
-	public function get_current_version(): int
+	public static function get_current_version(): int
 	{
-		if($this->db->tableExists('migrations'))
+		$db = Database::connect();
+		if($db->tableExists('migrations'))
 		{
-			$builder = $this->db->table('migrations');
+			$builder = $db->table('migrations');
 			$builder->select('version')->orderBy('version', 'DESC')->limit(1);
 			return $builder->get()->getRow()->version;
 		}

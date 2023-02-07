@@ -18,7 +18,7 @@ before_install:
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker run --rm -v $(pwd):/app opensourcepos/composer composer install
-  - version=$(grep application_version application/config/config.php | sed "s/.*=\s'\(.*\)';/\1/g")
+  - version=$(grep application_version app/Config/App.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
   - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower

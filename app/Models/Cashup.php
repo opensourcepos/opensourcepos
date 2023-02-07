@@ -14,6 +14,27 @@ use stdClass;
 
 class Cashup extends Model
 {
+	protected $table = 'cash_up';
+	protected $primaryKey = 'cashup_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'open_date',
+		'close_date',
+		'open_cash_amount',
+		'transfer_cash_amount',
+		'note',
+		'closed_amount_cash',
+		'closed_amount_card',
+		'closed_amount_check',
+		'closed_amount_total',
+		'description',
+		'open_employee_id',
+		'close_employee_id',
+		'deleted',
+		'closed_amount_due'
+	];
+
 	/**
 	 * Determines if a given Cashup_id is a Cashup
 	 */
@@ -60,10 +81,11 @@ class Cashup extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
-		
+
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(cash_up.cashup_id) as count');
 		}
@@ -105,7 +127,7 @@ class Cashup extends Model
 
 		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: convert this to ternary notation.
+		if(empty($config['date_or_time_format']))	//TODO: convert this to ternary notation.
 		{
 			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -117,7 +139,7 @@ class Cashup extends Model
 		$builder->groupBy('cashup_id');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRowArray()['count'];
 		}

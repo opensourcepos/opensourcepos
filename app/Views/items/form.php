@@ -62,7 +62,7 @@
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php
-						if(config('OSPOS')->settings['category_dropdown'])
+						if($config['category_dropdown'])
 						{
 							echo form_dropdown('category', esc($categories, 'attr'), $selected_category, ['class' => 'form-control']);
 						}
@@ -146,7 +146,7 @@
 						echo form_radio($radio_button) ?> <?php echo lang('Items.kit') ?>
 				</label>
 				<?php
-				if(config('OSPOS')->settings['derive_sale_quantity'] == '1')
+				if($config['derive_sale_quantity'] == '1')
 				{
 				?>
 					<label class="radio-inline">
@@ -192,7 +192,7 @@
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'cost_price',
@@ -202,7 +202,7 @@
 						'value' => to_currency_no_money($item_info->cost_price)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -213,7 +213,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'unit_price',
@@ -223,7 +223,7 @@
 						'value' => to_currency_no_money($item_info->unit_price)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -240,7 +240,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_1',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name'], 'attr') : esc(config('OSPOS')->settings['default_tax_1_name'], 'attr')
+						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name'], 'attr') : esc($config['default_tax_1_name'], 'attr')
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -263,7 +263,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_2',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name'], 'attr') : esc(config('OSPOS')->settings['default_tax_2_name'], 'attr')
+						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name'], 'attr') : esc($config['default_tax_2_name'], 'attr')
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -420,7 +420,7 @@
 		</div>
 
 		<?php
-		if(config('OSPOS')->settings['multi_pack_enabled'] == '1')
+		if($config['multi_pack_enabled'] == '1')
 		{
 			?>
 			<div class="form-group form-group-sm">

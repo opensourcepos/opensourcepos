@@ -13,6 +13,26 @@ use ReflectionClass;
  */
 class Attribute extends Model
 {
+	protected $table = 'attribute_definitions';
+	protected $primaryKey = 'definition_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [	//TODO: This model may not be well designed... The model accesses three different tables (attribute_definitions, attribute_links, attribute_values). Should that be more than one model? According to CodeIgniter, these are meant to model a single table https://codeigniter.com/user_guide/models/model.html#models
+		'definition_name',
+		'definition_type',
+		'definition_unit',
+		'definition_flags',
+		'deleted',
+		'attribute_id',
+		'definition_id',
+		'item_id',
+		'sale_id',
+		'receiving_id',
+		'attribute_value',
+		'attribute_date',
+		'attribute_decimal'
+	];
+
 	const SHOW_IN_ITEMS = 1;	//TODO: These need to be moved to constants.php
 	const SHOW_IN_SALES = 2;
 	const SHOW_IN_RECEIVINGS = 4;
@@ -67,11 +87,12 @@ class Attribute extends Model
 	 */
 	public function value_exists($attribute_value, string $definition_type = TEXT): bool
 	{
+		$config = config('OSPOS')->settings;
 		switch($definition_type)
 		{
 			case DATE:
 				$data_type = 'date';
-				$attribute_date_value = DateTime::createFromFormat(config('OSPOS')->settings['dateformat'], $attribute_value);
+				$attribute_date_value = DateTime::createFromFormat($config['dateformat'], $attribute_value);
 				$attribute_value = $attribute_date_value->format('Y-m-d');
 				break;
 			case DECIMAL:
@@ -207,7 +228,7 @@ class Attribute extends Model
 	public function get_definitions_by_flags(int $definition_flags): array
 	{
 		$builder = $this->db->table('attribute_definitions');
-		$builder->where('definition_flags &', $definition_flags);
+		$builder->where('definition_flags', $definition_flags);
 		$builder->where('deleted', 0);
 		$builder->where('definition_type <>', GROUP);
 		$builder->orderBy('definition_id');
@@ -490,12 +511,12 @@ class Attribute extends Model
 		return $success;
 	}
 
-	public function get_definition_by_name(string $definition_name, $definition_type = FALSE): array
+	public function get_definition_by_name(string $definition_name, $definition_type = false): array
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_name', $definition_name);
 
-		if($definition_type != FALSE)
+		if($definition_type)
 		{
 			$builder->where('definition_type', $definition_type);
 		}
@@ -648,7 +669,8 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$locale_date_format = config('OSPOS')->settings['dateformat'];
+		$config = config('OSPOS')->settings;
+		$locale_date_format = $config['dateformat'];
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
@@ -825,7 +847,7 @@ class Attribute extends Model
 		{
 			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, FALSE, $attribute['attribute_id'], $definition_type);
 
-			if($this->save_link($attribute['item_id'], $definition_id, $new_attribute_id) == FALSE)
+			if(!$this->save_link($attribute['item_id'], $definition_id, $new_attribute_id))
 			{
 				log_message('Error', 'Transaction failed');
 				$this->db->transRollback();

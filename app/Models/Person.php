@@ -11,6 +11,25 @@ use stdClass;
  */
 class Person extends Model
 {
+	protected $table = 'people';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'first_name',
+		'last_name',
+		'phone_number',
+		'email',
+		'address_1',
+		'address_2',
+		'city',
+		'state',
+		'zip',
+		'country',
+		'comments',
+		'gender'
+	];
+
 	/**
 	 * Determines whether the given person exists in the people database table
 	 *
@@ -176,7 +195,7 @@ class Person extends Model
 	 */
 	public function delete($person_id = null, bool $purge = false): bool
 	{
-		return TRUE;
+		return true;
 	}
 
 	/**

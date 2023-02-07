@@ -10,6 +10,14 @@ use stdClass;
  */
 class Item_quantity extends Model
 {
+	protected $table = 'item_quantities';
+	protected $primaryKey = 'item_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'quantity'
+	];
+
     public function exists(int $item_id, int $location_id): bool
     {
         $builder = $this->db->table('item_quantities');
@@ -41,7 +49,7 @@ class Item_quantity extends Model
         $builder->where('location_id', $location_id);
         $result = $builder->get()->getRow();
 
-        if(empty($result) == TRUE)
+        if(empty($result))
         {
             //Get empty base parent object, as $item_id is NOT an item
             $result = new stdClass();

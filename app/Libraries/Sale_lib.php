@@ -14,6 +14,7 @@ use App\Models\Sale;
 use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
 use ReflectionException;
+use App\Libraries\Tax_lib;
 
 /**
  * Sale library
@@ -30,15 +31,14 @@ use ReflectionException;
  * @property rounding_mode rounding_mode
  * @property sale sale
  * @property stock_location stock_location
- *
- * @property tax_lib tax_lib
+ * @property Tax_lib tax_lib
  * @property session session
+ * @property array config
  */
 class Sale_lib
 {
 	public function __construct()
 	{
-		$this->tax_lib = new Tax_lib();
 		$this->session = Session();
 
 		$this->attribute = model('Attribute');
@@ -51,6 +51,7 @@ class Sale_lib
 		$this->rounding_mode = model('enums/Rounding_mode');
 		$this->sale = model('Sale');
 		$this->stock_location = model('Stock_location');
+		$this->config = config('OSPOS')->settings;
 	}
 
 	public function get_line_sequence_options(): array
@@ -66,7 +67,7 @@ class Sale_lib
 	{
 		$register_modes = [];
 
-		if(!config('OSPOS')->settings['invoice_enable'])
+		if(!$this->config['invoice_enable'])
 		{
 			$register_modes['sale'] = lang('Sales.sale');
 		}
@@ -75,7 +76,7 @@ class Sale_lib
 			$register_modes['sale'] = lang('Sales.receipt');
 			$register_modes['sale_quote'] = lang('Sales.quote');
 
-			if(config('OSPOS')->settings['work_order_enable'])
+			if($this->config['work_order_enable'])
 			{
 				$register_modes['sale_work_order'] = lang('Sales.work_order');
 			}
@@ -131,7 +132,7 @@ class Sale_lib
 
 		//TODO: This set of if/elseif/else needs to be converted to a switch statement
 		// Entry sequence (this will render kits in the expected sequence)
-		if(config('OSPOS')->settings['line_sequence'] == '0')
+		if($this->config['line_sequence'] == '0')
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -141,7 +142,7 @@ class Sale_lib
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif(config('OSPOS')->settings['line_sequence'] == '1')	//TODO: Need to change these to constants
+		elseif($this->config['line_sequence'] == '1')	//TODO: Need to change these to constants
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -153,7 +154,7 @@ class Sale_lib
 			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
 		}
 		// Group by Item Category
-		elseif(config('OSPOS')->settings['line_sequence'] == '2')	//TODO: Need to change these to constants
+		elseif($this->config['line_sequence'] == '2')	//TODO: Need to change these to constants
 		{
 			$sort = [];
 			foreach($filtered_cart as $k => $v)
@@ -311,7 +312,7 @@ class Sale_lib
 
 	public function is_invoice_mode(): bool
 	{
-		return ($this->session->get('sales_mode') == 'sale_invoice'	&& config('OSPOS')->settings['invoice_enable']);
+		return ($this->session->get('sales_mode') == 'sale_invoice'	&& $this->config['invoice_enable']);
 	}
 
 	public function is_sale_by_receipt_mode(): bool	//TODO: This function is not called anywhere in the code.
@@ -352,11 +353,11 @@ class Sale_lib
 
 	public function is_print_after_sale(): bool
 	{//TODO: this needs to be converted to a switch statement
-		if(config('OSPOS')->settings['print_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
+		if($this->config['print_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
 		{
 			return TRUE;
 		}
-		elseif(config('OSPOS')->settings['print_receipt_check_behaviour'] == 'never')	//TODO: === ?
+		elseif($this->config['print_receipt_check_behaviour'] == 'never')	//TODO: === ?
 		{
 			return FALSE;
 		}
@@ -379,11 +380,11 @@ class Sale_lib
 
 	public function is_email_receipt(): bool
 	{//TODO: this needs to be converted to a switch statement
-		if(config('OSPOS')->settings['email_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
+		if($this->config['email_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
 		{
 			return TRUE;
 		}
-		elseif(config('OSPOS')->settings['email_receipt_check_behaviour'] == 'never')	//TODO: === ?
+		elseif($this->config['email_receipt_check_behaviour'] == 'never')	//TODO: === ?
 		{
 			return FALSE;
 		}
@@ -720,7 +721,7 @@ class Sale_lib
 	{
 		if(!$this->session->get('dinner_table'))
 		{
-			if(config('OSPOS')->settings['dinner_table_enable'])
+			if($this->config['dinner_table_enable'])
 			{
 				$this->set_dinner_table(1);	//TODO: Replace 1 with constant
 			}
@@ -927,7 +928,7 @@ class Sale_lib
 		$total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type);
 		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, TRUE);
 
-		if(config('OSPOS')->settings['multi_pack_enabled'])
+		if($this->config['multi_pack_enabled'])
 		{
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
@@ -1231,7 +1232,7 @@ class Sale_lib
 	 */
 	public function reset_cash_rounding(): int
 	{
-		$cash_rounding_code = config('OSPOS')->settings['cash_rounding_code'];
+		$cash_rounding_code = $this->config['cash_rounding_code'];
 
 		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)	//TODO: convert to ternary notation.
 		{
@@ -1379,7 +1380,7 @@ class Sale_lib
 	{
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($this->config['tax_included'])
 		{
 			$tax_fraction = bcdiv(bcadd('100', $tax_percentage), '100');
 			$price_tax_excl = bcdiv($item_total, $tax_fraction);
@@ -1397,7 +1398,7 @@ class Sale_lib
 		$subtotal = '0.0';
 		foreach($this->get_cart() as $item)
 		{
-			if($exclude_tax && config('OSPOS')->settings['tax_included'])
+			if($exclude_tax && $this->config['tax_included'])
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
 			}
@@ -1421,9 +1422,11 @@ class Sale_lib
 
 		$cash_mode = $this->session->get('cash_mode');
 
-		if(!config('OSPOS')->settings['tax_included'])
+		if(!$this->config['tax_included'])
 		{
 			$cart = $this->get_cart();
+			$this->tax_lib = new \app\Libraries\Tax_lib();
+
 			foreach($this->tax_lib->get_taxes($cart)[0] as $tax)
 			{
 				$total = bcadd($total, $tax['sale_tax_amount']);
@@ -1446,7 +1449,7 @@ class Sale_lib
 	public function check_for_cash_rounding(string $total): string
 	{
 		$cash_decimals = cash_decimals();
-		$cash_rounding_code = config('OSPOS')->settings['cash_rounding_code'];
+		$cash_rounding_code = $this->config['cash_rounding_code'];
 
 		return Rounding_mode::round_number($cash_rounding_code, (float)$total, $cash_decimals);
 	}

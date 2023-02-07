@@ -40,10 +40,10 @@ if(isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if(config('OSPOS')->settings['company_logo'] != '')
+				<?php if($config['company_logo'] != '')
 				{
 				?>
-					<img id="image" src="data:<?php echo esc($mimetype) ?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . esc(config('OSPOS')->settings['company_logo']))) ?>" alt="company_logo" />
+					<img id="image" src="data:<?php echo esc($mimetype) ?>;base64,<?php echo base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -52,7 +52,7 @@ if(isset($error_message))
 		</tr>
 		<tr>
 			<td id="company-title" id="company">
-				<?php echo esc(config('OSPOS')->settings['company']) ?><br/>
+				<?php echo esc($config['company']) ?><br/>
 				<?php echo nl2br(esc($company_info)) ?>
 			</td>
 			<td id="meta">
@@ -201,10 +201,10 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<span><?php echo nl2br(config('OSPOS')->settings['payment_message']) ?></span>
-				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->settings['invoice_default_comments'] : $comments) ?></span>
+				<span><?php echo nl2br($config['payment_message']) ?></span>
+				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $config['invoice_default_comments'] : $comments) ?></span>
 			</h5>
-			<?php echo nl2br(config('OSPOS')->settings['return_policy']) ?>
+			<?php echo nl2br($config['return_policy']) ?>
 		</div>
 		<div id='barcode'>
 			<img alt='<?php echo esc($barcode, 'attr') ?>' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>

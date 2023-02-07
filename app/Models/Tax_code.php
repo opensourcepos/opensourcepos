@@ -11,6 +11,18 @@ use stdClass;
  */
 class Tax_code extends Model
 {
+	protected $table = 'tax_codes';
+	protected $primaryKey = 'tax_code_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'tax_code',
+		'tax_code_name',
+		'city',
+		'state',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */
@@ -65,10 +77,10 @@ class Tax_code extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = true): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
 	{
 		$builder = $this->db->table('tax_codes');
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -157,7 +169,7 @@ class Tax_code extends Model
 	/**
 	 * Deletes a specific tax code
 	 */
-	public function delete(string $tax_code = null, bool $purge = false): bool
+	public function delete($tax_code = null, bool $purge = false)
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->where('tax_code', $tax_code);
@@ -192,7 +204,7 @@ class Tax_code extends Model
 		$builder = $this->db->table('tax_codes AS tax_codes');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_codes.tax_code) as count');
 		}
@@ -204,7 +216,7 @@ class Tax_code extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -224,6 +236,8 @@ class Tax_code extends Model
 	 */
 	public function get_sales_tax_code(string $city = '', string $state = '')
 	{
+		$config = config('OSPOS')->settings;
+
 		// if tax code using both city and state cannot be found then  try again using just the state
 		// if the state tax code cannot be found then try again using blanks for both
 		$builder = $this->db->table('tax_codes');
@@ -252,7 +266,7 @@ class Tax_code extends Model
 		}
 		else
 		{
-			return config('OSPOS')->settings['default_tax_code'];
+			return $config['default_tax_code'];
 		}
 	}
 

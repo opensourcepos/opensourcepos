@@ -7,7 +7,7 @@ class Summary_taxes extends Summary_report
 	protected function _get_data_columns(): array	//TODO: hungarian notation
 	{
 		return [
-			['tax_name' => $this->lang->line('Reports.tax_name'), 'sortable' => FALSE],
+			['tax_name' => lang('Reports.tax_name'), 'sortable' => FALSE],
 			['tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'],
 			['report_count' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
 			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
@@ -18,9 +18,11 @@ class Summary_taxes extends Summary_report
 
 	protected function _where(array $inputs, &$builder): void	//TODO: hungarian notation
 	{
+		$config = config('OSPOS')->settings;
+
 		$builder->where('sales.sale_status', COMPLETED);
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -32,9 +34,11 @@ class Summary_taxes extends Summary_report
 
 	public function getData(array $inputs): array
 	{
+		$config = config('OSPOS')->settings;
+
 		$where = 'WHERE sale_status = ' . COMPLETED . ' ';	//TODO: Duplicated code
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: Ternary notation
+		if(empty($config['date_or_time_format']))	//TODO: Ternary notation
 		{
 			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -44,7 +48,7 @@ class Summary_taxes extends Summary_report
 		}
 		$decimals = totals_decimals();
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($config['tax_included'])
 		{
 			$sale_total = '(CASE WHEN sales_items.discount_type = ' . PERCENT
 				. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals)"

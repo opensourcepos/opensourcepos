@@ -74,7 +74,8 @@ class Token_lib
 
 	public function parse_barcode(string &$quantity, string &$price,  string &$item_id_or_number_or_item_kit_or_receipt): void
 	{
-		$barcode_formats = json_decode(config('OSPOS')->settings['barcode_formats']);
+		$config = config('OSPOS')->settings;
+		$barcode_formats = json_decode($config['barcode_formats']);
 		$barcode_tokens = Token::get_barcode_tokens();
 
 		if(!empty($barcode_formats))

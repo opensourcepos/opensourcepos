@@ -23,6 +23,7 @@ use ReflectionException;
  * @property receiving receiving
  * @property stock_location stock_location
  * @property supplier supplier
+ * @property array config
  */
 class Receivings extends Secure_Controller
 {
@@ -40,6 +41,7 @@ class Receivings extends Secure_Controller
 		$this->receiving = model('Receiving');
 		$this->stock_location = model('Stock_location');
 		$this->supplier = model('Supplier');
+		$this->config = config('OSPOS')->settings;
 	}
 
 	public function getIndex(): void
@@ -135,8 +137,8 @@ class Receivings extends Secure_Controller
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount = config('OSPOS')->settings['default_receivings_discount'];
-		$discount_type = config('OSPOS')->settings['default_receivings_discount_type'];
+		$discount = $this->config['default_receivings_discount'];
+		$discount_type = $this->config['default_receivings_discount_type'];
 
 		if($mode == 'return' && $this->receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -445,7 +447,7 @@ class Receivings extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);	//TODO: newdate does not follow naming conventions
 		
-		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
+		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 
 		$receiving_data = [

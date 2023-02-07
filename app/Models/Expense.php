@@ -14,6 +14,23 @@ use stdClass;
  */
 class Expense extends Model
 {
+	protected $table = 'expenses';
+	protected $primaryKey = 'expense_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'date',
+		'amount',
+		'payment_type',
+		'expense_category_id',
+		'description',
+		'employee_id',
+		'deleted',
+		'supplier_tax_code',
+		'tax_amount',
+		'supplier_id'
+	];
+
 	/**
 	 * Determines if a given Expense_id is an Expense
 	 */
@@ -72,10 +89,11 @@ class Expense extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('expenses AS expenses');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
@@ -113,11 +131,11 @@ class Expense extends Model
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
 		/*	//TODO: Below needs to be replaced with Ternary notation
-		empty(config('OSPOS')->settings['date_or_time_format)
+		empty($config['date_or_time_format)
 			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
 			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		*/
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -126,17 +144,17 @@ class Expense extends Model
 			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_debit'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_debit'])`... same with below.
+		if($filters['only_debit'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.debit'));
 		}
 
-		if($filters['only_credit'] != FALSE)
+		if($filters['only_credit'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.credit'));
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'])
 		{
 			$builder->groupStart();
 				$builder->like('expenses.payment_type', lang('Expenses.cash'));
@@ -144,17 +162,17 @@ class Expense extends Model
 			$builder->groupEnd();
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -269,12 +287,14 @@ class Expense extends Model
 	 */
 	public function get_payments_summary(string $search, array $filters): array	//TODO: $search is passed but never used in the function
 	{
+		$config = config('OSPOS')->settings;
+
 		// get payment summary
 		$builder = $this->db->table('expenses');
 		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder->where('deleted', $filters['is_deleted']);
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -283,27 +303,27 @@ class Expense extends Model
 			$builder->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_cash'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_cash'])`... same with below.
+		if($filters['only_cash'])
 		{
 			$builder->like('payment_type', lang('Expenses.cash'));
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('payment_type', lang('Expenses.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('payment_type', lang('Expenses.check'));
 		}
 
-		if($filters['only_credit'] != FALSE)
+		if($filters['only_credit'])
 		{
 			$builder->like('payment_type', lang('Expenses.credit'));
 		}
 
-		if($filters['only_debit'] != FALSE)
+		if($filters['only_debit'])
 		{
 			$builder->like('payment_type', lang('Expenses.debit'));
 		}

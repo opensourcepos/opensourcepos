@@ -10,6 +10,16 @@ use CodeIgniter\Model;
  */
 class Module extends Model
 {
+	protected $table = 'modules';
+	protected $primaryKey = 'module_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'name_lang_key',
+		'desc_lang_key',
+		'sort'
+	];
+
 	public function get_module_name(string $module_id): string
 	{
 		$builder = $this->db->table('modules');

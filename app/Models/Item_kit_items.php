@@ -9,6 +9,14 @@ use CodeIgniter\Model;
  */
 class Item_kit_items extends Model
 {
+	protected $table = 'item_kit_items';
+	protected $primaryKey = 'item_kit_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'kit_sequence'
+	];
+
 	/**
 	 * Gets item kit items for a particular item kit
 	 */
@@ -72,7 +80,7 @@ class Item_kit_items extends Model
 	/**
 	 * Deletes item kit items given an item kit
 	 */
-	public function delete(int $item_kit_id = null, bool $purge = false): bool
+	public function delete($item_kit_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('item_kit_items');
 

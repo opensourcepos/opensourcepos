@@ -21,6 +21,7 @@ class Suppliers extends Persons
 
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$data['table_headers'] = get_suppliers_manage_table_headers();
 
 		echo view('people/manage', $data);

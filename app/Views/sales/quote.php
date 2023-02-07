@@ -75,19 +75,19 @@ if (isset($error_message))
 
 		<div id="logo">
 			<?php
-			if(config('OSPOS')->settings['company_logo'] != '')
+			if($config['company_logo'] != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . esc(config('OSPOS')->settings['company_logo'], 'url')) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo" />
 			<?php
 			}
 			?>
 			<div>&nbsp</div>
 			<?php
-			if(config('OSPOS')->settings['receipt_show_company_name'])
+			if($config['receipt_show_company_name'])
 			{
 			?>
-				<div id="company_name"><?php echo esc(config('OSPOS')->settings['company']) ?></div>
+				<div id="company_name"><?php echo esc($config['company']) ?></div>
 			<?php
 			}
 			?>
@@ -215,7 +215,7 @@ if (isset($error_message))
 		<div id="sale_return_policy">
 			<h5>
 				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></span>
-				<span style='padding:4%;'><?php echo esc(config('OSPOS')->settings['quote_default_comments']) ?></span>
+				<span style='padding:4%;'><?php echo esc($config['quote_default_comments']) ?></span>
 			</h5>
 		</div>
 	</div>
@@ -228,7 +228,7 @@ if (isset($error_message))
 		if (window.jsPrintSetup)
 		{
 			<?php
-			if(!config('OSPOS')->settings['print_header'])
+			if(!$config['print_header'])
 			{
 			?>
 				// set page header
@@ -238,7 +238,7 @@ if (isset($error_message))
 			<?php
 			}
 
-			if(!config('OSPOS')->settings['print_footer'])
+			if(!$config['print_footer'])
 			{
 			?>
 				// set empty page footer
