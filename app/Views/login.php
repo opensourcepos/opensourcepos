@@ -8,20 +8,27 @@
 ?>
 
 <!doctype html>
-<html lang="<?php echo current_language_code() ?>">
+<html lang="<?= current_language_code() ?>">
 	<head>
 	  <meta charset="utf-8">
-		<base href="<?php echo base_url() ?>">
-		<title><?php echo config('OSPOS')->settings['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
+		<base href="<?= base_url() ?>">
+		<title><?= config('OSPOS')->settings['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<meta content="noindex, nofollow" name="robots">
 
-		<link href="<?php echo base_url() ?>favicon.ico" rel="shortcut icon" type="image/x-icon">
-		<link href="<?php echo 'dist/bootswatch-5/' . (empty(config('OSPOS')->settings['theme']) || 'paper' == config('OSPOS')->settings['theme'] || 'readable' == config('OSPOS')->settings['theme'] ? 'flatly' : config('OSPOS')->settings['theme']) . '/bootstrap.min.css' ?>" rel="stylesheet" type="text/css">
+		<link href="<?= base_url('/favicon.ico') ?>" rel="shortcut icon" type="image/x-icon">
+		<?php
+			$theme = (empty(config('OSPOS')->settings['theme'])
+				|| 'paper' == config('OSPOS')->settings['theme']
+				|| 'readable' == config('OSPOS')->settings['theme']
+					? 'flatly'
+					: config('OSPOS')->settings['theme']);
+		?>
+		<link href="<?= base_url("/dist/bootswatch/$theme/bootstrap.min.css") ?>" rel="stylesheet" type="text/css">
 
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="../../public/css/login.min.css"/>
+		<link rel="stylesheet" type="text/css" href="<?= base_url('/css/login.min.css') ?>"/>
 		<!-- end css template tags -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>
