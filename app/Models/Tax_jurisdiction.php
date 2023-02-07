@@ -12,6 +12,20 @@ use stdClass;
 
 class Tax_jurisdiction extends Model
 {
+	protected $table = 'tax_jurisdictions';
+	protected $primaryKey = 'cashup_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'jurisdiction_name',
+		'tax_group',
+		'tax_type',
+		'reporting_authority',
+		'tax_group_sequence',
+		'cascade_sequence',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */
@@ -69,7 +83,7 @@ class Tax_jurisdiction extends Model
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -169,7 +183,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Soft deletes a specific tax jurisdiction
 	 */
-	public function delete(int $jurisdiction_id = null, bool $purge = false): bool
+	public function delete($jurisdiction_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);
@@ -204,7 +218,7 @@ class Tax_jurisdiction extends Model
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: Replace this with just count_only: `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
@@ -216,7 +230,7 @@ class Tax_jurisdiction extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: ===
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

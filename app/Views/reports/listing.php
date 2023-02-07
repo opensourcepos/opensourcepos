@@ -64,21 +64,22 @@ if(isset($error))
 				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?php echo lang('Reports.detailed_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php 			
-				$person_id = $this->session->get('person_id');
-				show_report_if_allowed('detailed', 'sales', $person_id);
-				show_report_if_allowed('detailed', 'receivings', $person_id);
-				show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
-				show_report_if_allowed('specific', 'discount', $person_id, 'reports_discounts');
-				show_report_if_allowed('specific', 'employee', $person_id, 'reports_employees');
-				show_report_if_allowed('specific', 'supplier', $person_id, 'reports_suppliers');
+				<?php
+					$person_id = session('person_id');
+
+					show_report_if_allowed('detailed', 'sales', $person_id);
+					show_report_if_allowed('detailed', 'receivings', $person_id);
+					show_report_if_allowed('specific', 'customer', $person_id, 'Reports.customers');
+					show_report_if_allowed('specific', 'discount', $person_id, 'Reports.discounts');
+					show_report_if_allowed('specific', 'employee', $person_id, 'Reports.employees');
+					show_report_if_allowed('specific', 'supplier', $person_id, 'Reports.suppliers');
 				?>
 			 </div>
 		</div>
 
 		<?php
 		$employee = model(Employee::class);
-		if ($employee->has_grant('reports_inventory', $this->session->get('person_id')))
+		if ($employee->has_grant('Reports.inventory', session('person_id')))
 		{
 		?>
 			<div class="panel panel-primary">
@@ -87,8 +88,8 @@ if(isset($error))
 				</div>
 				<div class="list-group">
 				<?php 
-				show_report('', 'reports_inventory_low');
-				show_report('', 'reports_inventory_summary');
+				show_report('', 'reports_inventory_low', 'Reports.inventory_low');
+				show_report('', 'reports_inventory_summary', 'Reports.inventory_summary');
 				?>
 				</div>
 			</div>

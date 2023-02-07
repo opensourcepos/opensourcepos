@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Config\BaseConfig;
 
 /**
@@ -11,5 +12,43 @@ use CodeIgniter\Config\BaseConfig;
  */
 class OSPOS extends BaseConfig
 {
-	public $settings = [];
+	public array $settings;
+
+	public string $commit_sha1 = 'dev';	//TODO: Travis scripts need to be updated to replace this with the commit hash on build
+
+	private CacheInterface $cache;
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->cache = Services::cache();
+		$this->set_settings();
+	}
+
+	public function set_settings(): void
+	{
+		helper('locale');
+
+		$cache = $this->cache->get('settings');
+
+		if($cache)
+		{
+			$this->settings = decode_array($cache);
+		}
+		else
+		{
+			$appconfig = model('Appconfig');
+			foreach($appconfig->get_all()->getResult() as $app_config)
+			{
+				$this->settings[$app_config->key] = $app_config->value;
+			}
+			$this->cache->save('settings', encode_array($this->settings));
+		}
+	}
+
+	public function update_settings(): void
+	{
+		$this->cache->delete('settings');
+		$this->set_settings();
+	}
 }

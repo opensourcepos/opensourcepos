@@ -9,6 +9,27 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Customer extends Person
 {
+	protected $table = 'customers';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'account_number',
+		'taxable',
+		'tax_id',
+		'sales_tax_code_id',
+		'deleted',
+		'discount',
+		'discount_type',
+		'company_name',
+		'package_id',
+		'points',
+		'date',
+		'employee_id',
+		'consent'
+	];
+
+
 	/**
 	 * Determines if a given person_id is a customer
 	 */
@@ -226,9 +247,10 @@ class Customer extends Person
 	public function delete($customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
+		$config = config('OSPOS')->settings;
 
 		// if privacy enforcement is selected scramble customer data
-		if(config('OSPOS')->settings['enforce_privacy'])
+		if($config['enforce_privacy'])
 		{
 			$builder = $this->db->table('people');
 			$builder->where('person_id', $customer_id);
@@ -407,7 +429,7 @@ class Customer extends Person
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

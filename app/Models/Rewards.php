@@ -10,6 +10,16 @@ use CodeIgniter\Model;
 
 class Rewards extends Model	//TODO: This class is named with plural while the general practice is to name models singular
 {
+	protected $table = 'sales_reward_points';
+	protected $primaryKey = 'id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'sale_id',
+		'earned',
+		'used'
+	];
+
 	/**
 	 * Inserts or updates a rewards
 	 */

@@ -25,7 +25,7 @@ use App\Models\Reports\Summary_sales;
 use App\Models\Reports\Summary_sales_taxes;
 use App\Models\Reports\Summary_suppliers;
 use App\Models\Reports\Summary_taxes;
-use CodeIgniter\HTTP\Uri;
+use Config\Services;
 
 /**
  * @property attribute attribute
@@ -51,17 +51,18 @@ use CodeIgniter\HTTP\Uri;
  * @property summary_sales_taxes summary_sales_taxes
  * @property summary_suppliers summary_suppliers
  * @property summary_taxes summary_taxes
- * @property URI uri
+ * @property array config
  */
 class Reports extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('reports');
-
-		$this->uri->setURI(uri_string());
-		$method_name = $this->uri->getSegment(2);
+		$request = Services::request();
+		$method_name = $request->getUri()->getSegment(2);
 		$exploder = explode('_', $method_name);
+		$this->config = config('OSPOS')->settings;
+		$this->stock_location = model('Stock_location');
 
 		if(sizeof($exploder) > 1)
 		{
@@ -1577,10 +1578,10 @@ class Reports extends Secure_Controller
 		$sale_type_options = [];
 		$sale_type_options['complete'] = lang('Reports.complete');
 		$sale_type_options['sales'] = lang('Reports.completed_sales');
-		if(config('OSPOS')->settings['invoice_enable'])
+		if($this->config['invoice_enable'])
 		{
 			$sale_type_options['quotes'] = lang('Reports.quotes');
-			if(config('OSPOS')->settings['work_order_enable'])
+			if($this->config['work_order_enable'])
 			{
 				$sale_type_options['work_orders'] = lang('Reports.work_orders');
 			}
@@ -1912,13 +1913,13 @@ class Reports extends Secure_Controller
 	{
 		$subtitle = '';
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($this->config['date_or_time_format']))
 		{
-			$subtitle .= date(config('OSPOS')->settings['dateformat'], strtotime($inputs['start_date'])) . ' - ' . date(config('OSPOS')->settings['dateformat'], strtotime($inputs['end_date']));
+			$subtitle .= date($this->config['dateformat'], strtotime($inputs['start_date'])) . ' - ' . date($this->config['dateformat'], strtotime($inputs['end_date']));
 		}
 		else
 		{
-			$subtitle .= date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], strtotime(rawurldecode($inputs['end_date'])));
+			$subtitle .= date($this->config['dateformat'] . ' ' . $this->config['timeformat'], strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->config['dateformat'] . ' ' . $this->config['timeformat'], strtotime(rawurldecode($inputs['end_date'])));
 		}
 
 		return $subtitle;

@@ -6,22 +6,23 @@ class Home extends Secure_Controller
 {
 	public function __construct()
 	{
-		parent::__construct(NULL, NULL, 'home');
+		parent::__construct('home', NULL, 'home');
 	}
 
 	public function getIndex(): void
 	{
+		$logged_in = $this->employee->is_logged_in();
 		echo view('home/home');
 	}
 
-	public function logout(): void
+	public function getLogout(): void
 	{
 		$this->employee->logout();
 	}
 
-	/*
-	Load "change employee password" form
-	*/
+	/**
+	 * Load "change employee password" form
+	 */
 	public function change_password(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$person_info = $this->employee->get_info($employee_id);
@@ -34,9 +35,9 @@ class Home extends Secure_Controller
 		echo view('home/form_change_password', $data);
 	}
 
-	/*
-	Change employee password
-	*/
+	/**
+	 * Change employee password
+	 */
 	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		if($this->request->getPost('current_password') != '' && $employee_id != -1)

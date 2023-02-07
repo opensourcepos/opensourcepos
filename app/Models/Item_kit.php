@@ -11,6 +11,20 @@ use stdClass;
  */
 class Item_kit extends Model
 {
+	protected $table = 'item_kits';
+	protected $primaryKey = 'item_kit_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'item_kit_number',
+		'name',
+		'description',
+		'item_id',
+		'kit_discount',
+		'kit_discount_type',
+		'price_option'
+	];
+
 	/**
 	 * Determines if a given item_id is an item kit
 	 */
@@ -50,7 +64,9 @@ class Item_kit extends Model
 	 */
 	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
 	{
-		if(config('OSPOS')->settings['allow_duplicate_barcodes'])
+		$config = config('OSPOS')->settings;
+
+		if($config['allow_duplicate_barcodes'])
 		{
 			return FALSE;
 		}
@@ -174,7 +190,7 @@ class Item_kit extends Model
 	/**
 	 * Deletes one item kit
 	 */
-	public function delete(int $item_kit_id = null, bool $purge = false): bool
+	public function delete($item_kit_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('item_kits');
 
@@ -246,7 +262,7 @@ class Item_kit extends Model
 		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(item_kits.item_kit_id) as count');
 		}
@@ -262,7 +278,7 @@ class Item_kit extends Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

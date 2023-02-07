@@ -18,6 +18,7 @@ abstract class Persons extends Secure_Controller
 
 	public function getIndex(): void
 	{
+		helper('tabular');
 		$data['table_headers'] = get_people_manage_table_headers();
 
 		echo view('people/manage', $data);

@@ -9,10 +9,19 @@ use ReflectionException;
 /**
  * Appconfig class
  *
- * @property mixed config
+ *
  */
 class Appconfig extends Model
 {
+	protected $table = 'app_config';
+	protected $primaryKey = 'key';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'key',
+		'value'
+	];
+
 	public function exists(string $key): bool
 	{
 		$builder = $this->db->table('app_config');
@@ -32,7 +41,7 @@ class Appconfig extends Model
 	public function get_value(string $key, string $default = ''): string
 	{
 		$builder = $this->db->table('app_config');
-		$query = $builder->getWhere(['key' => $key], 1, 1);
+		$query = $builder->getWhere(['key' => $key], 1);
 
 		if($query->getNumRows() == 1)	//TODO: ===
 		{
@@ -43,21 +52,19 @@ class Appconfig extends Model
 	}
 
 	/**
-	 * Calls the parent save() from BaseModel but additionally updates the cached array value.
-	 * @param $data
+	 * Calls the parent save() from BaseModel and updates the cached reference.
+	 * @param array|object $data
 	 * @return bool
 	 * @throws ReflectionException
 	 */
-	public function save($data): bool
+	public function save($data): bool	//TODO: This is puking: Allowed fields must be specified for model: "App\Models\Appconfig"
 	{
-		$this->config = config('OSPOS');
 		$success = parent::save($data);
-
-		$key = array_keys($data)[0];
+		$config = config('OSPOS');
 
 		if($success)
 		{
-			$this->config[$key] = $data[$key];
+			$config->update_settings();	//TODO: We need to investigate whether there is a possibility of stale data. It updates the cache in this function, but when save() returns any instances of $config->settings[] may not be updated yet.
 		}
 
 		return $success;
@@ -102,7 +109,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_invoice_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_invoice_number'] + 1;
 
 		if($save)
 		{
@@ -117,7 +125,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_quote_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_quote_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_quote_number'] + 1;
 
 		if($save)
 		{
@@ -132,7 +141,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_work_order_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_work_order_number'] + 1;
 
 		if($save)
 		{

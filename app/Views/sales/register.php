@@ -73,7 +73,7 @@ if(isset($success))
 					<?php echo form_dropdown('mode', esc($modes), esc($mode), ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 				<?php
-				if(config('OSPOS')->settings['dinner_table_enable'] == TRUE)
+				if($config['dinner_table_enable'] == TRUE)
 				{
 				?>
 					<li class="pull-left first_li">
@@ -106,7 +106,7 @@ if(isset($success))
 
 				<?php
 				$employee = model(Employee::class);
-				if($employee->has_grant('reports_sales', $this->session->get('person_id')))
+				if($employee->has_grant('reports_sales', session('person_id')))
 				{
 				?>
 					<li class="pull-right">
@@ -240,7 +240,7 @@ if(isset($success))
 								<div class="input-group">
 									<?php echo form_input (['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
 									<span class="input-group-btn">
-										<?php echo form_checkbox (['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle",'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . config('OSPOS')->settings['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => esc($line), 'checked' => $item['discount_type']]) ?>
+										<?php echo form_checkbox (['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle",'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => esc($line), 'checked' => $item['discount_type']]) ?>
 									</span>
 								</div>
 							</td>
@@ -391,7 +391,7 @@ if(isset($success))
 						<th style="width: 55%;"><?php echo lang('Sales.customer_discount') ?></th>
 						<th style="width: 45%; text-align: right;"><?php echo ($customer_discount_type == FIXED) ? to_currency($customer_discount) : $customer_discount . '%' ?></th>
 					</tr>
-					<?php if(config('OSPOS')->settings['customer_reward_enable'] == TRUE): ?>
+					<?php if($config['customer_reward_enable'] == TRUE): ?>
 					<?php
 					if(!empty($customer_rewards))
 					{
@@ -678,7 +678,7 @@ if(isset($success))
 						</div>
 					</div>
 					<?php
-					if(($mode == 'sale_invoice') && config('OSPOS')->settings['invoice_enable'] == TRUE)
+					if(($mode == 'sale_invoice') && $config['invoice_enable'] == TRUE)
 					{
 					?>
 						<div class="row">
@@ -849,7 +849,7 @@ $(document).ready(function()
 	});
 
 	<?php
-	if(config('OSPOS')->settings['invoice_enable'] == TRUE)
+	if($config['invoice_enable'] == TRUE)
 	{
 	?>
 		$('#sales_invoice_number').keyup(function() {

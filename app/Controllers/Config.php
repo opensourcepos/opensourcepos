@@ -7,6 +7,7 @@ use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
+use App\Libraries\Ci3encrypt;
 
 use App\Models\Appconfig;
 use App\Models\Attribute;
@@ -17,9 +18,10 @@ use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
 use App\Models\Tax;
 
-use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
+use Config\Encryption;
+use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
 use ReflectionException;
@@ -40,6 +42,7 @@ use ReflectionException;
  * @property rounding_mode rounding_mode
  * @property stock_location stock_location
  * @property tax tax
+ * @property array config
  */
 class Config extends Secure_Controller
 {
@@ -51,7 +54,7 @@ class Config extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
-		
+
 		$this->attribute = model('Attribute');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
@@ -59,9 +62,7 @@ class Config extends Secure_Controller
 		$this->rounding_mode = model('Rounding_mode');
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
-
-		$this->encryption = new Encryption();
-		$this->encrypter = $this->encryption->initialize();
+		$this->config = config('OSPOS')->settings;
 	}
 
 	/*
@@ -74,7 +75,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = [];
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('OSPOSConfig')->application_version;
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
 		if(file_exists('license/LICENSE'))
 		{
@@ -250,7 +251,7 @@ class Config extends Secure_Controller
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = config('OSPOS')->settings['company_logo'] != '';
+		$data['logo_exists'] = $this->config['company_logo'] != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
@@ -259,7 +260,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
-		$data['currency_code'] = config('OSPOS')->settings['currency_code'];
+		$data['currency_code'] = $this->config['currency_code'];
 
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
@@ -271,15 +272,17 @@ class Config extends Secure_Controller
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
 
-		$data['selected_image_allowed_types'] = explode('|', config('OSPOS')->settings['image_allowed_types']);
+		$data['selected_image_allowed_types'] = explode('|', $this->config['image_allowed_types']);
 
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$data['mailchimp']['api_key'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);
-			$data['mailchimp']['list_id'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
+			$encrypter = Services::encrypter();
+
+			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key'] ?? '');
+			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id'] ?? '');
 		}
 		else
 		{
@@ -287,7 +290,6 @@ class Config extends Secure_Controller
 			$data['mailchimp']['list_id'] = '';
 		}
 
-		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$data['mailchimp']['lists'] = $this->_mailchimp();
 
 		echo view('configs/manage', $data);
@@ -911,7 +913,7 @@ class Config extends Secure_Controller
 		// switches immediately back to the register the mode reflects the change
 		if($success == TRUE)
 		{
-			if(config('OSPOS')->settings['invoice_enable'])
+			if($this->config['invoice_enable'])
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
@@ -939,13 +941,13 @@ class Config extends Secure_Controller
 	 */
 	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
-		$encryption_key = config('OSPOS')->settings['encryption_key'];
+		$encryption_key = config('Encryption')->key;
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
 		{
 			// Config path
-			$config_path = APPPATH . 'config/config.php';
+			$config_path = APPPATH . 'Config/config.php';	//TODO: This is now in APPPATH . 'Config\Encryption.php' but it shouldn't be pulled from here.  It should be pulled from '\.env'
 
 			// Open the file
 			$config = file_get_contents($config_path);
@@ -953,11 +955,8 @@ class Config extends Secure_Controller
 			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
 			$key = bin2hex($this->encryption->createKey());
 
-			// set the encryption key in the config item
-			$this->appconfig->save(['encryption_key' => $key]);
-
 			// replace the empty placeholder with a real randomly generated encryption key
-			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
+			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);	//TODO: This needs to be modified also so that it replaces encryption.key = '' with encryption.key = '[NEW KEY]'
 
 			$result = FALSE;
 

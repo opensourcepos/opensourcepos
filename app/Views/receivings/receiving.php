@@ -16,7 +16,7 @@
  * @var array $payment_options
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <?php
 if (isset($error))
@@ -39,7 +39,7 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?php echo form_open(esc("$controller_name/change_mode", 'attr'), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open(esc("$controller_name/change_mode", 'attr'), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -204,7 +204,7 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>' . esc(config('OSPOS')->settings['currency_symbol'], 'attr') .'</b>',
+											'data-on' => '<b>' . esc($config['currency_symbol'], 'attr') .'</b>',
 											'data-off' => '<b>%</b>',
 											'data-line' => esc($line, 'attr'),
 											'checked' => $item['discount_type']

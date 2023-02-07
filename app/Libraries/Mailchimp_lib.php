@@ -3,7 +3,7 @@
 namespace app\Libraries;
 
 use CodeIgniter\Encryption\EncrypterInterface;
-use CodeIgniter\Encryption\Encryption;
+use Config\Services;
 
 /**
  * MailChimp API v3 REST client Connector
@@ -14,7 +14,6 @@ use CodeIgniter\Encryption\Encryption;
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
  *   - Stefan Ashwell: https://github.com/stef686/codeigniter-mailchimp-api-v3
  *
- * @property encryption encryption
  * @property encrypterinterface encrypter
  */
 class MailchimpConnector
@@ -38,16 +37,13 @@ class MailchimpConnector
 	 */
 	public function __construct(string $api_key = '')
 	{
-		$this->encryption = new Encryption();
+		$config = config('OSPOS')->settings;
 
-		if(empty($api_key))
-		{
-			$this->_api_key = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);	//TODO: Hungarian notation
-		}
-		else
-		{
-			$this->_api_key = $api_key;	//TODO: Hungarian notation
-		}
+		$encrypter = Services::encrypter();
+
+		$this->_api_key = empty($api_key)
+			? $encrypter->decrypt($config['mailchimp_api_key'])	//TODO: Hungarian notation
+			: $api_key;	//TODO: Hungarian notation
 
 		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{

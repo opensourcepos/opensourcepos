@@ -9,7 +9,7 @@ use CodeIgniter\Model;
  */
 abstract class Token Extends Model
 {
-	protected $value = '';
+	protected string $value = '';
 
 	public function __construct(string $value = '')
 	{

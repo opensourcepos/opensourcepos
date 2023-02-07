@@ -43,7 +43,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 						'name' => 'open_amount_cash',
@@ -52,7 +52,7 @@
 						'value' => to_currency_no_money($cash_ups_info->open_amount_cash)
 					]) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'transfer_amount_cash',
@@ -73,7 +73,7 @@
 						])
 					?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_cash',
@@ -115,7 +115,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_cash)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -138,7 +138,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_due',
@@ -147,7 +147,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -158,7 +158,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_card',
@@ -167,7 +167,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_card)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -178,7 +178,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_check',
@@ -187,7 +187,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_check)]
 							) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -198,7 +198,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input ([
 							'name' => 'closed_amount_total',
@@ -209,7 +209,7 @@
 						]
 					) ?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo esc(config('OSPOS')->settings['currency_symbol']) ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -256,12 +256,12 @@ $(document).ready(function()
 	<?php echo view('partial/datepicker_locale') ?>
 
 	$('#open_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap(config('OSPOS')->settings['dateformat']) . ' ' . dateformat_bootstrap(config('OSPOS')->settings['timeformat']) ?>",
-		startDate: "<?php echo date(config('OSPOS')->settings['dateformat'] . ' ' . esc(config('OSPOS')->settings['timeformat'], 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
+		format: "<?php echo dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
+		startDate: "<?php echo date($config['dateformat'] . ' ' . esc($config['timeformat'], 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
 		<?php
-		$t = config('OSPOS')->settings['timeformat'];
+		$t = $config['timeformat'];
 		$m = $t[strlen($t)-1];
-		if( strpos(config('OSPOS')->settings['timeformat'], 'a') !== false || strpos(config('OSPOS')->settings['timeformat'], 'A') !== false )
+		if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
 		{
 		?>
 			showMeridian: true,
@@ -283,12 +283,12 @@ $(document).ready(function()
 	});
 
 	$('#close_date').datetimepicker({
-		format: "<?php echo dateformat_bootstrap(config('OSPOS')->settings['dateformat']) . ' ' . dateformat_bootstrap(config('OSPOS')->settings['timeformat']) ?>",
-		startDate: "<?php echo date(config('OSPOS')->settings['dateformat'] . ' ' . esc(config('OSPOS')->settings['timeformat'], 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
+		format: "<?php echo dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
+		startDate: "<?php echo date($config['dateformat'] . ' ' . esc($config['timeformat'], 'js'), mktime(0, 0, 0, 1, 1, 2010)) ?>",
 		<?php
-		$t = config('OSPOS')->settings['timeformat'];
+		$t = $config['timeformat'];
 		$m = $t[strlen($t)-1];
-		if( strpos(config('OSPOS')->settings['timeformat'], 'a') !== false || strpos(config('OSPOS')->settings['timeformat'], 'A') !== false )
+		if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
 		{
 		?>
 			showMeridian: true,

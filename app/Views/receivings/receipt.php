@@ -33,25 +33,25 @@
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
-		if (config('OSPOS')->settings['company_logo'] != '')
+		if ($config['company_logo'] != '')
 		{ 
 		?>
-			<div id="company_name"><img id="image" src="<?php echo esc(base_url('uploads/' . config('OSPOS')->settings['company_logo']), 'url') ?>" alt="company_logo" /></div>
+			<div id="company_name"><img id="image" src="<?php echo esc(base_url('uploads/' . $config['company_logo']), 'url') ?>" alt="company_logo" /></div>
 		<?php
 		}
 		?>
 
 		<?php
-		if (config('OSPOS')->settings['receipt_show_company_name'])
+		if ($config['receipt_show_company_name'])
 		{ 
 		?>
-			<div id="company_name"><?php echo esc(config('OSPOS')->settings['company']) ?></div>
+			<div id="company_name"><?php echo esc($config['company']) ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo esc(nl2br(config('OSPOS')->settings['address'])) ?></div>
-		<div id="company_phone"><?php echo esc(config('OSPOS')->settings['phone']) ?></div>
+		<div id="company_address"><?php echo esc(nl2br($config['address'])) ?></div>
+		<div id="company_phone"><?php echo esc($config['phone']) ?></div>
 		<div id="sale_receipt"><?php echo lang('Receivings.receipt') ?></div>
 		<div id="sale_time"><?php echo esc($transaction_time) ?></div>
 	</div>
@@ -158,7 +158,7 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo esc(nl2br(config('OSPOS')->settings['return_policy'])) ?>
+		<?php echo esc(nl2br($config['return_policy'])) ?>
 	</div>
 
 	<div id='barcode'>

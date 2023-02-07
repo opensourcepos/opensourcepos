@@ -17,7 +17,7 @@
 						'name' => 'invoice_enable',
 						'value' => 'invoice_enable',
 						'id' => 'invoice_enable',
-						'checked' => config('OSPOS')->settings['invoice_enable']
+						'checked' => $config['invoice_enable']
 					]) ?>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.invoice_type'), 'invoice_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-3'>
-					<?php echo form_dropdown('invoice_type', esc($invoice_type_options, 'attr'), esc(config('OSPOS')->settings['invoice_type'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('invoice_type', esc($invoice_type_options, 'attr'), esc($config['invoice_type'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -36,7 +36,7 @@
 						'name' => 'recv_invoice_format',
 						'id' => 'recv_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['recv_invoice_format'], 'attr')
+						'value' => esc($config['recv_invoice_format'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 						'name' => 'invoice_default_comments',
 						'id' => 'invoice_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['invoice_default_comments'], 'attr')
+						'value' => esc($config['invoice_default_comments'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 						'name' => 'invoice_email_message',
 						'id' => 'invoice_email_message',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['invoice_email_message'], 'attr')
+						'value' => esc($config['invoice_email_message'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.line_sequence'), 'line_sequence', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('line_sequence', esc($line_sequence_options, 'attr'), esc(config('OSPOS')->settings['line_sequence'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('line_sequence', esc($line_sequence_options, 'attr'), esc($config['line_sequence'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -79,7 +79,7 @@
 						'name' => 'sales_invoice_format',
 						'id' => 'sales_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['sales_invoice_format'], 'attr')
+						'value' => esc($config['sales_invoice_format'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 						'name' => 'last_used_invoice_number',
 						'id' => 'last_used_invoice_number',
 						'class' => 'form-control input-sm required',
-						'value' => config('OSPOS')->settings['last_used_invoice_number']
+						'value' => $config['last_used_invoice_number']
 					]) ?>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 						'name' => 'sales_quote_format',
 						'id' => 'sales_quote_format',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['sales_quote_format'], 'attr')
+						'value' => esc($config['sales_quote_format'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -117,7 +117,7 @@
 						'name' => 'last_used_quote_number',
 						'id' => 'last_used_quote_number',
 						'class' => 'form-control input-sm required',
-						'value'=>config('OSPOS')->settings['last_used_quote_number']
+						'value'=>$config['last_used_quote_number']
 					]) ?>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 						'name' => 'quote_default_comments',
 						'id' => 'quote_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['quote_default_comments'], 'attr')
+						'value' => esc($config['quote_default_comments'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -141,7 +141,7 @@
 						'name' => 'work_order_enable',
 						'value' => 'work_order_enable',
 						'id' => 'work_order_enable',
-						'checked' => config('OSPOS')->settings['work_order_enable']
+						'checked' => $config['work_order_enable']
 					]) ?>
 				</div>
 			</div>
@@ -153,7 +153,7 @@
 						'name' => 'work_order_format',
 						'id' => 'work_order_format',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['work_order_format'], 'attr')
+						'value' => esc($config['work_order_format'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -166,7 +166,7 @@
 						'name' => 'last_used_work_order_number',
 						'id' => 'last_used_work_order_number',
 						'class' => 'form-control input-sm required',
-						'value' => config('OSPOS')->settings['last_used_work_order_number']
+						'value' => $config['last_used_work_order_number']
 					]) ?>
 				</div>
 			</div>

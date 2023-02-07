@@ -54,7 +54,7 @@
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-				pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
+				pageSize: <?php echo $config['lines_per_page'] ?>,
 				sortable: true,
 				showExport: true,
 				exportDataType: 'all',

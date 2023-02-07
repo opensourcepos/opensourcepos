@@ -13,16 +13,19 @@ use CodeIgniter\Session\Session;
  *
  * @property employee employee
  * @property module module
- * 
+ * @property array global_view_data
  * @property session session
  *
  */
 class Secure_Controller extends BaseController
 {
-	public function __construct(string $module_id = NULL, string $submodule_id = NULL, string $menu_group = NULL)
+	public array $global_view_data;
+
+	public function __construct(string $module_id = '', string $submodule_id = NULL, string $menu_group = NULL)
 	{
 		$this->employee = model('Employee');
 		$this->module = model('Module');
+		$config = config('OSPOS')->settings;
 
 		if(!$this->employee->is_logged_in())
 		{
@@ -36,7 +39,7 @@ class Secure_Controller extends BaseController
 			redirect("no_access/$module_id/$submodule_id");
 		}
 
-		// load up global data visible to all the loaded views
+		// load up global global_view_data visible to all the loaded views
 		$this->session = session();
 		if($menu_group == NULL)
 		{
@@ -47,24 +50,21 @@ class Secure_Controller extends BaseController
 			$this->session->set('menu_group', $menu_group);
 		}
 
-		if($menu_group == 'home')	//TODO: Convert to ternary notation
-		{
-			$allowed_modules = $this->module->get_allowed_home_modules($logged_in_employee_info->person_id);
-		}
-		else
-		{
-			$allowed_modules = $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
-		}
+		$allowed_modules = $menu_group == 'home'
+			? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
+			: $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
 		foreach($allowed_modules->getResult() as $module)
 		{
-			$data['allowed_modules'][] = $module;
+			$global_view_data['allowed_modules'][] = $module;
 		}
 
-		$data['user_info'] = $logged_in_employee_info;
-		$data['controller_name'] = $module_id;
-
-		echo view('viewData', $data);
+		$global_view_data += [
+			'user_info' => $logged_in_employee_info,
+			'controller_name' => $module_id,
+			'config' => $config
+		];
+		view('viewData', $global_view_data);
 	}
 
 	public function check_numeric()

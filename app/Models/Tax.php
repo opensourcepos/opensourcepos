@@ -11,6 +11,18 @@ use stdClass;
  */
 class Tax extends Model
 {
+	protected $table = 'tax_rates';
+	protected $primaryKey = 'tax_rate_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'rate_tax_code_id',
+		'rate_tax_category_id',
+		'rate_jurisdiction_id',
+		'tax_rate',
+		'tax_rounding_code'
+	];
+
 	/**
 	 * Determines if a given row is on file
 	 */
@@ -179,7 +191,7 @@ class Tax extends Model
 	/**
 	 * Deletes a single tax rate entry
 	 */
-	public function delete(int $tax_rate_id = null, bool $purge = false): bool
+	public function delete($tax_rate_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('tax_rates');
 
@@ -213,7 +225,7 @@ class Tax extends Model
 		$builder = $this->db->table('tax_rates');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_rate_id) as count');
 		} else
@@ -241,7 +253,7 @@ class Tax extends Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

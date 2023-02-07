@@ -17,6 +17,20 @@ use ReflectionException;
  */
 class Receiving extends Model
 {
+	protected $table = 'receivings';
+	protected $primaryKey = 'receiving_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [
+		'receiving_time',
+		'supplier_id',
+		'employee_id',
+		'comment',
+		'receiving_id',
+		'payment_type',
+		'reference'
+	];
+
 	public function get_info(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
@@ -63,7 +77,7 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update(int $receiving_id = NULL, array $receiving_data = NULL): bool
+	public function update($receiving_id = NULL, $receiving_data = NULL): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -107,6 +121,7 @@ class Receiving extends Model
 
 		foreach($items as $line => $item_data)
 		{
+			$config = config('OSPOS')->settings;
 			$cur_item_info = $item->get_info($item['item_id']);
 
 			$receivings_items_data = [
@@ -129,7 +144,7 @@ class Receiving extends Model
 			$items_received = $item_data['receiving_quantity'] != 0 ? $item_data['quantity'] * $item_data['receiving_quantity'] : $item_data['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
-			if($cur_item_info->cost_price != $item_data['price'] && config('OSPOS')->settings['receiving_calculate_average_price'])
+			if($cur_item_info->cost_price != $item_data['price'] && $config['receiving_calculate_average_price'])
 			{
 				$item->change_cost_price($item_data['item_id'], $items_received, $item_data['price'], $cur_item_info->cost_price);
 			}
@@ -238,7 +253,7 @@ class Receiving extends Model
 
 		// execute transaction
 		$this->db->transComplete();
-	
+
 		return $this->db->transStatus();
 	}
 
@@ -249,7 +264,7 @@ class Receiving extends Model
 
 		return $builder->get();
 	}
-	
+
 	public function get_supplier(int $receiving_id): object
 	{
 		$builder = $this->db->table('receivings');
@@ -275,9 +290,11 @@ class Receiving extends Model
 	 */
 	public function create_temp_table(array $inputs): void
 	{
+		$config = config('OSPOS')->settings;
+
 		if(empty($inputs['receiving_id']))
 		{
-			if(empty(config('OSPOS')->settings['date_or_time_format']))
+			if(empty($config['date_or_time_format']))
 			{
 				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}

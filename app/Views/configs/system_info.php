@@ -18,7 +18,7 @@
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
 				<?php echo lang('Config.ospos_info') . ':' ?>
-				<?php echo esc(config('OSPOS')->settings['application_version']) ?> - <?php echo esc(substr(config('OSPOS')->settings['commit_sha1'], 0, 6)) ?><br>
+				<?php echo esc(config('App')->application_version) ?> - <?php echo esc(substr(config('OSPOS')->commit_sha1, 0, 6)) ?><br>
 				Language Code: <?php echo current_language_code() ?><br><br>
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>
@@ -53,9 +53,9 @@
 				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>
 						&#187; [writeable/logs:]
-						<?php $logs = '../writeable/logs/';
-							$uploads = '../writeable/uploads/';
-							$images = '../writeable/uploads/item_pics/';
+						<?php $logs = '../writable/logs/';
+							$uploads = '../writable/uploads/';
+							$images = '../writable/uploads/item_pics/';
 							$import = '../import_items.csv';
 							$importcustomers = '../import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
 							
@@ -183,7 +183,7 @@
 						?>
 						<br>
 				<div id="timezone" style="font-weight:600;"></div><br><br>
-				<div id="ostimezone" style="display:none;" ><?php echo esc(config('OSPOS')->settings['timezone']) ?></div><br>
+				<div id="ostimezone" style="display:none;" ><?php echo esc($config['timezone']) ?></div><br>
 				<br>	
 			</div>
 		</div>
@@ -205,6 +205,6 @@
 			});
 							
 			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc(config('OSPOS')->settings['timezone']) ?></div><br>';
+			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc($config['timezone']) ?></div><br>';
 		</script>
 </div>
