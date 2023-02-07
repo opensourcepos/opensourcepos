@@ -80,20 +80,18 @@ class Employee extends Person
 		{
 			return $query->getRow();
 		}
-		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
+
+		//Get empty base parent object, as $employee_id is NOT an employee
+		$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
+
+		//Get all the fields from employee table
+		//append those fields to base parent object, we have a complete empty object
+		foreach($this->db->getFieldNames('employees') as $field)
 		{
-			//Get empty base parent object, as $employee_id is NOT an employee
-			$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
-
-			//Get all the fields from employee table
-			//append those fields to base parent object, we have a complete empty object
-			foreach($this->db->getFieldNames('employees') as $field)
-			{
-				$person_obj->$field = '';
-			}
-
-			return $person_obj;
+			$person_obj->$field = '';
 		}
+
+		return $person_obj;
 	}
 
 	/**
