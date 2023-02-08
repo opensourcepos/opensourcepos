@@ -65,6 +65,7 @@ class Secure_Controller extends BaseController
 
 		$global_view_data['user_info'] = $logged_in_employee_info;
 		$global_view_data['controller_name'] = $module_id;
+		view('viewData', $global_view_data);
 	}
 
 	public function check_numeric()
