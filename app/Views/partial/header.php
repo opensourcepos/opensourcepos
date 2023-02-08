@@ -113,17 +113,17 @@ helper('cookie');
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
-					<div id="liveclock"><?php echo date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?></div>
+					<div id="liveclock"><?= date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?></div>
 				</div>
 
 				<div class="navbar-right" style="margin:0">
-					<?php echo anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-					<?php echo '  |  ' . ($request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
-					<?php echo anchor('home/logout', lang('Login.logout')) ?>
+					<?= anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+					<?= '  |  ' . ($request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
+					<?= anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?php echo esc(config('OSPOS')->settings['company']) ?></strong>
+					<strong><?= esc(config('OSPOS')->settings['company']) ?></strong>
 				</div>
 			</div>
 		</div>
@@ -138,17 +138,17 @@ helper('cookie');
 						<span class="icon-bar"></span>
 					</button>
 
-					<a class="navbar-brand hidden-sm" href="<?php echo site_url() ?>">OSPOS</a>
+					<a class="navbar-brand hidden-sm" href="<?= site_url() ?>">OSPOS</a>
 				</div>
 
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php foreach($allowed_modules as $module): ?>
-							<li class="<?php echo $module->module_id == $request->getUri()->getSegment(0) ? 'active' : '' ?>">
-								<a href="<?php echo esc(site_url($module->module_id), 'url') ?>" title="<?php echo lang("Module.$module->module_id") ?>" class="menu-icon">
+							<li class="<?= $module->module_id == $request->getUri()->getSegment(0) ? 'active' : '' ?>">
+								<a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
 
-									<img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" style="border: none;" alt="Module Icon"/><br/>
-									<?php echo lang('Module.' . $module->module_id) ?>
+									<img src="<?= base_url("images/menubar/$module->module_id.png") ?>" style="border: none;" alt="Module Icon"/><br/>
+									<?= lang('Module.' . $module->module_id) ?>
 								</a>
 							</li>
 						<?php endforeach; ?>
