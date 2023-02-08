@@ -3,7 +3,7 @@
  * @var array $allowed_modules
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
