@@ -144,7 +144,7 @@ helper('cookie');
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php foreach($allowed_modules as $module): ?>
-							<li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : '' ?>">
+							<li class="<?php echo $module->module_id == $request->getUri()->getSegment(0) ? 'active' : '' ?>">
 								<a href="<?php echo esc(site_url($module->module_id), 'url') ?>" title="<?php echo lang("Module.$module->module_id") ?>" class="menu-icon">
 
 									<img src="<?php echo esc(base_url() . "images/menubar/$module->module_id.png", 'url') ?>" style="border: none;" alt="Module Icon"/><br/>
