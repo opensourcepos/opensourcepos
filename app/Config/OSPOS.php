@@ -11,5 +11,7 @@ use CodeIgniter\Config\BaseConfig;
  */
 class OSPOS extends BaseConfig
 {
-	public $settings = [];
+	public array $settings = [];
+
+	public string $commit_sha1 = '123abcd';
 }
