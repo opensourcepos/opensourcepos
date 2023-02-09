@@ -169,7 +169,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Soft deletes a specific tax jurisdiction
 	 */
-	public function delete(int $jurisdiction_id = null, bool $purge = false): bool
+	public function delete($jurisdiction_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 		$builder->where('jurisdiction_id', $jurisdiction_id);

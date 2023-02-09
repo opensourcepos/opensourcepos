@@ -207,7 +207,7 @@ class Stock_location extends Model
 	 * @param bool $purge
 	 * @return bool
 	 */
-	public function delete(int $location_id = null, bool $purge = FALSE): bool
+	public function delete($location_id = null, bool $purge = FALSE)
 	{
 		$this->db->transStart();
 
