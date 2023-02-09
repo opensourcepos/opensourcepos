@@ -174,7 +174,7 @@ class Item_kit extends Model
 	/**
 	 * Deletes one item kit
 	 */
-	public function delete(int $item_kit_id = null, bool $purge = false): bool
+	public function delete($item_kit_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('item_kits');
 

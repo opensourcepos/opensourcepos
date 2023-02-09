@@ -81,7 +81,7 @@ class Item_taxes extends Model
 	/**
 	 * Deletes taxes given an item
 	 */
-	public function delete(int $item_id = null, bool $purge = false): bool
+	public function delete($item_id = null, bool $purge = false)
 	{
 		$builder = $this->db->table('items_taxes');
 

@@ -174,7 +174,7 @@ class Person extends Model
 	 * @param integer $person_id person identifier
 	 * @return boolean always TRUE
 	 */
-	public function delete($person_id = null, bool $purge = false): bool
+	public function delete($person_id = null, bool $purge = false)
 	{
 		return TRUE;
 	}

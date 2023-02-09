@@ -14,14 +14,14 @@ use ReflectionException;
  */
 class Inventory extends Model
 {
-	public function insert(array $inventory_data = NULL, bool $returnID = TRUE): bool	//TODO: $returnID does not match variable naming conventions.  It's also never used in the function
+	public function insert($inventory_data = NULL, bool $returnID = TRUE)
 	{
 		$builder = $this->db->table('inventory');
 
 		return $builder->insert($inventory_data);
 	}
 
-	public function update(string $comment = NULL, array $inventory_data = NULL): bool	//TODO: this function either needs a name change or to be brought in line with the parent function declaration.
+	public function update($comment = NULL, $inventory_data = NULL): bool
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_comment', $comment);

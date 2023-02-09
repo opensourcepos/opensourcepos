@@ -439,7 +439,7 @@ class Item extends Model
 	 * Deletes one item
 	 * @throws ReflectionException
 	 */
-	public function delete(int $item_id = null, bool $purge = false): bool	//TODO: need to figure out what to do with these override functions that don't match our signature.
+	public function delete($item_id = null, bool $purge = false)
 	{
 		$this->db->transStart();
 

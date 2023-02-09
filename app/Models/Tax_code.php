@@ -157,7 +157,7 @@ class Tax_code extends Model
 	/**
 	 * Deletes a specific tax code
 	 */
-	public function delete(string $tax_code = null, bool $purge = false): bool
+	public function delete($tax_code = null, bool $purge = false)
 	{
 		$builder = $this->db->table('tax_codes');
 		$builder->where('tax_code', $tax_code);
