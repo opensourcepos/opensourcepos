@@ -63,7 +63,7 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update(int $receiving_id = NULL, array $receiving_data = NULL): bool
+	public function update($receiving_id = NULL, $receiving_data = NULL): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
