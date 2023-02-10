@@ -5,6 +5,7 @@ namespace app\Libraries;
 use CodeIgniter\Email\Email;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\Services;
 
 
 /**
@@ -22,9 +23,7 @@ class Email_lib
   	public function __construct()
 	{
 		$this->email = new Email();
-		$this->encryption = new Encryption();
-		$this->encrypter = $this->encryption->initialize();
-
+		$encrypter = Services::encrypter();
 
 		$config = [
 			'mailtype' => 'html',
@@ -34,7 +33,7 @@ class Email_lib
 			'mailpath' => config('OSPOS')->settings['mailpath'],
 			'smtp_host' => config('OSPOS')->settings['smtp_host'],
 			'smtp_user' => config('OSPOS')->settings['smtp_user'],
-			'smtp_pass' => $this->encrypter->decrypt(config('OSPOS')->settings['smtp_pass']),
+			'smtp_pass' => $encrypter->decrypt(config('OSPOS')->settings['smtp_pass']),
 			'smtp_port' => config('OSPOS')->settings['smtp_port'],
 			'smtp_timeout' => config('OSPOS')->settings['smtp_timeout'],
 			'smtp_crypto' => config('OSPOS')->settings['smtp_crypto']

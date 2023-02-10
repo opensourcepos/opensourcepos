@@ -10,6 +10,7 @@ use App\Models\Tax_code;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\Services;
 use stdClass;
 
 /**
@@ -38,10 +39,9 @@ class Customers extends Persons
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
 
-		$this->encryption = new Encryption();
-		$this->encrypter = $this->encryption->initialize();
+		$encrypter = Services::encrypter();
 
-		$this->_list_id = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
+		$this->_list_id = $encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
 	}
 
 	public function getIndex(): void

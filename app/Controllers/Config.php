@@ -20,6 +20,7 @@ use App\Models\Tax;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
+use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
 use ReflectionException;
@@ -59,9 +60,6 @@ class Config extends Secure_Controller
 		$this->rounding_mode = model('Rounding_mode');
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
-
-		$this->encryption = new Encryption();
-		$this->encrypter = $this->encryption->initialize();
 	}
 
 	/*
@@ -278,8 +276,10 @@ class Config extends Secure_Controller
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$data['mailchimp']['api_key'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);
-			$data['mailchimp']['list_id'] = $this->encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
+			$encrypter = Services::encrypter();
+
+			$data['mailchimp']['api_key'] = $encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key']);
+			$data['mailchimp']['list_id'] = $encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
 		}
 		else
 		{
