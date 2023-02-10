@@ -5,7 +5,9 @@
  * @var CodeIgniter\HTTP\IncomingRequest $request
  */
 
-$request = \Config\Services::request();
+use Config\Services;
+
+$request = Services::request();
 helper('cookie');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -118,7 +120,7 @@ helper('cookie');
 
 				<div class="navbar-right" style="margin:0">
 					<?= anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-					<?= '  |  ' . ($request->getGet('debug') == 'true' ? $this->session->get('session_sha1') . '  |  ' : '') ?>
+					<?= '  |  ' . ($request->getGet('debug') == 'true' ? session('session_sha1') . '  |  ' : '') ?>
 					<?= anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
