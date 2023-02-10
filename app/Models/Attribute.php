@@ -207,7 +207,7 @@ class Attribute extends Model
 	public function get_definitions_by_flags(int $definition_flags): array
 	{
 		$builder = $this->db->table('attribute_definitions');
-		$builder->where('definition_flags &', $definition_flags);
+		$builder->where('definition_flags', $definition_flags);
 		$builder->where('deleted', 0);
 		$builder->where('definition_type <>', GROUP);
 		$builder->orderBy('definition_id');
