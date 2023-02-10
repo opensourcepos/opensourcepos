@@ -381,8 +381,8 @@ function to_decimals(float $number, string $decimals = NULL, int $type = NumberF
 	}
 
 	$fmt = new NumberFormatter(config('OSPOS')->settings['number_locale'], $type);
-	$fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->settings['$decimals']);
-	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->settings['$decimals']);
+	$fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->settings[$decimals]);
+	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : config('OSPOS')->settings[$decimals]);
 
 	if(empty(config('OSPOS')->settings['thousands_separator']))
 	{

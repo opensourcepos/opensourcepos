@@ -127,7 +127,7 @@ class Receiving_lib
 		$this->session->remove('recv_comment');
 	}
    
-	public function get_reference(): string
+	public function get_reference(): ?string
 	{
 		return $this->session->get('recv_reference');
 	}
