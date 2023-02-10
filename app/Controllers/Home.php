@@ -15,7 +15,7 @@ class Home extends Secure_Controller
 		echo view('home/home');
 	}
 
-	public function logout(): void
+	public function getLogout(): void
 	{
 		$this->employee->logout();
 	}

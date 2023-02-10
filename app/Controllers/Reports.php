@@ -26,6 +26,7 @@ use App\Models\Reports\Summary_sales_taxes;
 use App\Models\Reports\Summary_suppliers;
 use App\Models\Reports\Summary_taxes;
 use CodeIgniter\HTTP\Uri;
+use Config\Services;
 
 /**
  * @property attribute attribute
@@ -51,16 +52,14 @@ use CodeIgniter\HTTP\Uri;
  * @property summary_sales_taxes summary_sales_taxes
  * @property summary_suppliers summary_suppliers
  * @property summary_taxes summary_taxes
- * @property URI uri
  */
 class Reports extends Secure_Controller
 {
 	public function __construct()
 	{
 		parent::__construct('reports');
-
-		$this->uri->setURI(uri_string());
-		$method_name = $this->uri->getSegment(2);
+		$request = Services::request();
+		$method_name = $request->getUri()->getSegment(2);
 		$exploder = explode('_', $method_name);
 
 		if(sizeof($exploder) > 1)
