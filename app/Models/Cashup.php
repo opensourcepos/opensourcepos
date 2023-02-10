@@ -63,7 +63,7 @@ class Cashup extends Model
 		$builder = $this->db->table('cash_up AS cash_up');
 		
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(cash_up.cashup_id) as count');
 		}
@@ -117,7 +117,7 @@ class Cashup extends Model
 		$builder->groupBy('cashup_id');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRowArray()['count'];
 		}
