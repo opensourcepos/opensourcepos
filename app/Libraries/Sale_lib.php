@@ -14,6 +14,7 @@ use App\Models\Sale;
 use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
 use ReflectionException;
+use App\Libraries\Tax_lib;
 
 /**
  * Sale library
@@ -30,15 +31,13 @@ use ReflectionException;
  * @property rounding_mode rounding_mode
  * @property sale sale
  * @property stock_location stock_location
- *
- * @property tax_lib tax_lib
+ * @property Tax_lib tax_lib
  * @property session session
  */
 class Sale_lib
 {
 	public function __construct()
 	{
-		$this->tax_lib = new Tax_lib();
 		$this->session = Session();
 
 		$this->attribute = model('Attribute');
@@ -1424,6 +1423,8 @@ class Sale_lib
 		if(!config('OSPOS')->settings['tax_included'])
 		{
 			$cart = $this->get_cart();
+			$this->tax_lib = new \app\Libraries\Tax_lib();
+
 			foreach($this->tax_lib->get_taxes($cart)[0] as $tax)
 			{
 				$total = bcadd($total, $tax['sale_tax_amount']);

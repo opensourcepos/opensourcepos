@@ -1471,7 +1471,7 @@ class Sales extends Secure_Controller
 				}
 			}
 
-			$payments[] = [
+			$sale_data['payments'] = [
 				'payment_id' => $payment_id,
 				'payment_type' => $payment_type,
 				'payment_amount' => $payment_amount,
@@ -1482,7 +1482,7 @@ class Sales extends Secure_Controller
 		}
 
 		$this->inventory->update('POS '.$sale_id, ['trans_date' => $sale_time]);	//TODO: Reflection Exception
-		if($this->sale->update($sale_id, $sale_data, $payments))
+		if($this->sale->update($sale_id, $sale_data))
 		{
 			echo json_encode (['success' => TRUE, 'message' => lang('Sales.successfully_updated'), 'id' => $sale_id]);
 		}

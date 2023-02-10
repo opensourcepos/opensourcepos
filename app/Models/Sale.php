@@ -537,14 +537,14 @@ class Sale extends Model
 	/**
 	 * Update sale
 	 */
-	public function update($sale_id = NULL, array $sale_data = NULL, array $payments = NULL): bool
+	public function update($sale_id = NULL, $sale_data = NULL): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
 		$success = $builder->update($sale_data);
 
 		//touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
-		if($success && !empty($payments))
+		if($success && !empty($sale_data['payments']))
 		{
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->transStart();
@@ -552,7 +552,7 @@ class Sale extends Model
 			$builder = $this->db->table('sales_payments');
 
 			// add new payments
-			foreach($payments as $payment)
+			foreach($sale_data['payments'] as $payment)
 			{
 				$payment_id = $payment['payment_id'];
 				$payment_type = $payment['payment_type'];
