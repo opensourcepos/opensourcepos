@@ -72,7 +72,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = [];
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('OSPOSConfig')->application_version;
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
 		if(file_exists('license/LICENSE'))
 		{
