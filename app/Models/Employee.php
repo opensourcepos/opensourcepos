@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Session\Session;
 
 /**
@@ -394,11 +395,11 @@ class Employee extends Person
 	/**
 	 * Logs out a user by destroying all session data and redirect to log in
 	 */
-	public function logout(): void
+	public function logout(): RedirectResponse
 	{
-		$this->session->destroy();
+		session()->destroy();
 
-		redirect()->to('login');
+		return redirect()->to('login');
 	}
 
 	/**
