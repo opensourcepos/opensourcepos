@@ -49,14 +49,9 @@ class Secure_Controller extends BaseController
 			$this->session->set('menu_group', $menu_group);
 		}
 
-		if($menu_group == 'home')	//TODO: Convert to ternary notation
-		{
-			$allowed_modules = $this->module->get_allowed_home_modules($logged_in_employee_info->person_id);
-		}
-		else
-		{
-			$allowed_modules = $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
-		}
+		$allowed_modules = $menu_group == 'home'
+			? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
+			: $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
 		foreach($allowed_modules->getResult() as $module)
 		{
