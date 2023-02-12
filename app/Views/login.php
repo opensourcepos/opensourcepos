@@ -4,6 +4,7 @@
  * @var bool $is_latest
  * @var string $latest_version
  * @var bool $gcaptcha_enabled
+ * @var array $config
  */
 ?>
 
@@ -12,16 +13,16 @@
 	<head>
 		<meta charset="utf-8">
 		<base href="<?= base_url() ?>">
-		<title><?= config('OSPOS')->settings['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
+		<title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<meta content="noindex, nofollow" name="robots">
 		<link href="<?= base_url('images/favicon.ico') ?>" rel="shortcut icon" type="image/x-icon">
 		<?php
-			$theme = (empty(config('OSPOS')->settings['theme']) 
-					|| 'paper' == config('OSPOS')->settings['theme']
-					|| 'readable' == config('OSPOS')->settings['theme']
+			$theme = (empty($config['theme']) 
+					|| 'paper' == $config['theme']
+					|| 'readable' == $config['theme']
 						? 'flatly'
-						: config('OSPOS')->settings['theme']);
+						: $config['theme']);
 		?>
 		<link href="<?= base_url("dist/bootswatch/$theme/bootstrap.min.css") ?>" rel="stylesheet" type="text/css">
 		<!-- start css template tags -->
@@ -33,8 +34,8 @@
 		<main class="d-flex justify-content-around align-items-center flex-grow-1">
 			<div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
 				<div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
-					<?php if (config('OSPOS')->settings['company_logo']): ?>
-						<img class="logo w-100" src="<?= base_url('images/' . config('OSPOS')->settings['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . config('OSPOS')->settings['company'] ?>">
+					<?php if ($config['company_logo']): ?>
+						<img class="logo w-100" src="<?= base_url('images/' . $config['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . $config['company'] ?>">
 					<?php else: ?>
 						<svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
 							<title><?= lang('common_software_title') . '&nbsp;' . lang('common_logo') ?></title>
@@ -56,7 +57,7 @@
 							<?= lang('Login.migration_needed', ['version' => $latest_version]) ?>
 						</div>
 					<?php endif; ?>
-					<?php if (empty(config('OSPOS')->settings['Login.form']) || 'floating_labels'==(config('OSPOS')->settings['Login.form'])): ?>
+					<?php if (empty($config['Login.form']) || 'floating_labels'==($config['Login.form'])): ?>
 						<div class="form-floating mt-3">
 							<input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>">
 							<label for="input-username"><?= lang('Login.username') ?></label>
@@ -65,7 +66,7 @@
 							<input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>">
 							<label for="input-password"><?= lang('Login.password') ?></label>
 						</div>
-					<?php elseif ('input_groups'==(config('OSPOS')->settings['Login.form'])): ?>
+					<?php elseif ('input_groups'==($config['Login.form'])): ?>
 						<div class="input-group mt-3">
 				  <span class="input-group-text" id="input-username">
 					<svg class="bi" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +90,7 @@
 						if($gcaptcha_enabled)
 						{
 							echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-							echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . config('OSPOS')->settings['gcaptcha_site_key'] . '"></div>';
+							echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . $config['gcaptcha_site_key'] . '"></div>';
 						}
 					?>
 					<div class="d-grid">
