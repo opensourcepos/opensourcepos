@@ -13,12 +13,12 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 /**
  * Currency locale helper
  */
-function current_language_code(bool $load_system_language = FALSE): string
+function current_language_code(bool $load_system_language = false): string
 {
 	$employee = model(Employee::class);
 
 	// Returns the language code of the employee if set or system language code if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
+	if($employee->is_logged_in() && $load_system_language === false)
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
 
