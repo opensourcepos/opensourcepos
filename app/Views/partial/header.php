@@ -15,7 +15,7 @@ helper('cookie');
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
-	<title><?php echo esc(config('OSPOS')->settings['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('OSPOS')->settings['application_version']) ?></title>
+	<title><?php echo esc(config('OSPOS')->settings['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->settings['theme']) ? 'flatly' : esc(config('OSPOS')->settings['theme'])) . '/bootstrap.min.css' ?>"/>
 
