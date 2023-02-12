@@ -3,6 +3,7 @@
  * @var object $user_info
  * @var array $allowed_modules
  * @var CodeIgniter\HTTP\IncomingRequest $request
+ * @var array $config
  */
 
 use Config\Services;
@@ -15,9 +16,9 @@ helper('cookie');
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() ?>" />
-	<title><?php echo esc(config('OSPOS')->settings['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
+	<title><?php echo esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty(config('OSPOS')->settings['theme']) ? 'flatly' : esc(config('OSPOS')->settings['theme'])) . '/bootstrap.min.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>"/>
 
 	<?php if (get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
@@ -91,8 +92,8 @@ helper('cookie');
 		<!-- end mincss template tags -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
-	<?php if (config('OSPOS')->settings['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc(config('OSPOS')->settings['theme']) . '.css')) { ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc(config('OSPOS')->settings['theme']) . '.css' ?>"/>
+	<?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc($config['theme']) . '.css' ?>"/>
 	<?php } ?>
 
 		<!-- start minjs template tags -->
@@ -115,7 +116,7 @@ helper('cookie');
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
-					<div id="liveclock"><?= date(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat']) ?></div>
+					<div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
 				</div>
 
 				<div class="navbar-right" style="margin:0">
@@ -125,7 +126,7 @@ helper('cookie');
 				</div>
 
 				<div class="navbar-center" style="text-align:center">
-					<strong><?= esc(config('OSPOS')->settings['company']) ?></strong>
+					<strong><?= esc($config['company']) ?></strong>
 				</div>
 			</div>
 		</div>

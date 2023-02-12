@@ -25,6 +25,7 @@ class Secure_Controller extends BaseController
 	{
 		$this->employee = model('Employee');
 		$this->module = model('Module');
+		$config = config('OSPOS')->settings;
 
 		if(!$this->employee->is_logged_in())
 		{
@@ -58,8 +59,11 @@ class Secure_Controller extends BaseController
 			$global_view_data['allowed_modules'][] = $module;
 		}
 
-		$global_view_data['user_info'] = $logged_in_employee_info;
-		$global_view_data['controller_name'] = $module_id;
+		$global_view_data += [
+			'user_info' => $logged_in_employee_info,
+			'controller_name' => $module_id,
+			'config' => $config
+		];
 		view('viewData', $global_view_data);
 	}
 
