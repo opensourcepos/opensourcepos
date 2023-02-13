@@ -38,7 +38,7 @@ function current_language(bool $load_system_language = FALSE): string
 	$employee = model(Employee::class);
 
 	// Returns the language of the employee if set or system language if not
-	if($employee->is_logged_in() && $load_system_language != TRUE)	//TODO: !==
+	if($employee->is_logged_in() && !$load_system_language)
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
 
@@ -572,4 +572,20 @@ function valid_date(string $date): bool	//TODO: need a better name for $date.  P
 function valid_decimal(string $decimal): bool	//TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
 {
 	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
+}
+
+function encode_array(array $data): array
+{
+//	array_walk($data, function(&$value, &$key) { $value = base64_encode($value);});
+	array_walk($data, function(&$value, &$key) { $value = rawurlencode($value);});
+
+	return $data;
+}
+
+function decode_array(array $data): array
+{
+//	array_walk($data, function(&$value, &$key) { $value = base64_decode($value);});
+	array_walk($data, function(&$value, &$key) { $value = rawurldecode($value);});
+
+	return $data;
 }

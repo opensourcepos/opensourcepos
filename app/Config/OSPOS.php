@@ -27,17 +27,23 @@ class OSPOS extends BaseConfig
 
 	public function set_settings(): void
 	{
-		if(!$this->cache->get('settings'))
+		helper('locale');
+
+		$cache = $this->cache->get('settings');
+
+		if($cache)
+		{
+			$this->settings = decode_array($cache);
+		}
+		else
 		{
 			$appconfig = model('Appconfig');
 			foreach($appconfig->get_all()->getResult() as $app_config)
 			{
 				$this->settings[$app_config->key] = $app_config->value;
 			}
-			$this->cache->save('settings', $this->settings);
+			$this->cache->save('settings', encode_array($this->settings));
 		}
-
-		$this->settings = $this->cache->get('settings');
 	}
 
 	public function update_settings(): void
