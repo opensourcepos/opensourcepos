@@ -30,6 +30,7 @@ class Taxes extends Secure_Controller
 		$this->tax_jurisdiction = model('Tax_jurisdiction');
 		
 		$this->tax_lib = new Tax_lib();
+		$this->config = config('OSPOS')->settings;
 
 		helper('tax_helper');
 	}
@@ -58,7 +59,7 @@ class Taxes extends Secure_Controller
 		$data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($this->config['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -134,7 +135,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_info = $this->tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($this->config['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -206,9 +207,9 @@ class Taxes extends Secure_Controller
 
 		if($tax_rate_id == -1)	//TODO: Replace -1 with constant
 		{
-			$data['rate_tax_code_id'] = config('OSPOS')->settings['default_tax_code'];
-			$data['rate_tax_category_id'] = config('OSPOS')->settings['default_tax_category'];
-			$data['rate_jurisdiction_id'] = config('OSPOS')->settings['default_tax_jurisdiction'];
+			$data['rate_tax_code_id'] = $this->config['default_tax_code'];
+			$data['rate_tax_category_id'] = $this->config['default_tax_category'];
+			$data['rate_jurisdiction_id'] = $this->config['default_tax_jurisdiction'];
 			$data['tax_rounding_code'] = rounding_mode::HALF_UP;
 			$data['tax_rate'] = '0.0000';
 		}
@@ -237,7 +238,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($this->config['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -304,7 +305,7 @@ class Taxes extends Secure_Controller
 		$data['rounding_options'] = rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($this->config['tax_included'])
 		{
 			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
 		}
@@ -557,7 +558,7 @@ class Taxes extends Secure_Controller
 	{
 		$tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
 
-		if(config('OSPOS')->settings['tax_included'])	//TODO: ternary notation
+		if($this->config['tax_included'])	//TODO: ternary notation
 		{
 			$default_tax_type = Tax_lib::TAX_TYPE_INCLUDED;
 		}

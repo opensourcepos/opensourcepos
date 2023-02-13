@@ -44,7 +44,7 @@ class OSPOSRules
 
 		//GCaptcha Check
 		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', config('OSPOS')->settings)
-			? config('OSPOS')->settings['gcaptcha_enable']
+			? $config['gcaptcha_enable']
 			: false;
 
 		if($gcaptcha_enabled)
@@ -73,7 +73,7 @@ class OSPOSRules
 		if(!empty($response))
 		{
 			$check = [
-				'secret'   => config('OSPOS')->settings['gcaptcha_secret_key'],
+				'secret'   => $config['gcaptcha_secret_key'],
 				'response' => $response,
 				'remoteip' => $this->request->getIPAddress()
 			];

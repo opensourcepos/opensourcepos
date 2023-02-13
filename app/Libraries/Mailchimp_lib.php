@@ -37,10 +37,11 @@ class MailchimpConnector
 	 */
 	public function __construct(string $api_key = '')
 	{
+		$config = config('OSPOS')->settings;
 		$encrypter = Services::encrypter();
 
 		$this->_api_key = empty($api_key)
-			? $encrypter->decrypt(config('OSPOS')->settings['mailchimp_api_key'])	//TODO: Hungarian notation
+			? $encrypter->decrypt($config['mailchimp_api_key'])	//TODO: Hungarian notation
 			: $api_key;	//TODO: Hungarian notation
 
 		if(!empty($this->_api_key))	//TODO: Hungarian notation

@@ -43,7 +43,9 @@ class Item extends Model
 	 */
 	public function item_number_exists(string $item_number, string $item_id = ''): bool
 	{
-		if(config('OSPOS')->settings['allow_duplicate_barcodes'])
+		$config = config('OSPOS')->settings;
+
+		if($config['allow_duplicate_barcodes'])
 		{
 			return FALSE;
 		}
@@ -93,6 +95,7 @@ class Item extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
 		// get_found_rows case
@@ -150,7 +153,7 @@ class Item extends Model
 			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: This needs to be replaced with Ternary notation
+		if(empty($config['date_or_time_format']))	//TODO: This needs to be replaced with Ternary notation
 		{
 			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -505,16 +508,17 @@ class Item extends Model
 
 	function get_search_suggestion_format(string $seed = NULL): string
 	{
-		$seed .= ',' . config('OSPOS')->settings['suggestions_first_column'];
+		$config = config('OSPOS')->settings;
+		$seed .= ',' . $config['suggestions_first_column'];
 
-		if(config('OSPOS')->settings['suggestions_second_column'] !== '')
+		if($config['suggestions_second_column'] !== '')
 		{
-			$seed .= ',' . config('OSPOS')->settings['suggestions_second_column'];
+			$seed .= ',' . $config['suggestions_second_column'];
 		}
 
-		if(config('OSPOS')->settings['suggestions_third_column'] !== '')
+		if($config['suggestions_third_column'] !== '')
 		{
-			$seed .= ',' . config('OSPOS')->settings['suggestions_third_column'];
+			$seed .= ',' . $config['suggestions_third_column'];
 		}
 
 		return $seed;
@@ -522,13 +526,14 @@ class Item extends Model
 
 	function get_search_suggestion_label($result_row): string
 	{
+		$config = config('OSPOS')->settings;
 		$label = '';
-		$label1 = config('OSPOS')->settings['suggestions_first_column'];
-		$label2 = config('OSPOS')->settings['suggestions_second_column'];
-		$label3 = config('OSPOS')->settings['suggestions_third_column'];
+		$label1 = $config['suggestions_first_column'];
+		$label2 = $config['suggestions_second_column'];
+		$label3 = $config['suggestions_third_column'];
 
 		// If multi_pack enabled then if "name" is part of the search suggestions then append pack
-		if(config('OSPOS')->settings['multi_pack_enabled'])
+		if($config['multi_pack_enabled'])
 		{
 			$this->append_label($label, $label1, $result_row);
 			$this->append_label($label, $label2, $result_row);
@@ -1028,6 +1033,8 @@ class Item extends Model
 	 */
 	function get_item_name(string $as_name = NULL): string
 	{
+		$config = config('OSPOS')->settings;
+
 		if($as_name == NULL)	//TODO: Replace with ternary notation
 		{
 			$as_name = '';
@@ -1037,7 +1044,7 @@ class Item extends Model
 			$as_name = ' AS ' . $as_name;
 		}
 
-		if(config('OSPOS')->settings['multi_pack_enabled'])	//TODO: Replace with ternary notation
+		if($config['multi_pack_enabled'])	//TODO: Replace with ternary notation
 		{
 			$item_name = "concat(items.name,'" . NAME_SEPARATOR . '\', items.pack_name)' . $as_name;
 		}

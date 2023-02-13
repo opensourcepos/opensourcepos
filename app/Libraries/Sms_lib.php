@@ -19,21 +19,18 @@ use Config\Services;
 
 class Sms_lib
 {
-  	public function __construct()
-	{
-	}
-
 	/*
 	 * SMS sending function
 	 * Example of use: $response = sendSMS('4477777777', 'My test message');
 	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
+		$config = config('OSPOS')->settings;
 		$encrypter = Services::encrypter();
 
-		$username = config('OSPOS')->settings['msg_uid'];
-		$password = $encrypter->decrypt(config('OSPOS')->settings['msg_pwd']);
-		$originator = config('OSPOS')->settings['msg_src'];
+		$username = $config['msg_uid'];
+		$password = $encrypter->decrypt($config['msg_pwd']);
+		$originator = $config['msg_src'];
 
 		$response = FALSE;
 

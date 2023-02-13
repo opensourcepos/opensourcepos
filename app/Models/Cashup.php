@@ -60,6 +60,7 @@ class Cashup extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
 		
 		// get_found_rows case
@@ -105,7 +106,7 @@ class Cashup extends Model
 
 		$builder->where('cash_up.deleted', $filters['is_deleted']);
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: convert this to ternary notation.
+		if(empty($config['date_or_time_format']))	//TODO: convert this to ternary notation.
 		{
 			$builder->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}

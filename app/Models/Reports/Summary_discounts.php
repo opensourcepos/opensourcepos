@@ -15,11 +15,12 @@ class Summary_discounts extends Summary_report
 
 	public function getData(array $inputs): array
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('sales_items AS sales_items');
 
 		if($inputs['discount_type'] == FIXED)	//TODO: if there are only two options for this if/else statement then it needs to be refactored to use ternary operators. Also ===?
 		{
-			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("' . config('OSPOS')->settings['currency_symbol'] . '",sales_items.discount)) AS discount, count(*) AS count');
+			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("' . $config['currency_symbol'] . '",sales_items.discount)) AS discount, count(*) AS count');
 			$builder->where('discount_type', FIXED);
 		}
 		elseif($inputs['discount_type'] == PERCENT)	//TODO: === ?

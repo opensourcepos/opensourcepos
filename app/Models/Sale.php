@@ -37,6 +37,7 @@ class Sale extends Model
 	 */
 	public function get_info(int $sale_id): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$this->create_temp_table (['sale_id' => $sale_id]);
 
 		$decimals = totals_decimals();
@@ -46,7 +47,7 @@ class Sale extends Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		if(config('OSPOS')->settings['tax_included'])	//TODO: This needs to be replaced with Ternary notation
+		if($config['tax_included'])	//TODO: This needs to be replaced with Ternary notation
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 		}
@@ -110,10 +111,12 @@ class Sale extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
+
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']);
 		}
@@ -297,6 +300,8 @@ class Sale extends Model
 	 */
 	public function get_payments_summary(string $search, array $filters): array
 	{
+		$config = config('OSPOS')->settings;
+
 		// get payment summary
 		$builder = $this->db->table('sales AS sales');
 		$builder->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
@@ -305,7 +310,7 @@ class Sale extends Model
 		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
 		//TODO: This needs to be replaced with Ternary notation
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: duplicated code.  We should think about refactoring out a method.
+		if(empty($config['date_or_time_format']))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -498,6 +503,8 @@ class Sale extends Model
 	 */
 	public function is_valid_receipt(string &$receipt_sale_id): bool	//TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
 	{
+		$config = config('OSPOS')->settings;
+
 		if(!empty($receipt_sale_id))
 		{
 			//POS #
@@ -507,7 +514,7 @@ class Sale extends Model
 			{
 				return $this->exists($pieces[1]);
 			}
-			elseif(config('OSPOS')->settings['invoice_enable'])
+			elseif($config['invoice_enable'])
 			{
 				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
 
@@ -612,6 +619,7 @@ class Sale extends Model
 	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
 							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table_id, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
+		$config = config('OSPOS')->settings;
 		$attribute = model(Attribute::class);
 		$customer = model(Customer::class);
 		$giftcard = model(Giftcard::class);
@@ -769,7 +777,7 @@ class Sale extends Model
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
-		if(config('OSPOS')->settings['dinner_table_enable'])
+		if($config['dinner_table_enable'])
 		{
 			$dinner_table = model(Dinner_table::class);
 			if($sale_status == COMPLETED)	//TODO: === ?
@@ -966,7 +974,9 @@ class Sale extends Model
 	 */
 	public function get_sale_items_ordered(int $sale_id): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$item = model(Item::class);
+
 		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->select('
 			sales_items.sale_id,
@@ -989,12 +999,12 @@ class Sale extends Model
 		$builder->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if(config('OSPOS')->settings['line_sequence'] == '0')	//TODO: Replace these with constants and this should be converted to a switch.
+		if($config['line_sequence'] == '0')	//TODO: Replace these with constants and this should be converted to a switch.
 		{
 			$builder->orderBy('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif(config('OSPOS')->settings['line_sequence'] == '1')
+		elseif($config['line_sequence'] == '1')
 		{
 			$builder->orderBy('stock_type', 'desc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -1002,7 +1012,7 @@ class Sale extends Model
 			$builder->orderBy('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
-		elseif(config('OSPOS')->settings['line_sequence'] == '2')
+		elseif($config['line_sequence'] == '2')
 		{
 			$builder->orderBy('category', 'asc');
 			$builder->orderBy('sales_items.description', 'asc');
@@ -1152,9 +1162,11 @@ class Sale extends Model
 	 */
 	public function create_temp_table(array $inputs): void
 	{
+		$config = config('OSPOS')->settings;
+
 		if(empty($inputs['sale_id']))
 		{
-			if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: This needs to be replaced with Ternary notation
+			if(empty($config['date_or_time_format']))	//TODO: This needs to be replaced with Ternary notation
 			{
 				$where = 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 			}
@@ -1182,7 +1194,7 @@ class Sale extends Model
 
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($config['tax_included'])
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $internal_tax";
@@ -1439,8 +1451,9 @@ class Sale extends Model
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
+		$config = config('OSPOS')->settings;
 
-		if(config('OSPOS')->settings['dinner_table_enable'])
+		if($config['dinner_table_enable'])
 		{
 			$dinner_table = model(Dinner_table::class);
 			$dinner_table_id = $this->get_dinner_table($sale_id);
@@ -1461,8 +1474,9 @@ class Sale extends Model
 	public function clear_suspended_sale_detail(int $sale_id): bool
 	{
 		$this->db->transStart();
+		$config = config('OSPOS')->settings;
 
-		if(config('OSPOS')->settings['dinner_table_enable'])
+		if($config['dinner_table_enable'])
 		{
 			$dinner_table = model(Dinner_table::class);
 			$dinner_table_id = $this->get_dinner_table($sale_id);
@@ -1507,7 +1521,9 @@ class Sale extends Model
 	 */
 	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used): void
 	{
-		if(!empty($customer_id) && config('OSPOS')->settings['customer_reward_enable'])
+		$config = config('OSPOS')->settings;
+
+		if(!empty($customer_id) && $config['customer_reward_enable'])
 		{
 			$customer = model(Customer::class);
 			$customer_rewards = model(Customer_rewards::class);
