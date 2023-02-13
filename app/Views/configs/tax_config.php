@@ -19,7 +19,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc(config('OSPOS')->settings['tax_id'], 'attr')
+						'value' => esc($config['tax_id'], 'attr')
 					]) ?>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
 						'name' => 'tax_included',
 						'id' => 'tax_included',
 						'value' => 'tax_included',
-						'checked' => config('OSPOS')->settings['tax_included']
+						'checked' => $config['tax_included']
 					]) ?>
 				</div>
 			</div>
@@ -43,14 +43,14 @@
 						'name' => 'default_tax_1_name',
 						'id' => 'default_tax_1_name',
 						'class' => 'form-control input-sm',
-						'value' => config('OSPOS')->settings['default_tax_1_name'] !== FALSE ? esc(config('OSPOS')->settings['default_tax_1_name'], 'attr') : lang('Items.sales_tax_1')]) ?>
+						'value' => $config['default_tax_1_name'] !== FALSE ? esc($config['default_tax_1_name'], 'attr') : lang('Items.sales_tax_1')]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input ([
 						'name' => 'default_tax_1_rate',
 						'id' => 'default_tax_1_rate',
 						'class' => 'form-control input-sm',
-						'value' => to_tax_decimals(config('OSPOS')->settings['default_tax_1_rate'])
+						'value' => to_tax_decimals($config['default_tax_1_rate'])
 					]) ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
@@ -63,7 +63,7 @@
 						'name' => 'default_tax_2_name',
 						'id' => 'default_tax_2_name',
 						'class' => 'form-control input-sm',
-						'value' => config('OSPOS')->settings['default_tax_2_name'] !== FALSE ? esc(config('OSPOS')->settings['default_tax_2_name'], 'attr') : lang('Items.sales_tax_2')
+						'value' => $config['default_tax_2_name'] !== FALSE ? esc($config['default_tax_2_name'], 'attr') : lang('Items.sales_tax_2')
 					]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
@@ -71,7 +71,7 @@
 						'name' => 'default_tax_2_rate',
 						'id' => 'default_tax_2_rate',
 						'class' => 'form-control input-sm',
-						'value' => to_tax_decimals(config('OSPOS')->settings['default_tax_2_rate'])
+						'value' => to_tax_decimals($config['default_tax_2_rate'])
 					]) ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
@@ -84,7 +84,7 @@
 						'name' => 'use_destination_based_tax',
 						'id' => 'use_destination_based_tax',
 						'value' => 'use_destination_based_tax',
-						'checked' => config('OSPOS')->settings['use_destination_based_tax']
+						'checked' => $config['use_destination_based_tax']
 					]) ?>
 				</div>
 			</div>
@@ -92,21 +92,21 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_code', esc($tax_code_options, 'attr'), esc(config('OSPOS')->settings['default_tax_code'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_code', esc($tax_code_options, 'attr'), esc($config['default_tax_code'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_category', esc($tax_category_options, 'attr'), esc(config('OSPOS')->settings['default_tax_category'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_category', esc($tax_category_options, 'attr'), esc($config['default_tax_category'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options, 'attr'), esc(config('OSPOS')->settings['default_tax_jurisdiction'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options, 'attr'), esc($config['default_tax_jurisdiction'], 'attr'), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 

@@ -182,7 +182,7 @@
 						?>
 						<br>
 				<div id="timezone" style="font-weight:600;"></div><br><br>
-				<div id="ostimezone" style="display:none;" ><?php echo esc(config('OSPOS')->settings['timezone']) ?></div><br>
+				<div id="ostimezone" style="display:none;" ><?php echo esc($config['timezone']) ?></div><br>
 				<br>	
 			</div>
 		</div>
@@ -204,6 +204,6 @@
 			});
 							
 			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc(config('OSPOS')->settings['timezone']) ?></div><br>';
+			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc($config['timezone']) ?></div><br>';
 		</script>
 </div>

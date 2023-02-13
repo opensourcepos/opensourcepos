@@ -55,6 +55,6 @@ if (isset($error_message))
 	<?php endif; ?>
 </div>
 
-<?php echo view('sales/' . config('OSPOS')->settings['receipt_template']) ?>
+<?php echo view('sales/' . $config['receipt_template']) ?>
 
 <?php echo view('partial/footer') ?>

@@ -77,19 +77,19 @@ if(isset($error_message))
 
 		<div id="logo">
 			<?php
-			if(config('OSPOS')->settings['company_logo'] != '')
+			if($config['company_logo'] != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . config('OSPOS')->settings['company_logo']) ?>" alt="company_logo" />
+				<img id="image" src="<?php echo base_url('uploads/' . $config['company_logo']) ?>" alt="company_logo" />
 			<?php
 			}
 			?>
 			<div>&nbsp</div>
 			<?php
-			if(config('OSPOS')->settings['receipt_show_company_name'])
+			if($config['receipt_show_company_name'])
 			{
 			?>
-				<div id="company_name"><?php echo esc(config('OSPOS')->settings['company']) ?></div>
+				<div id="company_name"><?php echo esc($config['company']) ?></div>
 			<?php
 			}
 			?>
@@ -219,7 +219,7 @@ if(isset($error_message))
 		// install firefox addon in order to use this plugin
 		if(window.jsPrintSetup)
 		{
-			<?php if(!config('OSPOS')->settings['print_header'])
+			<?php if(!$config['print_header'])
 			{
 			?>
 				// set page header
@@ -229,7 +229,7 @@ if(isset($error_message))
 			<?php
 			}
 
-			if(!config('OSPOS')->settings['print_footer'])
+			if(!$config['print_footer'])
 			{
 			?>
 				// set empty page footer
