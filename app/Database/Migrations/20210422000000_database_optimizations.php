@@ -60,7 +60,7 @@ class Migration_database_optimizations extends Migration
 						break;
 					case DATE:
 						$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
-						$value = $attribute_date->format(config('OSPOS')->settings['dateformat']);
+						$value = $attribute_date->format($config['dateformat']);
 						break;
 					default:
 						$value = $attribute_value['attribute_value'];

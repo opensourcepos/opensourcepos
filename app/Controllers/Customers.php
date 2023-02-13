@@ -24,6 +24,7 @@ use stdClass;
  *
  * @property encryption encryption
  * @property encrypterinterface encrypter
+ * @property array config
  *
  */
 class Customers extends Persons
@@ -38,10 +39,11 @@ class Customers extends Persons
 
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
+		$this->config = config('OSPOS')->settings;
 
 		$encrypter = Services::encrypter();
 
-		$this->_list_id = $encrypter->decrypt(config('OSPOS')->settings['mailchimp_list_id']);
+		$this->_list_id = $encrypter->decrypt($this->config['mailchimp_list_id']);
 	}
 
 	public function getIndex(): void
@@ -174,7 +176,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if(config('OSPOS')->settings['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
+		if($$this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
@@ -280,7 +282,7 @@ class Customers extends Persons
 			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
 		];
 
-		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
+		$date_formatter = date_create_from_format($$this->config['dateformat'] . ' ' . $$this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,

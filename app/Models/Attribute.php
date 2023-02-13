@@ -67,11 +67,12 @@ class Attribute extends Model
 	 */
 	public function value_exists($attribute_value, string $definition_type = TEXT): bool
 	{
+		$config = config('OSPOS')->settings;
 		switch($definition_type)
 		{
 			case DATE:
 				$data_type = 'date';
-				$attribute_date_value = DateTime::createFromFormat(config('OSPOS')->settings['dateformat'], $attribute_value);
+				$attribute_date_value = DateTime::createFromFormat($config['dateformat'], $attribute_value);
 				$attribute_value = $attribute_date_value->format('Y-m-d');
 				break;
 			case DECIMAL:
@@ -648,7 +649,8 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$locale_date_format = config('OSPOS')->settings['dateformat'];
+		$config = config('OSPOS')->settings;
+		$locale_date_format = $config['dateformat'];
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use CodeIgniter\Validation\ValidationInterface;
 use ReflectionException;
 
 /**
  * Appconfig class
  *
- * @property mixed config
+ *
  */
 class Appconfig extends Model
 {
@@ -43,21 +45,21 @@ class Appconfig extends Model
 	}
 
 	/**
-	 * Calls the parent save() from BaseModel but additionally updates the cached array value.
+	 * Calls the parent save() from BaseModel and updates the cached reference.
 	 * @param $data
 	 * @return bool
 	 * @throws ReflectionException
 	 */
 	public function save($data): bool
 	{
-		$this->config = config('OSPOS');
 		$success = parent::save($data);
-
+		$config = config('OSPOS');
 		$key = array_keys($data)[0];
 
 		if($success)
 		{
-			$this->config[$key] = $data[$key];
+			$config->settings[$key] = $data[$key];
+			$config->update_settings();
 		}
 
 		return $success;
@@ -102,7 +104,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_invoice_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_invoice_number'] + 1;
 
 		if($save)
 		{
@@ -117,7 +120,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_quote_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_quote_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_quote_number'] + 1;
 
 		if($save)
 		{
@@ -132,7 +136,8 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
-		$last_used = (int)config('OSPOS')->settings['last_used_work_order_number'] + 1;
+		$config = config('OSPOS')->settings;
+		$last_used = (int)$config['last_used_work_order_number'] + 1;
 
 		if($save)
 		{

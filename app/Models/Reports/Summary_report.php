@@ -9,9 +9,10 @@ abstract class Summary_report extends Report
 	 */
 	private function __common_select(array $inputs, &$builder): void	//TODO: Hungarian notation
 	{
+		$config = config('OSPOS')->settings;
 		$where = '';	//TODO: Duplicated code
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
@@ -32,7 +33,7 @@ abstract class Summary_report extends Report
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 
-		if(config('OSPOS')->settings['tax_included'])
+		if($config['tax_included'])
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
 			$sale_subtotal = "$sale_total - $sales_tax";
@@ -100,8 +101,10 @@ abstract class Summary_report extends Report
 
 	private function __common_where(array $inputs, &$builder): void
 	{
+		$config = config('OSPOS')->settings;
+
 		//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-		if(empty(config('OSPOS')->settings['date_or_time_format']))	//TODO: Duplicated code
+		if(empty($config['date_or_time_format']))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}

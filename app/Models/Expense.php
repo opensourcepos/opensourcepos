@@ -72,6 +72,7 @@ class Expense extends Model
 	 */
 	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
+		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('expenses AS expenses');
 
 		// get_found_rows case
@@ -113,11 +114,11 @@ class Expense extends Model
 		$builder->where('expenses.deleted', $filters['is_deleted']);
 
 		/*	//TODO: Below needs to be replaced with Ternary notation
-		empty(config('OSPOS')->settings['date_or_time_format)
+		empty($config['date_or_time_format)
 			? $builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']))
 			: $builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		*/
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$builder->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -269,12 +270,14 @@ class Expense extends Model
 	 */
 	public function get_payments_summary(string $search, array $filters): array	//TODO: $search is passed but never used in the function
 	{
+		$config = config('OSPOS')->settings;
+
 		// get payment summary
 		$builder = $this->db->table('expenses');
 		$builder->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$builder->where('deleted', $filters['is_deleted']);
 
-		if(empty(config('OSPOS')->settings['date_or_time_format']))
+		if(empty($config['date_or_time_format']))
 		{
 			$builder->where('DATE_FORMAT(date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}

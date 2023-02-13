@@ -224,6 +224,8 @@ class Tax_code extends Model
 	 */
 	public function get_sales_tax_code(string $city = '', string $state = '')
 	{
+		$config = config('OSPOS')->settings;
+
 		// if tax code using both city and state cannot be found then  try again using just the state
 		// if the state tax code cannot be found then try again using blanks for both
 		$builder = $this->db->table('tax_codes');
@@ -252,7 +254,7 @@ class Tax_code extends Model
 		}
 		else
 		{
-			return config('OSPOS')->settings['default_tax_code'];
+			return $config['default_tax_code'];
 		}
 	}
 

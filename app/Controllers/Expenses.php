@@ -136,9 +136,10 @@ class Expenses extends Secure_Controller
 
 	public function save(int $expense_id = -1): void	//TODO: Replace -1 with a constant
 	{
+		$config = config('OSPOS')->settings;
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
 
-		$date_formatter = date_create_from_format(config('OSPOS')->settings['dateformat'] . ' ' . config('OSPOS')->settings['timeformat'], $newdate);
+		$date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),

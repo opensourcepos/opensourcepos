@@ -226,9 +226,10 @@ class Customer extends Person
 	public function delete($customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
+		$config = config('OSPOS')->settings;
 
 		// if privacy enforcement is selected scramble customer data
-		if(config('OSPOS')->settings['enforce_privacy'])
+		if($config['enforce_privacy'])
 		{
 			$builder = $this->db->table('people');
 			$builder->where('person_id', $customer_id);
