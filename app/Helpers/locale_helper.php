@@ -101,26 +101,6 @@ function get_languages(): array
 	];
 }
 
-function load_language(array $lang_array, bool $load_system_language = FALSE): void	//TODO: this is not called anywhere in the code.
-{
-	$lang = get_instance()->lang;
-
-	if($load_system_language)
-	{
-		foreach($lang_array as $language_file)
-		{
-			$lang->load($language_file, current_language_code(TRUE));
-		}
-	}
-	else
-	{
-		foreach($lang_array as $language_file)
-		{
-			$lang->load($language_file, current_language_code());
-		}
-	}
-}
-
 function get_timezones(): array
 {
 	return [
