@@ -15,7 +15,7 @@
 		table_support.init({
 			resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
 			headers: <?php echo esc($table_headers, 'js') ?>,
-			pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
+			pageSize: <?php echo $config['lines_per_page'] ?>,
 			uniqueId: 'definition_id'
 		});
 	});

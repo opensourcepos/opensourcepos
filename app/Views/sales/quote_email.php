@@ -34,10 +34,10 @@
 	<table id="info">
 		<tr>
 			<td id="logo">
-				<?php if(config('OSPOS')->settings['company_logo'] != '')
+				<?php if($config['company_logo'] != '')
 				{
 				?>
-					<img id="image" src="<?php echo 'uploads/' . esc(config('OSPOS')->settings['company_logo'],'url') ?>" alt="company_logo" />
+					<img id="image" src="<?php echo 'uploads/' . esc($config['company_logo'],'url') ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -49,7 +49,7 @@
 		<tr>
 			<td id="company-title">
 				<div id="company">
-					<?php echo esc(config('OSPOS')->settings['company']) ?>
+					<?php echo esc($config['company']) ?>
 					<?php echo nl2br(esc($company_info)) ?>
 				</div>
 			</td>
@@ -154,10 +154,10 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<span><?php echo nl2br(esc(config('OSPOS')->settings['payment_message'])) ?></span>
-				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? config('OSPOS')->settings['quote_default_comments'] : esc($comments)) ?></span>
+				<span><?php echo nl2br(esc($config['payment_message'])) ?></span>
+				<span><?php echo lang('Sales.comments') . ': ' . (empty($comments) ? $config['quote_default_comments'] : esc($comments)) ?></span>
 			</h5>
-			<?php echo nl2br(esc(config('OSPOS')->settings['return_policy'])) ?>
+			<?php echo nl2br(esc($config['return_policy'])) ?>
 		</div>
 		<div id='barcode'>
 			<?php echo $quote_number ?>

@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Messages.message'), 'message_label', ['for' => 'message', 'class' => 'control-label col-xs-2 required']) ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea (['class' => 'form-control input-sm required', 'name' => 'message', 'id' => 'message', 'value' => esc(config('OSPOS')->settings['msg_msg'], 'attr')]) ?>
+				<?php echo form_textarea (['class' => 'form-control input-sm required', 'name' => 'message', 'id' => 'message', 'value' => esc($config['msg_msg'], 'attr')]) ?>
 			</div>
 		</div>
 	</fieldset>

@@ -73,7 +73,7 @@ if(isset($error))
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', esc($discount_type_options, 'attr'), esc(config('OSPOS')->settings['default_sales_discount_type'], 'attr'), ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('discount_type', esc($discount_type_options, 'attr'), esc($config['default_sales_discount_type'], 'attr'), ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php

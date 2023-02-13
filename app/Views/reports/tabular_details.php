@@ -36,7 +36,7 @@
 
 		var details_data = <?php echo json_encode(esc($details_data, 'js')) ?>;
 		<?php
-		if(config('OSPOS')->settings['customer_reward_enable'] == TRUE && !empty($details_data_rewards))	//TODO: === ?
+		if($config['customer_reward_enable'] == TRUE && !empty($details_data_rewards))	//TODO: === ?
 		{
 		?>
 			var details_data_rewards = <?php echo json_encode(esc($details_data_rewards, 'js')) ?>;
@@ -63,7 +63,7 @@
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-				pageSize: <?php echo config('OSPOS')->settings['lines_per_page'] ?>,
+				pageSize: <?php echo $config['lines_per_page'] ?>,
 				pagination: true,
 				sortable: true,
 				showColumns: true,
@@ -88,7 +88,7 @@
 					});
 
 					<?php
-					if(config('OSPOS')->settings['customer_reward_enable'] == TRUE && !empty($details_data_rewards))
+					if($config['customer_reward_enable'] == TRUE && !empty($details_data_rewards))
 					{
 					?>
 						$detail.append('<table></table>').find("table").bootstrapTable({
