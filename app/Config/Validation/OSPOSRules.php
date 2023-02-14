@@ -24,6 +24,7 @@ class OSPOSRules
 	{
 		$this->employee = model('Employee');
 		$this->request = Services::request();
+		$config = config('OSPOS')->settings;
 
 		//Installation Check
 		if(!$this->installation_check())
@@ -42,8 +43,9 @@ class OSPOSRules
 			return false;
 		}
 
+
 		//GCaptcha Check
-		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', config('OSPOS')->settings)
+		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
 			? $config['gcaptcha_enable']
 			: false;
 
