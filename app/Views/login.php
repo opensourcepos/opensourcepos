@@ -26,7 +26,7 @@
 		?>
 		<link href="<?= base_url("dist/bootswatch/$theme/bootstrap.min.css") ?>" rel="stylesheet" type="text/css">
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="<?= base_url('css/login.min.css') ?>"/>
+		<link rel="stylesheet" type="text/css" href="../../public/css/login.min.css"/>
 		<!-- end css template tags -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>
