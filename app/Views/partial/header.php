@@ -97,7 +97,7 @@ helper('cookie');
 	<?php } ?>
 
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="../../../public/dist/opensourcepos.min.js?rel=58213e1611"></script>
+		<script type="text/javascript" src="../../../public/dist/opensourcepos.min.js?rel=16e6f23cde"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
