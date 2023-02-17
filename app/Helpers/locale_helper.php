@@ -593,7 +593,6 @@ function valid_decimal(string $decimal): bool	//TODO: need a better name for $de
 
 function encode_array(array $data): array
 {
-//	array_walk($data, function(&$value, &$key) { $value = base64_encode($value);});
 	array_walk($data, function(&$value, &$key) { $value = rawurlencode($value);});
 
 	return $data;
@@ -601,7 +600,6 @@ function encode_array(array $data): array
 
 function decode_array(array $data): array
 {
-//	array_walk($data, function(&$value, &$key) { $value = base64_decode($value);});
 	array_walk($data, function(&$value, &$key) { $value = rawurldecode($value);});
 
 	return $data;
