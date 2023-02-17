@@ -62,6 +62,7 @@ class Reports extends Secure_Controller
 		$method_name = $request->getUri()->getSegment(2);
 		$exploder = explode('_', $method_name);
 		$this->config = config('OSPOS')->settings;
+		$this->stock_location = model('Stock_location');
 
 		if(sizeof($exploder) > 1)
 		{
