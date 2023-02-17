@@ -38,6 +38,7 @@ class MailchimpConnector
 	public function __construct(string $api_key = '')
 	{
 		$config = config('OSPOS')->settings;
+
 		$encrypter = Services::encrypter();
 
 		$this->_api_key = empty($api_key)
