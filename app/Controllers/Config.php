@@ -280,7 +280,7 @@ class Config extends Secure_Controller
 		{
 			$encrypter = Services::encrypter();
 
-			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key']);
+			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key']);	//TODO: When these keys don't exist decrypt throws an exception. We need to rework this so that if the array elements are null that it doesn't try to call decrypt.  Here and in other places.
 			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id']);
 		}
 		else
@@ -941,13 +941,13 @@ class Config extends Secure_Controller
 	 */
 	private function _check_encryption(): bool        //TODO: Hungarian notation
 	{
-		$encryption_key = $this->config['encryption_key'];
+		$encryption_key = config('Encryption')->key;
 
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
 		{
 			// Config path
-			$config_path = APPPATH . 'config/config.php';
+			$config_path = APPPATH . 'Config/config.php';	//TODO: This is now in APPPATH . 'Config\Encryption.php' but it shouldn't be pulled from here.  It should be pulled from '\.env'
 
 			// Open the file
 			$config = file_get_contents($config_path);
@@ -955,11 +955,8 @@ class Config extends Secure_Controller
 			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
 			$key = bin2hex($this->encryption->createKey());
 
-			// set the encryption key in the config item
-			$this->appconfig->save(['encryption_key' => $key]);
-
 			// replace the empty placeholder with a real randomly generated encryption key
-			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
+			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);	//TODO: This needs to be modified also so that it replaces encryption.key = '' with encryption.key = '[NEW KEY]'
 
 			$result = FALSE;
 
