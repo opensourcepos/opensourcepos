@@ -54,6 +54,7 @@ class Login extends BaseController
 				set_time_limit(3600);
 
 				$migration->setNamespace('App')->latest();
+				return redirect()->to('login');
 			}
 		}
 
