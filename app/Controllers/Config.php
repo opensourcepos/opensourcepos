@@ -7,6 +7,7 @@ use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
+use App\Libraries\Ci3encrypt;
 
 use App\Models\Appconfig;
 use App\Models\Attribute;
@@ -17,9 +18,9 @@ use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
 use App\Models\Tax;
 
-use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
+use Config\Encryption;
 use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
@@ -278,10 +279,18 @@ class Config extends Secure_Controller
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$encrypter = Services::encrypter();
+			$config = new Encryption();
+			$config->driver = 'OpenSSL';
+			$config->key = config('Encryption')->key;
+			$config->cipher = 'AES-128-CBC';
+			$config->rawData = false;
+			$config->encryptKeyInfo = 'encryption';
+			$config->authKeyInfo = 'authentication';
 
-			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key']);	//TODO: When these keys don't exist decrypt throws an exception. We need to rework this so that if the array elements are null that it doesn't try to call decrypt.  Here and in other places.
-			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id']);
+			$encrypter = Services::encrypter($config, false);
+
+			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key'] ?? '');
+			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id'] ?? '');
 		}
 		else
 		{
@@ -289,7 +298,6 @@ class Config extends Secure_Controller
 			$data['mailchimp']['list_id'] = '';
 		}
 
-		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$data['mailchimp']['lists'] = $this->_mailchimp();
 
 		echo view('configs/manage', $data);
