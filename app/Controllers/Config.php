@@ -54,7 +54,7 @@ class Config extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
-		
+
 		$this->attribute = model('Attribute');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
@@ -279,15 +279,7 @@ class Config extends Secure_Controller
 
 		if($this->_check_encryption())	//TODO: Hungarian notation
 		{
-			$config = new Encryption();
-			$config->driver = 'OpenSSL';
-			$config->key = config('Encryption')->key;
-			$config->cipher = 'AES-128-CBC';
-			$config->rawData = false;
-			$config->encryptKeyInfo = 'encryption';
-			$config->authKeyInfo = 'authentication';
-
-			$encrypter = Services::encrypter($config, false);
+			$encrypter = Services::encrypter();
 
 			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key'] ?? '');
 			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id'] ?? '');
