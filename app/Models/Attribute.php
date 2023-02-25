@@ -13,6 +13,22 @@ use ReflectionClass;
  */
 class Attribute extends Model
 {
+	protected $allowedFields = [	//TODO: This model may not be well designed... The model accesses three different tables (attribute_definitions, attribute_links, attribute_values). Should that be more than one model?
+		'definition_name',
+		'definition_type',
+		'definition_unit',
+		'definition_flags',
+		'deleted',
+		'attribute_id',
+		'definition_id',
+		'item_id',
+		'sale_id',
+		'receiving_id',
+		'attribute_value',
+		'attribute_date',
+		'attribute_decimal'
+	];
+
 	const SHOW_IN_ITEMS = 1;	//TODO: These need to be moved to constants.php
 	const SHOW_IN_SALES = 2;
 	const SHOW_IN_RECEIVINGS = 4;

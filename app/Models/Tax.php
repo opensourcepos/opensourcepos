@@ -11,6 +11,14 @@ use stdClass;
  */
 class Tax extends Model
 {
+	protected $allowedFields = [
+		'rate_tax_code_id',
+		'rate_tax_category_id',
+		'rate_jurisdiction_id',
+		'tax_rate',
+		'tax_rounding_code'
+	];
+
 	/**
 	 * Determines if a given row is on file
 	 */

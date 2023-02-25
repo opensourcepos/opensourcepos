@@ -9,6 +9,10 @@ use CodeIgniter\Model;
  */
 class Item_kit_items extends Model
 {
+	protected $allowedFields = [
+		'kit_sequence'
+	];
+
 	/**
 	 * Gets item kit items for a particular item kit
 	 */

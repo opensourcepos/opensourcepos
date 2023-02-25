@@ -10,6 +10,12 @@ use CodeIgniter\Model;
  */
 class Customer_rewards extends Model
 {
+	protected $allowedFields = [
+		'package_name',
+		'points_percent',
+		'deleted'
+	];
+
 	public function exists(int $package_id): bool
 	{
 		$builder = $this->db->table('customers_packages');

@@ -10,6 +10,10 @@ use stdClass;
  */
 class Item_quantity extends Model
 {
+	protected $allowedFields = [
+		'quantity'
+	];
+
     public function exists(int $item_id, int $location_id): bool
     {
         $builder = $this->db->table('item_quantities');

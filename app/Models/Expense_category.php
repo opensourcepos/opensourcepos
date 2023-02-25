@@ -11,6 +11,12 @@ use stdClass;
  */
 class Expense_category extends Model
 {
+	protected $allowedFields = [
+		'category_name',
+		'category_description',
+		'deleted'
+	];
+
 	/**
 	 * Determines if a given Expense_id is an Expense category
 	 */

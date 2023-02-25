@@ -11,6 +11,16 @@ use stdClass;
  */
 class Item_kit extends Model
 {
+	protected $allowedFields = [
+		'item_kit_number',
+		'name',
+		'description',
+		'item_id',
+		'kit_discount',
+		'kit_discount_type',
+		'price_option'
+	];
+
 	/**
 	 * Determines if a given item_id is an item kit
 	 */

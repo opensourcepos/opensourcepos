@@ -9,6 +9,23 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Customer extends Person
 {
+	protected $allowedFields = [
+		'account_number',
+		'taxable',
+		'tax_id',
+		'sales_tax_code_id',
+		'deleted',
+		'discount',
+		'discount_type',
+		'company_name',
+		'package_id',
+		'points',
+		'date',
+		'employee_id',
+		'consent'
+	];
+
+
 	/**
 	 * Determines if a given person_id is a customer
 	 */

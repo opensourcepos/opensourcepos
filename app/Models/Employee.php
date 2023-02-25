@@ -14,6 +14,15 @@ use CodeIgniter\Session\Session;
  */
 class Employee extends Person
 {
+	protected $allowedFields = [
+		'username',
+		'password',
+		'deleted',
+		'hashversion',
+		'language',
+		'language_code'
+	];
+
 	public function __construct()
 	{
 		parent::__construct();

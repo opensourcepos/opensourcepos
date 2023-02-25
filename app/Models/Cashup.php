@@ -14,6 +14,23 @@ use stdClass;
 
 class Cashup extends Model
 {
+	protected $allowedFields = [
+		'open_date',
+		'close_date',
+		'open_cash_amount',
+		'transfer_cash_amount',
+		'note',
+		'closed_amount_cash',
+		'closed_amount_card',
+		'closed_amount_check',
+		'closed_amount_total',
+		'description',
+		'open_employee_id',
+		'close_employee_id',
+		'deleted',
+		'closed_amount_due'
+	];
+
 	/**
 	 * Determines if a given Cashup_id is a Cashup
 	 */
@@ -62,7 +79,7 @@ class Cashup extends Model
 	{
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
-		
+
 		// get_found_rows case
 		if($count_only)
 		{

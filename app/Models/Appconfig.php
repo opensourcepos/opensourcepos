@@ -15,6 +15,11 @@ use ReflectionException;
  */
 class Appconfig extends Model
 {
+	protected $allowedFields = [
+		'key',
+		'value'
+	];
+
 	public function exists(string $key): bool
 	{
 		$builder = $this->db->table('app_config');
@@ -46,20 +51,18 @@ class Appconfig extends Model
 
 	/**
 	 * Calls the parent save() from BaseModel and updates the cached reference.
-	 * @param $data
+	 * @param array|object $data
 	 * @return bool
 	 * @throws ReflectionException
 	 */
-	public function save($data): bool
+	public function save($data): bool	//TODO: This is puking: Allowed fields must be specified for model: "App\Models\Appconfig"
 	{
 		$success = parent::save($data);
 		$config = config('OSPOS');
-		$key = array_keys($data)[0];
 
 		if($success)
 		{
-			$config->settings[$key] = $data[$key];
-			$config->update_settings();
+			$config->update_settings();	//TODO: We need to investigate whether there is a possibility of stale data. It updates the cache in this function, but when save() returns any instances of $config->settings[] may not be updated yet.
 		}
 
 		return $success;

@@ -11,6 +11,14 @@ use stdClass;
  */
 class Tax_code extends Model
 {
+	protected $allowedFields = [
+		'tax_code',
+		'tax_code_name',
+		'city',
+		'state',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */

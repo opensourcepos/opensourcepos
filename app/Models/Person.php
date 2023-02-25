@@ -11,6 +11,21 @@ use stdClass;
  */
 class Person extends Model
 {
+	protected $allowedFields = [
+		'first_name',
+		'last_name',
+		'phone_number',
+		'email',
+		'address_1',
+		'address_2',
+		'city',
+		'state',
+		'zip',
+		'country',
+		'comments',
+		'gender'
+	];
+
 	/**
 	 * Determines whether the given person exists in the people database table
 	 *

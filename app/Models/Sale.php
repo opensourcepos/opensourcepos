@@ -25,6 +25,19 @@ use ReflectionException;
  */
 class Sale extends Model
 {
+	protected $allowedFields = [
+		'sale_time',
+		'customer_id',
+		'employee_id',
+		'comment',
+		'quote_number',
+		'sale_status',
+		'invoice_number',
+		'dinner_table_id',
+		'work_order_number',
+		'sale_type'
+	];
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -1114,7 +1127,7 @@ class Sale extends Model
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('invoice_number', $invoice_number);
-		
+
 		if(!empty($sale_id))
 		{
 			$builder->where('sale_id !=', $sale_id);
@@ -1223,7 +1236,7 @@ class Sale extends Model
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)';
-		
+
 		$this->db->query($sql);
 
 		// create a temporary table to contain all the payment types and amount
@@ -1241,7 +1254,7 @@ class Sale extends Model
 				WHERE ' . $where . '
 				GROUP BY payments.sale_id
 			)';
-		
+
 		$this->db->query($sql);
 		$item = model(Item::class);
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_temp') .
@@ -1308,7 +1321,7 @@ class Sale extends Model
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)';
-		
+
 		$this->db->query($sql);
 	}
 
@@ -1372,7 +1385,7 @@ class Sale extends Model
 	public function update_sale_status(int $sale_id, int $sale_status): void
 	{
 		$builder = $this->db->table('sales');
-		
+
 		$builder->where('sale_id', $sale_id);
 		$builder->update(['sale_status' => $sale_status]);
 	}

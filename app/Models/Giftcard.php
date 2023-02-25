@@ -11,6 +11,14 @@ use stdClass;
  */
 class Giftcard extends Model
 {
+	protected $allowedFields = [
+		'giftcard_number',
+		'value',
+		'deleted',
+		'person_id',
+		'record_time'
+	];
+
 	/**
 	 * Determines if a given giftcard_id is a giftcard
 	 */
