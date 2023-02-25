@@ -55,7 +55,7 @@ class Rounding_mode
 	}
 
 	public static function round_number(int $rounding_mode, float $amount, int $decimals): string
-	{//TODO: this needs to be be replaced with a switch statement
+	{//TODO: this needs to be replaced with a switch statement
 		if($rounding_mode == Rounding_mode::ROUND_UP)
 		{
 			$fig = pow(10, $decimals);

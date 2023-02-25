@@ -93,7 +93,7 @@ class Expense extends Model
 		$builder = $this->db->table('expenses AS expenses');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
@@ -144,17 +144,17 @@ class Expense extends Model
 			$builder->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_debit'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_debit'])`... same with below.
+		if($filters['only_debit'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.debit'));
 		}
 
-		if($filters['only_credit'] != FALSE)
+		if($filters['only_credit'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.credit'));
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'])
 		{
 			$builder->groupStart();
 				$builder->like('expenses.payment_type', lang('Expenses.cash'));
@@ -162,17 +162,17 @@ class Expense extends Model
 			$builder->groupEnd();
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('expenses.payment_type', lang('Expenses.check'));
 		}
 
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -303,27 +303,27 @@ class Expense extends Model
 			$builder->where('date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		if($filters['only_cash'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['only_cash'])`... same with below.
+		if($filters['only_cash'])
 		{
 			$builder->like('payment_type', lang('Expenses.cash'));
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('payment_type', lang('Expenses.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('payment_type', lang('Expenses.check'));
 		}
 
-		if($filters['only_credit'] != FALSE)
+		if($filters['only_credit'])
 		{
 			$builder->like('payment_type', lang('Expenses.credit'));
 		}
 
-		if($filters['only_debit'] != FALSE)
+		if($filters['only_debit'])
 		{
 			$builder->like('payment_type', lang('Expenses.debit'));
 		}

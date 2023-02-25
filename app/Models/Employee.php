@@ -256,7 +256,7 @@ class Employee extends Person
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
 
-		if($unique == FALSE)
+		if(!$unique)
 		{
 			$builder->where('deleted', 0);
 		}

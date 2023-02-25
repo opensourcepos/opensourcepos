@@ -198,7 +198,7 @@ class Sale extends Model
 		$builder = $this->db->table('sales_items AS sales_items');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(DISTINCT sales.sale_id) AS count');
 		}
@@ -239,7 +239,7 @@ class Sale extends Model
 
 		if(!empty($search))	//TODO: this is duplicated code.  We should think about refactoring out a method
 		{
-			if($filters['is_valid_receipt'] != FALSE)
+			if($filters['is_valid_receipt'])
 			{
 				$pieces = explode(' ', $search);
 				$builder->where('sales.sale_id', $pieces[1]);
@@ -265,12 +265,12 @@ class Sale extends Model
 		}
 
 		//TODO: Avoid double negatives.  This can be changed to `if($filters['only_invoices'])`... also below
-		if($filters['only_invoices'] != FALSE)
+		if($filters['only_invoices'])
 		{
 			$builder->where('sales.invoice_number IS NOT NULL');
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'])
 		{
 			$builder->groupStart();
 				$builder->like('payments.payment_type', lang('Sales.cash'));
@@ -278,23 +278,23 @@ class Sale extends Model
 			$builder->groupEnd();
 		}
 
-		if($filters['only_creditcard'] != FALSE)
+		if($filters['only_creditcard'])
 		{
 			$builder->like('payments.payment_type', lang('Sales.credit'));
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('payments.payment_type', lang('Sales.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('payments.payment_type', lang('Sales.check'));
 		}
 
 		//get_found_rows
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
@@ -338,7 +338,7 @@ class Sale extends Model
 
 		if(!empty($search))	//TODO: duplicated code.  We should think about refactoring out a method.
 		{
-			if($filters['is_valid_receipt'] != FALSE)//TODO: Avoid double negatives
+			if($filters['is_valid_receipt'])
 			{
 				$pieces = explode(' ',$search);
 				$builder->where('sales.sale_id', $pieces[1]);
@@ -373,27 +373,27 @@ class Sale extends Model
 		}
 
 		//TODO: Avoid the double negatives
-		if($filters['only_invoices'] != FALSE)
+		if($filters['only_invoices'])
 		{
 			$builder->where('invoice_number IS NOT NULL');
 		}
 
-		if($filters['only_cash'] != FALSE)
+		if($filters['only_cash'])
 		{
 			$builder->like('payment_type', lang('Sales.cash'));
 		}
 
-		if($filters['only_due'] != FALSE)
+		if($filters['only_due'])
 		{
 			$builder->like('payment_type', lang('Sales.due'));
 		}
 
-		if($filters['only_check'] != FALSE)
+		if($filters['only_check'])
 		{
 			$builder->like('payment_type', lang('Sales.check'));
 		}
 
-		if($filters['only_creditcard'] != FALSE)
+		if($filters['only_creditcard'])
 		{
 			$builder->like('payment_type', lang('Sales.credit'));
 		}
@@ -408,7 +408,7 @@ class Sale extends Model
 
 		foreach($payments as $key => $payment)
 		{
-			if(strstr($payment['payment_type'], lang('Sales.giftcard')) != FALSE)
+			if(strstr($payment['payment_type'], lang('Sales.giftcard')))
 			{
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
@@ -1059,16 +1059,16 @@ class Sale extends Model
 	/**
 	 * Gets sale payment options
 	 */
-	public function get_payment_options(bool $giftcard = TRUE, bool $reward_points = FALSE): array
+	public function get_payment_options(bool $giftcard = true, bool $reward_points = true): array
 	{
 		$payments = get_payment_options();
 
-		if($giftcard == TRUE)
+		if($giftcard)
 		{
 			$payments[lang('Sales.giftcard')] = lang('Sales.giftcard');
 		}
 
-		if($reward_points == TRUE)
+		if($reward_points)
 		{
 			$payments[lang('Sales.rewards')] = lang('Sales.rewards');
 		}

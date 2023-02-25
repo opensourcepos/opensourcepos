@@ -16,7 +16,7 @@ use App\Models\Customer;
  */
 class Token_customer extends Token
 {
-	private $customer_info;
+	private string $customer_info;
 
 	public function __construct(string $customer_info = '')
 	{

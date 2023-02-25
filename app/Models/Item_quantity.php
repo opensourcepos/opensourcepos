@@ -49,7 +49,7 @@ class Item_quantity extends Model
         $builder->where('location_id', $location_id);
         $result = $builder->get()->getRow();
 
-        if(empty($result) == TRUE)
+        if(empty($result))
         {
             //Get empty base parent object, as $item_id is NOT an item
             $result = new stdClass();

@@ -142,7 +142,7 @@ class Supplier extends Person
 	/**
 	 * Deletes one supplier
 	 */
-	public function delete($supplier_id = null, bool $purge = false)
+	public function delete($supplier_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->where('person_id', $supplier_id);
@@ -268,7 +268,7 @@ class Supplier extends Person
 		$builder = $this->db->table('suppliers AS suppliers');
 
 		//get_found_rows case
-		if($count_only == TRUE)	//TODO: This needs to be replaced with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(suppliers.person_id) as count');
 		}
@@ -286,7 +286,7 @@ class Supplier extends Person
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
 
-		if($count_only == TRUE)	//TODO: This needs to be replaced with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

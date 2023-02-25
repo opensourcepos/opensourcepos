@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
-use CodeIgniter\Validation\ValidationInterface;
 use ReflectionException;
 
 /**
