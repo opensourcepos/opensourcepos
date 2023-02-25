@@ -13,7 +13,11 @@ use ReflectionClass;
  */
 class Attribute extends Model
 {
-	protected $allowedFields = [	//TODO: This model may not be well designed... The model accesses three different tables (attribute_definitions, attribute_links, attribute_values). Should that be more than one model?
+	protected $table = 'attribute_definitions';
+	protected $primaryKey = 'definition_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
+	protected $allowedFields = [	//TODO: This model may not be well designed... The model accesses three different tables (attribute_definitions, attribute_links, attribute_values). Should that be more than one model? According to CodeIgniter, these are meant to model a single table https://codeigniter.com/user_guide/models/model.html#models
 		'definition_name',
 		'definition_type',
 		'definition_unit',

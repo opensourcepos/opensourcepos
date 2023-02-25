@@ -9,6 +9,10 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Supplier extends Person
 {
+	protected $table = 'suppliers';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'company_name',
 		'account_number',

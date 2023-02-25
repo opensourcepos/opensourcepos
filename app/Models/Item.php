@@ -15,6 +15,10 @@ use stdClass;
  */
 class Item extends Model
 {
+	protected $table = 'items';
+	protected $primaryKey = 'item_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'name',
 		'category',

@@ -9,6 +9,10 @@ use CodeIgniter\Model;
  */
 class Item_kit_items extends Model
 {
+	protected $table = 'item_kit_items';
+	protected $primaryKey = 'item_kit_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'kit_sequence'
 	];

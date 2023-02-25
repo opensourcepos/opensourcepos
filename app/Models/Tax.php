@@ -11,6 +11,10 @@ use stdClass;
  */
 class Tax extends Model
 {
+	protected $table = 'tax_rates';
+	protected $primaryKey = 'tax_rate_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'rate_tax_code_id',
 		'rate_tax_category_id',

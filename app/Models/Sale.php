@@ -25,6 +25,10 @@ use ReflectionException;
  */
 class Sale extends Model
 {
+	protected $table = 'sales';
+	protected $primaryKey = 'sale_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'sale_time',
 		'customer_id',

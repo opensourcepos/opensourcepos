@@ -14,6 +14,10 @@ use stdClass;
  */
 class Expense extends Model
 {
+	protected $table = 'expenses';
+	protected $primaryKey = 'expense_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'date',
 		'amount',

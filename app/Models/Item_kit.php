@@ -11,6 +11,10 @@ use stdClass;
  */
 class Item_kit extends Model
 {
+	protected $table = 'item_kits';
+	protected $primaryKey = 'item_kit_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'item_kit_number',
 		'name',

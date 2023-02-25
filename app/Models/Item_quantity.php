@@ -10,6 +10,10 @@ use stdClass;
  */
 class Item_quantity extends Model
 {
+	protected $table = 'item_quantities';
+	protected $primaryKey = 'item_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'quantity'
 	];

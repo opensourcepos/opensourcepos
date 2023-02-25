@@ -11,6 +11,10 @@ use stdClass;
  */
 class Expense_category extends Model
 {
+	protected $table = 'expense_categories';
+	protected $primaryKey = 'expense_category_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'category_name',
 		'category_description',

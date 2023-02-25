@@ -14,6 +14,10 @@ use ReflectionException;
  */
 class Inventory extends Model
 {
+	protected $table = 'inventory';
+	protected $primaryKey = 'trans_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'trans_items',
 		'trans_user',
