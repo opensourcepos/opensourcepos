@@ -10,6 +10,12 @@ use CodeIgniter\Model;
 
 class Rewards extends Model	//TODO: This class is named with plural while the general practice is to name models singular
 {
+	protected $allowedFields = [
+		'sale_id',
+		'earned',
+		'used'
+	];
+
 	/**
 	 * Inserts or updates a rewards
 	 */

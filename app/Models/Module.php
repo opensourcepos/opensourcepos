@@ -10,6 +10,12 @@ use CodeIgniter\Model;
  */
 class Module extends Model
 {
+	protected $allowedFields = [
+		'name_lang_key',
+		'desc_lang_key',
+		'sort'
+	];
+
 	public function get_module_name(string $module_id): string
 	{
 		$builder = $this->db->table('modules');

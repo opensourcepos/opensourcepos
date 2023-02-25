@@ -15,6 +15,29 @@ use stdClass;
  */
 class Item extends Model
 {
+	protected $allowedFields = [
+		'name',
+		'category',
+		'supplier_id',
+		'item_number',
+		'description',
+		'cost_price',
+		'unit_price',
+		'reorder_level',
+		'allow_alt_description',
+		'is_serialized',
+		'deleted',
+		'stock_type',
+		'item_type',
+		'tax_category_id',
+		'receiving_quantity',
+		'pic_filename',
+		'qty_per_pack',
+		'pack_name',
+		'low_sell_item_id',
+		'hsn_code'
+	];
+
 	/**
 	 * Determines if a given item_id is an item
 	 */

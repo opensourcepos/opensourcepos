@@ -14,6 +14,19 @@ use stdClass;
  */
 class Expense extends Model
 {
+	protected $allowedFields = [
+		'date',
+		'amount',
+		'payment_type',
+		'expense_category_id',
+		'description',
+		'employee_id',
+		'deleted',
+		'supplier_tax_code',
+		'tax_amount',
+		'supplier_id'
+	];
+
 	/**
 	 * Determines if a given Expense_id is an Expense
 	 */

@@ -12,6 +12,12 @@ use stdClass;
 
 class Tax_category extends Model
 {
+	protected $allowedFields = [
+		'tax_category',
+		'tax_group_sequence',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */

@@ -12,6 +12,16 @@ use stdClass;
 
 class Tax_jurisdiction extends Model
 {
+	protected $allowedFields = [
+		'jurisdiction_name',
+		'tax_group',
+		'tax_type',
+		'reporting_authority',
+		'tax_group_sequence',
+		'cascade_sequence',
+		'deleted'
+	];
+
 	/**
 	 *  Determines if it exists in the table
 	 */

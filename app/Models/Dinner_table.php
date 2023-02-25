@@ -10,6 +10,12 @@ use CodeIgniter\Model;
  */
 class Dinner_table extends Model
 {
+	protected $allowedFields = [
+		'name',
+		'status',
+		'deleted'
+	];
+
 	public function exists(int $dinner_table_id): bool
 	{
 		$builder = $this->db->table('dinner_tables');

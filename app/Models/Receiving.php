@@ -17,6 +17,16 @@ use ReflectionException;
  */
 class Receiving extends Model
 {
+	protected $allowedFields = [
+		'receiving_time',
+		'supplier_id',
+		'employee_id',
+		'comment',
+		'receiving_id',
+		'payment_type',
+		'reference'
+	];
+
 	public function get_info(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
@@ -239,7 +249,7 @@ class Receiving extends Model
 
 		// execute transaction
 		$this->db->transComplete();
-	
+
 		return $this->db->transStatus();
 	}
 
@@ -250,7 +260,7 @@ class Receiving extends Model
 
 		return $builder->get();
 	}
-	
+
 	public function get_supplier(int $receiving_id): object
 	{
 		$builder = $this->db->table('receivings');

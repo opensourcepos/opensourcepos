@@ -14,6 +14,15 @@ use ReflectionException;
  */
 class Inventory extends Model
 {
+	protected $allowedFields = [
+		'trans_items',
+		'trans_user',
+		'trans_date',
+		'trans_comment',
+		'trans_inventory',
+		'trans_location'
+	];
+
 	public function insert($inventory_data = NULL, bool $returnID = TRUE)
 	{
 		$builder = $this->db->table('inventory');

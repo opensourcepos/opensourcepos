@@ -16,6 +16,11 @@ use CodeIgniter\Session\Session;
  */
 class Stock_location extends Model
 {
+	protected $allowedFields = [
+		'location_name',
+		'deleted'
+	];
+
 	public function __construct()
 	{
 		parent::__construct();

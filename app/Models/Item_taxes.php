@@ -9,6 +9,11 @@ use CodeIgniter\Model;
  */
 class Item_taxes extends Model
 {
+	protected $allowedFields = [
+		'name',
+		'percent'
+	];
+
 	/**
 	 * Gets tax info for a particular item
 	 */

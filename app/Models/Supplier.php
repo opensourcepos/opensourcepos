@@ -9,15 +9,24 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Supplier extends Person
 {
+	protected $allowedFields = [
+		'company_name',
+		'account_number',
+		'tax_id',
+		'deleted',
+		'agency_name',
+		'category'
+	];
+
 	/**
 	* Determines if a given person_id is a customer
 	*/
 	public function exists(int $person_id): bool
 	{
-		$builder = $this->db->table('suppliers');	
+		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->where('suppliers.person_id', $person_id);
-		
+
 		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
@@ -31,7 +40,7 @@ class Supplier extends Person
 
 		return $builder->countAllResults();
 	}
-	
+
 	/**
 	 * Returns all the suppliers
 	 */
@@ -50,17 +59,17 @@ class Supplier extends Person
 
 		return $builder->get();
 	}
-	
+
 	/**
 	 * Gets information about a particular supplier
 	 */
 	public function get_info(int $person_id): object
 	{
-		$builder = $this->db->table('suppliers');	
+		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'people.person_id = suppliers.person_id');
 		$builder->where('suppliers.person_id', $person_id);
 		$query = $builder->get();
-		
+
 		if($query->getNumRows() == 1)	//TODO: ===
 		{
 			return $query->getRow();
@@ -69,18 +78,18 @@ class Supplier extends Person
 		{
 			//Get empty base parent object, as $supplier_id is NOT a supplier
 			$person_obj = parent::get_info(-1);	//TODO: need to replace with a constant instead of -1
-			
-			//Get all the fields from supplier table		
+
+			//Get all the fields from supplier table
 			//append those fields to base parent object, we have a complete empty object
 			foreach($this->db->getFieldNames('suppliers') as $field)
 			{
 				$person_obj->$field = '';
 			}
-			
+
 			return $person_obj;
 		}
 	}
-	
+
 	/**
 	 * Gets information about multiple suppliers
 	 */
@@ -93,7 +102,7 @@ class Supplier extends Person
 
 		return $builder->get();
 	}
-	
+
 	/**
 	 * Inserts or updates a suppliers
 	 */
@@ -103,7 +112,7 @@ class Supplier extends Person
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
-		
+
 		if(parent::save_value($person_data,$supplier_id))
 		{
 			$builder = $this->db->table('suppliers');
@@ -118,14 +127,14 @@ class Supplier extends Person
 				$success = $builder->update($supplier_data);
 			}
 		}
-		
+
 		$this->db->transComplete();
-		
+
 		$success &= $this->db->transStatus();
 
 		return $success;
 	}
-	
+
 	/**
 	 * Deletes one supplier
 	 */
@@ -136,7 +145,7 @@ class Supplier extends Person
 
 		return $builder->update(['deleted' => 1]);
 	}
-	
+
 	/**
 	 * Deletes a list of suppliers
 	 */
@@ -147,7 +156,7 @@ class Supplier extends Person
 
 		return $builder->update(['deleted' => 1]);
  	}
- 	
+
  	/**
 	 * Get search suggestions to find suppliers
 	 */
@@ -183,7 +192,7 @@ class Supplier extends Person
 		$builder->join('people', 'suppliers.person_id = people.person_id');
 		$builder->groupStart();
 			$builder->like('first_name', $search);
-			$builder->orLike('last_name', $search); 
+			$builder->orLike('last_name', $search);
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
@@ -246,7 +255,7 @@ class Supplier extends Person
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
-	
+
 	/**
 	 * Perform a search on suppliers
 	 */
@@ -272,7 +281,7 @@ class Supplier extends Person
 			$builder->orLike('CONCAT(first_name, " ", last_name)', $search);	//TODO: According to PHPStorm, this line down to the return is repeated in Customer.php and Employee.php... perhaps refactoring a method in a library could be helpful?
 		$builder->groupEnd();
 		$builder->where('deleted', 0);
-		
+
 		if($count_only == TRUE)	//TODO: This needs to be replaced with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
