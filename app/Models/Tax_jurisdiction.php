@@ -83,7 +83,7 @@ class Tax_jurisdiction extends Model
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -218,7 +218,7 @@ class Tax_jurisdiction extends Model
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: Replace this with just count_only: `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
 		}
@@ -230,7 +230,7 @@ class Tax_jurisdiction extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: ===
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

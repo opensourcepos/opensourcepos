@@ -77,10 +77,10 @@ class Tax_code extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = true): ResultInterface	//TODO: $no_deleted should be something like $is_deleted and flip the logic.
 	{
 		$builder = $this->db->table('tax_codes');
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}
@@ -204,7 +204,7 @@ class Tax_code extends Model
 		$builder = $this->db->table('tax_codes AS tax_codes');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_codes.tax_code) as count');
 		}
@@ -216,7 +216,7 @@ class Tax_code extends Model
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

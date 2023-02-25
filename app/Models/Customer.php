@@ -429,7 +429,7 @@ class Customer extends Person
 		$builder->where('deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

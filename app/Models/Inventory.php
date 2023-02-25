@@ -53,7 +53,7 @@ class Inventory extends Model
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
 
-		if($location_id != FALSE)
+		if($location_id)
         {
             $builder->where('trans_location', $location_id);
         }

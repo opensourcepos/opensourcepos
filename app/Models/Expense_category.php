@@ -79,7 +79,7 @@ class Expense_category extends Model
 	{
 		$builder = $this->db->table('expense_categories');
 
-		if($no_deleted == TRUE)
+		if($no_deleted)
 		{
 			$builder->where('deleted', 0);
 		}

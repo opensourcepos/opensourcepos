@@ -224,23 +224,23 @@ class Item extends Model
 
 		$builder->where('items.deleted', $filters['is_deleted']);
 
-		if($filters['empty_upc'] != FALSE)	//TODO: Avoid the double negative on these... just replace it with `if($filters['empty_upc'])`... same with below.
+		if($filters['empty_upc'])
 		{
 			$builder->where('item_number', NULL);
 		}
-		if($filters['low_inventory'] != FALSE)
+		if($filters['low_inventory'])
 		{
 			$builder->where('quantity <=', 'reorder_level');
 		}
-		if($filters['is_serialized'] != FALSE)
+		if($filters['is_serialized'])
 		{
 			$builder->where('is_serialized', 1);
 		}
-		if($filters['no_description'] != FALSE)
+		if($filters['no_description'])
 		{
 			$builder->where('items.description', '');
 		}
-		if($filters['temporary'] != FALSE)
+		if($filters['temporary'])
 		{
 			$builder->where('items.item_type', ITEM_TEMP);
 		}
@@ -376,7 +376,7 @@ class Item extends Model
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$builder->where('item_number', $item_number);
 
-		if($ignore_deleted == FALSE)	//TODO: ===
+		if(!$ignore_deleted)
 		{
 			$builder->where('items.deleted', $deleted);
 		}

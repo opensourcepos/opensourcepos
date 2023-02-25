@@ -262,7 +262,7 @@ class Item_kit extends Model
 		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(item_kits.item_kit_id) as count');
 		}
@@ -278,7 +278,7 @@ class Item_kit extends Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

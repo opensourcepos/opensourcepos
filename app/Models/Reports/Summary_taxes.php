@@ -7,7 +7,7 @@ class Summary_taxes extends Summary_report
 	protected function _get_data_columns(): array	//TODO: hungarian notation
 	{
 		return [
-			['tax_name' => $this->lang->line('Reports.tax_name'), 'sortable' => FALSE],
+			['tax_name' => lang('Reports.tax_name'), 'sortable' => FALSE],
 			['tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'],
 			['report_count' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
 			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],

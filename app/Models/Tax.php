@@ -225,7 +225,7 @@ class Tax extends Model
 		$builder = $this->db->table('tax_rates');
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			$builder->select('COUNT(tax_rate_id) as count');
 		} else
@@ -253,7 +253,7 @@ class Tax extends Model
 		}
 
 		// get_found_rows case
-		if($count_only == TRUE)
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}

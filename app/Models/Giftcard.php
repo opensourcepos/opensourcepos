@@ -238,7 +238,7 @@ class Giftcard extends Model
 		$builder = $this->db->table('giftcards');
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			$builder->select('COUNT(giftcards.giftcard_id) as count');
 		}
@@ -254,7 +254,7 @@ class Giftcard extends Model
 		$builder->where('giftcards.deleted', 0);
 
 		// get_found_rows case
-		if($count_only == TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
 			return $builder->get()->getRow()->count;
 		}

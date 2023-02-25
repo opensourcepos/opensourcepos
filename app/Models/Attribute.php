@@ -511,12 +511,12 @@ class Attribute extends Model
 		return $success;
 	}
 
-	public function get_definition_by_name(string $definition_name, $definition_type = FALSE): array
+	public function get_definition_by_name(string $definition_name, $definition_type = false): array
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_name', $definition_name);
 
-		if($definition_type != FALSE)
+		if($definition_type)
 		{
 			$builder->where('definition_type', $definition_type);
 		}
@@ -847,7 +847,7 @@ class Attribute extends Model
 		{
 			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, FALSE, $attribute['attribute_id'], $definition_type);
 
-			if($this->save_link($attribute['item_id'], $definition_id, $new_attribute_id) == FALSE)
+			if(!$this->save_link($attribute['item_id'], $definition_id, $new_attribute_id))
 			{
 				log_message('Error', 'Transaction failed');
 				$this->db->transRollback();
