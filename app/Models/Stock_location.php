@@ -16,6 +16,10 @@ use CodeIgniter\Session\Session;
  */
 class Stock_location extends Model
 {
+	protected $table = 'stock_locations';
+	protected $primaryKey = 'location_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'location_name',
 		'deleted'

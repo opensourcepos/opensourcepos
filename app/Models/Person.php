@@ -11,6 +11,10 @@ use stdClass;
  */
 class Person extends Model
 {
+	protected $table = 'people';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'first_name',
 		'last_name',

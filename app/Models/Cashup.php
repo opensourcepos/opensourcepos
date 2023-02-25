@@ -14,6 +14,10 @@ use stdClass;
 
 class Cashup extends Model
 {
+	protected $table = 'cash_up';
+	protected $primaryKey = 'cashup_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'open_date',
 		'close_date',

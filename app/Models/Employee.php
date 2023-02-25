@@ -14,6 +14,10 @@ use CodeIgniter\Session\Session;
  */
 class Employee extends Person
 {
+	protected $table = 'Employees';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'username',
 		'password',

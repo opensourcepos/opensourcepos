@@ -12,6 +12,10 @@ use stdClass;
 
 class Tax_category extends Model
 {
+	protected $table = 'tax_categories';
+	protected $primaryKey = 'tax_category_id';
+	protected $useAutoIncrement = true;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'tax_category',
 		'tax_group_sequence',

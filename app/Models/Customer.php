@@ -9,6 +9,10 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Customer extends Person
 {
+	protected $table = 'customers';
+	protected $primaryKey = 'person_id';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'account_number',
 		'taxable',

@@ -15,6 +15,10 @@ use ReflectionException;
  */
 class Appconfig extends Model
 {
+	protected $table = 'app_config';
+	protected $primaryKey = 'key';
+	protected $useAutoIncrement = false;
+	protected $useSoftDeletes = false;
 	protected $allowedFields = [
 		'key',
 		'value'
