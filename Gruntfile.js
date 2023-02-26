@@ -1,29 +1,47 @@
 module.exports = function(grunt) {
 
-    dist_files = [
-        {
-            src: [
-                'public/**',
-                'vendor/**',
-                'app/**',
-                '!/tests',
-                '!/public/images/menubar/png/',
-                '!/public/dist/bootswatch/',
-                '/public/dist/bootswatch/*/*.css',
-                '!/public/dist/bootswatch-5/',
-                '/public/dist/bootswatch-5/*/*.css',
-                'app/Database/**',
-                '*.txt',
-                '*.md',
-                'LICENSE',
-                'docker*',
-                'docker/**',
-                'Dockerfile',
-                '**/.htaccess',
-                '*.csv'
-            ]
-        }
-    ];
+	dist_files = [
+		{
+			src: [
+				'public/**',
+				'vendor/**',
+				'app/**',
+				'!/tests',
+				'!/grunt045',
+				'!/public/images/menubar/png/',
+				'!/public/dist/bootswatch/',
+				'/public/dist/bootswatch/*/*.css',
+				'!/public/dist/bootswatch-5/',
+				'/public/dist/bootswatch-5/*/*.css',
+				'app/Database/**',
+				'*.txt',
+				'*.md',
+				'LICENSE',
+				'docker*',
+				'docker/**',
+				'Dockerfile',
+				'**/.htaccess',
+				'*.csv'
+			]
+		}
+	];
+
+	ospos_css = ['public/css/*.css',
+		'!public/css/login.css',
+		'!public/css/login.min.css',
+		'!public/css/invoice_email.css',
+		'!public/css/barcode_font.css',
+		'!public/css/darkly.css'];
+
+	ospos_js = ['public/dist/bootstrap/js/*.min.js',
+		'public/js/jquery*',
+		'public/js/*.js'];
+
+	ospos_min_css = ['public/dist/jquery-ui/*.css',
+		'public/dist/*.css'];
+
+	ospos_min_js = ['public/dist/*min.js'];
+
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -33,24 +51,38 @@ module.exports = function(grunt) {
 				src: ['app/Views/partial/header.php']
 			}
 		},
-		bower_concat: {
-			all: {
-				mainFiles: {
-					'bootstrap-table': [
-						"dist/bootstrap-table.min.js",
-						"dist/bootstrap-table.css",
-						"dist/extensions/export/bootstrap-table-export.min.js",
-						"dist/extensions/mobile/bootstrap-table-mobile.min.js",
-						"dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js",
-						"dist/extensions/sticky-header/bootstrap-table-sticky-header.css"
-					],
-					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
+		injector: {
+			options: {
+				lineEnding: '\n',
+				ignorePath: 'public/',
+				addRootSlash: false,
+			},
+			css_js_header: {
+				files: {
+					'app/Views/partial/header.php': [ospos_css, ospos_js]
 				},
-				dest: {
-					'js': 'tmp/opensourcepos_bower.js',
-					'css': 'tmp/opensourcepos_bower.css'
-				}
-			}
+			},
+			mincss_header: {
+				options: {
+					starttag: '<!-- mincss injector:css -->',
+				},
+				files: {
+					'app/Views/partial/header.php': [ospos_min_css]
+				},
+			},
+			minjs: {
+				options: {
+					starttag: '<!-- minjs injector:css -->',
+				},
+				files: {
+					'app/Views/partial/header.php': [ospos_min_css]
+				},
+			},
+			css_login: {
+				files: {
+					'app/Views/login.php': ['public/css/login.min.css']
+				},
+			},
 		},
 		bowercopy: {
 			options: {
@@ -58,7 +90,7 @@ module.exports = function(grunt) {
 			},
 			targetdistjqueryui: {
 				options: {
-					srcPrefix: 'public/bower_components/jquery-ui',
+					srcPrefix: 'public/resources/jquery-ui',
 					destPrefix: 'public/dist'
 				},
 				files: {
@@ -67,7 +99,7 @@ module.exports = function(grunt) {
 			},
 			targetdistbootswatch: {
 				options: {
-					srcPrefix: 'public/bower_components/bootswatch',
+					srcPrefix: 'public/resources/bootswatch',
 					destPrefix: 'public/dist'
 				},
 				files: {
@@ -82,50 +114,6 @@ module.exports = function(grunt) {
 					'public/license': 'LICENSE'
 				}
 			}
-		},
-		copy: {
-			themes: {
-				files: [
-					{
-						expand: true,
-						cwd: 'node_modules/bootstrap/dist/css',
-						src: ['bootstrap.css', 'bootstrap.min.css'],
-						dest: 'public/dist/bootswatch-5/bootstrap/',
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						cwd: 'node_modules/bootswatch/dist',
-						src: ['**/bootstrap.css', '**/bootstrap.min.css'],
-						dest: 'public/dist/bootswatch-5/',
-						filter: 'isFile'
-					}
-				],
-			},
-			licenses: {
-				files: [{
-					expand: true,
-					src: 'LICENSE',
-					dest: 'public/license/',
-					filter: 'isFile',},
-					{
-						expand: true,
-						cwd: 'node_modules/bootstrap',
-						src: 'LICENSE',
-						dest: 'public/license/',
-						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootstrap-5.license'); },
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						cwd: 'node_modules/bootswatch',
-						src: 'LICENSE',
-						dest: 'public/license/',
-						rename: function(dest, src) { return dest + src.replace('LICENSE', 'bootswatch-5.license'); },
-						filter: 'isFile'
-					},
-				],
-			},
 		},
 		cssmin: {
 			target: {
@@ -165,9 +153,11 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-			files: ['Gruntfile.js', 'public/js/*.js'],
+			files: ['public/js/imgpreview.full.jquery.js',
+				'public/js/manage_tables.js',
+				'public/js/nominatim.autocomplete.js'],
 			options: {
-				// options here to override JSHint defaults
+				esversion: 6,
 				globals: {
 					jQuery: true,
 					console: true,
@@ -176,140 +166,38 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		tags: {
-			css_header: {
-				options: {
-					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
-					openTag: '<!-- start css template tags -->',
-					closeTag: '<!-- end css template tags -->',
-					ignorePath: '../../../public/'
-				},
-				src: ['public/css/*.css', '!public/css/login.css', '!public/css/login.min.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/darkly.css'],
-				dest: 'app/Views/partial/header.php',
-			},
-			mincss_header: {
-				options: {
-					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
-					openTag: '<!-- start mincss template tags -->',
-					closeTag: '<!-- end mincss template tags -->',
-					ignorePath: '../../../public/'
-				},
-				// jquery-ui must be first or at least before opensourcepos.min.css
-				src: ['public/dist/jquery-ui/*.css', 'public/dist/*.css'],
-				dest: 'app/Views/partial/header.php',
-			},
-			css_login: {
-				options: {
-					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
-					openTag: '<!-- start css template tags -->',
-					closeTag: '<!-- end css template tags -->',
-					ignorePath: '../../public/'
-				},
-				src: 'public/css/login.min.css',
-				dest: 'app/Views/login.php'
-			},
-			js: {
-				options: {
-					scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
-					openTag: '<!-- start js template tags -->',
-					closeTag: '<!-- end js template tags -->',
-					ignorePath: '../../../public/'
-				},
-				src: ['public/dist/bootstrap/js/*.min.js', 'public/js/jquery*', 'public/js/*.js'],
-				dest: 'app/Views/partial/header.php'
-			},
-			minjs: {
-				options: {
-					scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
-					openTag: '<!-- start minjs template tags -->',
-					closeTag: '<!-- end minjs template tags -->',
-					ignorePath: '../../../public/'
-				},
-				src: ['public/dist/*min.js'],
-				dest: 'app/Views/partial/header.php'
-			}
-		},
 		watch: {
 			files: ['<%= jshint.files %>'],
 			tasks: ['jshint']
 		},
-		cachebreaker: {
-			dev: {
+		compress: {
+			tar: {
 				options: {
-					match: [ {
-						'opensourcepos.min.js': 'public/dist/opensourcepos.min.js',
-						'opensourcepos.min.css': 'public/dist/opensourcepos.min.css'
-					} ],
-					replacement: 'md5'
+					mode: 'tar',
+					archive: 'dist/opensourcepos.tgz',
+					level: 2,
 				},
-				files: {
-					src: ['app/Views/partial/header.php', 'app/Views/login.php']
-				}
-			}
-		},
-		clean: {
-			bower: ["public/bower_components"],
-			composer: ["vendor"],
-			license: ['public/bower_components/**/bower.json'],
-			npm: ["node_modules"]
-		},
-		license: {
-			all: {
-				// Target-specific file lists and/or options go here. 
+				files: dist_files
+			},
+			zip: {
 				options: {
-					// Target-specific options go here. 
-					directory: 'public/bower_components',
-					output: 'public/license/bower.LICENSES'
-				}
-			}
-		},
-		'bower-licensechecker': {
-			options: {
-				/*directory: 'path/to/bower',*/
-				acceptable: [ 'MIT', 'BSD', 'LICENSE.md' ],
-				printTotal: true,
-				warn: {
-					nonBower: true,
-					noLicense: true,
-					allGood: true,
-					noGood: true
+					mode: 'zip',
+					archive: 'dist/opensourcepos.zip',
 				},
-				log: {
-					outFile: 'public/license/.licenses',
-					nonBower: true,
-					noLicense: true,
-					allGood: true,
-					noGood: true,
-				}
+				files: dist_files
 			}
-		},
-        compress: {
-            tar: {
-                options: {
-                    mode: 'tar',
-                    archive: 'dist/opensourcepos.tgz',
-                    level: 2,
-                },
-                files: dist_files
-            },
-            zip: {
-                options: {
-                    mode: 'zip',
-                    archive: 'dist/opensourcepos.zip',
-                },
-                files: dist_files
-            }
-        }
+		}
 	});
 
 	require('load-grunt-tasks')(grunt);
-	grunt.loadNpmTasks('grunt-composer');
+
 	grunt.loadNpmTasks('grunt-contrib-compress');
 
-	grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'copy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
-	grunt.registerTask('update', ['composer:update', 'bower:update']);
-	grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
-	grunt.registerTask('package', ['default', 'compress']);
-	grunt.registerTask('packages', ['composer:update']);
+	grunt.registerTask('task1', ['wiredep']);
+	grunt.registerTask('task3', ['bowercopy']);
+	grunt.registerTask('task5', ['concat','uglify','cssmin','injector','jshint']);
+	grunt.registerTask('task7', ['compress']);
+
+	grunt.registerTask('watch', ['watch']);
 
 };
