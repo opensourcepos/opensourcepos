@@ -11,12 +11,12 @@
 <!doctype html>
 <html lang="<?= current_language_code() ?>">
 	<head>
-		<meta charset="utf-8">
-		<base href="<?= base_url() ?>">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<base href="<?= base_url() . '/' ?>">
 		<title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<meta content="noindex, nofollow" name="robots">
-		<link href="<?= base_url('images/favicon.ico') ?>" rel="shortcut icon" type="image/x-icon">
+		<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 		<?php
 			$theme = (empty($config['theme']) 
 					|| 'paper' == $config['theme']
@@ -24,10 +24,9 @@
 						? 'flatly'
 						: $config['theme']);
 		?>
-		<link href="<?= base_url("dist/bootswatch/$theme/bootstrap.min.css") ?>" rel="stylesheet" type="text/css">
-		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="../../public/css/login.min.css"/>
-		<!-- end css template tags -->
+		<link href="<?= "dist/bootswatch-5/$theme/bootstrap.min.css" ?>" rel="stylesheet" type="text/css">
+		<!-- injector:css -->
+		<!-- endinjector -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>
 	<body class="bg-light d-flex flex-column">

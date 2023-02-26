@@ -1,7 +1,7 @@
 # Dependency directories
 node_modules
 vendor
-public/bower_components
+public/resources
 app/Config/email.php
 app/sessions/*
 app/logs/*
