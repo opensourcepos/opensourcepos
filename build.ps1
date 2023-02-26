@@ -23,12 +23,12 @@ npm run buildtasks
 
 Write-Output "============================================================================="
 Write-Output "Restore configured .env file if it exists."
-Write-Output "(If one is found in a folder located at  ../etc/name-of-current-folder)"
+Write-Output "(If one is found in a folder located at  ../env/<name-of-ospos-root-folder>)"
 Write-Output "============================================================================="
 $currentfolder = Split-Path -Path (Get-Location) -Leaf
-if(Test-Path -Path ../etc/$currentfolder/.env -PathType Leaf)
+if(Test-Path -Path ../env/$currentfolder/.env -PathType Leaf)
 {
-Copy ../etc/$currentfolder/.env
+Copy ../env/$currentfolder/.env
 }
 
 Write-Output "============================================================================="
