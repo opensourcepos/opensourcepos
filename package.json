@@ -1,55 +1,51 @@
 {
-  "name": "opensourcepos",
-  "version": "3.4.0",
-  "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
-  "main": "index.php",
-  "license": "MIT",
-  "authors": [
-	"jekkos <jekkos - at - opensourcepos.org>",
-	"FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
-	"objecttothis <objecttothis - at - gmail.com>"
-  ],
-  "scripts": {
-	"install": "composer install & bower install",
-	"update": "npm update & composer self-update & composer update",
-	"clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
-	"test": "echo \\\"Error: no tests specified\\\" && exit 1"
-  },
-  "publishConfig": {
-	"registry": "https://npm.pkg.github.com/"
-  },
-  "keywords": [
-	"point-of-sale",
-	"POS"
-  ],
-  "devDependencies": {
-	"grunt": "^1.6.1",
-	"grunt-bower": "^0.5.0",
-	"grunt-bower-concat": "^0.1.1",
-	"grunt-bower-licensechecker": "^0.1.2",
-	"grunt-bowercopy": "^1.2.5",
-	"grunt-cache-breaker": "^0.5.6",
-	"grunt-cli": "^1.4.3",
-	"grunt-composer": "^0.2.0",
-	"grunt-contrib-clean": "~2.0.1",
-	"grunt-contrib-compress": "^2.0.0",
-	"grunt-contrib-concat": "~2.1.0",
-	"grunt-contrib-copy": "^1.0.0",
-	"grunt-contrib-cssmin": "^4.0.0",
-	"grunt-contrib-jshint": "^3.2.0",
-	"grunt-contrib-uglify": "~5.2.2",
-	"grunt-contrib-watch": "^1.1.0",
-	"grunt-license-bower": "~1.0.1",
-	"grunt-script-link-tags": "^1.0.2",
-	"grunt-wiredep": "^3.0.1",
-	"load-grunt-tasks": "^5.1.0",
-	"npm-check-updates": "^16.6.5"
-  },
-  "dependencies": {
-	"bootstrap-5": "npm:bootstrap@^5.2.3",
-	"bootswatch-5": "npm:bootswatch@^5.2.3",
-	"coffeescript": "^2.7.0",
-	"npm": "^9.4.2",
-	"npm-check-updates": "^16.6.5"
-  }
+	"name": "opensourcepos",
+	"version": "3.4.0",
+	"description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
+	"main": "index.php",
+	"license": "MIT",
+	"authors": [
+		"jekkos <jekkos - at - opensourcepos.org>",
+		"FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
+		"objecttothis <objecttothis - at - gmail.com>",
+		"SteveIreland <steve.ireland.de - at - gmail.com>"
+	],
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"keywords": [
+		"point-of-sale",
+		"POS"
+	],
+	"scripts": {
+		"install": "composer install",
+		"buildsetup": "npm install -g grunt-cli && bower install && cd grunt045 && npm install cd ../",
+		"buildtasks": "grunt task1 && cd grunt045 && grunt task2 && cd ../ && grunt task3 && cd grunt045 && grunt task4 && cd ../ && grunt task5 --force && cd grunt045 && grunt task6 && cd ../ && grunt task7",
+		"build": "npm run buildsetup && npm run buildtasks",
+		"watch": "grunt watch",
+		"build": "npm run install && npm run buildsetup && npm run buildtasks && npm run watch",
+		"update": "npm update & composer self-update & composer update",
+		"clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"bootstrap": "^5.2.3",
+		"bootswatch": "^5.2.3",
+		"coffeescript": "^2.7.0",
+		"npm": "^9.4.2",
+		"npm-check-updates": "^16.6.5"
+	},
+	"devDependencies": {
+		"grunt": "^1.6.1",
+		"grunt-bowercopy": "^1.2.5",
+		"grunt-contrib-compress": "^2.0.0",
+		"grunt-contrib-concat": "~2.1.0",
+		"grunt-contrib-cssmin": "^4.0.0",
+		"grunt-contrib-jshint": "^3.2.0",
+		"grunt-contrib-uglify": "~5.2.2",
+		"grunt-contrib-watch": "^1.1.0",
+		"grunt-injector": "^1.1.0",
+		"grunt-wiredep": "^3.0.1",
+		"load-grunt-tasks": "^5.1.0"
+	}
 }
