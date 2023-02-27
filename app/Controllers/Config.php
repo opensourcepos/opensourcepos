@@ -46,6 +46,8 @@ use ReflectionException;
  */
 class Config extends Secure_Controller
 {
+	protected $helpers = ['security'];
+
 	public function __construct()
 	{
 		parent::__construct('config');
@@ -277,7 +279,7 @@ class Config extends Secure_Controller
 		//Load Integrations Related fields
 		$data['mailchimp']	= [];
 
-		if($this->_check_encryption())	//TODO: Hungarian notation
+		if(check_encryption())	//TODO: Hungarian notation
 		{
 			$encrypter = Services::encrypter();
 
@@ -499,7 +501,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if(check_encryption())
 		{
 			$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
 		}
@@ -527,7 +529,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if($this->_check_encryption())
+		if(check_encryption())
 		{
 			$password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
 		}
@@ -594,7 +596,7 @@ class Config extends Secure_Controller
 		$api_key = '';
 		$list_id = '';
 
-		if($this->_check_encryption())	//TODO: Hungarian notation
+		if(check_encryption())	//TODO: Hungarian notation
 		{
 			$api_key = $this->encrypter->encrypt($this->request->getPost('mailchimp_api_key', FILTER_SANITIZE_STRING));
 			$list_id = $this->encrypter->encrypt($this->request->getPost('mailchimp_list_id', FILTER_SANITIZE_STRING));
@@ -934,53 +936,5 @@ class Config extends Secure_Controller
 		$success = $this->appconfig->save(['company_logo' => '']);
 
 		echo json_encode (['success' => $success]);
-	}
-
-	/**
-	 * @throws ReflectionException
-	 */
-	private function _check_encryption(): bool        //TODO: Hungarian notation
-	{
-		$encryption_key = config('Encryption')->key;
-
-		// check if the encryption_key config item is the default one
-		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
-		{
-			// Config path
-			$config_path = APPPATH . 'Config/config.php';	//TODO: This is now in APPPATH . 'Config\Encryption.php' but it shouldn't be pulled from here.  It should be pulled from '\.env'
-
-			// Open the file
-			$config = file_get_contents($config_path);
-
-			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
-			$key = bin2hex($this->encryption->createKey());
-
-			// replace the empty placeholder with a real randomly generated encryption key
-			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);	//TODO: This needs to be modified also so that it replaces encryption.key = '' with encryption.key = '[NEW KEY]'
-
-			$result = FALSE;
-
-			// Chmod the file
-			@chmod($config_path, 0770);
-
-			// Verify file permissions
-			if(is_writable($config_path))
-			{
-				// Write the new config.php file
-				$handle = @fopen($config_path, 'w+');
-
-				// Write the file
-				$result = !(fwrite($handle, $config) === FALSE);
-
-				fclose($handle);
-			}
-
-			// Chmod the file
-			@chmod($config_path, 0440);
-
-			return $result;
-		}
-
-		return TRUE;
 	}
 }
