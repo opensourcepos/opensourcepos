@@ -60,17 +60,15 @@ class Appconfig extends Model
 	 */
 	public function save($data): bool
 	{
-		//built-in method
-//		$success = parent::save($data);
-
 		$key = array_keys($data)[0];
-		$success = $this->exists($key) ? $this->where('key', $key)->set('value', $data[$key])->update() : $this->insert($data);
+		$value = $data[$key];
+		$save_data = ['key' => $key, 'value' => $value];
 
-		$config = config('OSPOS');
+		$success = parent::save($save_data);
 
 		if($success)
 		{
-			$config->update_settings();	//TODO: We need to investigate whether there is a possibility of stale data. It updates the cache in this function, but when save() returns any instances of $config->settings[] may not be updated yet.
+			config('OSPOS')->update_settings();
 		}
 
 		return $success;
