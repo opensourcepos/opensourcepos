@@ -25,9 +25,9 @@ class Appconfig extends Model
 	public function exists(string $key): bool
 	{
 		$builder = $this->db->table('app_config');
-		$builder->where('app_config.key', $key);	//TODO: I think we can skip app_config. and just write where(key, $key);
+		$builder->where('key', $key);
 
-		return ($builder->get()->getNumRows() == 1);	//TODO: ===
+		return ($builder->get()->getNumRows() === 1);
 	}
 
 	public function get_all(): ResultInterface
@@ -43,7 +43,7 @@ class Appconfig extends Model
 		$builder = $this->db->table('app_config');
 		$query = $builder->getWhere(['key' => $key], 1);
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if($query->getNumRows() === 1)
 		{
 			return $query->getRow()->value;
 		}
@@ -53,13 +53,19 @@ class Appconfig extends Model
 
 	/**
 	 * Calls the parent save() from BaseModel and updates the cached reference.
+	 *
 	 * @param array|object $data
 	 * @return bool
 	 * @throws ReflectionException
 	 */
-	public function save($data): bool	//TODO: This is puking: Allowed fields must be specified for model: "App\Models\Appconfig"
+	public function save($data): bool
 	{
-		$success = parent::save($data);
+		//built-in method
+//		$success = parent::save($data);
+
+		$key = array_keys($data)[0];
+		$success = $this->exists($key) ? $this->where('key', $key)->set('value', $data[$key])->update() : $this->insert($data);
+
 		$config = config('OSPOS');
 
 		if($success)
@@ -77,12 +83,11 @@ class Appconfig extends Model
 	{
 		$success = TRUE;
 
-		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		foreach($data as $element)
+		foreach($data as $key => $value)
 		{
-			$success &= $this->save($element);
+			$success &= $this->save([$key => $value]);
 		}
 
 		$this->db->transComplete();
