@@ -8,9 +8,9 @@ require_once('Secure_Controller.php');
 
 /**
  * Attributes controls the custom attributes assigned to items
- * 
+ *
  * @property attribute attribute
- * 
+ *
  */
 class Attributes extends Secure_Controller
 {
@@ -23,7 +23,6 @@ class Attributes extends Secure_Controller
 
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$data['table_headers'] = get_attribute_definition_manage_table_headers();
 
 		echo view('attributes/manage', $data);

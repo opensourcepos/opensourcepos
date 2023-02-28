@@ -62,7 +62,6 @@ class Items extends Secure_Controller
 
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$this->session->set('allow_temp_items', 0);
 
 		$data['table_headers'] = get_items_manage_table_headers();
