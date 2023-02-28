@@ -56,6 +56,7 @@ class Sales extends Secure_Controller
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
 		$this->config = config('OSPOS')->settings;
+		$this->stock_location = model('Stock_location');
 	}
 
 	public function getIndex(): void
