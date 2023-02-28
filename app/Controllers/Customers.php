@@ -34,7 +34,6 @@ class Customers extends Persons
 	public function __construct()
 	{
 		parent::__construct('customers');
-		helper('tabular');
 		$this->mailchimp_lib = new Mailchimp_lib();
 
 		$this->customer = model('Customer');

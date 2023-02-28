@@ -46,7 +46,7 @@ class Dinner_table extends Model
 	/**
 	 * Get empty tables
 	 */
-	public function get_empty_tables(int $current_dinner_table_id): array
+	public function get_empty_tables(?int $current_dinner_table_id): array
 	{
 		$builder = $this->db->table('dinner_tables');
 		$builder->where('status', 0);
