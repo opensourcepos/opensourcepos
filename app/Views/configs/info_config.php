@@ -2,6 +2,7 @@
 /**
  * @var bool $logo_exists
  * @var string $controller_name
+ * @var array $config
  */
 ?>
 <?php echo form_open('config/save_info/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
@@ -10,7 +11,7 @@
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
 			<ul id="info_error_message_box" class="error_message_box"></ul>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.company'), 'company', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
@@ -19,20 +20,20 @@
 							'name' => 'company',
 							'id' => 'company',
 							'class' => 'form-control input-sm required',
-							'value' => esc($config['company'], 'attr')
+							'value' => $config['company']
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.company_logo'), 'company_logo', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-6'>
 					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
 						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
 							<img data-src="holder.js/100%x100%" alt="<?php echo lang('Config.company_logo') ?>"
-								 src="<?php if($logo_exists) echo esc(base_url('uploads/' . $config['company_logo']), 'url'); else echo '' ?>"
+								 src="<?php if($logo_exists) echo base_url('uploads/' . $config['company_logo']); else echo '' ?>"
 								 style="max-height: 100%; max-width: 100%;">
 						</div>
 						<div>
@@ -47,19 +48,19 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.address'), 'address', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea ([
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> esc($config['address'], 'attr')
+						'value'=> $config['address'], 'attr'
 					]) ?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.website'), 'website', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
@@ -68,13 +69,13 @@
 							'name' => 'website',
 							'id' => 'website',
 							'class' => 'form-control input-sm',
-							'value'=> esc($config['website'], 'url')
+							'value'=> $config['website']
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Common.email'), 'email', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
@@ -84,13 +85,13 @@
 							'id' => 'email',
 							'type' => 'email',
 							'class' => 'form-control input-sm',
-							'value'=> esc($config['email'], 'attr')
+							'value'=> $config['email']
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.phone'), 'phone', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
@@ -99,13 +100,13 @@
 							'name' => 'phone',
 							'id' => 'phone',
 							'class' => 'form-control input-sm required',
-							'value'=> esc($config['phone'], 'attr')
+							'value'=> $config['phone']
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.fax'), 'fax', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-6">
 					<div class="input-group">
@@ -114,20 +115,20 @@
 							'name' => 'fax',
 							'id' => 'fax',
 							'class' => 'form-control input-sm',
-							'value'=> esc($config['fax'], 'attr')
+							'value'=> $config['fax']
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Common.return_policy'), 'return_policy', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea ([
 						'name' => 'return_policy',
 						'id' => 'return_policy',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['return_policy'], 'attr')
+						'value' => $config['return_policy']
 					]) ?>
 				</div>
 			</div>
@@ -148,7 +149,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo esc(site_url("$controller_name/remove_logo"), 'url'); ?>',
+			url: '<?php echo site_url("$controller_name/remove_logo"); ?>',
 			dataType: 'json'
 		})
 	});
@@ -166,7 +167,7 @@ $(document).ready(function()
     		return_policy: "required"
    		},
 
-		messages: 
+		messages:
 		{
 			company: "<?php echo lang('Config.company_required') ?>",
 			address: "<?php echo lang('Config.address_required') ?>",

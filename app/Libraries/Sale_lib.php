@@ -14,7 +14,6 @@ use App\Models\Sale;
 use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
 use ReflectionException;
-use App\Libraries\Tax_lib;
 
 /**
  * Sale library
@@ -39,7 +38,7 @@ class Sale_lib
 {
 	public function __construct()
 	{
-		$this->session = Session();
+		$this->session = session();
 
 		$this->attribute = model('Attribute');
 		$this->customer = model('Customer');
@@ -700,10 +699,10 @@ class Sale_lib
 
 	public function get_mode(): string
 	{
-		if(!$this->session->get('sales_mode'))                                                                                                                                                                                                                     
-		{                                                                                                                                                                                                                                                                   
-			$this->set_mode('sale');                                                                                                                                                                                                                            
-		}      
+		if(!$this->session->get('sales_mode'))
+		{
+			$this->set_mode('sale');
+		}
 		return $this->session->get('sales_mode');
 	}
 
@@ -717,7 +716,7 @@ class Sale_lib
 		$this->session->remove('sales_mode');
 	}
 
-	public function get_dinner_table(): int
+	public function get_dinner_table(): ?int
 	{
 		if(!$this->session->get('dinner_table'))
 		{
@@ -1441,7 +1440,7 @@ class Sale_lib
 		return $total;
 	}
 
-	public function get_empty_tables(int $current_dinner_table_id): array
+	public function get_empty_tables(?int $current_dinner_table_id): array
 	{
 		return $this->dinner_table->get_empty_tables($current_dinner_table_id);
 	}

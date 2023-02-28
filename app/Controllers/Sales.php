@@ -49,12 +49,14 @@ class Sales extends Secure_Controller
 
 		helper('file');
 
+		$this->session = session();
 		$this->barcode_lib = new Barcode_lib();
 		$this->email_lib = new Email_lib();
 		$this->sale_lib = new Sale_lib();
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
 		$this->config = config('OSPOS')->settings;
+		$this->stock_location = model('Stock_location');
 	}
 
 	public function getIndex(): void
@@ -570,7 +572,7 @@ class Sales extends Secure_Controller
 		if(!$this->validate([]))
 		{
 			$this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
-			
+
 			$this->sale_lib->empty_payments();
 		}
 		else
@@ -1286,7 +1288,7 @@ class Sales extends Secure_Controller
 		$data['selected_employee_name'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$data['sale_info'] = $sale_info;
 		$balance_due = round($sale_info['amount_due'] - $sale_info['amount_tendered'] + $sale_info['cash_refund'], totals_decimals(), PHP_ROUND_HALF_UP);
-		
+
 		if(!$this->sale_lib->reset_cash_rounding() && $balance_due < 0)
 		{
 			$balance_due = 0;

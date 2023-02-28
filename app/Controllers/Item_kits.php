@@ -28,7 +28,7 @@ class Item_kits extends Secure_Controller
 		$this->item_kit = model('Item_kit');
 		$this->item_kit_items = model('Item_kit_items');
 	}
-	
+
 	/**
 	 * Add the total cost and retail price to a passed item_kit retrieving the data from each singular item part of the kit
 	 */
@@ -63,10 +63,9 @@ class Item_kits extends Secure_Controller
 
 		return $item_kit;
 	}
-	
+
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$data['table_headers'] = get_item_kits_manage_table_headers();
 
 		echo view('item_kits/manage', $data);
@@ -111,7 +110,7 @@ class Item_kits extends Secure_Controller
 
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
-	
+
 	public function view(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$info = $this->item_kit->get_info($item_kit_id);
@@ -150,7 +149,7 @@ class Item_kits extends Secure_Controller
 
 		echo view("item_kits/form", $data);
 	}
-	
+
 	public function save(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$item_kit_data = [
@@ -163,7 +162,7 @@ class Item_kits extends Secure_Controller
 			'print_option' => $this->request->getPost('print_option', FILTER_SANITIZE_NUMBER_INT),
 			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING)
 		];
-		
+
 		if($this->item_kit->save_value($item_kit_data, $item_kit_id))
 		{
 			$new_item = FALSE;
@@ -218,7 +217,7 @@ class Item_kits extends Secure_Controller
 			]);
 		}
 	}
-	
+
 	public function delete(): void
 	{
 		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
@@ -241,7 +240,7 @@ class Item_kits extends Secure_Controller
 		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
-	
+
 	public function generate_barcodes(string $item_kit_ids): void
 	{
 		$this->barcode_lib = new Barcode_lib();
@@ -249,10 +248,10 @@ class Item_kits extends Secure_Controller
 
 		$item_kit_ids = explode(':', $item_kit_ids);
 		foreach($item_kit_ids as $item_kid_id)
-		{		
+		{
 			// calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
 			$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
-			
+
 			$item_kid_id = 'KIT '. urldecode($item_kid_id);
 
 			$result[] = [

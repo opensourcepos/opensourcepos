@@ -18,7 +18,6 @@ class Giftcards extends Secure_Controller
 
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$data['table_headers'] = get_giftcards_manage_table_headers();
 
 		echo view('giftcards/manage', $data);
