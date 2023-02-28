@@ -8,7 +8,7 @@
 
 ## Local install
 
-First of all, if you're seeing the message `system folder missing` after launching your browser, that most likely means you have cloned the repository and have not built the project.
+First of all, if you're seeing the message `system folder missing` after launching your browser, or cannot find `database.php`, that most likely means you have cloned the repository and have not built the project.  To build the project from a source commit point instead of from an official release check out [Building OSPOS](BUILD.md). Otherwise, continue with the following steps.
 
 1. Download the a [pre-release for a specific branch](https://github.com/opensourcepos/opensourcepos/packages/1047637) or the latest stable [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
