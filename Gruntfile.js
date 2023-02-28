@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'app/Database/database.sql': ['app/Database/tables.sql', 'app/Database/constraints.sql'],
-					'app/Database/migrate_phppos_dist.sql': ['app/Database/tables.sql', 'app/Database/phppos_migrate.sql', 'database/constraints.sql']
+					'app/Database/migrate_phppos_dist.sql': ['app/Database/tables.sql', 'app/Database/Migrations/sqlscripts/pre-3.0.2/phppos_migrate.sql', 'database/constraints.sql']
 				}
 			}
 		},
