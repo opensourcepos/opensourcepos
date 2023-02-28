@@ -21,7 +21,6 @@ class Expenses extends Secure_Controller
 
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$data['table_headers'] = get_expenses_manage_table_headers();
 
 		// filters that will be loaded in the multiselect dropdown

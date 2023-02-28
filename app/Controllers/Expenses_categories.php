@@ -18,7 +18,6 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 	public function getIndex(): void
 	{
-		helper('tabular');
 		$data['table_headers'] = get_expense_category_manage_table_headers();
 
 		 echo view('expenses_categories/manage', $data);
