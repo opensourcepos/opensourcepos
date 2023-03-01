@@ -593,14 +593,14 @@ function valid_decimal(string $decimal): bool	//TODO: need a better name for $de
 
 function encode_array(array $data): array
 {
-	array_walk($data, function(&$value, &$key) { $value = rawurlencode($value);});
+	array_walk($data, function(&$value, $key) { $value = rawurlencode($value);});
 
 	return $data;
 }
 
 function decode_array(array $data): array
 {
-	array_walk($data, function(&$value, &$key) { $value = rawurldecode($value);});
+	array_walk($data, function(&$value, $key) { $value = rawurldecode($value);});
 
 	return $data;
 }

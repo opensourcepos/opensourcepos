@@ -26,10 +26,16 @@ class Sms_lib
 	public function sendSMS(int $phone, string $message): bool
 	{
 		$config = config('OSPOS')->settings;
+
 		$encrypter = Services::encrypter();
 
+		$password = $config['msg_pwd'];
+		if(!empty($password))
+		{
+			$password = $encrypter->decrypt($password);
+		}
+
 		$username = $config['msg_uid'];
-		$password = $encrypter->decrypt($config['msg_pwd']);
 		$originator = $config['msg_src'];
 
 		$response = FALSE;

@@ -15,9 +15,10 @@ class Home extends Secure_Controller
 		echo view('home/home');
 	}
 
-	public function getLogout(): void
+	public function getLogout(): \CodeIgniter\HTTP\RedirectResponse
 	{
 		$this->employee->logout();
+		return redirect()->to('login');
 	}
 
 	/**
