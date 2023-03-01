@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 				'vendor/**',
 				'app/**',
 				'!/tests',
-				'!/grunt045',
+				'!grunt045**',
 				'!/public/images/menubar/png/',
 				'!/public/dist/bootswatch/',
 				'/public/dist/bootswatch/*/*.css',

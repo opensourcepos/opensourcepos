@@ -283,8 +283,25 @@ class Config extends Secure_Controller
 		{
 			$encrypter = Services::encrypter();
 
-			$data['mailchimp']['api_key'] = $encrypter->decrypt($this->config['mailchimp_api_key'] ?? '');
-			$data['mailchimp']['list_id'] = $encrypter->decrypt($this->config['mailchimp_list_id'] ?? '');
+			$mailchimp_api_key = $this->config['mailchimp_api_key'];
+			if(!empty($mailchimp_api_key))
+			{
+				$data['mailchimp']['api_key'] = $encrypter->decrypt($mailchimp_api_key);
+			}
+			else
+			{
+				$data['mailchimp']['api_key'] = '';
+			}
+
+			$mailchimp_list_id = $this->config['mailchimp_list_id'];
+			if(!empty($mailchimp_list_id))
+			{
+				$data['mailchimp']['list_id'] = $encrypter->decrypt($mailchimp_list_id);
+			}
+			else
+			{
+				$data['mailchimp']['list_id'] = '';
+			}
 		}
 		else
 		{
