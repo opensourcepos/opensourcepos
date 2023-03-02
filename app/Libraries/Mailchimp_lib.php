@@ -41,9 +41,14 @@ class MailchimpConnector
 
 		$encrypter = Services::encrypter();
 
-		$this->_api_key = empty($api_key)
-			? $encrypter->decrypt($config['mailchimp_api_key'])	//TODO: Hungarian notation
-			: $api_key;	//TODO: Hungarian notation
+		$mailchimp_api_key = $config['mailchimp_api_key'];
+
+		if(!empty($mailchimp_api_key))
+		{
+			$this->_api_key = empty($api_key)
+				? $encrypter->decrypt($mailchimp_api_key)	//TODO: Hungarian notation
+				: $api_key;	//TODO: Hungarian notation
+		}
 
 		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{

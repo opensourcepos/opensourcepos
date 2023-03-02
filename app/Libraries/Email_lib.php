@@ -25,8 +25,14 @@ class Email_lib
 	{
 		$this->email = new Email();
 		$this->config = config('OSPOS')->settings;
+
 		$encrypter = Services::encrypter();
 		
+		$smtp_pass = $this->config['smtp_pass'];
+		if(!empty($smtp_pass))
+		{
+			$smtp_pass = $encrypter->decrypt($smtp_pass);
+		}
 		
 		$email_config = [
 			'mailtype' => 'html',
@@ -36,7 +42,7 @@ class Email_lib
 			'mailpath' => $this->config['mailpath'],
 			'smtp_host' => $this->config['smtp_host'],
 			'smtp_user' => $this->config['smtp_user'],
-			'smtp_pass' => $encrypter->decrypt($this->config['smtp_pass']),
+			'smtp_pass' => $smtp_pass,
 			'smtp_port' => $this->config['smtp_port'],
 			'smtp_timeout' => $this->config['smtp_timeout'],
 			'smtp_crypto' => $this->config['smtp_crypto']
