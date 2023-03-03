@@ -408,7 +408,7 @@ class Employee extends Person
 	/**
 	 * Logs out a user by destroying all session data and redirect to log in
 	 */
-	public function logout()
+	public function logout(): void
 	{
 		session()->destroy();
 	}
