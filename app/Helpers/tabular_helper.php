@@ -94,7 +94,7 @@ function get_sales_manage_table_headers(): string
 function get_sale_data_row(object $sale): array
 {
 	$uri = current_url(true);
-	$controller_name = $uri->getSegment(1);
+	$controller = $uri->getSegment(1);
 
 	$row = [
 		'sale_id' => $sale->sale_id,
@@ -114,25 +114,25 @@ function get_sale_data_row(object $sale): array
 		$row['invoice'] = empty($sale->invoice_number)
 			? ''
 			: anchor(
-				$controller_name."/invoice/$sale->sale_id",
+				"$controller/invoice/$sale->sale_id",
 				'<span class="glyphicon glyphicon-list-alt"></span>',
 				['title'=>lang('Sales.show_invoice')]
 			);
 	}
 
 	$row['receipt'] = anchor(
-		$controller_name."/receipt/$sale->sale_id",
+		"$controller/receipt/$sale->sale_id",
 		'<span class="glyphicon glyphicon-usd"></span>',
 		['title' => lang('Sales.show_receipt')]
 	);
 	$row['edit'] = anchor(
-		$controller_name."/edit/$sale->sale_id",
+		"$controller/edit/$sale->sale_id",
 		'<span class="glyphicon glyphicon-edit"></span>',
 		[
 			'class' => 'modal-dlg print_hide',
 			'data-btn-delete' => lang('Common.delete'),
 			'data-btn-submit' => lang('Common.submit'),
-			'title' => lang($controller_name . '.update')
+			'title' => lang("$controller.update")
 		]
 	);
 
@@ -217,8 +217,7 @@ function get_people_manage_table_headers(): string
  */
 function get_person_data_row(object $person): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'people.person_id' => $person->person_id,
@@ -238,12 +237,12 @@ function get_person_data_row(object $person): array
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$person->person_id",	//TODO: String interpolation
+			"$controller/view/$person->person_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 					'class' => 'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
-					'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+					'title'=>lang($controller . '.update')	//TODO: String interpolation
 			]
 		)
 	];
@@ -282,8 +281,7 @@ function get_customer_manage_table_headers(): string
  */
 function get_customer_data_row(object $person, object $stats): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'people.person_id' => $person->person_id,
@@ -295,7 +293,7 @@ function get_customer_data_row(object $person, object $stats): array
 		'messages' => empty($person->phone_number)
 			? ''
 			: anchor(
-				"Messages/view/$person->person_id",	//TODO: String interpolation
+				"Messages/view/$person->person_id",
 				'<span class="glyphicon glyphicon-phone"></span>',
 				[
 					'class' => 'modal-dlg',
@@ -304,12 +302,12 @@ function get_customer_data_row(object $person, object $stats): array
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$person->person_id",	//TODO: String interpolation
+			"$controller/view/$person->person_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -350,8 +348,7 @@ function get_suppliers_manage_table_headers(): string
  */
 function get_supplier_data_row(object $supplier): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'people.person_id' => $supplier->person_id,
@@ -374,12 +371,12 @@ function get_supplier_data_row(object $supplier): array
 				]
 			),
 		'edit' => anchor(
-			$controller_name."/view/$supplier->person_id",	//TODO: String interpolation
+			"$controller/view/$supplier->person_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class'=>"modal-dlg",
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -469,8 +466,7 @@ function get_item_data_row(object $item): array
 		$tax_percents = !$tax_percents ? '-' : $tax_percents;
 	}
 
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	$image = NULL;
 	if($item->pic_filename != '')	//TODO: !== ?
@@ -515,29 +511,29 @@ function get_item_data_row(object $item): array
 
 	$icons = [
 		'inventory' => anchor(
-			$controller_name."/inventory/$item->item_id",	//TODO: String interpolation
+			"$controller/inventory/$item->item_id",
 			'<span class="glyphicon glyphicon-pushpin"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang($controller_name . '.count')	//TODO: String interpolation
+				'title' => lang("$controller.count")
 			]
 		),
 		'stock' => anchor(
-			$controller_name."/count_details/$item->item_id",	//TODO: String interpolation
+			"$controller/countDetails/$item->item_id",
 			'<span class="glyphicon glyphicon-list-alt"></span>',
 			[
 				'class' => 'modal-dlg',
-				'title' => lang($controller_name . '.details_count')	//TODO: String interpolation
+				'title' => lang("$controller.details_count")
 			]
 		),
 		'edit' => anchor(
-			$controller_name."/view/$item->item_id",	//TODO: String interpolation
+			"$controller/view/$item->item_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang($controller_name . '.update')	//TODO: String interpolation
+				'title' => lang("$controller.update")
 			]
 		)
 	];
@@ -566,9 +562,7 @@ function get_giftcards_manage_table_headers(): string
  */
 function get_giftcard_data_row(object $giftcard): array
 {
-
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'giftcard_id' => $giftcard->giftcard_id,
@@ -577,12 +571,12 @@ function get_giftcard_data_row(object $giftcard): array
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor(
-			$controller_name."/view/$giftcard->giftcard_id",	//TODO: String interpolation
+			"$controller/view/$giftcard->giftcard_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -610,9 +604,7 @@ function get_item_kits_manage_table_headers(): string
  */
 function get_item_kit_data_row(object $item_kit): array
 {
-
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'item_kit_id' => $item_kit->item_kit_id,
@@ -622,12 +614,12 @@ function get_item_kit_data_row(object $item_kit): array
 		'total_cost_price' => to_currency($item_kit->total_cost_price),
 		'total_unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor(
-			$controller_name."/view/$item_kit->item_kit_id",	//TODO: String interpolation
+			"$controller/view/$item_kit->item_kit_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -691,8 +683,7 @@ function get_attribute_definition_data_row(object $attribute): array
 {
 
 	$attribute = model('Attribute');
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	if(count($attribute->definition_flags) == 0)	//TODO: === ?
 	{
@@ -714,12 +705,12 @@ function get_attribute_definition_data_row(object $attribute): array
 		'definition_group' => $attribute->definition_group,
 		'definition_flags' => $definition_flags,
 		'edit' => anchor(
-			"$controller_name/view/$attribute->definition_id",
+			"$controller/view/$attribute->definition_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -744,20 +735,19 @@ function get_expense_category_manage_table_headers(): string
  */
 function get_expense_category_data_row(object $expense_category): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'expense_category_id' => $expense_category->expense_category_id,
 		'category_name' => $expense_category->category_name,
 		'category_description' => $expense_category->category_description,
 		'edit' => anchor(
-			$controller_name."/view/$expense_category->expense_category_id",	//TODO: String interpolation
+			"$controller/view/$expense_category->expense_category_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -790,8 +780,7 @@ function get_expenses_manage_table_headers(): string
  */
 function get_expenses_data_row(object $expense): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'expense_id' => $expense->expense_id,
@@ -805,12 +794,12 @@ function get_expenses_data_row(object $expense): array
 		'description' => $expense->description,
 		'created_by' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor(
-			$controller_name."/view/$expense->expense_id",
+			"$controller/view/$expense->expense_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
@@ -887,8 +876,7 @@ function get_cashups_manage_table_headers(): string
  */
 function get_cash_up_data_row(object $cash_up): array
 {
-	$router = service('router');
-	$controller_name = strtolower($router->controllerName());
+	$controller = get_controller();
 
 	return [
 		'cashup_id' => $cash_up->cashup_id,
@@ -905,13 +893,25 @@ function get_cash_up_data_row(object $cash_up): array
 		'closed_amount_check' => to_currency($cash_up->closed_amount_check),
 		'closed_amount_total' => to_currency($cash_up->closed_amount_total),
 		'edit' => anchor(
-			$controller_name."/view/$cash_up->cashup_id",
+			"$controller/view/$cash_up->cashup_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller_name . '.update')
+				'title'=>lang("$controller.update")
 			]
 		)
 	];
+}
+
+/**
+ * Returns the right-most part of the controller name
+ * @return string
+ */
+function get_controller(): string
+{
+	$router = service('router');
+	$controller_name = strtolower($router->controllerName());
+	$controller_name_parts = explode('\\', $controller_name);
+	return end($controller_name_parts);
 }

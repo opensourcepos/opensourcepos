@@ -109,11 +109,11 @@ class Tax_category extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save_value(array &$tax_category_data, bool $tax_category_id = FALSE): bool
+	public function save_value(array &$tax_category_data, int $tax_category_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_categories');
 
-		if(!$tax_category_id || !$this->exists($tax_category_id))
+		if($tax_category_id == NEW_ENTRY || !$this->exists($tax_category_id))
 		{
 			if($builder->insert($tax_category_data))
 			{
@@ -150,7 +150,7 @@ class Tax_category extends Model
 
 			$this->save_value($tax_category_data, $value['tax_category_id']);
 
-			if($value['tax_category_id'] == -1)	//TODO: -1 should be converted into a constant for code readability.  Perhaps NO_TAX_CATEGORY?
+			if($value['tax_category_id'] == NEW_ENTRY)
 			{
 				$not_to_delete[] = $tax_category_data['tax_category_id'];
 			}
@@ -200,7 +200,7 @@ class Tax_category extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'tax_category', 'asc', TRUE);
 	}
@@ -208,8 +208,15 @@ class Tax_category extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_category', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'tax_category';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('tax_categories AS tax_categories');
 
 		// get_found_rows case
@@ -263,7 +270,7 @@ class Tax_category extends Model
 	{
 		return [
 			'0' => [
-				'tax_category_id' => -1,	//TODO: This should probably be a Constant instead of -1
+				'tax_category_id' => NEW_ENTRY,
 				'tax_category' => '',
 				'tax_group_sequence' => '',
 				'deleted' => ''

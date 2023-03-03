@@ -30,7 +30,7 @@ class Messages extends Secure_Controller
 		echo view('messages/sms');
 	}
 
-	public function view(int $person_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $person_id = NEW_ENTRY): void
 	{ 
 		$info = $this->person->get_info($person_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -65,7 +65,7 @@ class Messages extends Secure_Controller
 	 * @param int $person_id
 	 * @return void
 	 */
-	public function send_form(int $person_id = -1): void	//TODO: Replace -1 with a constant
+	public function send_form(int $person_id = NEW_ENTRY): void
 	{	
 		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_STRING);
 		$message = $this->request->getPost('message', FILTER_SANITIZE_STRING);
@@ -77,7 +77,7 @@ class Messages extends Secure_Controller
 			echo json_encode ([
 				'success' => TRUE,
 				'message' => lang('Messages.successfully_sent') . ' ' . esc($phone),
-				'person_id' => $person_id	//TODO: Replace -1 with a constant
+				'person_id' => $person_id
 			]);
 		}
 		else
@@ -85,7 +85,7 @@ class Messages extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone),
-				'person_id' => -1	//TODO: Replace -1 with a constant
+				'person_id' => NEW_ENTRY
 			]);
 		}
 	}

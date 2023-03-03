@@ -26,13 +26,13 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	/*
 	Returns expense_category_manage table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense_category->get_found_rows($search);
@@ -46,21 +46,21 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_expense_category_data_row($this->expense_category->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $expense_category_id = NEW_ENTRY): void
 	{
 		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
 
 		echo view("expenses_categories/form", $data);
 	}
 
-	public function save(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $expense_category_id = NEW_ENTRY): void
 	{
 		$expense_category_data = [
 			'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_STRING),
@@ -70,7 +70,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
 		{
 			// New expense_category
-			if($expense_category_id == -1)	//TODO: Replace -1 with a constant.
+			if($expense_category_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -88,16 +88,16 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			}
 		}
 		else//failure
-		{//TODO: need to replace -1 for a constant
+		{
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

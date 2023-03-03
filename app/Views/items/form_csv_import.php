@@ -4,7 +4,7 @@
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?php echo site_url('items/generate_csv_file') ?>"><?php echo lang('Common.download_import_template') ?></a>
+				<a href="<?php echo 'items/generate_csv_file' ?>"><?php echo lang('Common.download_import_template') ?></a>
 			</div>
 		</div>
 
@@ -30,7 +30,7 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url('items') ?>', response);
+					table_support.handle_submit('<?php echo 'items' ?>', response);
 				},
 				dataType: 'json'
 			});

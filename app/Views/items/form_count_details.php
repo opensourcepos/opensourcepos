@@ -20,7 +20,7 @@ use App\Models\Employee;
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->item_number, 'attr')
+						'value' => esc($item_info->item_number)
 					]) ?>
 				</div>
 			</div>
@@ -34,7 +34,7 @@ use App\Models\Employee;
 					'id' => 'name',
 					'class' => 'form-control input-sm',
 					'disabled' => '',
-					'value' => esc($item_info->name, 'attr')
+					'value' => esc($item_info->name)
 				]) ?>
 			</div>
 		</div>
@@ -49,7 +49,7 @@ use App\Models\Employee;
 						'id' => 'category',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->category, 'attr')
+						'value' => esc($item_info->category)
 					]) ?>
 				</div>
 			</div>
@@ -58,7 +58,7 @@ use App\Models\Employee;
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', esc($stock_locations, 'attr'), current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('stock_location', esc($stock_locations), current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 

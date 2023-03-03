@@ -19,7 +19,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['tax_id'], 'attr')
+						'value' => esc($config['tax_id'])
 					]) ?>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 						'name' => 'default_tax_1_name',
 						'id' => 'default_tax_1_name',
 						'class' => 'form-control input-sm',
-						'value' => $config['default_tax_1_name'] !== FALSE ? esc($config['default_tax_1_name'], 'attr') : lang('Items.sales_tax_1')]) ?>
+						'value' => $config['default_tax_1_name'] !== FALSE ? esc($config['default_tax_1_name']) : lang('Items.sales_tax_1')]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input ([
@@ -63,7 +63,7 @@
 						'name' => 'default_tax_2_name',
 						'id' => 'default_tax_2_name',
 						'class' => 'form-control input-sm',
-						'value' => $config['default_tax_2_name'] !== FALSE ? esc($config['default_tax_2_name'], 'attr') : lang('Items.sales_tax_2')
+						'value' => $config['default_tax_2_name'] !== FALSE ? esc($config['default_tax_2_name']) : lang('Items.sales_tax_2')
 					]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
@@ -92,21 +92,21 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_code', esc($tax_code_options, 'attr'), esc($config['default_tax_code'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_code', esc($tax_code_options), esc($config['default_tax_code']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_category', esc($tax_category_options, 'attr'), esc($config['default_tax_category'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_category', esc($tax_category_options), esc($config['default_tax_category']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options, 'attr'), esc($config['default_tax_jurisdiction'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options), esc($config['default_tax_jurisdiction']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -159,11 +159,11 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			default_tax2_rate:
 			{
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 		},
 

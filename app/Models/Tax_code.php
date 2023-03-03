@@ -48,15 +48,18 @@ class Tax_code extends Model
 	/**
 	 * Gets information about the particular record
 	 */
-	public function get_info(int $tax_code_id): object
+	public function get_info(?int $tax_code_id): object
 	{
-		$builder = $this->db->table('tax_codes');
+		if($tax_code_id != null)
+		{
+			$builder = $this->db->table('tax_codes');
 
-		$builder->where('tax_code_id', $tax_code_id);
-		$builder->where('deleted', 0);
-		$query = $builder->get();
+			$builder->where('tax_code_id', $tax_code_id);
+			$builder->where('deleted', 0);
+			$query = $builder->get();
+		}
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if($tax_code_id != null && $query->getNumRows() === 1)
 		{
 			return $query->getRow();
 		}
@@ -68,7 +71,7 @@ class Tax_code extends Model
 			//Get all the fields from the table
 			foreach($this->db->getFieldNames('tax_codes') as $field)
 			{
-				$tax_code_obj->$field = '';
+				$tax_code_obj->$field = null;
 			}
 			return $tax_code_obj;
 		}
@@ -191,7 +194,7 @@ class Tax_code extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -199,8 +202,15 @@ class Tax_code extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'tax_code_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('tax_codes AS tax_codes');
 
 		// get_found_rows case
@@ -303,7 +313,7 @@ class Tax_code extends Model
 	{
 		return [
 			'0' => [
-				'tax_code_id' => -1,
+				'tax_code_id' => NEW_ENTRY,
 				'tax_code' => '',
 				'tax_code_name' => '',
 				'city' => '',

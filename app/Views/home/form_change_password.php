@@ -20,7 +20,7 @@
 								'name' => 'username',
 								'id' => 'username',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->username, 'attr'),
+								'value' => esc($person_info->username),
 								'readonly' => 'true'
 							]) ?>
 						</div>

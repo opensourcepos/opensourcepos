@@ -55,7 +55,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> $config['address'], 'attr'
+						'value'=> $config['address']
 					]) ?>
 				</div>
 			</div>
@@ -149,7 +149,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo site_url("$controller_name/remove_logo"); ?>',
+			url: '<?php echo "$controller_name/remove_logo"; ?>',
 			dataType: 'json'
 		})
 	});

@@ -31,7 +31,7 @@ class Stock_location extends Model
 
 		$this->session = session();
 	}
-	public function exists(int $location_id = -1): bool	//TODO: Replace -1 with a constant
+	public function exists(int $location_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('stock_locations');
 		$builder->where('location_id', $location_id);

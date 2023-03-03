@@ -122,7 +122,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#customer_rewards").load('<?php echo site_url("config/ajax_customer_rewards") ?>', init_add_remove_tables);
+					$("#customer_rewards").load('<?php echo "config/ajax_customer_rewards" ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});

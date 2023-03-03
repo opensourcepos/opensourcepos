@@ -26,13 +26,13 @@ class Giftcards extends Secure_Controller
 	/*
 	Returns Giftcards table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$giftcards = $this->giftcard->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->giftcard->get_found_rows($search);
@@ -50,9 +50,9 @@ class Giftcards extends Secure_Controller
 	Gives search suggestions based on what is being searched for
 	*/
 
-	public function suggest(): void
+	public function getSuggest(): void
 	{
-		$suggestions = $this->giftcard->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), TRUE);
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -64,14 +64,14 @@ class Giftcards extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_giftcard_data_row($this->giftcard->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $giftcard_id = -1): void	//TODO: Need to replace -1 with a constant
+	public function getView(int $giftcard_id = NEW_ENTRY): void
 	{
 		$config = config('OSPOS')->settings;
 		$giftcard_info = $this->giftcard->get_info($giftcard_id);
@@ -84,7 +84,8 @@ class Giftcards extends Secure_Controller
 		}
 		else
 		{
-			$max_giftnumber = isset($this->giftcard->get_max_number()->giftcard_number) ? $this->Giftcard->get_max_number()->giftcard_number : 0;	//TODO: variable does not follow naming standard.
+			$max_number_obj = $this->giftcard->get_max_number();
+			$max_giftnumber = isset($max_number_obj) ? $this->giftcard->get_max_number()->giftcard_number : 0;	//TODO: variable does not follow naming standard.
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $max_giftnumber + 1;
 		}
 		$data['giftcard_id'] = $giftcard_id;
@@ -93,11 +94,11 @@ class Giftcards extends Secure_Controller
 		echo view("giftcards/form", $data);
 	}
 
-	public function save(int $giftcard_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $giftcard_id = NEW_ENTRY): void
 	{
 		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_STRING);
 
-		if($giftcard_id == -1 && trim($giftcard_number) == '')
+		if($giftcard_id == NEW_ENTRY && trim($giftcard_number) == '')
 		{
 			$giftcard_number = $this->giftcard->generate_unique_giftcard_name($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		}
@@ -112,7 +113,7 @@ class Giftcards extends Secure_Controller
 		if($this->giftcard->save_value($giftcard_data, $giftcard_id))
 		{
 			//New giftcard
-			if($giftcard_id == -1)	//TODO: Constant needed
+			if($giftcard_id == NEW_ENTRY)	//TODO: Constant needed
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -134,7 +135,7 @@ class Giftcards extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Giftcards.error_adding_updating') . ' ' . $giftcard_data['giftcard_number'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -144,13 +145,13 @@ class Giftcards extends Secure_Controller
 	 *
 	 * @return void
 	 */
-	public function ajax_check_number_giftcard(): void
+	public function postCheckNumberGiftcard(): void
 	{
 		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

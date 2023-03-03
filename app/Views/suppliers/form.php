@@ -18,7 +18,7 @@
 					'name' => 'company_name',
 					'id' => 'company_name_input',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->company_name, 'attr')
+					'value' => esc($person_info->company_name)
 					])
 				?>
 			</div>
@@ -38,7 +38,7 @@
 					'name' => 'agency_name',
 					'id' => 'agency_name_input',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->agency_name, 'attr')
+					'value' => esc($person_info->agency_name)
 					])
 				?>
 			</div>
@@ -53,7 +53,7 @@
 					'name' => 'account_number',
 					'id' => 'account_number',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->account_number, 'attr')
+					'value' => esc($person_info->account_number)
 					])
 				?>
 			</div>
@@ -66,7 +66,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc($person_info->tax_id, 'attr')
+						'value' => esc($person_info->tax_id)
 					])
 				?>
 			</div>
@@ -84,7 +84,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

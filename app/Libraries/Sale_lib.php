@@ -418,7 +418,7 @@ class Sale_lib
 	 * @param string $payment_amount
 	 * @param int $cash_adjustment
 	 */
-	public function add_payment(int $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
+	public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
 	{
 		$payments = $this->get_payments();
 		if(isset($payments[$payment_id]))
@@ -807,7 +807,7 @@ class Sale_lib
 		//make sure item exists
 		if(empty($item_info))
 		{
-			$item_id = -1;	//TODO: Replace -1 with constant
+			$item_id = NEW_ENTRY;
 			return FALSE;
 		}
 
@@ -968,6 +968,7 @@ class Sale_lib
 					'tax_category_id' => $item_info->tax_category_id
 				]
 			];
+
 			//add to existing array
 			$items += $item;
 		}
@@ -1052,7 +1053,7 @@ class Sale_lib
 	 * @param string|NULL $discounted_total
 	 * @return bool
 	 */
-	public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, string $discount_type, string $price, string $discounted_total = NULL): bool
+	public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = NULL): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))

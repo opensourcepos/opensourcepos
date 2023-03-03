@@ -19,21 +19,21 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_code_id',esc($tax_code_options, 'attr'), esc($rate_tax_code_id, 'attr'), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_tax_code_id',esc($tax_code_options), esc($rate_tax_code_id), ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_category'), 'rate_tax_category_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_category_id', esc($tax_category_options, 'attr'), esc($rate_tax_category_id, 'attr'), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_tax_category_id', esc($tax_category_options), esc($rate_tax_category_id), ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_jurisdiction'), 'rate_jurisdiction_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_jurisdiction_id', esc($tax_jurisdiction_options, 'attr'), esc($rate_jurisdiction_id, 'attr'), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_jurisdiction_id', esc($tax_jurisdiction_options), esc($rate_jurisdiction_id), ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
@@ -44,7 +44,7 @@
 						'name' => 'tax_rate',
 						'id' => 'tax_rate',
 						'class' => 'form-control input-sm text-uppercase',
-						'value' => esc($tax_rate, 'attr')
+						'value' => esc($tax_rate)
 					])
 				?>
 				<span class="input-group-addon input-sm">%</span>
@@ -55,7 +55,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_rounding'), 'tax_rounding_code', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('tax_rounding_code', esc($rounding_options, 'attr'), esc($tax_rounding_code, 'attr'), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('tax_rounding_code', esc($rounding_options), esc($tax_rounding_code), ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>
@@ -71,7 +71,7 @@
                 $(form).ajaxSubmit({
                     success: function (response) {
                         dialog_support.hide();
-                        table_support.handle_submit('<?php echo site_url('taxes') ?>', response);
+                        table_support.handle_submit('<?php echo'taxes' ?>', response);
                     },
                     dataType: 'json'
                 });

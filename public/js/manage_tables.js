@@ -284,7 +284,7 @@
 
 	var submit_handler = function(url) {
 		return function (resource, response) {
-			var id = response.id;
+			var id = response.id.toString();
 			if (!response.success) {
 				$.notify(response.message, { type: 'danger' });
 			} else {
@@ -292,8 +292,8 @@
 				var selector = rows_selector(response.id);
 				var rows = $(selector.join(",")).length;
 				if (rows > 0 && rows < 15) {
-					var ids = response.id.split(":");
-					$.get([url || resource + '/get_row', id].join("/"), {}, function (response) {
+					var ids = id.split(":");
+					$.get([url || resource + '/row', id].join("/"), {}, function (response) {
 						$.each(selector, function (index, element) {
 							var id = $(element).data('uniqueid');
 							table().updateByUniqueId({id: id, row: response[id] || response});

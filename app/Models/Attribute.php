@@ -150,8 +150,14 @@ class Attribute extends Model
 	/*
 	 Performs a search on attribute definitions
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc'): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'definition.definition_name', ?string $order = 'asc'): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'definition.definition_name';
+		if($order == null) $order = 'asc';
+
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');
 		$builder->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
@@ -187,7 +193,7 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
-	public function get_values_by_definitions(array $definition_ids): array
+	public function get_values_by_definitions(?array $definition_ids): array
 	{
 		if(count($definition_ids ? : []))
 		{
@@ -569,18 +575,21 @@ class Attribute extends Model
 		return $builder->delete($delete_data);
 	}
 
-	public function get_link_value(int $item_id, int $definition_id): object
+	public function get_link_value(int $item_id, ?int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
-		$builder->where('definition_id', $definition_id);
+		if($definition_id != NULL)
+		{
+			$builder->where('definition_id', $definition_id);
+		}
 
 		return $builder->get('attribute_links')->getRowObject();
 	}
 
-	public function get_link_values(int $item_id, string $sale_receiving_fk, int $id, int $definition_flags): ResultInterface
+	public function get_link_values(int $item_id, string $sale_receiving_fk, ?int $id, ?int $definition_flags): ResultInterface
 	{
 		$format = $this->db->escape(dateformat_mysql());
 
@@ -603,7 +612,10 @@ class Attribute extends Model
 			$builder->where('receiving_id', null);
 		}
 
-		$builder->where('definition_flags & ', $definition_flags);
+		if(!empty($id))
+		{
+			$builder->where('definition_flags & ', $definition_flags);
+		}
 
 		return $builder->get();
 	}

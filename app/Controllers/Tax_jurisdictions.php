@@ -29,13 +29,13 @@ class Tax_jurisdictions extends Secure_Controller
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
@@ -49,14 +49,14 @@ class Tax_jurisdictions extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 
 		echo json_encode($data_row);
 	}
 
-	public function view(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $tax_jurisdiction_id = NEW_ENTRY): void
 	{
 		$data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
@@ -64,7 +64,7 @@ class Tax_jurisdictions extends Secure_Controller
 	}
 
 
-	public function save(int $jurisdiction_id = -1): void	//TODO: Replace -1 with constant
+	public function postSave(int $jurisdiction_id = NEW_ENTRY): void
 	{
 		$tax_jurisdiction_data = [
 			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING),
@@ -73,7 +73,7 @@ class Tax_jurisdictions extends Secure_Controller
 
 		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))
 		{
-			if($jurisdiction_id == -1)	//TODO: Replace -1 with constant
+			if($jurisdiction_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -95,12 +95,12 @@ class Tax_jurisdictions extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

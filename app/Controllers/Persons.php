@@ -36,7 +36,7 @@ abstract class Persons extends Secure_Controller
 	/**
 	 * Gets one row for a person manage table. This is called using AJAX to update one row.
 	 */
-	public function get_row(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_person_data_row($this->person->get_info($row_id));
 

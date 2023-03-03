@@ -36,7 +36,7 @@ if(isset($error))
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', esc($discount_type_options, 'attr'), esc($config['default_sales_discount_type'], 'attr'), ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('discount_type', esc($discount_type_options), esc($config['default_sales_discount_type']), ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php
@@ -44,9 +44,9 @@ if(isset($error))
 	?>
 
 	<div class="form-group form-group-sm" id="report_specific_input_data">
-		<?php echo form_label(esc($specific_input_name, 'attr'), 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?php echo form_label(esc($specific_input_name), 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div class="col-xs-3 discount_percent">
-			<?php echo form_dropdown('specific_input_data', esc($specific_input_data, 'attr'), '', 'id="specific_input_data" class="form-control"') ?>
+			<?php echo form_dropdown('specific_input_data', esc($specific_input_data), '', 'id="specific_input_data" class="form-control"') ?>
 		</div>
 
 		<?php	
@@ -70,7 +70,7 @@ if(isset($error))
 	<div class="form-group form-group-sm">
 		<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div id='report_sale_type' class="col-xs-3">
-			<?php echo form_dropdown('sale_type', esc($sale_type_options, 'attr'), 'complete', 'id="input_type" class="form-control"') ?>
+			<?php echo form_dropdown('sale_type', esc($sale_type_options), 'complete', 'id="input_type" class="form-control"') ?>
 		</div>
 	</div>
 

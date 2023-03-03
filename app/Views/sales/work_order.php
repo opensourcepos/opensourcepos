@@ -32,7 +32,7 @@ if(isset($error_message))
 		{
 			var send_email = function()
 			{
-				$.get('<?php echo esc(site_url("/sales/send_pdf/$sale_id_num/work_order")) ?>',
+				$.get('<?php echo esc("/sales/send_pdf/$sale_id_num/work_order") ?>',
 					function(response)
 					{
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )

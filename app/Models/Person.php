@@ -92,16 +92,38 @@ class Person extends Model
 		}
 		else
 		{
-			//create object with empty properties.
-			$person_obj = new stdClass();
-
-			foreach($this->db->getFieldNames('people') as $field)
-			{
-				$person_obj->$field = '';
-			}
-
-			return $person_obj;
+			return $this->getEmptyObject('people');
 		}
+	}
+
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
 	}
 
 	/**
@@ -126,11 +148,11 @@ class Person extends Model
 	 * @param bool $person_id identifier of the person to update the information
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
-	public function save_value(array &$person_data, bool $person_id = FALSE): bool
+	public function save_value(array &$person_data, int $person_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('people');
 
-		if(!$person_id || !$this->exists($person_id))
+		if($person_id == NEW_ENTRY || !$this->exists($person_id))
 		{
 			if($builder->insert($person_data))
 			{
