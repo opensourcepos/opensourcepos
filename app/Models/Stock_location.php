@@ -107,7 +107,7 @@ class Stock_location extends Model
 		$builder->where('deleted', 0);
 		$builder->limit(1);
 
-		return $builder->get()->getRow()->location_id;
+		return $builder->get()->getRow()->location_id;	//TODO: this is puking. Trying to get property 'location_id' of non-object
 	}
 
 	public function get_location_name(int $location_id): string
