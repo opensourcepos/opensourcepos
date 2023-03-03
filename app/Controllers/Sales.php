@@ -56,6 +56,9 @@ class Sales extends Secure_Controller
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
 		$this->config = config('OSPOS')->settings;
+
+		$this->customer = model('Customer');
+		$this->sale = model('Sale');
 		$this->stock_location = model('Stock_location');
 	}
 
@@ -65,7 +68,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian Notation
 	}
 
-	public function manage(): void
+	public function getManage(): void
 	{
 		$person_id = $this->session->get('person_id');
 
@@ -169,9 +172,9 @@ class Sales extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function select_customer(): void
+	public function postSelect_customer(): void
 	{
-		$customer_id = $this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
+		$customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
 		if($this->customer->exists($customer_id))
 		{
 			$this->sale_lib->set_customer($customer_id);
@@ -188,7 +191,7 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function change_mode(): void
+	public function postChange_mode(): void
 	{
 		$mode = $this->request->getPost('mode', FILTER_SANITIZE_STRING);
 		$this->sale_lib->set_mode($mode);
@@ -451,7 +454,7 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
-	public function add(): void
+	public function postAdd(): void
 	{
 		$data = [];
 
