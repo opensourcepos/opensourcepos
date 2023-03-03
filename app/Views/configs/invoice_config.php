@@ -25,7 +25,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.invoice_type'), 'invoice_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-3'>
-					<?php echo form_dropdown('invoice_type', esc($invoice_type_options, 'attr'), esc($config['invoice_type'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('invoice_type', esc($invoice_type_options), esc($config['invoice_type']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -36,7 +36,7 @@
 						'name' => 'recv_invoice_format',
 						'id' => 'recv_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['recv_invoice_format'], 'attr')
+						'value' => esc($config['recv_invoice_format'])
 					]) ?>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 						'name' => 'invoice_default_comments',
 						'id' => 'invoice_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['invoice_default_comments'], 'attr')
+						'value' => esc($config['invoice_default_comments'])
 					]) ?>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 						'name' => 'invoice_email_message',
 						'id' => 'invoice_email_message',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['invoice_email_message'], 'attr')
+						'value' => esc($config['invoice_email_message'])
 					]) ?>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.line_sequence'), 'line_sequence', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('line_sequence', esc($line_sequence_options, 'attr'), esc($config['line_sequence'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('line_sequence', esc($line_sequence_options), esc($config['line_sequence']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -79,7 +79,7 @@
 						'name' => 'sales_invoice_format',
 						'id' => 'sales_invoice_format',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['sales_invoice_format'], 'attr')
+						'value' => esc($config['sales_invoice_format'])
 					]) ?>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 						'name' => 'sales_quote_format',
 						'id' => 'sales_quote_format',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['sales_quote_format'], 'attr')
+						'value' => esc($config['sales_quote_format'])
 					]) ?>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 						'name' => 'quote_default_comments',
 						'id' => 'quote_default_comments',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['quote_default_comments'], 'attr')
+						'value' => esc($config['quote_default_comments'])
 					]) ?>
 				</div>
 			</div>
@@ -153,7 +153,7 @@
 						'name' => 'work_order_format',
 						'id' => 'work_order_format',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['work_order_format'], 'attr')
+						'value' => esc($config['work_order_format'])
 					]) ?>
 				</div>
 			</div>

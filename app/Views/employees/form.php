@@ -42,7 +42,7 @@
 								'name' => 'username',
 								'id' => 'username',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->username, 'attr')
+								'value' => esc($person_info->username)
 							]) ?>
 						</div>
 					</div>
@@ -51,7 +51,7 @@
 				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']), 'attr'))?>
+					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])))?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -65,7 +65,7 @@
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']), 'attr')) ?>
+				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']))) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
@@ -97,8 +97,8 @@
 								
 								echo form_dropdown(
 									'language',
-									esc($languages, 'attr'),
-									esc("$language_code:$language", 'attr'),
+									esc($languages),
+									esc("$language_code:$language"),
 									['class' => 'form-control input-sm']
 									);
 							?>
@@ -209,7 +209,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -226,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo esc(site_url("$controller_name/check_username/$employee_id"), 'url') ?>'
+				remote: '<?php echo esc("$controller_name/check_username/$employee_id") ?>'
 			},
 			password:
 			{

@@ -22,7 +22,7 @@
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->item_number, 'attr')
+						'value' => esc($item_info->item_number)
 					]) ?>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 					'id' => 'name',
 					'class' => 'form-control input-sm',
 					'disabled' => '',
-					'value' => esc($item_info->name, 'attr')
+					'value' => esc($item_info->name)
 				]) ?>
 			</div>
 		</div>
@@ -51,7 +51,7 @@
 							'id' => 'category',
 							'class' => 'form-control input-sm',
 							'disabled' => '',
-							'value' => esc($item_info->category, 'attr')
+							'value' => esc($item_info->category)
 					]) ?>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', esc($stock_locations, 'attr'), current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('stock_location', esc($stock_locations), current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 
@@ -111,7 +111,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

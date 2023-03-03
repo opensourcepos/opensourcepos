@@ -34,7 +34,7 @@ $(document).ready(function()
 {
 	var send_email = function()
 	{
-		$.get('<?php echo esc(site_url("/sales/send_pdf/$sale_id_num"), 'url') ?>',
+		$.get('<?php echo esc("/sales/send_pdf/$sale_id_num") ?>',
 			function(response)
 			{
 				$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -262,7 +262,7 @@ $(document).ready(function()
 			<div style='padding:2%;'><?php echo nl2br(esc($config['return_policy'])) ?></div>
 		</div>
 		<div id='barcode'>
-			<img style='padding-top:4%;' alt='<?php echo esc($barcode, 'attr') ?>' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
+			<img style='padding-top:4%;' alt='<?php echo esc($barcode) ?>' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

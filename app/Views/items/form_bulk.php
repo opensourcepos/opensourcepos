@@ -40,7 +40,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', esc($suppliers, 'attr'), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('supplier_id', esc($suppliers), '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
@@ -89,7 +89,7 @@
 					'name' => 'tax_names[]',
 					'id' => 'tax_name_1',
 					'class' => 'form-control input-sm',
-					'value' => esc($config['default_tax_1_name'], 'attr')
+					'value' => esc($config['default_tax_1_name'])
 				]) ?>
 			</div>
 			<div class="col-xs-4">
@@ -112,7 +112,7 @@
 					'name' => 'tax_names[]',
 					'id' => 'tax_name_2',
 					'class' => 'form-control input-sm',
-					'value' => esc($config['default_tax_2_name'], 'attr')
+					'value' => esc($config['default_tax_2_name'])
 				]) ?>
 			</div>
 			<div class="col-xs-4">
@@ -153,14 +153,14 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('allow_alt_description', esc($allow_alt_description_choices, 'attr'), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('allow_alt_description', esc($allow_alt_description_choices), '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('is_serialized', esc($serialization_choices, 'attr'), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('is_serialized', esc($serialization_choices), '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 	</fieldset>
@@ -171,7 +171,7 @@
 $(document).ready(function()
 {
 	$('#category').autocomplete({
-		source: "<?php echo site_url('items/suggest_category') ?>",
+		source: "<?php echo 'items/suggest_category' ?>",
 		appendTo: '.modal-content',
 		delay: 10
 	});
@@ -195,7 +195,7 @@ $(document).ready(function()
 					success: function(response)
 					{
 						dialog_support.hide();
-						table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+						table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 					},
 					dataType: 'json'
 				});

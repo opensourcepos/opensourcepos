@@ -50,8 +50,8 @@ $(document).ready(function()
 
     table_support.init({
         employee_id: <?php echo $employee->get_logged_in_employee_info()->person_id ?>,
-        resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
-        headers: <?php echo esc($table_headers, 'js') ?>,
+        resource: '<?php echo esc($controller_name) ?>',
+        headers: <?php echo $table_headers ?>,
         pageSize: <?php echo $config['lines_per_page'] ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {
@@ -73,12 +73,12 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar print_hide">
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/csv_import"), 'url') ?>'
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csvImport" ?>'
             title='<?php echo lang('Items.import_items_csv') ?>'>
         <span class="glyphicon glyphicon-import">&nbsp;</span><?php echo lang('Common.import_csv') ?>
     </button>
 
-    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo lang('Common.new') ?>' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/view"), 'url') ?>'
+    <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new='<?php echo lang('Common.new') ?>' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/view" ?>'
             title='<?php echo lang("$controller_name.new") ?>'>
         <span class="glyphicon glyphicon-tag">&nbsp;</span><?php echo lang("$controller_name.new") ?>
     </button>
@@ -89,17 +89,17 @@ $(document).ready(function()
         <button id="delete" class="btn btn-default btn-sm print_hide">
             <span class="glyphicon glyphicon-trash">&nbsp;</span><?php echo lang('Common.delete') ?>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/bulk_edit"), 'url') ?>'
+        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/bulk_edit" ?>'
 				title='<?php echo lang('Items.edit_multiple_items') ?>'>
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?php echo lang('Items.bulk_edit') ?>
         </button>
-        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo esc(site_url("$controller_name/generate_barcodes"), 'url') ?>' title='<?php echo lang('Items.generate_barcodes') ?>'>
+        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?php echo "$controller_name/generate_barcodes" ?>' title='<?php echo lang('Items.generate_barcodes') ?>'>
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?php echo lang('Items.generate_barcodes') ?>
         </button>
         <?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?php echo form_multiselect(
 			'filters[]',
-			esc($filters, 'attr'),
+			esc($filters),
 			[''],
 			[
 				'id' => 'filters',
@@ -114,7 +114,7 @@ $(document).ready(function()
         {
             echo form_dropdown(
 			'stock_location',
-				esc($stock_locations, 'attr'),
+				esc($stock_locations),
 				$stock_location,
 				[
 					'id' => 'stock_location',

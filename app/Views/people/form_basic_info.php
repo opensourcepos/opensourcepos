@@ -10,7 +10,7 @@
 			'name' => 'first_name',
 			'id' => 'first_name',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->first_name, 'attr')
+			'value' => esc($person_info->first_name)
 		]) ?>
 	</div>
 </div>
@@ -22,7 +22,7 @@
 			'name' => 'last_name',
 			'id' => 'last_name',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->last_name, 'attr')
+			'value' => esc($person_info->last_name)
 		]) ?>
 	</div>
 </div>
@@ -61,7 +61,7 @@
 				'name' => 'email',
 				'id' => 'email',
 				'class' => 'form-control input-sm',
-				'value' => esc($person_info->email, 'attr')
+				'value' => esc($person_info->email)
 			]) ?>
 		</div>
 	</div>
@@ -76,7 +76,7 @@
 				'name' => 'phone_number',
 				'id' => 'phone_number',
 				'class' => 'form-control input-sm',
-				'value' => esc($person_info->phone_number, 'attr')
+				'value' => esc($person_info->phone_number)
 			]) ?>
 		</div>
 	</div>
@@ -89,7 +89,7 @@
 			'name' => 'address_1',
 			'id' => 'address_1',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->address_1, 'attr')
+			'value' => esc($person_info->address_1)
 		]) ?>
 	</div>
 </div>
@@ -101,7 +101,7 @@
 			'name' => 'address_2',
 			'id' => 'address_2',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->address_2, 'attr')
+			'value' => esc($person_info->address_2)
 		]) ?>
 	</div>
 </div>
@@ -113,7 +113,7 @@
 			'name' => 'city',
 			'id' => 'city',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->city, 'attr')
+			'value' => esc($person_info->city)
 		]) ?>
 	</div>
 </div>
@@ -125,7 +125,7 @@
 			'name' => 'state',
 			'id' => 'state',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->state, 'attr')
+			'value' => esc($person_info->state)
 		]) ?>
 	</div>
 </div>
@@ -137,7 +137,7 @@
 			'name' => 'zip',
 			'id' => 'postcode',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->zip, 'attr')
+			'value' => esc($person_info->zip)
 		]) ?>
 	</div>
 </div>
@@ -149,7 +149,7 @@
 			'name' => 'country',
 			'id' => 'country',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->country, 'attr')
+			'value' => esc($person_info->country)
 		]) ?>
 	</div>
 </div>
@@ -161,7 +161,7 @@
 			'name' => 'comments',
 			'id' => 'comments',
 			'class' => 'form-control input-sm',
-			'value' => esc($person_info->comments, 'attr')
+			'value' => esc($person_info->comments)
 		]) ?>
 	</div>
 </div>

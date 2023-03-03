@@ -72,7 +72,7 @@ class Token_lib
 		return $token_tree;
 	}
 
-	public function parse_barcode(string &$quantity, string &$price,  string &$item_id_or_number_or_item_kit_or_receipt): void
+	public function parse_barcode(?string &$quantity, ?string &$price,  ?string &$item_id_or_number_or_item_kit_or_receipt): void
 	{
 		$config = config('OSPOS')->settings;
 		$barcode_formats = json_decode($config['barcode_formats']);

@@ -33,7 +33,7 @@ class Item_lib
 		return $this->session->get('item_location');
 	}
 
-	public function set_item_location(string $location): void
+	public function set_item_location(?string $location): void
 	{
 		$this->session->set('item_location',$location);
 	}

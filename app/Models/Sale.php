@@ -118,7 +118,7 @@ class Sale extends Model
 	/**
 	 * Get number of rows for the takings (sales/manage) view
 	 */
-	public function get_found_rows(string $search, array $filters): ResultInterface
+	public function get_found_rows(string $search, array $filters): int
 	{
 		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
@@ -126,8 +126,15 @@ class Sale extends Model
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'sales.sale_time';
+		if($order == null) $order = 'desc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 
 		// Pick up only non-suspended records
@@ -585,7 +592,7 @@ class Sale extends Model
 				$cash_adjustment = $payment['cash_adjustment'];
 				$employee_id = $payment['employee_id'];
 
-				if($payment_id == -1 && $payment_amount != 0)
+				if($payment_id == NEW_ENTRY && $payment_amount != 0)
 				{
 					// Add a new payment transaction
 					$sales_payments_data = [
@@ -598,7 +605,7 @@ class Sale extends Model
 					];
 					$success = $builder->insert($sales_payments_data);
 				}
-				elseif($payment_id != -1)
+				elseif($payment_id != NEW_ENTRY)
 				{
 					if($payment_amount != 0)
 					{
@@ -644,7 +651,7 @@ class Sale extends Model
 		$item = model(Item::class);
 		$item_quantity = model(Item_quantity::class);
 
-		if($sale_id != -1)
+		if($sale_id != NEW_ENTRY)
 		{
 			$this->clear_suspended_sale_detail($sale_id);
 		}
@@ -674,7 +681,7 @@ class Sale extends Model
 
 		$builder = $this->db->table('sales');
 
-		if($sale_id == -1)	//TODO: I think we have a constant for this and the -1 needs to be replaced with the constant in constants.php... something like NEW_SALE
+		if($sale_id == NEW_ENTRY)
 		{
 			$builder->insert($sales_data);
 			$sale_id = $this->db->insertID();
@@ -788,7 +795,7 @@ class Sale extends Model
 			$attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
 		}
 
-		if($customer_id == -1 || $customer->taxable)	//TODO: Need a NEW_CUSTOMER constant in constants.php instead of -1
+		if($customer_id == NEW_ENTRY || $customer->taxable)
 		{
 			$this->save_sales_tax($sale_id, $sales_taxes[0]);
 			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
@@ -1334,7 +1341,7 @@ class Sale extends Model
 	 */
 	public function get_all_suspended(int $customer_id = NULL): array
 	{
-		if($customer_id == -1)	//TODO: This should be converted to a global constant and stored in constants.php
+		if($customer_id == NEW_ENTRY)
 		{
 			$query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
 				. $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED);
@@ -1353,7 +1360,7 @@ class Sale extends Model
 	 */
 	public function get_dinner_table(int $sale_id)	//TODO: this is returning NULL or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
 	{
-		if($sale_id == -1)
+		if($sale_id == NEW_ENTRY)
 		{
 			return NULL;
 		}

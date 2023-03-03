@@ -72,10 +72,10 @@ module.exports = function(grunt) {
 			},
 			minjs: {
 				options: {
-					starttag: '<!-- minjs injector:css -->',
+					starttag: '<!-- minjs injector:js -->',
 				},
 				files: {
-					'app/Views/partial/header.php': [ospos_min_css]
+					'app/Views/partial/header.php': [ospos_min_js]
 				},
 			},
 			css_login: {
@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 		concat: {
 			js: {
 				options: {
-					separator: ';'
+					separator: '\n'
 				},
 				files: {
 					'tmp/opensourcepos.js': ['public/dist/jquery/jquery.js', 'tmp/opensourcepos_bower.js', 'public/js/*.js']

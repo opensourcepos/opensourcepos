@@ -322,17 +322,17 @@ function to_datetime(int $datetime = DEFAULT_DATETIME): string
 	return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);
 }
 
-function to_currency(float $number): string
+function to_currency(?float $number): string
 {
 	return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
-function to_currency_no_money(float $number): string
+function to_currency_no_money(?float $number): string
 {
 	return to_decimals($number, 'currency_decimals');
 }
 
-function to_currency_tax(float $number): string
+function to_currency_tax(?float $number): string
 {
 	$config = config('OSPOS')->settings;
 
@@ -346,8 +346,13 @@ function to_currency_tax(float $number): string
 	}
 }
 
-function to_tax_decimals(float $number): string
+function to_tax_decimals($number): string
 {
+	// TODO: When the tax array is empty the value passed in is an empty string,  For now I "untyped" it to get past
+	// the issue because I don't understand why an empty string is being passed in when I know the array is empty.
+	// It looks like it must be creating a String value on the fly because the form is referring to the index 0 when
+	// there IS no index[0] row in the table
+
 	// taxes that are NULL, '' or 0 don't need to be displayed
 	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0, and it will save it
 	if(empty($number))
@@ -358,18 +363,18 @@ function to_tax_decimals(float $number): string
 	return to_decimals($number, 'tax_decimals');
 }
 
-function to_quantity_decimals(float $number): string
+function to_quantity_decimals(?float $number): string
 {
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals(float $number, string $decimals = NULL, int $type = NumberFormatter::DECIMAL): string
+function to_decimals(?float $number, string $decimals = NULL, int $type = NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
 	if(!isset($number))
 	{
-		return $number;
+		return "";
 	}
 
 	$config = config('OSPOS')->settings;
@@ -386,7 +391,11 @@ function to_decimals(float $number, string $decimals = NULL, int $type = NumberF
 	return $fmt->format($number);
 }
 
-function parse_quantity(string $number): float
+/**
+ * @param string $number
+ * @return false|float|int|mixed|string
+ */
+function parse_quantity(string $number)
 {
 	return parse_decimals($number, quantity_decimals());
 }

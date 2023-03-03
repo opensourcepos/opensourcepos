@@ -105,7 +105,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_categories").load('<?php echo esc(site_url("taxes/ajax_tax_categories"), 'url') ?>', init_add_remove_tax_categories);
+						$("#tax_categories").load('<?php echo esc("taxes/ajax_tax_categories") ?>', init_add_remove_tax_categories);
 					},
 					dataType: 'json'
 				});

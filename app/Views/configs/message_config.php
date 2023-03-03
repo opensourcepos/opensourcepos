@@ -13,7 +13,7 @@
 							'name' => 'msg_uid',
 							'id' => 'msg_uid',
 							'class' => 'form-control input-sm required',
-							'value' => esc($config['msg_uid'], 'attr')
+							'value' => esc($config['msg_uid'])
 						]) ?>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 							'name' => 'msg_pwd',
 							'id' => 'msg_pwd',
 							'class' => 'form-control input-sm required',
-							'value' => esc($config['msg_pwd'], 'attr')
+							'value' => esc($config['msg_pwd'])
 						]) ?>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 							'name' => 'msg_src',
 							'id' => 'msg_src',
 							'class' => 'form-control input-sm required',
-							'value' => $config['msg_src'] == NULL ? esc($config['company'], 'attr') : esc($config['msg_src'], 'attr')
+							'value' => $config['msg_src'] == NULL ? esc($config['company']) : esc($config['msg_src'])
 						]) ?>
 					</div>
 				</div>

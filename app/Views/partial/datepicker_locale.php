@@ -1,4 +1,4 @@
-<?php $this->lang->load('calendar'); $this->lang->load('date'); ?>
+<?php $config = config('OSPOS')->settings; ?>
 
 var pickerconfig = function(config) {
     return $.extend({
@@ -25,7 +25,7 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?php echo current_language_code() ?>"
-    }, <?php echo $config ?? '{}' ?>);
+    }, <?php '{}' ?>);
 };
 
 $.fn.datetimepicker.dates['<?php echo $config['language'] ?>'] = {
