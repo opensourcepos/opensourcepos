@@ -46,7 +46,7 @@ class Sale extends Model
 	{
 		parent::__construct();
 
-//		$this->sale_lib = new Sale_lib();	//TODO: This is causing an infinite loop because the sale lib is invoking the sale model and the model invokes the sale_lib
+		$this->sale_lib = new Sale_lib();
 	}
 
 	/**

@@ -48,7 +48,7 @@ class Sale_lib
 		$this->item_quantity = model('Item_quantity');
 		$this->item_taxes = model('Item_taxes');
 		$this->rounding_mode = model('enums/Rounding_mode');
-		$this->sale = model('Sale');
+//		$this->sale = model('Sale');	//TODO: This is causing an infinite loop because the constructor calls the sale library
 		$this->stock_location = model('Stock_location');
 		$this->config = config('OSPOS')->settings;
 	}
@@ -219,17 +219,17 @@ class Sale_lib
 		$this->session->remove('sales_comment');
 	}
 
-	public function get_invoice_number(): string
+	public function get_invoice_number(): ?string
 	{
 		return $this->session->get('sales_invoice_number');
 	}
 
-	public function get_quote_number(): string
+	public function get_quote_number(): ?string
 	{
 		return $this->session->get('sales_quote_number');
 	}
 
-	public function get_work_order_number(): string
+	public function get_work_order_number(): ?string
 	{
 		return $this->session->get('sales_work_order_number');
 	}
@@ -759,7 +759,7 @@ class Sale_lib
 		$this->session->set('payment_type', $payment_type);
 	}
 
-	public function get_payment_type(): string
+	public function get_payment_type(): ?string
 	{
 		return $this->session->get('payment_type');
 	}
