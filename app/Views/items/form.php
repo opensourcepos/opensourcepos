@@ -38,7 +38,7 @@
 						'name' => 'item_number',
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->item_number, 'attr')
+						'value' => esc($item_info->item_number)
 					]) ?>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 					'name' => 'name',
 					'id' => 'name',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_info->name, 'attr')
+					'value' => esc($item_info->name)
 				]) ?>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 					<?php
 						if($config['category_dropdown'])
 						{
-							echo form_dropdown('category', esc($categories, 'attr'), $selected_category, ['class' => 'form-control']);
+							echo form_dropdown('category', esc($categories), $selected_category, ['class' => 'form-control']);
 						}
 						else
 						{
@@ -72,7 +72,7 @@
 								'name' => 'category',
 								'id' => 'category',
 								'class' => 'form-control input-sm',
-								'value' => esc($item_info->category, 'attr')
+								'value' => esc($item_info->category)
 							]);
 						}
 					?>
@@ -82,7 +82,7 @@
 
 		<div id="attributes">
 			<script type="text/javascript">
-				$('#attributes').load('<?php echo site_url("items/attributes/$item_info->item_id") ?>');
+				$('#attributes').load('<?php echo "items/attributes/$item_info->item_id" ?>');
 			</script>
 		</div>
 
@@ -183,7 +183,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', esc($suppliers, 'attr'), $selected_supplier, ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('supplier_id', esc($suppliers), $selected_supplier, ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
@@ -240,7 +240,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_1',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name'], 'attr') : esc($config['default_tax_1_name'], 'attr')
+						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name']) : esc($config['default_tax_1_name'])
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -263,7 +263,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_2',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name'], 'attr') : esc($config['default_tax_2_name'], 'attr')
+						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name']) : esc($config['default_tax_2_name'])
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -292,7 +292,7 @@
 							'id' => 'tax_category',
 							'class' => 'form-control input-sm',
 							'size' => '50',
-							'value' => esc($tax_category, 'attr')
+							'value' => esc($tax_category)
 						]) ?><?php echo form_hidden('tax_category_id', $tax_category_id) ?>
 					</div>
 				</div>
@@ -308,7 +308,7 @@
 							'name' => 'hsn_code',
 							'id' => 'hsn_code',
 							'class' => 'form-control input-sm',
-							'value' => esc($hsn_code, 'attr')
+							'value' => esc($hsn_code)
 						]) ?>
 					</div>
 				</div>
@@ -368,7 +368,7 @@
 						'name' => 'description',
 						'id' => 'description',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->description, 'attr')
+						'value' => esc($item_info->description)
 				]) ?>
 			</div>
 		</div>
@@ -402,7 +402,7 @@
 					'name' => 'allow_alt_description',
 					'id' => 'allow_alt_description',
 					'value' => 1,
-					'checked' => ($item_info->allow_alt_description) ? 1 : 0
+					'checked' => ($item_info->allow_alt_description == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
@@ -414,7 +414,7 @@
 					'name' => 'is_serialized',
 					'id' => 'is_serialized',
 					'value' => 1,
-					'checked' => ($item_info->is_serialized) ? 1 : 0
+					'checked' => ($item_info->is_serialized == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
@@ -441,7 +441,7 @@
 						'name' => 'pack_name',
 						'id' => 'pack_name',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->pack_name, 'attr')
+						'value' => esc($item_info->pack_name)
 					]) ?>
 				</div>
 			</div>
@@ -453,7 +453,7 @@
 							'name' => 'low_sell_item_name',
 							'id' => 'low_sell_item_name',
 							'class' => 'form-control input-sm',
-							'value' => esc($selected_low_sell_item, 'attr')
+							'value' => esc($selected_low_sell_item)
 						]) ?><?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
 					</div>
 				</div>
@@ -469,7 +469,7 @@
 					'name' => 'is_deleted',
 					'id' => 'is_deleted',
 					'value'=>1,
-					'checked' => ($item_info->deleted) ? 1 : 0
+					'checked' => ($item_info->deleted == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
@@ -501,7 +501,7 @@ $(document).ready(function()
 	};
 
 	$('#tax_category').autocomplete({
-		source: "<?php echo site_url('taxes/suggest_tax_categories') ?>",
+		source: "<?php echo 'taxes/suggestTaxCategories' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -517,7 +517,7 @@ $(document).ready(function()
 	};
 
 	$('#low_sell_item_name').autocomplete({
-		source: "<?php echo site_url('items/suggest_low_sell') ?>",
+		source: "<?php echo 'items/suggestLowSell' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -527,7 +527,7 @@ $(document).ready(function()
 	});
 
 	$('#category').autocomplete({
-		source: "<?php echo site_url('items/suggest_category') ?>",
+		source: "<?php echo 'items/suggestCategory' ?>",
 		delay: 10,
 		appendTo: '.modal-content'
 	});
@@ -535,7 +535,7 @@ $(document).ready(function()
 	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: '<?php echo esc(site_url("$controller_name/remove_logo/$item_info->item_id"), 'url') ?>',
+			url: '<?php echo "$controller_name/removeLogo/$item_info->item_id" ?>',
 			dataType: 'json'
 		})
 	});
@@ -553,7 +553,7 @@ $(document).ready(function()
 						if(stay_open)
 						{
 							// set action of item_form to url without item id, so a new one can be created
-							$('#item_form').attr('action', "<?php echo site_url('items/save/') ?>");
+							$('#item_form').attr('action', "<?php echo 'items/save/' ?>");
 							// use a whitelist of fields to minimize unintended side effects
 							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
 								'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
@@ -564,7 +564,7 @@ $(document).ready(function()
 						{
 							dialog_support.hide();
 						}
-						table_support.handle_submit('<?php echo site_url('items') ?>', response, stay_open);
+						table_support.handle_submit('<?php echo 'items' ?>', response, stay_open);
 						init_validation();
 					},
 					dataType: 'json'
@@ -582,26 +582,23 @@ $(document).ready(function()
 					required: false,
 					remote:
 					{
-						url: "<?php echo esc(site_url("$controller_name/check_item_number"), 'url') ?>",
+						url: "<?php echo esc("$controller_name/checkItemNumber") ?>",
 						type: 'POST',
 						data: {
-							'item_id' : "<?php echo $item_info->item_id ?>",
-							'item_number' : function()
-							{
-								return $('#item_number').val();
-							},
+							'item_id' : "<?php echo $item_info->item_id ?>"
+							// item_number should be passed into the function by default
 						}
 					}
 				},
 				cost_price:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				unit_price:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -610,7 +607,7 @@ $(document).ready(function()
 				<?php echo 'quantity_' . $key ?>:
 					{
 						required: true,
-						remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 					},
 				<?php
 				}
@@ -618,17 +615,17 @@ $(document).ready(function()
 				receiving_quantity:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				reorder_level:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				tax_percent:
 				{
-					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					required: false,
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				}
 			},
 
@@ -671,7 +668,6 @@ $(document).ready(function()
 				},
 				tax_percent:
 				{
-					required: "<?php echo lang('Items.tax_percent_required') ?>",
 					number: "<?php echo lang('Items.tax_percent_number') ?>"
 				}
 			}

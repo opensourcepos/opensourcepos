@@ -13,7 +13,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('attributes/save_definition/' . esc($definition_id, 'attr'), ['id' => 'attribute_form', 'class' => 'form-horizontal']) //TODO: String Interpolation?>
+<?php echo form_open('attributes/save_definition/' . esc($definition_id), ['id' => 'attribute_form', 'class' => 'form-horizontal']) //TODO: String Interpolation?>
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
@@ -23,7 +23,7 @@
 					'name' => 'definition_name',
 					'id' => 'definition_name',
 					'class' => 'form-control input-sm',
-					'value'=>esc($definition_info->definition_name, 'attr')
+					'value'=>esc($definition_info->definition_name)
 				]
 			) ?>
 		</div>
@@ -41,8 +41,8 @@
 		<div class='col-xs-8'>
 			<?php echo form_dropdown(
 				'definition_group',
-				esc($definition_group, 'attr'),
-				esc($definition_info->definition_fk, 'attr'),
+				esc($definition_group),
+				esc($definition_info->definition_fk),
 				'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
 			) ?>
 		</div>
@@ -54,8 +54,8 @@
 			<div class="input-group">
 				<?php echo form_multiselect(
 					'definition_flags[]',
-					esc($definition_flags, 'attr'),
-					esc(array_keys($selected_definition_flags), 'attr'),
+					esc($definition_flags),
+					esc(array_keys($selected_definition_flags)),
 					[
 						'id' => 'definition_flags',
 						'class' => 'selectpicker show-menu-arrow',
@@ -75,7 +75,7 @@
 			<div class="input-group">
 				<?php echo form_input ([
 					'name' => 'definition_unit',
-					'value' => esc($definition_info->definition_unit, 'attr'),
+					'value' => esc($definition_info->definition_unit),
 					'class' => 'form-control input-sm',
 					'id' => 'definition_unit'
 				]) ?>
@@ -181,7 +181,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$.post('<?php echo esc(site_url("$controller_name/delete_attribute_value/"), 'url') ?>', {definition_id: definition_id, attribute_value: value});
+			$.post('<?php echo esc("$controller_name/delete_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
 		}
 		$(this).parents("li").remove();
 	};
@@ -210,7 +210,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo site_url("attributes/save_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
+				$.post('<?php echo "attributes/save_attribute_value/" ?>', {definition_id: definition_id, attribute_value: value});
 			}
 		}
 
@@ -256,7 +256,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo esc(site_url($controller_name), 'url') ?>', response);
+					table_support.handle_submit('<?php echo esc($controller_name) ?>', response);
 				},
 				dataType: 'json'
 			});

@@ -63,7 +63,7 @@
 					'name' => 'supplier_tax_code',
 					'id' => 'supplier_tax_code',
 					'class' => 'form-control input-sm',
-					'value' => esc($expenses_info->supplier_tax_code, 'attr')
+					'value' => esc($expenses_info->supplier_tax_code)
 				]) ?>
 			</div>
 		</div>
@@ -111,21 +111,21 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses.payment'), 'payment_type', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('payment_type', esc($payment_options, 'attr'), esc($expenses_info->payment_type, 'attr'), ['class' => 'form-control', 'id' => 'payment_type']) ?>
+				<?php echo form_dropdown('payment_type', esc($payment_options), esc($expenses_info->payment_type), ['class' => 'form-control', 'id' => 'payment_type']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses_categories.name'), 'category', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('expense_category_id', esc($expense_categories, 'attr'), $expenses_info->expense_category_id, ['class' => 'form-control', 'id' => 'category']) ?>
+				<?php echo form_dropdown('expense_category_id', esc($expense_categories), $expenses_info->expense_category_id, ['class' => 'form-control', 'id' => 'category']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('employee_id', esc($employees, 'attr'), $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('employee_id', esc($employees), $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -136,7 +136,7 @@
 					'name' => 'description',
 					'id' => 'description',
 					'class' => 'form-control input-sm',
-					'value' => esc($expenses_info->description, 'attr')
+					'value' => esc($expenses_info->description)
 				]) ?>
 			</div>
 		</div>
@@ -170,7 +170,7 @@ $(document).ready(function()
 
 	var amount_validator = function(field) {
 		return {
-			url: "<?php echo esc(site_url("$controller_name/ajax_check_amount"), 'url') ?>",
+			url: "<?php echo esc("$controller_name/ajax_check_amount") ?>",
 			type: 'POST',
 			dataFilter: function(data) {
 				var response = JSON.parse(data);
@@ -226,7 +226,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

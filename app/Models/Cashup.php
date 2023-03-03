@@ -71,7 +71,7 @@ class Cashup extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search, array $filters): ResultInterface
+	public function get_found_rows(string $search, array $filters): int
 	{
 		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}
@@ -79,8 +79,15 @@ class Cashup extends Model
 	/**
 	 * Searches cashups
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'cashup_id', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'cashup_id';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
 
@@ -208,9 +215,9 @@ class Cashup extends Model
 	/**
 	* Inserts or updates a cashup
 	*/
-	public function save_value(array &$cash_up_data, $cashup_id = FALSE): bool
+	public function save_value(array &$cash_up_data, $cashup_id = NEW_ENTRY): bool
 	{
-		if(!$cashup_id == -1 || !$this->exists($cashup_id))	//TODO: Replace -1 with constant
+		if(!$cashup_id == NEW_ENTRY || !$this->exists($cashup_id))
 		{
 			$builder = $this->db->table('cash_up');
 			if($builder->insert($cash_up_data))

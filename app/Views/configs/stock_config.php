@@ -80,7 +80,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#stock_locations").load('<?php echo site_url("config/ajax_stock_locations") ?>', init_add_remove_locations);
+					$("#stock_locations").load('<?php echo "config/ajax_stock_locations" ?>', init_add_remove_locations);
 				},
 				dataType: 'json'
 			});

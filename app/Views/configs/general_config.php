@@ -18,7 +18,7 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, esc($config['theme'], 'attr'), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
+							<?php echo form_dropdown('theme', $themes, esc($config['theme']), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
 						</div>
 						<div class="col-sm-7">
 							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
@@ -38,7 +38,7 @@
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						],
-						esc($config['login_form'], 'attr'),
+						esc($config['login_form']),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -65,7 +65,7 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc($config['currency_symbol'], 'attr').'</b>',
+								'data-on' => '<b>' . esc($config['currency_symbol']).'</b>',
 								'data-off' => '<b>%</b>',
 								'checked' => $config['default_sales_discount_type']
 								]) ?>
@@ -95,7 +95,7 @@
 								'data-toggle' => 'toggle',
 								'data-size' => 'normal',
 								'data-onstyle' => 'success',
-								'data-on' => '<b>' . esc($config['currency_symbol'], 'attr') . '</b>',
+								'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>',
 								'data-off' => '<b>%</b>',
 								'checked' => $config['default_receivings_discount_type']
 								]) ?>
@@ -158,7 +158,7 @@
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								esc($config['notify_vertical_position'], 'attr'),
+								esc($config['notify_vertical_position']),
 								['class' => 'form-control input-sm']
 							) ?>
 						</div>
@@ -170,7 +170,7 @@
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')
 								],
-								esc($config['notify_horizontal_position'], 'attr'),
+								esc($config['notify_horizontal_position']),
 								['class' => 'form-control input-sm']
 							) ?>
 						</div>
@@ -274,7 +274,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_site_key'], 'attr')
+						'value' => esc($config['gcaptcha_site_key'])
 					]) ?>
 				</div>
 			</div>
@@ -286,7 +286,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_secret_key'], 'attr')
+						'value' => esc($config['gcaptcha_secret_key'])
 						]) ?>
 				</div>
 			</div>
@@ -306,7 +306,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_first_column'], 'attr'),
+									esc($config['suggestions_first_column']),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -323,7 +323,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_second_column'], 'attr'),
+									esc($config['suggestions_second_column']),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -340,7 +340,7 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_third_column'], 'attr'),
+									esc($config['suggestions_third_column']),
 									['class' => 'form-control input-sm']
 								) ?>
 							</div>
@@ -473,12 +473,12 @@ $(document).ready(function()
 			lines_per_page:
 			{
 				required: true,
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			default_sales_discount:
 			{
 				required: true,
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			gcaptcha_site_key:
 			{

@@ -42,27 +42,21 @@ class Item extends Model
 		'hsn_code'
 	];
 
+
 	/**
 	 * Determines if a given item_id is an item
 	 */
 	public function exists(int $item_id, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
 	{
-		// check if $item_id is a number and not a string starting with 0
-		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) !== '0')
+		$builder = $this->db->table('items');
+		$builder->where('item_id', $item_id);
+
+		if($ignore_deleted === FALSE)
 		{
-			$builder = $this->db->table('items');
-			$builder->where('item_id', $item_id);
-
-			if($ignore_deleted === FALSE)
-			{
-				$builder->where('deleted', $deleted);
-			}
-
-			return ($builder->get()->getNumRows() === 1);
+			$builder->where('deleted', $deleted);
 		}
 
-		return FALSE;
+		return ($builder->get()->getNumRows() === 1);
 	}
 
 	/**
@@ -79,15 +73,16 @@ class Item extends Model
 
 		$builder = $this->db->table('items');
 		$builder->where('item_number', $item_number);
+		$builder->where('deleted !=', 1);
+		$builder->where('item_id !=', intval($item_id));
 
-		// check if $item_id is a number and not a string starting with 0
-		// because cases like 00012345 will be seen as a number where it is a barcode
+//		// check if $item_id is a number and not a string starting with 0
+//		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')	//TODO: !==
 		{
 			$builder->where('item_id !=', intval($item_id));
 		}
-
-		return ($builder->get()->getNumRows() >= 1);
+		return ($builder->get()->getNumRows()) >= 1;
 	}
 
 	/**
@@ -112,7 +107,7 @@ class Item extends Model
 	/**
 	 * Get number of rows
 	 */
-	public function get_found_rows(string $search, array $filters): ResultInterface
+	public function get_found_rows(string $search, array $filters): int
 	{
 		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
@@ -120,8 +115,15 @@ class Item extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == NULL) $rows = 0;
+		if($limit_from == NULL) $limit_from = 0;
+		if($sort == NULL) $sort = 'items.name';
+		if($order == NULL) $order = 'asc';
+		if($count_only == NULL) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
@@ -273,11 +275,11 @@ class Item extends Model
 	/**
 	 * Returns all the items
 	 */
-	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0): ResultInterface	//TODO: Replace -1 with a constant
+	public function get_all(int $stock_location_id = NEW_ENTRY, int $rows = 0, int $limit_from = 0): ResultInterface
 	{
 		$builder = $this->db->table('items');
 
-		if($stock_location_id > -1)	//TODO: Replace -1 with a constant
+		if($stock_location_id > -1)
 		{
 			$builder->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$builder->where('location_id', $stock_location_id);
@@ -318,16 +320,36 @@ class Item extends Model
 			return $query->getRow();
 		}
 
-		//Get empty base parent object, as $item_id is NOT an item
-		$item_obj = new stdClass();
+		return $this->getEmptyObject('items');
+	}
 
-		//Get all the fields from items table
-		foreach($this->db->getFieldNames('items') as $field)
-		{
-			$item_obj->$field = '';
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
 		}
 
-		return $item_obj;
+		return $empty_obj;
 	}
 
 	/**
@@ -341,7 +363,7 @@ class Item extends Model
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
+		if(ctype_digit(strval($item_id)) && substr($item_id, 0, 1) != '0')
 		{
 			$builder->orWhere('items.item_id', $item_id);
 		}
@@ -422,16 +444,16 @@ class Item extends Model
 	/**
 	 * Inserts or updates an item
 	 */
-	public function save_value(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
+	public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool	//TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
 
-		if(!$item_id || !$this->exists($item_id, TRUE))
+		if($item_id == NEW_ENTRY || !$this->exists($item_id, TRUE))
 		{
 			if($builder->insert($item_data))
 			{
 				$item_data['item_id'] = $this->db->insertID();
-				if($item_data['low_sell_item_id'] == -1)	//TODO: Replace -1 with a constant... === ?
+				if($item_data['low_sell_item_id'] == NEW_ENTRY)
 				{
 					$builder = $this->db->table('items');
 					$builder->where('item_id', $item_data['item_id']);
@@ -469,7 +491,7 @@ class Item extends Model
 	 * Deletes one item
 	 * @throws ReflectionException
 	 */
-	public function delete($item_id = null, bool $purge = false)
+	public function delete($item_id = NULL, bool $purge = false)
 	{
 		$this->db->transStart();
 

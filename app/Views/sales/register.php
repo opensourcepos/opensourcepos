@@ -98,7 +98,7 @@ if(isset($success))
 				?>
 
 				<li class="pull-right">
-					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo esc(site_url("$controller_name/suspended"), 'url') ?>"
+					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo esc("$controller_name/suspended") ?>"
 							title="<?php echo lang('Sales.suspended_sales') ?>">
 						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('Sales.suspended_sales') ?>
 					</button>
@@ -176,11 +176,11 @@ if(isset($success))
 				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open(esc("$controller_name/edit_item/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?php echo form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
 							<td>
 								<?php
-									echo anchor(esc("$controller_name/delete_item/$line"), '<span class="glyphicon glyphicon-trash"></span>');
+									echo anchor(esc("$controller_name/deleteItem/$line"), '<span class="glyphicon glyphicon-trash"></span>');
 									echo form_hidden('location', $item['item_location']);
 									echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value'=>$item['item_id']]);
 								?>
@@ -267,7 +267,7 @@ if(isset($success))
 							?>
 								<td><?php echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
 								<td style="align: center;" colspan="6">
-									<?php echo form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => esc($item['description'], 'attr'), 'tabindex' => ++$tabindex]) ?>
+									<?php echo form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'tabindex' => ++$tabindex]) ?>
 								</td>
 								<td> </td>
 							<?php
@@ -289,7 +289,7 @@ if(isset($success))
 									<?php
 									if($item['allow_alt_description'])
 									{
-										echo form_input (['name' => 'description', 'class' => 'form-control input-sm', 'value' => esc($item['description'], 'attr'), 'onClick' => 'this.select();']);
+										echo form_input (['name' => 'description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'onClick' => 'this.select();']);
 									}
 									else
 									{
@@ -426,7 +426,7 @@ if(isset($success))
 				</table>
 
 				<?php echo anchor(
-					"$controller_name/remove_customer",
+					"$controller_name/removeCustomer",
 					'<span class=\'glyphicon glyphicon-remove\'>&nbsp</span>' . lang('Common.remove') . ' ' . lang('Customers.customer'),
 						['class' => 'btn btn-danger btn-sm', 'id' => 'remove_customer_button', 'title' => lang('Common.remove') . ' ' . lang('Customers.customer')]
 					)
@@ -440,7 +440,7 @@ if(isset($success))
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Sales.select_customer') . esc(" $customer_required") ?></label>
 					<?php echo form_input (['name' => 'customer', 'id' => 'customer', 'class' => 'form-control input-sm', 'value' => lang('Sales.start_typing_customer_name')]) ?>
 
-					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('Common.submit') ?>" data-href="<?php echo site_url("customers/view") ?>"
+					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('Common.submit') ?>" data-href="<?php echo "customers/view" ?>"
 							title="<?php echo lang("$controller_name.new_customer") ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang("$controller_name.new_customer") ?>
 					</button>
@@ -505,7 +505,7 @@ if(isset($success))
 				if($payments_cover_total)
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/add_payment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
@@ -552,7 +552,7 @@ if(isset($success))
 				else
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/add_payment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
@@ -719,18 +719,18 @@ $(document).ready(function()
 
 	$("#remove_customer_button").click(function()
 	{
-		$.post("<?php echo site_url('sales/remove_customer'); ?>", redirect);
+		$.post("<?php echo site_url('sales/removeCustomer'); ?>", redirect);
 	});
 
 	$(".delete_item_button").click(function()
 	{
 		const item_id = $(this).data('item-id');
-		$.post("<?php echo site_url('sales/delete_item/'); ?>" + item_id, redirect);
+		$.post("<?php echo site_url('sales/deleteItem/'); ?>" + item_id, redirect);
 	});
 
 	$(".delete_payment_button").click(function() {
 		const item_id = $(this).data('payment-id');
-		$.post("<?php echo site_url('sales/delete_payment/'); ?>" + item_id, redirect);
+		$.post("<?php echo site_url('sales/deletePayment/'); ?>" + item_id, redirect);
 	});
 
 	$("input[name='item_number']").change(function() {
@@ -782,7 +782,7 @@ $(document).ready(function()
 	});
 
 	$('#item').autocomplete( {
-		source: "<?php echo esc(site_url("$controller_name/item_search"), 'url') ?>",
+		source: "<?php echo esc("$controller_name/itemSearch") ?>",
 		minChars: 0,
 		autoFocus: false,
 		delay: 500,

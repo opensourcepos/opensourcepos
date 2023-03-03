@@ -35,7 +35,7 @@ class Customers extends Persons
 	{
 		parent::__construct('customers');
 		$this->mailchimp_lib = new Mailchimp_lib();
-
+		$this->customer_rewards = model('Customer_rewards');
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
 		$this->config = config('OSPOS')->settings;
@@ -64,7 +64,7 @@ class Customers extends Persons
 	/**
 	 * Gets one row for a customer manage table. This is called using AJAX to update one row.
 	 */
-	public function get_row(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$person = $this->customer->get_info($row_id);
 
@@ -91,7 +91,7 @@ class Customers extends Persons
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch()
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -129,9 +129,9 @@ class Customers extends Persons
 	/**
 	 * Gives search suggestions based on what is being searched for
 	 */
-	public function suggest(): void
+	public function getSuggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -146,8 +146,11 @@ class Customers extends Persons
 	/**
 	 * Loads the customer edit form
 	 */
-	public function view(int $customer_id = -1): void	//TODO: replace -1 with a constant
+	public function getView(int $customer_id = NEW_ENTRY): void
 	{
+		// Set default values
+		if($customer_id == null) $customer_id = NEW_ENTRY;
+
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
@@ -184,7 +187,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($$this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
+		if($this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
@@ -265,7 +268,7 @@ class Customers extends Persons
 	/**
 	 * Inserts/updates a customer
 	 */
-	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $customer_id = NEW_ENTRY): void
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);
 		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
@@ -290,7 +293,7 @@ class Customers extends Persons
 			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
 		];
 
-		$date_formatter = date_create_from_format($$this->config['dateformat'] . ' ' . $$this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
+		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,
@@ -309,17 +312,18 @@ class Customers extends Persons
 		if($this->customer->save_customer($person_data, $customer_data, $customer_id))
 		{
 			// save customer to Mailchimp selected list	//TODO: addOrUpdateMember should be refactored... potentially pass an array or object instead of 6 parameters.
+			$mailchimp_status = $this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING);
 			$this->mailchimp_lib->addOrUpdateMember(
 				$this->_list_id,
 				$email,
 				$first_name,
 				$last_name,
-				$this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING),
+				$mailchimp_status == null ? "" : $mailchimp_status,
 				['vip' => $this->request->getPost('mailchimp_vip') != NULL]
 			);
 
 			// New customer
-			if($customer_id == -1)
+			if($customer_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -341,7 +345,7 @@ class Customers extends Persons
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -349,7 +353,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an email address already exists
 	 */
-	public function ajax_check_email(): void
+	public function postCheckEmail(): void
 	{
 		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
@@ -359,7 +363,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an account number already exists
 	 */
-	public function ajax_check_account_number(): void
+	public function postCheckAccountNumber(): void
 	{
 		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
@@ -369,7 +373,7 @@ class Customers extends Persons
 	/**
 	 * This deletes customers from the customers table
 	 */
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$customers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 		$customers_info = $this->customer->get_multiple_info($customers_to_delete);
@@ -408,9 +412,9 @@ class Customers extends Persons
 		force_download($name, $data);
 	}
 
-	public function csv_import(): void
+	public function getCsvImport(): void
 	{
-		echo view('customers/form_csv_import', NULL);
+		echo view('customers/form_csv_import');
 	}
 
 	public function do_csv_import(): void

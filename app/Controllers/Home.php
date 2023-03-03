@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\HTTP\RedirectResponse;
+
 class Home extends Secure_Controller
 {
 	public function __construct()
@@ -15,7 +17,7 @@ class Home extends Secure_Controller
 		echo view('home/home');
 	}
 
-	public function getLogout(): \CodeIgniter\HTTP\RedirectResponse
+	public function getLogout(): RedirectResponse
 	{
 		$this->employee->logout();
 		return redirect()->to('login');

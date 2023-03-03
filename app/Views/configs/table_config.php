@@ -117,7 +117,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#dinner_tables").load('<?php echo esc(site_url("config/ajax_dinner_tables"), 'url') ?>', init_add_remove_tables);
+					$("#dinner_tables").load('<?php echo esc("config/ajax_dinner_tables") ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});

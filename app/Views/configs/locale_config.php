@@ -16,8 +16,8 @@
 				<?php echo form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
 				<div class='row'>
 					<div class='col-xs-1'>
-						<?php echo form_input('number_locale', esc($config['number_locale'], 'attr'), ['class' => 'form-control input-sm', 'id' => 'number_locale']) ?>
-						<?php echo form_hidden('save_number_locale', esc($config['number_locale'], 'attr')) ?>
+						<?php echo form_input('number_locale', esc($config['number_locale']), ['class' => 'form-control input-sm', 'id' => 'number_locale']) ?>
+						<?php echo form_hidden('save_number_locale', esc($config['number_locale'])) ?>
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">
@@ -51,7 +51,7 @@
 						'name' => 'currency_symbol',
 						'id' => 'currency_symbol',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($config['currency_symbol'], 'attr')
+						'value' => esc($config['currency_symbol'])
 					]) ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 						'name' => 'currency_code',
 						'id' => 'currency_code',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($currency_code, 'attr')
+						'value' => esc($currency_code)
 					]) ?>
 				</div>
 			</div>
@@ -144,7 +144,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options, 'attr'), $config['cash_rounding_code'], ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options), $config['cash_rounding_code'], ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -160,7 +160,7 @@
 							'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
 							'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
 						],
-						esc($config['payment_options_order'], 'attr'),
+						esc($config['payment_options_order']),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -169,7 +169,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_input('country_codes', esc($config['country_codes'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_input('country_codes', esc($config['country_codes']), ['class' => 'form-control input-sm']) ?>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
@@ -197,7 +197,7 @@
 				<?php echo form_dropdown(
 					'timezone',
 					get_timezones(),
-					$config['timezone'] ? esc($config['timezone'], 'attr') : date_default_timezone_get(), ['class' => 'form-control input-sm']) ?>
+					$config['timezone'] ? esc($config['timezone']) : date_default_timezone_get(), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -207,7 +207,7 @@
 				<?php echo form_dropdown(
 					'dateformat',
 					get_dateformats(),
-					esc($config['dateformat'], 'attr'),
+					esc($config['dateformat']),
 					['class' => 'form-control input-sm']
 				) ?>
 				</div>

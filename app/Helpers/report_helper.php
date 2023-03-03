@@ -33,7 +33,7 @@ function show_report(string $report_prefix, string $report_name, string $lang_ke
 	if(!empty($report_label) && $report_label != $lang_key . ' (TBD)')	//TODO: String Interpolation.  Also !==
 	{//TODO: Is there a better way to do this?  breaking the php like this makes it more difficult to read.
 		?>
-			<a class="list-group-item" href="<?= site_url("reports/$report_prefix" . preg_replace('/reports_(.*)/', '$1', $report_name)) ?>"><?= $report_label; ?></a>
+			<a class="list-group-item" href="<?= "reports/$report_prefix" . preg_replace('/reports_(.*)/', '$1', $report_name) ?>"><?= $report_label; ?></a>
 		<?php
 	}
 }

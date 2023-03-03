@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Session\Session;
 
 /**
@@ -96,13 +95,13 @@ class Employee extends Person
 		}
 
 		//Get empty base parent object, as $employee_id is NOT an employee
-		$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
+		$person_obj = parent::get_info(NEW_ITEM);
 
 		//Get all the fields from employee table
 		//append those fields to base parent object, we have a complete empty object
 		foreach($this->db->getFieldNames('employees') as $field)
 		{
-			$person_obj->$field = '';
+			$person_obj->$field = null;
 		}
 
 		return $person_obj;
@@ -124,7 +123,7 @@ class Employee extends Person
 	/**
 	 * Inserts or updates an employee
 	 */
-	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE): bool
+	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
 	{
 		$success = FALSE;
 
@@ -134,7 +133,7 @@ class Employee extends Person
 		if(ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id))
 		{
 			$builder = $this->db->table('employees');
-			if(!$employee_id || !$this->exists($employee_id))
+			if($employee_id == NEW_ENTRY || !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
 				$success = $builder->insert($employee_data);
@@ -328,7 +327,7 @@ class Employee extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
@@ -336,8 +335,15 @@ class Employee extends Person
 	/**
 	 * Performs a search on employees
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'last_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('employees AS employees');
 
 		// get_found_rows case
@@ -408,7 +414,7 @@ class Employee extends Person
 	/**
 	 * Logs out a user by destroying all session data and redirect to log in
 	 */
-	public function logout()
+	public function logout(): void
 	{
 		session()->destroy();
 	}
@@ -466,12 +472,16 @@ class Employee extends Person
 	/**
 	 * Determines whether the employee specified employee has access the specific module.
 	 */
-	public function has_grant(string $permission_id, int $person_id): bool
+	public function has_grant(?string $permission_id, ?int $person_id): bool
 	{
 		//if no module_id is null, allow access
 		if($permission_id == NULL)
 		{
 			return TRUE;
+		}
+		if($person_id == NULL)
+		{
+			return FALSE;
 		}
 
 		$builder = $this->db->table('grants');

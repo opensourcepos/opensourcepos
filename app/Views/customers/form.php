@@ -46,7 +46,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
+						<?php echo form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
 					</div>
 				</div>
 
@@ -100,7 +100,7 @@
 								'name' => 'company_name',
 								'id' => 'company_name',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->company_name, 'attr')
+								'value' => esc($person_info->company_name)
 							]) ?>
 					</div>
 				</div>
@@ -112,7 +112,7 @@
 								'name' => 'account_number',
 								'id' => 'account_number',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->account_number, 'attr')
+								'value' => esc($person_info->account_number)
 							]) ?>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 								'name' => 'tax_id',
 								'id' => 'tax_id',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->tax_id, 'attr')
+								'value' => esc($person_info->tax_id)
 							]) ?>
 					</div>
 				</div>
@@ -133,7 +133,7 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
-							<?php echo form_dropdown('package_id', esc($packages, 'attr'), $selected_package, ['class' => 'form-control']) ?>
+							<?php echo form_dropdown('package_id', esc($packages), $selected_package, ['class' => 'form-control']) ?>
 						</div>
 					</div>
 
@@ -154,7 +154,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' || $person_info->taxable) ?>
+						<?php echo form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
 					</div>
 				</div>
 
@@ -171,7 +171,7 @@
 										'id' => 'sales_tax_code_name',
 										'class' => 'form-control input-sm',
 										'size' => '50',
-										'value' => esc($sales_tax_code_label, 'attr')
+										'value' => esc($sales_tax_code_label)
 								]) ?>
 								<?php echo form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id) ?>
 							</div>
@@ -204,7 +204,7 @@
 								'name' => 'employee',
 								'id' => 'employee',
 								'class' => 'form-control input-sm',
-								'value' => esc($employee, 'attr'),
+								'value' => esc($employee),
 								'readonly' => 'true'
 							]) ?>
 					</div>
@@ -356,7 +356,7 @@
 									'cleaned' => 'cleaned',
 									'pending' => 'pending'
 								],
-								esc($mailchimp_info['status'], 'attr'),
+								esc($mailchimp_info['status']),
 								['id' => 'mailchimp_status', 'class' => 'form-control input-sm']) ?>
 						</div>
 					</div>
@@ -364,7 +364,7 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-1'>
-							<?php echo form_checkbox('mailchimp_vip', '1', !($mailchimp_info['vip'] == '') && $mailchimp_info['vip']) ?>
+							<?php echo form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
 						</div>
 					</div>
 
@@ -374,7 +374,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_member_rating',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_info['member_rating'], 'attr'),
+									'value' => esc($mailchimp_info['member_rating']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -386,7 +386,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_activity_total',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_activity['total'], 'attr'),
+									'value' => esc($mailchimp_activity['total']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -398,7 +398,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_activity_lastopen',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_activity['lastopen'], 'attr'),
+									'value' => esc($mailchimp_activity['lastopen']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -410,7 +410,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_activity_open',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_activity['open'], 'attr'),
+									'value' => esc($mailchimp_activity['open']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -422,7 +422,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_activity_click',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_activity['click'], 'attr'),
+									'value' => esc($mailchimp_activity['click']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -434,7 +434,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_activity_unopen',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_activity['unopen'], 'attr'),
+									'value' => esc($mailchimp_activity['unopen']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -446,7 +446,7 @@
 							<?php echo form_input ([
 									'name' => 'mailchimp_email_client',
 									'class' => 'form-control input-sm',
-									'value' => esc($mailchimp_info['email_client'], 'attr'),
+									'value' => esc($mailchimp_info['email_client']),
 									'disabled' => ''
 								]) ?>
 						</div>
@@ -476,7 +476,7 @@ $(document).ready(function()
 	};
 
 	$('#sales_tax_code_name').autocomplete({
-		source: "<?php echo esc(site_url('taxes/suggest_tax_codes'), 'url') ?>",
+		source: "<?php echo esc('taxes/suggestTaxCodes') ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -491,7 +491,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -508,7 +508,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc(site_url("$controller_name/ajax_check_email"), 'url') ?>",
+					url: "<?php echo esc("$controller_name/checkEmail") ?>",
 					type: 'POST',
 					data: {
 						'person_id': "<?php echo $person_info->person_id ?>"
@@ -520,7 +520,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc(site_url("$controller_name/ajax_check_account_number"), 'url') ?>",
+					url: "<?php echo esc("$controller_name/checkAccountNumber") ?>",
 					type: 'POST',
 					data: {
 						'person_id': "<?php echo $person_info->person_id ?>"

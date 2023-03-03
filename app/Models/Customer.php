@@ -38,7 +38,6 @@ class Customer extends Person
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
 		$builder->where('customers.person_id', $person_id);
-
 		return ($builder->get()->getNumRows() == 1);
 	}
 
@@ -103,19 +102,39 @@ class Customer extends Person
 		}
 		else
 		{
-			//Get empty base parent object, as $customer_id is NOT a customer
-			$person_obj = parent::get_info(-1);	//TODO: NEED TO CREATE A GLOBAL CONSTANT FOR NO_PERSON IN CONFIG/CONSTANTS.PHP AND CALL IT HERE FOR CLARITY.
-
-			//Get all the fields from customer table
-			//append those fields to base parent object, we have a complete empty object
-			foreach($this->db->getFieldNames('customers') as $field)
-			{
-				$person_obj->$field = '';
-			}
-
-			return $person_obj;
+			return $this->getEmptyObject('customers');
 		}
 	}
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = parent::get_info(NEW_ENTRY);
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
+	}
+
 
 	/**
 	 * Gets stats about a particular customer
@@ -206,7 +225,7 @@ class Customer extends Person
 	/**
 	 * Inserts or updates a customer
 	 */
-	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE): bool
+	public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
 	{
 		$success = FALSE;
 
@@ -215,7 +234,7 @@ class Customer extends Person
 		if(parent::save_value($person_data, $customer_id))
 		{
 			$builder = $this->db->table('customers');
-			if(!$customer_id || !$this->exists($customer_id))
+			if($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
 				$success = $builder->insert($customer_data);
@@ -398,16 +417,24 @@ class Customer extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		$result = $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		return $result;
 	}
 
 	/**
 	 * Performs a search on customers
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'last_name', string $order = 'asc', bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'last_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('customers AS customers');
 
 		// get_found_rows case

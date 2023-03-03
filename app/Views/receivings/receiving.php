@@ -39,14 +39,14 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?= form_open(esc("$controller_name/change_mode", 'attr'), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open(esc("$controller_name/change_mode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
 					<label class="control-label"><?php echo lang('Receivings.mode') ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_dropdown('mode', esc($modes, 'attr'), esc($mode, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+					<?php echo form_dropdown('mode', esc($modes), esc($mode), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 
 				<?php 
@@ -57,7 +57,7 @@ if (isset($success))
 						<label class="control-label"><?php echo lang('Receivings.stock_source') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('stock_source', esc($stock_locations, 'attr'), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('stock_source', esc($stock_locations), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 					
 					<?php
@@ -68,7 +68,7 @@ if (isset($success))
 							<label class="control-label"><?php echo lang('Receivings.stock_destination') ?></label>
 						</li>
 						<li class="pull-left">
-							<?php echo form_dropdown('stock_destination', esc($stock_locations, 'attr'), esc($stock_destination, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+							<?php echo form_dropdown('stock_destination', esc($stock_locations), esc($stock_destination), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 						</li>
 				<?php
 					}
@@ -106,7 +106,7 @@ if (isset($success))
 					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg'
 						data-btn-submit='<?php echo lang('Common.submit') ?>'
 						data-btn-new='<?php echo lang('Common.new') ?>'
-						data-href='<?php echo site_url("items/view") ?>'
+						data-href='<?php echo "items/view" ?>'
 						title='<?php echo lang('Sales.new_item') ?>'>
 						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo lang('Sales.new_item') ?>
 					</button>
@@ -149,9 +149,9 @@ if (isset($success))
 				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open(esc("$controller_name/edit_item/$line", 'attr'), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?php echo form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
-							<td><?php echo anchor(esc("$controller_name/delete_item/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+							<td><?php echo anchor(esc("$controller_name/deleteItem/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?php echo esc($item['item_number']) ?></td>
 							<td style="align:center;">
 								<?php echo esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
@@ -184,7 +184,7 @@ if (isset($success))
 							<td><?php echo form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
 							<td><?php echo form_dropdown(
 									'receiving_quantity',
-									esc($item['receiving_quantity_choices'], 'attr'),
+									esc($item['receiving_quantity_choices']),
 									$item['receiving_quantity'],
 									['class' => 'form-control input-sm']
 								) ?></td>
@@ -204,9 +204,9 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>' . esc($config['currency_symbol'], 'attr') .'</b>',
+											'data-on' => '<b>' . esc($config['currency_symbol']) .'</b>',
 											'data-off' => '<b>%</b>',
-											'data-line' => esc($line, 'attr'),
+											'data-line' => esc($line),
 											'checked' => $item['discount_type']
 										]) ?>
 									</span>
@@ -242,7 +242,7 @@ if (isset($success))
 									echo form_input ([
 										'name' => 'description',
 										'class' => 'form-control input-sm',
-										'value' => esc($item['description'], 'attr')
+										'value' => esc($item['description'])
 									]);
 								}
 								else
@@ -250,7 +250,7 @@ if (isset($success))
 									if ($item['description'] != '')	//TODO: !==?
 									{
 										echo $item['description'];
-										echo form_hidden('description', esc($item['description'], 'attr'));
+										echo form_hidden('description', esc($item['description']));
 									}
 									else
 									{
@@ -332,7 +332,7 @@ if (isset($success))
 		else
 		{
 		?>
-			<?php echo form_open(esc("$controller_name/select_supplier", 'attr'), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+			<?php echo form_open(esc("$controller_name/select_supplier"), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Receivings.select_supplier') ?></label>
 					<?php echo form_input ([
@@ -342,7 +342,7 @@ if (isset($success))
 						'value' => lang('Receivings.start_typing_supplier_name')
 					]) ?>
 
-					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url("suppliers/view") ?>'
+					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "suppliers/view" ?>'
 							title='<?php echo lang('Receivings.new_supplier') ?>'>
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang('Receivings.new_supplier') ?>
 					</button>
@@ -383,7 +383,7 @@ if (isset($success))
 				if($mode == 'requisition')
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/requisition_complete", 'attr'), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/requisition_complete"), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo lang('Common.comments') ?></label>
 							<?php echo form_textarea ([
@@ -411,7 +411,7 @@ if (isset($success))
 								'name' => 'comment',
 								'id' => 'comment',
 								'class' => 'form-control input-sm',
-								'value' => esc($comment, 'attr'),
+								'value' => esc($comment),
 								'rows' => '4'
 							]) ?>
 							<div id="payment_details" >
@@ -439,7 +439,7 @@ if (isset($success))
 													'name' => 'recv_reference',
 													'id' => 'recv_reference',
 													'class' => 'form-control input-sm',
-													'value' => esc($reference, 'attr'),
+													'value' => esc($reference),
 													'size' => 5
 												]) ?>
 											</td>
@@ -452,7 +452,7 @@ if (isset($success))
 										<td>
 											<?php echo form_dropdown(
 												'payment_type',
-												esc($payment_options, 'attr'),
+												esc($payment_options),
 												[],
 												[
 													'id' => 'payment_types',
@@ -496,7 +496,7 @@ $(document).ready(function()
 {
 	$("#item").autocomplete(
 	{
-		source: '<?php echo esc(site_url("$controller_name/stock_item_search"), 'url') ?>',
+		source: '<?php echo esc("$controller_name/stock_item_search") ?>',
 		minChars:0,
 		delay:10,
 		autoFocus: false,
@@ -523,17 +523,17 @@ $(document).ready(function()
 
 	$('#comment').keyup(function() 
 	{
-		$.post('<?php echo esc(site_url("$controller_name/set_comment"), 'url') ?>', {comment: $('#comment').val()});
+		$.post('<?php echo esc("$controller_name/set_comment") ?>', {comment: $('#comment').val()});
 	});
 
 	$('#recv_reference').keyup(function() 
 	{
-		$.post('<?php echo esc(site_url("$controller_name/set_reference"), 'url') ?>', {recv_reference: $('#recv_reference').val()});
+		$.post('<?php echo esc("$controller_name/set_reference") ?>', {recv_reference: $('#recv_reference').val()});
 	});
 
 	$("#recv_print_after_sale").change(function()
 	{
-		$.post('<?php echo esc(site_url("$controller_name/set_print_after_sale"), 'url') ?>', {recv_print_after_sale: $(this).is(":checked")});
+		$.post('<?php echo esc("$controller_name/set_print_after_sale") ?>', {recv_print_after_sale: $(this).is(":checked")});
 	});
 
 	$('#item,#supplier').click(function()
@@ -543,7 +543,7 @@ $(document).ready(function()
 
 	$("#supplier").autocomplete(
 	{
-		source: '<?php echo site_url("suppliers/suggest") ?>',
+		source: '<?php echo "suppliers/suggest" ?>',
 		minChars:0,
 		delay:10,
 		select: function (a, ui) {
@@ -568,7 +568,7 @@ $(document).ready(function()
 	{
 		if (confirm('<?php echo lang('Receivings.confirm_cancel_receiving') ?>'))
 		{
-			$('#finish_receiving_form').attr('action', '<?php echo esc(site_url("$controller_name/cancel_receiving"), 'url') ?>');
+			$('#finish_receiving_form').attr('action', '<?php echo esc("$controller_name/cancel_receiving") ?>');
 			$('#finish_receiving_form').submit();
 		}
 	});

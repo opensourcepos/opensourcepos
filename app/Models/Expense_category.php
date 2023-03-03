@@ -109,11 +109,11 @@ class Expense_category extends Model
 	/**
 	 * Inserts or updates an expense_category
 	 */
-	public function save_value(array &$expense_category_data, bool $expense_category_id = FALSE): bool
+	public function save_value(array &$expense_category_data, int $expense_category_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('expense_categories');
 
-		if(!$expense_category_id || !$this->exists($expense_category_id))
+		if($expense_category_id == NEW_ENTRY || !$this->exists($expense_category_id))
 		{
 			if($builder->insert($expense_category_data))
 			{
@@ -144,7 +144,7 @@ class Expense_category extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'category_name', 'asc', TRUE);
 	}
@@ -152,8 +152,15 @@ class Expense_category extends Model
 	/**
 	 * Perform a search on expense_category
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'category_name', ?string $order='asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'category_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('expense_categories AS expense_categories');
 
 		// get_found_rows case
