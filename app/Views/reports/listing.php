@@ -1,5 +1,7 @@
 <?php
 /**
+ * @var int $person_id
+ * @var array $permission_ids
  * @var array $grants
  */
 
@@ -26,14 +28,14 @@ if(isset($error))
 				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?php echo lang('Reports.graphical_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php
-				foreach($grants as $grant) 
-				{
-					if (preg_match('/reports_/', $grant['permission_id']) && !preg_match('/(inventory|receivings)/', $grant['permission_id']))
-					{
-						show_report('graphical_summary', $grant['permission_id']);
-					}
-				}
+				<?php foreach ($permission_ids as $permission_id) :
+					if (can_show_report($permission_id, ['inventory', 'receiving'])) :
+						$link = get_report_link($permission_id, 'graphical_summary');
+						?>
+						<a class="list-group-item" href="<?php echo $link['path']; ?>"><?php echo $link['label']; ?></a>
+						<?php
+					endif;
+				endforeach;
 				?>
 			 </div>
 		</div>
@@ -45,14 +47,14 @@ if(isset($error))
 				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?php echo lang('Reports.summary_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php 
-				foreach($grants as $grant) 
-				{
-					if (preg_match('/reports_/', $grant['permission_id']) && !preg_match('/(inventory|receivings)/', $grant['permission_id']))
-					{
-						show_report('summary', $grant['permission_id']);
-					}
-				}
+				<?php foreach ($permission_ids as $permission_id) :
+					if (can_show_report($permission_id, ['inventory', 'receiving'])) :
+						$link = get_report_link($permission_id, 'summary');
+						?>
+						<a class="list-group-item" href="<?php echo $link['path']; ?>"><?php echo $link['label']; ?></a>
+						<?php
+					endif;
+				endforeach;
 				?>
 			 </div>
 		</div>
@@ -65,32 +67,41 @@ if(isset($error))
 			</div>
 			<div class="list-group">
 				<?php
-					$person_id = session('person_id');
-
-					show_report_if_allowed('detailed', 'sales', $person_id);
-					show_report_if_allowed('detailed', 'receivings', $person_id);
-					show_report_if_allowed('specific', 'customer', $person_id, 'Reports.customers');
-					show_report_if_allowed('specific', 'discount', $person_id, 'Reports.discounts');
-					show_report_if_allowed('specific', 'employee', $person_id, 'Reports.employees');
-					show_report_if_allowed('specific', 'supplier', $person_id, 'Reports.suppliers');
+				$detailed_reports = [
+					'reports_sales' => 'detailed',
+					'reports_receivings' => 'detailed',
+					'reports_customers' => 'specific',
+					'reports_discounts' => 'specific',
+					'reports_employees' => 'specific',
+					'reports_suppliers' => 'specific',
+				];
+				foreach ($detailed_reports as $report_name => $prefix) :
+					if (in_array($report_name, $permission_ids)) :
+						$link = get_report_link($report_name, $prefix);
+						?>
+						<a class="list-group-item" href="<?php echo $link['path']; ?>"><?php echo $link['label']; ?></a>
+					<?php
+					endif;
+				endforeach;
 				?>
 			 </div>
 		</div>
 
 		<?php
-		$employee = model(Employee::class);
-		if ($employee->has_grant('Reports.inventory', session('person_id')))
-		{
+		if (in_array('reports_inventory', $permission_ids))
+		 {
 		?>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp</span><?php echo lang('Reports.inventory_reports') ?></h3>
 				</div>
 				<div class="list-group">
-				<?php 
-				show_report('', 'reports_inventory_low', 'Reports.inventory_low');
-				show_report('', 'reports_inventory_summary', 'Reports.inventory_summary');
+				<?php
+				$inventory_low_report = get_report_link('reports_inventory_low');
+				$inventory_summary_report = get_report_link('reports_inventory_summary');
 				?>
+					<a class="list-group-item" href="<?php echo $inventory_low_report['path']; ?>"><?php echo $inventory_low_report['label']; ?></a>
+					<a class="list-group-item" href="<?php echo $inventory_summary_report['path']; ?>"><?php echo $inventory_summary_report['label']; ?></a>
 				</div>
 			</div>
 		<?php 
