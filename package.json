@@ -26,30 +26,30 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "^1.5.3",
-    "grunt-bower": "^0.21.4",
-    "grunt-bower-concat": "^1.0.0",
-    "grunt-bower-licensechecker": "^0.1.2",
-    "grunt-bowercopy": "^1.2.5",
-    "grunt-cache-breaker": "^2.0.1",
-    "grunt-cli": "^1.4.3",
-    "grunt-composer": "^0.4.5",
-    "grunt-contrib-clean": "~1.0.0",
-    "grunt-contrib-compress": "^1.4.1",
-    "grunt-contrib-concat": "~0.5.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-uglify": "~5.0.1",
-    "grunt-contrib-watch": "~1.1.0",
-    "grunt-license-bower": "~1.0.1",
-    "grunt-script-link-tags": "https://github.com/jekkos/grunt-script-link-tags.git#master",
-    "grunt-wiredep": "^3.0.1",
-    "load-grunt-tasks": "^3.4.0",
-    "npm": "^9.4.1"
+    "grunt": "1.5.3",
+    "grunt-bower": "0.21.4",
+    "grunt-bower-concat": "1.0.0",
+    "grunt-bower-licensechecker": "0.1.2",
+    "grunt-bowercopy": "1.2.5",
+    "grunt-cache-breaker": "2.0.1",
+    "grunt-cli": "1.4.3",
+    "grunt-composer": "0.4.5",
+    "grunt-contrib-clean": "1.0.0",
+    "grunt-contrib-compress": "1.6.0",
+    "grunt-contrib-concat": "0.5.1",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "0.14.0",
+    "grunt-contrib-jshint": "0.6.5",
+    "grunt-contrib-uglify": "5.0.1",
+    "grunt-contrib-watch": "1.1.0",
+    "grunt-license-bower": "1.0.1",
+    "grunt-script-link-tags": "1.0.2",
+    "grunt-wiredep": "3.0.1",
+    "load-grunt-tasks": "3.5.2",
+    "npm": "9.4.1"
   },
   "dependencies": {
-    "bootstrap": "^5.1.3",
-    "bootswatch": "^5.1.3"
+    "bootstrap": "5.1.3",
+    "bootswatch": "5.1.3"
   }
 }
