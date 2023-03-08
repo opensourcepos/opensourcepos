@@ -10,7 +10,7 @@ $(document).ready(function()
 	<?php echo view('partial/bootstrap_tables_locale') ?>
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
-		headers: <?php echo esc($tax_rate_table_headers, 'js') ?>,
+		headers: <?php echo $tax_rate_table_headers ?>,
 		pageSize: <?php echo $config['lines_per_page'] ?>,
 		uniqueId: 'tax_rate_id'
 	});
