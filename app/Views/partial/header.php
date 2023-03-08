@@ -39,7 +39,7 @@ $request = Services::request();
 	<?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc($config['theme']) . '.css' ?>"/>
 	<?php } ?>
-		<!-- minjs injector:css -->
+		<!-- minjs injector:js -->
 		<!-- endinjector -->
 	<?php endif; ?>
 

@@ -13,11 +13,11 @@ module.exports = function(grunt) {
 						'dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js',
 						'dist/extensions/sticky-header/bootstrap-table-sticky-header.css'
 					],
-					'chartist-plugin-axistitle': [ "./dist/chartist-plugin-axistitle.min.js"]
+					'chartist-plugin-axistitle': [ "dist/chartist-plugin-axistitle.min.js"]
 				},
 				dest: {
-					'js': '../../tmp/opensourcepos_bower.js',
-					'css': '../../tmp/opensourcepos_bower.css'
+					'js': '../tmp/opensourcepos_bower.js',
+					'css': '../tmp/opensourcepos_bower.css'
 				}
 			}
 		},
