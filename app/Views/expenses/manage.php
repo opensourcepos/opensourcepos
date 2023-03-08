@@ -26,7 +26,7 @@ $(document).ready(function()
 
 	table_support.init({
 		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
-		headers: <?php echo esc($table_headers) ?>,
+		headers: <?php echo $table_headers ?>,
 		pageSize: <?php echo $config['lines_per_page'] ?>,
 		uniqueId: 'expense_id',
 		onLoadSuccess: function(response) {

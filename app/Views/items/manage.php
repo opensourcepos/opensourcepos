@@ -51,7 +51,7 @@ $(document).ready(function()
     table_support.init({
         employee_id: <?php echo $employee->get_logged_in_employee_info()->person_id ?>,
         resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
-        headers: <?php echo esc($table_headers, 'js') ?>,
+        headers: <?php echo $table_headers ?>,
         pageSize: <?php echo $config['lines_per_page'] ?>,
         uniqueId: 'items.item_id',
         queryParams: function() {
