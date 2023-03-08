@@ -19,7 +19,7 @@ $request = Services::request();
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>"/>
 
-	<?php if (get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+	<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
 		<!-- bower:css -->
 		<!-- endbower -->
 		<!-- injector:css -->
@@ -63,7 +63,7 @@ $request = Services::request();
 
 				<div class="navbar-right" style="margin:0">
 					<?= anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name", 'attr'), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-					<?= '  |  ' . ($request->getGet('debug') == 'true' ? session('session_sha1') . '  |  ' : '') ?>
+					<?= '  |  ' . ((ENVIRONMENT == 'development' || $request->getGet('debugdebug') == 'true') ? session('session_sha1') . '  |  ' : '') ?>
 					<?= anchor('home/logout', lang('Login.logout')) ?>
 				</div>
 
