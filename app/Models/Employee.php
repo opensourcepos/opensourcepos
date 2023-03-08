@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
-use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Session\Session;
 
 /**
