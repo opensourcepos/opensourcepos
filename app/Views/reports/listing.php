@@ -32,8 +32,10 @@ if (isset($error)) {
 				<h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp</span><?= lang('Reports.graphical_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php foreach ($permission_ids as $permission_id) {
-				    if (can_show_report($permission_id, ['inventory', 'receiving'])) {
+				<?php foreach ($permission_ids as $permission_id)
+				{
+				    if (can_show_report($permission_id, ['inventory', 'receiving']))
+					{
 				        $link = get_report_link($permission_id, 'graphical_summary');
 				        ?>
 						<a class="list-group-item" href="<?= $link['path']; ?>"><?= $link['label']; ?></a>
@@ -51,8 +53,10 @@ if (isset($error)) {
 				<h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp</span><?= lang('Reports.summary_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php foreach ($permission_ids as $permission_id) {
-				    if (can_show_report($permission_id, ['inventory', 'receiving'])) {
+				<?php foreach ($permission_ids as $permission_id)
+				{
+				    if (can_show_report($permission_id, ['inventory', 'receiving']))
+					{
 				        $link = get_report_link($permission_id, 'summary');
 				        ?>
 						<a class="list-group-item" href="<?= $link['path']; ?>"><?= $link['label']; ?></a>
@@ -70,8 +74,10 @@ if (isset($error)) {
 				<h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp</span><?= lang('Reports.detailed_reports') ?></h3>
 			</div>
 			<div class="list-group">
-				<?php foreach ($detailed_reports as $report_name => $prefix) {
-				    if (in_array($report_name, $permission_ids, true)) {
+				<?php foreach ($detailed_reports as $report_name => $prefix)
+				{
+				    if (in_array($report_name, $permission_ids, true))
+					{
 				        $link = get_report_link($report_name, $prefix);
 				        ?>
 						<a class="list-group-item" href="<?= $link['path']; ?>"><?= $link['label']; ?></a>

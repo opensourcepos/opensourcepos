@@ -3,7 +3,8 @@
 function get_report_link(string $report_name, string $report_prefix = '', string $lang_key = ''): array
 {
     $path = 'reports/';
-    if ($report_prefix !== '') {
+    if ($report_prefix !== '')
+	{
         $path .= $report_prefix . '_';
     }
 
@@ -13,7 +14,8 @@ function get_report_link(string $report_name, string $report_prefix = '', string
     $report_name = str_replace('reports_', '', $report_name);
     $path .= $report_name;
 
-    if ($lang_key === '') {
+    if ($lang_key === '')
+	{
         $lang_key = 'Reports.' . $report_name;
     }
 
@@ -31,12 +33,15 @@ function get_report_link(string $report_name, string $report_prefix = '', string
  */
 function can_show_report($permission_id, array $restrict_views = []): bool
 {
-    if (strpos($permission_id, 'reports_') === false) {
+    if (strpos($permission_id, 'reports_') === false)
+	{
         return false;
     }
 
-    foreach ($restrict_views as $restrict_view) {
-        if (strpos($permission_id, $restrict_view) !== false) {
+    foreach ($restrict_views as $restrict_view)
+	{
+        if (strpos($permission_id, $restrict_view) !== false)
+		{
             return false;
         }
     }
