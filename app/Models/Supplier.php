@@ -257,7 +257,7 @@ class Supplier extends Person
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		return $this->goSearch($search, 0, 0, 'last_name', 'asc', TRUE);
 	}
 
 	/**

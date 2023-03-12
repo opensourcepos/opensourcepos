@@ -214,7 +214,7 @@ class Tax extends Model
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
+		return $this->goSearch($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
 
 	/**

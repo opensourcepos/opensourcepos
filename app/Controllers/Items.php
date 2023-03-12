@@ -116,7 +116,7 @@ class Items extends Secure_Controller
 		//Check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
-		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+		$items = $this->item->goSearch($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->item->get_found_rows($search, $filters);
 		$data_rows = [];
 

@@ -99,7 +99,7 @@ class Customers extends Persons
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
+		$customers = $this->customer->goSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
 
 		$data_rows = [];

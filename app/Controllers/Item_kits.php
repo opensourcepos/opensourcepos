@@ -82,7 +82,7 @@ class Item_kits extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
+		$item_kits = $this->item_kit->segoSearcharch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->item_kit->get_found_rows($search);
 
 		$data_rows = [];
