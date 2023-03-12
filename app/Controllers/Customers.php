@@ -91,13 +91,13 @@ class Customers extends Persons
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->get('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->get('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->get('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->get('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->get('order', FILTER_SANITIZE_STRING);
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
@@ -131,7 +131,7 @@ class Customers extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->get('term', FILTER_SANITIZE_STRING), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -146,7 +146,7 @@ class Customers extends Persons
 	/**
 	 * Loads the customer edit form
 	 */
-	public function view(int $customer_id = -1): void	//TODO: replace -1 with a constant
+	public function getView(int $customer_id = -1): void	//TODO: replace -1 with a constant
 	{
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)

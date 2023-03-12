@@ -36,16 +36,16 @@ class Expenses extends Secure_Controller
 		echo view('expenses/manage', $data);
 	}
 
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search   = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit    = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset   = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort     = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order    = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search   = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit    = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset   = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort     = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order    = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 		$filters  = [
-			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),
-			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
+			'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_STRING),
+			'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_STRING),
 			'only_cash' => FALSE,
 			'only_due' => FALSE,
 			'only_check' => FALSE,
@@ -55,7 +55,7 @@ class Expenses extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: variable naming does not match standard
+		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: variable naming does not match standard
 		$filters = array_merge($filters, $filledup);
 		$expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense->get_found_rows($search, $filters);
@@ -76,7 +76,7 @@ class Expenses extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
-	public function view(int $expense_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $expense_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$data = [];	//TODO: Duplicated code
 

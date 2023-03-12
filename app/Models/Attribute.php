@@ -150,7 +150,7 @@ class Attribute extends Model
 	/*
 	 Performs a search on attribute definitions
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc'): ResultInterface
+	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc'): ResultInterface
 	{
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');

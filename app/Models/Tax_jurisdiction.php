@@ -213,7 +213,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 

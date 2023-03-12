@@ -26,13 +26,13 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	/*
 	Returns expense_category_manage table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense_category->get_found_rows($search);
@@ -53,7 +53,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode($data_row);
 	}
 
-	public function view(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
 

@@ -55,8 +55,8 @@ class Receivings extends Secure_Controller
 	 */
 	public function item_search(): void
 	{
-		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
-		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING)));
+		$suggestions = $this->item->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING)));
 
 		echo json_encode($suggestions);
 	}
@@ -67,8 +67,8 @@ class Receivings extends Secure_Controller
 	 */
 	public function stock_item_search(): void
 	{
-		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
-		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING)));
+		$suggestions = $this->item->get_stock_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING)));
 
 		echo json_encode($suggestions);
 	}

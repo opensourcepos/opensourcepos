@@ -31,13 +31,13 @@ class Attributes extends Secure_Controller
 	/**
 	 * Returns customer table data rows. This will be called with AJAX.
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$attributes = $this->attribute->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->attribute->get_found_rows($search);
@@ -155,7 +155,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function suggest_attribute(int $definition_id): void
 	{
-		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getVar('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -182,7 +182,7 @@ class Attributes extends Secure_Controller
 		return $definition_flag_names;
 	}
 
-	public function view(int $definition_id = NO_DEFINITION_ID): void
+	public function getView(int $definition_id = NO_DEFINITION_ID): void
 	{
 		$info = $this->attribute->get_info($definition_id);
 		foreach(get_object_vars($info) as $property => $value)

@@ -152,7 +152,7 @@ class Expense_category extends Model
 	/**
 	 * Perform a search on expense_category
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE): ResultInterface
+	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'category_name', string $order='asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('expense_categories AS expense_categories');
 

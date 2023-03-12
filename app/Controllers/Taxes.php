@@ -77,13 +77,13 @@ class Taxes extends Secure_Controller
 	/*
 	Returns tax_codes table data rows. This will be called with AJAX.
 	*/
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$tax_rates = $this->tax->search($search, $limit, $offset, $sort, $order);
 
@@ -126,7 +126,7 @@ class Taxes extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function view_tax_codes(int $tax_code = -1): void	//TODO: Replace -1 with constant
+	public function getView_tax_codes(int $tax_code = -1): void	//TODO: Replace -1 with constant
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);
 
@@ -194,7 +194,7 @@ class Taxes extends Secure_Controller
 	}
 
 
-	public function view(int $tax_rate_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $tax_rate_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$tax_rate_info = $this->tax->get_info($tax_rate_id);
 
@@ -226,7 +226,7 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_rates_form', $data);
 	}
 
-	public function view_tax_categories(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
+	public function getView_tax_categories(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated Code
 
@@ -293,7 +293,7 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_category_form', $data);
 	}
 
-	public function view_tax_jurisdictions(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
+	public function getView_tax_jurisdictions(int $tax_code = -1): void	//TODO: Replace -1 with constant	//TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated code
 

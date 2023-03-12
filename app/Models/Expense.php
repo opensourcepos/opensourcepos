@@ -87,7 +87,7 @@ class Expense extends Model
 	/**
 	 * Searches expenses
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function getSearch(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('expenses AS expenses');

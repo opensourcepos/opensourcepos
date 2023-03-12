@@ -29,13 +29,13 @@ class Tax_jurisdictions extends Secure_Controller
 	/*
 	 * Returns tax_category table data rows. This will be called with AJAX.
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
@@ -56,7 +56,7 @@ class Tax_jurisdictions extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function view(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
 	{
 		$data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
