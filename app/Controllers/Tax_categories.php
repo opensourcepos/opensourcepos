@@ -34,7 +34,7 @@ class Tax_categories extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$tax_categories = $this->tax_category->goSearch($search, $limit, $offset, $sort, $order);
+		$tax_categories = $this->tax_category->getSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_category->get_found_rows($search);
 
 		$data_rows = [];

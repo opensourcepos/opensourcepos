@@ -30,7 +30,7 @@ class Employees extends Persons
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$employees = $this->employee->goSearch($search, $limit, $offset, $sort, $order);
+		$employees = $this->employee->getSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->employee->get_found_rows($search);
 
 		$data_rows = [];

@@ -251,7 +251,7 @@ class Item_kit extends Model
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->goSearch($search, 0, 0, 'name', 'asc', TRUE);
+		return $this->getSearch($search, 0, 0, 'name', 'asc', TRUE);
 	}
 
 	/**

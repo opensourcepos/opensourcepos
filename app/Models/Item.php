@@ -114,7 +114,7 @@ class Item extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
-		return $this->goSearch($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
+		return $this->getSearch($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
 	/**

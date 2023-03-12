@@ -146,7 +146,7 @@ class Expense_category extends Model
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->goSearch($search, 0, 0, 'category_name', 'asc', TRUE);
+		return $this->getSearch($search, 0, 0, 'category_name', 'asc', TRUE);
 	}
 
 	/**
