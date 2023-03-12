@@ -30,7 +30,7 @@ class Messages extends Secure_Controller
 		echo view('messages/sms');
 	}
 
-	public function view(int $person_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $person_id = -1): void	//TODO: Replace -1 with a constant
 	{ 
 		$info = $this->person->get_info($person_id);
 		foreach(get_object_vars($info) as $property => $value)

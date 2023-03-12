@@ -99,29 +99,29 @@ class Sales extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->get('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->get('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->get('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->get('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->get('order', FILTER_SANITIZE_STRING);
 
 		$filters = [
 			'sale_type' => 'all',
 			'location_id' => 'all',
-			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),
-			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
+			'start_date' => $this->request->get('start_date', FILTER_SANITIZE_STRING),
+			'end_date' => $this->request->get('end_date', FILTER_SANITIZE_STRING),
 			'only_cash' => FALSE,
 			'only_due' => FALSE,
 			'only_check' => FALSE,
 			'only_creditcard' => FALSE,
-			'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+			'only_invoices' => $this->config['invoice_enable'] && $this->request->get('only_invoices', FILTER_SANITIZE_NUMBER_INT),
 			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: Variable does not meet naming conventions
+		$filledup = array_fill_keys($this->request->get('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: Variable does not meet naming conventions
 		$filters = array_merge($filters, $filledup);
 
 		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
@@ -150,7 +150,7 @@ class Sales extends Secure_Controller
 	public function item_search(): void
 	{
 		$suggestions = [];
-		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term', FILTER_SANITIZE_STRING) : NULL;
+		$receipt = $search = $this->request->get('term') != '' ? $this->request->get('term', FILTER_SANITIZE_STRING) : NULL;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
 		{
@@ -1702,7 +1702,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
-	public function search_cart_for_item_id(int $id, array $array)	//TODO: The second parameter should not be named array perhaps int $needle_item_id, array $shopping_cart
+	public function getSearch_cart_for_item_id(int $id, array $array)	//TODO: The second parameter should not be named array perhaps int $needle_item_id, array $shopping_cart
 	{
 		foreach($array as $key => $val)	//TODO: key and val are not reflective of the contents of the array and should be replaced with descriptive variable names.  Perhaps $cart_haystack => $item_details
 		{

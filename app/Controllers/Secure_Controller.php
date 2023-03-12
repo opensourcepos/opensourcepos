@@ -71,7 +71,7 @@ class Secure_Controller extends BaseController
 	{
 		$result = TRUE;
 
-		foreach($this->request->getGet(NULL, FILTER_SANITIZE_STRING) as $str)
+		foreach($this->request->getVar(NULL, FILTER_SANITIZE_STRING) as $str)
 		{
 			$result &= parse_decimals($str);
 		}
@@ -81,9 +81,9 @@ class Secure_Controller extends BaseController
 
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function getIndex() { return FALSE; }
-	public function search() { return FALSE; }
+	public function getSearch() { return FALSE; }
 	public function suggest_search() { return FALSE; }
-	public function view(int $data_item_id = -1) { return FALSE; }
+	public function getView(int $data_item_id = -1) { return FALSE; }
 	public function save(int $data_item_id = -1) { return FALSE; }
 	public function delete() { return FALSE; }
 }

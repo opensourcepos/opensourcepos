@@ -120,7 +120,7 @@ class Item extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function getSearch(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items

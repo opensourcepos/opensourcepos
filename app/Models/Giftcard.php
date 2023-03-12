@@ -233,7 +233,7 @@ class Giftcard extends Model
 	/**
 	 * Performs a search on giftcards
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE): ResultInterface
 	{
 		$builder = $this->db->table('giftcards');
 

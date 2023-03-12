@@ -12,7 +12,7 @@ $(document).ready(function()
 	<?php echo view('partial/bootstrap_tables_locale') ?>
 
 	table_support.init({
-		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
+		resource: '<?php echo esc($controller_name) ?>',
 		headers: <?php echo $table_headers ?>,
 		pageSize: <?php echo $config['lines_per_page'] ?>,
 		uniqueId: 'people.person_id',

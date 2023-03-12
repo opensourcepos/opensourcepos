@@ -22,13 +22,13 @@ class Employees extends Persons
 	/**
 	 * Returns employee table data rows. This will be called with AJAX.
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$employees = $this->employee->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->employee->get_found_rows($search);
@@ -47,14 +47,14 @@ class Employees extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), 25, TRUE);
+		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25, TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -62,7 +62,7 @@ class Employees extends Persons
 	/**
 	 * Loads the employee edit form
 	 */
-	public function view(int $employee_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
@@ -215,7 +215,7 @@ class Employees extends Persons
 	 */
 	public function check_username($employee_id): void
 	{
-		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username', FILTER_SANITIZE_STRING));
+		$exists = $this->employee->username_exists($employee_id, $this->request->getVar('username', FILTER_SANITIZE_STRING));
 		echo !$exists ? 'true' : 'false';
 	}
 }

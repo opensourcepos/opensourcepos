@@ -43,6 +43,8 @@ class Items extends Secure_Controller
 	{
 		parent::__construct('items');
 
+		$this->session = Services::session();
+
 		$this->image = Services::image();
 
 		$this->barcode_lib = new Barcode_lib();
@@ -85,21 +87,21 @@ class Items extends Secure_Controller
 	/*
 	 * Returns Items table data rows. This will be called with AJAX.
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$this->item_lib->set_item_location($this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT));
+		$this->item_lib->set_item_location($this->request->getVar('stock_location', FILTER_SANITIZE_NUMBER_INT));
 
 		$definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
 		$filters = [
-			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_STRING),
-			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_STRING),
+			'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_STRING),
+			'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_STRING),
 			'stock_location_id' => $this->item_lib->get_item_location(),
 			'empty_upc' => FALSE,
 			'low_inventory' => FALSE,
@@ -112,7 +114,7 @@ class Items extends Secure_Controller
 		];
 
 		//Check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
+		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
 		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->item->get_found_rows($search, $filters);
@@ -211,7 +213,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_category(): void
 	{
-		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_category_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -221,7 +223,7 @@ class Items extends Secure_Controller
 	 */
 	public function suggest_location(): void
 	{
-		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_location_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -240,8 +242,9 @@ class Items extends Secure_Controller
 		echo json_encode($result);
 	}
 
-	public function view(int $item_id = NEW_ITEM): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
+	public function getView(int $item_id = NEW_ITEM)	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
+		log_message('info', '>>> Item view started');
 		if($item_id === NEW_ITEM)
 		{
 			$data = [];
@@ -412,7 +415,8 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		echo view('items/form', $data);
+		log_message('info', '>>> showing the form');
+		return view('items/form', $data);
 	}
 
 	public function inventory(int $item_id = NEW_ITEM): void
