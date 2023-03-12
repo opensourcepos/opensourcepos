@@ -242,9 +242,8 @@ class Items extends Secure_Controller
 		echo json_encode($result);
 	}
 
-	public function getView(int $item_id = NEW_ITEM)	//TODO: Super long function.  Perhaps we need to refactor out some methods.
+	public function getView(int $item_id = NEW_ITEM): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
-		log_message('info', '>>> Item view started');
 		if($item_id === NEW_ITEM)
 		{
 			$data = [];
@@ -415,8 +414,7 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		log_message('info', '>>> showing the form');
-		return view('items/form', $data);
+		echo view('items/form', $data);
 	}
 
 	public function inventory(int $item_id = NEW_ITEM): void
