@@ -39,7 +39,7 @@ class Attributes extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$attributes = $this->attribute->search($search, $limit, $offset, $sort, $order);
+		$attributes = $this->attribute->goSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->attribute->get_found_rows($search);
 
 		$data_rows = [];

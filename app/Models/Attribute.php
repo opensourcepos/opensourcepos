@@ -303,7 +303,7 @@ class Attribute extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search)->getNumRows();
+		return $this->goSearch($search)->getNumRows();
 	}
 
 	private function check_data_validity(int $definition_id, string $from, string $to): bool

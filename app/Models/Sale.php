@@ -120,7 +120,7 @@ class Sale extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
-		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
+		return $this->goSearch($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
 
 	/**

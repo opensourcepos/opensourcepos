@@ -124,7 +124,7 @@ class Sales extends Secure_Controller
 		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: Variable does not meet naming conventions
 		$filters = array_merge($filters, $filledup);
 
-		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
+		$sales = $this->sale->goSearch($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->sale->get_found_rows($search, $filters);
 		$payments = $this->sale->get_payments_summary($search, $filters);
 		$payment_summary = get_sales_manage_payments_summary($payments);
