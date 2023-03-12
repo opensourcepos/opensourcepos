@@ -93,11 +93,11 @@ class Customers extends Persons
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->get('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->get('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->get('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->get('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->get('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
@@ -131,7 +131,7 @@ class Customers extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->get('term', FILTER_SANITIZE_STRING), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
