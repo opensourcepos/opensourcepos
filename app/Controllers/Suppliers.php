@@ -52,7 +52,7 @@ class Suppliers extends Persons
 		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$suppliers = $this->supplier->goSearch($search, $limit, $offset, $sort, $order);
+		$suppliers = $this->supplier->getSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->supplier->get_found_rows($search);
 
 		$data_rows = [];

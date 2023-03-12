@@ -34,7 +34,7 @@ class Giftcards extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$giftcards = $this->giftcard->goSearch($search, $limit, $offset, $sort, $order);
+		$giftcards = $this->giftcard->getSearch($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->giftcard->get_found_rows($search);
 
 		$data_rows = [];
