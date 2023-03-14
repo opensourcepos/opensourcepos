@@ -34,7 +34,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$expense_categories = $this->expense_category->getSearch($search, $limit, $offset, $sort, $order);
+		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense_category->get_found_rows($search);
 
 		$data_rows = [];

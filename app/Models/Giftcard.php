@@ -227,14 +227,28 @@ class Giftcard extends Model
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->getSearch($search, 0, 0, 'giftcard_number', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'giftcard_number', 'asc', TRUE);
 	}
 
 	/**
 	 * Performs a search on giftcards
 	 */
-	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'giftcard_number', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'giftcard_number';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'giftcard_number';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('giftcards');
 
 		// get_found_rows case

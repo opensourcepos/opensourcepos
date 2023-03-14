@@ -120,14 +120,21 @@ class Sale extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
-		return $this->getSearch($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
 
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function getSearch(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'sales.sale_time', string $order = 'desc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = FALSE): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'sales.sale_time';
+		if($order == null) $order = 'desc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 
 		// Pick up only non-suspended records

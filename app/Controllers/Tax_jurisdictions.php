@@ -37,7 +37,7 @@ class Tax_jurisdictions extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$tax_jurisdictions = $this->tax_jurisdiction->getSearch($search, $limit, $offset, $sort, $order);
+		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
 
 		$data_rows = [];

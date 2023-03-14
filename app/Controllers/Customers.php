@@ -93,13 +93,13 @@ class Customers extends Persons
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
-		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
 
-		$customers = $this->customer->getSearch($search, $limit, $offset, $sort, $order);
+		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
 
 		$data_rows = [];
@@ -148,6 +148,9 @@ class Customers extends Persons
 	 */
 	public function getView(int $customer_id = -1): void	//TODO: replace -1 with a constant
 	{
+		// Set default values
+		if($customer_id == null) $customer_id = -1;
+
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{

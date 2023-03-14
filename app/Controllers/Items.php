@@ -116,7 +116,7 @@ class Items extends Secure_Controller
 		//Check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
-		$items = $this->item->getSearch($search, $filters, $limit, $offset, $sort, $order);
+		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->item->get_found_rows($search, $filters);
 		$data_rows = [];
 
@@ -244,6 +244,9 @@ class Items extends Secure_Controller
 
 	public function getView(int $item_id = NEW_ITEM): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
+		// Set default values
+		if($item_id == null) $item_id = NEW_ITEM;
+
 		if($item_id === NEW_ITEM)
 		{
 			$data = [];

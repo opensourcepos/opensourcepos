@@ -251,15 +251,22 @@ class Item_kit extends Model
 	 */
 	public function get_found_rows(string $search): ResultInterface
 	{
-		return $this->getSearch($search, 0, 0, 'name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
 	}
 
 	/**
 	 * Perform a search on items
 	 */
-	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
 	{
-		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
+		$builder = $this->db->table('item_kits');
 
 		// get_found_rows case
 		if($count_only)
