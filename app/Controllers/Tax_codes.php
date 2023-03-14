@@ -41,7 +41,7 @@ class Tax_codes extends Secure_Controller
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
 		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
 
-		$tax_codes = $this->tax_code->getSearch($search, $limit, $offset, $sort, $order);
+		$tax_codes = $this->tax_code->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_code->get_found_rows($search);
 
 		$data_rows = [];

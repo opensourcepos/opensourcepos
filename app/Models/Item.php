@@ -114,14 +114,21 @@ class Item extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
-		return $this->getSearch($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
 	/**
 	 * Perform a search on items
 	 */
-	public function getSearch(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'items.name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'items.name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 

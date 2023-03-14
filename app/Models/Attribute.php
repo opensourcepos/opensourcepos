@@ -150,8 +150,14 @@ class Attribute extends Model
 	/*
 	 Performs a search on attribute definitions
 	 */
-	public function getSearch(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'definition.definition_name', string $order = 'asc'): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'definition.definition_name', ?string $order = 'asc'): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'definition.definition_name';
+		if($order == null) $order = 'asc';
+
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');
 		$builder->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
@@ -303,7 +309,7 @@ class Attribute extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->getSearch($search)->getNumRows();
+		return $this->search($search)->getNumRows();
 	}
 
 	private function check_data_validity(int $definition_id, string $from, string $to): bool

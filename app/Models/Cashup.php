@@ -73,14 +73,21 @@ class Cashup extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): ResultInterface
 	{
-		return $this->getSearch($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}
 
 	/**
 	 * Searches cashups
 	 */
-	public function getSearch(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'cashup_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'cashup_id', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'cashup_id';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
 
