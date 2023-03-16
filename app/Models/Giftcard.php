@@ -225,7 +225,7 @@ class Giftcard extends Model
 	/**
 	 * Gets gift cards
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'giftcard_number', 'asc', TRUE);
 	}
