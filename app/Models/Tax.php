@@ -212,7 +212,7 @@ class Tax extends Model
 	/**
 	 * Gets tax_codes
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}

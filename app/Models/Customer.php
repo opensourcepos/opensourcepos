@@ -110,7 +110,7 @@ class Customer extends Person
 			//append those fields to base parent object, we have a complete empty object
 			foreach($this->db->getFieldNames('customers') as $field)
 			{
-				$person_obj->$field = '';
+				$person_obj->$field = null;
 			}
 
 			return $person_obj;
@@ -398,9 +398,11 @@ class Customer extends Person
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		$result = $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		log_message('info', '>>>Customer.get_found_rows-' . $result);
+		return $result;
 	}
 
 	/**

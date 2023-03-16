@@ -205,7 +205,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
 	}

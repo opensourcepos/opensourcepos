@@ -71,7 +71,7 @@ class Cashup extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search, array $filters): ResultInterface
+	public function get_found_rows(string $search, array $filters): int
 	{
 		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
 	}

@@ -35,7 +35,7 @@ class Customers extends Persons
 	{
 		parent::__construct('customers');
 		$this->mailchimp_lib = new Mailchimp_lib();
-
+		$this->customer_rewards = model('Customer_rewards');
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
 		$this->config = config('OSPOS')->settings;
@@ -91,7 +91,7 @@ class Customers extends Persons
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
-	public function getSearch(): void
+	public function getSearch()
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -187,7 +187,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($$this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
+		if($this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
 		{
 			$data['use_destination_based_tax'] = TRUE;
 		}
