@@ -492,7 +492,7 @@ class Items extends Secure_Controller
 		echo view('barcodes/barcode_sheet', $data);
 	}
 
-	public function attributes(int $item_id = NEW_ITEM): void
+	public function getAttributes(int $item_id = NEW_ITEM): void
 	{
 		$data['item_id'] = $item_id;
 		$definition_ids = json_decode($this->request->getPost('definition_ids', FILTER_SANITIZE_STRING), TRUE);

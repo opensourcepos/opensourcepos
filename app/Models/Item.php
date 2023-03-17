@@ -120,7 +120,7 @@ class Item extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
@@ -331,7 +331,7 @@ class Item extends Model
 		//Get all the fields from items table
 		foreach($this->db->getFieldNames('items') as $field)
 		{
-			$item_obj->$field = '';
+			$item_obj->$field = null;
 		}
 
 		return $item_obj;
