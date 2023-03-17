@@ -193,7 +193,7 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
-	public function get_values_by_definitions(array $definition_ids): array
+	public function get_values_by_definitions(?array $definition_ids): array
 	{
 		if(count($definition_ids ? : []))
 		{
