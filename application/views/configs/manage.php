@@ -18,6 +18,9 @@
 		<a data-toggle="tab" href="#locale_tab" title="<?php echo $this->lang->line('config_locale_configuration'); ?>"><?php echo $this->lang->line('config_locale'); ?></a>
 	</li>
 	<li role="presentation">
+		<a data-toggle="tab" href="#shortcuts_tab" title="<?php echo $this->lang->line('config_system_sc'); ?>"><?php echo $this->lang->line('config_system_sc'); ?></a>
+	</li>
+	<li role="presentation">
 		<a data-toggle="tab" href="#barcode_tab" title="<?php echo $this->lang->line('config_barcode_configuration'); ?>"><?php echo $this->lang->line('config_barcode'); ?></a>
 	</li>
 	<li role="presentation">
@@ -52,6 +55,9 @@
 	</div>
 	<div class="tab-pane" id="locale_tab">
 		<?php $this->load->view("configs/locale_config"); ?>
+	</div>
+	<div class="tab-pane" id="shortcuts_tab">
+		<?php $this->load->view("configs/shortcuts_config"); ?>
 	</div>
 	<div class="tab-pane" id="barcode_tab">
 		<?php $this->load->view("configs/barcode_config"); ?>
