@@ -1,6 +1,6 @@
 <?php
 $lang["customers_available_points"] = "Puntos Disponibles";
-$lang["rewards_package"] = "Premios";
+$lang["rewards_package"] = "Recompensas";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
 $lang["sales_account_number"] = "Cuenta #";
 $lang["sales_add_payment"] = "Agregar Pago";
@@ -106,7 +106,7 @@ $lang["sales_key_cancel"] = "Cancelar actual Cotización/Factura/Venta";
 $lang["sales_key_customer_search"] = "Búsqueda de Clientes";
 $lang["sales_key_finish_quote"] = "Finish Quote/Invoice witdout payment";
 $lang["sales_key_finish_sale"] = "Agregar Pago y Completar Factura/Venta";
-$lang["sales_key_full"] = "Abrir en modo Pantalla Completa";
+$lang["sales_key_full"] = "Abrir en Pantalla Completa";
 $lang["sales_key_function"] = "Function";
 $lang["sales_key_help"] = "Atajos";
 $lang["sales_key_help_modal"] = "Abrir Ventana de Atajos";
