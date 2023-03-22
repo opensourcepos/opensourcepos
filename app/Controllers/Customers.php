@@ -268,7 +268,7 @@ class Customers extends Persons
 	/**
 	 * Inserts/updates a customer
 	 */
-	public function save(int $customer_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $customer_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);
 		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
@@ -293,7 +293,7 @@ class Customers extends Persons
 			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
 		];
 
-		$date_formatter = date_create_from_format($$this->config['dateformat'] . ' ' . $$this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
+		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,
@@ -312,12 +312,13 @@ class Customers extends Persons
 		if($this->customer->save_customer($person_data, $customer_data, $customer_id))
 		{
 			// save customer to Mailchimp selected list	//TODO: addOrUpdateMember should be refactored... potentially pass an array or object instead of 6 parameters.
+			$mailchimp_status = $this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING);
 			$this->mailchimp_lib->addOrUpdateMember(
 				$this->_list_id,
 				$email,
 				$first_name,
 				$last_name,
-				$this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING),
+				$mailchimp_status == null ? "" : $mailchimp_status,
 				['vip' => $this->request->getPost('mailchimp_vip') != NULL]
 			);
 
