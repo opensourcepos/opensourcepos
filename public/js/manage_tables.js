@@ -292,7 +292,8 @@
 				var selector = rows_selector(response.id);
 				var rows = $(selector.join(",")).length;
 				if (rows > 0 && rows < 15) {
-					var ids = response.id.split(":");
+					var respond_id = response.id;
+					var ids = respond_id.split(":");
 					$.get([url || resource + '/get_row', id].join("/"), {}, function (response) {
 						$.each(selector, function (index, element) {
 							var id = $(element).data('uniqueid');
