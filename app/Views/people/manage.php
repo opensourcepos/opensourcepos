@@ -39,14 +39,14 @@ $(document).ready(function()
 	if ($controller_name == 'customers')	//TODO: === ?
 	{
 	?>
-		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/csv_import"), 'url') ?>'
+		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csv_import" ?>'
 				title='<?php echo lang('Customers.import_items_csv') ?>'>
 			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo lang('Common.import_csv') ?>
 		</button>
 	<?php
 	}
 	?>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url("$controller_name/view") ?>'
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/view" ?>'
 			title='<?php echo lang("$controller_name.new") ?>'>
 		<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang("$controller_name.new") ?>
 	</button>

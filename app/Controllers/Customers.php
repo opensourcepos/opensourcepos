@@ -353,7 +353,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an email address already exists
 	 */
-	public function ajax_check_email(): void
+	public function postAjaxCheckEmail(): void
 	{
 		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
@@ -363,7 +363,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an account number already exists
 	 */
-	public function ajax_check_account_number(): void
+	public function postAjaxCheckAccountNumber(): void
 	{
 		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 

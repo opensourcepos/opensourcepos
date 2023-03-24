@@ -440,7 +440,7 @@ if(isset($success))
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Sales.select_customer') . esc(" $customer_required") ?></label>
 					<?php echo form_input (['name' => 'customer', 'id' => 'customer', 'class' => 'form-control input-sm', 'value' => lang('Sales.start_typing_customer_name')]) ?>
 
-					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('Common.submit') ?>" data-href="<?php echo site_url("customers/view") ?>"
+					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?php echo lang('Common.submit') ?>" data-href="<?php echo "customers/view" ?>"
 							title="<?php echo lang("$controller_name.new_customer") ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang("$controller_name.new_customer") ?>
 					</button>
