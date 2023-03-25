@@ -105,12 +105,20 @@ class Customer extends Person
 			//Get empty base parent object, as $customer_id is NOT a customer
 			$person_obj = parent::get_info(NEW_ENTRY);
 
-			//Get all the fields from customer table
-			//append those fields to base parent object, we have a complete empty object
-			foreach($this->db->getFieldNames('customers') as $field)
-			{
-				$person_obj->$field = null;
+			// Initialize empty object
+
+			foreach ($this->db->getFieldData('customers') as $field) {
+				$field_name = $field->name;
+				if (in_array($field->type, array('int', 'tinyint', 'decimal')))
+				{
+					$person_obj->$field_name = 0;
+				}
+				else
+				{
+					$person_obj->$field_name = NULL;
+				}
 			}
+			$person_obj->person_id = NEW_ENTRY;
 
 			return $person_obj;
 		}

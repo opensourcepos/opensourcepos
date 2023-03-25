@@ -123,11 +123,11 @@ class Item extends Model
 	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
-		if($rows == null) $rows = 0;
-		if($limit_from == null) $limit_from = 0;
-		if($sort == null) $sort = 'items.name';
-		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($rows == NULL) $rows = 0;
+		if($limit_from == NULL) $limit_from = 0;
+		if($sort == NULL) $sort = 'items.name';
+		if($order == NULL) $order = 'asc';
+		if($count_only == NULL) $count_only = FALSE;
 
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
@@ -328,11 +328,20 @@ class Item extends Model
 		//Get empty base parent object, as $item_id is NOT an item
 		$item_obj = new stdClass();
 
-		//Get all the fields from items table
-		foreach($this->db->getFieldNames('items') as $field)
-		{
-			$item_obj->$field = null;
+		// Initialize empty object
+
+		foreach ($this->db->getFieldData('items') as $field) {
+			$field_name = $field->name;
+			if (in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$item_obj->$field_name = 0;
+			}
+			else
+			{
+				$item_obj->$field_name = NULL;
+			}
 		}
+		$item_obj->item_id = NEW_ENTRY;
 
 		return $item_obj;
 	}
@@ -476,7 +485,7 @@ class Item extends Model
 	 * Deletes one item
 	 * @throws ReflectionException
 	 */
-	public function delete($item_id = null, bool $purge = false)
+	public function delete($item_id = NULL, bool $purge = false)
 	{
 		$this->db->transStart();
 

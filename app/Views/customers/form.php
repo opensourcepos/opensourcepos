@@ -46,7 +46,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
+						<?php echo form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
 					</div>
 				</div>
 
@@ -154,7 +154,7 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' || $person_info->taxable) ?>
+						<?php echo form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
 					</div>
 				</div>
 
@@ -364,7 +364,7 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-1'>
-							<?php echo form_checkbox('mailchimp_vip', '1', !($mailchimp_info['vip'] == '') && $mailchimp_info['vip']) ?>
+							<?php echo form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
 						</div>
 					</div>
 

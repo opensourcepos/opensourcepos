@@ -92,13 +92,19 @@ class Person extends Model
 		}
 		else
 		{
-			//create object with empty properties.
 			$person_obj = new stdClass();
-
-			foreach($this->db->getFieldNames('people') as $field)
-			{
-				$person_obj->$field = '';
+			foreach ($this->db->getFieldData('people') as $field) {
+				$field_name = $field->name;
+				if (in_array($field->type, array('int', 'tinyint', 'decimal')))
+				{
+					$person_obj->$field_name = 0;
+				}
+				else
+				{
+					$person_obj->$field_name = NULL;
+				}
 			}
+			$person_obj->person_id = NEW_ENTRY;
 
 			return $person_obj;
 		}

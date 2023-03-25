@@ -402,7 +402,7 @@
 					'name' => 'allow_alt_description',
 					'id' => 'allow_alt_description',
 					'value' => 1,
-					'checked' => ($item_info->allow_alt_description) ? 1 : 0
+					'checked' => ($item_info->allow_alt_description == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
@@ -414,7 +414,7 @@
 					'name' => 'is_serialized',
 					'id' => 'is_serialized',
 					'value' => 1,
-					'checked' => ($item_info->is_serialized) ? 1 : 0
+					'checked' => ($item_info->is_serialized == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
@@ -469,7 +469,7 @@
 					'name' => 'is_deleted',
 					'id' => 'is_deleted',
 					'value'=>1,
-					'checked' => ($item_info->deleted) ? 1 : 0
+					'checked' => ($item_info->deleted == 1) ? TRUE : FALSE
 				]) ?>
 			</div>
 		</div>
