@@ -46,7 +46,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row(int $row_id): void
+	public function getAjaxRow(int $row_id): void
 	{
 		$data_row = get_expense_category_data_row($this->expense_category->get_info($row_id));
 
