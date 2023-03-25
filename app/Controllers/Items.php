@@ -211,9 +211,9 @@ class Items extends Secure_Controller
 	/**
 	 * Gives search suggestions based on what is being searched for. Called from the view.
 	 */
-	public function suggest_category(): void
+	public function getSuggestCategory(): void
 	{
-		$suggestions = $this->item->get_category_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
@@ -221,14 +221,14 @@ class Items extends Secure_Controller
 	/**
 	 * Gives search suggestions based on what is being searched for.  Called from the view.
 	 */
-	public function suggest_location(): void
+	public function getSuggestLocation(): void
 	{
-		$suggestions = $this->item->get_location_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
 
 		echo json_encode($suggestions);
 	}
 
-	public function getAjaxRow(string $item_ids): void	//TODO: It's possible an array would be better.
+	public function getRow(string $item_ids): void	//TODO: It's possible an array would be better.
 	{
 		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
@@ -557,7 +557,11 @@ class Items extends Secure_Controller
 	public function postSave(int $item_id = NEW_ENTRY): void
 	{
 		$upload_success = $this->upload_image();
-		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
+
+		// TODO the hasFile is not defined, so commenting this out and saving it for last.
+//		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
+		$upload_file = null;
+
 		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		$item_type = $this->request->getPost('item_type') === NULL ? ITEM : $this->request->getPost('item_type', FILTER_SANITIZE_NUMBER_INT);
 
@@ -608,10 +612,17 @@ class Items extends Secure_Controller
 			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? NULL : $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
 		}
 
-		$original_name = $upload_file->getFilename();
-		if(!empty($original_name))
+		if ($upload_file != NULL)
 		{
-			$item_data['pic_filename'] = $original_name;
+			$original_name = $upload_file->getFilename();
+			if(!empty($original_name))
+			{
+				$item_data['pic_filename'] = $original_name;
+			}
+		}
+		else
+		{
+			$item_data['pic_filename'] = NULL;
 		}
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -767,7 +778,7 @@ class Items extends Secure_Controller
 	}
 
 
-	public function check_item_number(): void
+	public function postCheckItemNumber(): void
 	{
 		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
@@ -789,7 +800,7 @@ class Items extends Secure_Controller
 		echo !$exists ? 'true' : 'false';
 	}
 
-	public function remove_logo($item_id): void
+	public function getRemoveLogo($item_id): void
 	{
 		$item_data = ['pic_filename' => NULL];
 		$result = $this->item->save_value($item_data, $item_id);

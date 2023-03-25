@@ -82,7 +82,7 @@
 
 		<div id="attributes">
 			<script type="text/javascript">
-				$('#attributes').load('<?php echo site_url("items/attributes/$item_info->item_id") ?>');
+				$('#attributes').load('<?php echo "items/attributes/$item_info->item_id" ?>');
 			</script>
 		</div>
 
@@ -501,7 +501,7 @@ $(document).ready(function()
 	};
 
 	$('#tax_category').autocomplete({
-		source: "<?php echo site_url('taxes/suggest_tax_categories') ?>",
+		source: "<?php echo 'taxes/suggestTaxCategories' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -517,7 +517,7 @@ $(document).ready(function()
 	};
 
 	$('#low_sell_item_name').autocomplete({
-		source: "<?php echo site_url('items/suggest_low_sell') ?>",
+		source: "<?php echo 'items/suggestLowSell' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -527,7 +527,7 @@ $(document).ready(function()
 	});
 
 	$('#category').autocomplete({
-		source: "<?php echo site_url('items/suggest_category') ?>",
+		source: "<?php echo 'items/suggestCategory' ?>",
 		delay: 10,
 		appendTo: '.modal-content'
 	});
@@ -535,7 +535,7 @@ $(document).ready(function()
 	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: '<?php echo esc(site_url("$controller_name/remove_logo/$item_info->item_id"), 'url') ?>',
+			url: '<?php echo "$controller_name/removeLogo/$item_info->item_id" ?>',
 			dataType: 'json'
 		})
 	});
@@ -553,7 +553,7 @@ $(document).ready(function()
 						if(stay_open)
 						{
 							// set action of item_form to url without item id, so a new one can be created
-							$('#item_form').attr('action', "<?php echo site_url('items/save/') ?>");
+							$('#item_form').attr('action', "<?php echo 'items/save/' ?>");
 							// use a whitelist of fields to minimize unintended side effects
 							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
 								'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
@@ -564,7 +564,7 @@ $(document).ready(function()
 						{
 							dialog_support.hide();
 						}
-						table_support.handle_submit('<?php echo site_url('items') ?>', response, stay_open);
+						table_support.handle_submit('<?php echo 'items' ?>', response, stay_open);
 						init_validation();
 					},
 					dataType: 'json'
@@ -582,7 +582,7 @@ $(document).ready(function()
 					required: false,
 					remote:
 					{
-						url: "<?php echo esc(site_url("$controller_name/check_item_number"), 'url') ?>",
+						url: "<?php echo esc("$controller_name/checkItemNumber") ?>",
 						type: 'POST',
 						data: {
 							'item_id' : "<?php echo $item_info->item_id ?>",
@@ -596,12 +596,12 @@ $(document).ready(function()
 				cost_price:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				unit_price:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -610,7 +610,7 @@ $(document).ready(function()
 				<?php echo 'quantity_' . $key ?>:
 					{
 						required: true,
-						remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 					},
 				<?php
 				}
@@ -618,17 +618,17 @@ $(document).ready(function()
 				receiving_quantity:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				reorder_level:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				},
 				tax_percent:
 				{
 					required: true,
-					remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				}
 			},
 
