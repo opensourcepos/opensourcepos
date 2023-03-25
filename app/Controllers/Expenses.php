@@ -125,7 +125,7 @@ class Expenses extends Secure_Controller
 		echo view("expenses/form", $data);
 	}
 
-	public function get_row(int $row_id)
+	public function getAjaxRow(int $row_id): vpid
 	{
 		$expense_info = $this->expense->get_info($row_id);
 		$data_row = get_expenses_data_row($expense_info);

@@ -178,7 +178,7 @@ class Cashups extends Secure_Controller
 		echo view("cashups/form", $data);
 	}
 
-	public function get_row(int $row_id): void
+	public function getAjaxRow(int $row_id): void
 	{
 		$cash_ups_info = $this->cashup->get_info($row_id);
 		$data_row = get_cash_up_data_row($cash_ups_info);

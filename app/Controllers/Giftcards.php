@@ -64,7 +64,7 @@ class Giftcards extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(int $row_id): void
+	public function getAjaxRow(int $row_id): void
 	{
 		$data_row = get_giftcard_data_row($this->giftcard->get_info($row_id));
 

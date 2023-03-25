@@ -32,7 +32,7 @@ class Suppliers extends Persons
 	 * @param $row_id
 	 * @return void
 	 */
-	public function get_row($row_id): void
+	public function getAjaxRow($row_id): void
 	{
 		$data_row = get_supplier_data_row($this->supplier->get_info($row_id));
 		$data_row['category'] = $this->supplier->get_category_name($data_row['category']);

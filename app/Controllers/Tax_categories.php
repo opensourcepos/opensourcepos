@@ -46,7 +46,7 @@ class Tax_categories extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function get_row($row_id): void
+	public function getAjaxRow($row_id): void
 	{
 		$data_row = get_tax_categories_data_row($this->tax_category->get_info($row_id));
 

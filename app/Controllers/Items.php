@@ -228,7 +228,7 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function get_row(string $item_ids): void	//TODO: It's possible an array would be better.
+	public function getAjaxRow(string $item_ids): void	//TODO: It's possible an array would be better.
 	{
 		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
