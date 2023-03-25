@@ -39,7 +39,7 @@ $(document).ready(function()
 	if ($controller_name == 'customers')	//TODO: === ?
 	{
 	?>
-		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csv_import" ?>'
+		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csvImport" ?>'
 				title='<?php echo lang('Customers.import_items_csv') ?>'>
 			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo lang('Common.import_csv') ?>
 		</button>
