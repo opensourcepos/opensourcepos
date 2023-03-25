@@ -49,7 +49,7 @@ class Tax_jurisdictions extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_tax_jurisdictions_data_row($this->tax_jurisdiction->get_info($row_id));
 

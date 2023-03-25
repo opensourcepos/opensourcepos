@@ -508,7 +508,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc("$controller_name/ajaxCheckEmail") ?>",
+					url: "<?php echo esc("$controller_name/checkEmail") ?>",
 					type: 'POST',
 					data: {
 						'person_id': "<?php echo $person_info->person_id ?>"
@@ -520,7 +520,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc("$controller_name/ajaxCheckAccountNumber") ?>",
+					url: "<?php echo esc("$controller_name/checkAccountNumber") ?>",
 					type: 'POST',
 					data: {
 						'person_id': "<?php echo $person_info->person_id ?>"

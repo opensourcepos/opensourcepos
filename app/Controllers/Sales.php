@@ -91,7 +91,7 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$sale_info = $this->sale->get_info($row_id)->getRow();
 		$data_row = get_sale_data_row($sale_info);

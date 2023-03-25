@@ -293,7 +293,7 @@
 				var rows = $(selector.join(",")).length;
 				if (rows > 0 && rows < 15) {
 					var ids = id.split(":");
-					$.get([url || resource + '/ajaxRow', id].join("/"), {}, function (response) {
+					$.get([url || resource + '/row', id].join("/"), {}, function (response) {
 						$.each(selector, function (index, element) {
 							var id = $(element).data('uniqueid');
 							table().updateByUniqueId({id: id, row: response[id] || response});
