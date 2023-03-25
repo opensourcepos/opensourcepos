@@ -13,7 +13,7 @@
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc($config['protocol'], 'attr'),
+						esc($config['protocol']),
 						['class' => 'form-control input-sm', 'id' => 'protocol'])
 					?>
 				</div>
@@ -26,7 +26,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['mailpath'], 'attr')
+						'value' => esc($config['mailpath'])
 					]) ?>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['smtp_host'], 'attr')
+						'value' => esc($config['smtp_host'])
 					]) ?>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc($config['smtp_crypto'], 'attr'),
+						esc($config['smtp_crypto']),
 						['class' => 'form-control input-sm', 'id' => 'smtp_crypto'])
 					?>
 				</div>
@@ -90,7 +90,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_user'], 'attr')
+							'value' => esc($config['smtp_user'])
 						]) ?>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_pass'], 'attr')
+							'value' => esc($config['smtp_pass'])
 						]) ?>
 					</div>
 				</div>

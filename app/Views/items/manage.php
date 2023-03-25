@@ -99,7 +99,7 @@ $(document).ready(function()
         <?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?php echo form_multiselect(
 			'filters[]',
-			esc($filters, 'attr'),
+			esc($filters),
 			[''],
 			[
 				'id' => 'filters',
@@ -114,7 +114,7 @@ $(document).ready(function()
         {
             echo form_dropdown(
 			'stock_location',
-				esc($stock_locations, 'attr'),
+				esc($stock_locations),
 				$stock_location,
 				[
 					'id' => 'stock_location',

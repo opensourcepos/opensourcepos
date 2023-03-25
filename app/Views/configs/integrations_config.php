@@ -20,7 +20,7 @@
 							'name' => 'mailchimp_api_key',
 							'id' => 'mailchimp_api_key',
 							'class' => 'form-control input-sm',
-							'value' => esc($mailchimp['api_key'], 'attr')
+							'value' => esc($mailchimp['api_key'])
 						]) ?>
 					</div>
 				</div>
@@ -38,8 +38,8 @@
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 						<?php echo form_dropdown(
 							'mailchimp_list_id',
-							esc($mailchimp['lists'], 'attr'),
-							esc($mailchimp['list_id'], 'attr'),
+							esc($mailchimp['lists']),
+							esc($mailchimp['list_id']),
 							['id' => 'mailchimp_list_id', 'class' => 'form-control input-sm']
 						) ?>
 					</div>

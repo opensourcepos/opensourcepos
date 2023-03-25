@@ -21,7 +21,7 @@
 					'name' => 'person_name',
 					'id' => 'person_name',
 					'class' => 'form-control input-sm',
-					'value' => esc($selected_person_name, 'attr')
+					'value' => esc($selected_person_name)
 				]) ?>
 				<?php echo form_hidden('person_id', $selected_person_id) ?>
 			</div>
@@ -41,7 +41,7 @@
 					'name' => 'giftcard_number',
 					'id' => 'giftcard_number',
 					'class' => 'form-control input-sm',
-					'value' => esc($giftcard_number, 'attr')
+					'value' => esc($giftcard_number)
 				]) ?>
 			</div>
 		</div>

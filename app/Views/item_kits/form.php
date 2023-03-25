@@ -22,7 +22,7 @@
 						'name' => 'item_kit_number',
 						'id' => 'item_kit_number',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_kit_info->item_kit_number, 'attr')
+						'value' => esc($item_kit_info->item_kit_number)
 					]) ?>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					'name' => 'name',
 					'id' => 'name',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_kit_info->name, 'attr')
+					'value' => esc($item_kit_info->name)
 				]) ?>
 			</div>
 		</div>
@@ -49,7 +49,7 @@
 					'id' => 'item_name',
 					'class' => 'form-control input-sm',
 					'size' => '50',
-					'value' => esc($selected_kit_item, 'attr')
+					'value' => esc($selected_kit_item)
 				]) ?>
 					<?php echo form_hidden('kit_item_id', $selected_kit_item_id) ?>
 
@@ -165,7 +165,7 @@
 					'name' => 'description',
 					'id' => 'description',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_kit_info->description, 'attr')
+					'value' => esc($item_kit_info->description)
 				]) ?>
 			</div>
 		</div>
