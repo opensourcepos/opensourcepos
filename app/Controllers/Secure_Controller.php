@@ -67,7 +67,7 @@ class Secure_Controller extends BaseController
 		view('viewData', $global_view_data);
 	}
 
-	public function check_numeric()
+	public function getCheckNumeric()
 	{
 		$result = TRUE;
 
