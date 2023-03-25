@@ -61,7 +61,7 @@ class Tax_codes extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function getView(int $tax_code_id = -1): void	//TODO: Need to replace -1 with constant
+	public function getView(int $tax_code_id = NEW_ENTRY): void
 	{
 		$data['tax_code_info'] = $this->tax_code->get_info($tax_code_id);
 
@@ -69,7 +69,7 @@ class Tax_codes extends Secure_Controller
 	}
 
 
-	public function save(int $tax_code_id = -1): void		//TODO: Need to replace -1 with constant
+	public function postSave(int $tax_code_id = NEW_ENTRY): void
 	{
 		$tax_code_data = [
 			'tax_code' => $this->request->getPost('tax_code', FILTER_SANITIZE_STRING),
@@ -80,7 +80,7 @@ class Tax_codes extends Secure_Controller
 
 		if($this->tax_code->save($tax_code_data))
 		{
-			if($tax_code_id == -1)	//TODO: Need to replace -1 with constant
+			if($tax_code_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -102,12 +102,12 @@ class Tax_codes extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

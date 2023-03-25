@@ -62,7 +62,7 @@ class Cashups extends Secure_Controller
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	public function getView(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
+	public function getView(int $cashup_id = NEW_ENTRY): void
 	{
 		$data = [];
 
@@ -186,7 +186,7 @@ class Cashups extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function save(int $cashup_id = -1): void	//TODO: Need to replace -1 with a constant in constants.php
+	public function postSave(int $cashup_id = NEW_ENTRY): void
 	{
 		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_STRING);
 		$open_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $open_date);
@@ -214,7 +214,7 @@ class Cashups extends Secure_Controller
 		if($this->cashup->save_value($cash_up_data, $cashup_id))
 		{
 			//New cashup_id
-			if($cashup_id == -1)//TODO: Need to replace -1 with a constant in constants.php
+			if($cashup_id == NEW_ENTRY)
 			{
 				echo json_encode(['success' => TRUE, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
 			}
@@ -225,11 +225,11 @@ class Cashups extends Secure_Controller
 		}
 		else//failure
 		{
-			echo json_encode(['success' => FALSE, 'message' => lang('Cashups.error_adding_updating'), 'id' => -1]);//TODO: Need to replace -1 with a constant in constants.php
+			echo json_encode(['success' => FALSE, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

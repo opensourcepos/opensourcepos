@@ -56,7 +56,7 @@ class Tax_jurisdictions extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function getView(int $tax_jurisdiction_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $tax_jurisdiction_id = NEW_ENTRY): void
 	{
 		$data['tax_jurisdiction_info'] = $this->tax_jurisdiction->get_info($tax_jurisdiction_id);
 
@@ -64,7 +64,7 @@ class Tax_jurisdictions extends Secure_Controller
 	}
 
 
-	public function save(int $jurisdiction_id = -1): void	//TODO: Replace -1 with constant
+	public function postSave(int $jurisdiction_id = NEW_ENTRY): void
 	{
 		$tax_jurisdiction_data = [
 			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING),
@@ -73,7 +73,7 @@ class Tax_jurisdictions extends Secure_Controller
 
 		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))
 		{
-			if($jurisdiction_id == -1)	//TODO: Replace -1 with constant
+			if($jurisdiction_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -95,12 +95,12 @@ class Tax_jurisdictions extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$tax_jurisdictions_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

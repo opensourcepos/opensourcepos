@@ -242,12 +242,12 @@ class Items extends Secure_Controller
 		echo json_encode($result);
 	}
 
-	public function getView(int $item_id = NEW_ITEM): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
+	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
 		// Set default values
-		if($item_id == null) $item_id = NEW_ITEM;
+		if($item_id == null) $item_id = NEW_ENTRY;
 
-		if($item_id === NEW_ITEM)
+		if($item_id === NEW_ENTRY)
 		{
 			$data = [];
 		}
@@ -275,7 +275,7 @@ class Items extends Secure_Controller
 
 		if($data['allow_temp_item'] === 1)
 		{
-			if($item_id !== NEW_ITEM)
+			if($item_id !== NEW_ENTRY)
 			{
 				if($item_info->item_type != ITEM_TEMP)
 				{
@@ -305,7 +305,7 @@ class Items extends Secure_Controller
 			$data['selected_category'] = $item_info->category;
 		}
 
-		if($item_id === NEW_ITEM)
+		if($item_id === NEW_ENTRY)
 		{
 			$data['default_tax_1_rate'] = $this->config['default_tax_1_rate'];
 			$data['default_tax_2_rate'] = $this->config['default_tax_2_rate'];
@@ -400,14 +400,14 @@ class Items extends Secure_Controller
 		foreach($stock_locations as $location)
 		{
 			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
-			$quantity = ($item_id === NEW_ITEM) ? 0 : $quantity;
+			$quantity = ($item_id === NEW_ENTRY) ? 0 : $quantity;
 			$location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
 			$data['stock_locations'] = $location_array;
 		}
 
 		$data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
 
-		if($item_id !== NEW_ITEM && $item_info->item_id !== $item_info->low_sell_item_id)
+		if($item_id !== NEW_ENTRY && $item_info->item_id !== $item_info->low_sell_item_id)
 		{
 			$low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
 			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
@@ -420,7 +420,7 @@ class Items extends Secure_Controller
 		echo view('items/form', $data);
 	}
 
-	public function inventory(int $item_id = NEW_ITEM): void
+	public function inventory(int $item_id = NEW_ENTRY): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
@@ -444,7 +444,7 @@ class Items extends Secure_Controller
 		echo view('items/form_inventory', $data);
 	}
 
-	public function count_details(int $item_id = NEW_ITEM): void
+	public function count_details(int $item_id = NEW_ENTRY): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
@@ -492,7 +492,7 @@ class Items extends Secure_Controller
 		echo view('barcodes/barcode_sheet', $data);
 	}
 
-	public function getAttributes(int $item_id = NEW_ITEM): void
+	public function getAttributes(int $item_id = NEW_ENTRY): void
 	{
 		$data['item_id'] = $item_id;
 		$definition_ids = json_decode($this->request->getPost('definition_ids', FILTER_SANITIZE_STRING), TRUE);
@@ -554,7 +554,7 @@ class Items extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save(int $item_id = NEW_ITEM): void
+	public function postSave(int $item_id = NEW_ENTRY): void
 	{
 		$upload_success = $this->upload_image();
 		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
@@ -621,7 +621,7 @@ class Items extends Secure_Controller
 			$success = TRUE;
 			$new_item = FALSE;
 
-			if($item_id === NEW_ITEM)
+			if($item_id === NEW_ENTRY)
 			{
 				$item_id = $item_data['item_id'];
 				$new_item = TRUE;
@@ -722,7 +722,7 @@ class Items extends Secure_Controller
 		{
 			$message = lang('Items.error_adding_updating') . ' ' . $item_data['name'];
 
-			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
+			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ENTRY]);
 		}
 	}
 
@@ -778,7 +778,7 @@ class Items extends Secure_Controller
 	 */
 	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
-		if($this->request->getPost('item_number', FILTER_SANITIZE_STRING) === NEW_ITEM)
+		if($this->request->getPost('item_number', FILTER_SANITIZE_STRING) === NEW_ENTRY)
 		{
 			$exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name', FILTER_SANITIZE_STRING));	//TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
 		}
@@ -800,7 +800,7 @@ class Items extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_inventory($item_id = NEW_ITEM): void
+	public function save_inventory($item_id = NEW_ENTRY): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->item->get_info($item_id);
@@ -834,7 +834,7 @@ class Items extends Secure_Controller
 		{
 			$message = lang('Items.error_adding_updating') . " $cur_item_info->name";
 
-			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ITEM]);
+			echo json_encode (['success' => FALSE, 'message' => $message, 'id' => NEW_ENTRY]);
 		}
 	}
 
@@ -889,7 +889,7 @@ class Items extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$items_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
@@ -941,7 +941,7 @@ class Items extends Secure_Controller
 				$allowed_stock_locations = $this->stock_location->get_allowed_locations();
 				$attribute_definition_names	= $this->attribute->get_definition_names();
 
-				unset($attribute_definition_names[-1]);	//Removes the common_none_selected_text from the array
+				unset($attribute_definition_names[NEW_ENTRY]);	//Removes the common_none_selected_text from the array
 
 				$attribute_data = [];
 

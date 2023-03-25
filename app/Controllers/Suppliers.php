@@ -87,7 +87,7 @@ class Suppliers extends Persons
 	/*
 	Loads the supplier edit form
 	*/
-	public function getView(int $supplier_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $supplier_id = NEW_ENTRY): void
 	{
 		$info = $this->supplier->get_info($supplier_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -103,7 +103,7 @@ class Suppliers extends Persons
 	/*
 	Inserts/updates a supplier
 	*/
-	public function save(int $supplier_id = -1): void	//TODO: Replace -1 with constant
+	public function postSave(int $supplier_id = NEW_ENTRY): void
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: Duplicate code
 		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
@@ -139,7 +139,7 @@ class Suppliers extends Persons
 		if($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id))
 		{
 			//New supplier
-			if($supplier_id == -1)	//TODO: Replace -1 with a constant
+			if($supplier_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -160,7 +160,7 @@ class Suppliers extends Persons
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
-				'id' => -1	//TODO: Replace -1 with a constant
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -168,7 +168,7 @@ class Suppliers extends Persons
 	/*
 	This deletes suppliers from the suppliers table
 	*/
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

@@ -53,14 +53,14 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode($data_row);
 	}
 
-	public function getView(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $expense_category_id = NEW_ENTRY): void
 	{
 		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
 
 		echo view("expenses_categories/form", $data);
 	}
 
-	public function save(int $expense_category_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $expense_category_id = NEW_ENTRY): void
 	{
 		$expense_category_data = [
 			'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_STRING),
@@ -70,7 +70,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
 		{
 			// New expense_category
-			if($expense_category_id == -1)	//TODO: Replace -1 with a constant.
+			if($expense_category_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -88,16 +88,16 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			}
 		}
 		else//failure
-		{//TODO: need to replace -1 for a constant
+		{
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
