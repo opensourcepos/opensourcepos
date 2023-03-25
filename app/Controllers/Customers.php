@@ -64,8 +64,9 @@ class Customers extends Persons
 	/**
 	 * Gets one row for a customer manage table. This is called using AJAX to update one row.
 	 */
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
+		log_message('info', '>>>getRow row_id-' . $row_id);
 		$person = $this->customer->get_info($row_id);
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
@@ -353,7 +354,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an email address already exists
 	 */
-	public function postAjaxCheckEmail(): void
+	public function postCheckEmail(): void
 	{
 		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 
@@ -363,7 +364,7 @@ class Customers extends Persons
 	/**
 	 * AJAX call to verify if an account number already exists
 	 */
-	public function postAjaxCheckAccountNumber(): void
+	public function postCheckAccountNumber(): void
 	{
 		$exists = $this->customer->check_account_number_exists($this->request->getPost('account_number'), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
 

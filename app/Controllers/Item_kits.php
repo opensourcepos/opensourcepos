@@ -103,7 +103,7 @@ class Item_kits extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		// calculate the total cost and retail price of the Kit, so it can be added to the table refresh
 		$item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));

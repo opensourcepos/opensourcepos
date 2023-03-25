@@ -160,7 +160,7 @@ class Attributes extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$attribute_definition_info = $this->attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);

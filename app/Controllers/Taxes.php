@@ -119,7 +119,7 @@ class Taxes extends Secure_Controller
 	}
 
 
-	public function getAjaxRow(int $row_id): void
+	public function getRow(int $row_id): void
 	{
 		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id));
 
