@@ -38,7 +38,7 @@
 						'name' => 'item_number',
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->item_number, 'attr')
+						'value' => esc($item_info->item_number)
 					]) ?>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 					'name' => 'name',
 					'id' => 'name',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_info->name, 'attr')
+					'value' => esc($item_info->name)
 				]) ?>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 					<?php
 						if($config['category_dropdown'])
 						{
-							echo form_dropdown('category', esc($categories, 'attr'), $selected_category, ['class' => 'form-control']);
+							echo form_dropdown('category', esc($categories), $selected_category, ['class' => 'form-control']);
 						}
 						else
 						{
@@ -72,7 +72,7 @@
 								'name' => 'category',
 								'id' => 'category',
 								'class' => 'form-control input-sm',
-								'value' => esc($item_info->category, 'attr')
+								'value' => esc($item_info->category)
 							]);
 						}
 					?>
@@ -183,7 +183,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', esc($suppliers, 'attr'), $selected_supplier, ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('supplier_id', esc($suppliers), $selected_supplier, ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
@@ -240,7 +240,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_1',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name'], 'attr') : esc($config['default_tax_1_name'], 'attr')
+						'value' => isset($item_tax_info[0]['name']) ? esc($item_tax_info[0]['name']) : esc($config['default_tax_1_name'])
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -263,7 +263,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_2',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name'], 'attr') : esc($config['default_tax_2_name'], 'attr')
+						'value' => isset($item_tax_info[1]['name']) ? esc($item_tax_info[1]['name']) : esc($config['default_tax_2_name'])
 					]) ?>
 				</div>
 				<div class="col-xs-4">
@@ -292,7 +292,7 @@
 							'id' => 'tax_category',
 							'class' => 'form-control input-sm',
 							'size' => '50',
-							'value' => esc($tax_category, 'attr')
+							'value' => esc($tax_category)
 						]) ?><?php echo form_hidden('tax_category_id', $tax_category_id) ?>
 					</div>
 				</div>
@@ -308,7 +308,7 @@
 							'name' => 'hsn_code',
 							'id' => 'hsn_code',
 							'class' => 'form-control input-sm',
-							'value' => esc($hsn_code, 'attr')
+							'value' => esc($hsn_code)
 						]) ?>
 					</div>
 				</div>
@@ -368,7 +368,7 @@
 						'name' => 'description',
 						'id' => 'description',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->description, 'attr')
+						'value' => esc($item_info->description)
 				]) ?>
 			</div>
 		</div>
@@ -441,7 +441,7 @@
 						'name' => 'pack_name',
 						'id' => 'pack_name',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_info->pack_name, 'attr')
+						'value' => esc($item_info->pack_name)
 					]) ?>
 				</div>
 			</div>
@@ -453,7 +453,7 @@
 							'name' => 'low_sell_item_name',
 							'id' => 'low_sell_item_name',
 							'class' => 'form-control input-sm',
-							'value' => esc($selected_low_sell_item, 'attr')
+							'value' => esc($selected_low_sell_item)
 						]) ?><?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
 					</div>
 				</div>

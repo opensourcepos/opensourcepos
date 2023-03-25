@@ -12,7 +12,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.barcode_type'), 'barcode_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('barcode_type', esc($support_barcode, 'attr'), esc($config['barcode_type'], 'attr'), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown('barcode_type', esc($support_barcode), esc($config['barcode_type']), ['class' => 'form-control input-sm']) ?>
 				</div>
 			</div>
 
@@ -52,8 +52,8 @@
 				<div class='col-sm-2'>
 					<?php echo form_dropdown(
 						'barcode_font',
-						esc($this->barcode_lib->listfonts('fonts'), 'attr'),
-						esc($config['barcode_font'], 'attr'),
+						esc($this->barcode_lib->listfonts('fonts')),
+						esc($config['barcode_font']),
 						['class' => 'form-control input-sm required']
 					) ?>
 				</div>
@@ -125,7 +125,7 @@
 					echo form_dropdown ([
 						'name' => 'barcode_formats[]',
 						'id' => 'barcode_formats',
-						'options' => !empty($barcode_formats) ? esc(array_combine($barcode_formats, $barcode_formats), 'attr') : [],
+						'options' => !empty($barcode_formats) ? esc(array_combine($barcode_formats, $barcode_formats)) : [],
 						'multiple' => 'multiple',
 						'data-role' => 'tagsinput']) ?>
 				</div>

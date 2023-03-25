@@ -267,7 +267,7 @@ if(isset($success))
 							?>
 								<td><?php echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
 								<td style="align: center;" colspan="6">
-									<?php echo form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => esc($item['description'], 'attr'), 'tabindex' => ++$tabindex]) ?>
+									<?php echo form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'tabindex' => ++$tabindex]) ?>
 								</td>
 								<td> </td>
 							<?php
@@ -289,7 +289,7 @@ if(isset($success))
 									<?php
 									if($item['allow_alt_description'])
 									{
-										echo form_input (['name' => 'description', 'class' => 'form-control input-sm', 'value' => esc($item['description'], 'attr'), 'onClick' => 'this.select();']);
+										echo form_input (['name' => 'description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'onClick' => 'this.select();']);
 									}
 									else
 									{

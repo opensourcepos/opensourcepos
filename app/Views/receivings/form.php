@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Receivings.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'supplier_name', 'value' => esc($selected_supplier_name, 'attr'), 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_input (['name' => 'supplier_name', 'value' => esc($selected_supplier_name), 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
 				<?php echo form_hidden('supplier_id', $selected_supplier_id) ?>
 			</div>
 		</div>
@@ -42,21 +42,21 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Receivings.reference'), 'reference', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'reference', 'value' => esc($receiving_info['reference'], 'attr'), 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_input (['name' => 'reference', 'value' => esc($receiving_info['reference']), 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Receivings.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('employee_id', esc($employees, 'attr'), $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('employee_id', esc($employees), $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
 			</div>
 		</div>
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Receivings.comments'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea (['name' => 'comment','value' => esc($receiving_info['comment'], 'attr'), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_textarea (['name' => 'comment','value' => esc($receiving_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>

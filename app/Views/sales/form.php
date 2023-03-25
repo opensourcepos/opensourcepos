@@ -41,10 +41,10 @@
 				<?php echo form_label(lang('Sales.invoice_number'), 'invoice_number', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<?php if(!empty($sale_info["invoice_number"]) && isset($sale_info['customer_id']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input (['name' => 'invoice_number', 'size'=>10, 'value' => esc($sale_info['invoice_number'], 'attr'), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<?php echo form_input (['name' => 'invoice_number', 'size'=>10, 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
 						<a id="send_invoice" href="javascript:void(0);"><?php echo lang('Sales.send_invoice') ?></a>
 					<?php else: ?>
-						<?php echo form_input (['name' => 'invoice_number', 'value' => esc($sale_info['invoice_number'], 'attr'), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<?php echo form_input (['name' => 'invoice_number', 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Sales.payment'), 'payment_new', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_dropdown('payment_type_new', esc($new_payment_options, 'attr'), esc($payment_type_new, 'attr'), ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
+					<?php echo form_dropdown('payment_type_new', esc($new_payment_options), esc($payment_type_new), ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
@@ -88,15 +88,15 @@
 					<?php // no editing of Gift Card payments as it's a complex change ?>
 					<?php echo form_hidden("payment_id_$i", $row->payment_id) ?>
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard'))) ): ?>
-						<?php echo form_input (['name' => "payment_type_$i", 'value' => esc($row->payment_type, 'attr'), 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+						<?php echo form_input (['name' => "payment_type_$i", 'value' => esc($row->payment_type), 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?php echo form_dropdown("payment_type_$i", esc($payment_options, 'attr'), esc($row->payment_type, 'attr'), ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
+						<?php echo form_dropdown("payment_type_$i", esc($payment_options), esc($row->payment_type), ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol'], 'attr') ?></b></span>
+							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input (['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])	//TODO: add type attribute ?>
 						<?php if(currency_side()): ?>
@@ -113,7 +113,7 @@
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard')))): ?>
 						<?php echo form_input (['name' => "refund_type_$i", 'value'=>lang('Sales.cash'), 'id' => "refund_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?php echo form_dropdown("refund_type_$i", esc($payment_options, 'attr'), lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
+						<?php echo form_dropdown("refund_type_$i", esc($payment_options), lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
@@ -137,7 +137,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'customer_name', 'value' => esc($selected_customer_name, 'attr'), 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_input (['name' => 'customer_name', 'value' => esc($selected_customer_name), 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
 				<?php echo form_hidden('customer_id', $selected_customer_id) ?>
 			</div>
 		</div>
@@ -145,7 +145,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Sales.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'employee_name', 'value' => esc($selected_employee_name, 'attr'), 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_input (['name' => 'employee_name', 'value' => esc($selected_employee_name), 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
 				<?php echo form_hidden('employee_id', $selected_employee_id) ?>
 			</div>
 		</div>
@@ -153,7 +153,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Sales.comment'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea (['name' => 'comment', 'value' => esc($sale_info['comment'], 'attr'), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?php echo form_textarea (['name' => 'comment', 'value' => esc($sale_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>

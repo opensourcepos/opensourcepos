@@ -12,7 +12,7 @@
 							'receipt_default' => lang('Config.receipt_default'),
 							'receipt_short' => lang('Config.receipt_short')
 						],
-						esc($config['receipt_template'], 'attr'),
+						esc($config['receipt_template']),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>

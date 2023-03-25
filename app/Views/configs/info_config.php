@@ -55,7 +55,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> $config['address'], 'attr'
+						'value'=> $config['address']
 					]) ?>
 				</div>
 			</div>

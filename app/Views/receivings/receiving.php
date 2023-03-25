@@ -39,14 +39,14 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?= form_open(esc("$controller_name/change_mode", 'attr'), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open(esc("$controller_name/change_mode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
 					<label class="control-label"><?php echo lang('Receivings.mode') ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_dropdown('mode', esc($modes, 'attr'), esc($mode, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+					<?php echo form_dropdown('mode', esc($modes), esc($mode), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 
 				<?php 
@@ -57,7 +57,7 @@ if (isset($success))
 						<label class="control-label"><?php echo lang('Receivings.stock_source') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('stock_source', esc($stock_locations, 'attr'), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('stock_source', esc($stock_locations), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 					
 					<?php
@@ -68,7 +68,7 @@ if (isset($success))
 							<label class="control-label"><?php echo lang('Receivings.stock_destination') ?></label>
 						</li>
 						<li class="pull-left">
-							<?php echo form_dropdown('stock_destination', esc($stock_locations, 'attr'), esc($stock_destination, 'attr'), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+							<?php echo form_dropdown('stock_destination', esc($stock_locations), esc($stock_destination), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 						</li>
 				<?php
 					}
@@ -149,7 +149,7 @@ if (isset($success))
 				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open(esc("$controller_name/edit_item/$line", 'attr'), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?php echo form_open(esc("$controller_name/edit_item/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
 							<td><?php echo anchor(esc("$controller_name/delete_item/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?php echo esc($item['item_number']) ?></td>
@@ -184,7 +184,7 @@ if (isset($success))
 							<td><?php echo form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
 							<td><?php echo form_dropdown(
 									'receiving_quantity',
-									esc($item['receiving_quantity_choices'], 'attr'),
+									esc($item['receiving_quantity_choices']),
 									$item['receiving_quantity'],
 									['class' => 'form-control input-sm']
 								) ?></td>
@@ -204,9 +204,9 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>' . esc($config['currency_symbol'], 'attr') .'</b>',
+											'data-on' => '<b>' . esc($config['currency_symbol']) .'</b>',
 											'data-off' => '<b>%</b>',
-											'data-line' => esc($line, 'attr'),
+											'data-line' => esc($line),
 											'checked' => $item['discount_type']
 										]) ?>
 									</span>
@@ -242,7 +242,7 @@ if (isset($success))
 									echo form_input ([
 										'name' => 'description',
 										'class' => 'form-control input-sm',
-										'value' => esc($item['description'], 'attr')
+										'value' => esc($item['description'])
 									]);
 								}
 								else
@@ -250,7 +250,7 @@ if (isset($success))
 									if ($item['description'] != '')	//TODO: !==?
 									{
 										echo $item['description'];
-										echo form_hidden('description', esc($item['description'], 'attr'));
+										echo form_hidden('description', esc($item['description']));
 									}
 									else
 									{
@@ -332,7 +332,7 @@ if (isset($success))
 		else
 		{
 		?>
-			<?php echo form_open(esc("$controller_name/select_supplier", 'attr'), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+			<?php echo form_open(esc("$controller_name/select_supplier"), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo lang('Receivings.select_supplier') ?></label>
 					<?php echo form_input ([
@@ -383,7 +383,7 @@ if (isset($success))
 				if($mode == 'requisition')
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/requisition_complete", 'attr'), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/requisition_complete"), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo lang('Common.comments') ?></label>
 							<?php echo form_textarea ([
@@ -411,7 +411,7 @@ if (isset($success))
 								'name' => 'comment',
 								'id' => 'comment',
 								'class' => 'form-control input-sm',
-								'value' => esc($comment, 'attr'),
+								'value' => esc($comment),
 								'rows' => '4'
 							]) ?>
 							<div id="payment_details" >
@@ -439,7 +439,7 @@ if (isset($success))
 													'name' => 'recv_reference',
 													'id' => 'recv_reference',
 													'class' => 'form-control input-sm',
-													'value' => esc($reference, 'attr'),
+													'value' => esc($reference),
 													'size' => 5
 												]) ?>
 											</td>
@@ -452,7 +452,7 @@ if (isset($success))
 										<td>
 											<?php echo form_dropdown(
 												'payment_type',
-												esc($payment_options, 'attr'),
+												esc($payment_options),
 												[],
 												[
 													'id' => 'payment_types',
