@@ -85,5 +85,5 @@ class Secure_Controller extends BaseController
 	public function suggest_search() { return FALSE; }
 	public function getView(int $data_item_id = -1) { return FALSE; }
 	public function postSave(int $data_item_id = -1) { return FALSE; }
-	public function delete() { return FALSE; }
+	public function postDelete() { return FALSE; }
 }

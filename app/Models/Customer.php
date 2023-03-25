@@ -38,7 +38,6 @@ class Customer extends Person
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
 		$builder->where('customers.person_id', $person_id);
-
 		return ($builder->get()->getNumRows() == 1);
 	}
 
@@ -104,7 +103,7 @@ class Customer extends Person
 		else
 		{
 			//Get empty base parent object, as $customer_id is NOT a customer
-			$person_obj = parent::get_info(-1);	//TODO: NEED TO CREATE A GLOBAL CONSTANT FOR NO_PERSON IN CONFIG/CONSTANTS.PHP AND CALL IT HERE FOR CLARITY.
+			$person_obj = parent::get_info(NEW_ENTRY);
 
 			//Get all the fields from customer table
 			//append those fields to base parent object, we have a complete empty object
@@ -206,7 +205,7 @@ class Customer extends Person
 	/**
 	 * Inserts or updates a customer
 	 */
-	public function save_customer(array &$person_data, array &$customer_data, bool $customer_id = FALSE): bool
+	public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
 	{
 		$success = FALSE;
 
@@ -215,7 +214,7 @@ class Customer extends Person
 		if(parent::save_value($person_data, $customer_id))
 		{
 			$builder = $this->db->table('customers');
-			if(!$customer_id || !$this->exists($customer_id))
+			if($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
 				$success = $builder->insert($customer_data);
