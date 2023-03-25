@@ -66,7 +66,6 @@ class Customers extends Persons
 	 */
 	public function getRow(int $row_id): void
 	{
-		log_message('info', '>>>getRow row_id-' . $row_id);
 		$person = $this->customer->get_info($row_id);
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
