@@ -215,9 +215,9 @@ class Cashup extends Model
 	/**
 	* Inserts or updates a cashup
 	*/
-	public function save_value(array &$cash_up_data, $cashup_id = FALSE): bool
+	public function save_value(array &$cash_up_data, $cashup_id = NEW_ITEM): bool
 	{
-		if(!$cashup_id == -1 || !$this->exists($cashup_id))	//TODO: Replace -1 with constant
+		if(!$cashup_id == NEW_ITEM || !$this->exists($cashup_id))
 		{
 			$builder = $this->db->table('cash_up');
 			if($builder->insert($cash_up_data))

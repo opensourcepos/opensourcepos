@@ -313,7 +313,7 @@ class Tax_code extends Model
 	{
 		return [
 			'0' => [
-				'tax_code_id' => -1,
+				'tax_code_id' => NEW_ENTRY,
 				'tax_code' => '',
 				'tax_code_name' => '',
 				'city' => '',

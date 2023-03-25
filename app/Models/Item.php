@@ -280,11 +280,11 @@ class Item extends Model
 	/**
 	 * Returns all the items
 	 */
-	public function get_all(int $stock_location_id = -1, int $rows = 0, int $limit_from = 0): ResultInterface	//TODO: Replace -1 with a constant
+	public function get_all(int $stock_location_id = NEW_ENTRY, int $rows = 0, int $limit_from = 0): ResultInterface
 	{
 		$builder = $this->db->table('items');
 
-		if($stock_location_id > -1)	//TODO: Replace -1 with a constant
+		if($stock_location_id > -1)
 		{
 			$builder->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$builder->where('location_id', $stock_location_id);
@@ -438,7 +438,7 @@ class Item extends Model
 			if($builder->insert($item_data))
 			{
 				$item_data['item_id'] = $this->db->insertID();
-				if($item_data['low_sell_item_id'] == -1)	//TODO: Replace -1 with a constant... === ?
+				if($item_data['low_sell_item_id'] == NEW_ENTRY)
 				{
 					$builder = $this->db->table('items');
 					$builder->where('item_id', $item_data['item_id']);

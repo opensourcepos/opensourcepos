@@ -150,7 +150,7 @@ class Tax_category extends Model
 
 			$this->save_value($tax_category_data, $value['tax_category_id']);
 
-			if($value['tax_category_id'] == -1)	//TODO: -1 should be converted into a constant for code readability.  Perhaps NO_TAX_CATEGORY?
+			if($value['tax_category_id'] == NEW_ENTRY)
 			{
 				$not_to_delete[] = $tax_category_data['tax_category_id'];
 			}
@@ -270,7 +270,7 @@ class Tax_category extends Model
 	{
 		return [
 			'0' => [
-				'tax_category_id' => -1,	//TODO: This should probably be a Constant instead of -1
+				'tax_category_id' => NEW_ENTRY,
 				'tax_category' => '',
 				'tax_group_sequence' => '',
 				'deleted' => ''

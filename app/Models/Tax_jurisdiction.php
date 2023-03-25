@@ -155,7 +155,7 @@ class Tax_jurisdiction extends Model
 
 			$this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
 
-			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant. Also === ?.  Also replace this with ternary notation.
+			if($value['jurisdiction_id'] == NEW_ENTRY)
 			{
 				$not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
 			}
@@ -256,7 +256,7 @@ class Tax_jurisdiction extends Model
 	{
 		return [
 			'0' => [
-				'jurisdiction_id' => -1,	//TODO: Replace -1 with a constant
+				'jurisdiction_id' => NEW_ENTRY,
 				'jurisdiction_name' => '',
 				'tax_group' => '',
 				'tax_type' => '1',

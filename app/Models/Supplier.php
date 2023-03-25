@@ -81,7 +81,7 @@ class Supplier extends Person
 		else
 		{
 			//Get empty base parent object, as $supplier_id is NOT a supplier
-			$person_obj = parent::get_info(-1);	//TODO: need to replace with a constant instead of -1
+			$person_obj = parent::get_info(NEW_ENTRY);
 
 			//Get all the fields from supplier table
 			//append those fields to base parent object, we have a complete empty object
