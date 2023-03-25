@@ -440,7 +440,7 @@ class Items extends Secure_Controller
 		echo view('items/form_inventory', $data);
 	}
 
-	public function count_details(int $item_id = NEW_ENTRY): void
+	public function getCountDetails(int $item_id = NEW_ENTRY): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
@@ -923,7 +923,7 @@ class Items extends Secure_Controller
 
 	public function getCsvImport(): void
 	{
-		echo view('items/form_csv_import', NULL);
+		echo view('items/form_csv_import');
 	}
 
 	/**
