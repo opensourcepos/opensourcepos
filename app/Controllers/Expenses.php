@@ -76,7 +76,7 @@ class Expenses extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
-	public function getView(int $expense_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $expense_id = NEW_ENTRY): void
 	{
 		$data = [];	//TODO: Duplicated code
 
@@ -133,7 +133,7 @@ class Expenses extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function save(int $expense_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $expense_id = NEW_ENTRY): void
 	{
 		$config = config('OSPOS')->settings;
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
@@ -156,7 +156,7 @@ class Expenses extends Secure_Controller
 		if($this->expense->save_value($expense_data, $expense_id))
 		{
 			//New Expense
-			if($expense_id == -1)
+			if($expense_id == NEW_ENTRY)
 			{
 				echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
 			}
@@ -167,7 +167,7 @@ class Expenses extends Secure_Controller
 		}
 		else//failure
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses.error_adding_updating'), 'id' => -1]);	//TODO: Need to replace -1 with a constant
+			echo json_encode (['success' => FALSE, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
 		}
 	}
 
@@ -178,7 +178,7 @@ class Expenses extends Secure_Controller
 		echo json_encode (['success' => $parsed_value !== FALSE]);
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$expenses_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

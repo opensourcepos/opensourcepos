@@ -223,7 +223,7 @@ class Receivings extends Secure_Controller
 	 * @param $item_number
 	 * @return void
 	 */
-	public function delete_item($item_number): void
+	public function postDelete_item($item_number): void
 	{
 		$this->receiving_lib->delete_item($item_number);
 
@@ -233,7 +233,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function delete(int $receiving_id = -1, bool $update_inventory = TRUE) : void
+	public function postDelete(int $receiving_id = -1, bool $update_inventory = TRUE) : void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];	//TODO: Replace -1 with constant

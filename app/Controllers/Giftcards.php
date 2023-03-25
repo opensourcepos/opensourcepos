@@ -71,7 +71,7 @@ class Giftcards extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function getView(int $giftcard_id = -1): void	//TODO: Need to replace -1 with a constant
+	public function getView(int $giftcard_id = NEW_ENTRY): void
 	{
 		$config = config('OSPOS')->settings;
 		$giftcard_info = $this->giftcard->get_info($giftcard_id);
@@ -93,11 +93,11 @@ class Giftcards extends Secure_Controller
 		echo view("giftcards/form", $data);
 	}
 
-	public function save(int $giftcard_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $giftcard_id = NEW_ENTRY): void
 	{
 		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_STRING);
 
-		if($giftcard_id == -1 && trim($giftcard_number) == '')
+		if($giftcard_id == NEW_ENTRY && trim($giftcard_number) == '')
 		{
 			$giftcard_number = $this->giftcard->generate_unique_giftcard_name($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		}
@@ -112,7 +112,7 @@ class Giftcards extends Secure_Controller
 		if($this->giftcard->save_value($giftcard_data, $giftcard_id))
 		{
 			//New giftcard
-			if($giftcard_id == -1)	//TODO: Constant needed
+			if($giftcard_id == NEW_ENTRY)	//TODO: Constant needed
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -134,7 +134,7 @@ class Giftcards extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Giftcards.error_adding_updating') . ' ' . $giftcard_data['giftcard_number'],
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -150,7 +150,7 @@ class Giftcards extends Secure_Controller
 		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

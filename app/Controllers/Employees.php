@@ -62,7 +62,7 @@ class Employees extends Persons
 	/**
 	 * Loads the employee edit form
 	 */
-	public function getView(int $employee_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $employee_id = NEW_ENTRY): void
 	{
 		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
@@ -98,7 +98,7 @@ class Employees extends Persons
 	/**
 	 * Inserts/updates an employee
 	 */
-	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $employee_id = NEW_ENTRY): void
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: duplicated code
 		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
@@ -162,7 +162,7 @@ class Employees extends Persons
 		if($this->employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
 		{
 			// New employee
-			if($employee_id == -1)
+			if($employee_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -184,7 +184,7 @@ class Employees extends Persons
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -192,7 +192,7 @@ class Employees extends Persons
 	/**
 	 * This deletes employees from the employees table
 	 */
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 

@@ -447,7 +447,7 @@ class Sales extends Secure_Controller
 	 * @param string $payment_id
 	 * @return void
 	 */
-	public function delete_payment(string $payment_id): void
+	public function postDelete_payment(string $payment_id): void
 	{
 		$this->sale_lib->delete_payment($payment_id);
 
@@ -463,7 +463,7 @@ class Sales extends Secure_Controller
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != -1)	//TODO: Replace -1 with a constant
+		if($customer_id != NEW_ENTRY)
 		{
 			// load the customer discount if any
 			$customer_discount = $this->customer->get_info($customer_id)->discount;
@@ -594,7 +594,7 @@ class Sales extends Secure_Controller
 	 * @return void
 	 * @throws ReflectionException
 	 */
-	public function delete_item(int $item_id): void
+	public function postDelete_item(int $item_id): void
 	{
 		$this->sale_lib->delete_item($item_id);
 
@@ -740,7 +740,7 @@ class Sales extends Secure_Controller
 			}
 
 
-			if($sale_id == -1 && $this->sale->check_invoice_number_exists($invoice_number))	//TODO: Replace -1 with constant
+			if($sale_id == NEW_ENTRY && $this->sale->check_invoice_number_exists($invoice_number))
 			{
 				$data['error'] = lang('Sales.invoice_number_duplicate', ['invoice_number' => $invoice_number]);
 				$this->_reload($data);
@@ -761,7 +761,7 @@ class Sales extends Secure_Controller
 				// Resort and filter cart lines for printing
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-				if($data['sale_id_num'] == -1)
+				if($data['sale_id_num'] == NEW_ENTRY)
 				{
 					$data['error_message'] = lang('Sales.transaction_failed');
 				}
@@ -791,7 +791,7 @@ class Sales extends Secure_Controller
 				$work_order_number = $this->token_lib->render($work_order_format);
 			}
 
-			if($sale_id == -1 && $this->sale->check_work_order_number_exists($work_order_number))
+			if($sale_id == NEW_ENTRY && $this->sale->check_work_order_number_exists($work_order_number))
 			{
 				$data['error'] = lang('Sales.work_order_number_duplicate');
 				$this->_reload($data);
@@ -826,7 +826,7 @@ class Sales extends Secure_Controller
 				$quote_number = $this->token_lib->render($quote_format);
 			}
 
-			if($sale_id == -1 && $this->sale->check_quote_number_exists($quote_number))
+			if($sale_id == NEW_ENTRY && $this->sale->check_quote_number_exists($quote_number))
 			{
 				$data['error'] = lang('Sales.quote_number_duplicate');
 				$this->_reload($data);
@@ -867,7 +867,7 @@ class Sales extends Secure_Controller
 
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
-			if($data['sale_id_num'] == -1)	//TODO: Replace -1 with a constant
+			if($data['sale_id_num'] == NEW_ENTRY)
 			{
 				$data['error_message'] = lang('Sales.transaction_failed');
 			}
@@ -963,7 +963,7 @@ class Sales extends Secure_Controller
 	{
 		$customer_info = '';
 
-		if($customer_id != -1)
+		if($customer_id != NEW_ENTRY)
 		{
 			$customer_info = $this->customer->get_info($customer_id);
 			$data['customer_id'] = $customer_id;
@@ -1144,8 +1144,8 @@ class Sales extends Secure_Controller
 
 		if($sale_id == '')
 		{
-			$sale_id = -1;
-			$this->session->set('sale_id', -1);	//TODO: replace -1 with a constant
+			$sale_id = NEW_ENTRY;
+			$this->session->set('sale_id', NEW_ENTRY);
 		}
 		$cash_rounding = $this->sale_lib->reset_cash_rounding();
 
@@ -1334,7 +1334,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function delete(int $sale_id = -1, bool $update_inventory = TRUE): void	//TODO: Replace -1 with a constant
+	public function postDelete(int $sale_id = NEW_ENTRY, bool $update_inventory = TRUE): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
@@ -1345,7 +1345,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];	//TODO: Replace -1 with a constant
+			$sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
 			if($this->sale->delete_list($sale_ids, $employee_id, $update_inventory))
 			{
@@ -1362,7 +1362,7 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function restore(int $sale_id = -1, bool $update_inventory = TRUE): void	//TODO: Replace -1 with a constant
+	public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = TRUE): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$has_grant = $this->employee->has_grant('sales_delete', $employee_id);
@@ -1373,7 +1373,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$sale_ids = $sale_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];	//TODO: Replace -1 with a constant
+			$sale_ids = $sale_id == NEW_ENTRY ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$sale_id];
 
 			if($this->sale->restore_list($sale_ids, $employee_id, $update_inventory))
 			{
@@ -1396,7 +1396,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @throws ReflectionException
 	 */
-	public function save(int $sale_id = -1): void	//TODO: Replace -1 with a constant
+	public function save(int $sale_id = NEW_ENTRY): void
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_STRING);
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1455,7 +1455,7 @@ class Sales extends Secure_Controller
 			];
 		}
 
-		$payment_id = -1;	//TODO: Replace -1 with a constant
+		$payment_id = NEW_ENTRY;
 		$payment_amount = $this->request->getPost('payment_amount_new', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$payment_type = $this->request->getPost('payment_type_new', FILTER_SANITIZE_STRING);
 
@@ -1508,7 +1508,7 @@ class Sales extends Secure_Controller
 	public function cancel(): void
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
-		if($sale_id != -1 && $sale_id != '')	//TODO: Replace -1 with a constant
+		if($sale_id != NEW_ENTRY && $sale_id != '')
 		{
 			$sale_type = $this->sale_lib->get_sale_type();
 
@@ -1525,7 +1525,7 @@ class Sales extends Secure_Controller
 			else
 			{
 				$this->sale->delete($sale_id);
-				$this->session->set('sale_id', -1);	//TODO: Replace -1 with a constant
+				$this->session->set('sale_id', NEW_ENTRY);
 			}
 		}
 		else

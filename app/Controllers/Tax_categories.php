@@ -53,7 +53,7 @@ class Tax_categories extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
-	public function getView(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
+	public function getView(int $tax_category_id = NEW_ENTRY): void
 	{
 		$data['tax_category_info'] = $this->tax_category->get_info($tax_category_id);
 
@@ -61,7 +61,7 @@ class Tax_categories extends Secure_Controller
 	}
 
 
-	public function save(int $tax_category_id = -1): void	//TODO: Need to replace -1 with constant
+	public function postSave(int $tax_category_id = NEW_ENTRY): void
 	{
 		$tax_category_data = [
 			'tax_category' => $this->request->getPost('tax_category', FILTER_SANITIZE_STRING),
@@ -72,7 +72,7 @@ class Tax_categories extends Secure_Controller
 		if($this->tax_category->save_value($tax_category_data, $tax_category_id))
 		{
 			// New tax_category_id
-			if($tax_category_id == -1)	//TODO: Need to replace -1 with constant
+			if($tax_category_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -94,12 +94,12 @@ class Tax_categories extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'],
-				'id' => -1	//TODO: Need to replace -1 with constant
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$tax_categories_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

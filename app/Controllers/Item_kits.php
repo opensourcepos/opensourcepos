@@ -111,11 +111,11 @@ class Item_kits extends Secure_Controller
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
 
-	public function getView(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
+	public function getView(int $item_kit_id = NEW_ENTRY): void
 	{
 		$info = $this->item_kit->get_info($item_kit_id);
 
-		if($item_kit_id == -1)	//TODO: Replace -1 with a constant
+		if($item_kit_id == NEW_ENTRY)
 		{
 			$info->price_option = '0';
 			$info->print_option = PRINT_ALL;
@@ -150,7 +150,7 @@ class Item_kits extends Secure_Controller
 		echo view("item_kits/form", $data);
 	}
 
-	public function save(int $item_kit_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $item_kit_id = NEW_ENTRY): void
 	{
 		$item_kit_data = [
 			'name' => $this->request->getPost('name', FILTER_SANITIZE_STRING),
@@ -167,7 +167,7 @@ class Item_kits extends Secure_Controller
 		{
 			$new_item = FALSE;
 			//New item kit
-			if($item_kit_id == -1)	//TODO: Replace -1 with a constant
+			if($item_kit_id == NEW_ENTRY)
 			{
 				$item_kit_id = $item_kit_data['item_kit_id'];
 				$new_item = TRUE;
@@ -213,12 +213,12 @@ class Item_kits extends Secure_Controller
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
-				'id' => -1	//TODO: Replace -1 with a constant
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
 
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 
