@@ -520,7 +520,7 @@ function get_item_data_row(object $item): array
 			]
 		),
 		'stock' => anchor(
-			"$controller/count_details/$item->item_id",
+			"$controller/countDetails/$item->item_id",
 			'<span class="glyphicon glyphicon-list-alt"></span>',
 			[
 				'class' => 'modal-dlg',

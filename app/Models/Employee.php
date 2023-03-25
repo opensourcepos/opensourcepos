@@ -472,12 +472,16 @@ class Employee extends Person
 	/**
 	 * Determines whether the employee specified employee has access the specific module.
 	 */
-	public function has_grant(?string $permission_id, int $person_id): bool
+	public function has_grant(?string $permission_id, ?int $person_id): bool
 	{
 		//if no module_id is null, allow access
 		if($permission_id == NULL)
 		{
 			return TRUE;
+		}
+		if($person_id == NULL)
+		{
+			return FALSE;
 		}
 
 		$builder = $this->db->table('grants');
