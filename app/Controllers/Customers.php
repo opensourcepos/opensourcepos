@@ -412,9 +412,9 @@ class Customers extends Persons
 		force_download($name, $data);
 	}
 
-	public function csv_import(): void
+	public function getCsvImport(): void
 	{
-		echo view('customers/form_csv_import', NULL);
+		echo view('customers/form_csv_import');
 	}
 
 	public function do_csv_import(): void

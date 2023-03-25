@@ -914,7 +914,7 @@ class Items extends Secure_Controller
 		force_download($name, $data, TRUE);
 	}
 
-	public function csv_import(): void
+	public function getCsvImport(): void
 	{
 		echo view('items/form_csv_import', NULL);
 	}
