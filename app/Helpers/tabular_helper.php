@@ -293,7 +293,7 @@ function get_customer_data_row(object $person, object $stats): array
 		'messages' => empty($person->phone_number)
 			? ''
 			: anchor(
-				"Messages/view/$person->person_id",	//TODO: String interpolation
+				"Messages/view/$person->person_id",
 				'<span class="glyphicon glyphicon-phone"></span>',
 				[
 					'class' => 'modal-dlg',
@@ -307,7 +307,7 @@ function get_customer_data_row(object $person, object $stats): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang($controller . '.update')	//TODO: String interpolation
+				'title'=>lang("$controller.update")
 			]
 		)
 	];

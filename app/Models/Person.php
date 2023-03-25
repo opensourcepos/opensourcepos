@@ -126,11 +126,11 @@ class Person extends Model
 	 * @param bool $person_id identifier of the person to update the information
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
-	public function save_value(array &$person_data, bool $person_id = FALSE): bool
+	public function save_value(array &$person_data, int $person_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('people');
 
-		if(!$person_id || !$this->exists($person_id))
+		if($person_id == NEW_ENTRY || !$this->exists($person_id))
 		{
 			if($builder->insert($person_data))
 			{

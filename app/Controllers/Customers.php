@@ -64,7 +64,7 @@ class Customers extends Persons
 	/**
 	 * Gets one row for a customer manage table. This is called using AJAX to update one row.
 	 */
-	public function get_row(int $row_id): void
+	public function getAjaxRow(int $row_id): void
 	{
 		$person = $this->customer->get_info($row_id);
 
@@ -146,10 +146,10 @@ class Customers extends Persons
 	/**
 	 * Loads the customer edit form
 	 */
-	public function getView(int $customer_id = -1): void	//TODO: replace -1 with a constant
+	public function getView(int $customer_id = NEW_ENTRY): void
 	{
 		// Set default values
-		if($customer_id == null) $customer_id = -1;
+		if($customer_id == null) $customer_id = NEW_ENTRY;
 
 		$info = $this->customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -268,7 +268,7 @@ class Customers extends Persons
 	/**
 	 * Inserts/updates a customer
 	 */
-	public function postSave(int $customer_id = -1): void	//TODO: Replace -1 with a constant
+	public function postSave(int $customer_id = NEW_ENTRY): void
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);
 		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
@@ -323,7 +323,7 @@ class Customers extends Persons
 			);
 
 			// New customer
-			if($customer_id == -1)
+			if($customer_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -345,7 +345,7 @@ class Customers extends Persons
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-				'id' => -1
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -373,7 +373,7 @@ class Customers extends Persons
 	/**
 	 * This deletes customers from the customers table
 	 */
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$customers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
 		$customers_info = $this->customer->get_multiple_info($customers_to_delete);
