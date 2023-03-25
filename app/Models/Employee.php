@@ -95,13 +95,13 @@ class Employee extends Person
 		}
 
 		//Get empty base parent object, as $employee_id is NOT an employee
-		$person_obj = parent::get_info(-1);	//TODO: Replace -1 with a constant
+		$person_obj = parent::get_info(NEW_ITEM);
 
 		//Get all the fields from employee table
 		//append those fields to base parent object, we have a complete empty object
 		foreach($this->db->getFieldNames('employees') as $field)
 		{
-			$person_obj->$field = '';
+			$person_obj->$field = null;
 		}
 
 		return $person_obj;
