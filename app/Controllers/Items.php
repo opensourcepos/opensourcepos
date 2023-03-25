@@ -268,11 +268,6 @@ class Items extends Secure_Controller
 
 		$item_info = $this->item->get_info($item_id);
 
-		foreach(get_object_vars($item_info) as $property => $value)
-		{
-			$item_info->$property = $value;
-		}
-
 		if($data['allow_temp_item'] === 1)
 		{
 			if($item_id !== NEW_ENTRY)
@@ -331,6 +326,7 @@ class Items extends Secure_Controller
 			&& !$data['allow_temp_item']
 			&& !($this->config['derive_sale_quantity'] === '1')
 		);
+
 
 		$data['item_info'] = $item_info;
 
