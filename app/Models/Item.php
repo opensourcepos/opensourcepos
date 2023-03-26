@@ -42,6 +42,7 @@ class Item extends Model
 		'hsn_code'
 	];
 
+
 	/**
 	 * Determines if a given item_id is an item
 	 */
@@ -325,25 +326,36 @@ class Item extends Model
 			return $query->getRow();
 		}
 
-		//Get empty base parent object, as $item_id is NOT an item
-		$item_obj = new stdClass();
+		return $this->getEmptyObject('items');
+	}
 
-		// Initialize empty object
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
 
-		foreach ($this->db->getFieldData('items') as $field) {
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
 			$field_name = $field->name;
-			if (in_array($field->type, array('int', 'tinyint', 'decimal')))
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
 			{
-				$item_obj->$field_name = 0;
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
 			}
 			else
 			{
-				$item_obj->$field_name = NULL;
+				$empty_obj->$field_name = NULL;
 			}
 		}
-		$item_obj->item_id = NEW_ENTRY;
 
-		return $item_obj;
+		return $empty_obj;
 	}
 
 	/**

@@ -378,7 +378,7 @@ class Items extends Secure_Controller
 			$data['tax_category'] = '';
 		}
 
-		$data['logo_exists'] = $item_info->pic_filename !== '';
+		$data['logo_exists'] = $item_info->pic_filename !== null;
 		$file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
 
 		if(empty($file_extension))
