@@ -92,22 +92,38 @@ class Person extends Model
 		}
 		else
 		{
-			$person_obj = new stdClass();
-			foreach ($this->db->getFieldData('people') as $field) {
-				$field_name = $field->name;
-				if (in_array($field->type, array('int', 'tinyint', 'decimal')))
-				{
-					$person_obj->$field_name = 0;
-				}
-				else
-				{
-					$person_obj->$field_name = NULL;
-				}
-			}
-			$person_obj->person_id = NEW_ENTRY;
-
-			return $person_obj;
+			return $this->getEmptyObject('people');
 		}
+	}
+
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
 	}
 
 	/**
