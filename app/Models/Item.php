@@ -48,22 +48,15 @@ class Item extends Model
 	 */
 	public function exists(int $item_id, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
 	{
-		// check if $item_id is a number and not a string starting with 0
-		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) !== '0')
+		$builder = $this->db->table('items');
+		$builder->where('item_id', $item_id);
+
+		if($ignore_deleted === FALSE)
 		{
-			$builder = $this->db->table('items');
-			$builder->where('item_id', $item_id);
-
-			if($ignore_deleted === FALSE)
-			{
-				$builder->where('deleted', $deleted);
-			}
-
-			return ($builder->get()->getNumRows() === 1);
+			$builder->where('deleted', $deleted);
 		}
 
-		return FALSE;
+		return ($builder->get()->getNumRows() === 1);
 	}
 
 	/**
@@ -80,15 +73,16 @@ class Item extends Model
 
 		$builder = $this->db->table('items');
 		$builder->where('item_number', $item_number);
+		$builder->where('deleted !=', 1);
+		$builder->where('item_id !=', intval($item_id));
 
-		// check if $item_id is a number and not a string starting with 0
-		// because cases like 00012345 will be seen as a number where it is a barcode
+//		// check if $item_id is a number and not a string starting with 0
+//		// because cases like 00012345 will be seen as a number where it is a barcode
 		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')	//TODO: !==
 		{
 			$builder->where('item_id !=', intval($item_id));
 		}
-
-		return ($builder->get()->getNumRows() >= 1);
+		return ($builder->get()->getNumRows()) >= 1;
 	}
 
 	/**
@@ -450,11 +444,11 @@ class Item extends Model
 	/**
 	 * Inserts or updates an item
 	 */
-	public function save_value(array &$item_data, bool $item_id = FALSE): bool	//TODO: need to bring this in line with parent or change the name
+	public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool	//TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
 
-		if(!$item_id || !$this->exists($item_id, TRUE))
+		if($item_id == NEW_ENTRY || !$this->exists($item_id, TRUE))
 		{
 			if($builder->insert($item_data))
 			{
