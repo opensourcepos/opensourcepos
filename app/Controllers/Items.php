@@ -774,6 +774,11 @@ class Items extends Secure_Controller
 	}
 
 
+	/**
+	 * Ajax call to check to see if the item number, a.k.a. barcode, is already used by another item
+	 * If it exists then that is an error condition so return TRUE for "error found"
+	 * @return string
+	 */
 	public function postCheckItemNumber(): void
 	{
 		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));

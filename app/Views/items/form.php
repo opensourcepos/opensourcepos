@@ -585,11 +585,8 @@ $(document).ready(function()
 						url: "<?php echo esc("$controller_name/checkItemNumber") ?>",
 						type: 'POST',
 						data: {
-							'item_id' : "<?php echo $item_info->item_id ?>",
-							'item_number' : function()
-							{
-								return $('#item_number').val();
-							},
+							'item_id' : "<?php echo $item_info->item_id ?>"
+							// item_number should be passed into the function by default
 						}
 					}
 				},
@@ -627,7 +624,7 @@ $(document).ready(function()
 				},
 				tax_percent:
 				{
-					required: true,
+					required: false,
 					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 				}
 			},
@@ -671,7 +668,6 @@ $(document).ready(function()
 				},
 				tax_percent:
 				{
-					required: "<?php echo lang('Items.tax_percent_required') ?>",
 					number: "<?php echo lang('Items.tax_percent_number') ?>"
 				}
 			}
