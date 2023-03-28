@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "المخزن المضاف أو المطروح منه.";
 $lang["giftcards_allow_alt_description"] = "السماح بوصف بديل";
 $lang["giftcards_bulk_edit"] = "تحرير جماعى";
 $lang["giftcards_cannot_be_deleted"] = "لايمكن حذف بطاقات الهدية المختارة، واحد أو أكثر منها لديه مبيعات.";
 $lang["giftcards_cannot_find_giftcard"] = "لايمكن إيجاد معلومات حول كارت الهدية.";
-$lang["giftcards_cannot_use"] = "كارت الهدية %1                         لا يمكن استعمالة في هذه العملية: اسم الزبون غير صحيح.";
+$lang["giftcards_cannot_use"] = "كارت الهدية %1 لا يمكن استعمالة في هذه العملية: اسم الزبون غير صحيح.";
 $lang["giftcards_card_value"] = "القيمة";
 $lang["giftcards_category"] = "الفئة";
 $lang["giftcards_change_all_to_allow_alt_desc"] = "السماح بوصف بديل للكل.";
