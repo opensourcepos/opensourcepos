@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "الكل";
 $lang["reports_authority"] = "السلطة";
 $lang["reports_canceled"] = "ملغى";
@@ -19,7 +18,7 @@ $lang["reports_complete"] = "عمليات البيع والمرتجع المكت
 $lang["reports_completed_sales"] = "المبيعات المكتملة";
 $lang["reports_confirm_delete"] = "هل انت متاكد من مسح البيانات المحددة؟";
 $lang["reports_confirm_restore"] = "هل انت متاكد من استعادة البيانات المحددة؟";
-$lang["reports_cost"] = "التكلفة";
+$lang["reports_cost"] = "سعر التكلفة";
 $lang["reports_cost_price"] = "سعر التكلفة";
 $lang["reports_count"] = "عدد";
 $lang["reports_customer"] = "عميل";
@@ -78,7 +77,7 @@ $lang["reports_payment_type"] = "طريقة الدفع";
 $lang["reports_payments"] = "المدفوعات";
 $lang["reports_payments_summary_report"] = "ملخص المدفوعات";
 $lang["reports_profit"] = "الربح";
-$lang["reports_quantity"] = "الكمية المشتراه";
+$lang["reports_quantity"] = "الكمية";
 $lang["reports_quantity_purchased"] = "المستلم";
 $lang["reports_quotes"] = "عروض اسعار";
 $lang["reports_received_by"] = "مستلمة بواسطة";
@@ -122,7 +121,7 @@ $lang["reports_suppliers"] = "الموردين";
 $lang["reports_suppliers_summary_report"] = "تقرير ملخص الموردين";
 $lang["reports_tax"] = "الضريبة";
 $lang["reports_tax_category"] = "الفئة الضريبية";
-$lang["reports_tax_name"] = "";
+$lang["reports_tax_name"] = "اسم الضريبه";
 $lang["reports_tax_percent"] = "نسبة الضريبة";
 $lang["reports_tax_rate"] = "معدل الضريبة";
 $lang["reports_taxes"] = "الضرائب";
