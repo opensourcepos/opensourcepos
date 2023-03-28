@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amount_entry"] = "إدخال القيمة";
@@ -86,7 +85,7 @@ $lang["items_remove_image"] = "ازالة الصورة";
 $lang["items_reorder_level"] = "نقطة إعادة الطلب";
 $lang["items_reorder_level_number"] = "نقطة إعادة الطلب يجب أن تكون رقم.";
 $lang["items_reorder_level_required"] = "نقطة إعادة الطلب مطلوبة.";
-$lang["items_retrive_item_info"] = "استرجاع بيانات الصنف";
+$lang["items_retrive_item_info"] = "الحصول على بيانات الصنف";
 $lang["items_sales_tax_1"] = "ضريبة المبيعات";
 $lang["items_sales_tax_2"] = "ضريبة المبيعات 2";
 $lang["items_search_attributes"] = "بحث الحقول المخصصة";
