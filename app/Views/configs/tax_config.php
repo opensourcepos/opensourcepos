@@ -159,11 +159,11 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			default_tax2_rate:
 			{
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 		},
 

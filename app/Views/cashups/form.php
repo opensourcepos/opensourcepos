@@ -310,7 +310,7 @@ $(document).ready(function()
 	});
 
 	$('#open_amount_cash, #transfer_amount_cash, #closed_amount_cash, #closed_amount_due, #closed_amount_card, #closed_amount_check').keyup(function() {
-		$.post("<?php echo esc(site_url("$controller_name/ajax_cashup_total"), 'url') ?>", {
+		$.post("<?php echo esc("$controller_name/ajax_cashup_total") ?>", {
 				'open_amount_cash': $('#open_amount_cash').val(),
 				'transfer_amount_cash': $('#transfer_amount_cash').val(),
 				'closed_amount_due': $('#closed_amount_due').val(),
@@ -332,7 +332,7 @@ $(document).ready(function()
 			success: function(response)
 			{
 				dialog_support.hide();
-				table_support.handle_submit('<?php echo esc(site_url('cashups'), 'url') ?>', response);
+				table_support.handle_submit('<?php echo esc('cashups') ?>', response);
 			},
 			dataType: 'json'
 		});

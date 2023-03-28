@@ -98,7 +98,7 @@ if(isset($success))
 				?>
 
 				<li class="pull-right">
-					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo esc(site_url("$controller_name/suspended"), 'url') ?>"
+					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href="<?php echo esc("$controller_name/suspended") ?>"
 							title="<?php echo lang('Sales.suspended_sales') ?>">
 						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo lang('Sales.suspended_sales') ?>
 					</button>

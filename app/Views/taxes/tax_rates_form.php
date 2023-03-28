@@ -71,7 +71,7 @@
                 $(form).ajaxSubmit({
                     success: function (response) {
                         dialog_support.hide();
-                        table_support.handle_submit('<?php echo site_url('taxes') ?>', response);
+                        table_support.handle_submit('<?php echo'taxes' ?>', response);
                     },
                     dataType: 'json'
                 });

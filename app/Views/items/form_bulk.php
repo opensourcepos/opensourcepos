@@ -171,7 +171,7 @@
 $(document).ready(function()
 {
 	$('#category').autocomplete({
-		source: "<?php echo site_url('items/suggest_category') ?>",
+		source: "<?php echo 'items/suggest_category' ?>",
 		appendTo: '.modal-content',
 		delay: 10
 	});
@@ -195,7 +195,7 @@ $(document).ready(function()
 					success: function(response)
 					{
 						dialog_support.hide();
-						table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+						table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 					},
 					dataType: 'json'
 				});

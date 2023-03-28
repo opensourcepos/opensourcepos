@@ -53,7 +53,7 @@ $(document).ready(function()
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
 		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo lang('Common.print') ?>
 	</button>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc(site_url("$controller_name/view"), 'url') ?>'
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo esc("$controller_name/view") ?>'
 			title='<?php echo lang($controller_name . 'new') ?>'>
 		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo lang($controller_name . '.new') ?>
 	</button>

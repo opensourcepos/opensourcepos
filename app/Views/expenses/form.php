@@ -170,7 +170,7 @@ $(document).ready(function()
 
 	var amount_validator = function(field) {
 		return {
-			url: "<?php echo esc(site_url("$controller_name/ajax_check_amount"), 'url') ?>",
+			url: "<?php echo esc("$controller_name/ajax_check_amount") ?>",
 			type: 'POST',
 			dataFilter: function(data) {
 				var response = JSON.parse(data);
@@ -226,7 +226,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

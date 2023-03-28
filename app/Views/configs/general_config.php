@@ -473,12 +473,12 @@ $(document).ready(function()
 			lines_per_page:
 			{
 				required: true,
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			default_sales_discount:
 			{
 				required: true,
-				remote: "<?php echo esc(site_url("$controller_name/check_numeric"), 'url') ?>"
+				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
 			},
 			gcaptcha_site_key:
 			{

@@ -100,7 +100,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			$("input[name='attribute_ids[" + definition_id + "]']").val('');
 		}).autocomplete({
 			source: function(request, response) {
-				$.get('<?php echo site_url('attributes/suggest_attribute/') ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
+				$.get('<?php echo 'attributes/suggest_attribute/' ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
 					return response(data);
 				}, 'json');
 			},
@@ -125,7 +125,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			var definition_id = $("#definition_name option:selected").val();
 			var attribute_values = definition_values();
 			attribute_values[definition_id] = '';
-			$('#attributes').load('<?php echo esc(site_url("items/attributes/$item_id"), 'url') ?>', {
+			$('#attributes').load('<?php echo esc("items/attributes/$item_id") ?>', {
 				'definition_ids': JSON.stringify(attribute_values)
 			}, enable_delete);
 		};

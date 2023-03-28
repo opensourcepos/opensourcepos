@@ -83,7 +83,7 @@ $(document).ready(function()
 	};
 
 	$('#person_name').autocomplete({
-		source: "<?php echo esc(site_url('customers/suggest'), 'url') ?>",
+		source: "<?php echo esc("customers/suggest") ?>",
 		minChars: 0,
 		delay: 15, 
 	   	cacheLength: 1,
@@ -98,11 +98,11 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				error: function(jqXHR, textStatus, errorThrown) 
 				{
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", {message: errorThrown});
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", {message: errorThrown});
 				},
 				dataType: 'json'
 			});
@@ -129,7 +129,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo esc(site_url("$controller_name/ajax_check_number_giftcard"), 'url') ?>",
+					url: "<?php echo esc("$controller_name/ajax_check_number_giftcard") ?>",
 					type: 'POST',
 					data: {
 						'amount': $('#giftcard_amount').val()
