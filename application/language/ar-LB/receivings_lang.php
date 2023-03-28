@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_amount_due"] = "";
 $lang["receivings_cancel_receiving"] = "إلغاء";
 $lang["receivings_cannot_be_deleted"] = "لايمكن حذف الإستلام/الإستلامات.";
