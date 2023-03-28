@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amount_entry"] = "إدخال القيمة";
@@ -26,7 +25,7 @@ $lang["items_cost_price_required"] = "سعر التكلفة مطلوب.";
 $lang["items_count"] = "تحديث المخزون";
 $lang["items_csv_import_failed"] = "فشل الإستيراد من اكسل";
 $lang["items_csv_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
-$lang["items_csv_import_partially_failed"] = "تم استيراد معظم الأصناف. البعض لم يتم استيرادهم ، وهذه هى القائمة:";
+$lang["items_csv_import_partially_failed"] = "يوجد خطأ بنسبة 1% في استيراد الاصناف في السطر: %2. لم يتم استيرادهم.";
 $lang["items_csv_import_success"] = "تم استيراد الأصناف بنجاح.";
 $lang["items_current_quantity"] = "الكمية الحالية";
 $lang["items_default_pack_name"] = "كل";
@@ -86,7 +85,7 @@ $lang["items_remove_image"] = "ازالة الصورة";
 $lang["items_reorder_level"] = "نقطة إعادة الطلب";
 $lang["items_reorder_level_number"] = "نقطة إعادة الطلب يجب أن تكون رقم.";
 $lang["items_reorder_level_required"] = "نقطة إعادة الطلب مطلوبة.";
-$lang["items_retrive_item_info"] = "استرجاع بيانات الصنف";
+$lang["items_retrive_item_info"] = "الحصول على بيانات الصنف";
 $lang["items_sales_tax_1"] = "ضريبة المبيعات";
 $lang["items_sales_tax_2"] = "ضريبة المبيعات 2";
 $lang["items_search_attributes"] = "بحث الحقول المخصصة";
