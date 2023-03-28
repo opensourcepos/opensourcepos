@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "العنوان 1";
 $lang["common_address_2"] = "العنوان 2";
 $lang["common_admin"] = "";
@@ -33,8 +32,8 @@ $lang["common_gender"] = "النوع";
 $lang["common_gender_female"] = "أنثى";
 $lang["common_gender_male"] = "ذكر";
 $lang["common_gender_undefined"] = "";
-$lang["common_icon"] = "";
-$lang["common_id"] = "كود";
+$lang["common_icon"] = "أيقونة";
+$lang["common_id"] = "رقم التعريف";
 $lang["common_import"] = "استيراد";
 $lang["common_import_change_file"] = "تغيير";
 $lang["common_import_csv"] = "استيراد من اكسل";
@@ -47,8 +46,8 @@ $lang["common_last_name_required"] = "الاسم الأخير مطلوب.";
 $lang["common_last_page"] = "الأخيرة";
 $lang["common_learn_about_project"] = "للتعرف على أخر المعلومات حول المشروع.";
 $lang["common_list_of"] = "قائمة بـ";
-$lang["common_logo"] = "";
-$lang["common_logo_mark"] = "";
+$lang["common_logo"] = "شعار";
+$lang["common_logo_mark"] = "علامة الشعار";
 $lang["common_logout"] = "خروج";
 $lang["common_manager"] = "";
 $lang["common_migration_needed"] = "سيبدأ ترحيل قاعدة البيانات إلى ٪1 بعد تسجيل الدخول.";
@@ -72,8 +71,8 @@ $lang["common_return_policy"] = "سياسة الاسترجاع";
 $lang["common_search"] = "بحث";
 $lang["common_search_options"] = "خيارات البحث";
 $lang["common_searched_for"] = "بحث عن";
-$lang["common_software_short"] = "";
-$lang["common_software_title"] = "";
+$lang["common_software_short"] = "OSPOS";
+$lang["common_software_title"] = "برنامج OSPOS";
 $lang["common_state"] = "المحافظة";
 $lang["common_submit"] = "حفظ";
 $lang["common_total_spent"] = "مجموع الصرف";
