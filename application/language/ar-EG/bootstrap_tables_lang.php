@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["tables_all"] = "الجميع";
 $lang["tables_columns"] = "أعمدة";
 $lang["tables_hide_show_pagination"] = "عرض/إخفاء أرقام الصفحات";
