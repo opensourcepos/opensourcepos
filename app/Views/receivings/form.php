@@ -76,7 +76,7 @@ $(document).ready(function()
 	};
 
 	$('#supplier_name').autocomplete({
-		source: "<?php echo site_url('suppliers/suggest') ?>",
+		source: "<?php echo 'suppliers/suggest' ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -88,7 +88,7 @@ $(document).ready(function()
 	$('button#delete').click(function()
 	{
 		dialog_support.hide();
-		table_support.do_delete("<?php echo esc(site_url($controller_name), 'url') ?>", <?php echo $receiving_info['receiving_id'] ?>);
+		table_support.do_delete("<?php echo esc($controller_name) ?>", <?php echo $receiving_info['receiving_id'] ?>);
 	});
 
 	$('#receivings_edit_form').validate($.extend({
@@ -97,7 +97,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

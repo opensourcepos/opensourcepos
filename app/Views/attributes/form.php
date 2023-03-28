@@ -181,7 +181,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$.post('<?php echo esc(site_url("$controller_name/delete_attribute_value/"), 'url') ?>', {definition_id: definition_id, attribute_value: value});
+			$.post('<?php echo esc("$controller_name/delete_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
 		}
 		$(this).parents("li").remove();
 	};
@@ -210,7 +210,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo site_url("attributes/save_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
+				$.post('<?php echo "attributes/save_attribute_value/" ?>', {definition_id: definition_id, attribute_value: value});
 			}
 		}
 
@@ -256,7 +256,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo esc(site_url($controller_name), 'url') ?>', response);
+					table_support.handle_submit('<?php echo esc($controller_name) ?>', response);
 				},
 				dataType: 'json'
 			});

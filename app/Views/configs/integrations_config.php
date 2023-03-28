@@ -61,7 +61,7 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?php echo esc(site_url($controller_name . '/ajax_check_mailchimp_api_key'), 'url') ?>", {
+		$.post("<?php echo esc("$controller_name/ajax_check_mailchimp_api_key"), ?>", {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {

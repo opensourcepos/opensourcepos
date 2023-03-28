@@ -149,7 +149,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo site_url("$controller_name/remove_logo"); ?>',
+			url: '<?php echo "$controller_name/remove_logo"; ?>',
 			dataType: 'json'
 		})
 	});

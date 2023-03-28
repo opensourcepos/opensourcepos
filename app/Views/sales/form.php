@@ -165,7 +165,7 @@ $(document).ready(function()
 	<?php if(!empty($sale_info['email'])): ?>
 		$('#send_invoice').click(function(event) {
 			if (confirm("<?php echo lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get("<?php echo esc(site_url("$controller_name/send_pdf/" . $sale_info['sale_id']), 'url') ?>",
+				$.get("<?php echo esc("$controller_name/send_pdf/" . $sale_info['sale_id']) ?>",
 					function(response) {
 						BootstrapDialog.closeAll();
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -184,7 +184,7 @@ $(document).ready(function()
 	};
 
 	$('#customer_name').autocomplete( {
-		source: "<?php echo site_url('customers/suggest') ?>",
+		source: "<?php echo 'customers/suggest' ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -200,7 +200,7 @@ $(document).ready(function()
 	};
 
 	$('#employee_name').autocomplete( {
-		source: "<?php echo site_url('employees/suggest') ?>",
+		source: "<?php echo 'employees/suggest' ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -211,12 +211,12 @@ $(document).ready(function()
 
 	$('button#delete').click(function() {
 		dialog_support.hide();
-		table_support.do_delete("<?php echo esc(site_url($controller_name), 'url') ?>", <?php echo $sale_info['sale_id'] ?>);
+		table_support.do_delete("<?php echo esc($controller_name); ?>", <?php echo $sale_info['sale_id'] ?>);
 	});
 
 	$('button#restore').click(function() {
 		dialog_support.hide();
-		table_support.do_restore("<?php echo esc(site_url($controller_name), 'url') ?>", <?php echo $sale_info['sale_id'] ?>);
+		table_support.do_restore("<?php echo esc($controller_name) ?>", <?php echo $sale_info['sale_id'] ?>);
 	});
 
 	$('#sales_edit_form').validate($.extend( {
@@ -225,10 +225,10 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 					
 					const params = $.param(table_support.query_params());
-					$.get("<?php echo site_url($controller_name); ?>/search?" + params, function(response) {
+					$.get("<?php echo $controller_name; ?>/search?" + params, function(response) {
 						$("#payment_summary").html(response.payment_summary);
 					}, 'json');
 				},
@@ -244,7 +244,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc(site_url("$controller_name/check_invoice_number"), 'url') ?>",
+					url: "<?php echo esc("$controller_name/check_invoice_number") ?>",
 					type: 'POST',
 					data: {
 						'sale_id': <?php echo $sale_info['sale_id'] ?>,

@@ -215,7 +215,7 @@
 $(document).ready(function()
 {
 	$('#item').autocomplete({
-		source: "<?php echo site_url('items/suggest') ?>",
+		source: '<?php echo "items/suggest" ?>',
 		minChars: 0,
 		autoFocus: false,
 		delay: 10,
@@ -253,7 +253,7 @@ $(document).ready(function()
 
 
 	$('#item_name').autocomplete({
-		source: "<?php echo site_url('items/suggest_kits') ?>",
+		source: "<?php echo 'items/suggest_kits' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -268,7 +268,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -285,7 +285,7 @@ $(document).ready(function()
 				required: false,
 				remote:
 				{
-					url: "<?php echo esc(site_url("$controller_name/check_item_number"), 'url') ?>",
+					url: '<?php echo esc("$controller_name/checkItemNumber") ?>',
 					type: 'POST',
 					data: 
 					{

@@ -209,7 +209,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -226,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo esc(site_url("$controller_name/check_username/$employee_id"), 'url') ?>'
+				remote: '<?php echo esc("$controller_name/check_username/$employee_id") ?>'
 			},
 			password:
 			{

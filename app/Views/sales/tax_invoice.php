@@ -34,7 +34,7 @@ $(document).ready(function()
 {
 	var send_email = function()
 	{
-		$.get('<?php echo esc(site_url("/sales/send_pdf/$sale_id_num"), 'url') ?>',
+		$.get('<?php echo esc("/sales/send_pdf/$sale_id_num") ?>',
 			function(response)
 			{
 				$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
