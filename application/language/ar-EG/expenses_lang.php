@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "إضافة مصاريف جديدة";
 $lang["expenses_amount"] = "قيمة المصاريف";
 $lang["expenses_amount_number"] = "القيمة يجب ان تكون رقم";
@@ -12,7 +11,7 @@ $lang["expenses_categories_name"] = "اسماء الفئات";
 $lang["expenses_category_required"] = "خانة مطلوبة: الفئات";
 $lang["expenses_check"] = "شيك";
 $lang["expenses_check_filter"] = "تصفية";
-$lang["expenses_confirm_delete"] = "تأكيد المسح؟";
+$lang["expenses_confirm_delete"] = "هل أنت متأكد أنك تريد حذف المصاريف المحددة؟";
 $lang["expenses_confirm_restore"] = "هل تريد بالتأكيد استعادة النفقات المحددة؟";
 $lang["expenses_credit"] = "بطاقة ائتمان";
 $lang["expenses_credit_filter"] = "بطاقة ائتمان";
