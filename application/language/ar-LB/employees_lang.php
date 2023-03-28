@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["employees_administrator"] = "";
 $lang["employees_basic_information"] = "المعلومات الأساسية للموظف";
 $lang["employees_cannot_be_deleted"] = "لايمكن حذف الموظفين ، واحد أو أكثر من المظفين قام بإجراء مبيعات :).";
@@ -38,6 +37,6 @@ $lang["employees_system_language"] = "لغة النظام";
 $lang["employees_unsuccessful_change_password"] = "فشل في تغيير كلمة المرور.";
 $lang["employees_update"] = "تحديث بيانات موظف";
 $lang["employees_username"] = "اسم المستخدم";
-$lang["employees_username_duplicate"] = "";
+$lang["employees_username_duplicate"] = "حساب المحدد هو موجود في قاعدة البيانات. نرجوا استخدام اسم حساب مختلف.";
 $lang["employees_username_minlength"] = "اسم المستخدم يجب أن يكون 5 حروف على الأقل.";
 $lang["employees_username_required"] = "اسم المستخدم مطلوب.";
