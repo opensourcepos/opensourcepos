@@ -1,6 +1,6 @@
 <?php
 $lang["customers_available_points"] = "النقاط المتاحة";
-$lang["rewards_package"] = "مكافآت";
+$lang["rewards_package"] = "فئة المكافئة";
 $lang["rewards_remaining_balance"] = "رصيد النقاط المتبقي هو ";
 $lang["sales_account_number"] = "حساب";
 $lang["sales_add_payment"] = "إضافة دفع";
@@ -121,7 +121,7 @@ $lang["sales_key_suspend"] = "حفط عملية البيع";
 $lang["sales_key_suspended"] = "إظهار عمليات البيع المحفظه";
 $lang["sales_key_system"] = "اختصارات متاحه";
 $lang["sales_key_tendered"] = "تعديل المبلغ المدفوع";
-$lang["sales_key_title"] = "Sales Keyboard Shortcuts";
+$lang["sales_key_title"] = "اختصارات صفحة المبيعات";
 $lang["sales_mc"] = "";
 $lang["sales_mode"] = "وضع التسجيل";
 $lang["sales_must_enter_numeric"] = "يجب إدخال رقم للمبلغ الفعلى المدفوع.";
