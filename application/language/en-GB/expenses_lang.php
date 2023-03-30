@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Add Expense";
 $lang["expenses_amount"] = "Amount";
 $lang["expenses_amount_number"] = "Amount must be a number";
@@ -43,7 +42,7 @@ $lang["expenses_successful_adding"] = "Expense add successful";
 $lang["expenses_successful_deleted"] = "Expense delete successful";
 $lang["expenses_successful_updating"] = "Expense update successful";
 $lang["expenses_supplier_name"] = "Supplier";
-$lang["expenses_supplier_tax_code"] = "VAT No.";
+$lang["expenses_supplier_tax_code"] = "VAT No";
 $lang["expenses_tax_amount"] = "Tax";
 $lang["expenses_tax_amount_number"] = "";
 $lang["expenses_update"] = "Update Expense";
