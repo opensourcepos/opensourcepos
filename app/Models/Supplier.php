@@ -110,7 +110,7 @@ class Supplier extends Person
 	/**
 	 * Inserts or updates a suppliers
 	 */
-	public function save_supplier(array &$person_data, array &$supplier_data, bool $supplier_id = FALSE): bool
+	public function save_supplier(array &$person_data, array &$supplier_data, int $supplier_id = NEW_ENTRY): bool
 	{
 		$success = FALSE;
 
@@ -120,7 +120,7 @@ class Supplier extends Person
 		if(parent::save_value($person_data,$supplier_id))
 		{
 			$builder = $this->db->table('suppliers');
-			if(!$supplier_id || !$this->exists($supplier_id))
+			if($supplier_id == NEW_ENTRY || !$this->exists($supplier_id))
 			{
 				$supplier_data['person_id'] = $person_data['person_id'];
 				$success = $builder->insert($supplier_data);
@@ -263,7 +263,7 @@ class Supplier extends Person
 	/**
 	 * Perform a search on suppliers
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;

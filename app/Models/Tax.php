@@ -166,7 +166,7 @@ class Tax extends Model
 	public function save_value(array &$tax_rate_data, int $tax_rate_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_rates');
-		if(!$this->exists($tax_rate_id))
+		if($tax_rate_id == NEW_ENTRY || !$this->exists($tax_rate_id))
 		{
 			if($builder->insert($tax_rate_data))
 			{
@@ -220,7 +220,7 @@ class Tax extends Model
 	/**
 	 * Performs a search on tax_rates
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;

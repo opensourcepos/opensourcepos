@@ -126,11 +126,11 @@ class Giftcard extends Model
 	/**
 	 * Inserts or updates a giftcard
 	 */
-	public function save_value(array &$giftcard_data, $giftcard_id = FALSE): bool
+	public function save_value(array &$giftcard_data, int $giftcard_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('giftcards');
 
-		if(!$giftcard_id || !$this->exists($giftcard_id))
+		if($giftcard_id == NEW_ENTRY || !$this->exists($giftcard_id))
 		{
 			if($builder->insert($giftcard_data))
 			{
@@ -233,7 +233,7 @@ class Giftcard extends Model
 	/**
 	 * Performs a search on giftcards
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
