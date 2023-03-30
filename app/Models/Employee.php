@@ -123,7 +123,7 @@ class Employee extends Person
 	/**
 	 * Inserts or updates an employee
 	 */
-	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, bool $employee_id = FALSE): bool
+	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
 	{
 		$success = FALSE;
 
@@ -133,7 +133,7 @@ class Employee extends Person
 		if(ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id))
 		{
 			$builder = $this->db->table('employees');
-			if(!$employee_id || !$this->exists($employee_id))
+			if($employee_id == NEW_ENTRY || !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
 				$success = $builder->insert($employee_data);
@@ -335,7 +335,7 @@ class Employee extends Person
 	/**
 	 * Performs a search on employees
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;

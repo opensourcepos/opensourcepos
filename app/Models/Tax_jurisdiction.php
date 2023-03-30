@@ -113,10 +113,10 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save_value(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
+	public function save_value(array &$jurisdiction_data, int $jurisdiction_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_jurisdictions');
-		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
+		if($jurisdiction_id == NEW_ENTRY || !$this->exists($jurisdiction_id))
 		{
 			if($builder->insert($jurisdiction_data))	//TODO: Replace this with simply a return of the result of insert()... see update() below.
 			{
@@ -213,7 +213,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;

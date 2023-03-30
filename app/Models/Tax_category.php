@@ -109,11 +109,11 @@ class Tax_category extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save_value(array &$tax_category_data, bool $tax_category_id = FALSE): bool
+	public function save_value(array &$tax_category_data, int $tax_category_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_categories');
 
-		if(!$tax_category_id || !$this->exists($tax_category_id))
+		if($tax_category_id == NEW_ENTRY || !$this->exists($tax_category_id))
 		{
 			if($builder->insert($tax_category_data))
 			{
@@ -208,7 +208,7 @@ class Tax_category extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
