@@ -1,5 +1,5 @@
 <?php
-$lang["customers_available_points"] = "Available Points";
+$lang["customers_available_points"] = "Points Available";
 $lang["rewards_package"] = "Rewards";
 $lang["rewards_remaining_balance"] = "Reward Points remaining value is ";
 $lang["sales_account_number"] = "Account #";
