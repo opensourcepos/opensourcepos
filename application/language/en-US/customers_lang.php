@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Account #";
 $lang["customers_account_number_duplicate"] = "Account Number is already present in the database.";
-$lang["customers_available_points"] = "Available Points";
+$lang["customers_available_points"] = "Points Available";
 $lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Average spent";
 $lang["customers_avg_discount"] = "Average discount";
@@ -41,7 +40,7 @@ $lang["customers_max"] = "Max. spent";
 $lang["customers_min"] = "Min. spent";
 $lang["customers_new"] = "New Customer";
 $lang["customers_none_selected"] = "You have not selected any customer(s) to delete.";
-$lang["customers_one_or_multiple"] = "customer(s)";
+$lang["customers_one_or_multiple"] = "Customer(s)";
 $lang["customers_quantity"] = "Quantity";
 $lang["customers_stats_info"] = "Stats";
 $lang["customers_successful_adding"] = "You have successfully added customer";
