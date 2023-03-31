@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company address is a required field.";
 $lang["config_all_set"] = "All file permissions are set correctly!";
@@ -100,7 +99,7 @@ $lang["config_default_tax_rate_3"] = "";
 $lang["config_default_tax_rate_number"] = "Default Tax Rate must be a number.";
 $lang["config_default_tax_rate_required"] = "Default Tax Rate is a required field.";
 $lang["config_derive_sale_quantity"] = "Allow Derived Sale Quantity";
-$lang["config_derive_sale_quantity_tooltip"] = "If checked then a new item type will provided for items ordered by extended amount";
+$lang["config_derive_sale_quantity_tooltip"] = "If checked then a new item type will be provided for items ordered by extended amount";
 $lang["config_dinner_table"] = "Table";
 $lang["config_dinner_table_duplicate"] = "Table must be unique.";
 $lang["config_dinner_table_enable"] = "Enable Dinner Tables";
@@ -130,7 +129,7 @@ $lang["config_enable_right_bar_tooltip"] = "";
 $lang["config_enforce_privacy"] = "Enforce privacy";
 $lang["config_enforce_privacy_tooltip"] = "Protect Customers privacy enforcing data scrambling in case of their data being deleted";
 $lang["config_fax"] = "Fax";
-$lang["config_file_perm"] = "There are problems with file permissions please fix and reload this page.";
+$lang["config_file_perm"] = "There are problems with file permissions. Please fix and reload this page.";
 $lang["config_financial_year"] = "Fiscal Year Start";
 $lang["config_financial_year_apr"] = "1st of April";
 $lang["config_financial_year_aug"] = "1st of August";
