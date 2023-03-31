@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "ຄ່າແອດທິບິວບໍ່ສາມາດມີ ':' ຫລື '|'";
 $lang["attributes_confirm_delete"] = "ແນ່ໃຈຫຼືບໍທີ່ຈະລືບລາຍການທີ່ເລືອກ";
-$lang["attributes_confirm_restore"] = "ແນ່ໃຈຫຼືບໍທີ່ຈະຄືນຄ່າແອັດທິບິ້ວດັ່ງກ່າວ";
+$lang["attributes_confirm_restore"] = "ແນ່ໃຈຫຼືບໍທີ່ຈະຄືນຄ່າແອັດທິບິ້ວດັ່ງກ່າວ?";
 $lang["attributes_definition_cannot_be_deleted"] = "ບໍສາມາດລືບລາຍການທີ່ເລືອກໄດ້";
 $lang["attributes_definition_error_adding_updating"] = "ລາຍການ %1 ບໍສາມາດເພີ່ມ ຫຼື ແກ້ໄຂ. ກະລຸນາກວດສອບຢູ່ log ຂໍ້ຜິດຜາດ";
 $lang["attributes_definition_flags"] = "ຄູນສົມບັດການເບິ່ງເຫັນ";
@@ -15,7 +14,7 @@ $lang["attributes_definition_successful_adding"] = "ເພີ່ມລາຍກ�
 $lang["attributes_definition_successful_deleted"] = "ລຶບລາຍການສຳເລັດແລ້ວ";
 $lang["attributes_definition_successful_updating"] = "ແກ້ໄຂລາຍການສຳເລັດແລ້ວ";
 $lang["attributes_definition_type"] = "ປະເພດລາຍການ";
-$lang["attributes_definition_type_required"] = "";
+$lang["attributes_definition_type_required"] = "ປະເພດແອດທີບິວ ຈຳເປັນຕ້ອງໃຊ້";
 $lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "";
 $lang["attributes_new"] = "";
