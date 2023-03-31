@@ -50,7 +50,7 @@ class Giftcards extends Secure_Controller
 	Gives search suggestions based on what is being searched for
 	*/
 
-	public function suggest(): void
+	public function getSuggest(): void
 	{
 		$suggestions = $this->giftcard->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), TRUE);
 
@@ -84,7 +84,8 @@ class Giftcards extends Secure_Controller
 		}
 		else
 		{
-			$max_giftnumber = isset($this->giftcard->get_max_number()->giftcard_number) ? $this->Giftcard->get_max_number()->giftcard_number : 0;	//TODO: variable does not follow naming standard.
+			$max_number_obj = $this->giftcard->get_max_number();
+			$max_giftnumber = isset($max_number_obj) ? $this->giftcard->get_max_number()->giftcard_number : 0;	//TODO: variable does not follow naming standard.
 			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $max_giftnumber + 1;
 		}
 		$data['giftcard_id'] = $giftcard_id;
@@ -144,7 +145,7 @@ class Giftcards extends Secure_Controller
 	 *
 	 * @return void
 	 */
-	public function ajax_check_number_giftcard(): void
+	public function postCheckNumberGiftcard(): void
 	{
 		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)]);

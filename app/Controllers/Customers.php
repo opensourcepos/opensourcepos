@@ -129,7 +129,7 @@ class Customers extends Persons
 	/**
 	 * Gives search suggestions based on what is being searched for
 	 */
-	public function suggest(): void
+	public function getSuggest(): void
 	{
 		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25,TRUE);
 
