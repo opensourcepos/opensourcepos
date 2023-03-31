@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Add Exception";
 $lang["taxes_cascade"] = "Cascade";
 $lang["taxes_cascade_sequence"] = "Cascade Sequence";
@@ -37,11 +36,11 @@ $lang["taxes_tax_category_duplicate"] = "Duplicate tax category";
 $lang["taxes_tax_category_invalid_chars"] = "Invalid characters in tax category name";
 $lang["taxes_tax_category_name"] = "Tax Category Name";
 $lang["taxes_tax_category_new"] = "New Tax Category";
-$lang["taxes_tax_category_required"] = "Tax category is required";
+$lang["taxes_tax_category_required"] = "Tax Category is Required";
 $lang["taxes_tax_code"] = "Tax Code";
 $lang["taxes_tax_code_cannot_be_deleted"] = "Tax Code delete failed";
-$lang["taxes_tax_code_duplicate"] = "Duplicate tax code";
-$lang["taxes_tax_code_invalid_chars"] = "Invalid characters in tax code";
+$lang["taxes_tax_code_duplicate"] = "Duplicate Tax Code";
+$lang["taxes_tax_code_invalid_chars"] = "Invalid Characters in Tax Code";
 $lang["taxes_tax_code_name"] = "Tax Code Name";
 $lang["taxes_tax_code_required"] = "Tax Code is a required field";
 $lang["taxes_tax_code_successful_deleted"] = "You have successfully deleted Tax Code";
@@ -59,8 +58,8 @@ $lang["taxes_tax_group_not_unique"] = "Tax Group %1 is not unique";
 $lang["taxes_tax_group_sequence"] = "Tax Group Sequence";
 $lang["taxes_tax_included"] = "Tax included";
 $lang["taxes_tax_jurisdiction"] = "Tax Jurisdiction";
-$lang["taxes_tax_jurisdiction_duplicate"] = "Duplicate tax jurisdiction";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "Invalid characters in jurisdiction name";
+$lang["taxes_tax_jurisdiction_duplicate"] = "Duplicate Tax Jurisdiction";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Invalid Characters in Jurisdiction Name";
 $lang["taxes_tax_jurisdiction_required"] = "Tax jurisdiction is required";
 $lang["taxes_tax_jurisdictions"] = "Tax Jurisdictions";
 $lang["taxes_tax_jurisdictions_configuration"] = "Tax Jurisdictions Configuration";
