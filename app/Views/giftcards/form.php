@@ -129,7 +129,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo esc("$controller_name/ajax_check_number_giftcard") ?>",
+					url: "<?php echo esc("$controller_name/checkNumberGiftcard") ?>",
 					type: 'POST',
 					data: {
 						'amount': $('#giftcard_amount').val()

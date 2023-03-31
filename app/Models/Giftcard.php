@@ -36,13 +36,13 @@ class Giftcard extends Model
 	}
 
 	/**
-	 * Gets max gift card number	//TODO: This isn't entirely accurate.  It returns the object and the results then pulls the giftcard_number.
+	 * Gets max gift card number	//TODO: This isn't entirely accurate.  It returns the object and the results then pulls the giftcard_number
 	 */
-	public function get_max_number(): object
+	public function get_max_number(): ?object
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
-		$builder->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
+		$builder->where('giftcard_number REGEXP \'^[0-9]+$\' = 0');
 		$builder->orderBy("giftcard_number","desc");
 		$builder->limit(1);
 
@@ -78,17 +78,37 @@ class Giftcard extends Model
 		}
 		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
-			//Get empty base parent object, as $giftcard_id is NOT a giftcard
-			$giftcard_obj = new stdClass();
-
-			//Get all the fields from giftcards table
-			foreach($this->db->getFieldNames('giftcards') as $field)
-			{
-				$giftcard_obj->$field = '';
-			}
-
-			return $giftcard_obj;
+			return $this->getEmptyObject('giftcards');
 		}
+	}
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
 	}
 
 	/**
@@ -254,7 +274,7 @@ class Giftcard extends Model
 		// get_found_rows case
 		if($count_only)	//TODO: replace this with `if($count_only)`
 		{
-			$builder->select('COUNT(giftcards.giftcard_id) as count');
+			$builder->select('COUNT(giftcard_id) as count');
 		}
 
 		$builder->join('people AS person', 'giftcards.person_id = person.person_id', 'left');
@@ -268,7 +288,7 @@ class Giftcard extends Model
 		$builder->where('giftcards.deleted', 0);
 
 		// get_found_rows case
-		if($count_only)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
