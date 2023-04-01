@@ -417,7 +417,7 @@ class Taxes extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function suggest_tax_codes(): void
+	public function getSuggestTaxCodes(): void
 	{
 		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING));
 

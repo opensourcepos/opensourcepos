@@ -575,18 +575,21 @@ class Attribute extends Model
 		return $builder->delete($delete_data);
 	}
 
-	public function get_link_value(int $item_id, int $definition_id): object
+	public function get_link_value(int $item_id, ?int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
-		$builder->where('definition_id', $definition_id);
+		if($definition_id != NULL)
+		{
+			$builder->where('definition_id', $definition_id);
+		}
 
 		return $builder->get('attribute_links')->getRowObject();
 	}
 
-	public function get_link_values(int $item_id, string $sale_receiving_fk, int $id, int $definition_flags): ResultInterface
+	public function get_link_values(int $item_id, string $sale_receiving_fk, ?int $id, ?int $definition_flags): ResultInterface
 	{
 		$format = $this->db->escape(dateformat_mysql());
 
@@ -609,7 +612,10 @@ class Attribute extends Model
 			$builder->where('receiving_id', null);
 		}
 
-		$builder->where('definition_flags & ', $definition_flags);
+		if(!empty($id))
+		{
+			$builder->where('definition_flags & ', $definition_flags);
+		}
 
 		return $builder->get();
 	}

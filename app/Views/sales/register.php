@@ -782,7 +782,7 @@ $(document).ready(function()
 	});
 
 	$('#item').autocomplete( {
-		source: "<?php echo esc(site_url("$controller_name/item_search"), 'url') ?>",
+		source: "<?php echo esc("$controller_name/itemSearch") ?>",
 		minChars: 0,
 		autoFocus: false,
 		delay: 500,

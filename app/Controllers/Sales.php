@@ -59,6 +59,8 @@ class Sales extends Secure_Controller
 
 		$this->customer = model('Customer');
 		$this->sale = model('Sale');
+		$this->item = model('Item');
+		$this->item_kit = model('Item_kit');
 		$this->stock_location = model('Stock_location');
 	}
 
@@ -147,10 +149,10 @@ class Sales extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function item_search(): void
+	public function getItemSearch(): void
 	{
 		$suggestions = [];
-		$receipt = $search = $this->request->getVar('term') != '' ? $this->request->get('term', FILTER_SANITIZE_STRING) : NULL;
+		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term', FILTER_SANITIZE_STRING) : NULL;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
 		{
@@ -515,6 +517,7 @@ class Sales extends Secure_Controller
 			{
 				if(!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
 				{
+					log_message('info', '>>> fail point 1');
 					$data['error'] = lang('Sales.unable_to_add_item');
 				}
 				else
@@ -527,6 +530,7 @@ class Sales extends Secure_Controller
 			$stock_warning = NULL;
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, $stock_warning))
 			{
+				log_message('info', '>>> fail point 2');
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
 			elseif($stock_warning != NULL)
@@ -538,6 +542,7 @@ class Sales extends Secure_Controller
 		{
 			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
 			{
+				log_message('info', '>>> fail point 3');
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
 			else

@@ -53,7 +53,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function item_search(): void
+	public function getItemSearch(): void
 	{
 		$suggestions = $this->item->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING)));
@@ -65,7 +65,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function stock_item_search(): void
+	public function getStockItemSearch(): void
 	{
 		$suggestions = $this->item->get_stock_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING)));
