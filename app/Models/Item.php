@@ -357,13 +357,18 @@ class Item extends Model
 	 */
 	public function get_info_by_id_or_number(int $item_id, bool $include_deleted = TRUE)
 	{
+		log_message('info','>>>get_info_by_id_or_number: item_id-' . $item_id);
+
 		$builder = $this->db->table('items');
 		$builder->groupStart();
 		$builder->where('items.item_number', $item_id);
 
+		log_message('info','>>>get_info_by_id_or_number: ctype_digit($item_id)-' . ctype_digit($item_id));
+		log_message('info','>>>get_info_by_id_or_number: substr($item_id, 0, 1)-' . substr($item_id, 0, 1));
+
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
+		if(ctype_digit(strval($item_id)) && substr($item_id, 0, 1) != '0')
 		{
 			$builder->orWhere('items.item_id', $item_id);
 		}

@@ -802,15 +802,18 @@ class Sale_lib
 	//TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
 	public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = NULL, int $kit_print_option = NULL, string $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
 	{
+		log_message('info', '>>>add_item: point 1: $item_id-' . $item_id . ', $include_deleted-' . $include_deleted);
 		$item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
 		//make sure item exists
 		if(empty($item_info))
 		{
 			$item_id = -1;	//TODO: Replace -1 with constant
+			log_message('info', '>>>add_item: point 2');
 			return FALSE;
 		}
 
+		log_message('info', '>>>add_item: point 3');
 		$applied_discount = $discount;
 		$item_id = $item_info->item_id;
 		$item_type = $item_info->item_type;
@@ -822,6 +825,7 @@ class Sale_lib
 		{
 			$price = $price_override;
 		}
+		log_message('info', '>>>add_item: point 4');
 
 		if($price_mode == PRICE_MODE_KIT)
 		{
@@ -855,6 +859,7 @@ class Sale_lib
 		}
 
 		// Serialization and Description
+		log_message('info', '>>>add_item: point 6');
 
 		//Get all items in the cart so far...
 		$items = $this->get_cart();
@@ -869,6 +874,7 @@ class Sale_lib
 		$insertkey = 0;                    //Key to use for new entry.	//TODO: $insertkey is never used
 		$updatekey = 0;                    //Key to use to update(quantity)
 
+		log_message('info', '>>>add_item: point 7');
 		foreach($items as $item)
 		{
 			//We primed the loop so maxkey is 0 the first time.
@@ -889,6 +895,7 @@ class Sale_lib
 				}
 			}
 		}
+		log_message('info', '>>>add_item: point 8');
 
 		$insertkey = $maxkey + 1;//TODO Does not follow naming conventions.
 		//array/cart records are identified by $insertkey and item_id is just another field.
@@ -933,11 +940,13 @@ class Sale_lib
 		}
 
 		$attribute_links = $this->attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->getRowObject();
+		log_message('info', '>>>add_item: point 9');
 
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
 			$item_quantity = model(Item_quantity::class);
+			log_message('info', '>>>add_item: point 10');
 
 			$item = [
 				$insertkey => [
@@ -968,18 +977,22 @@ class Sale_lib
 					'tax_category_id' => $item_info->tax_category_id
 				]
 			];
+			log_message('info', '>>>add_item: point 11');
 			//add to existing array
 			$items += $item;
 		}
 		else
 		{
+			log_message('info', '>>>add_item: point 12');
 			$line = &$items[$updatekey];
 			$line['quantity'] = $quantity;
 			$line['total'] = $total;
 			$line['discounted_total'] = $discounted_total;
 		}
+		log_message('info', '>>>add_item: point 13');
 
 		$this->set_cart($items);
+		log_message('info', '>>>add_item: point 14');
 
 		return TRUE;
 	}

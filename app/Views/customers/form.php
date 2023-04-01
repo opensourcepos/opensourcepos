@@ -476,7 +476,7 @@ $(document).ready(function()
 	};
 
 	$('#sales_tax_code_name').autocomplete({
-		source: "<?php echo esc('taxes/suggest_tax_codes') ?>",
+		source: "<?php echo esc('taxes/suggestTaxCodes') ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
