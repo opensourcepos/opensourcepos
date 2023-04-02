@@ -162,7 +162,7 @@ class Receivings extends Secure_Controller
 	 * @param $item_id
 	 * @return void
 	 */
-	public function edit_item($item_id): void
+	public function postEditItem($item_id): void
 	{
 		$data = [];
 
@@ -223,7 +223,7 @@ class Receivings extends Secure_Controller
 	 * @param $item_number
 	 * @return void
 	 */
-	public function postDelete_item($item_number): void
+	public function getDeleteItem($item_number): void
 	{
 		$this->receiving_lib->delete_item($item_number);
 

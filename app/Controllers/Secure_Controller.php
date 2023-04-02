@@ -26,6 +26,7 @@ class Secure_Controller extends BaseController
 		$this->employee = model('Employee');
 		$this->module = model('Module');
 		$config = config('OSPOS')->settings;
+		$validation = \Config\Services::validation();
 
 		if(!$this->employee->is_logged_in())
 		{

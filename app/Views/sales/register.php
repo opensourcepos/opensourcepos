@@ -176,11 +176,11 @@ if(isset($success))
 				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open(esc("$controller_name/edit_item/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?php echo form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
 							<td>
 								<?php
-									echo anchor(esc("$controller_name/delete_item/$line"), '<span class="glyphicon glyphicon-trash"></span>');
+									echo anchor(esc("$controller_name/deleteItem/$line"), '<span class="glyphicon glyphicon-trash"></span>');
 									echo form_hidden('location', $item['item_location']);
 									echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value'=>$item['item_id']]);
 								?>
@@ -426,7 +426,7 @@ if(isset($success))
 				</table>
 
 				<?php echo anchor(
-					"$controller_name/remove_customer",
+					"$controller_name/removeCustomer",
 					'<span class=\'glyphicon glyphicon-remove\'>&nbsp</span>' . lang('Common.remove') . ' ' . lang('Customers.customer'),
 						['class' => 'btn btn-danger btn-sm', 'id' => 'remove_customer_button', 'title' => lang('Common.remove') . ' ' . lang('Customers.customer')]
 					)
@@ -505,7 +505,7 @@ if(isset($success))
 				if($payments_cover_total)
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/add_payment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
@@ -552,7 +552,7 @@ if(isset($success))
 				else
 				{
 				?>
-					<?php echo form_open(esc("$controller_name/add_payment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?php echo form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
@@ -719,18 +719,18 @@ $(document).ready(function()
 
 	$("#remove_customer_button").click(function()
 	{
-		$.post("<?php echo site_url('sales/remove_customer'); ?>", redirect);
+		$.post("<?php echo site_url('sales/removeCustomer'); ?>", redirect);
 	});
 
 	$(".delete_item_button").click(function()
 	{
 		const item_id = $(this).data('item-id');
-		$.post("<?php echo site_url('sales/delete_item/'); ?>" + item_id, redirect);
+		$.post("<?php echo site_url('sales/deleteItem/'); ?>" + item_id, redirect);
 	});
 
 	$(".delete_payment_button").click(function() {
 		const item_id = $(this).data('payment-id');
-		$.post("<?php echo site_url('sales/delete_payment/'); ?>" + item_id, redirect);
+		$.post("<?php echo site_url('sales/deletePayment/'); ?>" + item_id, redirect);
 	});
 
 	$("input[name='item_number']").change(function() {
