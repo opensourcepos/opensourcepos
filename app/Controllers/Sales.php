@@ -43,11 +43,13 @@ use ReflectionException;
  */
 class Sales extends Secure_Controller
 {
+	protected $helpers = ['form', 'file'];
+
 	public function __construct()
 	{
 		parent::__construct('sales');
 
-		helper('file');
+//		helper('file');
 
 		$this->session = session();
 		$this->barcode_lib = new Barcode_lib();
@@ -324,7 +326,7 @@ class Sales extends Secure_Controller
 	 * Multiple Payments. Called in the view.
 	 * @return void
 	 */
-	public function add_payment(): void
+	public function postAddPayment(): void
 	{
 		$data = [];
 
@@ -333,14 +335,16 @@ class Sales extends Secure_Controller
 		//TODO: See the code block below.  This too needs to be ternary notation.
 		if($payment_type !== lang('Sales.giftcard'))
 		{
-			$this->validator->setRule('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|numeric');
+			$rules = ['amount_tendered' => 'trim|required|decimal',];
+			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
 		}
 		else
 		{
-			$this->validator->setRule('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
+			$rules = ['amount_tendered' => 'trim|required',];
+			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
 		}
 
-		if(!$this->validate([]))
+		if(!$this->validate($rules, $messages))
 		{//TODO: the code below should be refactored to the following ternary notation since it's much more readable and concise:
 			//$data['error'] = $payment_type === lang('Sales.giftcard')
 			//	? $data['error'] = lang('Sales.must_enter_numeric_giftcard')
@@ -441,7 +445,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$this->_reload($data);	//TODO: Hungarian notation
+		$this->_reload($data);
 	}
 
 	/**
@@ -517,7 +521,6 @@ class Sales extends Secure_Controller
 			{
 				if(!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
 				{
-					log_message('info', '>>> fail point 1');
 					$data['error'] = lang('Sales.unable_to_add_item');
 				}
 				else
@@ -530,7 +533,6 @@ class Sales extends Secure_Controller
 			$stock_warning = NULL;
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, $stock_warning))
 			{
-				log_message('info', '>>> fail point 2');
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
 			elseif($stock_warning != NULL)
@@ -542,7 +544,6 @@ class Sales extends Secure_Controller
 		{
 			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_STANDARD, NULL, NULL, $price))
 			{
-				log_message('info', '>>> fail point 3');
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
 			else
@@ -559,38 +560,43 @@ class Sales extends Secure_Controller
 	 * @param string $line
 	 * @return void
 	 */
-	public function edit_item(string $line): void
+	public function postEditItem(string $line): void
 	{
 		$data = [];
 
-		$this->validator->setRule('price', 'lang:sales_price', 'required|numeric');
-		$this->validator->setRule('quantity', 'lang:sales_quantity', 'required|numeric');
-		$this->validator->setRule('discount', 'lang:sales_discount', 'required|numeric');
+		$rules = [
+			'price' => 'trim|required|numeric',
+			'quantity' => 'trim|required|numeric',
+			'discount' => 'trim|required|numeric',
+		];
 
-		$description = $this->request->getPost('description', FILTER_SANITIZE_STRING);
-		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_STRING);
-		$price = parse_decimals($this->request->getPost('price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-		$quantity = parse_quantity($this->request->getPost('quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-		$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_STRING);
-		$discount = $discount_type ? parse_quantity($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) : parse_decimals($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-
-		$item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
-		$discounted_total = $this->request->getPost('discounted_total') != '' ? $this->request->getPost('discounted_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : NULL;
-
-		if(!$this->validate([]))
+		if($this->validate($rules))
 		{
+
+			$description = $this->request->getPost('description', FILTER_SANITIZE_STRING);
+			$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_STRING);
+			$price = parse_decimals($this->request->getPost('price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+			$quantity = parse_quantity($this->request->getPost('quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+			$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_STRING);
+			$discount = $discount_type ? parse_quantity($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)) : parse_decimals($this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+
+			$item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
+			$discounted_total = $this->request->getPost('discounted_total') != '' ? $this->request->getPost('discounted_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : NULL;
+
+
 			$this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 
 			$this->sale_lib->empty_payments();
+
+			$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
+
 		}
 		else
 		{
 			$data['error'] = lang('Sales.error_editing_item');
 		}
 
-		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
-
-		$this->_reload($data);	//TODO: Hungarian notation
+		$this->_reload($data);
 	}
 
 	/**
@@ -599,7 +605,7 @@ class Sales extends Secure_Controller
 	 * @return void
 	 * @throws ReflectionException
 	 */
-	public function postDelete_item(int $item_id): void
+	public function getDeleteItem(int $item_id): void
 	{
 		$this->sale_lib->delete_item($item_id);
 
@@ -612,7 +618,7 @@ class Sales extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function remove_customer(): void
+	public function getRemoveCustomer(): void
 	{
 		$this->sale_lib->clear_giftcard_remainder();
 		$this->sale_lib->clear_rewards_remainder();

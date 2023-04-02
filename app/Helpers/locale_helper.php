@@ -391,7 +391,11 @@ function to_decimals(?float $number, string $decimals = NULL, int $type = Number
 	return $fmt->format($number);
 }
 
-function parse_quantity(string $number): float
+/**
+ * @param string $number
+ * @return false|float|int|mixed|string
+ */
+function parse_quantity(string $number)
 {
 	return parse_decimals($number, quantity_decimals());
 }

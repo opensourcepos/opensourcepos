@@ -149,9 +149,9 @@ if (isset($success))
 				foreach(array_reverse($cart, TRUE) as $line => $item)
 				{
 			?>
-					<?php echo form_open(esc("$controller_name/edit_item/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?php echo form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
-							<td><?php echo anchor(esc("$controller_name/delete_item/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+							<td><?php echo anchor(esc("$controller_name/deleteItem/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?php echo esc($item['item_number']) ?></td>
 							<td style="align:center;">
 								<?php echo esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
