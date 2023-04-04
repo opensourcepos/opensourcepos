@@ -100,7 +100,7 @@
 									esc($languages),
 									esc("$language_code:$language"),
 									['class' => 'form-control input-sm']
-									);
+								);
 							?>
 						</div>
 					</div>
@@ -118,7 +118,7 @@
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant, "class=\'module\'") ?>
+							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class=\'module\'") ?>
 							<?php echo form_dropdown(
 								"menu_group_$module->module_id", [
 									'home' => lang('Module.home'),
@@ -139,13 +139,13 @@
 									{
 										$lang_key = $module->module_id . '_' . $exploded_permission[1];
 										$lang_line = lang($lang_key);
-										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
+										$lang_line = (lang($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
 										if(!empty($lang_line))
 										{
 							?>
 											<ul>
 												<li>
-													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant) ?>
+													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
 													<?php echo form_hidden("menu_group_$permission->permission_id", "--") ?>
 													<span class="medium"><?php echo $lang_line ?></span>
 												</li>
@@ -226,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo esc("$controller_name/check_username/$employee_id") ?>'
+				remote: '<?php echo esc("$controller_name/checkUsername/$employee_id") ?>'
 			},
 			password:
 			{

@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-sm-2" style="text-align: left;"><br>
 			<p style="min-height:14.7em;"><strong>General Info </p> 
-			<p style="min-height:9.9em;">User Setup</p><br> 
+			<p style="min-height:9.9em;">User Setup</p><br>
 			<p>Permissions</p></strong>
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
@@ -28,8 +28,8 @@
 						echo "&#187; INTL: ", extension_loaded('intl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br> <br>';
-						echo "&#187; Xml: ", extension_loaded('xml') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br> <br>';		
+						echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
+						echo "&#187; Xml: ", extension_loaded('xml') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br><br>';
 					?>
 				User Configuration:<br>
 				.Browser:
@@ -48,7 +48,7 @@
 					?><br>
 				.Server Software: <?php echo esc($_SERVER['SERVER_SOFTWARE']) ?><br>
 				.PHP Version: <?php echo PHP_VERSION ?><br>
-				.DB Version: <?php echo esc(mysqli_get_server_info($this->db->conn_id)) ?><br>
+				.DB Version: <?php echo esc($db_version) ?><br>
 				.Server Port: <?php echo esc($_SERVER['SERVER_PORT']) ?><br>
 				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>

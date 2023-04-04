@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_message/', ['id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveMessage/', ['id' => 'message_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -13,7 +13,7 @@
 							'name' => 'msg_uid',
 							'id' => 'msg_uid',
 							'class' => 'form-control input-sm required',
-							'value' => esc($config['msg_uid'])
+							'value' => $config['msg_uid']
 						]) ?>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 							'name' => 'msg_pwd',
 							'id' => 'msg_pwd',
 							'class' => 'form-control input-sm required',
-							'value' => esc($config['msg_pwd'])
+							'value' => $config['msg_pwd']
 						]) ?>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 							'name' => 'msg_src',
 							'id' => 'msg_src',
 							'class' => 'form-control input-sm required',
-							'value' => $config['msg_src'] == NULL ? esc($config['company']) : esc($config['msg_src'])
+							'value' => $config['msg_src'] == NULL ? $config['company'] : $config['msg_src']
 						]) ?>
 					</div>
 				</div>

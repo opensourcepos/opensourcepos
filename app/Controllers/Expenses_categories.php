@@ -28,11 +28,11 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$expense_categories = $this->expense_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense_category->get_found_rows($search);
@@ -63,8 +63,8 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	public function postSave(int $expense_category_id = NEW_ENTRY): void
 	{
 		$expense_category_data = [
-			'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_STRING),
-			'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_STRING)
+			'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
@@ -99,7 +99,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 
 	public function postDelete(): void
 	{
-		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($this->expense_category->delete_list($expense_category_to_delete))	//TODO: Convert to ternary notation.
 		{

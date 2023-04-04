@@ -24,11 +24,11 @@ class Employees extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$employees = $this->employee->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->employee->get_found_rows($search);
@@ -47,14 +47,14 @@ class Employees extends Persons
 	 */
 	public function suggest(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25, TRUE);
+		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 25, TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->employee->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -100,8 +100,8 @@ class Employees extends Persons
 	 */
 	public function postSave(int $employee_id = NEW_ENTRY): void
 	{
-		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: duplicated code
-		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: duplicated code
+		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
@@ -113,26 +113,26 @@ class Employees extends Persons
 			'last_name' => $last_name,
 			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
 			'email' => $email,
-			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
-			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
-			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
-			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
-			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
-			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
-			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
-			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
+			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'country' => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		$grants_array = [];
 		foreach($this->module->get_all_permissions()->getResult() as $permission)
 		{
 			$grants = [];
-			$grant = $this->request->getPost('grant_'.$permission->permission_id) != NULL ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_STRING) : '';
+			$grant = $this->request->getPost('grant_'.$permission->permission_id) != NULL ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
 
 			if($grant == $permission->permission_id)
 			{
 				$grants['permission_id'] = $permission->permission_id;
-				$grants['menu_group'] = $this->request->getPost('menu_group_'.$permission->permission_id) != NULL ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_STRING) : '--';
+				$grants['menu_group'] = $this->request->getPost('menu_group_'.$permission->permission_id) != NULL ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
 				$grants_array[] = $grants;
 			}
 		}
@@ -140,9 +140,9 @@ class Employees extends Persons
 		//Password has been changed OR first time password set
 		if($this->request->getPost('password') != '' && ENVIRONMENT != 'testing')
 		{
-			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
+			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 			$employee_data = [
-				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_STRING),
+				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 				'password' 	=> password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
 				'hash_version' 	=> 2,
 				'language_code' => $exploded[0],
@@ -151,9 +151,9 @@ class Employees extends Persons
 		}
 		else //Password not changed
 		{
-			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
+			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 			$employee_data = [
-				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_STRING),
+				'username' 	=> $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 				'language_code'	=> $exploded[0],
 				'language' 	=> $exploded[1]
 			];
@@ -194,7 +194,7 @@ class Employees extends Persons
 	 */
 	public function postDelete(): void
 	{
-		$employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$employees_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($this->employee->delete_list($employees_to_delete))	//TODO: this is passing a string, but delete_list expects an array
 		{
@@ -213,9 +213,9 @@ class Employees extends Persons
 	 * @param $employee_id
 	 * @return void
 	 */
-	public function check_username($employee_id): void
+	public function getCheckUsername($employee_id): void
 	{
-		$exists = $this->employee->username_exists($employee_id, $this->request->getVar('username', FILTER_SANITIZE_STRING));
+		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));
 		echo !$exists ? 'true' : 'false';
 	}
 }

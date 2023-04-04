@@ -50,7 +50,7 @@ class Customers extends Persons
 		}
 		else
 		{
-			$this->_list_id = "";
+			$this->_list_id = '';
 		}
 	}
 
@@ -93,11 +93,11 @@ class Customers extends Persons
 	*/
 	public function getSearch()
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getGet('sort');
+		$order  = $this->request->getGet('order');
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
@@ -131,14 +131,14 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term'), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING), 25, FALSE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -168,7 +168,6 @@ class Customers extends Persons
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
-		$tax_code_id = $tax_code_info->tax_code_id;	//TODO: This variable is never used after this.
 
 		if($tax_code_info->tax_code != NULL)
 		{
@@ -270,8 +269,8 @@ class Customers extends Persons
 	 */
 	public function postSave(int $customer_id = NEW_ENTRY): void
 	{
-		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);
-		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$first_name = $this->request->getPost('first_name');
+		$last_name = $this->request->getPost('last_name');
 		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
@@ -283,26 +282,26 @@ class Customers extends Persons
 			'last_name' => $last_name,
 			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
 			'email' => $email,
-			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
-			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
-			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
-			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
-			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
-			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
-			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
-			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
+			'phone_number' => $this->request->getPost('phone_number'),
+			'address_1' => $this->request->getPost('address_1'),
+			'address_2' => $this->request->getPost('address_2'),
+			'city' => $this->request->getPost('city'),
+			'state' => $this->request->getPost('state'),
+			'zip' => $this->request->getPost('zip'),
+			'country' => $this->request->getPost('country'),
+			'comments' => $this->request->getPost('comments')
 		];
 
-		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date', FILTER_SANITIZE_STRING));
+		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != NULL,
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_STRING),
-			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_STRING),
-			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name', FILTER_SANITIZE_STRING),
+			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number'),
+			'tax_id' => $this->request->getPost('tax_id'),
+			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name'),
 			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'discount_type' => $this->request->getPost('discount_type') == NULL ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
-			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id', FILTER_SANITIZE_STRING),
+			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id'),
 			'taxable' => $this->request->getPost('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
 			'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
@@ -312,7 +311,7 @@ class Customers extends Persons
 		if($this->customer->save_customer($person_data, $customer_data, $customer_id))
 		{
 			// save customer to Mailchimp selected list	//TODO: addOrUpdateMember should be refactored... potentially pass an array or object instead of 6 parameters.
-			$mailchimp_status = $this->request->getPost('mailchimp_status', FILTER_SANITIZE_STRING);
+			$mailchimp_status = $this->request->getPost('mailchimp_status');
 			$this->mailchimp_lib->addOrUpdateMember(
 				$this->_list_id,
 				$email,
@@ -375,7 +374,7 @@ class Customers extends Persons
 	 */
 	public function postDelete(): void
 	{
-		$customers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$customers_to_delete = $this->request->getPost('ids');
 		$customers_info = $this->customer->get_multiple_info($customers_to_delete);
 
 		$count = 0;

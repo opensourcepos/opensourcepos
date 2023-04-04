@@ -3,7 +3,7 @@
  * @var array $support_barcode
  */
 ?>
-<?php echo form_open('config/save_barcode/', ['id' => 'barcode_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveBarcode/', ['id' => 'barcode_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -12,7 +12,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.barcode_type'), 'barcode_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('barcode_type', esc($support_barcode), esc($config['barcode_type']), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown(
+						'barcode_type',
+						$support_barcode,
+						$config['barcode_type'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -52,9 +57,9 @@
 				<div class='col-sm-2'>
 					<?php echo form_dropdown(
 						'barcode_font',
-						esc($this->barcode_lib->listfonts('fonts')),
-						esc($config['barcode_font']),
-						['class' => 'form-control input-sm required']
+						$barcode_fonts,
+						$config['barcode_font'],
+						"class='form-control input-sm' required"
 					) ?>
 				</div>
 				<div class="col-sm-2">
@@ -77,7 +82,7 @@
 						'name' => 'allow_duplicate_barcodes',
 						'id' => 'allow_duplicate_barcodes',
 						'value' => 'allow_duplicate_barcodes',
-						'checked' => $config['allow_duplicate_barcodes']
+						'checked' => $config['allow_duplicate_barcodes'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -93,7 +98,7 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'id',
-							'checked' => $config['barcode_content' === 'id']
+							'checked' => $config['barcode_content'] == 'id'
 						]) ?>
 						<?php echo lang('Config.barcode_id') ?>
 					</label>
@@ -101,7 +106,8 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'number',
-							'checked' => $config['barcode_content'] === 'number']) ?>
+							'checked' => $config['barcode_content'] == 'number'
+						]) ?>
 						<?php echo lang('Config.barcode_number') ?>
 					</label>
 					&nbsp
@@ -110,7 +116,7 @@
 						<?php echo form_checkbox ([
 							'name' => 'barcode_generate_if_empty',
 							'value' => 'barcode_generate_if_empty',
-							'checked' => $config['barcode_generate_if_empty']
+							'checked' => $config['barcode_generate_if_empty'] == 1
 							]) ?>
 						<?php echo lang('Config.barcode_generate_if_empty') ?>
 					</label>
@@ -122,12 +128,13 @@
 				<div class='col-xs-4'>
 					<?php
 					$barcode_formats = json_decode($config['barcode_formats']);
-					echo form_dropdown ([
-						'name' => 'barcode_formats[]',
-						'id' => 'barcode_formats',
-						'options' => !empty($barcode_formats) ? esc(array_combine($barcode_formats, $barcode_formats)) : [],
-						'multiple' => 'multiple',
-						'data-role' => 'tagsinput']) ?>
+					echo form_dropdown (
+						'barcode_formats[]',
+						'barcode_formats',
+						!empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
+						'multiple',
+						'tagsinput'
+					) ?>
 				</div>
 			</div>
 
