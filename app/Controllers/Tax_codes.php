@@ -35,11 +35,11 @@ class Tax_codes extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$tax_codes = $this->tax_code->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_code->get_found_rows($search);
@@ -72,10 +72,10 @@ class Tax_codes extends Secure_Controller
 	public function postSave(int $tax_code_id = NEW_ENTRY): void
 	{
 		$tax_code_data = [
-			'tax_code' => $this->request->getPost('tax_code', FILTER_SANITIZE_STRING),
-			'tax_code_name' => $this->request->getPost('tax_code_name', FILTER_SANITIZE_STRING),
-			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
-			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING)
+			'tax_code' => $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'tax_code_name' => $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		if($this->tax_code->save($tax_code_data))

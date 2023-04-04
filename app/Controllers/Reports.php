@@ -83,6 +83,8 @@ class Reports extends Secure_Controller
 	//Initial Report listing screen
 	public function getIndex(): void
 	{
+		$this->clearCache();
+
 		$data['grants'] = $this->employee->get_employee_grants($this->session->get('person_id'));
 
 		echo view('reports/listing', $data);
@@ -98,6 +100,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void	//TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
 	{//TODO: Duplicated code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -147,6 +151,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -194,6 +200,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_expenses_categories(string $start_date, string $end_date, string $sale_type): void
 	{
+		$this->clearCache();
+
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];	//TODO: Duplicated Code
 
 		$this->summary_expenses_categories = model('reports/Summary_expenses_categories');
@@ -234,6 +242,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [	//TODO: Duplicated Code
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -284,6 +294,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -332,6 +344,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -384,6 +398,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -434,6 +450,8 @@ class Reports extends Secure_Controller
 	 */
 	public function summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicate Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -475,6 +493,8 @@ class Reports extends Secure_Controller
 	//Summary Sales Taxes report
 	public function summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -513,6 +533,8 @@ class Reports extends Secure_Controller
 
 	public function summary_discounts_input(): void
 	{
+		$this->clearCache();
+
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -526,6 +548,8 @@ class Reports extends Secure_Controller
 	//Summary Discounts report
 	public function summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -564,6 +588,8 @@ class Reports extends Secure_Controller
 	//Summary Payments report
 	public function summary_payments(string $start_date, string $end_date): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -626,6 +652,8 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input(): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -638,6 +666,8 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_only(): void
 	{
+		$this->clearCache();
+
 		$data = [];
 		echo view('reports/date_input', $data);
 	}
@@ -645,6 +675,8 @@ class Reports extends Secure_Controller
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_sales(): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  lang('Reports.all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -667,6 +699,8 @@ class Reports extends Secure_Controller
 	//Graphical Expenses by Categories report
 	public function graphical_summary_expenses_categories(string $start_date, string $end_date, string $sale_type): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -706,6 +740,8 @@ class Reports extends Secure_Controller
 	//Graphical summary sales report
 	public function graphical_summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -746,6 +782,8 @@ class Reports extends Secure_Controller
 	//Graphical summary items report
 	public function graphical_summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -786,6 +824,8 @@ class Reports extends Secure_Controller
 	//Graphical summary customers report
 	public function graphical_summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -823,6 +863,8 @@ class Reports extends Secure_Controller
 	//Graphical summary suppliers report
 	public function graphical_summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -861,6 +903,8 @@ class Reports extends Secure_Controller
 	//Graphical summary employees report
 	public function graphical_summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -899,6 +943,8 @@ class Reports extends Secure_Controller
 	//Graphical summary taxes report
 	public function graphical_summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -937,6 +983,8 @@ class Reports extends Secure_Controller
 	//Graphical summary sales taxes report
 	public function graphical_summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -975,6 +1023,8 @@ class Reports extends Secure_Controller
 	//Graphical summary customers report
 	public function graphical_summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -1015,6 +1065,8 @@ class Reports extends Secure_Controller
 	//Graphical summary discounts report
 	public function graphical_summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
 	{//TODO: Duplicated Code
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -1056,6 +1108,8 @@ class Reports extends Secure_Controller
 	//Graphical summary payments report
 	public function graphical_summary_payments(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -1096,6 +1150,8 @@ class Reports extends Secure_Controller
 
 	public function specific_customer_input(): void
 	{
+		$this->clearCache();
+
 		$data = [];
 		$data['specific_input_name'] = lang('Reports.customer');
 		$customers = [];
@@ -1133,6 +1189,8 @@ class Reports extends Secure_Controller
 
 	public function specific_customer(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): void
 	{
+		$this->clearCache();
+
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
 
 		$this->specific_customer = model('reports/Specific_customer');
@@ -1233,6 +1291,8 @@ class Reports extends Secure_Controller
 
 	public function specific_employee_input(): void
 	{
+		$this->clearCache();
+
 		$data = [];
 		$data['specific_input_name'] = lang('Reports.employee');
 
@@ -1249,6 +1309,8 @@ class Reports extends Secure_Controller
 
 	public function specific_employee(string $start_date, string $end_date, string $employee_id, string $sale_type): void
 	{
+		$this->clearCache();
+
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
 
 		$this->specific_employee = model('reports/Specific_employee');
@@ -1344,6 +1406,8 @@ class Reports extends Secure_Controller
 
 	public function specific_discount_input(): void
 	{
+		$this->clearCache();
+
 		$data = [];
 		$data['specific_input_name'] = lang('Reports.discount');
 
@@ -1361,6 +1425,8 @@ class Reports extends Secure_Controller
 
 	public function specific_discount(string $start_date, string $end_date, string $discount, string $sale_type, string $discount_type): void
 	{
+		$this->clearCache();
+
 		$inputs = [
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -1462,6 +1528,8 @@ class Reports extends Secure_Controller
 
 	public function get_detailed_sales_row(string $sale_id): void
 	{
+		$this->clearCache();
+
 		$inputs = ['sale_id' => $sale_id];
 
 		$this->detailed_sales = model('reports/Detailed_sales');
@@ -1511,6 +1579,8 @@ class Reports extends Secure_Controller
 
 	public function specific_supplier_input(): void
 	{
+		$this->clearCache();
+
 		$data = [];
 		$data['specific_input_name'] = lang('Reports.supplier');
 
@@ -1594,6 +1664,8 @@ class Reports extends Secure_Controller
 
 	public function detailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_SALES);
 
 		$inputs = [
@@ -1747,6 +1819,8 @@ class Reports extends Secure_Controller
 
 	public function detailed_receivings(string $start_date, string $end_date, string $receiving_type, string $location_id = 'all'): void
 	{
+		$this->clearCache();
+
 		$definition_names = $this->attribute->get_definitions_by_flags(attribute::SHOW_IN_RECEIVINGS);
 
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
@@ -1826,6 +1900,8 @@ class Reports extends Secure_Controller
 
 	public function inventory_low(): void
 	{
+		$this->clearCache();
+
 		$inputs = [];
 
 		$this->inventory_low = model('reports/Inventory_low');
@@ -1858,6 +1934,8 @@ class Reports extends Secure_Controller
 
 	public function inventory_summary_input(): void
 	{
+		$this->clearCache();
+
 		$this->inventory_summary = model('reports/Inventory_summary');
 		$model = $this->inventory_summary;
 
@@ -1873,6 +1951,8 @@ class Reports extends Secure_Controller
 
 	public function inventory_summary(string $location_id = 'all', string $item_count = 'all'): void
 	{
+		$this->clearCache();
+
 		$inputs = ['location_id' => $location_id, 'item_count' => $item_count];
 
 		$this->inventory_summary = model('reports/Inventory_summary');
@@ -1923,5 +2003,14 @@ class Reports extends Secure_Controller
 		}
 
 		return $subtitle;
+	}
+
+	private function clearCache()
+	{
+		//Make sure the report is not cached by the browser
+		$this->response->setHeader('Pragma', 'no-cache')
+			->appendHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
+			->appendHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+			->appendHeader('Cache-Control', 'post-check=0, pre-check=0');
 	}
 }

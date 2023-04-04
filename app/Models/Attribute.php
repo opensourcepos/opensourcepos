@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use CodeIgniter\Database\RawSql;
 use DateTime;
 use stdClass;
 use ReflectionClass;
@@ -85,9 +86,10 @@ class Attribute extends Model
 	/*
 	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 */
-	public function value_exists($attribute_value, string $definition_type = TEXT): bool
+	public function value_exists($attribute_value, string $definition_type = TEXT)
 	{
 		$config = config('OSPOS')->settings;
+
 		switch($definition_type)
 		{
 			case DATE:
@@ -468,8 +470,6 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$builder = $this->db->table('attribute_definitions');
-
 		//Definition doesn't exist
 		if($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id))
 		{
@@ -479,6 +479,7 @@ class Attribute extends Model
 			}
 			else
 			{
+				$builder = $this->db->table('attribute_definitions');
 				$success = $builder->insert($definition_data);
 				$definition_data['definition_id'] = $this->db->insertID();
 			}
@@ -487,11 +488,13 @@ class Attribute extends Model
 		//Definition already exists
 		else
 		{
-			//Get current definition type and name
+			$builder = $this->db->table('attribute_definitions');
 			$builder->select('definition_type');
 			$builder->where('definition_id', $definition_id);
+			$builder->where('deleted', ACTIVE);
+			$query = $builder->get();
+			$row = $query->getRow();
 
-			$row = $builder->get('attribute_definitions')->getRow();
 			$from_definition_type = $row->definition_type;
 			$to_definition_type = $definition_data['definition_type'];
 
@@ -599,7 +602,7 @@ class Attribute extends Model
 		$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$builder->where('definition_type <>', GROUP);
-		$builder->where('deleted', 0);
+		$builder->where('deleted', ACTIVE);
 		$builder->where('item_id', $item_id);
 
 		if(!empty($id))
@@ -620,7 +623,7 @@ class Attribute extends Model
 		return $builder->get();
 	}
 
-	public function get_attribute_value(int $item_id, int $definition_id): object
+	public function get_attribute_value(int $item_id, int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_values');
 		$builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -628,8 +631,43 @@ class Attribute extends Model
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
 		$builder->where('definition_id', $definition_id);
+		$query = $builder->get();
 
-		return $builder->get()->getRowObject();
+		if($query->getNumRows() == 1)
+		{
+			return $query->getRow();
+		}
+
+		return $this->getEmptyObject('attribute_values');
+	}
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
 	}
 
 	public function get_attribute_values(int $item_id): array	//TODO: Is this function used anywhere in the code?
@@ -646,13 +684,13 @@ class Attribute extends Model
 
 	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id): void
 	{
-//TODO: this likely needs to be rewritten as two different queries rather than a subquery within a query.  Then use query_builder for both.
-		$query = 'INSERT INTO ' . $this->db->prefixTable('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')	';
-		$query .= 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
-		$query .= 'FROM ' . $this->db->prefixTable('attribute_links');
-		$query .= 'WHERE item_id = ' . $this->db->escape($item_id);
+		$query = 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
+		$query .= ' FROM ' . $this->db->prefixTable('attribute_links');
+		$query .= ' WHERE item_id = ' . $this->db->escape($item_id);
 		$query .=' AND sale_id IS NULL AND receiving_id IS NULL';
-		$this->db->query($query);
+
+		$builder = $this->db->table('attribute_links');
+		$builder->ignore(true)->setQueryAsData(new RawSql($query), null, 'item_id, definition_id, attribute_id, '. $sale_receiving_fk )->insertBatch();
 	}
 
 	public function get_suggestions(int $definition_id, string $term): array
@@ -664,7 +702,7 @@ class Attribute extends Model
 		$builder->join('attribute_links', 'attribute_links.definition_id = definition.definition_id');
 		$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$builder->like('attribute_value', $term);
-		$builder->where('deleted', 0);
+		$builder->where('deleted', ACTIVE);
 		$builder->where('definition.definition_id', $definition_id);
 		$builder->orderBy('attribute_value','ASC');
 
@@ -679,10 +717,10 @@ class Attribute extends Model
 
 	public function save_value(string $attribute_value, int $definition_id, $item_id = FALSE, $attribute_id = FALSE, string $definition_type = DROPDOWN): int
 	{
-		$this->db->transStart();
-
 		$config = config('OSPOS')->settings;
 		$locale_date_format = $config['dateformat'];
+
+		$this->db->transStart();
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
@@ -769,15 +807,15 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
 
-		return $builder->update(['deleted' => 1]);
+		return $builder->update(['deleted' => DELETED]);
 	}
 
-	public function delete_definition_list(string $definition_ids): bool
+	public function delete_definition_list(array $definition_ids): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->whereIn('definition_id', $definition_ids);
 
-		return $builder->update(['deleted' => 1]);
+		return $builder->update(['deleted' => DELETED]);
 	}
 
 	/**
@@ -841,7 +879,7 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
 
-		return $builder->update(['deleted' => 0]);
+		return $builder->update(['deleted' => ACTIVE]);
 	}
 
 	/**

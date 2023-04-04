@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_receipt/', ['id' => 'receipt_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveReceipt/', ['id' => 'receipt_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -8,12 +8,13 @@
 				<?php echo form_label(lang('Config.receipt_template'), 'receipt_template', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown(
-						'receipt_template', [
+						'receipt_template',
+						[
 							'receipt_default' => lang('Config.receipt_default'),
 							'receipt_short' => lang('Config.receipt_short')
 						],
-						esc($config['receipt_template']),
-						['class' => 'form-control input-sm']
+						$config['receipt_template'],
+						"class='form-control input-sm'"
 					) ?>
 				</div>
 			</div>
@@ -121,7 +122,7 @@
 						'name' => 'receipt_show_company_name',
 						'value' => 'receipt_show_company_name',
 						'id' => 'receipt_show_company_name',
-						'checked' => $config['receipt_show_company_name']
+						'checked' => $config['receipt_show_company_name'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -133,7 +134,7 @@
 						'name' => 'receipt_show_taxes',
 						'value' => 'receipt_show_taxes',
 						'id' => 'receipt_show_taxes',
-						'checked' => $config['receipt_show_taxes']
+						'checked' => $config['receipt_show_taxes'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -145,7 +146,7 @@
 						'name' => 'receipt_show_tax_ind',
 						'value' => 'receipt_show_tax_ind',
 						'id' => 'receipt_show_tax_ind',
-						'checked' => $config['receipt_show_tax_ind']
+						'checked' => $config['receipt_show_tax_ind'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -157,7 +158,7 @@
 						'name' => 'receipt_show_total_discount',
 						'value' => 'receipt_show_total_discount',
 						'id' => 'receipt_show_total_discount',
-						'checked' => $config['receipt_show_total_discount']
+						'checked' => $config['receipt_show_total_discount'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -169,7 +170,7 @@
 						'name' => 'receipt_show_description',
 						'value' => 'receipt_show_description',
 						'id' => 'receipt_show_description',
-						'checked' => $config['receipt_show_description']
+						'checked' => $config['receipt_show_description'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -181,7 +182,7 @@
 						'name' => 'receipt_show_serialnumber',
 						'value' => 'receipt_show_serialnumber',
 						'id' => 'receipt_show_serialnumber',
-						'checked' => $config['receipt_show_serialnumber']
+						'checked' => $config['receipt_show_serialnumber'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -193,7 +194,7 @@
 						'name' => 'print_silently',
 						'id' => 'print_silently',
 						'value' => 'print_silently',
-						'checked' => $config['print_silently']
+						'checked' => $config['print_silently'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -205,7 +206,7 @@
 						'name' => 'print_header',
 						'id' => 'print_header',
 						'value' => 'print_header',
-						'checked' => $config['print_header']
+						'checked' => $config['print_header'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -217,7 +218,7 @@
 						'name' => 'print_footer',
 						'id' => 'print_footer',
 						'value' => 'print_footer',
-						'checked' => $config['print_footer']
+						'checked' => $config['print_footer'] == 1
 					]) ?>
 				</div>
 			</div>

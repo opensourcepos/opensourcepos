@@ -40,7 +40,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', esc($suppliers), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('supplier_id', $suppliers, '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
@@ -153,14 +153,14 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('allow_alt_description', esc($allow_alt_description_choices), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('is_serialized', esc($serialization_choices), '', ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('is_serialized', $serialization_choices, '', ['class' => 'form-control']) ?>
 			</div>
 		</div>
 	</fieldset>

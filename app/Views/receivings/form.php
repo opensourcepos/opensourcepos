@@ -49,7 +49,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Receivings.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('employee_id', esc($employees), $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
 			</div>
 		</div>
 		

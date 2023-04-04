@@ -493,7 +493,7 @@ class Employee extends Person
 	/**
 	 * Returns the menu group designation that this module is to appear in
 	 */
-	public function get_menu_group(string $permission_id, int $person_id): string
+	public function get_menu_group(string $permission_id, ?int $person_id): string
 	{
 		$builder = $this->db->table('grants');
 		$builder->select('menu_group');

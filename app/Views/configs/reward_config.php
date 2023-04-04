@@ -3,7 +3,7 @@
  * @var array $customer_rewards
  */
 ?>
-<?php echo form_open('config/save_rewards/', ['id' => 'reward_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveRewards/', ['id' => 'reward_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -16,7 +16,7 @@
 						'name' => 'customer_reward_enable',
 						'value' => 'customer_reward_enable',
 						'id' => 'customer_reward_enable',
-						'checked' => $config['customer_reward_enable']
+						'checked' => $config['customer_reward_enable'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -122,7 +122,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#customer_rewards").load('<?php echo "config/ajax_customer_rewards" ?>', init_add_remove_tables);
+					$("#customer_rewards").load('<?php echo "config/customerRewards" ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});

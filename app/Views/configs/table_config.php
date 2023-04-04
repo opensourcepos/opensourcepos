@@ -3,7 +3,7 @@
  * @var array $dinner_tables
  */
 ?>
-<?php echo form_open('config/save_tables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveTables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -16,7 +16,7 @@
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
-						'checked' => $config['dinner_table_enable']
+						'checked' => $config['dinner_table_enable'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -117,7 +117,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#dinner_tables").load('<?php echo esc("config/ajax_dinner_tables") ?>', init_add_remove_tables);
+					$("#dinner_tables").load('<?= "config/dinnerTables" ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});

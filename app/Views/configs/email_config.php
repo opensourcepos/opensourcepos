@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_email/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveEmail/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -8,14 +8,15 @@
 				<?php echo form_label(lang('Config.email_protocol'), 'protocol', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown(
-					'protocol', [
+						'protocol',
+						[
 							'mail' => 'mail',
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						esc($config['protocol']),
-						['class' => 'form-control input-sm', 'id' => 'protocol'])
-					?>
+						$config['protocol'],
+						"class='form-control input-sm' id='protocol'"
+					) ?>
 				</div>
 			</div>
 
@@ -26,7 +27,7 @@
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['mailpath'])
+						'value' => $config['mailpath']
 					]) ?>
 				</div>
 			</div>
@@ -38,7 +39,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['smtp_host'])
+						'value' => $config['smtp_host']
 					]) ?>
 				</div>
 			</div>
@@ -58,14 +59,16 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('smtp_crypto', [
+					<?php echo form_dropdown(
+						'smtp_crypto',
+						[
 							'' => 'None',
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						esc($config['smtp_crypto']),
-						['class' => 'form-control input-sm', 'id' => 'smtp_crypto'])
-					?>
+						$config['smtp_crypto'],
+						"class='form-control input-sm' id='smtp_crypto'"
+					) ?>
 				</div>
 			</div>
 
@@ -90,7 +93,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_user'])
+							'value' => $config['smtp_user']
 						]) ?>
 					</div>
 				</div>
@@ -105,7 +108,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_pass'])
+							'value' => $config['smtp_pass']
 						]) ?>
 					</div>
 				</div>

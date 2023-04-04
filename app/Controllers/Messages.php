@@ -44,8 +44,8 @@ class Messages extends Secure_Controller
 
 	public function send(): void
 	{
-		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_STRING);
-		$message = $this->request->getPost('message', FILTER_SANITIZE_STRING);
+		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
@@ -67,8 +67,8 @@ class Messages extends Secure_Controller
 	 */
 	public function send_form(int $person_id = NEW_ENTRY): void
 	{	
-		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_STRING);
-		$message = $this->request->getPost('message', FILTER_SANITIZE_STRING);
+		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$response = $this->sms_lib->sendSMS($phone, $message);
 
