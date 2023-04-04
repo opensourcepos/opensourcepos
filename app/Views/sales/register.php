@@ -70,7 +70,7 @@ if(isset($success))
 					<label class="control-label"><?php echo lang('Sales.mode') ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_dropdown('mode', esc($modes), esc($mode), ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+					<?php echo form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 				<?php
 				if($config['dinner_table_enable'] == TRUE)
@@ -80,7 +80,7 @@ if(isset($success))
 						<label class="control-label"><?php echo lang('Sales.table') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('dinner_table', esc($empty_tables), esc($selected_table), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 				<?php
 				}
@@ -91,7 +91,7 @@ if(isset($success))
 						<label class="control-label"><?php echo lang('Sales.stock_location') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('stock_location', esc($stock_locations), esc($stock_location), ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 				<?php
 				}
@@ -510,7 +510,7 @@ if(isset($success))
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', esc($payment_options), esc($selected_payment_type), ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit', 'disabled' => 'disabled']) ?>
+									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit', 'disabled' => 'disabled']) ?>
 								</td>
 							</tr>
 							<tr>
@@ -557,7 +557,7 @@ if(isset($success))
 							<tr>
 								<td><?php echo lang('Sales.payment') ?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', esc($payment_options),  esc($selected_payment_type), ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+									<?php echo form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 								</td>
 							</tr>
 							<tr>
@@ -873,12 +873,12 @@ $(document).ready(function()
 	});
 
 	$('#finish_sale_button').click(function() {
-		$('#buttons_form').attr('action', "<?php echo esc(site_url("$controller_name/complete"), 'url') ?>");
+		$('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
 		$('#buttons_form').submit();
 	});
 
 	$('#finish_invoice_quote_button').click(function() {
-		$('#buttons_form').attr('action', "<?php echo esc(site_url("$controller_name/complete"), 'url') ?>");
+		$('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
 		$('#buttons_form').submit();
 	});
 
@@ -1024,7 +1024,7 @@ document.body.onkeyup = function(e)
 			break;
 		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
 			$("#add_payment_button").click();
-			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			window.location.href = "<?= 'sales/complete' ?>";
 			break;
 		case 56: // Alt + 8 Finish Quote/Invoice without payment
 			$("#finish_invoice_quote_button").click();

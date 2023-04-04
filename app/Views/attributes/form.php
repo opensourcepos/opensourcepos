@@ -13,7 +13,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('attributes/save_definition/' . esc($definition_id), ['id' => 'attribute_form', 'class' => 'form-horizontal']) //TODO: String Interpolation?>
+<?php echo form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form', 'class' => 'form-horizontal'])?>
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
@@ -23,7 +23,7 @@
 					'name' => 'definition_name',
 					'id' => 'definition_name',
 					'class' => 'form-control input-sm',
-					'value'=>esc($definition_info->definition_name)
+					'value'=>$definition_info->definition_name
 				]
 			) ?>
 		</div>
@@ -32,7 +32,7 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, esc(array_search($definition_info->definition_type, DEFINITION_TYPES)), 'id="definition_type" class="form-control"') ?>
+			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
 		</div>
 	</div>
 
@@ -41,8 +41,8 @@
 		<div class='col-xs-8'>
 			<?php echo form_dropdown(
 				'definition_group',
-				esc($definition_group),
-				esc($definition_info->definition_fk),
+				$definition_group,
+				$definition_info->definition_fk,
 				'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
 			) ?>
 		</div>
@@ -75,7 +75,7 @@
 			<div class="input-group">
 				<?php echo form_input ([
 					'name' => 'definition_unit',
-					'value' => esc($definition_info->definition_unit),
+					'value' => $definition_info->definition_unit,
 					'class' => 'form-control input-sm',
 					'id' => 'definition_unit'
 				]) ?>
@@ -210,7 +210,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo "attributes/save_attribute_value/" ?>', {definition_id: definition_id, attribute_value: value});
+				$.post('<?php echo "attributes/saveAttributeValue/" ?>', {definition_id: definition_id, attribute_value: value});
 			}
 		}
 
@@ -228,7 +228,7 @@ $(document).ready(function()
 		}
 	});
 
-	var definition_values = <?php echo json_encode(array_values(esc($definition_values))) ?>;
+	var definition_values = <?php echo json_encode(array_values($definition_values)) ?>;
 	$.each(definition_values, function(index, element) {
 		add_attribute_value(element);
 	});

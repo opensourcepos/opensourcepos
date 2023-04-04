@@ -20,6 +20,7 @@ use App\Models\Tax;
 
 use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
+use Config\Database;
 use Config\Encryption;
 use Config\Services;
 use DirectoryIterator;
@@ -47,6 +48,8 @@ use ReflectionException;
 class Config extends Secure_Controller
 {
 	protected $helpers = ['security'];
+	private $db;
+
 
 	public function __construct()
 	{
@@ -56,7 +59,7 @@ class Config extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
-
+		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
@@ -65,6 +68,8 @@ class Config extends Secure_Controller
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
 		$this->config = config('OSPOS')->settings;
+		$this->db = Database::connect();
+		$this->encrypter = Services::encrypter();
 	}
 
 	/*
@@ -81,7 +86,7 @@ class Config extends Secure_Controller
 
 		if(file_exists('license/LICENSE'))
 		{
-			$license[$i]['text'] = file_get_contents('license/LICENSE', NULL, NULL, 0, 2000);
+			$license[$i]['text'] = file_get_contents('license/LICENSE', false, NULL, 0, 2000);
 		}
 		else
 		{
@@ -101,13 +106,13 @@ class Config extends Secure_Controller
 
 					$basename = 'license/' . $fileinfo->getBasename('.version');
 
-					$license[$i]['title'] = file_get_contents($basename . '.version', NULL, NULL, 0, 100);
+					$license[$i]['title'] = file_get_contents($basename . '.version', false, NULL, 0, 100);
 
 					$license_text_file = $basename . '.license';
 
 					if(file_exists($license_text_file))
 					{
-						$license[$i]['text'] = file_get_contents($license_text_file , NULL, NULL, 0, 2000);
+						$license[$i]['text'] = file_get_contents($license_text_file , false, NULL, 0, 2000);
 					}
 					else
 					{
@@ -253,6 +258,7 @@ class Config extends Secure_Controller
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$data['barcode_fonts'] = $this->barcode_lib->listfonts('fonts');
 		$data['logo_exists'] = $this->config['company_logo'] != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
@@ -263,6 +269,7 @@ class Config extends Secure_Controller
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
 		$data['currency_code'] = $this->config['currency_code'];
+		$data['db_version'] = mysqli_get_server_info(db_connect()->mysqli);
 
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
@@ -281,12 +288,11 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
-			$encrypter = Services::encrypter();
 
 			$mailchimp_api_key = $this->config['mailchimp_api_key'];
 			if(!empty($mailchimp_api_key))
 			{
-				$data['mailchimp']['api_key'] = $encrypter->decrypt($mailchimp_api_key);
+				$data['mailchimp']['api_key'] = $this->encrypter->decrypt($mailchimp_api_key);
 			}
 			else
 			{
@@ -296,7 +302,7 @@ class Config extends Secure_Controller
 			$mailchimp_list_id = $this->config['mailchimp_list_id'];
 			if(!empty($mailchimp_list_id))
 			{
-				$data['mailchimp']['list_id'] = $encrypter->decrypt($mailchimp_list_id);
+				$data['mailchimp']['list_id'] = $this->encrypter->decrypt($mailchimp_list_id);
 			}
 			else
 			{
@@ -317,19 +323,19 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_info(): void
+	public function postSaveInfo(): void
 	{
 		$upload_data = $this->upload_logo();
 		$upload_success = !empty($upload_data['error']);
 
 		$batch_save_data = [
-			'company' => $this->request->getPost('company', FILTER_SANITIZE_STRING),
-			'address' => $this->request->getPost('address', FILTER_SANITIZE_STRING),
-			'phone' => $this->request->getPost('phone', FILTER_SANITIZE_STRING),
+			'company' => $this->request->getPost('company'),
+			'address' => $this->request->getPost('address'),
+			'phone' => $this->request->getPost('phone'),
 			'email' => $this->request->getPost('email', FILTER_SANITIZE_EMAIL),
-			'fax' => $this->request->getPost('fax', FILTER_SANITIZE_STRING),
+			'fax' => $this->request->getPost('fax'),
 			'website' => $this->request->getPost('website', FILTER_SANITIZE_URL),
-			'return_policy' => $this->request->getPost('return_policy', FILTER_SANITIZE_STRING)
+			'return_policy' => $this->request->getPost('return_policy')
 		];
 
 		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'] === TRUE)
@@ -388,11 +394,11 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_general(): void
+	public function postSaveGeneral(): void
 	{
 		$batch_save_data = [
-			'theme' => $this->request->getPost('theme', FILTER_SANITIZE_STRING),
-			'login_form' => $this->request->getPost('login_form', FILTER_SANITIZE_STRING),
+			'theme' => $this->request->getPost('theme'),
+			'login_form' => $this->request->getPost('login_form'),
 			'default_sales_discount_type' => $this->request->getPost('default_sales_discount_type') != NULL,
 			'default_sales_discount' => $this->request->getPost('default_sales_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != NULL,
@@ -405,14 +411,14 @@ class Config extends Secure_Controller
 			'image_max_width' => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_height' => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_size' => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-			'image_allowed_types' => implode('|', $this->request->getPost('image_allowed_types', FILTER_SANITIZE_STRING)),
+			'image_allowed_types' => implode('|', $this->request->getPost('image_allowed_types')),
 			'gcaptcha_enable' => $this->request->getPost('gcaptcha_enable') != NULL,
-			'gcaptcha_secret_key' => $this->request->getPost('gcaptcha_secret_key', FILTER_SANITIZE_STRING),
-			'gcaptcha_site_key' => $this->request->getPost('gcaptcha_site_key', FILTER_SANITIZE_STRING),
-			'suggestions_first_column' => $this->request->getPost('suggestions_first_column', FILTER_SANITIZE_STRING),
-			'suggestions_second_column' => $this->request->getPost('suggestions_second_column', FILTER_SANITIZE_STRING),
-			'suggestions_third_column' => $this->request->getPost('suggestions_third_column', FILTER_SANITIZE_STRING),
-			'giftcard_number' => $this->request->getPost('giftcard_number', FILTER_SANITIZE_STRING),
+			'gcaptcha_secret_key' => $this->request->getPost('gcaptcha_secret_key'),
+			'gcaptcha_site_key' => $this->request->getPost('gcaptcha_site_key'),
+			'suggestions_first_column' => $this->request->getPost('suggestions_first_column'),
+			'suggestions_second_column' => $this->request->getPost('suggestions_second_column'),
+			'suggestions_third_column' => $this->request->getPost('suggestions_third_column'),
+			'giftcard_number' => $this->request->getPost('giftcard_number'),
 			'derive_sale_quantity' => $this->request->getPost('derive_sale_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != NULL,
 			'multi_pack_enabled' => $this->request->getPost('multi_pack_enabled') != NULL,
 			'include_hsn' => $this->request->getPost('include_hsn') != NULL,
@@ -444,10 +450,10 @@ class Config extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function ajax_check_number_locale(): void
+	public function postCheckNumberLocale(): void
 	{
-		$number_locale = $this->request->getPost('number_locale', FILTER_SANITIZE_STRING);
-		$save_number_locale = $this->request->getPost('save_number_locale', FILTER_SANITIZE_STRING);
+		$number_locale = $this->request->getPost('number_locale');
+		$save_number_locale = $this->request->getPost('save_number_locale');
 
 		$fmt = new NumberFormatter($number_locale, NumberFormatter::CURRENCY);
 		if($number_locale != $save_number_locale)
@@ -458,8 +464,8 @@ class Config extends Secure_Controller
 		}
 		else
 		{
-			$currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol', FILTER_SANITIZE_STRING);
-			$currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code', FILTER_SANITIZE_STRING);
+			$currency_symbol = empty($this->request->getPost('currency_symbol')) ? $fmt->getSymbol(NumberFormatter::CURRENCY_SYMBOL) : $this->request->getPost('currency_symbol');
+			$currency_code = empty($this->request->getPost('currency_code')) ? $fmt->getTextAttribute(NumberFormatter::CURRENCY_CODE) : $this->request->getPost('currency_code');
 		}
 
 		if($this->request->getPost('thousands_separator') == 'false')
@@ -482,27 +488,27 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_locale(): void
+	public function postSaveLocale(): void
 	{
-		$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
+		$exploded = explode(":", $this->request->getPost('language'));
 		$batch_save_data = [
-			'currency_symbol' => $this->request->getPost('currency_symbol', FILTER_SANITIZE_STRING),
-			'currency_code' => $this->request->getPost('currency_code', FILTER_SANITIZE_STRING),
+			'currency_symbol' => $this->request->getPost('currency_symbol'),
+			'currency_code' => $this->request->getPost('currency_code'),
 			'language_code' => $exploded[0],
 			'language' => $exploded[1],
-			'timezone' => $this->request->getPost('timezone', FILTER_SANITIZE_STRING),
-			'dateformat' => $this->request->getPost('dateformat', FILTER_SANITIZE_STRING),
-			'timeformat' => $this->request->getPost('timeformat', FILTER_SANITIZE_STRING),
+			'timezone' => $this->request->getPost('timezone'),
+			'dateformat' => $this->request->getPost('dateformat'),
+			'timeformat' => $this->request->getPost('timeformat'),
 			'thousands_separator' => !empty($this->request->getPost('thousands_separator', FILTER_SANITIZE_NUMBER_INT)),
-			'number_locale' => $this->request->getPost('number_locale', FILTER_SANITIZE_STRING),
+			'number_locale' => $this->request->getPost('number_locale'),
 			'currency_decimals' => $this->request->getPost('currency_decimals', FILTER_SANITIZE_NUMBER_INT),
 			'tax_decimals' => $this->request->getPost('tax_decimals', FILTER_SANITIZE_NUMBER_INT),
 			'quantity_decimals' => $this->request->getPost('quantity_decimals', FILTER_SANITIZE_NUMBER_INT),
-			'country_codes' => $this->request->getPost('country_codes', FILTER_SANITIZE_STRING),
-			'payment_options_order' => $this->request->getPost('payment_options_order', FILTER_SANITIZE_STRING),
+			'country_codes' => $this->request->getPost('country_codes'),
+			'payment_options_order' => $this->request->getPost('payment_options_order'),
 			'date_or_time_format' => $this->request->getPost('date_or_time_format', FILTER_SANITIZE_NUMBER_INT),
 			'cash_decimals' => $this->request->getPost('cash_decimals', FILTER_SANITIZE_NUMBER_INT),
-			'cash_rounding_code' => $this->request->getPost('cash_rounding_code', FILTER_SANITIZE_STRING),
+			'cash_rounding_code' => $this->request->getPost('cash_rounding_code'),
 			'financial_year' => $this->request->getPost('financial_year', FILTER_SANITIZE_NUMBER_INT)
 		];
 
@@ -514,24 +520,28 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_email(): void
+	public function postSaveEmail(): void
 	{
 		$password = '';
 
 		if(check_encryption())
 		{
-			$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			$smtp_pass = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			if(!empty($smtp_pass))
+			{
+				$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			}
 		}
 
 		$batch_save_data = [
-			'protocol' => $this->request->getPost('protocol', FILTER_SANITIZE_STRING),
-			'mailpath' => $this->request->getPost('mailpath', FILTER_SANITIZE_STRING),
-			'smtp_host' => $this->request->getPost('smtp_host', FILTER_SANITIZE_STRING),
-			'smtp_user' => $this->request->getPost('smtp_user', FILTER_SANITIZE_STRING),
+			'protocol' => $this->request->getPost('protocol'),
+			'mailpath' => $this->request->getPost('mailpath'),
+			'smtp_host' => $this->request->getPost('smtp_host'),
+			'smtp_user' => $this->request->getPost('smtp_user'),
 			'smtp_pass' => $password,
 			'smtp_port' => $this->request->getPost('smtp_port', FILTER_SANITIZE_NUMBER_INT),
 			'smtp_timeout' => $this->request->getPost('smtp_timeout', FILTER_SANITIZE_NUMBER_INT),
-			'smtp_crypto' => $this->request->getPost('smtp_crypto', FILTER_SANITIZE_STRING)
+			'smtp_crypto' => $this->request->getPost('smtp_crypto')
 		];
 
 		$success = $this->appconfig->batch_save($batch_save_data);
@@ -542,7 +552,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_message(): void
+	public function postSaveMessage(): void
 	{
 		$password = '';
 
@@ -552,10 +562,10 @@ class Config extends Secure_Controller
 		}
 
 		$batch_save_data = [
-			'msg_msg' => $this->request->getPost('msg_msg', FILTER_SANITIZE_STRING),
-			'msg_uid' => $this->request->getPost('msg_uid', FILTER_SANITIZE_STRING),
+			'msg_msg' => $this->request->getPost('msg_msg'),
+			'msg_uid' => $this->request->getPost('msg_uid'),
 			'msg_pwd' => $password,
-			'msg_src' => $this->request->getPost('msg_src', FILTER_SANITIZE_STRING)
+			'msg_src' => $this->request->getPost('msg_src')
 		];
 
 		$success = $this->appconfig->batch_save($batch_save_data);
@@ -592,10 +602,10 @@ class Config extends Secure_Controller
 	 *
 	 * @return void
 	 */
-	public function ajax_check_mailchimp_api_key(): void
+	public function postCheckMailchimpApiKey(): void
 	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
-		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key', FILTER_SANITIZE_STRING));
+		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
 		$success = count($lists) > 0;
 
 		echo json_encode ([
@@ -608,15 +618,26 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_mailchimp(): void
+	public function postSaveMailchimp(): void
 	{
 		$api_key = '';
 		$list_id = '';
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
-			$api_key = $this->encrypter->encrypt($this->request->getPost('mailchimp_api_key', FILTER_SANITIZE_STRING));
-			$list_id = $this->encrypter->encrypt($this->request->getPost('mailchimp_list_id', FILTER_SANITIZE_STRING));
+			$api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
+			if(!empty($api_key_unencrypted))
+			{
+				$api_key = $this->encrypter->encrypt($api_key_unencrypted);
+				$api_key_unencrypted = '';
+			}
+
+			$list_id_unencrypted = $this->request->getPost('mailchimp_list_id');
+			if(!empty($list_id_unencrypted))
+			{
+				$list_id = $this->encrypter->encrypt($list_id_unencrypted);
+				$list_id_unencrypted = '';
+			}
 		}
 
 		$batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
@@ -626,14 +647,14 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function ajax_stock_locations(): void
+	public function getStockLocations(): void
 	{
 		$stock_locations = $this->stock_location->get_all()->getResultArray();
 
 		echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
 	}
 
-	public function ajax_dinner_tables(): void
+	public function getDinnerTables(): void
 	{
 		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
@@ -647,7 +668,7 @@ class Config extends Secure_Controller
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
-	public function ajax_customer_rewards(): void
+	public function getCustomerRewards(): void
 	{
 		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
@@ -665,12 +686,12 @@ class Config extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	public function save_locations(): void
+	public function postSaveLocations(): void
 	{
 		$this->db->transStart();
 
 		$not_to_delete = [];
-		foreach($this->request->getPost(NULL, FILTER_SANITIZE_STRING) as $key => $value)
+		foreach($this->request->getPost(NULL) as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
 			{
@@ -709,7 +730,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_tables(): void
+	public function postSaveTables(): void
 	{
 		$this->db->transStart();
 
@@ -720,7 +741,7 @@ class Config extends Secure_Controller
 		if($dinner_table_enable)
 		{
 			$not_to_delete = [];
-			foreach($this->request->getPost(NULL, FILTER_SANITIZE_STRING) as $key => $value)	//TODO: Not sure if this is the best way to filter the array
+			foreach($this->request->getPost(NULL) as $key => $value)	//TODO: Not sure if this is the best way to filter the array
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 				{
@@ -758,20 +779,20 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_tax(): void
+	public function postSaveTax(): void
 	{
 		$this->db->transStart();
 
 		$batch_save_data = [
 			'default_tax_1_rate' => parse_tax($this->request->getPost('default_tax_1_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'default_tax_1_name' => $this->request->getPost('default_tax_1_name', FILTER_SANITIZE_STRING),
+			'default_tax_1_name' => $this->request->getPost('default_tax_1_name'),
 			'default_tax_2_rate' => parse_tax($this->request->getPost('default_tax_2_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'default_tax_2_name' => $this->request->getPost('default_tax_2_name', FILTER_SANITIZE_STRING),
+			'default_tax_2_name' => $this->request->getPost('default_tax_2_name'),
 			'tax_included' => $this->request->getPost('tax_included') != NULL,
 			'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != NULL,
-			'default_tax_code' => $this->request->getPost('default_tax_code', FILTER_SANITIZE_STRING),
-			'default_tax_category' => $this->request->getPost('default_tax_category', FILTER_SANITIZE_STRING),
-			'default_tax_jurisdiction' => $this->request->getPost('default_tax_jurisdiction', FILTER_SANITIZE_STRING),
+			'default_tax_code' => $this->request->getPost('default_tax_code'),
+			'default_tax_category' => $this->request->getPost('default_tax_category'),
+			'default_tax_jurisdiction' => $this->request->getPost('default_tax_jurisdiction'),
 			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
@@ -789,7 +810,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_rewards(): void
+	public function postSaveRewards(): void
 	{
 		$this->db->transStart();
 
@@ -801,7 +822,7 @@ class Config extends Secure_Controller
 		{
 			$not_to_delete = [];
 			$array_save = [];
-			foreach($this->request->getPost(NULL, FILTER_SANITIZE_STRING) as $key => $value)
+			foreach($this->request->getPost(NULL) as $key => $value)
 			{
 				if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
 				{
@@ -848,24 +869,24 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_barcode(): void
+	public function postSaveBarcode(): void
 	{
 		$batch_save_data = [
-			'barcode_type' => $this->request->getPost('barcode_type', FILTER_SANITIZE_STRING),
+			'barcode_type' => $this->request->getPost('barcode_type'),
 			'barcode_width' => $this->request->getPost('barcode_width', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_height' => $this->request->getPost('barcode_height', FILTER_SANITIZE_NUMBER_INT),
-			'barcode_font' => $this->request->getPost('barcode_font', FILTER_SANITIZE_STRING),
+			'barcode_font' => $this->request->getPost('barcode_font'),
 			'barcode_font_size' => $this->request->getPost('barcode_font_size', FILTER_SANITIZE_NUMBER_INT),
-			'barcode_first_row' => $this->request->getPost('barcode_first_row', FILTER_SANITIZE_STRING),
-			'barcode_second_row' => $this->request->getPost('barcode_second_row', FILTER_SANITIZE_STRING),
-			'barcode_third_row' => $this->request->getPost('barcode_third_row', FILTER_SANITIZE_STRING),
+			'barcode_first_row' => $this->request->getPost('barcode_first_row'),
+			'barcode_second_row' => $this->request->getPost('barcode_second_row'),
+			'barcode_third_row' => $this->request->getPost('barcode_third_row'),
 			'barcode_num_in_row' => $this->request->getPost('barcode_num_in_row', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_page_width' => $this->request->getPost('barcode_page_width', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_page_cellspacing' => $this->request->getPost('barcode_page_cellspacing', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_generate_if_empty' => $this->request->getPost('barcode_generate_if_empty') != NULL,
 			'allow_duplicate_barcodes' => $this->request->getPost('allow_duplicate_barcodes') != NULL,
-			'barcode_content' => $this->request->getPost('barcode_content', FILTER_SANITIZE_STRING),
-			'barcode_formats' => json_encode($this->request->getPost('barcode_formats', FILTER_SANITIZE_STRING))
+			'barcode_content' => $this->request->getPost('barcode_content'),
+			'barcode_formats' => json_encode($this->request->getPost('barcode_formats'))
 		];
 
 		$success = $this->appconfig->batch_save($batch_save_data);
@@ -876,14 +897,14 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_receipt(): void
+	public function postSaveReceipt(): void
 	{
 		$batch_save_data = [
-			'receipt_template' => $this->request->getPost('receipt_template', FILTER_SANITIZE_STRING),
+			'receipt_template' => $this->request->getPost('receipt_template'),
 			'receipt_font_size' => $this->request->getPost('receipt_font_size', FILTER_SANITIZE_NUMBER_INT),
 			'print_delay_autoreturn' => $this->request->getPost('print_delay_autoreturn', FILTER_SANITIZE_NUMBER_INT),
-			'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour', FILTER_SANITIZE_STRING),
-			'print_receipt_check_behaviour' => $this->request->getPost('print_receipt_check_behaviour', FILTER_SANITIZE_STRING),
+			'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour'),
+			'print_receipt_check_behaviour' => $this->request->getPost('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->request->getPost('receipt_show_company_name') != NULL,
 			'receipt_show_taxes' => ($this->request->getPost('receipt_show_taxes') != NULL),
 			'receipt_show_tax_ind' => ($this->request->getPost('receipt_show_tax_ind') != NULL),
@@ -907,23 +928,23 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_invoice(): void
+	public function postSaveInvoice(): void
 	{
 		$batch_save_data = [
 			'invoice_enable' => $this->request->getPost('invoice_enable') != NULL,
-			'sales_invoice_format' => $this->request->getPost('sales_invoice_format', FILTER_SANITIZE_STRING),
-			'sales_quote_format' => $this->request->getPost('sales_quote_format', FILTER_SANITIZE_STRING),
-			'recv_invoice_format' => $this->request->getPost('recv_invoice_format', FILTER_SANITIZE_STRING),
-			'invoice_default_comments' => $this->request->getPost('invoice_default_comments', FILTER_SANITIZE_STRING),
-			'invoice_email_message' => $this->request->getPost('invoice_email_message', FILTER_SANITIZE_STRING),
-			'line_sequence' => $this->request->getPost('line_sequence', FILTER_SANITIZE_STRING),
+			'sales_invoice_format' => $this->request->getPost('sales_invoice_format'),
+			'sales_quote_format' => $this->request->getPost('sales_quote_format'),
+			'recv_invoice_format' => $this->request->getPost('recv_invoice_format'),
+			'invoice_default_comments' => $this->request->getPost('invoice_default_comments'),
+			'invoice_email_message' => $this->request->getPost('invoice_email_message'),
+			'line_sequence' => $this->request->getPost('line_sequence'),
 			'last_used_invoice_number' => $this->request->getPost('last_used_invoice_number', FILTER_SANITIZE_NUMBER_INT),
 			'last_used_quote_number' => $this->request->getPost('last_used_quote_number', FILTER_SANITIZE_NUMBER_INT),
-			'quote_default_comments' => $this->request->getPost('quote_default_comments', FILTER_SANITIZE_STRING),
+			'quote_default_comments' => $this->request->getPost('quote_default_comments'),
 			'work_order_enable' => $this->request->getPost('work_order_enable') != NULL,
-			'work_order_format' => $this->request->getPost('work_order_format', FILTER_SANITIZE_STRING),
+			'work_order_format' => $this->request->getPost('work_order_format'),
 			'last_used_work_order_number' => $this->request->getPost('last_used_work_order_number', FILTER_SANITIZE_NUMBER_INT),
-			'invoice_type' => $this->request->getPost('invoice_type', FILTER_SANITIZE_STRING)
+			'invoice_type' => $this->request->getPost('invoice_type')
 		];
 
 		$success = $this->appconfig->batch_save($batch_save_data);
@@ -934,7 +955,7 @@ class Config extends Secure_Controller
 		{
 			if($this->config['invoice_enable'])
 			{
-				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
+				$this->sale_lib->set_mode($this->config['default_register_mode']);
 			}
 			else
 			{

@@ -45,7 +45,7 @@ class Sale extends Model
 	public function __construct()
 	{
 		parent::__construct();
-
+		helper('text');
 		$this->sale_lib = new Sale_lib();
 	}
 
@@ -640,8 +640,8 @@ class Sale extends Model
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 * @throws ReflectionException
 	 */
-	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, string $invoice_number,
-							string $work_order_number, string $quote_number, int $sale_type, array $payments, int $dinner_table_id, array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
+	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, ?string $invoice_number,
+							?string $work_order_number, ?string $quote_number, int $sale_type, ?array $payments, ?int $dinner_table_id, ?array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
 		$config = config('OSPOS')->settings;
 		$attribute = model(Attribute::class);
@@ -649,14 +649,13 @@ class Sale extends Model
 		$giftcard = model(Giftcard::class);
 		$inventory = model('Inventory');
 		$item = model(Item::class);
+
 		$item_quantity = model(Item_quantity::class);
 
 		if($sale_id != NEW_ENTRY)
 		{
 			$this->clear_suspended_sale_detail($sale_id);
 		}
-
-		$tax_decimals = tax_decimals();	//TODO: $tax_decimals is never used.
 
 		if(count($items) == 0)	//TODO: ===
 		{
@@ -679,23 +678,21 @@ class Sale extends Model
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
 
-		$builder = $this->db->table('sales');
-
 		if($sale_id == NEW_ENTRY)
 		{
+			$builder = $this->db->table('sales');
 			$builder->insert($sales_data);
 			$sale_id = $this->db->insertID();
 		}
 		else
 		{
+			$builder = $this->db->table('sales');
 			$builder->where('sale_id', $sale_id);
 			$builder->update($sales_data);
 		}
 
 		$total_amount = 0;
 		$total_amount_used = 0;
-
-		$builder = $this->db->table('sales_payments');
 
 		foreach($payments as $payment_id => $payment)
 		{
@@ -722,6 +719,7 @@ class Sale extends Model
 				'employee_id' => $employee_id
 			];
 
+			$builder = $this->db->table('sales_payments');
 			$builder->insert($sales_payments_data);
 
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']) - floatval($payment['cash_refund']);
@@ -730,8 +728,6 @@ class Sale extends Model
 		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
 		$customer = $customer->get_info($customer_id);
-
-		$builder = $this->db->table('sales_items');
 
 		foreach($items as $line => $item_data)
 		{
@@ -757,6 +753,7 @@ class Sale extends Model
 				'print_option' => $item_data['print_option']
 			];
 
+			$builder = $this->db->table('sales_items');
 			$builder->insert($sales_items_data);
 
 			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)	//TODO: === ?

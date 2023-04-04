@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.open_employee'), 'open_employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('open_employee_id', esc($employees), $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('open_employee_id', $employees, $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -97,7 +97,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.close_employee'), 'close_employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('close_employee_id', esc($employees), $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('close_employee_id', $employees, $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -128,8 +128,8 @@
 					'name' => 'note',
 					'id' => 'note',
 					'value'=>0,
-					'checked'=>($cash_ups_info->note) ? 1 : 0]
-				) ?>
+					'checked'=>$cash_ups_info->note == 1
+				]) ?>
 			</div>
 		</div>
 
@@ -239,8 +239,8 @@
 						'name' => 'deleted',
 						'id' => 'deleted',
 						'value'=>1,
-						'checked'=>($cash_ups_info->deleted) ? 1 : 0]
-					) ?>
+						'checked'=>$cash_ups_info->deleted == 1
+					]) ?>
 				</div>
 			</div>
 		<?php

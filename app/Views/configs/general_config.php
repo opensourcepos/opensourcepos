@@ -7,7 +7,7 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_general/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveGeneral/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -18,7 +18,12 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, esc($config['theme']), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
+							<?php echo form_dropdown(
+								'theme',
+								$themes,
+								$config['theme'],
+								"class='form-control input-sm' id='theme-change'"
+							) ?>
 						</div>
 						<div class="col-sm-7">
 							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
@@ -33,14 +38,14 @@
 				<?php echo form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown(
-						'login_form',
-						[
-							'floating_labels' => lang('Config.floating_labels'),
-							'input_groups' => lang('Config.input_groups')
-						],
-						esc($config['login_form']),
-						['class' => 'form-control input-sm']
-					) ?>
+							'login_form',
+							[
+								'floating_labels' => lang('Config.floating_labels'),
+								'input_groups' => lang('Config.input_groups')
+							],
+							$config['login_form'],
+							"class='form-control input-sm'"
+						) ?>
 				</div>
 			</div>
 
@@ -67,7 +72,7 @@
 								'data-onstyle' => 'success',
 								'data-on' => '<b>' . esc($config['currency_symbol']).'</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $config['default_sales_discount_type']
+								'checked' => $config['default_sales_discount_type'] == 1
 								]) ?>
 						</span>
 					</div>
@@ -97,7 +102,7 @@
 								'data-onstyle' => 'success',
 								'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $config['default_receivings_discount_type']
+								'checked' => $config['default_receivings_discount_type'] == 1
 								]) ?>
 						</span>
 					</div>
@@ -111,7 +116,7 @@
 						'name' => 'enforce_privacy',
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
-						'checked' => $config['enforce_privacy']
+						'checked' => $config['enforce_privacy'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -127,7 +132,7 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => $config['receiving_calculate_average_price']
+						'checked' => $config['receiving_calculate_average_price'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -158,8 +163,8 @@
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								esc($config['notify_vertical_position']),
-								['class' => 'form-control input-sm']
+								$config['notify_vertical_position'],
+								"class='form-control input-sm'"
 							) ?>
 						</div>
 						<div class='col-sm-2'>
@@ -170,8 +175,8 @@
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')
 								],
-								esc($config['notify_horizontal_position']),
-								['class' => 'form-control input-sm']
+								$config['notify_horizontal_position'],
+								"class='form-control input-sm'"
 							) ?>
 						</div>
 					</div>
@@ -236,13 +241,16 @@
 						<div class='col-sm-4'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.image_allowed_file_types') ?></span>
-								<?php echo form_multiselect('image_allowed_types[]', esc($image_allowed_types), esc($selected_image_allowed_types), [
-									'id' => 'image_allowed_types',
-									'class' => 'selectpicker show-menu-arrow',
-									'data-none-selected-text'=>lang('Common.none_selected_text'),
-									'data-selected-text-format' => 'count > 1',
-									'data-style' => 'btn-default btn-sm',
-									'data-width' => '100%'
+								<?php echo form_multiselect([
+									'name' => 'image_allowed_types',
+									'options' => $image_allowed_types,
+									'selected' => $selected_image_allowed_types,
+									'extra' => "id='image_allowed_types'".
+										"class='selectpicker show-menu-arrow'".
+										"data-none-selected-text=".lang('Common.none_selected_text').
+										"data-selected-text-format='count > 1'".
+										"data-style='btn-default btn-sm'".
+										"data-width='100%'"
 								]) ?>
 							</div>
 						</div>
@@ -257,7 +265,7 @@
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
-						'checked' => $config['gcaptcha_enable']
+						'checked' => $config['gcaptcha_enable'] == 1
 					]) ?>
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
@@ -274,7 +282,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_site_key'])
+						'value' => $config['gcaptcha_site_key']
 					]) ?>
 				</div>
 			</div>
@@ -286,7 +294,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_secret_key'])
+						'value' => $config['gcaptcha_secret_key']
 						]) ?>
 				</div>
 			</div>
@@ -306,8 +314,8 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_first_column']),
-									['class' => 'form-control input-sm']
+									$config['suggestions_first_column'],
+									"class='form-control input-sm'"
 								) ?>
 							</div>
 						</div>
@@ -323,8 +331,8 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_second_column']),
-									['class' => 'form-control input-sm']
+									$config['suggestions_second_column'],
+									"class='form-control input-sm'"
 								) ?>
 							</div>
 						</div>
@@ -340,8 +348,8 @@
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_third_column']),
-									['class' => 'form-control input-sm']
+									$config['suggestions_third_column'],
+									"class='form-control input-sm'"
 								) ?>
 							</div>
 						</div>
@@ -376,7 +384,7 @@
 					'name' => 'derive_sale_quantity',
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
-					'checked' => $config['derive_sale_quantity']
+					'checked' => $config['derive_sale_quantity'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -392,7 +400,7 @@
 						'name' => 'show_office_group',
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
-						'checked' => $show_office_group
+						'checked' => $show_office_group == 1
 					]) ?>
 				</div>
 			</div>
@@ -404,7 +412,7 @@
 						'name' => 'multi_pack_enabled',
 						'id' => 'multi_pack_enabled',
 						'value' => 'multi_pack_enabled',
-						'checked' => $config['multi_pack_enabled']
+						'checked' => $config['multi_pack_enabled'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -416,7 +424,7 @@
 						'name' => 'include_hsn',
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
-						'checked' => $config['include_hsn']
+						'checked' => $config['include_hsn'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -428,7 +436,7 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => $config['category_dropdown']
+						'checked' => $config['category_dropdown'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -473,12 +481,12 @@ $(document).ready(function()
 			lines_per_page:
 			{
 				required: true,
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			default_sales_discount:
 			{
 				required: true,
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			gcaptcha_site_key:
 			{

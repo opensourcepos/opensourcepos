@@ -46,7 +46,7 @@ if (isset($success))
 					<label class="control-label"><?php echo lang('Receivings.mode') ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_dropdown('mode', esc($modes), esc($mode), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+					<?php echo form_dropdown('mode', $modes, $mode, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 				</li>
 
 				<?php 
@@ -57,7 +57,7 @@ if (isset($success))
 						<label class="control-label"><?php echo lang('Receivings.stock_source') ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('stock_source', esc($stock_locations), $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 					</li>
 					
 					<?php
@@ -68,7 +68,7 @@ if (isset($success))
 							<label class="control-label"><?php echo lang('Receivings.stock_destination') ?></label>
 						</li>
 						<li class="pull-left">
-							<?php echo form_dropdown('stock_destination', esc($stock_locations), esc($stock_destination), ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+							<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 						</li>
 				<?php
 					}
@@ -184,7 +184,7 @@ if (isset($success))
 							<td><?php echo form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
 							<td><?php echo form_dropdown(
 									'receiving_quantity',
-									esc($item['receiving_quantity_choices']),
+									$item['receiving_quantity_choices'],
 									$item['receiving_quantity'],
 									['class' => 'form-control input-sm']
 								) ?></td>
@@ -207,7 +207,7 @@ if (isset($success))
 											'data-on' => '<b>' . esc($config['currency_symbol']) .'</b>',
 											'data-off' => '<b>%</b>',
 											'data-line' => esc($line),
-											'checked' => $item['discount_type']
+											'checked' => $item['discount_type'] == 1
 										]) ?>
 									</span>
 								</div> 
@@ -424,7 +424,7 @@ if (isset($success))
 												'id' => 'recv_print_after_sale',
 												'class' => 'checkbox',
 												'value' => 1,
-												'checked' => $print_after_sale
+												'checked' => $print_after_sale == 1
 											]) ?>
 										</td>
 									</tr>
@@ -452,7 +452,7 @@ if (isset($success))
 										<td>
 											<?php echo form_dropdown(
 												'payment_type',
-												esc($payment_options),
+												$payment_options,
 												[],
 												[
 													'id' => 'payment_types',

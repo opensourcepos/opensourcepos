@@ -30,7 +30,8 @@ class Secure_Controller extends BaseController
 
 		if(!$this->employee->is_logged_in())
 		{
-			return redirect()->to('login');
+			header("Location:".base_url('login'));
+			exit();
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
@@ -72,12 +73,20 @@ class Secure_Controller extends BaseController
 	{
 		$result = TRUE;
 
-		foreach($this->request->getVar(NULL, FILTER_SANITIZE_STRING) as $str)
+		foreach($this->request->getVar(NULL, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $str)
 		{
 			$result &= parse_decimals($str);
 		}
 
 		echo $result !== FALSE ? 'true' : 'false';
+	}
+
+	public function getConfig($key)
+	{
+		if (isset($config[$key]))
+		{
+			return $config[$key];
+		}
 	}
 
 	// this is the basic set of methods most OSPOS Controllers will implement

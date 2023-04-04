@@ -45,10 +45,10 @@ class Home extends Secure_Controller
 	{
 		if($this->request->getPost('current_password') != '' && $employee_id != -1)
 		{
-			if($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_STRING), $this->request->getPost('current_password')))
+			if($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password')))
 			{
 				$employee_data = [
-					'username' => $this->request->getPost('username', FILTER_SANITIZE_STRING),
+					'username' => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 					'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
 					'hash_version' => 2
 				];

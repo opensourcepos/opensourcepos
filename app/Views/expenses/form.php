@@ -111,21 +111,21 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses.payment'), 'payment_type', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('payment_type', esc($payment_options), esc($expenses_info->payment_type), ['class' => 'form-control', 'id' => 'payment_type']) ?>
+				<?php echo form_dropdown('payment_type', $payment_options, $expenses_info->payment_type, ['class' => 'form-control', 'id' => 'payment_type']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses_categories.name'), 'category', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('expense_category_id', esc($expense_categories), $expenses_info->expense_category_id, ['class' => 'form-control', 'id' => 'category']) ?>
+				<?php echo form_dropdown('expense_category_id', $expense_categories, $expenses_info->expense_category_id, ['class' => 'form-control', 'id' => 'category']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Expenses.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('employee_id', esc($employees), $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('employee_id', $employees, $expenses_info->employee_id, 'id="employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -152,7 +152,7 @@
 						'name' => 'deleted',
 						'id' => 'deleted',
 						'value' => 1,
-						'checked' => ($expenses_info->deleted) ? 1 : 0
+						'checked' => $expenses_info->deleted == 1
 					]) ?>
 				</div>
 			</div>

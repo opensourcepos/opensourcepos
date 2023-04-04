@@ -28,11 +28,11 @@ class Giftcards extends Secure_Controller
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$giftcards = $this->giftcard->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->giftcard->get_found_rows($search);
@@ -52,14 +52,14 @@ class Giftcards extends Secure_Controller
 
 	public function getSuggest(): void
 	{
-		$suggestions = $this->giftcard->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), TRUE);
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->giftcard->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -96,7 +96,7 @@ class Giftcards extends Secure_Controller
 
 	public function postSave(int $giftcard_id = NEW_ENTRY): void
 	{
-		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_STRING);
+		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($giftcard_id == NEW_ENTRY && trim($giftcard_number) == '')
 		{
@@ -153,7 +153,7 @@ class Giftcards extends Secure_Controller
 
 	public function postDelete(): void
 	{
-		$giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($this->giftcard->delete_list($giftcards_to_delete))
 		{

@@ -774,7 +774,7 @@ class Sale_lib
 		$this->session->set('sales_giftcard_remainder', $value);
 	}
 
-	public function get_giftcard_remainder(): string
+	public function get_giftcard_remainder(): ?string
 	{
 		return $this->session->get('sales_giftcard_remainder');
 	}
@@ -789,7 +789,7 @@ class Sale_lib
 		$this->session->set('sales_rewards_remainder', $value);
 	}
 
-	public function get_rewards_remainder(): string
+	public function get_rewards_remainder(): ?string
 	{
 		return $this->session->get('sales_rewards_remainder');
 	}

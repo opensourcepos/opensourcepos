@@ -6,7 +6,7 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_tax/', ['id' => 'tax_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveTax/', ['id' => 'tax_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -19,7 +19,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['tax_id'])
+						'value' => $config['tax_id']
 					]) ?>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
 						'name' => 'tax_included',
 						'id' => 'tax_included',
 						'value' => 'tax_included',
-						'checked' => $config['tax_included']
+						'checked' => $config['tax_included'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 						'name' => 'default_tax_1_name',
 						'id' => 'default_tax_1_name',
 						'class' => 'form-control input-sm',
-						'value' => $config['default_tax_1_name'] !== FALSE ? esc($config['default_tax_1_name']) : lang('Items.sales_tax_1')]) ?>
+						'value' => $config['default_tax_1_name'] !== FALSE ? $config['default_tax_1_name'] : lang('Items.sales_tax_1')]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input ([
@@ -63,7 +63,7 @@
 						'name' => 'default_tax_2_name',
 						'id' => 'default_tax_2_name',
 						'class' => 'form-control input-sm',
-						'value' => $config['default_tax_2_name'] !== FALSE ? esc($config['default_tax_2_name']) : lang('Items.sales_tax_2')
+						'value' => $config['default_tax_2_name'] !== FALSE ? $config['default_tax_2_name'] : lang('Items.sales_tax_2')
 					]) ?>
 				</div>
 				<div class="col-xs-1 input-group">
@@ -84,7 +84,7 @@
 						'name' => 'use_destination_based_tax',
 						'id' => 'use_destination_based_tax',
 						'value' => 'use_destination_based_tax',
-						'checked' => $config['use_destination_based_tax']
+						'checked' => $config['use_destination_based_tax'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -92,21 +92,36 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_code', esc($tax_code_options), esc($config['default_tax_code']), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown(
+						'default_tax_code',
+						$tax_code_options,
+						$config['default_tax_code'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_category', esc($tax_category_options), esc($config['default_tax_category']), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown(
+						'default_tax_category',
+						$tax_category_options,
+						$config['default_tax_category'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('default_tax_jurisdiction', esc($tax_jurisdiction_options), esc($config['default_tax_jurisdiction']), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown(
+						'default_tax_jurisdiction',
+						$tax_jurisdiction_options,
+						$config['default_tax_jurisdiction'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -159,11 +174,11 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			default_tax2_rate:
 			{
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 		},
 
@@ -171,7 +186,7 @@ $(document).ready(function()
 		{
 			default_tax_1_rate:
 			{
-				number: "<?php echo lang('Config.default_tax_rate_number') ?>"
+				number: "<?= lang('Config.default_tax_rate_number') ?>"
 			},
 		}
 	}));

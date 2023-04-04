@@ -19,21 +19,21 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_code_id',esc($tax_code_options), esc($rate_tax_code_id), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_tax_code_id',$tax_code_options, $rate_tax_code_id, ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_category'), 'rate_tax_category_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_tax_category_id', esc($tax_category_options), esc($rate_tax_category_id), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_tax_category_id', $tax_category_options, $rate_tax_category_id, ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_jurisdiction'), 'rate_jurisdiction_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('rate_jurisdiction_id', esc($tax_jurisdiction_options), esc($rate_jurisdiction_id), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('rate_jurisdiction_id', $tax_jurisdiction_options, $rate_jurisdiction_id, ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
@@ -55,7 +55,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Taxes.tax_rounding'), 'tax_rounding_code', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?php echo form_dropdown('tax_rounding_code', esc($rounding_options), esc($tax_rounding_code), ['class' => 'form-control input-sm']) ?>
+				<?php echo form_dropdown('tax_rounding_code', $rounding_options, $tax_rounding_code, ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>

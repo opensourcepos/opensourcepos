@@ -6,7 +6,7 @@
  */
 ?>
 
-<?php echo form_open('config/save_locale/', ['id' => 'locale_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveLocale/', ['id' => 'locale_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -16,8 +16,15 @@
 				<?php echo form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
 				<div class='row'>
 					<div class='col-xs-1'>
-						<?php echo form_input('number_locale', esc($config['number_locale']), ['class' => 'form-control input-sm', 'id' => 'number_locale']) ?>
-						<?php echo form_hidden('save_number_locale', esc($config['number_locale'])) ?>
+						<?php echo form_input([
+							'name' => 'number_locale',
+							'value' => $config['number_locale'],
+							'extra' => "class='form-control input-sm' id='number_locale'"
+						]) ?>
+						<?php echo form_hidden([
+							'name' => 'save_number_locale',
+							'value' => $config['number_locale']
+						]) ?>
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">
@@ -39,7 +46,7 @@
 						'name' => 'thousands_separator',
 						'id' => 'thousands_separator',
 						'value' => 'thousands_separator',
-						'checked' => $config['thousands_separator']
+						'checked' => $config['thousands_separator'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -51,7 +58,7 @@
 						'name' => 'currency_symbol',
 						'id' => 'currency_symbol',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($config['currency_symbol'])
+						'value' => $config['currency_symbol']
 					]) ?>
 				</div>
 			</div>
@@ -63,7 +70,7 @@
 						'name' => 'currency_code',
 						'id' => 'currency_code',
 						'class' => 'form-control input-sm number_locale',
-						'value' => esc($currency_code)
+						'value' => $currency_code
 					]) ?>
 				</div>
 			</div>
@@ -144,7 +151,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown('cash_rounding_code', esc($rounding_options), $config['cash_rounding_code'], ['class' => 'form-control input-sm']) ?>
+					<?php echo form_dropdown(
+						'cash_rounding_code',
+						$rounding_options,
+						$config['cash_rounding_code'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -160,8 +172,8 @@
 							'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
 							'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
 						],
-						esc($config['payment_options_order']),
-						['class' => 'form-control input-sm']
+						$config['payment_options_order'],
+						"class='form-control input-sm'"
 					) ?>
 				</div>
 			</div>
@@ -169,7 +181,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_input('country_codes', esc($config['country_codes']), ['class' => 'form-control input-sm']) ?>
+					<?php echo form_input('country_codes', $config['country_codes'], ['class' => 'form-control input-sm']) ?>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
@@ -197,7 +209,9 @@
 				<?php echo form_dropdown(
 					'timezone',
 					get_timezones(),
-					$config['timezone'] ? esc($config['timezone']) : date_default_timezone_get(), ['class' => 'form-control input-sm']) ?>
+					$config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
+					"class='form-control input-sm'"
+				) ?>
 				</div>
 			</div>
 
@@ -207,8 +221,8 @@
 				<?php echo form_dropdown(
 					'dateformat',
 					get_dateformats(),
-					esc($config['dateformat']),
-					['class' => 'form-control input-sm']
+					$config['dateformat'],
+					"class='form-control input-sm'"
 				) ?>
 				</div>
 				<div class='col-sm-2'>
@@ -226,7 +240,7 @@
 						'name' => 'date_or_time_format',
 						'id' => 'date_or_time_format',
 						'value' => 'date_or_time_format',
-						'checked' => $config['date_or_time_format']
+						'checked' => $config['date_or_time_format'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -276,7 +290,7 @@ $(document).ready(function()
 		data['currency_symbol'] = $('#currency_symbol').val();
 		data['currency_code'] = $('#currency_code').val();
 		data['thousands_separator'] = $('#thousands_separator').is(":checked")
-		$.post("<?php echo esc(site_url($controller_name . '/ajax_check_number_locale'), 'url') //TODO: String Interpolation ?>",
+		$.post("<?= "$controller_name /checkNumberLocale" ?>",
 			data,
 			function(response) {
 				$("input[name='save_number_locale']").val(response.save_number_locale);
@@ -296,7 +310,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo esc(site_url($controller_name . '/ajax_check_number_locale'), 'url') ?>",
+					url: "<?= "$controller_name/checkNumberLocale" ?>",
 					type: 'POST',
 					data: {
 						'number_locale': function() { return $('#number_locale').val(); },

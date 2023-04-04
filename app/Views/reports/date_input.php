@@ -38,7 +38,7 @@ if(isset($error))
 			?>
 				<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
 				<div id='report_sale_type' class="col-xs-3">
-					<?php echo form_dropdown('sale_type', esc($sale_type_options), 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
+					<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
 				</div>
 			<?php
 			}
@@ -73,7 +73,7 @@ if(isset($error))
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', esc($discount_type_options), esc($config['default_sales_discount_type']), ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php
@@ -87,7 +87,7 @@ if(isset($error))
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_stock_location' class="col-xs-3">
-				<?php echo form_dropdown('stock_location', esc($stock_locations), 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php

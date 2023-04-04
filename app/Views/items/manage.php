@@ -114,7 +114,7 @@ $(document).ready(function()
         {
             echo form_dropdown(
 			'stock_location',
-				esc($stock_locations),
+				$stock_locations,
 				$stock_location,
 				[
 					'id' => 'stock_location',
