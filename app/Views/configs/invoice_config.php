@@ -4,7 +4,7 @@
  * @var array $line_sequence_options
  */
 ?>
-<?php echo form_open('config/save_invoice/', ['id' => 'invoice_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveInvoice/', ['id' => 'invoice_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>

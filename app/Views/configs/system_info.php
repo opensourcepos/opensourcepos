@@ -47,7 +47,7 @@
 					?><br>
 				.Server Software: <?php echo esc($_SERVER['SERVER_SOFTWARE']) ?><br>
 				.PHP Version: <?php echo PHP_VERSION ?><br>
-				.DB Version: <?php echo esc(mysqli_get_server_info($this->db->conn_id)) ?><br>
+				.DB Version: <?php echo esc($db_version) ?><br>
 				.Server Port: <?php echo esc($_SERVER['SERVER_PORT']) ?><br>
 				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>
