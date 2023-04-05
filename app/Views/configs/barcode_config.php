@@ -3,7 +3,7 @@
  * @var array $support_barcode
  */
 ?>
-<?php echo form_open('config/save_barcode/', ['id' => 'barcode_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveBarcode/', ['id' => 'barcode_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -52,7 +52,7 @@
 				<div class='col-sm-2'>
 					<?php echo form_dropdown(
 						'barcode_font',
-						esc($this->barcode_lib->listfonts('fonts')),
+						esc($barcode_fonts),
 						esc($config['barcode_font']),
 						['class' => 'form-control input-sm required']
 					) ?>
@@ -93,7 +93,7 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'id',
-							'checked' => $config['barcode_content' === 'id']
+							'checked' => @$config['barcode_content' === 'id']
 						]) ?>
 						<?php echo lang('Config.barcode_id') ?>
 					</label>
@@ -101,7 +101,7 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'number',
-							'checked' => $config['barcode_content'] === 'number']) ?>
+							'checked' => @$config['barcode_content'] === 'number']) ?>
 						<?php echo lang('Config.barcode_number') ?>
 					</label>
 					&nbsp

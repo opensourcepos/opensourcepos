@@ -7,7 +7,7 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_general/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveGeneral/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -38,9 +38,9 @@
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						],
-						esc($config['login_form']),
+						esc(@$config['login_form']),
 						['class' => 'form-control input-sm']
-					) ?>
+					) ?>s
 				</div>
 			</div>
 
@@ -127,7 +127,7 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => $config['receiving_calculate_average_price']
+						'checked' => @$config['receiving_calculate_average_price']
 						]) ?>
 				</div>
 			</div>
@@ -428,7 +428,7 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => $config['category_dropdown']
+						'checked' => @$config['category_dropdown']
 					]) ?>
 				</div>
 			</div>

@@ -3,7 +3,7 @@
  * @var array $dinner_tables
  */
 ?>
-<?php echo form_open('config/save_tables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveTables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>

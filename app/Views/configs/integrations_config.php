@@ -4,7 +4,7 @@
  * @var string $controller_name
  */
 ?>
-<?php echo form_open('config/save_mailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -61,7 +61,7 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?php echo esc("$controller_name/ajax_check_mailchimp_api_key"), ?>", {
+		$.post("<?php echo esc("$controller_name/ajax_check_mailchimp_api_key") ?>", {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {

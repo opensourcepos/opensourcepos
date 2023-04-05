@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_receipt/', ['id' => 'receipt_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveReceipt/', ['id' => 'receipt_config_form', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>

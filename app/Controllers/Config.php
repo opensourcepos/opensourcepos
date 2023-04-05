@@ -56,7 +56,7 @@ class Config extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
-
+		$this->appconfig = model('Appconfig');
 		$this->attribute = model('Attribute');
 		$this->customer_rewards = model('Customer_rewards');
 		$this->dinner_table = model('Dinner_table');
@@ -253,6 +253,7 @@ class Config extends Secure_Controller
 		$data['dinner_tables'] = $this->dinner_table->get_all()->getResultArray();
 		$data['customer_rewards'] = $this->customer_rewards->get_all()->getResultArray();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$data['barcode_fonts'] = $this->barcode_lib->listfonts('fonts');
 		$data['logo_exists'] = $this->config['company_logo'] != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
@@ -263,6 +264,7 @@ class Config extends Secure_Controller
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
 		$data['currency_code'] = $this->config['currency_code'];
+		$data['db_version'] = mysqli_get_server_info(db_connect()->mysqli);
 
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
@@ -317,7 +319,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_info(): void
+	public function postSaveInfo(): void
 	{
 		$upload_data = $this->upload_logo();
 		$upload_success = !empty($upload_data['error']);
@@ -388,7 +390,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_general(): void
+	public function postSaveGeneral(): void
 	{
 		$batch_save_data = [
 			'theme' => $this->request->getPost('theme', FILTER_SANITIZE_STRING),
@@ -482,7 +484,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_locale(): void
+	public function postSaveLocale(): void
 	{
 		$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_STRING));
 		$batch_save_data = [
@@ -514,7 +516,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_email(): void
+	public function postSaveEmail(): void
 	{
 		$password = '';
 
@@ -542,7 +544,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_message(): void
+	public function postSaveMessage(): void
 	{
 		$password = '';
 
@@ -608,7 +610,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_mailchimp(): void
+	public function postSaveMailchimp(): void
 	{
 		$api_key = '';
 		$list_id = '';
@@ -665,7 +667,7 @@ class Config extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
-	public function save_locations(): void
+	public function postSaveLocations(): void
 	{
 		$this->db->transStart();
 
@@ -709,7 +711,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_tables(): void
+	public function postSaveTables(): void
 	{
 		$this->db->transStart();
 
@@ -758,7 +760,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_tax(): void
+	public function postSaveTax(): void
 	{
 		$this->db->transStart();
 
@@ -789,7 +791,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_rewards(): void
+	public function postSaveRewards(): void
 	{
 		$this->db->transStart();
 
@@ -848,7 +850,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_barcode(): void
+	public function postSaveBarcode(): void
 	{
 		$batch_save_data = [
 			'barcode_type' => $this->request->getPost('barcode_type', FILTER_SANITIZE_STRING),
@@ -876,7 +878,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_receipt(): void
+	public function postSaveReceipt(): void
 	{
 		$batch_save_data = [
 			'receipt_template' => $this->request->getPost('receipt_template', FILTER_SANITIZE_STRING),
@@ -907,7 +909,7 @@ class Config extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_invoice(): void
+	public function postSaveInvoice(): void
 	{
 		$batch_save_data = [
 			'invoice_enable' => $this->request->getPost('invoice_enable') != NULL,

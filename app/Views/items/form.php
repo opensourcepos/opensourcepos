@@ -224,7 +224,7 @@
 					]) ?>
 					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
-					<?php endif; ?>
+					<?php endif; ?>`
 				</div>
 			</div>
 		</div>

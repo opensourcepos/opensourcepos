@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_email/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveEmail/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -38,7 +38,7 @@
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
-						'value' => esc($config['smtp_host'])
+						'value' => esc(@$config['smtp_host'])
 					]) ?>
 				</div>
 			</div>
@@ -90,7 +90,7 @@
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_user'])
+							'value' => esc(@$config['smtp_user'])
 						]) ?>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
-							'value' => esc($config['smtp_pass'])
+							'value' => esc(@$config['smtp_pass'])
 						]) ?>
 					</div>
 				</div>

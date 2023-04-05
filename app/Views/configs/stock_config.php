@@ -3,7 +3,7 @@
  * @var array $stock_locations
  */
 ?>
-<?php echo form_open('config/save_locations/', ['id' => 'location_config_form', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveLocations/', ['id' => 'location_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
