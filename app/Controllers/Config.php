@@ -20,6 +20,7 @@ use App\Models\Tax;
 
 use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
+use Config\Database;
 use Config\Encryption;
 use Config\Services;
 use DirectoryIterator;
@@ -48,6 +49,7 @@ class Config extends Secure_Controller
 {
 	protected $helpers = ['security'];
 
+
 	public function __construct()
 	{
 		parent::__construct('config');
@@ -65,6 +67,8 @@ class Config extends Secure_Controller
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
 		$this->config = config('OSPOS')->settings;
+		$this->db = Database::connect();
+		$this->encrypter = Services::encrypter();
 	}
 
 	/*
@@ -283,12 +287,12 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
-			$encrypter = Services::encrypter();
 
 			$mailchimp_api_key = $this->config['mailchimp_api_key'];
+			log_message('info', '>>> $mailchimp_api_key-' . $mailchimp_api_key);
 			if(!empty($mailchimp_api_key))
 			{
-				$data['mailchimp']['api_key'] = $encrypter->decrypt($mailchimp_api_key);
+				$data['mailchimp']['api_key'] = $this->encrypter->decrypt($mailchimp_api_key);
 			}
 			else
 			{
@@ -298,7 +302,7 @@ class Config extends Secure_Controller
 			$mailchimp_list_id = $this->config['mailchimp_list_id'];
 			if(!empty($mailchimp_list_id))
 			{
-				$data['mailchimp']['list_id'] = $encrypter->decrypt($mailchimp_list_id);
+				$data['mailchimp']['list_id'] = $this->encrypter->decrypt($mailchimp_list_id);
 			}
 			else
 			{
@@ -617,8 +621,19 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
-			$api_key = $this->encrypter->encrypt($this->request->getPost('mailchimp_api_key', FILTER_SANITIZE_STRING));
-			$list_id = $this->encrypter->encrypt($this->request->getPost('mailchimp_list_id', FILTER_SANITIZE_STRING));
+			$api_key_unencrypted = $this->request->getPost('mailchimp_api_key', FILTER_SANITIZE_STRING);
+			if(!empty($api_key_unencrypted))
+			{
+				$api_key = $this->encrypter->encrypt($api_key_unencrypted);
+				$api_key_unencrypted = "";
+			}
+
+			$list_id_unencrypted = $this->request->getPost('mailchimp_list_id', FILTER_SANITIZE_STRING);
+			if(!empty($list_id_unencrypted))
+			{
+				$list_id = $this->encrypter->encrypt($list_id_unencrypted);
+				$list_id_unencrypted = "";
+			}
 		}
 
 		$batch_save_data = ['mailchimp_api_key' => $api_key, 'mailchimp_list_id' => $list_id];
@@ -635,7 +650,7 @@ class Config extends Secure_Controller
 		echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
 	}
 
-	public function ajax_dinner_tables(): void
+	public function getDinnerTables(): void
 	{
 		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
 
