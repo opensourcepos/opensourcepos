@@ -207,7 +207,7 @@ if (isset($success))
 											'data-on' => '<b>' . esc($config['currency_symbol']) .'</b>',
 											'data-off' => '<b>%</b>',
 											'data-line' => esc($line),
-											'checked' => $item['discount_type']
+											'checked' => $item['discount_type'] == 1
 										]) ?>
 									</span>
 								</div> 
@@ -424,7 +424,7 @@ if (isset($success))
 												'id' => 'recv_print_after_sale',
 												'class' => 'checkbox',
 												'value' => 1,
-												'checked' => $print_after_sale
+												'checked' => $print_after_sale == 1
 											]) ?>
 										</td>
 									</tr>

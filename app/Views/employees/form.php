@@ -118,7 +118,7 @@
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant, "class=\'module\'") ?>
+							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class=\'module\'") ?>
 							<?php echo form_dropdown(
 								"menu_group_$module->module_id", [
 									'home' => lang('Module.home'),
@@ -145,7 +145,7 @@
 							?>
 											<ul>
 												<li>
-													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant) ?>
+													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
 													<?php echo form_hidden("menu_group_$permission->permission_id", "--") ?>
 													<span class="medium"><?php echo $lang_line ?></span>
 												</li>

@@ -40,7 +40,7 @@
 						],
 						esc(@$config['login_form']),
 						['class' => 'form-control input-sm']
-					) ?>s
+					) ?>
 				</div>
 			</div>
 
@@ -67,7 +67,7 @@
 								'data-onstyle' => 'success',
 								'data-on' => '<b>' . esc($config['currency_symbol']).'</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $config['default_sales_discount_type']
+								'checked' => $config['default_sales_discount_type'] == 1
 								]) ?>
 						</span>
 					</div>
@@ -97,7 +97,7 @@
 								'data-onstyle' => 'success',
 								'data-on' => '<b>' . esc($config['currency_symbol']) . '</b>',
 								'data-off' => '<b>%</b>',
-								'checked' => $config['default_receivings_discount_type']
+								'checked' => $config['default_receivings_discount_type'] == 1
 								]) ?>
 						</span>
 					</div>
@@ -111,7 +111,7 @@
 						'name' => 'enforce_privacy',
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
-						'checked' => $config['enforce_privacy']
+						'checked' => $config['enforce_privacy'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -127,7 +127,7 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => @$config['receiving_calculate_average_price']
+						'checked' => @$config['receiving_calculate_average_price'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -257,7 +257,7 @@
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
-						'checked' => $config['gcaptcha_enable']
+						'checked' => $config['gcaptcha_enable'] == 1
 					]) ?>
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
@@ -376,7 +376,7 @@
 					'name' => 'derive_sale_quantity',
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
-					'checked' => $config['derive_sale_quantity']
+					'checked' => $config['derive_sale_quantity'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -392,7 +392,7 @@
 						'name' => 'show_office_group',
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
-						'checked' => $show_office_group
+						'checked' => $show_office_group == 1
 					]) ?>
 				</div>
 			</div>
@@ -404,7 +404,7 @@
 						'name' => 'multi_pack_enabled',
 						'id' => 'multi_pack_enabled',
 						'value' => 'multi_pack_enabled',
-						'checked' => $config['multi_pack_enabled']
+						'checked' => $config['multi_pack_enabled'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -416,7 +416,7 @@
 						'name' => 'include_hsn',
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
-						'checked' => $config['include_hsn']
+						'checked' => $config['include_hsn'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -428,7 +428,7 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => @$config['category_dropdown']
+						'checked' => @$config['category_dropdown'] == 1
 					]) ?>
 				</div>
 			</div>

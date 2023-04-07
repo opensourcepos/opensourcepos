@@ -77,7 +77,7 @@
 						'name' => 'allow_duplicate_barcodes',
 						'id' => 'allow_duplicate_barcodes',
 						'value' => 'allow_duplicate_barcodes',
-						'checked' => $config['allow_duplicate_barcodes']
+						'checked' => $config['allow_duplicate_barcodes'] == 1
 					]) ?>
 					&nbsp
 					<label class="control-label">
@@ -110,7 +110,7 @@
 						<?php echo form_checkbox ([
 							'name' => 'barcode_generate_if_empty',
 							'value' => 'barcode_generate_if_empty',
-							'checked' => $config['barcode_generate_if_empty']
+							'checked' => $config['barcode_generate_if_empty'] == 1
 							]) ?>
 						<?php echo lang('Config.barcode_generate_if_empty') ?>
 					</label>

@@ -152,7 +152,7 @@
 						'name' => 'deleted',
 						'id' => 'deleted',
 						'value' => 1,
-						'checked' => ($expenses_info->deleted) ? 1 : 0
+						'checked' => $expenses_info->deleted == 1
 					]) ?>
 				</div>
 			</div>
