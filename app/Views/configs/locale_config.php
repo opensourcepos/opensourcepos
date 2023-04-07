@@ -39,7 +39,7 @@
 						'name' => 'thousands_separator',
 						'id' => 'thousands_separator',
 						'value' => 'thousands_separator',
-						'checked' => $config['thousands_separator']
+						'checked' => $config['thousands_separator'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -226,7 +226,7 @@
 						'name' => 'date_or_time_format',
 						'id' => 'date_or_time_format',
 						'value' => 'date_or_time_format',
-						'checked' => $config['date_or_time_format']
+						'checked' => $config['date_or_time_format'] == 1
 						]) ?>
 				</div>
 			</div>

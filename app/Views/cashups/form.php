@@ -128,8 +128,8 @@
 					'name' => 'note',
 					'id' => 'note',
 					'value'=>0,
-					'checked'=>($cash_ups_info->note) ? 1 : 0]
-				) ?>
+					'checked'=>$cash_ups_info->note == 1
+				]) ?>
 			</div>
 		</div>
 
@@ -239,8 +239,8 @@
 						'name' => 'deleted',
 						'id' => 'deleted',
 						'value'=>1,
-						'checked'=>($cash_ups_info->deleted) ? 1 : 0]
-					) ?>
+						'checked'=>$cash_ups_info->deleted == 1
+					]) ?>
 				</div>
 			</div>
 		<?php

@@ -68,7 +68,7 @@ foreach($definition_values as $definition_id => $definition_value)
 						'name' => esc("attribute_links[$definition_id]"),
 						'id' => "attribute_links[$definition_id]",
 						'value' => 1,
-						'checked' => ($value ? 1 : 0),
+						'checked' => $value == 1,
 						'class' => 'checkbox-inline',
 						'data-definition-id' => $definition_id
 					]);

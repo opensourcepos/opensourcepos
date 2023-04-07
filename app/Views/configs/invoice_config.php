@@ -17,7 +17,7 @@
 						'name' => 'invoice_enable',
 						'value' => 'invoice_enable',
 						'id' => 'invoice_enable',
-						'checked' => $config['invoice_enable']
+						'checked' => $config['invoice_enable'] == 1
 					]) ?>
 				</div>
 			</div>
@@ -141,7 +141,7 @@
 						'name' => 'work_order_enable',
 						'value' => 'work_order_enable',
 						'id' => 'work_order_enable',
-						'checked' => $config['work_order_enable']
+						'checked' => $config['work_order_enable'] == 1
 					]) ?>
 				</div>
 			</div>
