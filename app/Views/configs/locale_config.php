@@ -276,7 +276,7 @@ $(document).ready(function()
 		data['currency_symbol'] = $('#currency_symbol').val();
 		data['currency_code'] = $('#currency_code').val();
 		data['thousands_separator'] = $('#thousands_separator').is(":checked")
-		$.post("<?php echo esc(site_url($controller_name . '/ajax_check_number_locale'), 'url') //TODO: String Interpolation ?>",
+		$.post("<?php echo esc("$controller_name /checkNumberLocale") ?>",
 			data,
 			function(response) {
 				$("input[name='save_number_locale']").val(response.save_number_locale);
@@ -296,7 +296,7 @@ $(document).ready(function()
 				required: true,
 				remote:
 				{
-					url: "<?php echo esc(site_url($controller_name . '/ajax_check_number_locale'), 'url') ?>",
+					url: "<?php echo esc("$controller_name/checkNumberLocale") ?>",
 					type: 'POST',
 					data: {
 						'number_locale': function() { return $('#number_locale').val(); },

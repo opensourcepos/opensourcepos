@@ -48,6 +48,7 @@ use ReflectionException;
 class Config extends Secure_Controller
 {
 	protected $helpers = ['security'];
+	private $db;
 
 
 	public function __construct()
@@ -450,7 +451,7 @@ class Config extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function ajax_check_number_locale(): void
+	public function postCheckNumberLocale(): void
 	{
 		$number_locale = $this->request->getPost('number_locale', FILTER_SANITIZE_STRING);
 		$save_number_locale = $this->request->getPost('save_number_locale', FILTER_SANITIZE_STRING);
@@ -643,7 +644,7 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	public function ajax_stock_locations(): void
+	public function getStockLocations(): void
 	{
 		$stock_locations = $this->stock_location->get_all()->getResultArray();
 
@@ -664,7 +665,7 @@ class Config extends Secure_Controller
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
-	public function ajax_customer_rewards(): void
+	public function getCustomerRewards(): void
 	{
 		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
 
@@ -951,7 +952,7 @@ class Config extends Secure_Controller
 		{
 			if($this->config['invoice_enable'])
 			{
-				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
+				$this->sale_lib->set_mode($this->config['default_register_mode']);
 			}
 			else
 			{

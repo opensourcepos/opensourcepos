@@ -80,6 +80,14 @@ class Secure_Controller extends BaseController
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
+	public function getConfig($key)
+	{
+		if (isset($config[$key]))
+		{
+			return $config[$key];
+		}
+	}
+
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function getIndex() { return FALSE; }
 	public function getSearch() { return FALSE; }
