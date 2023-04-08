@@ -290,7 +290,6 @@ class Config extends Secure_Controller
 		{
 
 			$mailchimp_api_key = $this->config['mailchimp_api_key'];
-			log_message('info', '>>> $mailchimp_api_key-' . $mailchimp_api_key);
 			if(!empty($mailchimp_api_key))
 			{
 				$data['mailchimp']['api_key'] = $this->encrypter->decrypt($mailchimp_api_key);
@@ -527,7 +526,11 @@ class Config extends Secure_Controller
 
 		if(check_encryption())
 		{
-			$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			$smtp_pass = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			if(!empty($smtp_pass))
+			{
+				$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
+			}
 		}
 
 		$batch_save_data = [

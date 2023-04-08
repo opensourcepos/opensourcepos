@@ -253,7 +253,7 @@ class Item extends Model
 		}
 
 		// get_found_rows case
-		if($count_only === TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			return $builder->get()->getRow()->count;
 		}
