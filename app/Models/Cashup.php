@@ -143,12 +143,14 @@ class Cashup extends Model
 			$builder->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
-		$builder->groupBy('cashup_id');
-
 		// get_found_rows case
 		if($count_only)
 		{
-			return $builder->get()->getRowArray()['count'];
+			return $builder->get()->getRow()->count;
+		}
+		else
+		{
+			$builder->groupBy('cashup_id');
 		}
 
 		$builder->orderBy($sort, $order);
@@ -199,18 +201,39 @@ class Cashup extends Model
 		}
 		else
 		{
-			//Get empty base parent object
-			$cash_up_obj = new stdClass();
-
-			//Get all the fields from cashup table
-			foreach($this->db->getFieldNames('cash_up') as $field)
-			{
-				$cash_up_obj->$field = '';
-			}
-
-			return $cash_up_obj;
+			return getEmptyObject('cash_up');
 		}
 	}
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
+	}
+
 
 	/**
 	* Inserts or updates a cashup
