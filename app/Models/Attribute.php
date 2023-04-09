@@ -622,7 +622,7 @@ class Attribute extends Model
 		return $builder->get();
 	}
 
-	public function get_attribute_value(int $item_id, int $definition_id): object
+	public function get_attribute_value(int $item_id, int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_values');
 		$builder->join('attribute_links', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -630,8 +630,43 @@ class Attribute extends Model
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
 		$builder->where('definition_id', $definition_id);
+		$query = $builder->get();
 
-		return $builder->get()->getRowObject();
+		if($query->getNumRows() == 1)
+		{
+			return $query->getRow();
+		}
+
+		return $this->getEmptyObject('attribute_values');
+	}
+
+	/**
+	 * Initializes an empty object based on database definitions
+	 * @param string $table_name
+	 * @return object
+	 */
+	private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			{
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
+			}
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
+		}
+
+		return $empty_obj;
 	}
 
 	public function get_attribute_values(int $item_id): array	//TODO: Is this function used anywhere in the code?
