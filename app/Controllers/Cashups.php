@@ -37,19 +37,19 @@ class Cashups extends Secure_Controller
 
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$filters = [
-			 'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_STRING),	//TODO: Is this the best way to filter dates
-			 'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_STRING),
+			 'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),	//TODO: Is this the best way to filter dates
+			 'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			 'is_deleted' => FALSE
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: $filledup doesn't follow variable naming patterns we are using.
+		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: $filledup doesn't follow variable naming patterns we are using.
 		$filters = array_merge($filters, $filledup);
 		$cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->cashup->get_found_rows($search, $filters);
@@ -188,7 +188,7 @@ class Cashups extends Secure_Controller
 
 	public function postSave(int $cashup_id = NEW_ENTRY): void
 	{
-		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_STRING);
+		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$open_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $open_date);
 
 		$close_date = $this->request->getPost('close_date', FILTER_SANITIZE_NUMBER_INT);
@@ -205,7 +205,7 @@ class Cashups extends Secure_Controller
 			'closed_amount_check' => parse_decimals($this->request->getPost('closed_amount_check', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'closed_amount_total' => parse_decimals($this->request->getPost('closed_amount_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'note' => $this->request->getPost('note') != NULL,
-			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING),
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'open_employee_id' => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
 			'close_employee_id' => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
 			'deleted' => $this->request->getPost('deleted') != NULL
@@ -231,7 +231,7 @@ class Cashups extends Secure_Controller
 
 	public function postDelete(): void
 	{
-		$cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($this->cashup->delete_list($cash_ups_to_delete))
 		{

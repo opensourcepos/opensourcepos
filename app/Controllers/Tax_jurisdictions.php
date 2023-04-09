@@ -31,11 +31,11 @@ class Tax_jurisdictions extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$tax_jurisdictions = $this->tax_jurisdiction->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_jurisdiction->get_found_rows($search);
@@ -67,8 +67,8 @@ class Tax_jurisdictions extends Secure_Controller
 	public function postSave(int $jurisdiction_id = NEW_ENTRY): void
 	{
 		$tax_jurisdiction_data = [
-			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING),
-			'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_STRING)
+			'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		if($this->tax_jurisdiction->save_value($tax_jurisdiction_data))

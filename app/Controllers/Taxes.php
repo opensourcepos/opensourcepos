@@ -79,11 +79,11 @@ class Taxes extends Secure_Controller
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$tax_rates = $this->tax->search($search, $limit, $offset, $sort, $order);
 
@@ -103,7 +103,7 @@ class Taxes extends Secure_Controller
 	 */
 	public function suggest_search(): void
 	{
-		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));	//TODO: There is no get_search_suggestions function in the tax model
+		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));	//TODO: There is no get_search_suggestions function in the tax model
 
 		echo json_encode($suggestions);
 	}
@@ -113,7 +113,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_tax_categories(): void
 	{
-		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -419,7 +419,7 @@ class Taxes extends Secure_Controller
 	 */
 	public function getSuggestTaxCodes(): void
 	{
-		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -431,10 +431,10 @@ class Taxes extends Secure_Controller
 	public function save_tax_codes(): void
 	{
 		$tax_code_id = $this->request->getPost('tax_code_id', FILTER_SANITIZE_NUMBER_INT);
-		$tax_code = $this->request->getPost('tax_code', FILTER_SANITIZE_STRING);
-		$tax_code_name = $this->request->getPost('tax_code_name', FILTER_SANITIZE_STRING);
-		$city = $this->request->getPost('city', FILTER_SANITIZE_STRING);
-		$state = $this->request->getPost('state', FILTER_SANITIZE_STRING);
+		$tax_code = $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$tax_code_name = $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$city = $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$state = $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$array_save = [];	//TODO: the naming of this variable is not good.
 		foreach($tax_code_id as $key=>$val)
@@ -459,10 +459,10 @@ class Taxes extends Secure_Controller
 	public function save_tax_jurisdictions(): void
 	{
 		$jurisdiction_id = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
-		$jurisdiction_name = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_STRING);
-		$tax_group = $this->request->getPost('tax_group', FILTER_SANITIZE_STRING);
+		$jurisdiction_name = $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$tax_group = $this->request->getPost('tax_group', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$tax_type = $this->request->getPost('tax_type', FILTER_SANITIZE_NUMBER_INT);
-		$reporting_authority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_STRING);
+		$reporting_authority = $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
 		$cascade_sequence = $this->request->getPost('cascade_sequence', FILTER_SANITIZE_NUMBER_INT);
 
@@ -506,7 +506,7 @@ class Taxes extends Secure_Controller
 	public function save_tax_categories(): void
 	{
 		$tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);
-		$tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_STRING);
+		$tax_category = $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$tax_group_sequence = $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT);
 
 		$array_save= [];
