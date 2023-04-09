@@ -679,13 +679,13 @@ function get_attribute_definition_manage_table_headers(): string
 	return transform_headers($headers);
 }
 
-function get_attribute_definition_data_row(object $attribute): array
+function get_attribute_definition_data_row(object $attribute_row): array
 {
 
 	$attribute = model('Attribute');
 	$controller = get_controller();
 
-	if(count($attribute->definition_flags) == 0)	//TODO: === ?
+	if(count($attribute->get_definition_flags()) == 0)
 	{
 		$definition_flags = lang('Common.none_selected_text');
 	}
@@ -695,17 +695,17 @@ function get_attribute_definition_data_row(object $attribute): array
 	}
 	else
 	{
-		$definition_flags = implode(', ', $attribute->definition_flags);
+		$definition_flags = implode(', ', $attribute->get_definition_flags());
 	}
 
 	return [
-		'definition_id' => $attribute->definition_id,
-		'definition_name' => $attribute->definition_name,
-		'definition_type' => $attribute->definition_type,
-		'definition_group' => $attribute->definition_group,
+		'definition_id' => $attribute_row->definition_id,
+		'definition_name' => $attribute_row->definition_name,
+		'definition_type' => $attribute_row->definition_type,
+		'definition_group' => $attribute_row->definition_group,
 		'definition_flags' => $definition_flags,
 		'edit' => anchor(
-			"$controller/view/$attribute->definition_id",
+			"$controller/view/$attribute_row->definition_id",
 			'<span class="glyphicon glyphicon-edit"></span>',
 			[
 				'class' => 'modal-dlg',

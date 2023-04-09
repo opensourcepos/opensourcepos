@@ -85,9 +85,10 @@ class Attribute extends Model
 	/*
 	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 */
-	public function value_exists($attribute_value, string $definition_type = TEXT): bool
+	public function value_exists($attribute_value, string $definition_type = TEXT)
 	{
 		$config = config('OSPOS')->settings;
+
 		switch($definition_type)
 		{
 			case DATE:
@@ -468,8 +469,6 @@ class Attribute extends Model
 	{
 		$this->db->transStart();
 
-		$builder = $this->db->table('attribute_definitions');
-
 		//Definition doesn't exist
 		if($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id))
 		{
@@ -479,6 +478,7 @@ class Attribute extends Model
 			}
 			else
 			{
+				$builder = $this->db->table('attribute_definitions');
 				$success = $builder->insert($definition_data);
 				$definition_data['definition_id'] = $this->db->insertID();
 			}
@@ -487,11 +487,13 @@ class Attribute extends Model
 		//Definition already exists
 		else
 		{
-			//Get current definition type and name
+			$builder = $this->db->table('attribute_definitions');
 			$builder->select('definition_type');
 			$builder->where('definition_id', $definition_id);
+			$builder->where('deleted', ACTIVE);
+			$query = $builder->get();
+			$row = $query->getRow();
 
-			$row = $builder->get('attribute_definitions')->getRow();
 			$from_definition_type = $row->definition_type;
 			$to_definition_type = $definition_data['definition_type'];
 
@@ -599,7 +601,7 @@ class Attribute extends Model
 		$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$builder->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$builder->where('definition_type <>', GROUP);
-		$builder->where('deleted', 0);
+		$builder->where('deleted', ACTIVE);
 		$builder->where('item_id', $item_id);
 
 		if(!empty($id))
@@ -664,7 +666,7 @@ class Attribute extends Model
 		$builder->join('attribute_links', 'attribute_links.definition_id = definition.definition_id');
 		$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$builder->like('attribute_value', $term);
-		$builder->where('deleted', 0);
+		$builder->where('deleted', ACTIVE);
 		$builder->where('definition.definition_id', $definition_id);
 		$builder->orderBy('attribute_value','ASC');
 
@@ -679,10 +681,10 @@ class Attribute extends Model
 
 	public function save_value(string $attribute_value, int $definition_id, $item_id = FALSE, $attribute_id = FALSE, string $definition_type = DROPDOWN): int
 	{
-		$this->db->transStart();
-
 		$config = config('OSPOS')->settings;
 		$locale_date_format = $config['dateformat'];
+
+		$this->db->transStart();
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
@@ -769,15 +771,15 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
 
-		return $builder->update(['deleted' => 1]);
+		return $builder->update(['deleted' => DELETED]);
 	}
 
-	public function delete_definition_list(string $definition_ids): bool
+	public function delete_definition_list(array $definition_ids): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->whereIn('definition_id', $definition_ids);
 
-		return $builder->update(['deleted' => 1]);
+		return $builder->update(['deleted' => DELETED]);
 	}
 
 	/**
@@ -841,7 +843,7 @@ class Attribute extends Model
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
 
-		return $builder->update(['deleted' => 0]);
+		return $builder->update(['deleted' => ACTIVE]);
 	}
 
 	/**
