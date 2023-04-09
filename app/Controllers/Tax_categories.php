@@ -28,11 +28,11 @@ class Tax_categories extends Secure_Controller
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$tax_categories = $this->tax_category->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->tax_category->get_found_rows($search);
@@ -64,8 +64,8 @@ class Tax_categories extends Secure_Controller
 	public function postSave(int $tax_category_id = NEW_ENTRY): void
 	{
 		$tax_category_data = [
-			'tax_category' => $this->request->getPost('tax_category', FILTER_SANITIZE_STRING),
-			'tax_category_code' => $this->request->getPost('tax_category_code', FILTER_SANITIZE_STRING),
+			'tax_category' => $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'tax_category_code' => $this->request->getPost('tax_category_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'tax_group_sequence' => $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT)
 		];
 

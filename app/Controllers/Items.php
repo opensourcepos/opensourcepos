@@ -89,19 +89,19 @@ class Items extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
-		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		$this->item_lib->set_item_location($this->request->getVar('stock_location', FILTER_SANITIZE_NUMBER_INT));
+		$this->item_lib->set_item_location($this->request->getGet('stock_location', FILTER_SANITIZE_NUMBER_INT));
 
 		$definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
 		$filters = [
-			'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_STRING),
-			'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_STRING),
+			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'stock_location_id' => $this->item_lib->get_item_location(),
 			'empty_upc' => FALSE,
 			'low_inventory' => FALSE,
@@ -114,7 +114,7 @@ class Items extends Secure_Controller
 		];
 
 		//Check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_STRING), TRUE);	//TODO: filled up does not meet naming standards
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: filled up does not meet naming standards
 		$filters = array_merge($filters, $filledup);
 		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->item->get_found_rows($search, $filters);
@@ -182,28 +182,28 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
 		];
 
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), $options, FALSE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $options, FALSE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest(): void
 	{
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_low_sell(): void
 	{
-		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_kits(): void
 	{
-		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_STRING), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -213,7 +213,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggestCategory(): void
 	{
-		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -223,7 +223,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggestLocation(): void
 	{
-		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -604,9 +604,9 @@ class Items extends Secure_Controller
 
 		//Save item data
 		$item_data = [
-			'name' => $this->request->getPost('name', FILTER_SANITIZE_STRING),
-			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING),
-			'category' => $this->request->getPost('category', FILTER_SANITIZE_STRING),
+			'name' => $this->request->getPost('name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'category' => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'item_type' => $item_type,
 			'stock_type' => $this->request->getPost('stock_type') === NULL ? HAS_STOCK : intval($this->request->getPost('stock_type', FILTER_SANITIZE_NUMBER_INT)),
 			'supplier_id' => empty($this->request->getPost('supplier_id')) ? NULL : intval($this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT)),
@@ -618,10 +618,10 @@ class Items extends Secure_Controller
 			'allow_alt_description' => $this->request->getPost('allow_alt_description') !== NULL,
 			'is_serialized' => $this->request->getPost('is_serialized') !== NULL,
 			'qty_per_pack' => $this->request->getPost('qty_per_pack') === NULL ? 1 : $this->request->getPost('qty_per_pack', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-			'pack_name' => $this->request->getPost('pack_name') === NULL ? $default_pack_name : $this->request->getPost('pack_name', FILTER_SANITIZE_STRING),
+			'pack_name' => $this->request->getPost('pack_name') === NULL ? $default_pack_name : $this->request->getPost('pack_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === NULL ? $item_id : $this->request->getPost('low_sell_item_id', FILTER_SANITIZE_NUMBER_INT),
 			'deleted' => $this->request->getPost('is_deleted') !== NULL,
-			'hsn_code' => $this->request->getPost('hsn_code') === NULL ? '' : $this->request->getPost('hsn_code', FILTER_SANITIZE_STRING)
+			'hsn_code' => $this->request->getPost('hsn_code') === NULL ? '' : $this->request->getPost('hsn_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		if($item_data['item_type'] == ITEM_TEMP)
@@ -673,7 +673,7 @@ class Items extends Secure_Controller
 			if(!$use_destination_based_tax)
 			{
 				$items_taxes_data = [];
-				$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_STRING);
+				$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 				$tax_percents = $this->request->getPost('tax_percents', FILTER_SANITIZE_NUMBER_FLOAT);
 
 				$tax_name_index = 0;
@@ -815,7 +815,7 @@ class Items extends Secure_Controller
 	 */
 	public function postCheckItemNumber(): void
 	{
-		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));
+		$exists = $this->item->item_number_exists($this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
 
@@ -824,9 +824,9 @@ class Items extends Secure_Controller
 	 */
 	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
-		if($this->request->getPost('item_number', FILTER_SANITIZE_STRING) === NEW_ENTRY)
+		if($this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS) === NEW_ENTRY)
 		{
-			$exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name', FILTER_SANITIZE_STRING));	//TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
+			$exists = $this->item_kit->item_kit_exists_for_name($this->request->getPost('name', FILTER_SANITIZE_FULL_SPECIAL_CHARS));	//TODO: item_kit_exists_for_name doesn't exist in Item_kit.  I looked at the blame and it appears to have never existed.
 		}
 		else
 		{
@@ -856,7 +856,7 @@ class Items extends Secure_Controller
 			'trans_items' => $item_id,
 			'trans_user' => $employee_id,
 			'trans_location' => $location_id,
-			'trans_comment' => $this->request->getPost('trans_comment', FILTER_SANITIZE_STRING),
+			'trans_comment' => $this->request->getPost('trans_comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'trans_inventory' => parse_quantity($this->request->getPost('newquantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
 		];
 
@@ -906,7 +906,7 @@ class Items extends Secure_Controller
 		if(empty($item_data) || $this->item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = [];
-			$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_STRING);
+			$tax_names = $this->request->getPost('tax_names', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			$tax_percents = $this->request->getPost('tax_percents', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 			$tax_updated = FALSE;
 

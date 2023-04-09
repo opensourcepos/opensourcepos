@@ -76,11 +76,11 @@ class Item_kits extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->item_kit->get_found_rows($search);
@@ -98,7 +98,7 @@ class Item_kits extends Secure_Controller
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
@@ -153,14 +153,14 @@ class Item_kits extends Secure_Controller
 	public function postSave(int $item_kit_id = NEW_ENTRY): void
 	{
 		$item_kit_data = [
-			'name' => $this->request->getPost('name', FILTER_SANITIZE_STRING),
-			'item_kit_number' => $this->request->getPost('item_kit_number', FILTER_SANITIZE_STRING),
+			'name' => $this->request->getPost('name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'item_kit_number' => $this->request->getPost('item_kit_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'item_id' => $this->request->getPost('kit_item_id', FILTER_SANITIZE_NUMBER_INT),
 			'kit_discount' => $this->request->getPost('kit_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'kit_discount_type' => $this->request->getPost('kit_discount_type') == NULL ? PERCENT : $this->request->getPost('kit_discount_type', FILTER_SANITIZE_NUMBER_INT),
 			'price_option' => $this->request->getPost('price_option', FILTER_SANITIZE_NUMBER_INT),
 			'print_option' => $this->request->getPost('print_option', FILTER_SANITIZE_NUMBER_INT),
-			'description' => $this->request->getPost('description', FILTER_SANITIZE_STRING)
+			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		if($this->item_kit->save_value($item_kit_data, $item_kit_id))
@@ -220,7 +220,7 @@ class Item_kits extends Secure_Controller
 
 	public function postDelete(): void
 	{
-		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_STRING);
+		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		if($this->item_kit->delete_list($item_kits_to_delete))
 		{
@@ -237,7 +237,7 @@ class Item_kits extends Secure_Controller
 
 	public function check_item_number(): void
 	{
-		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_STRING), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
+		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
 

@@ -46,11 +46,11 @@ class Suppliers extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_STRING);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->supplier->get_found_rows($search);
@@ -72,14 +72,14 @@ class Suppliers extends Persons
 	*/
 	public function suggest(): void
 	{
-		$suggestions = $this->supplier->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_STRING), TRUE);
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING), FALSE);
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -105,8 +105,8 @@ class Suppliers extends Persons
 	*/
 	public function postSave(int $supplier_id = NEW_ENTRY): void
 	{
-		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: Duplicate code
-		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicate code
+		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
@@ -116,23 +116,23 @@ class Suppliers extends Persons
 		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_STRING),
+			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'email' => $email,
-			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
-			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
-			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
-			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
-			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
-			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
-			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
-			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
+			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'country' => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		$supplier_data = [
-			'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_STRING),
-			'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_STRING),
-			'category' => $this->request->getPost('category', FILTER_SANITIZE_STRING),
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_STRING),
+			'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'category' => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
