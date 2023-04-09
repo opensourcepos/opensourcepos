@@ -73,7 +73,7 @@ class Attributes extends Secure_Controller
 	public function postDelete_attribute_value(): void
 	{
 		$success = $this->attribute->delete_value(
-			$this->request->getPost('attribute_value', FILTER_SANITIZE_STRING),
+			html_entity_decode($this->request->getPost('attribute_value')),
 			$this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
 		);
 
@@ -153,9 +153,9 @@ class Attributes extends Secure_Controller
 	 * @param int $definition_id
 	 * @return void
 	 */
-	public function suggest_attribute(int $definition_id): void
+	public function getSuggestAttribute(int $definition_id): void
 	{
-		$suggestions = $this->attribute->get_suggestions($definition_id, $this->request->getVar('term', FILTER_SANITIZE_STRING));
+		$suggestions = $this->attribute->get_suggestions($definition_id, html_entity_decode($this->request->getVar('term')));
 
 		echo json_encode($suggestions);
 	}

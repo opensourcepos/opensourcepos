@@ -491,7 +491,41 @@ class Items extends Secure_Controller
 	public function getAttributes(int $item_id = NEW_ENTRY): void
 	{
 		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->request->getPost('definition_ids', FILTER_SANITIZE_STRING), TRUE);
+		$definition_ids = json_decode($this->request->getGet('definition_ids'), TRUE);
+		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+		$data['definition_names'] = $this->attribute->get_definition_names();
+
+		foreach($data['definition_values'] as $definition_id => $definition_value)
+		{
+			$attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+			$attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? NULL : $attribute_value->attribute_id;
+			$values = &$data['definition_values'][$definition_id];
+			$values['attribute_id'] = $attribute_id;
+			$values['attribute_value'] = $attribute_value;
+			$values['selected_value'] = '';
+
+			if ($definition_value['definition_type'] === DROPDOWN)
+			{
+				$values['values'] = $this->attribute->get_definition_values($definition_id);
+				$link_value = $this->attribute->get_link_value($item_id, $definition_id);
+				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
+			}
+
+			if (!empty($definition_ids[$definition_id]))
+			{
+				$values['selected_value'] = $definition_ids[$definition_id];
+			}
+
+			unset($data['definition_names'][$definition_id]);
+		}
+
+		echo view('attributes/item', $data);
+	}
+
+	public function postAttributes(int $item_id = NEW_ENTRY): void
+	{
+		$data['item_id'] = $item_id;
+		$definition_ids = json_decode($this->request->getPost('definition_ids'), TRUE);
 		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
 		$data['definition_names'] = $this->attribute->get_definition_names();
 
@@ -695,21 +729,21 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links', FILTER_SANITIZE_NUMBER_INT) : [];
+			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links') : [];
 			$attribute_ids = $this->request->getPost('attribute_ids', FILTER_SANITIZE_NUMBER_INT);
 
 			$this->attribute->delete_link($item_id);
 
-			foreach($attribute_links as $definition_id => $attribute_id)
+			foreach($attribute_links as $definition_id => $attribute_value)
 			{
 				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
 
 				if($definition_type !== DROPDOWN)
 				{
-					$attribute_id = $this->attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
+					$attribute_id = $this->attribute->save_value($attribute_value, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
 				}
 
-				$this->attribute->save_link($item_id, $definition_id, $attribute_id);
+				$this->attribute->save_link($item_id, $definition_id, intval($attribute_ids[$definition_id]));
 			}
 
 			if($success && $upload_success)

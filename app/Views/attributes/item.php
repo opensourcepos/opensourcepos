@@ -100,7 +100,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			$("input[name='attribute_ids[" + definition_id + "]']").val('');
 		}).autocomplete({
 			source: function(request, response) {
-				$.get('<?php echo 'attributes/suggest_attribute/' ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
+				$.get('<?php echo 'attributes/suggestAttribute/' ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
 					return response(data);
 				}, 'json');
 			},
