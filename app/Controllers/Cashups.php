@@ -188,10 +188,10 @@ class Cashups extends Secure_Controller
 
 	public function postSave(int $cashup_id = NEW_ENTRY): void
 	{
-		$open_date = $this->request->getPost('open_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$open_date = $this->request->getPost('open_date');
 		$open_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $open_date);
 
-		$close_date = $this->request->getPost('close_date', FILTER_SANITIZE_NUMBER_INT);
+		$close_date = $this->request->getPost('close_date');
 		$close_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $close_date);
 
 		$cash_up_data = [

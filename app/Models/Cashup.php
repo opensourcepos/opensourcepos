@@ -201,7 +201,7 @@ class Cashup extends Model
 		}
 		else
 		{
-			return getEmptyObject('cash_up');
+			return $this->getEmptyObject('cash_up');
 		}
 	}
 
