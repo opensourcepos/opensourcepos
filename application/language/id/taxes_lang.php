@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Tambah pengecualian";
 $lang["taxes_cascade"] = "Menurunkan";
 $lang["taxes_cascade_sequence"] = "Urutan Penurunan";
@@ -40,8 +39,8 @@ $lang["taxes_tax_category_new"] = "Kategori Pajak baru";
 $lang["taxes_tax_category_required"] = "Kategori Pajak dibutuhkan";
 $lang["taxes_tax_code"] = "Kode Pajak";
 $lang["taxes_tax_code_cannot_be_deleted"] = "Gagal menghapus Kode Pajak";
-$lang["taxes_tax_code_duplicate"] = "Kode pajak ganda";
-$lang["taxes_tax_code_invalid_chars"] = "Terdapat karakter yang salah dalam kode pajak";
+$lang["taxes_tax_code_duplicate"] = "Kode Pajak ganda";
+$lang["taxes_tax_code_invalid_chars"] = "Terdapat karakter yang salah dalam Kode Pajak";
 $lang["taxes_tax_code_name"] = "Nama Kode Pajak";
 $lang["taxes_tax_code_required"] = "Kode pajak harus diisi";
 $lang["taxes_tax_code_successful_deleted"] = "Anda berhasil menghapus Kode Pajak";
@@ -60,7 +59,7 @@ $lang["taxes_tax_group_sequence"] = "Urutan Grup Pajak";
 $lang["taxes_tax_included"] = "Termasuk pajak";
 $lang["taxes_tax_jurisdiction"] = "Yuridiksi Pajak";
 $lang["taxes_tax_jurisdiction_duplicate"] = "Yuridiksi Pajak ganda";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "Karakter yang salah pada nama yuridiksi";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Karakter yang salah pada Nama Yuridiksi";
 $lang["taxes_tax_jurisdiction_required"] = "Diperlukan yurisdiksi Pajak";
 $lang["taxes_tax_jurisdictions"] = "Yurisdiksi Pajak";
 $lang["taxes_tax_jurisdictions_configuration"] = "Konfigurasi Yurisdiksi Pajak";
