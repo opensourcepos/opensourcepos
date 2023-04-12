@@ -1,6 +1,6 @@
 <?php
 return [
-	"customers_available_points" => "Poin yang tersedia",
+	"customers_available_points" => "Poin tersedia",
 	"rewards_package" => "Hadiah",
 	"rewards_remaining_balance" => "Poin hadiah yang tersisa adalah ",
 	"sales_account_number" => "Akun #",
