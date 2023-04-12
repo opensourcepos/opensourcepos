@@ -1,7 +1,7 @@
 <?php
 $lang["customers_account_number"] = "Akun #";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah ada di basis data.";
-$lang["customers_available_points"] = "Poin yang tersedia";
+$lang["customers_available_points"] = "Poin tersedia";
 $lang["customers_available_points_value"] = "";
 $lang["customers_average"] = "Rata-rata yang dihabiskan";
 $lang["customers_avg_discount"] = "Rata-rata diskon";
@@ -40,7 +40,7 @@ $lang["customers_max"] = "Max. dihabiskan";
 $lang["customers_min"] = "Min. dihabiskan";
 $lang["customers_new"] = "Pelanggan Baru";
 $lang["customers_none_selected"] = "Anda belum memilih pelanggan untuk dihapus.";
-$lang["customers_one_or_multiple"] = "pelanggan";
+$lang["customers_one_or_multiple"] = "Pelanggan";
 $lang["customers_quantity"] = "Kuantitas";
 $lang["customers_stats_info"] = "Statistik";
 $lang["customers_successful_adding"] = "Anda telah berhasil menambah pelanggan";
