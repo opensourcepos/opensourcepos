@@ -1,5 +1,5 @@
 <?php
-$lang["customers_available_points"] = "Poin yang tersedia";
+$lang["customers_available_points"] = "Poin tersedia";
 $lang["rewards_package"] = "Hadiah";
 $lang["rewards_remaining_balance"] = "Poin hadiah yang tersisa adalah ";
 $lang["sales_account_number"] = "Akun #";
