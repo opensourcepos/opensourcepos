@@ -2,7 +2,7 @@
 return [
 	"customers_account_number" => "Akun #",
 	"customers_account_number_duplicate" => "Nomor akun ini telah ada di basis data.",
-	"customers_available_points" => "Poin yang tersedia",
+	"customers_available_points" => "Poin tersedia",
 	"customers_available_points_value" => "",
 	"customers_average" => "Rata-rata yang dihabiskan",
 	"customers_avg_discount" => "Rata-rata diskon",
@@ -41,7 +41,7 @@ return [
 	"customers_min" => "Min. dihabiskan",
 	"customers_new" => "Pelanggan Baru",
 	"customers_none_selected" => "Anda belum memilih pelanggan untuk dihapus.",
-	"customers_one_or_multiple" => "pelanggan",
+	"customers_one_or_multiple" => "Pelanggan",
 	"customers_quantity" => "Kuantitas",
 	"customers_stats_info" => "Statistik",
 	"customers_successful_adding" => "Anda telah berhasil menambah pelanggan",

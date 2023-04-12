@@ -130,7 +130,7 @@ return [
 	"config_enforce_privacy" => "Berlakukan privasi",
 	"config_enforce_privacy_tooltip" => "Lindungi privasi Pelanggan yang menegakkan data dalam hal data mereka dihapus",
 	"config_fax" => "Fax",
-	"config_file_perm" => "Ada masalah dengan izin file, harap perbaiki dan muat ulang halaman ini.",
+	"config_file_perm" => "Perizinan berkas bermasalah, Silakan perbaiki dan muat ulang halaman ini.",
 	"config_financial_year" => "Tahun Awal Fiskal",
 	"config_financial_year_apr" => "1 April",
 	"config_financial_year_aug" => "1 Agustus",
