@@ -38,7 +38,7 @@
 							'floating_labels' => lang('Config.floating_labels'),
 							'input_groups' => lang('Config.input_groups')
 						],
-						esc(@$config['login_form']),
+						esc($config['login_form']),
 						['class' => 'form-control input-sm']
 					) ?>
 				</div>
@@ -127,7 +127,7 @@
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
-						'checked' => @$config['receiving_calculate_average_price'] == 1
+						'checked' => $config['receiving_calculate_average_price'] == 1
 						]) ?>
 				</div>
 			</div>
@@ -428,7 +428,7 @@
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
-						'checked' => @$config['category_dropdown'] == 1
+						'checked' => $config['category_dropdown'] == 1
 					]) ?>
 				</div>
 			</div>
