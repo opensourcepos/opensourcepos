@@ -62,7 +62,7 @@
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php
-						if(@$config['category_dropdown'])
+						if($config['category_dropdown'])
 						{
 							echo form_dropdown('category', esc($categories), $selected_category, ['class' => 'form-control']);
 						}
