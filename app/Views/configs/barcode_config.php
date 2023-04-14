@@ -93,7 +93,7 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'id',
-							'checked' => $config['barcode_content' == 'id']
+							'checked' => $config['barcode_content'] == 'id'
 						]) ?>
 						<?php echo lang('Config.barcode_id') ?>
 					</label>
@@ -101,7 +101,8 @@
 						<?php echo form_radio ([
 							'name' => 'barcode_content',
 							'value' => 'number',
-							'checked' => $config['barcode_content'] == 'number']) ?>
+							'checked' => $config['barcode_content'] == 'number'
+						]) ?>
 						<?php echo lang('Config.barcode_number') ?>
 					</label>
 					&nbsp
