@@ -106,7 +106,7 @@ class Config extends Secure_Controller
 
 					$basename = 'license/' . $fileinfo->getBasename('.version');
 
-					$license[$i]['title'] = file_get_contents($basename . '.version', NULL, NULL, 0, 100);
+					$license[$i]['title'] = file_get_contents($basename . '.version', false, NULL, 0, 100);
 
 					$license_text_file = $basename . '.license';
 
