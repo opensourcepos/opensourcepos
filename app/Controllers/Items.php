@@ -379,19 +379,26 @@ class Items extends Secure_Controller
 		}
 
 		$data['logo_exists'] = $item_info->pic_filename !== null;
-		$file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
-
-		if(empty($file_extension))
+		if($item_info->pic_filename != null)
 		{
-			$images = glob("./uploads/item_pics/$item_info->pic_filename.*");
+			$file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
+			if(empty($file_extension))
+			{
+				$images = glob("./uploads/item_pics/$item_info->pic_filename.*");
+			}
+			else
+			{
+				$images = glob("./uploads/item_pics/$item_info->pic_filename");
+			}
+			$data['image_path']	= sizeof($images) > 0 ? base_url($images[0]) : '';
 		}
 		else
 		{
-			$images = glob("./uploads/item_pics/$item_info->pic_filename");
+			$data['image_path']	= '';
 		}
 
-		$data['image_path']	= sizeof($images) > 0 ? base_url($images[0]) : '';
-		$stock_locations	= $this->stock_location->get_undeleted_all()->getResultArray();
+
+		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
 		{
@@ -491,9 +498,17 @@ class Items extends Secure_Controller
 	public function getAttributes(int $item_id = NEW_ENTRY): void
 	{
 		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->request->getGet('definition_ids'), TRUE);
-		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-		$data['definition_names'] = $this->attribute->get_definition_names();
+		if($this->request->getGet('definition_ids') != null)
+		{
+			$definition_ids = json_decode($this->request->getGet('definition_ids'), TRUE);
+			$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+			$data['definition_names'] = $this->attribute->get_definition_names();
+		}
+		else
+		{
+			$data['definition_values'] = [];
+			$data['definition_names'] = [];
+		}
 
 		foreach($data['definition_values'] as $definition_id => $definition_value)
 		{
