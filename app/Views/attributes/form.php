@@ -32,7 +32,7 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, esc(array_search($definition_info->definition_type, DEFINITION_TYPES)), 'id="definition_type" class="form-control"') ?>
+			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
 		</div>
 	</div>
 
@@ -41,8 +41,8 @@
 		<div class='col-xs-8'>
 			<?php echo form_dropdown(
 				'definition_group',
-				esc($definition_group),
-				esc($definition_info->definition_fk),
+				$definition_group,
+				$definition_info->definition_fk,
 				'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
 			) ?>
 		</div>

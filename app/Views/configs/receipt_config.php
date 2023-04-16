@@ -7,15 +7,15 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.receipt_template'), 'receipt_template', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'receipt_template',
-						'options' => [
+					<?php echo form_dropdown(
+						'receipt_template',
+						[
 							'receipt_default' => lang('Config.receipt_default'),
 							'receipt_short' => lang('Config.receipt_short')
 						],
-						'selected' => $config['receipt_template'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+						$config['receipt_template'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 

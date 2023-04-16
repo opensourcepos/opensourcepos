@@ -100,7 +100,7 @@
 									esc($languages),
 									esc("$language_code:$language"),
 									['class' => 'form-control input-sm']
-									);
+								);
 							?>
 						</div>
 					</div>
