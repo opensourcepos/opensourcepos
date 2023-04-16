@@ -59,7 +59,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Sales.payment'), 'payment_new', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_dropdown('payment_type_new', esc($new_payment_options), esc($payment_type_new), ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
+					<?php echo form_dropdown('payment_type_new', $new_payment_options, $payment_type_new, ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
@@ -113,7 +113,7 @@
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard')))): ?>
 						<?php echo form_input (['name' => "refund_type_$i", 'value'=>lang('Sales.cash'), 'id' => "refund_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?php echo form_dropdown("refund_type_$i", esc($payment_options), lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
+						<?php echo form_dropdown("refund_type_$i", $payment_options, lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>

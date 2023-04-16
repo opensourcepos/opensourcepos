@@ -25,12 +25,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.invoice_type'), 'invoice_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-3'>
-					<?php echo form_dropdown([
-						'name' => 'invoice_type',
-						'options' => $invoice_type_options,
-						'selected' => $config['invoice_type'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'invoice_type',
+						$invoice_type_options,
+						$config['invoice_type'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -73,12 +73,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.line_sequence'), 'line_sequence', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'line_sequence',
-						'options' => $line_sequence_options,
-						'selected' => $config['line_sequence'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'line_sequence',
+						$line_sequence_options,
+						$config['line_sequence'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 

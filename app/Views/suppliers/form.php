@@ -27,7 +27,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Suppliers.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('category', esc($categories), esc($person_info->category), ['class' => 'form-control', 'id' => 'category']) ?>
+				<?php echo form_dropdown('category', $categories, $person_info->category, ['class' => 'form-control', 'id' => 'category']) ?>
 			</div>
 		</div>
 

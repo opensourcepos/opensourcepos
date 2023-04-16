@@ -64,7 +64,7 @@
 					<?php
 						if($config['category_dropdown'])
 						{
-							echo form_dropdown('category', esc($categories), $selected_category, ['class' => 'form-control']);
+							echo form_dropdown('category', $categories, $selected_category, ['class' => 'form-control']);
 						}
 						else
 						{
@@ -183,7 +183,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('supplier_id', esc($suppliers), $selected_supplier, ['class' => 'form-control']) ?>
+				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control']) ?>
 			</div>
 		</div>
 

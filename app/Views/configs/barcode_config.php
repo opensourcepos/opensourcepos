@@ -12,12 +12,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.barcode_type'), 'barcode_type', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'barcode_type',
-						'options' => $support_barcode,
-						'selected' => $config['barcode_type'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'barcode_type',
+						$support_barcode,
+						$config['barcode_type'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -55,12 +55,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.barcode_font'), 'barcode_font', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-sm-2'>
-					<?php echo form_dropdown([
-						'name' => 'barcode_font',
-						'options' => $barcode_fonts,
-						'selected' => $config['barcode_font'],
-						'extra' => "class='form-control input-sm' required"
-					]) ?>
+					<?php echo form_dropdown(
+						'barcode_font',
+						$barcode_fonts,
+						$config['barcode_font'],
+						"class='form-control input-sm' required"
+					) ?>
 				</div>
 				<div class="col-sm-2">
 					<?php echo form_input ([
@@ -128,12 +128,13 @@
 				<div class='col-xs-4'>
 					<?php
 					$barcode_formats = json_decode($config['barcode_formats']);
-					echo form_dropdown ([
-						'name' => 'barcode_formats[]',
-						'id' => 'barcode_formats',
-						'options' => !empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
-						'multiple' => 'multiple',
-						'data-role' => 'tagsinput']) ?>
+					echo form_dropdown (
+						'barcode_formats[]',
+						'barcode_formats',
+						!empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
+						'multiple',
+						'tagsinput'
+					) ?>
 				</div>
 			</div>
 

@@ -7,16 +7,16 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.email_protocol'), 'protocol', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'protocol',
-						'options' => [
+					<?php echo form_dropdown(
+						'protocol',
+						[
 							'mail' => 'mail',
 							'sendmail' => 'sendmail',
 							'smtp' => 'smtp'
 						],
-						'selected' => $config['protocol'],
-						'extra' => "class='form-control input-sm' id='protocol'"
-					]) ?>
+						$config['protocol'],
+						"class='form-control input-sm' id='protocol'"
+					) ?>
 				</div>
 			</div>
 
@@ -59,16 +59,16 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'smtp_crypto',
-						'options' => [
+					<?php echo form_dropdown(
+						'smtp_crypto',
+						[
 							'' => 'None',
 							'tls' => 'TLS',
 							'ssl' => 'SSL'
 						],
-						'selected' => $config['smtp_crypto'],
-						'extra' => "class='form-control input-sm' id='smtp_crypto'"
-					]) ?>
+						$config['smtp_crypto'],
+						"class='form-control input-sm' id='smtp_crypto'"
+					) ?>
 				</div>
 			</div>
 

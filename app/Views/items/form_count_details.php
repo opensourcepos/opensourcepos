@@ -58,7 +58,7 @@ use App\Models\Employee;
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_dropdown('stock_location', esc($stock_locations), current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
+				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'display_stock(this.value);', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 

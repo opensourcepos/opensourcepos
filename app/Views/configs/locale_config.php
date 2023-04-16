@@ -151,30 +151,30 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.cash_rounding'), 'cash_rounding_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'cash_rounding_code',
-						'options' => $rounding_options,
-						'selected' => $config['cash_rounding_code'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'cash_rounding_code',
+						$rounding_options,
+						$config['cash_rounding_code'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.payment_options_order'), 'payment_options_order', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_dropdown([
-						'name' => 'payment_options_order',
-						'options' => [
+					<?php echo form_dropdown(
+						'payment_options_order',
+						[
 							'cashdebitcredit' => lang('Sales.cash') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.credit'),
 							'debitcreditcash' => lang('Sales.debit') . ' / ' . lang('Sales.credit') . ' / ' . lang('Sales.cash'),
 							'debitcashcredit' => lang('Sales.debit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.credit'),
 							'creditdebitcash' => lang('Sales.credit') . ' / ' . lang('Sales.debit') . ' / ' . lang('Sales.cash'),
 							'creditcashdebit' => lang('Sales.credit') . ' / ' . lang('Sales.cash') . ' / ' . lang('Sales.debit')
 						],
-						'selected' => $config['payment_options_order'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+						$config['payment_options_order'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
@@ -206,24 +206,24 @@
 			<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Config.timezone'), 'timezone', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-4'>
-				<?php echo form_dropdown([
-					'name' => 'timezone',
-					'options' => get_timezones(),
-					'selected' => $config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
-					'extra' => "class='form-control input-sm'"
-				]) ?>
+				<?php echo form_dropdown(
+					'timezone',
+					get_timezones(),
+					$config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
+					"class='form-control input-sm'"
+				) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Config.datetimeformat'), 'datetimeformat', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-sm-2'>
-				<?php echo form_dropdown([
-					'name' => 'dateformat',
-					'options' => get_dateformats(),
-					'selected' => $config['dateformat'],
-					'extra' => "class='form-control input-sm'"
-				]) ?>
+				<?php echo form_dropdown(
+					'dateformat',
+					get_dateformats(),
+					$config['dateformat'],
+					"class='form-control input-sm'"
+				) ?>
 				</div>
 				<div class='col-sm-2'>
 				<?php echo form_dropdown('timeformat',

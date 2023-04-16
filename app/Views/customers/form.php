@@ -133,12 +133,12 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
-							<?php echo form_dropdown([
-								'name' => 'package_id',
-								'options' => $packages,
-								'selected' => $selected_package,
-								'extra' => "class='form-control input-sm'"
-							]) ?>
+							<?php echo form_dropdown(
+								'package_id',
+								$packages,
+								$selected_package,
+								"class='form-control input-sm'"
+							) ?>
 						</div>
 					</div>
 
@@ -354,17 +354,17 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_dropdown([
-								'name' => 'mailchimp_status',
-								'options' => [
+							<?php echo form_dropdown(
+								'mailchimp_status',
+								[
 									'subscribed' => 'subscribed',
 									'unsubscribed' => 'unsubscribed',
 									'cleaned' => 'cleaned',
 									'pending' => 'pending'
 								],
-								'selected' => $mailchimp_info['status'],
-								'extras' => ['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
-							]) ?>
+								$mailchimp_info['status'],
+								['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
+							) ?>
 						</div>
 					</div>
 

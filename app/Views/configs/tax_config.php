@@ -92,36 +92,36 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_code'), 'default_tax_code', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'default_tax_code',
-						'options' => $tax_code_options,
-						'selected' => $config['default_tax_code'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'default_tax_code',
+						$tax_code_options,
+						$config['default_tax_code'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_category'), 'default_tax_category', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'default_tax_category',
-						'options' => $tax_category_options,
-						'selected' => $config['default_tax_category'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'default_tax_category',
+						$tax_category_options,
+						$config['default_tax_category'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.default_tax_jurisdiction'), 'default_tax_jurisdiction', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-						'name' => 'default_tax_jurisdiction',
-						'options' => $tax_jurisdiction_options,
-						'selected' => $config['default_tax_jurisdiction'],
-						'extra' => "class='form-control input-sm'"
-					]) ?>
+					<?php echo form_dropdown(
+						'default_tax_jurisdiction',
+						$tax_jurisdiction_options,
+						$config['default_tax_jurisdiction'],
+						"class='form-control input-sm'"
+					) ?>
 				</div>
 			</div>
 

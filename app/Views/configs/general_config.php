@@ -18,12 +18,12 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown([
-								'name' => 'theme',
-								'options' => $themes,
-								'selected' => $config['theme'],
-								'extra' => "class='form-control input-sm' id='theme-change'"
-							]) ?>
+							<?php echo form_dropdown(
+								'theme',
+								$themes,
+								$config['theme'],
+								"class='form-control input-sm' id='theme-change'"
+							) ?>
 						</div>
 						<div class="col-sm-7">
 							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
@@ -37,15 +37,15 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown([
-							'name' => 'login_form',
-							'options' => [
+					<?php echo form_dropdown(
+							'login_form',
+							[
 								'floating_labels' => lang('Config.floating_labels'),
 								'input_groups' => lang('Config.input_groups')
 							],
-							'selected' => $config['login_form'],
-							'extra' => "class='form-control input-sm'"
-						]) ?>
+							$config['login_form'],
+							"class='form-control input-sm'"
+						) ?>
 				</div>
 			</div>
 
@@ -157,27 +157,27 @@
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
-							<?php echo form_dropdown([
-								'name' => 'notify_vertical_position',
-								'options' => [
+							<?php echo form_dropdown(
+								'notify_vertical_position',
+								[
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								'selected' => $config['notify_vertical_position'],
-								'extra' => "class='form-control input-sm'"
-							]) ?>
+								$config['notify_vertical_position'],
+								"class='form-control input-sm'"
+							) ?>
 						</div>
 						<div class='col-sm-2'>
-							<?php echo form_dropdown([
-								'name' => 'notify_horizontal_position',
-								'options' => [
+							<?php echo form_dropdown(
+								'notify_horizontal_position',
+								[
 									'left' => lang('Config.left'),
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')
 								],
-								'selected' => $config['notify_horizontal_position'],
-								'extra' => "class='form-control input-sm'"
-							]) ?>
+								$config['notify_horizontal_position'],
+								"class='form-control input-sm'"
+							) ?>
 						</div>
 					</div>
 				</div>
@@ -306,51 +306,51 @@
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_first_column') ?></span>
-								<?php echo form_dropdown([
-									'name' => 'suggestions_first_column',
-									'options' => [
+								<?php echo form_dropdown(
+									'suggestions_first_column',
+									[
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									'selected' => $config['suggestions_first_column'],
-									'extra' => "class='form-control input-sm'"
-								]) ?>
+									$config['suggestions_first_column'],
+									"class='form-control input-sm'"
+								) ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_second_column') ?></span>
-								<?php echo form_dropdown([
-									'name' => 'suggestions_second_column',
-									'options' => [
+								<?php echo form_dropdown(
+									'suggestions_second_column',
+									[
 										'' => lang('Config.none'),
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									'selected' => $config['suggestions_second_column'],
-									'extra' => "class='form-control input-sm'"
-								]) ?>
+									$config['suggestions_second_column'],
+									"class='form-control input-sm'"
+								) ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_third_column') ?></span>
-								<?php echo form_dropdown([
-									'name' => 'suggestions_third_column',
-									'options' => [
+								<?php echo form_dropdown(
+									'suggestions_third_column',
+									[
 										'' => lang('Config.none'),
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									'selected' => $config['suggestions_third_column'],
-									'extra' => "class='form-control input-sm'"
-								]) ?>
+									$config['suggestions_third_column'],
+									"class='form-control input-sm'"
+								) ?>
 							</div>
 						</div>
 					</div>
