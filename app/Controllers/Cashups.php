@@ -107,10 +107,26 @@ class Cashups extends Secure_Controller
 			// if it's date mode only and not date & time truncate the open and end date to date only
 			if(empty($this->config['date_or_time_format']))
 			{
+				if($cash_ups_info->open_date != null)
+				{
+					$start_date = substr($cash_ups_info->open_date, 0, 10);
+				}
+				else
+				{
+					$start_date = null;
+				}
+				if($cash_ups_info->close_date != null)
+				{
+					$end_date = substr($cash_ups_info->close_date, 0, 10);
+				}
+				else
+				{
+					$end_date = null;
+				}
 				// search for all the payments given the time range
 				$inputs = [
-					'start_date' => substr($cash_ups_info->open_date, 0, 10),
-					'end_date' => substr($cash_ups_info->close_date, 0, 10),
+					'start_date' => $start_date,
+					'end_date' => $end_date,
 					'sale_type' => 'complete',
 					'location_id' => 'all'
 				];

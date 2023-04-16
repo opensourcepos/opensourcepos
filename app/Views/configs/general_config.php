@@ -18,7 +18,12 @@
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown('theme', $themes, esc($config['theme']), ['class' => 'form-control input-sm', 'id' => 'theme-change']) ?>
+							<?php echo form_dropdown([
+								'name' => 'theme',
+								'options' => $themes,
+								'selected' => $config['theme'],
+								'extra' => "class='form-control input-sm' id='theme-change'"
+							]) ?>
 						</div>
 						<div class="col-sm-7">
 							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
@@ -32,15 +37,15 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown(
-						'login_form',
-						[
-							'floating_labels' => lang('Config.floating_labels'),
-							'input_groups' => lang('Config.input_groups')
-						],
-						esc($config['login_form']),
-						['class' => 'form-control input-sm']
-					) ?>
+					<?php echo form_dropdown([
+							'name' => 'login_form',
+							'options' => [
+								'floating_labels' => lang('Config.floating_labels'),
+								'input_groups' => lang('Config.input_groups')
+							],
+							'selected' => $config['login_form'],
+							'extra' => "class='form-control input-sm'"
+						]) ?>
 				</div>
 			</div>
 
@@ -152,27 +157,27 @@
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
-							<?php echo form_dropdown(
-								'notify_vertical_position',
-								[
+							<?php echo form_dropdown([
+								'name' => 'notify_vertical_position',
+								'options' => [
 									'top' => lang('Config.top'),
 									'bottom' => lang('Config.bottom')
 								],
-								esc($config['notify_vertical_position']),
-								['class' => 'form-control input-sm']
-							) ?>
+								'selected' => $config['notify_vertical_position'],
+								'extra' => "class='form-control input-sm'"
+							]) ?>
 						</div>
 						<div class='col-sm-2'>
-							<?php echo form_dropdown(
-								'notify_horizontal_position',
-								[
+							<?php echo form_dropdown([
+								'name' => 'notify_horizontal_position',
+								'options' => [
 									'left' => lang('Config.left'),
 									'center' => lang('Config.center'),
 									'right' => lang('Config.right')
 								],
-								esc($config['notify_horizontal_position']),
-								['class' => 'form-control input-sm']
-							) ?>
+								'selected' => $config['notify_horizontal_position'],
+								'extra' => "class='form-control input-sm'"
+							]) ?>
 						</div>
 					</div>
 				</div>
@@ -236,13 +241,16 @@
 						<div class='col-sm-4'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.image_allowed_file_types') ?></span>
-								<?php echo form_multiselect('image_allowed_types[]', esc($image_allowed_types), esc($selected_image_allowed_types), [
-									'id' => 'image_allowed_types',
-									'class' => 'selectpicker show-menu-arrow',
-									'data-none-selected-text'=>lang('Common.none_selected_text'),
-									'data-selected-text-format' => 'count > 1',
-									'data-style' => 'btn-default btn-sm',
-									'data-width' => '100%'
+								<?php echo form_multiselect([
+									'name' => 'image_allowed_types',
+									'options' => $image_allowed_types,
+									'selected' => $selected_image_allowed_types,
+									'extra' => "id='image_allowed_types'".
+										"class='selectpicker show-menu-arrow'".
+										"data-none-selected-text=".lang('Common.none_selected_text').
+										"data-selected-text-format='count > 1'".
+										"data-style='btn-default btn-sm'".
+										"data-width='100%'"
 								]) ?>
 							</div>
 						</div>
@@ -274,7 +282,7 @@
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_site_key'])
+						'value' => $config['gcaptcha_site_key']
 					]) ?>
 				</div>
 			</div>
@@ -286,7 +294,7 @@
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
-						'value' => esc($config['gcaptcha_secret_key'])
+						'value' => $config['gcaptcha_secret_key']
 						]) ?>
 				</div>
 			</div>
@@ -298,51 +306,51 @@
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_first_column') ?></span>
-								<?php echo form_dropdown(
-									'suggestions_first_column',
-									[
+								<?php echo form_dropdown([
+									'name' => 'suggestions_first_column',
+									'options' => [
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_first_column']),
-									['class' => 'form-control input-sm']
-								) ?>
+									'selected' => $config['suggestions_first_column'],
+									'extra' => "class='form-control input-sm'"
+								]) ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_second_column') ?></span>
-								<?php echo form_dropdown(
-									'suggestions_second_column',
-									[
+								<?php echo form_dropdown([
+									'name' => 'suggestions_second_column',
+									'options' => [
 										'' => lang('Config.none'),
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_second_column']),
-									['class' => 'form-control input-sm']
-								) ?>
+									'selected' => $config['suggestions_second_column'],
+									'extra' => "class='form-control input-sm'"
+								]) ?>
 							</div>
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_third_column') ?></span>
-								<?php echo form_dropdown(
-									'suggestions_third_column',
-									[
+								<?php echo form_dropdown([
+									'name' => 'suggestions_third_column',
+									'options' => [
 										'' => lang('Config.none'),
 										'name' => lang('Items.name'),
 										'item_number' => lang('Items.number_information'),
 										'unit_price' => lang('Items.unit_price'),
 										'cost_price' => lang('Items.cost_price')
 									],
-									esc($config['suggestions_third_column']),
-									['class' => 'form-control input-sm']
-								) ?>
+									'selected' => $config['suggestions_third_column'],
+									'extra' => "class='form-control input-sm'"
+								]) ?>
 							</div>
 						</div>
 					</div>
@@ -473,12 +481,12 @@ $(document).ready(function()
 			lines_per_page:
 			{
 				required: true,
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			default_sales_discount:
 			{
 				required: true,
-				remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			gcaptcha_site_key:
 			{

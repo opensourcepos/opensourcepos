@@ -12,14 +12,14 @@
 			{
 			?>
 				<div class="form-group form-group-sm">
-					<?php echo form_label(esc($license['title']), 'license', ['class' => 'control-label col-xs-3']) ?>
+					<?php echo form_label($license['title'], 'license', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-6'>
 						<?php echo form_textarea ([
 							'name' => 'license',
 							'id' => 'license_' . $counter++,	//TODO: String Interpolation
 							'class' => 'form-control',
 							'readonly' => '',
-							'value' => esc($license['text'])
+							'value' => $license['text']
 						]) ?>
 					</div>
 				</div>

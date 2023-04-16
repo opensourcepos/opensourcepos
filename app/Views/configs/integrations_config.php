@@ -20,7 +20,7 @@
 							'name' => 'mailchimp_api_key',
 							'id' => 'mailchimp_api_key',
 							'class' => 'form-control input-sm',
-							'value' => esc($mailchimp['api_key'])
+							'value' => $mailchimp['api_key']
 						]) ?>
 					</div>
 				</div>
@@ -36,12 +36,12 @@
 				<div class='col-xs-4'>
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-						<?php echo form_dropdown(
-							'mailchimp_list_id',
-							esc($mailchimp['lists']),
-							esc($mailchimp['list_id']),
-							['id' => 'mailchimp_list_id', 'class' => 'form-control input-sm']
-						) ?>
+						<?php echo form_dropdown([
+							'name' => 'mailchimp_list_id',
+							'options' => $mailchimp['lists'],
+							'selected' => $mailchimp['list_id'],
+							'extra' => "id='mailchimp_list_id' class='form-control input-sm'"
+						]) ?>
 					</div>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?php echo esc("$controller_name/ajax_check_mailchimp_api_key") ?>", {
+		$.post("<?= "$controller_name/checkMailchimpApiKey" ?>", {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {

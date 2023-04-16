@@ -97,7 +97,15 @@ class Cashup extends Model
 			$builder->select('COUNT(cash_up.cashup_id) as count');
 		}
 
-		$builder->select('
+		if(!$count_only)
+		{
+			$builder->select('
+			cash_up.cashup_id,
+			');
+		}
+		else
+		{
+			$builder->select('
 			cash_up.cashup_id,
 			MAX(cash_up.open_date) AS open_date,
 			MAX(cash_up.close_date) AS close_date,
@@ -117,6 +125,7 @@ class Cashup extends Model
 			MAX(close_employees.first_name) AS close_first_name,
 			MAX(close_employees.last_name) AS close_last_name
 		');
+		}
 
 		$builder->join('people AS open_employees', 'open_employees.person_id = cash_up.open_employee_id', 'LEFT');
 		$builder->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');

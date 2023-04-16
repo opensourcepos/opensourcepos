@@ -50,7 +50,7 @@ class Customers extends Persons
 		}
 		else
 		{
-			$this->_list_id = "";
+			$this->_list_id = '';
 		}
 	}
 
