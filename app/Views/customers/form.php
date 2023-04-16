@@ -137,7 +137,7 @@
 								'name' => 'package_id',
 								'options' => $packages,
 								'selected' => $selected_package,
-								'extra' => ['class' => 'form-control']
+								'extra' => "class='form-control input-sm'"
 							]) ?>
 						</div>
 					</div>
