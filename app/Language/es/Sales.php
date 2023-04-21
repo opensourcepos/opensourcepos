@@ -1,7 +1,7 @@
 <?php
 return [
 	"customers_available_points" => "Puntos Disponibles",
-	"rewards_package" => "Premios",
+	"rewards_package" => "Recompensas",
 	"rewards_remaining_balance" => "El remanente de puntos es ",
 	"sales_account_number" => "Cuenta #",
 	"sales_add_payment" => "Agregar Pago",
@@ -107,7 +107,7 @@ return [
 	"sales_key_customer_search" => "Búsqueda de Clientes",
 	"sales_key_finish_quote" => "Finish Quote/Invoice witdout payment",
 	"sales_key_finish_sale" => "Agregar Pago y Completar Factura/Venta",
-	"sales_key_full" => "Abrir en modo Pantalla Completa",
+	"sales_key_full" => "Abrir en Pantalla Completa",
 	"sales_key_function" => "Function",
 	"sales_key_help" => "Atajos",
 	"sales_key_help_modal" => "Abrir Ventana de Atajos",

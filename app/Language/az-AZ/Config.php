@@ -1,6 +1,6 @@
 <?php
 return [
-	"config_address" => "Şirkət Adresi",
+	"config_address" => "Şirkət Unvanı",
 	"config_address_required" => "Şirkətin adı olan boşluq sahəsi doldurulmalıdı.",
 	"config_all_set" => "Bütün fayl icazələri düzgün qurulub!",
 	"config_allow_duplicate_barcodes" => "Dublikat Barkodlarına icazə verin",
