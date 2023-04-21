@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use CodeIgniter\Database\RawSql;
 use DateTime;
 use stdClass;
 use ReflectionClass;
@@ -683,13 +684,38 @@ class Attribute extends Model
 
 	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id): void
 	{
-//TODO: this likely needs to be rewritten as two different queries rather than a subquery within a query.  Then use query_builder for both.
-		$query = 'INSERT INTO ' . $this->db->prefixTable('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')	';
-		$query .= 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
-		$query .= 'FROM ' . $this->db->prefixTable('attribute_links');
-		$query .= 'WHERE item_id = ' . $this->db->escape($item_id);
+
+		// ERROR - 2023-04-19 21:39:45 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'item_id = 1 AND sale_id IS NULL AND receiving_id IS NULL' at line 1 in C:\vroots\osposci4\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:295
+		//Stack trace:
+		//#0 C:\vroots\osposci4\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(295): mysqli->query('INSERT INTO osp...', 0)
+		//#1 C:\vroots\osposci4\vendor\codeigniter4\framework\system\Database\BaseConnection.php(691): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO osp...')
+		//#2 C:\vroots\osposci4\vendor\codeigniter4\framework\system\Database\BaseConnection.php(605): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO osp...')
+		//#3 C:\vroots\osposci4\app\Models\Attribute.php(692): CodeIgniter\Database\BaseConnection->query('INSERT INTO osp...')
+		//#4 C:\vroots\osposci4\app\Models\Sale.php(814): App\Models\Attribute->copy_attribute_links(1, 'sale_id', 4)
+		//#5 C:\vroots\osposci4\app\Controllers\Sales.php(874): App\Models\Sale->save_value(4, '0', Array, 2, 1, '', NULL, NULL, NULL, 0, Array, NULL, Array)
+		//#6 C:\vroots\osposci4\vendor\codeigniter4\framework\system\CodeIgniter.php(934): App\Controllers\Sales->postComplete()
+		//#7 C:\vroots\osposci4\vendor\codeigniter4\framework\system\CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sales))
+		//#8 C:\vroots\osposci4\vendor\codeigniter4\framework\system\CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+		//#9 C:\vroots\osposci4\public\index.php(67): CodeIgniter\CodeIgniter->run()
+		//#10 {main}
+
+//		$this->db->query(
+//			'INSERT INTO ' . $this->db->dbprefix('attribute_links') . ' (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')
+//			SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id) . '
+//			FROM ' . $this->db->dbprefix('attribute_links') . '
+//			WHERE item_id = ' . $this->db->escape($item_id) . ' AND sale_id IS NULL AND receiving_id IS NULL'
+//		);
+
+
+		$query = 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
+		$query .= ' FROM ' . $this->db->prefixTable('attribute_links');
+		$query .= ' WHERE item_id = ' . $this->db->escape($item_id);
 		$query .=' AND sale_id IS NULL AND receiving_id IS NULL';
-		$this->db->query($query);
+
+		$builder = $this->db->table('attribute_links');
+		$builder->ignore(true)->setQueryAsData(new RawSql($query), null, 'item_id, definition_id, attribute_id, '. $sale_receiving_fk )->insertBatch();
+
+
 	}
 
 	public function get_suggestions(int $definition_id, string $term): array

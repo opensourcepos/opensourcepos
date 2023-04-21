@@ -1,9 +1,13 @@
 <?php
 
-namespace app\Libraries;
+namespace App\Libraries;
 
 use Exception;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use App\Libraries\Barcodes\Code39;
+use App\Libraries\Barcodes\Code128;
+use App\Libraries\Barcodes\Ean8;
+use App\Libraries\Barcodes\Ean13;
 
 /**
  * Barcode library
