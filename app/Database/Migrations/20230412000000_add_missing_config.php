@@ -9,6 +9,7 @@ class Migration_add_missing_config extends Migration
 	public function up(): void
 	{
 		$image_values = [
+			['key' => 'account_number', 'value' => ''],  // This has no current maintenance, but it's used in Sales
 			['key' => 'category_dropdown', 'value' => ''],
 			['key' => 'smtp_host', 'value' => ''],
 			['key' => 'smtp_user', 'value' => ''],

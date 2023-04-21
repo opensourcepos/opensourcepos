@@ -873,12 +873,12 @@ $(document).ready(function()
 	});
 
 	$('#finish_sale_button').click(function() {
-		$('#buttons_form').attr('action', "<?php echo esc(site_url("$controller_name/complete"), 'url') ?>");
+		$('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
 		$('#buttons_form').submit();
 	});
 
 	$('#finish_invoice_quote_button').click(function() {
-		$('#buttons_form').attr('action', "<?php echo esc(site_url("$controller_name/complete"), 'url') ?>");
+		$('#buttons_form').attr('action', "<?= "$controller_name/complete" ?>");
 		$('#buttons_form').submit();
 	});
 
@@ -1024,7 +1024,7 @@ document.body.onkeyup = function(e)
 			break;
 		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
 			$("#add_payment_button").click();
-			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			window.location.href = "<?= 'sales/complete' ?>";
 			break;
 		case 56: // Alt + 8 Finish Quote/Invoice without payment
 			$("#finish_invoice_quote_button").click();

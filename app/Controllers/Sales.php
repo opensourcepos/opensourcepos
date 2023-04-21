@@ -634,10 +634,9 @@ class Sales extends Secure_Controller
 	 * @return void
 	 * @throws ReflectionException
 	 */
-	public function complete(): void	//TODO: this function is huge.  Probably should be refactored.
+	public function postComplete(): void	//TODO: this function is huge.  Probably should be refactored.
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
-		$sale_type = $this->sale_lib->get_sale_type();	//TODO: This variable gets overwritten way down below before being used.
 		$data = [];
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 
