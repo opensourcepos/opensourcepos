@@ -14,7 +14,7 @@
 		<div class="row">
 			<div class="col-sm-2" align="left"><br>
 			<p style="min-height:14.7em;"><strong>General Info </p> 
-			<p style="min-height:9.9em;">User Setup</p> 
+			<p style="min-height:9.9em;">User Setup</p><br> 
 			<p>Permissions</p></strong>
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" align="left"><br>
@@ -29,7 +29,8 @@
 						echo "&#187; INTL: ", extension_loaded('intl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
 						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
 						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br> <br>';		
+						echo "&#187; Curl: ", extension_loaded('curl') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br>';		
+						echo "&#187; Xml: ", extension_loaded('xml') ? '<font color="green">Enabled &#x2713</font>' : '<font color="red">Disabled &#x2717</font>', '<br> <br>';		
 					?>
 				User Configuration:<br>
 				.Browser:
