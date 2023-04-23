@@ -55,7 +55,7 @@ return [
 	"taxes_tax_codes_saved_unsuccessfully" => "لم يتم حفظ تغييرات قانون الضريبة",
 	"taxes_tax_excluded" => "لا تشمل الضرائب",
 	"taxes_tax_group" => "المجموعة الضريبية",
-	"taxes_tax_group_not_unique" => "",
+	"taxes_tax_group_not_unique" => "فئة الضرائب يجب ان تكون فريده",
 	"taxes_tax_group_sequence" => "تسلسل مجموعة الضرائب",
 	"taxes_tax_included" => "الضريبة مشمولة",
 	"taxes_tax_jurisdiction" => "الاختصاص الضريبي",

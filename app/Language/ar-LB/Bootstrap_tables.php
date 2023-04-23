@@ -1,6 +1,6 @@
 <?php
 return [
-	"tables_all" => "الجميع",
+	"tables_all" => "الكل",
 	"tables_columns" => "أعمدة",
 	"tables_hide_show_pagination" => "عرض/إخفاء أرقام الصفحات",
 	"tables_loading" => "جارى التحميل، برجاء الإنتظار ...",

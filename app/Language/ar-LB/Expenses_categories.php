@@ -9,7 +9,7 @@ return [
 	"expenses_categories_description" => "وصف النوع",
 	"expenses_categories_error_adding_updating" => "مشكلة أثناء أضافة أو تعديل نوع المصاريف",
 	"expenses_categories_info" => "معلومات عن نوع المصاريف",
-	"expenses_categories_name" => "أسم النوع",
+	"expenses_categories_name" => "اسم الفئة",
 	"expenses_categories_new" => "نوع جديد",
 	"expenses_categories_no_expenses_categories_to_display" => "لا يجد أنواع للعرض",
 	"expenses_categories_none_selected" => "لم تختار أي نوع مصاريف",

@@ -12,7 +12,7 @@ return [
 	"expenses_category_required" => "خانة مطلوبة: الفئات",
 	"expenses_check" => "شيك",
 	"expenses_check_filter" => "تصفية",
-	"expenses_confirm_delete" => "تأكيد المسح؟",
+	"expenses_confirm_delete" => "هل أنت متأكد أنك تريد حذف المصاريف المحددة؟",
 	"expenses_confirm_restore" => "هل تريد بالتأكيد استعادة النفقات المحددة؟",
 	"expenses_credit" => "بطاقة ائتمان",
 	"expenses_credit_filter" => "بطاقة ائتمان",
