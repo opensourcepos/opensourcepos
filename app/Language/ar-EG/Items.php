@@ -86,7 +86,7 @@ return [
 	"items_reorder_level" => "نقطة إعادة الطلب",
 	"items_reorder_level_number" => "نقطة إعادة الطلب يجب أن تكون رقم.",
 	"items_reorder_level_required" => "نقطة إعادة الطلب مطلوبة.",
-	"items_retrive_item_info" => "استرجاع بيانات الصنف",
+	"items_retrive_item_info" => "الحصول على بيانات الصنف",
 	"items_sales_tax_1" => "ضريبة المبيعات",
 	"items_sales_tax_2" => "ضريبة المبيعات 2",
 	"items_search_attributes" => "بحث الحقول المخصصة",

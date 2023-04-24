@@ -1,5 +1,5 @@
 <?php
-return [
+;return [
 	"reports_all" => "الكل",
 	"reports_authority" => "السلطة",
 	"reports_canceled" => "ملغى",
@@ -19,7 +19,7 @@ return [
 	"reports_completed_sales" => "المبيعات المكتملة",
 	"reports_confirm_delete" => "هل انت متاكد من مسح البيانات المحددة؟",
 	"reports_confirm_restore" => "هل انت متاكد من استعادة البيانات المحددة؟",
-	"reports_cost" => "التكلفة",
+	"reports_cost" => "سعر التكلفة",
 	"reports_cost_price" => "سعر التكلفة",
 	"reports_count" => "عدد",
 	"reports_customer" => "عميل",
@@ -78,7 +78,7 @@ return [
 	"reports_payments" => "المدفوعات",
 	"reports_payments_summary_report" => "ملخص المدفوعات",
 	"reports_profit" => "الربح",
-	"reports_quantity" => "الكمية المشتراه",
+	"reports_quantity" => "الكمية",
 	"reports_quantity_purchased" => "المستلم",
 	"reports_quotes" => "عروض اسعار",
 	"reports_received_by" => "مستلمة بواسطة",
@@ -122,7 +122,7 @@ return [
 	"reports_suppliers_summary_report" => "تقرير ملخص الموردين",
 	"reports_tax" => "الضريبة",
 	"reports_tax_category" => "الفئة الضريبية",
-	"reports_tax_name" => "",
+	"reports_tax_name" => "اسم الضريبه",
 	"reports_tax_percent" => "نسبة الضريبة",
 	"reports_tax_rate" => "معدل الضريبة",
 	"reports_taxes" => "الضرائب",
