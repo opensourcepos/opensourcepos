@@ -38,7 +38,7 @@ return [
 	"employees_unsuccessful_change_password" => "فشل في تغيير كلمة المرور.",
 	"employees_update" => "تحديث بيانات موظف",
 	"employees_username" => "اسم المستخدم",
-	"employees_username_duplicate" => "",
+	"employees_username_duplicate" => "حساب المحدد هو موجود في قاعدة البيانات. نرجوا استخدام اسم حساب مختلف.",
 	"employees_username_minlength" => "اسم المستخدم يجب أن يكون 5 حروف على الأقل.",
 	"employees_username_required" => "اسم المستخدم مطلوب.",
 ];
