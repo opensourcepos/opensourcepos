@@ -8,7 +8,7 @@ return [
 	"expenses_cannot_be_deleted" => "لا يمكن المسح",
 	"expenses_cash" => "نقدا",
 	"expenses_cash_filter" => "نقدا",
-	"expenses_categories_name" => "اسماء الفئات",
+	"expenses_categories_name" => "اسم الفئة",
 	"expenses_category_required" => "خانة مطلوبة: الفئات",
 	"expenses_check" => "شيك",
 	"expenses_check_filter" => "تصفية",
