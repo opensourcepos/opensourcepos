@@ -5,7 +5,7 @@ return [
 	"expenses_categories_cannot_be_deleted" => "Impossible de supprimer la ou les dépenses de catégorie",
 	"expenses_categories_category_id" => "ID",
 	"expenses_categories_confirm_delete" => "Êtes-vous sûr de vouloir supprimer la catégorie de dépenses sélectionnée ?",
-	"expenses_categories_confirm_restore" => "Êtes-vous certain de vouloir restorer la catégorie de dépenses selectionnée ?",
+	"expenses_categories_confirm_restore" => "Voulez-vous restaurer la Catégorie de Dépense selectionnée ?",
 	"expenses_categories_description" => "Description de la catégorie",
 	"expenses_categories_error_adding_updating" => "Erreur lors de l'ajout / mise à jour de la catégorie de dépenses",
 	"expenses_categories_info" => "Catégorie Info sur les dépenses",

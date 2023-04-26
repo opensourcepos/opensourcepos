@@ -2,7 +2,7 @@
 return [
 	"account_number" => "Account #",
 	"account_number_duplicate" => "Account Number is already present in the database.",
-	"available_points" => "Available Points",
+	"available_points" => "Points Available",
 	"available_points_value" => "",
 	"average" => "Average spent",
 	"avg_discount" => "Average discount",
@@ -41,7 +41,7 @@ return [
 	"min" => "Min. spent",
 	"new" => "New Customer",
 	"none_selected" => "You have not selected any customer(s) to delete.",
-	"one_or_multiple" => "customer(s)",
+	"one_or_multiple" => "Customer(s)",
 	"quantity" => "Quantity",
 	"stats_info" => "Stats",
 	"successful_adding" => "You have successfully added customer",

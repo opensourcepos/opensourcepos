@@ -1,6 +1,6 @@
 <?php
 return [
-	"customers_available_points" => "Available Points",
+	"customers_available_points" => "Points Available",
 	"rewards_package" => "Rewards",
 	"rewards_remaining_balance" => "Reward Points remaining value is ",
 	"account_number" => "Account #",
@@ -40,7 +40,7 @@ return [
 	"customer_discount" => "Discount",
 	"customer_email" => "Email",
 	"customer_location" => "Location",
-	"customer_mailchimp_status" => "MailChimp status",
+	"customer_mailchimp_status" => "MailChimp Status",
 	"customer_optional" => "(Required for Due Payments)",
 	"customer_required" => "(Required)",
 	"customer_total" => "Total",

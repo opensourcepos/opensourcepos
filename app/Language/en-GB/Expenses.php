@@ -43,7 +43,7 @@ return [
 	"expenses_successful_deleted" => "Expense delete successful",
 	"expenses_successful_updating" => "Expense update successful",
 	"expenses_supplier_name" => "Supplier",
-	"expenses_supplier_tax_code" => "VAT No.",
+	"expenses_supplier_tax_code" => "VAT No",
 	"expenses_tax_amount" => "Tax",
 	"expenses_tax_amount_number" => "",
 	"expenses_update" => "Update Expense",
