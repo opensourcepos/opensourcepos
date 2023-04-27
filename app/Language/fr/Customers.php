@@ -41,7 +41,7 @@ return [
 	"customers_min" => "Min. dépensé",
 	"customers_new" => "Nouveau client",
 	"customers_none_selected" => "Vous n'avez sélectionné aucun client à supprimer.",
-	"customers_one_or_multiple" => "client(s)",
+	"customers_one_or_multiple" => "Client(s)",
 	"customers_quantity" => "Quantité",
 	"customers_stats_info" => "Statistiques",
 	"customers_successful_adding" => "Vous avez ajouté un nouveau client",

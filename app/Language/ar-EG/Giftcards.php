@@ -5,7 +5,7 @@ return [
 	"giftcards_bulk_edit" => "تحرير جماعى",
 	"giftcards_cannot_be_deleted" => "لايمكن حذف بطاقات الهدية المختارة، واحد أو أكثر منها لديه مبيعات.",
 	"giftcards_cannot_find_giftcard" => "لايمكن إيجاد معلومات حول كارت الهدية.",
-	"giftcards_cannot_use" => "كارت الهدية %1                         لا يمكن استعمالة في هذه العملية: اسم الزبون غير صحيح.",
+	"giftcards_cannot_use" => "كارت الهدية %1 لا يمكن استعمالة في هذه العملية: اسم الزبون غير صحيح.",
 	"giftcards_card_value" => "القيمة",
 	"giftcards_category" => "الفئة",
 	"giftcards_change_all_to_allow_alt_desc" => "السماح بوصف بديل للكل.",

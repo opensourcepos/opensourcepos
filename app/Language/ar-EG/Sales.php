@@ -1,7 +1,7 @@
 <?php
 return [
 	"customers_available_points" => "النقاط المتاحة",
-	"rewards_package" => "مكافآت",
+	"rewards_package" => "فئة المكافئة",
 	"rewards_remaining_balance" => "رصيد النقاط المتبقي هو ",
 	"sales_account_number" => "حساب",
 	"sales_add_payment" => "إضافة دفع",
@@ -122,7 +122,7 @@ return [
 	"sales_key_suspended" => "إظهار عمليات البيع المحفظه",
 	"sales_key_system" => "اختصارات متاحه",
 	"sales_key_tendered" => "تعديل المبلغ المدفوع",
-	"sales_key_title" => "Sales Keyboard Shortcuts",
+	"sales_key_title" => "اختصارات صفحة المبيعات",
 	"sales_mc" => "",
 	"sales_mode" => "وضع التسجيل",
 	"sales_must_enter_numeric" => "يجب إدخال رقم للمبلغ الفعلى المدفوع.",

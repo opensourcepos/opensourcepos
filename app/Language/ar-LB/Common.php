@@ -41,7 +41,7 @@ return [
 	"common_import_full_path" => "المسار الكامل لملف اكسل مطلوب",
 	"common_import_remove_file" => "إزالة",
 	"common_import_select_file" => "اختار ملف",
-	"common_inv" => "المخزن",
+	"common_inv" => "فاتورة",
 	"common_last_name" => "الاسم الأخير",
 	"common_last_name_required" => "الاسم الأخير مطلوب.",
 	"common_last_page" => "الأخيرة",
