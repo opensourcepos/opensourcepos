@@ -213,9 +213,9 @@ class Employees extends Persons
 	 * @param $employee_id
 	 * @return void
 	 */
-	public function check_username($employee_id): void
+	public function getCheckUsername($employee_id): void
 	{
-		$exists = $this->employee->username_exists($employee_id, $this->request->getVar('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+		$exists = $this->employee->username_exists($employee_id, $this->request->getGet('username'));
 		echo !$exists ? 'true' : 'false';
 	}
 }

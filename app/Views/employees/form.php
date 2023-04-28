@@ -226,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo esc("$controller_name/check_username/$employee_id") ?>'
+				remote: '<?php echo esc("$controller_name/checkUsername/$employee_id") ?>'
 			},
 			password:
 			{
