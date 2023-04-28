@@ -30,7 +30,7 @@ class Secure_Controller extends BaseController
 
 		if(!$this->employee->is_logged_in())
 		{
-			return redirect()->to('login');
+			header("Location:".base_url('login'));
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
