@@ -139,7 +139,7 @@
 									{
 										$lang_key = $module->module_id . '_' . $exploded_permission[1];
 										$lang_line = lang($lang_key);
-										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
+										$lang_line = (lang($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
 										if(!empty($lang_line))
 										{
 							?>

@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-sm-2" style="text-align: left;"><br>
 			<p style="min-height:14.7em;"><strong>General Info </p> 
-			<p style="min-height:9.9em;">User Setup</p> 
+			<p style="min-height:9.9em;">User Setup</p><br>
 			<p>Permissions</p></strong>
 			</div> 
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
@@ -25,11 +25,11 @@
 					<?php 
 						echo "&#187; GD: ", extension_loaded('gd') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
 						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-						echo "&#187; XML: ", extension_loaded('xml') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; INTL: ", extension_loaded('intl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; OpenSSL: ", extension_loaded('openssl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; MBString: ", extension_loaded('mbstring') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
-						echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br> <br>';
+						echo "&#187; Curl: ", extension_loaded('curl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
+						echo "&#187; Xml: ", extension_loaded('xml') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br><br>';
 					?>
 				User Configuration:<br>
 				.Browser:
