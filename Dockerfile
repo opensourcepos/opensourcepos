@@ -1,4 +1,4 @@
-FROM php:7.4-apache AS ospos
+FROM php:8-apache AS ospos
 LABEL maintainer="jekkos"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -13,7 +13,7 @@ RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/time
 WORKDIR /app
 COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod -R 750 /app/writable/uploads /app/writable/logs && chown -R www-data:www-data /app/writable /app/application
+RUN chmod -R 750 /app/writable/uploads /app/writable/logs && chown -R www-data:www-data /app/writable 
 
 FROM ospos AS ospos_test
 

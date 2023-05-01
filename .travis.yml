@@ -22,9 +22,8 @@ script:
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
   - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
-    sh -c "npm install && bower install && grunt package"
+    sh -c "npm install && npm run build"
   - docker build . --target ospos -t ospos
-  - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
   - docker build database/ -t jekkos/opensourcepos:sqlscript
 env:
   global:
