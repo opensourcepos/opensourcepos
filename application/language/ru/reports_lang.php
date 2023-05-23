@@ -1,7 +1,7 @@
 <?php
 $lang["reports_all"] = "Все";
 $lang["reports_authority"] = "Полномочия";
-$lang["reports_canceled"] = "Аннулированно";
+$lang["reports_canceled"] = "Отменено";
 $lang["reports_categories"] = "Категории";
 $lang["reports_categories_summary_report"] = "Сводный отчет по категориям";
 $lang["reports_category"] = "Категория";
@@ -86,7 +86,7 @@ $lang["reports_receiving_type"] = "Тип закупки";
 $lang["reports_receivings"] = "Закупки";
 $lang["reports_reorder_level"] = "Уровень повторного заказа";
 $lang["reports_report"] = "Отчет";
-$lang["reports_report_input"] = "Входной отчет";
+$lang["reports_report_input"] = "Ввод отчета";
 $lang["reports_reports"] = "Отчеты";
 $lang["reports_requisition"] = "";
 $lang["reports_requisition_by"] = "";
