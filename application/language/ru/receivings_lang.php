@@ -1,9 +1,9 @@
 <?php
 $lang["receivings_amount_due"] = "";
-$lang["receivings_cancel_receiving"] = "Аннулировать";
+$lang["receivings_cancel_receiving"] = "Отменить";
 $lang["receivings_cannot_be_deleted"] = "Не удалось удалить закупку(и).";
 $lang["receivings_comments"] = "Комментарии";
-$lang["receivings_complete_receiving"] = "Закрыть";
+$lang["receivings_complete_receiving"] = "Завершить";
 $lang["receivings_confirm_cancel_receiving"] = "Вы уверены, что хотите удалить эту закупку? Все товары будут очищены.";
 $lang["receivings_confirm_delete"] = "Вы уверены, что хотите удалить эту закупку? Это действие нельзя отменить.";
 $lang["receivings_confirm_finish_receiving"] = "Вы уверены, что хотите отправить эту закупку? Это действие нельзя отменить.";
