@@ -19,9 +19,6 @@ Read-Host -Prompt "Press any key to continue"
 
 # npm i npm@9.4.2
 
-Write-Output "npm-check-updates"
-npm i npm-check-updates@16.6.5
-
 Write-Output "bootstrap"
 npm i bootstrap@3.4.1
 
@@ -31,26 +28,29 @@ npm i bootswatch@3.4.1
 Write-Output "bootstrap-daterangepicker"
 npm i bootstrap-daterangepicker@2.1.27
 
+Write-Output "bootstrap-datetimepicker"
+npm i git://github.com/smalot/bootstrap-datetimepicker.git#master
+
 Write-Output "bootstrap-notify"
 npm i bootstrap-notify@3.1.3
 
-Write-Output "bootstrap-selec"
+Write-Output "bootstrap-select"
 npm i bootstrap-select@1.13.18
 
 Write-Output "bootstrap-table"
 npm i bootstrap-table@1.18.1
 
+Write-Output "bootstrap-tagsinput"
+npm i bootstrap-tagsinput@0.7.1
+
 Write-Output "bootstrap-toggle"
 npm i bootstrap-toggle@2.2.2
-
-Write-Output "jasny-bootstrap"
-npm i jasny-bootstrap@3.1.3
 
 Write-Output "bootstrap3-dialog"
 npm i git://github.com/nakupanda/bootstrap3-dialog.git#master
 
-Write-Output "bootstrap-tagsinput"
-npm i bootstrap-tagsinput@0.7.1
+Write-Output "jasny-bootstrap"
+npm i jasny-bootstrap@3.1.3
 
 Write-Output "bootstrap5"
 npm i bootstrap5@npm:bootstrap@5.2.3
@@ -109,6 +109,9 @@ npm i jspdf-autotable@2.0.17
 Write-Output "es6-promise"
 npm i es6-promise@4.2.8
 
+Write-Output "npm-check-updates"
+npm i -D npm-check-updates@16.6.5
+
 Write-Output "gulp"
 npm i -D gulp@4.0.2
 
@@ -124,6 +127,20 @@ npm i -D gulp-inject@5.0.5
 Write-Output "gulp-concat"
 npm i -D gulp-concat@2.6.1
 
+Write-Output "gulp-clean-css"
+npm i -D gulp-clean-css
 
-# Obsolete - Hopefully not needed and can be replaced by base datetimepicker?
-# npm i smalot-bootstrap-datetimepicker@2.4.4
+Write-Output "gulp-rename"
+npm i -D gulp-rename
+
+Write-Output "gulp-uglify"
+npm i -D gulp-uglify
+
+Write-Output "gulp-debug"
+npm i -D gulp-debug
+
+Write-Output "stream-series"
+npm i -D stream-series
+
+Write-Output "readable-stream"
+npm i -D readable-stream

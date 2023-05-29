@@ -22,9 +22,7 @@ $request = Services::request();
 	<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
 		<!-- inject:debug:css -->
 		<!-- endinject -->
-		<!-- inject:debug:0:js -->
-		<!-- endinject -->
-		<!-- inject:debug:1:js -->
+		<!-- inject:debug:js -->
 		<!-- endinject -->
 	<?php else : ?>
 		<!--inject:prod:css -->
@@ -34,9 +32,7 @@ $request = Services::request();
 	<?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc($config['theme']) . '.css' ?>"/>
 	<?php } ?>
-		<!-- inject:prod:0:js -->
-		<!-- endinject -->
-		<!-- inject:prod:1:js -->
+		<!-- inject:prod:js -->
 		<!-- endinject -->
 	<?php endif; ?>
 
