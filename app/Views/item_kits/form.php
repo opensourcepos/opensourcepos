@@ -49,7 +49,7 @@
 					'id' => 'item_name',
 					'class' => 'form-control input-sm',
 					'size' => '50',
-					'value' => esc($selected_kit_item)
+					'value' => $selected_kit_item
 				]) ?>
 					<?php echo form_hidden('kit_item_id', $selected_kit_item_id) ?>
 
@@ -253,7 +253,7 @@ $(document).ready(function()
 
 
 	$('#item_name').autocomplete({
-		source: "<?php echo 'items/suggest_kits' ?>",
+		source: "<?php echo 'items/suggestKits' ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
