@@ -2,7 +2,7 @@
 
 namespace app\Libraries;
 
-use App\Models\tokens\Token;
+use App\Models\Tokens\Token;
 
 /**
  * Token library

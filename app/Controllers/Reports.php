@@ -80,6 +80,11 @@ class Reports extends Secure_Controller
 		helper('report');
 	}
 
+	public function index(): void
+	{
+		$this->getIndex();
+	}
+
 	//Initial Report listing screen
 	public function getIndex(): void
 	{
@@ -1662,7 +1667,7 @@ class Reports extends Secure_Controller
 		return $sale_type_options;
 	}
 
-	public function detailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
+	public function getDetailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
 		$this->clearCache();
 
