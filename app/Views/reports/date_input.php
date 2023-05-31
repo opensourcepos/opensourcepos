@@ -111,7 +111,7 @@ $(document).ready(function()
 	<?php echo view('partial/daterangepicker') ?>
 
 	$("#generate_report").click(function()
-	{		
+	{
 		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val() || 'all', $("#discount_type_id").val() || 0 ].join("/");
 	});
 });

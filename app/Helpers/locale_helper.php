@@ -384,7 +384,7 @@ function to_decimals(?float $number, string $decimals = NULL, int $type = Number
 
 	if(empty($config['thousands_separator']))
 	{
-		$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+		$fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
 	$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
 
