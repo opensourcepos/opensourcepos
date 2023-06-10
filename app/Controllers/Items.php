@@ -187,9 +187,9 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function suggest(): void
+	public function getSuggest(): void
 	{
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
@@ -201,9 +201,9 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_kits(): void
+	public function getSuggestKits(): void
 	{
-		$suggestions = $this->item->get_kit_search_suggestions($this->request->getPostGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
+		$suggestions = $this->item->get_kit_search_suggestions($this->request->getGet('term'), ['search_custom' => FALSE, 'is_deleted' => FALSE], TRUE);
 
 		echo json_encode($suggestions);
 	}
