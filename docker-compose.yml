@@ -14,10 +14,10 @@ networks:
 
 services:
     sqlscript:
-        image: jekkos/opensourcepos:sqlscript
+        image: jekkos/opensourcepos:sql-ci4
         command: /bin/sh -c 'exit 0'
     ospos:
-        image: jekkos/opensourcepos:3.3.8
+        image: jekkos/opensourcepos:ci4-upgrade
         restart: always
         depends_on:
           - mysql
@@ -30,7 +30,7 @@ services:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
         environment:
-          - CI_ENV=production
+          - CI_ENVIRONMENT=production
           - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
