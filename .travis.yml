@@ -21,8 +21,8 @@ script:
   - version=$(grep application_version app/Config/App.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
-  - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
-    sh -c "npm install && npm run build"
+  - docker run --rm -it -v $(pwd):/app -w /app node/node
+    sh -c "npm install && npm install -g gulp && npm run build"
   - docker build . --target ospos -t ospos
   - docker build database/ -t jekkos/opensourcepos:sqlscript
 env:
