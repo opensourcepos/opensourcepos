@@ -17,23 +17,24 @@ before_install:
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker run --rm -v $(pwd):/app opensourcepos/composer composer install
+  - docker run --rm -v $(pwd):/app opensourcepos/composer:ci4 composer install
   - version=$(grep application_version app/Config/App.php | sed "s/.*=\s'\(.*\)';/\1/g")
+  - sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$rev'/g" app/Config/OSPOS.php
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
-  - docker run --rm -it -v $(pwd):/app -w /app opensourcepos/node-grunt-bower
-    sh -c "npm install && npm run build"
+  - docker run --privileged --rm -it -v $(pwd):/app -w /app node
+    sh -c "npm install && npm install -g gulp && npm run build"
   - docker build . --target ospos -t ospos
-  - docker build database/ -t jekkos/opensourcepos:sqlscript
+  - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
   global:
   - DOCKER_COMPOSE_VERSION=1.29.1
   - BRANCH=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
+  - TAG=${TRAVIS_TAG:-$BRANCH}
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
 after_success:
-  - TAG=${TRAVIS_TAG:-$BRANCH}
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
-    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sqlscript"
+    "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sql-$TAG"
   - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
   - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 before_deploy:
