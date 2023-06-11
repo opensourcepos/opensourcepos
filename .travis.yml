@@ -24,7 +24,7 @@ script:
   - docker run --rm -it -v $(pwd):/app -w /app node
     sh -c "npm install && npm install -g gulp && npm run build"
   - docker build . --target ospos -t ospos
-  - docker build database/ -t jekkos/opensourcepos:sqlscript
+  - docker build app/Database/ -t jekkos/opensourcepos:sqlscript
 env:
   global:
   - DOCKER_COMPOSE_VERSION=1.29.1
