@@ -102,6 +102,10 @@ class Database extends Config
     {
         parent::__construct();
 
+        $this->development['hostname'] =  getenv('MYSQL_HOST_NAME') ? getenv('MYSQL_HOST_NAME') : 'mysql';
+        $this->development['username'] =  getenv('MYSQL_USERNAME') ? getenv('MYSQL_USERNAME') : 'admin';
+        $this->development['password'] =  getenv('MYSQL_PASSWORD') ? getenv('MYSQL_PASSWORD') : 'pointofsale';
+
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.

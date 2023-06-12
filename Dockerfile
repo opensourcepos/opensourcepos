@@ -13,7 +13,7 @@ RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/time
 WORKDIR /app
 COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod -R 750 /app/writable/uploads /app/writable/logs && chown -R www-data:www-data /app/writable 
+RUN chmod -R 770 /app/writable/uploads /app/writable/logs /app/writable/cache && chown -R www-data:www-data /app/writable 
 
 FROM ospos AS ospos_test
 
@@ -30,7 +30,6 @@ CMD ["/app/vendor/phpunit/phpunit/phpunit"]
 
 FROM ospos AS ospos_dev
 
-RUN echo "CI_ENVIRONMENT=development" >> /app/.env
 RUN mkdir -p /app/bower_components && ln -s /app/bower_components /var/www/html/bower_components
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \

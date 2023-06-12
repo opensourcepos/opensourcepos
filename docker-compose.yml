@@ -30,7 +30,7 @@ services:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
         environment:
-          - CI_ENV=production
+          - CI_ENVIRONMENT=production
           - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
