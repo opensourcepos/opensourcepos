@@ -102,7 +102,7 @@ class Database extends Config
     {
         parent::__construct();
 
-        $this->development['hostname'] =  getenv('MYSQL_HOST_NAME') ? getenv('MYSQL_HOST_NAME') : 'mysql';
+        $this->development['hostname'] =  getenv('MYSQL_HOST_NAME') ? getenv('MYSQL_HOST_NAME') : 'localhost';
         $this->development['username'] =  getenv('MYSQL_USERNAME') ? getenv('MYSQL_USERNAME') : 'admin';
         $this->development['password'] =  getenv('MYSQL_PASSWORD') ? getenv('MYSQL_PASSWORD') : 'pointofsale';
 
