@@ -1,10 +1,10 @@
 FROM php:8-apache AS ospos
 LABEL maintainer="jekkos"
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    libicu-dev \
-    libgd-dev \
-    openssl
+RUN DEBIAN_FRONTEND=noninteractive apt-get install  -y \
+                    libicu-dev \
+                    libgd-dev \
+                    openssl
 
 RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd
