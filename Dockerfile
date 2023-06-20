@@ -1,10 +1,7 @@
 FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
 
-RUN apt update && apt-get install  -y \
-        libicu-dev \
-        libgd-dev \
-        openssl
+RUN apt update && apt-get install -y libicu-dev libgd-dev && apt clean
 
 RUN a2enmod rewrite headers
 RUN docker-php-ext-install mysqli bcmath intl gd
