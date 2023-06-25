@@ -1,13 +1,5 @@
-FROM php:8-apache AS ospos
+FROM opensourcepos/base AS ospos
 LABEL maintainer="jekkos"
-
-# workaround for travis docker issue (https://stackoverflow.com/questions/71941032/why-i-cannot-run-apt-update-inside-a-fresh-ubuntu22-04)
-RUN sed -i -e 's/^APT/# APT/' -e 's/^DPkg/# DPkg/' /etc/apt/apt.conf.d/docker-clean
-RUN apt update && apt-get install -y libicu-dev libgd-dev 
-
-RUN a2enmod rewrite headers
-RUN docker-php-ext-install mysqli bcmath intl gd
-RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
 COPY . /app
