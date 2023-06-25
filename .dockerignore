@@ -1,6 +1,6 @@
 node_modules
 tmp
-application/config/email.php
+app/Config/Email.php
 *.patch
 patches/
 .idea/
@@ -16,4 +16,6 @@ git-svn-diff.py
 *~
 *.~
 *.log
-application/sessions/*
+app/writable/session/*
+!app/writable/session/index.html
+
