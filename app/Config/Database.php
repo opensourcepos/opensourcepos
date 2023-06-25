@@ -112,9 +112,20 @@ class Database extends Config
 			'port' => 3306
 		];
 
-        $this->development['hostname'] =  getenv('MYSQL_HOST_NAME') ? getenv('MYSQL_HOST_NAME') : 'localhost';
-        $this->development['username'] =  getenv('MYSQL_USERNAME') ? getenv('MYSQL_USERNAME') : 'admin';
-        $this->development['password'] =  getenv('MYSQL_PASSWORD') ? getenv('MYSQL_PASSWORD') : 'pointofsale';
+		if(!getenv('database.development.hostname'))
+		{
+			$this->development['hostname'] =  getenv('database.development.hostname');
+		}
+
+		if(!getenv('database.development.hostname'))
+		{
+			$this->development['username'] =  getenv('database.development.username');
+		}
+
+		if(!getenv('database.development.hostname'))
+		{
+			$this->development['password'] =  getenv('database.development.password');
+		}
 
 		// Ensure that we always set the database group to 'tests' if
 		// we are currently running an automated test suite, so that
