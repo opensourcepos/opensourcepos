@@ -1,14 +1,5 @@
-FROM php:8-apache AS ospos
+FROM opensourcepos/base AS ospos
 LABEL maintainer="jekkos"
-
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    libicu-dev \
-    libgd-dev \
-    openssl
-
-RUN a2enmod rewrite headers
-RUN docker-php-ext-install mysqli bcmath intl gd
-RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
 COPY . /app
