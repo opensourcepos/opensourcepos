@@ -33,10 +33,10 @@ services:
           - CI_ENVIRONMENT=production
           - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
-          - MYSQL_USERNAME=admin
-          - MYSQL_PASSWORD=pointofsale
+          - database.development.username=admin
+          - database.development.password=pointofsale
           - MYSQL_DB_NAME=ospos
-          - MYSQL_HOST_NAME=mysql
+          - database.development.hostname=mysql
 
     mysql:
         image: mariadb:10.5
