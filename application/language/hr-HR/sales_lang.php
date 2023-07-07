@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "";
 $lang["rewards_package"] = "";
 $lang["rewards_remaining_balance"] = "";
@@ -37,7 +36,7 @@ $lang["sales_credit_filter"] = "";
 $lang["sales_current_table"] = "";
 $lang["sales_customer"] = "Kupac";
 $lang["sales_customer_address"] = "Adresa kupca";
-$lang["sales_customer_discount"] = "Discount";
+$lang["sales_customer_discount"] = "Popust";
 $lang["sales_customer_email"] = "e-mail kupca";
 $lang["sales_customer_location"] = "Mjesto kupca";
 $lang["sales_customer_mailchimp_status"] = "";
@@ -53,7 +52,7 @@ $lang["sales_date_type"] = "Datum je potreban";
 $lang["sales_debit"] = "Debitna kartica";
 $lang["sales_debit_filter"] = "";
 $lang["sales_delete"] = "";
-$lang["sales_delete_confirmation"] = "Želite li obrisati ovu prodaju. Ova akcija ne može se vratiti?";
+$lang["sales_delete_confirmation"] = "Želite li obrisati ovu prodaju? Ova akcija ne može se vratiti.";
 $lang["sales_delete_entire_sale"] = "Obrisati cjelokupnu prodaju";
 $lang["sales_delete_successful"] = "Uspješno ste obrisali prodaju";
 $lang["sales_delete_unsuccessful"] = "Neuspješno brisanje prodaje";
