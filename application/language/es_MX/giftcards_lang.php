@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "Inventario para agregar o restar.";
 $lang["giftcards_allow_alt_description"] = "Permitir Descripción Alterna";
 $lang["giftcards_bulk_edit"] = "Editor Masivo";
@@ -36,9 +35,9 @@ $lang["giftcards_low_inventory_giftcards"] = "Tarjetas de Regalo con Inventario 
 $lang["giftcards_manually_editing_of_quantity"] = "Editor Manual de Cantidad";
 $lang["giftcards_must_select_giftcard_for_barcode"] = "Debes seleccionar al menos (1) Tarjeta de Regalo para generar Códigos de Barra.";
 $lang["giftcards_new"] = "Nueva Tarjeta de Regalo";
-$lang["giftcards_no_description_giftcards"] = "";
-$lang["giftcards_no_giftcards_to_display"] = "";
-$lang["giftcards_none"] = "";
+$lang["giftcards_no_description_giftcards"] = "Gif Cards sin Descripción";
+$lang["giftcards_no_giftcards_to_display"] = "No hay Gift Cards para mostrar.";
+$lang["giftcards_none"] = "Ninguno";
 $lang["giftcards_none_selected"] = "";
 $lang["giftcards_number"] = "";
 $lang["giftcards_number_information"] = "";
