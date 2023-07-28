@@ -39,7 +39,7 @@
     "grunt-contrib-concat": "~0.5.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^0.14.0",
-    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-jshint": "~3.2.0",
     "grunt-contrib-uglify": "~5.0.1",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-license-bower": "~1.0.1",
