@@ -28,7 +28,6 @@ services:
           - logs:/app/application/logs
         environment:
           - CI_ENV=${OSPOS_CI_ENV}
-          - FORCE_HTTPS=true
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=${OSPOS_MYSQL_USERNAME}
           - MYSQL_PASSWORD=${OSPOS_MYSQL_PASSWORD}
