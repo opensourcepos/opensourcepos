@@ -31,7 +31,6 @@ services:
           - logs:/app/application/logs
         environment:
           - CI_ENV=production
-          - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
