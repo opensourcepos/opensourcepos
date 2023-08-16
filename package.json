@@ -26,11 +26,12 @@
     "POS"
   ],
   "devDependencies": {
-    "grunt": "^1.5.3",
+    "grunt": "^1.6.1",
     "grunt-bower": "^0.21.4",
     "grunt-bower-concat": "^1.0.0",
     "grunt-bower-licensechecker": "^0.1.2",
     "grunt-bowercopy": "^1.2.5",
+    "grunt-bump": "^0.8.0",
     "grunt-cache-breaker": "^2.0.1",
     "grunt-cli": "^1.4.3",
     "grunt-composer": "^0.4.5",
