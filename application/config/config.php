@@ -65,7 +65,7 @@ $config['db_log_enabled'] = FALSE;
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] .= '//' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
+$config['base_url'] = '//' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
 /*
