@@ -1,10 +1,10 @@
 <?php
 return [
-	"enum_half_down" => "Mitad abajo",
-	"enum_half_even" => "Mitad par",
-	"enum_half_five" => "Cinco y media",
-	"enum_half_odd" => "Mitad impar",
-	"enum_half_up" => "Medio arriba",
-	"enum_round_down" => "Truncado",
-	"enum_round_up" => "Redondeo arriba",
+	"half_down" => "Mitad abajo",
+	"half_even" => "Mitad par",
+	"half_five" => "Cinco y media",
+	"half_odd" => "Mitad impar",
+	"half_up" => "Medio arriba",
+	"round_down" => "Truncado",
+	"round_up" => "Redondeo arriba",
 ];
