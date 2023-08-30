@@ -368,7 +368,7 @@ class Reports extends Secure_Controller
 		$data['mode'] = 'sale';
 		$data['discount_type_options'] = array(
 			'0' => $this->lang->line('reports_discount_percent'),
-			'1'=> $this->lang->line('reports_discount_fixed'));
+			'1' => $this->lang->line('reports_discount_fixed'));
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$this->load->view('reports/date_input', $data);
@@ -913,19 +913,23 @@ class Reports extends Secure_Controller
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$data['payment_type'] = $this->get_payment_type();
+
 		$this->load->view('reports/specific_customer_input', $data);
 	}
 
 	public function get_payment_type()
 	{
-			$payment_type = array( 'all' => $this->lang->line('common_none_selected_text'),
-					'cash' => $this->lang->line('sales_cash'),
-					'due' => $this->lang->line('sales_due'),
-					'check' => $this->lang->line('sales_check'),
-					'credit' => $this->lang->line('sales_credit'),
-					'debit' => $this->lang->line('sales_debit'),
-					'invoices' => $this->lang->line('sales_invoice'));
-			return $payment_type;
+		$payment_type = array(
+			'all' => $this->lang->line('common_none_selected_text'),
+			'cash' => $this->lang->line('sales_cash'),
+			'due' => $this->lang->line('sales_due'),
+			'check' => $this->lang->line('sales_check'),
+			'credit' => $this->lang->line('sales_credit'),
+			'debit' => $this->lang->line('sales_debit'),
+			'invoices' => $this->lang->line('sales_invoice')
+		);
+
+		return $payment_type;
 	}
 
 	public function specific_customer($start_date, $end_date, $customer_id, $sale_type, $payment_type)
@@ -1350,6 +1354,7 @@ class Reports extends Secure_Controller
 		}
 		$sale_type_options['canceled'] = $this->lang->line('reports_canceled');
 		$sale_type_options['returns'] = $this->lang->line('reports_returns');
+
 		return $sale_type_options;
 	}
 
@@ -1451,6 +1456,7 @@ class Reports extends Secure_Controller
 			'details_data_rewards' => $details_data_rewards,
 			'overall_summary_data' => $this->xss_clean($model->getSummaryData($inputs))
 		);
+
 		$this->load->view('reports/tabular_details', $data);
 	}
 
