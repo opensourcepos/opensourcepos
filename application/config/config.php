@@ -65,7 +65,9 @@ $config['db_log_enabled'] = FALSE;
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '//' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
+$config['https_on'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
+$config['base_url'] = $config['https_on'] ? 'https' : 'http';
+$config['base_url'] .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') ;
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
 /*
@@ -436,7 +438,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix'] = '';
 $config['cookie_domain'] = '';
 $config['cookie_path'] = '/';
-$config['cookie_secure'] = TRUE;
+$config['cookie_secure'] = $config['https_on'];
 $config['cookie_httponly'] = TRUE;
 
 /*
