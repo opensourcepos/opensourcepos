@@ -28,6 +28,8 @@ This applies only to the upcoming 3.4.0 release of OSPOS which is being worked o
 
 That's all there is to it.  These commands thread a lot of smaller tasks together and run them sequentially.  If you want to run each step manually, then you will need to pay attention to the bouncing between folders that takes place in order to run each task using the correct version of Grunt.
 
+Note: If you receive messages similar to 'codeigniter4/framework v4.3.1 requires ext-intl', this is an indicator that you do not have intl enabled in php.ini
+
 After the build tasks are complete, if you have the database set up and a preconfigured copy of .env, just drop the .env file into the root of the working folder. You should be ready to go.
 
 If you do not have an existing (and upgraded) database, then you will need to continue from this point forward with the standard installation instructions, but at this point you have a runnable version of OSPOS.
