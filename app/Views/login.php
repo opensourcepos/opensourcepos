@@ -26,6 +26,7 @@
 		?>
 		<link href="<?= "resources/bootswatch5/$theme/bootstrap.min.css" ?>" rel="stylesheet" type="text/css">
 		<!-- inject:login:css -->
+		<link rel="stylesheet" href="css/login.min.css">
 		<!-- endinject -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>
