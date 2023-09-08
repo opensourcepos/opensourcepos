@@ -9,7 +9,7 @@ function check_encryption(): bool
 {
 	$old_key = config('Encryption')->key;
 
-	if(strlen($old_key) < 64)
+	if((empty($old_key)) || (strlen($old_key) < 64))
 	{
 		//Create Key
 		$encryption = new Encryption();
@@ -18,12 +18,19 @@ function check_encryption(): bool
 
 		//Write to .env
 		$config_path = ROOTPATH . '.env';
-		$backup_path = $config_path . '.bak';
+		$new_config_path = WRITEPATH . '/backup/.env' ;
+		$backup_path = WRITEPATH . '/backup/.env.bak';
 
-		copy($config_path, $backup_path);
+		//Copy to backup
+		if(!copy($config_path, $backup_path))
+		{
+			log_message('error', "Unable to copy $config_path to $backup_path");
+		}
+
+		@chmod($config_path, 0660);
+		@chmod($backup_path, 0660);
+		
 		$config_file = file_get_contents($config_path);
-		@chmod($config_path, 0440);
-
 		$config_file = preg_replace("/(encryption\.key.*=.*)('.*')/", "$1'$key'", $config_file);
 
 		if(!empty($old_key))
@@ -33,19 +40,24 @@ function check_encryption(): bool
 			$config_file = substr_replace($config_file, $old_line, $insertion_point,0);
 		}
 
-		@chmod($config_path, 0770);
-
-		if(is_writable($config_path))
+		$handle = @fopen($config_path, 'w+');
+		
+		if(empty($handle))
 		{
-			// Write the new config.php file
-			$handle = @fopen($config_path, 'w+');
-			fwrite($handle, $config_file) === FALSE;
-			fclose($handle);
-		}
-		else
-		{
+			log_message('error', "Unable to open $config_path for updating");
 			return false;
 		}
+		
+		@chmod($config_path, 0660);
+		$write_failed = !fwrite($handle, $config_file);
+		fclose($handle);
+		
+		if($write_failed)
+		{
+			log_message('error', "Unable to write to $config_path for updating.");
+			return false; 
+		}
+		log_message('info', "File $config_path has been updated."); 
 	}
 
 	return true;
@@ -54,8 +66,27 @@ function check_encryption(): bool
 function abort_encryption_conversion()
 {
 	$config_path = ROOTPATH . '.env';
-	$backup_path = $config_path . '.bak';
+	$backup_path = WRITEPATH . '/backup/.env.bak';
 
-	unlink($config_path);
-	rename($backup_path, $config_path);
+	$config_file = file_get_contents($backup_path);
+
+	$handle = @fopen($config_path, 'w+');
+	
+	if(empty($handle))
+	{
+		log_message('error', "Unable to open $config_path to undo encryption conversion");
+	}
+	else 
+	{	
+		@chmod($config_path, 0660);
+		$write_failed = !fwrite($handle, $config_file);
+		fclose($handle);
+
+		if($write_failed)
+		{
+			log_message('error', "Unable to write to $config_path to undo encryption conversion.");
+			return;
+		}
+		log_message('info', "File $config_path has been updated to undo encryption conversion"); 
+	}
 }
