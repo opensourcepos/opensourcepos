@@ -26,7 +26,7 @@ return [
 	"count" => "Update Inventory",
 	"csv_import_failed" => "CSV import failed",
 	"csv_import_nodata_wrongformat" => "The uploaded CSV file has no data or is formatted incorrectly.",
-	"csv_import_partially_failed" => "There were {0} item import failure(s) on line(s): {1}. No rows were imported.",
+	"csv_import_partially_failed" => "There were {count} item import failure(s) on line(s): {failures}. No rows were imported.",
 	"csv_import_success" => "Item CSV import successful.",
 	"current_quantity" => "Current Quantity",
 	"default_pack_name" => "Each",
