@@ -1091,7 +1091,7 @@ class Items extends Secure_Controller
 
 				if(count($failCodes) > 0)
 				{
-					$message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
+					$message = lang('Items.csv_import_partially_failed', ['count' => count($failCodes), 'failures' =>implode(', ', $failCodes)]);
 					$this->db->transRollback();
 					echo json_encode (['success' => FALSE, 'message' => $message]);
 				}
