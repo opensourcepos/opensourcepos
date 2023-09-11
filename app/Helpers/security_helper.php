@@ -2,7 +2,6 @@
 
 use CodeIgniter\Encryption\Encryption;
 
-
 /**
  * @return bool
  */
@@ -18,19 +17,12 @@ function check_encryption(): bool
 		config('Encryption')->key = $key;
 
 		//Write to .env
-		//For security reasons. the web server must not have write
-		//access to the base url, so we must not try to write or update files there.
-		//To make this code work, create the backup directory as below and
-		//ensure it is writeable by the webserver, including setting
-		//any SELinux permissions needed under eg Fedora
-		//We present a message to the user telling them to
-		//copy the .env file into place manually.
 		$config_path = ROOTPATH . '.env';
-		$backup_path = ROOTPATH . '/writable/backup/.env.bak';
+		$backup_path = $config_path . '.bak';
 
 		copy($config_path, $backup_path);
-		@chmod($backup_path, 0770);
 		$config_file = file_get_contents($config_path);
+		@chmod($config_path, 0440);
 
 		$config_file = preg_replace("/(encryption\.key.*=.*)('.*')/", "$1'$key'", $config_file);
 
@@ -41,20 +33,18 @@ function check_encryption(): bool
 			$config_file = substr_replace($config_file, $old_line, $insertion_point,0);
 		}
 
-		$new_config_path = ROOTPATH . '/writable/backup/.env' ;
+		@chmod($config_path, 0770);
 
-		//Changes to .env must only be invoked by Login controller
-		$router = service('router');
-		$controller = $router->controllerName();
-		if(strtolower(class_basename($controller)) == 'login')
+		if(is_writable($config_path))
 		{
-			$handle = @fopen($new_config_path, 'w+') or die("Unable to open " . $new_config_path . " for writing");
-			@chmod($new_config_path, 0770);
+			// Write the new config.php file
+			$handle = @fopen($config_path, 'w+');
 			fwrite($handle, $config_file) === FALSE;
 			fclose($handle);
-			echo '<script type="text/javascript">';
-			echo ' alert("File ' . $new_config_path . ' has been created. You must move this to ' . ROOTPATH . '")'; 
-			echo '</script>';
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -63,9 +53,9 @@ function check_encryption(): bool
 
 function abort_encryption_conversion()
 {
-	$new_config_path = ROOTPATH . '/writable/backup/.env' ;
-	$backup_path = ROOTPATH . '/writable/backup/.env.bak';
+	$config_path = ROOTPATH . '.env';
+	$backup_path = $config_path . '.bak';
 
-	unlink($new_config_path);
-	rename($backup_path, $new_config_path);
+	unlink($config_path);
+	rename($backup_path, $config_path);
 }
