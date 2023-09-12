@@ -41,7 +41,16 @@ class MailchimpConnector
 
 		$encrypter = Services::encrypter();
 
-		$mailchimp_api_key = $config['mailchimp_api_key'];
+		//If mailchimp_api_key has not been configured react gracefully
+		if(isset($this->config['mailchimp_api_key']))
+		{
+		  $mailchimp_api_key = $this->config['mailchimp_api_key'];
+		}
+		else 
+		{
+		  $mailchimp_api_key = '';
+		}
+			
 
 		if(!empty($mailchimp_api_key))
 		{
