@@ -69,7 +69,16 @@ class Config extends Secure_Controller
 		$this->tax = model('Tax');
 		$this->config = config('OSPOS')->settings;
 		$this->db = Database::connect();
-		$this->encrypter = Services::encrypter();
+
+		helper('security');
+		if(check_encryption())
+		{
+			$this->encrypter = Services::encrypter();
+		}
+		else 
+		{
+			log_message('alert', 'Error preparing encryption key');
+		}
 	}
 
 	/*
@@ -288,43 +297,24 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
-			//If mailchimp_api_key has not been configured react gracefully
-			if(isset($this->config['mailchimp_api_key']))
-			{
-			  $mailchimp_api_key = $this->config['mailchimp_api_key'];
-			}
-			else 
-			{
-			  $mailchimp_api_key = '';
-			}
-			
-			if(!empty($mailchimp_api_key))
-			{
-				$data['mailchimp']['api_key'] = $this->encrypter->decrypt($mailchimp_api_key);
-			}
-			else
-			{
-				$data['mailchimp']['api_key'] = '';
-			}
 
-			//If mailchimp_list_id has not been configured react gracefully
-			if(isset($this->config['mailchimp_list_id']))
-			{
-			  $mailchimp_list_id = $this->config['mailchimp_list_id'];
-			}
-			else 
-			{
-			  $mailchimp_list_id = '';
-			}
+			$mailchimp_api_key = isset($this->config['mailchimp_api_key'])
+    			? $this->config['mailchimp_api_key']
+				: '';
+
+			$mailchimp_api_key = empty($mailchimp_api_key)
+    			? '' 
+				: $this->encrypter->decrypt($mailchimp_api_key);
+
+
+			$mailchimp_list_id = isset($this->config['mailchimp_list_id'])
+    			? $this->config['mailchimp_list_id']
+				: '';
 			
-			if(!empty($mailchimp_list_id))
-			{
-				$data['mailchimp']['list_id'] = $this->encrypter->decrypt($mailchimp_list_id);
-			}
-			else
-			{
-				$data['mailchimp']['list_id'] = '';
-			}
+			$mailchimp_list_id = empty($mailchimp_list_id)
+    			? '' 
+				: $this->encrypter->decrypt($mailchimp_list_id);
+
 		}
 		else
 		{
