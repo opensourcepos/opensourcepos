@@ -44,7 +44,7 @@ class MailchimpConnector
 		$mailchimp_api_key = isset($this->config['mailchimp_api_key'])
 			? $this->config['mailchimp_api_key']
 			: '';
-			
+
 		if(!empty($mailchimp_api_key))
 		{
 			$this->_api_key = empty($api_key)

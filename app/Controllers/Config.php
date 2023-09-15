@@ -277,7 +277,9 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
-		$data['currency_code'] = $this->config['currency_code'];
+		$data['currency_code'] = isset($this->config['currency_code'])
+			? $this->config['currency_code']
+			: '' ;
 		$data['db_version'] = mysqli_get_server_info(db_connect()->mysqli);
 
 		// load all the license statements, they are already XSS cleaned in the private function
@@ -297,24 +299,13 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
+			$mailchimp_api_key = !isset($this->config['mailchimp_api_key'])
+				? ''
+				: $this->encrypter->decrypt($this->config['mailchimp_api_key']);
 
-			$mailchimp_api_key = isset($this->config['mailchimp_api_key'])
-    			? $this->config['mailchimp_api_key']
-				: '';
-
-			$mailchimp_api_key = empty($mailchimp_api_key)
-    			? '' 
-				: $this->encrypter->decrypt($mailchimp_api_key);
-
-
-			$mailchimp_list_id = isset($this->config['mailchimp_list_id'])
-    			? $this->config['mailchimp_list_id']
-				: '';
-			
-			$mailchimp_list_id = empty($mailchimp_list_id)
-    			? '' 
-				: $this->encrypter->decrypt($mailchimp_list_id);
-
+			$mailchimp_list_id = !isset($this->config['mailchimp_list_id'])
+				? ''
+				: $this->encrypter->decrypt($this->config['mailchimp_list_id']);
 		}
 		else
 		{
