@@ -9,7 +9,7 @@ function check_encryption(): bool
 {
 	$old_key = config('Encryption')->key;
 
-	if((empty($old_key)) or (strlen($old_key) < 64))
+	if((empty($old_key)) || (strlen($old_key) < 64))
 	{
 		//Create Key
 		$encryption = new Encryption();
@@ -27,8 +27,8 @@ function check_encryption(): bool
 			log_message('error', "Unable to copy $config_path to $backup_path");
 		}
 
-		@chmod($config_path, 0770);
-		@chmod($backup_path, 0770);
+		@chmod($config_path, 0660);
+		@chmod($backup_path, 0660);
 		
 		$config_file = file_get_contents($config_path);
 		$config_file = preg_replace("/(encryption\.key.*=.*)('.*')/", "$1'$key'", $config_file);
@@ -48,11 +48,11 @@ function check_encryption(): bool
 			return false;
 		}
 		
-		@chmod($config_path, 0770);
-		$retval = fwrite($handle, $config_file);
+		@chmod($config_path, 0660);
+		$write_failed = !fwrite($handle, $config_file);
 		fclose($handle);
 		
-		if($retval === false)
+		if($write_failed)
 		{
 			log_message('error', "Unable to write to $config_path for updating.");
 			return false; 
@@ -78,13 +78,14 @@ function abort_encryption_conversion()
 	}
 	else 
 	{	
-		@chmod($config_path, 0770);
-		$retval = fwrite($handle, $config_file);
+		@chmod($config_path, 0660);
+		$write_failed = !fwrite($handle, $config_file);
 		fclose($handle);
 
-		if($retval === false)
+		if($write_failed)
 		{
 			log_message('error', "Unable to write to $config_path to undo encryption conversion.");
+			return;
 		}
 		log_message('info', "File $config_path has been updated to undo encryption conversion"); 
 	}
