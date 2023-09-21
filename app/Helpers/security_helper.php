@@ -90,3 +90,18 @@ function abort_encryption_conversion()
 		log_message('info', "File $config_path has been updated to undo encryption conversion"); 
 	}
 }
+
+function remove_backup()
+{
+	$backup_path = WRITEPATH . '/backup/.env.bak';
+	if( ! file_exists($backup_path))
+	{
+		return;
+	}
+	if(unlink($backup_path) === false)
+	{
+		log_message('error', "Unable to remove $backup_path.");
+		return;
+	}
+	log_message('info', "File $backup_path has been removed"); 
+}

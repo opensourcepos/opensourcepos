@@ -299,6 +299,12 @@ class Config extends Secure_Controller
 
 		if(check_encryption())	//TODO: Hungarian notation
 		{
+			if(!isset($this->encrypter))
+			{
+				helper('security');
+				$this->encrypter = Services::encrypter();
+			}
+			
 			$mailchimp_api_key = isset($this->config['mailchimp_api_key'])
 				? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
 				: '';
@@ -306,6 +312,9 @@ class Config extends Secure_Controller
 			$mailchimp_list_id = isset($this->config['mailchimp_list_id'])
 				? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
 				: '';
+
+			//Remove any backup of .env created by check_encryption()
+			remove_backup();
 		}
 		else
 		{
