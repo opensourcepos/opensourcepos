@@ -32,6 +32,8 @@ class Convert_to_ci4 extends Migration
 			check_encryption();
 		}
 
+		remove_backup();
+
 		error_log('Migrating to CodeIgniter4 formats completed');
 	}
 
@@ -69,6 +71,7 @@ class Convert_to_ci4 extends Migration
 			if(!$success)
 			{
 				abort_encryption_conversion();
+				remove_backup();
 				throw new RedirectException('login');
 			}
 
