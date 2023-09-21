@@ -71,6 +71,11 @@ class Convert_to_ci4 extends Migration
 				abort_encryption_conversion();
 				throw new RedirectException('login');
 			}
+			else 
+			{
+				//Remove any backup of .env created by check_encryption()
+				remove_backup();
+			}
 
 			$appconfig->batch_save($ci4_encrypted_data);
 		} catch(RedirectException $e)
