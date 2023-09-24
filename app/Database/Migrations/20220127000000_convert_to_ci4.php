@@ -32,6 +32,8 @@ class Convert_to_ci4 extends Migration
 			check_encryption();
 		}
 
+		remove_backup();
+
 		error_log('Migrating to CodeIgniter4 formats completed');
 	}
 
@@ -69,12 +71,8 @@ class Convert_to_ci4 extends Migration
 			if(!$success)
 			{
 				abort_encryption_conversion();
-				throw new RedirectException('login');
-			}
-			else 
-			{
-				//Remove any backup of .env created by check_encryption()
 				remove_backup();
+				throw new RedirectException('login');
 			}
 
 			$appconfig->batch_save($ci4_encrypted_data);

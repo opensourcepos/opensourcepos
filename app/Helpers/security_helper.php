@@ -94,6 +94,10 @@ function abort_encryption_conversion()
 function remove_backup()
 {
 	$backup_path = WRITEPATH . '/backup/.env.bak';
+	if( ! file_exists($backup_path))
+	{
+		return;
+	}
 	if(unlink($backup_path) === false)
 	{
 		log_message('error', "Unable to remove $backup_path.");
