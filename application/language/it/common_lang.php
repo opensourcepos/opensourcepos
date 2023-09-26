@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Non ci sono persone da mostrare.";
 $lang["common_none_selected_text"] = "[Selezionare]";
 $lang["common_or"] = "OR";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Numero di Telefono";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Visitare il";

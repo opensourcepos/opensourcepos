@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Không có nội dung hiển thị.";
 $lang["common_none_selected_text"] = "[Chọn]";
 $lang["common_or"] = "HOẶC";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Số điện thoại";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Ghé thăm";

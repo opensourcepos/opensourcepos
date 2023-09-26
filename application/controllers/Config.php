@@ -22,7 +22,7 @@ class Config extends Secure_Controller
 		$composer = FALSE;
 		$license = array();
 
-		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
+		$license[$i]['title'] = 'Zishof Point Of Sale ' . $this->config->item('application_version');
 
 		if(file_exists('license/LICENSE'))
 		{

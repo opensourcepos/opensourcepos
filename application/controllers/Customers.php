@@ -248,7 +248,7 @@ class Customers extends Persons
 			'state' => $this->input->post('state'),
 			'zip' => $this->input->post('zip'),
 			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments')
+			'comments' => $this->input->post('comments'),
 		);
 
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
@@ -264,6 +264,7 @@ class Customers extends Persons
 			'taxable' => $this->input->post('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
 			'employee_id' => $this->input->post('employee_id'),
+			'id_finger' => $this->input->post('id_finger'),
 			'sales_tax_code_id' => $this->input->post('sales_tax_code_id') == '' ? NULL : $this->input->post('sales_tax_code_id')
 		);
 
@@ -409,7 +410,8 @@ class Customers extends Persons
 							'discount_type'		=> $data[16],
 							'taxable'			=> $data[17] == '' ? 0 : 1,
 							'date'				=> date('Y-m-d H:i:s'),
-							'employee_id'		=> $this->Employee->get_logged_in_employee_info()->person_id
+							'employee_id'		=> $this->Employee->get_logged_in_employee_info()->person_id,
+							'id_finger' 		=>  $data[18],
 						);
 						$account_number = $data[14];
 

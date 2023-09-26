@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Det finns inga personer att visa.";
 $lang["common_none_selected_text"] = "{Inget valt}";
 $lang["common_or"] = "Eller";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefonnummer";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Vänligen besök";

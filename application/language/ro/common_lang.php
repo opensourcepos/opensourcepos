@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Nu există persoane de afișat.";
 $lang["common_none_selected_text"] = "[Select]ati";
 $lang["common_or"] = "SAU";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Număr de telefon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Vă rugăm să vizitați";

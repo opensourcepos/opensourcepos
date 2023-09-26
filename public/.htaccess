@@ -14,10 +14,10 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # if in web root
-RewriteRule ^(.*)$ index.php?/$1 [L]
+# RewriteRule ^(.*)$ index.php?/$1 [L]
 
 # if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path
-# RewriteRule ^(.*)$ /<OSPOS path>/public/index.php?/$1 [L]
+RewriteRule ^(.*)$ /customospos/public/index.php?/$1 [L]
 
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.

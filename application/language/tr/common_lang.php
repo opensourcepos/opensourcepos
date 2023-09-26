@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Gösterecek kişi yok.";
 $lang["common_none_selected_text"] = "[Seç]";
 $lang["common_or"] = "VEYA";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Şurayı ziyaret edin:";

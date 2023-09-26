@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "មិនមានមនុស្សដ
 $lang["common_none_selected_text"] = "[ជ្រើសរើស]";
 $lang["common_or"] = "ឬ";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "លេខទូរស័ព្ទ";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "សូមកាន់";

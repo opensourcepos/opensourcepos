@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Нет информации для от
 $lang["common_none_selected_text"] = "[Выбрать]";
 $lang["common_or"] = "ИЛИ";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Номер телефона";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Посетите";

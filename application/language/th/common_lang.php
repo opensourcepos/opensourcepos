@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตั
 $lang["common_none_selected_text"] = "กรุณาเลือก";
 $lang["common_or"] = "หรือ";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "โทรศัพท์";
 $lang["common_phone_number_required"] = "ต้องกรอกเบอร์โทร";
 $lang["common_please_visit_my"] = "เยี่ยมชมที่";

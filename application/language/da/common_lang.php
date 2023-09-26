@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Der er ingen folk at vise.";
 $lang["common_none_selected_text"] = "[Vælg]";
 $lang["common_or"] = "ELLER";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefonnummer";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Besøg venligst";

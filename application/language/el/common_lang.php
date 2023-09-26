@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Δεν υπάρχουν άνθρωπο�
 $lang["common_none_selected_text"] = "[Επιλογή]";
 $lang["common_or"] = "Ή";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "";
 $lang["common_phone_number"] = "Αριθμός τηλεφώνου";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Παρακαλώ επισκεφτείτε το";

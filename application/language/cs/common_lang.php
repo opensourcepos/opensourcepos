@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Žádní zákazníci k zobrazení.";
 $lang["common_none_selected_text"] = "bez výběru";
 $lang["common_or"] = "Nebo";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Navštivte prosím";

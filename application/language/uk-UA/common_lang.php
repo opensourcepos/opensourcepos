@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Немає осіб для відобр
 $lang["common_none_selected_text"] = "Виберіть";
 $lang["common_or"] = "АБО";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Номер телефону";
 $lang["common_phone_number_required"] = "Номер телефону - обов'язкове поле.";
 $lang["common_please_visit_my"] = "Будь ласка, перейдіть";

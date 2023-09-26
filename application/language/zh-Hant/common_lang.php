@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示.";
 $lang["common_none_selected_text"] = "[選擇]";
 $lang["common_or"] = "或";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "電話號碼";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "請造訪";

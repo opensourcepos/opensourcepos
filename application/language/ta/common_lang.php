@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "காண்பிக்க நபர�
 $lang["common_none_selected_text"] = "[தேர்ந்தெடு]";
 $lang["common_or"] = "அல்லது";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "தொலைபேசி எண்";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "தயவுசெய்து பார்வையிடவும்";

@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Er werden geen personen gevonden.";
 $lang["common_none_selected_text"] = "Geen selectie";
 $lang["common_or"] = "Of";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefoon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Bezoek mijn";

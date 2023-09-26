@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Nincsenek megjeleníthető emberek";
 $lang["common_none_selected_text"] = "Nincs kiválaszva";
 $lang["common_or"] = "VAGY";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "Telefonszám";
 $lang["common_phone_number_required"] = "Telefonszám kötelező mező";
 $lang["common_please_visit_my"] = "Kérem látogassa meg a ";

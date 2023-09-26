@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "אין אנשים להצגה.";
 $lang["common_none_selected_text"] = "[בחר]";
 $lang["common_or"] = "או";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "מספר טלפון";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "בקר בכתובת";

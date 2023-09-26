@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "Няма хора за показван
 $lang["common_none_selected_text"] = "Нищо не е избрано";
 $lang["common_or"] = "Или";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "Finger";
 $lang["common_phone_number"] = "Телефонен номер";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Моля, посетете";

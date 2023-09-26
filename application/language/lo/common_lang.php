@@ -58,6 +58,7 @@ $lang["common_no_persons_to_display"] = "There are no people to display.";
 $lang["common_none_selected_text"] = "ບໍ່ໄດ້ເລືອກລາຍການ";
 $lang["common_or"] = "ຫຼື";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "ID Finger";
 $lang["common_phone_number"] = "ເບີໂທ";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "ກະລູນາເຂົ້າບ່ອນນີ້້";

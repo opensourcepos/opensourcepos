@@ -57,6 +57,7 @@ $lang["common_no_persons_to_display"] = "Nema ljudi za prikaz.";
 $lang["common_none_selected_text"] = "[Izaberi]";
 $lang["common_or"] = "Ili";
 $lang["common_people"] = "";
+$lang["common_id_finger"] = "Broj telefona";
 $lang["common_phone_number"] = "Broj telefona";
 $lang["common_phone_number_required"] = "Broj telefona je obavezan";
 $lang["common_please_visit_my"] = "Posjetite";
