@@ -167,10 +167,10 @@ class Item_kit extends Model
 	/**
 	 * Inserts or updates an item kit
 	 */
-	public function save_value(array &$item_kit_data, bool $item_kit_id = FALSE): bool
+	public function save_value(array &$item_kit_data, int $item_kit_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('item_kits');
-		if(!$item_kit_id || !$this->exists($item_kit_id))
+		if($item_kit_id == NEW_ENTRY || !$this->exists($item_kit_id))
 		{
 			if($builder->insert($item_kit_data))
 			{
@@ -249,7 +249,7 @@ class Item_kit extends Model
  	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
 	}
@@ -257,14 +257,21 @@ class Item_kit extends Model
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
-		$builder = $this->db->table('item_kits AS item_kits');	//TODO: Can we just say 'item_kits' here?
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
+		$builder = $this->db->table('item_kits');
 
 		// get_found_rows case
 		if($count_only)
 		{
-			$builder->select('COUNT(item_kits.item_kit_id) as count');
+			$builder->select('COUNT(item_kit_id) as count');
 		}
 
 		$builder->like('name', $search);

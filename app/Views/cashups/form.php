@@ -9,7 +9,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open(esc('cashups/save/'.$cash_ups_info->cashup_id, 'attr'), ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']) //TODO: String Interpolation ?>
+<?php echo form_open(esc('cashups/save/'.$cash_ups_info->cashup_id), ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']) //TODO: String Interpolation ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.info'), 'cash_ups_info', ['class' => 'control-label col-xs-3']) ?>
@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.open_employee'), 'open_employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('open_employee_id', esc($employees, 'attr'), $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('open_employee_id', $employees, $cash_ups_info->open_employee_id, 'id="open_employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -97,7 +97,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label(lang('Cashups.close_employee'), 'close_employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('close_employee_id', esc($employees, 'attr'), $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"') ?>
+				<?php echo form_dropdown('close_employee_id', $employees, $cash_ups_info->close_employee_id, 'id="close_employee_id" class="form-control"') ?>
 			</div>
 		</div>
 
@@ -128,8 +128,8 @@
 					'name' => 'note',
 					'id' => 'note',
 					'value'=>0,
-					'checked'=>($cash_ups_info->note) ? 1 : 0]
-				) ?>
+					'checked'=>$cash_ups_info->note == 1
+				]) ?>
 			</div>
 		</div>
 
@@ -239,8 +239,8 @@
 						'name' => 'deleted',
 						'id' => 'deleted',
 						'value'=>1,
-						'checked'=>($cash_ups_info->deleted) ? 1 : 0]
-					) ?>
+						'checked'=>$cash_ups_info->deleted == 1
+					]) ?>
 				</div>
 			</div>
 		<?php
@@ -310,7 +310,7 @@ $(document).ready(function()
 	});
 
 	$('#open_amount_cash, #transfer_amount_cash, #closed_amount_cash, #closed_amount_due, #closed_amount_card, #closed_amount_check').keyup(function() {
-		$.post("<?php echo esc(site_url("$controller_name/ajax_cashup_total"), 'url') ?>", {
+		$.post("<?php echo esc("$controller_name/ajax_cashup_total") ?>", {
 				'open_amount_cash': $('#open_amount_cash').val(),
 				'transfer_amount_cash': $('#transfer_amount_cash').val(),
 				'closed_amount_due': $('#closed_amount_due').val(),
@@ -332,7 +332,7 @@ $(document).ready(function()
 			success: function(response)
 			{
 				dialog_support.hide();
-				table_support.handle_submit('<?php echo esc(site_url('cashups'), 'url') ?>', response);
+				table_support.handle_submit('<?php echo esc('cashups') ?>', response);
 			},
 			dataType: 'json'
 		});

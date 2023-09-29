@@ -88,7 +88,7 @@ class Receiving extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, bool $receiving_id = FALSE): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
+	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, int $receiving_id = NEW_ENTRY): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
 		$attribute = model(Attribute::class);
 		$inventory = model('Inventory');

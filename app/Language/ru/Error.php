@@ -1,5 +1,5 @@
 <?php
 return [
-	"error_no_permission_module" => "У вас нет разрешения на доступ к модуля называется",
-	"error_unknown" => "неизвестный",
+	"no_permission_module" => "У вас нет разрешения на доступ к модулю",
+	"unknown" => "Неизвестная ошибка",
 ];

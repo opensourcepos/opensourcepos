@@ -25,8 +25,8 @@ $(document).ready(function()
 	<?php echo view('partial/bootstrap_tables_locale') ?>
 
 	table_support.init({
-		resource: '<?php echo esc(site_url($controller_name), 'url') ?>',
-		headers: <?php echo esc($table_headers, 'js') ?>,
+		resource: '<?php echo esc($controller_name) ?>',
+		headers: <?php echo $table_headers ?>,
 		pageSize: <?php echo $config['lines_per_page'] ?>,
 		uniqueId: 'cashup_id',
 		queryParams: function() {
@@ -46,8 +46,8 @@ $(document).ready(function()
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
 		<span class="glyphicon glyphicon-print">&nbsp;</span><?php echo lang('Common.print') ?>
 	</button>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo site_url($controller_name."/view") //TODO: String Interpolation ?>'
-			title='<?php echo lang(esc($controller_name, 'attr') . '.new') //TODO: String Interpolation?>'>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/view" ?>'
+			title='<?php echo lang("$controller_name.new") ?>'>
 		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo lang(esc($controller_name) . '.new') //TODO: String Interpolation ?>
 	</button>
 </div>
@@ -59,7 +59,7 @@ $(document).ready(function()
 		</button>
 
 		<?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-		<?php echo form_multiselect('filters[]', esc($filters, 'attr'), [''], [
+		<?php echo form_multiselect('filters[]', esc($filters), [''], [
 			'id' => 'filters',
 			'data-none-selected-text'=>lang('Common.none_selected_text'),
 			'class' => 'selectpicker show-menu-arrow',

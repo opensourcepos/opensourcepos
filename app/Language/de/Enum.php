@@ -1,10 +1,10 @@
 <?php
 return [
-	"enum_half_down" => "Halbe abrunden",
-	"enum_half_even" => "Halbe symmetrisch gerade runden",
-	"enum_half_five" => "",
-	"enum_half_odd" => "Halbe symmetrisch ungerade runden",
-	"enum_half_up" => "Halbe aufrunden",
-	"enum_round_down" => "Abrunden",
-	"enum_round_up" => "Aufrunden",
+	"half_down" => "Halbe abrunden",
+	"half_even" => "Halbe symmetrisch gerade runden",
+	"half_five" => "",
+	"half_odd" => "Halbe symmetrisch ungerade runden",
+	"half_up" => "Halbe aufrunden",
+	"round_down" => "Abrunden",
+	"round_up" => "Aufrunden",
 ];

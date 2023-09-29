@@ -78,8 +78,8 @@
                                 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;<?= esc($row['class'] . $row['type'] . $row['function']) ?>
                                 <?php if (! empty($row['args'])) : ?>
                                     <?php $args_id = $error_id . 'args' . $index ?>
-                                    ( <a href="#" onclick="return toggle('<?= esc($args_id, 'attr') ?>');">arguments</a> )
-                                    <div class="args" id="<?= esc($args_id, 'attr') ?>">
+                                    ( <a href="#" onclick="return toggle('<?= esc($args_id) ?>');">arguments</a> )
+                                    <div class="args" id="<?= esc($args_id) ?>">
                                         <table cellspacing="0">
 
                                         <?php

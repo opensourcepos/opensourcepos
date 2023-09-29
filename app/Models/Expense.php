@@ -79,7 +79,7 @@ class Expense extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search, array $filters): ResultInterface
+	public function get_found_rows(string $search, array $filters): int
 	{
 		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
@@ -87,8 +87,15 @@ class Expense extends Model
 	/**
 	 * Searches expenses
 	 */
-	public function search(string $search, array $filters, int $rows = 0, int $limit_from = 0, string $sort = 'expense_id', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'expense_id', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'expense_id';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$config = config('OSPOS')->settings;
 		$builder = $this->db->table('expenses AS expenses');
 
@@ -220,35 +227,56 @@ class Expense extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if ($query->getNumRows() == 1)    //TODO: ===
 		{
 			return $query->getRow();
 		}
-		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
-		{
-			//Get empty base parent object
-			$expenses_obj = new stdClass();
 
-			//Get all the fields from expenses table
-			foreach($this->db->getFieldNames('expenses') as $field)
+		$empty_obj = $this->getEmptyObject('expenses');
+		$empty_obj->supplier_name = NULL;
+		$empty_obj->first_name = NULL;
+		$empty_obj->last_name = NULL;
+
+		return $empty_obj;
+	}
+
+		/**
+		 * Initializes an empty object based on database definitions
+		 * @param string $table_name
+		 * @return object
+		 */
+		private function getEmptyObject(string $table_name): object
+	{
+		// Return an empty base parent object, as $item_id is NOT an item
+		$empty_obj = new stdClass();
+
+		// Iterate through field definitions to determine how the fields should be initialized
+
+		foreach($this->db->getFieldData($table_name) as $field) {
+
+			$field_name = $field->name;
+
+			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
 			{
-				$expenses_obj->$field = '';
+				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
 			}
-
-			$expenses_obj->supplier_name = '';
-
-			return $expenses_obj;
+			else
+			{
+				$empty_obj->$field_name = NULL;
+			}
 		}
+
+		return $empty_obj;
 	}
 
 	/**
 	 * Inserts or updates an expense
 	 */
-	public function save_value(array &$expense_data, bool $expense_id = FALSE): bool
+	public function save_value(array &$expense_data, int $expense_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('expenses');
 
-		if(!$expense_id || !$this->exists($expense_id))
+		if($expense_id == NEW_ENTRY || !$this->exists($expense_id))
 		{
 			if($builder->insert($expense_data))
 			{

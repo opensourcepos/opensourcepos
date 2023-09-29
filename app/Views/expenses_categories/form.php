@@ -17,7 +17,7 @@
 					'name' => 'category_name',
 					'id' => 'category_name',
 					'class' => 'form-control input-sm',
-					'value' => esc($category_info->category_name, 'attr')
+					'value' => esc($category_info->category_name)
 				]) ?>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 					'name' => 'category_description',
 					'id' => 'category_description',
 					'class' => 'form-control input-sm',
-					'value' => esc($category_info->category_description, 'attr')
+					'value' => esc($category_info->category_description)
 				]) ?>
 			</div>
 		</div>
@@ -47,7 +47,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc(site_url($controller_name), 'url') ?>", response);
+					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});

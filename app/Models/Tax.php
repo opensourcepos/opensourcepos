@@ -163,10 +163,10 @@ class Tax extends Model
 	/**
 	Inserts or updates a tax_rates entry
 	*/
-	public function save_value(array &$tax_rate_data, int $tax_rate_id = -1): bool	//TODO: the default value for $tax_rate_id should be made a constant and replaced here.
+	public function save_value(array &$tax_rate_data, int $tax_rate_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_rates');
-		if(!$this->exists($tax_rate_id))
+		if($tax_rate_id == NEW_ENTRY || !$this->exists($tax_rate_id))
 		{
 			if($builder->insert($tax_rate_data))
 			{
@@ -212,7 +212,7 @@ class Tax extends Model
 	/**
 	 * Gets tax_codes
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
 	}
@@ -220,8 +220,15 @@ class Tax extends Model
 	/**
 	 * Performs a search on tax_rates
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'tax_code_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'tax_code_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('tax_rates');
 
 		// get_found_rows case

@@ -104,7 +104,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_codes").load('<?php echo site_url("taxes/ajax_tax_codes") ?>', init_add_remove_tax_codes);
+						$("#tax_codes").load('<?php echo "taxes/ajax_tax_codes" ?>', init_add_remove_tax_codes);
 					},
 					dataType: 'json'
 				});

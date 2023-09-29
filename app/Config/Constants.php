@@ -93,6 +93,12 @@ define('EVENT_PRIORITY_NORMAL', 100);
  */
 define('EVENT_PRIORITY_HIGH', 10);
 
+/**
+ * Global Constants.
+ */
+const NEW_ENTRY = -1;
+const ACTIVE = 0;
+const DELETED = 1;
 
 /**
  * Attribute Related Constants.

@@ -113,10 +113,10 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Inserts or updates a row
 	 */
-	public function save_value(array &$jurisdiction_data, bool $jurisdiction_id = FALSE): bool
+	public function save_value(array &$jurisdiction_data, int $jurisdiction_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('tax_jurisdictions');
-		if(!$jurisdiction_id || !$this->exists($jurisdiction_id))
+		if($jurisdiction_id == NEW_ENTRY || !$this->exists($jurisdiction_id))
 		{
 			if($builder->insert($jurisdiction_data))	//TODO: Replace this with simply a return of the result of insert()... see update() below.
 			{
@@ -155,7 +155,7 @@ class Tax_jurisdiction extends Model
 
 			$this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
 
-			if($value['jurisdiction_id'] == -1)		//TODO: replace -1 with a constant. Also === ?.  Also replace this with ternary notation.
+			if($value['jurisdiction_id'] == NEW_ENTRY)
 			{
 				$not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
 			}
@@ -205,7 +205,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 * Gets rows
 	 */
-	public function get_found_rows(string $search): ResultInterface
+	public function get_found_rows(string $search): int
 	{
 		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
 	}
@@ -213,8 +213,15 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, int $rows = 0, int $limit_from = 0, string $sort = 'jurisdiction_name', string $order = 'asc', bool $count_only = FALSE): ResultInterface
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
+		// Set default values
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'jurisdiction_name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = FALSE;
+
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
 		// get_found_rows case
@@ -249,7 +256,7 @@ class Tax_jurisdiction extends Model
 	{
 		return [
 			'0' => [
-				'jurisdiction_id' => -1,	//TODO: Replace -1 with a constant
+				'jurisdiction_id' => NEW_ENTRY,
 				'jurisdiction_name' => '',
 				'tax_group' => '',
 				'tax_type' => '1',

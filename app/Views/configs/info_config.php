@@ -5,7 +5,7 @@
  * @var array $config
  */
 ?>
-<?php echo form_open('config/save_info/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php echo form_open('config/saveInfo/', ['id' => 'info_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -55,7 +55,7 @@
 						'name' => 'address',
 						'id' => 'address',
 						'class' => 'form-control input-sm required',
-						'value'=> $config['address'], 'attr'
+						'value'=> $config['address']
 					]) ?>
 				</div>
 			</div>
@@ -149,7 +149,7 @@ $(document).ready(function()
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo site_url("$controller_name/remove_logo"); ?>',
+			url: '<?php echo "$controller_name/remove_logo"; ?>',
 			dataType: 'json'
 		})
 	});

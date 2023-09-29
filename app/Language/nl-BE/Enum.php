@@ -1,10 +1,10 @@
 <?php
 return [
-	"enum_half_down" => "Half Omlaag",
-	"enum_half_even" => "Half Even",
-	"enum_half_five" => "Half Vijf",
-	"enum_half_odd" => "Half Oneven",
-	"enum_half_up" => "Half Boven",
-	"enum_round_down" => "Naar Beneden",
-	"enum_round_up" => "Naar Boven",
+	"half_down" => "Half Omlaag",
+	"half_even" => "Half Even",
+	"half_five" => "Half Vijf",
+	"half_odd" => "Half Oneven",
+	"half_up" => "Half Boven",
+	"round_down" => "Naar Beneden",
+	"round_up" => "Naar Boven",
 ];

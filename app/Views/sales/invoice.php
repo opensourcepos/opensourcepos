@@ -260,7 +260,7 @@ $(document).ready(function()
 			<div style='padding:2%;'><?php echo nl2br(esc($config['return_policy'])) ?></div>
 		</div>
 		<div id='barcode'>
-			<img alt='<?php echo esc($barcode, 'attr') ?>' style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
+			<img alt='<?php echo esc($barcode) ?>' style='padding-top:4%;' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 			<?php echo $sale_id ?>
 		</div>
 	</div>

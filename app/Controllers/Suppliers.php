@@ -32,7 +32,7 @@ class Suppliers extends Persons
 	 * @param $row_id
 	 * @return void
 	 */
-	public function get_row($row_id): void
+	public function getRow($row_id): void
 	{
 		$data_row = get_supplier_data_row($this->supplier->get_info($row_id));
 		$data_row['category'] = $this->supplier->get_category_name($data_row['category']);
@@ -44,13 +44,13 @@ class Suppliers extends Persons
 	 * Returns Supplier table data rows. This will be called with AJAX.
 	 * @return void
 	 */
-	public function search(): void
+	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_STRING);
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_STRING);
-		$order = $this->request->getGet('order', FILTER_SANITIZE_STRING);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->supplier->get_found_rows($search);
@@ -72,14 +72,14 @@ class Suppliers extends Persons
 	*/
 	public function suggest(): void
 	{
-		$suggestions = $this->supplier->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_STRING), TRUE);
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_STRING), FALSE);
+		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), FALSE);
 
 		echo json_encode($suggestions);
 	}
@@ -87,7 +87,7 @@ class Suppliers extends Persons
 	/*
 	Loads the supplier edit form
 	*/
-	public function view(int $supplier_id = -1): void	//TODO: Replace -1 with constant
+	public function getView(int $supplier_id = NEW_ENTRY): void
 	{
 		$info = $this->supplier->get_info($supplier_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -103,10 +103,10 @@ class Suppliers extends Persons
 	/*
 	Inserts/updates a supplier
 	*/
-	public function save(int $supplier_id = -1): void	//TODO: Replace -1 with constant
+	public function postSave(int $supplier_id = NEW_ENTRY): void
 	{
-		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_STRING);	//TODO: Duplicate code
-		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_STRING);
+		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicate code
+		$last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
 		// format first and last name properly
@@ -116,30 +116,30 @@ class Suppliers extends Persons
 		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_STRING),
+			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'email' => $email,
-			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_STRING),
-			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_STRING),
-			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_STRING),
-			'city' => $this->request->getPost('city', FILTER_SANITIZE_STRING),
-			'state' => $this->request->getPost('state', FILTER_SANITIZE_STRING),
-			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_STRING),
-			'country' => $this->request->getPost('country', FILTER_SANITIZE_STRING),
-			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_STRING)
+			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'zip' => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'country' => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'comments' => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
 		$supplier_data = [
-			'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_STRING),
-			'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_STRING),
-			'category' => $this->request->getPost('category', FILTER_SANITIZE_STRING),
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_STRING),
+			'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'category' => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
 		if($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id))
 		{
 			//New supplier
-			if($supplier_id == -1)	//TODO: Replace -1 with a constant
+			if($supplier_id == NEW_ENTRY)
 			{
 				echo json_encode ([
 					'success' => TRUE,
@@ -160,7 +160,7 @@ class Suppliers extends Persons
 			echo json_encode ([
 				'success' => FALSE,
 				'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
-				'id' => -1	//TODO: Replace -1 with a constant
+				'id' => NEW_ENTRY
 			]);
 		}
 	}
@@ -168,7 +168,7 @@ class Suppliers extends Persons
 	/*
 	This deletes suppliers from the suppliers table
 	*/
-	public function delete(): void
+	public function postDelete(): void
 	{
 		$suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 

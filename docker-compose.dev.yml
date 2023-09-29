@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2'
 
 volumes:
     uploads:
@@ -32,6 +32,7 @@ services:
           - logs:/app/application/logs
         environment:
           - PHP_TIMEZONE=UTC
+          - CI_ENVIRONMENT=development
           - MYSQL_USERNAME=admin
           - MYSQL_PASSWORD=pointofsale
           - MYSQL_DB_NAME=ospos
@@ -47,7 +48,7 @@ services:
         networks:
           - db_net
         volumes:
-          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+          - ./app/Database/database.sql:/docker-entrypoint-initdb.d/database.sql
           - mysql:/var/lib/mysql:rw
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale

@@ -162,7 +162,7 @@
 	</div>
 
 	<div id='barcode'>
-		<img alt='<?php echo esc($barcode, 'attr') ?>' src='data:image/png;base64,<?php echo esc($barcode, 'attr') ?>' /><br>
+		<img alt='<?php echo esc($barcode) ?>' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
 		<?php echo $receiving_id ?>
 	</div>
 </div>

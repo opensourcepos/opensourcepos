@@ -26,10 +26,12 @@ class Secure_Controller extends BaseController
 		$this->employee = model('Employee');
 		$this->module = model('Module');
 		$config = config('OSPOS')->settings;
+		$validation = \Config\Services::validation();
 
 		if(!$this->employee->is_logged_in())
 		{
-			return redirect()->to('login');
+			header("Location:".base_url('login'));
+			exit();
 		}
 
 		$logged_in_employee_info = $this->employee->get_logged_in_employee_info();
@@ -67,11 +69,11 @@ class Secure_Controller extends BaseController
 		view('viewData', $global_view_data);
 	}
 
-	public function check_numeric()
+	public function getCheckNumeric()
 	{
 		$result = TRUE;
 
-		foreach($this->request->getGet(NULL, FILTER_SANITIZE_STRING) as $str)
+		foreach($this->request->getVar(NULL, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $str)
 		{
 			$result &= parse_decimals($str);
 		}
@@ -79,11 +81,19 @@ class Secure_Controller extends BaseController
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
+	public function getConfig($key)
+	{
+		if (isset($config[$key]))
+		{
+			return $config[$key];
+		}
+	}
+
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function getIndex() { return FALSE; }
-	public function search() { return FALSE; }
+	public function getSearch() { return FALSE; }
 	public function suggest_search() { return FALSE; }
-	public function view(int $data_item_id = -1) { return FALSE; }
-	public function save(int $data_item_id = -1) { return FALSE; }
-	public function delete() { return FALSE; }
+	public function getView(int $data_item_id = -1) { return FALSE; }
+	public function postSave(int $data_item_id = -1) { return FALSE; }
+	public function postDelete() { return FALSE; }
 }
