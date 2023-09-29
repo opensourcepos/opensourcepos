@@ -1,45 +1,50 @@
 <?php
 
-use App\Models\Employee;
+function get_report_link(string $report_name, string $report_prefix = '', string $lang_key = ''): array
+{
+    $path = 'reports/';
+    if ($report_prefix !== '')
+	{
+        $path .= $report_prefix . '_';
+    }
+
+    /**
+     * Sanitize the report name in case it has come from the permissions table.
+     */
+    $report_name = str_replace('reports_', '', $report_name);
+    $path .= $report_name;
+
+    if ($lang_key === '')
+	{
+        $lang_key = 'Reports.' . $report_name;
+    }
+
+    return [
+        'path'  => site_url($path),
+        'label' => lang($lang_key),
+    ];
+}
 
 /**
- * Report helper
+ * @param string   $permission_id
+ * @param string[] $restrict_views
  *
- * @param string $report_prefix
- * @param string $report_name
- * @param int $person_id
- * @param string $permission_id
- *
- * @property employee $employee
+ * @return bool
  */
-function show_report_if_allowed(string $report_prefix, string $report_name, int $person_id, string $permission_id = ''): void
+function can_show_report($permission_id, array $restrict_views = []): bool
 {
-	$permission_id = empty($permission_id) ? $report_name : $permission_id;    //TODO: Use String Interpolation here.
-	$employee = model(Employee::class);
+    if (strpos($permission_id, 'reports_') === false)
+  {
+        return false;
+    }
 
-	if($employee->has_grant($permission_id, $person_id))
+    foreach ($restrict_views as $restrict_view)
 	{
-		show_report($report_prefix, $report_name, $permission_id);
-	}
+        if (strpos($permission_id, $restrict_view) !== false)
+		{
+            return false;
+        }
+    }
+
+    return true;
 }
-
-function show_report(string $report_prefix, string $report_name, string $lang_key = ''): void
-{
-	if(empty($lang_key))
-	{
-		$lang_key = str_replace('reports_','', $report_name);
-		$report_label = lang('Reports.' . $lang_key);
-	}
-	$report_label = lang('Reports.' . $lang_key);
-
-	$report_prefix = empty($report_prefix) ? '' : $report_prefix . '_';
-
-	// no summary nor detailed reports for receivings
-	if(!empty($report_label) && $report_label != $lang_key . ' (TBD)')	//TODO: String Interpolation.  Also !==
-	{//TODO: Is there a better way to do this?  breaking the php like this makes it more difficult to read.
-		?>
-			<a class="list-group-item" href="<?= "reports/$report_prefix" . preg_replace('/reports_(.*)/', '$1', $report_name) ?>"><?= $report_label; ?></a>
-		<?php
-	}
-}
-?>
