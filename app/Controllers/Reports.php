@@ -88,9 +88,15 @@ class Reports extends Secure_Controller
 	//Initial Report listing screen
 	public function getIndex(): void
 	{
-		$this->clearCache();
+		$person_id = $this->session->get('person_id');
+		$grants = $this->employee->get_employee_grants($this->session->get('person_id'));
+		$permissions_ids = array_column($grants, 'permission_id');
 
-		$data['grants'] = $this->employee->get_employee_grants($this->session->get('person_id'));
+		$data = [
+			'person_id' => $person_id,
+			'grants' => $grants,
+			'permission_ids' => $permissions_ids,
+		];
 
 		echo view('reports/listing', $data);
 	}
