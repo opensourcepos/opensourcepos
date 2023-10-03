@@ -148,7 +148,7 @@ return [
 	"quantity" => "Qté",
 	"quantity_less_than_reorder_level" => "Avertissement, Quantité Demandée Insuffisante.",
 	"quantity_less_than_zero" => "Avertissement : Quantité Demandée insuffisante. Vous pouvez accomplir la vente, mais veuillez vérifier votre inventaire.",
-	"quantity_of_items" => "Quantité d'articles %1",
+	"quantity_of_items" => "Quantité d'articles {0}",
 	"quote" => "Offre",
 	"quote_number" => "Offre n°",
 	"quote_number_duplicate" => "Le numéro de l'offre doit être unique.",

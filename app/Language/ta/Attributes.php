@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறு (களை) நீக்க விரும்புகிறீர்களா?",
 	"confirm_restore" => "தேர்ந்தெடுக்கப்பட்ட பண்புக்கூறுகளை (களை) மீட்டெடுக்க விரும்புகிறீர்களா?",
 	"definition_cannot_be_deleted" => "Could not delete selected attribute(s)",
-	"definition_error_adding_updating" => "Attribute %1 could not be added or updated. Please check the error log.",
+	"definition_error_adding_updating" => "Attribute {0} could not be added or updated. Please check the error log.",
 	"definition_flags" => "Attribute Visibility",
 	"definition_group" => "Group",
 	"definition_id" => "Id",

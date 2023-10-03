@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "تغییرات کد مالیاتی ذخیره نشده است",
 	"tax_excluded" => "پرداخت مالیات",
 	"tax_group" => "گروه مالیاتی",
-	"tax_group_not_unique" => "گروه مالیاتی٪ 1 منحصر به فرد نیست",
+	"tax_group_not_unique" => "گروه مالیاتی{0} منحصر به فرد نیست",
 	"tax_group_sequence" => "دنباله گروه مالیاتی",
 	"tax_included" => "با احتساب مالیات",
 	"tax_jurisdiction" => "صلاحیت مالیاتی",

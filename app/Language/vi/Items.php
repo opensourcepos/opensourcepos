@@ -26,7 +26,7 @@ return [
 	"count" => "Cập hàng tồn kho",
 	"csv_import_failed" => "Gặp lỗi khi nhập từ CSV",
 	"csv_import_nodata_wrongformat" => "Tập tin tải lên không có dữ liệu hoặc là nó có định dạng không đúng.",
-	"csv_import_partially_failed" => "Có %1 mục tin gặp lỗi khi nhập trên dòng: %2. Không có hàng nào được nhập vào.",
+	"csv_import_partially_failed" => "Có {0} mục tin gặp lỗi khi nhập trên dòng: {1}. Không có hàng nào được nhập vào.",
 	"csv_import_success" => "Nhập hàng hóa thành công.",
 	"current_quantity" => "Số lượng hiện tại",
 	"default_pack_name" => "Mỗi",

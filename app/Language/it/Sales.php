@@ -148,7 +148,7 @@ return [
 	"quantity" => "Quantità",
 	"quantity_less_than_reorder_level" => "Attenzione: la Quantità desiderata è sotto al Livello di riordino per questo Articolo.",
 	"quantity_less_than_zero" => "Attenzione: la Quantità desiderata non è sufficiente. Puoi ancora procedere alla vendita ma controlla l'inventario.",
-	"quantity_of_items" => "Quantità di %1 Articolo",
+	"quantity_of_items" => "Quantità di {0} Articolo",
 	"quote" => "Preventivo",
 	"quote_number" => "Numero Preventivo",
 	"quote_number_duplicate" => "Numero Preventivo deve essere unico.",

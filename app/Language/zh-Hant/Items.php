@@ -26,7 +26,7 @@ return [
 	"count" => "更新庫存",
 	"csv_import_failed" => "CSV匯入失敗",
 	"csv_import_nodata_wrongformat" => "上傳的 CSV 文件沒有數據或格式不正確。",
-	"csv_import_partially_failed" => "線上有 %1 個項目導入失敗：%2。未導入任何行。",
+	"csv_import_partially_failed" => "線上有 {0} 個項目導入失敗：{1}。未導入任何行。",
 	"csv_import_success" => "項目 CSV 導入成功。",
 	"current_quantity" => "當前數量",
 	"default_pack_name" => "每個",

@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Vergi kodu dəyişikliyi saxlanılmadı",
 	"tax_excluded" => "Vergi istisna olunur",
 	"tax_group" => "Vergi qurupu",
-	"tax_group_not_unique" => "Vergi Qrupu %1 unikal deyil",
+	"tax_group_not_unique" => "Vergi Qrupu {0} unikal deyil",
 	"tax_group_sequence" => "Vergi Qrupu Sırası",
 	"tax_included" => "Vergi daxildir",
 	"tax_jurisdiction" => "Vergi Yurisdiksiya",

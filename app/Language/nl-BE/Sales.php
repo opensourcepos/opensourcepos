@@ -148,7 +148,7 @@ return [
 	"quantity" => "Aantal",
 	"quantity_less_than_reorder_level" => "Waarschuwing, de gewenste hoeveelheid stock is overschreden.",
 	"quantity_less_than_zero" => "Waarschuwing: Gewenste hoeveelheid is onvoldoende. U kunt de verkoop nog steeds verwerken, maar controleer uw inventaris.",
-	"quantity_of_items" => "Hoeveelheid van 1% items",
+	"quantity_of_items" => "Hoeveelheid van {0} items",
 	"quote" => "Offerte",
 	"quote_number" => "Offertenummer",
 	"quote_number_duplicate" => "Offertenummer moet uniek zijn.",

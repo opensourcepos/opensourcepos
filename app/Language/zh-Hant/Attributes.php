@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "您確定要刪除此屬性?",
 	"confirm_restore" => "您確定要還原所選屬性嗎？",
 	"definition_cannot_be_deleted" => "無法刪除所選屬性",
-	"definition_error_adding_updating" => "無法添加或更新屬性 %1。 請檢查錯誤日誌。",
+	"definition_error_adding_updating" => "無法添加或更新屬性 {0}。 請檢查錯誤日誌。",
 	"definition_flags" => "屬性可見性",
 	"definition_group" => "群組",
 	"definition_id" => "編號",

@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "确定要删除所选属性吗",
 	"confirm_restore" => "您确定要还原所选属性吗？",
 	"definition_cannot_be_deleted" => "不能删除该特征属性",
-	"definition_error_adding_updating" => "无法添加或更新属性%1。 请检查错误日志。",
+	"definition_error_adding_updating" => "无法添加或更新属性{0}。 请检查错误日志。",
 	"definition_flags" => "属性可见性",
 	"definition_group" => "组",
 	"definition_id" => "ID卡",

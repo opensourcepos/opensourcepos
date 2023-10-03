@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Izmjena šifre poreza nije snimljena",
 	"tax_excluded" => "Porez nije uključen",
 	"tax_group" => "Poreska grupa",
-	"tax_group_not_unique" => "Poreska grupa %1 nije jedinstvena",
+	"tax_group_not_unique" => "Poreska grupa {0} nije jedinstvena",
 	"tax_group_sequence" => "Redoslijed poreske grupe",
 	"tax_included" => "Porez je uključen",
 	"tax_jurisdiction" => "Poreski organ",

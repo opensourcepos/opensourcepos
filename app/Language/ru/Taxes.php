@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Изменения налогового кода не сохранены",
 	"tax_excluded" => "Без налога",
 	"tax_group" => "Налоговая группа",
-	"tax_group_not_unique" => "Налоговая группа %1 не уникальна",
+	"tax_group_not_unique" => "Налоговая группа {0} не уникальна",
 	"tax_group_sequence" => "Последовательность налоговой группы",
 	"tax_included" => "Вкл. налог",
 	"tax_jurisdiction" => "Налоговая юрисдикция",

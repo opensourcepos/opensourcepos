@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Geçersiz kullanıcı adı ve/veya parola.",
 	"login" => "Giriş",
 	"logout" => "Çıkış",
-	"migration_needed" => "Girişten sonra %1 veri tabanına göç başlayacak.",
+	"migration_needed" => "Girişten sonra {0} veri tabanına göç başlayacak.",
 	"password" => "Parola",
 	"username" => "Kullanıcı Adı",
-	"welcome" => "%1'e Hoş Geldiniz!",
+	"welcome" => "{0}'e Hoş Geldiniz!",
 ];

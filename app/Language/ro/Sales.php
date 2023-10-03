@@ -148,7 +148,7 @@ return [
 	"quantity" => "Cantitate",
 	"quantity_less_than_reorder_level" => "Avertisment: Cantitatea dorita este sub nivelul de resuplinire a acestui Articol.",
 	"quantity_less_than_zero" => "Avertisment: Cantitatea dorita este insuficienta. Vanzarea poate continua, dar verificati-va stocul.",
-	"quantity_of_items" => "Cantitatea a %1 Articole",
+	"quantity_of_items" => "Cantitatea a {0} Articole",
 	"quote" => "Cotatie",
 	"quote_number" => "Numar Cotatie",
 	"quote_number_duplicate" => "Numar Cotatie trebuie sa fie unic.",

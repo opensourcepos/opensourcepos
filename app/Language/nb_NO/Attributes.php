@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Are you sure you want to delete the selected attribute(s)?",
 	"confirm_restore" => "Are you sure you want to restore the selected attribute(s)?",
 	"definition_cannot_be_deleted" => "Could not delete selected attribute(s)",
-	"definition_error_adding_updating" => "Attribute %1 could not be added or updated. Please check the error log.",
+	"definition_error_adding_updating" => "Attribute {0} could not be added or updated. Please check the error log.",
 	"definition_flags" => "Attribute Visibility",
 	"definition_group" => "Group",
 	"definition_id" => "Id",

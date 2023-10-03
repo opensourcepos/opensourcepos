@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Yanlış istifadəçi adı və ya şifrə.",
 	"login" => "Giriş",
 	"logout" => "Çıxış",
-	"migration_needed" => "%1 -ə daxil olandan sonra verilənlər bazası miqrasiyası başlayacaq.",
+	"migration_needed" => "{0} -ə daxil olandan sonra verilənlər bazası miqrasiyası başlayacaq.",
 	"password" => "Şifrə",
 	"username" => "İstifadəçi",
-	"welcome" => "%1 -ə xoş gəlmisiniz!",
+	"welcome" => "{0} -ə xoş gəlmisiniz!",
 ];

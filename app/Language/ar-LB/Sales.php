@@ -148,7 +148,7 @@ return [
 	"quantity" => "الكمية",
 	"quantity_less_than_reorder_level" => "تحذير: الكمية أقل من الحد المطلوب لهذه المادة.",
 	"quantity_less_than_zero" => "تحذير! الكمية المطلوبة غير كافية، بإمكانك إتمام عملية البيع ، لكن تحقق من مخزنك.",
-	"quantity_of_items" => "عدد ال 1% من الاصناف",
+	"quantity_of_items" => "عدد ال {0} من الاصناف",
 	"quote" => "عرض اسعار",
 	"quote_number" => "رقم عرض الاسعار",
 	"quote_number_duplicate" => "رقم عرض الاسعار يجب ان يكون فريد.",

@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "稅碼更改未保存",
 	"tax_excluded" => "不含稅",
 	"tax_group" => "稅務集團",
-	"tax_group_not_unique" => "稅組 %1 不是唯一的",
+	"tax_group_not_unique" => "稅組 {0} 不是唯一的",
 	"tax_group_sequence" => "稅組序列",
 	"tax_included" => "含稅",
 	"tax_jurisdiction" => "稅收管轄權",

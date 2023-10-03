@@ -5,7 +5,7 @@ return [
 	"bulk_edit" => "Editor Masivo",
 	"cannot_be_deleted" => "No se puede borrar la tarjeta (s) de regalo seleccionada(s), una o mas de las Tarjetas de Regalo ya tuvo ventas.",
 	"cannot_find_giftcard" => "Tarjeta de Regalo no encontrada.",
-	"cannot_use" => "Tarjeta de Regalo %1 no puede ser usada para esta venta: Cliente incorrecto.",
+	"cannot_use" => "Tarjeta de Regalo {0} no puede ser usada para esta venta: Cliente incorrecto.",
 	"card_value" => "Valor",
 	"category" => "Categoría",
 	"change_all_to_allow_alt_desc" => "Permitir descripción alternativa para todos.",

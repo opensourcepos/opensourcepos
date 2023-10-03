@@ -26,7 +26,7 @@ return [
 	"count" => "Voorraad bijwerken",
 	"csv_import_failed" => "CSV importeren mislukt",
 	"csv_import_nodata_wrongformat" => "Het geüploade CSV-bestand bevat geen gegevens or heeft de verkeerde indeling.",
-	"csv_import_partially_failed" => "Er zijn %1 artikel import fout(en) in lijn(en): %2. Geen rijen geïmporteerd.",
+	"csv_import_partially_failed" => "Er zijn {0} artikel import fout(en) in lijn(en): {1}. Geen rijen geïmporteerd.",
 	"csv_import_success" => "Artikel CSV geïmporteerd.",
 	"current_quantity" => "Huidige hoeveelheid",
 	"default_pack_name" => "Per stuk",

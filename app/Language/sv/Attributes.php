@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Är du säker på att du vill ta bort de valda attributen?",
 	"confirm_restore" => "Är du säker på att du vill återställa de valda attributen?",
 	"definition_cannot_be_deleted" => "Det gick inte att ta bort valda attribut",
-	"definition_error_adding_updating" => "Attribut% 1 kunde inte läggas till eller uppdateras. Kontrollera felloggen.",
+	"definition_error_adding_updating" => "Attribut{0} kunde inte läggas till eller uppdateras. Kontrollera felloggen.",
 	"definition_flags" => "Attribut synlighet",
 	"definition_group" => "Grupp",
 	"definition_id" => "Id",

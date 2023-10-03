@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "BTW-Code wijzigingen niet opgeslagen",
 	"tax_excluded" => "Exclusief BTW",
 	"tax_group" => "BTW Groep",
-	"tax_group_not_unique" => "BTW-Groep %1 is niet uniek",
+	"tax_group_not_unique" => "BTW-Groep {0} is niet uniek",
 	"tax_group_sequence" => "BTW-Groep Volgorde",
 	"tax_included" => "BTW Inbegrepen",
 	"tax_jurisdiction" => "BTW Bevoegdheid",

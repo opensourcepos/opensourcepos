@@ -10,7 +10,7 @@ return [
 	"comments" => "評論",
 	"common" => "一般",
 	"confirm_search" => "您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "請在保存前，更正已識別的錯誤",
 	"country" => "國家",
 	"dashboard" => "",

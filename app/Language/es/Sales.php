@@ -148,7 +148,7 @@ return [
 	"quantity" => "Cantidad",
 	"quantity_less_than_reorder_level" => "Advertencia. La cantidad deseada es insuficiente.",
 	"quantity_less_than_zero" => "Advertencia. La cantidad deseada no tiene stock suficiente. Puedes procesar la venta pero revisa tu inventario.",
-	"quantity_of_items" => "Cantidad de %1 articulos",
+	"quantity_of_items" => "Cantidad de {0} articulos",
 	"quote" => "Cotizar",
 	"quote_number" => "Número de Presupuesto",
 	"quote_number_duplicate" => "Cotizacion debe ser unico.",

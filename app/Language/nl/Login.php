@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Ongeldige gebruikersnaam en/of wachtwoord.",
 	"login" => "Aanmelden",
 	"logout" => "Afmelden",
-	"migration_needed" => "Een databasemigratie naar %1 zal starten na aanmelding.",
+	"migration_needed" => "Een databasemigratie naar {0} zal starten na aanmelding.",
 	"password" => "Wachtwoord",
 	"username" => "Gebruikersnaam",
-	"welcome" => "Welkom bij %1!",
+	"welcome" => "Welkom bij {0}!",
 ];

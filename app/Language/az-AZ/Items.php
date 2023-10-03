@@ -26,7 +26,7 @@ return [
 	"count" => "inventorun yenilənməsi",
 	"csv_import_failed" => "səhv csv import",
 	"csv_import_nodata_wrongformat" => "Yüklənmiş faylda məlumat yoxdur və ya düzgün formatlanmır.",
-	"csv_import_partially_failed" => "Xətlərdə %1 element idxalı uğursuzluq (lar) var: %2. Heç bir sıra idxal edilmədi.",
+	"csv_import_partially_failed" => "Xətlərdə {0} element idxalı uğursuzluq (lar) var: {1}. Heç bir sıra idxal edilmədi.",
 	"csv_import_success" => "Malların İdxalı Uğurla Həyata Keçdi.",
 	"current_quantity" => "indiki say",
 	"default_pack_name" => "Hər biri",

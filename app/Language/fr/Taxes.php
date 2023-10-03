@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Changements des Codes Fiscal n'ont pas été enregistrés",
 	"tax_excluded" => "Taxe exclue",
 	"tax_group" => "Groupe Fiscal",
-	"tax_group_not_unique" => "Groupe fiscal %1 n'est pas unique",
+	"tax_group_not_unique" => "Groupe fiscal {0} n'est pas unique",
 	"tax_group_sequence" => "Séquence du Groupe Fiscal",
 	"tax_included" => "Taxe Inclue",
 	"tax_jurisdiction" => "Juridiction Fiscal",

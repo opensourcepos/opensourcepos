@@ -26,7 +26,7 @@ return [
 	"count" => "Ažuriraj zalihu",
 	"csv_import_failed" => "Uvoz CSV-a nije uspio",
 	"csv_import_nodata_wrongformat" => "Učitana CSV datoteka nema podatke ili je pogrešno formatirana.",
-	"csv_import_partially_failed" => "Bilo je %1 grešaka pri uvozu stavke na liniji: %2. Nijedan red nije uvezen.",
+	"csv_import_partially_failed" => "Bilo je {0} grešaka pri uvozu stavke na liniji: {1}. Nijedan red nije uvezen.",
 	"csv_import_success" => "Uvoz CSV stavke je uspješan.",
 	"current_quantity" => "Trenutna količina",
 	"default_pack_name" => "Svaki",

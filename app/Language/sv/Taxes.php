@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Skattkodsändringar sparades inte",
 	"tax_excluded" => "Skatt exkluderad",
 	"tax_group" => "Skattegrupp",
-	"tax_group_not_unique" => "Skattegrupp% 1 är inte unik",
+	"tax_group_not_unique" => "Skattegrupp{0} är inte unik",
 	"tax_group_sequence" => "Skattgruppsekvens",
 	"tax_included" => "Skatt ingår",
 	"tax_jurisdiction" => "Skattejurisdiktion",

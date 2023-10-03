@@ -148,7 +148,7 @@ return [
 	"quantity" => "כמות",
 	"quantity_less_than_reorder_level" => "אזהרה: כמות רצויה נמצאת מתחת לרמת ההזמנה עבור פריט זה.",
 	"quantity_less_than_zero" => "אזהרה: כמות מבוקשת אינה מספיקה. עדיין תוכל לעבד את המכירה, אך בדוק את המלאי שלך.",
-	"quantity_of_items" => "כמות של %1 פריטים",
+	"quantity_of_items" => "כמות של {0} פריטים",
 	"quote" => "הצעת מחיר",
 	"quote_number" => "מספר הצעת מחיר",
 	"quote_number_duplicate" => "מספר הצעת מחיר חייב להיות ייחודי.",
