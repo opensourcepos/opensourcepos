@@ -457,7 +457,7 @@ if(isset($success))
 
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
-				<th style="width: 55%;"><?php echo lang('Sales.quantity_of_items', ['quantity' => $item_count]) ?></th>
+				<th style="width: 55%;"><?php echo lang('Sales.quantity_of_items', [$item_count]) ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo $total_units ?></th>
 			</tr>
 			<tr>
