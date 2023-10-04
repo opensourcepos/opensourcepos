@@ -4,8 +4,8 @@ return [
 	"tables_columns" => "Columns",
 	"tables_hide_show_pagination" => "Hide/Show pagination",
 	"tables_loading" => "Loading, please wait...",
-	"tables_page_from_to" => "Showing {pageFrom} to {pageTo} of {totalRows} rows",
+	"tables_page_from_to" => "Showing {0} to {1} of {2} rows",
 	"tables_refresh" => "Refresh",
-	"tables_rows_per_page" => "{pageNumber} rows per page",
+	"tables_rows_per_page" => "{0} rows per page",
 	"tables_toggle" => "Toggle",
 ];
