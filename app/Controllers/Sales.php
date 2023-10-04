@@ -375,11 +375,11 @@ class Sales extends Secure_Controller
 
 				if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id)
 				{
-					$data['error'] = lang('Giftcards.cannot_use', ['giftcard_num' => $giftcard_num]);
+					$data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
 				}
 				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')	//TODO ===?
 				{
-					$data['error'] = lang('Giftcards.remaining_balance', ['giftcard_num' => $giftcard_num, 'balance' => to_currency($cur_giftcard_value)]);
+					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value)]);
 				}
 				else
 				{
@@ -387,7 +387,7 @@ class Sales extends Secure_Controller
 					$new_giftcard_value = max($new_giftcard_value, 0);
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
-					$data['warning'] = lang('Giftcards.remaining_balance', ['giftcard_num' => $giftcard_num, 'balance' => $new_giftcard_value]);
+					$data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
 					$amount_tendered = min($this->sale_lib->get_amount_due(), $this->giftcard->get_giftcard_value($giftcard_num));
 
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
@@ -752,7 +752,7 @@ class Sales extends Secure_Controller
 
 			if($sale_id == NEW_ENTRY && $this->sale->check_invoice_number_exists($invoice_number))
 			{
-				$data['error'] = lang('Sales.invoice_number_duplicate', ['invoice_number' => $invoice_number]);
+				$data['error'] = lang('Sales.invoice_number_duplicate', [$invoice_number]);
 				$this->_reload($data);
 			}
 			else

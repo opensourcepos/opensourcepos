@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Tax Code changes not saved",
 	"tax_excluded" => "Tax excluded",
 	"tax_group" => "Tax Group",
-	"tax_group_not_unique" => "Tax Group {group} is not unique",
+	"tax_group_not_unique" => "Tax Group {0} is not unique",
 	"tax_group_sequence" => "Tax Group Sequence",
 	"tax_included" => "Tax included",
 	"tax_jurisdiction" => "Tax Jurisdiction",
