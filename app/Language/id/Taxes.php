@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Perubahan Kode Pajak tidak tersimpan",
 	"tax_excluded" => "Pengecualian Pajak",
 	"tax_group" => "Grup Pajak",
-	"tax_group_not_unique" => "Grup Pajak %1 tidak unik",
+	"tax_group_not_unique" => "Grup Pajak {0} tidak unik",
 	"tax_group_sequence" => "Urutan Grup Pajak",
 	"tax_included" => "Termasuk pajak",
 	"tax_jurisdiction" => "Yuridiksi Pajak",

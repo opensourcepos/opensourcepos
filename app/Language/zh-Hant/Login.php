@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "帳號或密碼錯誤。",
 	"login" => "登入",
 	"logout" => "登出",
-	"migration_needed" => "登錄後將開始向 %1 的數據庫遷移。",
+	"migration_needed" => "登錄後將開始向 {0} 的數據庫遷移。",
 	"password" => "密碼",
 	"username" => "帳號",
-	"welcome" => "歡迎來到 %1！",
+	"welcome" => "歡迎來到 {0}！",
 ];

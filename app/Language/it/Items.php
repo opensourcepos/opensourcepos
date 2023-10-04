@@ -26,7 +26,7 @@ return [
 	"count" => "Aggiorna Inventario",
 	"csv_import_failed" => "Importazione CSV fallita",
 	"csv_import_nodata_wrongformat" => "L'upload del file non ha dati o non è formattato correttamente.",
-	"csv_import_partially_failed" => "Si sono verificati %1 errori di importazione degli elementi nelle righe: %2. Nessuna riga è stata importata.",
+	"csv_import_partially_failed" => "Si sono verificati {0} errori di importazione degli elementi nelle righe: {1}. Nessuna riga è stata importata.",
 	"csv_import_success" => "Importazione CSV dell'articolo riuscita.",
 	"current_quantity" => "Quantità Corrente",
 	"default_pack_name" => "Ogni",

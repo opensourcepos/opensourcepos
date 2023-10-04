@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Nom d'utilisateur et/ou mot de passe invalide.",
 	"login" => "Login",
 	"logout" => "Déconnexion",
-	"migration_needed" => "Une migration de base de données vers %1 débutera après l'ouverture de session.",
+	"migration_needed" => "Une migration de base de données vers {0} débutera après l'ouverture de session.",
 	"password" => "Mot de passe",
 	"username" => "Nom d'utilisateur",
-	"welcome" => "Bienvenue à %1 !",
+	"welcome" => "Bienvenue à {0} !",
 ];

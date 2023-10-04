@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "האם אתה בטוח שברצונך למחוק את המאפיינים שנבחרו?",
 	"confirm_restore" => "האם אתה בטוח שברצונך לשחזר את המאפיינים שנבחרו?",
 	"definition_cannot_be_deleted" => "לא ניתן למחוק מאפיינים נבחר(ים)",
-	"definition_error_adding_updating" => "לא ניתן להוסיף או לעדכן את הערך %1. בדוק את יומן השגיאות.",
+	"definition_error_adding_updating" => "לא ניתן להוסיף או לעדכן את הערך {0}. בדוק את יומן השגיאות.",
 	"definition_flags" => "מאפיין גלוי",
 	"definition_group" => "קבוצה",
 	"definition_id" => "מספר זיהוי",

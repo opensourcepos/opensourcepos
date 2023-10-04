@@ -26,7 +26,7 @@ return [
 	"count" => "Actualizar Inventario",
 	"csv_import_failed" => "Falló la importación de Hoja de Cálculo",
 	"csv_import_nodata_wrongformat" => "El archivo subido no tiene datos o el formato es incorrecto.",
-	"csv_import_partially_failed" => "Hubo %1 falla(s) en la importación de producto(s) en la(s) línea(s): %2. Ninguna fila ha sido importada.",
+	"csv_import_partially_failed" => "Hubo {0} falla(s) en la importación de producto(s) en la(s) línea(s): {1}. Ninguna fila ha sido importada.",
 	"csv_import_success" => "Se importaron los articulos exitosamente.",
 	"current_quantity" => "Cantidad Actual",
 	"default_pack_name" => "Cada",

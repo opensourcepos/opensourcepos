@@ -143,7 +143,7 @@ class Attributes extends Secure_Controller
 		{
 			echo json_encode([
 				'success' => FALSE,
-				'message' => lang('Attributes.definition_error_adding_updating', ['definition_name' => $definition_name]),
+				'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
 				'id' => NEW_ENTRY
 			]);
 		}

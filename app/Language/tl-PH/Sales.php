@@ -148,7 +148,7 @@ return [
 	"quantity" => "Quantity",
 	"quantity_less_than_reorder_level" => "Warning: Desired Quantity is below Reorder Level for that Item.",
 	"quantity_less_than_zero" => "Warning: Desired Quantity is insufficient. You can still process the sale, but audit your inventory.",
-	"quantity_of_items" => "Quantity of %1 Items",
+	"quantity_of_items" => "Quantity of {0} Items",
 	"quote" => "Quote",
 	"quote_number" => "Quote Number",
 	"quote_number_duplicate" => "Quote Number must be unique.",

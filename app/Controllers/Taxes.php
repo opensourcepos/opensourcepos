@@ -485,7 +485,7 @@ class Taxes extends Secure_Controller
 			{
 				echo json_encode ([
 					'success' => FALSE,
-					'message' => lang('Taxes.tax_group_not_unique', ['group' => $tax_group[$key]])
+					'message' => lang('Taxes.tax_group_not_unique', [$tax_group[$key]])
 				]);
 				return;
 			}

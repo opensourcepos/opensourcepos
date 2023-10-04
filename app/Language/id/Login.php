@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Nama Pengguna Atau Sandi Salah.",
 	"login" => "Masuk",
 	"logout" => "Keluar",
-	"migration_needed" => "Migrasi basis data untuk %1 akan mulai setelah masuk.",
+	"migration_needed" => "Migrasi basis data untuk {0} akan mulai setelah masuk.",
 	"password" => "Kata kunci",
 	"username" => "Nama Anda",
-	"welcome" => "Selamat Datang di %1!",
+	"welcome" => "Selamat Datang di {0}!",
 ];

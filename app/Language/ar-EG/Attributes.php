@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "هل أنت متأكد من أنك تريد حذف الميزات المحددة ؟",
 	"confirm_restore" => "هل أنت متأكد من أنك تريد استعادة السمة (السمات) المحددة؟",
 	"definition_cannot_be_deleted" => "لا يمكن حذف السمات المحددة",
-	"definition_error_adding_updating" => "لا يمكن إضافة السمة ٪1 أو تحديثها. يرجى التحقق من سجل الخطأ.",
+	"definition_error_adding_updating" => "لا يمكن إضافة السمة {0} أو تحديثها. يرجى التحقق من سجل الخطأ.",
 	"definition_flags" => "رؤية الميزات",
 	"definition_group" => "المجموعة",
 	"definition_id" => "كود",

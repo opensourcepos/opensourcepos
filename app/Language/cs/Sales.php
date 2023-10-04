@@ -148,7 +148,7 @@ return [
 	"quantity" => "ks",
 	"quantity_less_than_reorder_level" => "Upozornění: Množství zboží je pod nastavenou úrovní pro doobjednání.",
 	"quantity_less_than_zero" => "Pozor: Není dostatek zboží. Můžete pokračovat v prodeji, ale zkontrolujte si stav skladu.",
-	"quantity_of_items" => "Množství položek %1",
+	"quantity_of_items" => "Množství položek {0}",
 	"quote" => "Nabídka",
 	"quote_number" => "Číslo nabídky",
 	"quote_number_duplicate" => "Číslo nabídky musí být jedinečné.",

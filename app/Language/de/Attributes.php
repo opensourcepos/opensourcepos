@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Sind Sie sicher, dass Sie die ausgewählten Attribute löschen möchten?",
 	"confirm_restore" => "Sind Sie sicher, dass Sie die ausgewählten Attribute wiederherstellen möchten?",
 	"definition_cannot_be_deleted" => "Ausgewählte Attribute konnten nicht gelöscht werden",
-	"definition_error_adding_updating" => "Das Attribut %1 konnte nicht hinzugefügt oder aktualisiert werden. Bitte überprüfen Sie den Error-Log.",
+	"definition_error_adding_updating" => "Das Attribut {0} konnte nicht hinzugefügt oder aktualisiert werden. Bitte überprüfen Sie den Error-Log.",
 	"definition_flags" => "Attribut Sichtbarkeit",
 	"definition_group" => "Gruppe",
 	"definition_id" => "ID",

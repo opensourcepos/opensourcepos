@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "¿Está seguro de eliminar el/los atributo(s) seleccionado(s)?",
 	"confirm_restore" => "¿Está seguro que quiere restaurar los atributos seleccionados?",
 	"definition_cannot_be_deleted" => "No ha sido posible eliminar el/los atributo(s) seleccionado(s)",
-	"definition_error_adding_updating" => "El atributo %1 no pudo ser agregado o actualizado. Favor de revisar el registro de errorres.",
+	"definition_error_adding_updating" => "El atributo {0} no pudo ser agregado o actualizado. Favor de revisar el registro de errorres.",
 	"definition_flags" => "Visibilidad del atributo",
 	"definition_group" => "Grupo",
 	"definition_id" => "Id",

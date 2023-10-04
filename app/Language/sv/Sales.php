@@ -148,7 +148,7 @@ return [
 	"quantity" => "Antal",
 	"quantity_less_than_reorder_level" => "Varning: Önskat antal är under påfyllnadsnivå för den aktuella produkten.",
 	"quantity_less_than_zero" => "Varning: Önskat antal är otillräckligt. Du kan fortfarande bearbeta försäljningen, men granska din inventering.",
-	"quantity_of_items" => "Antal %1 objekt",
+	"quantity_of_items" => "Antal {0} objekt",
 	"quote" => "Quote",
 	"quote_number" => "Quote nummer",
 	"quote_number_duplicate" => "Quote nummer måste vara unikt.",

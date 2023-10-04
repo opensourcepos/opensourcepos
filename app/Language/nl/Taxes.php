@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Belastingcode wijzigingen niet opgeslagen",
 	"tax_excluded" => "Exclusief belasting",
 	"tax_group" => "Belastinggroep",
-	"tax_group_not_unique" => "Belastinggroep %1 is niet uniek",
+	"tax_group_not_unique" => "Belastinggroep {0} is niet uniek",
 	"tax_group_sequence" => "Belastinggroep volgorde",
 	"tax_included" => "Inclusief belasting",
 	"tax_jurisdiction" => "Belastingjurisdictie",

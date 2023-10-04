@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Vergi Kodu değişiklikleri kaydedilmedi",
 	"tax_excluded" => "Vergi hariç",
 	"tax_group" => "Vergi Kümesi",
-	"tax_group_not_unique" => "%1 Vergi Kümesi eşsiz değil",
+	"tax_group_not_unique" => "{0} Vergi Kümesi eşsiz değil",
 	"tax_group_sequence" => "Vergi Kümesi Sırası",
 	"tax_included" => "Vergi dahil",
 	"tax_jurisdiction" => "Vergi Yargı Yetkisi",

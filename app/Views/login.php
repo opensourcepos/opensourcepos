@@ -45,7 +45,7 @@
 				</div>
 				<section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
 					<?= form_open('login') ?>
-					<h3 class="text-center m-0"><?= lang('Login.welcome', ['install_name' => lang('Common.software_short')]) ?></h3>
+					<h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
 					<?php if ($has_errors): ?>
 						<div class="alert alert-danger mt-3">
 							<?= validation_list_errors() ?>
@@ -53,7 +53,7 @@
 					<?php endif; ?>
 					<?php if (!$is_latest): ?>
 						<div class="alert alert-info mt-3">
-							<?= lang('Login.migration_needed', ['version' => $latest_version]) ?>
+							<?= lang('Login.migration_needed', [$latest_version]) ?>
 						</div>
 					<?php endif; ?>
 					<?php if (empty($config['Login.form']) || 'floating_labels'==($config['Login.form'])): ?>

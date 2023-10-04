@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "Не вдалося зберегти податковий код.",
 	"tax_excluded" => "Без податку",
 	"tax_group" => "Податкова група",
-	"tax_group_not_unique" => "Податкова група % 1 не є унікальною",
+	"tax_group_not_unique" => "Податкова група {0} не є унікальною",
 	"tax_group_sequence" => "Послідовність податкової групи",
 	"tax_included" => "Податок включений",
 	"tax_jurisdiction" => "Податкова юрисдикція",

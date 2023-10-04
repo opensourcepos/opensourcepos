@@ -148,7 +148,7 @@ return [
 	"quantity" => "Jumlah",
 	"quantity_less_than_reorder_level" => "Peringatan: Stok Inventori barang ini dibawah level order ulang.",
 	"quantity_less_than_zero" => "Peringatan: Stok Inventori tidak cukup. Proses penjualan masih dapat dilanjutkan, tapi periksa Inventori.",
-	"quantity_of_items" => "Jumlah dari %1 item",
+	"quantity_of_items" => "Jumlah dari {0} item",
 	"quote" => "Penawaran",
 	"quote_number" => "No. Penawaran",
 	"quote_number_duplicate" => "No. Penawaran tidak boleh sama.",

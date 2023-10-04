@@ -26,7 +26,7 @@ return [
 	"count" => "Ändere Bestand",
 	"csv_import_failed" => "CSV Import fehlgeschlagen",
 	"csv_import_nodata_wrongformat" => "Die hochgeladene Datei enthält keine Daten oder ist falsch formatiert.",
-	"csv_import_partially_failed" => "%1 Artikel-Import Fehler in Zeile: %2. Keine Reihen wurden importiert.",
+	"csv_import_partially_failed" => "{0} Artikel-Import Fehler in Zeile: {1}. Keine Reihen wurden importiert.",
 	"csv_import_success" => "Artikelimport erfolgreich.",
 	"current_quantity" => "Aktuelle Menge",
 	"default_pack_name" => "Jedes",

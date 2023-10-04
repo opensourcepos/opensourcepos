@@ -10,7 +10,7 @@ return [
 	"comments" => "",
 	"common" => "",
 	"confirm_search" => "",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "",
 	"country" => "",
 	"dashboard" => "",

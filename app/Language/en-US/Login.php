@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Invalid username and/or password.",
 	"login" => "Login",
 	"logout" => "Logout",
-	"migration_needed" => "A database migration to {version} will start after login.",
+	"migration_needed" => "A database migration to {0} will start after login.",
 	"password" => "Password",
 	"username" => "Username",
-	"welcome" => "Welcome to {install_name}!",
+	"welcome" => "Welcome to {0}!",
 ];

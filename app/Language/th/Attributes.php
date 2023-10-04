@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "ต้องการลบคุณลักษณะที่เลือกหรือไม่ ?",
 	"confirm_restore" => "ต้องการคืนค่าคุณลักษณะที่เลือกหรือไม่ ?",
 	"definition_cannot_be_deleted" => "ไม่สามารถลบคุณลักษณะที่เลือก",
-	"definition_error_adding_updating" => "ไม่สามารถเพิ่มหรือแก้ไขคุณลักษณะ %1, โปรดตรวจสอบความผิดพลาดในบันทึก",
+	"definition_error_adding_updating" => "ไม่สามารถเพิ่มหรือแก้ไขคุณลักษณะ {0}, โปรดตรวจสอบความผิดพลาดในบันทึก",
 	"definition_flags" => "การมองเห็นคุณลักษณะ",
 	"definition_group" => "กลุ่ม",
 	"definition_id" => "ID",

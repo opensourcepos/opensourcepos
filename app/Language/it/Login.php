@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Username o Password non validi.",
 	"login" => "Login",
 	"logout" => "Uscita",
-	"migration_needed" => "Dopo l'accesso verrà avviata una migrazione del database a %1.",
+	"migration_needed" => "Dopo l'accesso verrà avviata una migrazione del database a {0}.",
 	"password" => "Password",
 	"username" => "Username",
-	"welcome" => "Benvenuto in %1!",
+	"welcome" => "Benvenuto in {0}!",
 ];
