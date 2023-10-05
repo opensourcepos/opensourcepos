@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Biztosan törli szeretné a kijelölt tulajdonságokat?",
 	"confirm_restore" => "Biztosan visszaállítja a kijelölt tulajdonságokat?",
 	"definition_cannot_be_deleted" => "Nem sikerült törölni a kijelölt tulajdonságokat",
-	"definition_error_adding_updating" => "% 1 attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.",
+	"definition_error_adding_updating" => "{0} attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.",
 	"definition_flags" => "Tulajdonság láthatósága",
 	"definition_group" => "Csoport",
 	"definition_id" => "Azonosító",

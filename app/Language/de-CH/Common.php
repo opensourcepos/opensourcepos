@@ -10,7 +10,7 @@ return [
 	"comments" => "Kommentare",
 	"common" => "Allgemein",
 	"confirm_search" => "Sie haben einen oder mehrere Zeilen gewählt. Nach der Verarbeitung werden diese nicht mehr selektiert sein. Wollen Sie die Suche dennoch verarbeiten?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "",
 	"country" => "Land",
 	"dashboard" => "",

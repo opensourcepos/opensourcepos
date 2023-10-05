@@ -26,7 +26,7 @@ return [
 	"count" => "แก้ไขจำนวนสินค้าคงคลัง",
 	"csv_import_failed" => "นำเข้าข้อมูล CSV ล้มเหลว",
 	"csv_import_nodata_wrongformat" => "Your uploaded file has no data or wrong format",
-	"csv_import_partially_failed" => "มีรายการ %1 รายการที่นำเข้าล้มเหลว : %2 รายการที่ยังไม่ได้นำเข้า",
+	"csv_import_partially_failed" => "มีรายการ {0} รายการที่นำเข้าล้มเหลว : {1} รายการที่ยังไม่ได้นำเข้า",
 	"csv_import_success" => "Import of Items successful",
 	"current_quantity" => "ปริมาณสินค้าคงคลัง",
 	"default_pack_name" => "ชิ้นละ",

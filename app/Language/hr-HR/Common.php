@@ -10,7 +10,7 @@ return [
 	"comments" => "Komentari",
 	"common" => "Zajedničko",
 	"confirm_search" => "Odabrali ste jedan ili više redova koji neće biti odabrani nakon pretrage. Jeste li ste sigurni da želite pretragu?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "",
 	"country" => "Država",
 	"dashboard" => "",

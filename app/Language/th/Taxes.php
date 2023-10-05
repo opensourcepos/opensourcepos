@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "ไม่สามารถบันทึกการเปลี่ยนแปลงรหัสภาษีได้",
 	"tax_excluded" => "ไม่รวมภาษี",
 	"tax_group" => "กลุ่มภาษี",
-	"tax_group_not_unique" => "กลุ่มภาษี %1 ต้องไม่ซ้ำกัน",
+	"tax_group_not_unique" => "กลุ่มภาษี {0} ต้องไม่ซ้ำกัน",
 	"tax_group_sequence" => "ลำดับกลุ่มภาษี",
 	"tax_included" => "รวมภาษี",
 	"tax_jurisdiction" => "เขตอำนาจศาลภาษี",

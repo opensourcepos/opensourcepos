@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Sei sicuro di voler eliminare gli attributi selezionati?",
 	"confirm_restore" => "Sei sicuro di voler ripristinare l'attributo selezionato?",
 	"definition_cannot_be_deleted" => "Non riesco a cancellare l'attributo selezionato",
-	"definition_error_adding_updating" => "Impossibile aggiungere o aggiornare l'attributo %1. Si prega di controllare il registro degli errori.",
+	"definition_error_adding_updating" => "Impossibile aggiungere o aggiornare l'attributo {0}. Si prega di controllare il registro degli errori.",
 	"definition_flags" => "Visibilità attributo",
 	"definition_group" => "Gruppo",
 	"definition_id" => "Id",

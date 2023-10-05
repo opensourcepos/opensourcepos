@@ -55,7 +55,7 @@ return [
 	"tax_codes_saved_unsuccessfully" => "no se guardaron los cambios en el codigo de impuesto",
 	"tax_excluded" => "impuesto excluido",
 	"tax_group" => "grupo de impuesto",
-	"tax_group_not_unique" => "Grupo de impuestos %1 no es el unico",
+	"tax_group_not_unique" => "Grupo de impuestos {0} no es el unico",
 	"tax_group_sequence" => "secuencia de grupo de impuesto",
 	"tax_included" => "impuesto incluido",
 	"tax_jurisdiction" => "impuesto por ley",

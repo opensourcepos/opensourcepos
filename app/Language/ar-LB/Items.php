@@ -26,7 +26,7 @@ return [
 	"count" => "تحديث المخزون",
 	"csv_import_failed" => "فشل الإستيراد من اكسل",
 	"csv_import_nodata_wrongformat" => "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.",
-	"csv_import_partially_failed" => "يوجد خطأ بنسبة 1% في استيراد الاصناف في السطر: %2. لم يتم استيرادهم.",
+	"csv_import_partially_failed" => "يوجد خطأ بنسبة {0} في استيراد الاصناف في السطر: {1}. لم يتم استيرادهم.",
 	"csv_import_success" => "تم استيراد الأصناف بنجاح.",
 	"current_quantity" => "الكمية الحالية",
 	"default_pack_name" => "كل",

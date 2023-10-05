@@ -10,7 +10,7 @@ return [
 	"comments" => "Podrobnosti",
 	"common" => "",
 	"confirm_search" => "Máte vybráno jeden nebo více řádků a tyto po po vyhledání nebudou vybrány. Chcete opravdu pokračovat s vyhledáváním?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "",
 	"country" => "Země",
 	"dashboard" => "",

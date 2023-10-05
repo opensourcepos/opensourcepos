@@ -26,7 +26,7 @@ return [
 	"count" => "Mutasi/Penyesuaian Inventori",
 	"csv_import_failed" => "Impor dari CSV tidak berhasil dilakukan",
 	"csv_import_nodata_wrongformat" => "Berkas unggahan tidak berisi data atau format salah.",
-	"csv_import_partially_failed" => "Terdapat %1 item yang gagal diimpor pada baris: %2. Tidak ada kolom yang diimpor.",
+	"csv_import_partially_failed" => "Terdapat {0} item yang gagal diimpor pada baris: {1}. Tidak ada kolom yang diimpor.",
 	"csv_import_success" => "Impor item berhasil.",
 	"current_quantity" => "Jumlah Saat ini",
 	"default_pack_name" => "Setiap",

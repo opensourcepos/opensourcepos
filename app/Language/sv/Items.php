@@ -26,7 +26,7 @@ return [
 	"count" => "Uppdatera Inventory",
 	"csv_import_failed" => "CSV-import misslyckades",
 	"csv_import_nodata_wrongformat" => "Den uppladdade filen har ingen data eller är formaterad felaktigt.",
-	"csv_import_partially_failed" => "Det fanns% 1 importfel (er) på rad (er):% 2. Inga rader importerades.",
+	"csv_import_partially_failed" => "Det fanns{0} importfel (er) på rad (er):{1}. Inga rader importerades.",
 	"csv_import_success" => "Artikelimporten lyckades.",
 	"current_quantity" => "Nuvarande antal",
 	"default_pack_name" => "Varje",

@@ -148,7 +148,7 @@ return [
 	"quantity" => "Miqdarı",
 	"quantity_less_than_reorder_level" => "Diqqət: İstədiyinizin Miqdarı bu Öhdəlik üçün Yenidən Səviyyə səviyyəsindən aşağıdadır.",
 	"quantity_less_than_zero" => "Xəbərdarlıq: İstədiyiniz miqdar kifayət deyil. Siz hələ də satışı edə bilərsiniz, lakin malın sayını yoxlayın.",
-	"quantity_of_items" => "%1 Məhsulların miqdarı",
+	"quantity_of_items" => "{0} Məhsulların miqdarı",
 	"quote" => "Qiymət ver",
 	"quote_number" => "Sitat Nömrəsi",
 	"quote_number_duplicate" => "Sitatın nömrəsi unikal olmalıdır.",

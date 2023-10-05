@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Tài khoản hoặc mật khẩu không hợp lệ.",
 	"login" => "Đăng nhập",
 	"logout" => "Đăng xuất",
-	"migration_needed" => "Di chuyển cơ sở dữ liệu sang %1 sẽ được bắt đầu sau khi đăng nhập.",
+	"migration_needed" => "Di chuyển cơ sở dữ liệu sang {0} sẽ được bắt đầu sau khi đăng nhập.",
 	"password" => "Mật khẩu",
 	"username" => "Tài khoản",
-	"welcome" => "Chào mừng đến với %1!",
+	"welcome" => "Chào mừng đến với {0}!",
 ];

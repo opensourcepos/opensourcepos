@@ -148,7 +148,7 @@ return [
 	"quantity" => "Số lượng",
 	"quantity_less_than_reorder_level" => "Cảnh báo: Số lượng mong muốn dưới Mức đặt mua bổ xung cho hàng hóa đó.",
 	"quantity_less_than_zero" => "Cảnh báo: Số lượng mong muốn không đủ. Bạn vẫn có thể xử lý đơn hàng, nhưng hãy kiểm toán tồn kho của bạn.",
-	"quantity_of_items" => "Số lượng của Hàng hóa %1",
+	"quantity_of_items" => "Số lượng của Hàng hóa {0}",
 	"quote" => "Báo giá",
 	"quote_number" => "Số Báo giá",
 	"quote_number_duplicate" => "Số Báo giá phải là duy nhất.",

@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "ແນ່ໃຈຫຼືບໍທີ່ຈະລືບລາຍການທີ່ເລືອກ",
 	"confirm_restore" => "ແນ່ໃຈຫຼືບໍທີ່ຈະຄືນຄ່າແອັດທິບິ້ວດັ່ງກ່າວ?",
 	"definition_cannot_be_deleted" => "ບໍສາມາດລືບລາຍການທີ່ເລືອກໄດ້",
-	"definition_error_adding_updating" => "ລາຍການ %1 ບໍສາມາດເພີ່ມ ຫຼື ແກ້ໄຂ. ກະລຸນາກວດສອບຢູ່ log ຂໍ້ຜິດຜາດ",
+	"definition_error_adding_updating" => "ລາຍການ {0} ບໍສາມາດເພີ່ມ ຫຼື ແກ້ໄຂ. ກະລຸນາກວດສອບຢູ່ log ຂໍ້ຜິດຜາດ",
 	"definition_flags" => "ຄູນສົມບັດການເບິ່ງເຫັນ",
 	"definition_group" => "ກຸ່ມ",
 	"definition_id" => "ລະຫັດ",

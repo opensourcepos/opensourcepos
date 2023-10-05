@@ -10,7 +10,7 @@ return [
 	"comments" => "Commenti",
 	"common" => "comune",
 	"confirm_search" => "Hai selezionato una o più righe, queste non saranno più selezionate dopo la tua ricerca. Sei sicuro di voler procedere alla ricerca?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "Correggi gli errori identificati prima di salvare",
 	"country" => "Paese",
 	"dashboard" => "",

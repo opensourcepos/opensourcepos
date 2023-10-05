@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Bạn có chắc chắn muốn xóa (các) thuộc tính đã chọn không?",
 	"confirm_restore" => "Bạn có chắc chắn muốn khôi phục (các) thuộc tính đã chọn không?",
 	"definition_cannot_be_deleted" => "Không thể xóa (các) thuộc tính được chọn",
-	"definition_error_adding_updating" => "Thuộc tính %1 không thể thêm hoặc cập nhật. Vui lòng kiểm tra nhật ký lỗi.",
+	"definition_error_adding_updating" => "Thuộc tính {0} không thể thêm hoặc cập nhật. Vui lòng kiểm tra nhật ký lỗi.",
 	"definition_flags" => "Hiển thị thuộc tính",
 	"definition_group" => "Nhóm",
 	"definition_id" => "Mã số",

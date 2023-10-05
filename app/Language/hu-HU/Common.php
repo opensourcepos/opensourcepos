@@ -10,7 +10,7 @@ return [
 	"comments" => "Megjegyzések",
 	"common" => "közös",
 	"confirm_search" => "Ön egy vagy több mezőt választott ki, a keresés után ezek már nem lesznek kiválasztva. Biztos, hogy elküldi ezt a keresést?",
-	"copyrights" => "© 2010 - %1",
+	"copyrights" => "© 2010 - {0}",
 	"correct_errors" => "",
 	"country" => "Ország",
 	"dashboard" => "",

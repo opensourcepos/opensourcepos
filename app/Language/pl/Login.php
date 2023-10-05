@@ -7,8 +7,8 @@ return [
 	"invalid_username_and_password" => "Niepoprawna nazwa użytkownika i/lub hasło.",
 	"login" => "Zaloguj",
 	"logout" => "Wyloguj",
-	"migration_needed" => "Migracja bazy danych do %1 zacznie się po zalogowaniu.",
+	"migration_needed" => "Migracja bazy danych do {0} zacznie się po zalogowaniu.",
 	"password" => "Hasło",
 	"username" => "Nazwa użytkownika",
-	"welcome" => "Witaj w %1!",
+	"welcome" => "Witaj w {0}!",
 ];

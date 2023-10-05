@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "کیا آپ منتخب شدہ کو حذف کرنا چاہتے ہیں ؟",
 	"confirm_restore" => "کیا آپ منتخب شدہ کو بحال کرنا چاہتے ہیں ؟",
 	"definition_cannot_be_deleted" => "منتخب شدہ کو حذف نہیں کیا جا سکتا",
-	"definition_error_adding_updating" => "Attribute %1 could not be added or updated. Please check the error log.",
+	"definition_error_adding_updating" => "Attribute {0} could not be added or updated. Please check the error log.",
 	"definition_flags" => "Attribute Visibility",
 	"definition_group" => "Group",
 	"definition_id" => "Id",

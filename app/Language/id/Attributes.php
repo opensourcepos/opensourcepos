@@ -4,7 +4,7 @@ return [
 	"confirm_delete" => "Apakah Anda yakin ingin menghapus atribut tersebut?",
 	"confirm_restore" => "Apakah Anda yakin ingin mengembalikan atribut tersebut?",
 	"definition_cannot_be_deleted" => "Tidak bisa menghapus atribut terpilih",
-	"definition_error_adding_updating" => "Atribut %1 tidak dapat ditambah atau diperbaharui. Silahkan periksa log kesalahan.",
+	"definition_error_adding_updating" => "Atribut {0} tidak dapat ditambah atau diperbaharui. Silahkan periksa log kesalahan.",
 	"definition_flags" => "Visibilitas Atribut",
 	"definition_group" => "Grup",
 	"definition_id" => "Nomor Id",
