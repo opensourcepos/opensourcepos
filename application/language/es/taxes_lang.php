@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Añadir excepción";
 $lang["taxes_cascade"] = "Cascada";
 $lang["taxes_cascade_sequence"] = "Secuencia en cascada";
@@ -37,11 +36,11 @@ $lang["taxes_tax_category_duplicate"] = "Tipo de impuesto duplicado";
 $lang["taxes_tax_category_invalid_chars"] = "Caracteres inválidos en el tipo de impuesto";
 $lang["taxes_tax_category_name"] = "Nombre del tipo de impuesto";
 $lang["taxes_tax_category_new"] = "Nuevo tipo de impuesto";
-$lang["taxes_tax_category_required"] = "Tipo de impuesto requerido";
+$lang["taxes_tax_category_required"] = "Tipo de impuesto es requerido";
 $lang["taxes_tax_code"] = "Código";
 $lang["taxes_tax_code_cannot_be_deleted"] = "Fallo al borrar tipo de impuesto";
-$lang["taxes_tax_code_duplicate"] = "Código de impuesto duplicado";
-$lang["taxes_tax_code_invalid_chars"] = "Caracteres no válidos en el código de impuesto";
+$lang["taxes_tax_code_duplicate"] = "Código de Impuesto Duplicado";
+$lang["taxes_tax_code_invalid_chars"] = "Caracteres Inválidos en el Código de Impuesto";
 $lang["taxes_tax_code_name"] = "Nombre";
 $lang["taxes_tax_code_required"] = "El código de impuesto es un campo obligatorio";
 $lang["taxes_tax_code_successful_deleted"] = "Se ha borrado correctamente el impuesto";
@@ -59,8 +58,8 @@ $lang["taxes_tax_group_not_unique"] = "El grupo de impuestos %1 no es único";
 $lang["taxes_tax_group_sequence"] = "Secuencia de grupo de impuestos";
 $lang["taxes_tax_included"] = "Impuestos incluidos";
 $lang["taxes_tax_jurisdiction"] = "Jurisdicción Tributaria";
-$lang["taxes_tax_jurisdiction_duplicate"] = "Jurisdicción Tributaria Duplicada";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "Caracteres inválidos en nombre de jurisdicción";
+$lang["taxes_tax_jurisdiction_duplicate"] = "Jurisdicción Fiscal Duplicada";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Caracteres no Válidos en el Nombre de Jurisdicción";
 $lang["taxes_tax_jurisdiction_required"] = "Es requerida una Jurisdicción Tributaria";
 $lang["taxes_tax_jurisdictions"] = "Jurisdicciones Tributarias";
 $lang["taxes_tax_jurisdictions_configuration"] = "Configuración de las Jurisdicciones Tributarias";
