@@ -1,6 +1,6 @@
 <?php
 $lang["customers_available_points"] = "Puntos Disponibles";
-$lang["rewards_package"] = "Recompensas";
+$lang["rewards_package"] = "Paquete de recompensas";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
 $lang["sales_account_number"] = "Cuenta #";
 $lang["sales_add_payment"] = "Agregar Pago";
