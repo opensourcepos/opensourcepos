@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "Este número de cuenta ya esta en la base de datos.";
 $lang["customers_available_points"] = "Puntos Disponibles";
@@ -41,7 +40,7 @@ $lang["customers_max"] = "Máx. gastado";
 $lang["customers_min"] = "Mín. gastado";
 $lang["customers_new"] = "Nuevo Cliente";
 $lang["customers_none_selected"] = "No has seleccionado clientes para ser borrados.";
-$lang["customers_one_or_multiple"] = "cliente(s)";
+$lang["customers_one_or_multiple"] = "Cliente(s)";
 $lang["customers_quantity"] = "Cantidad";
 $lang["customers_stats_info"] = "Estados";
 $lang["customers_successful_adding"] = "Has agregado satisfactoriamente el cliente";
@@ -52,4 +51,4 @@ $lang["customers_tax_id"] = "Identificador del Impuesto";
 $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";
-$lang["rewards_package"] = "Paquete de premios";
+$lang["rewards_package"] = "Paquete de recompensas";
