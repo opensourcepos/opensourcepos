@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "El valor del atributo no puede contener ':' o '|'";
 $lang["attributes_confirm_delete"] = "¿Está seguro de que desea borrar los atributos seleccionados?";
 $lang["attributes_confirm_restore"] = "¿Está seguro de que desea restaurar los atributos seleccionados?";
 $lang["attributes_definition_cannot_be_deleted"] = "No se han podido borrar los atributos seleccionados";
-$lang["attributes_definition_error_adding_updating"] = "El atributo %1 no pudo ser agregado o actulizado. Por favor, compruebe el registro de errores.";
+$lang["attributes_definition_error_adding_updating"] = "El atributo %1 no pudo ser agregado o actulizado. Por favor compruebe el registro de errores.";
 $lang["attributes_definition_flags"] = "Visibilidad del atributo";
 $lang["attributes_definition_group"] = "Grupo";
 $lang["attributes_definition_id"] = "Id";
