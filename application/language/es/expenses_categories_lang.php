@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["category_name_required"] = "nombre requerido-";
 $lang["expenses_categories_add_item"] = "Agregar categoria";
 $lang["expenses_categories_cannot_be_deleted"] = "No pudo borrar";
@@ -9,7 +8,7 @@ $lang["expenses_categories_confirm_restore"] = "¿Está seguro de que desea rest
 $lang["expenses_categories_description"] = "Descripcion Categoria";
 $lang["expenses_categories_error_adding_updating"] = "Error actualizando/adicinando categoria";
 $lang["expenses_categories_info"] = "Informacion Categoria";
-$lang["expenses_categories_name"] = "Nombre Categoria";
+$lang["expenses_categories_name"] = "Categorías de gastos";
 $lang["expenses_categories_new"] = "Nueva Categoria";
 $lang["expenses_categories_no_expenses_categories_to_display"] = "Ninguna categoria para mostrar";
 $lang["expenses_categories_none_selected"] = "No ha seleccionado nada";
