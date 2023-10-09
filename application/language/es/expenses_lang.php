@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Agregar Gasto";
 $lang["expenses_amount"] = "Monto";
 $lang["expenses_amount_number"] = "Monto debe ser numerico";
@@ -8,7 +7,7 @@ $lang["expenses_by_category"] = "Categoria";
 $lang["expenses_cannot_be_deleted"] = "No puede borrar Categoria de gastos";
 $lang["expenses_cash"] = "Efectivo";
 $lang["expenses_cash_filter"] = "Efectivo";
-$lang["expenses_categories_name"] = "Categoria";
+$lang["expenses_categories_name"] = "Categoria de Gastos";
 $lang["expenses_category_required"] = "categoria es un campo requerido";
 $lang["expenses_check"] = "Cheque";
 $lang["expenses_check_filter"] = "Cheque";
