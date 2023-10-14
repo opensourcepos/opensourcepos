@@ -1,14 +1,15 @@
-<?php 
-
-$lang["messages_first_name"] = "Adı";
-$lang["messages_last_name"] = "Soyadı";
-$lang["messages_message"] = "Mesaj";
-$lang["messages_message_placeholder"] = "Mesajınız burada...";
-$lang["messages_message_required"] = "Mesaj tələb olunur";
-$lang["messages_multiple_phones"] = "(Birdən çox alıcı halında, vergüllə ayrılan mobil nömrələri daxil edin)";
-$lang["messages_phone"] = "Telefon";
-$lang["messages_phone_number_required"] = "Telefon nömrəsi tələb olunur";
-$lang["messages_phone_placeholder"] = "Mobil Nömrə(lər) burada...";
-$lang["messages_sms_send"] = "SMS Göndər";
-$lang["messages_successfully_sent"] = "Mesaj uğurla göndərildi: ";
-$lang["messages_unsuccessfully_sent"] = "Mesaj uğursuz olaraq göndərildi: ";
+<?php
+return [
+	"first_name" => "Adı",
+	"last_name" => "Soyadı",
+	"message" => "Mesaj",
+	"message_placeholder" => "Mesajınız burada...",
+	"message_required" => "Mesaj tələb olunur",
+	"multiple_phones" => "(Birdən çox alıcı halında, vergüllə ayrılan mobil nömrələri daxil edin)",
+	"phone" => "Telefon",
+	"phone_number_required" => "Telefon nömrəsi tələb olunur",
+	"phone_placeholder" => "Mobil Nömrə(lər) burada...",
+	"sms_send" => "SMS Göndər",
+	"successfully_sent" => "Mesaj uğurla göndərildi: ",
+	"unsuccessfully_sent" => "Mesaj uğursuz olaraq göndərildi: ",
+];

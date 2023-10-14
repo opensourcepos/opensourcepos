@@ -6,27 +6,30 @@ If you are a developer and need to add unique features to OSPOS, you can downloa
 
 After you've made your changes, you will need to do a "BUILD" on it to add all necessary components that OSPOS needs to be a fully functional application.
 
-This documents the "How to Build" process.  
+This documents the "How to Build" process.
 
-The goal here was to do a lot of work in setting up and configuring the build process so that the actual build is as simple as possible.  I think we've accomplished that task.
+The goal here is to set up and configure the build process so that the actual build is as simple as possible.
+
+The build process uses the build tools "npm" and "gulp" to piece everything together.
 
 This applies only to the upcoming 3.4.0 release of OSPOS which is being worked on in the CI4 branch, where we are upgrading OSPOS to version 4 of the CodeIgniter framework.
 
 ## Prerequisites
 
-- Install the latest version of NPM.
-- Install the latest version of Composer.
+- Install the latest version of NPM (tested using version 9.4.2)
+- Install the latest version of Composer (tested using composer 2.5.1)
 
 ## The Workflow
 
 1. Download the code from the CI4 branch found at https://github.com/opensourcepos/opensourcepos/tree/ci4-upgrade.
 2. Unzip it and copy the contents into the working folder.
 3. Start a terminal session from the root of your working folder. For example, I normally open up the working folder in PHPStorm and run the commands from the Terminal provided by the IDE.
-4. Enter the following commands:
-   - `npm install`
-   - `npm run build`
+4. Enter the following three commands in sequence:
+	- `composer install`
+	- `npm install`
+	- `npm run build`
 
-That's all there is to it.  These commands thread a lot of smaller tasks together and run them sequentially.  If you want to run each step manually, then you will need to pay attention to the bouncing between folders that takes place in order to run each task using the correct version of Grunt.
+That's all there is to it.
 
 Note: If you receive messages similar to 'codeigniter4/framework v4.3.1 requires ext-intl', this is an indicator that you do not have intl enabled in php.ini
 
@@ -41,9 +44,6 @@ Using an `.env` file is a convenient approach to store OSPOS configuration.
 I've added the following Powershell scripts to make my life a bit easier, which I share with you.
 
 * `build.ps1` - Which runs the build but also restores the .env from a backup I make of it in a specifically placed folder. I place a copy of the configured .env file in a folder that has the following path from the working folder: `../env/<working-folder-name>/.env`
-
-
-* `build-steps.ps1` - This runs through each step of the build and pauses just before it executes the next build step so that the developer can check the results of the previous build step.
 
 ## The Result
 

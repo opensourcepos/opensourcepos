@@ -1,21 +1,23 @@
 <?php
-$lang["datepicker_all_time"] = "Cały czas";
-$lang["datepicker_apply"] = "Zastosuj";
-$lang["datepicker_cancel"] = "Anuluj";
-$lang["datepicker_custom"] = "Niestandardowy";
-$lang["datepicker_from"] = "Od";
-$lang["datepicker_last_30"] = "Ostatnie 30 dni";
-$lang["datepicker_last_7"] = "Ostatnie 7 dni";
-$lang["datepicker_last_financial_year"] = "Ostatni rok fiskalny";
-$lang["datepicker_last_month"] = "Ostatni miesiąc";
-$lang["datepicker_last_year"] = "Ostatni rok";
-$lang["datepicker_same_month_last_year"] = "Ten sam miesiąc w zeszłym roku";
-$lang["datepicker_same_month_to_same_day_last_year"] = "Ten sam dzień w tym samym miesiącu rok temu";
-$lang["datepicker_this_financial_year"] = "Obecny rok fiskalny";
-$lang["datepicker_this_month"] = "Obecny miesiąc";
-$lang["datepicker_this_year"] = "Obecny rok";
-$lang["datepicker_to"] = "Do";
-$lang["datepicker_today"] = "Dzisiaj";
-$lang["datepicker_today_last_year"] = "Dzisiaj rok temu";
-$lang["datepicker_weekstart"] = "0";
-$lang["datepicker_yesterday"] = "Wczoraj";
+return [
+	"all_time" => "Cały czas",
+	"apply" => "Zastosuj",
+	"cancel" => "Anuluj",
+	"custom" => "Niestandardowy",
+	"from" => "Od",
+	"last_30" => "Ostatnie 30 dni",
+	"last_7" => "Ostatnie 7 dni",
+	"last_financial_year" => "Ostatni rok fiskalny",
+	"last_month" => "Ostatni miesiąc",
+	"last_year" => "Ostatni rok",
+	"same_month_last_year" => "Ten sam miesiąc w zeszłym roku",
+	"same_month_to_same_day_last_year" => "Ten sam dzień w tym samym miesiącu rok temu",
+	"this_financial_year" => "Obecny rok fiskalny",
+	"this_month" => "Obecny miesiąc",
+	"this_year" => "Obecny rok",
+	"to" => "Do",
+	"today" => "Dzisiaj",
+	"today_last_year" => "Dzisiaj rok temu",
+	"weekstart" => "0",
+	"yesterday" => "Wczoraj",
+];

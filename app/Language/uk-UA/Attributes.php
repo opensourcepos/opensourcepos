@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Значення атрибуту не може містити ':' або'|'";
-$lang["attributes_confirm_delete"] = "Ви впевнені, що хочете видалити вибрані атрибут(и)?";
-$lang["attributes_confirm_restore"] = "Ви впевнені, що хочете відновити вибрані атрибут(и)?";
-$lang["attributes_definition_cannot_be_deleted"] = "Не вдалося видалити вибрані атрибут(и)";
-$lang["attributes_definition_error_adding_updating"] = "Атрибут %1 не може бути доданий або оновлений. Будь ласка, перевірте журнал помилок.";
-$lang["attributes_definition_flags"] = "Видимість атрибуту";
-$lang["attributes_definition_group"] = "Група";
-$lang["attributes_definition_id"] = "№";
-$lang["attributes_definition_name"] = "Додати атрибут";
-$lang["attributes_definition_name_required"] = "Назва атрибуту - обов'язкове поле";
-$lang["attributes_definition_one_or_multiple"] = "Атрибут(и)";
-$lang["attributes_definition_successful_adding"] = "Ви успішно додали товар";
-$lang["attributes_definition_successful_deleted"] = "Успішно видалено";
-$lang["attributes_definition_successful_updating"] = "Оновлено успішно";
-$lang["attributes_definition_type"] = "Тип атрибуту";
-$lang["attributes_definition_type_required"] = "Назва атрибуту - обов'язкове поле";
-$lang["attributes_definition_unit"] = "Одиниця виміру";
-$lang["attributes_definition_values"] = "Значення атрибуту";
-$lang["attributes_new"] = "Новий атрибут";
-$lang["attributes_no_attributes_to_display"] = "Немає об'єктів для відображення";
-$lang["attributes_receipt_visibility"] = "Чек";
-$lang["attributes_show_in_items"] = "Показати в товарах";
-$lang["attributes_show_in_items_visibility"] = "Товари";
-$lang["attributes_show_in_receipt"] = "Показати в квитанції";
-$lang["attributes_show_in_receivings"] = "Показати в надходженнях";
-$lang["attributes_show_in_receivings_visibility"] = "Надходження";
-$lang["attributes_show_in_sales"] = "Показати в продажах";
-$lang["attributes_show_in_sales_visibility"] = "Продажі";
-$lang["attributes_update"] = "Оновити атрибут";
+<?php
+return [
+	"attribute_value_invalid_chars" => "Значення атрибуту не може містити ':' або'|'",
+	"confirm_delete" => "Ви впевнені, що хочете видалити вибрані атрибут(и)?",
+	"confirm_restore" => "Ви впевнені, що хочете відновити вибрані атрибут(и)?",
+	"definition_cannot_be_deleted" => "Не вдалося видалити вибрані атрибут(и)",
+	"definition_error_adding_updating" => "Атрибут {0} не може бути доданий або оновлений. Будь ласка, перевірте журнал помилок.",
+	"definition_flags" => "Видимість атрибуту",
+	"definition_group" => "Група",
+	"definition_id" => "№",
+	"definition_name" => "Додати атрибут",
+	"definition_name_required" => "Назва атрибуту - обов'язкове поле",
+	"definition_one_or_multiple" => "Атрибут(и)",
+	"definition_successful_adding" => "Ви успішно додали товар",
+	"definition_successful_deleted" => "Успішно видалено",
+	"definition_successful_updating" => "Оновлено успішно",
+	"definition_type" => "Тип атрибуту",
+	"definition_type_required" => "Назва атрибуту - обов'язкове поле",
+	"definition_unit" => "Одиниця виміру",
+	"definition_values" => "Значення атрибуту",
+	"new" => "Новий атрибут",
+	"no_attributes_to_display" => "Немає об'єктів для відображення",
+	"receipt_visibility" => "Чек",
+	"show_in_items" => "Показати в товарах",
+	"show_in_items_visibility" => "Товари",
+	"show_in_receipt" => "Показати в квитанції",
+	"show_in_receivings" => "Показати в надходженнях",
+	"show_in_receivings_visibility" => "Надходження",
+	"show_in_sales" => "Показати в продажах",
+	"show_in_sales_visibility" => "Продажі",
+	"update" => "Оновити атрибут",
+];

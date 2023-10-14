@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "Ik ben geen robot.";
-$lang["login_go"] = "Aanmelden";
-$lang["login_invalid_gcaptcha"] = "Bewijs dat je geen robot bent.";
-$lang["login_invalid_installation"] = "De installatie is niet juist, controleer uw php.ini bestand.";
-$lang["login_invalid_username_and_password"] = "Ongeldige gebruikersnaam en/of wachtwoord.";
-$lang["login_login"] = "Aanmelden";
-$lang["login_logout"] = "Afmelden";
-$lang["login_migration_needed"] = "Een databasemigratie naar %1 zal starten na aanmelding.";
-$lang["login_password"] = "Wachtwoord";
-$lang["login_username"] = "Gebruikersnaam";
-$lang["login_welcome"] = "Welkom bij %1!";
+<?php
+return [
+	"gcaptcha" => "Ik ben geen robot.",
+	"go" => "Aanmelden",
+	"invalid_gcaptcha" => "Bewijs dat je geen robot bent.",
+	"invalid_installation" => "De installatie is niet juist, controleer uw php.ini bestand.",
+	"invalid_username_and_password" => "Ongeldige gebruikersnaam en/of wachtwoord.",
+	"login" => "Aanmelden",
+	"logout" => "Afmelden",
+	"migration_needed" => "Een databasemigratie naar {0} zal starten na aanmelding.",
+	"password" => "Wachtwoord",
+	"username" => "Gebruikersnaam",
+	"welcome" => "Welkom bij {0}!",
+];

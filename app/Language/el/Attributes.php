@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Η τιμή του χαρακτηριστικού δεν μπορεί να περιέχει ':' ή '|'";
-$lang["attributes_confirm_delete"] = "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα χαρακτηριστικά;";
-$lang["attributes_confirm_restore"] = "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τα επιλεγμένα χαρακτηριστικά;";
-$lang["attributes_definition_cannot_be_deleted"] = "Δεν ήταν δυνατή η διαγραφή των επιλεγμένων χαρακτηριστικών";
-$lang["attributes_definition_error_adding_updating"] = "Το χαρακτηριστικό %1 δεν ήταν δυνατό να προστεθεί ή να ενημερωθεί. Ελέγξτε το αρχείο καταγραφής σφαλμάτων.";
-$lang["attributes_definition_flags"] = "Ορατότητα χαρακτηριστικών";
-$lang["attributes_definition_group"] = "Ομάδα";
-$lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Προσθήκη χαρακτηριστικού";
-$lang["attributes_definition_name_required"] = "Το όνομα του χαρακτηριστικού είναι υποχρεωτικό πεδίο";
-$lang["attributes_definition_one_or_multiple"] = "Χαρακτηριστικό(ά)";
-$lang["attributes_definition_successful_adding"] = "Έχετε προσθέσει με επιτυχία στοιχείο";
-$lang["attributes_definition_successful_deleted"] = "";
-$lang["attributes_definition_successful_updating"] = "Έχετε ενημερώσει με επιτυχία το χαρακτηριστικό";
-$lang["attributes_definition_type"] = "Τύπος Χαρακτηριστικού";
-$lang["attributes_definition_type_required"] = "Ο τύπος ιδιότητας είναι υποχρεωτικό πεδίο";
-$lang["attributes_definition_unit"] = "Μονάδα μέτρησης";
-$lang["attributes_definition_values"] = "Τιμές Χαρακτηριστικών";
-$lang["attributes_new"] = "Νέο χαρακτηριστικό";
-$lang["attributes_no_attributes_to_display"] = "Δεν υπάρχουν στοιχεία για εμφάνιση";
-$lang["attributes_receipt_visibility"] = "";
-$lang["attributes_show_in_items"] = "";
-$lang["attributes_show_in_items_visibility"] = "";
-$lang["attributes_show_in_receipt"] = "";
-$lang["attributes_show_in_receivings"] = "";
-$lang["attributes_show_in_receivings_visibility"] = "";
-$lang["attributes_show_in_sales"] = "";
-$lang["attributes_show_in_sales_visibility"] = "";
-$lang["attributes_update"] = "";
+<?php
+return [
+	"attribute_value_invalid_chars" => "Η τιμή του χαρακτηριστικού δεν μπορεί να περιέχει ':' ή '|'",
+	"confirm_delete" => "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα χαρακτηριστικά;",
+	"confirm_restore" => "Είστε βέβαιοι ότι θέλετε να επαναφέρετε τα επιλεγμένα χαρακτηριστικά;",
+	"definition_cannot_be_deleted" => "Δεν ήταν δυνατή η διαγραφή των επιλεγμένων χαρακτηριστικών",
+	"definition_error_adding_updating" => "Το χαρακτηριστικό {0} δεν ήταν δυνατό να προστεθεί ή να ενημερωθεί. Ελέγξτε το αρχείο καταγραφής σφαλμάτων.",
+	"definition_flags" => "Ορατότητα χαρακτηριστικών",
+	"definition_group" => "Ομάδα",
+	"definition_id" => "Id",
+	"definition_name" => "Προσθήκη χαρακτηριστικού",
+	"definition_name_required" => "Το όνομα του χαρακτηριστικού είναι υποχρεωτικό πεδίο",
+	"definition_one_or_multiple" => "Χαρακτηριστικό(ά)",
+	"definition_successful_adding" => "Έχετε προσθέσει με επιτυχία στοιχείο",
+	"definition_successful_deleted" => "",
+	"definition_successful_updating" => "Έχετε ενημερώσει με επιτυχία το χαρακτηριστικό",
+	"definition_type" => "Τύπος Χαρακτηριστικού",
+	"definition_type_required" => "Ο τύπος ιδιότητας είναι υποχρεωτικό πεδίο",
+	"definition_unit" => "Μονάδα μέτρησης",
+	"definition_values" => "Τιμές Χαρακτηριστικών",
+	"new" => "Νέο χαρακτηριστικό",
+	"no_attributes_to_display" => "Δεν υπάρχουν στοιχεία για εμφάνιση",
+	"receipt_visibility" => "",
+	"show_in_items" => "",
+	"show_in_items_visibility" => "",
+	"show_in_receipt" => "",
+	"show_in_receivings" => "",
+	"show_in_receivings_visibility" => "",
+	"show_in_sales" => "",
+	"show_in_sales_visibility" => "",
+	"update" => "",
+];

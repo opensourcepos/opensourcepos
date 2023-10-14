@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.";
-$lang["login_go"] = "Go";
-$lang["login_invalid_gcaptcha"] = "ຍັງບໍ່ໄດ້ຕິກ ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.";
-$lang["login_invalid_installation"] = "ການຕິດຕັ້ງມີຂໍ້ຜິດພາດ, ກະລຸນາກວດສອບ php.ini file.";
-$lang["login_invalid_username_and_password"] = "Username ຫຼື Password ບໍ່ຖືກຕ້ອງ.";
-$lang["login_login"] = "ເຂົ້າລະບົບ";
-$lang["login_logout"] = "";
-$lang["login_migration_needed"] = "";
-$lang["login_password"] = "Password";
-$lang["login_username"] = "Username";
-$lang["login_welcome"] = "";
+<?php
+return [
+	"gcaptcha" => "ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.",
+	"go" => "Go",
+	"invalid_gcaptcha" => "ຍັງບໍ່ໄດ້ຕິກ ຂ້ອຍບໍ່ແມ່ນເຄື່ອງຈັກ.",
+	"invalid_installation" => "ການຕິດຕັ້ງມີຂໍ້ຜິດພາດ, ກະລຸນາກວດສອບ php.ini file.",
+	"invalid_username_and_password" => "Username ຫຼື Password ບໍ່ຖືກຕ້ອງ.",
+	"login" => "ເຂົ້າລະບົບ",
+	"logout" => "",
+	"migration_needed" => "",
+	"password" => "Password",
+	"username" => "Username",
+	"welcome" => "",
+];

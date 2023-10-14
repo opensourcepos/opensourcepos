@@ -1,4 +1,5 @@
-<?php 
-
-$lang["error_no_permission_module"] = "Önnek nincs hozzáférése az alábbi modulhoz ";
-$lang["error_unknown"] = "ismeretlen";
+<?php
+return [
+	"no_permission_module" => "Önnek nincs hozzáférése az alábbi modulhoz ",
+	"unknown" => "ismeretlen",
+];
