@@ -1,7 +1,7 @@
 <?php
 return [
 	"customers_available_points" => "Puntos Disponibles",
-	"rewards_package" => "Recompensas",
+	"rewards_package" => "Paquete de recompensas",
 	"rewards_remaining_balance" => "El remanente de puntos es ",
 	"account_number" => "Cuenta #",
 	"add_payment" => "Agregar Pago",

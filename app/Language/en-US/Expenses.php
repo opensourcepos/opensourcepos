@@ -27,7 +27,7 @@ return [
 	"employee" => "Created By",
 	"error_adding_updating" => "Error adding/updating Expense",
 	"expense_id" => "Id",
-	"employee" => "Employee",
+	"expenses_employee" => "Employee",
 	"info" => "Expense Info",
 	"ip_address" => "",
 	"is_deleted" => "Deleted",

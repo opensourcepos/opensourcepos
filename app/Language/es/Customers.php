@@ -41,7 +41,7 @@ return [
 	"min" => "Mín. gastado",
 	"new" => "Nuevo Cliente",
 	"none_selected" => "No has seleccionado clientes para ser borrados.",
-	"one_or_multiple" => "cliente(s)",
+	"one_or_multiple" => "Cliente(s)",
 	"quantity" => "Cantidad",
 	"stats_info" => "Estados",
 	"successful_adding" => "Has agregado satisfactoriamente el cliente",
@@ -52,5 +52,5 @@ return [
 	"taxable" => "Gravable",
 	"total" => "Total",
 	"update" => "Actualizar Cliente",
-	"rewards_package" => "Paquete de premios",
+	"rewards_package" => "Paquete de recompensas",
 ];

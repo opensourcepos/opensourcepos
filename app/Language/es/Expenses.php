@@ -8,7 +8,7 @@ return [
 	"cannot_be_deleted" => "No puede borrar Categoria de gastos",
 	"cash" => "Efectivo",
 	"cash_filter" => "Efectivo",
-	"categories_name" => "Categoria",
+	"categories_name" => "Categoria de Gastos",
 	"category_required" => "categoria es un campo requerido",
 	"check" => "Cheque",
 	"check_filter" => "Cheque",

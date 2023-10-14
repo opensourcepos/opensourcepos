@@ -9,7 +9,7 @@ return [
 	"description" => "Descripcion Categoria",
 	"error_adding_updating" => "Error actualizando/adicinando categoria",
 	"info" => "Informacion Categoria",
-	"name" => "Nombre Categoria",
+	"name" => "Categorías de gastos",
 	"new" => "Nueva Categoria",
 	"no_expenses_categories_to_display" => "Ninguna categoria para mostrar",
 	"none_selected" => "No ha seleccionado nada",

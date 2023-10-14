@@ -53,7 +53,7 @@ return [
 	"manager" => "",
 	"migration_needed" => "",
 	"new" => "New",
-	"no" => "",
+	"no" => "No",
 	"no_persons_to_display" => "There are no people to display.",
 	"none_selected_text" => "[Select]",
 	"or" => "OR",
@@ -82,7 +82,7 @@ return [
 	"website" => "opensourcepos.org",
 	"welcome" => "Welcome",
 	"welcome_message" => "Welcome to OSPOS, click a module below to get started.",
-	"yes" => "",
+	"yes" => "Yes",
 	"you_are_using_ospos" => "",
 	"zip" => "Postal Code",
 ];
