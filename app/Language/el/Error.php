@@ -1,4 +1,5 @@
-<?php 
-
-$lang["error_no_permission_module"] = "";
-$lang["error_unknown"] = "";
+<?php
+return [
+	"no_permission_module" => "",
+	"unknown" => "",
+];

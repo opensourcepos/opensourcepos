@@ -8,7 +8,7 @@
 		"jekkos <jekkos - at - opensourcepos.org>",
 		"FrancescoUK <francesco.lodolo.uk - at - gmail.com>",
 		"objecttothis <objecttothis - at - gmail.com>",
-		"SteveIreland <steve.ireland.de - at - gmail.com>"
+		"SteveIreland <stevei - at - ruledomain.com>"
 	],
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/"
@@ -18,34 +18,55 @@
 		"POS"
 	],
 	"scripts": {
-		"install": "composer install",
-		"buildsetup": "npm install -g grunt-cli && bower install && cd grunt045 && npm install cd ../",
-		"buildtasks": "grunt task1 && cd grunt045 && grunt task2 && cd ../ && grunt task3 && cd grunt045 && grunt task4 && cd ../ && grunt task5 --force && cd grunt045 && grunt task6 && cd ../ && grunt task7",
-		"build": "npm run buildsetup && npm run buildtasks",
-		"watch": "grunt watch",
-		"build": "npm run install && npm run buildsetup && npm run buildtasks && npm run watch",
-		"update": "npm update & composer self-update & composer update",
-		"clean": "grunt clean:composer & grunt clean:bower & grunt clean:npm",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "gulp default",
+		"gulp": "gulp"
 	},
+	"type": "module",
 	"dependencies": {
-		"bootstrap": "^5.2.3",
-		"bootswatch": "^5.2.3",
+		"bootstrap": "^3.4.1",
+		"bootstrap-daterangepicker": "^2.1.27",
+		"bootstrap-datetime-picker": "github:smalot/bootstrap-datetimepicker#master",
+		"bootstrap-notify": "^3.1.3",
+		"bootstrap-select": "^1.13.18",
+		"bootstrap-table": "^1.18.1",
+		"bootstrap-tagsinput": "^0.7.1",
+		"bootstrap-toggle": "^2.2.2",
+		"bootstrap3-dialog": "github:nakupanda/bootstrap3-dialog#master",
+		"bootstrap5": "npm:bootstrap@^5.2.3",
+		"bootswatch": "^3.4.1",
+		"bootswatch5": "npm:bootswatch@^5.2.3",
+		"chartist": "^0.11.4",
+		"chartist-plugin-axistitle": "^0.0.7",
+		"chartist-plugin-barlabels": "^0.0.5",
+		"chartist-plugin-pointlabels": "^0.0.4",
+		"chartist-plugin-tooltips": "github:tmmdata/chartist-plugin-tooltip#v0.0.18",
+		"clipboard": "^2.0.11",
 		"coffeescript": "^2.7.0",
-		"npm": "^9.4.2",
-		"npm-check-updates": "^16.6.5"
+		"es6-promise": "^4.2.8",
+		"html2canvas": "^1.4.1",
+		"jasny-bootstrap": "^3.1.3",
+		"jquery": "^2.1.4",
+		"jquery-form": "^4.3.0",
+		"jquery-ui-dist": "^1.12.1",
+		"jquery-validation": "^1.19.5",
+		"js-cookie": "^2.2.1",
+		"jspdf": "^1.3.4",
+		"jspdf-autotable": "^2.0.17",
+		"tableexport.jquery.plugin": "^1.27.0"
 	},
 	"devDependencies": {
-		"grunt": "^1.6.1",
-		"grunt-bowercopy": "^1.2.5",
-		"grunt-contrib-compress": "^2.0.0",
-		"grunt-contrib-concat": "~2.1.0",
-		"grunt-contrib-cssmin": "^4.0.0",
-		"grunt-contrib-jshint": "^3.2.0",
-		"grunt-contrib-uglify": "~5.2.2",
-		"grunt-contrib-watch": "^1.1.0",
-		"grunt-injector": "^1.1.0",
-		"grunt-wiredep": "^3.0.1",
-		"load-grunt-tasks": "^5.1.0"
+		"gulp": "^4.0.2",
+		"gulp-clean": "^0.4.0",
+		"gulp-clean-css": "^4.3.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-debug": "^4.0.0",
+		"gulp-header": "^2.0.9",
+		"gulp-inject": "^5.0.5",
+		"gulp-rename": "^2.0.0",
+		"gulp-rev": "^10.0.0",
+		"gulp-uglify": "^3.0.2",
+		"npm-check-updates": "^16.6.5",
+		"readable-stream": "^4.4.0",
+		"stream-series": "^0.1.1"
 	}
 }

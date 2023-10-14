@@ -1,13 +1,14 @@
-<?php 
-
-$lang["login_gcaptcha"] = "Ich bin kein Roboter.";
-$lang["login_go"] = "Los";
-$lang["login_invalid_gcaptcha"] = "Ich bin kein Roboter ist ungültig.";
-$lang["login_invalid_installation"] = "Die Installation ist nicht korrekt, überprüfen Sie Ihre php.ini-Datei.";
-$lang["login_invalid_username_and_password"] = "Ungültiger Benutzername oder Passwort.";
-$lang["login_login"] = "Login";
-$lang["login_logout"] = "";
-$lang["login_migration_needed"] = "";
-$lang["login_password"] = "Passwort";
-$lang["login_username"] = "Benutzername";
-$lang["login_welcome"] = "";
+<?php
+return [
+	"gcaptcha" => "Ich bin kein Roboter.",
+	"go" => "Los",
+	"invalid_gcaptcha" => "Ich bin kein Roboter ist ungültig.",
+	"invalid_installation" => "Die Installation ist nicht korrekt, überprüfen Sie Ihre php.ini-Datei.",
+	"invalid_username_and_password" => "Ungültiger Benutzername oder Passwort.",
+	"login" => "Login",
+	"logout" => "",
+	"migration_needed" => "",
+	"password" => "Passwort",
+	"username" => "Benutzername",
+	"welcome" => "",
+];

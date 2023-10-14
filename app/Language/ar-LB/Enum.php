@@ -1,9 +1,10 @@
-<?php 
-
-$lang["enum_half_down"] = "تقريب نصفي";
-$lang["enum_half_even"] = "نصف مزدوج";
-$lang["enum_half_five"] = "نصف الخمس";
-$lang["enum_half_odd"] = "نصف فردي";
-$lang["enum_half_up"] = "تقريب نصفي";
-$lang["enum_round_down"] = "التقريب";
-$lang["enum_round_up"] = "التقريب";
+<?php
+return [
+	"half_down" => "تقريب نصفي",
+	"half_even" => "نصف مزدوج",
+	"half_five" => "نصف الخمس",
+	"half_odd" => "نصف فردي",
+	"half_up" => "تقريب نصفي",
+	"round_down" => "التقريب",
+	"round_up" => "التقريب",
+];

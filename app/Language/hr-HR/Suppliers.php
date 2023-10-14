@@ -1,23 +1,24 @@
-<?php 
-
-$lang["suppliers_account_number"] = "Račun br.";
-$lang["suppliers_agency_name"] = "Naziv djelatnosti";
-$lang["suppliers_cannot_be_deleted"] = "Ne mogu obrisati odabranog dobavljača. Jedan ili više odabranih dobavljača ima prodaju.";
-$lang["suppliers_category"] = "";
-$lang["suppliers_company_name"] = "Naziv tvrtke";
-$lang["suppliers_company_name_required"] = "Naziv tvrtke je potreban";
-$lang["suppliers_confirm_delete"] = "Jeste li ste sigurni da želite obrisati odabranog dobavljača?";
-$lang["suppliers_confirm_restore"] = "";
-$lang["suppliers_cost"] = "";
-$lang["suppliers_error_adding_updating"] = "Greška kod dodavanja/ažuriranja dobavljača";
-$lang["suppliers_goods"] = "";
-$lang["suppliers_new"] = "Novi dobavljač";
-$lang["suppliers_none_selected"] = "Niste odabrali nijednog dobavljača za brisanje";
-$lang["suppliers_one_or_multiple"] = "Dobavljač(i)";
-$lang["suppliers_successful_adding"] = "Uspješno ste dodali dobavljača";
-$lang["suppliers_successful_deleted"] = "Uspješno ste obrisali dobavljača";
-$lang["suppliers_successful_updating"] = "Uspješno ste ažurirali dobavljača";
-$lang["suppliers_supplier"] = "Dobavljač";
-$lang["suppliers_supplier_id"] = "ID";
-$lang["suppliers_tax_id"] = "";
-$lang["suppliers_update"] = "Ažuriranje dobavljača";
+<?php
+return [
+	"account_number" => "Račun br.",
+	"agency_name" => "Naziv djelatnosti",
+	"cannot_be_deleted" => "Ne mogu obrisati odabranog dobavljača. Jedan ili više odabranih dobavljača ima prodaju.",
+	"category" => "",
+	"company_name" => "Naziv tvrtke",
+	"company_name_required" => "Naziv tvrtke je potreban",
+	"confirm_delete" => "Jeste li ste sigurni da želite obrisati odabranog dobavljača?",
+	"confirm_restore" => "",
+	"cost" => "",
+	"error_adding_updating" => "Greška kod dodavanja/ažuriranja dobavljača",
+	"goods" => "",
+	"new" => "Novi dobavljač",
+	"none_selected" => "Niste odabrali nijednog dobavljača za brisanje",
+	"one_or_multiple" => "Dobavljač(i)",
+	"successful_adding" => "Uspješno ste dodali dobavljača",
+	"successful_deleted" => "Uspješno ste obrisali dobavljača",
+	"successful_updating" => "Uspješno ste ažurirali dobavljača",
+	"supplier" => "Dobavljač",
+	"supplier_id" => "ID",
+	"tax_id" => "",
+	"update" => "Ažuriranje dobavljača",
+];

@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Egenskabens værdi kan ikke indeholde ':' or '|'";
-$lang["attributes_confirm_delete"] = "Er du sikker på, at du vil slette de valgte egenskaber?";
-$lang["attributes_confirm_restore"] = "Er du sikker på, at du vil gendanne de valgte egenskaber?";
-$lang["attributes_definition_cannot_be_deleted"] = "De valgte egenskaber kunne ikke slettes";
-$lang["attributes_definition_error_adding_updating"] = "Egenskab %1 Kunne ikke tilføjes eller opdateres. Tjek venligst fejlprotokollen.";
-$lang["attributes_definition_flags"] = "Egenskabens Synlighed";
-$lang["attributes_definition_group"] = "Gruppe";
-$lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Tilføj egenskab";
-$lang["attributes_definition_name_required"] = "Egenskabens navn er et obligatorisk felt";
-$lang["attributes_definition_one_or_multiple"] = "Egenskab(er)";
-$lang["attributes_definition_successful_adding"] = "Du har tilføjet en genstand";
-$lang["attributes_definition_successful_deleted"] = "Du har slettet en genstand";
-$lang["attributes_definition_successful_updating"] = "Du har opdateret en egenskab";
-$lang["attributes_definition_type"] = "Egenskabs-type";
-$lang["attributes_definition_type_required"] = "Egenskabs-type er et obligatorisk felt";
-$lang["attributes_definition_unit"] = "Måleenhed";
-$lang["attributes_definition_values"] = "Egenskabens værdier";
-$lang["attributes_new"] = "Ny egenskab";
-$lang["attributes_no_attributes_to_display"] = "Ingen genstande at vise";
-$lang["attributes_receipt_visibility"] = "Kvittering";
-$lang["attributes_show_in_items"] = "Vis i genstande";
-$lang["attributes_show_in_items_visibility"] = "Genstande";
-$lang["attributes_show_in_receipt"] = "Vis i kvittering";
-$lang["attributes_show_in_receivings"] = "Vis i modtagelser";
-$lang["attributes_show_in_receivings_visibility"] = "Modtagelser";
-$lang["attributes_show_in_sales"] = "Vis i salg";
-$lang["attributes_show_in_sales_visibility"] = "Salg";
-$lang["attributes_update"] = "Opdater egenskab";
+<?php
+return [
+	"attribute_value_invalid_chars" => "Egenskabens værdi kan ikke indeholde ':' or '|'",
+	"confirm_delete" => "Er du sikker på, at du vil slette de valgte egenskaber?",
+	"confirm_restore" => "Er du sikker på, at du vil gendanne de valgte egenskaber?",
+	"definition_cannot_be_deleted" => "De valgte egenskaber kunne ikke slettes",
+	"definition_error_adding_updating" => "Egenskab {0} Kunne ikke tilføjes eller opdateres. Tjek venligst fejlprotokollen.",
+	"definition_flags" => "Egenskabens Synlighed",
+	"definition_group" => "Gruppe",
+	"definition_id" => "Id",
+	"definition_name" => "Tilføj egenskab",
+	"definition_name_required" => "Egenskabens navn er et obligatorisk felt",
+	"definition_one_or_multiple" => "Egenskab(er)",
+	"definition_successful_adding" => "Du har tilføjet en genstand",
+	"definition_successful_deleted" => "Du har slettet en genstand",
+	"definition_successful_updating" => "Du har opdateret en egenskab",
+	"definition_type" => "Egenskabs-type",
+	"definition_type_required" => "Egenskabs-type er et obligatorisk felt",
+	"definition_unit" => "Måleenhed",
+	"definition_values" => "Egenskabens værdier",
+	"new" => "Ny egenskab",
+	"no_attributes_to_display" => "Ingen genstande at vise",
+	"receipt_visibility" => "Kvittering",
+	"show_in_items" => "Vis i genstande",
+	"show_in_items_visibility" => "Genstande",
+	"show_in_receipt" => "Vis i kvittering",
+	"show_in_receivings" => "Vis i modtagelser",
+	"show_in_receivings_visibility" => "Modtagelser",
+	"show_in_sales" => "Vis i salg",
+	"show_in_sales_visibility" => "Salg",
+	"update" => "Opdater egenskab",
+];

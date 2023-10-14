@@ -16,31 +16,24 @@ $request = Services::request();
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url() . '/' ?>" />
 	<title><?php echo esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
-	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url() ?>favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>"/>
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="<?php echo 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>"/>
 
 	<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
-		<!-- bower:css -->
-		<!-- endbower -->
-		<!-- injector:css -->
-		<!-- endinjector -->
-		<!-- bower:js -->
-		<!-- endbower -->
-		<!-- injector:js -->
-		<!-- endinjector -->
+		<!-- inject:debug:css -->
+		<!-- endinject -->
+		<!-- inject:debug:js -->
+		<!-- endinject -->
 	<?php else : ?>
-		<!--[if lte IE 8]>
-		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
-		<![endif]-->
-		<!-- mincss injector:css -->
-		<!-- endinjector -->
+		<!--inject:prod:css -->
+		<!-- endinject -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
 	<?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo 'css/' . esc($config['theme']) . '.css' ?>"/>
 	<?php } ?>
-		<!-- minjs injector:js -->
-		<!-- endinjector -->
+		<!-- inject:prod:js -->
+		<!-- endinject -->
 	<?php endif; ?>
 
 	<?php echo view('partial/header_js') ?>

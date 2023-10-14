@@ -1,9 +1,10 @@
-<?php 
-
-$lang["enum_half_down"] = "Yarım aşağı";
-$lang["enum_half_even"] = "Yarım hətta";
-$lang["enum_half_five"] = "Yarısı";
-$lang["enum_half_odd"] = "Yarım təkliklərdə";
-$lang["enum_half_up"] = "Yarım yuxarı";
-$lang["enum_round_down"] = "Yuvarla aşağı";
-$lang["enum_round_up"] = "Yuvarla yuxarı";
+<?php
+return [
+	"half_down" => "Yarım aşağı",
+	"half_even" => "Yarım hətta",
+	"half_five" => "Yarısı",
+	"half_odd" => "Yarım təkliklərdə",
+	"half_up" => "Yarım yuxarı",
+	"round_down" => "Yuvarla aşağı",
+	"round_up" => "Yuvarla yuxarı",
+];

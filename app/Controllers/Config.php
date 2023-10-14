@@ -242,7 +242,7 @@ class Config extends Secure_Controller
 		$themes = [];
 
 		// read all themes in the dist folder
-		$dir = new DirectoryIterator('dist/bootswatch');
+		$dir = new DirectoryIterator('resources/bootswatch');
 
 		foreach($dir as $dirinfo)	//TODO: $dirinfo doesn't follow naming convention
 		{
