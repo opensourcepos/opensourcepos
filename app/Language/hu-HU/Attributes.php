@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Tulajdonság értéke nem tartalmazhat '_' vagy '|' karaktert";
-$lang["attributes_confirm_delete"] = "Biztosan törli szeretné a kijelölt tulajdonságokat?";
-$lang["attributes_confirm_restore"] = "Biztosan visszaállítja a kijelölt tulajdonságokat?";
-$lang["attributes_definition_cannot_be_deleted"] = "Nem sikerült törölni a kijelölt tulajdonságokat";
-$lang["attributes_definition_error_adding_updating"] = "% 1 attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.";
-$lang["attributes_definition_flags"] = "Tulajdonság láthatósága";
-$lang["attributes_definition_group"] = "Csoport";
-$lang["attributes_definition_id"] = "Azonosító";
-$lang["attributes_definition_name"] = "Tulajdonság hozzáadása";
-$lang["attributes_definition_name_required"] = "Tulajdonság név kötelező mező";
-$lang["attributes_definition_one_or_multiple"] = "tulajdonságok";
-$lang["attributes_definition_successful_adding"] = "Sikeresen hozzáadta az elemet";
-$lang["attributes_definition_successful_deleted"] = "Sikeresen törölte";
-$lang["attributes_definition_successful_updating"] = "Sikeresen frissítette a tulajdonságot";
-$lang["attributes_definition_type"] = "Tulajdonság típus";
-$lang["attributes_definition_type_required"] = "Tulajdonság típusa kötelező mező";
-$lang["attributes_definition_unit"] = "Mértkékegység";
-$lang["attributes_definition_values"] = "Tulajdonság értékei";
-$lang["attributes_new"] = "Új tulajdnoság";
-$lang["attributes_no_attributes_to_display"] = "Nincs megjelenítendő elem";
-$lang["attributes_receipt_visibility"] = "Nyugta";
-$lang["attributes_show_in_items"] = "Megjelenítés a termékekben";
-$lang["attributes_show_in_items_visibility"] = "Termékek";
-$lang["attributes_show_in_receipt"] = "Nyugta megjelenítése";
-$lang["attributes_show_in_receivings"] = "Meglenesítés árúátvételekben";
-$lang["attributes_show_in_receivings_visibility"] = "Áruátvételek";
-$lang["attributes_show_in_sales"] = "Megjelenítés az értékesítésekben";
-$lang["attributes_show_in_sales_visibility"] = "Értékesítések";
-$lang["attributes_update"] = "Tulajdonság frissítése";
+<?php
+return [
+	"attribute_value_invalid_chars" => "Tulajdonság értéke nem tartalmazhat '_' vagy '|' karaktert",
+	"confirm_delete" => "Biztosan törli szeretné a kijelölt tulajdonságokat?",
+	"confirm_restore" => "Biztosan visszaállítja a kijelölt tulajdonságokat?",
+	"definition_cannot_be_deleted" => "Nem sikerült törölni a kijelölt tulajdonságokat",
+	"definition_error_adding_updating" => "{0} attribútum nem adható hozzá és nem frissíthető. Kérjük, ellenőrizze a hibanaplót.",
+	"definition_flags" => "Tulajdonság láthatósága",
+	"definition_group" => "Csoport",
+	"definition_id" => "Azonosító",
+	"definition_name" => "Tulajdonság hozzáadása",
+	"definition_name_required" => "Tulajdonság név kötelező mező",
+	"definition_one_or_multiple" => "tulajdonságok",
+	"definition_successful_adding" => "Sikeresen hozzáadta az elemet",
+	"definition_successful_deleted" => "Sikeresen törölte",
+	"definition_successful_updating" => "Sikeresen frissítette a tulajdonságot",
+	"definition_type" => "Tulajdonság típus",
+	"definition_type_required" => "Tulajdonság típusa kötelező mező",
+	"definition_unit" => "Mértkékegység",
+	"definition_values" => "Tulajdonság értékei",
+	"new" => "Új tulajdnoság",
+	"no_attributes_to_display" => "Nincs megjelenítendő elem",
+	"receipt_visibility" => "Nyugta",
+	"show_in_items" => "Megjelenítés a termékekben",
+	"show_in_items_visibility" => "Termékek",
+	"show_in_receipt" => "Nyugta megjelenítése",
+	"show_in_receivings" => "Meglenesítés árúátvételekben",
+	"show_in_receivings_visibility" => "Áruátvételek",
+	"show_in_sales" => "Megjelenítés az értékesítésekben",
+	"show_in_sales_visibility" => "Értékesítések",
+	"update" => "Tulajdonság frissítése",
+];

@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine ':' sau '|'";
-$lang["attributes_confirm_delete"] = "Sigur doriti stergerea atributului/atributelor selectat(e)?";
-$lang["attributes_confirm_restore"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "Nu se poate sterge atributul/atributele selectat(e)";
-$lang["attributes_definition_error_adding_updating"] = "";
-$lang["attributes_definition_flags"] = "Vizibilitate atribut";
-$lang["attributes_definition_group"] = "Grup";
-$lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Adauga atribut";
-$lang["attributes_definition_name_required"] = "Nume atribut este un camp obligatoriu";
-$lang["attributes_definition_one_or_multiple"] = "atribut(e)";
-$lang["attributes_definition_successful_adding"] = "Ati adaugat articolul cu succes";
-$lang["attributes_definition_successful_deleted"] = "Ati sters cu succes";
-$lang["attributes_definition_successful_updating"] = "Ati actualizat atributul cu succes";
-$lang["attributes_definition_type"] = "Tip Atribut";
-$lang["attributes_definition_type_required"] = "Tip Atribut este camp obligatoriu";
-$lang["attributes_definition_unit"] = "";
-$lang["attributes_definition_values"] = "Valori Atribut";
-$lang["attributes_new"] = "Atribut nou";
-$lang["attributes_no_attributes_to_display"] = "Nu sunt articole de afisat";
-$lang["attributes_receipt_visibility"] = "Chitanta";
-$lang["attributes_show_in_items"] = "Arata in articole";
-$lang["attributes_show_in_items_visibility"] = "Articole";
-$lang["attributes_show_in_receipt"] = "Arata in chitanta";
-$lang["attributes_show_in_receivings"] = "Arata in receptii";
-$lang["attributes_show_in_receivings_visibility"] = "Receptii";
-$lang["attributes_show_in_sales"] = "Arata in vanzari";
-$lang["attributes_show_in_sales_visibility"] = "Vanzari";
-$lang["attributes_update"] = "Actualizare Atribut";
+<?php
+return [
+	"attribute_value_invalid_chars" => "Valoare atribut nu poate contine ':' sau '|'",
+	"confirm_delete" => "Sigur doriti stergerea atributului/atributelor selectat(e)?",
+	"confirm_restore" => "",
+	"definition_cannot_be_deleted" => "Nu se poate sterge atributul/atributele selectat(e)",
+	"definition_error_adding_updating" => "",
+	"definition_flags" => "Vizibilitate atribut",
+	"definition_group" => "Grup",
+	"definition_id" => "Id",
+	"definition_name" => "Adauga atribut",
+	"definition_name_required" => "Nume atribut este un camp obligatoriu",
+	"definition_one_or_multiple" => "atribut(e)",
+	"definition_successful_adding" => "Ati adaugat articolul cu succes",
+	"definition_successful_deleted" => "Ati sters cu succes",
+	"definition_successful_updating" => "Ati actualizat atributul cu succes",
+	"definition_type" => "Tip Atribut",
+	"definition_type_required" => "Tip Atribut este camp obligatoriu",
+	"definition_unit" => "",
+	"definition_values" => "Valori Atribut",
+	"new" => "Atribut nou",
+	"no_attributes_to_display" => "Nu sunt articole de afisat",
+	"receipt_visibility" => "Chitanta",
+	"show_in_items" => "Arata in articole",
+	"show_in_items_visibility" => "Articole",
+	"show_in_receipt" => "Arata in chitanta",
+	"show_in_receivings" => "Arata in receptii",
+	"show_in_receivings_visibility" => "Receptii",
+	"show_in_sales" => "Arata in vanzari",
+	"show_in_sales_visibility" => "Vanzari",
+	"update" => "Actualizare Atribut",
+];

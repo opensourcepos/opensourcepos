@@ -1,31 +1,32 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "";
-$lang["attributes_confirm_delete"] = "";
-$lang["attributes_confirm_restore"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "";
-$lang["attributes_definition_error_adding_updating"] = "";
-$lang["attributes_definition_flags"] = "";
-$lang["attributes_definition_group"] = "";
-$lang["attributes_definition_id"] = "";
-$lang["attributes_definition_name"] = "";
-$lang["attributes_definition_name_required"] = "";
-$lang["attributes_definition_one_or_multiple"] = "";
-$lang["attributes_definition_successful_adding"] = "";
-$lang["attributes_definition_successful_deleted"] = "";
-$lang["attributes_definition_successful_updating"] = "";
-$lang["attributes_definition_type"] = "";
-$lang["attributes_definition_type_required"] = "";
-$lang["attributes_definition_unit"] = "";
-$lang["attributes_definition_values"] = "";
-$lang["attributes_new"] = "";
-$lang["attributes_no_attributes_to_display"] = "";
-$lang["attributes_receipt_visibility"] = "";
-$lang["attributes_show_in_items"] = "";
-$lang["attributes_show_in_items_visibility"] = "";
-$lang["attributes_show_in_receipt"] = "";
-$lang["attributes_show_in_receivings"] = "";
-$lang["attributes_show_in_receivings_visibility"] = "";
-$lang["attributes_show_in_sales"] = "";
-$lang["attributes_show_in_sales_visibility"] = "";
-$lang["attributes_update"] = "";
+<?php
+return [
+	"attribute_value_invalid_chars" => "",
+	"confirm_delete" => "",
+	"confirm_restore" => "",
+	"definition_cannot_be_deleted" => "",
+	"definition_error_adding_updating" => "",
+	"definition_flags" => "",
+	"definition_group" => "",
+	"definition_id" => "",
+	"definition_name" => "",
+	"definition_name_required" => "",
+	"definition_one_or_multiple" => "",
+	"definition_successful_adding" => "",
+	"definition_successful_deleted" => "",
+	"definition_successful_updating" => "",
+	"definition_type" => "",
+	"definition_type_required" => "",
+	"definition_unit" => "",
+	"definition_values" => "",
+	"new" => "",
+	"no_attributes_to_display" => "",
+	"receipt_visibility" => "",
+	"show_in_items" => "",
+	"show_in_items_visibility" => "",
+	"show_in_receipt" => "",
+	"show_in_receivings" => "",
+	"show_in_receivings_visibility" => "",
+	"show_in_sales" => "",
+	"show_in_sales_visibility" => "",
+	"update" => "",
+];

@@ -1,22 +1,24 @@
 <?php
-$lang["suppliers_account_number"] = "Номер счета";
-$lang["suppliers_agency_name"] = "Название агентства";
-$lang["suppliers_cannot_be_deleted"] = "Не удалось удалить выбранных поставщиков. У одного или нескольких из них есть продажи.";
-$lang["suppliers_category"] = "Категория";
-$lang["suppliers_company_name"] = "Название компании";
-$lang["suppliers_company_name_required"] = "Название компании - обязательное поле для заполнения.";
-$lang["suppliers_confirm_delete"] = "Вы уверены, что хотите удалить выбранных поставщиков?";
-$lang["suppliers_confirm_restore"] = "Вы уверены, что хотите восстановить выбранных поставщиков?";
-$lang["suppliers_cost"] = "Расходы поставщика";
-$lang["suppliers_error_adding_updating"] = "Ошибка при добавлении/обновлении поставщика.";
-$lang["suppliers_goods"] = "Поставщик товаров";
-$lang["suppliers_new"] = "Новый поставщик";
-$lang["suppliers_none_selected"] = "Вы не выбрали поставщиков для удаления.";
-$lang["suppliers_one_or_multiple"] = "Поставщик(и)";
-$lang["suppliers_successful_adding"] = "Поставщик был успешно добавлен";
-$lang["suppliers_successful_deleted"] = "Успешно удалено";
-$lang["suppliers_successful_updating"] = "Поставщик успешно обновлен";
-$lang["suppliers_supplier"] = "Поставщик";
-$lang["suppliers_supplier_id"] = "№";
-$lang["suppliers_tax_id"] = "№ налога";
-$lang["suppliers_update"] = "Обновить поставщика";
+return [
+	"account_number" => "Номер счета",
+	"agency_name" => "Название агентства",
+	"cannot_be_deleted" => "Не удалось удалить выбранных поставщиков. У одного или нескольких из них есть продажи.",
+	"category" => "Категория",
+	"company_name" => "Название компании",
+	"company_name_required" => "Название компании - обязательное поле для заполнения.",
+	"confirm_delete" => "Вы уверены, что хотите удалить выбранных поставщиков?",
+	"confirm_restore" => "Вы уверены, что хотите восстановить выбранных поставщиков?",
+	"cost" => "Расходы поставщика",
+	"error_adding_updating" => "Ошибка при добавлении/обновлении поставщика.",
+	"goods" => "Поставщик товаров",
+	"new" => "Новый поставщик",
+	"none_selected" => "Вы не выбрали поставщиков для удаления.",
+	"one_or_multiple" => "Поставщик(и)",
+	"successful_adding" => "Поставщик был успешно добавлен",
+	"successful_deleted" => "Успешно удалено",
+	"successful_updating" => "Поставщик успешно обновлен",
+	"supplier" => "Поставщик",
+	"supplier_id" => "№",
+	"tax_id" => "№ налога",
+	"update" => "Обновить поставщика",
+];

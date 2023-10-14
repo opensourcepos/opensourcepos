@@ -1195,7 +1195,6 @@ class Reports extends Secure_Controller
 			'debit' => lang('Sales.debit'),
 			'invoices' => lang('Sales.invoice')
 		];
-
 	}
 
 	public function specific_customer(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): void
@@ -1669,7 +1668,6 @@ class Reports extends Secure_Controller
 		}
 		$sale_type_options['canceled'] = lang('Reports.canceled');
 		$sale_type_options['returns'] = lang('Reports.returns');
-
 		return $sale_type_options;
 	}
 

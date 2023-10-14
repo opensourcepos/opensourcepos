@@ -1,10 +1,11 @@
-<?php 
-
-$lang["tables_all"] = "Всичко/и";
-$lang["tables_columns"] = "Колони";
-$lang["tables_hide_show_pagination"] = "Скриване / Показване на страници";
-$lang["tables_loading"] = "Зареждане, моля изчакайте...";
-$lang["tables_page_from_to"] = "Показани са {0} до {1} от {2} реда";
-$lang["tables_refresh"] = "Опресняване";
-$lang["tables_rows_per_page"] = "{0} редове на страница";
-$lang["tables_toggle"] = "Щифт";
+<?php
+return [
+	"tables_all" => "Всичко/и",
+	"tables_columns" => "Колони",
+	"tables_hide_show_pagination" => "Скриване / Показване на страници",
+	"tables_loading" => "Зареждане, моля изчакайте...",
+	"tables_page_from_to" => "Показани са {0} до {1} от {2} реда",
+	"tables_refresh" => "Опресняване",
+	"tables_rows_per_page" => "{0} редове на страница",
+	"tables_toggle" => "Щифт",
+];

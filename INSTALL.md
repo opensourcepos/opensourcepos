@@ -1,6 +1,6 @@
 ## Server Requirements
 
-- PHP version `7.2` to `7.4` are supported, PHP version `≤5.6` and `8.0` are NOT supported. Please note that PHP needs to have the extensions `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` , `php-curl` and `php-xml` installed and enabled.
+- PHP version `7.2` to `8.0` are supported, PHP version `≤5.6` is NOT supported. Please note that PHP needs to have the extensions `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` , `php-curl` and `php-xml` installed and enabled.
 - MySQL `5.5`, `5.6` and `5.7` are supported, also MariaDB replacement `10.x` is supported and might offer better performance.
 - Apache `2.2` and `2.4` are supported. Nginx should work fine too, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
 - Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).

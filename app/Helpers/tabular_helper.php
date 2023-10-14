@@ -887,7 +887,7 @@ function get_cash_up_data_row(object $cash_up): array
 		'close_date' => to_datetime(strtotime($cash_up->close_date)),
 		'close_employee_id' => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
 		'closed_amount_cash' => to_currency($cash_up->closed_amount_cash),
-		'note' => $cash_up->note ? $CI->lang->line('common_yes') : $CI->lang->line('common_no'),
+		'note' => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',
 		'closed_amount_due' => to_currency($cash_up->closed_amount_due),
 		'closed_amount_card' => to_currency($cash_up->closed_amount_card),
 		'closed_amount_check' => to_currency($cash_up->closed_amount_check),

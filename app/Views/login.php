@@ -24,9 +24,9 @@
 						? 'flatly'
 						: $config['theme']);
 		?>
-		<link href="<?= "dist/bootswatch-5/$theme/bootstrap.min.css" ?>" rel="stylesheet" type="text/css">
-		<!-- injector:css -->
-		<!-- endinjector -->
+		<link href="<?= "resources/bootswatch5/$theme/bootstrap.min.css" ?>" rel="stylesheet" type="text/css">
+		<!-- inject:login:css -->
+		<!-- endinject -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>
 	<body class="bg-light d-flex flex-column">

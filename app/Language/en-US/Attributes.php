@@ -19,7 +19,7 @@ return [
 	"definition_unit" => "Measurement Unit",
 	"definition_values" => "Attribute Values",
 	"new" => "New Attribute",
-	"no_attributes_to_display" => "No Attributes to display",
+	"no_attributes_to_display" => "No Items to display",
 	"receipt_visibility" => "Receipt",
 	"show_in_items" => "Show in items",
 	"show_in_items_visibility" => "Items",
