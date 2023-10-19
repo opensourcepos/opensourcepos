@@ -15,7 +15,8 @@ class Migration_add_missing_config extends Migration
 			['key' => 'smtp_user', 'value' => ''],
 			['key' => 'smtp_pass', 'value' => ''],
 			['key' => 'login_form', 'value' => ''],
-			['key' => 'receiving_calculate_average_price', 'value' => '']
+			['key' => 'receiving_calculate_average_price', 'value' => ''],
+			['key' => 'payment_message', 'value' => '']
 		];
 
 		$this->db->table('app_config')->ignore(true)->insertBatch($image_values);
