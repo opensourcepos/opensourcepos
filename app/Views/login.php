@@ -56,7 +56,7 @@
 							<?= lang('Login.migration_needed', [$latest_version]) ?>
 						</div>
 					<?php endif; ?>
-					<?php if (empty($config['Login.form']) || 'floating_labels'==($config['Login.form'])): ?>
+					<?php if (empty($config['login_form']) || 'floating_labels'==($config['login_form'])): ?>
 						<div class="form-floating mt-3">
 							<input class="form-control" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>">
 							<label for="input-username"><?= lang('Login.username') ?></label>
@@ -65,7 +65,7 @@
 							<input class="form-control" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>">
 							<label for="input-password"><?= lang('Login.password') ?></label>
 						</div>
-					<?php elseif ('input_groups'==($config['Login.form'])): ?>
+					<?php elseif ('input_groups'==($config['login_form'])): ?>
 						<div class="input-group mt-3">
 				  <span class="input-group-text" id="input-username">
 					<svg class="bi" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
