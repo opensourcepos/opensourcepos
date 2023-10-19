@@ -7,7 +7,6 @@ use App\Libraries\Mailchimp_lib;
 use App\Libraries\Receiving_lib;
 use App\Libraries\Sale_lib;
 use App\Libraries\Tax_lib;
-use App\Libraries\Ci3encrypt;
 
 use App\Models\Appconfig;
 use App\Models\Attribute;
@@ -75,7 +74,7 @@ class Config extends Secure_Controller
 		{
 			$this->encrypter = Services::encrypter();
 		}
-		else 
+		else
 		{
 			log_message('alert', 'Error preparing encryption key');
 		}
@@ -304,12 +303,12 @@ class Config extends Secure_Controller
 				helper('security');
 				$this->encrypter = Services::encrypter();
 			}
-			
-			$mailchimp_api_key = isset($this->config['mailchimp_api_key'])
+
+			$mailchimp_api_key = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
 				? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
 				: '';
 
-			$mailchimp_list_id = isset($this->config['mailchimp_list_id'])
+			$mailchimp_list_id = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
 				? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
 				: '';
 
@@ -386,7 +385,7 @@ class Config extends Secure_Controller
 		else
 		{
 			$file = $this->request->getFile('company_logo');
-			$file->move(WRITEPATH . 'uploads');
+			$file->move(BASEPATH . 'uploads');
 
 			$file_info = [
 				'orig_name' => $file->getClientName(),
