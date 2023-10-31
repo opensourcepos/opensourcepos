@@ -23,7 +23,7 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.4||^8.0",
+		"php": "^7.4||^8.1",
 		"codeigniter4/framework": "^4.3.1",
 		"dompdf/dompdf": "^2.0.3",
 		"tamtamchik/namecase": "^1.0.6",
