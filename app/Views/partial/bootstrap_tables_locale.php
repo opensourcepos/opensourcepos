@@ -14,7 +14,7 @@
 			return "<?php echo lang('Bootstrap_tables.rows_per_page') ?>".replace('{0}', pageNumber);
 		},
 		formatShowingRows: function (pageFrom, pageTo, totalRows) {
-			return "<?php echo lang('Bootstrap_tables.tables_page_from_to') ?>".replace('{0}', pageFrom).replace('{1}', pageTo).replace('{2}', totalRows);    
+			return "<?php echo lang('Bootstrap_tables.page_from_to') ?>".replace('{0}', pageFrom).replace('{1}', pageTo).replace('{2}', totalRows);
 		},
 		formatSearch: function () {
 			return "<?php echo lang('Common.search') ?>";

@@ -475,17 +475,17 @@ function get_item_data_row(object $item): array
 		if($ext == '')	//TODO: Convert to ternary notation. Also === ?
 		{
 			// legacy
-			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
+			$images = glob("./uploads/item_pics/$item->pic_filename.*");
 		}
 		else
 		{
 			// preferred
-			$images = glob('./uploads/item_pics/' . $item->pic_filename);
+			$images = glob("./uploads/item_pics/$item->pic_filename");
 		}
 
 		if(sizeof($images) > 0)
 		{
-			$image .= '<a class=\'rollover\' href=\''. base_url($images[0]) .'\'><img alt=\'Image thumbnail\' src=\''.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '\'></a>';
+			$image .= '<a class=\'rollover\' href=\''. base_url($images[0]) .'\'><img alt=\'Image thumbnail\' src=\''.site_url('items/picThumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '\'></a>';
 		}
 	}
 
