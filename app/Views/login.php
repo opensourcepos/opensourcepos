@@ -18,7 +18,7 @@
 		<meta content="noindex, nofollow" name="robots">
 		<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 		<?php
-			$theme = (empty($config['theme']) 
+			$theme = (empty($config['theme'])
 					|| 'paper' == $config['theme']
 					|| 'readable' == $config['theme']
 						? 'flatly'
@@ -26,6 +26,7 @@
 		?>
 		<link href="<?= "resources/bootswatch5/$theme/bootstrap.min.css" ?>" rel="stylesheet" type="text/css">
 		<!-- inject:login:css -->
+		<link rel="stylesheet" href="css/login.min.css">
 		<!-- endinject -->
 		<meta content="#2c3e50" name="theme-color">
 	</head>

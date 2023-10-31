@@ -12,17 +12,17 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-2" style="text-align: left;"><br>
-			<p style="min-height:14.7em;"><strong>General Info </p> 
+			<p style="min-height:14.7em;"><strong>General Info </p>
 			<p style="min-height:9.9em;">User Setup</p><br>
 			<p>Permissions</p></strong>
-			</div> 
+			</div>
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
 				<?php echo lang('Config.ospos_info') . ':' ?>
 				<?php echo esc(config('App')->application_version) ?> - <?php echo esc(substr(config('OSPOS')->commit_sha1, 0, 6)) ?><br>
 				Language Code: <?php echo current_language_code() ?><br><br>
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>
-					<?php 
+					<?php
 						echo "&#187; GD: ", extension_loaded('gd') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red;">Disabled &#x2717</span>', '<br>';
 						echo "&#187; BC Math: ", extension_loaded('bcmath') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
 						echo "&#187; INTL: ", extension_loaded('intl') ? '<span style="color: green;">Enabled &#x2713</span>' : '<span style="color: red">Disabled &#x2717</span>', '<br>';
@@ -53,12 +53,12 @@
 				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>
 						&#187; [writeable/logs:]
-						<?php $logs = '../writable/logs/';
-							$uploads = '../writable/uploads/';
-							$images = '../writable/uploads/item_pics/';
-							$import = '../import_items.csv';
+						<?php $logs = WRITEPATH . 'logs/';
+							$uploads = BASEPATH . 'uploads/';
+							$images = BASEPATH . 'uploads/item_pics/';
+							$import = '../import_items.csv';	//TODO: These two are probably incorrect paths because CI4 has a different folder structure
 							$importcustomers = '../import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
-							
+
 							if(is_writable($logs))
 							{
 								echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<span style="color: green;">  Writable &#x2713 </span>';
@@ -76,7 +76,7 @@
 							else
 							{
 								echo ' | <span style="color: green;">Security Check Passed &#x2713</span>';
-							}	
+							}
 							clearstatcache();
 						?>
 						<br>
@@ -96,12 +96,12 @@
 								echo ' | <span style="color: red;">Vulnerable or Incorrect Permissions &#x2717</span>';
 							} else {
 								echo ' |  <span style="color: green;">Security Check Passed &#x2713 </span>';
-							}	
+							}
 							clearstatcache();
 						?>
 						<br>
-						&#187; [public/uploads/item_pics:]	
-						<?php 
+						&#187; [writable/uploads/item_pics:]
+						<?php
 							if (is_writable($images))
 							{
 								echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<span style="color: green;"> Writable &#x2713 </span>';
@@ -109,7 +109,7 @@
 							else
 							{
 								echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |	 ' . '<span style="color: red;"> Not Writable &#x2717 </span>';
-							} 
+							}
 
 							clearstatcache();
 							if (substr(decoct(fileperms($images)), -4) != 750  )
@@ -124,7 +124,7 @@
 						?>
 						<br>
 						&#187; [import_customers.csv:]
-						<?php 
+						<?php
 							if (is_readable($importcustomers))
 							{
 								echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<span style="color: green;">	 Readable &#x2713 </span>';
@@ -167,12 +167,12 @@
 
 							if(substr(decoct(fileperms($uploads)), -4) != 750)
 							{
-								echo '<br><span style="color: red;"> &#187; [public/uploads:] ' . lang('Config.is_writable') . '</span>';
+								echo '<br><span style="color: red;"> &#187; [writable/uploads:] ' . lang('Config.is_writable') . '</span>';
 							}
 
 							if(substr(decoct(fileperms($images)), -4) != 750)
 							{
-								echo '<br><span style="color: red;"> &#187; [public/uploads/item_pics:] ' . lang('Config.is_writable') . '</span>';
+								echo '<br><span style="color: red;"> &#187; [writable/uploads/item_pics:] ' . lang('Config.is_writable') . '</span>';
 							}
 
 							if(!((substr(decoct(fileperms($importcustomers)), -4) == 640)
@@ -184,7 +184,7 @@
 						<br>
 				<div id="timezone" style="font-weight:600;"></div><br><br>
 				<div id="ostimezone" style="display:none;" ><?php echo esc($config['timezone']) ?></div><br>
-				<br>	
+				<br>
 			</div>
 		</div>
 	</div>
@@ -197,13 +197,13 @@
 			clipboard.on('success', function(e) {
 				document.getSelection().removeAllRanges();
 			});
-			
+
 			document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
-					
+
 			$(function() {
 				$('#timezone').clone().appendTo('#timezoneE');
 			});
-							
+
 			if($('#timezone').html() !== $('#ostimezone').html())
 			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc($config['timezone']) ?></div><br>';
 		</script>
