@@ -138,7 +138,7 @@ class Items extends Secure_Controller
 	 * @param $pic_filename
 	 * @return void
 	 */
-	public function pic_thumb($pic_filename): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3453
+	public function getPicThumb($pic_filename): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3453
 	{
 		helper('file');
 
@@ -150,7 +150,7 @@ class Items extends Secure_Controller
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
-			$thumb_path = $base_path . $this->image->thumb_marker . '.' . $file_extension;
+			$thumb_path = $base_path . "_thumb.$file_extension";
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
@@ -810,7 +810,7 @@ class Items extends Secure_Controller
 		else
 		{
 			$file = $this->request->getFile('company_logo');
-			$file->move(WRITEPATH . 'uploads/item_pics');
+			$file->move(BASEPATH . 'uploads');
 
 			$file_info = [
 				'orig_name' => $file->getClientName(),
@@ -1369,7 +1369,7 @@ class Items extends Secure_Controller
 			$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 			if(empty($ext))
 			{
-				$images = glob("./uploads/item_pics/$item->pic_filename.*");
+				$images = glob(BASEPATH . "uploads/item_pics/$item->pic_filename.*");
 				if(sizeof($images) > 0)
 				{
 					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);

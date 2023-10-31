@@ -380,7 +380,7 @@
 					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
 					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
 						<img data-src="holder.js/100%x100%" alt="<?php echo lang('Items.image') ?>"
-							 src="<?php echo esc($image_path, 'url') ?>"
+							 src="<?php echo $image_path ?>"
 							 style="max-height: 100%; max-width: 100%;">
 					</div>
 					<div>
@@ -677,4 +677,3 @@ $(document).ready(function()
 	init_validation();
 });
 </script>
-
