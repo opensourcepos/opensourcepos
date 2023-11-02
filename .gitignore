@@ -76,3 +76,4 @@ auth.json
 *.jpg
 *.jpeg
 *copy*
+/writable/logs/*.log
