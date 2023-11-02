@@ -138,7 +138,7 @@ $request = Services::request();
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php foreach($allowed_modules as $module): ?>
-							<li class="<?= $module->module_id == $request->getUri()->getSegment(0) ? 'active' : '' ?>">
+							<li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
 								<a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
 
 									<img src="<?= base_url("images/menubar/$module->module_id.png") ?>" style="border: none;" alt="Module Icon"/><br/>
