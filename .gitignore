@@ -3,9 +3,6 @@ node_modules
 vendor
 public/resources
 app/Config/email.php
-app/sessions/*
-app/logs/*
-app/uploads/*
 npm-debug.log*
 
 # Docker
