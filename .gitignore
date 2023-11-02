@@ -78,3 +78,6 @@ auth.json
 *copy*
 /writable/logs/*.log
 /writable/debugbar/*.json
+/app/Database/database.sql
+/writable/cache/settings
+/.env.bak
