@@ -57,15 +57,7 @@ class Encryption extends BaseConfig
      */
     public string $digest = 'SHA512';
 
-	/**
-	 * The cipher to use.
-	 * This setting is only used by OpenSSLHandler.
-	 *
-	 * Set to aes-128-cbc for CI3 Encryption compatibility.
-	 */
-	public string $cipher = 'aes-256-ctr';
-
-	/**
+    /**
      * Whether the cipher-text should be raw. If set to false, then it will be base64 encoded.
      * This setting is only used by OpenSSLHandler.
      *
@@ -88,4 +80,13 @@ class Encryption extends BaseConfig
      * Set to 'authentication' for CI3 Encryption compatibility.
      */
     public string $authKeyInfo = '';
+
+    /**
+     * Cipher to use.
+     * This setting is only used by OpenSSLHandler.
+     *
+     * Set to 'AES-128-CBC' to decrypt encrypted data that encrypted
+     * by CI3 Encryption default configuration.
+     */
+    public string $cipher = 'AES-256-CTR';
 }
