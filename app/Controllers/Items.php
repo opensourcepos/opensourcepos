@@ -136,16 +136,15 @@ class Items extends Secure_Controller
 
 	/**
 	 * Processes thumbnail of image.  Called via the tabular_helper
-	 * @param $pic_filename
+	 * @param string $pic_filename
 	 * @return void
 	 */
-	public function getPicThumb($pic_filename): void	//TODO: https://github.com/opensourcepos/opensourcepos/issues/3453
+	public function getPicThumb(string $pic_filename): void
 	{
 		helper('file');
 
 		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
-		$images = glob('./uploads/item_pics/' . $pic_filename);
-
+		$images = glob("./uploads/item_pics/$pic_filename");
 		$base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 
 		if(sizeof($images) > 0)
@@ -155,21 +154,15 @@ class Items extends Secure_Controller
 
 			if(sizeof($images) < 2 && !file_exists($thumb_path))
 			{
-				$gd2_config['image_library'] = 'gd2';
-				$gd2_config['source_image']  = $image_path;
-				$gd2_config['maintain_ratio'] = TRUE;
-				$gd2_config['create_thumb'] = TRUE;
-				$gd2_config['width'] = 52;
-				$gd2_config['height'] = 32;
-
-				$this->image->initialize($gd2_config);
-				$this->image->resize();
-
-				$thumb_path = $this->image->full_dst_path;
+				$image = Services::image('gd2');
+				$image->withFile($image_path)
+					->resize(52, 32, true, 'height')
+					->save($thumb_path);
 			}
 
 			$this->response->setContentType(mime_content_type($thumb_path));
 			$this->response->setBody(file_get_contents($thumb_path));
+			$this->response->send();
 		}
 	}
 
