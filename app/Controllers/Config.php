@@ -385,7 +385,7 @@ class Config extends Secure_Controller
 		else
 		{
 			$file = $this->request->getFile('company_logo');
-			$file->move(BASEPATH . 'uploads');
+			$file->move(FCPATH . 'uploads');
 
 			$file_info = [
 				'orig_name' => $file->getClientName(),

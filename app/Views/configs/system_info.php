@@ -54,8 +54,8 @@
 				File Permissions:<br>
 						&#187; [writeable/logs:]
 						<?php $logs = WRITEPATH . 'logs/';
-							$uploads = BASEPATH . 'uploads/';
-							$images = BASEPATH . 'uploads/item_pics/';
+							$uploads = FCPATH . 'uploads/';
+							$images = FCPATH . 'uploads/item_pics/';
 							$import = '../import_items.csv';	//TODO: These two are probably incorrect paths because CI4 has a different folder structure
 							$importcustomers = '../import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
 
