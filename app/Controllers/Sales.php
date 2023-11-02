@@ -379,7 +379,7 @@ class Sales extends Secure_Controller
 				}
 				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')	//TODO ===?
 				{
-					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value)]);
+					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
 				}
 				else
 				{
