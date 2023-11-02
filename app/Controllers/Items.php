@@ -15,6 +15,7 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
 
+use Config\ForeignCharacters;
 use Config\Services;
 use CodeIgniter\Files\File;
 use CodeIgniter\Images\Image;
@@ -810,7 +811,7 @@ class Items extends Secure_Controller
 		else
 		{
 			$file = $this->request->getFile('company_logo');
-			$file->move(BASEPATH . 'uploads');
+			$file->move(FCPATH . 'uploads');
 
 			$file_info = [
 				'orig_name' => $file->getClientName(),
@@ -1369,7 +1370,7 @@ class Items extends Secure_Controller
 			$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 			if(empty($ext))
 			{
-				$images = glob(BASEPATH . "uploads/item_pics/$item->pic_filename.*");
+				$images = glob(FCPATH . "uploads/item_pics/$item->pic_filename.*");
 				if(sizeof($images) > 0)
 				{
 					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
