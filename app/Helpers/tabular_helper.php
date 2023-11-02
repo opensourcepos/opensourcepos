@@ -472,20 +472,15 @@ function get_item_data_row(object $item): array
 	if($item->pic_filename != '')	//TODO: !== ?
 	{
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
-		if($ext == '')	//TODO: Convert to ternary notation. Also === ?
-		{
-			// legacy
-			$images = glob("./uploads/item_pics/$item->pic_filename.*");
-		}
-		else
-		{
-			// preferred
-			$images = glob("./uploads/item_pics/$item->pic_filename");
-		}
+
+		$images = $ext == ''
+			? glob("./uploads/item_pics/$item->pic_filename.*")
+			: glob("./uploads/item_pics/$item->pic_filename");
 
 		if(sizeof($images) > 0)
-		{
-			$image .= '<a class=\'rollover\' href=\''. base_url($images[0]) .'\'><img alt=\'Image thumbnail\' src=\''.site_url('items/PicThumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '\'></a>';
+		{//TODO: alt text needs to be localized instead of English hardcoded
+			//TODO: this is resulting in the html being displayed to the screen rather than the thumbnail.  Something is broken.
+			$image .= '<a class=\'rollover\' href=\''. base_url($images[0]) .'\'><img alt=\'Image thumbnail\' src=\'' . site_url('items/PicThumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '\'></a>';
 		}
 	}
 

@@ -131,7 +131,7 @@ class Items extends Secure_Controller
 			}
 		}
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
 	/**
@@ -222,7 +222,7 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	public function getRow(string $item_ids): void	//TODO: It's possible an array would be better.
+	public function getRow(string $item_ids): void	//TODO: An array would be better for parameter.
 	{
 		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
 
