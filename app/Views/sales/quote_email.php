@@ -16,7 +16,7 @@
 <html lang="<?php echo $this->request->getLocale() ?>">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'css/invoice_email.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('css/invoice_email.css') ?>"/>
 	<title><?php echo lang('Sales.send_quote') ?></title>
 </head>
 

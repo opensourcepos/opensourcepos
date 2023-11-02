@@ -12,7 +12,7 @@
 <html lang="<?= current_language_code() ?>">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<base href="<?= base_url() . '/' ?>">
+		<base href="<?= base_url() ?>">
 		<title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<meta content="noindex, nofollow" name="robots">

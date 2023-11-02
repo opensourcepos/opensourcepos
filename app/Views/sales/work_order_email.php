@@ -15,7 +15,7 @@
 <html lang="<?php echo $this->request->getLocale() ?>">
 <head title="<?php echo lang('Sales.work_order') ?>">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'css/invoice_email.css' ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('css/invoice_email.css')  ?>"/>
 </head>
 
 <body>
