@@ -22,7 +22,7 @@ $(document).ready(function()
             '_blank' // <- This is what makes it open in a new window.
         );
     });
-	
+
 	// when any filter is clicked and the dropdown window is closed
 	$('#filters').on('hidden.bs.select', function(e)
 	{
@@ -71,7 +71,6 @@ $(document).ready(function()
     });
 });
 </script>
-
 <div id="title_bar" class="btn-toolbar print_hide">
     <button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csvImport" ?>'
             title='<?php echo lang('Items.import_items_csv') ?>'>
