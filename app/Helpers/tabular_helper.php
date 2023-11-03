@@ -50,7 +50,7 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 			'field' => key($element),
 			'title' => current($element),
 			'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
-			'escape' => !preg_match("/(edit|phone_number|email|messages)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
+			'escape' => !preg_match("/(edit|phone_number|email|messages|item_pic|customer_name|note)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
 			'sortable' => $element['sortable'] ?? current($element) != '',
 			'checkbox' => $element['checkbox'] ?? FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
