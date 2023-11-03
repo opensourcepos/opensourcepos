@@ -75,6 +75,7 @@ auth.json
 *.png
 *.jpg
 *.jpeg
+*.webp
 *copy*
 /writable/logs/*.log
 /writable/debugbar/*.json
