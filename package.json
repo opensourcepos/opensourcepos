@@ -66,7 +66,7 @@
 		"gulp-rev": "^10.0.0",
 		"gulp-uglify": "^3.0.2",
 		"npm-check-updates": "^16.14.6",
-		"readable-stream": "^4.4.0",
+		"readable-stream": "^4.4.2",
 		"stream-series": "^0.1.1"
 	}
 }
