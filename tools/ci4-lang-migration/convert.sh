@@ -11,6 +11,7 @@ for file in $projectdir/application/language/**/*.php; do
     path=${file/$projectdir\//}
     docker run -v "$projectdir:/root" php:cli-alpine -c php /root/tools/ci4-lang-migration/convert.php /root/$path > $output;
     prefix=$(basename ${output,,} .php);
+    [ "$prefix" = "bootstrap_tables" ] && prefix="tables"
     sed -i "s/\(\s*\)\"${prefix}_/\1\"/g" $output
 done
 rm -rf "$projectdir/application"
