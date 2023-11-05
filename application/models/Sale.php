@@ -633,6 +633,11 @@ class Sale extends CI_Model
 				$total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
 			}
 
+			if($payment['cash_adjustment'] == NULL)
+			{
+				$payment['cash_adjustment'] = CASH_ADJUSTMENT_FALSE;
+			}
+			
 			$sales_payments_data = array(
 				'sale_id'		  => $sale_id,
 				'payment_type'	  => $payment['payment_type'],
