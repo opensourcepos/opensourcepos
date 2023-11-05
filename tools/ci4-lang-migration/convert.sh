@@ -13,4 +13,4 @@ for file in $projectdir/application/language/**/*.php; do
     prefix=$(basename ${output,,} .php);
     sed -i "s/\(\s*\)\"${prefix}_/\1\"/g" $output
 done
-
+rm -rf "$projectdir/application"
