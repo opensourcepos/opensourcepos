@@ -21,7 +21,7 @@ class Secure_Controller extends BaseController
 {
 	public array $global_view_data;
 
-	public function __construct(string $module_id = '', string $submodule_id = NULL, string $menu_group = NULL)
+	public function __construct(string $module_id = '', string $submodule_id = null, string $menu_group = null)
 	{
 		$this->employee = model('Employee');
 		$this->module = model('Module');
@@ -69,16 +69,20 @@ class Secure_Controller extends BaseController
 		view('viewData', $global_view_data);
 	}
 
+	/**
+	 * AJAX function used to confirm whether values sent in the request are numeric
+	 * @return void
+	 */
 	public function getCheckNumeric()
 	{
-		$result = TRUE;
+		$result = true;
 
-		foreach($this->request->getVar(NULL, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $str)
+		foreach($this->request->getVar(null, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $value)
 		{
-			$result &= parse_decimals($str);
+			$result &= (int)parse_decimals($value);
 		}
 
-		echo $result !== FALSE ? 'true' : 'false';
+		echo $result !== false ? 'true' : 'false';
 	}
 
 	public function getConfig($key)
@@ -90,10 +94,10 @@ class Secure_Controller extends BaseController
 	}
 
 	// this is the basic set of methods most OSPOS Controllers will implement
-	public function getIndex() { return FALSE; }
-	public function getSearch() { return FALSE; }
-	public function suggest_search() { return FALSE; }
-	public function getView(int $data_item_id = -1) { return FALSE; }
-	public function postSave(int $data_item_id = -1) { return FALSE; }
-	public function postDelete() { return FALSE; }
+	public function getIndex() { return false; }
+	public function getSearch() { return false; }
+	public function suggest_search() { return false; }
+	public function getView(int $data_item_id = -1) { return false; }
+	public function postSave(int $data_item_id = -1) { return false; }
+	public function postDelete() { return false; }
 }
