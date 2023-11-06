@@ -236,10 +236,11 @@ class Attribute extends Model
 	public function get_definitions_by_flags(int $definition_flags): array
 	{
 		$builder = $this->db->table('attribute_definitions');
-		$builder->where('definition_flags', $definition_flags);
+		$builder->where(new RawSql("definition_flags & $definition_flags"));	//TODO: we need to heed CI warnings to escape properly
 		$builder->where('deleted', 0);
 		$builder->where('definition_type <>', GROUP);
 		$builder->orderBy('definition_id');
+
 		$results = $builder->get()->getResultArray();
 
 		return $this->to_array($results, 'definition_id', 'definition_name');
@@ -422,7 +423,7 @@ class Attribute extends Model
 					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
 					$this->db->transStart();
-//TODO: We should see if we can convert these queries to use query builder from CI4.
+//TODO: We should see if we can convert these queries to use query builder from CI4.  Likely we need to do this using RawSql() https://codeigniter.com/user_guide/database/query_builder.html?highlight=rawsql#query-builder-where-rawsql
 //TODO: We should see if we can refactor a function out of this block and the identical block above it.
 					$query = 'UPDATE '. $this->db->prefixTable('attribute_links') .' links ';
 					$query .= 'JOIN '. $this->db->prefixTable('attribute_values') .' vals ';
@@ -533,6 +534,14 @@ class Attribute extends Model
 		return $builder->get()->getResultArray();
 	}
 
+	/**
+	 * Inserts or updates an attribute link
+	 *
+	 * @param int $item_id
+	 * @param int $definition_id
+	 * @param int $attribute_id
+	 * @return bool
+	 */
 	public function save_link(int $item_id, int $definition_id, int $attribute_id): bool
 	{
 		$this->db->transStart();
@@ -589,7 +598,7 @@ class Attribute extends Model
 			$builder->where('definition_id', $definition_id);
 		}
 
-		return $builder->get('attribute_links')->getRowObject();
+		return $builder->get()->getRowObject();
 	}
 
 	public function get_link_values(int $item_id, string $sale_receiving_fk, ?int $id, ?int $definition_flags): ResultInterface
@@ -617,10 +626,12 @@ class Attribute extends Model
 
 		if(!empty($id))
 		{
-			$builder->where('definition_flags & ', $definition_flags);
+			$builder->where('definition_flags &=', $definition_flags);
 		}
 
-		return $builder->get();
+		$result = $builder->get();
+
+		return $result;
 	}
 
 	public function get_attribute_value(int $item_id, int $definition_id): ?object

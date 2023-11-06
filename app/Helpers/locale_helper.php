@@ -414,7 +414,7 @@ function parse_tax(string $number)
  * @param int|NULL $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, int $decimals = NULL)
+function parse_decimals(string $number, int $decimals = null)
 {
 	// ignore empty strings and return
 	if(empty($number))
@@ -424,17 +424,17 @@ function parse_decimals(string $number, int $decimals = NULL)
 
 	if ($number > MAX_PRECISION)
 	{
-		return FALSE;
+		return false;
 	}
 
 	if ($number > 1.e14)
 	{
-		return FALSE;
+		return false;
 	}
 
 	$config = config('OSPOS')->settings;
 
-	if($decimals === NULL)
+	if($decimals === false)
 	{
 		$decimals = $config['currency_decimals'];	//TODO: $decimals is never used.
 	}
@@ -443,7 +443,7 @@ function parse_decimals(string $number, int $decimals = NULL)
 
 	if(empty($config['thousands_separator']))
 	{
-		$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+		$fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
 
 	try
@@ -452,7 +452,7 @@ function parse_decimals(string $number, int $decimals = NULL)
 	}
 	catch(Exception $e)
 	{
-		return FALSE;
+		return false;
 	}
 }
 

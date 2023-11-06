@@ -492,17 +492,9 @@ class Items extends Secure_Controller
 	public function getAttributes(int $item_id = NEW_ENTRY): void
 	{
 		$data['item_id'] = $item_id;
-		if($this->request->getGet('definition_ids') != null)
-		{
-			$definition_ids = json_decode($this->request->getGet('definition_ids'), TRUE);
-			$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-			$data['definition_names'] = $this->attribute->get_definition_names();
-		}
-		else
-		{
-			$data['definition_values'] = [];
-			$data['definition_names'] = [];
-		}
+		$definition_ids = json_decode($this->request->getGet('definition_ids') ?? '', TRUE);
+		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+		$data['definition_names'] = $this->attribute->get_definition_names();
 
 		foreach($data['definition_values'] as $definition_id => $definition_value)
 		{
