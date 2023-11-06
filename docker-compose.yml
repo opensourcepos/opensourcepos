@@ -17,7 +17,7 @@ services:
         image: jekkos/opensourcepos:sqlscript
         command: /bin/sh -c 'exit 0'
     ospos:
-        image: jekkos/opensourcepos:3.3.8
+        image: jekkos/opensourcepos:3.3.9
         restart: always
         depends_on:
           - mysql

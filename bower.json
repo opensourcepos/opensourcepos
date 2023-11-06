@@ -1,7 +1,7 @@
 {
   "name": "opensourcepos",
   "description": "Open Source Point of Sale is a web-based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
-  "version": "3.3.8",
+  "version": "3.3.9",
   "license": "MIT",
   "authors": [
     "jekkos <jekkos - at - opensourcepos.org>",

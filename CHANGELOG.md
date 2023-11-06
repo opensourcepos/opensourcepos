@@ -1,4 +1,5 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...HEAD
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...
+[3.3.8]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
 [3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
 [3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
 [3.3.5]: https://github.com/opensourcepos/opensourcepos/compare/3.3.4...3.3.5
@@ -32,6 +33,13 @@ All notable changes to this project will be documented here.
 List of changes in the `master` branch.
 
 - N/A
+
+## [3.3.9] - 2023-11-06
+
+-  Translation updates (Spanish, Croatian, Russian, English, Indonesian, Thai, Central Khmer)
+-  Fix logout race condition issue
+-  Fix docker compose file
+-  Minor report fixes
 
 ## [3.3.8] - 2022-04-26
 
