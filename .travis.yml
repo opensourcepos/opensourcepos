@@ -62,7 +62,7 @@ deploy:
     user: jekkos
     overwrite: true
     api_key:
-      secure: Ax25mMRDfHVf/HjRwqxYJe2oMnWC4sc2aKIiUxAOviVJJSCl4GMWhcFlUNnFsDcKIg2ofEGMVD6b9cTBuOwPDvymUDFnLNCCgDWve+vRDdWaTkTipn77Qk4c9UO9VvuzlPSKopChefPHlQ0n1rEmAMiKIXuqjUlNGqybW4FLP4E=
+      secure: "A3dEyc+6Z484rk0aobcbOLMSFKSCvBImzydocVe3vr/J59BuT2Ooht7JmwnHeImS31DP0ZhAAkmdezvOWmmN9pOwU8yXiuwSkzt61SonAZZJInldlPMRjfLg42URG05F5M8hnPnSqmgRoXToIRNGtiL6Pa24/LrQfTryX9ygkC8="
     on:
       tags: true
       branch: master
