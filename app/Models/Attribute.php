@@ -5,6 +5,7 @@ namespace App\Models;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
+use Config\OSPOS;
 use DateTime;
 use stdClass;
 use ReflectionClass;
@@ -88,7 +89,7 @@ class Attribute extends Model
 	 */
 	public function value_exists($attribute_value, string $definition_type = TEXT)
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		switch($definition_type)
 		{
@@ -728,7 +729,7 @@ class Attribute extends Model
 
 	public function save_value(string $attribute_value, int $definition_id, $item_id = FALSE, $attribute_id = FALSE, string $definition_type = DROPDOWN): int
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$locale_date_format = $config['dateformat'];
 
 		$this->db->transStart();

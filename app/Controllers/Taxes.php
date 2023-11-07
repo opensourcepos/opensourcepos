@@ -8,6 +8,7 @@ use App\Models\Tax;
 use App\Models\Tax_category;
 use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
+use Config\OSPOS;
 
 /**
  * @property tax_lib tax_lib
@@ -19,6 +20,8 @@ use App\Models\Tax_jurisdiction;
  */
 class Taxes extends Secure_Controller
 {
+	public array $config;
+
 	public function __construct()
 	{
 		parent::__construct('taxes');
@@ -28,9 +31,9 @@ class Taxes extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 		$this->tax_code = model('Tax_code');
 		$this->tax_jurisdiction = model('Tax_jurisdiction');
-		
+
 		$this->tax_lib = new Tax_lib();
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 
 		helper('tax_helper');
 	}

@@ -185,7 +185,7 @@ class Receiving_lib
 	//TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
 	public function add_item(int $item_id, int $quantity = 1, int $item_location = NULL, float $discount = 0, int $discount_type = 0, float $price = NULL, string $description = NULL, string $serialnumber = NULL, float $receiving_quantity = NULL, int $receiving_id = NULL, bool $include_deleted = FALSE): bool
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		//make sure item exists in database.
 		if(!$this->item->exists($item_id, $include_deleted))

@@ -11,6 +11,7 @@ use App\Models\Tax_category;
 use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
 use App\Libraries\Sale_lib;
+use Config\OSPOS;
 
 /**
  * Tax library
@@ -47,7 +48,7 @@ class Tax_lib
 		$this->tax_category = model('Tax_category');
 		$this->tax_code = model('Tax_code');
 		$this->tax_jurisdiction = model('Tax_jurisdiction');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 	}
 
 	public function get_tax_types(): array

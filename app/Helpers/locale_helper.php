@@ -16,7 +16,7 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 function current_language_code(bool $load_system_language = false): string
 {
 	$employee = model(Employee::class);
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	// Returns the language code of the employee if set or system language code if not
 	if($employee->is_logged_in() && $load_system_language === false)
@@ -37,7 +37,7 @@ function current_language_code(bool $load_system_language = false): string
 function current_language(bool $load_system_language = FALSE): string
 {
 	$employee = model(Employee::class);
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	// Returns the language of the employee if set or system language if not
 	if($employee->is_logged_in() && !$load_system_language)
@@ -231,7 +231,7 @@ function get_timeformats(): array
 function get_payment_options(): array
 {
 	$payments = [];
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 //TODO: This needs to be switched to a switch statement
 	if($config['payment_options_order'] == 'debitcreditcash')	//TODO: ===
@@ -279,7 +279,7 @@ function get_payment_options(): array
 
 function currency_side(): bool
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::CURRENCY);
 	$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
 
@@ -288,37 +288,37 @@ function currency_side(): bool
 
 function quantity_decimals(): int
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return $config['quantity_decimals'] ? $config['quantity_decimals'] : 0;
 }
 
 function totals_decimals(): int
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return $config['currency_decimals'] ? (int)$config['currency_decimals'] : 0;
 }
 
 function cash_decimals(): int
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return $config['cash_decimals'] ? $config['cash_decimals'] : 0;
 }
 
 function tax_decimals(): int
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return $config['tax_decimals'] ? $config['tax_decimals'] : 0;
 }
 
 function to_date(int $date = DEFAULT_DATE): string
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return date($config['dateformat'], $date);
 }
 
 function to_datetime(int $datetime = DEFAULT_DATETIME): string
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);
 }
 
@@ -334,7 +334,7 @@ function to_currency_no_money(?float $number): string
 
 function to_currency_tax(?float $number): string
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	if($config['tax_included'])	//TODO: ternary notation
 	{
@@ -377,7 +377,7 @@ function to_decimals(?float $number, string $decimals = NULL, int $type = Number
 		return "";
 	}
 
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	$fmt = new NumberFormatter($config['number_locale'], $type);
 	$fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
 	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
@@ -432,7 +432,7 @@ function parse_decimals(string $number, int $decimals = null)
 		return false;
 	}
 
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	if($decimals === false)
 	{
@@ -506,7 +506,7 @@ function dateformat_momentjs(string $php_format): string
 
 function dateformat_mysql(): string
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	$php_format = $config['dateformat'];
 
 	$SYMBOLS_MATCHING = [
@@ -591,7 +591,7 @@ function dateformat_bootstrap(string $php_format): string
 
 function valid_date(string $date): bool	//TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	return (DateTime::createFromFormat($config['dateformat'], $date));
 }
 

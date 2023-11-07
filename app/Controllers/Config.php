@@ -21,6 +21,7 @@ use CodeIgniter\Encryption\EncrypterInterface;
 use CodeIgniter\Files\File;
 use Config\Database;
 use Config\Encryption;
+use Config\OSPOS;
 use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
@@ -66,7 +67,7 @@ class Config extends Secure_Controller
 		$this->rounding_mode = model('Rounding_mode');
 		$this->stock_location = model('Stock_location');
 		$this->tax = model('Tax');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 		$this->db = Database::connect();
 
 		helper('security');
@@ -258,7 +259,6 @@ class Config extends Secure_Controller
 	}
 
 	/**
-	 * @throws ReflectionException
 	 */
 	public function getIndex(): void
 	{
@@ -276,9 +276,7 @@ class Config extends Secure_Controller
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
-		$data['currency_code'] = isset($this->config['currency_code'])
-			? $this->config['currency_code']
-			: '' ;
+		$data['currency_code'] = $this->config['currency_code'] ?? '';
 		$data['db_version'] = mysqli_get_server_info(db_connect()->mysqli);
 
 		// load all the license statements, they are already XSS cleaned in the private function
@@ -304,11 +302,11 @@ class Config extends Secure_Controller
 				$this->encrypter = Services::encrypter();
 			}
 
-			$mailchimp_api_key = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
+			$data['mailchimp']['api_key'] = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
 				? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
 				: '';
 
-			$mailchimp_list_id = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
+			$data['mailchimp']['list_id'] = (isset($this->config['mailchimp_list_id']) && !empty($this->config['mailchimp_list_id']))
 				? $this->encrypter->decrypt($this->config['mailchimp_list_id'])
 				: '';
 

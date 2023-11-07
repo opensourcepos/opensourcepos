@@ -10,6 +10,7 @@ use App\Models\Tax_code;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\OSPOS;
 use Config\Services;
 use stdClass;
 
@@ -38,7 +39,7 @@ class Customers extends Persons
 		$this->customer_rewards = model('Customer_rewards');
 		$this->customer = model('Customer');
 		$this->tax_code = model('Tax_code');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();
 

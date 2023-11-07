@@ -18,7 +18,7 @@ class Summary_taxes extends Summary_report
 
 	protected function _where(array $inputs, &$builder): void	//TODO: hungarian notation
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$builder->where('sales.sale_status', COMPLETED);
 
@@ -34,7 +34,7 @@ class Summary_taxes extends Summary_report
 
 	public function getData(array $inputs): array
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$where = 'WHERE sale_status = ' . COMPLETED . ' ';	//TODO: Duplicated code
 

@@ -121,7 +121,7 @@ class Receiving extends Model
 
 		foreach($items as $line => $item_data)
 		{
-			$config = config('OSPOS')->settings;
+			$config = config(OSPOS::class)->settings;
 			$cur_item_info = $item->get_info($item['item_id']);
 
 			$receivings_items_data = [
@@ -290,7 +290,7 @@ class Receiving extends Model
 	 */
 	public function create_temp_table(array $inputs): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if(empty($inputs['receiving_id']))
 		{

@@ -5,6 +5,7 @@ namespace app\Libraries;
 use CodeIgniter\Email\Email;
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\OSPOS;
 use Config\Services;
 
 
@@ -24,16 +25,16 @@ class Email_lib
   	public function __construct()
 	{
 		$this->email = new Email();
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();
-		
+
 		$smtp_pass = $this->config['smtp_pass'];
 		if(!empty($smtp_pass))
 		{
 			$smtp_pass = $encrypter->decrypt($smtp_pass);
 		}
-		
+
 		$email_config = [
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',

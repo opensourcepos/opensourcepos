@@ -2,6 +2,7 @@
 
 namespace App\Database\Migrations;
 
+use App\Models\Appconfig;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Router\Exceptions\RedirectException;
@@ -44,7 +45,7 @@ class Convert_to_ci4 extends Migration
 
 	private function convert_ci3_encrypted_data()
 	{
-		$appconfig = model('Appconfig');
+		$appconfig = model(Appconfig::class);
 
 		$ci3_encrypted_data = [
 			'clcdesq_api_key' => '',
@@ -83,7 +84,8 @@ class Convert_to_ci4 extends Migration
 	}
 
 	/**
-	 * @return void
+	 * @param array $encrypted_data
+	 * @return array
 	 */
 	private function decrypt_ci3_data(array $encrypted_data): array
 	{

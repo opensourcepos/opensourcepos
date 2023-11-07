@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -19,7 +20,7 @@ class Login extends BaseController
 		if(!$this->employee->is_logged_in())
 		{
 			$migration = new MY_Migration(config('Migrations'));
-			$config = config('OSPOS')->settings;
+			$config = config(OSPOS::class)->settings;
 
 			$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
 				? $config['gcaptcha_enable']

@@ -266,7 +266,7 @@ class Customer extends Person
 	public function delete($customer_id = null, bool $purge = false): bool
 	{
 		$result = TRUE;
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		// if privacy enforcement is selected scramble customer data
 		if($config['enforce_privacy'])

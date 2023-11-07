@@ -3,6 +3,7 @@ namespace App\Config\Validation;
 
 use App\Models\Employee;
 use CodeIgniter\HTTP\IncomingRequest;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -24,7 +25,7 @@ class OSPOSRules
 	{
 		$this->employee = model('Employee');
 		$this->request = Services::request();
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		//Installation Check
 		if(!$this->installation_check())

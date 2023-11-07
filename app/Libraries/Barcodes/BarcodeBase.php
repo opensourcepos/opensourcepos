@@ -31,7 +31,7 @@ abstract class BarcodeBase
 	 * @var data - to be set
 	 */
 	protected $data = '';
-	
+
 	/*
 	 * @var int x (width)
 	 */
@@ -89,7 +89,7 @@ abstract class BarcodeBase
 	 * Generate a barcode for this implementation using the given seed.
 	 * Default implementation returns just the seed
 	 * @param $number The seed to generate a barcode for
-	 * @return mixed The generated barcode
+	 * @return string|null The generated barcode
 	 */
 	public function generate($number)
 	{
@@ -120,7 +120,7 @@ abstract class BarcodeBase
 
 	/*
 	 * Set Quality
-	 * @param int q - jpeg quality 
+	 * @param int q - jpeg quality
 	 * @return instance of \emberlabs\Barcode\BarcodeBase
 	 */
 	public function setQuality($q)
@@ -170,11 +170,11 @@ abstract class BarcodeBase
 	/*
 	 * Save Image
 	 *
-	 * @param string filename - File to write to (needs to have .png, .gif, or 
+	 * @param string filename - File to write to (needs to have .png, .gif, or
 	 *	.jpg extension)
 	 * @return void
-	 * @throws \RuntimeException - If the file could not be written or some 
-	 *	other I/O error. 
+	 * @throws \RuntimeException - If the file could not be written or some
+	 *	other I/O error.
 	 */
 	public function save($filename)
 	{
@@ -197,12 +197,11 @@ abstract class BarcodeBase
 
 			default:
 				throw new \RuntimeException("Could not determine file type.");
-			break;
 		}
 	}
 
 	/*
-	 * Base64 Encoded 
+	 * Base64 Encoded
 	 * For ouput in-page
 	 * @return void
 	 */
