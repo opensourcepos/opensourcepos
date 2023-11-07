@@ -5,6 +5,7 @@ namespace App\Events;
 use App\Libraries\MY_Migration;
 use App\Models\Appconfig;
 use CodeIgniter\Session\Session;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -16,10 +17,12 @@ use Config\Services;
  */
 class Load_config
 {
+	public Session $session;
+
 	/**
 	 * Loads configuration from database into App CI config and then applies those settings
 	 */
-	public function load_config()
+	public function load_config(): void
 	{
 		//Migrations
 		$migration_config = config('Migrations');
@@ -28,7 +31,7 @@ class Load_config
 		$this->session = session();
 
 		//Database Configuration
-		$config = config('OSPOS');
+		$config = config(OSPOS::class);
 
 		if (!$migration->is_latest())
 		{
