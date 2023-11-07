@@ -5,7 +5,9 @@ namespace App\Controllers;
 use App\Models\Employee;
 use App\Models\Module;
 
+use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
+use Config\Services;
 
 /**
  * Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
@@ -20,13 +22,16 @@ use CodeIgniter\Session\Session;
 class Secure_Controller extends BaseController
 {
 	public array $global_view_data;
+	public Model $employee;
+	public Model $module;
+	public Session $session;
 
 	public function __construct(string $module_id = '', string $submodule_id = null, string $menu_group = null)
 	{
-		$this->employee = model('Employee');
-		$this->module = model('Module');
+		$this->employee = model(Employee::class);
+		$this->module = model(Module::class);
 		$config = config('OSPOS')->settings;
-		$validation = \Config\Services::validation();
+		$validation = Services::validation();
 
 		if(!$this->employee->is_logged_in())
 		{

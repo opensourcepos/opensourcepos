@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use CodeIgniter\Model;
 use Config\Services;
 
 /**
@@ -11,9 +12,10 @@ use Config\Services;
  */
 class Login extends BaseController
 {
+	public Model $employee;
 	public function index()
 	{
-		$this->employee = model('Employee');
+		$this->employee = model(Employee::class);
 		if(!$this->employee->is_logged_in())
 		{
 			$migration = new MY_Migration(config('Migrations'));

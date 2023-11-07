@@ -61,9 +61,9 @@ class Attribute extends Model
 	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
 	 * @param	int		$item_id
 	 * @param	bool	$definition_id
-	 * @return	bool					TRUE if at least one attribute_link exists or FALSE if no attributes exist.
+	 * @return	bool	returns true if at least one attribute_link exists or false if no attributes exist.
 	 */
-	public function link_exists(int $item_id, bool $definition_id = FALSE): bool
+	public function link_exists(int $item_id, bool $definition_id = false): bool
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
@@ -558,11 +558,11 @@ class Attribute extends Model
 		}
 		else
 		{
-			$builder->insert([
-					'attribute_id' => $attribute_id,
-					'item_id' => $item_id,
-					'definition_id' => $definition_id
-			]);
+			$data = ['attribute_id' => $attribute_id,
+				'item_id' => $item_id,
+				'definition_id' => $definition_id
+			];
+			$builder->insert($data);
 		}
 
 		$this->db->transComplete();
@@ -593,7 +593,7 @@ class Attribute extends Model
 		$builder->where('item_id', $item_id);
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
-		if($definition_id != NULL)
+		if($definition_id != null)
 		{
 			$builder->where('definition_id', $definition_id);
 		}
