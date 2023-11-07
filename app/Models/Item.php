@@ -64,7 +64,7 @@ class Item extends Model
 	 */
 	public function item_number_exists(string $item_number, string $item_id = ''): bool
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if($config['allow_duplicate_barcodes'])
 		{
@@ -124,7 +124,7 @@ class Item extends Model
 		if($order == NULL) $order = 'asc';
 		if($count_only == NULL) $count_only = FALSE;
 
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
 		// get_found_rows case
@@ -557,7 +557,7 @@ class Item extends Model
 
 	function get_search_suggestion_format(string $seed = NULL): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$seed .= ',' . $config['suggestions_first_column'];
 
 		if($config['suggestions_second_column'] !== '')
@@ -575,7 +575,7 @@ class Item extends Model
 
 	function get_search_suggestion_label($result_row): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$label = '';
 		$label1 = $config['suggestions_first_column'];
 		$label2 = $config['suggestions_second_column'];
@@ -1082,7 +1082,7 @@ class Item extends Model
 	 */
 	function get_item_name(string $as_name = NULL): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if($as_name == NULL)	//TODO: Replace with ternary notation
 		{

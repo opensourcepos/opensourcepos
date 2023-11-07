@@ -135,7 +135,7 @@ class Expenses extends Secure_Controller
 
 	public function postSave(int $expense_id = NEW_ENTRY): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);

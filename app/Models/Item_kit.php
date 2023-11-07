@@ -64,7 +64,7 @@ class Item_kit extends Model
 	 */
 	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if($config['allow_duplicate_barcodes'])
 		{

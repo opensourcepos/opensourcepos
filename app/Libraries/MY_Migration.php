@@ -25,7 +25,7 @@ class MY_Migration extends MigrationRunner
 	/**
 	 * Gets the database version number
 	 *
-	 * @return string The version number of the last successfully run database migration.
+	 * @return int The version number of the last successfully run database migration.
 	 */
 	public static function get_current_version(): int
 	{

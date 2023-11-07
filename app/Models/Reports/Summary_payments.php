@@ -20,7 +20,7 @@ class Summary_payments extends Summary_report
 	public function getData(array $inputs): array
 	{
 		$cash_payment = lang('Sales.cash');    //TODO: This is never used.  Should it be?
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$separator[] = [
 			'trans_group' => '<HR>',

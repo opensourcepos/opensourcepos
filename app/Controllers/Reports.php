@@ -25,6 +25,7 @@ use App\Models\Reports\Summary_sales;
 use App\Models\Reports\Summary_sales_taxes;
 use App\Models\Reports\Summary_suppliers;
 use App\Models\Reports\Summary_taxes;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -61,7 +62,7 @@ class Reports extends Secure_Controller
 		$request = Services::request();
 		$method_name = $request->getUri()->getSegment(2);
 		$exploder = explode('_', $method_name);
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 		$this->stock_location = model('Stock_location');
 
 		if(sizeof($exploder) > 1)
@@ -810,7 +811,7 @@ class Reports extends Secure_Controller
 
 		$labels = [];
 		$series = [];
-		
+
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['name'];
@@ -1751,7 +1752,7 @@ class Reports extends Secure_Controller
 
 				$attribute_values = expand_attribute_values($definition_names, $drow);
 
-				$details_data[$row['sale_id']][] = 
+				$details_data[$row['sale_id']][] =
 					array_merge ([
 						$drow['name'],
 						$drow['category'],

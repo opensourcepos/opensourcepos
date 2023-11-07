@@ -21,6 +21,7 @@ use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
 use CodeIgniter\Config\Services;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
@@ -57,7 +58,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->tax_lib = new Tax_lib();
 		$this->token_lib = new Token_lib();
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 
 		$this->customer = model('Customer');
 		$this->sale = model('Sale');
@@ -1454,8 +1455,7 @@ class Sales extends Secure_Controller
 				}
 			}
 
-
-			$payments[] = [
+			$sale_data['payments'] = [
 				'payment_id' => $payment_id,
 				'payment_type' => $payment_type,
 				'payment_amount' => $payment_amount,

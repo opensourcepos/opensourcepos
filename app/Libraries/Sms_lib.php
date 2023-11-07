@@ -25,7 +25,7 @@ class Sms_lib
 	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();
 

@@ -31,7 +31,7 @@ class Barcode_lib
 
 	public function get_barcode_config(): array
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$data['company'] = $config['company'];
 		$data['barcode_content'] = $config['barcode_content'];

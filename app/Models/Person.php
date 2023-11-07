@@ -145,7 +145,7 @@ class Person extends Model
 	 * Inserts or updates a person
 	 *
 	 * @param array $person_data array containing person information
-	 * @param bool $person_id identifier of the person to update the information
+	 * @param int $person_id identifier of the person to update the information
 	 * @return boolean TRUE if the save was successful, FALSE if not
 	 */
 	public function save_value(array &$person_data, int $person_id = NEW_ENTRY): bool

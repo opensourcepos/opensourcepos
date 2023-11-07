@@ -3,6 +3,7 @@
 namespace app\Libraries;
 
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -37,7 +38,7 @@ class MailchimpConnector
 	 */
 	public function __construct(string $api_key = '')
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();
 

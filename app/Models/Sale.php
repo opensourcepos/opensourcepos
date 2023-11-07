@@ -54,7 +54,7 @@ class Sale extends Model
 	 */
 	public function get_info(int $sale_id): ResultInterface
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$this->create_temp_table (['sale_id' => $sale_id]);
 
 		$decimals = totals_decimals();
@@ -135,7 +135,7 @@ class Sale extends Model
 		if($order == null) $order = 'desc';
 		if($count_only == null) $count_only = FALSE;
 
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
@@ -324,7 +324,7 @@ class Sale extends Model
 	 */
 	public function get_payments_summary(string $search, array $filters): array
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		// get payment summary
 		$builder = $this->db->table('sales AS sales');
@@ -527,7 +527,7 @@ class Sale extends Model
 	 */
 	public function is_valid_receipt(string &$receipt_sale_id): bool	//TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if(!empty($receipt_sale_id))
 		{
@@ -643,7 +643,7 @@ class Sale extends Model
 	public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, ?string $invoice_number,
 							?string $work_order_number, ?string $quote_number, int $sale_type, ?array $payments, ?int $dinner_table_id, ?array &$sales_taxes): int	//TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$attribute = model(Attribute::class);
 		$customer = model(Customer::class);
 		$giftcard = model(Giftcard::class);
@@ -995,7 +995,7 @@ class Sale extends Model
 	 */
 	public function get_sale_items_ordered(int $sale_id): ResultInterface
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$item = model(Item::class);
 
 		$builder = $this->db->table('sales_items AS sales_items');
@@ -1183,7 +1183,7 @@ class Sale extends Model
 	 */
 	public function create_temp_table(array $inputs): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if(empty($inputs['sale_id']))
 		{
@@ -1472,7 +1472,7 @@ class Sale extends Model
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if($config['dinner_table_enable'])
 		{
@@ -1495,7 +1495,7 @@ class Sale extends Model
 	public function clear_suspended_sale_detail(int $sale_id): bool
 	{
 		$this->db->transStart();
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if($config['dinner_table_enable'])
 		{
@@ -1542,7 +1542,7 @@ class Sale extends Model
 	 */
 	private function save_customer_rewards(int $customer_id, int $sale_id, float $total_amount, float $total_amount_used): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		if(!empty($customer_id) && $config['customer_reward_enable'])
 		{
