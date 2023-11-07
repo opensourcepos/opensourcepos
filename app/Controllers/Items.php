@@ -730,7 +730,7 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$attribute_links = $this->request->getPost('attribute_links') !== NULL ? $this->request->getPost('attribute_links') : [];
+			$attribute_links = $this->request->getPost('attribute_links') ?? [];
 			$attribute_ids = $this->request->getPost('attribute_ids');
 
 			$this->attribute->delete_link($item_id);
@@ -739,12 +739,11 @@ class Items extends Secure_Controller
 			{
 				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
 
-				if($definition_type !== DROPDOWN)
-				{
-					$attribute_id = $this->attribute->save_value($attribute_value, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
-				}
+				$attribute_id = $definition_type === DROPDOWN
+					? $attribute_value
+					: $this->attribute->save_value($attribute_value, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
 
-				$this->attribute->save_link($item_id, $definition_id, intval($attribute_ids[$definition_id]));
+				$this->attribute->save_link($item_id, $definition_id, $attribute_id);
 			}
 
 			if($success && $upload_success)

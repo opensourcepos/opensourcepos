@@ -13,6 +13,7 @@ use CodeIgniter\Session\Session;
  */
 class Employee extends Person
 {
+	public Session $session;
 	protected $table = 'Employees';
 	protected $primaryKey = 'person_id';
 	protected $useAutoIncrement = false;
