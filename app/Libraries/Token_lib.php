@@ -19,7 +19,7 @@ class Token_lib
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
 		{
-			$tokened_text = strftime($tokened_text);
+			$tokened_text = strftime($tokened_text);	//TODO: these need to be converted to IntlDateFormatter::format()
 		}
 
 		// Call scan to build an array of all of the tokens used in the text to be transformed
@@ -74,7 +74,7 @@ class Token_lib
 
 	public function parse_barcode(?string &$quantity, ?string &$price,  ?string &$item_id_or_number_or_item_kit_or_receipt): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$barcode_formats = json_decode($config['barcode_formats']);
 		$barcode_tokens = Token::get_barcode_tokens();
 
@@ -89,7 +89,7 @@ class Token_lib
 				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;
 			}
 		}
-		else 
+		else
 		{
 			$quantity = 1;	//TODO: Quantity is handled using bcmath functions so that it is precision safe.  This should be '1'
 		}

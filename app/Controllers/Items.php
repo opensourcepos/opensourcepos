@@ -16,6 +16,7 @@ use App\Models\Supplier;
 use App\Models\Tax_category;
 
 use Config\ForeignCharacters;
+use Config\OSPOS;
 use Config\Services;
 use CodeIgniter\Files\File;
 use CodeIgniter\Images\Image;
@@ -60,7 +61,7 @@ class Items extends Secure_Controller
 		$this->stock_location = model('Stock_location');
 		$this->supplier = model('Supplier');
 		$this->tax_category = model('Tax_category');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 	}
 
 	public function getIndex(): void
@@ -811,7 +812,7 @@ class Items extends Secure_Controller
 	/**
 	 * Ajax call to check to see if the item number, a.k.a. barcode, is already used by another item
 	 * If it exists then that is an error condition so return TRUE for "error found"
-	 * @return string
+	 * @return void
 	 */
 	public function postCheckItemNumber(): void
 	{
@@ -1207,9 +1208,9 @@ class Items extends Secure_Controller
 	/**
 	 * Saves attribute data found in the CSV import.
 	 *
-	 * @param array row
-	 * @param array item_data
-	 * @param array definitions
+	 * @param array $row
+	 * @param array $item_data
+	 * @param array $definitions
 	 */
 	private function save_attribute_data(array $row, array $item_data, array $definitions): bool
 	{
@@ -1270,8 +1271,10 @@ class Items extends Secure_Controller
 	/**
 	 * Saves inventory quantities for the row in the appropriate stock locations.
 	 *
-	 * @param array    row
-	 * @param array    item_data
+	 * @param array $row
+	 * @param array $item_data
+	 * @param array $allowed_locations
+	 * @param int $employee_id
 	 * @throws ReflectionException
 	 */
 	private function save_inventory_quantities(array $row, array $item_data, array $allowed_locations, int $employee_id): void
@@ -1317,7 +1320,7 @@ class Items extends Secure_Controller
 	/**
 	 * Saves the tax data found in the line of the CSV items import file
 	 *
-	 * @param	array	row
+	 * @param array $row
 	 */
 	private function save_tax_data(array $row, array $item_data): void
 	{

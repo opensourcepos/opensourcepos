@@ -7,6 +7,7 @@ use App\Models\Module;
 
 use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
+use Config\OSPOS;
 use Config\Services;
 
 /**
@@ -30,7 +31,7 @@ class Secure_Controller extends BaseController
 	{
 		$this->employee = model(Employee::class);
 		$this->module = model(Module::class);
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$validation = Services::validation();
 
 		if(!$this->employee->is_logged_in())
@@ -78,7 +79,7 @@ class Secure_Controller extends BaseController
 	 * AJAX function used to confirm whether values sent in the request are numeric
 	 * @return void
 	 */
-	public function getCheckNumeric()
+	public function getCheckNumeric(): void
 	{
 		$result = true;
 

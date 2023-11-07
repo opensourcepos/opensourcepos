@@ -1,4 +1,4 @@
-<?php $config = config('OSPOS')->settings; ?>
+<?php $config = config(OSPOS::class)->settings; ?>
 
 var pickerconfig = function(config) {
     return $.extend({

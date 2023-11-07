@@ -73,7 +73,7 @@ class Giftcards extends Secure_Controller
 
 	public function getView(int $giftcard_id = NEW_ENTRY): void
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$giftcard_info = $this->giftcard->get_info($giftcard_id);
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';

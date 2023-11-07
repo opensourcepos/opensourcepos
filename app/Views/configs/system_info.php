@@ -18,7 +18,7 @@
 			</div>
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
 				<?php echo lang('Config.ospos_info') . ':' ?>
-				<?php echo esc(config('App')->application_version) ?> - <?php echo esc(substr(config('OSPOS')->commit_sha1, 0, 6)) ?><br>
+				<?php echo esc(config('App')->application_version) ?> - <?php echo esc(substr(config(OSPOS::class)->commit_sha1, 0, 6)) ?><br>
 				Language Code: <?php echo current_language_code() ?><br><br>
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>

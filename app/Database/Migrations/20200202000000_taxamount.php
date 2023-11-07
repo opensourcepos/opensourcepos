@@ -8,7 +8,7 @@ use App\Models\Appconfig;
 use CodeIgniter\Database\ResultInterface;
 
 /**
- * 
+ *
  *
  * @property appconfig appconfig
  * @property tax_lib tax_lib
@@ -64,7 +64,7 @@ class Migration_TaxAmount extends Migration
 
 	private function upgrade_tax_history_for_sale(int $sale_id, string $tax_decimals, bool $tax_included): void	//TODO: $tax_included is passed as a parameter but never used in the function body.
 	{
-		$customer_sales_tax_support = FALSE;
+		$customer_sales_tax_support = false;
 		$tax_type = Migration_TaxAmount::VAT_TAX;
 		$sales_taxes = [];
 		$tax_group_sequence = 0;
@@ -74,7 +74,7 @@ class Migration_TaxAmount extends Migration
 		{
 			// This computes tax for each line item and adds it to the tax type total
 			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
-			$tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount'], TRUE);
+			$tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount'], true);
 			$item_tax_amount = $this->get_item_tax($tax_basis, $item['percent'], PHP_ROUND_HALF_UP, $tax_decimals);
 			$this->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percent'], $tax_type, $item_tax_amount);
 			$this->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, PHP_ROUND_HALF_UP, $sale_id, $item['name']);
@@ -155,7 +155,7 @@ class Migration_TaxAmount extends Migration
 	public function get_item_total(string $quantity, string $price, string $discount, bool $include_discount = FALSE): string
 	{
 		$total = bcmul($quantity, $price);
-		
+
 		if($include_discount)
 		{
 			$total = bcsub($total, bcmul(bcmul($quantity, $price), bcdiv($discount, 100)));

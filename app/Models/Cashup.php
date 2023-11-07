@@ -88,7 +88,7 @@ class Cashup extends Model
 		if($order == null) $order = 'asc';
 		if($count_only == null) $count_only = FALSE;
 
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
 
 		// get_found_rows case

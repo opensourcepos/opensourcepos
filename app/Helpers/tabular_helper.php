@@ -75,7 +75,7 @@ function get_sales_manage_table_headers(): string
 		['change_due' => lang('Sales.change_due')],
 		['payment_type' => lang('Sales.payment_type')]
 	];
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	if($config['invoice_enable'])
 	{
@@ -106,7 +106,7 @@ function get_sale_data_row(object $sale): array
 		'payment_type' => $sale->payment_type
 	];
 
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	if($config['invoice_enable'])
 	{
@@ -390,7 +390,7 @@ function get_supplier_data_row(object $supplier): array
 function get_items_manage_table_headers(): string
 {
 	$attribute = model(Attribute::class);
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
 	$headers = [
@@ -439,7 +439,7 @@ function get_item_data_row(object $item): array
 	$attribute = model(Attribute::class);
 	$item_taxes = model(Item_taxes::class);
 	$tax_category = model(Tax_category::class);
-	$config = config('OSPOS')->settings;
+	$config = config(OSPOS::class)->settings;
 
 	if($config['use_destination_based_tax'])
 	{

@@ -96,7 +96,7 @@ class Expense extends Model
 		if($order == null) $order = 'asc';
 		if($count_only == null) $count_only = FALSE;
 
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('expenses AS expenses');
 
 		// get_found_rows case
@@ -315,7 +315,7 @@ class Expense extends Model
 	 */
 	public function get_payments_summary(string $search, array $filters): array	//TODO: $search is passed but never used in the function
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 
 		// get payment summary
 		$builder = $this->db->table('expenses');

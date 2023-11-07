@@ -6,6 +6,7 @@ use App\Models\Cashup;
 use App\Models\Expense;
 use App\Models\Reports\Summary_payments;
 use CodeIgniter\Model;
+use Config\OSPOS;
 
 /**
  * @property cashup cashup
@@ -18,11 +19,11 @@ class Cashups extends Secure_Controller
 	public function __construct()
 	{
 		parent::__construct('cashups');
-		
+
 		$this->cashup = model('Cashup');
 		$this->expense = model('Expense');
 		$this->summary_payments = model('Reports/Summary_payments');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 	}
 
 	public function getIndex(): void

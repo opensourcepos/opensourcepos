@@ -11,6 +11,7 @@ use App\Models\Item_kit;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
@@ -41,7 +42,7 @@ class Receivings extends Secure_Controller
 		$this->receiving = model('Receiving');
 		$this->stock_location = model('Stock_location');
 		$this->supplier = model('Supplier');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 	}
 
 	public function getIndex(): void
@@ -108,7 +109,7 @@ class Receivings extends Secure_Controller
 
 		$this->_reload();	//TODO: Hungarian notation
 	}
-	
+
 	public function set_comment(): void
 	{
 		$this->receiving_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -122,12 +123,12 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
 	}
-	
+
 	public function set_reference(): void
 	{
 		$this->receiving_lib->set_reference($this->request->getPost('recv_reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
-	
+
 	public function add(): void
 	{
 		$data = [];
@@ -192,7 +193,7 @@ class Receivings extends Secure_Controller
 
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
-	
+
 	public function edit($receiving_id): void
 	{
 		$data = [];
@@ -202,18 +203,18 @@ class Receivings extends Secure_Controller
 		{
 			$data['suppliers'][$supplier->person_id] = $supplier->first_name . ' ' . $supplier->last_name;
 		}
-	
+
 		$data['employees'] = [];
 		foreach($this->employee->get_all()->getResult() as $employee)
 		{
 			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
 		}
-	
+
 		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
 		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
-	
+
 		echo view('receivings/form', $data);
 	}
 
@@ -237,7 +238,7 @@ class Receivings extends Secure_Controller
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];	//TODO: Replace -1 with constant
-	
+
 		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))	//TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
 		{
 			echo json_encode ([
@@ -269,7 +270,7 @@ class Receivings extends Secure_Controller
 	public function complete(): void
 	{
 		$data = [];
-		
+
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['transaction_time'] = to_datetime(time());
@@ -284,7 +285,7 @@ class Receivings extends Secure_Controller
 			$data['amount_tendered'] = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
 		}
-		
+
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
@@ -334,7 +335,7 @@ class Receivings extends Secure_Controller
 	 */
 	public function requisition_complete(): void
 	{
-		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) 
+		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination())
 		{
 			foreach($this->receiving_lib->get_cart() as $item)
 			{
@@ -342,17 +343,17 @@ class Receivings extends Secure_Controller
 				$this->receiving_lib->add_item($item['item_id'], $item['quantity'], $this->receiving_lib->get_stock_destination(), $item['discount_type']);
 				$this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
 			}
-			
+
 			$this->complete();
 		}
-		else 
+		else
 		{
 			$data['error'] = lang('Receivings.error_requisition');
 
 			$this->_reload($data);	//TODO: Hungarian notation
 		}
 	}
-	
+
 	public function receipt($receiving_id): void
 	{
 		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
@@ -402,7 +403,7 @@ class Receivings extends Secure_Controller
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['stock_locations'] = $this->stock_location->get_allowed_locations('receivings');
 		$data['show_stock_locations'] = count($data['stock_locations']) > 1;
-		if($data['show_stock_locations']) 
+		if($data['show_stock_locations'])
 		{
 			$data['modes']['requisition'] = lang('Receivings.requisition');
 			$data['stock_source'] = $this->receiving_lib->get_stock_source();
@@ -434,7 +435,7 @@ class Receivings extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
-		
+
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
 		echo view("receivings/receiving", $data);
@@ -446,7 +447,7 @@ class Receivings extends Secure_Controller
 	public function save(int $receiving_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: newdate does not follow naming conventions
-		
+
 		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
 

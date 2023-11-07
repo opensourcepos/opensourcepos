@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
@@ -68,7 +69,7 @@ class Appconfig extends Model
 
 		if($success)
 		{
-			config('OSPOS')->update_settings();
+			config(OSPOS::class)->update_settings();
 		}
 
 		return $success;
@@ -112,7 +113,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_invoice_sequence(bool $save = true): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$last_used = (int)$config['last_used_invoice_number'] + 1;
 
 		if($save)
@@ -128,7 +129,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_quote_sequence(bool $save = true): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$last_used = (int)$config['last_used_quote_number'] + 1;
 
 		if($save)
@@ -144,7 +145,7 @@ class Appconfig extends Model
 	 */
 	public function acquire_next_work_order_sequence(bool $save = true): string
 	{
-		$config = config('OSPOS')->settings;
+		$config = config(OSPOS::class)->settings;
 		$last_used = (int)$config['last_used_work_order_number'] + 1;
 
 		if($save)

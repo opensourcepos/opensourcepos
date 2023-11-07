@@ -13,6 +13,7 @@ use App\Models\Enums\Rounding_mode;
 use App\Models\Sale;
 use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
@@ -50,7 +51,7 @@ class Sale_lib
 		$this->rounding_mode = model('enums/Rounding_mode');
 //		$this->sale = model('Sale');	//TODO: This is causing an infinite loop because the constructor calls the sale library
 		$this->stock_location = model('Stock_location');
-		$this->config = config('OSPOS')->settings;
+		$this->config = config(OSPOS::class)->settings;
 	}
 
 	public function get_line_sequence_options(): array
@@ -414,7 +415,7 @@ class Sale_lib
 	/**
 	 * Adds a new payment to the payments array or updates an existing one.
 	 * It will also disable cash_mode if a non-qualifying payment type is added.
-	 * @param int $payment_id
+	 * @param string $payment_id
 	 * @param string $payment_amount
 	 * @param int $cash_adjustment
 	 */
@@ -1042,14 +1043,13 @@ class Sale_lib
 		return -1;	//TODO: Replace -1 with constant
 	}
 
-	/**
-	 * @param string $line
+	/* @param string $line
 	 * @param string $description
 	 * @param string $serialnumber
 	 * @param string $quantity
 	 * @param string $discount
-	 * @param string $discount_type
-	 * @param string $price
+	 * @param string|null $discount_type
+	 * @param string|null $price
 	 * @param string|NULL $discounted_total
 	 * @return bool
 	 */
