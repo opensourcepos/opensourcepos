@@ -817,6 +817,7 @@ class Items extends Secure_Controller
 	public function postCheckItemNumber(): void
 	{
 		$exists = $this->item->item_number_exists($this->request->getPost('item_number'), $this->request->getPost('item_id'));
+
 		echo !$exists ? 'true' : 'false';
 	}
 

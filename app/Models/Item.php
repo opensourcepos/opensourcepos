@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use ReflectionException;
 use stdClass;
 
