@@ -21,6 +21,7 @@
  * @var string $selected_low_sell_item
  * @var int $selected_low_sell_item_id
  * @var string $controller_name
+ * @var array $config
  */
 ?>
 <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
@@ -494,7 +495,7 @@ $(document).ready(function()
 		!$(this).val() && $(this).val('');
 	});
 
-	var fill_value = function(event, ui) {
+	var fill_tax_category_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='tax_category_id']").val(ui.item.value);
 		$("input[name='tax_category']").val(ui.item.label);
@@ -506,11 +507,11 @@ $(document).ready(function()
 		delay: 15,
 		cacheLength: 1,
 		appendTo: '.modal-content',
-		select: fill_value,
-		focus: fill_value
+		select: fill_tax_category_value,
+		focus: fill_tax_category_value
 	});
 
-	var fill_value = function(event, ui) {
+	var fill_low_sell_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='low_sell_item_id']").val(ui.item.value);
 		$("input[name='low_sell_item_name']").val(ui.item.label);
@@ -522,8 +523,8 @@ $(document).ready(function()
 		delay: 15,
 		cacheLength: 1,
 		appendTo: '.modal-content',
-		select: fill_value,
-		focus: fill_value
+		select: fill_low_sell_value,
+		focus: fill_low_sell_value
 	});
 
 	$('#category').autocomplete({
@@ -573,61 +574,61 @@ $(document).ready(function()
 
 			errorLabelContainer: '#error_message_box',
 
-			rules:
-			{
-				name: 'required',
-				category: 'required',
-				item_number:
-				{
-					required: false,
-					remote:
-					{
-						url: "<?php echo esc("$controller_name/checkItemNumber") ?>",
-						type: 'POST',
-						data: {
-							'item_id' : "<?php echo $item_info->item_id ?>"
-							// item_number should be passed into the function by default
-						}
-					}
-				},
-				cost_price:
-				{
-					required: true,
-					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-				},
-				unit_price:
-				{
-					required: true,
-					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-				},
-				<?php
-				foreach($stock_locations as $key=>$location_detail)
-				{
-				?>
-				<?php echo 'quantity_' . $key ?>:
-					{
-						required: true,
-						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-					},
-				<?php
-				}
-				?>
-				receiving_quantity:
-				{
-					required: true,
-					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-				},
-				reorder_level:
-				{
-					required: true,
-					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-				},
-				tax_percent:
-				{
-					required: false,
-					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
-				}
-			},
+			//rules:
+			//{
+			//	name: 'required',
+			//	category: 'required',
+			//	item_number:
+			//	{
+			//		required: false,
+			//		remote:
+			//		{
+			//			url: "<?php //echo esc("$controller_name/checkItemNumber") ?>//",
+			//			type: 'POST',
+			//			data: {
+			//				'item_id' : "<?php //echo $item_info->item_id ?>//"
+			//				// item_number should be passed into the function by default
+			//			}
+			//		}
+			//	},
+			//	cost_price:
+			//	{
+			//		required: true,
+			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//	},
+			//	unit_price:
+			//	{
+			//		required: true,
+			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//	},
+			//	<?php
+			//	foreach($stock_locations as $key=>$location_detail)
+			//	{
+			//	?>
+			<!--	--><?php //echo 'quantity_' . $key ?>//:
+			//		{
+			//			required: true,
+			//			remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//		},
+			//	<?php
+			//	}
+			//	?>
+			//	receiving_quantity:
+			//	{
+			//		required: true,
+			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//	},
+			//	reorder_level:
+			//	{
+			//		required: true,
+			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//	},
+			//	tax_percent:
+			//	{
+			//		required: false,
+			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
+			//	}
+			//},
 
 			messages:
 			{
