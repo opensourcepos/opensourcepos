@@ -574,61 +574,61 @@ $(document).ready(function()
 
 			errorLabelContainer: '#error_message_box',
 
-			//rules:
-			//{
-			//	name: 'required',
-			//	category: 'required',
-			//	item_number:
-			//	{
-			//		required: false,
-			//		remote:
-			//		{
-			//			url: "<?php //echo esc("$controller_name/checkItemNumber") ?>//",
-			//			type: 'POST',
-			//			data: {
-			//				'item_id' : "<?php //echo $item_info->item_id ?>//"
-			//				// item_number should be passed into the function by default
-			//			}
-			//		}
-			//	},
-			//	cost_price:
-			//	{
-			//		required: true,
-			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//	},
-			//	unit_price:
-			//	{
-			//		required: true,
-			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//	},
-			//	<?php
-			//	foreach($stock_locations as $key=>$location_detail)
-			//	{
-			//	?>
-			<!--	--><?php //echo 'quantity_' . $key ?>//:
-			//		{
-			//			required: true,
-			//			remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//		},
-			//	<?php
-			//	}
-			//	?>
-			//	receiving_quantity:
-			//	{
-			//		required: true,
-			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//	},
-			//	reorder_level:
-			//	{
-			//		required: true,
-			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//	},
-			//	tax_percent:
-			//	{
-			//		required: false,
-			//		remote: "<?php //echo esc("$controller_name/checkNumeric") ?>//"
-			//	}
-			//},
+			rules:
+			{
+				name: 'required',
+				category: 'required',
+				item_number:
+				{
+					required: false,
+					remote:
+						{
+							url: "<?php echo esc("$controller_name/checkItemNumber") ?>",
+							type: 'POST',
+							data: {
+								'item_id' : "<?php echo $item_info->item_id ?>"
+								// item_number should be passed into the function by default
+							}
+						}
+				},
+				cost_price:
+				{
+					required: true,
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				},
+				unit_price:
+				{
+					required: true,
+					remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				},
+				<?php
+				foreach($stock_locations as $key=>$location_detail)
+				{
+					?>
+					<?php echo 'quantity_' . $key ?>:
+					{
+						required: true,
+							remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+					},
+					<?php
+				}
+				?>
+				receiving_quantity:
+				{
+					required: true,
+						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				},
+				reorder_level:
+				{
+					required: true,
+						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				},
+				tax_percent:
+				{
+					required: false,
+						remote: "<?php echo esc("$controller_name/checkNumeric") ?>"
+				}
+			},
 
 			messages:
 			{
