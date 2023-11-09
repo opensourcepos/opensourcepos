@@ -15,10 +15,8 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
 
-use Config\ForeignCharacters;
 use Config\OSPOS;
 use Config\Services;
-use CodeIgniter\Files\File;
 use CodeIgniter\Images\Image;
 use ReflectionException;
 
@@ -136,7 +134,7 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * Processes thumbnail of image.  Called via the tabular_helper
+	 * AJAX function. Processes thumbnail of image. Called via tabular_helper
 	 * @param string $pic_filename
 	 * @return void
 	 */
@@ -177,7 +175,7 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== NULL
 		];
 
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), $options, FALSE);
+		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), $options);
 
 		echo json_encode($suggestions);
 	}
@@ -237,6 +235,10 @@ class Items extends Secure_Controller
 		echo json_encode($result);
 	}
 
+	/**
+	 * @param int $item_id
+	 * @return void
+	 */
 	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
 		// Set default values
@@ -584,6 +586,7 @@ class Items extends Secure_Controller
 	}
 
 	/**
+	 * @param int $item_id
 	 * @throws ReflectionException
 	 */
 	public function postSave(int $item_id = NEW_ENTRY): void
@@ -959,7 +962,7 @@ class Items extends Secure_Controller
 		$allowed_attributes = $this->attribute->get_definition_names(FALSE);
 		$data = generate_import_items_csv($allowed_locations, $allowed_attributes);
 
-		force_download($name, $data, TRUE);
+		$this->response->download($name, $data);
 	}
 
 	public function getCsvImport(): void
@@ -1002,8 +1005,8 @@ class Items extends Secure_Controller
 						$attribute_data[$definition_name]['dropdown_values'] = $this->attribute->get_definition_values($attribute_data[$definition_name]['definition_id']);
 					}
 				}
-
-				$this->db->transBegin();
+				$db = db_connect();
+				$db->transBegin();	//TODO: This section needs to be reworked so that the data array is being created then passed to the Item model because $db doesn't exist in the controller without being instantiated, but database operations should be restricted to the model
 
 				foreach($csv_rows as $key => $row)
 				{
@@ -1079,12 +1082,12 @@ class Items extends Secure_Controller
 				if(count($failCodes) > 0)
 				{
 					$message = lang('Items.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
-					$this->db->transRollback();
+					$db->transRollback();
 					echo json_encode (['success' => FALSE, 'message' => $message]);
 				}
 				else
 				{
-					$this->db->transCommit();
+					$db->transCommit();
 
 					echo json_encode (['success' => TRUE, 'message' => lang('Items.csv_import_success')]);
 				}
