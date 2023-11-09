@@ -409,7 +409,7 @@ class Customers extends Persons
 	{
 		$name = 'import_customers.csv';
 		$data = file_get_contents('../' . $name);
-		force_download($name, $data);
+		$this->response->download($name, $data);
 	}
 
 	public function getCsvImport(): void
