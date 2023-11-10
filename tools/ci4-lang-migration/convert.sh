@@ -15,3 +15,4 @@ for file in $projectdir/application/language/**/*.php; do
     sed -i "s/\(\s*\)\"${prefix}_/\1\"/g" $output
 done
 rm -rf "$projectdir/application"
+git add $projectdir/application/language
