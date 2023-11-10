@@ -21,6 +21,11 @@ class Attributes extends Secure_Controller
 		$this->attribute = model('Attribute');
 	}
 
+	/**
+	 * Gets and sends the main view for Attributes to the browser.
+	 *
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_attribute_definition_manage_table_headers();
@@ -160,6 +165,10 @@ class Attributes extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$attribute_definition_info = $this->attribute->get_info($row_id);
