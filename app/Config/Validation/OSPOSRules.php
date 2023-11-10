@@ -20,6 +20,7 @@ class OSPOSRules
 	 * @param array $data Data sent to the view.
 	 * @param string|null $error The error sent back to the validation handler on failure.
 	 * @return bool True if validation passes or false if there are errors.
+	 * @noinspection PhpUnused
 	 */
 	public function login_check(string $username, string $fields , array $data, ?string &$error = null): bool
 	{
