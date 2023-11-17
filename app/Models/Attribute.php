@@ -181,6 +181,12 @@ class Attribute extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * Gets all attributes connected to an item given the item_id
+	 *
+	 * @param int $item_id
+	 * @return array
+	 */
 	public function get_attributes_by_item(int $item_id): array
 	{
 		$builder = $this->db->table('attribute_definitions');
@@ -452,14 +458,15 @@ class Attribute extends Model
 		$zero_attribute_id = $this->value_exists('0');
 		$one_attribute_id = $this->value_exists('1');
 
-		if($zero_attribute_id === FALSE)
+		if($zero_attribute_id === false)
 		{
-			$zero_attribute_id = $this->save_value('0', $definition_id, FALSE, FALSE, CHECKBOX);
+			$zero_attribute_id = $this->save_value('0', $definition_id, false, false, CHECKBOX);
 		}
 
-		if($one_attribute_id === FALSE)
+		if($one_attribute_id === false)
 		{
-			$one_attribute_id = $this->save_value('1', $definition_id, FALSE, FALSE, CHECKBOX);
+			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
+			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
 		}
 
 		return [$zero_attribute_id, $one_attribute_id];
@@ -551,11 +558,12 @@ class Attribute extends Model
 
 		if($this->link_exists($item_id, $definition_id))
 		{
+			$builder->set(['attribute_id' => $attribute_id]);
 			$builder->where('definition_id', $definition_id);
 			$builder->where('item_id', $item_id);
 			$builder->where('sale_id', null);
 			$builder->where('receiving_id', null);
-			$builder->update(['attribute_id' => $attribute_id]);
+			$builder->update();
 		}
 		else
 		{
@@ -705,6 +713,13 @@ class Attribute extends Model
 		$builder->ignore(true)->setQueryAsData(new RawSql($query), null, 'item_id, definition_id, attribute_id, '. $sale_receiving_fk )->insertBatch();
 	}
 
+	/**
+	 * Gets search suggestions (attribute values) for a specific attribute definition given a search term and definition_id
+	 *
+	 * @param int $definition_id
+	 * @param string $term
+	 * @return array
+	 */
 	public function get_suggestions(int $definition_id, string $term): array
 	{
 		$suggestions = [];
@@ -718,16 +733,23 @@ class Attribute extends Model
 		$builder->where('definition.definition_id', $definition_id);
 		$builder->orderBy('attribute_value','ASC');
 
-		foreach($builder->get()->getResult() as $row)
+		foreach($builder->get()->getResult('array') as $suggestion)
 		{
-			$row_array = (array)$row;
-			$suggestions[] = ['value' => $row_array['attribute_id'], 'label' => $row_array['attribute_value']];
+			$suggestions[] = ['value' => $suggestion['attribute_id'], 'label' => $suggestion['attribute_value']];
 		}
 
 		return $suggestions;
 	}
 
-	public function save_value(string $attribute_value, int $definition_id, $item_id = FALSE, $attribute_id = FALSE, string $definition_type = DROPDOWN): int
+	/**
+	 * @param string $attribute_value
+	 * @param int $definition_id
+	 * @param bool $item_id
+	 * @param bool $attribute_id
+	 * @param string $definition_type
+	 * @return int
+	 */
+	public function save_value(string $attribute_value, int $definition_id, $item_id = false, $attribute_id = false, string $definition_type = DROPDOWN): int
 	{
 		$config = config(OSPOS::class)->settings;
 		$locale_date_format = $config['dateformat'];
@@ -740,7 +762,7 @@ class Attribute extends Model
 		//Update attribute_value
 			$attribute_id = $this->value_exists($attribute_value, $definition_type);
 
-			if($attribute_id === FALSE)
+			if($attribute_id === false)
 			{
 				switch($definition_type)	//TODO: Duplicated code
 				{
@@ -758,18 +780,21 @@ class Attribute extends Model
 				}
 
 				$builder = $this->db->table('attribute_values');
-				$builder->insert(["attribute_$data_type" => $attribute_value]);
+				$builder->set(["attribute_$data_type" => $attribute_value]);
+				$builder->insert();
 
 				$attribute_id = $this->db->insertID();
 			}
 
-			$builder = $this->db->table('attribute_links');
 			$data = [
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id
 			];
-			$builder->insert($data);
+
+			$builder = $this->db->table('attribute_links');
+			$builder->set($data);
+			$builder->insert();
 		}
 		//Existing Attribute
 		else
@@ -790,9 +815,11 @@ class Attribute extends Model
 			}
 
 			$builder = $this->db->table('attribute_values');
+			$builder->set(["attribute_$data_type" => $attribute_value]);
 			$builder->where('attribute_id', $attribute_id);
-			$builder->update(["attribute_$data_type" => $attribute_value]);
+			$builder->update();
 		}
+		log_message('error', 'save_value result: ' . $this->db->transStatus());
 
 		$this->db->transComplete();
 

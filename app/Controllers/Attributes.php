@@ -58,7 +58,9 @@ class Attributes extends Secure_Controller
 	}
 
 	/**
+	 * AJAX called function which saves the attribute value sent via POST by using the model save function.
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveAttributeValue(): void
 	{
@@ -73,7 +75,9 @@ class Attributes extends Secure_Controller
 	}
 
 	/**
+	 * AJAX called function deleting an attribute value using the model delete function.
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postDelete_attribute_value(): void
 	{
@@ -86,8 +90,11 @@ class Attributes extends Secure_Controller
 	}
 
 	/**
+	 * AJAX called function which saves the attribute definition.
+	 *
 	 * @param int $definition_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveDefinition(int $definition_id = NO_DEFINITION_ID): void
 	{
@@ -155,8 +162,10 @@ class Attributes extends Secure_Controller
 	}
 
 	/**
+	 *
 	 * @param int $definition_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getSuggestAttribute(int $definition_id): void
 	{
@@ -213,11 +222,21 @@ class Attributes extends Secure_Controller
 		echo view('attributes/form', $data);
 	}
 
-	public function postDelete_value(int $attribute_id): bool	//TODO: This function appears to never be used in the codebase.  Is it needed?
+	/**
+	 * AJAX called function to delete an attribute value. This is never called in the code. Perhaps it was boiler plate code that just isn't needed?
+	 * @param int $attribute_id
+	 * @return bool
+	 * @noinspection PhpUnused
+	 */
+	public function delete_value(int $attribute_id): bool	//TODO: This function appears to never be used in the codebase.  Is it needed?
 	{
 		return $this->attribute->delete_value($attribute_id, NO_DEFINITION_ID);
 	}
 
+	/**
+	 * Deletes an attribute definition
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
