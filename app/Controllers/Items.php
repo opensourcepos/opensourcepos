@@ -283,23 +283,7 @@ class Items extends Secure_Controller
 
 		$item_info = $this->item->get_info($item_id);
 
-		if($data['allow_temp_item'] === 1)
-		{
-			if($item_id !== NEW_ENTRY)
-			{
-				if($item_info->item_type != ITEM_TEMP)
-				{
-					$data['allow_temp_item'] = 0;
-				}
-			}
-		}
-		else
-		{
-			if($item_info->item_type == ITEM_TEMP)
-			{
-				$data['allow_temp_item'] = 1;
-			}
-		}
+		$data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
 
 		$use_destination_based_tax = (boolean)$this->config['use_destination_based_tax'];
 		$data['include_hsn'] = $this->config['include_hsn'] === '1';
@@ -341,7 +325,6 @@ class Items extends Secure_Controller
 			&& !$data['allow_temp_item']
 			&& !($this->config['derive_sale_quantity'] === '1')
 		);
-
 
 		$data['item_info'] = $item_info;
 
@@ -438,7 +421,14 @@ class Items extends Secure_Controller
 		echo view('items/form', $data);
 	}
 
-	public function inventory(int $item_id = NEW_ENTRY): void
+	/**
+	 * AJAX called function which returns the update inventory form view for an item
+	 *
+	 * @param int $item_id
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function getInventory(int $item_id = NEW_ENTRY): void
 	{
 		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
 
