@@ -6,6 +6,7 @@
  */
 
 use App\Models\Employee;
+use App\Models\Inventory;
 
 ?>
 <?php echo form_open('items', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
@@ -91,13 +92,12 @@ use App\Models\Employee;
 	</thead>
 	<tbody id="inventory_result">
 		<?php
-			/**
-			 * the tbody content of the table will be filled in by the javascript (see bottom of page)
-			 */
-			$inventory_array = $this->Inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
-			$employee_name = [];
-
+			 //the tbody content of the table will be filled in by the javascript (see bottom of page)
 			$employee = model(Employee::class);
+			$inventory = model(Inventory::class);
+
+			$inventory_array = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+			$employee_name = [];
 
 			foreach($inventory_array as $row)
 			{
@@ -111,53 +111,53 @@ use App\Models\Employee;
 <script type="text/javascript">
 $(document).ready(function()
 {
-    display_stock(<?php echo json_encode(key(esc($stock_locations, 'raw'))) ?>);
+	display_stock(<?php echo json_encode(key(esc($stock_locations, 'raw'))) ?>);
 });
 
 function display_stock(location_id)
 {
-    var item_quantities = <?php echo json_encode(esc($item_quantities, 'raw')) ?>;
-    document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals() ?>);
+	var item_quantities = <?php echo json_encode(esc($item_quantities, 'raw')) ?>;
+	document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals() ?>);
 
-    var inventory_data = <?php echo json_encode(esc($inventory_array), 'raw') ?>;
-    var employee_data = <?php echo json_encode(esc($employee_name, 'raw')) ?>;
+	var inventory_data = <?php echo json_encode(esc($inventory_array, 'raw')) ?>;
+	var employee_data = <?php echo json_encode(esc($employee_name, 'raw')) ?>;
 
-    var table = document.getElementById("inventory_result");
+	var table = document.getElementById("inventory_result");
 
-    // Remove old query from tbody
-    var rowCount = table.rows.length;
-    for (var index = rowCount; index > 0; index--)
-    {
-        table.deleteRow(index-1);
-    }
+	// Remove old query from tbody
+	var rowCount = table.rows.length;
+	for (var index = rowCount; index > 0; index--)
+	{
+		table.deleteRow(index-1);
+	}
 
-    // Add new query to tbody
-    for (var index = 0; index < inventory_data.length; index++)
-    {
-        var data = inventory_data[index];
-        if(data['trans_location'] == location_id)
-        {
-            var tr = document.createElement('tr');
+	// Add new query to tbody
+	for (var index = 0; index < inventory_data.length; index++)
+	{
+		var data = inventory_data[index];
+		if(data['trans_location'] == location_id)
+		{
+			var tr = document.createElement('tr');
 
-            var td = document.createElement('td');
-            td.appendChild(document.createTextNode(data['trans_date']));
-            tr.appendChild(td);
+			var td = document.createElement('td');
+			td.appendChild(document.createTextNode(data['trans_date']));
+			tr.appendChild(td);
 
-            td = document.createElement('td');
-            td.appendChild(document.createTextNode(employee_data[index]));
-            tr.appendChild(td);
+			td = document.createElement('td');
+			td.appendChild(document.createTextNode(employee_data[index]));
+			tr.appendChild(td);
 
-            td = document.createElement('td');
-            td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals() ?>)));
+			td = document.createElement('td');
+			td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals() ?>)));
 			td.setAttribute("style", "text-align:center");
-            tr.appendChild(td);
+			tr.appendChild(td);
 
-            td = document.createElement('td');
-            td.appendChild(document.createTextNode(data['trans_comment']));
-            tr.appendChild(td);
+			td = document.createElement('td');
+			td.appendChild(document.createTextNode(data['trans_comment']));
+			tr.appendChild(td);
 
-            table.appendChild(tr);
-        }
-    }
+			table.appendChild(tr);
+		}
+	}
 }
 </script>
