@@ -19,6 +19,7 @@ services:
             target: ospos_dev
         container_name: ospos_dev
         restart: always
+        user: "${UID}:${GID}"
         depends_on:
           - mysql
         ports:
