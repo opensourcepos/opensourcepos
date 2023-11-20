@@ -1,5 +1,10 @@
-FROM opensourcepos/base AS ospos
+FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
+
+RUN apt update && apt-get install -y libicu-dev libgd-dev
+RUN a2enmod rewrite 
+RUN docker-php-ext-install mysqli bcmath intl gd
+RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
 COPY . /app
@@ -20,6 +25,7 @@ WORKDIR /app/tests
 CMD ["/app/vendor/phpunit/phpunit/phpunit"]
 
 FROM ospos AS ospos_dev
+RUN addgroup -S $GID && adduser -S $UID -G $GID
 
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
