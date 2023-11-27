@@ -14,7 +14,7 @@ class Db_log
 		{
 			$db = Database::connect();
 
-			$filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.php';
+			$filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
 			$handle = fopen($filepath, "a+");
 
 			$sql = $db->getLastQuery();
