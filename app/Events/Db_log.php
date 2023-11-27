@@ -2,32 +2,47 @@
 
 namespace App\Events;
 
+use Config\Database;
+
 class Db_log
 {
-	public function db_log_queries()
+	public function db_log_queries(): void
 	{
 		$config = config('App');
-
 		// check if database logging is enabled (see config/config.php)
 		if($config->db_log_enabled)
 		{
-			// Creating Query Log file with today's date in application/logs folder
+			$db = Database::connect();
+
 			$filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.php';
-			// Opening file with pointer at the end of the file
 			$handle = fopen($filepath, "a+");
 
-			// Get execution time of all the queries executed by controller
-			$times = $config->db->query_times;
-			foreach($config->db->queries as $key => $query)
-			{
-				// Generating SQL file along with execution time
-				$sql = $query . " \n Execution Time:" . $times[$key];
-				// Writing it in the log file
-				fwrite($handle, $sql . "\n\n");
-			}
+			$sql = $db->getLastQuery();
+			$execution_time = $this->convert_time($sql->getDuration());
+			$sql .= " \n Affected rows: " . $db->affectedRows()
+				. " \n Execution Time: " . $execution_time['time'] . ' ' . $execution_time['unit'];
+			fwrite($handle, $sql . "\n\n");
 
 			// Close the file
 			fclose($handle);
 		}
+	}
+
+	private function convert_time(float $time): array
+	{
+		$unit = 's';
+
+		if($time <= 0.1 && $time > 0.0001)
+		{
+			$time = $time * 1000;
+			$unit = 'ms';
+		}
+		elseif($time <= 0.0001)
+		{
+			$time = $time * 1000000;
+			$unit = 'µs';
+		}
+
+		return ['time' => $time, 'unit' => $unit];
 	}
 }
