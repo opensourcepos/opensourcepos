@@ -60,6 +60,8 @@ Events::on('pre_system', static function () {
 $config = new Load_config();
 Events::on('post_controller_constructor', [$config, 'load_config']);
 
-Events::on('post_controller', [Db_log::class, 'db_log_queries']);
+$db_log = new Db_log();
+Events::on('DBQuery', [$db_log, 'db_log_queries']);
 
-Events::on('pre_controller', [Method::class, 'validate_method']);
+$method = new Method();
+Events::on('pre_controller', [$method, 'validate_method']);
