@@ -12,20 +12,38 @@ class Db_log
 		// check if database logging is enabled (see config/config.php)
 		if($config->db_log_enabled)
 		{
-			$db = Database::connect();
-
 			$filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
 			$handle = fopen($filepath, "a+");
+			$message = $this->generate_message($config);
 
-			$sql = $db->getLastQuery();
-			$execution_time = $this->convert_time($sql->getDuration());
-			$sql .= " \n Affected rows: " . $db->affectedRows()
-				. " \n Execution Time: " . $execution_time['time'] . ' ' . $execution_time['unit'];
-			fwrite($handle, $sql . "\n\n");
+			if(strlen($message) > 0)
+			{
+				fwrite($handle, $message . "\n\n");
+			}
 
 			// Close the file
 			fclose($handle);
 		}
+	}
+
+	private function generate_message($config): string
+	{
+		$db = Database::connect();
+		$last_query = $db->getLastQuery();
+		$affected_rows = $db->affectedRows();
+		$execution_time = $this->convert_time($last_query->getDuration());
+
+		$message = $last_query->getQuery()
+			. " \n Affected rows: $affected_rows"
+			. " \n Execution Time: " . $execution_time['time'] . ' ' . $execution_time['unit'];
+
+		$long_query = ($execution_time['unit'] === 's') && ($execution_time['time'] > 0.5);
+		if($long_query)
+		{
+			$message .= ' [LONG RUNNING QUERY]';
+		}
+
+		return $config->db_log_only_long && !$long_query ? '' : $message;
 	}
 
 	private function convert_time(float $time): array
