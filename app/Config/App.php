@@ -12,35 +12,35 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $application_version = '3.4.0-dev';
+	public string $application_version = '3.4.0-dev';
 
 	/**
 	 * This is the commit hash for the version you are currently using.
 	 *
 	 * @var string
 	 */
-	public $commit_sha1 = 'dev';
+	public string $commit_sha1 = 'dev';
 
 	/**
 	 * Logs are stored in writable/logs
 	 *
 	 * @var bool
 	 */
-	public $db_log_enabled = false;
+	public bool $db_log_enabled = false;
 
 	/**
-	 * DB Query Log only long running queries
+	 * DB Query Log only long-running queries
 	 *
 	 * @var bool
 	 */
-	public $db_log_only_long = false;
+	public bool $db_log_only_long = false;
 
 	/**
 	 * Defines whether to require/reroute to HTTPS
 	 *
 	 * @var bool
 	 */
-	public $https_on;	//Set in the constructor
+	public bool $https_on;	//Set in the constructor
 
 	/**
 	 * --------------------------------------------------------------------------
