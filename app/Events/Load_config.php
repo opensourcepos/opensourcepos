@@ -51,8 +51,10 @@ class Load_config
 		$language = Services::language();
 		$language->setLocale($config->settings['language_code']);
 
+		log_message('error', '$config->timezone set to: ' . $config->settings['timezone']);
+		log_message('error', 'PHP date.timezone set to: ' . ini_get('date.timezone'));
 		//Time Zone
-		date_default_timezone_set($config->timezone ?? 'America/New_York');
+		date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
 
 		bcscale(max(2, totals_decimals() + tax_decimals()));
 	}
