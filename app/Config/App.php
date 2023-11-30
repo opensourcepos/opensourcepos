@@ -29,6 +29,13 @@ class App extends BaseConfig
 	public $db_log_enabled = false;
 
 	/**
+	 * DB Query Log only long running queries
+	 *
+	 * @var bool
+	 */
+	public $db_log_only_long = false;
+
+	/**
 	 * Defines whether to require/reroute to HTTPS
 	 *
 	 * @var bool
