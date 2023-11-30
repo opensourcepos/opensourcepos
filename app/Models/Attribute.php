@@ -81,7 +81,7 @@ class Attribute extends Model
 			$builder->where('definition_id', $definition_id);
 		}
 
-		return ($builder->get()->getNumRows() > 0);
+		return ($builder->get()->getNumRows() > 0);	//TODO: This is returning a result of 1 on dropdown
 	}
 
 	/*
@@ -552,6 +552,7 @@ class Attribute extends Model
 	 */
 	public function save_link(int $item_id, int $definition_id, int $attribute_id): bool
 	{
+		log_message('error', "saving link: definition - $definition_id, item - $item_id, attribute_id - $attribute_id" );
 		$this->db->transStart();
 
 		$builder = $this->db->table('attribute_links');
@@ -574,6 +575,7 @@ class Attribute extends Model
 			$builder->insert($data);
 		}
 
+		log_message('error', 'save_link result: ' . $this->db->transStatus());
 		$this->db->transComplete();
 
 		return $this->db->transStatus();
@@ -819,6 +821,7 @@ class Attribute extends Model
 			$builder->where('attribute_id', $attribute_id);
 			$builder->update();
 		}
+		log_message('error', "saving value: $attribute_value");
 		log_message('error', 'save_value result: ' . $this->db->transStatus());
 
 		$this->db->transComplete();
