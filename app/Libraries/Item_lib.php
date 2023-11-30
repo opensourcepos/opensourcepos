@@ -2,6 +2,7 @@
 
 namespace app\Libraries;
 
+use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
 use App\Models\Stock_location;
 
@@ -16,6 +17,9 @@ use App\Models\Stock_location;
 
 class Item_lib
 {
+	private Session $session;
+	private Model $stock_location;
+
   	public function __construct()
 	{
 		$this->session = Session();

@@ -25,6 +25,8 @@ class Stock_location extends Model
 		'deleted'
 	];
 
+	private Session $session;
+
 	public function __construct()
 	{
 		parent::__construct();
