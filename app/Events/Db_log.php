@@ -2,11 +2,12 @@
 
 namespace App\Events;
 
+use CodeIgniter\Config\BaseConfig;
 use Config\Database;
 
 class Db_log
 {
-	private object $config;
+	private BaseConfig $config;
 
 	public function db_log_queries(): void
 	{
