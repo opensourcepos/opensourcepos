@@ -15,6 +15,7 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
 
+use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
 use CodeIgniter\Images\Image;
@@ -39,6 +40,21 @@ require_once('Secure_Controller.php');
  */
 class Items extends Secure_Controller
 {
+	private object $image;
+	private Barcode_lib $barcode_lib;
+	private Item_lib $item_lib;
+	private Model $attribute;
+	private Model $inventory;
+	private Model $item;
+	private Model $item_kit;
+	private Model $item_quantity;
+	private Model $item_taxes;
+	private Model $stock_location;
+	private Model $supplier;
+	private Model $tax_category;
+	private array $config;
+
+
 	public function __construct()
 	{
 		parent::__construct('items');
