@@ -6,6 +6,7 @@ use App\Models\Item_taxes;
 use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
+use Config\OSPOS;
 
 /**
  * Tabular views helper
@@ -187,9 +188,6 @@ function get_sales_manage_payments_summary(array $payments): string
 
 /**
  * Get the header for the people tabular view
- *
- * @property employee $employee
- * @property session $session
  */
 function get_people_manage_table_headers(): string
 {
@@ -250,9 +248,6 @@ function get_person_data_row(object $person): array
 
 /**
  * Get the header for the customer tabular view
- *
- * @property employee $employee
- * @property session $session
  */
 function get_customer_manage_table_headers(): string
 {
@@ -315,9 +310,6 @@ function get_customer_data_row(object $person, object $stats): array
 
 /**
  * Get the header for the suppliers tabular view
- *
- * @property employee $employee
- * @property session $session
  */
 function get_suppliers_manage_table_headers(): string
 {
@@ -384,8 +376,6 @@ function get_supplier_data_row(object $supplier): array
 
 /**
  * Get the header for the items tabular view
- *
- * @property attribute $attribute
  */
 function get_items_manage_table_headers(): string
 {
@@ -429,10 +419,6 @@ function get_items_manage_table_headers(): string
 
 /**
  * Get the html data row for the item
- *
- * @property attribute $attribute
- * @property item_taxes $item_taxes
- * @property tax_category $tax_category
  */
 function get_item_data_row(object $item): array
 {
@@ -676,7 +662,7 @@ function get_attribute_definition_manage_table_headers(): string
 function get_attribute_definition_data_row(object $attribute_row): array
 {
 
-	$attribute = model('Attribute');
+	$attribute = model(Attribute::class);
 	$controller = get_controller();
 
 	if(count($attribute->get_definition_flags()) == 0)

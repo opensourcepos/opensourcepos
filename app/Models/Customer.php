@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
+use Config\OSPOS;
 
 /**
  * Customer class

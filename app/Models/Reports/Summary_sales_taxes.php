@@ -2,8 +2,18 @@
 
 namespace App\Models\Reports;
 
+use Config\OSPOS;
+
 class Summary_sales_taxes extends Summary_report
 {
+	private array $config;
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->config = config(OSPOS::class)->settings;
+	}
+
 	protected function _get_data_columns(): array	//TODO: hungarian notation
 	{
 		return [
@@ -17,11 +27,9 @@ class Summary_sales_taxes extends Summary_report
 
 	protected function _where(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
-		$config = config(OSPOS::class)->settings;
-
 		$builder->where('sales.sale_status', COMPLETED);
 
-		if(empty($config['date_or_time_format']))	//TODO: Duplicated code
+		if(empty($this->config['date_or_time_format']))	//TODO: Duplicated code
 		{
 			$builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 		}
@@ -33,11 +41,9 @@ class Summary_sales_taxes extends Summary_report
 
 	public function getData(array $inputs): array
 	{
-		$config = config(OSPOS::class)->settings;
-
 		$where = 'WHERE sale_status = ' . COMPLETED . ' ';
 
-		if(empty($config['date_or_time_format']))
+		if(empty($this->config['date_or_time_format']))
 		{
 			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date'])
 			. ' AND ' . $this->db->escape($inputs['end_date']);

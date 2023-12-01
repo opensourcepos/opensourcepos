@@ -10,20 +10,17 @@ use App\Models\Stock_location;
  * Item library
  *
  * Library with utilities to manage items
- *
- * @property session session
- * @property stock_location stock_location
- */
+ **/
 
 class Item_lib
 {
 	private Session $session;
-	private Model $stock_location;
+	private Stock_location $stock_location;
 
   	public function __construct()
 	{
 		$this->session = Session();
-		$this->stock_location = model('Stock_location');
+		$this->stock_location = model(Stock_location::class);
 	}
 
 	public function get_item_location(): string

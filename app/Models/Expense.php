@@ -4,13 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use stdClass;
 
 /**
  * Expense class
- *
- * @property employee employee
- * @property expense_category expense_category
  */
 class Expense extends Model
 {
@@ -86,6 +84,15 @@ class Expense extends Model
 
 	/**
 	 * Searches expenses
+	 *
+	 * @param string $search
+	 * @param array $filters
+	 * @param int|null $rows
+	 * @param int|null $limit_from
+	 * @param string|null $sort
+	 * @param string|null $order
+	 * @param bool|null $count_only
+	 * @return ResultInterface|false|string
 	 */
 	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'expense_id', ?string $order = 'asc', ?bool $count_only = FALSE)
 	{
@@ -100,7 +107,7 @@ class Expense extends Model
 		$builder = $this->db->table('expenses AS expenses');
 
 		// get_found_rows case
-		if($count_only)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}

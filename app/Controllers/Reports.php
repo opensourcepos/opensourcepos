@@ -28,42 +28,54 @@ use App\Models\Reports\Summary_taxes;
 use Config\OSPOS;
 use Config\Services;
 
-/**
- * @property attribute attribute
- * @property customer customer
- * @property stock_location stock_location
- * @property supplier supplier
- * @property detailed_receivings detailed_receivings
- * @property detailed_sales detailed_sales
- * @property inventory_low inventory_low
- * @property inventory_summary inventory_summary
- * @property specific_customer specific_customer
- * @property specific_discount specific_discount
- * @property specific_employee specific_employee
- * @property specific_supplier specific_supplier
- * @property summary_categories summary_categories
- * @property summary_customers summary_customers
- * @property summary_discounts summary_discounts
- * @property summary_employees summary_employees
- * @property summary_expenses_categories summary_expenses_categories
- * @property summary_items summary_items
- * @property summary_payments summary_payments
- * @property summary_sales summary_sales
- * @property summary_sales_taxes summary_sales_taxes
- * @property summary_suppliers summary_suppliers
- * @property summary_taxes summary_taxes
- * @property array config
- */
 class Reports extends Secure_Controller
 {
+	private Attribute $attribute;
+	private array $config;
+	private Customer $customer;
+	private Stock_location $stock_location;
+	private Summary_sales $summary_sales;
+	private Summary_sales_taxes $summary_sales_taxes;
+	private Summary_categories $summary_categories;
+	private Summary_expenses_categories $summary_expenses_categories;
+	private Summary_customers $summary_customers;
+	private Summary_items $summary_items;
+	private Summary_suppliers $summary_suppliers;
+	private Summary_employees $summary_employees;
+	private Summary_taxes $summary_taxes;
+	private Summary_discounts $summary_discounts;
+	private Summary_payments $summary_payments;
+	private Detailed_sales $detailed_sales;
+	private Supplier $supplier;
+	private Detailed_receivings $detailed_receivings;
+	private Inventory_summary $inventory_summary;
+
 	public function __construct()
 	{
 		parent::__construct('reports');
 		$request = Services::request();
 		$method_name = $request->getUri()->getSegment(2);
 		$exploder = explode('_', $method_name);
+
+		$this->attribute = config(Attribute::class);
 		$this->config = config(OSPOS::class)->settings;
-		$this->stock_location = model('Stock_location');
+		$this->customer = model(Customer::class);
+		$this->stock_location = model(Stock_location::class);
+		$this->summary_sales = model(Summary_sales::class);
+		$this->summary_sales_taxes = model(Summary_sales_taxes::class);
+		$this->summary_categories = model(Summary_categories::class);
+		$this->summary_expenses_categories = model(Summary_expenses_categories::class);
+		$this->summary_customers = model(Summary_customers::class);
+		$this->summary_items = model(Summary_items::class);
+		$this->summary_suppliers = model(Summary_suppliers::class);
+		$this->summary_employees = model(Summary_employees::class);
+		$this->summary_taxes = model(Summary_taxes::class);
+		$this->summary_discounts = model(Summary_discounts::class);
+		$this->summary_payments = model(Summary_payments::class);
+		$this->detailed_sales = model(Detailed_sales::class);
+		$this->supplier = model(Supplier::class);
+		$this->detailed_receivings = model(Detailed_receivings::class);
+		$this->inventory_summary = model(Inventory_summary::class);
 
 		if(sizeof($exploder) > 1)
 		{
@@ -121,11 +133,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_sales = model('reports/Summary_sales');
-		$model = $this->summary_sales;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_sales->getData($inputs);
+		$summary = $this->summary_sales->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -145,7 +154,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.sales_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_sales->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -172,11 +181,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_categories = model('reports/Summary_categories');
-		$model = $this->summary_categories;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_categories->getData($inputs);
+		$summary = $this->summary_categories->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -195,7 +201,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_categories->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -216,11 +222,8 @@ class Reports extends Secure_Controller
 
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];	//TODO: Duplicated Code
 
-		$this->summary_expenses_categories = model('reports/Summary_expenses_categories');
-		$model = $this->summary_expenses_categories;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_expenses_categories->getData($inputs);
+		$summary = $this->summary_expenses_categories->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -236,7 +239,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.expenses_categories_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_expenses_categories->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -263,11 +266,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_customers = model('reports/Summary_customers');
-		$model = $this->summary_customers;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_customers->getData($inputs);
+		$summary = $this->summary_customers->getSummaryData($inputs);
 
 		$tabular_data = [];
 
@@ -288,7 +288,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.customers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_customers->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -315,11 +315,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_suppliers = model('reports/Summary_suppliers');
-		$model = $this->summary_suppliers;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_suppliers->getData($inputs);
+		$summary = $this->summary_suppliers->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -338,7 +335,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.suppliers_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_suppliers->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -365,11 +362,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_items = model('reports/Summary_items');
-		$model = $this->summary_items;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_items->getData($inputs);
+		$summary = $this->summary_items->getSummaryData($inputs);
 
 		$tabular_data = [];
 
@@ -392,7 +386,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.items_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_items->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -419,11 +413,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_employees = model('reports/summary_employees');
-		$model = $this->summary_employees;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_employees->getData($inputs);
+		$summary = $this->summary_employees->getSummaryData($inputs);
 
 		$tabular_data = [];
 
@@ -444,7 +435,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.employees_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_employees->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -471,11 +462,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_taxes = model('reports/Summary_taxes');
-		$model = $this->summary_taxes;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_taxes->getData($inputs);
+		$summary = $this->summary_taxes->getSummaryData($inputs);
 
 		$tabular_data = [];
 
@@ -494,7 +482,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_taxes->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -514,11 +502,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_sales_taxes = model('reports/Summary_sales_taxes');
-		$model = $this->summary_sales_taxes;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_sales_taxes->getData($inputs);
+		$summary = $this->summary_sales_taxes->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -535,7 +520,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.sales_taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_sales_taxes->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -557,7 +542,9 @@ class Reports extends Secure_Controller
 		echo view('reports/date_input', $data);
 	}
 
-	//Summary Discounts report
+	/**
+	 * Summary Discounts report
+	 **/
 	public function summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
 	{//TODO: Duplicated Code
 		$this->clearCache();
@@ -570,11 +557,8 @@ class Reports extends Secure_Controller
 			'discount_type' => $discount_type
 		];
 
-		$this->summary_discounts = model('reports/Summary_discounts');
-		$model = $this->summary_discounts;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_discounts->getData($inputs);
+		$summary = $this->summary_discounts->getSummaryData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -589,7 +573,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.discounts_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_discounts->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -609,11 +593,8 @@ class Reports extends Secure_Controller
 			'location_id' => 'all'
 		];
 
-		$this->summary_payments = model('reports/Summary_payments');
-		$model = $this->summary_payments;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_payments->getData($inputs);
+		$summary = $this->summary_payments->getSummaryData($inputs);
 
 		$tabular_data = [];
 
@@ -653,7 +634,7 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.payments_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->summary_payments->getDataColumns(),
 			'data' => $tabular_data,
 			'summary_data' => $summary
 		];
@@ -719,11 +700,8 @@ class Reports extends Secure_Controller
 			'sale_type' => $sale_type
 		];
 
-		$this->summary_expenses_categories = model('reports/Summary_expenses_categories');
-		$model = $this->summary_expenses_categories;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_expenses_categories->getData($inputs);
+		$summary = $this->summary_expenses_categories->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -761,11 +739,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_sales = model('reports/Summary_sales');
-		$model = $this->summary_sales;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_sales->getData($inputs);
+		$summary = $this->summary_sales->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -803,11 +778,9 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_items = model('reports/Summary_items');
-		$model = $this->summary_items;
 
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_items->getData($inputs);
+		$summary = $this->summary_items->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -845,11 +818,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_categories = model('reports/Summary_categories');
-		$model = $this->summary_categories;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_categories->getData($inputs);
+		$summary = $this->summary_categories->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -884,11 +854,9 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_suppliers = model('reports/Summary_suppliers');
-		$model = $this->summary_suppliers;
 
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_suppliers->getData($inputs);
+		$summary = $this->summary_suppliers->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -924,11 +892,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_employees = model('reports/Summary_employees');
-		$model = $this->summary_employees;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_employees->getData($inputs);
+		$summary = $this->summary_employees->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -964,11 +929,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_taxes = model('reports/Summary_taxes');
-		$model = $this->summary_taxes;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_taxes->getData($inputs);
+		$summary = $this->summary_taxes->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -1004,11 +966,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_sales_taxes = model('reports/Summary_sales_taxes');
-		$model = $this->summary_sales_taxes;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_sales_taxes->getData($inputs);
+		$summary = $this->summary_sales_taxes->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -1044,11 +1003,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_customers = model('reports/Summary_customers');
-		$model = $this->summary_customers;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_customers->getData($inputs);
+		$summary = $this->summary_customers->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -1087,11 +1043,8 @@ class Reports extends Secure_Controller
 			'discount_type'=>$discount_type
 		];
 
-		$this->summary_discounts = model('reports/Summary_discounts');
-		$model = $this->summary_discounts;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_discounts->getData($inputs);
+		$summary = $this->summary_discounts->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -1129,11 +1082,8 @@ class Reports extends Secure_Controller
 			'location_id' => $location_id
 		];
 
-		$this->summary_payments = model('reports/Summary_payments');
-		$model = $this->summary_payments;
-
-		$report_data = $model->getData($inputs);
-		$summary = $model->getSummaryData($inputs);
+		$report_data = $this->summary_payments->getData($inputs);
+		$summary = $this->summary_payments->getSummaryData($inputs);
 
 		$labels = [];
 		$series = [];
@@ -1204,13 +1154,12 @@ class Reports extends Secure_Controller
 
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type];
 
-		$this->specific_customer = model('reports/Specific_customer');
-		$model = $this->specific_customer;
+		$specific_customer = model(Specific_customer::class);
 
-		$model->create($inputs);
+		$specific_customer->create($inputs);
 
-		$headers = $model->getDataColumns();
-		$report_data = $model->getData($inputs);
+		$headers = $specific_customer->getDataColumns();
+		$report_data = $specific_customer->getData($inputs);
 
 		$summary_data = [];
 		$details_data = [];
@@ -1294,7 +1243,7 @@ class Reports extends Secure_Controller
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
-			'overall_summary_data' => $model->getSummaryData($inputs)
+			'overall_summary_data' => $specific_customer->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular_details', $data);
@@ -1324,13 +1273,12 @@ class Reports extends Secure_Controller
 
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type];
 
-		$this->specific_employee = model('reports/Specific_employee');
-		$model = $this->specific_employee;
+		$specific_employee = model(Specific_employee::class);
 
-		$model->create($inputs);
+		$specific_employee->create($inputs);
 
-		$headers = $model->getDataColumns();
-		$report_data = $model->getData($inputs);
+		$headers = $specific_employee->getDataColumns();
+		$report_data = $specific_employee->getData($inputs);
 
 		$summary_data = [];
 		$details_data = [];
@@ -1409,7 +1357,7 @@ class Reports extends Secure_Controller
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
-			'overall_summary_data' => $model->getSummaryData($inputs)
+			'overall_summary_data' => $specific_employee->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular_details', $data);
@@ -1446,13 +1394,12 @@ class Reports extends Secure_Controller
 			'discount_type' => $discount_type
 		];
 
-		$this->specific_discount = model('reports/Specific_discount');
-		$model = $this->specific_discount;
+		$specific_discount = model(Specific_discount::class);
 
-		$model->create($inputs);
+		$specific_discount->create($inputs);
 
-		$headers = $model->getDataColumns();
-		$report_data = $model->getData($inputs);
+		$headers = $specific_discount->getDataColumns();
+		$report_data = $specific_discount->getData($inputs);
 
 		$summary_data = [];
 		$details_data = [];
@@ -1531,7 +1478,7 @@ class Reports extends Secure_Controller
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
-			'overall_summary_data' => $model->getSummaryData($inputs)
+			'overall_summary_data' => $specific_discount->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular_details', $data);
@@ -1543,12 +1490,9 @@ class Reports extends Secure_Controller
 
 		$inputs = ['sale_id' => $sale_id];
 
-		$this->detailed_sales = model('reports/Detailed_sales');
-		$model = $this->detailed_sales;
+		$this->detailed_sales->create($inputs);
 
-		$model->create($inputs);
-
-		$report_data = $model->getDataBySaleId($sale_id);
+		$report_data = $this->detailed_sales->getDataBySaleId($sale_id);
 
 		if($report_data['sale_status'] == CANCELED)
 		{
@@ -1615,12 +1559,11 @@ class Reports extends Secure_Controller
 			'sale_type' => $sale_type
 		];
 
-		$this->specific_supplier = model('reports/Specific_supplier');
-		$model = $this->specific_supplier;
+		$specific_supplier = model(Specific_supplier::class);
 
-		$model->create($inputs);
+		$specific_supplier->create($inputs);
 
-		$report_data = $model->getData($inputs);
+		$report_data = $specific_supplier->getData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -1646,9 +1589,9 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => $supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
-			'headers' => $model->getDataColumns(),
+			'headers' => $specific_supplier->getDataColumns(),
 			'data' => $tabular_data,
-			'summary_data' => $model->getSummaryData($inputs)
+			'summary_data' => $specific_supplier->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular', $data);
@@ -1686,17 +1629,14 @@ class Reports extends Secure_Controller
 			'definition_ids' => array_keys($definition_names)
 		];
 
-		$this->detailed_sales = model('reports/Detailed_sales');
-		$model = $this->detailed_sales;
+		$this->detailed_sales->create($inputs);
 
-		$model->create($inputs);
-
-		$columns = $model->getDataColumns();
+		$columns = $this->detailed_sales->getDataColumns();
 		$columns['details'] = array_merge($columns['details'], $definition_names);
 
 		$headers = $columns;
 
-		$report_data = $model->getData($inputs);
+		$report_data = $this->detailed_sales->getData($inputs);
 
 		$summary_data = [];
 		$details_data = [];
@@ -1787,7 +1727,7 @@ class Reports extends Secure_Controller
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
-			'overall_summary_data' => $model->getSummaryData($inputs)
+			'overall_summary_data' => $this->detailed_sales->getSummaryData($inputs)
 		];
 		echo view('reports/tabular_details', $data);
 	}
@@ -1796,12 +1736,9 @@ class Reports extends Secure_Controller
 	{
 		$inputs = ['receiving_id' => $receiving_id];
 
-		$this->detailed_receivings = model('reports/Detailed_receivings');
-		$model = $this->detailed_receivings;
+		$this->detailed_receivings->create($inputs);
 
-		$model->create($inputs);
-
-		$report_data = $model->getDataByReceivingId($receiving_id);
+		$report_data = $this->detailed_receivings->getDataByReceivingId($receiving_id);
 
 		$summary_data = [
 			'receiving_id' => $report_data['receiving_id'],
@@ -1835,16 +1772,13 @@ class Reports extends Secure_Controller
 
 		$inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names)];
 
-		$this->detailed_receivings = model('reports/Detailed_receivings');
-		$model = $this->detailed_receivings;
+		$this->detailed_receivings->create($inputs);
 
-		$model->create($inputs);
-
-		$columns = $model->getDataColumns();
+		$columns = $this->detailed_receivings->getDataColumns();
 		$columns['details'] = array_merge($columns['details'], $definition_names);
 
 		$headers = $columns;
-		$report_data = $model->getData($inputs);
+		$report_data = $this->detailed_receivings->getData($inputs);
 
 		$summary_data = [];
 		$details_data = [];
@@ -1902,7 +1836,7 @@ class Reports extends Secure_Controller
 			'editable' => 'receivings',
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
-			'overall_summary_data' => $model->getSummaryData($inputs)
+			'overall_summary_data' => $this->detailed_receivings->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular_details', $data);
@@ -1914,10 +1848,9 @@ class Reports extends Secure_Controller
 
 		$inputs = [];
 
-		$this->inventory_low = model('reports/Inventory_low');
-		$model = $this->inventory_low;
+		$inventory_low = model(Inventory_low::class);
 
-		$report_data = $model->getData($inputs);
+		$report_data = $inventory_low->getData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -1934,9 +1867,9 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.inventory_low_report'),
 			'subtitle' => '',
-			'headers' => $model->getDataColumns(),
+			'headers' => $inventory_low->getDataColumns(),
 			'data' => $tabular_data,
-			'summary_data' => $model->getSummaryData($inputs)
+			'summary_data' => $inventory_low->getSummaryData($inputs)
 		];
 
 		echo view('reports/tabular', $data);
@@ -1946,11 +1879,8 @@ class Reports extends Secure_Controller
 	{
 		$this->clearCache();
 
-		$this->inventory_summary = model('reports/Inventory_summary');
-		$model = $this->inventory_summary;
-
 		$data = [];
-		$data['item_count'] = $model->getItemCountDropdownArray();
+		$data['item_count'] = $this->inventory_summary->getItemCountDropdownArray();
 
 		$stock_locations = $this->stock_location->get_allowed_locations();
 		$stock_locations['all'] = lang('Reports.all');
@@ -1965,10 +1895,7 @@ class Reports extends Secure_Controller
 
 		$inputs = ['location_id' => $location_id, 'item_count' => $item_count];
 
-		$this->inventory_summary = model('reports/Inventory_summary');
-		$model = $this->inventory_summary;
-
-		$report_data = $model->getData($inputs);
+		$report_data = $this->inventory_summary->getData($inputs);
 
 		$tabular_data = [];
 		foreach($report_data as $row)
@@ -1990,9 +1917,9 @@ class Reports extends Secure_Controller
 		$data = [
 			'title' => lang('Reports.inventory_summary_report'),
 			'subtitle' => '',
-			'headers' => $model->getDataColumns(),
+			'headers' => $this->inventory_summary->getDataColumns(),
 			'data' => $tabular_data,
-			'summary_data' => $model->getSummaryData($report_data)
+			'summary_data' => $this->inventory_summary->getSummaryData($report_data)
 		];
 
 		echo view('reports/tabular', $data);
@@ -2015,7 +1942,7 @@ class Reports extends Secure_Controller
 		return $subtitle;
 	}
 
-	private function clearCache()
+	private function clearCache(): void
 	{
 		//Make sure the report is not cached by the browser
 		$this->response->setHeader('Pragma', 'no-cache')

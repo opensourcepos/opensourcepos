@@ -4,19 +4,19 @@ namespace App\Controllers;
 
 use App\Models\Expense;
 use App\Models\Expense_category;
+use Config\OSPOS;
 
-/**
- * @property expense expense
- * @property expense_category expense_category
- */
 class Expenses extends Secure_Controller
 {
+	private Expense $expense;
+	private Expense_category $expense_category;
+
 	public function __construct()
 	{
 		parent::__construct('expenses');
 
-		$this->expense = model('Expense');
-		$this->expense_category = model('Expense_category');
+		$this->expense = model(Expense::class);
+		$this->expense_category = model(Expense_category::class);
 	}
 
 	public function getIndex(): void

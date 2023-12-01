@@ -4,16 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
  * Receiving class
- *
- * @property attribute attribute
- * @property inventory inventory
- * @property item item
- * @property item_quantity item_quantity
- * @property supplier supplier
  */
 class Receiving extends Model
 {

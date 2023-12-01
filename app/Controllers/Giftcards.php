@@ -3,17 +3,17 @@
 namespace App\Controllers;
 
 use App\Models\Giftcard;
+use Config\OSPOS;
 
-/**
- * @property giftcard giftcard
- */
 class Giftcards extends Secure_Controller
 {
+	private Giftcard $giftcard;
+
 	public function __construct()
 	{
 		parent::__construct('giftcards');
 
-		$this->giftcard = model('Giftcard');
+		$this->giftcard = model(Giftcard::class);
 	}
 
 	public function getIndex(): void

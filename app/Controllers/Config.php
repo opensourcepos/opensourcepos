@@ -17,38 +17,32 @@ use App\Models\Enums\Rounding_mode;
 use App\Models\Stock_location;
 use App\Models\Tax;
 
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Encryption\EncrypterInterface;
-use CodeIgniter\Files\File;
 use Config\Database;
-use Config\Encryption;
 use Config\OSPOS;
 use Config\Services;
 use DirectoryIterator;
 use NumberFormatter;
 use ReflectionException;
 
-/**
- * @property barcode_lib barcode_lib
- * @property mailchimp_lib mailchimp_lib
- * @property receiving_lib receiving_lib
- * @property sale_lib sale_lib
- * @property tax_lib tax_lib
- * @property encryption encryption
- * @property encrypterinterface encrypter
- * @property appconfig appconfig
- * @property attribute attribute
- * @property customer_rewards customer_rewards
- * @property dinner_table dinner_table
- * @property module module
- * @property rounding_mode rounding_mode
- * @property stock_location stock_location
- * @property tax tax
- * @property array config
- */
 class Config extends Secure_Controller
 {
 	protected $helpers = ['security'];
-	private $db;
+	private BaseConnection $db;
+	private EncrypterInterface $encrypter;
+	private Barcode_lib $barcode_lib;
+	private Sale_lib $sale_lib;
+	private Receiving_lib $receiving_lib;
+	private Tax_lib $tax_lib;
+	private Appconfig $appconfig;
+	private Attribute $attribute;
+	private Customer_rewards $customer_rewards;
+	private Dinner_table $dinner_table;
+	protected Module $module;
+	private Stock_location $stock_location;
+	private Tax $tax;
+	private array $config;
 
 
 	public function __construct()
@@ -59,14 +53,13 @@ class Config extends Secure_Controller
 		$this->sale_lib = new Sale_lib();
 		$this->receiving_lib = new receiving_lib();
 		$this->tax_lib = new Tax_lib();
-		$this->appconfig = model('Appconfig');
-		$this->attribute = model('Attribute');
-		$this->customer_rewards = model('Customer_rewards');
-		$this->dinner_table = model('Dinner_table');
-		$this->module = model('Module');
-		$this->rounding_mode = model('Rounding_mode');
-		$this->stock_location = model('Stock_location');
-		$this->tax = model('Tax');
+		$this->appconfig = model(Appconfig::class);
+		$this->attribute = model(Attribute::class);
+		$this->customer_rewards = model(Customer_rewards::class);
+		$this->dinner_table = model(Dinner_table::class);
+		$this->module = model(Module::class);
+		$this->stock_location = model(Stock_location::class);
+		$this->tax = model(Tax::class);
 		$this->config = config(OSPOS::class)->settings;
 		$this->db = Database::connect();
 
@@ -277,7 +270,7 @@ class Config extends Secure_Controller
 		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->module->get_show_office_group();
 		$data['currency_code'] = $this->config['currency_code'] ?? '';
-		$data['db_version'] = mysqli_get_server_info(db_connect()->mysqli);
+		$data['db_version'] = mysqli_get_server_info($this->db->getConnection());
 
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
@@ -582,11 +575,11 @@ class Config extends Secure_Controller
 	 */
 	private function _mailchimp(string $api_key = ''): array	//TODO: Hungarian notation
 	{
-		$this->mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
+		$mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
 
 		$result = [];
 
-		$lists = $this->mailchimp_lib->getLists();
+		$lists = $mailchimp_lib->getLists();
 		if($lists !== FALSE)
 		{
 			if(is_array($lists) && !empty($lists['lists']) && is_array($lists['lists']))

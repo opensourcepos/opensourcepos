@@ -263,14 +263,14 @@ class Supplier extends Person
 	/**
 	 * Perform a search on suppliers
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 25, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
-		// Set default values
-		if($rows == null) $rows = 0;
-		if($limit_from == null) $limit_from = 0;
-		if($sort == null) $sort = 'last_name';
-		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		//Set default values on null
+		$rows = $rows ?? 25;
+		$limit_from = $limit_from ?? 0;
+		$sort = $sort ?? 'last_name';
+		$order = $order ?? 'asc';
+		$count_only = $count_only ?? false;
 
 		$builder = $this->db->table('suppliers AS suppliers');
 

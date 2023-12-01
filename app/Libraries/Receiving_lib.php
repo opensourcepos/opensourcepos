@@ -10,33 +10,32 @@ use App\Models\Receiving;
 use App\Models\Stock_location;
 
 use CodeIgniter\Session\Session;
+use Config\OSPOS;
 
 /**
  * Receiving library
  *
  * Library with utilities to manage receivings
- *
- * @property attribute attribute
- * @property item item
- * @property item_kit_items item_kit_items
- * @property item_quantity item_quantity
- * @property receiving receiving
- * @property stock_location stock_location
- * 
- * @property session session
- *
  */
 class Receiving_lib
 {
+	private Attribute $attribute;
+	private Item $item;
+	private Item_kit_items $item_kit_items;
+	private Item_quantity $item_quantity;
+	private Receiving $receiving;
+	private Stock_location $stock_location;
+	private Session $session;
+
 	public function __construct()
 	{
-		$this->attribute = model('Attribute');
-		$this->item = model('Item');
-		$this->item_kit_items = model('Item_kit_items');
-		$this->item_quantity = model('Item_quantity');
-		$this->receiving = model('Receiving');
-		$this->stock_location = model('Stock_location');
-		
+		$this->attribute = model(Attribute::class);
+		$this->item = model(Item::class);
+		$this->item_kit_items = model(Item_kit_items::class);
+		$this->item_quantity = model(Item_quantity::class);
+		$this->receiving = model(Receiving::class);
+		$this->stock_location = model(Stock_location::class);
+
 		$this->session = session();
 	}
 
@@ -94,7 +93,7 @@ class Receiving_lib
 	{
 		$this->session->set('recv_mode', $mode);
 	}
-	
+
 	public function clear_mode(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_mode()
 	{
 		$this->session->remove('recv_mode');
@@ -109,60 +108,60 @@ class Receiving_lib
 
 		return $this->session->get('recv_stock_source');
 	}
-	
+
 	public function get_comment(): string
 	{
 		$comment = $this->session->get('recv_comment');
 
 		return empty($comment) ? '' : $comment;
 	}
-	
+
 	public function set_comment(string $comment): void
 	{
 		$this->session->set('recv_comment', $comment);
 	}
-	
+
 	public function clear_comment(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_comment()
 	{
 		$this->session->remove('recv_comment');
 	}
-   
+
 	public function get_reference(): ?string
 	{
 		return $this->session->get('recv_reference');
 	}
-	
+
 	public function set_reference(string $reference): void
 	{
 		$this->session->set('recv_reference', $reference);
 	}
-	
+
 	public function clear_reference(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_reference()
 	{
 		$this->session->remove('recv_reference');
 	}
-	
+
 	public function is_print_after_sale(): bool
 	{
 		return $this->session->get('recv_print_after_sale') == 'true'
 			|| $this->session->get('recv_print_after_sale') == '1';
 	}
-	
+
 	public function set_print_after_sale(bool $print_after_sale): void
 	{
 		$this->session->set('recv_print_after_sale', $print_after_sale);
 	}
-	
+
 	public function set_stock_source(int $stock_source): void
 	{
 		$this->session->set('recv_stock_source', $stock_source);
 	}
-	
+
 	public function clear_stock_source(): void
 	{
 		$this->session->remove('recv_stock_source');
 	}
-	
+
 	public function get_stock_destination(): string
 	{
 		if(!$this->session->get('recv_stock_destination'))
@@ -177,7 +176,7 @@ class Receiving_lib
 	{
 		$this->session->set('recv_stock_destination', $stock_destination);
 	}
-	
+
 	public function clear_stock_destination(): void
 	{
 		$this->session->remove('recv_stock_destination');
@@ -260,8 +259,6 @@ class Receiving_lib
 
 		$attribute_links = $this->attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
-		$item_quantity = model(Item_quantity::class);
-
 		$item = [
 			$insertkey => [
 				'item_id' => $item_id,
@@ -279,7 +276,7 @@ class Receiving_lib
 				'quantity' => $quantity,
 				'discount' => $discount,
 				'discount_type' => $discount_type,
-				'in_stock' => $item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+				'in_stock' => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
 				'receiving_quantity' => $receiving_quantity,
 				'receiving_quantity_choices' => $receiving_quantity_choices,
@@ -347,8 +344,8 @@ class Receiving_lib
 		if(preg_match("/(RECV|KIT)/", $pieces[0]))	//TODO: this needs to be converted to ternary notation.
 		{
 			$receiving_id = $pieces[1];
-		} 
-		else 
+		}
+		else
 		{
 			$receiving_id = $this->receiving->get_receiving_by_reference($receipt_receiving_id)->getRow()->receiving_id;
 		}
@@ -370,7 +367,7 @@ class Receiving_lib
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
 		$item_kit_id = count($pieces) > 1 ? $pieces[1] : $external_item_kit_id;
-		
+
 		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type);
@@ -422,7 +419,7 @@ class Receiving_lib
 		{
 			$total = bcadd($total, $this->get_item_total(($item['quantity']), $item['price'], $item['discount'], $item['discount_type'], $item['receiving_quantity']));
 		}
-		
+
 		return $total;
 	}
 }

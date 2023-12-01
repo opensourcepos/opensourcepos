@@ -3,17 +3,17 @@
 namespace App\Controllers;
 
 use App\Models\Person;
+use CodeIgniter\Model;
 
-/**
- * @property person person
- */
 abstract class Persons extends Secure_Controller
 {
+	protected Person $person;
+
 	public function __construct(string $module_id = NULL)
 	{
 		parent::__construct($module_id);
 
-		$this->person = model('Person');
+		$this->person = model(Person::class);
 	}
 
 	public function getIndex(): void

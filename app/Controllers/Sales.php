@@ -24,33 +24,27 @@ use CodeIgniter\Config\Services;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * @property barcode_lib barcode_lib
- * @property email_lib email_lib
- * @property sale_lib sale_lib
- * @property tax_lib tax_lib
- * @property token_lib token_lib
- * @property customer customer
- * @property customer_rewards customer_rewards
- * @property dinner_table dinner_table
- * @property employee employee
- * @property giftcard giftcard
- * @property inventory inventory
- * @property item item
- * @property item_kit item_kit
- * @property sale sale
- * @property stock_location stock_location
- * @property array config
- */
 class Sales extends Secure_Controller
 {
 	protected $helpers = ['form', 'file'];
+	private Barcode_lib $barcode_lib;
+	private Email_lib $email_lib;
+	private Sale_lib $sale_lib;
+	private Tax_lib $tax_lib;
+	private Token_lib $token_lib;
+	private Customer $customer;
+	private Customer_rewards $customer_rewards;
+	private Dinner_table $dinner_table;
+	protected Employee $employee;
+	private Item $item;
+	private Item_kit $item_kit;
+	private Sale $sale;
+	private Stock_location $stock_location;
+	private array $config;
 
 	public function __construct()
 	{
 		parent::__construct('sales');
-
-//		helper('file');
 
 		$this->session = session();
 		$this->barcode_lib = new Barcode_lib();
@@ -60,11 +54,14 @@ class Sales extends Secure_Controller
 		$this->token_lib = new Token_lib();
 		$this->config = config(OSPOS::class)->settings;
 
-		$this->customer = model('Customer');
-		$this->sale = model('Sale');
-		$this->item = model('Item');
-		$this->item_kit = model('Item_kit');
-		$this->stock_location = model('Stock_location');
+		$this->customer = model(Customer::class);
+		$this->sale = model(Sale::class);
+		$this->item = model(Item::class);
+		$this->item_kit = model(Item_kit::class);
+		$this->stock_location = model(Stock_location::class);
+		$this->customer_rewards = model(Customer_rewards::class);
+		$this->dinner_table = model(Dinner_table::class);
+		$this->employee = model(Employee::class);
 	}
 
 	public function getIndex(): void
@@ -330,7 +327,7 @@ class Sales extends Secure_Controller
 	public function postAddPayment(): void
 	{
 		$data = [];
-
+		$giftcard = model(Giftcard::class);
 		$payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		//TODO: See the code block below.  This too needs to be ternary notation.
@@ -370,8 +367,8 @@ class Sales extends Secure_Controller
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
 				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-				$cur_giftcard_value = $this->giftcard->get_giftcard_value($giftcard_num);
-				$cur_giftcard_customer = $this->giftcard->get_giftcard_customer($giftcard_num);
+				$cur_giftcard_value = $giftcard->get_giftcard_value($giftcard_num);
+				$cur_giftcard_customer = $giftcard->get_giftcard_customer($giftcard_num);
 				$customer_id = $this->sale_lib->get_customer();
 
 				if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id)
@@ -384,12 +381,12 @@ class Sales extends Secure_Controller
 				}
 				else
 				{
-					$new_giftcard_value = $this->giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
+					$new_giftcard_value = $giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
 					$new_giftcard_value = max($new_giftcard_value, 0);
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
 					$data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
-					$amount_tendered = min($this->sale_lib->get_amount_due(), $this->giftcard->get_giftcard_value($giftcard_num));
+					$amount_tendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcard_num));
 
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				}
@@ -1411,7 +1408,7 @@ class Sales extends Secure_Controller
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-
+		$inventory = model(Inventory::class);
 		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
 		$sale_time = $date_formatter->format('Y-m-d H:i:s');
 
@@ -1498,7 +1495,7 @@ class Sales extends Secure_Controller
 			];
 		}
 
-		$this->inventory->update('POS '.$sale_id, ['trans_date' => $sale_time]);	//TODO: Reflection Exception
+		$inventory->update('POS '.$sale_id, ['trans_date' => $sale_time]);	//TODO: Reflection Exception
 		if($this->sale->update($sale_id, $sale_data))
 		{
 			echo json_encode (['success' => TRUE, 'message' => lang('Sales.successfully_updated'), 'id' => $sale_id]);

@@ -13,15 +13,13 @@ use Config\Services;
  * Email library
  *
  * Library with utilities to configure and send emails
- *
- * @property email email
- * @property encryption encryption
- * @property encrypterinterface encrypter
- * @property array config
  */
 
 class Email_lib
 {
+	private Email $email;
+	private array $config;
+
   	public function __construct()
 	{
 		$this->email = new Email();
@@ -38,7 +36,7 @@ class Email_lib
 		$email_config = [
 			'mailtype' => 'html',
 			'useragent' => 'OSPOS',
-			'validate' => TRUE,
+			'validate' => true,
 			'protocol' => $this->config['protocol'],
 			'mailpath' => $this->config['mailpath'],
 			'smtp_host' => $this->config['smtp_host'],
