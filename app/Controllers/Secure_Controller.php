@@ -83,7 +83,7 @@ class Secure_Controller extends BaseController
 	{
 		$result = true;
 
-		foreach($this->request->getVar(null, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $value)
+		foreach($this->request->getGet(null, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $value)
 		{
 			$result &= (int)parse_decimals($value);
 		}

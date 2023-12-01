@@ -37,11 +37,11 @@ class Attributes extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$attributes = $this->attribute->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->attribute->get_found_rows($search);
@@ -168,7 +168,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function getSuggestAttribute(int $definition_id): void
 	{
-		$suggestions = $this->attribute->get_suggestions($definition_id, html_entity_decode($this->request->getVar('term')));
+		$suggestions = $this->attribute->get_suggestions($definition_id, html_entity_decode($this->request->getGet('term')));
 
 		echo json_encode($suggestions);
 	}
