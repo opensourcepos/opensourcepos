@@ -2,6 +2,8 @@
 
 namespace App\Models\Reports;
 
+use Config\OSPOS;
+
 class Summary_payments extends Summary_report
 {
 	protected function _get_data_columns(): array    //TODO: Hungarian notation

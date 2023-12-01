@@ -6,33 +6,27 @@ use App\Libraries\Sms_lib;
 
 use App\Models\Person;
 
-/**
- *
- *
- * @property sms_lib sms_lib
- *
- * @property person person
- *
- */
 class Messages extends Secure_Controller
 {
+	private Sms_lib $sms_lib;
+
 	public function __construct()
 	{
 		parent::__construct('messages');
-		
-		$this->sms_lib = new Sms_lib();
 
-		$this->person = model('Person');
+		$this->sms_lib = new Sms_lib();
 	}
-	
+
 	public function getIndex(): void
 	{
 		echo view('messages/sms');
 	}
 
 	public function getView(int $person_id = NEW_ENTRY): void
-	{ 
-		$info = $this->person->get_info($person_id);
+	{
+		$person = model(Person::class);
+		$info = $person->get_info($person_id);
+
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $value;
@@ -66,7 +60,7 @@ class Messages extends Secure_Controller
 	 * @return void
 	 */
 	public function send_form(int $person_id = NEW_ENTRY): void
-	{	
+	{
 		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$message = $this->request->getPost('message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 

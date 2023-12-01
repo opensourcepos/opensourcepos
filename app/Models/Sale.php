@@ -5,23 +5,11 @@ namespace App\Models;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
+use Config\OSPOS;
 use ReflectionException;
 
 /**
  * Sale class
- *
- * @property attribute attribute
- * @property customer customer
- * @property customer_rewards customer_rewards
- * @property dinner_table dinner_table
- * @property employee employee
- * @property giftcard giftcard
- * @property inventory inventory
- * @property item item
- * @property item_quantity item_quantity
- * @property rewards rewards
- *
- * @property Sale_lib sale_lib
  */
 class Sale extends Model
 {
@@ -46,7 +34,6 @@ class Sale extends Model
 	{
 		parent::__construct();
 		helper('text');
-		$this->sale_lib = new Sale_lib();
 	}
 
 	/**
@@ -1076,8 +1063,8 @@ class Sale extends Model
 		{
 			$payments[lang('Sales.rewards')] = lang('Sales.rewards');
 		}
-
-		if($this->sale_lib->get_mode() == 'sale_work_order')
+		$sale_lib = new Sale_lib();
+		if($sale_lib->get_mode() == 'sale_work_order')
 		{
 			$payments[lang('Sales.cash_deposit')] = lang('Sales.cash_deposit');
 			$payments[lang('Sales.credit_deposit')] = lang('Sales.credit_deposit');

@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use Config\OSPOS;
 use Exception;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use App\Libraries\Barcodes\Code39;
@@ -14,10 +15,9 @@ use App\Libraries\Barcodes\Ean13;
  *
  * Library with utilities to manage barcodes
  */
-
 class Barcode_lib
 {
-	private $supported_barcodes = [
+	private array $supported_barcodes = [
 		'Code39' => 'Code 39',
 		'Code128' => 'Code 128',
 		'Ean8' => 'EAN 8',

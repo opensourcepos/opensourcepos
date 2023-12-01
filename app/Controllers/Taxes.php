@@ -10,27 +10,23 @@ use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
 use Config\OSPOS;
 
-/**
- * @property tax_lib tax_lib
- * @property rounding_mode rounding_mode
- * @property tax tax
- * @property tax_category tax_category
- * @property tax_code tax_code
- * @property tax_jurisdiction tax_jurisdiction
- */
 class Taxes extends Secure_Controller
 {
-	public array $config;
+	private array $config;
+	private Tax_lib $tax_lib;
+	private Tax $tax;
+	private Tax_category $tax_category;
+	private Tax_code $tax_code;
+	private Tax_jurisdiction $tax_jurisdiction;
 
 	public function __construct()
 	{
 		parent::__construct('taxes');
 
-		$this->rounding_mode = model('enums/Rounding_mode');
-		$this->tax = model('Tax');
-		$this->tax_category = model('Tax_category');
-		$this->tax_code = model('Tax_code');
-		$this->tax_jurisdiction = model('Tax_jurisdiction');
+		$this->tax = model(Tax::class);
+		$this->tax_category = model(Tax_category::class);
+		$this->tax_code = model(Tax_code::class);
+		$this->tax_jurisdiction = model(Tax_jurisdiction::class);
 
 		$this->tax_lib = new Tax_lib();
 		$this->config = config(OSPOS::class)->settings;

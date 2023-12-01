@@ -5,10 +5,12 @@ namespace App\Controllers;
 use App\Models\Employee;
 
 /**
- * @property employee employee
+ * @property Employee employee
  */
 class Office extends Secure_Controller
 {
+	protected Employee $employee;
+
 	function __construct()
 	{
 		parent::__construct('office', NULL, 'office');
@@ -21,7 +23,7 @@ class Office extends Secure_Controller
 
 	public function logout(): void
 	{
-		$this->employee = model('Employee');
+		$this->employee = model(Employee::class);
 
 		$this->employee->logout();
 	}

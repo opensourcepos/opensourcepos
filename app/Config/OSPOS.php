@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Models\Appconfig;
 use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\Config\BaseConfig;
 
@@ -13,9 +14,7 @@ use CodeIgniter\Config\BaseConfig;
 class OSPOS extends BaseConfig
 {
 	public array $settings;
-
 	public string $commit_sha1 = 'dev';	//TODO: Travis scripts need to be updated to replace this with the commit hash on build
-
 	private CacheInterface $cache;
 
 	public function __construct()
@@ -37,7 +36,7 @@ class OSPOS extends BaseConfig
 		}
 		else
 		{
-			$appconfig = model('Appconfig');
+			$appconfig = model(Appconfig::class);
 			foreach($appconfig->get_all()->getResult() as $app_config)
 			{
 				$this->settings[$app_config->key] = $app_config->value;

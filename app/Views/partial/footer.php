@@ -1,4 +1,9 @@
-			</div>
+<?php
+
+use Config\OSPOS;
+
+?>
+</div>
 		</div>
 
 		<div id="footer">

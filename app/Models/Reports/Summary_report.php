@@ -2,6 +2,8 @@
 
 namespace App\Models\Reports;
 
+use Config\OSPOS;
+
 abstract class Summary_report extends Report
 {
 	/**
@@ -167,8 +169,8 @@ abstract class Summary_report extends Report
 	protected function _group_order(object &$builder): void {}	//TODO: hungarian notation
 
 	/**
-	 * Public interface implementing the base abstract class, 
-	 * in general it should not be extended unless there is a valid reason 
+	 * Public interface implementing the base abstract class,
+	 * in general it should not be extended unless there is a valid reason
 	 * like a non sale report (e.g. expenses)
 	 */
 

@@ -15,43 +15,27 @@ use App\Models\Stock_location;
 use App\Models\Supplier;
 use App\Models\Tax_category;
 
-use CodeIgniter\Model;
+use CodeIgniter\Images\Handlers\BaseHandler;
 use Config\OSPOS;
 use Config\Services;
-use CodeIgniter\Images\Image;
 use ReflectionException;
 
 require_once('Secure_Controller.php');
 
-/**
- * @property image image
- * @property barcode_lib barcode_lib
- * @property item_lib item_lib
- * @property attribute attribute
- * @property inventory inventory
- * @property item item
- * @property item_kit item_kit
- * @property item_quantity item_quantity
- * @property item_taxes item_taxes
- * @property stock_location stock_location
- * @property supplier supplier
- * @property tax_category tax_category
- * @property array config
- */
 class Items extends Secure_Controller
 {
-	private object $image;
+	private BaseHandler $image;
 	private Barcode_lib $barcode_lib;
 	private Item_lib $item_lib;
-	private Model $attribute;
-	private Model $inventory;
-	private Model $item;
-	private Model $item_kit;
-	private Model $item_quantity;
-	private Model $item_taxes;
-	private Model $stock_location;
-	private Model $supplier;
-	private Model $tax_category;
+	private Attribute $attribute;
+	private Inventory $inventory;
+	private Item $item;
+	private Item_kit $item_kit;
+	private Item_quantity $item_quantity;
+	private Item_taxes $item_taxes;
+	private Stock_location $stock_location;
+	private Supplier $supplier;
+	private Tax_category $tax_category;
 	private array $config;
 
 
@@ -66,15 +50,15 @@ class Items extends Secure_Controller
 		$this->barcode_lib = new Barcode_lib();
 		$this->item_lib = new Item_lib();
 
-		$this->attribute = model('Attribute');
-		$this->inventory = model('Inventory');
-		$this->item = model('Item');
-		$this->item_kit = model('Item_kit');
-		$this->item_quantity = model('Item_quantity');
-		$this->item_taxes = model('Item_taxes');
-		$this->stock_location = model('Stock_location');
-		$this->supplier = model('Supplier');
-		$this->tax_category = model('Tax_category');
+		$this->attribute = model(Attribute::class);
+		$this->inventory = model(Inventory::class);
+		$this->item = model(Item::class);
+		$this->item_kit = model(Item_kit::class);
+		$this->item_quantity = model(Item_quantity::class);
+		$this->item_taxes = model(Item_taxes::class);
+		$this->stock_location = model(Stock_location::class);
+		$this->supplier = model(Supplier::class);
+		$this->tax_category = model(Tax_category::class);
 		$this->config = config(OSPOS::class)->settings;
 	}
 

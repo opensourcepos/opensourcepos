@@ -8,21 +8,20 @@ use App\Models\Reports\Summary_payments;
 use CodeIgniter\Model;
 use Config\OSPOS;
 
-/**
- * @property cashup cashup
- * @property expense expense
- * @property summary_payments summary_payments
- * @property array $config
- */
 class Cashups extends Secure_Controller
 {
+	 private Cashup $cashup;
+	 private Expense $expense;
+	 private Summary_payments $summary_payments;
+	 private array $config;
+
 	public function __construct()
 	{
 		parent::__construct('cashups');
 
-		$this->cashup = model('Cashup');
-		$this->expense = model('Expense');
-		$this->summary_payments = model('Reports/Summary_payments');
+		$this->cashup = model(Cashup::class);
+		$this->expense = model(Expense::class);
+		$this->summary_payments = model(Summary_payments::class);
 		$this->config = config(OSPOS::class)->settings;
 	}
 

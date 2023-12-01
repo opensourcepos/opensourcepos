@@ -23,9 +23,9 @@ use Config\Services;
 class Secure_Controller extends BaseController
 {
 	public array $global_view_data;
-	public Model $employee;
-	public Model $module;
-	public Session $session;
+	protected Employee $employee;
+	protected Module $module;
+	protected Session $session;
 
 	public function __construct(string $module_id = '', string $submodule_id = null, string $menu_group = null)
 	{

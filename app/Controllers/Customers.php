@@ -10,35 +10,27 @@ use App\Models\Tax_code;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
 use stdClass;
 
-/**
- *
- *
- * @property mailchimp_lib mailchimp_lib
- *
- * @property customer customer
- * @property customer_rewards customer_rewards
- * @property tax_code tax_code
- *
- * @property encryption encryption
- * @property encrypterinterface encrypter
- * @property array config
- *
- */
 class Customers extends Persons
 {
-	private $_list_id;
+	private string $_list_id;
+	private Mailchimp_lib $mailchimp_lib;
+	private Customer_rewards $customer_rewards;
+	private Customer $customer;
+	private Tax_code $tax_code;
+	private array $config;
 
 	public function __construct()
 	{
 		parent::__construct('customers');
 		$this->mailchimp_lib = new Mailchimp_lib();
-		$this->customer_rewards = model('Customer_rewards');
-		$this->customer = model('Customer');
-		$this->tax_code = model('Tax_code');
+		$this->customer_rewards = model(Customer_rewards::class);
+		$this->customer = model(Customer::class);
+		$this->tax_code = model(Tax_code::class);
 		$this->config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();

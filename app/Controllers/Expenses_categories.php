@@ -4,16 +4,15 @@ namespace App\Controllers;
 
 use App\Models\Expense_category;
 
-/**
- * @property expense_category expense_category
- */
 class Expenses_categories extends Secure_Controller	//TODO: Is this class ever used?
 {
+	private Expense_category $expense_category;
+
 	public function __construct()
 	{
 		parent::__construct('expenses_categories');
 
-		$this->expense_category = model('Expense_category');
+		$this->expense_category = model(Expense_category::class);
 	}
 
 	public function getIndex(): void
@@ -23,9 +22,9 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		 echo view('expenses_categories/manage', $data);
 	}
 
-	/*
-	Returns expense_category_manage table data rows. This will be called with AJAX.
-	*/
+	/**
+	 * Returns expense_category_manage table data rows. This will be called with AJAX.
+	 **/
 	public function getSearch(): void
 	{
 		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -73,7 +72,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			if($expense_category_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Expenses_categories.successful_adding'),
 					'id' => $expense_category_data['expense_category_id']
 				]);
@@ -81,7 +80,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			else // Existing Expense Category
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Expenses_categories.successful_updating'),
 					'id' => $expense_category_id
 				]);
@@ -90,7 +89,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		else//failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => true,
 				'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
 				'id' => NEW_ENTRY
 			]);
@@ -104,13 +103,13 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		if($this->expense_category->delete_list($expense_category_to_delete))	//TODO: Convert to ternary notation.
 		{
 			echo json_encode([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
 		}
 	}
 }
