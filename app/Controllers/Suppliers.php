@@ -39,7 +39,7 @@ class Suppliers extends Persons
 	/**
 	 * Returns Supplier table data rows. This will be called with AJAX.
 	 * @return void
-	 */
+	 **/
 	public function getSearch(): void
 	{
 		$search = $this->request->getPost('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
@@ -63,9 +63,9 @@ class Suppliers extends Persons
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 **/
 	public function suggest(): void
 	{
 		$suggestions = $this->supplier->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);
@@ -73,7 +73,7 @@ class Suppliers extends Persons
 		echo json_encode($suggestions);
 	}
 
-	public function suggest_search()
+	public function suggest_search(): void
 	{
 		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), false);
 
