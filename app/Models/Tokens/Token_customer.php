@@ -8,15 +8,11 @@ use App\Models\Customer;
 
 /**
  * Token_customer class
- *
- * @property sale_lib sale_lib
- *
- * @property customer customer
- *
- */
+ **/
 class Token_customer extends Token
 {
 	private string $customer_info;
+	private Sale_lib $sale_lib;
 
 	public function __construct(string $customer_info = '')
 	{

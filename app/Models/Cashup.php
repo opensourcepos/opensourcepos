@@ -4,14 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
+use Config\OSPOS;
 use stdClass;
 
 /**
  * Cashup class
- *
- * @property employee employee
+ * Cashups are used to report actual cash on hand, expenses and transactions at the end of a period.
  */
-
 class Cashup extends Model
 {
 	protected $table = 'cash_up';

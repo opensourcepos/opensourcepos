@@ -1,3 +1,6 @@
+<?php
+	use Config\OSPOS;
+?>
 <style>
 	 a:hover {
 	  cursor:pointer;
@@ -8,7 +11,9 @@
 </style>
 </style><script type="text/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
-	<?php echo lang('Config.server_notice') ?>
+	<?php
+
+	echo lang('Config.server_notice') ?>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-2" style="text-align: left;"><br>

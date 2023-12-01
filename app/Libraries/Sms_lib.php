@@ -4,6 +4,7 @@ namespace app\Libraries;
 
 use CodeIgniter\Encryption\Encryption;
 use CodeIgniter\Encryption\EncrypterInterface;
+use Config\OSPOS;
 use Config\Services;
 
 
@@ -11,18 +12,14 @@ use Config\Services;
  * SMS library
  *
  * Library with utilities to send texts via SMS Gateway (requires proxy implementation)
- *
- * @property encryption encryption
- * @property encrypterinterface encrypter
- *
  */
 
 class Sms_lib
 {
-	/*
+	/**
 	 * SMS sending function
 	 * Example of use: $response = sendSMS('4477777777', 'My test message');
-	 */
+	 **/
 	public function sendSMS(int $phone, string $message): bool
 	{
 		$config = config(OSPOS::class)->settings;

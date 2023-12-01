@@ -20,37 +20,34 @@ use ReflectionException;
  * Sale library
  *
  * Library with utilities to manage sales
- *
- * @property attribute attribute
- * @property customer customer
- * @property dinner_table dinner_table
- * @property item item
- * @property item_kit_items item_kit_items
- * @property item_quantity item_quantity
- * @property item_taxes item_taxes
- * @property rounding_mode rounding_mode
- * @property sale sale
- * @property stock_location stock_location
- * @property Tax_lib tax_lib
- * @property session session
- * @property array config
- */
+ **/
 class Sale_lib
 {
+	private Attribute $attribute;
+	private Customer $customer;
+	private Dinner_table $dinner_table;
+	private Item $item;
+	private Item_kit_items $item_kit_items;
+	private Item_quantity $item_quantity;
+	private Item_taxes $item_taxes;
+	private Sale $sale;
+	private Stock_location $stock_location;
+	private Session $session;
+	private array $config;
+
 	public function __construct()
 	{
 		$this->session = session();
 
-		$this->attribute = model('Attribute');
-		$this->customer = model('Customer');
-		$this->dinner_table = model('Dinner_table');
-		$this->item = model('Item');
-		$this->item_kit_items = model('Item_kit_items');
-		$this->item_quantity = model('Item_quantity');
-		$this->item_taxes = model('Item_taxes');
-		$this->rounding_mode = model('enums/Rounding_mode');
-//		$this->sale = model('Sale');	//TODO: This is causing an infinite loop because the constructor calls the sale library
-		$this->stock_location = model('Stock_location');
+		$this->attribute = model(Attribute::class);
+		$this->customer = model(Customer::class);
+		$this->dinner_table = model(Dinner_table::class);
+		$this->item = model(Item::class);
+		$this->item_kit_items = model(Item_kit_items::class);
+		$this->item_quantity = model(Item_quantity::class);
+		$this->item_taxes = model(Item_taxes::class);
+		$this->sale = model(Sale::class);
+		$this->stock_location = model(Stock_location::class);
 		$this->config = config(OSPOS::class)->settings;
 	}
 
@@ -938,8 +935,6 @@ class Sale_lib
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
-			$item_quantity = model(Item_quantity::class);
-
 			$item = [
 				$insertkey => [
 					'item_id' => $item_id,
@@ -957,7 +952,7 @@ class Sale_lib
 					'quantity' => $quantity,
 					'discount' => $applied_discount,
 					'discount_type' => $discount_type,
-					'in_stock' => $item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+					'in_stock' => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 					'price' => $price,
 					'cost_price' => $cost_price,
 					'total' => $total,
@@ -995,8 +990,7 @@ class Sale_lib
 
 			if($item_info->stock_type == HAS_STOCK)	//TODO: === ?
 			{
-				$item_quantity = model(Item_quantity::class);
-				$item_quantity = $item_quantity->get_item_quantity($item_id, $item_location)->quantity;
+				$item_quantity = $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity;
 				$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
 
 				if($item_quantity - $quantity_added < 0)
@@ -1425,9 +1419,9 @@ class Sale_lib
 		if(!$this->config['tax_included'])
 		{
 			$cart = $this->get_cart();
-			$this->tax_lib = new \app\Libraries\Tax_lib();
+			$tax_lib = new Tax_lib();
 
-			foreach($this->tax_lib->get_taxes($cart)[0] as $tax)
+			foreach($tax_lib->get_taxes($cart)[0] as $tax)
 			{
 				$total = bcadd($total, $tax['sale_tax_amount']);
 			}

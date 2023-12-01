@@ -17,37 +17,32 @@ use Config\OSPOS;
  * Tax library
  *
  * Library with utilities to manage taxes
- *
- * @property sale_lib sale_lib
- * @property customer customer
- * @property item_taxes item_taxes
- * @property rounding_mode rounding_mode
- * @property sale sale
- * @property tax tax
- * @property tax_category tax_category
- * @property tax_code tax_code
- * @property tax_jurisdiction tax_jurisdiction
- * @property array config
- *
- */
-
+ **/
 class Tax_lib
 {
 	const TAX_TYPE_EXCLUDED = '1';	//TODO: These constants need to be moved to constants.php
 	const TAX_TYPE_INCLUDED = '0';
+	private Sale_lib $sale_lib;
+	private Customer $customer;
+	private Item_taxes $item_taxes;
+	private Sale $sale;
+	private Tax $tax;
+	private Tax_category $tax_category;
+	private Tax_code $tax_code;
+	private Tax_jurisdiction $tax_jurisdiction;
+	private array $config;
 
 	public function __construct()
 	{
 		$this->sale_lib = new Sale_lib();
 
-		$this->customer = model('Customer');
-		$this->item_taxes = model('Item_taxes');
-		$this->rounding_mode = model('Rounding_mode');
-		$this->sale = model('Sale');
-		$this->tax = model('Tax');
-		$this->tax_category = model('Tax_category');
-		$this->tax_code = model('Tax_code');
-		$this->tax_jurisdiction = model('Tax_jurisdiction');
+		$this->customer = model(Customer::class);
+		$this->item_taxes = model(Item_taxes::class);
+		$this->sale = model(Sale::class);
+		$this->tax = model(Tax::class);
+		$this->tax_category = model(Tax_category::class);
+		$this->tax_code = model(Tax_code::class);
+		$this->tax_jurisdiction = model(Tax_jurisdiction::class);
 		$this->config = config(OSPOS::class)->settings;
 	}
 

@@ -7,16 +7,16 @@ use ReflectionException;
 
 /**
  * Token_invoice_sequence class
- *
- * @property appconfig appconfig
- */
+ **/
 
 class Token_invoice_sequence extends Token
 {
+	private Appconfig $appconfig;
+
 	public function __construct(string $value = '')
 	{
 		parent::__construct($value);
-		$this->appconfig = model('Appconfig');
+		$this->appconfig = model(Appconfig::class);
 	}
 
 	public function token_id(): string

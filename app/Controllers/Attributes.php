@@ -8,24 +8,23 @@ require_once('Secure_Controller.php');
 
 /**
  * Attributes controls the custom attributes assigned to items
- *
- * @property attribute attribute
- *
- */
+ **/
 class Attributes extends Secure_Controller
 {
+	private Attribute $attribute;
+
 	public function __construct()
 	{
 		parent::__construct('attributes');
 
-		$this->attribute = model('Attribute');
+		$this->attribute = model(Attribute::class);
 	}
 
 	/**
 	 * Gets and sends the main view for Attributes to the browser.
 	 *
 	 * @return void
-	 */
+	 **/
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_attribute_definition_manage_table_headers();

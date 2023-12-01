@@ -14,20 +14,19 @@ use App\Models\Supplier;
 use Config\OSPOS;
 use ReflectionException;
 
-/**
- * @property receiving_lib receiving_lib
- * @property token_lib token_lib
- * @property barcode_lib barcode_lib
- * @property inventory inventory
- * @property item item
- * @property item_kit item_kit
- * @property receiving receiving
- * @property stock_location stock_location
- * @property supplier supplier
- * @property array config
- */
 class Receivings extends Secure_Controller
 {
+	 private Receiving_lib $receiving_lib;
+	 private Token_lib $token_lib;
+	 private Barcode_lib $barcode_lib;
+	 private Inventory $inventory;
+	 private Item $item;
+	 private Item_kit $item_kit;
+	 private Receiving $receiving;
+	 private Stock_location $stock_location;
+	 private Supplier $supplier;
+	 private array $config;
+
 	public function __construct()
 	{
 		parent::__construct('receivings');
@@ -36,12 +35,12 @@ class Receivings extends Secure_Controller
 		$this->token_lib = new Token_lib();
 		$this->barcode_lib = new Barcode_lib();
 
-		$this->inventory = model('Inventory');
-		$this->item_kit = model('Item_kit');
-		$this->item = model('Item');
-		$this->receiving = model('Receiving');
-		$this->stock_location = model('Stock_location');
-		$this->supplier = model('Supplier');
+		$this->inventory = model(Inventory::class);
+		$this->item_kit = model(Item_kit::class);
+		$this->item = model(Item::class);
+		$this->receiving = model(Receiving::class);
+		$this->stock_location = model(Stock_location::class);
+		$this->supplier = model(Supplier::class);
 		$this->config = config(OSPOS::class)->settings;
 	}
 

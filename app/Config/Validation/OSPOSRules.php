@@ -7,11 +7,13 @@ use Config\OSPOS;
 use Config\Services;
 
 /**
- * @property employee employee
+ * @property Employee employee
  * @property IncomingRequest request
  */
 class OSPOSRules
 {
+	private IncomingRequest $request;
+	private array $config;
 	/**
 	 * Validates the username and password sent to the login view. User is logged in on successful validation.
 	 *
@@ -24,9 +26,9 @@ class OSPOSRules
 	 */
 	public function login_check(string $username, string $fields , array $data, ?string &$error = null): bool
 	{
-		$this->employee = model('Employee');
+		$employee = model(Employee::class);
 		$this->request = Services::request();
-		$config = config(OSPOS::class)->settings;
+		$this->config = config(OSPOS::class)->settings;
 
 		//Installation Check
 		if(!$this->installation_check())
@@ -36,21 +38,15 @@ class OSPOSRules
 			return false;
 		}
 
-		//Username and Password Check
 		$password = $data['password'];
-		if(!$this->employee->login($username, $password))
+		if(!$employee->login($username, $password))
 		{
 			$error = lang('Login.invalid_username_and_password');
 
 			return false;
 		}
 
-
-		//GCaptcha Check
-		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $config)
-			? $config['gcaptcha_enable']
-			: false;
-
+		$gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
 		if($gcaptcha_enabled)
 		{
 			$g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
@@ -77,7 +73,7 @@ class OSPOSRules
 		if(!empty($response))
 		{
 			$check = [
-				'secret'   => $config['gcaptcha_secret_key'],
+				'secret'   => $this->config['gcaptcha_secret_key'],
 				'response' => $response,
 				'remoteip' => $this->request->getIPAddress()
 			];

@@ -4,19 +4,15 @@ namespace App\Controllers;
 
 use App\Models\Supplier;
 
-/**
- *
- *
- * @property supplier supplier
- *
- */
 class Suppliers extends Persons
 {
+	private Supplier $supplier;
+
 	public function __construct()
 	{
 		parent::__construct('suppliers');
 
-		$this->supplier = model('Supplier');
+		$this->supplier = model(Supplier::class);
 	}
 
 	public function getIndex(): void
@@ -46,11 +42,11 @@ class Suppliers extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getPost('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+		$limit = $this->request->getPost('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getPost('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getPost('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getPost('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->supplier->get_found_rows($search);
@@ -66,7 +62,7 @@ class Suppliers extends Persons
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
-	
+
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
@@ -83,7 +79,7 @@ class Suppliers extends Persons
 
 		echo json_encode($suggestions);
 	}
-	
+
 	/*
 	Loads the supplier edit form
 	*/
@@ -99,7 +95,7 @@ class Suppliers extends Persons
 
 		echo view("suppliers/form", $data);
 	}
-	
+
 	/*
 	Inserts/updates a supplier
 	*/
@@ -164,7 +160,7 @@ class Suppliers extends Persons
 			]);
 		}
 	}
-	
+
 	/*
 	This deletes suppliers from the suppliers table
 	*/

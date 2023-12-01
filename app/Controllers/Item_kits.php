@@ -7,26 +7,21 @@ use App\Libraries\Barcode_lib;
 use App\Models\Item;
 use App\Models\Item_kit;
 use App\Models\Item_kit_items;
+use CodeIgniter\Model;
 
-/**
- *
- *
- * @property barcode_lib barcode_lib
- *
- * @property item item
- * @property item_kit item_kit
- * @property item_kit_items item_kit_items
- *
- */
 class Item_kits extends Secure_Controller
 {
+	private Item $item;
+	private Item_kit $item_kit;
+	private Item_kit_items $item_kit_items;
+
 	public function __construct()
 	{
 		parent::__construct('item_kits');
 
-		$this->item = model('Item');
-		$this->item_kit = model('Item_kit');
-		$this->item_kit_items = model('Item_kit_items');
+		$this->item = model(Item::class);
+		$this->item_kit = model(Item_kit::class);
+		$this->item_kit_items = model(Item_kit_items::class);
 	}
 
 	/**
@@ -59,7 +54,9 @@ class Item_kits extends Secure_Controller
 
 		$discount_fraction = bcdiv($item_kit->kit_discount, '100');
 
-		$item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)?bcmul($item_kit->total_unit_price, $discount_fraction): $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
+		$item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)
+				? bcmul($item_kit->total_unit_price, $discount_fraction)
+				: $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
 
 		return $item_kit;
 	}
@@ -76,7 +73,7 @@ class Item_kits extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -250,7 +247,7 @@ class Item_kits extends Secure_Controller
 
 	public function generate_barcodes(string $item_kit_ids): void
 	{
-		$this->barcode_lib = new Barcode_lib();
+		$barcode_lib = new Barcode_lib();
 		$result = [];
 
 		$item_kit_ids = explode(':', $item_kit_ids);
@@ -271,7 +268,7 @@ class Item_kits extends Secure_Controller
 		}
 
 		$data['items'] = $result;
-		$barcode_config = $this->barcode_lib->get_barcode_config();
+		$barcode_config = $barcode_lib->get_barcode_config();
 		// in case the selected barcode type is not Code39 or Code128 we set by default Code128
 		// the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
 		if($barcode_config['barcode_type'] != 'Code39' && $barcode_config['barcode_type'] != 'Code128')

@@ -7,16 +7,15 @@ use ReflectionException;
 
 /**
  * Token_quote_sequence class
- *
- * @property appconfig appconfig
- *
- */
+ **/
 class Token_quote_sequence extends Token
 {
+	private Appconfig $appconfig;
+
 	public function __construct()
 	{
 		parent::__construct();
-		$this->appconfig = model('AppConfig');
+		$this->appconfig = model(AppConfig::class);
 
 	}
 
