@@ -124,7 +124,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getVar('term'), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,TRUE);
 
 		echo json_encode($suggestions);
 	}
