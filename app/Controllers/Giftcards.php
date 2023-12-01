@@ -28,11 +28,11 @@ class Giftcards extends Secure_Controller
 	*/
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit  = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order  = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$giftcards = $this->giftcard->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->giftcard->get_found_rows($search);
@@ -52,7 +52,7 @@ class Giftcards extends Secure_Controller
 
 	public function getSuggest(): void
 	{
-		$suggestions = $this->giftcard->get_search_suggestions($this->request->getVar('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);
 
 		echo json_encode($suggestions);
 	}

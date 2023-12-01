@@ -103,27 +103,27 @@ class Sales extends Secure_Controller
 
 	public function getSearch(): void
 	{
-		$search = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$filters = [
 			'sale_type' => 'all',
 			'location_id' => 'all',
-			'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'only_cash' => FALSE,
 			'only_due' => FALSE,
 			'only_check' => FALSE,
 			'only_creditcard' => FALSE,
-			'only_invoices' => $this->config['invoice_enable'] && $this->request->getVar('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+			'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
 			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: Variable does not meet naming conventions
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: Variable does not meet naming conventions
 		$filters = array_merge($filters, $filledup);
 
 		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);

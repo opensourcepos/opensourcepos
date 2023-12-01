@@ -38,24 +38,24 @@ class Expenses extends Secure_Controller
 
 	public function getSearch(): void
 	{
-		$search   = $this->request->getVar('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit    = $this->request->getVar('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset   = $this->request->getVar('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort     = $this->request->getVar('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order    = $this->request->getVar('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search   = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit    = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset   = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort     = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order    = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$filters  = [
-			'start_date' => $this->request->getVar('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'end_date' => $this->request->getVar('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'only_cash' => FALSE,
-			'only_due' => FALSE,
-			'only_check' => FALSE,
-			'only_credit' => FALSE,
-			'only_debit' => FALSE,
-			'is_deleted' => FALSE
+			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'only_cash' => false,
+			'only_due' => false,
+			'only_check' => false,
+			'only_credit' => false,
+			'only_debit' => false,
+			'is_deleted' => false
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getVar('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: variable naming does not match standard
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: variable naming does not match standard
 		$filters = array_merge($filters, $filledup);
 		$expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense->get_found_rows($search, $filters);
