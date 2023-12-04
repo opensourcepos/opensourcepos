@@ -4,14 +4,14 @@
  * @var array $item_count
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 
 
-<div id="page_title"><?php echo lang('Reports.report_input') ?></div>
+<div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
 if(isset($error))
@@ -20,19 +20,19 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div id='report_stock_location' class="col-xs-3">
-			<?php echo form_dropdown('stock_location', $stock_locations, 'all', 'id="location_id" class="form-control"') ?>
+			<?= form_dropdown('stock_location', $stock_locations, 'all', 'id="location_id" class="form-control"') ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.item_count'), 'reports_item_count_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label(lang('Reports.item_count'), 'reports_item_count_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div id='report_item_count' class="col-xs-3">
-			<?php echo form_dropdown('item_count', $item_count, 'all', 'id="item_count" class="form-control"') ?>
+			<?= form_dropdown('item_count', $item_count, 'all', 'id="item_count" class="form-control"') ?>
 		</div>
 	</div>
 
@@ -43,9 +43,9 @@ if(isset($error))
 			'content' => lang('Common.submit'),
 			'class' => 'btn btn-primary btn-sm'
 	]) ?>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>
 
 <script type="text/javascript">
 $(document).ready(function()

@@ -79,7 +79,7 @@ class Tax_jurisdiction extends Model
 	/**
 	 *  Returns all rows from the table
 	 */
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = true): ResultInterface
 	{
 		$builder = $this->db->table('tax_jurisdictions');
 
@@ -121,10 +121,10 @@ class Tax_jurisdiction extends Model
 			if($builder->insert($jurisdiction_data))	//TODO: Replace this with simply a return of the result of insert()... see update() below.
 			{
 				$jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('jurisdiction_id', $jurisdiction_id);
@@ -207,20 +207,20 @@ class Tax_jurisdiction extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'jurisdiction_name', 'asc', true);
 	}
 
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'jurisdiction_name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 

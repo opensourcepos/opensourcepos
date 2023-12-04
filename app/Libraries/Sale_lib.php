@@ -201,7 +201,7 @@ class Sale_lib
 
 	public function get_comment(): string
 	{
-		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
+		// avoid returning a null that results in a 0 in the comment if nothing is set/available
 		$comment = $this->session->get('sales_comment');
 
 		return empty($comment) ? '' : $comment;
@@ -237,7 +237,7 @@ class Sale_lib
 		return $this->session->get('sale_type');
 	}
 
-	public function set_invoice_number(int $invoice_number, bool $keep_custom = FALSE): void
+	public function set_invoice_number(int $invoice_number, bool $keep_custom = false): void
 	{
 		$current_invoice_number = $this->session->get('sales_invoice_number');
 
@@ -247,7 +247,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_quote_number(string $quote_number, bool $keep_custom = FALSE): void
+	public function set_quote_number(string $quote_number, bool $keep_custom = false): void
 	{
 		$current_quote_number = $this->session->get('sales_quote_number');
 
@@ -257,7 +257,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_work_order_number(string $work_order_number, bool $keep_custom = FALSE): void
+	public function set_work_order_number(string $work_order_number, bool $keep_custom = false): void
 	{
 		$current_work_order_number = $this->session->get('sales_work_order_number');
 
@@ -267,7 +267,7 @@ class Sale_lib
 		}
 	}
 
-	public function set_sale_type(int $sale_type, bool $keep_custom = FALSE): void
+	public function set_sale_type(int $sale_type, bool $keep_custom = false): void
 	{
 		$current_sale_type = $this->session->get('sale_type');
 
@@ -352,11 +352,11 @@ class Sale_lib
 	{//TODO: this needs to be converted to a switch statement
 		if($this->config['print_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
 		{
-			return TRUE;
+			return true;
 		}
 		elseif($this->config['print_receipt_check_behaviour'] == 'never')	//TODO: === ?
 		{
-			return FALSE;
+			return false;
 		}
 		else // remember last setting, session based though
 		{
@@ -379,11 +379,11 @@ class Sale_lib
 	{//TODO: this needs to be converted to a switch statement
 		if($this->config['email_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
 		{
-			return TRUE;
+			return true;
 		}
 		elseif($this->config['email_receipt_check_behaviour'] == 'never')	//TODO: === ?
 		{
-			return FALSE;
+			return false;
 		}
 		else // remember last setting, session based though
 		{
@@ -460,10 +460,10 @@ class Sale_lib
 			$payments[$payment_id]['payment_amount'] = $payment_amount;
 			$this->set_payments($payments);
 
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -798,7 +798,7 @@ class Sale_lib
 	}
 
 	//TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
-	public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = NULL, int $kit_print_option = NULL, string $price_override = NULL, string $description = NULL, string $serialnumber = NULL, int $sale_id = NULL, bool $include_deleted = FALSE, bool $print_option = NULL, bool $line = NULL): bool
+	public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = null, int $kit_print_option = null, string $price_override = null, string $description = null, string $serialnumber = null, int $sale_id = null, bool $include_deleted = false, bool $print_option = null, bool $line = null): bool
 	{
 		$item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
@@ -806,7 +806,7 @@ class Sale_lib
 		if(empty($item_info))
 		{
 			$item_id = NEW_ENTRY;
-			return FALSE;
+			return false;
 		}
 
 		$applied_discount = $discount;
@@ -816,7 +816,7 @@ class Sale_lib
 
 		$price = $item_info->unit_price;
 		$cost_price = $item_info->cost_price;
-		if($price_override != NULL)
+		if($price_override != null)
 		{
 			$price = $price_override;
 		}
@@ -863,7 +863,7 @@ class Sale_lib
 		//item to the cart. Since items can be deleted, we can't use a count. we use the highest key + 1.
 
 		$maxkey = 0;                       //Highest key so far
-		$itemalreadyinsale = FALSE;        //We did not find the item yet.	//TODO: variable naming here does not match the convention
+		$itemalreadyinsale = false;        //We did not find the item yet.	//TODO: variable naming here does not match the convention
 		$insertkey = 0;                    //Key to use for new entry.	//TODO: $insertkey is never used
 		$updatekey = 0;                    //Key to use to update(quantity)
 
@@ -879,7 +879,7 @@ class Sale_lib
 
 			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)	//TODO: === ?
 			{
-				$itemalreadyinsale = TRUE;
+				$itemalreadyinsale = true;
 				$updatekey = $item['line'];
 				if(!$item_info->is_serialized)
 				{
@@ -912,7 +912,7 @@ class Sale_lib
 		}
 		else
 		{	//TODO: Convert this to ternary notation
-			if($print_option != NULL)	//TODO: === ?
+			if($print_option != null)	//TODO: === ?
 			{
 				$print_option_selected = $print_option;
 			}
@@ -923,7 +923,7 @@ class Sale_lib
 		}
 
 		$total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type);
-		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, TRUE);
+		$discounted_total = $this->get_item_total($quantity, $price, $applied_discount, $discount_type, true);
 
 		if($this->config['multi_pack_enabled'])
 		{
@@ -945,8 +945,8 @@ class Sale_lib
 					'item_number' => $item_info->item_number,
 					'attribute_values' => $attribute_links->attribute_values,
 					'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
-					'description' => $description != NULL ? $description : $item_info->description,
-					'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
+					'description' => $description != null ? $description : $item_info->description,
+					'serialnumber' => $serialnumber != null ? $serialnumber : '',
 					'allow_alt_description' => $item_info->allow_alt_description,
 					'is_serialized' => $item_info->is_serialized,
 					'quantity' => $quantity,
@@ -978,7 +978,7 @@ class Sale_lib
 
 		$this->set_cart($items);
 
-		return TRUE;
+		return true;
 	}
 
 	public function out_of_stock(int $item_id, int $item_location): string
@@ -1044,16 +1044,16 @@ class Sale_lib
 	 * @param string $discount
 	 * @param string|null $discount_type
 	 * @param string|null $price
-	 * @param string|NULL $discounted_total
+	 * @param string|null $discounted_total
 	 * @return bool
 	 */
-	public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = NULL): bool
+	public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = null): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
-			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])
+			if($discounted_total != null && $discounted_total != $line['discounted_total'])
 			{
 				// Note when entered the "discounted_total" is expected to be entered without a discount
 				$quantity = $this->get_quantity_sold($discounted_total, $price);
@@ -1070,11 +1070,11 @@ class Sale_lib
 
 			$line['price'] = $price;
 			$line['total'] = $this->get_item_total($quantity, $price, $discount, $line['discount_type']);
-			$line['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $line['discount_type'], TRUE);
+			$line['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $line['discount_type'], true);
 			$this->set_cart($items);
 		}
 
-		return FALSE;	//TODO: This function will always return false.
+		return false;	//TODO: This function will always return false.
 	}
 
 	/**
@@ -1108,7 +1108,7 @@ class Sale_lib
 
 		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, NULL, TRUE);
+			$this->add_item($row->item_id, $row->item_location, -$row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, null, true);
 		}
 
 		$this->set_customer($this->sale->get_customer($sale_id)->person_id);
@@ -1119,14 +1119,14 @@ class Sale_lib
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $external_item_kit_id;
-		$result = TRUE;
+		$result = true;
 		$applied_discount = $discount;
 
 		foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
 			$result &= $this->add_item($item_kit_item['item_id'], $item_location, $item_kit_item['quantity'], $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option);
 
-			if($stock_warning == NULL)
+			if($stock_warning == null)
 			{
 				$stock_warning = $this->out_of_stock($item_kit_item['item_id'], $item_location);
 			}
@@ -1142,7 +1142,7 @@ class Sale_lib
 
 		foreach($this->sale->get_sale_items_ordered($sale_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, TRUE, $row->print_option);
+			$this->add_item($row->item_id, $row->item_location, $row->quantity_purchased, $row->discount, $row->discount_type, PRICE_MODE_STANDARD, null, null, $row->item_unit_price, $row->description, $row->serialnumber, $sale_id, true, $row->print_option);
 		}
 
 		$this->session->set('cash_mode', CASH_MODE_FALSE);
@@ -1155,7 +1155,7 @@ class Sale_lib
 			{
 				if($row->payment_type != lang('Sales.cash') && $row->payment_type != lang('Sales.cash_adjustment'))
 				{
-					$cash_types_only = FALSE;
+					$cash_types_only = false;
 				}
 
 			}
@@ -1266,7 +1266,7 @@ class Sale_lib
 			{
 				$item['discount'] = $discount;
 				$item['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type);
-				$item['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+				$item['discounted_total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, true);
 			}
 		}
 
@@ -1288,12 +1288,12 @@ class Sale_lib
 		return $discount;
 	}
 
-	public function get_subtotal(bool $include_discount = FALSE, bool $exclude_tax = FALSE): string
+	public function get_subtotal(bool $include_discount = false, bool $exclude_tax = false): string
 	{
 		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
 
-	public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = FALSE): string
+	public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false): string
 	{
 		$tax_info = $this->item_taxes->get_info($item_id);
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, $include_discount);
@@ -1323,7 +1323,7 @@ class Sale_lib
 		return $discounted_extended_amount;
 	}
 
-	public function get_item_total(string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = FALSE): string
+	public function get_item_total(string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false): string
 	{
 		$total = bcmul($quantity, $price);
 		if($include_discount)
@@ -1372,7 +1372,7 @@ class Sale_lib
 
 	public function get_item_tax(string $quantity, string $price, string $discount, int $discount_type, string $tax_percentage): string
 	{
-		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, true);
 
 		if($this->config['tax_included'])
 		{
@@ -1387,7 +1387,7 @@ class Sale_lib
 		return bcmul($item_total, $tax_fraction);
 	}
 
-	public function calculate_subtotal(bool $include_discount = FALSE, bool $exclude_tax = FALSE): string
+	public function calculate_subtotal(bool $include_discount = false, bool $exclude_tax = false): string
 	{
 		$subtotal = '0.0';
 		foreach($this->get_cart() as $item)
@@ -1410,9 +1410,9 @@ class Sale_lib
 	 * @param bool $include_cash_rounding
 	 * @return string
 	 */
-	public function get_total(bool $include_cash_rounding = TRUE): string
+	public function get_total(bool $include_cash_rounding = true): string
 	{
-		$total = $this->calculate_subtotal(TRUE);
+		$total = $this->calculate_subtotal(true);
 
 		$cash_mode = $this->session->get('cash_mode');
 

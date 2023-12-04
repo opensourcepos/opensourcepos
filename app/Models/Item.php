@@ -47,12 +47,12 @@ class Item extends Model
 	/**
 	 * Determines if a given item_id is an item
 	 */
-	public function exists(int $item_id, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
+	public function exists(int $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 
-		if($ignore_deleted === FALSE)
+		if(!$ignore_deleted)
 		{
 			$builder->where('deleted', $deleted);
 		}
@@ -69,7 +69,7 @@ class Item extends Model
 
 		if($config['allow_duplicate_barcodes'])
 		{
-			return FALSE;
+			return false;
 		}
 
 		$builder = $this->db->table('items');
@@ -110,26 +110,26 @@ class Item extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): int
 	{
-		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', true);
 	}
 
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
-		if($rows == NULL) $rows = 0;
-		if($limit_from == NULL) $limit_from = 0;
-		if($sort == NULL) $sort = 'items.name';
-		if($order == NULL) $order = 'asc';
-		if($count_only == NULL) $count_only = FALSE;
+		if($rows == null) $rows = 0;
+		if($limit_from == null) $limit_from = 0;
+		if($sort == null) $sort = 'items.name';
+		if($order == null) $order = 'asc';
+		if($count_only == null) $count_only = false;
 
 		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
 		// get_found_rows case
-		if($count_only === TRUE)	//TODO: replace this with `if($count_only)`
+		if($count_only)
 		{
 			$builder->select('COUNT(DISTINCT items.item_id) AS count');
 		}
@@ -229,7 +229,7 @@ class Item extends Model
 
 		if($filters['empty_upc'])
 		{
-			$builder->where('item_number', NULL);
+			$builder->where('item_number', null);
 		}
 		if($filters['low_inventory'])
 		{
@@ -346,7 +346,7 @@ class Item extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -356,7 +356,7 @@ class Item extends Model
 	/**
 	 * Gets information about a particular item by item id or number
 	 */
-	public function get_info_by_id_or_number(int $item_id, bool $include_deleted = TRUE)
+	public function get_info_by_id_or_number(int $item_id, bool $include_deleted = true)
 	{
 		$builder = $this->db->table('items');
 		$builder->groupStart();
@@ -393,7 +393,7 @@ class Item extends Model
 	/**
 	 * Get an item id given an item number
 	 */
-	public function get_item_id(string $item_number, bool $ignore_deleted = FALSE, bool $deleted = FALSE): bool
+	public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool
 	{
 		$builder = $this->db->table('items');
 		$builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -411,7 +411,7 @@ class Item extends Model
 			return $query->getRow()->item_id;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -449,7 +449,7 @@ class Item extends Model
 	{
 		$builder = $this->db->table('items');
 
-		if($item_id == NEW_ENTRY || !$this->exists($item_id, TRUE))
+		if($item_id == NEW_ENTRY || !$this->exists($item_id, true))
 		{
 			if($builder->insert($item_data))
 			{
@@ -461,10 +461,10 @@ class Item extends Model
 					$builder->update(['low_sell_item_id' => $item_data['item_id']]);
 				}
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 		else
 		{
@@ -492,7 +492,7 @@ class Item extends Model
 	 * Deletes one item
 	 * @throws ReflectionException
 	 */
-	public function delete($item_id = NULL, bool $purge = false)
+	public function delete($item_id = null, bool $purge = false)
 	{
 		$this->db->transStart();
 
@@ -556,7 +556,7 @@ class Item extends Model
 		return $success;
 	}
 
-	function get_search_suggestion_format(string $seed = NULL): string
+	function get_search_suggestion_format(string $seed = null): string
 	{
 		$config = config(OSPOS::class)->settings;
 		$seed .= ',' . $config['suggestions_first_column'];
@@ -636,7 +636,7 @@ class Item extends Model
 		}
 	}
 
-	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
+	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
@@ -686,7 +686,7 @@ class Item extends Model
 			$builder->select('company_name');
 			$builder->like('company_name', $search);
 
-			// restrict to non deleted companies only if is_deleted is FALSE
+			// restrict to non deleted companies only if is_deleted is false
 			$builder->where('deleted', $filters['is_deleted']);
 			$builder->distinct();
 			$builder->orderBy('company_name', 'asc');
@@ -714,7 +714,7 @@ class Item extends Model
 			}
 
 			//Search in attributes
-			if($filters['search_custom'] !== FALSE)
+			if($filters['search_custom'] !== false)
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -741,7 +741,7 @@ class Item extends Model
 	}
 
 
-	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
+	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
@@ -794,7 +794,7 @@ class Item extends Model
 			$builder->select('company_name');
 			$builder->like('company_name', $search);
 
-			// restrict to non deleted companies only if is_deleted is FALSE
+			// restrict to non deleted companies only if is_deleted is false
 			$builder->where('deleted', $filters['is_deleted']);
 			$builder->distinct();
 			$builder->orderBy('company_name', 'asc');
@@ -823,7 +823,7 @@ class Item extends Model
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] !== FALSE)	//TODO: duplicated code.  We should refactor out a method... this can be replaced with `if($filters['search_custom']`... no need for the double negative
+			if($filters['search_custom'] !== false)	//TODO: duplicated code.  We should refactor out a method... this can be replaced with `if($filters['search_custom']`... no need for the double negative
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -849,7 +849,7 @@ class Item extends Model
 		return array_unique($suggestions, SORT_REGULAR);
 	}
 
-	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => FALSE, 'search_custom' => FALSE], bool $unique = FALSE, int $limit = 25): array
+	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
 		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];	//TODO: This variable is never used.
@@ -899,7 +899,7 @@ class Item extends Model
 			$builder->select('company_name');
 			$builder->like('company_name', $search);
 
-			// restrict to non deleted companies only if is_deleted is FALSE
+			// restrict to non deleted companies only if is_deleted is false
 			$builder->where('deleted', $filters['is_deleted']);
 			$builder->distinct();
 			$builder->orderBy('company_name', 'asc');
@@ -927,7 +927,7 @@ class Item extends Model
 			}
 
 			//Search in attributes
-			if($filters['search_custom'] !== FALSE)	//TODO: Duplicate code... same as above... no double negatives
+			if($filters['search_custom'] !== false)	//TODO: Duplicate code... same as above... no double negatives
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -1032,9 +1032,9 @@ class Item extends Model
 	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
-	public function change_cost_price(int $item_id, float $items_received, float $new_price, float $old_price = NULL): bool
+	public function change_cost_price(int $item_id, float $items_received, float $new_price, float $old_price = null): bool
 	{
-		if($old_price === NULL)
+		if($old_price === null)
 		{
 			$item_info = $this->get_info($item_id);
 			$old_price = $item_info->cost_price;
@@ -1081,11 +1081,11 @@ class Item extends Model
 	 * for a multipack environment then the item name should have the
 	 * pack appended to it
 	 */
-	function get_item_name(string $as_name = NULL): string
+	function get_item_name(string $as_name = null): string
 	{
 		$config = config(OSPOS::class)->settings;
 
-		if($as_name == NULL)	//TODO: Replace with ternary notation
+		if($as_name == null)	//TODO: Replace with ternary notation
 		{
 			$as_name = '';
 		}

@@ -5,6 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 use App\Models\Attribute;
+use Config\OSPOS;
 use DateTime;
 
 class Migration_database_optimizations extends Migration
@@ -59,6 +60,7 @@ class Migration_database_optimizations extends Migration
 						$value = $attribute_value['attribute_decimal'];
 						break;
 					case DATE:
+						$config = config(OSPOS::class)->settings;
 						$attribute_date = DateTime::createFromFormat('Y-m-d', $attribute_value['attribute_date']);
 						$value = $attribute_date->format($config['dateformat']);
 						break;
@@ -67,7 +69,7 @@ class Migration_database_optimizations extends Migration
 						break;
 				}
 
-				$attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], FALSE, $attribute_link['definition_type']);
+				$attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
 			}
 		}
 		$this->db->transComplete();
@@ -76,10 +78,11 @@ class Migration_database_optimizations extends Migration
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
 		error_log('Migrating database_optimizations completed');
 	}
+
 	/**
 	 * Given the type of attribute, deletes any duplicates it finds in the attribute_values table and reassigns those
 	 */
-	private function migrate_duplicate_attribute_values($attribute_type)
+	private function migrate_duplicate_attribute_values($attribute_type): void
 	{
 		//Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
 		$this->db->transStart();

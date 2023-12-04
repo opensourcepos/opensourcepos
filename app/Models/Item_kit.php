@@ -57,7 +57,7 @@ class Item_kit extends Model
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Item_kit extends Model
 
 		if($config['allow_duplicate_barcodes'])
 		{
-			return FALSE;
+			return false;
 		}
 
 		$builder = $this->db->table('item_kits');
@@ -177,10 +177,10 @@ class Item_kit extends Model
 			{
 				$item_kit_data['item_kit_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('item_kit_id', $item_kit_id);
@@ -216,7 +216,7 @@ class Item_kit extends Model
 		$builder = $this->db->table('item_kits');
 
 		//KIT #
-		if(stripos($search, 'KIT ') !== FALSE)
+		if(stripos($search, 'KIT ') !== false)
 		{
 			$builder->like('item_kit_id', str_ireplace('KIT ', '', $search));
 			$builder->orderBy('item_kit_id', 'asc');
@@ -252,20 +252,20 @@ class Item_kit extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'name', 'asc', true);
 	}
 
 	/**
 	 * Perform a search on items
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('item_kits');
 
@@ -280,7 +280,7 @@ class Item_kit extends Model
 		$builder->orLike('item_kit_number', $search);
 
 		//KIT #
-		if(stripos($search, 'KIT ') !== FALSE)
+		if(stripos($search, 'KIT ') !== false)
 		{
 			$builder->orLike('item_kit_id', str_ireplace('KIT ', '', $search));
 		}

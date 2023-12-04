@@ -35,7 +35,7 @@ class Person extends Model
 	 *
 	 * @param integer $person_id identifier of the person to verify the existence
 	 *
-	 * @return boolean TRUE if the person exists, FALSE if not
+	 * @return boolean true if the person exists, false if not
 	 */
 	public function exists(int $person_id): bool
 	{
@@ -119,7 +119,7 @@ class Person extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -146,7 +146,7 @@ class Person extends Model
 	 *
 	 * @param array $person_data array containing person information
 	 * @param int $person_id identifier of the person to update the information
-	 * @return boolean TRUE if the save was successful, FALSE if not
+	 * @return boolean true if the save was successful, false if not
 	 */
 	public function save_value(array &$person_data, int $person_id = NEW_ENTRY): bool
 	{
@@ -158,10 +158,10 @@ class Person extends Model
 			{
 				$person_data['person_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('person_id', $person_id);
@@ -213,7 +213,7 @@ class Person extends Model
 	 * Deletes one Person (dummy base function)
 	 *
 	 * @param integer $person_id person identifier
-	 * @return boolean always TRUE
+	 * @return boolean always true
 	 */
 	public function delete($person_id = null, bool $purge = false): bool
 	{
@@ -224,10 +224,10 @@ class Person extends Model
 	 * Deletes a list of people (dummy base function)
 	 *
 	 * @param array $person_ids list of person identifiers
-	 * @return boolean always TRUE
+	 * @return boolean always true
 	 */
 	public function delete_list(array $person_ids): bool
 	{
-		return TRUE;
+		return true;
  	}
 }

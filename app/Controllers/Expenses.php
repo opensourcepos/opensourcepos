@@ -55,7 +55,7 @@ class Expenses extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: variable naming does not match standard
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: variable naming does not match standard
 		$filters = array_merge($filters, $filledup);
 		$expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense->get_found_rows($search, $filters);
@@ -94,7 +94,7 @@ class Expenses extends Secure_Controller
 		$data['expenses_info'] = $this->expense->get_info($expense_id);
 
 		$expense_categories = [];
-		foreach($this->expense_category->get_all(0, 0, TRUE)->getResultArray() as $row)
+		foreach($this->expense_category->get_all(0, 0, true)->getResultArray() as $row)
 		{
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
 		}
@@ -142,7 +142,7 @@ class Expenses extends Secure_Controller
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->request->getPost('supplier_id') == '' ? NULL : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
+			'supplier_id' => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
 			'supplier_tax_code' => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'amount' => parse_decimals($this->request->getPost('amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'tax_amount' => parse_decimals($this->request->getPost('tax_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
@@ -150,7 +150,7 @@ class Expenses extends Secure_Controller
 			'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
 			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
-			'deleted' => $this->request->getPost('deleted') != NULL
+			'deleted' => $this->request->getPost('deleted') != null
 		];
 
 		if($this->expense->save_value($expense_data, $expense_id))
@@ -158,24 +158,24 @@ class Expenses extends Secure_Controller
 			//New Expense
 			if($expense_id == NEW_ENTRY)
 			{
-				echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
+				echo json_encode (['success' => true, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
 			}
 			else // Existing Expense
 			{
-				echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
+				echo json_encode (['success' => true, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
 			}
 		}
 		else//failure
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
+			echo json_encode (['success' => false, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
 		}
 	}
 
 	public function ajax_check_amount(): void
 	{
-		$value = $this->request->getPost(NULL, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+		$value = $this->request->getPost(null, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$parsed_value = parse_decimals(array_pop($value));
-		echo json_encode (['success' => $parsed_value !== FALSE]);
+		echo json_encode (['success' => $parsed_value !== false]);
 	}
 
 	public function postDelete(): void
@@ -184,11 +184,11 @@ class Expenses extends Secure_Controller
 
 		if($this->expense->delete_list($expenses_to_delete))
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
+			echo json_encode (['success' => true, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Expenses.cannot_be_deleted'), 'ids' => $expenses_to_delete]);
+			echo json_encode (['success' => false, 'message' => lang('Expenses.cannot_be_deleted'), 'ids' => $expenses_to_delete]);
 		}
 	}
 }

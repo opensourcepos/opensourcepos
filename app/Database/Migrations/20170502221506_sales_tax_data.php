@@ -40,7 +40,7 @@ class Migration_Sales_Tax_Data extends Migration
 				$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
 			}
 		}
-		
+
 		error_log('Migrating sales tax history. The number of sales that will be migrated is finished.');
 	}
 
@@ -52,7 +52,7 @@ class Migration_Sales_Tax_Data extends Migration
 	{
 		$tax_decimals = $this->appconfig->get_value('tax_decimals', 2);
 		$tax_included = $this->appconfig->get_value('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
-		$customer_sales_tax_support = FALSE;
+		$customer_sales_tax_support = false;
 
 		if($tax_included)	//TODO: Convert to ternary notation.
 		{
@@ -71,7 +71,7 @@ class Migration_Sales_Tax_Data extends Migration
 		{
 			// This computes tax for each line item and adds it to the tax type total
 			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
-			$tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], TRUE);
+			$tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], true);
 
 			$item_tax_amount = $tax_included
 				? $this->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent'])
@@ -153,7 +153,7 @@ class Migration_Sales_Tax_Data extends Migration
 		}
 	}
 
-	public function get_item_total(string $quantity, string $price, string $discount_percentage, bool $include_discount = FALSE): string
+	public function get_item_total(string $quantity, string $price, string $discount_percentage, bool $include_discount = false): string
 	{
 		$total = bcmul($quantity, $price);
 
@@ -179,7 +179,7 @@ class Migration_Sales_Tax_Data extends Migration
 	{
 		$tax_included = $this->appconfig->get_value('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
 
-		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
+		$price = $this->get_item_total($quantity, $price, $discount_percentage, true);
 
 		if($tax_included)
 		{

@@ -1,13 +1,18 @@
-<?php echo form_open('config/saveEmail/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?php
+/**
+ * @var array $config
+ */
+?>
+<?= form_open('config/saveEmail/', ['id' => 'email_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+			<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 			<ul id="email_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_protocol'), 'protocol', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_protocol'), 'protocol', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown(
+					<?= form_dropdown(
 						'protocol',
 						[
 							'mail' => 'mail',
@@ -21,9 +26,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_mailpath'), 'mailpath', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_mailpath'), 'mailpath', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-4">
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'mailpath',
 						'id' => 'mailpath',
 						'class' => 'form-control input-sm',
@@ -33,9 +38,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_host'), 'smtp_host', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_host'), 'smtp_host', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'smtp_host',
 						'id' => 'smtp_host',
 						'class' => 'form-control input-sm',
@@ -45,9 +50,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_port'), 'smtp_port', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_port'), 'smtp_port', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'smtp_port',
 						'id' => 'smtp_port',
 						'class' => 'form-control input-sm',
@@ -57,9 +62,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown(
+					<?= form_dropdown(
 						'smtp_crypto',
 						[
 							'' => 'None',
@@ -73,9 +78,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'smtp_timeout',
 						'id' => 'smtp_timeout',
 						'class' => 'form-control input-sm',
@@ -85,11 +90,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_user'), 'smtp_user', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_user'), 'smtp_user', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-						<?php echo form_input ([
+						<?= form_input ([
 							'name' => 'smtp_user',
 							'id' => 'smtp_user',
 							'class' => 'form-control input-sm',
@@ -100,11 +105,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.email_smtp_pass'), 'smtp_pass', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.email_smtp_pass'), 'smtp_pass', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
-						<?php echo form_password ([
+						<?= form_password ([
 							'name' => 'smtp_pass',
 							'id' => 'smtp_pass',
 							'class' => 'form-control input-sm',
@@ -114,14 +119,14 @@
 				</div>
 			</div>
 
-			<?php echo form_submit ([
+			<?= form_submit ([
 				'name' => 'submit_email',
 				'id' => 'submit_email',
 				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	</div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling

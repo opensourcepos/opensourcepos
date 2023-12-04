@@ -1,18 +1,19 @@
 <?php
 /**
  * @var array $dinner_tables
+ * @var array $config
  */
 ?>
-<?php echo form_open('config/saveTables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('config/saveTables/', ['id' => 'table_config_form', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
-            <div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
             <ul id="table_error_message_box" class="error_message_box"></ul>
 
-			<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
+			<div class="form-group form-group-sm">
+				<?= form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'dinner_table_enable',
 						'value' => 'dinner_table_enable',
 						'id' => 'dinner_table_enable',
@@ -22,10 +23,10 @@
 			</div>
 
             <div id="dinner_tables">
-				<?php echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
+				<?= view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
 			</div>
-            
-            <?php echo form_submit ([
+
+            <?= form_submit ([
                 'name' => 'submit_table',
                 'id' => 'submit_table',
                 'value' => lang('Common.submit'),
@@ -33,7 +34,7 @@
 			]) ?>
         </fieldset>
     </div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -49,20 +50,20 @@ $(document).ready(function()
 		}
 		else
 		{
-			$(".add_dinner_table, .remove_dinner_table").hide();	
+			$(".add_dinner_table, .remove_dinner_table").hide();
 		}
 		return arguments.callee;
 	})();
 
 	$("#dinner_table_enable").change(enable_disable_dinner_table_enable);
 
-	var table_count = <?php echo sizeof($dinner_tables) ?>;
+	var table_count = <?= sizeof($dinner_tables) ?>;
 
 	var hide_show_remove = function() {
 		if ($("input[name*='dinner_tables']:enabled").length > 1)
 		{
 			$(".remove_dinner_tables").show();
-		} 
+		}
 		else
 		{
 			$(".remove_dinner_tables").hide();
@@ -75,7 +76,7 @@ $(document).ready(function()
 		var block = $(this).parent().clone(true);
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'dinner_table_' + ++id;
-		$(new_block).find('label').html("<?php echo lang('Config.dinner_table') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
+		$(new_block).find('label').html("<?= lang('Config.dinner_table') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
 		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();
 	};
@@ -99,20 +100,20 @@ $(document).ready(function()
 	$.validator.addMethod('dinner_table' , function(value, element) {
 		var value_count = 0;
 		$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").each(function() {
-			value_count = $(this).val() == value ? value_count + 1 : value_count; 
+			value_count = $(this).val() == value ? value_count + 1 : value_count;
 		});
 		return value_count < 2;
-    }, "<?php echo lang('Config.dinner_table_duplicate') ?>");
+    }, "<?= lang('Config.dinner_table_duplicate') ?>");
 
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
-    }, "<?php echo lang('Config.dinner_table_invalid_chars') ?>");
-	
+    }, "<?= lang('Config.dinner_table_invalid_chars') ?>");
+
 	$('#table_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").prop("disabled", false); 
+					$("input[name*='dinner_table']:not(input[name=dinner_table_enable])").prop("disabled", false);
 					return true;
 				},
 				success: function(response)	{
@@ -133,7 +134,7 @@ $(document).ready(function()
 			foreach($dinner_tables as $dinner_table=>$table)
 			{
 			?>
-				<?php echo 'dinner_table_' . ++$i ?>:
+				<?= 'dinner_table_' . ++$i ?>:
 				{
 					required: true,
 					dinner_table: true,
@@ -144,7 +145,7 @@ $(document).ready(function()
 			?>
    		},
 
-		messages: 
+		messages:
 		{
 			<?php
 			$i = 0;
@@ -152,7 +153,7 @@ $(document).ready(function()
 			foreach($dinner_tables as $dinner_table=>$table)
 			{
 			?>
-				<?php echo 'dinner_table_' . ++$i ?>: "<?php echo lang('Config.dinner_table_required') ?>",
+				<?= 'dinner_table_' . ++$i ?>: "<?= lang('Config.dinner_table_required') ?>",
 			<?php
 			}
 			?>

@@ -127,12 +127,12 @@ class Employees extends Persons
 		foreach($this->module->get_all_permissions()->getResult() as $permission)
 		{
 			$grants = [];
-			$grant = $this->request->getPost('grant_'.$permission->permission_id) != NULL ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
+			$grant = $this->request->getPost('grant_'.$permission->permission_id) != null ? $this->request->getPost('grant_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
 
 			if($grant == $permission->permission_id)
 			{
 				$grants['permission_id'] = $permission->permission_id;
-				$grants['menu_group'] = $this->request->getPost('menu_group_'.$permission->permission_id) != NULL ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
+				$grants['menu_group'] = $this->request->getPost('menu_group_'.$permission->permission_id) != null ? $this->request->getPost('menu_group_' . $permission->permission_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '--';
 				$grants_array[] = $grants;
 			}
 		}
@@ -165,7 +165,7 @@ class Employees extends Persons
 			if($employee_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
 					'id' => $employee_data['person_id']
 				]);
@@ -173,7 +173,7 @@ class Employees extends Persons
 			else // Existing employee
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
 					'id' => $employee_id
 				]);
@@ -182,7 +182,7 @@ class Employees extends Persons
 		else // Failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 				'id' => NEW_ENTRY
 			]);
@@ -199,13 +199,13 @@ class Employees extends Persons
 		if($this->employee->delete_list($employees_to_delete))	//TODO: this is passing a string, but delete_list expects an array
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Employees.successful_deleted') . ' ' . count($employees_to_delete) . ' ' . lang('Employees.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Employees.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Employees.cannot_be_deleted')]);
 		}
 	}
 

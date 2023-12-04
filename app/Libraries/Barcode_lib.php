@@ -224,9 +224,9 @@ class Barcode_lib
 	{
 		$array = [];	//TODO: Naming of this variable should be changed.  The variable should never be named the data type.  $fonts would be a better name.
 
-		if(($handle = opendir($folder)) !== FALSE)
+		if(($handle = opendir($folder)) !== false)
 		{
-			while(($file = readdir($handle)) !== FALSE)
+			while(($file = readdir($handle)) !== false)
 			{
 				if(substr($file, -4, 4) === '.ttf')
 				{

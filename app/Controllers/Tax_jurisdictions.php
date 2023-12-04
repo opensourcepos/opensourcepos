@@ -76,7 +76,7 @@ class Tax_jurisdictions extends Secure_Controller
 			if($jurisdiction_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Tax_jurisdictions.successful_adding'),
 					'id' => $tax_jurisdiction_data['jurisdiction_id']
 				]);
@@ -84,7 +84,7 @@ class Tax_jurisdictions extends Secure_Controller
 			else
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Tax_jurisdictions.successful_updating'),
 					'id' => $jurisdiction_id
 				]);
@@ -93,7 +93,7 @@ class Tax_jurisdictions extends Secure_Controller
 		else
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
 				'id' => NEW_ENTRY
 			]);
@@ -107,13 +107,13 @@ class Tax_jurisdictions extends Secure_Controller
 		if($this->tax_jurisdiction->delete_list($tax_jurisdictions_to_delete))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Tax_jurisdictions.successful_deleted') . ' ' . count($tax_jurisdictions_to_delete) . ' ' . lang('Tax_jurisdictions.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Tax_jurisdictions.cannot_be_deleted')]);
 		}
 	}
 }

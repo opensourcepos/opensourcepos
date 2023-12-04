@@ -78,7 +78,7 @@ class MailchimpConnector
 			return $this->_request($httpVerb, $method, $args);	//TODO: Hungarian notation
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -107,18 +107,18 @@ class MailchimpConnector
 	 */
 	private function _request(string $httpVerb, string $method, array $args = [])	//TODO: Hungarian notation
 	{
-		$result = FALSE;
+		$result = false;
 
-		if(($ch = curl_init()) !== FALSE)
+		if(($ch = curl_init()) !== false)
 		{
 			curl_setopt($ch, CURLOPT_URL, $this->_build_request_url($method, $httpVerb, $args));
 			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 			curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->_api_key);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'PHP-MCAPI/3.0');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_POST, TRUE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpVerb);
 
@@ -127,7 +127,7 @@ class MailchimpConnector
 			curl_close($ch);
 		}
 
-		return $result ? json_decode($result, TRUE) : FALSE;
+		return $result ? json_decode($result, true) : false;
 	}
 }
 

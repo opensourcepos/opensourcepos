@@ -9,17 +9,17 @@
  * @var array $definition_values
  */
 ?>
-<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form', 'class' => 'form-horizontal'])?>
+<?= form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form', 'class' => 'form-horizontal'])?>
 <fieldset id="attribute_basic_info">
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
-			<?php echo form_input ([
+			<?= form_input ([
 					'name' => 'definition_name',
 					'id' => 'definition_name',
 					'class' => 'form-control input-sm',
@@ -30,16 +30,16 @@
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
+			<?= form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Attributes.definition_group'), 'definition_group', ['class' => 'control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_group'), 'definition_group', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown(
+			<?= form_dropdown(
 				'definition_group',
 				$definition_group,
 				$definition_info->definition_fk,
@@ -49,10 +49,10 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label(lang('Attributes.definition_flags'), 'definition_flags', ['class' => 'control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_flags'), 'definition_flags', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_multiselect(
+				<?= form_multiselect(
 					'definition_flags[]',
 					esc($definition_flags),
 					esc(array_keys($selected_definition_flags)),
@@ -70,10 +70,10 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label(lang('Attributes.definition_unit'), 'definition_units', ['class' => 'control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_unit'), 'definition_units', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_input ([
+				<?= form_input ([
 					'name' => 'definition_unit',
 					'value' => $definition_info->definition_unit,
 					'class' => 'form-control input-sm',
@@ -84,10 +84,10 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label(lang('Attributes.definition_values'), 'definition_value', ['class' => 'control-label col-xs-3']) ?>
+		<?= form_label(lang('Attributes.definition_values'), 'definition_value', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
-				<?php echo form_input (['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
+				<?= form_input (['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
 				<span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
 					<span class="glyphicon glyphicon-plus-sign"></span>
 				</span>
@@ -96,21 +96,21 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
-		<?php echo form_label('&nbsp', 'definition_list_group', ['class' => 'control-label col-xs-3']) ?>
+		<?= form_label('&nbsp', 'definition_list_group', ['class' => 'control-label col-xs-3']) ?>
 		<div class='col-xs-8'>
 			<ul id="definition_list_group" class="list-group"></ul>
 		</div>
 	</div>
 
 </fieldset>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
 	var values = [];
-	var definition_id = <?php echo esc($definition_id, 'js') ?>;
+	var definition_id = <?= esc($definition_id, 'js') ?>;
 	var is_new = definition_id == 0;
 
 	var disable_definition_types = function()
@@ -181,7 +181,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			$.post('<?php echo esc("$controller_name/delete_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
+			$.post('<?= esc("$controller_name/delete_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
 		}
 		$(this).parents("li").remove();
 	};
@@ -210,7 +210,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				$.post('<?php echo "attributes/saveAttributeValue/" ?>', {definition_id: definition_id, attribute_value: value});
+				$.post('<?= "attributes/saveAttributeValue/" ?>', {definition_id: definition_id, attribute_value: value});
 			}
 		}
 
@@ -228,14 +228,14 @@ $(document).ready(function()
 		}
 	});
 
-	var definition_values = <?php echo json_encode(array_values($definition_values)) ?>;
+	var definition_values = <?= json_encode(array_values($definition_values)) ?>;
 	$.each(definition_values, function(index, element) {
 		add_attribute_value(element);
 	});
 
 	$.validator.addMethod('valid_chars', function(value, element) {
         return value.match(/(\||_)/g) == null;
-	}, "<?php echo lang('Attributes.attribute_value_invalid_chars') ?>");
+	}, "<?= lang('Attributes.attribute_value_invalid_chars') ?>");
 
 	$('form').bind('submit', function () {
 		$(this).find(':input').prop('disabled', false);
@@ -256,7 +256,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo esc($controller_name) ?>', response);
+					table_support.handle_submit('<?= esc($controller_name) ?>', response);
 				},
 				dataType: 'json'
 			});
@@ -269,8 +269,8 @@ $(document).ready(function()
 		},
         messages:
         {
-            definition_name: "<?php echo lang('Attributes.definition_name_required') ?>",
-            definition_type: "<?php echo lang('Attributes.definition_type_required') ?>"
+            definition_name: "<?= lang('Attributes.definition_name_required') ?>",
+            definition_type: "<?= lang('Attributes.definition_type_required') ?>"
         }
 	}, form_support.error));
 });

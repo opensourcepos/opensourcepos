@@ -20,7 +20,7 @@ function current_language_code(bool $load_system_language = false): string
 	$config = config(OSPOS::class)->settings;
 
 	// Returns the language code of the employee if set or system language code if not
-	if($employee->is_logged_in() && $load_system_language === false)
+	if($employee->is_logged_in() && !$load_system_language)
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
 
@@ -35,7 +35,7 @@ function current_language_code(bool $load_system_language = false): string
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
-function current_language(bool $load_system_language = FALSE): string
+function current_language(bool $load_system_language = false): string
 {
 	$employee = model(Employee::class);
 	$config = config(OSPOS::class)->settings;
@@ -354,7 +354,7 @@ function to_tax_decimals($number): string
 	// It looks like it must be creating a String value on the fly because the form is referring to the index 0 when
 	// there IS no index[0] row in the table
 
-	// taxes that are NULL, '' or 0 don't need to be displayed
+	// taxes that are null, '' or 0 don't need to be displayed
 	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0, and it will save it
 	if(empty($number))
 	{
@@ -369,7 +369,7 @@ function to_quantity_decimals(?float $number): string
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals(?float $number, string $decimals = NULL, int $type = NumberFormatter::DECIMAL): string
+function to_decimals(?float $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -412,7 +412,7 @@ function parse_tax(string $number)
 
 /**
  * @param string $number
- * @param int|NULL $decimals
+ * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
 function parse_decimals(string $number, int $decimals = null)
@@ -435,7 +435,7 @@ function parse_decimals(string $number, int $decimals = null)
 
 	$config = config(OSPOS::class)->settings;
 
-	if($decimals === false)
+	if(!$decimals)
 	{
 		$decimals = $config['currency_decimals'];	//TODO: $decimals is never used.
 	}

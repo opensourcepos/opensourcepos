@@ -48,7 +48,7 @@ class Migration_TaxAmount extends Migration
 
 				foreach($unmigrated_invoices as $key => $unmigrated_invoice)
 				{
-					$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id'], $tax_decimals, TRUE);
+					$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id'], $tax_decimals, true);
 				}
 				$this->db->query('DROP TABLE ' . $this->db->prefixTable('sales_taxes_backup'));
 			}
@@ -152,7 +152,7 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 
-	public function get_item_total(string $quantity, string $price, string $discount, bool $include_discount = FALSE): string
+	public function get_item_total(string $quantity, string $price, string $discount, bool $include_discount = false): string
 	{
 		$total = bcmul($quantity, $price);
 

@@ -45,8 +45,8 @@ class Sale extends Model
 		$this->create_temp_table (['sale_id' => $sale_id]);
 
 		$decimals = totals_decimals();
-		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
-		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
+		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
+		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
 		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
@@ -74,11 +74,11 @@ class Sale extends Model
 				MAX(customer_p.last_name) AS last_name,
 				MAX(customer_p.email) AS email,
 				MAX(customer_p.comments) AS comments,
-				MAX(IFNULL(payments.sale_cash_adjustment, 0)) AS cash_adjustment,
-				MAX(IFNULL(payments.sale_cash_refund, 0)) AS cash_refund,
+				MAX(IFnull(payments.sale_cash_adjustment, 0)) AS cash_adjustment,
+				MAX(IFnull(payments.sale_cash_refund, 0)) AS cash_refund,
 				' . "
 				$sale_total AS amount_due,
-				MAX(IFNULL(payments.sale_payment_amount, 0)) AS amount_tendered,
+				MAX(IFnull(payments.sale_payment_amount, 0)) AS amount_tendered,
 				(MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type';
@@ -107,20 +107,20 @@ class Sale extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): int
 	{
-		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', true);
 	}
 
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = FALSE)
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'sales.sale_time';
 		if($order == null) $order = 'desc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$config = config(OSPOS::class)->settings;
 
@@ -161,10 +161,10 @@ class Sale extends Model
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
-		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
-		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
-		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
+		$tax = 'IFnull(SUM(sales_items_taxes.tax), 0)';
+		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
+		$internal_tax = 'IFnull(SUM(sales_items_taxes.internal_tax), 0)';
+		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
 
 		$sale_subtotal = "ROUND(SUM($sale_price), $decimals) - $internal_tax";
 		$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
@@ -533,12 +533,12 @@ class Sale extends Model
 				{
 					$receipt_sale_id = 'POS ' . $sale_info->getRow()->sale_id;
 
-					return TRUE;
+					return true;
 				}
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -555,7 +555,7 @@ class Sale extends Model
 	/**
 	 * Update sale
 	 */
-	public function update($sale_id = NULL, $sale_data = NULL): bool
+	public function update($sale_id = null, $sale_data = null): bool
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
@@ -651,7 +651,7 @@ class Sale extends Model
 
 		$sales_data = [
 			'sale_time' => date('Y-m-d H:i:s'),
-			'customer_id' => $customer->exists($customer_id) ? $customer_id : NULL,
+			'customer_id' => $customer->exists($customer_id) ? $customer_id : null,
 			'employee_id' => $employee_id,
 			'comment' => $comment,
 			'sale_status' => $sale_status,
@@ -800,12 +800,7 @@ class Sale extends Model
 
 		$this->db->transComplete();
 
-		if($this->db->transStatus() === FALSE)
-		{
-			return -1;	//TODO: this should also be replaced with a FAIL or NO_PERSON constant or something similar instead of -1
-		}
-
-		return $sale_id;
+		return $this->db->transStatus() ? $sale_id : -1;
 	}
 
 	/**
@@ -886,13 +881,13 @@ class Sale extends Model
 	 * Deletes list of sales
 	 * @throws ReflectionException
 	 */
-	public function delete_list(array $sale_ids, int $employee_id, bool $update_inventory = TRUE): bool
+	public function delete_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool
 	{
-		$result = TRUE;
+		$result = true;
 
 		foreach($sale_ids as $sale_id)
 		{
-			$result &= $this->delete($sale_id, FALSE, $update_inventory, $employee_id);
+			$result &= $this->delete($sale_id, false, $update_inventory, $employee_id);
 		}
 
 		return $result;
@@ -901,14 +896,14 @@ class Sale extends Model
 	/**
 	 * Restores list of sales
 	 */
-	public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = TRUE): bool	//TODO: $employee_id and $update_inventory are never used in the function.
+	public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool	//TODO: $employee_id and $update_inventory are never used in the function.
 	{
 		foreach($sale_ids as $sale_id)
 		{
 			$this->update_sale_status($sale_id, SUSPENDED);
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	/**
@@ -917,7 +912,7 @@ class Sale extends Model
 	 * However, if applicable the inventory still needs to be updated
 	 * @throws ReflectionException
 	 */
-	public function delete($sale_id = NULL, bool $purge = FALSE, bool $update_inventory = TRUE, $employee_id = null): bool
+	public function delete($sale_id = null, bool $purge = false, bool $update_inventory = true, $employee_id = null): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -1196,11 +1191,11 @@ class Sale extends Model
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
-		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
-		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
+		$tax = 'IFnull(SUM(sales_items_taxes.tax), 0)';
+		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
+		$internal_tax = 'IFnull(SUM(sales_items_taxes.internal_tax), 0)';
 
-		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
+		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
 
 		if($config['tax_included'])
 		{
@@ -1323,7 +1318,7 @@ class Sale extends Model
 	/**
 	 * Retrieves all sales that are in a suspended state
 	 */
-	public function get_all_suspended(int $customer_id = NULL): array
+	public function get_all_suspended(int $customer_id = null): array
 	{
 		if($customer_id == NEW_ENTRY)
 		{
@@ -1342,11 +1337,11 @@ class Sale extends Model
 	/**
 	 * Gets the dinner table for the selected sale
 	 */
-	public function get_dinner_table(int $sale_id)	//TODO: this is returning NULL or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
+	public function get_dinner_table(int $sale_id)	//TODO: this is returning null or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
 	{
 		if($sale_id == NEW_ENTRY)
 		{
-			return NULL;
+			return null;
 		}
 
 		$builder = $this->db->table('sales');
@@ -1395,12 +1390,12 @@ class Sale extends Model
 
 		$row = $builder->get()->getRow();
 
-		if($row != NULL)
+		if($row != null)
 		{
 			return $row->quote_number;
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -1413,12 +1408,12 @@ class Sale extends Model
 
 		$row = $builder->get()->getRow();
 
-		if($row != NULL)	//TODO: === ?
+		if($row != null)	//TODO: === ?
 		{
 			return $row->work_order_number;
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -1431,12 +1426,12 @@ class Sale extends Model
 
 		$row = $builder->get()->getRow();
 
-		if($row != NULL)	//TODO: === ?
+		if($row != null)	//TODO: === ?
 		{
 			return $row->comment;
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -1543,8 +1538,8 @@ class Sale extends Model
 			{
 				$points_percent = $customer_rewards->get_points_percent($package_id);
 				$points = $customer->get_info($customer_id)->points;
-				$points = ($points == NULL ? 0 : $points);
-				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
+				$points = ($points == null ? 0 : $points);
+				$points_percent = ($points_percent == null ? 0 : $points_percent);
 				$total_amount_earned = ($total_amount * $points_percent / 100);
 				$points = $points + $total_amount_earned;
 

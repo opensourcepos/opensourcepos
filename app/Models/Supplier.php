@@ -112,7 +112,7 @@ class Supplier extends Person
 	 */
 	public function save_supplier(array &$person_data, array &$supplier_data, int $supplier_id = NEW_ENTRY): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -164,7 +164,7 @@ class Supplier extends Person
  	/**
 	 * Get search suggestions to find suppliers
 	 */
-	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = FALSE): array	//TODO: Parent is looking for the 2nd parameter to be an int
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = false): array	//TODO: Parent is looking for the 2nd parameter to be an int
 	{
 		$suggestions = [];
 
@@ -257,7 +257,7 @@ class Supplier extends Person
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'last_name', 'asc', true);
 	}
 
 	/**

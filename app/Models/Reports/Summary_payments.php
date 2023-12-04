@@ -97,7 +97,7 @@ class Summary_payments extends Summary_report
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
 		foreach($payments as $key => $payment) {
-			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== FALSE) {
+			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== false) {
 				$gift_card_count += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
 

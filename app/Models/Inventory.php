@@ -27,14 +27,14 @@ class Inventory extends Model
 		'trans_location'
 	];
 
-	public function insert($inventory_data = NULL, bool $returnID = TRUE)
+	public function insert($inventory_data = null, bool $returnID = true)
 	{
 		$builder = $this->db->table('inventory');
 
 		return $builder->insert($inventory_data);
 	}
 
-	public function update($comment = NULL, $inventory_data = NULL): bool
+	public function update($comment = null, $inventory_data = null): bool
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_comment', $comment);
@@ -48,7 +48,7 @@ class Inventory extends Model
 	 * @param bool $location_id
 	 * @return ResultInterface
 	 */
-	public function get_inventory_data_for_item(int $item_id, bool $location_id = FALSE): ResultInterface
+	public function get_inventory_data_for_item(int $item_id, bool $location_id = false): ResultInterface
 	{
 		$builder = $this->db->table('inventory');
 		$builder->where('trans_items', $item_id);
@@ -85,7 +85,7 @@ class Inventory extends Model
 			}
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	public function get_inventory_sum(int $item_id): array

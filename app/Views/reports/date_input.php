@@ -1,16 +1,17 @@
 <?php
 /**
  * @var array $sale_type_options
+ * @var array $config
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 
 
-<div id="page_title"><?php echo lang('Reports.report_input') ?></div>
+<div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
 if(isset($error))
@@ -19,15 +20,15 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
+		<?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
 		<div class="col-xs-3">
-				<?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+				<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		</div>
 	</div>
 
-	<?php	
+	<?php
 	if(!empty($mode))
 	{
 	?>
@@ -36,18 +37,18 @@ if(isset($error))
 			if($mode == 'sale')
 			{
 			?>
-				<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
+				<?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
 				<div id='report_sale_type' class="col-xs-3">
-					<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
+					<?= form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
 				</div>
 			<?php
 			}
 			elseif($mode == 'receiving')
 			{
 			?>
-				<?php echo form_label(lang('Reports.receiving_type'), 'reports_receiving_type_label', ['class' => 'required control-label col-xs-2']) ?>
+				<?= form_label(lang('Reports.receiving_type'), 'reports_receiving_type_label', ['class' => 'required control-label col-xs-2']) ?>
 				<div id='report_receiving_type' class="col-xs-3">
-					<?php echo form_dropdown(
+					<?= form_dropdown(
 							'receiving_type',
 							[
 								'all' => lang('Reports.all'),
@@ -66,28 +67,28 @@ if(isset($error))
 	}
 	?>
 
-	<?php	
+	<?php
 	if (isset($discount_type_options))
 	{
 	?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
+			<?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_discount_type' class="col-xs-3">
-				<?php echo form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
+				<?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php
 	}
 	?>
 
-	<?php	
+	<?php
 	if (!empty($stock_locations) && count($stock_locations) > 2)
 	{
 	?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
+			<?= form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_stock_location' class="col-xs-3">
-				<?php echo form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
+				<?= form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
 			</div>
 		</div>
 	<?php
@@ -101,14 +102,14 @@ if(isset($error))
 			'content'=>lang('Common.submit'),
 			'class' => 'btn btn-primary btn-sm']
 	);	?>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>
 
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php echo view('partial/daterangepicker') ?>
+	<?= view('partial/daterangepicker') ?>
 
 	$("#generate_report").click(function()
 	{

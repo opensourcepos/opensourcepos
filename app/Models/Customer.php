@@ -129,7 +129,7 @@ class Customer extends Person
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -207,7 +207,7 @@ class Customer extends Person
 		// if the email is empty return like it is not existing
 		if(empty($email))
 		{
-			return FALSE;
+			return false;
 		}
 
 		$builder = $this->db->table('customers');
@@ -228,7 +228,7 @@ class Customer extends Person
 	 */
 	public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		$this->db->transStart();
 
@@ -266,7 +266,7 @@ class Customer extends Person
 
 	public function delete($customer_id = null, bool $purge = false): bool
 	{
-		$result = TRUE;
+		$result = true;
 		$config = config(OSPOS::class)->settings;
 
 		// if privacy enforcement is selected scramble customer data
@@ -279,7 +279,7 @@ class Customer extends Person
 					'last_name' => $customer_id,
 					'phone_number' => '',
 					'email' => '',
-					'gender' => NULL,
+					'gender' => null,
 					'address_1' => '',
 					'address_2' => '',
 					'city' => '',
@@ -293,15 +293,15 @@ class Customer extends Person
 			$builder->where('person_id', $customer_id);
 			$result &= $builder->update([
 					'consent' => 0,
-					'company_name' => NULL,
-					'account_number' => NULL,
+					'company_name' => null,
+					'account_number' => null,
 					'tax_id' => '',
 					'taxable' => 0,
 					'discount' => 0.00,
 					'discount_type' => 0,
-					'package_id' => NULL,
-					'points' => NULL,
-					'sales_tax_code_id' => NULL,
+					'package_id' => null,
+					'points' => null,
+					'sales_tax_code_id' => null,
 					'deleted' => 1
 				]);
 		}
@@ -420,21 +420,21 @@ class Customer extends Person
 	 */
 	public function get_found_rows(string $search): int
 	{
-		$result = $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		$result = $this->search($search, 0, 0, 'last_name', 'asc', true);
 		return $result;
 	}
 
 	/**
 	 * Performs a search on customers
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'last_name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('customers AS customers');
 

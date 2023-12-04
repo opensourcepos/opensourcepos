@@ -61,8 +61,8 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo esc($heading) ?></h1>
-		<?php echo esc($message) ?>
+		<h1><?= esc($heading) ?></h1>
+		<?= esc($message) ?>
 	</div>
 </body>
 </html>

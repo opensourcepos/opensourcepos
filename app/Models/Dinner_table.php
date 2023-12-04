@@ -83,7 +83,7 @@ class Dinner_table extends Model
 	{
 		if(empty($dinner_table_id))
 		{
-			return FALSE;
+			return false;
 		}
 		else	//TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
 		{
@@ -125,7 +125,7 @@ class Dinner_table extends Model
 			$builder->where('dinner_table_id', $dinner_table_id);
 			return $builder->update(['status' => 1]);
 		}
-		else//TODO: THIS ELSE STATEMENT ISN'T NEEDED.  JUST DO THE IF AND THEN RETURN TRUE AFTER IT.
+		else//TODO: THIS ELSE STATEMENT ISN'T NEEDED.  JUST DO THE IF AND THEN RETURN true AFTER IT.
 		{
 			return true;
 		}

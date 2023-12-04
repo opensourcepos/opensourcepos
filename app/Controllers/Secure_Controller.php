@@ -49,7 +49,7 @@ class Secure_Controller extends BaseController
 
 		// load up global global_view_data visible to all the loaded views
 		$this->session = session();
-		if($menu_group == NULL)
+		if($menu_group == null)
 		{
 			$menu_group = $this->session->get('menu_group');
 		}
@@ -62,6 +62,7 @@ class Secure_Controller extends BaseController
 			? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
 			: $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
+		$global_view_data = [];
 		foreach($allowed_modules->getResult() as $module)
 		{
 			$global_view_data['allowed_modules'][] = $module;

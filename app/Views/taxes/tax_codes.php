@@ -3,30 +3,30 @@
  * @var array $tax_codes
  */
 ?>
-<?php echo form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
 <div id="config_wrapper">
 	<fieldset id="config_info">
-		<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+		<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 		<ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
 		<div id="tax_codes">
-			<?php echo view('partial/tax_codes', ['tax_codes' => $tax_codes]) ?>
+			<?= view('partial/tax_codes', ['tax_codes' => $tax_codes]) ?>
 		</div>
 
-		<?php echo form_submit ([
+		<?= form_submit ([
 			'name' => 'submit_tax_codes',
 			'id' => 'submit_tax_codes',
 			'value' => lang('Common.submit'),
 			'class' => 'btn btn-primary btn-sm pull-right']) ?>
 	</fieldset>
 </div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		var tax_code_count = <?php echo sizeof($tax_codes) ?>;
+		var tax_code_count = <?= sizeof($tax_codes) ?>;
 		if (tax_code_count == 0) {
 			tax_code_count = 1;
 		}
@@ -51,7 +51,7 @@
 			++tax_code_count;
 			var new_tax_code_id = 'tax_code_' + tax_code_count;
 
-			$(new_block).find('label').html("<?php echo lang('Taxes.tax_code') ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
+			$(new_block).find('label').html("<?= lang('Taxes.tax_code') ?> " + tax_code_count).attr('for', new_tax_code_id).attr('class', 'control-label col-xs-2');
 			$(new_block).find("input[name='tax_code[]']").attr('id', new_tax_code_id).removeAttr('disabled').attr('class', 'form-control text-uppercase required input-sm').val('');
 			$(new_block).find("input[name='tax_code_name[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
 			$(new_block).find("input[name='city[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
@@ -83,34 +83,34 @@
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('Taxes.tax_code_duplicate') ?>");
+		}, "<?= lang('Taxes.tax_code_duplicate') ?>");
 
 		$.validator.addMethod('validateTaxCodeCharacters', function(value, element) {
 			if ((value.indexOf('_') != -1)) {
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('Taxes.tax_code_invalid_chars') ?>");
+		}, "<?= lang('Taxes.tax_code_invalid_chars') ?>");
 
 		$.validator.addMethod('requireTaxCode', function(value, element) {
 			if (value .trim() == '') {
 				return false;
 			}
 			return true;
-		}, "<?php echo lang('Taxes.tax_code_required') ?>");
+		}, "<?= lang('Taxes.tax_code_required') ?>");
 
 		$('#tax_codes_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_codes").load('<?php echo "taxes/ajax_tax_codes" ?>', init_add_remove_tax_codes);
+						$("#tax_codes").load('<?= "taxes/ajax_tax_codes" ?>', init_add_remove_tax_codes);
 					},
 					dataType: 'json'
 				});
 			},
 			invalidHandler: function(event, validator) {
-				$.notify("<?php echo lang('Common.correct_errors') ?>");
+				$.notify("<?= lang('Common.correct_errors') ?>");
 			},
 			errorLabelContainer: "#tax_code_error_message_box"
 		}));
@@ -120,7 +120,7 @@
 		foreach($tax_codes as $tax_code => $tax_code_data)
 		{
 		?>
-		$('<?php echo '#tax_code_' . ++$i ?>').rules( "add", {
+		$('<?= '#tax_code_' . ++$i ?>').rules( "add", {
 			requireTaxCode: true,
 			check4TaxCodeDups: true,
 			validateTaxCodeCharacters: true

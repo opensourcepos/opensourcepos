@@ -386,16 +386,16 @@ class Taxes extends Secure_Controller
 		{
 			if($tax_rate_id == NEW_ENTRY)
 			{//TODO: this needs to be replaced with ternary notation
-				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successfully_added')]);
+				echo json_encode (['success' => true, 'message' => lang('Taxes.tax_rate_successfully_added')]);
 			}
 			else //Existing tax_code
 			{
-				echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_rate_successful_updated')]);
+				echo json_encode (['success' => true, 'message' => lang('Taxes.tax_rate_successful_updated')]);
 			}
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_rate_error_adding_updating')]);
+			echo json_encode (['success' => false, 'message' => lang('Taxes.tax_rate_error_adding_updating')]);
 		}
 	}
 
@@ -405,10 +405,10 @@ class Taxes extends Secure_Controller
 
 		if($this->tax->delete_list($tax_codes_to_delete))	//TODO: this needs to be replaced with ternary notation
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Taxes.tax_code_successful_deleted')]);
+			echo json_encode (['success' => true, 'message' => lang('Taxes.tax_code_successful_deleted')]);
 		} else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Taxes.tax_code_cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Taxes.tax_code_cannot_be_deleted')]);
 		}
 	}
 
@@ -483,7 +483,7 @@ class Taxes extends Secure_Controller
 			if (in_array($tax_group[$key], $unique_tax_groups))	//TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
 			{
 				echo json_encode ([
-					'success' => FALSE,
+					'success' => false,
 					'message' => lang('Taxes.tax_group_not_unique', [$tax_group[$key]])
 				]);
 				return;

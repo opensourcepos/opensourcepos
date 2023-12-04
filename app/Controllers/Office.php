@@ -13,7 +13,7 @@ class Office extends Secure_Controller
 
 	function __construct()
 	{
-		parent::__construct('office', NULL, 'office');
+		parent::__construct('office', null, 'office');
 	}
 
 	public function getIndex(): void

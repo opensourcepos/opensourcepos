@@ -79,7 +79,7 @@ class Expense extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): int
 	{
-		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', true);
 	}
 
 	/**
@@ -94,14 +94,14 @@ class Expense extends Model
 	 * @param bool|null $count_only
 	 * @return ResultInterface|false|string
 	 */
-	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'expense_id', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'expense_id', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'expense_id';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('expenses AS expenses');
@@ -240,9 +240,9 @@ class Expense extends Model
 		}
 
 		$empty_obj = $this->getEmptyObject('expenses');
-		$empty_obj->supplier_name = NULL;
-		$empty_obj->first_name = NULL;
-		$empty_obj->last_name = NULL;
+		$empty_obj->supplier_name = null;
+		$empty_obj->first_name = null;
+		$empty_obj->last_name = null;
 
 		return $empty_obj;
 	}
@@ -269,7 +269,7 @@ class Expense extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -289,10 +289,10 @@ class Expense extends Model
 			{
 				$expense_data['expense_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('expense_id', $expense_id);

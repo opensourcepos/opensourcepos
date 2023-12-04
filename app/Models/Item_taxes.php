@@ -35,7 +35,7 @@ class Item_taxes extends Model
 	 */
 	public function save_value(array &$items_taxes_data, int $item_id): bool
 	{
-		$success = TRUE;
+		$success = true;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -62,7 +62,7 @@ class Item_taxes extends Model
 	 */
 	public function save_multiple(array &$items_taxes_data, string $item_ids): bool	//TODO: investigate why this is sent as a : delimited string rather than an array.
 	{
-		$success = TRUE;
+		$success = true;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();

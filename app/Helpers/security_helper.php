@@ -29,7 +29,7 @@ function check_encryption(): bool
 
 		@chmod($config_path, 0660);
 		@chmod($backup_path, 0660);
-		
+
 		$config_file = file_get_contents($config_path);
 		$config_file = preg_replace("/(encryption\.key.*=.*)('.*')/", "$1'$key'", $config_file);
 
@@ -41,23 +41,23 @@ function check_encryption(): bool
 		}
 
 		$handle = @fopen($config_path, 'w+');
-		
+
 		if(empty($handle))
 		{
 			log_message('error', "Unable to open $config_path for updating");
 			return false;
 		}
-		
+
 		@chmod($config_path, 0660);
 		$write_failed = !fwrite($handle, $config_file);
 		fclose($handle);
-		
+
 		if($write_failed)
 		{
 			log_message('error', "Unable to write to $config_path for updating.");
-			return false; 
+			return false;
 		}
-		log_message('info', "File $config_path has been updated."); 
+		log_message('info', "File $config_path has been updated.");
 	}
 
 	return true;
@@ -71,13 +71,13 @@ function abort_encryption_conversion()
 	$config_file = file_get_contents($backup_path);
 
 	$handle = @fopen($config_path, 'w+');
-	
+
 	if(empty($handle))
 	{
 		log_message('error', "Unable to open $config_path to undo encryption conversion");
 	}
-	else 
-	{	
+	else
+	{
 		@chmod($config_path, 0660);
 		$write_failed = !fwrite($handle, $config_file);
 		fclose($handle);
@@ -87,7 +87,7 @@ function abort_encryption_conversion()
 			log_message('error', "Unable to write to $config_path to undo encryption conversion.");
 			return;
 		}
-		log_message('info', "File $config_path has been updated to undo encryption conversion"); 
+		log_message('info', "File $config_path has been updated to undo encryption conversion");
 	}
 }
 
@@ -98,10 +98,10 @@ function remove_backup()
 	{
 		return;
 	}
-	if(unlink($backup_path) === false)
+	if(!unlink($backup_path))
 	{
 		log_message('error', "Unable to remove $backup_path.");
 		return;
 	}
-	log_message('info', "File $backup_path has been removed"); 
+	log_message('info', "File $backup_path has been removed");
 }
