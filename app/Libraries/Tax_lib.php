@@ -62,7 +62,7 @@ class Tax_lib
 		$decimals = tax_decimals();
 
 		// The tax basis should be returned to the currency scale
-		$tax_basis = $this->sale_lib->get_item_total($quantity, $price, $discount, $discount_type, TRUE);
+		$tax_basis = $this->sale_lib->get_item_total($quantity, $price, $discount, $discount_type, true);
 
 		return $this->get_tax_for_amount($tax_basis, $tax_percentage, $rounding_code, $decimals);
 	}
@@ -94,7 +94,7 @@ class Tax_lib
 		{
 			foreach($cart as $line => $item)
 			{
-				$taxed = FALSE;
+				$taxed = false;
 
 				if(!$this->config['use_destination_based_tax'])
 				{
@@ -116,7 +116,7 @@ class Tax_lib
 					foreach($tax_info as $tax)
 					{
 						// This computes tax for each line item and adds it to the tax type total
-						$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
+						$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true);
 						$tax_amount = '0.0';
 
 						if($this->config['tax_included'])
@@ -135,7 +135,7 @@ class Tax_lib
 							$tax_group_sequence++;
 							$this->update_taxes($taxes, $tax_type, $tax['name'], $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);    //TODO: Replace -1 with constant.
 							$tax_group_sequence += 1;	//TODO: $tax_group_sequence++;
-							$taxed = TRUE;
+							$taxed = true;
 						}
 
 						$items_taxes_detail = [];
@@ -147,9 +147,9 @@ class Tax_lib
 						$items_taxes_detail['rounding_code'] = Rounding_mode::HALF_UP;
 						$items_taxes_detail['cascade_sequence'] = 0;
 						$items_taxes_detail['item_tax_amount'] = $tax_amount;
-						$items_taxes_detail['sales_tax_code_id'] = NULL;
-						$items_taxes_detail['jurisdiction_id'] = NULL;
-						$items_taxes_detail['tax_category_id'] = NULL;
+						$items_taxes_detail['sales_tax_code_id'] = null;
+						$items_taxes_detail['jurisdiction_id'] = null;
+						$items_taxes_detail['tax_category_id'] = null;
 
 						$item_taxes[] = $items_taxes_detail;
 					}
@@ -157,7 +157,7 @@ class Tax_lib
 				else
 				{
 					// Start of destination based tax calculations
-					if($item['tax_category_id'] == NULL)	//TODO: === ?
+					if($item['tax_category_id'] == null)	//TODO: === ?
 					{
 						$item['tax_category_id'] = $this->config['default_tax_category'];
 					}
@@ -186,7 +186,7 @@ class Tax_lib
 
 	public function get_included_tax(string $quantity, string $price, string $discount_percentage, int $discount_type, string $tax_percentage, $tax_decimal, $rounding_code): string	//TODO: $tax_decimal and $rounding_code are in the signature but never used in the function.
 	{
-		$item_total = $this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, TRUE);
+		$item_total = $this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, true);
 		$tax_fraction = bcdiv(bcadd('100', $tax_percentage), '100');
 		$price_tax_excl = bcdiv($item_total, $tax_fraction);
 		return bcsub($item_total, $price_tax_excl);
@@ -195,7 +195,7 @@ class Tax_lib
 	/**
 	* Updates the sales_tax array which is later saved to the `sales_taxes` table and used for printing taxes on receipts and invoices
 	*/
-	public function update_taxes(array &$taxes, string $tax_type, string $tax_group, string $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', int $tax_code_id = NULL, int $jurisdiction_id = NULL, int $tax_category_id = NULL): void
+	public function update_taxes(array &$taxes, string $tax_type, string $tax_group, string $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', int $tax_code_id = null, int $jurisdiction_id = null, int $tax_category_id = null): void
 	{
 		$tax_group_index = $this->clean('X' . (float)$tax_rate . '% ' . $tax_group);	//TODO: Not sure we should be casting to a float here.  The clean() function takes a string, so it just gets converted back to a string and there's risk of inaccuracies in the value displayed.
 
@@ -328,7 +328,7 @@ class Tax_lib
 	 */
 	public function apply_destination_tax(array &$item, string $city, string $state, int $sales_tax_code_id, string $register_mode, int $sale_id, array &$taxes, array &$item_taxes, int $line): bool
 	{
-		$taxed = FALSE;
+		$taxed = false;
 
 		$tax_code_id = $this->get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code_id);
 
@@ -340,7 +340,7 @@ class Tax_lib
 			$tax_definition = $this->tax->get_taxes($tax_code_id, $item['tax_category_id']);
 
 			// The tax basis should be returned to the currency scale
-			$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
+			$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], true);
 
 			$row = 0;	//TODO: This variable is set but never used.
 
@@ -374,7 +374,7 @@ class Tax_lib
 
 				if($tax_amount != 0)
 				{
-					$taxed = TRUE;
+					$taxed = true;
 					$this->update_taxes($taxes, $tax_type, $tax['tax_group'], $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
 				}
 
@@ -407,11 +407,11 @@ class Tax_lib
 		}
 		else
 		{
-			if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
+			if($sales_tax_code_id == null || $sales_tax_code_id == 0)
 			{
 				$sales_tax_code_id = $this->tax_code->get_sales_tax_code($city, $state);
 
-				if($sales_tax_code_id == NULL || $sales_tax_code_id == 0)
+				if($sales_tax_code_id == null || $sales_tax_code_id == 0)
 				{
 					$sales_tax_code_id = $this->config['default_tax_code']; // overrides customer assigned code
 				}

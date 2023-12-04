@@ -5,15 +5,16 @@
  * @var array $series_data_1
  * @var bool $show_currency
  * @var string $xaxis_title
+ * @var array $config
  */
 ?>
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode(esc($labels_1, 'js')) ?>,
+		labels: <?= json_encode(esc($labels_1, 'js')) ?>,
 		series: [{
-			name: '<?php echo esc($yaxis_title, 'js') ?>',
-			data: <?php echo json_encode(esc($series_data_1, 'js')) ?>
+			name: '<?= esc($yaxis_title, 'js') ?>',
+			data: <?= json_encode(esc($series_data_1, 'js')) ?>
 		}]
 	};
 
@@ -68,13 +69,13 @@
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo esc($config['currency_symbol'], 'js') ?>';
+						return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo esc($config['currency_symbol'], 'js') ?>' + value;
+						return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 						<?php
 					}
 				}
@@ -92,7 +93,7 @@
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
 				axisX: {
-					axisTitle: '<?php echo esc($xaxis_title, 'js') ?>',
+					axisTitle: '<?= esc($xaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: -100,
@@ -101,7 +102,7 @@
 					textAnchor: 'middle'
 				},
 				axisY: {
-					axisTitle: '<?php echo esc($yaxis_title, 'js') ?>',
+					axisTitle: '<?= esc($yaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,
@@ -121,13 +122,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo esc($config['currency_symbol'], 'js') ?>';
+							return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo esc($config['currency_symbol'], 'js') ?>' + value;
+							return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 					<?php
 						}
 					}
@@ -140,7 +141,7 @@
 					?>
 				}
 			}),
-			
+
 			Chartist.plugins.tooltip({
 				pointClass: 'ct-tooltip-point',
 				transformTooltipTextFnc: function(value) {
@@ -150,13 +151,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo esc($config['currency_symbol'], 'js') ?>';
+							return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo esc($config['currency_symbol'], 'js') ?>' + value;
+							return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 					<?php
 						}
 					}
@@ -171,7 +172,7 @@
 			})
 		]
 	};
-	
+
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',
@@ -187,7 +188,7 @@
 	];
 
 	chart = new Chartist.Line('#chart1', data, options, responsiveOptions);
-	
+
 	chart.on('draw', function(data) {
 		// If the draw event was triggered from drawing a point on the line chart
 		if(data.type === 'point') {
@@ -195,7 +196,7 @@
 			var circle = new Chartist.Svg('circle', {
 				cx: [data.x],
 				cy: [data.y],
-				r: [5], 
+				r: [5],
 				'ct:value': data.value.y,
 				'ct:meta': data.meta,
 				class: 'ct-tooltip-point',

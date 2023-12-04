@@ -126,7 +126,7 @@
 
 						if($standard_item_locked)
 						{
-							$radio_button['disabled'] = TRUE;
+							$radio_button['disabled'] = true;
 						}
 						echo form_radio($radio_button) ?> <?= lang('Items.standard') ?>
 				</label>
@@ -142,7 +142,7 @@
 
 						if($item_kit_disabled)
 						{
-							$radio_button['disabled'] = TRUE;
+							$radio_button['disabled'] = true;
 						}
 						echo form_radio($radio_button) ?> <?= lang('Items.kit') ?>
 				</label>

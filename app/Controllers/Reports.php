@@ -534,7 +534,7 @@ class Reports extends Secure_Controller
 
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations, true);
 		$data['mode'] = 'sale';
 		$data['discount_type_options'] = ['0' => lang('Reports.discount_percent'), '1'=> lang('Reports.discount_fixed')];
 		$data['sale_type_options'] = $this->get_sale_type_options();
@@ -649,7 +649,7 @@ class Reports extends Secure_Controller
 
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] = lang('Reports.all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations, true);
 		$data['mode'] = 'sale';
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
@@ -672,7 +672,7 @@ class Reports extends Secure_Controller
 
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  lang('Reports.all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations, true);
 		$data['mode'] = 'sale';
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
@@ -683,7 +683,7 @@ class Reports extends Secure_Controller
 	{
 		$stock_locations = $data = $this->stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  lang('Reports.all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations, true);
 		$data['mode'] = 'receiving';
 
 		echo view('reports/date_input', $data);
@@ -721,7 +721,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -760,7 +760,7 @@ class Reports extends Secure_Controller
 			'summary_data_1' => $summary,
 			'yaxis_title' => lang('Reports.revenue'),
 			'xaxis_title' => lang('Reports.date'),
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -800,7 +800,7 @@ class Reports extends Secure_Controller
 			'summary_data_1' => $summary,
 			'yaxis_title' => lang('Reports.items'),
 			'xaxis_title' => lang('Reports.revenue'),
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -836,7 +836,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -874,7 +874,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -911,7 +911,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -948,7 +948,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -985,7 +985,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -1024,7 +1024,7 @@ class Reports extends Secure_Controller
 			'summary_data_1' => $summary,
 			'yaxis_title' => lang('Reports.customers'),
 			'xaxis_title' => lang('Reports.revenue'),
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -1064,7 +1064,7 @@ class Reports extends Secure_Controller
 			'summary_data_1' => $summary,
 			'yaxis_title' => lang('Reports.count'),
 			'xaxis_title' => lang('Reports.discount'),
-			'show_currency' => FALSE
+			'show_currency' => false
 		];
 
 		echo view('reports/graphical', $data);
@@ -1104,7 +1104,7 @@ class Reports extends Secure_Controller
 			'labels_1' => $labels,
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
-			'show_currency' => TRUE
+			'show_currency' => true
 		];
 
 		echo view('reports/graphical', $data);
@@ -1884,7 +1884,7 @@ class Reports extends Secure_Controller
 
 		$stock_locations = $this->stock_location->get_allowed_locations();
 		$stock_locations['all'] = lang('Reports.all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations, true);
 
 		echo view('reports/inventory_summary_input', $data);
 	}

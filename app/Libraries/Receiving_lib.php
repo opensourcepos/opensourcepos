@@ -182,7 +182,7 @@ class Receiving_lib
 		$this->session->remove('recv_stock_destination');
 	}
 	//TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
-	public function add_item(int $item_id, int $quantity = 1, int $item_location = NULL, float $discount = 0, int $discount_type = 0, float $price = NULL, string $description = NULL, string $serialnumber = NULL, float $receiving_quantity = NULL, int $receiving_id = NULL, bool $include_deleted = FALSE): bool
+	public function add_item(int $item_id, int $quantity = 1, int $item_location = null, float $discount = 0, int $discount_type = 0, float $price = null, string $description = null, string $serialnumber = null, float $receiving_quantity = null, int $receiving_id = null, bool $include_deleted = false): bool
 	{
 		$config = config(OSPOS::class)->settings;
 
@@ -194,7 +194,7 @@ class Receiving_lib
 
 			if(!$item_id)
 			{
-				return FALSE;
+				return false;
 			}
 		}
 
@@ -207,7 +207,7 @@ class Receiving_lib
 		//item to the list. Since items can be deleted, we can't use a count. we use the highest key + 1.
 
 		$maxkey = 0;					//Highest key so far
-		$itemalreadyinsale = FALSE;		//We did not find the item yet.
+		$itemalreadyinsale = false;		//We did not find the item yet.
 		$updatekey = 0;					//Key to use to update(quantity)
 
 		foreach($items as $item)
@@ -224,7 +224,7 @@ class Receiving_lib
 
 			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)
 			{
-				$itemalreadyinsale = TRUE;
+				$itemalreadyinsale = true;
 				$updatekey = $item['line'];
 			}
 		}
@@ -233,7 +233,7 @@ class Receiving_lib
 		$item_info = $this->item->get_info($item_id);
 
 		//array records are identified by $insertkey and item_id is just another field.
-		$price = $price != NULL ? $price : $item_info->cost_price;
+		$price = $price != null ? $price : $item_info->cost_price;
 
 		if($config['multi_pack_enabled'])
 		{
@@ -267,8 +267,8 @@ class Receiving_lib
 				'stock_name' => $this->stock_location->get_location_name($item_location),
 				'line' => $insertkey,
 				'name' => $item_info->name,
-				'description' => $description != NULL ? $description: $item_info->description,
-				'serialnumber' => $serialnumber != NULL ? $serialnumber: '',
+				'description' => $description != null ? $description: $item_info->description,
+				'serialnumber' => $serialnumber != null ? $serialnumber: '',
 				'attribute_values' => $attribute_links->attribute_values,
 				'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
 				'allow_alt_description' => $item_info->allow_alt_description,
@@ -298,7 +298,7 @@ class Receiving_lib
 
 		$this->set_cart($items);
 
-		return TRUE;
+		return true;
 	}
 
 	public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, int $discount_type, float $price, float $receiving_quantity): bool
@@ -323,7 +323,7 @@ class Receiving_lib
 			$this->set_cart($items);
 		}
 
-		return FALSE;	//TODO: This function will always return false.
+		return false;	//TODO: This function will always return false.
 	}
 
 	/**
@@ -356,7 +356,7 @@ class Receiving_lib
 
 		foreach($this->receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
 		}
 
 		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
@@ -381,7 +381,7 @@ class Receiving_lib
 
 		foreach($this->receiving->get_receiving_items($receiving_id)->getResult() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
 		}
 
 		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);

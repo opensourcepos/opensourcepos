@@ -1,5 +1,10 @@
 <?php
 	use Config\OSPOS;
+
+/**
+ * @var string $db_version
+ * @var array $config
+ */
 ?>
 <style>
 	 a:hover {
@@ -22,9 +27,9 @@
 			<p>Permissions</p></strong>
 			</div>
 			<div class="col-sm-8" id="issuetemplate" style="text-align: left;"><br>
-				<?php echo lang('Config.ospos_info') . ':' ?>
-				<?php echo esc(config('App')->application_version) ?> - <?php echo esc(substr(config(OSPOS::class)->commit_sha1, 0, 6)) ?><br>
-				Language Code: <?php echo current_language_code() ?><br><br>
+				<?= lang('Config.ospos_info') . ':' ?>
+				<?= esc(config('App')->application_version) ?> - <?= esc(substr(config(OSPOS::class)->commit_sha1, 0, 6)) ?><br>
+				Language Code: <?= current_language_code() ?><br><br>
 				<div id="TimeError"></div>
 				Extensions & Modules:<br>
 					<?php
@@ -51,11 +56,11 @@
 						}
 						 echo esc(get_browser_name($_SERVER['HTTP_USER_AGENT']));
 					?><br>
-				.Server Software: <?php echo esc($_SERVER['SERVER_SOFTWARE']) ?><br>
-				.PHP Version: <?php echo PHP_VERSION ?><br>
-				.DB Version: <?php echo esc($db_version) ?><br>
-				.Server Port: <?php echo esc($_SERVER['SERVER_PORT']) ?><br>
-				.OS: <?php echo php_uname('s') .' '. php_uname('r') ?><br><br>
+				.Server Software: <?= esc($_SERVER['SERVER_SOFTWARE']) ?><br>
+				.PHP Version: <?= PHP_VERSION ?><br>
+				.DB Version: <?= esc($db_version) ?><br>
+				.Server Port: <?= esc($_SERVER['SERVER_PORT']) ?><br>
+				.OS: <?= php_uname('s') .' '. php_uname('r') ?><br><br>
 				File Permissions:<br>
 						&#187; [writeable/logs:]
 						<?php $logs = WRITEPATH . 'logs/';
@@ -188,14 +193,14 @@
 						?>
 						<br>
 				<div id="timezone" style="font-weight:600;"></div><br><br>
-				<div id="ostimezone" style="display:none;" ><?php echo esc($config['timezone']) ?></div><br>
+				<div id="ostimezone" style="display:none;" ><?= esc($config['timezone']) ?></div><br>
 				<br>
 			</div>
 		</div>
 	</div>
 </div>
 <div style="text-align: center;">
-		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?php echo lang('Config.report_an_issue') ?></a>
+		<a class="copy" data-clipboard-action="copy" data-clipboard-target="#issuetemplate">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> <?= lang('Config.report_an_issue') ?></a>
 		<script>
 			var clipboard = new ClipboardJS('.copy');
 
@@ -210,6 +215,6 @@
 			});
 
 			if($('#timezone').html() !== $('#ostimezone').html())
-			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?php echo lang('Config.timezone_error') ?></span><br><br><?php echo lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?php echo lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?php echo esc($config['timezone']) ?></div><br>';
+			document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?= lang('Config.timezone_error') ?></span><br><br><?= lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?= lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?= esc($config['timezone']) ?></div><br>';
 		</script>
 </div>

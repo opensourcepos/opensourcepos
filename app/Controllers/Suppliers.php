@@ -128,7 +128,7 @@ class Suppliers extends Persons
 			'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'category' => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
@@ -138,7 +138,7 @@ class Suppliers extends Persons
 			if($supplier_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
 					'id' => $supplier_data['person_id']
 				]);
@@ -146,7 +146,7 @@ class Suppliers extends Persons
 			else //Existing supplier
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
 					'id' => $supplier_id]);
 			}
@@ -154,7 +154,7 @@ class Suppliers extends Persons
 		else//failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Suppliers.error_adding_updating') . ' ' . 	$supplier_data['company_name'],
 				'id' => NEW_ENTRY
 			]);
@@ -171,13 +171,13 @@ class Suppliers extends Persons
 		if($this->supplier->delete_list($suppliers_to_delete))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliers_to_delete) . ' ' . lang('Suppliers.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Suppliers.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);
 		}
 	}
 }

@@ -25,7 +25,7 @@ class Detailed_sales extends Report
 			'summary' => [
 				['id' => lang('Reports.sale_id')],
 				['type_code' => lang('Reports.code_type')],
-				['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
+				['sale_time' => lang('Reports.date'), 'sortable' => false],
 				['quantity' => lang('Reports.quantity')],
 				['employee_name' => lang('Reports.sold_by')],
 				['customer_name' => lang('Reports.sold_to')],
@@ -34,7 +34,7 @@ class Detailed_sales extends Report
 				['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
 				['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
 				['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-				['payment_type' => lang('Reports.payment_type'), 'sortable' => FALSE],
+				['payment_type' => lang('Reports.payment_type'), 'sortable' => false],
 				['comment' => lang('Reports.comments')]
 			],
 			'details' => [

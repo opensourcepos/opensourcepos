@@ -109,12 +109,12 @@ class Attributes extends Secure_Controller
 	//Save definition data
 		$definition_data = [
 			'definition_name' => $this->request->getPost('definition_name'),
-			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : NULL,
+			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
 			'definition_flags' => $definition_flags,
-			'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : NULL
+			'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
 		];
 
-		if ($this->request->getPost('definition_type') != NULL)
+		if ($this->request->getPost('definition_type') != null)
 		{
 			$definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type')];
 		}
@@ -134,7 +134,7 @@ class Attributes extends Secure_Controller
 				}
 
 				echo json_encode([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Attributes.definition_successful_adding') . ' ' . $definition_name,
 					'id' => $definition_data['definition_id']
 				]);
@@ -143,7 +143,7 @@ class Attributes extends Secure_Controller
 			else
 			{
 				echo json_encode([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
 					'id' => $definition_id
 				]);
@@ -153,7 +153,7 @@ class Attributes extends Secure_Controller
 		else
 		{
 			echo json_encode([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
 				'id' => NEW_ENTRY
 			]);
@@ -243,11 +243,11 @@ class Attributes extends Secure_Controller
 		if($this->attribute->delete_definition_list($attributes_to_delete))
 		{
 			$message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
-			echo json_encode(['success' => TRUE, 'message' => $message]);
+			echo json_encode(['success' => true, 'message' => $message]);
 		}
 		else
 		{
-			echo json_encode(['success' => FALSE, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
+			echo json_encode(['success' => false, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
 		}
 	}
 }

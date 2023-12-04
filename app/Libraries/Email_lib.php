@@ -54,7 +54,7 @@ class Email_lib
 	 * Email sending function
 	 * Example of use: $response = sendEmail('john@doe.com', 'Hello', 'This is a message', $filename);
 	 */
-	public function sendEmail(string $to, string $subject, string $message, string $attachment = NULL): bool
+	public function sendEmail(string $to, string $subject, string $message, string $attachment = null): bool
 	{
 		$email = $this->email;
 

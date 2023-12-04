@@ -75,7 +75,7 @@ class Tax_category extends Model
 	/**
 	 *  Returns all rows from the table
 	 *///TODO: I think we should work toward having all these get_all functions with the same signature.  It makes it easier to use them.  This signature is different from the others.
-	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = TRUE): ResultInterface	//TODO: $no_deleted needs a new name.  $not_deleted is the correct grammar, but it's a bit confusing by naming the variable a negative.  Probably better to name it is_deleted and flip the logic
+	public function get_all(int $rows = 0, int $limit_from = 0, bool $no_deleted = true): ResultInterface	//TODO: $no_deleted needs a new name.  $not_deleted is the correct grammar, but it's a bit confusing by naming the variable a negative.  Probably better to name it is_deleted and flip the logic
 	{
 		$builder = $this->db->table('tax_categories');
 		if($no_deleted)
@@ -119,10 +119,10 @@ class Tax_category extends Model
 			{
 				$tax_category_data['tax_category_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('tax_category_id', $tax_category_id);
@@ -202,20 +202,20 @@ class Tax_category extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'tax_category', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'tax_category', 'asc', true);
 	}
 
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_category', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'tax_category';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('tax_categories AS tax_categories');
 

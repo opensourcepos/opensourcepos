@@ -104,7 +104,7 @@ class Giftcard extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -127,7 +127,7 @@ class Giftcard extends Model
 			return $query->getRow()->giftcard_id;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -157,10 +157,10 @@ class Giftcard extends Model
 				$giftcard_data['giftcard_number'] = $this->db->insertID();
 				$giftcard_data['giftcard_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('giftcard_id', $giftcard_id);
@@ -247,27 +247,27 @@ class Giftcard extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'giftcard_number', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'giftcard_number', 'asc', true);
 	}
 
 	/**
 	 * Performs a search on giftcards
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'giftcard_number', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'giftcard_number';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'giftcard_number';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('giftcards');
 

@@ -6,13 +6,14 @@
  * @var array $details_data
  * @var array $headers
  * @var array $summary_data
+ * @var array $config
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
-<div id="page_title"><?php echo esc($title) ?></div>
+<div id="page_title"><?= esc($title) ?></div>
 
-<div id="page_subtitle"><?php echo esc($subtitle) ?></div>
+<div id="page_subtitle"><?= esc($subtitle) ?></div>
 
 <div id="table_holder">
 	<table id="table"></table>
@@ -23,7 +24,7 @@
 		foreach($overall_summary_data as $name => $value)
 		{
 		?>
-			<div class="summary_row"><?php echo lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+			<div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
 		<?php
 		}
 	?>
@@ -32,14 +33,14 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-	 	<?php echo view('partial/bootstrap_tables_locale') ?>
+	 	<?= view('partial/bootstrap_tables_locale') ?>
 
-		var details_data = <?php echo json_encode(esc($details_data, 'js')) ?>;
+		var details_data = <?= json_encode(esc($details_data, 'js')) ?>;
 		<?php
-		if($config['customer_reward_enable'] == TRUE && !empty($details_data_rewards))	//TODO: === ?
+		if($config['customer_reward_enable'] && !empty($details_data_rewards))
 		{
 		?>
-			var details_data_rewards = <?php echo json_encode(esc($details_data_rewards, 'js')) ?>;
+			var details_data_rewards = <?= json_encode(esc($details_data_rewards, 'js')) ?>;
 		<?php
 		}
 		?>
@@ -48,7 +49,7 @@
 			if(isset($editable))
 			{
 			?>
-				table_support.submit_handler('<?php echo esc(site_url("reports/get_detailed_$editable" . '_row'), 'url') ?>');
+				table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row'), 'url') ?>');
 				dialog_support.init("a.modal-dlg");
 			<?php
 			}
@@ -59,11 +60,11 @@
 			.addClass("table-striped")
 			.addClass("table-bordered")
 			.bootstrapTable({
-				columns: <?php echo transform_headers(esc($headers['summary'], 'js'), TRUE) ?>,
+				columns: <?= transform_headers(esc($headers['summary'], 'js'), true) ?>,
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
-				pageSize: <?php echo $config['lines_per_page'] ?>,
+				pageSize: <?= $config['lines_per_page'] ?>,
 				pagination: true,
 				sortable: true,
 				showColumns: true,
@@ -71,7 +72,7 @@
 				showExport: true,
 				exportDataType: 'all',
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-				data: <?php echo json_encode(esc($summary_data, 'js')) ?>,
+				data: <?= json_encode(esc($summary_data, 'js')) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
 				detailView: true,
@@ -83,16 +84,16 @@
 				},
 				onExpandRow: function (index, row, $detail) {
 					$detail.html('<table></table>').find("table").bootstrapTable({
-						columns: <?php echo transform_headers_readonly(esc($headers['details'], 'js')) ?>,
+						columns: <?= transform_headers_readonly(esc($headers['details'], 'js')) ?>,
 						data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 					});
 
 					<?php
-					if($config['customer_reward_enable'] == TRUE && !empty($details_data_rewards))
+					if($config['customer_reward_enable'] && !empty($details_data_rewards))
 					{
 					?>
 						$detail.append('<table></table>').find("table").bootstrapTable({
-							columns: <?php echo transform_headers_readonly(esc($headers['details_rewards'], 'js')) ?>,
+							columns: <?= transform_headers_readonly(esc($headers['details_rewards'], 'js')) ?>,
 							data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 						});
 					<?php
@@ -105,4 +106,4 @@
 	});
 </script>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>

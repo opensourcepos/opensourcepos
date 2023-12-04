@@ -80,7 +80,7 @@ class Appconfig extends Model
 	 */
 	public function batch_save(array $data): bool
 	{
-		$success = TRUE;
+		$success = true;
 
 		$this->db->transStart();
 

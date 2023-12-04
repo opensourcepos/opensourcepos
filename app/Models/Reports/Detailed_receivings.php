@@ -24,7 +24,7 @@ class Detailed_receivings extends Report
 		return [
 			'summary' => [
 				['id' => lang('Reports.receiving_id')],
-				['receiving_time' => lang('Reports.date'), 'sortable' => FALSE],
+				['receiving_time' => lang('Reports.date'), 'sortable' => false],
 				['quantity' => lang('Reports.quantity')],
 				['employee_name' => lang('Reports.received_by')],
 				['supplier_name' => lang('Reports.supplied_by')],

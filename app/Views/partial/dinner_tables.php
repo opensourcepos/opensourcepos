@@ -12,8 +12,8 @@ foreach($dinner_tables as $table_key => $table)
 	$dinner_table_name = $table['name'];
 	++$i;
 ?>
-	<div class="form-group form-group-sm" style="<?php echo $table['deleted'] ? 'display:none;' : 'display:block;' ?>">
-		<?php echo form_label(lang('Config.dinner_table') . " $i", "dinner_table_$i", ['class' => 'required control-label col-xs-2']) ?>
+	<div class="form-group form-group-sm" style="<?= $table['deleted'] ? 'display:none;' : 'display:block;' ?>">
+		<?= form_label(lang('Config.dinner_table') . " $i", "dinner_table_$i", ['class' => 'required control-label col-xs-2']) ?>
 
 
 		<div class='col-xs-2'>

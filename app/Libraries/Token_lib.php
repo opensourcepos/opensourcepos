@@ -15,10 +15,10 @@ class Token_lib
 	/**
 	 * Expands all the tokens found in a given text string and returns the results.
 	 */
-	public function render(string $tokened_text, array $tokens = [], $save = TRUE): string
+	public function render(string $tokened_text, array $tokens = [], $save = true): string
 	{
 		// Apply the transformation for the "%" tokens if any are used
-		if(strpos($tokened_text, '%') !== FALSE)
+		if(strpos($tokened_text, '%') !== false)
 		{
 			$tokened_text = strftime($tokened_text);	//TODO: these need to be converted to IntlDateFormatter::format()
 		}
@@ -28,7 +28,7 @@ class Token_lib
 
 		if(empty($token_tree))
 		{
-			if(strpos($tokened_text, '%') !== FALSE)
+			if(strpos($tokened_text, '%') !== false)
 			{
 				return strftime($tokened_text);
 			}
@@ -87,7 +87,7 @@ class Token_lib
 				$quantity = (isset($parsed_results['W'])) ? (int) $parsed_results['W'] / 1000 : 1;
 				$item_id_or_number_or_item_kit_or_receipt = (isset($parsed_results['I'])) ?
 					$parsed_results['I'] : $item_id_or_number_or_item_kit_or_receipt;
-				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : NULL;
+				$price = (isset($parsed_results['P'])) ? (double) $parsed_results['P'] : null;
 			}
 		}
 		else
@@ -130,7 +130,7 @@ class Token_lib
 		return $results;
 	}
 
-	public function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, array $tokens, bool $save = TRUE): array	//TODO: $tokens
+	public function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, array $tokens, bool $save = true): array	//TODO: $tokens
 	{
 		foreach($used_tokens as $token_code => $token_info)
 		{
@@ -154,7 +154,7 @@ class Token_lib
 		return $token_values;
 	}
 
-	private function resolve_token($token_code, array $tokens = [], $save = TRUE): string
+	private function resolve_token($token_code, array $tokens = [], $save = true): string
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{

@@ -45,11 +45,11 @@ class Cashups extends Secure_Controller
 		$filters = [
 			 'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),	//TODO: Is this the best way to filter dates
 			 'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			 'is_deleted' => FALSE
+			 'is_deleted' => false
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), TRUE);	//TODO: $filledup doesn't follow variable naming patterns we are using.
+		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: $filledup doesn't follow variable naming patterns we are using.
 		$filters = array_merge($filters, $filledup);
 		$cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->cashup->get_found_rows($search, $filters);
@@ -171,12 +171,12 @@ class Cashups extends Secure_Controller
 
 			// lookup expenses paid in cash
 			$filters = [
-						 'only_cash' => TRUE,
-						 'only_due' => FALSE,
-						 'only_check' => FALSE,
-						 'only_credit' => FALSE,
-						 'only_debit' => FALSE,
-						 'is_deleted' => FALSE
+						 'only_cash' => true,
+						 'only_due' => false,
+						 'only_check' => false,
+						 'only_credit' => false,
+						 'only_debit' => false,
+						 'is_deleted' => false
 			];
 
 			$payments = $this->expense->get_payments_summary('', array_merge($inputs, $filters));
@@ -220,11 +220,11 @@ class Cashups extends Secure_Controller
 			'closed_amount_card' => parse_decimals($this->request->getPost('closed_amount_card', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'closed_amount_check' => parse_decimals($this->request->getPost('closed_amount_check', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'closed_amount_total' => parse_decimals($this->request->getPost('closed_amount_total', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'note' => $this->request->getPost('note') != NULL,
+			'note' => $this->request->getPost('note') != null,
 			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'open_employee_id' => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
 			'close_employee_id' => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
-			'deleted' => $this->request->getPost('deleted') != NULL
+			'deleted' => $this->request->getPost('deleted') != null
 		];
 
 		if($this->cashup->save_value($cash_up_data, $cashup_id))
@@ -232,16 +232,16 @@ class Cashups extends Secure_Controller
 			//New cashup_id
 			if($cashup_id == NEW_ENTRY)
 			{
-				echo json_encode(['success' => TRUE, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
+				echo json_encode(['success' => true, 'message' => lang('Cashups.successful_adding'), 'id' => $cash_up_data['cashup_id']]);
 			}
 			else // Existing Cashup
 			{
-				echo json_encode(['success' => TRUE, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
+				echo json_encode(['success' => true, 'message' => lang('Cashups.successful_updating'), 'id' => $cashup_id]);
 			}
 		}
 		else//failure
 		{
-			echo json_encode(['success' => FALSE, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
+			echo json_encode(['success' => false, 'message' => lang('Cashups.error_adding_updating'), 'id' => NEW_ENTRY]);
 		}
 	}
 
@@ -251,11 +251,11 @@ class Cashups extends Secure_Controller
 
 		if($this->cashup->delete_list($cash_ups_to_delete))
 		{
-			echo json_encode(['success' => TRUE, 'message' => lang('Cashups.successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('Cashups.one_or_multiple'), 'ids' => $cash_ups_to_delete]);
+			echo json_encode(['success' => true, 'message' => lang('Cashups.successful_deleted') . ' ' . count($cash_ups_to_delete) . ' ' . lang('Cashups.one_or_multiple'), 'ids' => $cash_ups_to_delete]);
 		}
 		else
 		{
-			echo json_encode(['success' => FALSE, 'message' => lang('Cashups.cannot_be_deleted'), 'ids' => $cash_ups_to_delete]);
+			echo json_encode(['success' => false, 'message' => lang('Cashups.cannot_be_deleted'), 'ids' => $cash_ups_to_delete]);
 		}
 	}
 

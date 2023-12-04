@@ -7,23 +7,24 @@
  * @var bool $use_destination_based_tax
  * @var string $sales_tax_code_label
  * @var string $employee
+ * @var array $config
  */
 ?>
-<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
-			<a data-toggle="tab" href="#customer_basic_info"><?php echo lang('Customers.basic_information') ?></a>
+			<a data-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
 		</li>
 		<?php
 		if(!empty($stats))
 		{
 		?>
 			<li role="presentation">
-				<a data-toggle="tab" href="#customer_stats_info"><?php echo lang('Customers.stats_info') ?></a>
+				<a data-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
 			</li>
 		<?php
 		}
@@ -33,7 +34,7 @@
 		{
 		?>
 			<li role="presentation">
-				<a data-toggle="tab" href="#customer_mailchimp_info"><?php echo lang('Customers.mailchimp_info') ?></a>
+				<a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
 			</li>
 		<?php
 		}
@@ -44,45 +45,45 @@
 		<div class="tab-pane fade in active" id="customer_basic_info">
 			<fieldset>
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
+						<?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
 					</div>
 				</div>
 
-				<?php echo view('people/form_basic_info') ?>
-				
+				<?= view('people/form_basic_info') ?>
+
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>
 					<div class="col-xs-8">
 						<label class="radio-inline">
-							<?php echo form_radio ([
+							<?= form_radio ([
 									'name' => 'discount_type',
 									'type' => 'radio',
 									'id' => 'discount_type',
 									'value' => 0,
 									'checked' => $person_info->discount_type == PERCENT
 								]
-							) ?> <?php echo lang('Customers.discount_percent') ?>
+							) ?> <?= lang('Customers.discount_percent') ?>
 						</label>
 						<label class="radio-inline">
-							<?php echo form_radio ([
+							<?= form_radio ([
 									'name' => 'discount_type',
 									'type' => 'radio',
 									'id' => 'discount_type',
 									'value' => 1,
 									'checked' => $person_info->discount_type == FIXED
 								]
-							) ?> <?php echo lang('Customers.discount_fixed') ?>
+							) ?> <?= lang('Customers.discount_fixed') ?>
 						</label>
 					</div>
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.discount'), 'discount', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.discount'), 'discount', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-3'>
 						<div class="input-group input-group-sm">
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'discount',
 									'id' => 'discount',
 									'class' => 'form-control input-sm',
@@ -90,13 +91,13 @@
 									'value' => $person_info->discount
 								]) ?>
 						</div>
-					</div>	
+					</div>
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.company_name'), 'company_name', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.company_name'), 'company_name', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
-						<?php echo form_input ([
+						<?= form_input ([
 								'name' => 'company_name',
 								'id' => 'company_name',
 								'class' => 'form-control input-sm',
@@ -106,9 +107,9 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-4'>
-						<?php echo form_input ([
+						<?= form_input ([
 								'name' => 'account_number',
 								'id' => 'account_number',
 								'class' => 'form-control input-sm',
@@ -118,9 +119,9 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-4'>
-						<?php echo form_input ([
+						<?= form_input ([
 								'name' => 'tax_id',
 								'id' => 'tax_id',
 								'class' => 'form-control input-sm',
@@ -129,11 +130,11 @@
 					</div>
 				</div>
 
-				<?php if($config['customer_reward_enable'] == TRUE): ?>
+				<?php if($config['customer_reward_enable']): ?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
-							<?php echo form_dropdown(
+							<?= form_dropdown(
 								'package_id',
 								$packages,
 								$selected_package,
@@ -143,9 +144,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.available_points'), 'available_points', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.available_points'), 'available_points', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'available_points',
 									'id' => 'available_points',
 									'class' => 'form-control input-sm',
@@ -157,9 +158,9 @@
 				<?php endif; ?>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
+						<?= form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
 					</div>
 				</div>
 
@@ -168,17 +169,17 @@
 				{
 				?>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-8'>
 							<div class="input-group input-group-sm">
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'sales_tax_code_name',
 										'id' => 'sales_tax_code_name',
 										'class' => 'form-control input-sm',
 										'size' => '50',
 										'value' => $sales_tax_code_label
 								]) ?>
-								<?php echo form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id) ?>
+								<?= form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id) ?>
 							</div>
 						</div>
 					</div>
@@ -187,11 +188,11 @@
 				?>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'date',
 									'id' => 'datetime',
 									'class' => 'form-control input-sm',
@@ -203,9 +204,9 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Customers.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
-						<?php echo form_input ([
+						<?= form_input ([
 								'name' => 'employee',
 								'id' => 'employee',
 								'class' => 'form-control input-sm',
@@ -215,7 +216,7 @@
 					</div>
 				</div>
 
-				<?php echo form_hidden('employee_id', $person_info->employee_id) ?>
+				<?= form_hidden('employee_id', $person_info->employee_id) ?>
 			</fieldset>
 		</div>
 
@@ -226,13 +227,13 @@
 			<div class="tab-pane" id="customer_stats_info">
 				<fieldset>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'total',
 										'id' => 'total',
 										'class' => 'form-control input-sm',
@@ -240,20 +241,20 @@
 										'disabled' => ''
 								]) ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'max',
 										'id' => 'max',
 										'class' => 'form-control input-sm',
@@ -261,20 +262,20 @@
 										'disabled' => ''
 									]) ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'min',
 										'id' => 'min',
 										'class' => 'form-control input-sm',
@@ -282,20 +283,20 @@
 										'disabled' => ''
 									]) ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<?php if (!currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'average',
 										'id' => 'average',
 										'class' => 'form-control input-sm',
@@ -303,17 +304,17 @@
 										'disabled' => ''
 									]) ?>
 								<?php if (currency_side()): ?>
-									<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'quantity',
 										'id' => 'quantity',
 										'class' => 'form-control input-sm',
@@ -325,10 +326,10 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.avg_discount'), 'avg_discount', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.avg_discount'), 'avg_discount', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-3">
 							<div class="input-group input-group-sm">
-								<?php echo form_input ([
+								<?= form_input ([
 										'name' => 'avg_discount',
 										'id' => 'avg_discount',
 										'class' => 'form-control input-sm',
@@ -352,9 +353,9 @@
 			<div class="tab-pane" id="customer_mailchimp_info">
 				<fieldset>
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_dropdown(
+							<?= form_dropdown(
 								'mailchimp_status',
 								[
 									'subscribed' => 'subscribed',
@@ -369,16 +370,16 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-1'>
-							<?php echo form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
+							<?= form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
 						</div>
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_member_rating'), 'mailchimp_member_rating', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_member_rating'), 'mailchimp_member_rating', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_member_rating',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_info['member_rating'],
@@ -388,9 +389,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_activity_total'), 'mailchimp_activity_total', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_activity_total'), 'mailchimp_activity_total', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_activity_total',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_activity['total'],
@@ -400,9 +401,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_activity_lastopen',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_activity['lastopen'],
@@ -412,9 +413,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_activity_open'), 'mailchimp_activity_open', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_activity_open'), 'mailchimp_activity_open', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_activity_open',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_activity['open'],
@@ -424,9 +425,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_activity_click'), 'mailchimp_activity_click', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_activity_click'), 'mailchimp_activity_click', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_activity_click',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_activity['click'],
@@ -436,9 +437,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_activity_unopen'), 'mailchimp_activity_unopen', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_activity_unopen'), 'mailchimp_activity_unopen', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_activity_unopen',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_activity['unopen'],
@@ -448,9 +449,9 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?php echo form_label(lang('Customers.mailchimp_email_client'), 'mailchimp_email_client', ['class' => 'control-label col-xs-3']) ?>
+						<?= form_label(lang('Customers.mailchimp_email_client'), 'mailchimp_email_client', ['class' => 'control-label col-xs-3']) ?>
 						<div class='col-xs-4'>
-							<?php echo form_input ([
+							<?= form_input ([
 									'name' => 'mailchimp_email_client',
 									'class' => 'form-control input-sm',
 									'value' => $mailchimp_info['email_client'],
@@ -464,7 +465,7 @@
 		}
 		?>
 	</div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -483,7 +484,7 @@ $(document).ready(function()
 	};
 
 	$('#sales_tax_code_name').autocomplete({
-		source: "<?php echo esc('taxes/suggestTaxCodes') ?>",
+		source: "<?= esc('taxes/suggestTaxCodes') ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -518,7 +519,7 @@ $(document).ready(function()
 					url: "<?= "$controller_name/checkEmail" ?>",
 					type: 'POST',
 					data: {
-						'person_id': "<?php echo $person_info->person_id ?>"
+						'person_id': "<?= $person_info->person_id ?>"
 						// email is posted by default
 					}
 				}
@@ -530,7 +531,7 @@ $(document).ready(function()
 					url: "<?= "$controller_name/checkAccountNumber" ?>",
 					type: 'POST',
 					data: {
-						'person_id': "<?php echo $person_info->person_id ?>"
+						'person_id': "<?= $person_info->person_id ?>"
 						// account_number is posted by default
 					}
 				}
@@ -539,11 +540,11 @@ $(document).ready(function()
 
 		messages:
 		{
-			first_name: "<?php echo lang('Common.first_name_required') ?>",
-			last_name: "<?php echo lang('Common.last_name_required') ?>",
-			consent: "<?php echo lang('Customers.consent_required') ?>",
-			email: "<?php echo lang('Customers.email_duplicate') ?>",
-			account_number: "<?php echo lang('Customers.account_number_duplicate') ?>"
+			first_name: "<?= lang('Common.first_name_required') ?>",
+			last_name: "<?= lang('Common.last_name_required') ?>",
+			consent: "<?= lang('Customers.consent_required') ?>",
+			email: "<?= lang('Customers.email_duplicate') ?>",
+			account_number: "<?= lang('Customers.account_number_duplicate') ?>"
 		}
 	}, form_support.error));
 });

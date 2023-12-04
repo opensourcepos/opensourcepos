@@ -7,38 +7,38 @@
  * @var int $employee_id
  */
 ?>
-<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
-			<a data-toggle="tab" href="#employee_basic_info"><?php echo lang('Employees.basic_information') ?></a>
+			<a data-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
 		</li>
 		<li role="presentation">
-			<a data-toggle="tab" href="#employee_login_info"><?php echo lang('Employees.login_info') ?></a>
+			<a data-toggle="tab" href="#employee_login_info"><?= lang('Employees.login_info') ?></a>
 		</li>
 		<li role="presentation">
-			<a data-toggle="tab" href="#employee_permission_info"><?php echo lang('Employees.permission_info') ?></a>
+			<a data-toggle="tab" href="#employee_permission_info"><?= lang('Employees.permission_info') ?></a>
 		</li>
 	</ul>
 
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="employee_basic_info">
 			<fieldset>
-				<?php echo view('people/form_basic_info') ?>
+				<?= view('people/form_basic_info') ?>
 			</fieldset>
 		</div>
 
 		<div class="tab-pane" id="employee_login_info">
 			<fieldset>
-				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
+				<div class="form-group form-group-sm">
+					<?= form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-							<?php echo form_input ([
+							<?= form_input ([
 								'name' => 'username',
 								'id' => 'username',
 								'class' => 'form-control input-sm',
@@ -50,12 +50,12 @@
 
 				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
-				<div class="form-group form-group-sm">	
-					<?php echo form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])))?>
+				<div class="form-group form-group-sm">
+					<?= form_label(lang('Employees.password'), 'password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])))?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
-							<?php echo form_password ([
+							<?= form_password ([
 									'name' => 'password',
 									'id' => 'password',
 									'class' => 'form-control input-sm'
@@ -64,12 +64,12 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
-				<?php echo form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']))) ?>
+				<div class="form-group form-group-sm">
+				<?= form_label(lang('Employees.repeat_password'), 'repeat_password', esc(array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']))) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
-							<?php echo form_password ([
+							<?= form_password ([
 									'name' => 'repeat_password',
 									'id' => 'repeat_password',
 									'class' => 'form-control input-sm'
@@ -79,22 +79,22 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label(lang('Employees.language'), 'language', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Employees.language'), 'language', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<?php 
+							<?php
 								$languages = get_languages();
 								$languages[':'] = lang('Employees.system_language');
 								$language_code = current_language_code();
 								$language = current_language();
-								
+
 								// If No language is set then it will display "System Language"
-								if($language_code === current_language_code(TRUE))
+								if($language_code === current_language_code(true))
 								{
 									$language_code = '';
 									$language = '';
 								}
-								
+
 								echo form_dropdown(
 									'language',
 									esc($languages),
@@ -110,16 +110,16 @@
 
 		<div class="tab-pane" id="employee_permission_info">
 			<fieldset>
-				<p><?php echo lang('Employees.permission_desc') ?></p>
+				<p><?= lang('Employees.permission_desc') ?></p>
 
 				<ul id="permission_list">
 					<?php
 					foreach($all_modules as $module)
 					{
 					?>
-						<li>	
-							<?php echo form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class=\'module\'") ?>
-							<?php echo form_dropdown(
+						<li>
+							<?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class=\'module\'") ?>
+							<?= form_dropdown(
 								"menu_group_$module->module_id", [
 									'home' => lang('Module.home'),
 									'office' => lang('Module.office'),
@@ -129,8 +129,8 @@
 								"class=\'module\'"
 							) ?>
 
-							<span class="medium"><?php echo lang("Module.$module->module_id") ?>:</span>
-							<span class="small"><?php echo lang("Module.$module->module_id" . '_desc') ?></span>
+							<span class="medium"><?= lang("Module.$module->module_id") ?>:</span>
+							<span class="small"><?= lang("Module.$module->module_id" . '_desc') ?></span>
 							<?php
 								foreach($all_subpermissions as $permission)
 								{
@@ -145,9 +145,9 @@
 							?>
 											<ul>
 												<li>
-													<?php echo form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
-													<?php echo form_hidden("menu_group_$permission->permission_id", "--") ?>
-													<span class="medium"><?php echo $lang_line ?></span>
+													<?= form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
+													<?= form_hidden("menu_group_$permission->permission_id", "--") ?>
+													<span class="medium"><?= $lang_line ?></span>
 												</li>
 											</ul>
 							<?php
@@ -163,7 +163,7 @@
 			</fieldset>
 		</div>
 	</div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -183,7 +183,7 @@ $(document).ready(function()
 			}
 		});
 		return result;
-	}, "<?php echo lang('Employees.subpermission_required') ?>");
+	}, "<?= lang('Employees.subpermission_required') ?>");
 
 	$('ul#permission_list > li > input.module').each(function()
 	{
@@ -202,14 +202,14 @@ $(document).ready(function()
 			updateInputs($this.is(':checked'));
 		});
 	});
-	
+
 	$('#employee_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
+					table_support.handle_submit("<?= esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -226,7 +226,7 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?php echo esc("$controller_name/checkUsername/$employee_id") ?>'
+				remote: '<?= esc("$controller_name/checkUsername/$employee_id") ?>'
 			},
 			password:
 			{
@@ -239,7 +239,7 @@ $(document).ready(function()
 				}
 				?>
 				minlength: 8
-			},	
+			},
 			repeat_password:
 			{
 				equalTo: '#password'
@@ -247,15 +247,15 @@ $(document).ready(function()
 			email: 'email'
 		},
 
-		messages: 
+		messages:
 		{
-			first_name: "<?php echo lang('Common.first_name_required') ?>",
-			last_name: "<?php echo lang('Common.last_name_required') ?>",
+			first_name: "<?= lang('Common.first_name_required') ?>",
+			last_name: "<?= lang('Common.last_name_required') ?>",
 			username:
 			{
-				required: "<?php echo lang('Employees.username_required') ?>",
-				minlength: "<?php echo lang('Employees.username_minlength') ?>",
-				remote: "<?php echo lang('Employees.username_duplicate') ?>"
+				required: "<?= lang('Employees.username_required') ?>",
+				minlength: "<?= lang('Employees.username_minlength') ?>",
+				remote: "<?= lang('Employees.username_duplicate') ?>"
             },
 			password:
 			{
@@ -263,17 +263,17 @@ $(document).ready(function()
 				if($person_info->person_id == "")
 				{
 				?>
-				required: "<?php echo lang('Employees.password_required') ?>",
+				required: "<?= lang('Employees.password_required') ?>",
 				<?php
 				}
 				?>
-				minlength: "<?php echo lang('Employees.password_minlength') ?>"
+				minlength: "<?= lang('Employees.password_minlength') ?>"
 			},
 			repeat_password:
 			{
-				equalTo: "<?php echo lang('Employees.password_must_match') ?>"
+				equalTo: "<?= lang('Employees.password_must_match') ?>"
 			},
-			email: "<?php echo lang('Common.email_invalid_format') ?>"
+			email: "<?= lang('Common.email_invalid_format') ?>"
 		}
 	}, form_support.error));
 });

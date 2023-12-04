@@ -81,15 +81,15 @@ class OSPOSRules
 			$ch = curl_init();
 
 			curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
-			curl_setopt($ch, CURLOPT_POST, TRUE);
+			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($check));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 			$result = curl_exec($ch);
 
 			curl_close($ch);
 
-			$status = json_decode($result, TRUE);
+			$status = json_decode($result, true);
 
 			if(!empty($status['success']))
 			{

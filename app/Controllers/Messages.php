@@ -45,11 +45,11 @@ class Messages extends Secure_Controller
 
 		if($response)
 		{
-			echo json_encode (['success' => TRUE, 'message' => lang('Messages.successfully_sent') . ' ' . esc($phone)]);
+			echo json_encode (['success' => true, 'message' => lang('Messages.successfully_sent') . ' ' . esc($phone)]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone)]);
+			echo json_encode (['success' => false, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone)]);
 		}
 	}
 
@@ -69,7 +69,7 @@ class Messages extends Secure_Controller
 		if($response)
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Messages.successfully_sent') . ' ' . esc($phone),
 				'person_id' => $person_id
 			]);
@@ -77,7 +77,7 @@ class Messages extends Secure_Controller
 		else
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone),
 				'person_id' => NEW_ENTRY
 			]);

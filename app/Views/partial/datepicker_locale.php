@@ -5,7 +5,7 @@ $config = config(OSPOS::class)->settings; ?>
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?php echo dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
+        format: "<?= dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
         <?php
         $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
@@ -27,68 +27,68 @@ var pickerconfig = function(config) {
         todayBtn: true,
         todayHighlight: true,
         bootcssVer: 3,
-        language: "<?php echo current_language_code() ?>"
+        language: "<?= current_language_code() ?>"
     }, <?php '{}' ?>);
 };
 
-$.fn.datetimepicker.dates['<?php echo $config['language'] ?>'] = {
+$.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
     days: [
-		"<?php echo lang('Cal.sunday') ?>",
-        "<?php echo lang('Cal.monday') ?>",
-        "<?php echo lang('Cal.tuesday') ?>",
-        "<?php echo lang('Cal.wednesday') ?>",
-        "<?php echo lang('Cal.thursday') ?>",
-        "<?php echo lang('Cal.friday') ?>",
-        "<?php echo lang('Cal.saturday') ?>",
-        "<?php echo lang('Cal.sunday') ?>"
+		"<?= lang('Cal.sunday') ?>",
+        "<?= lang('Cal.monday') ?>",
+        "<?= lang('Cal.tuesday') ?>",
+        "<?= lang('Cal.wednesday') ?>",
+        "<?= lang('Cal.thursday') ?>",
+        "<?= lang('Cal.friday') ?>",
+        "<?= lang('Cal.saturday') ?>",
+        "<?= lang('Cal.sunday') ?>"
 		],
         daysShort: [
-		"<?php echo lang('Cal.sun') ?>",
-        "<?php echo lang('Cal.mon') ?>",
-        "<?php echo lang('Cal.tue') ?>",
-        "<?php echo lang('Cal.wed') ?>",
-        "<?php echo lang('Cal.thu') ?>",
-        "<?php echo lang('Cal.fri') ?>",
-        "<?php echo lang('Cal.sat') ?>"
+		"<?= lang('Cal.sun') ?>",
+        "<?= lang('Cal.mon') ?>",
+        "<?= lang('Cal.tue') ?>",
+        "<?= lang('Cal.wed') ?>",
+        "<?= lang('Cal.thu') ?>",
+        "<?= lang('Cal.fri') ?>",
+        "<?= lang('Cal.sat') ?>"
 		],
         daysMin: [
-		"<?php echo lang('Cal.su') ?>",
-        "<?php echo lang('Cal.mo') ?>",
-        "<?php echo lang('Cal.tu') ?>",
-        "<?php echo lang('Cal.we') ?>",
-        "<?php echo lang('Cal.th') ?>",
-        "<?php echo lang('Cal.fr') ?>",
-        "<?php echo lang('Cal.sa') ?>"
+		"<?= lang('Cal.su') ?>",
+        "<?= lang('Cal.mo') ?>",
+        "<?= lang('Cal.tu') ?>",
+        "<?= lang('Cal.we') ?>",
+        "<?= lang('Cal.th') ?>",
+        "<?= lang('Cal.fr') ?>",
+        "<?= lang('Cal.sa') ?>"
 		],
         months: [
-		"<?php echo lang('Cal.january') ?>",
-        "<?php echo lang('Cal.february') ?>",
-        "<?php echo lang('Cal.march') ?>",
-        "<?php echo lang('Cal.april') ?>",
-        "<?php echo lang('Cal.may') ?>",
-        "<?php echo lang('Cal.june') ?>",
-        "<?php echo lang('Cal.july') ?>",
-        "<?php echo lang('Cal.august') ?>",
-        "<?php echo lang('Cal.september') ?>",
-        "<?php echo lang('Cal.october') ?>",
-        "<?php echo lang('Cal.november') ?>",
-        "<?php echo lang('Cal.december') ?>"
+		"<?= lang('Cal.january') ?>",
+        "<?= lang('Cal.february') ?>",
+        "<?= lang('Cal.march') ?>",
+        "<?= lang('Cal.april') ?>",
+        "<?= lang('Cal.may') ?>",
+        "<?= lang('Cal.june') ?>",
+        "<?= lang('Cal.july') ?>",
+        "<?= lang('Cal.august') ?>",
+        "<?= lang('Cal.september') ?>",
+        "<?= lang('Cal.october') ?>",
+        "<?= lang('Cal.november') ?>",
+        "<?= lang('Cal.december') ?>"
 		],
         monthsShort: [
-		"<?php echo lang('Cal.jan') ?>",
-        "<?php echo lang('Cal.feb') ?>",
-        "<?php echo lang('Cal.mar') ?>",
-        "<?php echo lang('Cal.apr') ?>",
-        "<?php echo lang('Cal.may') ?>",
-        "<?php echo lang('Cal.jun') ?>",
-        "<?php echo lang('Cal.jul') ?>",
-        "<?php echo lang('Cal.aug') ?>",
-        "<?php echo lang('Cal.sep') ?>",
-        "<?php echo lang('Cal.oct') ?>",
-        "<?php echo lang('Cal.nov') ?>",
-        "<?php echo lang('Cal.dec') ?>"
+		"<?= lang('Cal.jan') ?>",
+        "<?= lang('Cal.feb') ?>",
+        "<?= lang('Cal.mar') ?>",
+        "<?= lang('Cal.apr') ?>",
+        "<?= lang('Cal.may') ?>",
+        "<?= lang('Cal.jun') ?>",
+        "<?= lang('Cal.jul') ?>",
+        "<?= lang('Cal.aug') ?>",
+        "<?= lang('Cal.sep') ?>",
+        "<?= lang('Cal.oct') ?>",
+        "<?= lang('Cal.nov') ?>",
+        "<?= lang('Cal.dec') ?>"
 		],
-    today: "<?php echo lang('Datepicker.today') ?>",
+    today: "<?= lang('Datepicker.today') ?>",
     <?php
         if( strpos($config['timeformat'], 'a') !== false )
         {
@@ -109,7 +109,7 @@ $.fn.datetimepicker.dates['<?php echo $config['language'] ?>'] = {
     <?php
         }
     ?>
-    weekStart: <?php echo lang('Datepicker.weekstart') ?>
+    weekStart: <?= lang('Datepicker.weekstart') ?>
 };
 
 $(".datetime").datetimepicker(pickerconfig());

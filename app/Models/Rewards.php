@@ -23,7 +23,7 @@ class Rewards extends Model	//TODO: This class is named with plural while the ge
 	/**
 	 * Inserts or updates a rewards
 	 */
-	public function save_value(array &$rewards_data, bool $rewards_id = FALSE): bool
+	public function save_value(array &$rewards_data, bool $rewards_id = false): bool
 	{
 		$builder = $this->db->table('sales_reward_points');
 		if(!$rewards_id || !$this->exists($rewards_id))		//TODO: looks like we are missing the exists function in this class
@@ -32,10 +32,10 @@ class Rewards extends Model	//TODO: This class is named with plural while the ge
 			{
 				$rewards_data['id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('id', $rewards_id);

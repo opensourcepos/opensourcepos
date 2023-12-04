@@ -5,20 +5,21 @@
  * @var array $selected_image_allowed_types
  * @var bool $show_office_group
  * @var string $controller_name
+ * @var array $config
  */
 ?>
-<?php echo form_open('config/saveGeneral/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('config/saveGeneral/', ['id' => 'general_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
-			<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+			<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 			<ul id="general_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.theme'), 'theme', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.theme'), 'theme', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-sm-10'>
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
-							<?php echo form_dropdown(
+							<?= form_dropdown(
 								'theme',
 								$themes,
 								$config['theme'],
@@ -26,8 +27,8 @@
 							) ?>
 						</div>
 						<div class="col-sm-7">
-							<a href="<?php echo 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
-								<span><?php echo lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span><span class="glyphicon glyphicon-new-window"></span>
+							<a href="<?= 'https://bootswatch.com/3/' . ('bootstrap' == ($config['theme']) ? 'default' : esc($config['theme'])) ?>" target="_blank" rel=”noopener”>
+								<span><?= lang('Config.theme_preview') . ' ' . ucfirst(esc($config['theme'])) . ' ' ?></span><span class="glyphicon glyphicon-new-window"></span>
 							</a>
 						</div>
 					</div>
@@ -35,9 +36,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.login_form'), 'login_form', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_dropdown(
+					<?= form_dropdown(
 							'login_form',
 							[
 								'floating_labels' => lang('Config.floating_labels'),
@@ -50,10 +51,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.default_sales_discount'), 'default_sales_discount', ['class' => 'control-label col-xs-2 required']) ?>
+				<?= form_label(lang('Config.default_sales_discount'), 'default_sales_discount', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input ([
+						<?= form_input ([
 							'name' => 'default_sales_discount',
 							'id' => 'default_sales_discount',
 							'class' => 'form-control input-sm required',
@@ -63,7 +64,7 @@
 							'value' => $config['default_sales_discount']
 							]) ?>
 						<span class="input-group-btn">
-							<?php echo form_checkbox ([
+							<?= form_checkbox ([
 								'id' => 'default_sales_discount_type',
 								'name' => 'default_sales_discount_type',
 								'value' => 1,
@@ -80,10 +81,10 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.default_receivings_discount'), 'default_receivings_discount', ['class' => 'control-label col-xs-2 required']) ?>
+				<?= form_label(lang('Config.default_receivings_discount'), 'default_receivings_discount', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?php echo form_input ([
+						<?= form_input ([
 							'name' => 'default_receivings_discount',
 							'id' => 'default_receivings_discount',
 							'class' => 'form-control input-sm required',
@@ -93,7 +94,7 @@
 							'value' => $config['default_receivings_discount']
 							]) ?>
 						<span class="input-group-btn">
-							<?php echo form_checkbox ([
+							<?= form_checkbox ([
 								'id' => 'default_receivings_discount_type',
 								'name' => 'default_receivings_discount_type',
 								'value' => 1,
@@ -110,9 +111,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.enforce_privacy'), 'enforce_privacy', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.enforce_privacy'), 'enforce_privacy', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'enforce_privacy',
 						'id' => 'enforce_privacy',
 						'value' => 'enforce_privacy',
@@ -120,15 +121,15 @@
 					]) ?>
 					&nbsp
 					<label class="control-label">
-						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.enforce_privacy_tooltip') ?>"></span>
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.enforce_privacy_tooltip') ?>"></span>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.receiving_calculate_average_price'), 'receiving_calculate_average_price', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.receiving_calculate_average_price'), 'receiving_calculate_average_price', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'receiving_calculate_average_price',
 						'id' => 'receiving_calculate_average_price',
 						'value' => 'receiving_calculate_average_price',
@@ -138,9 +139,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.lines_per_page'), 'lines_per_page', ['class' => 'control-label col-xs-2 required']) ?>
+				<?= form_label(lang('Config.lines_per_page'), 'lines_per_page', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'lines_per_page',
 						'id' => 'lines_per_page',
 						'class' => 'form-control input-sm required',
@@ -153,11 +154,11 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.notify_alignment'), 'notify_horizontal_position', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.notify_alignment'), 'notify_horizontal_position', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
-							<?php echo form_dropdown(
+							<?= form_dropdown(
 								'notify_vertical_position',
 								[
 									'top' => lang('Config.top'),
@@ -168,7 +169,7 @@
 							) ?>
 						</div>
 						<div class='col-sm-2'>
-							<?php echo form_dropdown(
+							<?= form_dropdown(
 								'notify_horizontal_position',
 								[
 									'left' => lang('Config.left'),
@@ -184,13 +185,13 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.image_restrictions'), 'image_restrictions', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.image_restrictions'), 'image_restrictions', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-horizontal"></span></span>
-								<?php echo form_input ([
+								<?= form_input ([
 									'name' => 'image_max_width',
 									'id' => 'image_max_width',
 									'class' => 'form-control input-sm required',
@@ -207,7 +208,7 @@
 						<div class='col-sm-2'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-resize-vertical"></span></span>
-								<?php echo form_input ([
+								<?= form_input ([
 									'name' => 'image_max_height',
 									'id' => 'image_max_height',
 									'class' => 'form-control input-sm required',
@@ -224,7 +225,7 @@
 						<div class='col-sm-2'>
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-hdd"></span></span>
-								<?php echo form_input ([
+								<?= form_input ([
 									'name' => 'image_max_size',
 									'id' => 'image_max_size',
 									'class' => 'form-control input-sm required',
@@ -240,8 +241,8 @@
 						</div>
 						<div class='col-sm-4'>
 							<div class='input-group'>
-								<span class="input-group-addon input-sm"><?php echo lang('Config.image_allowed_file_types') ?></span>
-								<?php echo form_multiselect([
+								<span class="input-group-addon input-sm"><?= lang('Config.image_allowed_file_types') ?></span>
+								<?= form_multiselect([
 									'name' => 'image_allowed_types',
 									'options' => $image_allowed_types,
 									'selected' => $selected_image_allowed_types,
@@ -259,9 +260,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.gcaptcha_enable'), 'gcaptcha_enable', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.gcaptcha_enable'), 'gcaptcha_enable', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'gcaptcha_enable',
 						'id' => 'gcaptcha_enable',
 						'value' => 'gcaptcha_enable',
@@ -269,16 +270,16 @@
 					]) ?>
 					<label class="control-label">
 						<a href="https://www.google.com/recaptcha/admin" target="_blank">
-							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.gcaptcha_tooltip') ?>"></span>
+							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.gcaptcha_tooltip') ?>"></span>
 						</a>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.gcaptcha_site_key'), 'config_gcaptcha_site_key', ['class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_site_key']) ?>
+				<?= form_label(lang('Config.gcaptcha_site_key'), 'config_gcaptcha_site_key', ['class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_site_key']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'gcaptcha_site_key',
 						'id' => 'gcaptcha_site_key',
 						'class' => 'form-control input-sm required',
@@ -288,9 +289,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.gcaptcha_secret_key'), 'config_gcaptcha_secret_key', ['class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_secret_key']) ?>
+				<?= form_label(lang('Config.gcaptcha_secret_key'), 'config_gcaptcha_secret_key', ['class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_secret_key']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_input ([
+					<?= form_input ([
 						'name' => 'gcaptcha_secret_key',
 						'id' => 'gcaptcha_secret_key',
 						'class' => 'form-control input-sm required',
@@ -300,13 +301,13 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.suggestions_layout'), 'suggestions_layout', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.suggestions_layout'), 'suggestions_layout', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-sm-10">
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-3'>
 							<div class='input-group'>
-								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_first_column') ?></span>
-								<?php echo form_dropdown(
+								<span class="input-group-addon input-sm"><?= lang('Config.suggestions_first_column') ?></span>
+								<?= form_dropdown(
 									'suggestions_first_column',
 									[
 										'name' => lang('Items.name'),
@@ -321,8 +322,8 @@
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
-								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_second_column') ?></span>
-								<?php echo form_dropdown(
+								<span class="input-group-addon input-sm"><?= lang('Config.suggestions_second_column') ?></span>
+								<?= form_dropdown(
 									'suggestions_second_column',
 									[
 										'' => lang('Config.none'),
@@ -338,8 +339,8 @@
 						</div>
 						<div class='col-sm-3'>
 							<div class='input-group'>
-								<span class="input-group-addon input-sm"><?php echo lang('Config.suggestions_third_column') ?></span>
-								<?php echo form_dropdown(
+								<span class="input-group-addon input-sm"><?= lang('Config.suggestions_third_column') ?></span>
+								<?= form_dropdown(
 									'suggestions_third_column',
 									[
 										'' => lang('Config.none'),
@@ -358,29 +359,29 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.giftcard_number'), 'giftcard_number', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.giftcard_number'), 'giftcard_number', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
-						<?php echo form_radio ([
+						<?= form_radio ([
 							'name' => 'giftcard_number',
 							'value' => 'series',
 							'checked' => $config['giftcard_number'] == 'series']) ?>
-						<?php echo lang('Config.giftcard_series') ?>
+						<?= lang('Config.giftcard_series') ?>
 					</label>
 					<label class="radio-inline">
-						<?php echo form_radio ([
+						<?= form_radio ([
 							'name' => 'giftcard_number',
 							'value' => 'random',
 							'checked' => $config['giftcard_number'] == 'random']) ?>
-						<?php echo lang('Config.giftcard_random') ?>
+						<?= lang('Config.giftcard_random') ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.derive_sale_quantity'), 'derive_sale_quantity', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.derive_sale_quantity'), 'derive_sale_quantity', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 					'name' => 'derive_sale_quantity',
 					'id' => 'derive_sale_quantity',
 					'value' => 'derive_sale_quantity',
@@ -388,15 +389,15 @@
 					]) ?>
 					&nbsp
 					<label class="control-label">
-						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo lang('Config.derive_sale_quantity_tooltip') ?>"></span>
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.derive_sale_quantity_tooltip') ?>"></span>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.show_office_group'), 'show_office_group', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.show_office_group'), 'show_office_group', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'show_office_group',
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
@@ -406,9 +407,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.multi_pack_enabled'), 'multi_pack_enabled', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.multi_pack_enabled'), 'multi_pack_enabled', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'multi_pack_enabled',
 						'id' => 'multi_pack_enabled',
 						'value' => 'multi_pack_enabled',
@@ -418,9 +419,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.include_hsn'), 'include_hsn', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.include_hsn'), 'include_hsn', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'include_hsn',
 						'id' => 'include_hsn',
 						'value' => 'include_hsn',
@@ -430,9 +431,9 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.category_dropdown'), 'category_dropdown', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.category_dropdown'), 'category_dropdown', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?php echo form_checkbox ([
+					<?= form_checkbox ([
 						'name' => 'category_dropdown',
 						'id' => 'category_dropdown',
 						'value' => 'category_dropdown',
@@ -441,14 +442,14 @@
 				</div>
 			</div>
 
-			<?php echo form_submit ([
+			<?= form_submit ([
 				'name' => 'submit_general',
 				'id' => 'submit_general',
 				'value' => lang('Common.submit'),
 				'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	</div>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -502,21 +503,21 @@ $(document).ready(function()
 		{
 			default_sales_discount:
 			{
-				required: "<?php echo lang('Config.default_sales_discount_required') ?>",
-				number: "<?php echo lang('Config.default_sales_discount_number') ?>"
+				required: "<?= lang('Config.default_sales_discount_required') ?>",
+				number: "<?= lang('Config.default_sales_discount_number') ?>"
 			},
 			lines_per_page:
 			{
-				required: "<?php echo lang('Config.lines_per_page_required') ?>",
-				number: "<?php echo lang('Config.lines_per_page_number') ?>"
+				required: "<?= lang('Config.lines_per_page_required') ?>",
+				number: "<?= lang('Config.lines_per_page_number') ?>"
 			},
 			gcaptcha_site_key:
 			{
-				required: "<?php echo lang('Config.gcaptcha_site_key_required') ?>"
+				required: "<?= lang('Config.gcaptcha_site_key_required') ?>"
 			},
 			gcaptcha_secret_key:
 			{
-				required: "<?php echo lang('Config.gcaptcha_secret_key_required') ?>"
+				required: "<?= lang('Config.gcaptcha_secret_key_required') ?>"
 			}
 		},
 

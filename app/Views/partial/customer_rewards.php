@@ -13,8 +13,8 @@
 		$customer_points_percent = $reward_category['points_percent'];
 		++$i;
 ?>
-		<div class="form-group form-group-sm" style="<?php echo $reward_category['deleted'] ? 'display:none;' : 'display:block;' ?>">
-			<?php echo form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'required control-label col-xs-2']) ?>
+		<div class="form-group form-group-sm" style="<?= $reward_category['deleted'] ? 'display:none;' : 'display:block;' ?>">
+			<?= form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'required control-label col-xs-2']) ?>
 			<div class='col-xs-2'>
 				<?php $form_data = [
 						'name' => 'customer_reward_' . $customer_reward_id,

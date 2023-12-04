@@ -173,4 +173,3 @@ const CASH_MODE_FALSE = 0;
  */
 const GOODS_SUPPLIER = 0;
 const COST_SUPPLIER = 1;
-

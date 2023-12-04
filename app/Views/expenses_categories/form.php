@@ -4,16 +4,16 @@
  * @var string $controller_name
  */
 ?>
-<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="expenses_categories">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'required control-label col-xs-3']) ?>
+			<?= form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input ([
+				<?= form_input ([
 					'name' => 'category_name',
 					'id' => 'category_name',
 					'class' => 'form-control input-sm',
@@ -23,9 +23,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Expenses_categories.description'), 'category_description', ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Expenses_categories.description'), 'category_description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea ([
+				<?= form_textarea ([
 					'name' => 'category_description',
 					'id' => 'category_description',
 					'class' => 'form-control input-sm',
@@ -35,7 +35,7 @@
 		</div>
 		
 	</fieldset>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type='text/javascript'>
 //validation and submit handling
@@ -47,7 +47,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
+					table_support.handle_submit("<?= esc($controller_name) ?>", response);
 				},
 				dataType: 'json'
 			});
@@ -62,7 +62,7 @@ $(document).ready(function()
 
 		messages:
 		{
-			category_name: "<?php echo lang('Expenses_categories.category_name_required') ?>"
+			category_name: "<?= lang('Expenses_categories.category_name_required') ?>"
 		}
 	}, form_support.error));
 });
