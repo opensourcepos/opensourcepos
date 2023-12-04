@@ -243,15 +243,15 @@
 							<div class='input-group'>
 								<span class="input-group-addon input-sm"><?= lang('Config.image_allowed_file_types') ?></span>
 								<?= form_multiselect([
-									'name' => 'image_allowed_types',
+									'name' => 'image_allowed_types[]',
 									'options' => $image_allowed_types,
 									'selected' => $selected_image_allowed_types,
-									'extra' => "id='image_allowed_types'".
-										"class='selectpicker show-menu-arrow'".
-										"data-none-selected-text=".lang('Common.none_selected_text').
-										"data-selected-text-format='count > 1'".
-										"data-style='btn-default btn-sm'".
-										"data-width='100%'"
+									'extra' => "id='image_allowed_types'"
+										. " class='selectpicker show-menu-arrow'"
+										. " data-none-selected-text='" . lang('Common.none_selected_text') . "'"
+										. " data-selected-text-format='count > 1'"
+										. " data-style='btn-default btn-sm'"
+										. " data-width='100%'"
 								]) ?>
 							</div>
 						</div>

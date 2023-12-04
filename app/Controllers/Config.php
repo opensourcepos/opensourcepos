@@ -272,19 +272,18 @@ class Config extends Secure_Controller
 		$data['currency_code'] = $this->config['currency_code'] ?? '';
 		$data['db_version'] = mysqli_get_server_info($this->db->getConnection());
 
-		// load all the license statements, they are already XSS cleaned in the private function
+		//Load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
 
-		// load all the themes, already XSS cleaned in the private function
+		//Load all the themes, already XSS cleaned in the private function
 		$data['themes'] = $this->_themes();
 
-		//Load General related fields
+		//General related fields
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
-		$data['image_allowed_types'] = array_combine($image_allowed_types,$image_allowed_types);
-
+		$data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
 		$data['selected_image_allowed_types'] = explode('|', $this->config['image_allowed_types']);
 
-		//Load Integrations Related fields
+		//Integrations Related fields
 		$data['mailchimp']	= [];
 
 		if(check_encryption())	//TODO: Hungarian notation
@@ -390,6 +389,7 @@ class Config extends Secure_Controller
 
 	/**
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveGeneral(): void
 	{
@@ -403,8 +403,8 @@ class Config extends Secure_Controller
 			'enforce_privacy' => $this->request->getPost('enforce_privacy', FILTER_SANITIZE_NUMBER_INT),
 			'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
 			'lines_per_page' => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
-			'notify_horizontal_position' => $this->request->getPost('notify_horizontal_position'),
-			'notify_vertical_position' => $this->request->getPost('notify_vertical_position'),
+			'notify_horizontal_position' => htmlspecialchars($this->request->getPost('notify_horizontal_position')),
+			'notify_vertical_position' => htmlspecialchars($this->request->getPost('notify_vertical_position')),
 			'image_max_width' => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_height' => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_size' => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
