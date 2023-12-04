@@ -35,7 +35,7 @@
 			<div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
 				<div class="box-logo d-flex flex-column justify-content-center align-items-center border-end px-4 pb-3 p-md-4">
 					<?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
-						<img class="logo w-100" src="<?= base_url('images/' . $config['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . $config['company'] ?>">
+						<img class="logo w-100" src="<?= base_url('uploads/' . $config['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . $config['company'] ?>">
 					<?php else: ?>
 						<svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
 							<title><?= lang('common_software_title') . '&nbsp;' . lang('common_logo') ?></title>
