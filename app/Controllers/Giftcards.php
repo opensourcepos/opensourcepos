@@ -107,7 +107,7 @@ class Giftcards extends Secure_Controller
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $giftcard_number,
 			'value' => parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'person_id' => $this->request->getPost('person_id') == '' ? NULL : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
+			'person_id' => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
 		if($this->giftcard->save_value($giftcard_data, $giftcard_id))
@@ -116,7 +116,7 @@ class Giftcards extends Secure_Controller
 			if($giftcard_id == NEW_ENTRY)	//TODO: Constant needed
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Giftcards.successful_adding') . ' ' . $giftcard_data['giftcard_number'],
 					'id' => $giftcard_data['giftcard_id']
 				]);
@@ -124,7 +124,7 @@ class Giftcards extends Secure_Controller
 			else //Existing giftcard
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Giftcards.successful_updating') . ' ' . $giftcard_data['giftcard_number'],
 					'id' => $giftcard_id
 				]);
@@ -133,7 +133,7 @@ class Giftcards extends Secure_Controller
 		else //failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Giftcards.error_adding_updating') . ' ' . $giftcard_data['giftcard_number'],
 				'id' => NEW_ENTRY
 			]);
@@ -148,7 +148,7 @@ class Giftcards extends Secure_Controller
 	public function postCheckNumberGiftcard(): void
 	{
 		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-		echo json_encode (['success' => $parsed_value !== FALSE, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
+		echo json_encode (['success' => $parsed_value !== false, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 
 	public function postDelete(): void
@@ -158,13 +158,13 @@ class Giftcards extends Secure_Controller
 		if($this->giftcard->delete_list($giftcards_to_delete))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Giftcards.successful_deleted') . ' ' . count($giftcards_to_delete).' '.lang('Giftcards.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Giftcards.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Giftcards.cannot_be_deleted')]);
 		}
 	}
 }

@@ -72,20 +72,20 @@ class Cashup extends Model
 	 */
 	public function get_found_rows(string $search, array $filters): int
 	{
-		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', TRUE);
+		return $this->search($search, $filters, 0, 0, 'cashup_id', 'asc', true);
 	}
 
 	/**
 	 * Searches cashups
 	 */
-	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'cashup_id', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'cashup_id', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'cashup_id';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('cash_up AS cash_up');
@@ -235,7 +235,7 @@ class Cashup extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -255,10 +255,10 @@ class Cashup extends Model
 			{
 				$cash_up_data['cashup_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 
-			return FALSE;
+			return false;
 		}
 
 		$builder = $this->db->table('cash_up');

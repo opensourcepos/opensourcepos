@@ -1,10 +1,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open_multipart('customers/do_csv_import/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
+<?= form_open_multipart('customers/do_csv_import/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?php echo esc('customers/csv') ?>"><?php echo lang('Common.download_import_template') ?></a>
+				<a href="<?= esc('customers/csv') ?>"><?= lang('Common.download_import_template') ?></a>
 			</div>
 		</div>
 
@@ -12,13 +12,13 @@
 			<div class='col-xs-12'>
 				<div class="fileinput fileinput-new input-group" data-provides="fileinput">
 					<div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span></div>
-					<span class="input-group-addon input-sm btn btn-default btn-file"><span class="fileinput-new"><?php echo lang('Common.import_select_file') ?></span><span class="fileinput-exists"><?php echo lang('Common.import_change_file') ?></span><input type="file" id="file_path" name="file_path" accept=".csv"></span>
-					<a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?php echo lang('Common.import_remove_file') ?></a>
+					<span class="input-group-addon input-sm btn btn-default btn-file"><span class="fileinput-new"><?= lang('Common.import_select_file') ?></span><span class="fileinput-exists"><?= lang('Common.import_change_file') ?></span><input type="file" id="file_path" name="file_path" accept=".csv"></span>
+					<a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?= lang('Common.import_remove_file') ?></a>
 				</div>
 			</div>
 		</div>
 	</fieldset>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 //validation and submit handling
@@ -30,7 +30,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo esc('customers') ?>', response);
+					table_support.handle_submit('<?= esc('customers') ?>', response);
 				},
 				dataType: 'json'
 			});
@@ -45,7 +45,7 @@ $(document).ready(function()
    
 		messages: 
 		{
-   			file_path: "<?php echo lang('Common.import_full_path') ?>"
+   			file_path: "<?= lang('Common.import_full_path') ?>"
 		}
 	}, form_support.error));
 });

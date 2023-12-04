@@ -3,15 +3,16 @@
  * @var array $labels_1
  * @var array $series_data_1
  * @var bool $show_currency
+ * @var array $config
  */
 ?>
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo json_encode(esc($labels_1, 'js')) ?>,
-		series: <?php echo json_encode(esc($series_data_1, 'js')) ?>
+		labels: <?= json_encode(esc($labels_1, 'js')) ?>,
+		series: <?= json_encode(esc($series_data_1, 'js')) ?>
 	};
-	
+
 	// We are setting a few options for our chart and override the defaults
 	var options = {
 
@@ -27,11 +28,11 @@
 			bottom: 100
 		},
 
-		// This option can be set to 'inside', 'outside' or 'center'. 
+		// This option can be set to 'inside', 'outside' or 'center'.
 		// show the labels on the border with the pie chart
 		labelPosition: 'outside',
 		labelDirection: 'explode',
-		
+
 		plugins: [
 			Chartist.plugins.tooltip({
 				transformTooltipTextFnc: function(value) {
@@ -41,13 +42,13 @@
 						if( currency_side() )
 						{
 					?>
-							return value + '<?php echo esc($config['currency_symbol'], 'js') ?>';
+							return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 						<?php
 						}
 						else
 						{
 						?>
-							return '<?php echo esc($config['currency_symbol'], 'js') ?>' + value;
+							return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 					<?php
 						}
 					}
@@ -62,7 +63,7 @@
 			})
 		]
 	};
-	
+
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',

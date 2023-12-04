@@ -124,14 +124,14 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,TRUE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,true);
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search(): void
 	{
-		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, FALSE);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, false);
 
 		echo json_encode($suggestions);
 	}
@@ -162,7 +162,7 @@ class Customers extends Persons
 
 		$tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
 
-		if($tax_code_info->tax_code != NULL)
+		if($tax_code_info->tax_code != null)
 		{
 			$data['sales_tax_code_label'] = $tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name;
 		}
@@ -181,11 +181,11 @@ class Customers extends Persons
 
 		if($this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
 		{
-			$data['use_destination_based_tax'] = TRUE;
+			$data['use_destination_based_tax'] = true;
 		}
 		else
 		{
-			$data['use_destination_based_tax'] = FALSE;
+			$data['use_destination_based_tax'] = false;
 		}
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
@@ -203,12 +203,12 @@ class Customers extends Persons
 		if(!empty($info->email))
 		{
 			// collect mailchimp customer info
-			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE)
+			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== false)
 			{
 				$data['mailchimp_info'] = $mailchimp_info;
 
 				// collect customer mailchimp emails activities (stats)
-				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE)
+				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== false)
 				{
 					if(array_key_exists('activity', $activities))
 					{
@@ -288,17 +288,17 @@ class Customers extends Persons
 		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
 		$customer_data = [
-			'consent' => $this->request->getPost('consent') != NULL,
-			'account_number' => $this->request->getPost('account_number') == '' ? NULL : $this->request->getPost('account_number'),
+			'consent' => $this->request->getPost('consent') != null,
+			'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
 			'tax_id' => $this->request->getPost('tax_id'),
-			'company_name' => $this->request->getPost('company_name') == '' ? NULL : $this->request->getPost('company_name'),
+			'company_name' => $this->request->getPost('company_name') == '' ? null : $this->request->getPost('company_name'),
 			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-			'discount_type' => $this->request->getPost('discount_type') == NULL ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
-			'package_id' => $this->request->getPost('package_id') == '' ? NULL : $this->request->getPost('package_id'),
-			'taxable' => $this->request->getPost('taxable') != NULL,
+			'discount_type' => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
+			'package_id' => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
+			'taxable' => $this->request->getPost('taxable') != null,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
 			'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
-			'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? NULL : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
+			'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
 		if($this->customer->save_customer($person_data, $customer_data, $customer_id))
@@ -311,14 +311,14 @@ class Customers extends Persons
 				$first_name,
 				$last_name,
 				$mailchimp_status == null ? "" : $mailchimp_status,
-				['vip' => $this->request->getPost('mailchimp_vip') != NULL]
+				['vip' => $this->request->getPost('mailchimp_vip') != null]
 			);
 
 			// New customer
 			if($customer_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
 					'id' => $customer_data['person_id']
 				]);
@@ -326,7 +326,7 @@ class Customers extends Persons
 			else // Existing customer
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Customers.successful_updating') . ' ' . $first_name . ' ' . $last_name,
 					'id' => $customer_id
 				]);
@@ -335,7 +335,7 @@ class Customers extends Persons
 		else // Failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 				'id' => NEW_ENTRY
 			]);
@@ -385,12 +385,12 @@ class Customers extends Persons
 
 		if($count == count($customers_to_delete))
 		{
-			echo json_encode (['success' => TRUE,
+			echo json_encode (['success' => true,
 				'message' => lang('Customers.successful_deleted') . ' ' . $count . ' ' . lang('Customers.one_or_multiple')]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Customers.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Customers.cannot_be_deleted')]);
 		}
 	}
 
@@ -413,11 +413,11 @@ class Customers extends Persons
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Customers.csv_import_failed')]);
+			echo json_encode (['success' => false, 'message' => lang('Customers.csv_import_failed')]);
 		}
 		else
 		{
-			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
+			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== false)
 			{
 				// Skip the first row as it's the table description
 				fgetcsv($handle);
@@ -425,7 +425,7 @@ class Customers extends Persons
 
 				$failCodes = [];
 
-				while(($data = fgetcsv($handle)) !== FALSE)
+				while(($data = fgetcsv($handle)) !== false)
 				{
 					$consent = $data[3] == '' ? 0 : 1;
 
@@ -469,7 +469,7 @@ class Customers extends Persons
 					}
 					else
 					{
-						$invalidated = TRUE;
+						$invalidated = true;
 					}
 
 					if($invalidated)
@@ -493,16 +493,16 @@ class Customers extends Persons
 				{
 					$message = lang('Customers.csv_import_partially_failed', [count($failCodes), implode(', ', $failCodes)]);
 
-					echo json_encode (['success' => FALSE, 'message' => $message]);
+					echo json_encode (['success' => false, 'message' => $message]);
 				}
 				else
 				{
-					echo json_encode (['success' => TRUE, 'message' => lang('Customers.csv_import_success')]);
+					echo json_encode (['success' => true, 'message' => lang('Customers.csv_import_success')]);
 				}
 			}
 			else
 			{
-				echo json_encode (['success' => FALSE, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
+				echo json_encode (['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
 			}
 		}
 	}

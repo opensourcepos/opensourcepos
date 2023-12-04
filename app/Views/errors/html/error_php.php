@@ -10,12 +10,12 @@
 
 <h4>A PHP Error was encountered</h4>
 
-<p>Severity: <?php echo esc($severity) ?></p>
-<p>Message:  <?php echo esc($message) ?></p>
-<p>Filename: <?php echo esc($filepath) ?></p>
-<p>Line Number: <?php echo $line ?></p>
+<p>Severity: <?= esc($severity) ?></p>
+<p>Message:  <?= esc($message) ?></p>
+<p>Filename: <?= esc($filepath) ?></p>
+<p>Line Number: <?= $line ?></p>
 
-<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
+<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE): ?>
 
 	<p>Backtrace:</p>
 	<?php foreach (debug_backtrace() as $error): ?>
@@ -23,9 +23,9 @@
 		<?php if (isset($error['file']) && strpos($error['file'], realpath(ROOTPATH)) !== 0): ?>
 
 			<p style="margin-left:10px">
-			File: <?php echo $error['file'] ?><br />
-			Line: <?php echo $error['line'] ?><br />
-			Function: <?php echo $error['function'] ?>
+			File: <?= $error['file'] ?><br />
+			Line: <?= $error['line'] ?><br />
+			Function: <?= $error['function'] ?>
 			</p>
 
 		<?php endif ?>

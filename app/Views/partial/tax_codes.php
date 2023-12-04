@@ -15,8 +15,8 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 	$state = $tax_code_data['state'];
 	++$i;
 ?>
-	<div class="form-group form-group-sm" style="<?php echo $tax_code_data['deleted'] ? 'display:none;' : 'display:block;' ?>">
-		<?php echo form_label(lang('Taxes.tax_code') . " $i", "tax_code_$i", ['class' => 'control-label col-xs-2']) ?>
+	<div class="form-group form-group-sm" style="<?= $tax_code_data['deleted'] ? 'display:none;' : 'display:block;' ?>">
+		<?= form_label(lang('Taxes.tax_code') . " $i", "tax_code_$i", ['class' => 'control-label col-xs-2']) ?>
 		<div class='col-xs-2'>
 			<?php $form_data = [
 					'name' => 'tax_code[]',
@@ -62,7 +62,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 		<span class="add_tax_code glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_code glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('tax_code_id[]', $tax_code_id) ?>
+		<?= form_hidden('tax_code_id[]', $tax_code_id) ?>
 	</div>
 <?php
 }

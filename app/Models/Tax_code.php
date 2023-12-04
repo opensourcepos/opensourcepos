@@ -122,9 +122,9 @@ class Tax_code extends Model
 		{
 			if($builder->insert($tax_code_data))	//TODO: this should be refactored to return $builder->insert($tax_code_data); in the same way that $builder->update() below is the return.  Look for this in the other save functions as well.
 			{
-				return TRUE;
+				return true;
 			}
-			return FALSE;
+			return false;
 		}
 
 		$builder->where('tax_code', $tax_code_data['tax_code']);
@@ -197,20 +197,20 @@ class Tax_code extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'tax_code_name', 'asc', true);
 	}
 
 	/**
 	 *  Perform a search for a set of rows
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'tax_code_name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('tax_codes AS tax_codes');
 

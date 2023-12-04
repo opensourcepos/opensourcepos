@@ -7,7 +7,7 @@ class Summary_sales extends Summary_report
 	protected function _get_data_columns(): array
 	{
 		return [
-			['sale_date' => lang('Reports.date'), 'sortable' => FALSE],
+			['sale_date' => lang('Reports.date'), 'sortable' => false],
 			['sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
 			['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
 			['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],

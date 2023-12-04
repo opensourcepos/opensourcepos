@@ -19,7 +19,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 	++$i;
 ?>
 	<div class="form-group form-group-sm" style="display:block;" >
-		<?php echo form_label(lang('Taxes.tax_jurisdiction') . " $i", "jurisdiction_name_$i", ['class' => 'control-label col-xs-2']) ?>
+		<?= form_label(lang('Taxes.tax_jurisdiction') . " $i", "jurisdiction_name_$i", ['class' => 'control-label col-xs-2']) ?>
 		<div class='col-xs-2'>
 			<?php $form_data = [
 				'name' => 'jurisdiction_name[]',
@@ -44,7 +44,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		</div>
 
 		<div class='col-xs-2'>
-			<?php echo form_dropdown('tax_type[]' . $i, $tax_types, $tax_type, ['class' => 'form-control'])	?>
+			<?= form_dropdown('tax_type[]' . $i, $tax_types, $tax_type, ['class' => 'form-control'])	?>
 		</div>
 
 		<div class='col-xs-2'>
@@ -82,7 +82,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		<span class="add_tax_jurisdiction glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_jurisdiction glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('jurisdiction_id[]', $jurisdiction_id) ?>
+		<?= form_hidden('jurisdiction_id[]', $jurisdiction_id) ?>
 	</div>
 <?php
 }

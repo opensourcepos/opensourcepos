@@ -83,7 +83,7 @@ class Tax_codes extends Secure_Controller
 			if($tax_code_id == NEW_ENTRY)
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Tax_codes.successful_adding'),
 					'id' => $tax_code_data['tax_code_id']
 				]);
@@ -91,7 +91,7 @@ class Tax_codes extends Secure_Controller
 			else
 			{
 				echo json_encode ([
-					'success' => TRUE,
+					'success' => true,
 					'message' => lang('Tax_codes.successful_updating'),
 					'id' => $tax_code_id
 				]);
@@ -100,7 +100,7 @@ class Tax_codes extends Secure_Controller
 		else
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
 				'id' => NEW_ENTRY
 			]);
@@ -114,13 +114,13 @@ class Tax_codes extends Secure_Controller
 		if($this->tax_code->delete_list($tax_codes_to_delete))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Tax_codes.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
 		}
 	}
 }

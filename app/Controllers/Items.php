@@ -1221,7 +1221,7 @@ class Items extends Secure_Controller
 						$dropdown_values = $attribute_data[$definition_name]['dropdown_values'];
 						$dropdown_values[] = '';
 
-						if(!empty($attribute_value) && in_array($attribute_value, $dropdown_values) === false)
+						if(!empty($attribute_value) && !in_array($attribute_value, $dropdown_values))
 						{
 							log_message('Error',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
 							return true;
@@ -1235,7 +1235,7 @@ class Items extends Secure_Controller
 						}
 						break;
 					case DATE:
-						if(valid_date($attribute_value) === false && !empty($attribute_value))
+						if(!valid_date($attribute_value) && !empty($attribute_value))
 						{
 							log_message('Error',"'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
 							return true;
@@ -1282,7 +1282,7 @@ class Items extends Secure_Controller
 					return true;
 				}
 
-				if($attribute_id === false)
+				if(!$attribute_id)
 				{
 					return true;
 				}
@@ -1300,11 +1300,11 @@ class Items extends Secure_Controller
 
 		$this->attribute->delete_link($item_id, $attribute_data['definition_id']);
 
-		if($attribute_id === false)
+		if(!$attribute_id)
 		{
 			$attribute_id = $this->attribute->save_value($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
 		}
-		else if($this->attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id) === false)
+		else if(!$this->attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id))
 		{
 			return false;
 		}

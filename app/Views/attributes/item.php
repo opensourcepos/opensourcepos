@@ -7,9 +7,9 @@
  */
 ?>
 <div class="form-group form-group-sm">
-	<?php echo form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
+	<?= form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
 	<div class='col-xs-8'>
-		<?php echo form_dropdown('definition_name', $definition_names, -1, ['id' => 'definition_name', 'class' => 'form-control']) ?>
+		<?= form_dropdown('definition_name', $definition_names, -1, ['id' => 'definition_name', 'class' => 'form-control']) ?>
 	</div>
 
 </div>
@@ -20,7 +20,7 @@ foreach($definition_values as $definition_id => $definition_value)
 ?>
 
 <div class="form-group form-group-sm">
-	<?php echo form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3']) ?>
+	<?= form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3']) ?>
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<?php
@@ -84,7 +84,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
 (function() {
-		<?php echo view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($config['dateformat'] . '"}')]) ?>
+		<?= view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($config['dateformat'] . '"}')]) ?>
 
 		var enable_delete = function() {
 			$('.remove_attribute_btn').click(function() {
@@ -99,7 +99,7 @@ foreach($definition_values as $definition_id => $definition_value)
 			$("input[name='attribute_ids[" + definition_id + "]']").val('');
 		}).autocomplete({
 			source: function(request, response) {
-				$.get('<?php echo 'attributes/suggestAttribute/' ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
+				$.get('<?= 'attributes/suggestAttribute/' ?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
 					return response(data);
 				}, 'json');
 			},

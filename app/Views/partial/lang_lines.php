@@ -2,8 +2,8 @@
 (function(lang, $) {
 
     var lines = {
-        'common_submit' : "<?php echo lang('Common.submit') ?>",
-        'common_close' : "<?php echo lang('Common.close') ?>"
+        'common_submit' : "<?= lang('Common.submit') ?>",
+        'common_close' : "<?= lang('Common.close') ?>"
     };
 
     $.extend(lang, {

@@ -49,7 +49,7 @@ class Attribute extends Model
 	/**
 	 * Determines if a given definition_id is an attribute
 	 */
-	public function exists(int $definition_id, bool $deleted = FALSE): bool
+	public function exists(int $definition_id, bool $deleted = false): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_id', $definition_id);
@@ -116,7 +116,7 @@ class Attribute extends Model
 			return $query->getRow()->attribute_id;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/*
@@ -256,16 +256,16 @@ class Attribute extends Model
 	/**
 	 * Returns an array of attribute definition names and IDs
 	 *
-	 * @param 	boolean		$groups		If FALSE does not return GROUP type attributes in the array
+	 * @param 	boolean		$groups		If false does not return GROUP type attributes in the array
 	 * @return	array					Array containing definition IDs, attribute names and -1 index with the local language '[SELECT]' line.
 	 */
-	public function get_definition_names(bool $groups = TRUE): array
+	public function get_definition_names(bool $groups = true): array
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('deleted', 0);
 		$builder->orderBy('definition_name','ASC');
 
-		if($groups === FALSE)
+		if(!$groups)
 		{
 			$builder->whereNotIn('definition_type',GROUP);
 		}
@@ -324,11 +324,11 @@ class Attribute extends Model
 
 	private function check_data_validity(int $definition_id, string $from, string $to): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		if($from === TEXT)
 		{
-			$success = TRUE;
+			$success = true;
 
 			$builder = $this->db->table('attribute_values');
 			$builder->distinct()->select('attribute_value');
@@ -347,7 +347,7 @@ class Attribute extends Model
 						break;
 				}
 
-				if($success === FALSE)
+				if(!$success)
 				{
 					$affected_items = $this->get_items_by_value($attribute->attribute_value, $definition_id);
 					foreach($affected_items as $affected_item)
@@ -389,11 +389,11 @@ class Attribute extends Model
 	 */
 	private function convert_definition_data(int $definition_id, string $from_type, string $to_type): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		if($from_type === TEXT)
 		{
-			if(in_array($to_type, [DATE, DECIMAL], TRUE))
+			if(in_array($to_type, [DATE, DECIMAL], true))
 			{
 				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
@@ -403,7 +403,7 @@ class Attribute extends Model
 			}
 			else if($to_type === DROPDOWN)
 			{
-				$success = TRUE;
+				$success = true;
 			}
 			else if($to_type === CHECKBOX)	//TODO: duplicated code.
 			{
@@ -414,7 +414,7 @@ class Attribute extends Model
 				$query = 'UPDATE '. $this->db->prefixTable('attribute_links') .' links ';
 				$query .= 'JOIN '. $this->db->prefixTable('attribute_values') .' vals ';
 				$query .= 'ON vals.attribute_id = links.attribute_id ';
-				$query .= "SET links.attribute_id = IF((attribute_value IN('FALSE','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+				$query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
 				$query .= 'WHERE definition_id = '. $this->db->escape($definition_id);
 				$success = $this->db->query($query);
 
@@ -423,7 +423,7 @@ class Attribute extends Model
 		}
 		else if($from_type === DROPDOWN)
 		{
-			if(in_array($to_type, [TEXT, CHECKBOX], TRUE))	//TODO: This if statement is possibly unnecessary... unless we have it there so that later we can do something with TEXT types also.
+			if(in_array($to_type, [TEXT, CHECKBOX], true))	//TODO: This if statement is possibly unnecessary... unless we have it there so that later we can do something with TEXT types also.
 			{
 				if($to_type === CHECKBOX)	//TODO: Duplicated code.
 				{
@@ -435,7 +435,7 @@ class Attribute extends Model
 					$query = 'UPDATE '. $this->db->prefixTable('attribute_links') .' links ';
 					$query .= 'JOIN '. $this->db->prefixTable('attribute_values') .' vals ';
 					$query .= 'ON vals.attribute_id = links.attribute_id ';
-					$query .= "SET links.attribute_id = IF((attribute_value IN('FALSE','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
+					$query .= "SET links.attribute_id = IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1]) ";
 					$query .= 'WHERE definition_id = '. $this->db->escape($definition_id);
 					$success = $this->db->query($query);
 
@@ -445,7 +445,7 @@ class Attribute extends Model
 		}
 		else
 		{
-			$success = TRUE;
+			$success = true;
 		}
 
 		$this->delete_orphaned_links($definition_id);
@@ -458,12 +458,12 @@ class Attribute extends Model
 		$zero_attribute_id = $this->value_exists('0');
 		$one_attribute_id = $this->value_exists('1');
 
-		if($zero_attribute_id === false)
+		if(!$zero_attribute_id)
 		{
 			$zero_attribute_id = $this->save_value('0', $definition_id, false, false, CHECKBOX);
 		}
 
-		if($one_attribute_id === false)
+		if(!$one_attribute_id)
 		{
 			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
 			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
@@ -482,7 +482,7 @@ class Attribute extends Model
 		//Definition doesn't exist
 		if($definition_id === NO_DEFINITION_ID || !$this->exists($definition_id))
 		{
-			if($this->exists($definition_id,TRUE))
+			if($this->exists($definition_id,true))
 			{
 				$success = $this->undelete($definition_id);
 			}
@@ -515,9 +515,9 @@ class Attribute extends Model
 
 			if($from_definition_type !== $to_definition_type)
 			{
-				if($this->convert_definition_data($definition_id, $from_definition_type, $to_definition_type) === FALSE)
+				if(!$this->convert_definition_data($definition_id, $from_definition_type, $to_definition_type))
 				{
-					return FALSE;
+					return false;
 				}
 			}
 		}
@@ -581,7 +581,7 @@ class Attribute extends Model
 		return $this->db->transStatus();
 	}
 
-	public function delete_link(int $item_id, bool $definition_id = FALSE): bool
+	public function delete_link(int $item_id, bool $definition_id = false): bool
 	{
 		$delete_data = ['item_id' => $item_id];
 
@@ -685,7 +685,7 @@ class Attribute extends Model
 			}
 			else
 			{
-				$empty_obj->$field_name = NULL;
+				$empty_obj->$field_name = null;
 			}
 		}
 
@@ -764,7 +764,7 @@ class Attribute extends Model
 		//Update attribute_value
 			$attribute_id = $this->value_exists($attribute_value, $definition_type);
 
-			if($attribute_id === false)
+			if(!$attribute_id)
 			{
 				switch($definition_type)	//TODO: Duplicated code
 				{
@@ -789,8 +789,8 @@ class Attribute extends Model
 			}
 
 			$data = [
-				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
-				'item_id' => empty($item_id) ? NULL : $item_id,
+				'attribute_id' => empty($attribute_id) ? null : $attribute_id,
+				'item_id' => empty($item_id) ? null : $item_id,
 				'definition_id' => $definition_id
 			];
 
@@ -842,7 +842,7 @@ class Attribute extends Model
 	 * Deletes an Attribute definition from the database and associated column in the items_import.csv
 	 *
 	 * @param	int		$definition_id	Attribute definition ID to remove.
-	 * @return 	boolean					TRUE if successful and FALSE if there is a failure
+	 * @return 	boolean					true if successful and false if there is a failure
 	 */
 	public function delete_definition(int $definition_id): bool
 	{
@@ -864,7 +864,7 @@ class Attribute extends Model
 	 * Deletes any attribute_links for a specific definition that do not have an item_id associated with them and are not DROPDOWN types
 	 *
 	 * @param int $definition_id
-	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
+	 * @return boolean true is returned if the delete was successful or false if there were any failures
 	 */
 	public function delete_orphaned_links(int $definition_id): bool
 	{
@@ -894,7 +894,7 @@ class Attribute extends Model
 	/**
 	 * Deletes any orphaned values that do not have associated links
 	 *
-	 * @return boolean TRUE is returned if the delete was successful or FALSE if there were any failures
+	 * @return boolean true is returned if the delete was successful or false if there were any failures
 	 */
 	public function delete_orphaned_values(): bool
 	{
@@ -905,7 +905,7 @@ class Attribute extends Model
 		$this->db->transStart();
 
 		$builder = $this->db->table('attribute_values');
-		$builder->whereNotIn('attribute_id', $subquery, FALSE);
+		$builder->whereNotIn('attribute_id', $subquery, false);
 		$builder->delete();
 
 		$this->db->transComplete();
@@ -937,13 +937,13 @@ class Attribute extends Model
 
 		foreach($attributes as $attribute)
 		{
-			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, FALSE, $attribute['attribute_id'], $definition_type);
+			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, false, $attribute['attribute_id'], $definition_type);
 
 			if(!$this->save_link($attribute['item_id'], $definition_id, $new_attribute_id))
 			{
 				log_message('Error', 'Transaction failed');
 				$this->db->transRollback();
-				return FALSE;
+				return false;
 			}
 		}
 		$success = $this->delete_orphaned_links($definition_id);

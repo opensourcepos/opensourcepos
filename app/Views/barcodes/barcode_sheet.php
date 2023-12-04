@@ -7,17 +7,17 @@
  */
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $this->request->getLocale() ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= $this->request->getLocale() ?>">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php echo lang('Items.generate_barcodes') ?></title>
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url() ?>css/barcode_font.css" />
+	<title><?= lang('Items.generate_barcodes') ?></title>
+	<link rel="stylesheet" rev="stylesheet" href="<?= base_url() ?>css/barcode_font.css" />
 </head>
 
-<body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
-      style="font-size:<?php echo $barcode_config['barcode_font_size'] ?>px">
-	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing'] ?> width='<?php echo $barcode_config['barcode_page_width']."%" ?>' >
+<body class=<?= "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
+      style="font-size:<?= $barcode_config['barcode_font_size'] ?>px">
+	<table cellspacing=<?= $barcode_config['barcode_page_cellspacing'] ?> width='<?= $barcode_config['barcode_page_width']."%" ?>' >
 		<tr>
 			<?php
 			$count = 0;

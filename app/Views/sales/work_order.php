@@ -14,9 +14,10 @@
  * @var float $subtotal
  * @var array $taxes
  * @var array $payments
+ * @var array $config
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <?php
 if(isset($error_message))
@@ -32,7 +33,7 @@ if(isset($error_message))
 		{
 			var send_email = function()
 			{
-				$.get('<?php echo esc("/sales/send_pdf/$sale_id_num/work_order") ?>',
+				$.get('<?= esc("/sales/send_pdf/$sale_id_num/work_order") ?>',
 					function(response)
 					{
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -49,27 +50,27 @@ if(isset($error_message))
 	</script>
 <?php endif; ?>
 
-<?php echo view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
+<?= view('partial/print_receipt', ['print_after_sale' => $print_after_sale, 'selected_printer' => 'invoice_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();')) */ ?>
 	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_work_order') ?></div></a>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_work_order') ?></div></a>
 	<?php endif; ?>
-	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
-	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_work_order_button']) ?>
+	<?= anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+	<?= anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_work_order_button']) ?>
 </div>
 
 <div id="page-wrap">
-	<div id="header"><?php echo $sales_work_order ?></div>
+	<div id="header"><?= $sales_work_order ?></div>
 	<div id="block1">
 		<div id="customer-title">
 			<?php
 			if(isset($customer))
 			{
 			?>
-				<div id="customer"><?php echo esc(nl2br($customer_info)) ?></div>
+				<div id="customer"><?= esc(nl2br($customer_info)) ?></div>
 			<?php
 			}
 			?>
@@ -80,7 +81,7 @@ if(isset($error_message))
 			if($config['company_logo'] != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . $config['company_logo']) ?>" alt="company_logo" />
+				<img id="image" src="<?= base_url('uploads/' . $config['company_logo']) ?>" alt="company_logo" />
 			<?php
 			}
 			?>
@@ -89,7 +90,7 @@ if(isset($error_message))
 			if($config['receipt_show_company_name'])
 			{
 			?>
-				<div id="company_name"><?php echo esc($config['company']) ?></div>
+				<div id="company_name"><?= esc($config['company']) ?></div>
 			<?php
 			}
 			?>
@@ -97,23 +98,23 @@ if(isset($error_message))
 	</div>
 
 	<div id="block2">
-		<div id="company-title"><?php echo esc(nl2br($company_info)) ?></div>
+		<div id="company-title"><?= esc(nl2br($company_info)) ?></div>
 		<table id="meta">
 			<tr>
-				<td class="meta-head"><?php echo esc($work_order_number_label) ?> </td>
-				<td><?php echo esc($work_order_number) ?></td>
+				<td class="meta-head"><?= esc($work_order_number_label) ?> </td>
+				<td><?= esc($work_order_number) ?></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo lang('Common.date') ?></td>
-				<td><?php echo esc($transaction_date) ?></td>
+				<td class="meta-head"><?= lang('Common.date') ?></td>
+				<td><?= esc($transaction_date) ?></td>
 			</tr>
 			<?php
 			if($print_price_info)
 			{
 			?>
 				<tr>
-					<td class="meta-head"><?php echo lang('Sales.amount_due') ?></td>
-					<td><?php echo to_currency(esc($total)) ?></td>
+					<td class="meta-head"><?= lang('Sales.amount_due') ?></td>
+					<td><?= to_currency(esc($total)) ?></td>
 				</tr>
 			<?php
 			}
@@ -123,12 +124,12 @@ if(isset($error_message))
 
 	<table id="items">
 		<tr>
-			<th><?php echo lang('Sales.item_number') ?></th>
-			<th><?php echo lang('Sales.item_name') ?></th>
-			<th><?php echo lang('Sales.quantity') ?></th>
-			<th><?php echo lang('Sales.price') ?></th>
-			<th><?php echo lang('Sales.discount') ?></th>
-			<th><?php echo lang('Sales.total') ?></th>
+			<th><?= lang('Sales.item_number') ?></th>
+			<th><?= lang('Sales.item_name') ?></th>
+			<th><?= lang('Sales.quantity') ?></th>
+			<th><?= lang('Sales.price') ?></th>
+			<th><?= lang('Sales.discount') ?></th>
+			<th><?= lang('Sales.total') ?></th>
 		</tr>
 		<?php
 		foreach($cart as $line => $item)
@@ -137,11 +138,11 @@ if(isset($error_message))
 			{
 			?>
 				<tr class="item-row">
-					<td><?php echo esc($item['item_number']) ?></td>
-					<td class="item-name"><?php echo esc($item['name']) ?></td>
-					<td style='text-align:center;'><?php echo to_quantity_decimals($item['quantity']) ?></td>
+					<td><?= esc($item['item_number']) ?></td>
+					<td class="item-name"><?= esc($item['name']) ?></td>
+					<td style='text-align:center;'><?= to_quantity_decimals($item['quantity']) ?></td>
 					<td><?php if($print_price_info) echo to_currency($item['price']) ?></td>
-					<td style='text-align:center;'><?php echo ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
+					<td style='text-align:center;'><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
 					<td style='border-right: solid 1px; text-align:right;'><?php if($print_price_info) echo to_currency($item['discounted_total']) ?></td>
 				</tr>
 
@@ -151,8 +152,8 @@ if(isset($error_message))
 				?>
 					<tr class="item-row">
 						<td></td>
-						<td class="item-name" colspan="4"><?php echo esc($item['description']) ?></td>
-						<td style='text-align:center;'><?php echo esc($item['serialnumber']) ?></td>
+						<td class="item-name" colspan="4"><?= esc($item['description']) ?></td>
+						<td style='text-align:center;'><?= esc($item['serialnumber']) ?></td>
 					</tr>
 				<?php
 				}
@@ -160,13 +161,13 @@ if(isset($error_message))
 		}
 		?>
 		<tr>
-			<td class="blank" colspan="6" style="text-align: center;"><?php echo '&nbsp;' //TODO: Why is PHP needed for an HTML `&nbsp;`? ?></td>
+			<td class="blank" colspan="6" style="text-align: center;"><?= '&nbsp;' //TODO: Why is PHP needed for an HTML `&nbsp;`? ?></td>
 		</tr>
 		<?php if($print_price_info) { ?>
 			<tr>
 				<td colspan="3" class="blank-bottom"> </td>
-				<td colspan="2" class="total-line"><?php echo lang('Sales.sub_total') ?></td>
-				<td class="total-value" id="subtotal"><?php echo to_currency($subtotal) ?></td>
+				<td colspan="2" class="total-line"><?= lang('Sales.sub_total') ?></td>
+				<td class="total-value" id="subtotal"><?= to_currency($subtotal) ?></td>
 			</tr>
 			<?php
 			foreach($taxes as $tax_group_index => $tax)
@@ -174,21 +175,21 @@ if(isset($error_message))
 				?>
 				<tr>
 					<td colspan="3" class="blank"> </td>
-					<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
-					<td class="total-value" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']) ?></td>
+					<td colspan="2" class="total-line"><?= (float)$tax['tax_rate'] . '% ' . $tax['tax_group'] ?></td>
+					<td class="total-value" id="taxes"><?= to_currency_tax($tax['sale_tax_amount']) ?></td>
 				</tr>
 				<?php
 			}
 			?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo lang('Sales.total') ?></td>
-				<td class="total-value" id="total"><?php echo to_currency($total) ?></td>
+				<td colspan="2" class="total-line"><?= lang('Sales.total') ?></td>
+				<td class="total-value" id="total"><?= to_currency($total) ?></td>
 			</tr>
 		<?php } ?>
 		<?php
-		$only_sale_check = FALSE;
-		$show_giftcard_remainder = FALSE;
+		$only_sale_check = false;
+		$show_giftcard_remainder = false;
 		foreach($payments as $payment_id => $payment)
 		{
 			$only_sale_check |= $payment['payment_type'] == lang('Sales.check');
@@ -197,8 +198,8 @@ if(isset($error_message))
 			?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo $splitpayment[0] ?></td>
-				<td class="total-value" id="paid"><?php echo to_currency( $payment['payment_amount'] ) ?></td>
+				<td colspan="2" class="total-line"><?= $splitpayment[0] ?></td>
+				<td class="total-value" id="paid"><?= to_currency( $payment['payment_amount'] ) ?></td>
 			</tr>
 			<?php
 		}
@@ -207,7 +208,7 @@ if(isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<span style='padding:4%;'><?php echo empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></span>
+				<span style='padding:4%;'><?= empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></span>
 			</h5>
 		</div>
 	</div>
@@ -243,4 +244,4 @@ if(isset($error_message))
 	});
 </script>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>

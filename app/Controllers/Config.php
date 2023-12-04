@@ -80,15 +80,15 @@ class Config extends Secure_Controller
 	private function _licenses(): array    //TODO: remove hungarian notation.  Super long function.  Perhaps we need to refactor out functions?
 	{
 		$i = 0;
-		$bower = FALSE;
-		$composer = FALSE;
+		$bower = false;
+		$composer = false;
 		$license = [];
 
 		$license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
 		if(file_exists('license/LICENSE'))
 		{
-			$license[$i]['text'] = file_get_contents('license/LICENSE', false, NULL, 0, 2000);
+			$license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 2000);
 		}
 		else
 		{
@@ -108,13 +108,13 @@ class Config extends Secure_Controller
 
 					$basename = 'license/' . $fileinfo->getBasename('.version');
 
-					$license[$i]['title'] = file_get_contents($basename . '.version', false, NULL, 0, 100);
+					$license[$i]['title'] = file_get_contents($basename . '.version', false, null, 0, 100);
 
 					$license_text_file = $basename . '.license';
 
 					if(file_exists($license_text_file))
 					{
-						$license[$i]['text'] = file_get_contents($license_text_file , false, NULL, 0, 2000);
+						$license[$i]['text'] = file_get_contents($license_text_file , false, null, 0, 2000);
 					}
 					else
 					{
@@ -124,12 +124,12 @@ class Config extends Secure_Controller
 				elseif($fileinfo->getBasename() == 'bower.LICENSES')
 				{
 					// set a flag to indicate that the JS Plugin bower.LICENSES file is available and needs to be attached at the end
-					$bower = TRUE;
+					$bower = true;
 				}
 				elseif($fileinfo->getBasename() == 'composer.LICENSES')
 				{
 					// set a flag to indicate that the composer.LICENSES file is available and needs to be attached at the end
-					$composer = TRUE;
+					$composer = true;
 				}
 			}
 		}
@@ -142,7 +142,7 @@ class Config extends Secure_Controller
 			$license[$i]['text'] = '';
 
 			$file = file_get_contents('license/composer.LICENSES');
-			$array = json_decode($file, TRUE);
+			$array = json_decode($file, true);
 
 			foreach($array as $key => $val)
 			{
@@ -192,7 +192,7 @@ class Config extends Secure_Controller
 			$license[$i]['text'] = '';
 
 			$file = file_get_contents('license/bower.LICENSES');
-			$array = json_decode($file, TRUE);
+			$array = json_decode($file, true);
 
 			foreach($array as $key => $val)
 			{
@@ -335,7 +335,7 @@ class Config extends Secure_Controller
 			'return_policy' => $this->request->getPost('return_policy')
 		];
 
-		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'] === TRUE)
+		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'])
 		{
 			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 		}
@@ -396,12 +396,12 @@ class Config extends Secure_Controller
 		$batch_save_data = [
 			'theme' => $this->request->getPost('theme'),
 			'login_form' => $this->request->getPost('login_form'),
-			'default_sales_discount_type' => $this->request->getPost('default_sales_discount_type') != NULL,
+			'default_sales_discount_type' => $this->request->getPost('default_sales_discount_type') != null,
 			'default_sales_discount' => $this->request->getPost('default_sales_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-			'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != NULL,
+			'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != null,
 			'default_receivings_discount' => $this->request->getPost('default_receivings_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'enforce_privacy' => $this->request->getPost('enforce_privacy', FILTER_SANITIZE_NUMBER_INT),
-			'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != NULL,
+			'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
 			'lines_per_page' => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
 			'notify_horizontal_position' => $this->request->getPost('notify_horizontal_position', FILTER_SANITIZE_NUMBER_INT),
 			'notify_vertical_position' => $this->request->getPost('notify_vertical_position', FILTER_SANITIZE_NUMBER_INT),
@@ -409,20 +409,20 @@ class Config extends Secure_Controller
 			'image_max_height' => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_size' => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
 			'image_allowed_types' => implode('|', $this->request->getPost('image_allowed_types')),
-			'gcaptcha_enable' => $this->request->getPost('gcaptcha_enable') != NULL,
+			'gcaptcha_enable' => $this->request->getPost('gcaptcha_enable') != null,
 			'gcaptcha_secret_key' => $this->request->getPost('gcaptcha_secret_key'),
 			'gcaptcha_site_key' => $this->request->getPost('gcaptcha_site_key'),
 			'suggestions_first_column' => $this->request->getPost('suggestions_first_column'),
 			'suggestions_second_column' => $this->request->getPost('suggestions_second_column'),
 			'suggestions_third_column' => $this->request->getPost('suggestions_third_column'),
 			'giftcard_number' => $this->request->getPost('giftcard_number'),
-			'derive_sale_quantity' => $this->request->getPost('derive_sale_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != NULL,
-			'multi_pack_enabled' => $this->request->getPost('multi_pack_enabled') != NULL,
-			'include_hsn' => $this->request->getPost('include_hsn') != NULL,
-			'category_dropdown' => $this->request->getPost('category_dropdown') != NULL
+			'derive_sale_quantity' => $this->request->getPost('derive_sale_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != null,
+			'multi_pack_enabled' => $this->request->getPost('multi_pack_enabled') != null,
+			'include_hsn' => $this->request->getPost('include_hsn') != null,
+			'category_dropdown' => $this->request->getPost('category_dropdown') != null
 		];
 
-		$this->module->set_show_office_group($this->request->getPost('show_office_group') != NULL);
+		$this->module->set_show_office_group($this->request->getPost('show_office_group') != null);
 
 		if($batch_save_data['category_dropdown'] == 1)
 		{
@@ -474,7 +474,7 @@ class Config extends Secure_Controller
 		$number_local_example = $fmt->format(1234567890.12300);
 
 		echo json_encode([
-			'success' => $number_local_example != FALSE,
+			'success' => $number_local_example != false,
 			'save_number_locale' => $save_number_locale,
 			'number_locale_example' => $number_local_example,
 			'currency_symbol' => $currency_symbol,
@@ -580,7 +580,7 @@ class Config extends Secure_Controller
 		$result = [];
 
 		$lists = $mailchimp_lib->getLists();
-		if($lists !== FALSE)
+		if($lists !== false)
 		{
 			if(is_array($lists) && !empty($lists['lists']) && is_array($lists['lists']))
 			{
@@ -688,7 +688,7 @@ class Config extends Secure_Controller
 		$this->db->transStart();
 
 		$not_to_delete = [];
-		foreach($this->request->getPost(NULL) as $key => $value)
+		foreach($this->request->getPost() as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
 			{
@@ -731,14 +731,14 @@ class Config extends Secure_Controller
 	{
 		$this->db->transStart();
 
-		$dinner_table_enable = $this->request->getPost('dinner_table_enable') != NULL;
+		$dinner_table_enable = $this->request->getPost('dinner_table_enable') != null;
 
 		$this->appconfig->save(['dinner_table_enable' => $dinner_table_enable]);
 
 		if($dinner_table_enable)
 		{
 			$not_to_delete = [];
-			foreach($this->request->getPost(NULL) as $key => $value)	//TODO: Not sure if this is the best way to filter the array
+			foreach($this->request->getPost() as $key => $value)	//TODO: Not sure if this is the best way to filter the array
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 				{
@@ -785,8 +785,8 @@ class Config extends Secure_Controller
 			'default_tax_1_name' => $this->request->getPost('default_tax_1_name'),
 			'default_tax_2_rate' => parse_tax($this->request->getPost('default_tax_2_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'default_tax_2_name' => $this->request->getPost('default_tax_2_name'),
-			'tax_included' => $this->request->getPost('tax_included') != NULL,
-			'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != NULL,
+			'tax_included' => $this->request->getPost('tax_included') != null,
+			'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,
 			'default_tax_code' => $this->request->getPost('default_tax_code'),
 			'default_tax_category' => $this->request->getPost('default_tax_category'),
 			'default_tax_jurisdiction' => $this->request->getPost('default_tax_jurisdiction'),
@@ -811,7 +811,7 @@ class Config extends Secure_Controller
 	{
 		$this->db->transStart();
 
-		$customer_reward_enable = $this->request->getPost('customer_reward_enable') != NULL;
+		$customer_reward_enable = $this->request->getPost('customer_reward_enable') != null;
 
 		$this->appconfig->save(['customer_reward_enable' => $customer_reward_enable]);
 
@@ -819,7 +819,7 @@ class Config extends Secure_Controller
 		{
 			$not_to_delete = [];
 			$array_save = [];
-			foreach($this->request->getPost(NULL) as $key => $value)
+			foreach($this->request->getPost() as $key => $value)
 			{
 				if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
 				{
@@ -880,8 +880,8 @@ class Config extends Secure_Controller
 			'barcode_num_in_row' => $this->request->getPost('barcode_num_in_row', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_page_width' => $this->request->getPost('barcode_page_width', FILTER_SANITIZE_NUMBER_INT),
 			'barcode_page_cellspacing' => $this->request->getPost('barcode_page_cellspacing', FILTER_SANITIZE_NUMBER_INT),
-			'barcode_generate_if_empty' => $this->request->getPost('barcode_generate_if_empty') != NULL,
-			'allow_duplicate_barcodes' => $this->request->getPost('allow_duplicate_barcodes') != NULL,
+			'barcode_generate_if_empty' => $this->request->getPost('barcode_generate_if_empty') != null,
+			'allow_duplicate_barcodes' => $this->request->getPost('allow_duplicate_barcodes') != null,
 			'barcode_content' => $this->request->getPost('barcode_content'),
 			'barcode_formats' => json_encode($this->request->getPost('barcode_formats'))
 		];
@@ -902,15 +902,15 @@ class Config extends Secure_Controller
 			'print_delay_autoreturn' => $this->request->getPost('print_delay_autoreturn', FILTER_SANITIZE_NUMBER_INT),
 			'email_receipt_check_behaviour' => $this->request->getPost('email_receipt_check_behaviour'),
 			'print_receipt_check_behaviour' => $this->request->getPost('print_receipt_check_behaviour'),
-			'receipt_show_company_name' => $this->request->getPost('receipt_show_company_name') != NULL,
-			'receipt_show_taxes' => ($this->request->getPost('receipt_show_taxes') != NULL),
-			'receipt_show_tax_ind' => ($this->request->getPost('receipt_show_tax_ind') != NULL),
-			'receipt_show_total_discount' => $this->request->getPost('receipt_show_total_discount') != NULL,
-			'receipt_show_description' => $this->request->getPost('receipt_show_description') != NULL,
-			'receipt_show_serialnumber' => $this->request->getPost('receipt_show_serialnumber') != NULL,
-			'print_silently' => $this->request->getPost('print_silently') != NULL,
-			'print_header' => $this->request->getPost('print_header') != NULL,
-			'print_footer' => $this->request->getPost('print_footer') != NULL,
+			'receipt_show_company_name' => $this->request->getPost('receipt_show_company_name') != null,
+			'receipt_show_taxes' => ($this->request->getPost('receipt_show_taxes') != null),
+			'receipt_show_tax_ind' => ($this->request->getPost('receipt_show_tax_ind') != null),
+			'receipt_show_total_discount' => $this->request->getPost('receipt_show_total_discount') != null,
+			'receipt_show_description' => $this->request->getPost('receipt_show_description') != null,
+			'receipt_show_serialnumber' => $this->request->getPost('receipt_show_serialnumber') != null,
+			'print_silently' => $this->request->getPost('print_silently') != null,
+			'print_header' => $this->request->getPost('print_header') != null,
+			'print_footer' => $this->request->getPost('print_footer') != null,
 			'print_top_margin' => $this->request->getPost('print_top_margin', FILTER_SANITIZE_NUMBER_INT),
 			'print_left_margin' => $this->request->getPost('print_left_margin', FILTER_SANITIZE_NUMBER_INT),
 			'print_bottom_margin' => $this->request->getPost('print_bottom_margin', FILTER_SANITIZE_NUMBER_INT),
@@ -928,7 +928,7 @@ class Config extends Secure_Controller
 	public function postSaveInvoice(): void
 	{
 		$batch_save_data = [
-			'invoice_enable' => $this->request->getPost('invoice_enable') != NULL,
+			'invoice_enable' => $this->request->getPost('invoice_enable') != null,
 			'sales_invoice_format' => $this->request->getPost('sales_invoice_format'),
 			'sales_quote_format' => $this->request->getPost('sales_quote_format'),
 			'recv_invoice_format' => $this->request->getPost('recv_invoice_format'),
@@ -938,7 +938,7 @@ class Config extends Secure_Controller
 			'last_used_invoice_number' => $this->request->getPost('last_used_invoice_number', FILTER_SANITIZE_NUMBER_INT),
 			'last_used_quote_number' => $this->request->getPost('last_used_quote_number', FILTER_SANITIZE_NUMBER_INT),
 			'quote_default_comments' => $this->request->getPost('quote_default_comments'),
-			'work_order_enable' => $this->request->getPost('work_order_enable') != NULL,
+			'work_order_enable' => $this->request->getPost('work_order_enable') != null,
 			'work_order_format' => $this->request->getPost('work_order_format'),
 			'last_used_work_order_number' => $this->request->getPost('last_used_work_order_number', FILTER_SANITIZE_NUMBER_INT),
 			'invoice_type' => $this->request->getPost('invoice_type')
@@ -948,7 +948,7 @@ class Config extends Secure_Controller
 
 		// Update the register mode with the latest change so that if the user
 		// switches immediately back to the register the mode reflects the change
-		if($success == TRUE)
+		if($success)
 		{
 			if($this->config['invoice_enable'])
 			{

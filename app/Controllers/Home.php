@@ -8,7 +8,7 @@ class Home extends Secure_Controller
 {
 	public function __construct()
 	{
-		parent::__construct('home', NULL, 'home');
+		parent::__construct('home', null, 'home');
 	}
 
 	public function getIndex(): void
@@ -56,7 +56,7 @@ class Home extends Secure_Controller
 				if($this->employee->change_password($employee_data, $employee_id))
 				{
 					echo json_encode ([
-						'success' => TRUE,
+						'success' => true,
 						'message' => lang('Employees.successful_change_password'),
 						'id' => $employee_id
 					]);
@@ -64,7 +64,7 @@ class Home extends Secure_Controller
 				else//failure
 				{//TODO: Replace -1 with constant
 					echo json_encode ([
-						'success' => FALSE,
+						'success' => false,
 						'message' => lang('Employees.unsuccessful_change_password'),
 						'id' => -1
 					]);
@@ -73,7 +73,7 @@ class Home extends Secure_Controller
 			else
 			{//TODO: Replace -1 with constant
 				echo json_encode ([
-					'success' => FALSE,
+					'success' => false,
 					'message' => lang('Employees.current_password_invalid'),
 					'id' => -1
 				]);
@@ -82,7 +82,7 @@ class Home extends Secure_Controller
 		else
 		{//TODO: Replace -1 with constant
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Employees.current_password_invalid'),
 				'id' => -1
 			]);

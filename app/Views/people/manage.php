@@ -2,19 +2,20 @@
 /**
  * @var string $controller_name
  * @var string $table_headers
+ * @var array $config
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php echo view('partial/bootstrap_tables_locale') ?>
+	<?= view('partial/bootstrap_tables_locale') ?>
 
 	table_support.init({
-		resource: '<?php echo esc($controller_name) ?>',
-		headers: <?php echo $table_headers ?>,
-		pageSize: <?php echo $config['lines_per_page'] ?>,
+		resource: '<?= esc($controller_name) ?>',
+		headers: <?= $table_headers ?>,
+		pageSize: <?= $config['lines_per_page'] ?>,
 		uniqueId: 'people.person_id',
 		enableActions: function()
 		{
@@ -39,26 +40,26 @@ $(document).ready(function()
 	if ($controller_name == 'customers')	//TODO: === ?
 	{
 	?>
-		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/csvImport" ?>'
-				title='<?php echo lang('Customers.import_items_csv') ?>'>
-			<span class="glyphicon glyphicon-import">&nbsp</span><?php echo lang('Common.import_csv') ?>
+		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/csvImport" ?>'
+				title='<?= lang('Customers.import_items_csv') ?>'>
+			<span class="glyphicon glyphicon-import">&nbsp</span><?= lang('Common.import_csv') ?>
 		</button>
 	<?php
 	}
 	?>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo lang('Common.submit') ?>' data-href='<?php echo "$controller_name/view" ?>'
-			title='<?php echo lang("$controller_name.new") ?>'>
-		<span class="glyphicon glyphicon-user">&nbsp</span><?php echo lang("$controller_name.new") ?>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/view" ?>'
+			title='<?= lang("$controller_name.new") ?>'>
+		<span class="glyphicon glyphicon-user">&nbsp</span><?= lang("$controller_name.new") ?>
 	</button>
 </div>
 
 <div id="toolbar">
 	<div class="pull-left btn-toolbar">
 		<button id="delete" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo lang('Common.delete') ?>
+			<span class="glyphicon glyphicon-trash">&nbsp</span><?= lang('Common.delete') ?>
 		</button>
 		<button id="email" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-envelope">&nbsp</span><?php echo lang('Common.email') ?>
+			<span class="glyphicon glyphicon-envelope">&nbsp</span><?= lang('Common.email') ?>
 		</button>
 	</div>
 </div>
@@ -67,4 +68,4 @@ $(document).ready(function()
 	<table id="table"></table>
 </div>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>

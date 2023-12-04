@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * @var string $title
+ * @var object $exception
+ * @var string $file
+ * @var string $line
+ * @var array $trace
+ */
+
 use Config\Services;
 use CodeIgniter\CodeIgniter;
 

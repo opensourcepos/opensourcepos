@@ -24,7 +24,7 @@ class Specific_supplier extends Report
 		return [
 			['id' => lang('Reports.sale_id')],
 			['type_code' => lang('Reports.code_type')],
-			['sale_time' => lang('Reports.date'), 'sortable' => FALSE],
+			['sale_time' => lang('Reports.date'), 'sortable' => false],
 			['name' => lang('Reports.name')],
 			['category' => lang('Reports.category')],
 			['item_number' => lang('Reports.item_number')],

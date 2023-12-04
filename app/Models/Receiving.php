@@ -61,7 +61,7 @@ class Receiving extends Model
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	public function exists(int $receiving_id): bool
@@ -72,7 +72,7 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
-	public function update($receiving_id = NULL, $receiving_data = NULL): bool
+	public function update($receiving_id = null, $receiving_data = null): bool
 	{
 		$builder = $this->db->table('receivings');
 		$builder->where('receiving_id', $receiving_id);
@@ -98,7 +98,7 @@ class Receiving extends Model
 
 		$receivings_data = [
 			'receiving_time' => date('Y-m-d H:i:s'),
-			'supplier_id' => $supplier->exists($supplier_id) ? $supplier_id : NULL,
+			'supplier_id' => $supplier->exists($supplier_id) ? $supplier_id : null,
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
@@ -171,21 +171,16 @@ class Receiving extends Model
 
 		$this->db->transComplete();
 
-		if($this->db->transStatus() === FALSE)	//TODO: Probably better written as return $this->db->transStatus() ? $receiving_id : -1;
-		{
-			return -1;
-		}
-
-		return $receiving_id;
+		return $this->db->transStatus() ? $receiving_id : -1;
 	}
 
 
 	/**
 	 * @throws ReflectionException
 	 */
-	public function delete_list(array $receiving_ids, int $employee_id, bool $update_inventory = TRUE): bool
+	public function delete_list(array $receiving_ids, int $employee_id, bool $update_inventory = true): bool
 	{
-		$success = TRUE;
+		$success = true;
 
 		// start a transaction to assure data integrity
 		$this->db->transStart();
@@ -206,7 +201,7 @@ class Receiving extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function delete_value(int $receiving_id, int $employee_id, bool $update_inventory = TRUE): bool
+	public function delete_value(int $receiving_id, int $employee_id, bool $update_inventory = true): bool
 	{
 		// start a transaction to assure data integrity
 		$this->db->transStart();

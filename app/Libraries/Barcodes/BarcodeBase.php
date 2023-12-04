@@ -82,7 +82,7 @@ abstract class BarcodeBase
 	 */
 	public function validate($barcode)
 	{
-		return TRUE;
+		return true;
 	}
 
 	/**

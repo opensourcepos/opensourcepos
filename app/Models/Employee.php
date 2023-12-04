@@ -126,7 +126,7 @@ class Employee extends Person
 	 */
 	public function save_employee(array &$person_data, array &$employee_data, array &$grants_data, int $employee_id = NEW_ENTRY): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->transStart();
@@ -182,12 +182,12 @@ class Employee extends Person
 	 */
 	public function delete($employee_id = null, bool $purge = false): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		//Don't let employees delete themselves
 		if($employee_id == $this->get_logged_in_employee_info()->person_id)
 		{
-			return FALSE;
+			return false;
 		}
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -213,12 +213,12 @@ class Employee extends Person
 	 */
 	public function delete_list(array $person_ids): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		//Don't let employees delete themselves
 		if(in_array($this->get_logged_in_employee_info()->person_id, $person_ids))
 		{
-			return FALSE;
+			return false;
 		}
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -244,7 +244,7 @@ class Employee extends Person
 	/**
 	 * Get search suggestions to find employees
 	 */
-	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = FALSE): array
+	public function get_search_suggestions(string $search, int $limit = 25, bool $unique = false): array
 	{
 		$suggestions = [];
 
@@ -330,20 +330,20 @@ class Employee extends Person
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'last_name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'last_name', 'asc', true);
 	}
 
 	/**
 	 * Performs a search on employees
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'last_name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('employees AS employees');
 
@@ -405,11 +405,11 @@ class Employee extends Person
 			{
 				$this->session->set('person_id', $row->person_id);
 
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -425,7 +425,7 @@ class Employee extends Person
 	 */
 	public function is_logged_in(): bool
 	{
-		return ($this->session->get('person_id') != FALSE);
+		return ($this->session->get('person_id') != false);
 	}
 
 	/**
@@ -438,7 +438,7 @@ class Employee extends Person
 			return $this->get_info($this->session->get('person_id'));
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -476,13 +476,13 @@ class Employee extends Person
 	public function has_grant(?string $permission_id, ?int $person_id): bool
 	{
 		//if no module_id is null, allow access
-		if($permission_id == NULL)
+		if($permission_id == null)
 		{
-			return TRUE;
+			return true;
 		}
-		if($person_id == NULL)
+		if($person_id == null)
 		{
-			return FALSE;
+			return false;
 		}
 
 		$builder = $this->db->table('grants');
@@ -504,7 +504,7 @@ class Employee extends Person
 		$row = $builder->get()->getRow();
 
 		// If no grants are assigned yet then set the default to 'home'
-		if($row == NULL)
+		if($row == null)
 		{
 			return 'home';
 		}
@@ -539,19 +539,19 @@ class Employee extends Person
 
 			if(password_verify($password, $row->password))
 			{
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Change password for the employee
 	 */
-	public function change_password(array $employee_data, $employee_id = FALSE): bool
+	public function change_password(array $employee_data, $employee_id = false): bool
 	{
-		$success = FALSE;
+		$success = false;
 
 		if(ENVIRONMENT != 'testing')
 		{

@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $message
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

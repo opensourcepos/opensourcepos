@@ -13,38 +13,39 @@
  * @var string $selected_employee_name
  * @var int $selected_employee_id
  * @var string $controller_name
+ * @var array $config
  */
 ?>
-<div id="required_fields_message"><?php echo lang('Common.fields_required_message') ?></div>
+<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('sales/save/' . $sale_info['sale_id'], ['id' => 'sales_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('sales/save/' . $sale_info['sale_id'], ['id' => 'sales_edit_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="sale_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Sales.receipt_number'), 'receipt_number', ['class' => 'control-label col-xs-3']) ?>
-			<?php echo anchor(esc('sales/receipt/' . $sale_info['sale_id'], 'url'), 'POS ' . $sale_info['sale_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style"=>"text-align:left"]) ?>
+			<?= form_label(lang('Sales.receipt_number'), 'receipt_number', ['class' => 'control-label col-xs-3']) ?>
+			<?= anchor(esc('sales/receipt/' . $sale_info['sale_id'], 'url'), 'POS ' . $sale_info['sale_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style"=>"text-align:left"]) ?>
 		</div>
 		
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Sales.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Sales.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'date','value' => to_datetime(strtotime($sale_info['sale_time'])), 'class' => 'datetime form-control input-sm']) ?>
+				<?= form_input (['name' => 'date','value' => to_datetime(strtotime($sale_info['sale_time'])), 'class' => 'datetime form-control input-sm']) ?>
 			</div>
 		</div>
 
 		<?php
-		if($config['invoice_enable'] == TRUE)	//TODO: Replace this with just `if($config['invoice_enable']))`
+		if($config['invoice_enable'])
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Sales.invoice_number'), 'invoice_number', ['class' => 'control-label col-xs-3']) ?>
+				<?= form_label(lang('Sales.invoice_number'), 'invoice_number', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<?php if(!empty($sale_info["invoice_number"]) && isset($sale_info['customer_id']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input (['name' => 'invoice_number', 'size'=>10, 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
-						<a id="send_invoice" href="javascript:void(0);"><?php echo lang('Sales.send_invoice') ?></a>
+						<?= form_input (['name' => 'invoice_number', 'size'=>10, 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<a id="send_invoice" href="javascript:void(0);"><?= lang('Sales.send_invoice') ?></a>
 					<?php else: ?>
-						<?php echo form_input (['name' => 'invoice_number', 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<?= form_input (['name' => 'invoice_number', 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -57,18 +58,18 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Sales.payment'), 'payment_new', ['class' => 'control-label col-xs-3']) ?>
+				<?= form_label(lang('Sales.payment'), 'payment_new', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
-					<?php echo form_dropdown('payment_type_new', $new_payment_options, $payment_type_new, ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
+					<?= form_dropdown('payment_type_new', $new_payment_options, $payment_type_new, ['id' => 'payment_types_new', 'class' => 'form-control']) ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
-						<?php echo form_input(['name' => 'payment_amount_new', 'value' => $payment_amount_new, 'id' => 'payment_amount_new', 'class' => 'form-control input-sm']) //TODO: potentially we need to add type to be float/decimal/numeric to reduce improper data entry ?>
+						<?= form_input(['name' => 'payment_amount_new', 'value' => $payment_amount_new, 'id' => 'payment_amount_new', 'class' => 'form-control input-sm']) //TODO: potentially we need to add type to be float/decimal/numeric to reduce improper data entry ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -83,47 +84,47 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Sales.payment'), "payment_$i", ['class' => 'control-label col-xs-3']) ?>
+				<?= form_label(lang('Sales.payment'), "payment_$i", ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php // no editing of Gift Card payments as it's a complex change ?>
-					<?php echo form_hidden("payment_id_$i", $row->payment_id) ?>
+					<?= form_hidden("payment_id_$i", $row->payment_id) ?>
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard'))) ): ?>
-						<?php echo form_input (['name' => "payment_type_$i", 'value' => esc($row->payment_type), 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+						<?= form_input (['name' => "payment_type_$i", 'value' => esc($row->payment_type), 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?php echo form_dropdown("payment_type_$i", esc($payment_options), esc($row->payment_type), ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
+						<?= form_dropdown("payment_type_$i", esc($payment_options), esc($row->payment_type), ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
-						<?php echo form_input (['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])	//TODO: add type attribute ?>
+						<?= form_input (['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])	//TODO: add type attribute ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Sales.refund'), "refund_$i", ['class' => 'control-label col-xs-3']) ?>
+				<?= form_label(lang('Sales.refund'), "refund_$i", ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-4'>
 					<?php // no editing of Gift Card payments as it's a complex change ?>
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard')))): ?>
-						<?php echo form_input (['name' => "refund_type_$i", 'value'=>lang('Sales.cash'), 'id' => "refund_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+						<?= form_input (['name' => "refund_type_$i", 'value'=>lang('Sales.cash'), 'id' => "refund_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?php echo form_dropdown("refund_type_$i", $payment_options, lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
+						<?= form_dropdown("refund_type_$i", $payment_options, lang('Sales.cash'), ['id' => "refund_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
 						<?php if(!currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
-						<?php echo form_input (['name' => "refund_amount_$i", 'value' => $row->cash_refund, 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+						<?= form_input (['name' => "refund_amount_$i", 'value' => $row->cash_refund, 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 						<?php if(currency_side()): ?>
-							<span class="input-group-addon input-sm"><b><?php echo esc($config['currency_symbol']) ?></b></span>
+							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -135,37 +136,37 @@
 		?>
 		
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'customer_name', 'value' => esc($selected_customer_name), 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
-				<?php echo form_hidden('customer_id', $selected_customer_id) ?>
+				<?= form_input (['name' => 'customer_name', 'value' => esc($selected_customer_name), 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_hidden('customer_id', $selected_customer_id) ?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Sales.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Sales.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_input (['name' => 'employee_name', 'value' => esc($selected_employee_name), 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
-				<?php echo form_hidden('employee_id', $selected_employee_id) ?>
+				<?= form_input (['name' => 'employee_name', 'value' => esc($selected_employee_name), 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_hidden('employee_id', $selected_employee_id) ?>
 			</div>
 		</div>
 		
 		<div class="form-group form-group-sm">
-			<?php echo form_label(lang('Sales.comment'), 'comment', ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Sales.comment'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?php echo form_textarea (['name' => 'comment', 'value' => esc($sale_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?= form_textarea (['name' => 'comment', 'value' => esc($sale_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
 <script type="text/javascript">
 $(document).ready(function()
 {	
 	<?php if(!empty($sale_info['email'])): ?>
 		$('#send_invoice').click(function(event) {
-			if (confirm("<?php echo lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get("<?php echo esc("$controller_name/send_pdf/" . $sale_info['sale_id']) ?>",
+			if (confirm("<?= lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
+				$.get("<?= esc("$controller_name/send_pdf/" . $sale_info['sale_id']) ?>",
 					function(response) {
 						BootstrapDialog.closeAll();
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -175,7 +176,7 @@ $(document).ready(function()
 		});
 	<?php endif; ?>
 	
-	<?php echo view('partial/datepicker_locale') ?>
+	<?= view('partial/datepicker_locale') ?>
 
 	var fill_value_customer = function(event, ui) {
 		event.preventDefault();
@@ -184,7 +185,7 @@ $(document).ready(function()
 	};
 
 	$('#customer_name').autocomplete( {
-		source: "<?php echo 'customers/suggest' ?>",
+		source: "<?= 'customers/suggest' ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -200,7 +201,7 @@ $(document).ready(function()
 	};
 
 	$('#employee_name').autocomplete( {
-		source: "<?php echo 'employees/suggest' ?>",
+		source: "<?= 'employees/suggest' ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -211,12 +212,12 @@ $(document).ready(function()
 
 	$('button#delete').click(function() {
 		dialog_support.hide();
-		table_support.do_delete("<?php echo esc($controller_name); ?>", <?php echo $sale_info['sale_id'] ?>);
+		table_support.do_delete("<?= esc($controller_name); ?>", <?= $sale_info['sale_id'] ?>);
 	});
 
 	$('button#restore').click(function() {
 		dialog_support.hide();
-		table_support.do_restore("<?php echo esc($controller_name) ?>", <?php echo $sale_info['sale_id'] ?>);
+		table_support.do_restore("<?= esc($controller_name) ?>", <?= $sale_info['sale_id'] ?>);
 	});
 
 	$('#sales_edit_form').validate($.extend( {
@@ -225,10 +226,10 @@ $(document).ready(function()
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit("<?php echo esc($controller_name) ?>", response);
+					table_support.handle_submit("<?= esc($controller_name) ?>", response);
 					
 					const params = $.param(table_support.query_params());
-					$.get("<?php echo $controller_name; ?>/search?" + params, function(response) {
+					$.get("<?= $controller_name; ?>/search?" + params, function(response) {
 						$("#payment_summary").html(response.payment_summary);
 					}, 'json');
 				},
@@ -244,10 +245,10 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo esc("$controller_name/check_invoice_number") ?>",
+					url: "<?= esc("$controller_name/check_invoice_number") ?>",
 					type: 'POST',
 					data: {
-						'sale_id': <?php echo $sale_info['sale_id'] ?>,
+						'sale_id': <?= $sale_info['sale_id'] ?>,
 						'invoice_number': function() {
 							return $('#invoice_number').val();
 						}
@@ -258,7 +259,7 @@ $(document).ready(function()
 
 		messages: 
 		{
-			invoice_number: "<?php echo lang('Sales.invoice_number_duplicate') ?>"
+			invoice_number: "<?= lang('Sales.invoice_number_duplicate') ?>"
 		}
 	}, form_support.error));
 });

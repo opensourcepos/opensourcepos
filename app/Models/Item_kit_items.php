@@ -53,13 +53,13 @@ class Item_kit_items extends Model
 	 */
 	public function save_value(array &$item_kit_items_data, int $item_kit_id): bool
 	{
-		$success = TRUE;
+		$success = true;
 
 		$this->db->transStart();
 
 		$this->delete($item_kit_id);
 
-		if($item_kit_items_data != NULL)
+		if($item_kit_items_data != null)
 		{
 			$builder = $this->db->table('item_kit_items');
 

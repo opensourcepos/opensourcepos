@@ -12,9 +12,10 @@
  * @var float $amount_tendered
  * @var float $amount_change
  * @var string $barcode
+ * @var array $config
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <?php
 	if (isset($error_message))
@@ -26,34 +27,34 @@
 	echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp</span>' . lang('Common.print') ?></div></a>
+	<?= anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . lang('Receivings.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
 </div>
 
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
 		if ($config['company_logo'] != '')
-		{ 
+		{
 		?>
-			<div id="company_name"><img id="image" src="<?php echo esc(base_url('uploads/' . $config['company_logo']), 'url') ?>" alt="company_logo" /></div>
+			<div id="company_name"><img id="image" src="<?= esc(base_url('uploads/' . $config['company_logo']), 'url') ?>" alt="company_logo" /></div>
 		<?php
 		}
 		?>
 
 		<?php
 		if ($config['receipt_show_company_name'])
-		{ 
+		{
 		?>
-			<div id="company_name"><?php echo esc($config['company']) ?></div>
+			<div id="company_name"><?= esc($config['company']) ?></div>
 		<?php
 		}
 		?>
 
-		<div id="company_address"><?php echo esc(nl2br($config['address'])) ?></div>
-		<div id="company_phone"><?php echo esc($config['phone']) ?></div>
-		<div id="sale_receipt"><?php echo lang('Receivings.receipt') ?></div>
-		<div id="sale_time"><?php echo esc($transaction_time) ?></div>
+		<div id="company_address"><?= esc(nl2br($config['address'])) ?></div>
+		<div id="company_phone"><?= esc($config['phone']) ?></div>
+		<div id="sale_receipt"><?= lang('Receivings.receipt') ?></div>
+		<div id="sale_time"><?= esc($transaction_time) ?></div>
 	</div>
 
 	<div id="receipt_general_info">
@@ -61,42 +62,42 @@
 		if(isset($supplier))
 		{
 		?>
-			<div id="customer"><?php echo lang('Suppliers.supplier') . esc(": $supplier") ?></div>
+			<div id="customer"><?= lang('Suppliers.supplier') . esc(": $supplier") ?></div>
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo lang('Receivings.id') . ": $receiving_id" ?></div>
-		<?php 
+		<div id="sale_id"><?= lang('Receivings.id') . ": $receiving_id" ?></div>
+		<?php
 		if (!empty($reference))
 		{
 		?>
-			<div id="reference"><?php echo lang('Receivings.reference') . esc(": $reference") ?></div>
-		<?php 
+			<div id="reference"><?= lang('Receivings.reference') . esc(": $reference") ?></div>
+		<?php
 		}
 		?>
-		<div id="employee"><?php echo lang('Employees.employee') . esc(": $employee") ?></div>
+		<div id="employee"><?= lang('Employees.employee') . esc(": $employee") ?></div>
 	</div>
 
 	<table id="receipt_items">
 		<tr>
-			<th style="width:40%;"><?php echo lang('Items.item') ?></th>
-			<th style="width:20%;"><?php echo lang('Common.price') ?></th>
-			<th style="width:20%;"><?php echo lang('Sales.quantity') ?></th>
-			<th style="width:15%;text-align:right;"><?php echo lang('Sales.total') ?></th>
+			<th style="width:40%;"><?= lang('Items.item') ?></th>
+			<th style="width:20%;"><?= lang('Common.price') ?></th>
+			<th style="width:20%;"><?= lang('Sales.quantity') ?></th>
+			<th style="width:15%;text-align:right;"><?= lang('Sales.total') ?></th>
 		</tr>
 
 		<?php
-		foreach(array_reverse($cart, TRUE) as $line => $item)
+		foreach(array_reverse($cart, true) as $line => $item)
 		{
 		?>
 			<tr>
-				<td><?php echo esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
-				<td><?php echo to_currency($item['price']) ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']) . ' ' . ($show_stock_locations ? ' [' . esc($item['stock_name']) . ']' : '') ?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1 ?></td>
-				<td><div class="total-value"><?php echo to_currency($item['total']) ?></div></td>
+				<td><?= esc($item['name'] . ' ' . $item['attribute_values']) ?></td>
+				<td><?= to_currency($item['price']) ?></td>
+				<td><?= to_quantity_decimals($item['quantity']) . ' ' . ($show_stock_locations ? ' [' . esc($item['stock_name']) . ']' : '') ?>&nbsp;&nbsp;&nbsp;x <?= $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1 ?></td>
+				<td><div class="total-value"><?= to_currency($item['total']) ?></div></td>
 			</tr>
 			<tr>
-				<td ><?php echo esc($item['serialnumber']) ?></td>
+				<td ><?= esc($item['serialnumber']) ?></td>
 			</tr>
 			<?php
 			if ($item['discount'] > 0 )
@@ -107,15 +108,15 @@
 					if($item['discount_type'] == FIXED)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . ' ' . lang('Sales.discount') ?></td>
+						<td colspan="3" class="discount"><?= to_currency($item['discount']) . ' ' . lang('Sales.discount') ?></td>
 					<?php
 					}
 					elseif($item['discount_type'] == PERCENT)
 					{
 					?>
-						<td colspan="3" class="discount"><?php echo to_decimals($item['discount']) . ' ' . lang('Sales.discount_included') ?></td>
+						<td colspan="3" class="discount"><?= to_decimals($item['discount']) . ' ' . lang('Sales.discount_included') ?></td>
 					<?php
-					}	
+					}
 					?>
 				</tr>
 			<?php
@@ -123,47 +124,47 @@
 			?>
 		<?php
 		}
-		?>	
+		?>
 		<tr>
-			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo lang('Sales.total') ?></td>
-			<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total) ?></div></td>
+			<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?= lang('Sales.total') ?></td>
+			<td style='border-top:2px solid #000000;'><div class="total-value"><?= to_currency($total) ?></div></td>
 		</tr>
-		<?php 
+		<?php
 		if($mode != 'requisition')
 		{
 		?>
 			<tr>
-				<td colspan="3" style='text-align:right;'><?php echo lang('Sales.payment') ?></td>
-				<td><div class="total-value"><?php echo esc($payment_type) ?></div></td>
+				<td colspan="3" style='text-align:right;'><?= lang('Sales.payment') ?></td>
+				<td><div class="total-value"><?= esc($payment_type) ?></div></td>
 			</tr>
 
 			<?php if(isset($amount_change))
 			{
 			?>
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.amount_tendered') ?></td>
-					<td><div class="total-value"><?php echo to_currency($amount_tendered) ?></div></td>
+					<td colspan="3" style='text-align:right;'><?= lang('Sales.amount_tendered') ?></td>
+					<td><div class="total-value"><?= to_currency($amount_tendered) ?></div></td>
 				</tr>
 
 				<tr>
-					<td colspan="3" style='text-align:right;'><?php echo lang('Sales.change_due') ?></td>
-					<td><div class="total-value"><?php echo $amount_change ?></div></td>
+					<td colspan="3" style='text-align:right;'><?= lang('Sales.change_due') ?></td>
+					<td><div class="total-value"><?= $amount_change ?></div></td>
 				</tr>
 			<?php
 			}
 			?>
-		<?php 
+		<?php
 		}
 		?>
 	</table>
 
 	<div id="sale_return_policy">
-		<?php echo esc(nl2br($config['return_policy'])) ?>
+		<?= esc(nl2br($config['return_policy'])) ?>
 	</div>
 
 	<div id='barcode'>
-		<img alt='<?php echo esc($barcode) ?>' src='data:image/png;base64,<?php echo esc($barcode) ?>' /><br>
-		<?php echo $receiving_id ?>
+		<img alt='<?= esc($barcode) ?>' src='data:image/png;base64,<?= esc($barcode) ?>' /><br>
+		<?= $receiving_id ?>
 	</div>
 </div>
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>

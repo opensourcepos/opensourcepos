@@ -30,13 +30,13 @@ function transform_headers_readonly(array $array): string	//TODO: $array needs t
 /**
  * Basic tabular headers function
  */
-function transform_headers(array $array, bool $readonly = FALSE, bool $editable = TRUE): string	//TODO: $array needs to be refactored to a new name.  Perhaps $headers?
+function transform_headers(array $array, bool $readonly = false, bool $editable = true): string	//TODO: $array needs to be refactored to a new name.  Perhaps $headers?
 {
 	$result = [];
 
 	if(!$readonly)
 	{
-		$array = array_merge ([['checkbox' => 'select', 'sortable' => FALSE]], $array);
+		$array = array_merge ([['checkbox' => 'select', 'sortable' => false]], $array);
 	}
 
 	if($editable)
@@ -53,7 +53,7 @@ function transform_headers(array $array, bool $readonly = FALSE, bool $editable 
 			'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
 			'escape' => !preg_match("/(edit|phone_number|email|messages|item_pic|customer_name|note)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
 			'sortable' => $element['sortable'] ?? current($element) != '',
-			'checkbox' => $element['checkbox'] ?? FALSE,
+			'checkbox' => $element['checkbox'] ?? false,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
 			'sorter' => $element ['sorter'] ?? ''
 		];
@@ -81,10 +81,10 @@ function get_sales_manage_table_headers(): string
 	if($config['invoice_enable'])
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
-		$headers[] = ['invoice' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE];
+		$headers[] = ['invoice' => '&nbsp', 'sortable' => false, 'escape' => false];
 	}
 
-	$headers[] = ['receipt' => '&nbsp', 'sortable' => FALSE, 'escape' => FALSE];
+	$headers[] = ['receipt' => '&nbsp', 'sortable' => false, 'escape' => false];
 
 	return transform_headers($headers);
 }
@@ -204,7 +204,7 @@ function get_people_manage_table_headers(): string
 
 	if($employee->has_grant('messages', $session->get('person_id')))
 	{
-		$headers[] = ['messages' => '', 'sortable' => FALSE];
+		$headers[] = ['messages' => '', 'sortable' => false];
 	}
 
 	return transform_headers($headers);
@@ -257,7 +257,7 @@ function get_customer_manage_table_headers(): string
 		['first_name' => lang('Common.first_name')],
 		['email' => lang('Common.email')],
 		['phone_number' => lang('Common.phone_number')],
-		['total' => lang('Common.total_spent'), 'sortable' => FALSE]
+		['total' => lang('Common.total_spent'), 'sortable' => false]
 	];
 
 	$employee = model(Employee::class);
@@ -265,7 +265,7 @@ function get_customer_manage_table_headers(): string
 
 	if($employee->has_grant('messages', $session->get('person_id')))
 	{
-		$headers[] = ['messages' => '', 'sortable' => FALSE];
+		$headers[] = ['messages' => '', 'sortable' => false];
 	}
 
 	return transform_headers($headers);
@@ -396,23 +396,23 @@ function get_items_manage_table_headers(): string
 
 	if($config['use_destination_based_tax'])
 	{
-		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => FALSE];
+		$headers[] = ['tax_percents' => lang('Items.tax_category'), 'sortable' => false];
 	}
 	else
 	{
-		$headers[] = ['tax_percents' => lang('Items.tax_percents'), 'sortable' => FALSE];
+		$headers[] = ['tax_percents' => lang('Items.tax_percents'), 'sortable' => false];
 
 	}
 
-	$headers[] = ['item_pic' => lang('Items.image'), 'sortable' => FALSE];
+	$headers[] = ['item_pic' => lang('Items.image'), 'sortable' => false];
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$headers[] = [$definition_id => $definition_name, 'sortable' => FALSE];
+		$headers[] = [$definition_id => $definition_name, 'sortable' => false];
 	}
 
-	$headers[] = ['inventory' => '', 'escape' => FALSE];
-	$headers[] = ['stock' => '', 'escape' => FALSE];
+	$headers[] = ['inventory' => '', 'escape' => false];
+	$headers[] = ['stock' => '', 'escape' => false];
 
 	return transform_headers($headers);
 }
@@ -429,7 +429,7 @@ function get_item_data_row(object $item): array
 
 	if($config['use_destination_based_tax'])
 	{
-		if($item->tax_category_id == NULL)	//TODO: === ?
+		if($item->tax_category_id == null)	//TODO: === ?
 		{
 			$tax_percents = '-';
 		}
@@ -454,7 +454,7 @@ function get_item_data_row(object $item): array
 
 	$controller = get_controller();
 
-	$image = NULL;
+	$image = null;
 	if($item->pic_filename != '')	//TODO: !== ?
 	{
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
@@ -572,8 +572,8 @@ function get_item_kits_manage_table_headers(): string
 		['item_kit_number' => lang('Item_kits.item_kit_number')],
 		['name' => lang('Item_kits.name')],
 		['description' => lang('Item_kits.description')],
-		['total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE],
-		['total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE]
+		['total_cost_price' => lang('Items.cost_price'), 'sortable' => false],
+		['total_unit_price' => lang('Items.unit_price'), 'sortable' => false]
 	];
 
 	return transform_headers($headers);

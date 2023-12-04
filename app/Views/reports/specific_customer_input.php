@@ -6,14 +6,14 @@
  * @var array $payment_type
  */
 ?>
-<?php echo view('partial/header') ?>
+<?= view('partial/header') ?>
 
 <script type="text/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 
 
-<div id="page_title"><?php echo lang('Reports.report_input') ?></div>
+<div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
 if(isset($error))
@@ -22,32 +22,32 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
+		<?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
 		<div class="col-xs-3">
-				<?php echo form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+				<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm" id="report_specific_input_data">
-		<?php echo form_label(esc($specific_input_name), 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label(esc($specific_input_name), 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div class="col-xs-3">
-			<?php echo form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control selectpicker" data-live-search="true"') ?>
+			<?= form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control selectpicker" data-live-search="true"') ?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div id='report_sale_type' class="col-xs-3">
-			<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
+			<?= form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
 		</div>
 	</div>
 	
 	<div class="form-group form-group-sm">
-		<?php echo form_label(lang('Reports.payment_type'), 'reports_payment_type_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label(lang('Reports.payment_type'), 'reports_payment_type_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div class="col-xs-3">
-			<?php echo form_dropdown('payment_type', $payment_type, '', 'id="input_payment_type" class="form-control"') ?>
+			<?= form_dropdown('payment_type', $payment_type, '', 'id="input_payment_type" class="form-control"') ?>
 		</div>
 	</div>
 
@@ -58,14 +58,14 @@ if(isset($error))
 			'content' => lang('Common.submit'),
 			'class' => 'btn btn-primary btn-sm'
 	]);	?>
-<?php echo form_close() ?>
+<?= form_close() ?>
 
-<?php echo view('partial/footer') ?>
+<?= view('partial/footer') ?>
 
 <script type="text/javascript">
 $(document).ready(function()
 {
-	<?php echo view('partial/daterangepicker') ?>
+	<?= view('partial/daterangepicker') ?>
 
 	$("#generate_report").click(function()
 	{

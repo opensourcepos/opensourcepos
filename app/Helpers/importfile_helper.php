@@ -42,23 +42,23 @@ function get_csv_file(string $file_name): array
 //It must be done in a way that does not significantly negatively affect performance.
 	ini_set('auto_detect_line_endings', true);
 
-	$csv_rows = FALSE;
+	$csv_rows = false;
 
-	if(($csv_file = fopen($file_name,'r')) !== FALSE)
+	if(($csv_file = fopen($file_name,'r')) !== false)
 	{
 		helper('security');
 
 		$csv_rows = [];
 
 		//Skip Byte-Order Mark
-		if(bom_exists($csv_file) === TRUE)
+		if(bom_exists($csv_file))
 		{
 			fseek($csv_file, 3);
 		}
 
 		$headers = fgetcsv($csv_file);
 
-		while(($row = fgetcsv($csv_file)) !== FALSE)
+		while(($row = fgetcsv($csv_file)) !== false)
 		{
 			//Skip empty lines
 			if($row !== [null])
@@ -75,7 +75,7 @@ function get_csv_file(string $file_name): array
 
 function bom_exists(&$file_handle): bool
 {
-	$result		= FALSE;
+	$result		= false;
 	$candidate	= fread($file_handle, 3);
 
 	rewind($file_handle);
@@ -84,7 +84,7 @@ function bom_exists(&$file_handle): bool
 
 	if (0 === strncmp($candidate, $bom, 3))
 	{
-		$result = TRUE;
+		$result = true;
 	}
 
 	return $result;

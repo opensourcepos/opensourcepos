@@ -16,14 +16,14 @@ class MY_Email extends Email
 		parent::__construct($config);
 	}
 
-	function sendMail(string $subject, string $body, string $to = NULL, string $reply_name = NULL, string $reply_mail = NULL, string $attachment = NULL): bool
+	function sendMail(string $subject, string $body, string $to = null, string $reply_name = null, string $reply_mail = null, string $attachment = null): bool
 	{
 		$this->setReplyTo($reply_mail, $reply_name);
 		$this->setFrom($this->default_sender_address, $this->default_sender_name, $this->default_bounce_address);
 		$this->setMailtype('html');
 		$this->setSubject($subject);
 		$this->setMessage($body);
-		if ($to == NULL) {
+		if ($to == null) {
 			$to = $this->default_email_address;
 			$this->setCc($this->default_cc_address);
 		}

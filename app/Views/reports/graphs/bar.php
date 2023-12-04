@@ -5,15 +5,16 @@
  * @var array $series_data_1
  * @var bool $show_currency
  * @var string $xaxis_title
+ * @var array $config
  */
 ?>
 <script>
 	// Labels and data series
 	var data = {
-		labels: <?php echo esc(json_encode($labels_1), 'js') ?>,
+		labels: <?= esc(json_encode($labels_1), 'js') ?>,
 		series: [{
-			name: '<?php echo esc($yaxis_title, 'js') ?>',
-			data: <?php echo esc(json_encode($series_data_1), 'js') ?>
+			name: '<?= esc($yaxis_title, 'js') ?>',
+			data: <?= esc(json_encode($series_data_1), 'js') ?>
 		}]
 	};
 
@@ -52,13 +53,13 @@
 					if( currency_side() )
 					{
 				?>
-						return value + '<?php echo esc($config['currency_symbol'], 'js') ?>';
+						return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 					<?php
 					}
 					else
 					{
 					?>
-						return '<?php echo esc($config['currency_symbol'], 'js') ?>' + value;
+						return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 				<?php
 					}
 				}
@@ -76,7 +77,7 @@
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
 				axisX: {
-					axisTitle: '<?php echo esc($xaxis_title, 'js') ?>',
+					axisTitle: '<?= esc($xaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: -100,
@@ -85,7 +86,7 @@
 					textAnchor: 'middle'
 				},
 				axisY: {
-					axisTitle: '<?php echo esc($yaxis_title, 'js') ?>',
+					axisTitle: '<?= esc($yaxis_title, 'js') ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,

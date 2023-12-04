@@ -152,35 +152,35 @@ class Item_kits extends Secure_Controller
 		$item_kit_data = [
 			'name' => $this->request->getPost('name'),
 			'item_kit_number' => $this->request->getPost('item_kit_number'),
-			'item_id' => empty($this->request->getPost('kit_item_id')) ? NULL : intval($this->request->getPost('kit_item_id')),
+			'item_id' => empty($this->request->getPost('kit_item_id')) ? null : intval($this->request->getPost('kit_item_id')),
 			'kit_discount' => parse_decimals($this->request->getPost('kit_discount')),
-			'kit_discount_type' => $this->request->getPost('kit_discount_type') === NULL ? PERCENT : intval($this->request->getPost('kit_discount_type')),
-			'price_option' => $this->request->getPost('price_option') === NULL ? PRICE_ALL : intval($this->request->getPost('price_option')),
-			'print_option' => $this->request->getPost('print_option') === NULL ? PRINT_ALL : intval($this->request->getPost('print_option')),
+			'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
+			'price_option' => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
+			'print_option' => $this->request->getPost('print_option') === null ? PRINT_ALL : intval($this->request->getPost('print_option')),
 			'description' => $this->request->getPost('description')
 		];
 
 		if($this->item_kit->save_value($item_kit_data, $item_kit_id))
 		{
-			$new_item = FALSE;
+			$new_item = false;
 			//New item kit
 			if($item_kit_id == NEW_ENTRY)
 			{
 				$item_kit_id = $item_kit_data['item_kit_id'];
-				$new_item = TRUE;
+				$new_item = true;
 			}
 
-			$item_kit_items_array = $this->request->getPost('item_kit_qty') === NULL ? NULL : $this->request->getPost('item_kit_qty');
+			$item_kit_items_array = $this->request->getPost('item_kit_qty') === null ? null : $this->request->getPost('item_kit_qty');
 
-			if($item_kit_items_array != NULL)
+			if($item_kit_items_array != null)
 			{
 				$item_kit_items = [];
 				foreach($item_kit_items_array as $item_id => $item_kit_qty)
 				{
 					$item_kit_items[] = [
 						'item_id' => $item_id,
-						'quantity' => $item_kit_qty === NULL ? 0 : parse_quantity($item_kit_qty),
-						'kit_sequence' => $this->request->getPost("item_kit_seq[$item_id]") === NULL ? 0 : intval($this->request->getPost("item_kit_seq[$item_id]"))
+						'quantity' => $item_kit_qty === null ? 0 : parse_quantity($item_kit_qty),
+						'kit_sequence' => $this->request->getPost("item_kit_seq[$item_id]") === null ? 0 : intval($this->request->getPost("item_kit_seq[$item_id]"))
 					];
 				}
 			}
@@ -191,7 +191,7 @@ class Item_kits extends Secure_Controller
 			}
 			else
 			{
-				$success = TRUE;
+				$success = true;
 			}
 
 			if($new_item)
@@ -215,7 +215,7 @@ class Item_kits extends Secure_Controller
 		else//failure
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
 				'id' => NEW_ENTRY
 			]);
@@ -229,13 +229,13 @@ class Item_kits extends Secure_Controller
 		if($this->item_kit->delete_list($item_kits_to_delete))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Item_kits.successful_deleted') . ' ' . count($item_kits_to_delete) . ' ' . lang('Item_kits.one_or_multiple')
 			]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Item_kits.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
 		}
 	}
 

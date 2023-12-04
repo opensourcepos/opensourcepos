@@ -233,7 +233,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function postDelete(int $receiving_id = -1, bool $update_inventory = TRUE) : void
+	public function postDelete(int $receiving_id = -1, bool $update_inventory = true) : void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$receiving_ids = $receiving_id == -1 ? $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT) : [$receiving_id];	//TODO: Replace -1 with constant
@@ -241,13 +241,13 @@ class Receivings extends Secure_Controller
 		if($this->receiving->delete_list($receiving_ids, $employee_id, $update_inventory))	//TODO: Likely need to surround this block of code in a try-catch to catch the ReflectionException
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Receivings.successfully_deleted') . ' ' . count($receiving_ids) . ' ' . lang('Receivings.one_or_multiple'),
 				'ids' => $receiving_ids]);
 		}
 		else
 		{
-			echo json_encode (['success' => FALSE, 'message' => lang('Receivings.cannot_be_deleted')]);
+			echo json_encode (['success' => false, 'message' => lang('Receivings.cannot_be_deleted')]);
 		}
 	}
 
@@ -279,7 +279,7 @@ class Receivings extends Secure_Controller
 		$data['payment_type'] = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
-		if($this->request->getPost('amount_tendered') != NULL)
+		if($this->request->getPost('amount_tendered') != null)
 		{
 			$data['amount_tendered'] = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
@@ -388,7 +388,7 @@ class Receivings extends Secure_Controller
 			}
 		}
 
-		$data['print_after_sale'] = FALSE;
+		$data['print_after_sale'] = false;
 
 		echo view("receivings/receipt", $data);
 
@@ -452,17 +452,17 @@ class Receivings extends Secure_Controller
 
 		$receiving_data = [
 			'receiving_time' => $receiving_time,
-			'supplier_id' => $this->request->getPost('supplier_id') ? $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT) : NULL,
+			'supplier_id' => $this->request->getPost('supplier_id') ? $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT) : null,
 			'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
 			'comment' => $this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'reference' => $this->request->getPost('reference') != '' ? $this->request->getPost('reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : NULL
+			'reference' => $this->request->getPost('reference') != '' ? $this->request->getPost('reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null
 		];
 
 		$this->inventory->update('RECV '.$receiving_id, ['trans_date' => $receiving_time]);
 		if($this->receiving->update($receiving_id, $receiving_data))
 		{
 			echo json_encode ([
-				'success' => TRUE,
+				'success' => true,
 				'message' => lang('Receivings.successfully_updated'),
 				'id' => $receiving_id
 			]);
@@ -470,7 +470,7 @@ class Receivings extends Secure_Controller
 		else
 		{
 			echo json_encode ([
-				'success' => FALSE,
+				'success' => false,
 				'message' => lang('Receivings.unsuccessfully_updated'),
 				'id' => $receiving_id
 			]);

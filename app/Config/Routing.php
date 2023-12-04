@@ -81,17 +81,17 @@ class Routing extends BaseRouting
     public ?string $override404 = null;
 
     /**
-     * If TRUE, the system will attempt to match the URI against
+     * If true, the system will attempt to match the URI against
      * Controllers by matching each segment against folders/files
      * in APPPATH/Controllers, when a match wasn't found against
      * defined routes.
      *
-     * If FALSE, will stop searching and do NO automatic routing.
+     * If false, will stop searching and do NO automatic routing.
      */
     public bool $autoRoute = true;
 
     /**
-     * If TRUE, will enable the use of the 'prioritize' option
+     * If true, will enable the use of the 'prioritize' option
      * when defining routes.
      *
      * Default: false

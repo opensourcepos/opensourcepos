@@ -90,15 +90,15 @@ class Tax extends Model
 		{
 			//Get empty base parent object
 			$tax_rate_obj = new stdClass();
-			$tax_rate_obj->tax_rate_id = NULL;
-			$tax_rate_obj->rate_tax_code_id = NULL;
+			$tax_rate_obj->tax_rate_id = null;
+			$tax_rate_obj->rate_tax_code_id = null;
 			$tax_rate_obj->tax_code = '';
 			$tax_rate_obj->tax_code_name = '';
-			$tax_rate_obj->rate_tax_category_id = NULL;
+			$tax_rate_obj->rate_tax_category_id = null;
 			$tax_rate_obj->tax_category = '';
 			$tax_rate_obj->tax_rate = 0.0;
 			$tax_rate_obj->tax_rounding_code = '0';
-			$tax_rate_obj->rate_jurisdiction_id = NULL;
+			$tax_rate_obj->rate_jurisdiction_id = null;
 			$tax_rate_obj->jurisdiction_name = '';
 
 			return $tax_rate_obj;
@@ -172,7 +172,7 @@ class Tax extends Model
 			{
 				$tax_rate_data['tax_rate_id'] = $this->db->insertID();
 
-				return TRUE;
+				return true;
 			}
 		}
 		else
@@ -181,11 +181,11 @@ class Tax extends Model
 
 			if($builder->update($tax_rate_data))
 			{
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -214,20 +214,20 @@ class Tax extends Model
 	 */
 	public function get_found_rows(string $search): int
 	{
-		return $this->search($search, 0, 0, 'tax_code_name', 'asc', TRUE);
+		return $this->search($search, 0, 0, 'tax_code_name', 'asc', true);
 	}
 
 	/**
 	 * Performs a search on tax_rates
 	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = FALSE)
+	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
 		if($rows == null) $rows = 0;
 		if($limit_from == null) $limit_from = 0;
 		if($sort == null) $sort = 'tax_code_name';
 		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = FALSE;
+		if($count_only == null) $count_only = false;
 
 		$builder = $this->db->table('tax_rates');
 
