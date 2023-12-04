@@ -401,7 +401,7 @@
 						'name' => 'show_office_group',
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
-						'checked' => $show_office_group == 1
+						'checked' => $show_office_group > 0
 					]) ?>
 				</div>
 			</div>
