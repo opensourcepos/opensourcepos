@@ -25,8 +25,10 @@ class Home extends Secure_Controller
 
 	/**
 	 * Load "change employee password" form
+	 *
+	 * @noinspection PhpUnused
 	 */
-	public function change_password(int $employee_id = -1): void	//TODO: Replace -1 with a constant
+	public function getChangePassword(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
 		$person_info = $this->employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
