@@ -73,7 +73,7 @@
 			<?= form_label(lang('Expenses.amount'), 'amount', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -82,7 +82,7 @@
 						'class' => 'form-control input-sm',
 						'value' => to_currency_no_money($expenses_info->amount)
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -93,7 +93,7 @@
 			<?= form_label(lang('Expenses.tax_amount'), 'tax_amount', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -102,7 +102,7 @@
 						'class' => 'form-control input-sm',
 						'value' => to_currency_no_money($expenses_info->tax_amount)
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>

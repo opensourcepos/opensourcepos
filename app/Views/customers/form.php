@@ -230,7 +230,7 @@
 						<?= form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
-								<?php if (!currency_side()): ?>
+								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 								<?= form_input ([
@@ -240,7 +240,7 @@
 										'value' => to_currency_no_money($stats->total),
 										'disabled' => ''
 								]) ?>
-								<?php if (currency_side()): ?>
+								<?php if (is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
@@ -251,7 +251,7 @@
 						<?= form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
-								<?php if (!currency_side()): ?>
+								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 								<?= form_input ([
@@ -261,7 +261,7 @@
 										'value' => to_currency_no_money($stats->max),
 										'disabled' => ''
 									]) ?>
-								<?php if (currency_side()): ?>
+								<?php if (is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
@@ -272,7 +272,7 @@
 						<?= form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
-								<?php if (!currency_side()): ?>
+								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 								<?= form_input ([
@@ -282,7 +282,7 @@
 										'value' => to_currency_no_money($stats->min),
 										'disabled' => ''
 									]) ?>
-								<?php if (currency_side()): ?>
+								<?php if (is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>
@@ -293,7 +293,7 @@
 						<?= form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-3']) ?>
 						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
-								<?php if (!currency_side()): ?>
+								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 								<?= form_input ([
@@ -303,7 +303,7 @@
 										'value' => to_currency_no_money($stats->average),
 										'disabled' => ''
 									]) ?>
-								<?php if (currency_side()): ?>
+								<?php if (is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 								<?php endif; ?>
 							</div>

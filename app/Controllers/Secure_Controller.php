@@ -79,6 +79,7 @@ class Secure_Controller extends BaseController
 	/**
 	 * AJAX function used to confirm whether values sent in the request are numeric
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getCheckNumeric(): void
 	{

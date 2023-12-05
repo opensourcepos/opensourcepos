@@ -39,7 +39,7 @@
 					<?php
 					if($show_currency)
 					{
-						if( currency_side() )
+						if( is_right_side_currency_symbol() )
 						{
 					?>
 							return value + '<?= esc($config['currency_symbol'], 'js') ?>';
