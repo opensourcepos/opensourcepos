@@ -5,15 +5,6 @@ branches:
     - weblate
 services:
   - docker
-before_install:
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - docker --version
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -28,7 +19,6 @@ script:
   - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
   global:
-  - DOCKER_COMPOSE_VERSION=1.29.1
   - BRANCH=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
   - TAG=${TRAVIS_TAG:-$BRANCH}
   - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` 
