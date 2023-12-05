@@ -252,6 +252,9 @@ class Tax_jurisdiction extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function get_empty_row(): array
 	{
 		return [

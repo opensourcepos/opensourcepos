@@ -15,6 +15,9 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		$this->expense_category = model(Expense_category::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_expense_category_manage_table_headers();
@@ -45,6 +48,10 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$data_row = get_expense_category_data_row($this->expense_category->get_info($row_id));
@@ -52,6 +59,10 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $expense_category_id
+	 * @return void
+	 */
 	public function getView(int $expense_category_id = NEW_ENTRY): void
 	{
 		$data['category_info'] = $this->expense_category->get_info($expense_category_id);
@@ -59,6 +70,10 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		echo view("expenses_categories/form", $data);
 	}
 
+	/**
+	 * @param int $expense_category_id
+	 * @return void
+	 */
 	public function postSave(int $expense_category_id = NEW_ENTRY): void
 	{
 		$expense_category_data = [
@@ -96,6 +111,9 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

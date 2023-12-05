@@ -11,12 +11,18 @@ class Home extends Secure_Controller
 		parent::__construct('home', null, 'home');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$logged_in = $this->employee->is_logged_in();
 		echo view('home/home');
 	}
 
+	/**
+	 * @return RedirectResponse
+	 */
 	public function getLogout(): RedirectResponse
 	{
 		$this->employee->logout();

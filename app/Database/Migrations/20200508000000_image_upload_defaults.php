@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_image_upload_defaults extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		$image_values = [
@@ -19,6 +22,9 @@ class Migration_image_upload_defaults extends Migration
 		$builder->insertBatch($image_values);
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 		$builder = $this->db->table('app_config');

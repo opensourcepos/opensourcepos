@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_move_expenses_categories extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating expense categories module');
@@ -15,6 +18,9 @@ class Migration_move_expenses_categories extends Migration
 		error_log('Migrating expense categories module completed');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 

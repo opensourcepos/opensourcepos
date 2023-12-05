@@ -11,6 +11,8 @@
 
 namespace App\Libraries\Barcodes;
 
+use OverflowException;
+
 /**
  * emberlabs Barcode Creator - Code39
  * 	     Generate Code39 Barcodes
@@ -21,7 +23,7 @@ namespace App\Libraries\Barcodes;
  */
 class Code39 extends BarcodeBase
 {
-	/*
+	/**
 	 * Binary map
 	 * @var array binMap
 	 */
@@ -73,51 +75,55 @@ class Code39 extends BarcodeBase
 		'Z'	=> '011010000',
 	);
 
-	/*
+	/**
 	 * const bar proportions
 	 */
-	const NARROW_BAR	= 20;
-	const WIDE_BAR		= 55;
-	const QUIET_BAR		= 35;
+	public const NARROW_BAR = 20;
+	public const WIDE_BAR = 55;
+	public const QUIET_BAR = 35;
 
-	/*
+	/**
 	 * Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @param mixed $data - (int or string) Data to be encoded
+	 * @return void
+	 * @throws OverflowException
 	 */
-	public function setData($data)
+	public function setData(mixed $data): void
 	{
 		$this->data = $data;
 	}
 
-	/*
+	/**
 	 * Get a binary map value
+	 */
+	/**
+	 * @param $char
+	 * @return string
 	 */
 	private function getMap($char)
 	{
 		return self::$binMap[$char] ?: self::$this->binMap[' '];
 	}
 
-	/*
+	/**
 	 * Draw the image
 	 *
-	 * Based on the implentation PHP Barcode Image Generator v1.0 
+	 * Based on the implentation PHP Barcode Image Generator v1.0
 	 * by Charles J. Scheffold - cs@sid6581.net
 	 * It was released into the Public Domain by its creator.
 	 *
 	 * @return void
 	 */
-	public function draw()
+	public function draw(): void
 	{
 		// I know, lots of junk.
 		$data = '*' . strtoupper(ltrim(rtrim(trim($this->data), '*'), '*')) . '*';
-	
+
 		//                Length of data  X   [ 6 narrow bars       +     3 wide bars      + A single Quiet stop ] - a single quiet stop
 		$pxPerChar = (strlen($data) * ((6 * self::NARROW_BAR) + (3 * self::WIDE_BAR) + self::QUIET_BAR)) - self::QUIET_BAR;
 		$widthQuotient = $this->x / $pxPerChar;
-		
+
 		// Lengths per type
 		$narrowBar	= (int) (self::NARROW_BAR * $widthQuotient);
 		$wideBar	= (int) (self::WIDE_BAR * $widthQuotient);
@@ -128,7 +134,7 @@ class Code39 extends BarcodeBase
 		// Do we have degenerate rectangles?
 		if ($narrowBar < 1 || $wideBar < 1 || $quietBar < 1 || $narrowBar == $quietBar || $narrowBar == $wideBar || $wideBar == $quietBar)
 		{
-			throw new \OverflowException("You need to specify a bigger width to properly display this barcode");
+			throw new OverflowException("You need to specify a bigger width to properly display this barcode");
 		}
 
 		$currentBarX = (int)(($this->x - $imageWidth) / 2);
@@ -140,7 +146,7 @@ class Code39 extends BarcodeBase
 		{
 			throw new \RuntimeException("Code39: Image failed to initialize");
 		}
-		
+
 		// Grab our colors
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
@@ -149,7 +155,7 @@ class Code39 extends BarcodeBase
 		foreach($charAry as $_k => $char)
 		{
 			$code = str_split($this->getMap($char));
-			$color = $black; 
+			$color = $black;
 
 			foreach($code as $k => $bit)
 			{
@@ -169,7 +175,7 @@ class Code39 extends BarcodeBase
 				$color = ($color == $black) ? $white : $black;
 			}
 
-			// Skip the spacer on the last run 
+			// Skip the spacer on the last run
 			if ($_k == (sizeof($charAry) - 1))
 			{
 				break;

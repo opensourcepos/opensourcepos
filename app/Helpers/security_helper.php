@@ -63,6 +63,9 @@ function check_encryption(): bool
 	return true;
 }
 
+/**
+ * @return void
+ */
 function abort_encryption_conversion()
 {
 	$config_path = ROOTPATH . '.env';
@@ -91,6 +94,9 @@ function abort_encryption_conversion()
 	}
 }
 
+/**
+ * @return void
+ */
 function remove_backup()
 {
 	$backup_path = WRITEPATH . '/backup/.env.bak';

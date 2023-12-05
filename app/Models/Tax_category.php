@@ -244,6 +244,10 @@ class Tax_category extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $search
+	 * @return array
+	 */
 	public function get_tax_category_suggestions(string $search): array
 	{
 		$suggestions = [];
@@ -266,6 +270,9 @@ class Tax_category extends Model
 		return $suggestions;
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function get_empty_row(): array
 	{
 		return [

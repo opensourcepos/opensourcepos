@@ -4,6 +4,9 @@ namespace App\Events;
 
 class Method
 {
+	/**
+	 * @return void
+	 */
 	public static function validate_method()
 	{
 		$url = $_SERVER['REQUEST_URI'];

@@ -20,6 +20,10 @@ class Customer_rewards extends Model
 		'deleted'
 	];
 
+	/**
+	 * @param int $package_id
+	 * @return bool
+	 */
 	public function exists(int $package_id): bool
 	{
 		$builder = $this->db->table('customers_packages');
@@ -28,6 +32,11 @@ class Customer_rewards extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
+	/**
+	 * @param array $package_data
+	 * @param int $package_id
+	 * @return bool
+	 */
 	public function save_value(array $package_data, int $package_id): bool
 	{
 		$package_data_to_save = [
@@ -48,6 +57,10 @@ class Customer_rewards extends Model
 		return $builder->update($package_data_to_save);
 	}
 
+	/**
+	 * @param int $package_id
+	 * @return string
+	 */
 	public function get_name(int $package_id): string
 	{
 		$builder = $this->db->table('customers_packages');
@@ -56,6 +69,10 @@ class Customer_rewards extends Model
 		return $builder->get()->getRow()->package_name;
 	}
 
+	/**
+	 * @param int $package_id
+	 * @return float
+	 */
 	public function get_points_percent(int $package_id): float
 	{
 		$builder = $this->db->table('customers_packages');
@@ -64,6 +81,9 @@ class Customer_rewards extends Model
 		return $builder->get()->getRow()->points_percent;
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('customers_packages');

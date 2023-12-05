@@ -47,6 +47,9 @@ class Customers extends Persons
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_customer_manage_table_headers();
@@ -81,10 +84,13 @@ class Customers extends Persons
 		echo json_encode($data_row);
 	}
 
-	/*
-	Returns customer table data rows. This will be called with AJAX.
-	*/
-	public function getSearch()
+
+	/**
+	 * Returns customer table data rows. This will be called with AJAX.
+	 *
+	 * @return void
+	 */
+	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
@@ -129,6 +135,9 @@ class Customers extends Persons
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, false);
@@ -404,11 +413,17 @@ class Customers extends Persons
 		$this->response->download($name, $data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getCsvImport(): void
 	{
 		echo view('customers/form_csv_import');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function do_csv_import(): void
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)

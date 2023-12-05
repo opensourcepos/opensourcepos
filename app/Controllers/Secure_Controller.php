@@ -27,6 +27,11 @@ class Secure_Controller extends BaseController
 	protected Module $module;
 	protected Session $session;
 
+	/**
+	 * @param string $module_id
+	 * @param string|null $submodule_id
+	 * @param string|null $menu_group
+	 */
 	public function __construct(string $module_id = '', string $submodule_id = null, string $menu_group = null)
 	{
 		$this->employee = model(Employee::class);
@@ -93,6 +98,10 @@ class Secure_Controller extends BaseController
 		echo $result !== false ? 'true' : 'false';
 	}
 
+	/**
+	 * @param $key
+	 * @return mixed|void
+	 */
 	public function getConfig($key)
 	{
 		if (isset($config[$key]))
@@ -101,11 +110,35 @@ class Secure_Controller extends BaseController
 		}
 	}
 
-	// this is the basic set of methods most OSPOS Controllers will implement
+	/**
+	 * @return false
+	 */
 	public function getIndex() { return false; }
+
+	/**
+	 * @return false
+	 */
 	public function getSearch() { return false; }
+
+	/**
+	 * @return false
+	 */
 	public function suggest_search() { return false; }
+
+	/**
+	 * @param int $data_item_id
+	 * @return false
+	 */
 	public function getView(int $data_item_id = -1) { return false; }
+
+	/**
+	 * @param int $data_item_id
+	 * @return false
+	 */
 	public function postSave(int $data_item_id = -1) { return false; }
+
+	/**
+	 * @return false
+	 */
 	public function postDelete() { return false; }
 }

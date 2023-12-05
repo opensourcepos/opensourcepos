@@ -15,12 +15,12 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Migration_TaxAmount extends Migration
 {
-	const ROUND_UP = 5;
-	const ROUND_DOWN = 6;
-	const HALF_FIVE = 7;
-	const YES = '1';
-	const VAT_TAX = '0';
-	const SALES_TAX = '1';	//TODO: It appears that this constant is never used
+	public const ROUND_UP = 5;
+	public const ROUND_DOWN = 6;
+	public const HALF_FIVE = 7;
+	public const YES = '1';
+	public const VAT_TAX = '0';
+	public const SALES_TAX = '1';	//TODO: It appears that this constant is never used
 
 	public function __construct()
 	{
@@ -29,6 +29,9 @@ class Migration_TaxAmount extends Migration
 		$this->appconfig = model('Appconfig');
 	}
 
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		$tax_included = ($this->appconfig->get_value('tax_included', Migration_TaxAmount::YES) == Migration_TaxAmount::YES);
@@ -57,11 +60,20 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @param string $tax_decimals
+	 * @param bool $tax_included
+	 * @return void
+	 */
 	private function upgrade_tax_history_for_sale(int $sale_id, string $tax_decimals, bool $tax_included): void	//TODO: $tax_included is passed as a parameter but never used in the function body.
 	{
 		$customer_sales_tax_support = false;
@@ -90,6 +102,10 @@ class Migration_TaxAmount extends Migration
 		$this->save_sales_tax($sales_taxes);
 	}
 
+	/**
+	 * @param int $block_count
+	 * @return ResultInterface
+	 */
 	private function get_unmigrated(int $block_count): ResultInterface
 	{
 		$builder = $this->db->table('sales_items_taxes as SIT');
@@ -104,6 +120,9 @@ class Migration_TaxAmount extends Migration
 		return $builder->get();
 	}
 
+	/**
+	 * @return int
+	 */
 	private function get_count_of_unmigrated(): int
 	{
 		$result = $this->db->query('SELECT COUNT(*) FROM(SELECT SIT.sale_id, ST.sale_id as sales_taxes_sale_id FROM '
@@ -116,6 +135,10 @@ class Migration_TaxAmount extends Migration
 		return $result[0]['COUNT(*)'];
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return ResultInterface
+	 */
 	private function get_sale_items_for_migration(int $sale_id): ResultInterface
 	{
 		$builder = $this->db->table('sales_items as sales_items');
@@ -132,6 +155,15 @@ class Migration_TaxAmount extends Migration
 		return $builder->get();
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @param int $line
+	 * @param string $name
+	 * @param float $percent
+	 * @param int $tax_type
+	 * @param float $item_tax_amount
+	 * @return void
+	 */
 	private function update_sales_items_taxes_amount(int $sale_id, int $line, string $name, float $percent, int $tax_type, float $item_tax_amount): void
 	{
 		$builder = $this->db->table('sales_items_taxes');
@@ -142,6 +174,10 @@ class Migration_TaxAmount extends Migration
 		$builder->update(['tax_type' => $tax_type, 'item_tax_amount' => $item_tax_amount]);
 	}
 
+	/**
+	 * @param array $sales_taxes
+	 * @return void
+	 */
 	private function save_sales_tax(array &$sales_taxes): void
 	{
 		$builder = $this->db->table('sales_taxes');
@@ -152,6 +188,13 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param bool $include_discount
+	 * @return string
+	 */
 	public function get_item_total(string $quantity, string $price, string $discount, bool $include_discount = false): string
 	{
 		$total = bcmul($quantity, $price);
@@ -164,6 +207,13 @@ class Migration_TaxAmount extends Migration
 		return $total;
 	}
 
+	/**
+	 * @param string $tax_basis
+	 * @param string $tax_percentage
+	 * @param int $rounding_mode
+	 * @param int $decimals
+	 * @return float
+	 */
 	public function get_item_tax(string $tax_basis, string $tax_percentage, int $rounding_mode, int $decimals): float	//TODO: is this currency safe?
 	{
 		$tax_fraction = bcdiv(bcadd('100', $tax_percentage), '100');
@@ -173,6 +223,13 @@ class Migration_TaxAmount extends Migration
 		return $this->round_number($rounding_mode, $tax_amount, $decimals);
 	}
 
+	/**
+	 * @param string $tax_basis
+	 * @param string $tax_percentage
+	 * @param int $rounding_mode
+	 * @param int $decimals
+	 * @return float
+	 */
 	public function get_sales_tax_for_amount(string $tax_basis, string $tax_percentage, int $rounding_mode, int $decimals): float	//TODO: is this currency safe?
 	{
 		$tax_fraction = bcdiv($tax_percentage, '100');
@@ -181,6 +238,12 @@ class Migration_TaxAmount extends Migration
 		return $this->round_number($rounding_mode, $tax_amount, $decimals);
 	}
 
+	/**
+	 * @param int $rounding_mode
+	 * @param string $amount
+	 * @param int $decimals
+	 * @return float
+	 */
 	public function round_number(int $rounding_mode, string $amount, int $decimals): float	//TODO: is this currency safe?
 	{//TODO: This needs to be converted to a switch
 		if($rounding_mode == Migration_TaxAmount::ROUND_UP)	//TODO: === ?
@@ -205,6 +268,20 @@ class Migration_TaxAmount extends Migration
 		return $rounded_total;
 	}
 
+	/**
+	 * @param array $sales_taxes
+	 * @param int $tax_type
+	 * @param string $tax_group
+	 * @param float $tax_rate
+	 * @param string $tax_basis
+	 * @param string $item_tax_amount
+	 * @param int $tax_group_sequence
+	 * @param int $rounding_code
+	 * @param int $sale_id
+	 * @param string $name
+	 * @param string $tax_code
+	 * @return void
+	 */
 	public function update_sales_taxes(array &$sales_taxes, int $tax_type, string $tax_group, float $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', string $tax_code = ''): void
 	{
 		$tax_group_index = $this->clean('X' . $tax_group);
@@ -239,6 +316,10 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	public function clean(string $string): string	//TODO: This can probably go into the migration helper as it's used it more than one migration. Also, $string needs to be refactored to a different name.
 	{
 		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
@@ -246,6 +327,10 @@ class Migration_TaxAmount extends Migration
 		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
 
+	/**
+	 * @param array $sales_taxes
+	 * @return void
+	 */
 	public function apply_invoice_taxing(array &$sales_taxes): void
 	{
 		if(!empty($sales_taxes))	//TODO: Duplicated code
@@ -266,6 +351,10 @@ class Migration_TaxAmount extends Migration
 		}
 	}
 
+	/**
+	 * @param array $sales_taxes
+	 * @return void
+	 */
 	public function round_sales_taxes(array &$sales_taxes): void
 	{
 		if(!empty($sales_taxes))

@@ -5,13 +5,17 @@ namespace App\Models\Reports;
 use App\Models\Receiving;
 
 /**
- * 
- * 
+ *
+ *
  * @property receiving receiving
- * 
+ *
  */
 class Detailed_receivings extends Report
 {
+	/**
+	 * @param array $inputs
+	 * @return void
+	 */
 	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
@@ -19,6 +23,9 @@ class Detailed_receivings extends Report
 		$receiving->create_temp_table($inputs);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getDataColumns(): array
 	{
 		return [
@@ -44,6 +51,10 @@ class Detailed_receivings extends Report
 		];
 	}
 
+	/**
+	 * @param string $receiving_id
+	 * @return array
+	 */
 	public function getDataByReceivingId(string $receiving_id): array
 	{
 		$builder = $this->db->table('receivings_items_temp');
@@ -66,6 +77,10 @@ class Detailed_receivings extends Report
 		return $builder->get()->getRowArray();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$builder = $this->db->table('receivings_items_temp AS receivings_items_temp');
@@ -142,6 +157,10 @@ class Detailed_receivings extends Report
 		return $data;
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getSummaryData(array $inputs): array
 	{
 		$builder = $this->db->table('receivings_items_temp');

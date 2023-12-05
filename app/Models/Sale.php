@@ -483,11 +483,21 @@ class Sale extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $year
+	 * @param int $start_from
+	 * @return int
+	 */
 	public function get_invoice_number_for_year(string $year = '', int $start_from = 0): int
 	{
 		return $this->get_number_for_year('invoice_number', $year, $start_from);
 	}
 
+	/**
+	 * @param $year
+	 * @param $start_from
+	 * @return int
+	 */
 	public function get_quote_number_for_year($year = '', $start_from = 0): int
 	{
 		return $this->get_number_for_year('quote_number', $year, $start_from);
@@ -1372,6 +1382,11 @@ class Sale extends Model
 		return $builder->get()->getRow()->sale_status;
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @param int $sale_status
+	 * @return void
+	 */
 	public function update_sale_status(int $sale_id, int $sale_status): void
 	{
 		$builder = $this->db->table('sales');

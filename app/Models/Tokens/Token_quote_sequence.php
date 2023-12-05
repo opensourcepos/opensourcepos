@@ -19,6 +19,9 @@ class Token_quote_sequence extends Token
 
 	}
 
+	/**
+	 * @return string
+	 */
 	public function token_id(): string
 	{
 		return 'QSEQ';

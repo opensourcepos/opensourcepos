@@ -26,6 +26,10 @@ class Receiving extends Model
 		'reference'
 	];
 
+	/**
+	 * @param int $receiving_id
+	 * @return ResultInterface
+	 */
 	public function get_info(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
@@ -36,6 +40,10 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $reference
+	 * @return ResultInterface
+	 */
 	public function get_receiving_by_reference(string $reference): ResultInterface
 	{
 		$builder = $this->db->table('receivings');
@@ -44,6 +52,10 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $receipt_receiving_id
+	 * @return bool
+	 */
 	public function is_valid_receipt(string $receipt_receiving_id): bool	//TODO: maybe receipt_receiving_id should be an array rather than a space delimited string
 	{
 		if(!empty($receipt_receiving_id))
@@ -64,6 +76,10 @@ class Receiving extends Model
 		return false;
 	}
 
+	/**
+	 * @param int $receiving_id
+	 * @return bool
+	 */
 	public function exists(int $receiving_id): bool
 	{
 		$builder = $this->db->table('receivings');
@@ -72,6 +88,11 @@ class Receiving extends Model
 		return ($builder->get()->getNumRows() == 1);
 	}
 
+	/**
+	 * @param $receiving_id
+	 * @param $receiving_data
+	 * @return bool
+	 */
 	public function update($receiving_id = null, $receiving_data = null): bool
 	{
 		$builder = $this->db->table('receivings');
@@ -247,6 +268,10 @@ class Receiving extends Model
 		return $this->db->transStatus();
 	}
 
+	/**
+	 * @param int $receiving_id
+	 * @return ResultInterface
+	 */
 	public function get_receiving_items(int $receiving_id): ResultInterface
 	{
 		$builder = $this->db->table('receivings_items');
@@ -255,6 +280,10 @@ class Receiving extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param int $receiving_id
+	 * @return object|array|\stdClass|null
+	 */
 	public function get_supplier(int $receiving_id): object
 	{
 		$builder = $this->db->table('receivings');
@@ -264,6 +293,9 @@ class Receiving extends Model
 		return $supplier->get_info($builder->get()->getRow()->supplier_id);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_payment_options(): array
 	{
 		return [

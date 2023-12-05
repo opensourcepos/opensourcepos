@@ -79,7 +79,7 @@ class Item extends Model
 
 //		// check if $item_id is a number and not a string starting with 0
 //		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')	//TODO: !==
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')    //TODO: !==
 		{
 			$builder->where('item_id !=', intval($item_id));
 		}
@@ -97,7 +97,11 @@ class Item extends Model
 		return $builder->countAllResults();
 	}
 
-	public function get_tax_category_usage(int $tax_category_id): int	//TODO: This function is never called in the code.
+	/**
+	 * @param int $tax_category_id
+	 * @return int
+	 */
+	public function get_tax_category_usage(int $tax_category_id): int    //TODO: This function is never called in the code.
 	{
 		$builder = $this->db->table('items');
 		$builder->where('tax_category_id', $tax_category_id);
@@ -119,14 +123,29 @@ class Item extends Model
 	public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'items.name', ?string $order = 'asc', ?bool $count_only = false)
 	{
 		// Set default values
-		if($rows == null) $rows = 0;
-		if($limit_from == null) $limit_from = 0;
-		if($sort == null) $sort = 'items.name';
-		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = false;
+		if($rows == null)
+		{
+			$rows = 0;
+		}
+		if($limit_from == null)
+		{
+			$limit_from = 0;
+		}
+		if($sort == null)
+		{
+			$sort = 'items.name';
+		}
+		if($order == null)
+		{
+			$order = 'asc';
+		}
+		if($count_only == null)
+		{
+			$count_only = false;
+		}
 
 		$config = config(OSPOS::class)->settings;
-		$builder = $this->db->table('items AS items');	//TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
+		$builder = $this->db->table('items AS items');    //TODO: I'm not sure if it's needed to write items AS items... I think you can just get away with items
 
 		// get_found_rows case
 		if($count_only)
@@ -183,7 +202,7 @@ class Item extends Model
 			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($config['date_or_time_format']))	//TODO: This needs to be replaced with Ternary notation
+		if(empty($config['date_or_time_format']))    //TODO: This needs to be replaced with Ternary notation
 		{
 			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -196,7 +215,7 @@ class Item extends Model
 
 		if(!empty($search))
 		{
-			if ($attributes_enabled && $filters['search_custom'])
+			if($attributes_enabled && $filters['search_custom'])
 			{
 				$builder->having("attribute_values LIKE '%$search%'");
 				$builder->orHaving("attribute_dtvalues LIKE '%$search%'");
@@ -205,11 +224,11 @@ class Item extends Model
 			else
 			{
 				$builder->groupStart();
-					$builder->like('name', $search);
-					$builder->orLike('item_number', $search);
-					$builder->orLike('items.item_id', $search);
-					$builder->orLike('company_name', $search);
-					$builder->orLike('items.category', $search);
+				$builder->like('name', $search);
+				$builder->orLike('item_number', $search);
+				$builder->orLike('items.item_id', $search);
+				$builder->orLike('company_name', $search);
+				$builder->orLike('items.category', $search);
 				$builder->groupEnd();
 			}
 		}
@@ -336,7 +355,8 @@ class Item extends Model
 
 		// Iterate through field definitions to determine how the fields should be initialized
 
-		foreach($this->db->getFieldData($table_name) as $field) {
+		foreach($this->db->getFieldData($table_name) as $field)
+		{
 
 			$field_name = $field->name;
 
@@ -406,7 +426,7 @@ class Item extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if($query->getNumRows() == 1)    //TODO: ===
 		{
 			return $query->getRow()->item_id;
 		}
@@ -445,7 +465,7 @@ class Item extends Model
 	/**
 	 * Inserts or updates an item
 	 */
-	public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool	//TODO: need to bring this in line with parent or change the name
+	public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool    //TODO: need to bring this in line with parent or change the name
 	{
 		$builder = $this->db->table('items');
 
@@ -556,7 +576,11 @@ class Item extends Model
 		return $success;
 	}
 
-	function get_search_suggestion_format(string $seed = null): string
+	/**
+	 * @param string|null $seed
+	 * @return string
+	 */
+	public function get_search_suggestion_format(string $seed = null): string
 	{
 		$config = config(OSPOS::class)->settings;
 		$seed .= ',' . $config['suggestions_first_column'];
@@ -574,7 +598,11 @@ class Item extends Model
 		return $seed;
 	}
 
-	function get_search_suggestion_label($result_row): string
+	/**
+	 * @param $result_row
+	 * @return string
+	 */
+	public function get_search_suggestion_label($result_row): string
 	{
 		$config = config(OSPOS::class)->settings;
 		$label = '';
@@ -607,15 +635,21 @@ class Item extends Model
 		return $label;
 	}
 
+	/**
+	 * @param string $label
+	 * @param string $item_field_name
+	 * @param object $item_info
+	 * @return void
+	 */
 	private function append_label(string &$label, string $item_field_name, object $item_info): void
 	{
 		if($item_field_name !== '')
 		{
 			if($label == '')
 			{
-				if($item_field_name == 'name')	//TODO: This needs to be replaced with Ternary notation if possible
+				if($item_field_name == 'name')    //TODO: This needs to be replaced with Ternary notation if possible
 				{
-					$label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name]);	//TODO: no need for .= operator.  If it gets here then that means label is an empty string.
+					$label .= implode(NAME_SEPARATOR, [$item_info->name, $item_info->pack_name]);    //TODO: no need for .= operator.  If it gets here then that means label is an empty string.
 				}
 				else
 				{
@@ -636,6 +670,13 @@ class Item extends Model
 		}
 	}
 
+	/**
+	 * @param string $search
+	 * @param array $filters
+	 * @param bool $unique
+	 * @param int $limit
+	 * @return array
+	 */
 	public function get_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
@@ -671,7 +712,7 @@ class Item extends Model
 			$builder = $this->db->table('items');
 			$builder->select('category');
 			$builder->where('deleted', $filters['is_deleted']);
-			$builder->distinct();	//TODO: duplicate code.  Refactor method.
+			$builder->distinct();    //TODO: duplicate code.  Refactor method.
 			$builder->like('category', $search);
 			$builder->orderBy('category', 'asc');
 
@@ -700,14 +741,17 @@ class Item extends Model
 			$builder = $this->db->table('items');
 			$builder->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
 			$builder->where('deleted', $filters['is_deleted']);
-			$builder->like('description', $search);	//TODO: duplicate code, refactor method.
+			$builder->like('description', $search);    //TODO: duplicate code, refactor method.
 			$builder->orderBy('description', 'asc');
 
 			foreach($builder->get()->getResult() as $row)
 			{
 				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
 
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
+				if(!array_walk($suggestions, function ($value, $label) use ($entry)
+				{
+					return $entry['label'] != $label;
+				}))
 				{
 					$suggestions[] = $entry;
 				}
@@ -741,6 +785,13 @@ class Item extends Model
 	}
 
 
+	/**
+	 * @param string $search
+	 * @param array $filters
+	 * @param bool $unique
+	 * @param int $limit
+	 * @return array
+	 */
 	public function get_stock_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
@@ -810,20 +861,23 @@ class Item extends Model
 			$builder->where('deleted', $filters['is_deleted']);
 			$builder->whereIn('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
 			$builder->where('stock_type', '0'); // stocked items only
-			$builder->like('description', $search);	//TODO: duplicated code, refactor method.
+			$builder->like('description', $search);    //TODO: duplicated code, refactor method.
 			$builder->orderBy('description', 'asc');
 
 			foreach($builder->get()->getResult() as $row)
 			{
 				$entry = ['value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row)];
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
+				if(!array_walk($suggestions, function ($value, $label) use ($entry)
+				{
+					return $entry['label'] != $label;
+				}))
 				{
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search by custom fields
-			if($filters['search_custom'] !== false)	//TODO: duplicated code.  We should refactor out a method... this can be replaced with `if($filters['search_custom']`... no need for the double negative
+			if($filters['search_custom'] !== false)    //TODO: duplicated code.  We should refactor out a method... this can be replaced with `if($filters['search_custom']`... no need for the double negative
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -849,10 +903,17 @@ class Item extends Model
 		return array_unique($suggestions, SORT_REGULAR);
 	}
 
+	/**
+	 * @param string $search
+	 * @param array $filters
+	 * @param bool $unique
+	 * @param int $limit
+	 * @return array
+	 */
 	public function get_kit_search_suggestions(string $search, array $filters = ['is_deleted' => false, 'search_custom' => false], bool $unique = false, int $limit = 25): array
 	{
 		$suggestions = [];
-		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];	//TODO: This variable is never used.
+		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];    //TODO: This variable is never used.
 
 		$builder = $this->db->table('items');
 		$builder->select('item_id, name');
@@ -920,14 +981,17 @@ class Item extends Model
 			foreach($builder->get()->getResult() as $row)
 			{
 				$entry = ['value' => $row->item_id, 'label' => $row->name];
-				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
+				if(!array_walk($suggestions, function ($value, $label) use ($entry)
+				{
+					return $entry['label'] != $label;
+				}))
 				{
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search in attributes
-			if($filters['search_custom'] !== false)	//TODO: Duplicate code... same as above... no double negatives
+			if($filters['search_custom'] !== false)    //TODO: Duplicate code... same as above... no double negatives
 			{
 				$builder = $this->db->table('attribute_links');
 				$builder->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
@@ -953,6 +1017,10 @@ class Item extends Model
 		return array_unique($suggestions, SORT_REGULAR);
 	}
 
+	/**
+	 * @param string $search
+	 * @return array
+	 */
 	public function get_low_sell_suggestions(string $search): array
 	{
 		$suggestions = [];
@@ -972,6 +1040,10 @@ class Item extends Model
 		return $suggestions;
 	}
 
+	/**
+	 * @param string $search
+	 * @return array
+	 */
 	public function get_category_suggestions(string $search): array
 	{
 		$suggestions = [];
@@ -991,6 +1063,10 @@ class Item extends Model
 		return $suggestions;
 	}
 
+	/**
+	 * @param string $search
+	 * @return array
+	 */
 	public function get_location_suggestions(string $search): array
 	{
 		$suggestions = [];
@@ -1009,7 +1085,10 @@ class Item extends Model
 		return $suggestions;
 	}
 
-	public function get_categories()	//TODO: This function is never called in the code.
+	/**
+	 * @return ResultInterface|false|string
+	 */
+	public function get_categories()    //TODO: This function is never called in the code.
 	{
 		$builder = $this->db->table('items');
 		$builder->select('category');
@@ -1055,21 +1134,36 @@ class Item extends Model
 		return $this->save_value($data, $item_id);
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param string $item_number
+	 * @return void
+	 */
 	public function update_item_number(int $item_id, string $item_number): void
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
-		$builder->update(['item_number' => $item_number]);	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+		$builder->update(['item_number' => $item_number]);    //TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	}
 
-	public function update_item_name(int $item_id, string $item_name): void	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	/**
+	 * @param int $item_id
+	 * @param string $item_name
+	 * @return void
+	 */
+	public function update_item_name(int $item_id, string $item_name): void    //TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
 		$builder->update(['name' => $item_name]);
 	}
 
-	public function update_item_description(int $item_id, string $item_description): void	//TODO: this function should probably return the result of update() and add ": bool" to the function signature
+	/**
+	 * @param int $item_id
+	 * @param string $item_description
+	 * @return void
+	 */
+	public function update_item_description(int $item_id, string $item_description): void    //TODO: this function should probably return the result of update() and add ": bool" to the function signature
 	{
 		$builder = $this->db->table('items');
 		$builder->where('item_id', $item_id);
@@ -1081,11 +1175,11 @@ class Item extends Model
 	 * for a multipack environment then the item name should have the
 	 * pack appended to it
 	 */
-	function get_item_name(string $as_name = null): string
+	public function get_item_name(string $as_name = null): string
 	{
 		$config = config(OSPOS::class)->settings;
 
-		if($as_name == null)	//TODO: Replace with ternary notation
+		if($as_name == null)    //TODO: Replace with ternary notation
 		{
 			$as_name = '';
 		}
@@ -1094,7 +1188,7 @@ class Item extends Model
 			$as_name = ' AS ' . $as_name;
 		}
 
-		if($config['multi_pack_enabled'])	//TODO: Replace with ternary notation
+		if($config['multi_pack_enabled'])    //TODO: Replace with ternary notation
 		{
 			$item_name = "concat(items.name,'" . NAME_SEPARATOR . '\', items.pack_name)' . $as_name;
 		}

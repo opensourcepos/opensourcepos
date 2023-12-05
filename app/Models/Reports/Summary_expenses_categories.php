@@ -6,6 +6,9 @@ use Config\OSPOS;
 
 class Summary_expenses_categories extends Summary_report
 {
+	/**
+	 * @return array[]
+	 */
 	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
@@ -16,6 +19,10 @@ class Summary_expenses_categories extends Summary_report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$config = config(OSPOS::class)->settings;
@@ -42,6 +49,10 @@ class Summary_expenses_categories extends Summary_report
 		return $builder->get()->getResultArray();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getSummaryData(array $inputs): array
 	{
 		$config = config(OSPOS::class)->settings;

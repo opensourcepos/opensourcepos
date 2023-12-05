@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\MY_Migration;
 use App\Models\Employee;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Model;
 use Config\OSPOS;
 use Config\Services;
@@ -14,6 +15,10 @@ use Config\Services;
 class Login extends BaseController
 {
 	public Model $employee;
+
+	/**
+	 * @return RedirectResponse|string
+	 */
 	public function index()
 	{
 		$this->employee = model(Employee::class);

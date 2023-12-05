@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_add_item_kit_number extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating add_item_kit_number');
@@ -16,6 +19,9 @@ class Migration_add_item_kit_number extends Migration
 		error_log('Migrating add_item_kit_number');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 	}

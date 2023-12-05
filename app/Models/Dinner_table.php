@@ -20,6 +20,10 @@ class Dinner_table extends Model
 		'deleted'
 	];
 
+	/**
+	 * @param int $dinner_table_id
+	 * @return bool
+	 */
 	public function exists(int $dinner_table_id): bool
 	{
 		$builder = $this->db->table('dinner_tables');
@@ -28,6 +32,11 @@ class Dinner_table extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
+	/**
+	 * @param array $table_data
+	 * @param int $dinner_table_id
+	 * @return bool
+	 */
 	public function save_value(array $table_data, int $dinner_table_id): bool
 	{
 		$table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0];
@@ -64,6 +73,10 @@ class Dinner_table extends Model
 		return $empty_tables_array;
 	}
 
+	/**
+	 * @param int $dinner_table_id
+	 * @return string
+	 */
 	public function get_name(int $dinner_table_id): string
 	{
 		if(empty($dinner_table_id))
@@ -79,6 +92,10 @@ class Dinner_table extends Model
 		}
 	}
 
+	/**
+	 * @param int $dinner_table_id
+	 * @return bool
+	 */
 	public function is_occupied(int $dinner_table_id): bool
 	{
 		if(empty($dinner_table_id))
@@ -94,6 +111,9 @@ class Dinner_table extends Model
 		}
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('dinner_tables');

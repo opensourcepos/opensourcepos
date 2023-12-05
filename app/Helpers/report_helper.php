@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param string $report_name
+ * @param string $report_prefix
+ * @param string $lang_key
+ * @return array
+ */
 function get_report_link(string $report_name, string $report_prefix = '', string $lang_key = ''): array
 {
     $path = 'reports/';

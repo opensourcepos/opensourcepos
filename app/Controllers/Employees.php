@@ -21,6 +21,8 @@ class Employees extends Persons
 
 	/**
 	 * Returns employee table data rows. This will be called with AJAX.
+	 *
+	 * @return void
 	 */
 	public function getSearch(): void
 	{
@@ -43,7 +45,9 @@ class Employees extends Persons
 	}
 
 	/**
-	 * Gives search suggestions based on what is being searched for
+	 * AJAX called function gives search suggestions based on what is being searched for.
+	 *
+	 * @return void
 	 */
 	public function suggest(): void
 	{
@@ -52,6 +56,9 @@ class Employees extends Persons
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->employee->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));

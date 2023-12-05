@@ -6,6 +6,9 @@ use Config\OSPOS;
 
 class Summary_payments extends Summary_report
 {
+	/**
+	 * @return array[]
+	 */
 	protected function _get_data_columns(): array    //TODO: Hungarian notation
 	{
 		return [
@@ -19,6 +22,10 @@ class Summary_payments extends Summary_report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$cash_payment = lang('Sales.cash');    //TODO: This is never used.  Should it be?
@@ -121,6 +128,10 @@ class Summary_payments extends Summary_report
 		return array_merge($sales, $separator, $payments);
 	}
 
+	/**
+	 * @param string $where
+	 * @return void
+	 */
 	protected function create_summary_payments_temp_tables(string $where): void
 	{
 		$decimals = totals_decimals();

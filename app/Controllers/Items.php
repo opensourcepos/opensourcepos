@@ -62,6 +62,9 @@ class Items extends Secure_Controller
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$this->session->set('allow_temp_items', 0);
@@ -239,6 +242,10 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @param string $item_ids
+	 * @return void
+	 */
 	public function getRow(string $item_ids): void	//TODO: An array would be better for parameter.
 	{
 		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
@@ -481,6 +488,10 @@ class Items extends Secure_Controller
 		echo view('items/form_count_details', $data);
 	}
 
+	/**
+	 * @param string $item_ids
+	 * @return void
+	 */
 	public function generate_barcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
 	{
 		$item_ids = explode(':', $item_ids);
@@ -505,6 +516,10 @@ class Items extends Secure_Controller
 		echo view('barcodes/barcode_sheet', $data);
 	}
 
+	/**
+	 * @param int $item_id
+	 * @return void
+	 */
 	public function getAttributes(int $item_id = NEW_ENTRY): void
 	{
 		$data['item_id'] = $item_id;
@@ -578,6 +593,9 @@ class Items extends Secure_Controller
 		echo view('attributes/item', $data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function bulk_edit(): void	//TODO: This function may not be called in the code. Need to confirm
 	{
 		$suppliers = ['' => lang('Items.none')];
@@ -892,7 +910,7 @@ class Items extends Secure_Controller
 
 		$this->inventory->insert($inv_data);
 
-	//Update stock quantity
+		//Update stock quantity
 		$item_quantity = $this->item_quantity->get_item_quantity($item_id, $location_id);
 		$item_quantity_data = [
 			'item_id' => $item_id,

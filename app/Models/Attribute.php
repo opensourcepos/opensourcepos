@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\BaseResult;
+use CodeIgniter\Database\Query;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use CodeIgniter\Database\RawSql;
@@ -35,10 +37,13 @@ class Attribute extends Model
 		'attribute_decimal'
 	];
 
-	const SHOW_IN_ITEMS = 1;	//TODO: These need to be moved to constants.php
-	const SHOW_IN_SALES = 2;
-	const SHOW_IN_RECEIVINGS = 4;
+	public const SHOW_IN_ITEMS = 1;	//TODO: These need to be moved to constants.php
+	public const SHOW_IN_SALES = 2;
+	public const SHOW_IN_RECEIVINGS = 4;
 
+	/**
+	 * @return array
+	 */
 	public static function get_definition_flags(): array
 	{
 		$class = new ReflectionClass(__CLASS__);
@@ -60,9 +65,9 @@ class Attribute extends Model
 
 	/**
 	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
-	 * @param	int		$item_id
-	 * @param	bool	$definition_id
-	 * @return	bool	returns true if at least one attribute_link exists or false if no attributes exist.
+	 * @param int $item_id ID of the item to check for an associated attribute.
+	 * @param bool $definition_id Attribute definition ID to check.
+	 * @return bool returns true if at least one attribute_link exists or false if no attributes exist for that item and attribute.
 	 */
 	public function link_exists(int $item_id, bool $definition_id = false): bool
 	{
@@ -84,8 +89,12 @@ class Attribute extends Model
 		return ($builder->get()->getNumRows() > 0);	//TODO: This is returning a result of 1 on dropdown
 	}
 
-	/*
+	/**
 	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
+	 *
+	 * @param string|float $attribute_value The value to search for in the attribute values table.
+	 * @param string $definition_type The definition type which will dictate which column is searched.
+	 * @return int|bool The attribute ID of the found row or false if no attribute value was found.
 	 */
 	public function value_exists($attribute_value, string $definition_type = TEXT)
 	{
@@ -119,8 +128,8 @@ class Attribute extends Model
 		return false;
 	}
 
-	/*
-	 Gets information about a particular attribute definition
+	/**
+	 * Gets information about a particular attribute definition
 	 */
 	public function get_info(int $definition_id): object
 	{
@@ -150,8 +159,8 @@ class Attribute extends Model
 		}
 	}
 
-	/*
-	 Performs a search on attribute definitions
+	/**
+	 * Performs a search on attribute definitions
 	 */
 	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'definition.definition_name', ?string $order = 'asc'): ResultInterface
 	{
@@ -184,8 +193,8 @@ class Attribute extends Model
 	/**
 	 * Gets all attributes connected to an item given the item_id
 	 *
-	 * @param int $item_id
-	 * @return array
+	 * @param int $item_id Item to retrieve attributes for.
+	 * @return array Attributes for the item.
 	 */
 	public function get_attributes_by_item(int $item_id): array
 	{
@@ -202,6 +211,10 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
+	/**
+	 * @param array|null $definition_ids
+	 * @return array
+	 */
 	public function get_values_by_definitions(?array $definition_ids): array
 	{
 		if(count($definition_ids ? : []))
@@ -223,6 +236,11 @@ class Attribute extends Model
 		return [];
 	}
 
+	/**
+	 * @param string $attribute_type
+	 * @param int $definition_id
+	 * @return array
+	 */
 	public function get_definitions_by_type(string $attribute_type, int $definition_id = NO_DEFINITION_ID): array
 	{
 		$builder = $this->db->table('attribute_definitions');
@@ -240,6 +258,10 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id', 'definition_name');
 	}
 
+	/**
+	 * @param int $definition_flags
+	 * @return array
+	 */
 	public function get_definitions_by_flags(int $definition_flags): array
 	{
 		$builder = $this->db->table('attribute_definitions');
@@ -276,6 +298,10 @@ class Attribute extends Model
 		return $definition_name + $this->to_array($results, 'definition_id', 'definition_name');
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @return array
+	 */
 	public function get_definition_values(int $definition_id): array
 	{
 		$attribute_values = [];
@@ -296,6 +322,12 @@ class Attribute extends Model
 		return $attribute_values;
 	}
 
+	/**
+	 * @param array $results
+	 * @param string $key
+	 * @param string $value
+	 * @return array
+	 */
 	private function to_array(array $results, string $key, string $value = ''): array
 	{
 		return array_column(array_map(function($result) use ($key, $value){
@@ -303,8 +335,8 @@ class Attribute extends Model
 		}, $results), 1, 0);
 	}
 
-	/*
-	 Gets total of rows
+	/**
+	 * Gets total of rows
 	 */
 	public function get_total_rows(): int
 	{
@@ -314,14 +346,20 @@ class Attribute extends Model
 		return $builder->countAllResults();
 	}
 
-	/*
-	 Get number of rows
+	/**
+	 * Get number of rows
 	 */
 	public function get_found_rows(string $search): int
 	{
 		return $this->search($search)->getNumRows();
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @param string $from
+	 * @param string $to
+	 * @return bool
+	 */
 	private function check_data_validity(int $definition_id, string $from, string $to): bool
 	{
 		$success = false;
@@ -365,9 +403,10 @@ class Attribute extends Model
 
 	/**
 	 * Returns all item_ids with a specific attribute_value and attribute_definition
-	 * @param string $attribute_value
-	 * @param int $definition_id
-	 * @return array
+	 *
+	 * @param string $attribute_value Attribute value to be searched
+	 * @param int $definition_id ID of the specific attribute to return items for.
+	 * @return array Item_ids matching the given parameters
 	 */
 	private function get_items_by_value(string $attribute_value, int $definition_id): array
 	{
@@ -382,9 +421,10 @@ class Attribute extends Model
 
 	/**
 	 * Converts data in attribute_values and attribute_links tables associated with the conversion of one attribute type to another.
+	 *
 	 * @param int $definition_id
-	 * @param 	string	$from_type
-	 * @param 	string	$to_type
+	 * @param string $from_type
+	 * @param string $to_type
 	 * @return boolean
 	 */
 	private function convert_definition_data(int $definition_id, string $from_type, string $to_type): bool
@@ -453,6 +493,10 @@ class Attribute extends Model
 		return $success;
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @return array
+	 */
 	private function checkbox_attribute_values(int $definition_id): array
 	{
 		$zero_attribute_id = $this->value_exists('0');
@@ -472,8 +516,8 @@ class Attribute extends Model
 		return [$zero_attribute_id, $one_attribute_id];
 	}
 
-	/*
-	 Inserts or updates a definition
+	/**
+	 * Inserts or updates a definition
 	 */
 	public function save_definition(array &$definition_data, int $definition_id = NO_DEFINITION_ID): bool
 	{
@@ -529,6 +573,11 @@ class Attribute extends Model
 		return $success;
 	}
 
+	/**
+	 * @param string $definition_name
+	 * @param $definition_type
+	 * @return array
+	 */
 	public function get_definition_by_name(string $definition_name, $definition_type = false): array
 	{
 		$builder = $this->db->table('attribute_definitions');
@@ -579,6 +628,11 @@ class Attribute extends Model
 		return $this->db->transStatus();
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param bool $definition_id
+	 * @return bool
+	 */
 	public function delete_link(int $item_id, bool $definition_id = false): bool
 	{
 		$delete_data = ['item_id' => $item_id];
@@ -596,6 +650,11 @@ class Attribute extends Model
 		return $builder->delete($delete_data);
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param int|null $definition_id
+	 * @return object|stdClass|null
+	 */
 	public function get_link_value(int $item_id, ?int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_links');
@@ -610,6 +669,13 @@ class Attribute extends Model
 		return $builder->get()->getRowObject();
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param string $sale_receiving_fk
+	 * @param int|null $id
+	 * @param int|null $definition_flags
+	 * @return ResultInterface
+	 */
 	public function get_link_values(int $item_id, string $sale_receiving_fk, ?int $id, ?int $definition_flags): ResultInterface
 	{
 		$format = $this->db->escape(dateformat_mysql());
@@ -643,6 +709,11 @@ class Attribute extends Model
 		return $result;
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param int $definition_id
+	 * @return object|array|stdClass|null
+	 */
 	public function get_attribute_value(int $item_id, int $definition_id): ?object
 	{
 		$builder = $this->db->table('attribute_values');
@@ -690,6 +761,11 @@ class Attribute extends Model
 		return $empty_obj;
 	}
 
+
+	/**
+	 * @param int $item_id
+	 * @return array
+	 */
 	public function get_attribute_values(int $item_id): array	//TODO: Is this function used anywhere in the code?
 	{
 		$builder = $this->db->table('attribute_links');
@@ -702,6 +778,12 @@ class Attribute extends Model
 		return $this->to_array($results, 'definition_id');
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param string $sale_receiving_fk
+	 * @param int $id
+	 * @return void
+	 */
 	public function copy_attribute_links(int $item_id, string $sale_receiving_fk, int $id): void
 	{
 		$query = 'SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id);
@@ -825,6 +907,11 @@ class Attribute extends Model
 		return $attribute_id;
 	}
 
+	/**
+	 * @param string $attribute_value
+	 * @param int $definition_id
+	 * @return bool|BaseResult|Query
+	 */
 	public function delete_value(string $attribute_value, int $definition_id)
 	{
 		$query = 'DELETE atrv, atrl ';
@@ -848,6 +935,10 @@ class Attribute extends Model
 		return $builder->update(['deleted' => DELETED]);
 	}
 
+	/**
+	 * @param array $definition_ids
+	 * @return bool
+	 */
 	public function delete_definition_list(array $definition_ids): bool
 	{
 		$builder = $this->db->table('attribute_definitions');
