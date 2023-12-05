@@ -424,7 +424,7 @@ function parse_decimals(string $number, int $decimals = null): mixed
 		return $number;
 	}
 
-	if ($number > MAX_PRECISION)
+	if ($number > MAX_PRECISION)	//TODO: This breaks when the string passed does not use . as the decimal separator.
 	{
 		return false;
 	}
@@ -443,7 +443,7 @@ function parse_decimals(string $number, int $decimals = null): mixed
 		$decimals = $config['currency_decimals'];
 	}
 
-	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+	$fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 
 	if(empty($config['thousands_separator']))
 	{
