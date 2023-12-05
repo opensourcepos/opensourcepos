@@ -8,6 +8,9 @@ use stdClass;
 
 class MY_Migration extends MigrationRunner
 {
+	/**
+	 * @return bool
+	 */
 	public function is_latest(): bool
 	{
 		$latest_version = $this->get_latest_migration();
@@ -16,6 +19,9 @@ class MY_Migration extends MigrationRunner
 		return $latest_version === $current_version;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_latest_migration(): int
 	{
 		$migrations = $this->findMigrations();
@@ -40,6 +46,9 @@ class MY_Migration extends MigrationRunner
 		return 0;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function migrate_to_ci4(): void
 	{
 		$ci3_migrations_version = $this->ci3_migrations_exists();
@@ -66,6 +75,10 @@ class MY_Migration extends MigrationRunner
 		return false;
 	}
 
+	/**
+	 * @param string $ci3_migrations_version
+	 * @return void
+	 */
 	private function migrate_table(string $ci3_migrations_version)
 	{
 		$this->convert_table();
@@ -88,16 +101,25 @@ class MY_Migration extends MigrationRunner
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function up(): void
 	{
 		// TODO: Implement up() method.
 	}
 
+	/**
+	 * @return void
+	 */
 	public function down(): void
 	{
 		// TODO: Implement down() method.
 	}
 
+	/**
+	 * @return array
+	 */
 	private function get_available_migrations(): array
 	{
 		$migrations = $this->findMigrations();

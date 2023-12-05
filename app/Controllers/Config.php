@@ -74,7 +74,7 @@ class Config extends Secure_Controller
 		}
 	}
 
-	/*
+	/**
 	 * This function loads all the licenses starting with the first one being OSPOS one
 	 */
 	private function _licenses(): array    //TODO: remove hungarian notation.  Super long function.  Perhaps we need to refactor out functions?
@@ -227,8 +227,9 @@ class Config extends Secure_Controller
 		return $license;
 	}
 
-	/*
+	/**
 	 * This function loads all the available themes in the dist/bootswatch directory
+	 * @return array
 	 */
 	private function _themes(): array	//TODO: Hungarian notation
 	{
@@ -570,7 +571,7 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
-	/*
+	/**
 	 * This function fetches all the available lists from Mailchimp for the given API key
 	 */
 	private function _mailchimp(string $api_key = ''): array	//TODO: Hungarian notation
@@ -644,6 +645,9 @@ class Config extends Secure_Controller
 		echo json_encode(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getStockLocations(): void
 	{
 		$stock_locations = $this->stock_location->get_all()->getResultArray();
@@ -651,6 +655,9 @@ class Config extends Secure_Controller
 		echo view('partial/stock_locations', ['stock_locations' => $stock_locations]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getDinnerTables(): void
 	{
 		$dinner_tables = $this->dinner_table->get_all()->getResultArray();
@@ -658,6 +665,10 @@ class Config extends Secure_Controller
 		echo view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]);
 	}
 
+
+	/**
+	 * @return void
+	 */
 	public function ajax_tax_categories(): void
 	{
 		$tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
@@ -665,6 +676,9 @@ class Config extends Secure_Controller
 		echo view('partial/tax_categories', ['tax_categories' => $tax_categories]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getCustomerRewards(): void
 	{
 		$customer_rewards = $this->customer_rewards->get_all()->getResultArray();
@@ -672,6 +686,9 @@ class Config extends Secure_Controller
 		echo view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]);
 	}
 
+	/**
+	 * @return void
+	 */
 	private function _clear_session_state(): void	//TODO: Hungarian notation
 	{
 		$this->sale_lib->clear_sale_location();
@@ -683,6 +700,9 @@ class Config extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postSaveLocations(): void
 	{
 		$this->db->transStart();

@@ -264,6 +264,11 @@ class Customer extends Person
 		$builder->update(['points' => $value]);
 	}
 
+	/**
+	 * @param $customer_id
+	 * @param bool $purge
+	 * @return bool
+	 */
 	public function delete($customer_id = null, bool $purge = false): bool
 	{
 		$result = true;

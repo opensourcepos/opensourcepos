@@ -24,6 +24,9 @@ class OSPOS extends BaseConfig
 		$this->set_settings();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_settings(): void
 	{
 		helper('locale');
@@ -45,6 +48,9 @@ class OSPOS extends BaseConfig
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function update_settings(): void
 	{
 		$this->cache->delete('settings');

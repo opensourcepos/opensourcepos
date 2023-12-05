@@ -9,6 +9,9 @@ abstract class Persons extends Secure_Controller
 {
 	protected Person $person;
 
+	/**
+	 * @param string|null $module_id
+	 */
 	public function __construct(string $module_id = null)
 	{
 		parent::__construct($module_id);
@@ -16,6 +19,9 @@ abstract class Persons extends Secure_Controller
 		$this->person = model(Person::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_people_manage_table_headers();

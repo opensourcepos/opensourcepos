@@ -9,6 +9,9 @@ class Db_log
 {
 	private App $config;
 
+	/**
+	 * @return void
+	 */
 	public function db_log_queries(): void
 	{
 		$this->config = config('App');
@@ -29,6 +32,9 @@ class Db_log
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	private function generate_message(): string
 	{
 		$db = Database::connect();
@@ -50,6 +56,10 @@ class Db_log
 		return $this->config->db_log_only_long && !$long_query ? '' : $message;
 	}
 
+	/**
+	 * @param float $time
+	 * @return array
+	 */
 	private function convert_time(float $time): array
 	{
 		$unit = 's';

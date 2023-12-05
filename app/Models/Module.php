@@ -20,6 +20,10 @@ class Module extends Model
 		'sort'
 	];
 
+	/**
+	 * @param string $module_id
+	 * @return string
+	 */
 	public function get_module_name(string $module_id): string
 	{
 		$builder = $this->db->table('modules');
@@ -35,6 +39,10 @@ class Module extends Model
 		return lang('Errors.unknown');
 	}
 
+	/**
+	 * @param string $module_id
+	 * @return string
+	 */
 	public function get_module_desc(string $module_id): string	//TODO: This method doesn't seem to be called in the code.  Is it needed?  Also, probably should change the name to get_module_description()
 	{
 		$builder = $this->db->table('modules');
@@ -50,6 +58,9 @@ class Module extends Model
 		return lang('Errors.unknown');
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all_permissions(): ResultInterface
 	{
 		$builder = $this->db->table('permissions');
@@ -57,6 +68,9 @@ class Module extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all_subpermissions(): ResultInterface
 	{
 		$builder = $this->db->table('permissions');
@@ -68,6 +82,9 @@ class Module extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all_modules(): ResultInterface
 	{
 		$builder = $this->db->table('modules');
@@ -76,6 +93,10 @@ class Module extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param int $person_id
+	 * @return ResultInterface
+	 */
 	public function get_allowed_home_modules(int $person_id): ResultInterface
 	{
 		$menus = ['home', 'both'];
@@ -90,6 +111,10 @@ class Module extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param int $person_id
+	 * @return ResultInterface
+	 */
 	public function get_allowed_office_modules(int $person_id): ResultInterface
 	{
 		$menus = ['office', 'both'];

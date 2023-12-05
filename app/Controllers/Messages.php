@@ -17,11 +17,18 @@ class Messages extends Secure_Controller
 		$this->sms_lib = new Sms_lib();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		echo view('messages/sms');
 	}
 
+	/**
+	 * @param int $person_id
+	 * @return void
+	 */
 	public function getView(int $person_id = NEW_ENTRY): void
 	{
 		$person = model(Person::class);
@@ -36,6 +43,9 @@ class Messages extends Secure_Controller
 		echo view('messages/form_sms', $data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function send(): void
 	{
 		$phone   = $this->request->getPost('phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

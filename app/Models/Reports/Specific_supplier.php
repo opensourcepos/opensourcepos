@@ -12,6 +12,10 @@ use App\Models\Sale;
  */
 class Specific_supplier extends Report
 {
+	/**
+	 * @param array $inputs
+	 * @return void
+	 */
 	public function create(array $inputs): void
 	{
 		//Create our temp tables to work with the data in our report
@@ -19,6 +23,9 @@ class Specific_supplier extends Report
 		$sale->create_temp_table($inputs);
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function getDataColumns(): array
 	{
 		return [
@@ -38,6 +45,10 @@ class Specific_supplier extends Report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$builder = $this->db->table('sales_items_temp');
@@ -112,6 +123,10 @@ class Specific_supplier extends Report
 		return $builder->get()->getResultArray();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getSummaryData(array $inputs): array
 	{
 		$builder = $this->db->table('sales_items_temp');

@@ -8,7 +8,7 @@
  *
  * Minimum Requirement: PHP 5.3.0
  */
- 
+
 /**
  * Image_Barcode2_Driver_Ean13 class
  *
@@ -44,7 +44,7 @@ class Ean13 extends BarcodeBase
 {
 	/*
 	 * Coding map
-	 * @var array 
+	 * @var array
 	 */
 	private $_codingmap = array(
 		'0' => array(
@@ -99,9 +99,9 @@ class Ean13 extends BarcodeBase
 		)
 	);
 
-	/*
+	/**
 	 * Coding map left
-	 * @var array 
+	 * @var array
 	 */
 	private $_codingmapleft = array(
 		'0' => array('A','A','A','A','A','A'),
@@ -116,31 +116,31 @@ class Ean13 extends BarcodeBase
 		'9' => array('A','B','B','A','B','A')
 	);
 
-	/*
+	/**
 	 * Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @param mixed $data - (int or string) Data to be encoded
+	 * @return void
 	 */
-	public function setData($data)
+	public function setData(mixed $data): void
 	{
 		$this->data = $data;
 	}
 
-	/*
+	/**
 	 * Generate EAN13 code out of a provided number
 	 * Code taken from http://stackoverflow.com/questions/19890144/generate-valid-ean13-in-php (unknown copyright / license claims)
 	 *
-	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
+	 * @param $number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
 	 * @return string with complete EAN13 code
 	 */
-	public function generate($number)
+	public function generate($number): string
 	{
 		$number = '200' . str_pad($number, 9, '0', STR_PAD_LEFT);
 		$weightflag = true;
 		$sum = 0;
 
-		// Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
+		// Weight for a digit in the checksum is 3, 1, 3... starting from the last digit.
 		// loop backwards to make the loop length-agnostic. The same basic functionality
 		// will work for codes of different lengths.
 		for ($i = strlen($number) - 1; $i >= 0; --$i)
@@ -153,7 +153,11 @@ class Ean13 extends BarcodeBase
 		return $number;
 	}
 
-	public function validate($barcode)
+	/**
+	 * @param $barcode
+	 * @return bool
+	 */
+	public function validate($barcode): bool
 	{
 		// check to see if barcode is 13 digits long
 		if (!preg_match("/^[0-9]{13}$/", $barcode)) {
@@ -192,8 +196,13 @@ class Ean13 extends BarcodeBase
 		return false;
 	}
 
-	/*
+	/**
 	 * Draw the image
+	 *
+	 * @return void
+	 */
+	/**
+	 * (Abstract) Draw the image
 	 *
 	 * @return void
 	 */
@@ -201,26 +210,26 @@ class Ean13 extends BarcodeBase
 	{
 		// Bars is in reference to a single, 1-level bar
 		$pxPerBar = 2;
-		
+
 		// Calculate the barcode width
-		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar) 
+		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar)
 			+ 3 * $pxPerBar  // left
 			+ 5 * $pxPerBar  // center
 			+ 3 * $pxPerBar  // right
 			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
-			
+
 		$this->img = @imagecreate($this->x, $this->y);
-		
+
 		if (!$this->img)
 		{
 			throw new \RuntimeException("Ean13: Image failed to initialize");
 		}
-		
+
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
-		
+
 		// Fill image with white color
 		imagefill($this->img, 0, 0, $white);
 
@@ -229,7 +238,7 @@ class Ean13 extends BarcodeBase
 
 		// Initiate x position centering the bar
 		$xpos = ($this->x - $barcodewidth) / 2;
- 
+
 		// Draws the left guard pattern (bar-space-bar)
 		// bar
 		imagefilledrectangle(
@@ -237,7 +246,7 @@ class Ean13 extends BarcodeBase
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
-			$this->y, 
+			$this->y,
 			$black
 		);
 

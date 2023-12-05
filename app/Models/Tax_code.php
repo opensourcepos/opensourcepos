@@ -281,6 +281,11 @@ class Tax_code extends Model
 		}
 	}
 
+	/**
+	 * @param string $search
+	 * @param int $limit
+	 * @return array
+	 */
 	public function get_tax_codes_search_suggestions(string $search, int $limit = 25): array
 	{
 		$suggestions = [];
@@ -310,6 +315,9 @@ class Tax_code extends Model
 		return $suggestions;
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function get_empty_row(): array
 	{
 		return [

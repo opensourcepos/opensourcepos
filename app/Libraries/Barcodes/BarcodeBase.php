@@ -54,21 +54,21 @@ abstract class BarcodeBase
 	 */
 	protected $jpgQuality = 85;
 
-	/*
+	/**
 	 * (Abstract) Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @param mixed $data - (int or string) Data to be encoded
+	 * @return void
+	 * @throws OverflowException
 	 */
-	abstract public function setData($data);
+	abstract public function setData(mixed $data): void;
 
-	/*
+	/**
 	 * Get the data
 	 *
 	 * @param mixed data - (int or string) Data to be encoded
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @throws OverflowException
 	 */
 	public function getData()
 	{
@@ -77,6 +77,7 @@ abstract class BarcodeBase
 
 	/**
 	 * Validate the given barcode.
+	 *
 	 * @param $barcode The barcode to validate
 	 * @return bool true if it complies with the barcode formatting
 	 */
@@ -96,19 +97,19 @@ abstract class BarcodeBase
 		return $number;
 	}
 
-	/*
+	/**
 	 * (Abstract) Draw the image
 	 *
 	 * @return void
 	 */
 	abstract public function draw();
 
-	/*
+	/**
 	 * Set the Dimensions
 	 *
-	 * @param int x
-	 * @param int y
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 * @param int $x
+	 * @param int $y
+	 * @return BarcodeBase
 	 */
 	public function setDimensions($x, $y)
 	{
@@ -118,10 +119,11 @@ abstract class BarcodeBase
 		return $this;
 	}
 
-	/*
+	/**
 	 * Set Quality
-	 * @param int q - jpeg quality
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 *
+	 * @param int $q - jpeg quality
+	 * @return BarcodeBase
 	 */
 	public function setQuality($q)
 	{
@@ -130,10 +132,11 @@ abstract class BarcodeBase
 		return $this;
 	}
 
-	/*
+	/**
 	 * Display human readable text below the code
-	 * @param boolean enable - Enable the human readable text
-	 * @return instance of \emberlabs\Barcode\BarcodeBase
+	 *
+	 * @param boolean $enable - Enable the human readable text
+	 * @return BarcodeBase
 	 */
 	public function enableHumanText($enable = true)
 	{
@@ -142,12 +145,13 @@ abstract class BarcodeBase
 		return $this;
 	}
 
-	/*
+	/**
 	 * Output Image to the buffer
 	 *
+	 * @param $type
 	 * @return void
 	 */
-	public function output($type = 'png')
+	public function output($type = 'png'): void
 	{
 		switch($type)
 		{
@@ -167,16 +171,14 @@ abstract class BarcodeBase
 		}
 	}
 
-	/*
+	/**
 	 * Save Image
 	 *
-	 * @param string filename - File to write to (needs to have .png, .gif, or
-	 *	.jpg extension)
+	 * @param string $filename - File to write to (needs to have .png, .gif, or .jpg extension)
 	 * @return void
-	 * @throws \RuntimeException - If the file could not be written or some
-	 *	other I/O error.
+	 * @throws RuntimeException - If the file could not be written or some other I/O error.
 	 */
-	public function save($filename)
+	public function save($filename): void
 	{
 		$type = strtolower(substr(strrchr($filename, '.'), 1));
 
@@ -200,12 +202,13 @@ abstract class BarcodeBase
 		}
 	}
 
-	/*
+	/**
 	 * Base64 Encoded
 	 * For ouput in-page
-	 * @return void
+	 *
+	 * @return string
 	 */
-	public function base64()
+	public function base64(): string
 	{
 		ob_start();
 		$this->output();

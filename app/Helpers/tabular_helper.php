@@ -605,6 +605,11 @@ function get_item_kit_data_row(object $item_kit): array
 	];
 }
 
+/**
+ * @param array $columns
+ * @param array $row
+ * @return array
+ */
 function parse_attribute_values(array $columns, array $row): array
 {
 	$attribute_values = [];
@@ -619,6 +624,11 @@ function parse_attribute_values(array $columns, array $row): array
 	return $attribute_values;
 }
 
+/**
+ * @param array $definition_names
+ * @param array $row
+ * @return array
+ */
 function expand_attribute_values(array $definition_names, array $row): array
 {
 	$values = parse_attribute_values(['attribute_values', 'attribute_dtvalues', 'attribute_dvalues'], $row);
@@ -646,6 +656,9 @@ function expand_attribute_values(array $definition_names, array $row): array
 	return $attribute_values;
 }
 
+/**
+ * @return string
+ */
 function get_attribute_definition_manage_table_headers(): string
 {
 	$headers = [
@@ -659,6 +672,10 @@ function get_attribute_definition_manage_table_headers(): string
 	return transform_headers($headers);
 }
 
+/**
+ * @param object $attribute_row
+ * @return array
+ */
 function get_attribute_definition_data_row(object $attribute_row): array
 {
 

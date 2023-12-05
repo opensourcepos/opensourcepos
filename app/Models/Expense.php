@@ -65,6 +65,10 @@ class Expense extends Model
 		return $employee->get_info($builder->get()->getRow()->employee_id);	//TODO: refactor out the nested function call.
 	}
 
+	/**
+	 * @param array $expense_ids
+	 * @return ResultInterface
+	 */
 	public function get_multiple_info(array $expense_ids): ResultInterface
 	{
 		$builder = $this->db->table('expenses');

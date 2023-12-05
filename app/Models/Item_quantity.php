@@ -18,7 +18,12 @@ class Item_quantity extends Model
 		'quantity'
 	];
 
-    public function exists(int $item_id, int $location_id): bool
+	/**
+	 * @param int $item_id
+	 * @param int $location_id
+	 * @return bool
+	 */
+	public function exists(int $item_id, int $location_id): bool
     {
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
@@ -27,7 +32,13 @@ class Item_quantity extends Model
         return ($builder->get()->getNumRows() == 1);	//TODO: ===
     }
 
-    public function save_value(array $location_detail, int $item_id, int $location_id): bool
+	/**
+	 * @param array $location_detail
+	 * @param int $item_id
+	 * @param int $location_id
+	 * @return bool
+	 */
+	public function save_value(array $location_detail, int $item_id, int $location_id): bool
     {
         if(!$this->exists($item_id, $location_id))
         {
@@ -42,7 +53,12 @@ class Item_quantity extends Model
         return $builder->update($location_detail);
     }
 
-    public function get_item_quantity(int $item_id, int $location_id)
+	/**
+	 * @param int $item_id
+	 * @param int $location_id
+	 * @return array|object|stdClass|null
+	 */
+	public function get_item_quantity(int $item_id, int $location_id)
     {
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);

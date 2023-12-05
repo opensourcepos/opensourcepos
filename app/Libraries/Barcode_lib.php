@@ -24,11 +24,17 @@ class Barcode_lib
 		'Ean13' => 'EAN 13'
 	];
 
+	/**
+	 * @return array|string[]
+	 */
 	public function get_list_barcodes(): array
 	{
 		return $this->supported_barcodes;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_barcode_config(): array
 	{
 		$config = config(OSPOS::class)->settings;
@@ -52,6 +58,11 @@ class Barcode_lib
 		return $data;
 	}
 
+	/**
+	 * @param array $item
+	 * @param array $barcode_config
+	 * @return object|Code128|Code39|Ean13|Ean8
+	 */
 	public static function barcode_instance(array $item, array $barcode_config): object
 	{
 		$barcode_instance = Barcode_lib::get_barcode_instance($barcode_config['barcode_type']);
@@ -71,6 +82,10 @@ class Barcode_lib
 		return $barcode_instance;
 	}
 
+	/**
+	 * @param string $barcode_type
+	 * @return Code128|Code39|Ean13|Ean8
+	 */
 	private static function get_barcode_instance(string $barcode_type = 'Code128'): object
 	{
 		switch($barcode_type)
@@ -90,6 +105,12 @@ class Barcode_lib
 		}
 	}
 
+	/**
+	 * @param array $item
+	 * @param object $barcode_instance
+	 * @param array $barcode_config
+	 * @return mixed
+	 */
 	private static function barcode_seed(array $item, object $barcode_instance, array $barcode_config)
 	{
 		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number'])
@@ -115,6 +136,11 @@ class Barcode_lib
 		return $seed;
 	}
 
+	/**
+	 * @param array $item
+	 * @param array $barcode_config
+	 * @return string
+	 */
 	private function generate_barcode(array $item, array $barcode_config): string
 	{
 		try
@@ -134,6 +160,10 @@ class Barcode_lib
 		}
 	}
 
+	/**
+	 * @param $barcode_content
+	 * @return string
+	 */
 	public function generate_receipt_barcode($barcode_content): string
 	{
 		try
@@ -181,6 +211,12 @@ class Barcode_lib
 		return $display_table;
 	}
 
+	/**
+	 * @param $layout_type
+	 * @param array $item
+	 * @param array $barcode_config
+	 * @return string
+	 */
 	private function manage_display_layout($layout_type, array $item, array $barcode_config): string
 	{
 		$result = '';

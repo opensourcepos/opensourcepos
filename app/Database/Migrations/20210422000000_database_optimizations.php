@@ -10,6 +10,9 @@ use DateTime;
 
 class Migration_database_optimizations extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating database_optimizations');
@@ -110,8 +113,8 @@ class Migration_database_optimizations extends Migration
 	/**
 	 * Updates the attribute_id in all attribute_link rows with duplicated attribute_ids then deletes unneeded rows from attribute_values
 	 *
-	 * @param ResultInterface $attribute_ids_to_fix
-	 * @param array $attribute_value
+	 * @param ResultInterface $attribute_ids_to_fix All attribute_ids that need to parsed
+	 * @param array $attribute_value The attribute value in question.
 	 */
 	private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value)
 	{
@@ -131,6 +134,9 @@ class Migration_database_optimizations extends Migration
 		}
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 	}

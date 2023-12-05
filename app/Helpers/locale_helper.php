@@ -37,6 +37,10 @@ function current_language_code(bool $load_system_language = false): string
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
+/**
+ * @param bool $load_system_language
+ * @return string
+ */
 function current_language(bool $load_system_language = false): string
 {
 	$employee = model(Employee::class);
@@ -58,6 +62,9 @@ function current_language(bool $load_system_language = false): string
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
 
+/**
+ * @return string[]
+ */
 function get_languages(): array
 {
 	return [
@@ -106,6 +113,9 @@ function get_languages(): array
 	];
 }
 
+/**
+ * @return string[]
+ */
 function get_timezones(): array
 {
 	return [
@@ -205,6 +215,9 @@ function get_timezones(): array
 	];
 }
 
+/**
+ * @return string[]
+ */
 function get_dateformats(): array
 {
 	return [
@@ -218,6 +231,9 @@ function get_dateformats(): array
 	];
 }
 
+/**
+ * @return string[]
+ */
 function get_timeformats(): array
 {
 	return [
@@ -280,6 +296,9 @@ function get_payment_options(): array
 	return $payments;
 }
 
+/**
+ * @return bool
+ */
 function is_right_side_currency_symbol(): bool
 {
 	$config = config(OSPOS::class)->settings;
@@ -289,52 +308,84 @@ function is_right_side_currency_symbol(): bool
 	return !preg_match('/^¤/', $fmt->getPattern());
 }
 
+/**
+ * @return int
+ */
 function quantity_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
 	return $config['quantity_decimals'] ? $config['quantity_decimals'] : 0;
 }
 
+/**
+ * @return int
+ */
 function totals_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
 	return $config['currency_decimals'] ? (int)$config['currency_decimals'] : 0;
 }
 
+/**
+ * @return int
+ */
 function cash_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
 	return $config['cash_decimals'] ? $config['cash_decimals'] : 0;
 }
 
+/**
+ * @return int
+ */
 function tax_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
 	return $config['tax_decimals'] ? $config['tax_decimals'] : 0;
 }
 
+/**
+ * @param int $date
+ * @return string
+ */
 function to_date(int $date = DEFAULT_DATE): string
 {
 	$config = config(OSPOS::class)->settings;
 	return date($config['dateformat'], $date);
 }
 
+/**
+ * @param int $datetime
+ * @return string
+ */
 function to_datetime(int $datetime = DEFAULT_DATETIME): string
 {
 	$config = config(OSPOS::class)->settings;
 	return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);
 }
 
+/**
+ * @param float|null $number
+ * @return string
+ */
 function to_currency(?float $number): string
 {
 	return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
+/**
+ * @param float|null $number
+ * @return string
+ */
 function to_currency_no_money(?float $number): string
 {
 	return to_decimals($number, 'currency_decimals');
 }
 
+/**
+ * @param float|null $number
+ * @return string
+ */
 function to_currency_tax(?float $number): string
 {
 	$config = config(OSPOS::class)->settings;
@@ -349,6 +400,10 @@ function to_currency_tax(?float $number): string
 	}
 }
 
+/**
+ * @param $number
+ * @return string
+ */
 function to_tax_decimals($number): string
 {
 	// TODO: When the tax array is empty the value passed in is an empty string,  For now I "untyped" it to get past
@@ -366,11 +421,21 @@ function to_tax_decimals($number): string
 	return to_decimals($number, 'tax_decimals');
 }
 
+/**
+ * @param float|null $number
+ * @return string
+ */
 function to_quantity_decimals(?float $number): string
 {
 	return to_decimals($number, 'quantity_decimals');
 }
 
+/**
+ * @param float|null $number
+ * @param string|null $decimals
+ * @param int $type
+ * @return string
+ */
 function to_decimals(?float $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
 	// ignore empty strings and return
@@ -508,6 +573,9 @@ function dateformat_momentjs(string $php_format): string
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+/**
+ * @return string
+ */
 function dateformat_mysql(): string
 {
 	$config = config(OSPOS::class)->settings;
@@ -552,6 +620,10 @@ function dateformat_mysql(): string
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+/**
+ * @param string $php_format
+ * @return string
+ */
 function dateformat_bootstrap(string $php_format): string
 {
 	$SYMBOLS_MATCHING = [
@@ -593,17 +665,29 @@ function dateformat_bootstrap(string $php_format): string
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+/**
+ * @param string $date
+ * @return bool
+ */
 function valid_date(string $date): bool	//TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
 	$config = config(OSPOS::class)->settings;
 	return (DateTime::createFromFormat($config['dateformat'], $date));
 }
 
+/**
+ * @param string $decimal
+ * @return bool
+ */
 function valid_decimal(string $decimal): bool	//TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
 {
 	return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
 
+/**
+ * @param array $data
+ * @return array
+ */
 function encode_array(array $data): array
 {
 	array_walk($data, function(&$value, $key) { $value = rawurlencode($value);});
@@ -611,6 +695,10 @@ function encode_array(array $data): array
 	return $data;
 }
 
+/**
+ * @param array $data
+ * @return array
+ */
 function decode_array(array $data): array
 {
 	array_walk($data, function(&$value, $key) { $value = rawurldecode($value);});

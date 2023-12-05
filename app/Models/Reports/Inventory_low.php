@@ -12,6 +12,9 @@ use App\Models\Item;
  */
 class Inventory_low extends Report
 {
+	/**
+	 * @return array[]
+	 */
 	public function getDataColumns(): array
 	{
 		return [
@@ -23,6 +26,10 @@ class Inventory_low extends Report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{//TODO: we need to see if this can be converted into using QueryBuilder
 		$item = model(Item::class);
@@ -43,6 +50,10 @@ class Inventory_low extends Report
 		return $query->getResultArray();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getSummaryData(array $inputs): array
 	{
 		return [];

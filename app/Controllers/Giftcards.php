@@ -16,6 +16,9 @@ class Giftcards extends Secure_Controller
 		$this->giftcard = model(Giftcard::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_giftcards_manage_table_headers();
@@ -23,9 +26,9 @@ class Giftcards extends Secure_Controller
 		echo view('giftcards/manage', $data);
 	}
 
-	/*
-	Returns Giftcards table data rows. This will be called with AJAX.
-	*/
+	/**
+	 * Returns Giftcards table data rows. This will be called with AJAX.
+	 */
 	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -46,10 +49,9 @@ class Giftcards extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-
+	/**
+	 * Gives search suggestions based on what is being searched for
+	 */
 	public function getSuggest(): void
 	{
 		$suggestions = $this->giftcard->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);
@@ -57,6 +59,9 @@ class Giftcards extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->giftcard->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -64,6 +69,10 @@ class Giftcards extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$data_row = get_giftcard_data_row($this->giftcard->get_info($row_id));
@@ -71,6 +80,10 @@ class Giftcards extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $giftcard_id
+	 * @return void
+	 */
 	public function getView(int $giftcard_id = NEW_ENTRY): void
 	{
 		$config = config(OSPOS::class)->settings;
@@ -94,6 +107,10 @@ class Giftcards extends Secure_Controller
 		echo view("giftcards/form", $data);
 	}
 
+	/**
+	 * @param int $giftcard_id
+	 * @return void
+	 */
 	public function postSave(int $giftcard_id = NEW_ENTRY): void
 	{
 		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -151,6 +168,9 @@ class Giftcards extends Secure_Controller
 		echo json_encode (['success' => $parsed_value !== false, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$giftcards_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

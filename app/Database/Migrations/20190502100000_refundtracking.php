@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_RefundTracking extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		helper(['migration', 'locale']);
@@ -100,6 +103,9 @@ class Migration_RefundTracking extends Migration
 		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->prefixTable('migrate_refund'));
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 

@@ -14,6 +14,9 @@ class Token_customer extends Token
 	private string $customer_info;
 	private Sale_lib $sale_lib;
 
+	/**
+	 * @param string $customer_info
+	 */
 	public function __construct(string $customer_info = '')
 	{
 		parent::__construct();
@@ -21,11 +24,17 @@ class Token_customer extends Token
 		$this->sale_lib = new Sale_lib();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function token_id(): string
 	{
 		return 'CU';
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_value(): string
 	{
 		//substitute customer info

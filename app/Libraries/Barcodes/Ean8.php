@@ -8,7 +8,7 @@
  *
  * Minimum Requirement: PHP 5.3.0
  */
- 
+
 /**
  * Image_Barcode2_Driver_Ean8 class
  *
@@ -44,7 +44,7 @@ class Ean8 extends BarcodeBase
 {
 	/*
 	 * Coding map
-	 * @var array 
+	 * @var array
 	 */
 	private $_codingmap = array(
 		'0' => array(
@@ -89,12 +89,13 @@ class Ean8 extends BarcodeBase
 		)
 	);
 
-	/*
+	/**
 	 * Calculate EAN8 or EAN13 automatically
 	 * set $len = 8 for EAN8, $len = 13 for EAN13
 	 *
-	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
-	 * @return string with complete EAN code
+	 * @param $number The internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
+	 * @param $len
+	 * @return string|null Complete EAN code
 	 */
 	public function generate($number, $len = 8)
 	{
@@ -145,7 +146,7 @@ class Ean8 extends BarcodeBase
 			}
 			elseif ($r !== intval($barcode[$data_len]))
 			{
-				// wrong checkdigit
+				// wrong check digit
 				$barcode = null;
 			}
 		}
@@ -153,7 +154,11 @@ class Ean8 extends BarcodeBase
 		return $barcode;
 	}
 
-	public function validate($barcode)
+	/**
+	 * @param $barcode
+	 * @return bool
+	 */
+	public function validate($barcode): bool
 	{
 		$ean = str_replace(array("-","/"," ","\t","\n"), "", $barcode);   // make a clean ean
 		$len = strlen($ean);
@@ -183,27 +188,27 @@ class Ean8 extends BarcodeBase
 		return false;
 	}
 
-	/*
+	/**
 	 * Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @param mixed $data - (int or string) Data to be encoded
+	 * @return void
 	 */
-	public function setData($data)
+	public function setData(mixed $data): void
 	{
 		$this->data = $data;
 	}
 
-	/*
+	/**
 	 * Draw the image
 	 *
 	 * @return void
 	 */
-	public function draw()
+	public function draw(): void
 	{
 		// Bars is in reference to a single, 1-level bar
 		$pxPerBar = 2;
-		
+
 		// Calculate the barcode width
 		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar)
 			+ 3 * $pxPerBar  // left
@@ -212,17 +217,17 @@ class Ean8 extends BarcodeBase
 			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
-			
+
 		$this->img = @imagecreate($this->x, $this->y);
-		
+
 		if (!$this->img)
 		{
 			throw new \RuntimeException("Ean8: Image failed to initialize");
 		}
-		
+
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
-		
+
 		// Fill image with white color
 		imagefill($this->img, 0, 0, $white);
 
@@ -231,7 +236,7 @@ class Ean8 extends BarcodeBase
 
 		// Initiate x position centering the bar
 		$xpos = ($this->x - $barcodewidth) / 2;
- 
+
 		// Draws the left guard pattern (bar-space-bar)
 		// bar
 		imagefilledrectangle(
@@ -239,7 +244,7 @@ class Ean8 extends BarcodeBase
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
-			$this->y, 
+			$this->y,
 			$black
 		);
 

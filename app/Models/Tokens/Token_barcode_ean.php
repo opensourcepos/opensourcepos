@@ -7,12 +7,18 @@ namespace App\Models\Tokens;
  */
 class Token_barcode_ean extends Token
 {
-    public function token_id(): string
+	/**
+	 * @return string
+	 */
+	public function token_id(): string
 	{
         return 'I';
     }
 
-    public function get_value(): string
+	/**
+	 * @return string
+	 */
+	public function get_value(): string
 	{
         return '\w';
     }

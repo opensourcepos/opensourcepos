@@ -16,6 +16,9 @@ class Tax_categories extends Secure_Controller
 		$this->tax_category = model('Tax_category');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		 $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
@@ -23,9 +26,11 @@ class Tax_categories extends Secure_Controller
 		 echo view('taxes/tax_categories', $data);
 	}
 
-	/*
+	/**
 	 * Returns tax_category table data rows. This will be called with AJAX.
-	*/
+	 *
+	 * @return void
+	 */
 	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -46,6 +51,10 @@ class Tax_categories extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * @param $row_id
+	 * @return void
+	 */
 	public function getRow($row_id): void
 	{
 		$data_row = get_tax_categories_data_row($this->tax_category->get_info($row_id));
@@ -53,6 +62,10 @@ class Tax_categories extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $tax_category_id
+	 * @return void
+	 */
 	public function getView(int $tax_category_id = NEW_ENTRY): void
 	{
 		$data['tax_category_info'] = $this->tax_category->get_info($tax_category_id);
@@ -61,6 +74,10 @@ class Tax_categories extends Secure_Controller
 	}
 
 
+	/**
+	 * @param int $tax_category_id
+	 * @return void
+	 */
 	public function postSave(int $tax_category_id = NEW_ENTRY): void
 	{
 		$tax_category_data = [
@@ -99,6 +116,9 @@ class Tax_categories extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$tax_categories_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);

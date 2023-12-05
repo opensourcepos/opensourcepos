@@ -25,6 +25,9 @@ class Cashups extends Secure_Controller
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_cashups_manage_table_headers();
@@ -35,6 +38,9 @@ class Cashups extends Secure_Controller
 		echo view('cashups/manage', $data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -62,6 +68,10 @@ class Cashups extends Secure_Controller
 		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * @param int $cashup_id
+	 * @return void
+	 */
 	public function getView(int $cashup_id = NEW_ENTRY): void
 	{
 		$data = [];
@@ -194,6 +204,10 @@ class Cashups extends Secure_Controller
 		echo view("cashups/form", $data);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$cash_ups_info = $this->cashup->get_info($row_id);
@@ -202,6 +216,10 @@ class Cashups extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $cashup_id
+	 * @return void
+	 */
 	public function postSave(int $cashup_id = NEW_ENTRY): void
 	{
 		$open_date = $this->request->getPost('open_date');
@@ -245,6 +263,9 @@ class Cashups extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$cash_ups_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_add_missing_config extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		$image_values = [
@@ -22,6 +25,9 @@ class Migration_add_missing_config extends Migration
 		$this->db->table('app_config')->ignore(true)->insertBatch($image_values);
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 		// no need to remove necessary config values.
