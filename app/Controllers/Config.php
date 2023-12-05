@@ -467,7 +467,7 @@ class Config extends Secure_Controller
 
 		if($this->request->getPost('thousands_separator') == 'false')
 		{
-			$fmt->setAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+			$fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}
 
 		$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
