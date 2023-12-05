@@ -55,7 +55,7 @@ $request = Services::request();
 				</div>
 
 				<div class="navbar-right" style="margin:0">
-					<?= anchor(esc("home/change_password/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name"), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+					<?= anchor(esc("home/changePassword/$user_info->person_id", 'url'), esc("$user_info->first_name $user_info->last_name"), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
 					<?= '  |  ' . ((ENVIRONMENT == 'development' || $request->getGet('debugdebug') == 'true') ? session('session_sha1') . '  |  ' : '') ?>
 					<?= anchor('home/logout', lang('Login.logout')) ?>
 				</div>

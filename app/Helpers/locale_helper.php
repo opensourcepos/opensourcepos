@@ -13,6 +13,8 @@ define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
 
 /**
  * Currency locale helper
+ * @param bool $load_system_language
+ * @return string
  */
 function current_language_code(bool $load_system_language = false): string
 {
@@ -278,7 +280,7 @@ function get_payment_options(): array
 	return $payments;
 }
 
-function currency_side(): bool
+function is_right_side_currency_symbol(): bool
 {
 	$config = config(OSPOS::class)->settings;
 	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::CURRENCY);
@@ -415,9 +417,8 @@ function parse_tax(string $number)
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, int $decimals = null)
+function parse_decimals(string $number, int $decimals = null): mixed
 {
-	// ignore empty strings and return
 	if(empty($number))
 	{
 		return $number;
@@ -435,12 +436,14 @@ function parse_decimals(string $number, int $decimals = null)
 
 	$config = config(OSPOS::class)->settings;
 
+	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+
 	if(!$decimals)
 	{
-		$decimals = $config['currency_decimals'];	//TODO: $decimals is never used.
+		$decimals = $config['currency_decimals'];
 	}
 
-	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+	$fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
 
 	if(empty($config['thousands_separator']))
 	{

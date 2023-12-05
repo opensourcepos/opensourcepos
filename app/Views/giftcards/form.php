@@ -51,7 +51,7 @@
 			<?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><?= esc($config['currency_symbol']) ?></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -60,7 +60,7 @@
 						'class' => 'form-control input-sm',
 						'value'=>to_currency_no_money($giftcard_value)
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></span>
 					<?php endif; ?>
 				</div>
