@@ -400,7 +400,7 @@ class Config extends Secure_Controller
 			'default_sales_discount' => $this->request->getPost('default_sales_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != null,
 			'default_receivings_discount' => $this->request->getPost('default_receivings_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-			'enforce_privacy' => $this->request->getPost('enforce_privacy', FILTER_SANITIZE_NUMBER_INT),
+			'enforce_privacy' => $this->request->getPost('enforce_privacy') != null,
 			'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
 			'lines_per_page' => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
 			'notify_horizontal_position' => $this->request->getPost('notify_horizontal_position'),
