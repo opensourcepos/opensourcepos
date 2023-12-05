@@ -15,6 +15,9 @@ class Suppliers extends Persons
 		$this->supplier = model(Supplier::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		helper('tabular');
@@ -73,6 +76,9 @@ class Suppliers extends Persons
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->supplier->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), false);
@@ -80,9 +86,12 @@ class Suppliers extends Persons
 		echo json_encode($suggestions);
 	}
 
-	/*
-	Loads the supplier edit form
-	*/
+	/**
+	 * Loads the supplier edit form
+	 *
+	 * @param int $supplier_id
+	 * @return void
+	 */
 	public function getView(int $supplier_id = NEW_ENTRY): void
 	{
 		$info = $this->supplier->get_info($supplier_id);
@@ -96,9 +105,12 @@ class Suppliers extends Persons
 		echo view("suppliers/form", $data);
 	}
 
-	/*
-	Inserts/updates a supplier
-	*/
+	/**
+	 * Inserts/updates a supplier
+	 *
+	 * @param int $supplier_id
+	 * @return void
+	 */
 	public function postSave(int $supplier_id = NEW_ENTRY): void
 	{
 		$first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicate code
@@ -161,9 +173,11 @@ class Suppliers extends Persons
 		}
 	}
 
-	/*
-	This deletes suppliers from the suppliers table
-	*/
+	/**
+	 * This deletes suppliers from the suppliers table
+	 *
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);

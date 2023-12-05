@@ -121,36 +121,40 @@ class Code128 extends BarcodeBase
 	/*
 	 * Subtypes
 	 */
-	const TYPE_AUTO	= 0; // Automatically detect the best code
-	const TYPE_A	= 1; // ASCII 00-95 (0-9, A-Z, Control codes, and some special chars)
-	const TYPE_B	= 2; // ASCII 32-127 (0-9, A-Z, a-z, special chars)
-	const TYPE_C	= 3; // Numbers 00-99 (two digits per code)
+	public const TYPE_AUTO = 0; // Automatically detect the best code
+	public const TYPE_A = 1; // ASCII 00-95 (0-9, A-Z, Control codes, and some special chars)
+	public const TYPE_B = 2; // ASCII 32-127 (0-9, A-Z, a-z, special chars)
+	public const TYPE_C = 3; // Numbers 00-99 (two digits per code)
 
-	/*
+	/**
 	 * Set the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
+	 * @param mixed $data - (int or string) Data to be encoded
+	 * @return void
+	 * @throws OverflowException
 	 */
-	public function setData($data)
+	public function setData(mixed $data): void
 	{
 		$this->data = $data;
 	}
 
-	/*
+	/**
 	 * Set the subtype
 	 * Defaults to Autodetect
-	 * @param int type - Const flag for the type
+	 *
+	 * @param int $type - Const flag for the type
+	 * @return void
 	 */
 	public function setSubType($type)
 	{
 		$this->type = ($type < 1 || $type > 3) ? self::TYPE_AUTO : (int) $type;
 	}
 
-	/*
+	/**
 	 * Get they key (value of the character)
-	 * @return int - pattern
+	 *
+	 * @param $char
+	 * @return false|int|string pattern
 	 */
 	private function getKey($char)
 	{
@@ -173,12 +177,14 @@ class Code128 extends BarcodeBase
 
 			default:
 				$this->resolveSubtype();
-				return $this->getKey($char); // recursion!
+				return $this->getKey($char);
 		}
 	}
 
-	/*
+	/**
 	 * Get the bar
+	 *
+	 * @param $char
 	 * @return int - pattern
 	 */
 	private function getBar($char)
@@ -188,12 +194,12 @@ class Code128 extends BarcodeBase
 		return self::$barMap[($key !== false) ? $key : 0];
 	}
 
-	/*
+	/**
 	 * Resolve subtype
-	 * @todo - Do some better charset checking and enforcement
+	 *
 	 * @return void
 	 */
-	private function resolveSubtype()
+	private function resolveSubtype()	//TODO: Do some better charset checking and enforcement
 	{
 		if ($this->type == self::TYPE_AUTO)
 		{

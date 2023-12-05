@@ -6,12 +6,18 @@ use CodeIgniter\Database\Migration;
 
 class Migration_add_iso_4217 extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		helper('migration');
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.3.0_add_iso_4217.sql');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 

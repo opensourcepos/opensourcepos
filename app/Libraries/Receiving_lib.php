@@ -39,6 +39,9 @@ class Receiving_lib
 		$this->session = session();
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_cart(): array
 	{
 		if(!$this->session->get('recv_cart'))
@@ -49,16 +52,26 @@ class Receiving_lib
 		return $this->session->get('recv_cart');
 	}
 
+	/**
+	 * @param array $cart_data
+	 * @return void
+	 */
 	public function set_cart(array $cart_data): void
 	{
 		$this->session->set('recv_cart', $cart_data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function empty_cart(): void
 	{
 		$this->session->remove('recv_cart');
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_supplier(): int
 	{
 		if(!$this->session->get('recv_supplier'))
@@ -69,16 +82,26 @@ class Receiving_lib
 		return $this->session->get('recv_supplier');
 	}
 
+	/**
+	 * @param int $supplier_id
+	 * @return void
+	 */
 	public function set_supplier(int $supplier_id): void
 	{
 		$this->session->set('recv_supplier', $supplier_id);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function remove_supplier(): void
 	{
 		$this->session->remove('recv_supplier');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_mode(): string
 	{
 		if(!$this->session->get('recv_mode'))
@@ -89,16 +112,26 @@ class Receiving_lib
 		return $this->session->get('recv_mode');
 	}
 
+	/**
+	 * @param string $mode
+	 * @return void
+	 */
 	public function set_mode(string $mode): void
 	{
 		$this->session->set('recv_mode', $mode);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_mode(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_mode()
 	{
 		$this->session->remove('recv_mode');
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_stock_source(): int
 	{
 		if(!$this->session->get('recv_stock_source'))
@@ -109,6 +142,9 @@ class Receiving_lib
 		return $this->session->get('recv_stock_source');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_comment(): string
 	{
 		$comment = $this->session->get('recv_comment');
@@ -116,52 +152,86 @@ class Receiving_lib
 		return empty($comment) ? '' : $comment;
 	}
 
+	/**
+	 * @param string $comment
+	 * @return void
+	 */
 	public function set_comment(string $comment): void
 	{
 		$this->session->set('recv_comment', $comment);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_comment(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_comment()
 	{
 		$this->session->remove('recv_comment');
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_reference(): ?string
 	{
 		return $this->session->get('recv_reference');
 	}
 
+	/**
+	 * @param string $reference
+	 * @return void
+	 */
 	public function set_reference(string $reference): void
 	{
 		$this->session->set('recv_reference', $reference);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_reference(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_reference()
 	{
 		$this->session->remove('recv_reference');
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_print_after_sale(): bool
 	{
 		return $this->session->get('recv_print_after_sale') == 'true'
 			|| $this->session->get('recv_print_after_sale') == '1';
 	}
 
+	/**
+	 * @param bool $print_after_sale
+	 * @return void
+	 */
 	public function set_print_after_sale(bool $print_after_sale): void
 	{
 		$this->session->set('recv_print_after_sale', $print_after_sale);
 	}
 
+	/**
+	 * @param int $stock_source
+	 * @return void
+	 */
 	public function set_stock_source(int $stock_source): void
 	{
 		$this->session->set('recv_stock_source', $stock_source);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_stock_source(): void
 	{
 		$this->session->remove('recv_stock_source');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_stock_destination(): string
 	{
 		if(!$this->session->get('recv_stock_destination'))
@@ -172,16 +242,38 @@ class Receiving_lib
 		return $this->session->get('recv_stock_destination');
 	}
 
+	/**
+	 * @param string $stock_destination
+	 * @return void
+	 */
 	public function set_stock_destination(string $stock_destination): void
 	{
 		$this->session->set('recv_stock_destination', $stock_destination);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_stock_destination(): void
 	{
 		$this->session->remove('recv_stock_destination');
 	}
 	//TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
+
+	/**
+	 * @param int $item_id
+	 * @param int $quantity
+	 * @param int|null $item_location
+	 * @param float $discount
+	 * @param int $discount_type
+	 * @param float|null $price
+	 * @param string|null $description
+	 * @param string|null $serialnumber
+	 * @param float|null $receiving_quantity
+	 * @param int|null $receiving_id
+	 * @param bool $include_deleted
+	 * @return bool
+	 */
 	public function add_item(int $item_id, int $quantity = 1, int $item_location = null, float $discount = 0, int $discount_type = 0, float $price = null, string $description = null, string $serialnumber = null, float $receiving_quantity = null, int $receiving_id = null, bool $include_deleted = false): bool
 	{
 		$config = config(OSPOS::class)->settings;
@@ -301,6 +393,17 @@ class Receiving_lib
 		return true;
 	}
 
+	/**
+	 * @param $line
+	 * @param string $description
+	 * @param string $serialnumber
+	 * @param float $quantity
+	 * @param float $discount
+	 * @param int $discount_type
+	 * @param float $price
+	 * @param float $receiving_quantity
+	 * @return bool
+	 */
 	public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, int $discount_type, float $price, float $receiving_quantity): bool
 	{
 		$items = $this->get_cart();
@@ -336,6 +439,10 @@ class Receiving_lib
 		$this->set_cart($items);
 	}
 
+	/**
+	 * @param int $receipt_receiving_id
+	 * @return void
+	 */
 	public function return_entire_receiving(int $receipt_receiving_id): void
 	{
 		//RECV #
@@ -362,6 +469,13 @@ class Receiving_lib
 		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
 	}
 
+	/**
+	 * @param string $external_item_kit_id
+	 * @param int $item_location
+	 * @param float $discount
+	 * @param int $discount_type
+	 * @return void
+	 */
 	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, int $discount_type): void
 	{
 		//KIT #
@@ -374,6 +488,10 @@ class Receiving_lib
 		}
 	}
 
+	/**
+	 * @param int $receiving_id
+	 * @return void
+	 */
 	public function copy_entire_receiving(int $receiving_id): void
 	{
 		$this->empty_cart();
@@ -388,6 +506,9 @@ class Receiving_lib
 		//$this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);	//TODO: If this code won't be added back in, then let's delete it.
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_all(): void
 	{
 		$this->clear_mode();
@@ -397,6 +518,14 @@ class Receiving_lib
 		$this->clear_reference();
 	}
 
+	/**
+	 * @param float $quantity
+	 * @param float $price
+	 * @param float $discount
+	 * @param int $discount_type
+	 * @param float $receiving_quantity
+	 * @return string
+	 */
 	public function get_item_total(float $quantity, float $price, float $discount, int $discount_type, float $receiving_quantity): string
 	{
 		$extended_quantity = bcmul($quantity, $receiving_quantity);
@@ -412,6 +541,9 @@ class Receiving_lib
 		return bcsub($total, $discount_amount);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_total(): string
 	{
 		$total = 0;

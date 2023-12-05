@@ -4,6 +4,9 @@ namespace App\Models\Reports;
 
 class Summary_items extends Summary_report
 {
+	/**
+	 * @return array[]
+	 */
 	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
@@ -20,6 +23,11 @@ class Summary_items extends Summary_report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _select(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
 		parent::_select($inputs, $builder);	//TODO: hungarian notation
@@ -33,6 +41,10 @@ class Summary_items extends Summary_report
 		');
 	}
 
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _from(object &$builder): void	//TODO: hungarian notation
 	{
 		parent::_from($builder);
@@ -40,6 +52,10 @@ class Summary_items extends Summary_report
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
 	}
 
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _group_order(object &$builder): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('items.item_id');

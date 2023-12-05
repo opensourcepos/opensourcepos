@@ -275,6 +275,10 @@ class Tax extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $tax_code_type
+	 * @return string
+	 */
 	public function get_tax_code_type_name(string $tax_code_type): string	//TODO: if this is being called from the view and passed through GET params then it will come through as a string... better if we can get it as an int though.
 	{
 		if($tax_code_type == '0')	//TODO: ===.  Also, replace this with ternary notation. The whole function becomes a nice one-liner.
@@ -287,6 +291,10 @@ class Tax extends Model
 		}
 	}
 
+	/**
+	 * @param int $tax_category_id
+	 * @return string
+	 */
 	public function get_tax_category(int $tax_category_id): string
 	{
 		$builder = $this->db->table('tax_categories');
@@ -296,6 +304,9 @@ class Tax extends Model
 		return $builder->get()->getRow()->tax_category;
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all_tax_categories(): ResultInterface
 	{
 		$builder = $this->db->table('tax_categories');
@@ -304,6 +315,10 @@ class Tax extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $tax_category
+	 * @return int
+	 */
 	public function get_tax_category_id(string $tax_category): int	//TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
 	{
 		$builder = $this->db->table('tax_categories');

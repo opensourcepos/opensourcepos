@@ -58,6 +58,10 @@ class Cashup extends Model
 		return $employee->get_info($builder->get()->getRow()->employee_id);
 	}
 
+	/**
+	 * @param string $cashup_ids
+	 * @return ResultInterface
+	 */
 	public function get_multiple_info(string $cashup_ids): ResultInterface
 	{
 		$builder = $this->db->table('cash_up');

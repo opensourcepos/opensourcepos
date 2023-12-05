@@ -91,6 +91,9 @@ abstract class Summary_report extends Report
 		");
 	}
 
+	/**
+	 * @return void
+	 */
 	private function __common_from(): void	//TODO: hungarian notation
 	{
 		$builder = $this->db->table('sales_items AS sales_items');
@@ -101,6 +104,11 @@ abstract class Summary_report extends Report
 		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 	}
 
+	/**
+	 * @param array $inputs
+	 * @param $builder
+	 * @return void
+	 */
 	private function __common_where(array $inputs, &$builder): void
 	{
 		$config = config(OSPOS::class)->settings;
@@ -163,9 +171,30 @@ abstract class Summary_report extends Report
 	 */
 	abstract protected function _get_data_columns(): array;	//TODO: hungarian notation
 
+	/**
+	 * @param array $inputs
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _select(array $inputs, object &$builder): void { $this->__common_select($inputs, $builder); }	//TODO: hungarian notation
+
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _from(object &$builder): void { $this->__common_from(); }	//TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
+
+	/**
+	 * @param array $inputs
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _where(array $inputs, object &$builder): void { $this->__common_where($inputs, $builder); }	//TODO: hungarian notation
+
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _group_order(object &$builder): void {}	//TODO: hungarian notation
 
 	/**
@@ -179,6 +208,10 @@ abstract class Summary_report extends Report
 		return $this->_get_data_columns();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$this->_select($inputs, $builder);
@@ -189,6 +222,10 @@ abstract class Summary_report extends Report
 		return $builder->get()->getResultArray();
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getSummaryData(array $inputs): array
 	{
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.

@@ -5,18 +5,25 @@ namespace App\Database\Migrations;
 use App\Models\Appconfig;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\Router\Exceptions\RedirectException;
 use Config\Encryption;
 use Config\Services;
 
 class Convert_to_ci4 extends Migration
 {
+	/**
+	 * Constructor.
+	 */
 	public function __construct(?Forge $forge = null)
 	{
 		parent::__construct($forge);
 		helper('security');
 	}
 
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating database to CodeIgniter4 formats');
@@ -38,11 +45,18 @@ class Convert_to_ci4 extends Migration
 		error_log('Migrating to CodeIgniter4 formats completed');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 
 	}
 
+	/**
+	 * @return RedirectResponse|void
+	 * @throws \ReflectionException
+	 */
 	private function convert_ci3_encrypted_data()
 	{
 		$appconfig = model(Appconfig::class);
@@ -84,8 +98,10 @@ class Convert_to_ci4 extends Migration
 	}
 
 	/**
-	 * @param array $encrypted_data
-	 * @return array
+	 * Decrypts CI3 encrypted data and returns the plaintext values.
+	 *
+	 * @param array $encrypted_data Data encrypted using CI3 methodology.
+	 * @return array Plaintext, unencrypted data.
 	 */
 	private function decrypt_ci3_data(array $encrypted_data): array
 	{
@@ -108,6 +124,12 @@ class Convert_to_ci4 extends Migration
 		return $decrypted_data;
 	}
 
+	/**
+	 * Encrypts data using CI4 algorithms.
+	 *
+	 * @param array $plain_data Data to be encrypted.
+	 * @return array Encrypted data.
+	 */
 	private function encrypt_data(array $plain_data): array
 	{
 		$encrypter = Services::encrypter();
@@ -121,6 +143,12 @@ class Convert_to_ci4 extends Migration
 		return $encrypted_data;
 	}
 
+	/**
+	 * Decrypts data using CI4 algorithms.
+	 *
+	 * @param array $encrypted_data Data to be decrypted.
+	 * @return array Decrypted data.
+	 */
 	private function decrypt_data(array $encrypted_data): array
 	{
 		$encrypter = Services::encrypter();

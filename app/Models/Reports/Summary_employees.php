@@ -4,6 +4,9 @@ namespace App\Models\Reports;
 
 class Summary_employees extends Summary_report
 {
+	/**
+	 * @return array[]
+	 */
 	protected function _get_data_columns(): array	//TODO: Hungarian notation
 	{
 		return [
@@ -19,6 +22,11 @@ class Summary_employees extends Summary_report
 	}
 //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
+	/**
+	 * @param array $inputs
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _select(array $inputs, object &$builder): void	//TODO: hungarian notation
 	{
 		parent::_select($inputs, $builder);
@@ -30,6 +38,10 @@ class Summary_employees extends Summary_report
 		');
 	}
 
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _from(object &$builder): void	//TODO: hungarian notation
 	{
 		parent::_from($builder);
@@ -37,6 +49,10 @@ class Summary_employees extends Summary_report
 		$builder->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
 	}
 
+	/**
+	 * @param object $builder
+	 * @return void
+	 */
 	protected function _group_order(object &$builder): void	//TODO: hungarian notation
 	{
 		$builder->groupBy('sales.employee_id');

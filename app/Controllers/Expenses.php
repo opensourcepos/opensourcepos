@@ -19,6 +19,9 @@ class Expenses extends Secure_Controller
 		$this->expense_category = model(Expense_category::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_expenses_manage_table_headers();
@@ -36,6 +39,9 @@ class Expenses extends Secure_Controller
 		echo view('expenses/manage', $data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getSearch(): void
 	{
 		$search   = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -76,6 +82,10 @@ class Expenses extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
 	}
 
+	/**
+	 * @param int $expense_id
+	 * @return void
+	 */
 	public function getView(int $expense_id = NEW_ENTRY): void
 	{
 		$data = [];	//TODO: Duplicated code
@@ -125,6 +135,10 @@ class Expenses extends Secure_Controller
 		echo view("expenses/form", $data);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$expense_info = $this->expense->get_info($row_id);
@@ -133,6 +147,10 @@ class Expenses extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $expense_id
+	 * @return void
+	 */
 	public function postSave(int $expense_id = NEW_ENTRY): void
 	{
 		$config = config(OSPOS::class)->settings;
@@ -171,6 +189,9 @@ class Expenses extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ajax_check_amount(): void
 	{
 		$value = $this->request->getPost(null, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -178,6 +199,9 @@ class Expenses extends Secure_Controller
 		echo json_encode (['success' => $parsed_value !== false]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$expenses_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

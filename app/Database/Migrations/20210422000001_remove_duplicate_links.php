@@ -7,6 +7,9 @@ use App\Models\Attribute;
 
 class Migration_remove_duplicate_links extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating remove_duplicate_links');
@@ -55,6 +58,9 @@ class Migration_remove_duplicate_links extends Migration
 		$this->db->transComplete();
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 	}

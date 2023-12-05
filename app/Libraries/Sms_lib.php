@@ -19,7 +19,7 @@ class Sms_lib
 	/**
 	 * SMS sending function
 	 * Example of use: $response = sendSMS('4477777777', 'My test message');
-	 **/
+	 */
 	public function sendSMS(int $phone, string $message): bool
 	{
 		$config = config(OSPOS::class)->settings;

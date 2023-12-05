@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_IndiaGST1 extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		helper('migration');
@@ -16,6 +19,9 @@ class Migration_IndiaGST1 extends Migration
 		error_log('Definition of Supplier.Tax Id corrected');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 	}

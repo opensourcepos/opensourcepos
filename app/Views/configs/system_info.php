@@ -44,7 +44,11 @@
 				User Configuration:<br>
 				.Browser:
 					<?php
-						function get_browser_name(string $user_agent): string
+					/**
+					 * @param string $user_agent
+					 * @return string
+					 */
+					function get_browser_name(string $user_agent): string
 						{
 							if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
 							elseif (strpos($user_agent, 'Edge')) return 'Edge';

@@ -14,6 +14,9 @@ class Summary_taxes extends Summary_report
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return array[]
+	 */
 	protected function _get_data_columns(): array	//TODO: hungarian notation
 	{
 		return [
@@ -26,6 +29,11 @@ class Summary_taxes extends Summary_report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @param $builder
+	 * @return void
+	 */
 	protected function _where(array $inputs, &$builder): void	//TODO: hungarian notation
 	{
 		$builder->where('sales.sale_status', COMPLETED);
@@ -40,6 +48,10 @@ class Summary_taxes extends Summary_report
 		}
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 

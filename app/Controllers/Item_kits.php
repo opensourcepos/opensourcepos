@@ -61,6 +61,9 @@ class Item_kits extends Secure_Controller
 		return $item_kit;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['table_headers'] = get_item_kits_manage_table_headers();
@@ -93,6 +96,9 @@ class Item_kits extends Secure_Controller
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$suggestions = $this->item_kit->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -100,6 +106,10 @@ class Item_kits extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		// calculate the total cost and retail price of the Kit, so it can be added to the table refresh
@@ -108,6 +118,10 @@ class Item_kits extends Secure_Controller
 		echo json_encode(get_item_kit_data_row($item_kit));
 	}
 
+	/**
+	 * @param int $item_kit_id
+	 * @return void
+	 */
 	public function getView(int $item_kit_id = NEW_ENTRY): void
 	{
 		$info = $this->item_kit->get_info($item_kit_id);
@@ -147,6 +161,10 @@ class Item_kits extends Secure_Controller
 		echo view("item_kits/form", $data);
 	}
 
+	/**
+	 * @param int $item_kit_id
+	 * @return void
+	 */
 	public function postSave(int $item_kit_id = NEW_ENTRY): void
 	{
 		$item_kit_data = [
@@ -222,6 +240,9 @@ class Item_kits extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -239,12 +260,19 @@ class Item_kits extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postCheckItemNumber(): void
 	{
 		$exists = $this->item_kit->item_number_exists($this->request->getPost('item_kit_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('item_kit_id', FILTER_SANITIZE_NUMBER_INT));
 		echo !$exists ? 'true' : 'false';
 	}
 
+	/**
+	 * @param string $item_kit_ids
+	 * @return void
+	 */
 	public function generate_barcodes(string $item_kit_ids): void
 	{
 		$barcode_lib = new Barcode_lib();

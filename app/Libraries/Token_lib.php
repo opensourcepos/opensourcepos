@@ -73,7 +73,13 @@ class Token_lib
 		return $token_tree;
 	}
 
-	public function parse_barcode(?string &$quantity, ?string &$price,  ?string &$item_id_or_number_or_item_kit_or_receipt): void
+	/**
+	 * @param string|null $quantity
+	 * @param string|null $price
+	 * @param string|null $item_id_or_number_or_item_kit_or_receipt
+	 * @return void
+	 */
+	public function parse_barcode(?string &$quantity, ?string &$price, ?string &$item_id_or_number_or_item_kit_or_receipt): void
 	{
 		$config = config(OSPOS::class)->settings;
 		$barcode_formats = json_decode($config['barcode_formats']);
@@ -96,6 +102,12 @@ class Token_lib
 		}
 	}
 
+	/**
+	 * @param string $string
+	 * @param string $pattern
+	 * @param array $tokens
+	 * @return array
+	 */
 	public function parse(string $string, string $pattern, array $tokens = []): array	//TODO: $string is a poor name for this parameter.
 	{
 		$token_tree = $this->scan($pattern);
@@ -130,6 +142,14 @@ class Token_lib
 		return $results;
 	}
 
+	/**
+	 * @param array $used_tokens
+	 * @param array $tokens_to_replace
+	 * @param array $token_values
+	 * @param array $tokens
+	 * @param bool $save
+	 * @return array
+	 */
 	public function generate(array $used_tokens, array &$tokens_to_replace, array &$token_values, array $tokens, bool $save = true): array	//TODO: $tokens
 	{
 		foreach($used_tokens as $token_code => $token_info)
@@ -154,6 +174,12 @@ class Token_lib
 		return $token_values;
 	}
 
+	/**
+	 * @param $token_code
+	 * @param array $tokens
+	 * @param $save
+	 * @return string
+	 */
 	private function resolve_token($token_code, array $tokens = [], $save = true): string
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)

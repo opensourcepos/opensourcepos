@@ -64,12 +64,18 @@ class Sales extends Secure_Controller
 		$this->employee = model(Employee::class);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$this->session->set('allow_temp_items', 1);
 		$this->_reload();	//TODO: Hungarian Notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getManage(): void
 	{
 		$person_id = $this->session->get('person_id');
@@ -93,6 +99,10 @@ class Sales extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$sale_info = $this->sale->get_info($row_id)->getRow();
@@ -101,6 +111,9 @@ class Sales extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -165,6 +178,9 @@ class Sales extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function suggest_search(): void
 	{
 		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
@@ -174,6 +190,9 @@ class Sales extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postSelect_customer(): void
 	{
 		$customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
@@ -193,6 +212,9 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postChange_mode(): void
 	{
 		$mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -249,6 +271,10 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
+	/**
+	 * @param int $sale_type
+	 * @return void
+	 */
 	public function change_register_mode(int $sale_type): void
 	{//TODO: This set of if statements should be refactored to a switch
 		if($sale_type == SALE_TYPE_POS)
@@ -277,6 +303,9 @@ class Sales extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_comment(): void
 	{
 		$this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -291,6 +320,9 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_payment_type(): void	//TODO: This function does not appear to be called anywhere in the code.
 	{
 		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -306,6 +338,9 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_price_work_orders(): void
 	{
 		$this->sale_lib->set_price_work_orders($this->request->getPost('price_work_orders', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
@@ -458,6 +493,9 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postAdd(): void
 	{
 		$data = [];
@@ -938,6 +976,10 @@ class Sales extends Secure_Controller
 		return $result;
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return bool
+	 */
 	public function send_receipt(int $sale_id): bool
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
@@ -967,6 +1009,12 @@ class Sales extends Secure_Controller
 		return $result;
 	}
 
+	/**
+	 * @param int $customer_id
+	 * @param array $data
+	 * @param bool $stats
+	 * @return array|object|\stdClass|string|null
+	 */
 	private function _load_customer_data(int $customer_id, array &$data, bool $stats = false)	//TODO: Hungarian notation
 	{
 		$customer_info = '';
@@ -1040,6 +1088,10 @@ class Sales extends Secure_Controller
 		return $customer_info;
 	}
 
+	/**
+	 * @param $sale_id
+	 * @return array
+	 */
 	private function _load_sale_data($sale_id): array    //TODO: Hungarian notation
 	{
 		$this->sale_lib->clear_all();
@@ -1146,6 +1198,10 @@ class Sales extends Secure_Controller
 		return $data;
 	}
 
+	/**
+	 * @param $data
+	 * @return void
+	 */
 	private function _reload($data = []): void	//TODO: Hungarian notation
 	{
 		$sale_id = $this->session->get('sale_id');	//TODO: This variable is never used
@@ -1272,6 +1328,10 @@ class Sales extends Secure_Controller
 		echo view("sales/register", $data);
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return void
+	 */
 	public function receipt(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
@@ -1279,6 +1339,10 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return void
+	 */
 	public function invoice(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
@@ -1287,6 +1351,10 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return void
+	 */
 	public function edit(int $sale_id): void
 	{
 		$data = [];
@@ -1370,6 +1438,11 @@ class Sales extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @param bool $update_inventory
+	 * @return void
+	 */
 	public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1544,6 +1617,9 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function discard_suspended_sale(): void
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
@@ -1627,11 +1703,17 @@ class Sales extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function sales_keyboard_help()
 	{
 		$this->load->view('sales/help');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function check_invoice_number(): void
 	{
 		$sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
@@ -1640,6 +1722,10 @@ class Sales extends Secure_Controller
 		echo !$exists ? 'true' : 'false';
 	}
 
+	/**
+	 * @param array $cart
+	 * @return array
+	 */
 	public function get_filtered(array $cart): array
 	{
 		$filtered_cart = [];
@@ -1659,6 +1745,9 @@ class Sales extends Secure_Controller
 		return $filtered_cart;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function change_item_number(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
@@ -1673,6 +1762,9 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function change_item_name(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
@@ -1691,6 +1783,9 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function change_item_description(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
@@ -1709,6 +1804,11 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_cart($cart);
 	}
 
+	/**
+	 * @param int $id
+	 * @param array $array
+	 * @return int|string|null
+	 */
 	public function getSearch_cart_for_item_id(int $id, array $array)	//TODO: The second parameter should not be named array perhaps int $needle_item_id, array $shopping_cart
 	{
 		foreach($array as $key => $val)	//TODO: key and val are not reflective of the contents of the array and should be replaced with descriptive variable names.  Perhaps $cart_haystack => $item_details

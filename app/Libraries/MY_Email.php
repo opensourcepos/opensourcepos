@@ -11,23 +11,37 @@ class MY_Email extends Email
 	var $default_sender_address = "";
 	var $default_bounce_address = "";
 
-	function __construct($config = [])
+	/**
+	 * @param array $config
+	 */
+	public function __construct(array $config = [])
 	{
 		parent::__construct($config);
 	}
 
-	function sendMail(string $subject, string $body, string $to = null, string $reply_name = null, string $reply_mail = null, string $attachment = null): bool
+	/**
+	 * @param string $subject
+	 * @param string $body
+	 * @param string|null $to
+	 * @param string|null $reply_name
+	 * @param string|null $reply_mail
+	 * @param string|null $attachment
+	 * @return bool
+	 */
+	public function sendMail(string $subject, string $body, string $to = null, string $reply_name = null, string $reply_mail = null, string $attachment = null): bool
 	{
 		$this->setReplyTo($reply_mail, $reply_name);
 		$this->setFrom($this->default_sender_address, $this->default_sender_name, $this->default_bounce_address);
 		$this->setMailtype('html');
 		$this->setSubject($subject);
 		$this->setMessage($body);
-		if ($to == null) {
+		if($to == null)
+		{
 			$to = $this->default_email_address;
 			$this->setCc($this->default_cc_address);
 		}
-		if ($attachment) {
+		if($attachment)
+		{
 			$this->attach($attachment);
 		}
 		$this->setTo($to);

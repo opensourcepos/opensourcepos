@@ -44,6 +44,9 @@ class Receivings extends Secure_Controller
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$this->_reload();
@@ -88,6 +91,9 @@ class Receivings extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function change_mode(): void
 	{
 		$stock_destination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -109,6 +115,9 @@ class Receivings extends Secure_Controller
 		$this->_reload();	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_comment(): void
 	{
 		$this->receiving_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -123,11 +132,17 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function set_reference(): void
 	{
 		$this->receiving_lib->set_reference($this->request->getPost('recv_reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
 
+	/**
+	 * @return void
+	 */
 	public function add(): void
 	{
 		$data = [];
@@ -193,6 +208,10 @@ class Receivings extends Secure_Controller
 		$this->_reload($data);	//TODO: Hungarian notation
 	}
 
+	/**
+	 * @param $receiving_id
+	 * @return void
+	 */
 	public function edit($receiving_id): void
 	{
 		$data = [];
@@ -353,6 +372,10 @@ class Receivings extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @param $receiving_id
+	 * @return void
+	 */
 	public function receipt($receiving_id): void
 	{
 		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
@@ -395,6 +418,10 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 	}
 
+	/**
+	 * @param $data
+	 * @return void
+	 */
 	private function _reload($data = []): void	//TODO: Hungarian notation
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();

@@ -106,7 +106,7 @@ class Attributes extends Secure_Controller
 			$definition_flags |= $flag;
 		}
 
-	//Save definition data
+		//Save definition data
 		$definition_data = [
 			'definition_name' => $this->request->getPost('definition_name'),
 			'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
@@ -123,7 +123,7 @@ class Attributes extends Secure_Controller
 
 		if($this->attribute->save_definition($definition_data, $definition_id))
 		{
-		//New definition
+			//New definition
 			if($definition_id == NO_DEFINITION_ID)
 			{
 				$definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
@@ -139,7 +139,7 @@ class Attributes extends Secure_Controller
 					'id' => $definition_data['definition_id']
 				]);
 			}
-		//Existing definition
+			//Existing definition
 			else
 			{
 				echo json_encode([
@@ -149,7 +149,7 @@ class Attributes extends Secure_Controller
 				]);
 			}
 		}
-	//Failure
+		//Failure
 		else
 		{
 			echo json_encode([
@@ -186,6 +186,10 @@ class Attributes extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $definition_flags
+	 * @return array
+	 */
 	private function get_attributes(int $definition_flags = 0): array
 	{
 		$definition_flag_names = [];
@@ -199,6 +203,10 @@ class Attributes extends Secure_Controller
 		return $definition_flag_names;
 	}
 
+	/**
+	 * @param int $definition_id
+	 * @return void
+	 */
 	public function getView(int $definition_id = NO_DEFINITION_ID): void
 	{
 		$info = $this->attribute->get_info($definition_id);

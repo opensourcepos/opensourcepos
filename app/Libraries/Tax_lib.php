@@ -17,11 +17,11 @@ use Config\OSPOS;
  * Tax library
  *
  * Library with utilities to manage taxes
- **/
+ */
 class Tax_lib
 {
-	const TAX_TYPE_EXCLUDED = '1';	//TODO: These constants need to be moved to constants.php
-	const TAX_TYPE_INCLUDED = '0';
+	public const TAX_TYPE_EXCLUDED = '1';	//TODO: These constants need to be moved to constants.php
+	public const TAX_TYPE_INCLUDED = '0';
 	private Sale_lib $sale_lib;
 	private Customer $customer;
 	private Item_taxes $item_taxes;
@@ -46,6 +46,9 @@ class Tax_lib
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_tax_types(): array
 	{
 		return [
@@ -184,6 +187,16 @@ class Tax_lib
 		return $tax_details;
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount_percentage
+	 * @param int $discount_type
+	 * @param string $tax_percentage
+	 * @param $tax_decimal
+	 * @param $rounding_code
+	 * @return string
+	 */
 	public function get_included_tax(string $quantity, string $price, string $discount_percentage, int $discount_type, string $tax_percentage, $tax_decimal, $rounding_code): string	//TODO: $tax_decimal and $rounding_code are in the signature but never used in the function.
 	{
 		$item_total = $this->sale_lib->get_item_total($quantity, $price, $discount_percentage, $discount_type, true);
@@ -399,6 +412,13 @@ class Tax_lib
 		return $taxed;
 	}
 
+	/**
+	 * @param string $register_mode
+	 * @param string $city
+	 * @param string $state
+	 * @param int $sales_tax_code_id
+	 * @return int
+	 */
 	public function get_applicable_tax_code(string $register_mode, string $city, string $state, int $sales_tax_code_id): int
 	{
 		if($register_mode == 'sale')
@@ -421,6 +441,10 @@ class Tax_lib
 		return $sales_tax_code_id;
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	public function clean(string $string): string	//TODO: $string is not a good choice of variable name here.
 	{
 		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
@@ -428,6 +452,9 @@ class Tax_lib
 		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_tax_code_options(): array
 	{
 		$tax_codes = $this->tax_code->get_all()->getResultArray();
@@ -444,6 +471,9 @@ class Tax_lib
 		return $tax_code_options;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_tax_jurisdiction_options(): array
 	{
 		$tax_jurisdictions = $this->tax_jurisdiction->get_all()->getResultArray();
@@ -460,6 +490,9 @@ class Tax_lib
 		return $tax_jurisdiction_options;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_tax_category_options(): array
 	{
 		$tax_categories = $this->tax_category->get_all()->getResultArray();
@@ -477,6 +510,10 @@ class Tax_lib
 		return $tax_category_options;
 	}
 
+	/**
+	 * @param string $selected_tax_type
+	 * @return string
+	 */
 	public function get_tax_type_options(string $selected_tax_type): string
 	{
 		$selected = 'selected=\"selected\" ';

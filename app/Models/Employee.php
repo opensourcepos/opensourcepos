@@ -45,6 +45,11 @@ class Employee extends Person
 		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
+	/**
+	 * @param int $employee_id
+	 * @param string $username
+	 * @return bool
+	 */
 	public function username_exists(int $employee_id, string $username): bool
 	{
 		$builder = $this->db->table('employees');

@@ -144,6 +144,9 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 {
 	private $_connector;	//TODO: Hungarian notation
 
+	/**
+	 * @param array $params
+	 */
 	public function __construct(array $params = [])
 	{
 		$api_key = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';

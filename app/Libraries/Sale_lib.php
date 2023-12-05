@@ -20,7 +20,7 @@ use ReflectionException;
  * Sale library
  *
  * Library with utilities to manage sales
- **/
+ */
 class Sale_lib
 {
 	private Attribute $attribute;
@@ -51,6 +51,9 @@ class Sale_lib
 		$this->config = config(OSPOS::class)->settings;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_line_sequence_options(): array
 	{
 		return [
@@ -60,6 +63,9 @@ class Sale_lib
 		];
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_register_mode_options(): array
 	{
 		$register_modes = [];
@@ -86,6 +92,9 @@ class Sale_lib
 		return $register_modes;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_invoice_type_options(): array
 	{
 		$invoice_types = [];
@@ -96,6 +105,9 @@ class Sale_lib
 		return $invoice_types;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_cart(): array
 	{
 		if(!$this->session->get('sales_cart'))
@@ -106,6 +118,10 @@ class Sale_lib
 		return $this->session->get('sales_cart');
 	}
 
+	/**
+	 * @param array $cart
+	 * @return array
+	 */
 	public function sort_and_filter_cart(array $cart): array
 	{
 		if(empty($cart))
@@ -176,16 +192,27 @@ class Sale_lib
 		return $filtered_cart;
 	}
 
+	/**
+	 * @param array $cart_data
+	 * @return void
+	 */
 	public function set_cart(array $cart_data): void
 	{
 		$this->session->set('sales_cart', $cart_data);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function empty_cart(): void
 	{
 		$this->session->remove('sales_cart');
 	}
 
+	/**
+	 * @return void
+	 * @throws ReflectionException
+	 */
 	public function remove_temp_items(): void
 	{
 		// Loop through the cart items and delete temporary items specific to this sale
@@ -199,6 +226,9 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_comment(): string
 	{
 		// avoid returning a null that results in a 0 in the comment if nothing is set/available
@@ -207,36 +237,60 @@ class Sale_lib
 		return empty($comment) ? '' : $comment;
 	}
 
+	/**
+	 * @param string $comment
+	 * @return void
+	 */
 	public function set_comment(string $comment): void
 	{
 		$this->session->set('sales_comment', $comment);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_comment(): void
 	{
 		$this->session->remove('sales_comment');
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_invoice_number(): ?string
 	{
 		return $this->session->get('sales_invoice_number');
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_quote_number(): ?string
 	{
 		return $this->session->get('sales_quote_number');
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_work_order_number(): ?string
 	{
 		return $this->session->get('sales_work_order_number');
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_sale_type(): int
 	{
 		return $this->session->get('sale_type');
 	}
 
+	/**
+	 * @param int $invoice_number
+	 * @param bool $keep_custom
+	 * @return void
+	 */
 	public function set_invoice_number(int $invoice_number, bool $keep_custom = false): void
 	{
 		$current_invoice_number = $this->session->get('sales_invoice_number');
@@ -247,6 +301,11 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @param string $quote_number
+	 * @param bool $keep_custom
+	 * @return void
+	 */
 	public function set_quote_number(string $quote_number, bool $keep_custom = false): void
 	{
 		$current_quote_number = $this->session->get('sales_quote_number');
@@ -257,6 +316,11 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @param string $work_order_number
+	 * @param bool $keep_custom
+	 * @return void
+	 */
 	public function set_work_order_number(string $work_order_number, bool $keep_custom = false): void
 	{
 		$current_work_order_number = $this->session->get('sales_work_order_number');
@@ -267,6 +331,11 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @param int $sale_type
+	 * @param bool $keep_custom
+	 * @return void
+	 */
 	public function set_sale_type(int $sale_type, bool $keep_custom = false): void
 	{
 		$current_sale_type = $this->session->get('sale_type');
@@ -277,77 +346,125 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_invoice_number(): void
 	{
 		$this->session->remove('sales_invoice_number');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_quote_number(): void
 	{
 		$this->session->remove('sales_quote_number');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_work_order_number(): void
 	{
 		$this->session->remove('sales_work_order_number');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_sale_type(): void
 	{
 		$this->session->remove('sale_type');
 	}
 
+	/**
+	 * @param int $suspended_id
+	 * @return void
+	 */
 	public function set_suspended_id(int $suspended_id): void
 	{
 		$this->session->set('suspended_id', $suspended_id);
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_suspended_id(): int
 	{
 		return $this->session->get('suspended_id');
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_invoice_mode(): bool
 	{
 		return ($this->session->get('sales_mode') == 'sale_invoice'	&& $this->config['invoice_enable']);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_sale_by_receipt_mode(): bool	//TODO: This function is not called anywhere in the code.
 	{
 		return ($this->session->get('sales_mode') == 'sale');	//TODO: === ?
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_quote_mode(): bool
 	{
 		return ($this->session->get('sales_mode') == 'sale_quote');	//TODO: === ?
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_return_mode(): bool
 	{
 		return ($this->session->get('sales_mode') == 'return');	//TODO: === ?
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_work_order_mode(): bool
 	{
 		return ($this->session->get('sales_mode') == 'sale_work_order');	//TODO: === ?
 	}
 
+	/**
+	 * @param string $price_work_orders
+	 * @return void
+	 */
 	public function set_price_work_orders(string $price_work_orders): void
 	{
 		$this->session->set('sales_price_work_orders', $price_work_orders);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_price_work_orders(): bool
 	{
 		return ($this->session->get('sales_price_work_orders') == 'true'	//TODO: === ?
 			|| $this->session->get('sales_price_work_orders') == '1');	//TODO: === ?
 	}
 
+	/**
+	 * @param bool $print_after_sale
+	 * @return void
+	 */
 	public function set_print_after_sale(bool $print_after_sale): void
 	{
 		$this->session->set('sales_print_after_sale', $print_after_sale);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_print_after_sale(): bool
 	{//TODO: this needs to be converted to a switch statement
 		if($this->config['print_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
@@ -365,16 +482,26 @@ class Sale_lib
 		}
 	}
 
+	/**
+	 * @param string $email_receipt
+	 * @return void
+	 */
 	public function set_email_receipt(string $email_receipt): void
 	{
 		$this->session->set('sales_email_receipt', $email_receipt);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_email_receipt(): void
 	{
 		$this->session->remove('sales_email_receipt');
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_email_receipt(): bool
 	{//TODO: this needs to be converted to a switch statement
 		if($this->config['email_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
@@ -392,7 +519,9 @@ class Sale_lib
 		}
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments
+	 */
 	public function get_payments(): array
 	{
 		if(!$this->session->get('sales_payments'))
@@ -403,7 +532,9 @@ class Sale_lib
 		return $this->session->get('sales_payments');
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments
+	 */
 	public function set_payments(array $payments_data): void
 	{
 		$this->session->set('sales_payments', $payments_data);
@@ -450,7 +581,9 @@ class Sale_lib
 		$this->set_payments($payments);
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments
+	 */
 	public function edit_payment(string $payment_id, float $payment_amount): bool
 	{
 		$payments = $this->get_payments();
@@ -495,7 +628,9 @@ class Sale_lib
 		$this->set_payments($payments);
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments
+	 */
 	public function empty_payments(): void	//TODO: function verbs are very inconsistent in these libraries.
 	{
 		$this->session->remove('sales_payments');
@@ -641,7 +776,9 @@ class Sale_lib
 		return $totals;
 	}
 
-	// Multiple Payments
+	/**
+	 * Multiple Payments
+	 */
 	public function get_amount_due(): string
 	{
 		// Payment totals need to be identified first so that we know whether or not there is a non-cash payment involved
@@ -655,6 +792,9 @@ class Sale_lib
 		return $rounded_due == 0 ? '0' : $amount_due;	//TODO: ===
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_customer(): int
 	{
 		if(!$this->session->get('sales_customer'))
@@ -665,16 +805,26 @@ class Sale_lib
 		return $this->session->get('sales_customer');
 	}
 
+	/**
+	 * @param int $customer_id
+	 * @return void
+	 */
 	public function set_customer(int $customer_id): void
 	{
 		$this->session->set('sales_customer', $customer_id);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function remove_customer(): void
 	{
 		$this->session->remove('sales_customer');
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_employee(): int
 	{
 		if(!$this->session->get('sales_employee'))
@@ -685,16 +835,26 @@ class Sale_lib
 		return $this->session->get('sales_employee');
 	}
 
+	/**
+	 * @param int $employee_id
+	 * @return void
+	 */
 	public function set_employee(int $employee_id): void
 	{
 		$this->session->set('sales_employee', $employee_id);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function remove_employee(): void
 	{
 		$this->session->remove('sales_employee');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_mode(): string
 	{
 		if(!$this->session->get('sales_mode'))
@@ -704,16 +864,26 @@ class Sale_lib
 		return $this->session->get('sales_mode');
 	}
 
+	/**
+	 * @param string $mode
+	 * @return void
+	 */
 	public function set_mode(string $mode): void
 	{
 		$this->session->set('sales_mode', $mode);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_mode(): void
 	{
 		$this->session->remove('sales_mode');
 	}
 
+	/**
+	 * @return int|null
+	 */
 	public function get_dinner_table(): ?int
 	{
 		if(!$this->session->get('dinner_table'))
@@ -727,16 +897,26 @@ class Sale_lib
 		return $this->session->get('dinner_table');
 	}
 
+	/**
+	 * @param int $dinner_table
+	 * @return void
+	 */
 	public function set_dinner_table(int $dinner_table): void
 	{
 		$this->session->set('dinner_table', $dinner_table);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_table(): void
 	{
 		$this->session->remove('dinner_table');
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_sale_location(): int
 	{
 		if(!$this->session->get('sales_location'))
@@ -747,57 +927,110 @@ class Sale_lib
 		return $this->session->get('sales_location');
 	}
 
+	/**
+	 * @param int $location
+	 * @return void
+	 */
 	public function set_sale_location(int $location): void
 	{
 		$this->session->set('sales_location', $location);
 	}
 
+	/**
+	 * @param string $payment_type
+	 * @return void
+	 */
 	public function set_payment_type(string $payment_type): void
 	{
 		$this->session->set('payment_type', $payment_type);
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_payment_type(): ?string
 	{
 		return $this->session->get('payment_type');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_sale_location(): void
 	{
 		$this->session->remove('sales_location');
 	}
 
+	/**
+	 * @param string $value
+	 * @return void
+	 */
 	public function set_giftcard_remainder(string $value): void
 	{
 		$this->session->set('sales_giftcard_remainder', $value);
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_giftcard_remainder(): ?string
 	{
 		return $this->session->get('sales_giftcard_remainder');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_giftcard_remainder(): void
 	{
 		$this->session->remove('sales_giftcard_remainder');
 	}
 
+	/**
+	 * @param string $value
+	 * @return void
+	 */
 	public function set_rewards_remainder(string $value): void
 	{
 		$this->session->set('sales_rewards_remainder', $value);
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function get_rewards_remainder(): ?string
 	{
 		return $this->session->get('sales_rewards_remainder');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_rewards_remainder(): void
 	{
 		$this->session->remove('sales_rewards_remainder');
 	}
 
 	//TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
+
+	/**
+	 * @param int $item_id
+	 * @param int $item_location
+	 * @param string $quantity
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @param int $price_mode
+	 * @param int|null $kit_price_option
+	 * @param int|null $kit_print_option
+	 * @param string|null $price_override
+	 * @param string|null $description
+	 * @param string|null $serialnumber
+	 * @param int|null $sale_id
+	 * @param bool $include_deleted
+	 * @param bool|null $print_option
+	 * @param bool|null $line
+	 * @return bool
+	 */
 	public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, int $kit_price_option = null, int $kit_print_option = null, string $price_override = null, string $description = null, string $serialnumber = null, int $sale_id = null, bool $include_deleted = false, bool $print_option = null, bool $line = null): bool
 	{
 		$item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
@@ -981,6 +1214,11 @@ class Sale_lib
 		return true;
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param int $item_location
+	 * @return string
+	 */
 	public function out_of_stock(int $item_id, int $item_location): string
 	{
 		//make sure item exists
@@ -1007,6 +1245,11 @@ class Sale_lib
 		return '';
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param int $item_location
+	 * @return string
+	 */
 	public function get_quantity_already_added(int $item_id, int $item_location): string
 	{
 		$items = $this->get_cart();
@@ -1022,6 +1265,10 @@ class Sale_lib
 		return $quantity_already_added;
 	}
 
+	/**
+	 * @param string $line_to_get
+	 * @return int
+	 */
 	public function get_item_id(string $line_to_get): int
 	{
 		$items = $this->get_cart();
@@ -1097,6 +1344,10 @@ class Sale_lib
 		$this->set_cart($items);
 	}
 
+	/**
+	 * @param string $receipt_sale_id
+	 * @return void
+	 */
 	public function return_entire_sale(string $receipt_sale_id): void
 	{
 		//POS #
@@ -1114,6 +1365,16 @@ class Sale_lib
 		$this->set_customer($this->sale->get_customer($sale_id)->person_id);
 	}
 
+	/**
+	 * @param string $external_item_kit_id
+	 * @param int $item_location
+	 * @param float $discount
+	 * @param string $discount_type
+	 * @param bool $kit_price_option
+	 * @param bool $kit_print_option
+	 * @param string $stock_warning
+	 * @return bool
+	 */
 	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, bool $kit_price_option, bool $kit_print_option, string &$stock_warning): bool
 	{
 		//KIT #
@@ -1135,6 +1396,10 @@ class Sale_lib
 		return $result;
 	}
 
+	/**
+	 * @param int $sale_id
+	 * @return void
+	 */
 	public function copy_entire_sale(int $sale_id): void
 	{
 		$this->empty_cart();
@@ -1189,11 +1454,17 @@ class Sale_lib
 		$this->session->set('sale_id', $sale_id);
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_sale_id(): int
 	{
 		return $this->session->get('sale_id');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_all(): void
 	{
 		$this->session->set('sale_id', -1);	//TODO: Replace -1 with constant
@@ -1212,6 +1483,9 @@ class Sale_lib
 		$this->clear_cash_flags();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function clear_cash_flags(): void
 	{
 		$this->session->remove('cash_rounding');
@@ -1242,6 +1516,9 @@ class Sale_lib
 		return $cash_rounding;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_customer_taxable(): bool	//TODO: This function is never called in the code
 	{
 		$customer_id = $this->get_customer();
@@ -1251,6 +1528,11 @@ class Sale_lib
 		return $customer->taxable or $customer_id == -1;	//TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.
 	}
 
+	/**
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @return void
+	 */
 	public function apply_customer_discount(string $discount, int $discount_type): void
 	{
 		// Get all items in the cart so far...
@@ -1273,6 +1555,9 @@ class Sale_lib
 		$this->set_cart($items);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_discount(): string
 	{
 		$discount = '0.0';
@@ -1288,11 +1573,25 @@ class Sale_lib
 		return $discount;
 	}
 
+	/**
+	 * @param bool $include_discount
+	 * @param bool $exclude_tax
+	 * @return string
+	 */
 	public function get_subtotal(bool $include_discount = false, bool $exclude_tax = false): string
 	{
 		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
 
+	/**
+	 * @param int $item_id
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @param bool $include_discount
+	 * @return string
+	 */
 	public function get_item_total_tax_exclusive(int $item_id, string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false): string
 	{
 		$tax_info = $this->item_taxes->get_info($item_id);
@@ -1309,6 +1608,16 @@ class Sale_lib
 	}
 
 	//TODO: This function doesn't seem to be called anywhere in the code.
+
+	/**
+	 * @param int $item_id
+	 * @param string $discounted_extended_amount
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @return string
+	 */
 	public function get_extended_total_tax_exclusive(int $item_id, string $discounted_extended_amount, string $quantity, string $price, string $discount = '0.0', int $discount_type = 0): string
 	{
 		$tax_info = $this->item_taxes->get_info($item_id);
@@ -1323,6 +1632,14 @@ class Sale_lib
 		return $discounted_extended_amount;
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @param bool $include_discount
+	 * @return string
+	 */
 	public function get_item_total(string $quantity, string $price, string $discount, int $discount_type, bool $include_discount = false): string
 	{
 		$total = bcmul($quantity, $price);
@@ -1348,6 +1665,12 @@ class Sale_lib
 		return bcdiv($total, $price, quantity_decimals());
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount_amount
+	 * @return string
+	 */
 	public function get_extended_amount(string $quantity, string $price, string $discount_amount = '0.0'): string
 	{
 		$extended_amount = bcmul($quantity, $price);
@@ -1355,6 +1678,13 @@ class Sale_lib
 		return bcsub($extended_amount, $discount_amount);
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @return string
+	 */
 	public function get_item_discount(string $quantity, string $price, string $discount, int $discount_type): string
 	{
 		$total = bcmul($quantity, $price);
@@ -1370,6 +1700,14 @@ class Sale_lib
 		return (string)round((float)$discount, totals_decimals(), PHP_ROUND_HALF_UP);	//TODO: is this safe with monetary amounts?
 	}
 
+	/**
+	 * @param string $quantity
+	 * @param string $price
+	 * @param string $discount
+	 * @param int $discount_type
+	 * @param string $tax_percentage
+	 * @return string
+	 */
 	public function get_item_tax(string $quantity, string $price, string $discount, int $discount_type, string $tax_percentage): string
 	{
 		$item_total = $this->get_item_total($quantity, $price, $discount, $discount_type, true);
@@ -1387,6 +1725,11 @@ class Sale_lib
 		return bcmul($item_total, $tax_fraction);
 	}
 
+	/**
+	 * @param bool $include_discount
+	 * @param bool $exclude_tax
+	 * @return string
+	 */
 	public function calculate_subtotal(bool $include_discount = false, bool $exclude_tax = false): string
 	{
 		$subtotal = '0.0';
@@ -1435,11 +1778,19 @@ class Sale_lib
 		return $total;
 	}
 
+	/**
+	 * @param int|null $current_dinner_table_id
+	 * @return array
+	 */
 	public function get_empty_tables(?int $current_dinner_table_id): array
 	{
 		return $this->dinner_table->get_empty_tables($current_dinner_table_id);
 	}
 
+	/**
+	 * @param string $total
+	 * @return string
+	 */
 	public function check_for_cash_rounding(string $total): string
 	{
 		$cash_decimals = cash_decimals();

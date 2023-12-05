@@ -209,6 +209,11 @@ class Item_kit extends Model
 		return $builder->delete();
 	}
 
+	/**
+	 * @param string $search
+	 * @param int $limit
+	 * @return array
+	 */
 	public function get_search_suggestions(string $search, int $limit = 25): array
 	{
 		$suggestions = [];

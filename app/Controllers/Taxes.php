@@ -34,6 +34,9 @@ class Taxes extends Secure_Controller
 		helper('tax_helper');
 	}
 
+	/**
+	 * @return void
+	 */
 	public function getIndex(): void
 	{
 		$data['tax_codes'] = $this->tax_code->get_all()->getResultArray();
@@ -72,10 +75,11 @@ class Taxes extends Secure_Controller
 		echo view('taxes/manage', $data);
 	}
 
-
-	/*
-	Returns tax_codes table data rows. This will be called with AJAX.
-	*/
+	/**
+	 * Returns tax_codes table data rows. This will be called with AJAX.
+	 *
+	 * @return void
+	 */
 	public function getSearch(): void
 	{
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -107,9 +111,11 @@ class Taxes extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-	/*
-	Provides list of tax categories to select from
-	*/
+	/**
+	 * Provides list of tax categories to select from
+	 *
+	 * @return void
+	 */
 	public function suggest_tax_categories(): void
 	{
 		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -118,6 +124,10 @@ class Taxes extends Secure_Controller
 	}
 
 
+	/**
+	 * @param int $row_id
+	 * @return void
+	 */
 	public function getRow(int $row_id): void
 	{
 		$data_row = get_tax_rates_data_row($this->tax->get_info($row_id));
@@ -125,6 +135,10 @@ class Taxes extends Secure_Controller
 		echo json_encode($data_row);
 	}
 
+	/**
+	 * @param int $tax_code
+	 * @return void
+	 */
 	public function getView_tax_codes(int $tax_code = NEW_ENTRY): void
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);
@@ -193,6 +207,10 @@ class Taxes extends Secure_Controller
 	}
 
 
+	/**
+	 * @param int $tax_rate_id
+	 * @return void
+	 */
 	public function getView(int $tax_rate_id = NEW_ENTRY): void
 	{
 		$tax_rate_info = $this->tax->get_info($tax_rate_id);
@@ -225,6 +243,10 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_rates_form', $data);
 	}
 
+	/**
+	 * @param int $tax_code
+	 * @return void
+	 */
 	public function getView_tax_categories(int $tax_code = NEW_ENTRY): void	//TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated Code
@@ -292,6 +314,10 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_category_form', $data);
 	}
 
+	/**
+	 * @param int $tax_code
+	 * @return void
+	 */
 	public function getView_tax_jurisdictions(int $tax_code = NEW_ENTRY): void //TODO: This appears to be called no where in the code.
 	{
 		$tax_code_info = $this->tax->get_info($tax_code);	//TODO: Duplicated code
@@ -359,11 +385,18 @@ class Taxes extends Secure_Controller
 		echo view('taxes/tax_jurisdiction_form', $data);
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function get_html_rounding_options(): string
 	{
 		return rounding_mode::get_html_rounding_options();
 	}
 
+	/**
+	 * @param int $tax_rate_id
+	 * @return void
+	 */
 	public function postSave(int $tax_rate_id = NEW_ENTRY): void
 	{
 		$tax_category_id = $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT);
@@ -399,6 +432,9 @@ class Taxes extends Secure_Controller
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function postDelete(): void
 	{
 		$tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
@@ -455,6 +491,9 @@ class Taxes extends Secure_Controller
 		]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function save_tax_jurisdictions(): void
 	{
 		$jurisdiction_id = $this->request->getPost('jurisdiction_id', FILTER_SANITIZE_NUMBER_INT);
@@ -502,6 +541,9 @@ class Taxes extends Secure_Controller
 		]);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function save_tax_categories(): void
 	{
 		$tax_category_id = $this->request->getPost('tax_category_id', FILTER_SANITIZE_NUMBER_INT);

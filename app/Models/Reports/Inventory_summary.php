@@ -12,6 +12,9 @@ use App\Models\Item;
  */
 class Inventory_summary extends Report
 {
+	/**
+	 * @return array[]
+	 */
 	public function getDataColumns(): array
 	{
 		return [
@@ -28,6 +31,10 @@ class Inventory_summary extends Report
 		];
 	}
 
+	/**
+	 * @param array $inputs
+	 * @return array
+	 */
 	public function getData(array $inputs): array
 	{
 		$item = model(Item::class);

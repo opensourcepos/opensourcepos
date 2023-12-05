@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param array $stock_locations
+ * @param array $attributes
+ * @return string
+ */
 function generate_import_items_csv(array $stock_locations, array $attributes): string
 {
 	$csv_headers = pack('CCC',0xef,0xbb,0xbf);	//Encode the Byte-Order Mark (BOM) so that UTF-8 File headers display properly in Microsoft Excel
@@ -10,6 +15,10 @@ function generate_import_items_csv(array $stock_locations, array $attributes): s
 	return $csv_headers;
 }
 
+/**
+ * @param array $locations
+ * @return string
+ */
 function generate_stock_location_headers(array $locations): string
 {
 	$location_headers = '';
@@ -22,6 +31,10 @@ function generate_stock_location_headers(array $locations): string
 	return $location_headers;
 }
 
+/**
+ * @param array $attribute_names
+ * @return string
+ */
 function generate_attribute_headers(array $attribute_names): string
 {
 	$attribute_headers = '';
@@ -35,6 +48,10 @@ function generate_attribute_headers(array $attribute_names): string
 	return $attribute_headers;
 }
 
+/**
+ * @param string $file_name
+ * @return array
+ */
 function get_csv_file(string $file_name): array
 {
 //TODO: current implementation reads the entire file in.  This is memory intensive for large files.
@@ -73,6 +90,10 @@ function get_csv_file(string $file_name): array
 	return $csv_rows;
 }
 
+/**
+ * @param $file_handle
+ * @return bool
+ */
 function bom_exists(&$file_handle): bool
 {
 	$result		= false;

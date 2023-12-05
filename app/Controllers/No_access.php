@@ -16,6 +16,12 @@ class No_Access extends BaseController
 	{
 		$this->module = model('Module');
 	}
+
+	/**
+	 * @param string $module_id
+	 * @param string $permission_id
+	 * @return void
+	 */
 	public function getIndex(string $module_id = '', string $permission_id = ''): void
 	{
 		$data['module_name']   = $this->module->get_module_name($module_id);

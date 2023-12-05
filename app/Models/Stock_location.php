@@ -33,6 +33,11 @@ class Stock_location extends Model
 
 		$this->session = session();
 	}
+
+	/**
+	 * @param int $location_id
+	 * @return bool
+	 */
 	public function exists(int $location_id = NEW_ENTRY): bool
 	{
 		$builder = $this->db->table('stock_locations');
@@ -41,6 +46,9 @@ class Stock_location extends Model
 		return ($builder->get()->getNumRows() >= 1);
 	}
 
+	/**
+	 * @return ResultInterface
+	 */
 	public function get_all(): ResultInterface
 	{
 		$builder = $this->db->table('stock_locations');
@@ -49,6 +57,10 @@ class Stock_location extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $module_id
+	 * @return ResultInterface
+	 */
 	public function get_undeleted_all(string $module_id = 'items'): ResultInterface
 	{
 		$builder = $this->db->table('stock_locations');
@@ -61,6 +73,10 @@ class Stock_location extends Model
 		return $builder->get();
 	}
 
+	/**
+	 * @param string $module_id
+	 * @return bool
+	 */
 	public function show_locations(string $module_id = 'items'): bool
 	{
 		$stock_locations = $this->get_allowed_locations($module_id);
@@ -68,11 +84,18 @@ class Stock_location extends Model
 		return count($stock_locations) > 1;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function multiple_locations(): bool
 	{
 		return $this->get_all()->getNumRows() > 1;
 	}
 
+	/**
+	 * @param string $module_id
+	 * @return array
+	 */
 	public function get_allowed_locations(string $module_id = 'items'): array
 	{
 		$stock = $this->get_undeleted_all($module_id)->getResultArray();
@@ -86,6 +109,11 @@ class Stock_location extends Model
 		return $stock_locations;
 	}
 
+	/**
+	 * @param int $location_id
+	 * @param string $module_id
+	 * @return bool
+	 */
 	public function is_allowed_location(int $location_id, string $module_id = 'items'): bool
 	{
 		$builder = $this->db->table('stock_locations');
@@ -99,6 +127,10 @@ class Stock_location extends Model
 		return ($builder->get()->getNumRows() == 1);	//TODO: ===
 	}
 
+	/**
+	 * @param string $module_id
+	 * @return int
+	 */
 	public function get_default_location_id(string $module_id = 'items'): int
 	{
 		$builder = $this->db->table('stock_locations');
@@ -112,6 +144,10 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_id;	//TODO: this is puking. Trying to get property 'location_id' of non-object
 	}
 
+	/**
+	 * @param int $location_id
+	 * @return string
+	 */
 	public function get_location_name(int $location_id): string
 	{
 		$builder = $this->db->table('stock_locations');
@@ -120,6 +156,10 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_name;
 	}
 
+	/**
+	 * @param string $location_name
+	 * @return int
+	 */
 	public function get_location_id(string $location_name): int
 	{
 		$builder = $this->db->table('stock_locations');
@@ -128,6 +168,11 @@ class Stock_location extends Model
 		return $builder->get()->getRow()->location_id;
 	}
 
+	/**
+	 * @param array $location_data
+	 * @param int $location_id
+	 * @return bool
+	 */
 	public function save_value(array &$location_data, int $location_id): bool
 	{
 		$location_name = $location_data['location_name'];
@@ -184,6 +229,12 @@ class Stock_location extends Model
 		return $builder->update($location_data_to_save);
 	}
 
+	/**
+	 * @param string $module
+	 * @param int $location_id
+	 * @param string $location_name
+	 * @return void
+	 */
 	private function _insert_new_permission(string $module, int $location_id, string $location_name): void	//TODO: refactor out hungarian notation
 	{
 		// insert new permission for stock location

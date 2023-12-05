@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class Migration_modify_attr_links_constraint extends Migration
 {
+	/**
+	 * Perform a migration step.
+	 */
 	public function up(): void
 	{
 		error_log('Migrating modify_attr_links_constraint');
@@ -16,6 +19,9 @@ class Migration_modify_attr_links_constraint extends Migration
 		error_log('Migrating modify_attr_links_constraint');
 	}
 
+	/**
+	 * Revert a migration step.
+	 */
 	public function down(): void
 	{
 	}
