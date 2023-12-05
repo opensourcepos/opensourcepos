@@ -26,7 +26,7 @@
 			<?= form_label(lang('Sales.receipt_number'), 'receipt_number', ['class' => 'control-label col-xs-3']) ?>
 			<?= anchor(esc('sales/receipt/' . $sale_info['sale_id'], 'url'), 'POS ' . $sale_info['sale_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style"=>"text-align:left"]) ?>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
@@ -64,11 +64,11 @@
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
-						<?php if(!currency_side()): ?>
+						<?php if(!is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?= form_input(['name' => 'payment_amount_new', 'value' => $payment_amount_new, 'id' => 'payment_amount_new', 'class' => 'form-control input-sm']) //TODO: potentially we need to add type to be float/decimal/numeric to reduce improper data entry ?>
-						<?php if(currency_side()): ?>
+						<?php if(is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
@@ -78,7 +78,7 @@
 		}
 		?>
 
-		<?php 
+		<?php
 		$i = 0;
 		foreach($payments as $row)
 		{
@@ -96,11 +96,11 @@
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
-						<?php if(!currency_side()): ?>
+						<?php if(!is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?= form_input (['name' => "payment_amount_$i", 'value' => $row->payment_amount, 'id' => "payment_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true'])	//TODO: add type attribute ?>
-						<?php if(currency_side()): ?>
+						<?php if(is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
@@ -119,22 +119,22 @@
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
-						<?php if(!currency_side()): ?>
+						<?php if(!is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 						<?= form_input (['name' => "refund_amount_$i", 'value' => $row->cash_refund, 'id' => "refund_amount_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
-						<?php if(currency_side()): ?>
+						<?php if(is_right_side_currency_symbol()): ?>
 							<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
 			</div>
-		<?php 
+		<?php
 			++$i;
 		}
 		echo form_hidden('number_of_payments', $i);
 		?>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
@@ -150,7 +150,7 @@
 				<?= form_hidden('employee_id', $selected_employee_id) ?>
 			</div>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.comment'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
@@ -162,7 +162,7 @@
 
 <script type="text/javascript">
 $(document).ready(function()
-{	
+{
 	<?php if(!empty($sale_info['email'])): ?>
 		$('#send_invoice').click(function(event) {
 			if (confirm("<?= lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
@@ -171,11 +171,11 @@ $(document).ready(function()
 						BootstrapDialog.closeAll();
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
 					}, 'json'
-				);	
+				);
 			}
 		});
 	<?php endif; ?>
-	
+
 	<?= view('partial/datepicker_locale') ?>
 
 	var fill_value_customer = function(event, ui) {
@@ -187,7 +187,7 @@ $(document).ready(function()
 	$('#customer_name').autocomplete( {
 		source: "<?= 'customers/suggest' ?>",
 		minChars: 0,
-		delay: 15, 
+		delay: 15,
 		cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value_customer,
@@ -203,7 +203,7 @@ $(document).ready(function()
 	$('#employee_name').autocomplete( {
 		source: "<?= 'employees/suggest' ?>",
 		minChars: 0,
-		delay: 15, 
+		delay: 15,
 		cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value_employee,
@@ -227,7 +227,7 @@ $(document).ready(function()
 				{
 					dialog_support.hide();
 					table_support.handle_submit("<?= esc($controller_name) ?>", response);
-					
+
 					const params = $.param(table_support.query_params());
 					$.get("<?= $controller_name; ?>/search?" + params, function(response) {
 						$("#payment_summary").html(response.payment_summary);
@@ -257,7 +257,7 @@ $(document).ready(function()
 			}
 		},
 
-		messages: 
+		messages:
 		{
 			invoice_number: "<?= lang('Sales.invoice_number_duplicate') ?>"
 		}

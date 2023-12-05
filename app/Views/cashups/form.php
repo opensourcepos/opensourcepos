@@ -43,7 +43,7 @@
 			<?= form_label(lang('Cashups.open_amount_cash'), 'open_amount_cash', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -52,7 +52,7 @@
 						'class' => 'form-control input-sm',
 						'value' => to_currency_no_money($cash_ups_info->open_amount_cash)
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -63,7 +63,7 @@
 			<?= form_label(lang('Cashups.transfer_amount_cash'), 'transfer_amount_cash', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -73,7 +73,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->transfer_amount_cash)
 						])
 					?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -106,7 +106,7 @@
 			<?= form_label(lang('Cashups.closed_amount_cash'), 'closed_amount_cash', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -115,7 +115,7 @@
 							'class' => 'form-control input-sm',
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_cash)]
 							) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -138,7 +138,7 @@
 			<?= form_label(lang('Cashups.closed_amount_due'), 'closed_amount_due', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -147,7 +147,7 @@
 							'class' => 'form-control input-sm',
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due)]
 							) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -158,7 +158,7 @@
 			<?= form_label(lang('Cashups.closed_amount_card'), 'closed_amount_card', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -167,7 +167,7 @@
 							'class' => 'form-control input-sm',
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_card)]
 							) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -178,7 +178,7 @@
 			<?= form_label(lang('Cashups.closed_amount_check'), 'closed_amount_check', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -187,7 +187,7 @@
 							'class' => 'form-control input-sm',
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_check)]
 							) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -198,7 +198,7 @@
 			<?= form_label(lang('Cashups.closed_amount_total'), 'closed_amount_total', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -209,7 +209,7 @@
 							'value'=>to_currency_no_money($cash_ups_info->closed_amount_total)
 						]
 					) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>

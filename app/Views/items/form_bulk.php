@@ -49,7 +49,7 @@
 			<?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -57,7 +57,7 @@
 						'id' => 'cost_price',
 						'class' => 'form-control input-sm'
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -68,7 +68,7 @@
 			<?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!currency_side()): ?>
+					<?php if (!is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 					<?= form_input ([
@@ -76,7 +76,7 @@
 						'id' => 'unit_price',
 						'class' => 'form-control input-sm'
 					]) ?>
-					<?php if (currency_side()): ?>
+					<?php if (is_right_side_currency_symbol()): ?>
 						<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
 					<?php endif; ?>
 				</div>
