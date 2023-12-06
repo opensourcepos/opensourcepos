@@ -61,7 +61,7 @@ class Barcode_lib
 	/**
 	 * @param array $item
 	 * @param array $barcode_config
-	 * @return object|Code128|Code39|Ean13|Ean8
+	 * @return object
 	 */
 	public static function barcode_instance(array $item, array $barcode_config): object
 	{
@@ -84,7 +84,7 @@ class Barcode_lib
 
 	/**
 	 * @param string $barcode_type
-	 * @return Code128|Code39|Ean13|Ean8
+	 * @return object
 	 */
 	private static function get_barcode_instance(string $barcode_type = 'Code128'): object
 	{

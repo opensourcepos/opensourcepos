@@ -66,9 +66,7 @@ abstract class BarcodeBase
 	/**
 	 * Get the data
 	 *
-	 * @param mixed data - (int or string) Data to be encoded
-	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @throws OverflowException
+	 * @return BarcodeInterface
 	 */
 	public function getData()
 	{

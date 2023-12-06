@@ -94,7 +94,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function change_mode(): void
+	public function postChangeMode(): void
 	{
 		$stock_destination = $this->request->getPost('stock_destination', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$stock_source = $this->request->getPost('stock_source', FILTER_SANITIZE_NUMBER_INT);
