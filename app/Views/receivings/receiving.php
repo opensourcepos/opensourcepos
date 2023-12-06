@@ -40,7 +40,7 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?= form_open(esc("$controller_name/change_mode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open(esc("$controller_name/changeMode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">

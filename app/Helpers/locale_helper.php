@@ -482,7 +482,7 @@ function parse_tax(string $number)
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, int $decimals = null): mixed
+function parse_decimals(string $number, int $decimals = null)
 {
 	if(empty($number))
 	{

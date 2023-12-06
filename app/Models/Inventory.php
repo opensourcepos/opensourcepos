@@ -77,15 +77,16 @@ class Inventory extends Model
 	}
 
 	/**
-	 * @throws ReflectionException
+	 * @param int $item_id ID number for the item to have quantity reset.
+	 * @return bool|int|string The row id of the inventory table on insert or false on failure
 	 */
-	public function reset_quantity(int $item_id): bool
+	public function reset_quantity(int $item_id)
 	{
 		$inventory_sums = $this->get_inventory_sum($item_id);
 		foreach($inventory_sums as $inventory_sum)
 		{
 			if($inventory_sum['sum'] > 0)
-			{//TODO: Reflection Exception
+			{
 				$employee = model(Employee::class);
 
 				return $this->insert([
