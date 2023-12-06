@@ -282,7 +282,7 @@ class Receiving extends Model
 
 	/**
 	 * @param int $receiving_id
-	 * @return object|array|\stdClass|null
+	 * @return object
 	 */
 	public function get_supplier(int $receiving_id): object
 	{

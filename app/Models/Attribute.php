@@ -653,7 +653,7 @@ class Attribute extends Model
 	/**
 	 * @param int $item_id
 	 * @param int|null $definition_id
-	 * @return object|stdClass|null
+	 * @return object|null
 	 */
 	public function get_link_value(int $item_id, ?int $definition_id): ?object
 	{
@@ -712,7 +712,7 @@ class Attribute extends Model
 	/**
 	 * @param int $item_id
 	 * @param int $definition_id
-	 * @return object|array|stdClass|null
+	 * @return object|null
 	 */
 	public function get_attribute_value(int $item_id, int $definition_id): ?object
 	{

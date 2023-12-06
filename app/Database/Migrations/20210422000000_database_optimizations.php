@@ -45,8 +45,11 @@ class Migration_database_optimizations extends Migration
 			$builder = $this->db->table('attribute_values');
 			$builder->delete(['attribute_id' => $attribute_value['attribute_id']]);
 
-			$query = 'SELECT links.definition_id, links.item_id, links.attribute_id, defs.definition_type FROM ospos_attribute_links links JOIN ospos_attribute_definitions defs ON defs.definition_id = links.definition_id where attribute_id = ';
-			$query .= $attribute_value['attribute_id'];
+			//TODO: This should be converted to using CI4 QueryBuilder
+			$query = 'SELECT links.definition_id, links.item_id, links.attribute_id, defs.definition_type'
+				. ' FROM ospos_attribute_links links'
+				. ' JOIN ospos_attribute_definitions defs ON defs.definition_id = links.definition_id'
+				. ' WHERE attribute_id = ' . $attribute_value['attribute_id'];
 			$attribute_links = $this->db->query($query);
 
 			$builder = $this->db->table('attribute_links');

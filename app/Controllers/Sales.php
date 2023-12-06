@@ -213,9 +213,12 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Changes the sale mode in the register to carry out different types of sales
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function postChange_mode(): void
+	public function postChangeMode(): void
 	{
 		$mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$this->sale_lib->set_mode($mode);
@@ -259,7 +262,9 @@ class Sales extends Secure_Controller
 
 		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
-//TODO: This has an empty body.  What to do here?
+//TODO: The code below was removed in 2017 by @steveireland. We either need to reinstate some of it or remove this entire if block but we can't leave an empty if block
+//			$dinner_table = $this->request->getPost('dinner_table');
+//			$this->sale_lib->set_dinner_table($dinner_table);
 		}
 		elseif($this->stock_location->is_allowed_location($stock_location, 'sales'))
 		{
