@@ -510,7 +510,6 @@ class Item extends Model
 
 	/**
 	 * Deletes one item
-	 * @throws ReflectionException
 	 */
 	public function delete($item_id = null, bool $purge = false)
 	{
@@ -547,7 +546,6 @@ class Item extends Model
 
 	/**
 	 * Deletes a list of items
-	 * @throws ReflectionException
 	 */
 	public function delete_list(array $item_ids): bool
 	{
