@@ -783,7 +783,7 @@ class Sale extends Model
 					'trans_inventory' => -$item_data['quantity']
 				];
 
-				$inventory->insert($inv_data);
+				$inventory->insert($inv_data, false);
 			}
 
 			$attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
@@ -955,7 +955,7 @@ class Sale extends Model
 						'trans_inventory' => $item_data['quantity_purchased']
 					];
 					// update inventory
-					$inventory->insert($inv_data);
+					$inventory->insert($inv_data, false);
 
 					// update quantities
 					$item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);

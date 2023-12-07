@@ -6,7 +6,7 @@ use App\Models\Appconfig;
 use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\HTTP\RedirectResponse;
-use CodeIgniter\Router\Exceptions\RedirectException;
+use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Config\Encryption;
 use Config\Services;
 

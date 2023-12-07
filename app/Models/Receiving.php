@@ -185,7 +185,7 @@ class Receiving extends Model
 				'trans_inventory' => $items_received
 			];
 
-			$inventory->insert($inv_data);
+			$inventory->insert($inv_data, false);
 			$attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
 			$supplier = $supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
@@ -247,7 +247,7 @@ class Receiving extends Model
 					'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
 				];
 				// update inventory
-				$inventory->insert($inv_data);
+				$inventory->insert($inv_data, false);
 
 				// update quantities
 				$item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased'] * (-$item['receiving_quantity']));

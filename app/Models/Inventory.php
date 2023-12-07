@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use CodeIgniter\Database\BaseResult;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
-use ReflectionException;
 
 /**
  * Inventory class
@@ -27,20 +25,6 @@ class Inventory extends Model
 		'trans_inventory',
 		'trans_location'
 	];
-
-	/**
-	 * Insert new data into the Inventory table.
-	 *
-	 * @param array|null|object $inventory_data Data to be inserted into the inventory table.
-	 * @param bool $returnID Returns the value of the ID column for the inserted row.
-	 * @return int|string|bool The ID of the inserted row on success or false on failure
-	 */
-	public function insert($inventory_data = null, bool $returnID = true)
-	{
-		$builder = $this->db->table('inventory');
-
-		return $builder->insert($inventory_data, $returnID);
-	}
 
 	/**
 	 * @param $comment
