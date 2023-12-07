@@ -25,7 +25,7 @@
 <div id="report_summary">
 	<?php
 	foreach($summary_data as $name => $value)
-	{ 
+	{
 		if($name == "total_quantity")
 		{
 	?>
@@ -59,7 +59,7 @@
 				sortable: true,
 				showExport: true,
 				exportDataType: 'all',
-				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'xlsx', 'pdf'],
 				pagination: true,
 				showColumns: true,
 				data: <?= json_encode(esc($data, 'js')) ?>,
