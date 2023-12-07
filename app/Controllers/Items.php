@@ -765,7 +765,7 @@ class Items extends Secure_Controller
 						'trans_inventory' => $updated_quantity - $item_quantity->quantity
 					];
 
-					$success &= $this->inventory->insert($inv_data);
+					$success &= $this->inventory->insert($inv_data, false);
 				}
 			}
 
@@ -908,7 +908,7 @@ class Items extends Secure_Controller
 			'trans_inventory' => parse_quantity($this->request->getPost('newquantity'))
 		];
 
-		$this->inventory->insert($inv_data);
+		$this->inventory->insert($inv_data, false);
 
 		//Update stock quantity
 		$item_quantity = $this->item_quantity->get_item_quantity($item_id, $location_id);
@@ -1362,7 +1362,7 @@ class Items extends Secure_Controller
 				$this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
 				$csv_data['trans_inventory'] = $row["location_$location_name"];
-				$this->inventory->insert($csv_data);	//TODO: Reflection Exception
+				$this->inventory->insert($csv_data, false);
 			}
 			elseif($is_update)
 			{
@@ -1374,7 +1374,7 @@ class Items extends Secure_Controller
 				$this->item_quantity->save_value($item_quantity_data, $item_data['item_id'], $location_id);
 
 				$csv_data['trans_inventory'] = 0;
-				$this->inventory->insert($csv_data);	//TODO: Reflection Exception
+				$this->inventory->insert($csv_data, false);
 			}
 		}
 	}
