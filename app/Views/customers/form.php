@@ -95,11 +95,11 @@
 				</div>
 
 				<div class="form-group form-group-sm">
-					<?= form_label(lang('Customers.company_name'), 'company_name', ['class' => 'control-label col-xs-3']) ?>
+					<?= form_label(lang('Customers.company_name'), 'customer_company_name', ['class' => 'control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<?= form_input ([
 								'name' => 'company_name',
-								'id' => 'company_name',
+								'id' => 'customer_company_name',
 								'class' => 'form-control input-sm',
 								'value' => $person_info->company_name
 							]) ?>
