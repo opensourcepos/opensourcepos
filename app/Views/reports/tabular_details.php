@@ -71,7 +71,7 @@
 				uniqueId: 'id',
 				showExport: true,
 				exportDataType: 'all',
-				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'xlsx', 'pdf'],
 				data: <?= json_encode(esc($summary_data, 'js')) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',

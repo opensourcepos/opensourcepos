@@ -38,7 +38,7 @@ Write-Output "bootstrap-select"
 npm i bootstrap-select@1.13.18
 
 Write-Output "bootstrap-table"
-npm i bootstrap-table@1.18.1
+npm i bootstrap-table@1.22.1
 
 Write-Output "bootstrap-tagsinput"
 npm i bootstrap-tagsinput@0.7.1
