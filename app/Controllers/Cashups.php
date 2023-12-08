@@ -55,8 +55,8 @@ class Cashups extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: $filledup doesn't follow variable naming patterns we are using.
-		$filters = array_merge($filters, $filledup);
+		$request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+		$filters = array_merge($filters, $request_filters);
 		$cash_ups = $this->cashup->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->cashup->get_found_rows($search, $filters);
 		$data_rows = [];

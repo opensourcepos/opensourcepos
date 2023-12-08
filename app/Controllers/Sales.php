@@ -136,8 +136,8 @@ class Sales extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: Variable does not meet naming conventions
-		$filters = array_merge($filters, $filledup);
+		$request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+		$filters = array_merge($filters, $request_filters);
 
 		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->sale->get_found_rows($search, $filters);
