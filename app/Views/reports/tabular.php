@@ -68,8 +68,6 @@
 				escape: false,
 				search: true
 		});
-
-
 	});
 </script>
 
