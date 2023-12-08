@@ -214,7 +214,7 @@
 			.bootstrapTable($.extend(options, {
 			columns: options.headers,
 			stickyHeader: true,
-			stickyHeaderOffsetLeft: $('#table').offset().right + 'px',
+			stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 			stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 			url: options.resource + '/search',
 			sidePagination: 'server',
