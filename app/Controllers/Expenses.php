@@ -61,8 +61,8 @@ class Expenses extends Secure_Controller
 		];
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);	//TODO: variable naming does not match standard
-		$filters = array_merge($filters, $filledup);
+		$request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+		$filters = array_merge($filters, $request_filters);
 		$expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->expense->get_found_rows($search, $filters);
 		$payments = $this->expense->get_payments_summary($search, $filters);

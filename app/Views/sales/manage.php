@@ -28,9 +28,9 @@ $(document).ready(function()
 	table_support.query_params = function()
 	{
 		return {
-			start_date: start_date,
-			end_date: end_date,
-			filters: $("#filters").val() || [""]
+			"start_date": start_date,
+			"end_date": end_date,
+			"filters": $("#filters").val()
 		}
 	};
 

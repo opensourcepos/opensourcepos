@@ -32,9 +32,9 @@ $(document).ready(function()
 		uniqueId: 'cashup_id',
 		queryParams: function() {
 			return $.extend(arguments[0], {
-				start_date: start_date,
-				end_date: end_date,
-				filters: $("#filters").val() || [""]
+				"end_date": end_date,
+				"filters": $("#filters").val(),
+				"start_date": start_date
 			});
 		}
 	});

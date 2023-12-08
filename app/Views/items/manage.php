@@ -57,10 +57,10 @@ $(document).ready(function()
         uniqueId: 'items.item_id',
         queryParams: function() {
             return $.extend(arguments[0], {
-                start_date: start_date,
-                end_date: end_date,
-                stock_location: $("#stock_location").val(),
-                filters: $("#filters").val() || [""]
+                "start_date": start_date,
+                "end_date": end_date,
+                "stock_location": $("#stock_location").val(),
+                "filters": $("#filters").val()
             });
         },
         onLoadSuccess: function(response) {
