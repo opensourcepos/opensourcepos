@@ -9,7 +9,7 @@ var pickerconfig = function(config) {
         <?php
         $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
-        if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
+        if(strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false)
         {
             ?>
             showMeridian: true,
@@ -28,7 +28,7 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-    }, <?php '{}' ?>);
+	}, <?php echo isset($config) ? $config : '{}' ?>);
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
@@ -39,8 +39,7 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Cal.wednesday') ?>",
         "<?= lang('Cal.thursday') ?>",
         "<?= lang('Cal.friday') ?>",
-        "<?= lang('Cal.saturday') ?>",
-        "<?= lang('Cal.sunday') ?>"
+        "<?= lang('Cal.saturday') ?>"
 		],
         daysShort: [
 		"<?= lang('Cal.sun') ?>",
