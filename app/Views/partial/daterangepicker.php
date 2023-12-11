@@ -84,8 +84,7 @@
 					"<?= lang('Cal.we') ?>",
 					"<?= lang('Cal.th') ?>",
 					"<?= lang('Cal.fr') ?>",
-					"<?= lang('Cal.sa') ?>",
-					"<?= lang('Cal.su') ?>"
+					"<?= lang('Cal.sa') ?>"
 				],
 				"monthNames": [
 					"<?= lang('Cal.january') ?>",
@@ -194,8 +193,7 @@
 					"<?= lang('Cal.we') ?>",
 					"<?= lang('Cal.th') ?>",
 					"<?= lang('Cal.fr') ?>",
-					"<?= lang('Cal.sa') ?>",
-					"<?= lang('Cal.su') ?>"
+					"<?= lang('Cal.sa') ?>"
 				],
 				"monthNames": [
 					"<?= lang('Cal.january') ?>",

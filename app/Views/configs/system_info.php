@@ -71,7 +71,7 @@
 							$uploads = FCPATH . 'uploads/';
 							$images = FCPATH . 'uploads/item_pics/';
 							$import = '../import_items.csv';	//TODO: These two are probably incorrect paths because CI4 has a different folder structure
-							$importcustomers = '../import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
+							$importcustomers = WRITEPATH . '/uploads/import_customers.csv';	//TODO: This variable does not follow naming conventions for the project.
 
 							if(is_writable($logs))
 							{
