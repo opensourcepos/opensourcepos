@@ -424,7 +424,7 @@ class Customers extends Persons
 	/**
 	 * @return void
 	 */
-	public function do_csv_import(): void
+	public function postImportCsvFile(): void
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
