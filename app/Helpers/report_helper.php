@@ -17,40 +17,40 @@ function get_report_link(string $report_name, string $report_prefix = '', string
     /**
      * Sanitize the report name in case it has come from the permissions table.
      */
-    $report_name = str_replace('reports_', '', $report_name);
-    $path .= $report_name;
+	$report_name = str_replace('reports_', '', $report_name);
+	$path .= $report_name;
 
-    if ($lang_key === '')
+	if ($lang_key === '')
 	{
-        $lang_key = 'Reports.' . $report_name;
+		$lang_key = 'Reports.' . $report_name;
     }
 
-    return [
-        'path'  => site_url($path),
-        'label' => lang($lang_key),
-    ];
+	return [
+		'path'  => site_url($path),
+		'label' => lang($lang_key),
+	];
 }
 
 /**
- * @param string   $permission_id
+ * @param string $permission_id
  * @param string[] $restrict_views
  *
  * @return bool
  */
-function can_show_report($permission_id, array $restrict_views = []): bool
+function can_show_report(string $permission_id, array $restrict_views = []): bool
 {
-    if (!strpos($permission_id, 'reports_'))
-  {
-        return false;
-    }
-
-    foreach ($restrict_views as $restrict_view)
+	if(strpos($permission_id, 'reports_') === false)
 	{
-        if (strpos($permission_id, $restrict_view) !== false)
-		{
-            return false;
-        }
-    }
+		return false;
+	}
 
-    return true;
+	foreach ($restrict_views as $restrict_view)
+	{
+		if (str_contains($permission_id, $restrict_view))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
