@@ -1,6 +1,6 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open_multipart('customers/do_csv_import/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
+<?= form_open_multipart('customers/importCsvFile/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
@@ -23,7 +23,7 @@
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
-{	
+{
 	$('#csv_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -37,13 +37,13 @@ $(document).ready(function()
 		},
 
 		errorLabelContainer: '#error_message_box',
- 
-		rules: 
+
+		rules:
 		{
 			file_path: 'required'
    		},
-   
-		messages: 
+
+		messages:
 		{
    			file_path: "<?= lang('Common.import_full_path') ?>"
 		}
