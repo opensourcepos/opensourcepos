@@ -52,7 +52,7 @@
 		"js-cookie": "^2.2.1",
 		"jspdf": "^1.5.3",
 		"jspdf-autotable": "^2.1.0",
-		"tableexport.jquery.plugin": "^1.27.0"
+		"tableexport.jquery.plugin": "^1.28.0"
 	},
 	"devDependencies": {
 		"gulp": "^4.0.2",
