@@ -270,10 +270,13 @@ class Item_kits extends Secure_Controller
 	}
 
 	/**
-	 * @param string $item_kit_ids
+	 * AJAX called function that generates barcodes for selected item_kits.
+	 *
+	 * @param string $item_kit_ids Colon separated list of item_kit_id values to generate barcodes for.
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function generate_barcodes(string $item_kit_ids): void
+	public function getGenerateBarcodes(string $item_kit_ids): void
 	{
 		$barcode_lib = new Barcode_lib();
 		$result = [];
