@@ -489,10 +489,13 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * @param string $item_ids
+	 *  AJAX called function that generates barcodes for selected items.
+	 *
+	 * @param string $item_ids Colon separated list of item_id values to generate barcodes for.
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function generate_barcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
+	public function getGenerateBarcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
 	{
 		$item_ids = explode(':', $item_ids);
 		$result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();

@@ -22,7 +22,7 @@ $(document).ready(function()
 	$('#generate_barcodes').click(function()
 	{
 		window.open(
-			'index.php/item_kits/generate_barcodes/'+table_support.selected_ids().join(':'),
+			'index.php/item_kits/generateBarcodes/'+table_support.selected_ids().join(':'),
 			'_blank' // <- This is what makes it open in a new window.
 		);
 	});
@@ -43,7 +43,7 @@ $(document).ready(function()
 			<span class="glyphicon glyphicon-trash">&nbsp</span><?= lang('Common.delete') ?>
 		</button>
 
-		<button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?= esc("$controller_name/generate_barcodes") ?>'>
+		<button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?= esc("$controller_name/generateBarcodes") ?>'>
 			<span class="glyphicon glyphicon-barcode">&nbsp</span><?= lang('Items.generate_barcodes') ?>
 		</button>
 	</div>

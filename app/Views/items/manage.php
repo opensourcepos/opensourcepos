@@ -19,7 +19,7 @@ $(document).ready(function()
     $('#generate_barcodes').click(function()
     {
         window.open(
-            'index.php/items/generate_barcodes/'+table_support.selected_ids().join(':'),
+            'index.php/items/generateBarcodes/'+table_support.selected_ids().join(':'),
             '_blank' // <- This is what makes it open in a new window.
         );
     });
@@ -93,7 +93,7 @@ $(document).ready(function()
 				title='<?= lang('Items.edit_multiple_items') ?>'>
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
         </button>
-        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?= "$controller_name/generate_barcodes" ?>' title='<?= lang('Items.generate_barcodes') ?>'>
+        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?= "$controller_name/generateBarcodes" ?>' title='<?= lang('Items.generate_barcodes') ?>'>
             <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
         </button>
         <?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
