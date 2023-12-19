@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_admin"] = "";
@@ -53,7 +52,7 @@ $lang["common_logout"] = "ออกจากระบบ";
 $lang["common_manager"] = "";
 $lang["common_migration_needed"] = "การย้ายฐานข้อมูลไปยัง %1 จะเริ่มขึ้นหลังจากเข้าสู่ระบบ";
 $lang["common_new"] = "สร้างใหม่";
-$lang["common_no"] = "";
+$lang["common_no"] = "ไม่";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
 $lang["common_none_selected_text"] = "กรุณาเลือก";
 $lang["common_or"] = "หรือ";
@@ -82,6 +81,6 @@ $lang["common_view_recent_sales"] = "การขายล่าสุด";
 $lang["common_website"] = "เว็บไซต์ opensourcepos.org";
 $lang["common_welcome"] = "ยินดีต้อนรับ";
 $lang["common_welcome_message"] = "ยินดีต้อนรับสู่ OSPOS, กรุณาเลือกโมดูลด้านล่างที่ต้องการทำงาน";
-$lang["common_yes"] = "";
+$lang["common_yes"] = "ใช่";
 $lang["common_you_are_using_ospos"] = "คุณกำลังใช้ โอเพนซอร์ส พีโอเอส รุ่น";
 $lang["common_zip"] = "รหัสไปรษณีย์";
