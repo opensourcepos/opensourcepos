@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "เพิ่มข้อยกเว้น";
 $lang["taxes_cascade"] = "ภาษีแบบซ้ำซ้อน";
 $lang["taxes_cascade_sequence"] = "ลำดับภาษีแบบซ้ำซ้อน";
