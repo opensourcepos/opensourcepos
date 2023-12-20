@@ -6,6 +6,10 @@ branches:
 services:
   - docker
 
+dist: jammy
+language: node_js
+node_js:
+  - 20
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker run --rm -v $(pwd):/app opensourcepos/composer:ci4 composer install
@@ -13,8 +17,7 @@ script:
   - sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$rev'/g" app/Config/OSPOS.php
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
-  - docker run --privileged --rm -it -v $(pwd):/app -w /app node
-    sh -c "npm install && npm install -g gulp && npm run build"
+  - npm ci && npm install -g gulp && npm run build
   - docker build . --target ospos -t ospos
   - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
