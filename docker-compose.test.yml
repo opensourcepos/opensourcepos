@@ -1,5 +1,8 @@
-version: '3.4'
+version: '2.2'
   
+include:
+  - docker/docker-mysql.yaml
+
 services:
     test: 
         build:
@@ -9,7 +12,7 @@ services:
           - mysql
         container_name: ospos_test
         environment:
-          - CI_ENV=testing
+          - CI_ENVIRONMENT=testing
           - ENCRYPTION_KEY=
           - MYSQL_HOST_NAME=mysql
           - MYSQL_DATABASE=ospos
@@ -19,14 +22,3 @@ services:
         ports:
           - "80:80"
 
-    mysql:
-        image: mariadb:10.5
-        container_name: mysql
-        restart: always
-        volumes:
-          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
-        environment:
-          - MYSQL_ROOT_PASSWORD=pointofsale
-          - MYSQL_DATABASE=ospos
-          - MYSQL_USER=admin
-          - MYSQL_PASSWORD=pointofsale

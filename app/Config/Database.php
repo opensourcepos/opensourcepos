@@ -76,6 +76,9 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
+
+
+
 	public $development = [
 		'DSN' => '',
 		'hostname' => 'localhost',
@@ -102,21 +105,6 @@ class Database extends Config
     {
         parent::__construct();
 
-		if(!getenv('database.development.hostname'))
-		{
-			$this->development['hostname'] =  getenv('database.development.hostname');
-		}
-
-		if(!getenv('database.development.hostname'))
-		{
-			$this->development['username'] =  getenv('database.development.username');
-		}
-
-		if(!getenv('database.development.hostname'))
-		{
-			$this->development['password'] =  getenv('database.development.password');
-		}
-
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.
@@ -128,6 +116,15 @@ class Database extends Config
 			case 'development';
 				$this->defaultGroup = 'development';
 				break;
+		}
+
+		foreach ([&$this->development, &$this->tests, &$this->default] as &$config) {
+			$config['hostname'] = !getenv('MYSQL_HOST_NAME') ? $config['hostname'] : getenv('MYSQL_HOST_NAME');
+			$config['username'] = !getenv('MYSQL_USERNAME') ? $config['username'] : getenv('MYSQL_USERNAME');
+			$config['password'] = !getenv('MYSQL_PASSWORD') ? $config['password'] : getenv('MYSQL_PASSWORD');
+			$config['database'] = !getenv('MYSQL_DB_NAME') ? $config['database'] : getenv('MYSQL_DB_NAME');
+
+
 		}
     }
 }
