@@ -1,23 +1,14 @@
 version: '2'
 
-volumes:
-    uploads:
-        driver: local
-    logs:
-        driver: local
-    mysql:
-        driver: local
-
-networks:
-    app_net:
-    db_net:
+include:
+  - docker/docker-mysql.yml
 
 services:
     sqlscript:
-        image: jekkos/opensourcepos:sql-ci4
+        image: jekkos/opensourcepos:sql-ci4-branch
         command: /bin/sh -c 'exit 0'
     ospos:
-        image: jekkos/opensourcepos:ci4-upgrade
+        image: jekkos/opensourcepos:ci4-branch
         restart: always
         depends_on:
           - mysql
@@ -25,7 +16,6 @@ services:
           - "127.0.0.1:80:80"
         networks:
           - app_net
-          - db_net
         volumes:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
@@ -37,22 +27,4 @@ services:
           - MYSQL_PASSWORD=pointofsale
           - MYSQL_DB_NAME=ospos
           - MYSQL_HOST_NAME=mysql
-
-    mysql:
-        image: mariadb:10.5
-        container_name: mysql
-        restart: always
-        expose:
-          - "3306"
-        networks:
-          - db_net
-        volumes_from:
-          - sqlscript
-        volumes:
-          - mysql:/var/lib/mysql:rw
-        environment:
-          - MYSQL_ROOT_PASSWORD=pointofsale
-          - MYSQL_DATABASE=ospos
-          - MYSQL_USER=admin
-          - MYSQL_PASSWORD=pointofsale
 
