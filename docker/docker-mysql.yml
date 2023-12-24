@@ -1,0 +1,30 @@
+version: '2'
+
+volumes:
+    uploads:
+        driver: local
+    logs:
+        driver: local
+    mysql:
+        driver: local
+
+networks:
+    app_net:
+
+services:
+    mysql:
+        image: mariadb:10.5
+        container_name: mysql
+        restart: always
+        expose:
+          - "3306"
+        networks:
+          - app_net
+        volumes:
+          - ./app/Database:/docker-entrypoint-initdb.d
+          - mysql:/var/lib/mysql:rw
+        environment:
+          - MYSQL_ROOT_PASSWORD=pointofsale
+          - MYSQL_DATABASE=ospos
+          - MYSQL_USER=admin
+          - MYSQL_PASSWORD=pointofsale
