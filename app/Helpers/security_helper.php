@@ -21,12 +21,20 @@ function check_encryption(): bool
 		$new_config_path = WRITEPATH . '/backup/.env' ;
 		$backup_path = WRITEPATH . '/backup/.env.bak';
 
-		//Copy to backup
+		$backup_folder = WRITEPATH . '/backup';
+
+		if (!file_exists($backup_folder) && !mkdir($backup_folder))
+		{
+			log_message('error', 'Could not create backup folder');
+			return false;
+		}
+
 		if(!copy($config_path, $backup_path))
 		{
 			log_message('error', "Unable to copy $config_path to $backup_path");
 		}
 
+		//Copy to backup
 		@chmod($config_path, 0660);
 		@chmod($backup_path, 0660);
 
