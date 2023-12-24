@@ -5,6 +5,6 @@ return [
 	"half_five" => "",
 	"half_odd" => "",
 	"half_up" => "",
-	"round_down" => "",
-	"round_up" => "",
+	"round_down" => "去尾法",
+	"round_up" => "进一法",
 ];
