@@ -32,9 +32,7 @@ class Customers extends Persons
 
 		$encrypter = Services::encrypter();
 
-		$mailchimp_list_id = $this->config['mailchimp_list_id'];
-
-		if(!empty($mailchimp_list_id))
+		if(!empty($this->config['mailchimp_list_id']))
 		{
 			$this->_list_id = $encrypter->decrypt($this->config['mailchimp_list_id']);
 		}
