@@ -522,7 +522,7 @@ class Sales extends Secure_Controller
 			}
 		}
 
-		$item_id_or_number_or_item_kit_or_receipt = $this->request->getPost('item', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$item_id_or_number_or_item_kit_or_receipt = (int)$this->request->getPost('item', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
 		$mode = $this->sale_lib->get_mode();
 		$quantity = ($mode == 'return') ? -$quantity : $quantity;
