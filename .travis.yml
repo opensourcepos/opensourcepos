@@ -28,8 +28,8 @@ env:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sql-$TAG"
-  - mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
-  - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
+  - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
+  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"
 deploy:
