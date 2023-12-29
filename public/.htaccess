@@ -68,7 +68,7 @@ Options All -Indexes
 
 <IfModule mod_headers.c>
   Header always set X-Frame-Options "SAMEORIGIN"
-  Header add Content-Security-Policy "default-src 'self' www.google.com; connect-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google.com www.gstatic.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.googleapis.com fonts.gstatic.com; img-src 'self' data:; object-src 'none'; form-action 'self'"
+  Header add Content-Security-Policy "default-src 'self' www.google.com; connect-src 'self' nominatim.openstreetmap.org; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google.com www.gstatic.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.googleapis.com fonts.gstatic.com; img-src 'self' data:; object-src 'none'; form-action 'self'"
   Header set X-Content-Type-Options "nosniff"
   Header set X-XSS-Protection "1; mode=block"
   Header set X-Frame-Options "DENY"

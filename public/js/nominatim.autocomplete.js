@@ -96,7 +96,7 @@
 			$("#" + key).autocomplete({
 				source: function (request, response) {
 					var params = default_params(key, value.response && value.response.field, options.language);
-					var request_params = {q: request.term};
+					var request_params = {};
 					options.extra_params && $.each(options.extra_params, function(key, param) {
 						request_params[key] = typeof param == "function" ? param() : param;
 					});
@@ -114,7 +114,7 @@
 					});
 				},
 				minChars:3,
-				delay:500,
+				delay:1000,
 				appendTo: '.modal-content',
 				select: handle_field_completion
 			});
