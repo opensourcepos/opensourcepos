@@ -12,7 +12,7 @@ node_js:
   - 20
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker run --rm -v $(pwd):/app opensourcepos/composer:ci4 composer install
+  - docker run --rm -u $(id -u) -v $(pwd):/app opensourcepos/composer:ci4 composer install
   - version=$(grep application_version app/Config/App.php | sed "s/.*=\s'\(.*\)';/\1/g")
   - sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$rev'/g" app/Config/OSPOS.php
   - echo "$version-$branch-$rev" 
@@ -28,8 +28,8 @@ env:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sql-$TAG"
-  - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
-  - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
+  - mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
+  - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"
 deploy:
