@@ -497,7 +497,7 @@ $(document).ready(function()
 {
 	$("#item").autocomplete(
 	{
-		source: '<?= esc("$controller_name/stock_item_search") ?>',
+		source: '<?= esc("$controller_name/stockItemSearch") ?>',
 		minChars:0,
 		delay:10,
 		autoFocus: false,
