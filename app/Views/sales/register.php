@@ -135,8 +135,8 @@ if(isset($success))
 				</li>
 				<li class="pull-right">
 					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc(site_url("items/view"), 'url') ?>"
-							title="<?= lang("$controller_name.new_item") ?>">
-						<span class="glyphicon glyphicon-tag">&nbsp</span><?= lang("$controller_name.new_item") ?>
+							title="<?= lang("Sales.new_item") ?>">
+						<span class="glyphicon glyphicon-tag">&nbsp</span><?= lang("Sales.new_item") ?>
 					</button>
 				</li>
 			</ul>
@@ -442,8 +442,8 @@ if(isset($success))
 					<?= form_input (['name' => 'customer', 'id' => 'customer', 'class' => 'form-control input-sm', 'value' => lang('Sales.start_typing_customer_name')]) ?>
 
 					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>"
-							title="<?= lang("$controller_name.new_customer") ?>">
-						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang("$controller_name.new_customer") ?>
+							title="<?= lang("Sales.new_customer") ?>">
+						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang("Sales.new_customer") ?>
 					</button>
 					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?= site_url("$controller_name/sales_keyboard_help") ?>"
 							title="<?= lang('Sales.key_title'); ?>">
