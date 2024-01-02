@@ -41,15 +41,15 @@ $(document).ready(function()
 	{
 	?>
 		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/csvImport" ?>'
-				title='<?= lang('Customers.import_items_csv') ?>'>
+				title='<?= lang(ucfirst($controller_name) .'.import_items_csv') ?>'>
 			<span class="glyphicon glyphicon-import">&nbsp</span><?= lang('Common.import_csv') ?>
 		</button>
 	<?php
 	}
 	?>
 	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/view" ?>'
-			title='<?= lang("$controller_name.new") ?>'>
-		<span class="glyphicon glyphicon-user">&nbsp</span><?= lang("$controller_name.new") ?>
+			title='<?= lang(ucfirst($controller_name). ".new") ?>'>
+		<span class="glyphicon glyphicon-user">&nbsp</span><?= lang(ucfirst($controller_name) .".new") ?>
 	</button>
 </div>
 

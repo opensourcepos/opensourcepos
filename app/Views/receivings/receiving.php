@@ -44,7 +44,7 @@ if (isset($success))
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label class="control-label"><?= lang('Receivings.mode') ?></label>
+					<label class="control-label"><?= lang(ucfirst($controller_name) .'.mode') ?></label>
 				</li>
 				<li class="pull-left">
 					<?= form_dropdown('mode', $modes, $mode, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -55,7 +55,7 @@ if (isset($success))
 				{
 				?>
 					<li class="pull-left">
-						<label class="control-label"><?= lang('Receivings.stock_source') ?></label>
+						<label class="control-label"><?= lang(ucfirst($controller_name) .'.stock_source') ?></label>
 					</li>
 					<li class="pull-left">
 						<?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -66,7 +66,7 @@ if (isset($success))
 					{
 					?>
 						<li class="pull-left">
-							<label class="control-label"><?= lang('Receivings.stock_destination') ?></label>
+							<label class="control-label"><?= lang(ucfirst($controller_name) .'.stock_destination') ?></label>
 						</li>
 						<li class="pull-left">
 							<?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange'=>"$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -88,13 +88,13 @@ if (isset($success))
 						if($mode=='receive' or $mode=='requisition')
 						{
 						?>
-							<?= lang('Receivings.find_or_scan_item') ?>
+							<?= lang(ucfirst($controller_name) .'.find_or_scan_item') ?>
 						<?php
 						}
 						else
 						{
 						?>
-							<?= lang('Receivings.find_or_scan_item_or_receipt') ?>
+							<?= lang(ucfirst($controller_name) .'.find_or_scan_item_or_receipt') ?>
 						<?php
 						}
 						?>
@@ -123,13 +123,13 @@ if (isset($success))
 			<tr>
 				<th style="width:5%;"><?= lang('Common.delete') ?></th>
 				<th style="width:15%;"><?= lang('Sales.item_number') ?></th>
-				<th style="width:23%;"><?= lang('Receivings.item_name') ?></th>
-				<th style="width:10%;"><?= lang('Receivings.cost') ?></th>
-				<th style="width:8%;"><?= lang('Receivings.quantity') ?></th>
-				<th style="width:10%;"><?= lang('Receivings.ship_pack') ?></th>
-				<th style="width:14%;"><?= lang('Receivings.discount') ?></th>
-				<th style="width:10%;"><?= lang('Receivings.total') ?></th>
-				<th style="width:5%;"><?= lang('Receivings.update') ?></th>
+				<th style="width:23%;"><?= lang(ucfirst($controller_name) .'.item_name') ?></th>
+				<th style="width:10%;"><?= lang(ucfirst($controller_name) .'.cost') ?></th>
+				<th style="width:8%;"><?= lang(ucfirst($controller_name) .'.quantity') ?></th>
+				<th style="width:10%;"><?= lang(ucfirst($controller_name) .'.ship_pack') ?></th>
+				<th style="width:14%;"><?= lang(ucfirst($controller_name) .'.discount') ?></th>
+				<th style="width:10%;"><?= lang(ucfirst($controller_name) .'.total') ?></th>
+				<th style="width:5%;"><?= lang(ucfirst($controller_name) .'.update') ?></th>
 			</tr>
 		</thead>
 
@@ -225,7 +225,7 @@ if (isset($success))
 							?>
 							<td>
 							<?= to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']) ?></td>
-							<td><a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang('Receivings.update') ?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) .'.update') ?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php
@@ -282,7 +282,7 @@ if (isset($success))
 		?>
 			<table class="sales_table_100">
 				<tr>
-					<th style='width: 55%;'><?= lang('Receivings.supplier') ?></th>
+					<th style='width: 55%;'><?= lang(ucfirst($controller_name) .'.supplier') ?></th>
 					<th style="width: 45%; text-align: right;"><?= esc($supplier) ?></th>
 				</tr>
 				<?php
@@ -290,7 +290,7 @@ if (isset($success))
 				{
 				?>
 					<tr>
-						<th style='width: 55%;'><?= lang('Receivings.supplier_email') ?></th>
+						<th style='width: 55%;'><?= lang(ucfirst($controller_name) .'.supplier_email') ?></th>
 						<th style="width: 45%; text-align: right;"><?= esc($supplier_email) ?></th>
 					</tr>
 				<?php
@@ -301,7 +301,7 @@ if (isset($success))
 				{
 				?>
 					<tr>
-						<th style='width: 55%;'><?= lang('Receivings.supplier_address') ?></th>
+						<th style='width: 55%;'><?= lang(ucfirst($controller_name) .'.supplier_address') ?></th>
 						<th style="width: 45%; text-align: right;"><?= esc($supplier_address) ?></th>
 					</tr>
 				<?php
@@ -312,7 +312,7 @@ if (isset($success))
 				{
 				?>
 					<tr>
-						<th style='width: 55%;'><?= lang('Receivings.supplier_location') ?></th>
+						<th style='width: 55%;'><?= lang(ucfirst($controller_name) .'.supplier_location') ?></th>
 						<th style="width: 45%; text-align: right;"><?= esc($supplier_location) ?></th>
 					</tr>
 				<?php
@@ -335,17 +335,17 @@ if (isset($success))
 		?>
 			<?= form_open(esc("$controller_name/select_supplier"), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
-					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?= lang('Receivings.select_supplier') ?></label>
+					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?= lang(ucfirst($controller_name) .'.select_supplier') ?></label>
 					<?= form_input ([
 						'name' => 'supplier',
 						'id' => 'supplier',
 						'class' => 'form-control input-sm',
-						'value' => lang('Receivings.start_typing_supplier_name')
+						'value' => lang(ucfirst($controller_name) .'.start_typing_supplier_name')
 					]) ?>
 
 					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "suppliers/view" ?>'
-							title='<?= lang('Receivings.new_supplier') ?>'>
-						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang('Receivings.new_supplier') ?>
+							title='<?= lang(ucfirst($controller_name) .'.new_supplier') ?>'>
+						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang(ucfirst($controller_name) .'.new_supplier') ?>
 					</button>
 
 				</div>
@@ -395,9 +395,9 @@ if (isset($success))
 								'rows' => '4'
 							]) ?>
 
-							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?= lang('Receivings.cancel_receiving') ?></div>
+							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?= lang(ucfirst($controller_name) .'.cancel_receiving') ?></div>
 
-							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?= lang('Receivings.complete_receiving') ?></div>
+							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?= lang(ucfirst($controller_name) .'.complete_receiving') ?></div>
 						</div>
 					<?= form_close() ?>
 				<?php
@@ -418,7 +418,7 @@ if (isset($success))
 							<div id="payment_details" >
 								<table class="sales_table_100" >
 									<tr>
-										<td><?= lang('Receivings.print_after_sale') ?></td>
+										<td><?= lang(ucfirst($controller_name) .'.print_after_sale') ?></td>
 										<td>
 											<?= form_checkbox ([
 												'name' => 'recv_print_after_sale',
@@ -434,7 +434,7 @@ if (isset($success))
 									{
 									?>
 										<tr>
-											<td><?= lang('Receivings.reference') ?></td>
+											<td><?= lang(ucfirst($controller_name) .'.reference') ?></td>
 											<td>
 												<?= form_input ([
 													'name' => 'recv_reference',
@@ -477,9 +477,9 @@ if (isset($success))
 								</table>
 							</div>
 
-							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?= lang('Receivings.cancel_receiving') ?></div>
+							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?= lang(ucfirst($controller_name) .'.cancel_receiving') ?></div>
 
-							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?= lang('Receivings.complete_receiving') ?></div>
+							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?= lang(ucfirst($controller_name) .'.complete_receiving') ?></div>
 						</div>
 					<?= form_close() ?>
 				<?php
@@ -557,7 +557,7 @@ $(document).ready(function()
 
 	$('#supplier').blur(function()
 	{
-		$(this).attr('value',"<?= lang('Receivings.start_typing_supplier_name') ?>");
+		$(this).attr('value',"<?= lang(ucfirst($controller_name) .'.start_typing_supplier_name') ?>");
 	});
 
 	$("#finish_receiving_button").click(function()
@@ -567,7 +567,7 @@ $(document).ready(function()
 
 	$("#cancel_receiving_button").click(function()
 	{
-		if (confirm('<?= lang('Receivings.confirm_cancel_receiving') ?>'))
+		if (confirm('<?= lang(ucfirst($controller_name) .'.confirm_cancel_receiving') ?>'))
 		{
 			$('#finish_receiving_form').attr('action', '<?= esc("$controller_name/cancel_receiving") ?>');
 			$('#finish_receiving_form').submit();
