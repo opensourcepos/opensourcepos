@@ -43,11 +43,11 @@
 		formatConfirmAction: function(action) {
 			if (action == "delete")
 			{
-				return "<?= lang(($editable ?? $controller_name). '.confirm_delete') ?>";
+				return "<?= lang(ucfirst($editable ?? $controller_name). '.confirm_delete') ?>";
 			}
 			else
 			{
-				return "<?= lang(($editable ?? $controller_name). '.confirm_restore') ?>";
+				return "<?= lang(ucfirst($editable ?? $controller_name). '.confirm_restore') ?>";
 			}
         }
 	};
