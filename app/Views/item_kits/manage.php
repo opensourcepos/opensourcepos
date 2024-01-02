@@ -32,8 +32,8 @@ $(document).ready(function()
 
 <div id="title_bar" class="btn-toolbar">
 	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= esc("$controller_name/view") ?>'
-			title='<?= lang($controller_name . '.new') ?>'>
-		<span class="glyphicon glyphicon-tags">&nbsp</span><?= lang($controller_name . '.new') ?>
+			title='<?= lang(ucfirst($controller_name) . '.new') ?>'>
+		<span class="glyphicon glyphicon-tags">&nbsp</span><?= lang(ucfirst($controller_name) . '.new') ?>
 	</button>
 </div>
 

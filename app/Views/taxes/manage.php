@@ -6,16 +6,16 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs">
 	<li class="active" role="presentation">
-		<a data-toggle="tab" href="#tax_codes_tab" title="<?= lang('Taxes.tax_codes_configuration') ?>"><?= lang('Taxes.tax_codes') ?></a>
+		<a data-toggle="tab" href="#tax_codes_tab" title="<?= lang(ucfirst($controller_name) .'.tax_codes_configuration') ?>"><?= lang(ucfirst($controller_name) .'.tax_codes') ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_jurisdictions_tab" title="<?= lang('Taxes.tax_jurisdictions_configuration') ?>"><?= lang('Taxes.tax_jurisdictions') ?></a>
+		<a data-toggle="tab" href="#tax_jurisdictions_tab" title="<?= lang(ucfirst($controller_name) .'.tax_jurisdictions_configuration') ?>"><?= lang(ucfirst($controller_name) .'.tax_jurisdictions') ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_categories_tab" title="<?= lang('Taxes.tax_categories_configuration') ?>"><?= lang('Taxes.tax_categories') ?></a>
+		<a data-toggle="tab" href="#tax_categories_tab" title="<?= lang(ucfirst($controller_name) .'.tax_categories_configuration') ?>"><?= lang(ucfirst($controller_name) .'.tax_categories') ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#tax_rates_tab" title="<?= lang('Taxes.tax_rate_configuration') ?>"><?= lang('Taxes.tax_rates') ?></a>
+		<a data-toggle="tab" href="#tax_rates_tab" title="<?= lang(ucfirst($controller_name) .'.tax_rate_configuration') ?>"><?= lang(ucfirst($controller_name) .'.tax_rates') ?></a>
 	</li>
 </ul>
 
