@@ -40,7 +40,7 @@ function get_tax_code_data_row($tax_code_row): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller_name.update_tax_codes")
+				'title'=>lang(ucfirst($controller_name) . ".update_tax_codes")
 			]
 		)
 	];
@@ -78,7 +78,7 @@ function get_tax_categories_data_row($tax_categories_row): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller_name.update")
+				'title'=>lang(ucfirst($controller_name) . ".update")
 			]
 		)
 	];
@@ -115,7 +115,7 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller_name.update")
+				'title'=>lang(ucfirst($controller_name) . ".update")
 			]
 		)
 	];
@@ -161,7 +161,7 @@ function get_tax_rates_data_row($tax_rates_row): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller_name.update")
+				'title'=>lang(ucfirst($controller_name) . ".update")
 			]
 		)
 	];

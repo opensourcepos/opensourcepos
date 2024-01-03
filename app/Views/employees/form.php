@@ -137,9 +137,9 @@
 									$exploded_permission = explode('_', $permission->permission_id, 2);
 									if($permission->module_id == $module->module_id)
 									{
-										$lang_key = $module->module_id . '_' . $exploded_permission[1];
-										$lang_line = lang($lang_key);
-										$lang_line = (lang($lang_key) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
+										$lang_key = $module->module_id . '.' . $exploded_permission[1];
+										$lang_line = lang(ucfirst($lang_key));
+										$lang_line = (lang(ucfirst($lang_key)) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
 										if(!empty($lang_line))
 										{
 							?>

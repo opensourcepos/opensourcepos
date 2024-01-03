@@ -971,7 +971,7 @@ class Sales extends Secure_Controller
 				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
 			}
 
-			$message = lang($result ? "sales_" . $type . "_sent" : "sales_" . $type . "_unsent") . ' ' . $to;
+			$message = lang($result ? "Sales." . $type . "_sent" : "Sales." . $type . "_unsent") . ' ' . $to;
 		}
 
 		echo json_encode (['success' => $result, 'message' => $message, 'id' => $sale_id]);
@@ -1004,7 +1004,7 @@ class Sales extends Secure_Controller
 
 			$result = $this->email_lib->sendEmail($to, $subject, $text);
 
-			$message = lang($result ? 'sales_receipt_sent' : 'sales_receipt_unsent') . ' ' . $to;
+			$message = lang($result ? 'Sales.receipt_sent' : 'Sales.receipt_unsent') . ' ' . $to;
 		}
 
 		echo json_encode (['success' => $result, 'message' => $message, 'id' => $sale_id]);
