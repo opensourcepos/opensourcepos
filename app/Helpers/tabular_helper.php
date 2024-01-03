@@ -133,7 +133,7 @@ function get_sale_data_row(object $sale): array
 			'class' => 'modal-dlg print_hide',
 			'data-btn-delete' => lang('Common.delete'),
 			'data-btn-submit' => lang('Common.submit'),
-			'title' => lang("$controller.update")
+			'title' => lang(ucfirst($controller) . ".update")
 		]
 	);
 
@@ -240,7 +240,7 @@ function get_person_data_row(object $person): array
 			[
 					'class' => 'modal-dlg',
 					'data-btn-submit' => lang('Common.submit'),
-					'title'=>lang($controller . '.update')	//TODO: String interpolation
+					'title'=>lang(ucfirst($controller) . '.update')	//TODO: String interpolation
 			]
 		)
 	];
@@ -302,7 +302,7 @@ function get_customer_data_row(object $person, object $stats): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -368,7 +368,7 @@ function get_supplier_data_row(object $supplier): array
 			[
 				'class'=>"modal-dlg",
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -496,7 +496,7 @@ function get_item_data_row(object $item): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang("$controller.count")
+				'title' => lang(ucfirst($controller) . ".count")
 			]
 		),
 		'stock' => anchor(
@@ -504,7 +504,7 @@ function get_item_data_row(object $item): array
 			'<span class="glyphicon glyphicon-list-alt"></span>',
 			[
 				'class' => 'modal-dlg',
-				'title' => lang("$controller.details_count")
+				'title' => lang(ucfirst($controller) . ".details_count")
 			]
 		),
 		'edit' => anchor(
@@ -513,7 +513,7 @@ function get_item_data_row(object $item): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title' => lang("$controller.update")
+				'title' => lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -556,7 +556,7 @@ function get_giftcard_data_row(object $giftcard): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -599,7 +599,7 @@ function get_item_kit_data_row(object $item_kit): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -707,7 +707,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -744,7 +744,7 @@ function get_expense_category_data_row(object $expense_category): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -796,7 +796,7 @@ function get_expenses_data_row(object $expense): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
@@ -895,7 +895,7 @@ function get_cash_up_data_row(object $cash_up): array
 			[
 				'class' => 'modal-dlg',
 				'data-btn-submit' => lang('Common.submit'),
-				'title'=>lang("$controller.update")
+				'title'=>lang(ucfirst($controller) . ".update")
 			]
 		)
 	];
