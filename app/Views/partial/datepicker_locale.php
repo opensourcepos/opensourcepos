@@ -5,7 +5,7 @@ $config = config(OSPOS::class)->settings; ?>
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?= dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat']) ?>",
+        format: "<?= dateformat_bootstrap($config['dateformat']) ?>",
         <?php
         $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
@@ -22,13 +22,14 @@ var pickerconfig = function(config) {
             <?php
         }
         ?>
-        minuteStep: 1,
+        minView: 2,
+		minuteStep: 1,
         autoclose: true,
         todayBtn: true,
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-	}, <?php echo isset($config) ? $config : '{}' ?>);
+	}, <?php echo isset($config) ?>);
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
