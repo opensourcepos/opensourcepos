@@ -39,7 +39,7 @@
 		"chartist-plugin-axistitle": "^0.0.7",
 		"chartist-plugin-barlabels": "^0.0.5",
 		"chartist-plugin-pointlabels": "^0.0.4",
-		"chartist-plugin-tooltips": "github:tmmdata/chartist-plugin-tooltip#v0.0.18",
+		"chartist-plugin-tooltips": "github:KanAlexey/chartist-tooltip#master",
 		"clipboard": "^2.0.11",
 		"coffeescript": "^2.7.0",
 		"es6-promise": "^4.2.8",

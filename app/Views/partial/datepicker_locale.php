@@ -23,7 +23,7 @@ var pickerconfig = function(config) {
         }
         ?>
         minView: 2,
-		minuteStep: 1,
+        minuteStep: 1,
         autoclose: true,
         todayBtn: true,
         todayHighlight: true,
