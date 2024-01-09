@@ -469,12 +469,12 @@ class Item extends Model
 	{
 		$builder = $this->db->table('items');
 
-		if($item_id == NEW_ENTRY || !$this->exists($item_id, true))
+		if($item_id < 1 || !$this->exists($item_id, true))
 		{
 			if($builder->insert($item_data))
 			{
-				$item_data['item_id'] = $this->db->insertID();
-				if($item_data['low_sell_item_id'] == NEW_ENTRY)
+				$item_data['item_id'] = (int)$this->db->insertID();
+				if($item_id < 1)
 				{
 					$builder = $this->db->table('items');
 					$builder->where('item_id', $item_data['item_id']);

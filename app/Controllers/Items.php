@@ -16,6 +16,7 @@ use App\Models\Supplier;
 use App\Models\Tax_category;
 
 use CodeIgniter\Images\Handlers\BaseHandler;
+use CodeIgniter\HTTP\DownloadResponse;
 use Config\OSPOS;
 use Config\Services;
 use ReflectionException;
@@ -599,7 +600,7 @@ class Items extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function bulk_edit(): void	//TODO: This function may not be called in the code. Need to confirm
+	public function getBulkEdit(): void	//TODO: This function may not be called in the code. Need to confirm
 	{
 		$suppliers = ['' => lang('Items.none')];
 
@@ -939,7 +940,7 @@ class Items extends Secure_Controller
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function bulk_update(): void
+	public function postBulkUpdate(): void
 	{
 		$items_to_update = $this->request->getPost('item_ids');
 		$item_data = [];
@@ -1010,14 +1011,15 @@ class Items extends Secure_Controller
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function generate_csv_file(): void
+	public function getGenerateCsvFile(): DownloadResponse
 	{
+		helper('importfile_helper');
 		$name = 'import_items.csv';
 		$allowed_locations = $this->stock_location->get_allowed_locations();
-		$allowed_attributes = $this->attribute->get_definition_names(false);
+		$allowed_attributes = $this->attribute->get_definition_names();
 		$data = generate_import_items_csv($allowed_locations, $allowed_attributes);
 
-		$this->response->download($name, $data);
+		return $this->response->download($name, $data);
 	}
 
 	/**
@@ -1034,8 +1036,9 @@ class Items extends Secure_Controller
 	 * @throws ReflectionException
 	 * @noinspection PhpUnused
 	 */
-	public function import_csv_file(): void
+	public function postImportCsvFile(): void
 	{
+		helper('importfile_helper');
 		if($_FILES['file_path']['error'] !== UPLOAD_ERR_OK)
 		{
 			echo json_encode (['success' => false, 'message' => lang('Items.csv_import_failed')]);
@@ -1071,8 +1074,8 @@ class Items extends Secure_Controller
 				foreach($csv_rows as $key => $row)
 				{
 					$is_failed_row = false;
-					$item_id = $row['Id'];
-					$is_update = !empty($item_id);
+					$item_id = (int)$row['Id'];
+					$is_update = ($item_id > 0);
 					$item_data = [
 						'item_id' => $item_id,
 						'name' => $row['Item Name'],
@@ -1131,7 +1134,7 @@ class Items extends Secure_Controller
 					{
 						$failed_row = $key+2;
 						$failCodes[] = $failed_row;
-						log_message('ERROR',"CSV Item import failed on line $failed_row. This item was not imported.");
+						log_message('error',"CSV Item import failed on line $failed_row. This item was not imported.");
 					}
 
 					unset($csv_rows[$key]);
@@ -1185,7 +1188,7 @@ class Items extends Secure_Controller
 		{
 			if (empty($val) && !$is_update)
 			{
-				log_message('Error',"Empty required value in $key.");
+				log_message('error',"Empty required value in $key.");
 				return true;
 			}
 		}
@@ -1198,7 +1201,7 @@ class Items extends Secure_Controller
 		{
 			if(!$this->item->exists($item_id))
 			{
-				log_message('Error',"non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
+				log_message('error',"non-existent item_id: '$item_id' when either existing item_id or no item_id is required.");
 				return true;
 			}
 		}
@@ -1208,22 +1211,22 @@ class Items extends Secure_Controller
 			'cost_price' => $item_data['cost_price'],
 			'unit_price' => $item_data['unit_price'],
 			'reorder_level' => $item_data['reorder_level'],
-			'supplier_id' => $item_data['supplier_id'],
+			'supplier_id' => $row['Supplier ID'],
 			'Tax 1 Percent' => $row['Tax 1 Percent'],
 			'Tax 2 Percent' => $row['Tax 2 Percent']
 		];
 
-		foreach($allowed_locations as $location_name)
+/* 		foreach($allowed_locations as $location_name)
 		{
 			$check_for_numeric_values[] = $row["location_$location_name"];
 		}
-
+ */
 		//Check for non-numeric values which require numeric
 		foreach($check_for_numeric_values as $key => $value)
 		{
 			if(!is_numeric($value) && !empty($value))
 			{
-				log_message('Error',"non-numeric: '$value' for '$key' when numeric is required");
+				log_message('error',"non-numeric: '$value' for '$key' when numeric is required");
 				return true;
 			}
 		}
@@ -1244,21 +1247,21 @@ class Items extends Secure_Controller
 
 						if(!empty($attribute_value) && !in_array($attribute_value, $dropdown_values))
 						{
-							log_message('Error',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
+							log_message('error',"Value: '$attribute_value' is not an acceptable DROPDOWN value");
 							return true;
 						}
 						break;
 					case DECIMAL:
 						if(!is_numeric($attribute_value) && !empty($attribute_value))
 						{
-							log_message('Error',"'$attribute_value' is not an acceptable DECIMAL value");
+							log_message('error',"'$attribute_value' is not an acceptable DECIMAL value");
 							return true;
 						}
 						break;
 					case DATE:
 						if(!valid_date($attribute_value) && !empty($attribute_value))
 						{
-							log_message('Error',"'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
+							log_message('error',"'$attribute_value' is not an acceptable DATE value. The value must match the set locale.");
 							return true;
 						}
 						break;

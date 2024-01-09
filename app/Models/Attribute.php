@@ -393,7 +393,7 @@ class Attribute extends Model
 						$affected_items[] = $affected_item['item_id'];
 					}
 
-					log_message('ERROR', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: ". implode(',', $affected_items));
+					log_message('error', "Attribute_value: '$attribute->attribute_value' cannot be converted to $to. Affected Items: ". implode(',', $affected_items));
 					unset($affected_items);
 				}
 			}
@@ -1028,7 +1028,7 @@ class Attribute extends Model
 
 			if(!$this->save_link($attribute['item_id'], $definition_id, $new_attribute_id))
 			{
-				log_message('Error', 'Transaction failed');
+				log_message('error', 'Transaction failed');
 				$this->db->transRollback();
 				return false;
 			}

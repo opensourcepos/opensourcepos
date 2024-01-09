@@ -89,7 +89,7 @@ $(document).ready(function()
         <button id="delete" class="btn btn-default btn-sm print_hide">
             <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/bulk_edit" ?>'
+        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "items/bulkEdit" ?>'
 				title='<?= lang('Items.edit_multiple_items') ?>'>
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
         </button>
