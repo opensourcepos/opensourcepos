@@ -11,7 +11,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open('items/bulk_update/', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('items/bulkUpdate/', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="bulk_item_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
@@ -172,7 +172,7 @@
 $(document).ready(function()
 {
 	$('#category').autocomplete({
-		source: "<?= 'items/suggest_category' ?>",
+		source: "<?= 'items/suggestCategory' ?>",
 		appendTo: '.modal-content',
 		delay: 10
 	});

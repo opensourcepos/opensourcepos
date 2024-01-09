@@ -227,8 +227,8 @@
 			<div class="tab-pane" id="customer_stats_info">
 				<fieldset>
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-4">
+						<?= form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
 								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -248,8 +248,8 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-4">
+						<?= form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
 								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -269,8 +269,8 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-4">
+						<?= form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
 								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -290,8 +290,8 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-4">
+						<?= form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
 								<?php if (!is_right_side_currency_symbol()): ?>
 									<span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -311,9 +311,10 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-4">
+						<?= form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
+							<span class="input-group-addon input-sm"><b><?= '>' ?></b></span>
 								<?= form_input ([
 										'name' => 'quantity',
 										'id' => 'quantity',
@@ -326,8 +327,8 @@
 					</div>
 
 					<div class="form-group form-group-sm">
-						<?= form_label(lang('Customers.avg_discount'), 'avg_discount', ['class' => 'control-label col-xs-3']) ?>
-						<div class="col-xs-3">
+						<?= form_label(lang('Customers.avg_discount'), 'avg_discount', ['class' => 'control-label col-xs-5']) ?>
+						<div class="col-xs-5">
 							<div class="input-group input-group-sm">
 								<?= form_input ([
 										'name' => 'avg_discount',
