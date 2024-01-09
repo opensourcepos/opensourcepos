@@ -1,10 +1,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open_multipart('items/import_csv_file/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
+<?= form_open_multipart('items/importCsvFile/', ['id' => 'csv_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?= 'items/generate_csv_file' ?>"><?= lang('Common.download_import_template') ?></a>
+				<a href="<?= esc('items/generateCsvFile') ?>"><?= lang('Common.download_import_template') ?></a>
 			</div>
 		</div>
 
@@ -27,23 +27,23 @@ $(document).ready(function()
 	$('#csv_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-				success:function(response)
+				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?= 'items' ?>', response);
+					table_support.handle_submit('<?= esc('items') ?>', response);
 				},
 				dataType: 'json'
 			});
 		},
 
 		errorLabelContainer: '#error_message_box',
- 
-		rules: 
+
+		rules:
 		{
 			file_path: 'required'
    		},
 
-		messages: 
+		messages:
 		{
    			file_path: "<?= lang('Common.import_full_path') ?>"
 		}
