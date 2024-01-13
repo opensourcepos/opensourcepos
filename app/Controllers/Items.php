@@ -1216,11 +1216,11 @@ class Items extends Secure_Controller
 			'Tax 2 Percent' => $row['Tax 2 Percent']
 		];
 
-/* 		foreach($allowed_locations as $location_name)
+ 		foreach($allowed_locations as $location_name)
 		{
 			$check_for_numeric_values[] = $row["location_$location_name"];
 		}
- */
+
 		//Check for non-numeric values which require numeric
 		foreach($check_for_numeric_values as $key => $value)
 		{

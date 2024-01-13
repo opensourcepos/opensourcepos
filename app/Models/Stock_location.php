@@ -255,7 +255,7 @@ class Stock_location extends Model
 			$this->employee = model('Employee');
 
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
-			$menu_group = $employee->get_menu_group($module, $employee['person_id']);
+			$menu_group = $this->employee->get_menu_group($module, $employee['person_id']);
 
 			$grants_data = ['permission_id' => $permission_id, 'person_id' => $employee['person_id'], 'menu_group' => $menu_group];
 
