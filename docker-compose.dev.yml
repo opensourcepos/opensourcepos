@@ -6,10 +6,13 @@ services:
     ospos:
         build:
             context: .
+            args:
+              - UID=${USERID}
+              - GID=${GROUPID}
             target: ospos_dev
         container_name: ospos_dev
         restart: always
-        user: "${UID}:${GID}"
+        user: "${USERID}:${GROUPID}"
         depends_on:
           - mysql
         ports:
