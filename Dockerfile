@@ -25,7 +25,12 @@ WORKDIR /app/tests
 CMD ["/app/vendor/phpunit/phpunit/phpunit"]
 
 FROM ospos AS ospos_dev
-RUN addgroup -S $GID && adduser -S $UID -G $GID
+
+ARG USERID
+ARG GROUPID
+
+RUN echo "Adding user uid $USERID with gid $GROUPID"
+RUN ( addgroup --gid $GROUPID ospos || true ) && ( adduser --uid $USERID --gid $GROUPID ospos )
 
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
