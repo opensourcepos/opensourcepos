@@ -1,7 +1,8 @@
-version: '3.4'
+version: '2.2'
 
 include:
-    - docker/docker-mysql.yml
+  - docker/docker-mysql.yml
+
 services:
     ospos:
         build:
