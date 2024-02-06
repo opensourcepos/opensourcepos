@@ -181,9 +181,11 @@ class Receivings extends Secure_Controller
 	{
 		$data = [];
 
-		$this->validator->setRule('price', 'lang:items_price', 'required|numeric');
-		$this->validator->setRule('quantity', 'lang:items_quantity', 'required|numeric');
-		$this->validator->setRule('discount', 'lang:items_discount', 'required|numeric');
+		$validation_rule = [
+			'price' => 'trim|required|numeric',
+			'quantity' => 'trim|required|numeric',
+			'discount' => 'trim|required|numeric',
+		];
 
 		$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -196,7 +198,7 @@ class Receivings extends Secure_Controller
 
 		$receiving_quantity = $this->request->getPost('receiving_quantity', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-		if(!$this->validate([]))
+		if($this->validate($validation_rule))
 		{
 			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity);
 		}
@@ -285,7 +287,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function complete(): void
+	public function postComplete(): void
 	{
 		$data = [];
 
