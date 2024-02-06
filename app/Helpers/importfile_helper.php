@@ -49,16 +49,12 @@ function generate_attribute_headers(array $attribute_names): string
 }
 
 /**
+ * Processes a CSV file and returns it.
  * @param string $file_name
- * @return array
+ * @return array A multidimensional array of rows found within the file and their associative key/value pairs.
  */
 function get_csv_file(string $file_name): array
 {
-//TODO: current implementation reads the entire file in.  This is memory intensive for large files.
-//We may want to rework the CSV import feature to read the file in chunks, process it and continue.
-//It must be done in a way that does not significantly negatively affect performance.
-	ini_set('auto_detect_line_endings', true);
-
 	$csv_rows = false;
 
 	if(($csv_file = fopen($file_name,'r')) !== false)
@@ -77,7 +73,6 @@ function get_csv_file(string $file_name): array
 
 		while(($row = fgetcsv($csv_file)) !== false)
 		{
-			//Skip empty lines
 			if($row !== [null])
 			{
 				$csv_rows[] = array_combine($headers, $row);
