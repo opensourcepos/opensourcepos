@@ -488,6 +488,7 @@ class Customers extends Persons
 					if($invalidated)
 					{
 						$failCodes[] = $i;
+						log_message('error',"Row $i was not imported: Either email or account number already exist or data was invalid.");
 					}
 					elseif($this->customer->save_customer($person_data, $customer_data))
 					{
