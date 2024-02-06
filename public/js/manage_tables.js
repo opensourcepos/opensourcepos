@@ -284,7 +284,7 @@
 
 	var submit_handler = function(url) {
 		return function (resource, response) {
-			var id = response.id.toString();
+			var id = response.id !== undefined ? response.id.toString() : "";
 			if (!response.success) {
 				$.notify(response.message, { type: 'danger' });
 			} else {
