@@ -323,7 +323,7 @@ class Config extends Secure_Controller
 	public function postSaveInfo(): void
 	{
 		$upload_data = $this->upload_logo();
-		$upload_success = !empty($upload_data['error']);
+		$upload_success = empty($upload_data['error']);
 
 		$batch_save_data = [
 			'company' => $this->request->getPost('company'),
@@ -337,7 +337,7 @@ class Config extends Secure_Controller
 
 		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'])
 		{
-			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+			$batch_save_data['company_logo'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
@@ -354,6 +354,13 @@ class Config extends Secure_Controller
 	 */
 	private function upload_logo(): array
 	{
+		$file = $this->request->getFile('company_logo');
+		if(!$file)
+		{
+			return [];
+		}
+		log_message('error', $file->getClientMimeType());
+
 		helper(['form']);
 		$validation_rule = [
 			'company_logo' => [
@@ -362,7 +369,7 @@ class Config extends Secure_Controller
 					'uploaded[company_logo]',
 					'is_image[company_logo]',
 					'max_size[company_logo,1024]',
-					'mime_in[company_logo,image/png,image/jpg,image/gif]',
+					'mime_in[company_logo,image/png,image/jpg,image/jpeg,image/gif]',
 					'ext_in[company_logo,png,jpg,gif]',
 					'max_dims[company_logo,800,680]',
 				]
@@ -373,19 +380,20 @@ class Config extends Secure_Controller
 		{
 			return (['error' => $this->validator->getError('company_logo')]);
 		}
-		else
-		{
-			$file = $this->request->getFile('company_logo');
-			$file->move(FCPATH . 'uploads');
 
-			$file_info = [
-				'orig_name' => $file->getClientName(),
-				'raw_name' => $file->getName(),
-				'file_ext' => $file->guessExtension()
-			];
 
-			return ($file_info);
-		}
+		$filename = $file->getClientName();
+		$info = pathinfo($filename);
+
+		$file_info = [
+			'orig_name' => $filename,
+			'raw_name' => $info['filename'],
+			'file_ext' => $file->guessExtension()
+		];
+
+		$file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+
+		return ($file_info);
 	}
 
 	/**
@@ -984,9 +992,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Called via AJAX. Removes the company logo from the database.
+	 * @return void
 	 * @throws ReflectionException
 	 */
-	public function remove_logo(): void
+	public function postRemoveLogo(): void
 	{
 		$success = $this->appconfig->save(['company_logo' => '']);
 
