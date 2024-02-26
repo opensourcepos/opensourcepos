@@ -220,6 +220,7 @@ class Barcode_lib
 	private function manage_display_layout($layout_type, array $item, array $barcode_config): string
 	{
 		$result = '';
+		helper('text');
 
 		//TODO: this needs to be converted to a switch statement.
 		if($layout_type == 'name')
