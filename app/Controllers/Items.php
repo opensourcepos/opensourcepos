@@ -810,7 +810,6 @@ class Items extends Secure_Controller
 		{
 			return [];
 		}
-		log_message('error', $file->getClientMimeType());
 
 		helper(['form']);
 		$validation_rule = [
