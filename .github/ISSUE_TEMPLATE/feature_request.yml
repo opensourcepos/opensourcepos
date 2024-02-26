@@ -24,7 +24,7 @@ body:
         - "✅ New Test"
     validations:
       required: true
-	  
+      
   - type: dropdown
     id: ospos-version
     attributes:
