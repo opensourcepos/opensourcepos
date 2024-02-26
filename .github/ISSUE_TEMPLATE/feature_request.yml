@@ -106,7 +106,7 @@ body:
       label: Additional Information
       description: Give us some additional information on the feature request like proposed solutions, links, screenshots, etc.
 	  
-  - type: checkboxes
+ - type: checkboxes
     id: terms
     attributes:
       label: Verify you searched open requests in OpensourcePOS
