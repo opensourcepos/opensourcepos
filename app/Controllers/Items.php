@@ -631,11 +631,8 @@ class Items extends Secure_Controller
 	 */
 	public function postSave(int $item_id = NEW_ENTRY): void
 	{
-		$upload_success = $this->upload_image();
-
-		// TODO the hasFile is not defined, so commenting this out and saving it for last.
-//		$upload_file = $this->request->hasFile('image') ? $this->request->getFile('image') : null;	//TODO: https://codeigniter4.github.io/userguide/incoming/incomingrequest.html#uploaded-files
-		$upload_file = null;
+		$upload_data = $this->upload_image();
+		$upload_success = empty($upload_data['error']);
 
 		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
 		$item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
@@ -687,18 +684,9 @@ class Items extends Secure_Controller
 			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
 		}
 
-		if ($upload_file != null)
-		{
-			$original_name = $upload_file->getFilename();
-			if(!empty($original_name))
-			{
-				$item_data['pic_filename'] = $original_name;
-			}
-		}
-		else
-		{
-			$item_data['pic_filename'] = null;
-		}
+		$item_data['pic_filename'] = !empty($upload_data['orig_name']) && $upload_data['raw_name']
+			? $upload_data['raw_name'] . '.' . $upload_data['file_ext']
+			: null;
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
@@ -798,7 +786,7 @@ class Items extends Secure_Controller
 			}
 			else
 			{
-				$message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors());	//TODO: Need to figure out what the analog to this->upload->display_errors() is.
+				$message = $upload_success ? lang('Items.error_adding_updating') . ' ' . $item_data['name'] : strip_tags($upload_data['error']);
 
 				echo json_encode (['success' => false, 'message' => $message, 'id' => $item_id]);
 			}
@@ -817,7 +805,13 @@ class Items extends Secure_Controller
 	 */
 	private function upload_image(): array
 	{
-		//Load upload library
+		$file = $this->request->getFile('items_image');
+		if(!$file)
+		{
+			return [];
+		}
+		log_message('error', $file->getClientMimeType());
+
 		helper(['form']);
 		$validation_rule = [
 			'items_image' => [
@@ -826,8 +820,9 @@ class Items extends Secure_Controller
 					'uploaded[items_image]',
 					'is_image[items_image]',
 					'max_size[items_image,' . $this->config['image_max_size'] . ']',
-					'max_dims[items_image,' . $this->config['image_max_width'] . ',' . $this->config['image_max_height'] . ']',
-					'ext_in[items_image,' . $this->config['image_allowed_types'] . ']'
+					'mime_in[items_image,image/png,image/jpg,image/jpeg,image/gif]',
+					'ext_in[items_image,' . $this->config['image_allowed_types'] . ']',
+					'max_dims[items_image,' . $this->config['image_max_width'] . ',' . $this->config['image_max_height'] . ']'
 				]
 			]
 		];
@@ -836,19 +831,18 @@ class Items extends Secure_Controller
 		{
 			return (['error' => $this->validator->getError('items_image')]);
 		}
-		else
-		{
-			$file = $this->request->getFile('company_logo');
-			$file->move(FCPATH . 'uploads');
 
-			$file_info = [
-				'orig_name' => $file->getClientName(),
-				'raw_name' => $file->getName(),
-				'file_ext' => $file->guessExtension()
-			];
+		$filename = $file->getClientName();
+		$info = pathinfo($filename);
 
-			return ($file_info);
-		}
+		$file_info = [
+			'orig_name' => $filename,
+			'raw_name' => $info['filename'],
+			'file_ext' => $file->guessExtension()
+		];
+
+		$file->move(FCPATH . 'uploads/item_pics/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
+		return ($file_info);
 	}
 
 
