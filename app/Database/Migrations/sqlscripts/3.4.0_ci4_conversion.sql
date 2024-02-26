@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS `ospos_sessions` (
 	);
 
 ALTER TABLE ospos_sessions ADD PRIMARY KEY (id, ip_address);
+
+UPDATE `ospos_app_config`
+SET `value` = REPLACE(value, '|', ',')
+WHERE `key` = 'image_allowed_types';

@@ -388,7 +388,7 @@
 						<span class="btn btn-default btn-sm btn-file">
 							<span class="fileinput-new"><?= lang('Items.select_image') ?></span>
 							<span class="fileinput-exists"><?= lang('Items.change_image') ?></span>
-							<input type="file" name="item_image" accept="image/*">
+							<input type="file" name="items_image" accept="image/*">
 						</span>
 						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?= lang('Items.remove_image') ?></a>
 					</div>
