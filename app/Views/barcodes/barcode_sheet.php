@@ -5,9 +5,13 @@
  * @var array $barcode_config
  * @var array $items
  */
+
+use App\Libraries\Barcode_lib;
+
+$barcode_lib = new Barcode_lib();
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= $this->request->getLocale() ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= service('request')->getLocale() ?>">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -15,7 +19,7 @@
 	<link rel="stylesheet" rev="stylesheet" href="<?= base_url() ?>css/barcode_font.css" />
 </head>
 
-<body class=<?= "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
+<body class=<?= "font_" . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
       style="font-size:<?= $barcode_config['barcode_font_size'] ?>px">
 	<table cellspacing=<?= $barcode_config['barcode_page_cellspacing'] ?> width='<?= $barcode_config['barcode_page_width']."%" ?>' >
 		<tr>
@@ -27,7 +31,7 @@
 				{
 					echo '</tr><tr>';
 				}
-				echo '<td>' . $this->barcode_lib->display_barcode($item, $barcode_config) . '</td>';
+				echo '<td>' . $barcode_lib->display_barcode($item, $barcode_config) . '</td>';
 				++$count;
 			}
 			?>
