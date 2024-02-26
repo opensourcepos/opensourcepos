@@ -23,8 +23,8 @@
 	],
 	"homepage": "https://github.com/opensourcepos/opensourcepos",
 	"require": {
-		"php": "^7.4||^8.3",
-		"codeigniter4/framework": "4.4.3",
+		"php": "^7.4||^8.0",
+		"codeigniter4/framework": "4.4.5",
 		"dompdf/dompdf": "^2.0.3",
 		"laminas/laminas-escaper": "2.12",
 		"paragonie/random_compat": "^2.0.21",
@@ -33,10 +33,10 @@
 		"tamtamchik/namecase": "^1.0.6"
 	},
 	"require-dev": {
-		"codeigniter/coding-standard": "^1.5",
+		"codeigniter/coding-standard": "^1.7",
 		"codeigniter4/devkit": "v1.1.0",
 		"fakerphp/faker": "^1.23.0",
-		"friendsofphp/php-cs-fixer": "3.13.0",
+		"friendsofphp/php-cs-fixer": "3.47.1",
 		"kint-php/kint": "^5.0.4",
 		"mikey179/vfsstream": "^1.6",
 		"nexusphp/cs-config": "^3.6",
