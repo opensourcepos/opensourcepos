@@ -23,7 +23,7 @@ body:
         - "⚡ Performance Improvements"
         - "✅ New Test"
     validations:
-     required: true
+      required: true
 	  
   - type: dropdown
     id: ospos-version
