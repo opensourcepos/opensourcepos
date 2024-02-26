@@ -47,15 +47,10 @@ class App extends BaseConfig
 	 * Base Site URL
 	 * --------------------------------------------------------------------------
 	 *
-	 * URL to your CodeIgniter root. Typically this will be your base URL,
+	 * URL to your CodeIgniter root. Typically, this will be your base URL,
 	 * WITH a trailing slash:
 	 *
 	 *    http://example.com/
-	 *
-	 * If this is not set then CodeIgniter will try guess the protocol, domain
-	 * and path to your installation. However, you should always configure this
-	 * explicitly and never rely on auto-guessing, especially in production
-	 * environments.
 	 */
 	public string $baseURL;	//Defined in the constructor
 
@@ -68,8 +63,7 @@ class App extends BaseConfig
      *      'http://accounts.example.com/':
      *          ['media.example.com', 'accounts.example.com']
      *
-     * @var string[]
-     * @phpstan-var list<string>
+     * @var list<string>
      */
     public array $allowedHostnames = [];
 
@@ -133,6 +127,8 @@ class App extends BaseConfig
 	 * If $negotiateLocale is true, this array lists the locales supported
 	 * by the application in descending order of priority. If no match is
 	 * found, the first locale will be used.
+	 *
+	 * IncomingRequest::setLocale() also uses this list.
 	 *
 	 * @var string[]
 	 */
