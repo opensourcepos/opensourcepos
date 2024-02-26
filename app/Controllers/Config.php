@@ -282,7 +282,7 @@ class Config extends Secure_Controller
 		//General related fields
 		$image_allowed_types = ['jpg','jpeg','gif','svg','webp','bmp','png','tif','tiff'];
 		$data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
-		$data['selected_image_allowed_types'] = explode('|', $this->config['image_allowed_types']);
+		$data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
 		//Integrations Related fields
 		$data['mailchimp']	= [];
@@ -359,7 +359,6 @@ class Config extends Secure_Controller
 		{
 			return [];
 		}
-		log_message('error', $file->getClientMimeType());
 
 		helper(['form']);
 		$validation_rule = [
@@ -417,7 +416,7 @@ class Config extends Secure_Controller
 			'image_max_width' => $this->request->getPost('image_max_width', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_height' => $this->request->getPost('image_max_height', FILTER_SANITIZE_NUMBER_INT),
 			'image_max_size' => $this->request->getPost('image_max_size', FILTER_SANITIZE_NUMBER_INT),
-			'image_allowed_types' => implode('|', $this->request->getPost('image_allowed_types')),
+			'image_allowed_types' => implode(',', $this->request->getPost('image_allowed_types')),
 			'gcaptcha_enable' => $this->request->getPost('gcaptcha_enable') != null,
 			'gcaptcha_secret_key' => $this->request->getPost('gcaptcha_secret_key'),
 			'gcaptcha_site_key' => $this->request->getPost('gcaptcha_site_key'),
