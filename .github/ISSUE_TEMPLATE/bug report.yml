@@ -1,0 +1,121 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+projects: ["ospos/3", "ospos/4"]
+assignees:
+  - none
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bug reports indicate that something is not working as intended. 
+        Please include as much detail as possible and submit a separate bug report for each problem.
+        Do not include personal identifying information such as email addresses or encryption keys.           
+  - type: dropdown
+    id: ospos-version
+    attributes:
+      label: OpensourcePOS Version
+      description: What version of our software are you running?
+      options:
+        - opensourcepos 3.3.9
+        - opensourcepos 3.3.8
+        - opensourcepos 3.3.7
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: php-version
+    attributes:
+      label: Php version
+      description: What version of Php?
+      options:
+        - Php 7.2
+        - Php 7.3
+        - Php 7.4
+        - Php 8.1 
+        - Php 8.2
+        - Php 8.3
+        - Php 8.4
+      default: 0
+    validations:
+      required: true 
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Other
+  - type: input
+    id: server
+    attributes:
+      label: Server Operating System and version
+      description: "Server Operating System "
+      placeholder: "Server Operating System "
+    validations:
+      required: true  
+  - type: input
+    id: database
+    attributes:
+      label: Database Management System and version
+      description: "Database Management System"
+      placeholder: "Database Management"
+    validations:
+      required: true   
+  - type: input
+    id: webserver
+    attributes:
+      label: Web Server and version
+      description: "Web Server and version "
+      placeholder: "Web Server and version "
+    validations:
+      required: true    
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior?
+      description: Tell us what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "Expected Behavior!"
+    validations:
+      required: true    
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description?
+      description: Describe the problem that you are seeing
+      placeholder: Tell us what you see!
+      value: "Describe the problem that you are seeing!"
+    validations:
+      required: true 
+  - type: textarea
+    id: steps-reproduce
+    attributes:
+      label: Steps to Reproduce?
+      description: List the steps to reproduce this issue
+      placeholder: Tell us what you see!
+      value: "Steps to Reproduce!"
+    validations:
+      required: true      
+  - type: textarea
+    id: servers
+    attributes:
+      label: System Information Report (optional)
+      description: Copy and paste from OSPOS > Configuration > Setup & Conf > Setup & Conf?
+      placeholder: System Information Report
+      value: "System Information Report"
+    validations:
+      required: true  
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Unmodified copy of OpensourcePOS
+      description: By submitting this issue you agree this copy has not been modified
+      options:
+        - label: I agree this copy has not been modified
+          required: true
