@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Agregar Excepcion";
 $lang["taxes_cascade"] = "Cascada";
 $lang["taxes_cascade_sequence"] = "Secuencia de Cascada";
@@ -37,11 +36,11 @@ $lang["taxes_tax_category_duplicate"] = "duplicar categoria de impuesto";
 $lang["taxes_tax_category_invalid_chars"] = "caracteres invalidos en el nombre de la categoria de impuesto";
 $lang["taxes_tax_category_name"] = "nombre de la categoria de impuesto";
 $lang["taxes_tax_category_new"] = "nueva categoria de impuesto";
-$lang["taxes_tax_category_required"] = "categoria de impuesto es requerida";
+$lang["taxes_tax_category_required"] = "Categoría de impuesto es requerida";
 $lang["taxes_tax_code"] = "codigo de impuesto";
 $lang["taxes_tax_code_cannot_be_deleted"] = "error al eliminar codigo de impuesto";
-$lang["taxes_tax_code_duplicate"] = "codigo de impuesto duplicado";
-$lang["taxes_tax_code_invalid_chars"] = "caracteres invalidos en el codigo de impuesto";
+$lang["taxes_tax_code_duplicate"] = "Código de impuesto duplicado";
+$lang["taxes_tax_code_invalid_chars"] = "Caracteres inválidos en el código de impuesto";
 $lang["taxes_tax_code_name"] = "nombre del codigo de impuesto";
 $lang["taxes_tax_code_required"] = "codigo de impuesto es un campo requerido";
 $lang["taxes_tax_code_successful_deleted"] = "has eliminado satisfactoriamente el codigo de impuesto";
@@ -59,8 +58,8 @@ $lang["taxes_tax_group_not_unique"] = "Grupo de impuestos %1 no es el unico";
 $lang["taxes_tax_group_sequence"] = "secuencia de grupo de impuesto";
 $lang["taxes_tax_included"] = "impuesto incluido";
 $lang["taxes_tax_jurisdiction"] = "impuesto por ley";
-$lang["taxes_tax_jurisdiction_duplicate"] = "impuesto por ley duplicado";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "caracteres invalidos en el nombre por ley";
+$lang["taxes_tax_jurisdiction_duplicate"] = "Impuesto por ley duplicado";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Caracteres inválidos en el nombre por ley";
 $lang["taxes_tax_jurisdiction_required"] = "impuesto por ley es requerido";
 $lang["taxes_tax_jurisdictions"] = "impuestos por leyes";
 $lang["taxes_tax_jurisdictions_configuration"] = "configuracion de impuestos por leyes";
