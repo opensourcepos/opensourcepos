@@ -126,17 +126,16 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?= form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-2']) ?>
+				<?php echo form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-4'>
 					<?php
-					$barcode_formats = json_decode($config['barcode_formats']);
-					echo form_dropdown (
-						'barcode_formats[]',
-						'barcode_formats',
-						!empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
-						'multiple',
-						'tagsinput'
-					) ?>
+					$barcode_formats = json_decode(config('OSPOS')->settings['barcode_formats']);
+					echo form_dropdown ([
+						'name' => 'barcode_formats[]',
+						'id' => 'barcode_formats',
+						'options' => !empty($barcode_formats) ? esc(array_combine($barcode_formats, $barcode_formats), 'attr') : [],
+						'multiple' => 'multiple',
+						'data-role' => 'tagsinput']) ?>
 				</div>
 			</div>
 

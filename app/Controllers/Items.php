@@ -496,23 +496,24 @@ class Items extends Secure_Controller
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function getGenerateBarcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids
+	public function getGenerateBarcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
 	{
 		$item_ids = explode(':', $item_ids);
 		$result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
-		$config = $this->barcode_lib->get_barcode_config();
-
-		$data['barcode_config'] = $config;
+		$data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 
 		foreach($result as &$item)
 		{
-			if(empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
+			if(isset($item['item_number']) && empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
 			{
-				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
+				$barcode_instance = Barcode_lib::barcode_instance($item, $data['barcode_config']);
 				$item['item_number'] = $barcode_instance->getData();
-				$save_item = ['item_number' => $item['item_number']];
 
-				$this->item->save_value($save_item, $item['item_id']);
+				if(isset($item['item_id']))
+				{
+					$save_item = ['item_number' => $item['item_number']];
+					$this->item->save_value($save_item, $item['item_id']);
+				}
 			}
 		}
 		$data['items'] = $result;

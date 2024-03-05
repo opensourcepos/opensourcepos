@@ -119,10 +119,10 @@ class Ean13 extends BarcodeBase
 	/**
 	 * Set the data
 	 *
-	 * @param mixed $data - (int or string) Data to be encoded
+	 * @param $data - (int or string) Data to be encoded
 	 * @return void
 	 */
-	public function setData(mixed $data): void
+	public function setData($data): void
 	{
 		$this->data = $data;
 	}
@@ -274,21 +274,27 @@ class Ean13 extends BarcodeBase
 		{
 			$value = substr($this->data, $idx, 1);
 
-			foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
+			if(isset($this->_codingmap[$value][$set_array[$idx - 1]]))
 			{
-				if ($bar)
+    			foreach($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
 				{
-					imagefilledrectangle(
-						$this->img,
-						$xpos,
-						0,
-						$xpos + $pxPerBar - 1,
-						$this->y,
-						$black
-					);
-				}
-
-				$xpos += $pxPerBar;
+        			if($bar)
+					{
+						imagefilledrectangle(
+							$this->img,
+							$xpos,
+							0,
+							$xpos + $pxPerBar - 1,
+							$this->y,
+							$black
+						);
+					}
+        			$xpos += $pxPerBar;
+    			}
+			}
+			else
+			{
+    			throw new \Exception("Invalid index in _codingmap array. Value: $value, Set: {$set_array[$idx - 1]}");
 			}
 		}
 
