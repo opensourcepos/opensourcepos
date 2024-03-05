@@ -4,11 +4,14 @@ namespace App\Libraries;
 
 use Config\OSPOS;
 use Exception;
+use Picqer\Barcode\BarcodeGenerator;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use App\Libraries\Barcodes\Code39;
 use App\Libraries\Barcodes\Code128;
 use App\Libraries\Barcodes\Ean8;
 use App\Libraries\Barcodes\Ean13;
+use ReflectionClass;
 
 /**
  * Barcode library
@@ -17,15 +20,46 @@ use App\Libraries\Barcodes\Ean13;
  */
 class Barcode_lib
 {
+	/**
+	 * @var array Values from Picqer\Barcode\BarcodeGenerator class. If that class changes, this array will need to be updated.
+	 */
 	private array $supported_barcodes = [
-		'Code39' => 'Code 39',
-		'Code128' => 'Code 128',
-		'Ean8' => 'EAN 8',
-		'Ean13' => 'EAN 13'
+		'C32' => 'Code 32',
+		'C39' => 'Code 39',
+		'C39+' => 'Code 39 Checksum',
+		'C39E' => 'Code 39E',
+		'C39E+' => 'Code 39E Checksum',
+		'C93' => 'Code 93',
+		'S25' => 'Standard 2 5',
+		'S25+' => 'Standard 2 5 Checksum',
+		'I25' => 'Interleaved 2 5',
+		'I25+' => 'Interleaved 2 5 Checksum',
+		'C128' => 'Code 128',
+		'C128A' => 'Code 128 A',
+		'C128B' => 'Code 128 B',
+		'C128C' => 'Code 128 C',
+		'EAN2' => 'EAN 2',
+		'EAN5' => 'EAN 5',
+		'EAN8' => 'EAN 8',
+		'EAN13' => 'EAN 13',
+		'ITF14' => 'ITF14',
+		'UPCA' => 'UPC A',
+		'UPCE' => 'UPC E',
+		'MSI' => 'Msi',
+		'MSI+' => 'MSI Checksum',
+		'POSTNET' => 'Postnet',
+		'PLANET' => 'Planet',
+		'RMS4CC' => 'RMS4CC',
+		'KIX' => 'KIX',
+		'IMB' => 'IMB',
+		'CODABAR' => 'Codabar',
+		'CODE11' => 'Code 11',
+		'PHARMA' => 'Pharma Code',
+		'PHARMA2T' => 'Pharma Code Two Tracks',
 	];
 
 	/**
-	 * @return array|string[]
+	 * @return array
 	 */
 	public function get_list_barcodes(): array
 	{
@@ -53,9 +87,23 @@ class Barcode_lib
 		$data['barcode_page_width'] = $config['barcode_page_width'];
 		$data['barcode_page_cellspacing'] = $config['barcode_page_cellspacing'];
 		$data['barcode_generate_if_empty'] = $config['barcode_generate_if_empty'];
-		$data['barcode_formats'] = $config['barcode_formats'];
+		$data['barcode_formats'] = $config['barcode_formats'] !== 'null'? $config['barcode_formats'] : [];
 
 		return $data;
+	}
+
+	/**
+	 * Returns the value to be used in the barcode.
+	 *
+	 * @param array $item Contains item data
+	 * @param array $barcode_config Contains barcode configuration
+	 * @return string Barcode value
+	 */
+	private function get_barcode_value(array $item, array $barcode_config)
+	{
+		return $barcode_config['barcode_content'] !== "id" && !empty($item['item_number'])
+			? $item['item_number']
+			: $item['item_id'];
 	}
 
 	/**
@@ -109,7 +157,7 @@ class Barcode_lib
 	 * @param array $item
 	 * @param object $barcode_instance
 	 * @param array $barcode_config
-	 * @return mixed
+	 * @return
 	 */
 	private static function barcode_seed(array $item, object $barcode_instance, array $barcode_config)
 	{
@@ -145,17 +193,15 @@ class Barcode_lib
 	{
 		try
 		{
-			$generator = new BarcodeGeneratorPNG();
-			$barcode_instance = Barcode_lib::barcode_instance($item, $barcode_config);
-			$barcode_instance->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
-
-			$barcode_instance->draw();
-
-			return $barcode_instance->base64();
+			$generator = new BarcodeGeneratorHTML();
+			$barcode_value = $this->get_barcode_value($item, $barcode_config);
+			return base64_encode($generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']));
 		}
 		catch(Exception $e)
 		{
 			echo 'Caught exception: ', $e->getMessage(), "\n";
+			echo 'Stack trace: ', $e->getTraceAsString();
+
 			return '';
 		}
 	}
@@ -200,15 +246,20 @@ class Barcode_lib
 	 */
 	public function display_barcode(array $item, array $barcode_config): string
 	{
-		$display_table = '<table>';
-		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
-		$barcode = $this->generate_barcode($item, $barcode_config);
-		$display_table .= "<tr><td style=\"text-align=center;\"><img src='data:image/png;base64,$barcode' /></td></tr>";
-		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-		$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
-		$display_table .= '</table>';
+		if(isset($item['item_number']) && isset($item['item_id']))
+		{
+			$display_table = '<table>';
+			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+			$barcode = $this->generate_barcode($item, $barcode_config);
+			$display_table .= "<tr><td style=\"text-align=center;\">" . base64_decode($barcode) . "</td></tr>";
+			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+			$display_table .= '</table>';
 
-		return $display_table;
+			return $display_table;
+		}
+
+		return "Item number or Item ID not found in the item array.";
 	}
 
 	/**
