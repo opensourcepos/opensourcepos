@@ -129,11 +129,11 @@ class Code128 extends BarcodeBase
 	/**
 	 * Set the data
 	 *
-	 * @param mixed $data - (int or string) Data to be encoded
+	 * @param $data - (int or string) Data to be encoded
 	 * @return void
 	 * @throws OverflowException
 	 */
-	public function setData(mixed $data): void
+	public function setData($data): void
 	{
 		$this->data = $data;
 	}

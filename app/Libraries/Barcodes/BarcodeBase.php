@@ -57,11 +57,11 @@ abstract class BarcodeBase
 	/**
 	 * (Abstract) Set the data
 	 *
-	 * @param mixed $data - (int or string) Data to be encoded
+	 * @param $data - (int or string) Data to be encoded
 	 * @return void
 	 * @throws OverflowException
 	 */
-	abstract public function setData(mixed $data): void;
+	abstract public function setData($data): void;
 
 	/**
 	 * Get the data
