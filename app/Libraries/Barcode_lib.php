@@ -4,14 +4,8 @@ namespace App\Libraries;
 
 use Config\OSPOS;
 use Exception;
-use Picqer\Barcode\BarcodeGenerator;
-use Picqer\Barcode\BarcodeGeneratorHTML;
+use Picqer\Barcode\BarcodeGeneratorDynamicHTML;
 use Picqer\Barcode\BarcodeGeneratorPNG;
-use App\Libraries\Barcodes\Code39;
-use App\Libraries\Barcodes\Code128;
-use App\Libraries\Barcodes\Ean8;
-use App\Libraries\Barcodes\Ean13;
-use ReflectionClass;
 
 /**
  * Barcode library
@@ -99,10 +93,10 @@ class Barcode_lib
 	 * @param array $barcode_config Contains barcode configuration
 	 * @return string Barcode value
 	 */
-	private function get_barcode_value(array $item, array $barcode_config)
+	private function get_barcode_value(array $item, array $barcode_config): string
 	{
-		return $barcode_config['barcode_content'] !== "id" && !empty($item['item_number'])
-			? $item['item_number']
+		return $barcode_config['barcode_content'] !== 'id'
+			? ($item['item_number'] ?? $item['name'])
 			: $item['item_id'];
 	}
 
@@ -193,9 +187,9 @@ class Barcode_lib
 	{
 		try
 		{
-			$generator = new BarcodeGeneratorHTML();
+			$generator = new BarcodeGeneratorDynamicHTML();
 			$barcode_value = $this->get_barcode_value($item, $barcode_config);
-			return base64_encode($generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']));
+			return $generator->getBarcode($barcode_value, $barcode_config['barcode_type']);
 		}
 		catch(Exception $e)
 		{
@@ -215,20 +209,7 @@ class Barcode_lib
 		try
 		{
 			$generator = new BarcodeGeneratorPNG();
-
-			//Code128 is the default and used in this case for the receipts
-			$barcode = $this->get_barcode_instance();
-
-			// set the receipt number to generate the barcode for
-			$barcode->setData($barcode_content);
-
-			// width: 300, height: 50
-			$barcode->setDimensions(300, 50);
-
-			// draw the image
-			$barcode->draw();
-
-			return $barcode->base64();
+			return base64_encode($generator->getBarcode($barcode_content, $generator::TYPE_CODE_128));
 		}
 		catch(Exception $e)
 		{
@@ -246,12 +227,12 @@ class Barcode_lib
 	 */
 	public function display_barcode(array $item, array $barcode_config): string
 	{
-		if(isset($item['item_number']) && isset($item['item_id']))
+		if((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id']))
 		{
 			$display_table = '<table>';
 			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
 			$barcode = $this->generate_barcode($item, $barcode_config);
-			$display_table .= "<tr><td style=\"text-align=center;\">" . base64_decode($barcode) . "</td></tr>";
+			$display_table .= '<tr><td style="text-align=center;"><div style=\'height:' . $barcode_config['barcode_height'] . 'px; width:'. $barcode_config['barcode_width'] . "px;'>$barcode</div></td></tr>";
 			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
 			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
 			$display_table .= '</table>';
@@ -259,7 +240,7 @@ class Barcode_lib
 			return $display_table;
 		}
 
-		return "Item number or Item ID not found in the item array.";
+		return "Item number or Item ID not found in the item array.";	//TODO: this needs to be run through the translation engine.
 	}
 
 	/**
@@ -273,7 +254,6 @@ class Barcode_lib
 		$result = '';
 		helper('text');
 
-		//TODO: this needs to be converted to a switch statement.
 		if($layout_type == 'name')
 		{
 			$result = lang('Items.name') . " " . $item['name'];
