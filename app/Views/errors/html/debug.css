@@ -19,7 +19,7 @@ body {
 }
 h1 {
     font-weight: lighter;
-    letter-spacing: 0.8;
+    letter-spacing: 0.8rem;
     font-size: 3rem;
     color: var(--dark-text-color);
     margin: 0;
