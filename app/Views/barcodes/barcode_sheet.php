@@ -20,7 +20,7 @@ $barcode_lib = new Barcode_lib();
 </head>
 
 <body class=<?= "font_" . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
-      style="font-size:<?= $barcode_config['barcode_font_size'] ?>px">
+	style="font-size:<?= $barcode_config['barcode_font_size'] ?>px">
 	<table cellspacing=<?= $barcode_config['barcode_page_cellspacing'] ?> width='<?= $barcode_config['barcode_page_width']."%" ?>' >
 		<tr>
 			<?php
