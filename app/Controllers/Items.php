@@ -506,9 +506,6 @@ class Items extends Secure_Controller
 		{
 			if(isset($item['item_number']) && empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
 			{
-				$barcode_instance = Barcode_lib::barcode_instance($item, $data['barcode_config']);
-				$item['item_number'] = $barcode_instance->getData();
-
 				if(isset($item['item_id']))
 				{
 					$save_item = ['item_number' => $item['item_number']];

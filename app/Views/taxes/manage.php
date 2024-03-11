@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $controller_name
+ */
+?>
 <?= view('partial/header') ?>
 
 <script type="text/javascript">
