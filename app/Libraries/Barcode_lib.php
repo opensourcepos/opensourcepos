@@ -152,11 +152,11 @@ class Barcode_lib
 		if((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id']))
 		{
 			$display_table = '<table>';
-			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+			$display_table .= "<tr><td style=\"text-align:center;\">" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
 			$barcode = $this->generate_barcode($item, $barcode_config);
-			$display_table .= '<tr><td style="text-align=center;"><div style=\'height:' . $barcode_config['barcode_height'] . 'px; width:'. $barcode_config['barcode_width'] . "px;'>$barcode</div></td></tr>";
-			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-			$display_table .= "<tr><td style=\"text-align=center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+			$display_table .= '<tr><td style="text-align:center;"><div style=\'height:' . $barcode_config['barcode_height'] . 'px; width:'. $barcode_config['barcode_width'] . "px;'>$barcode</div></td></tr>";
+			$display_table .= "<tr><td style=\"text-align:center;\">" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+			$display_table .= "<tr><td style=\"text-align:center;\">" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
 			$display_table .= '</table>';
 
 			return $display_table;
@@ -178,7 +178,7 @@ class Barcode_lib
 
 		if($layout_type == 'name')
 		{
-			$result = lang('Items.name') . " " . $item['name'];
+			$result = lang('Items.name') . ": " . $item['name'];
 		}
 		elseif($layout_type == 'category' && isset($item['category']))
 		{
@@ -198,7 +198,9 @@ class Barcode_lib
 		}
 		elseif($layout_type == 'item_code')
 		{
-			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
+			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
+				? $item['item_number']
+				: $item['item_id'];
 		}
 
 		return character_limiter($result, 40);
