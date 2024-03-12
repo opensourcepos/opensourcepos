@@ -41,6 +41,10 @@ defined('WEEK')   || define('WEEK', 604800);
 defined('MONTH')  || define('MONTH', 2_592_000);
 defined('YEAR')   || define('YEAR', 31_536_000);
 defined('DECADE') || define('DECADE', 315_360_000);
+defined('DEFAULT_DATE') || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
+defined('DEFAULT_DATETIME') || define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
+defined('NOW') || define('NOW', time());
+
 
 /*
  | --------------------------------------------------------------------------
@@ -173,3 +177,11 @@ const CASH_MODE_FALSE = 0;
  */
 const GOODS_SUPPLIER = 0;
 const COST_SUPPLIER = 1;
+
+/**
+ * Locale Related Constants
+ */
+const MAX_PRECISION = 1e14;
+const DEFAULT_PRECISION = 2;
+const DEFAULT_LANGUAGE = 'english';
+const DEFAULT_LANGUAGE_CODE = 'en-US';
