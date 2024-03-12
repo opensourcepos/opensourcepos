@@ -303,9 +303,9 @@ class Item_kits extends Secure_Controller
 		$barcode_config = $barcode_lib->get_barcode_config();
 		// in case the selected barcode type is not Code39 or Code128 we set by default Code128
 		// the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
-		if($barcode_config['barcode_type'] != 'Code39' && $barcode_config['barcode_type'] != 'Code128')
+		if($barcode_config['barcode_type'] != 'C39' && $barcode_config['barcode_type'] != 'C128')
 		{
-			$barcode_config['barcode_type'] = 'Code128';
+			$barcode_config['barcode_type'] = 'C128';
 		}
 		$data['barcode_config'] = $barcode_config;
 
