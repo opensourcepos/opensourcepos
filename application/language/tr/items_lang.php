@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet.";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amount_entry"] = "Miktar Girişi";
@@ -20,9 +19,9 @@ $lang["items_confirm_bulk_edit"] = "Seçili tüm ürünleri düzenlemek istediğ
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "Tüm ürün vergi bilgileri değiştirilecektir.";
 $lang["items_confirm_delete"] = "Seçili ürünleri silmek istediğinize emin misiniz?";
 $lang["items_confirm_restore"] = "Seçili ürünleri onarmak istediğinize emin misiniz?";
-$lang["items_cost_price"] = "Maliyet Fiyatı";
-$lang["items_cost_price_number"] = "Fiyat sayı olmalıdır (9.90).";
-$lang["items_cost_price_required"] = "Maliyet Fiyatı zorunlu alandır.";
+$lang["items_cost_price"] = "Toptan Fiyatı";
+$lang["items_cost_price_number"] = "Toptan Fiyatı sayı olmalıdır.";
+$lang["items_cost_price_required"] = "Toptan Fiyatı zorunlu alandır.";
 $lang["items_count"] = "Stoğu Güncelle";
 $lang["items_csv_import_failed"] = "CSV aktarım hatası";
 $lang["items_csv_import_nodata_wrongformat"] = "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta.";
@@ -74,7 +73,7 @@ $lang["items_none"] = "Hiçbiri";
 $lang["items_none_selected"] = "Düzenlemek için ürün seçmediniz";
 $lang["items_nonstock"] = "Stokta Olmayan";
 $lang["items_number_information"] = "Ürün No";
-$lang["items_number_required"] = "UPC/EAN/ISBN alanı zorunludur.";
+$lang["items_number_required"] = "Barkod alanı zorunludur.";
 $lang["items_one_or_multiple"] = "ürün";
 $lang["items_pack_name"] = "Paket adı";
 $lang["items_qty_per_pack"] = "Paket başına miktar";
