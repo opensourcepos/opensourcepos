@@ -435,7 +435,7 @@ function to_decimals(?float $number, string $decimals = null, int $type = Number
 {
 	if(!isset($number))
 	{
-		return "";
+		return '';
 	}
 
 	$config = config(OSPOS::class)->settings;
@@ -481,9 +481,9 @@ function parse_decimals(string $number, int $decimals = null)
 	{
 		return $number;
 	}
-	
+
 	$locale_safe_number = prepare_decimal($number);
-	
+
 	if ($locale_safe_number > MAX_PRECISION)	//TODO: This breaks when the string passed does not use . as the decimal separator.
 	{
 		return false;

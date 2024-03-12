@@ -89,7 +89,7 @@
 						'maxlength' => '5',
 						'id' => 'kit_discount',
 						'class' => 'form-control input-sm',
-						'value' => $item_kit_info->kit_discount
+						'value' => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
 					]) ?>
 				</div>
 			</div>
@@ -197,7 +197,7 @@
 				?>
 					<tr>
 						<td><a href='#' onclick='return delete_item_kit_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
-						<td><input class='quantity form-control input-sm' id='item_seq_<?= $item_kit_item['item_id'] ?>' name=item_kit_seq[<?= $item_kit_item['item_id'] ?>] value="<?= to_quantity_decimals($item_kit_item['kit_sequence']) ?>"/></td>
+						<td><input class='quantity form-control input-sm' id='item_seq_<?= $item_kit_item['item_id'] ?>' name=item_kit_seq[<?= $item_kit_item['item_id'] ?>] value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"/></td>
 						<td><?= esc($item_kit_item['name']) ?></td>
 						<td><input class='quantity form-control input-sm' id='item_qty_<?= $item_kit_item['item_id'] ?>' name=item_kit_qty[<?= $item_kit_item['item_id'] ?>] value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"/></td>
 					</tr>
@@ -287,7 +287,7 @@ $(document).ready(function()
 				{
 					url: '<?= esc("$controller_name/checkItemNumber") ?>',
 					type: 'POST',
-					data: 
+					data:
 					{
 						'item_kit_id' : "<?= $item_kit_info->item_kit_id ?>",
 						'item_kit_number' : function()
