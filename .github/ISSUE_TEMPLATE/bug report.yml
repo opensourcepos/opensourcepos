@@ -21,6 +21,7 @@ body:
         - opensourcepos 3.3.9
         - opensourcepos 3.3.8
         - opensourcepos 3.3.7
+        - development (unreleased)
       default: 0
     validations:
       required: true
