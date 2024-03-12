@@ -2,26 +2,17 @@
 use App\Models\Employee;
 use Config\OSPOS;
 
-const DEFAULT_LANGUAGE = 'english';	//TODO: These constants all need to be moved to constants.php
-const DEFAULT_LANGUAGE_CODE = 'en-US';
-
-define('NOW', time());
-const MAX_PRECISION = 1e14;
-const DEFAULT_PRECISION = 2;
-define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
-define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
-
 /**
- * Currency locale helper
- * @param bool $load_system_language
- * @return string
+ * Returns the currently configured language code.
+ *
+ * @param bool $load_system_language When true, the system language is returned.
+ * @return string Returns the default language code if a language code is not configured.
  */
 function current_language_code(bool $load_system_language = false): string
 {
 	$employee = model(Employee::class);
 	$config = config(OSPOS::class)->settings;
 
-	// Returns the language code of the employee if set or system language code if not
 	if($employee->is_logged_in() && !$load_system_language)
 	{
 		$employee_info = $employee->get_logged_in_employee_info();
@@ -297,7 +288,9 @@ function get_payment_options(): array
 }
 
 /**
- * @return bool
+ * Determines if the current currency symbol is on the right side of the amount
+ *
+ * @return bool true is returned when the symbol should be displayed to the right of the amount. False otherwise.
  */
 function is_right_side_currency_symbol(): bool
 {
@@ -309,12 +302,14 @@ function is_right_side_currency_symbol(): bool
 }
 
 /**
- * @return int
+ * Returns the number of decimals to use in Quantities.
+ *
+ * @return int The number of decimals to include in the quantity.
  */
 function quantity_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
-	return $config['quantity_decimals'] ? $config['quantity_decimals'] : 0;
+	return $config['quantity_decimals'] ?? 0;
 }
 
 /**
@@ -323,7 +318,7 @@ function quantity_decimals(): int
 function totals_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
-	return $config['currency_decimals'] ? (int)$config['currency_decimals'] : 0;
+	return $config['currency_decimals'] ?? 0;
 }
 
 /**
@@ -332,7 +327,7 @@ function totals_decimals(): int
 function cash_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
-	return $config['cash_decimals'] ? $config['cash_decimals'] : 0;
+	return $config['cash_decimals'] ?? 0;
 }
 
 /**
@@ -341,7 +336,7 @@ function cash_decimals(): int
 function tax_decimals(): int
 {
 	$config = config(OSPOS::class)->settings;
-	return $config['tax_decimals'] ? $config['tax_decimals'] : 0;
+	return $config['tax_decimals'] ?? 0;
 }
 
 /**
@@ -438,8 +433,6 @@ function to_quantity_decimals(?float $number): string
  */
 function to_decimals(?float $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
-	// ignore empty strings and return
-	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
 	if(!isset($number))
 	{
 		return "";
@@ -488,13 +481,15 @@ function parse_decimals(string $number, int $decimals = null)
 	{
 		return $number;
 	}
-
-	if ($number > MAX_PRECISION)	//TODO: This breaks when the string passed does not use . as the decimal separator.
+	
+	$locale_safe_number = prepare_decimal($number);
+	
+	if ($locale_safe_number > MAX_PRECISION)	//TODO: This breaks when the string passed does not use . as the decimal separator.
 	{
 		return false;
 	}
 
-	if ($number > 1.e14)
+	if($locale_safe_number > 1.e14)
 	{
 		return false;
 	}
@@ -704,4 +699,25 @@ function decode_array(array $data): array
 	array_walk($data, function(&$value, $key) { $value = rawurldecode($value);});
 
 	return $data;
+}
+
+/**
+ * Determines if the current locale uses a comma for decimal separator and reformats the decimal to use a period.
+ *
+ * @param string $decimal The decimal to reformat.
+ * @return string The reformatted decimal.
+ */
+function prepare_decimal(string $decimal): string
+{
+	$config = config(OSPOS::class)->settings;
+	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
+	$decimal_separator = $fmt->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+
+	if($decimal_separator === ',' && strpos($decimal, ',') !== false)
+	{
+		$decimal = str_replace('.', '', $decimal); //Remove thousands separator
+		$decimal = str_replace(',', '.', $decimal); //Replace decimal separator
+	}
+
+	return $decimal;
 }

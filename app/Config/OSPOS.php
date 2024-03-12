@@ -29,8 +29,6 @@ class OSPOS extends BaseConfig
 	 */
 	public function set_settings(): void
 	{
-		helper('locale');
-
 		$cache = $this->cache->get('settings');
 
 		if($cache)

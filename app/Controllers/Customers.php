@@ -291,12 +291,14 @@ class Customers extends Persons
 
 		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
+		$discount = prepare_decimal($this->request->getPost('discount'));
+
 		$customer_data = [
 			'consent' => $this->request->getPost('consent') != null,
 			'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
 			'tax_id' => $this->request->getPost('tax_id'),
 			'company_name' => $this->request->getPost('company_name') == '' ? null : $this->request->getPost('company_name'),
-			'discount' => $this->request->getPost('discount') == '' ? 0.00 : $this->request->getPost('discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'discount' => $this->request->getPost('discount') == '' ? 0.00 : filter_var($discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'discount_type' => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
 			'package_id' => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
 			'taxable' => $this->request->getPost('taxable') != null,

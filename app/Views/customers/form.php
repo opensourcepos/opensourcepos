@@ -88,7 +88,7 @@
 									'id' => 'discount',
 									'class' => 'form-control input-sm',
 									'onClick' => 'this.select();',
-									'value' => $person_info->discount
+									'value' => $person_info->discount_type === FIXED ? to_currency_no_money($person_info->discount) : to_decimals($person_info->discount)
 								]) ?>
 						</div>
 					</div>
@@ -320,7 +320,7 @@
 										'name' => 'quantity',
 										'id' => 'quantity',
 										'class' => 'form-control input-sm',
-										'value' => $stats->quantity,
+										'value' => to_quantity_decimals($stats->quantity),
 										'disabled' => ''
 									]) ?>
 							</div>
@@ -335,7 +335,7 @@
 										'name' => 'avg_discount',
 										'id' => 'avg_discount',
 										'class' => 'form-control input-sm',
-										'value' => $stats->avg_discount,
+										'value' => to_decimals($stats->avg_discount),
 										'disabled' => ''
 									]) ?>
 								<span class="input-group-addon input-sm"><b>%</b></span>

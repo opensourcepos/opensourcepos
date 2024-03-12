@@ -11,7 +11,7 @@ use App\Libraries\Barcode_lib;
 $barcode_lib = new Barcode_lib();
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= service('request')->getLocale() ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= current_language_code() ?>">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
