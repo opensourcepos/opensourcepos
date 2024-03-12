@@ -207,6 +207,7 @@ class Autoload extends AutoloadConfig
     public $helpers = [
 		'form',
 		'cookie',
-		'tabular'
+		'tabular',
+		'locale'
 	];
 }

@@ -20,7 +20,7 @@ $(document).ready(function()
     {
         window.open(
             'index.php/items/generateBarcodes/'+table_support.selected_ids().join(':'),
-            '_blank' // <- This is what makes it open in a new window.
+            '_blank'
         );
     });
 
