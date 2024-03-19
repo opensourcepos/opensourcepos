@@ -123,7 +123,7 @@ class Suppliers extends Persons
 		$person_data = [
 			'first_name' => $first_name,
 			'last_name' => $last_name,
-			'gender' => $this->request->getPost('gender', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+			'gender' => $this->request->getPost('gender'),
 			'email' => $email,
 			'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),

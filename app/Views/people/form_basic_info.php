@@ -11,7 +11,7 @@
 			'name' => 'first_name',
 			'id' => 'first_name',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->first_name
+			'value' => esc(html_entity_decode($person_info->first_name))
 		]) ?>
 	</div>
 </div>
@@ -23,7 +23,7 @@
 			'name' => 'last_name',
 			'id' => 'last_name',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->last_name
+			'value' => esc(html_entity_decode($person_info->last_name))
 		]) ?>
 	</div>
 </div>
@@ -77,7 +77,7 @@
 				'name' => 'phone_number',
 				'id' => 'phone_number',
 				'class' => 'form-control input-sm',
-				'value' => $person_info->phone_number
+				'value' => esc(html_entity_decode($person_info->phone_number))
 			]) ?>
 		</div>
 	</div>
@@ -90,7 +90,7 @@
 			'name' => 'address_1',
 			'id' => 'address_1',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->address_1
+			'value' => esc(html_entity_decode($person_info->address_1))
 		]) ?>
 	</div>
 </div>
@@ -102,7 +102,7 @@
 			'name' => 'address_2',
 			'id' => 'address_2',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->address_2
+			'value' => esc(html_entity_decode($person_info->address_2))
 		]) ?>
 	</div>
 </div>
@@ -114,7 +114,7 @@
 			'name' => 'city',
 			'id' => 'city',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->city
+			'value' => esc(html_entity_decode($person_info->city))
 		]) ?>
 	</div>
 </div>
@@ -126,7 +126,7 @@
 			'name' => 'state',
 			'id' => 'state',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->state
+			'value' => esc(html_entity_decode($person_info->state))
 		]) ?>
 	</div>
 </div>
@@ -138,7 +138,7 @@
 			'name' => 'zip',
 			'id' => 'postcode',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->zip
+			'value' => esc(html_entity_decode($person_info->zip))
 		]) ?>
 	</div>
 </div>
@@ -150,7 +150,7 @@
 			'name' => 'country',
 			'id' => 'country',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->country
+			'value' => esc(html_entity_decode($person_info->country))
 		]) ?>
 	</div>
 </div>
@@ -162,7 +162,7 @@
 			'name' => 'comments',
 			'id' => 'comments',
 			'class' => 'form-control input-sm',
-			'value' => $person_info->comments
+			'value' => esc(html_entity_decode($person_info->comments))
 		]) ?>
 	</div>
 </div>
