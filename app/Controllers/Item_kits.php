@@ -132,6 +132,7 @@ class Item_kits extends Secure_Controller
 			$info->print_option = PRINT_ALL;
 			$info->kit_item_id = 0;
 			$info->item_number = '';
+			$info->kit_discount = 0;
 		}
 
 		foreach(get_object_vars($info) as $property => $value)
@@ -170,7 +171,7 @@ class Item_kits extends Secure_Controller
 		$item_kit_data = [
 			'name' => $this->request->getPost('name'),
 			'item_kit_number' => $this->request->getPost('item_kit_number'),
-			'item_id' => empty($this->request->getPost('kit_item_id')) ? null : intval($this->request->getPost('kit_item_id')),
+			'item_id' => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
 			'kit_discount' => parse_decimals($this->request->getPost('kit_discount')),
 			'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
 			'price_option' => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
@@ -302,9 +303,9 @@ class Item_kits extends Secure_Controller
 		$barcode_config = $barcode_lib->get_barcode_config();
 		// in case the selected barcode type is not Code39 or Code128 we set by default Code128
 		// the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
-		if($barcode_config['barcode_type'] != 'Code39' && $barcode_config['barcode_type'] != 'Code128')
+		if($barcode_config['barcode_type'] != 'C39' && $barcode_config['barcode_type'] != 'C128')
 		{
-			$barcode_config['barcode_type'] = 'Code128';
+			$barcode_config['barcode_type'] = 'C128';
 		}
 		$data['barcode_config'] = $barcode_config;
 
