@@ -216,7 +216,7 @@
 	</div>
 
 	<div id="barcode">
-		<img alt='<?= esc($barcode) ?>' src='data:image/png;base64,<?= esc($barcode) ?>' /><br>
+		<?= $barcode ?><br>
 		<?= $sale_id ?>
 	</div>
 </div>
