@@ -326,6 +326,13 @@ class Supplier extends Person
 	 */
 	public function get_category_name(int $supplier_type): string
 	{
-		return lang("Suppliers.$supplier_type");
+		if($supplier_type == 0)
+		{
+			return lang('Suppliers.goods');
+		}
+		else
+		{
+			return  lang('Suppliers.cost');
+		}		
 	}
 }
