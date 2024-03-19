@@ -18,7 +18,7 @@
 					'name' => 'company_name',
 					'id' => 'company_name_input',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->company_name)
+					'value' => html_entity_decode($person_info->company_name)
 					])
 				?>
 			</div>
@@ -31,14 +31,14 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?= form_label(lang('Suppliers.agency_name'), 'agency_name', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?= form_input ([
 					'name' => 'agency_name',
 					'id' => 'agency_name_input',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->agency_name)
+					'value' => esc(html_entity_decode($person_info->agency_name))
 					])
 				?>
 			</div>
@@ -46,14 +46,14 @@
 
 		<?= view('people/form_basic_info') ?>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?= form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?= form_input ([
 					'name' => 'account_number',
 					'id' => 'account_number',
 					'class' => 'form-control input-sm',
-					'value' => esc($person_info->account_number)
+					'value' => esc(html_entity_decode($person_info->account_number))
 					])
 				?>
 			</div>
@@ -66,7 +66,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc($person_info->tax_id)
+						'value' => esc(html_entity_decode($person_info->tax_id))
 					])
 				?>
 			</div>
@@ -91,7 +91,7 @@ $(document).ready(function()
 		},
 
 		errorLabelContainer: '#error_message_box',
- 
+
 		rules:
 		{
 			company_name: 'required',
@@ -100,7 +100,7 @@ $(document).ready(function()
 			email: 'email'
    		},
 
-		messages: 
+		messages:
 		{
 			company_name: "<?= lang('Suppliers.company_name_required') ?>",
 			first_name: "<?= lang('Common.first_name_required') ?>",
