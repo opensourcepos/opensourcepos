@@ -344,7 +344,7 @@ function get_supplier_data_row(object $supplier): array
 
 	return [
 		'people.person_id' => $supplier->person_id,
-		'company_name' => $supplier->company_name,
+		'company_name' => html_entity_decode($supplier->company_name),
 		'agency_name' => $supplier->agency_name,
 		'category' => $supplier->category,
 		'last_name' => $supplier->last_name,
