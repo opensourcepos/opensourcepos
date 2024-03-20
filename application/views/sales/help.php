@@ -8,50 +8,51 @@
 		<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th><?php echo $this->lang->line('sales_key_help'); ?></th>
 				<th><?php echo $this->lang->line('sales_key_function'); ?></th>
+				<th><?php echo $this->lang->line('sales_key_help'); ?></th>
 			</tr>
 		</thead>
 			<tbody>
 				<tr>
-					<td><code>ESC</code></td>
+					
 					<td><?php echo $this->lang->line('sales_key_cancel'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_cancel'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 1</code></td>
 					<td><?php echo $this->lang->line('sales_key_item_search'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_items'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 2</code></td>
 					<td><?php echo $this->lang->line('sales_key_customer_search'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_customers'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 3</code></td>
 					<td><?php echo $this->lang->line('sales_key_suspend'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_suspend'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 4</code></td>
 					<td><?php echo $this->lang->line('sales_key_suspended'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_suspended'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 5</code></td>
 					<td><?php echo $this->lang->line('sales_key_tendered'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_amount'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 6</code></td>
 					<td><?php echo $this->lang->line('sales_key_payment'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_payment'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 7</code></td>
 					<td><?php echo $this->lang->line('sales_key_finish_sale'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_complete'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 8</code></td>
 					<td><?php echo $this->lang->line('sales_key_finish_quote'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_finish'), 5); ?></code></td>
 				</tr>
 				<tr>
-					<td><code>ALT + 9</code></td>
 					<td><?php echo $this->lang->line('sales_key_help_modal'); ?></td>
+					<td><code><?php echo substr($this->config->item('key_help'), 5); ?></code></td>
 				</tr>
 			</tbody>
 		</table>
@@ -61,34 +62,34 @@
 		<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th><?php echo $this->lang->line('sales_key_help'); ?></th>
 				<th><?php echo $this->lang->line('sales_key_function'); ?></th>
+				<th><?php echo $this->lang->line('sales_key_help'); ?></th>
 			</tr>
 		</thead>
 			<tbody>
 				<tr>
-					<td><code>F11</code></td>
 					<td><?php echo $this->lang->line('sales_key_full'); ?></td>
+					<td><code>F11</code></td>
 				</tr>
 				<tr>
-					<td><code>CTRL + </code></td>
 					<td><?php echo $this->lang->line('sales_key_in'); ?></td>
+					<td><code>CTRL + </code></td>
 				</tr>
 				<tr>
-					<td><code>CTRL -</code></td>
 					<td><?php echo $this->lang->line('sales_key_out'); ?></td>
+					<td><code>CTRL -</code></td>
 				</tr>
 				<tr>
-					<td><code>CTRL + 0</code></td>
 					<td><?php echo $this->lang->line('sales_key_restore'); ?></td>
+					<td><code>CTRL + 0</code></td>
 				</tr>
 				<tr>
-					<td><code>CTRL + P</code></td>
 					<td><?php echo $this->lang->line('sales_key_print'); ?></td>
+					<td><code>CTRL + P</code></td>
 				</tr>
 				<tr>
-					<td><code>CTRL + F</code></td>
 					<td><?php echo $this->lang->line('sales_key_search'); ?></td>
+					<td><code>CTRL + F</code></td>
 				</tr>
 			</tbody>
 		</table>

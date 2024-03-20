@@ -326,3 +326,4 @@ $lang["config_website"] = "Website";
 $lang["config_wholesale_markup"] = "";
 $lang["config_work_order_enable"] = "Work Order Support";
 $lang["config_work_order_format"] = "Work Order Format";
+$lang["config_system_sc"] = "Sales Shortcuts";

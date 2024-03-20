@@ -956,42 +956,44 @@ document.body.onkeyup = function(e)
 {
 	switch(event.altKey && event.keyCode) 
 	{
-        case 49: // Alt + 1 Items Seach
+        case <?php echo substr($this->config->item('key_items'), 0,2);  ?>: // Alt + 1 Items Seach
 			$("#item").focus();
 			$("#item").select();
             break;
-        case 50: // Alt + 2 Customers Search
+        case <?php echo substr($this->config->item('key_customers'), 0,2);  ?>: // Alt + 2 Customers Search
 			$("#customer").focus();
 			$("#customer").select();
             break;
-		case 51: // Alt + 3 Suspend Current Sale
+		case <?php echo substr($this->config->item('key_suspend'), 0,2);  ?>: // Alt + 3 Suspend Current Sale
 			$("#suspend_sale_button").click();
 			break;
-		case 52: // Alt + 4 Check Suspended
+		case <?php echo substr($this->config->item('key_suspended'), 0,2);  ?>: // Alt + 4 Check Suspended
 			$("#show_suspended_sales_button").click();
 			break;
-        case 53: // Alt + 5 Edit Amount Tendered Value
+        case <?php echo substr($this->config->item('key_amount'), 0,2);  ?>: // Alt + 5 Edit Amount Tendered Value
 			$("#amount_tendered").focus();
 			$("#amount_tendered").select();
             break;
-		case 54: // Alt + 6 Add Payment
+		case <?php echo substr($this->config->item('key_payment'), 0,2);  ?>: // Alt + 6 Add Payment
 			$("#add_payment_button").click();
 			break;	
-		case 55: // Alt + 7 Add Payment and Complete Sales/Invoice
+		case <?php echo substr($this->config->item('key_complete'), 0,2);  ?>: // Alt + 7 Add Payment and Complete Sales/Invoice
 			$("#add_payment_button").click();
-			window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			setTimeout(function () {
+				window.location.href = "<?php echo site_url('sales/complete'); ?>";
+			}, 100);
 			break; 
-		case 56: // Alt + 8 Finish Quote/Invoice without payment
+		case <?php echo substr($this->config->item('key_finish'), 0,2);  ?>: // Alt + 8 Finish Quote/Invoice without payment
 			$("#finish_invoice_quote_button").click();
 			break;
-		case 57: // Alt + 9 Open Shortcuts Help Modal
+		case <?php echo substr($this->config->item('key_help'), 0,2);  ?>: // Alt + 9 Open Shortcuts Help Modal
 			$("#show_keyboard_help").click();
 			break;
 	}
-	
+
 	switch(event.keyCode) 
 	{
-		case 27: // ESC Cancel Current Sale
+		case <?php echo substr($this->config->item('key_cancel'), 0,2);  ?>: // ESC Cancel Current Sale
 			$("#cancel_sale_button").click();
 			break;		  
     }
