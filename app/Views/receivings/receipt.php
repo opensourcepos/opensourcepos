@@ -51,7 +51,7 @@
 		}
 		?>
 
-		<div id="company_address"><?= esc(nl2br($config['address'])) ?></div>
+		<div id="company_address"><?= nl2br(esc($config['address'])) ?></div>
 		<div id="company_phone"><?= esc($config['phone']) ?></div>
 		<div id="sale_receipt"><?= lang('Receivings.receipt') ?></div>
 		<div id="sale_time"><?= esc($transaction_time) ?></div>
@@ -159,11 +159,11 @@
 	</table>
 
 	<div id="sale_return_policy">
-		<?= esc(nl2br($config['return_policy'])) ?>
+		<?= nl2br(esc($config['return_policy'])) ?>
 	</div>
 
 	<div id='barcode'>
-		<img alt='<?= esc($barcode) ?>' src='data:image/png;base64,<?= esc($barcode) ?>' /><br>
+		<?= $barcode ?><br>
 		<?= $receiving_id ?>
 	</div>
 </div>
