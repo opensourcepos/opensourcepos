@@ -12,6 +12,30 @@ body:
         Bug reports indicate that something is not working as intended. 
         Please include as much detail as possible and submit a separate bug report for each problem.
         Do not include personal identifying information such as email addresses or encryption keys.           
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description?
+      description: Describe the problem that you are seeing
+      placeholder: "Describe the problem that you are seeing"
+    validations:
+      required: true 
+  - type: textarea
+    id: steps-reproduce
+    attributes:
+      label: Steps to Reproduce?
+      description: List the steps to reproduce this issue
+      placeholder: "Steps to Reproduce"
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior?
+      description: Tell us what did you expect to happen?
+      placeholder: "Expected Behavior"
+    validations:
+      required: true    
   - type: dropdown
     id: ospos-version
     attributes:
@@ -76,33 +100,6 @@ body:
       placeholder: "Web Server and version "
     validations:
       required: true    
-  - type: textarea
-    id: expected-behavior
-    attributes:
-      label: Expected Behavior?
-      description: Tell us what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "Expected Behavior!"
-    validations:
-      required: true    
-  - type: textarea
-    id: bug-description
-    attributes:
-      label: Bug Description?
-      description: Describe the problem that you are seeing
-      placeholder: Tell us what you see!
-      value: "Describe the problem that you are seeing!"
-    validations:
-      required: true 
-  - type: textarea
-    id: steps-reproduce
-    attributes:
-      label: Steps to Reproduce?
-      description: List the steps to reproduce this issue
-      placeholder: Tell us what you see!
-      value: "Steps to Reproduce!"
-    validations:
-      required: true      
   - type: textarea
     id: servers
     attributes:
