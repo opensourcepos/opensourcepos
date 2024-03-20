@@ -6,6 +6,12 @@
 
 class Tax_category extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('tax_categories')) ? $field : 'tax_category_id';
+	}
+
 	/**
 	 *  Determines if it exists in the table
 	 */

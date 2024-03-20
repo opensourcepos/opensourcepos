@@ -6,6 +6,12 @@
 
 class Item_kit extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('item_kits')) ? $field : 'item_kit_id';
+	}
+
 	/*
 	Determines if a given item_id is an item kit
 	*/

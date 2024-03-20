@@ -5,6 +5,13 @@
 
 class Item extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		$allowed_columns = array_merge($this->db->list_fields('items'), $this->db->list_fields('item_quantities'));
+		return in_array($field, $allowed_columns) ? $field : 'item_id';
+	}
+
 	/*
 	Determines if a given item_id is an item
 	*/

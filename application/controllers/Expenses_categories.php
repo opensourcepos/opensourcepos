@@ -24,7 +24,7 @@ class Expenses_categories extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort   = $this->input->get('sort');
+		$sort   = $this->Expense_category->sort_column($this->input->get('sort'));
 		$order  = $this->input->get('order');
 
 		$expense_categories = $this->Expense_category->search($search, $limit, $offset, $sort, $order);

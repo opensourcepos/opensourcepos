@@ -56,7 +56,7 @@ class Sales extends Secure_Controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
+		$sort = $this->Sale->sort_column($this->input->get('sort'));
 		$order = $this->input->get('order');
 
 		$filters = array('sale_type' => 'all',

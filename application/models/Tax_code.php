@@ -6,6 +6,12 @@
 
 class Tax_code extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('tax_codes')) ? $field : 'tax_code_id';
+	}
+
 	/**
 	 *  Determines if it exists in the table
 	 */

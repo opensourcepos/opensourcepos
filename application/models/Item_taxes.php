@@ -6,6 +6,12 @@
 
 class Item_taxes extends CI_Model
 {
+
+	public function sort_column($field)
+	{
+		return in_array($field, $this->db->list_fields('items_taxes')) ? $field : 'item_id';
+	}
+
 	/*
 	Gets tax info for a particular item
 	*/
