@@ -87,11 +87,11 @@ class Customers extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort');
-		$order  = $this->request->getGet('order');
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->customer->get_found_rows($search);
