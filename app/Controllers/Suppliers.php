@@ -44,11 +44,11 @@ class Suppliers extends Persons
 	 **/
 	public function getSearch(): void
 	{
-		$search = $this->request->getPost('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-		$limit = $this->request->getPost('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getPost('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getPost('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$order = $this->request->getPost('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$suppliers = $this->supplier->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->supplier->get_found_rows($search);
