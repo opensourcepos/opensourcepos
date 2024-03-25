@@ -208,6 +208,7 @@ class Autoload extends AutoloadConfig
 		'form',
 		'cookie',
 		'tabular',
-		'locale'
+		'locale',
+		'security'
 	];
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3dab086db00c12326789bba4fc940d8",
+    "content-hash": "aa9d3e97f50d42618e1c9e4ae34eca4b",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -620,36 +620,37 @@
         },
         {
             "name": "tamtamchik/namecase",
-            "version": "1.0.6",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tamtamchik/namecase.git",
-                "reference": "9e16fb72e99b42cc17e4994420c7ac591497682f"
+                "reference": "f963f321a3afbde83f1bb1bda1d53b848c7015dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/9e16fb72e99b42cc17e4994420c7ac591497682f",
-                "reference": "9e16fb72e99b42cc17e4994420c7ac591497682f",
+                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/f963f321a3afbde83f1bb1bda1d53b848c7015dd",
+                "reference": "f963f321a3afbde83f1bb1bda1d53b848c7015dd",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=5.4.0"
+                "php": ">=7.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "1.*"
+                "phpunit/phpunit": "^9",
+                "scrutinizer/ocular": "^1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev",
-                    "1.0.x": "1.0.x-dev"
+                    "dev-master": "3.0-dev",
+                    "2.x": "2.x-dev",
+                    "1.x": "1.x-dev"
                 }
             },
             "autoload": {
                 "files": [
-                    "src/functions.php"
+                    "src/function.php"
                 ],
                 "psr-4": {
                     "Tamtamchik\\NameCase\\": "src"
@@ -663,7 +664,7 @@
                 {
                     "name": "Yuri Tkachenko",
                     "email": "yuri.tam.tkachenko@gmail.com",
-                    "homepage": "http://tamtamchika.net"
+                    "homepage": "https://tamtamchika.net"
                 }
             ],
             "description": "This package allows you to convert names into the correct case where possible.",
@@ -677,9 +678,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tamtamchik/namecase/issues",
-                "source": "https://github.com/tamtamchik/namecase/tree/1.0.x"
+                "source": "https://github.com/tamtamchik/namecase/tree/3.0.0"
             },
-            "time": "2020-03-05T09:03:13+00:00"
+            "time": "2023-01-26T15:07:18+00:00"
         }
     ],
     "packages-dev": [

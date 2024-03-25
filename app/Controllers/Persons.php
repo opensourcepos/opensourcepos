@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Person;
-use CodeIgniter\Model;
+use function \Tamtamchik\NameCase\str_name_case;
 
 abstract class Persons extends Secure_Controller
 {
@@ -59,8 +59,11 @@ abstract class Persons extends Secure_Controller
 	 *
 	 * returns John O'Grady-Smith
 	 */
-	protected function nameize(string $string): string    //TODO: The parameter should not be named $string.  Should also think about renaming the function.  The term is Proper Noun Capitalization, so perhaps something more reflective of that.
+	protected function nameize(string $input): string
 	{
-		return str_name_case($string);
+		$adjusted_name = str_name_case($input);
+
+		// Use preg_replace to match HTML entities and convert them to lowercase.
+		return preg_replace_callback('/&[a-zA-Z0-9#]+;/', function($matches) { return strtolower($matches[0]); }, $adjusted_name);
 	}
 }

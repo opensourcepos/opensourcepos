@@ -119,3 +119,15 @@ function remove_backup()
 	}
 	log_message('info', "File $backup_path has been removed");
 }
+
+function html_limited_decode(string $original, array $safe_characters): string
+{
+	$search = esc($safe_characters);
+	$replace = $safe_characters;
+	return str_replace($search, $replace, $original);
+}
+
+function esc_safe(string $input): string
+{
+	return htmlentities($input, ENT_QUOTES, 'UTF-8', false) === $input ? $input : esc($input);
+}
