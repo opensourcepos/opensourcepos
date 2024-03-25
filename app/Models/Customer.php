@@ -229,7 +229,6 @@ class Customer extends Person
 	public function save_customer(array &$person_data, array &$customer_data, int $customer_id = NEW_ENTRY): bool
 	{
 		$success = false;
-
 		$this->db->transStart();
 
 		if(parent::save_value($person_data, $customer_id))
