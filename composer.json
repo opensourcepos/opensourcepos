@@ -30,7 +30,7 @@
 		"paragonie/random_compat": "^2.0.21",
 		"picqer/php-barcode-generator": "^2.4.0",
 		"psr/log": "^1.1",
-		"tamtamchik/namecase": "^1.0.6"
+		"tamtamchik/namecase": "^3.0.0"
 	},
 	"require-dev": {
 		"codeigniter/coding-standard": "^1.7",
