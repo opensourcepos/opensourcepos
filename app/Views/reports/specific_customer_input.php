@@ -31,7 +31,7 @@ if(isset($error))
 	</div>
 
 	<div class="form-group form-group-sm" id="report_specific_input_data">
-		<?= form_label(esc($specific_input_name), 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
+		<?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div class="col-xs-3">
 			<?= form_dropdown('specific_input_data', $specific_input_data, '', 'id="specific_input_data" class="form-control selectpicker" data-live-search="true"') ?>
 		</div>
@@ -43,7 +43,7 @@ if(isset($error))
 			<?= form_dropdown('sale_type', $sale_type_options, 'complete', 'id="input_type" class="form-control"') ?>
 		</div>
 	</div>
-	
+
 	<div class="form-group form-group-sm">
 		<?= form_label(lang('Reports.payment_type'), 'reports_payment_type_label', ['class' => 'required control-label col-xs-2']) ?>
 		<div class="col-xs-3">
@@ -51,7 +51,7 @@ if(isset($error))
 		</div>
 	</div>
 
-	<?php 
+	<?php
 		echo form_button ([
 			'name' => 'generate_report',
 			'id' => 'generate_report',
@@ -70,7 +70,7 @@ $(document).ready(function()
 	$("#generate_report").click(function()
 	{
 		window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), $("#input_type").val(), $('#input_payment_type').val() || 0].join("/");
-	});	
-	
+	});
+
 });
 </script>

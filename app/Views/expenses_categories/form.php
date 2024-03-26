@@ -17,7 +17,7 @@
 					'name' => 'category_name',
 					'id' => 'category_name',
 					'class' => 'form-control input-sm',
-					'value' => esc($category_info->category_name)
+					'value' => $category_info->category_name
 				]) ?>
 			</div>
 		</div>
@@ -29,11 +29,11 @@
 					'name' => 'category_description',
 					'id' => 'category_description',
 					'class' => 'form-control input-sm',
-					'value' => esc($category_info->category_description)
+					'value' => $category_info->category_description
 				]) ?>
 			</div>
 		</div>
-		
+
 	</fieldset>
 <?= form_close() ?>
 

@@ -14,7 +14,7 @@
 ?>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open(esc("taxes/save/$tax_rate_id", 'url'), ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("taxes/save/$tax_rate_id", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="tax_rate_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
@@ -44,7 +44,7 @@
 						'name' => 'tax_rate',
 						'id' => 'tax_rate',
 						'class' => 'form-control input-sm text-uppercase',
-						'value' => esc($tax_rate)
+						'value' => $tax_rate
 					])
 				?>
 				<span class="input-group-addon input-sm">%</span>

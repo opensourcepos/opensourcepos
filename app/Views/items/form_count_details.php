@@ -21,7 +21,7 @@ use App\Models\Inventory;
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->item_number)
+						'value' => $item_info->item_number
 					]) ?>
 				</div>
 			</div>
@@ -35,7 +35,7 @@ use App\Models\Inventory;
 					'id' => 'name',
 					'class' => 'form-control input-sm',
 					'disabled' => '',
-					'value' => esc($item_info->name)
+					'value' => $item_info->name
 				]) ?>
 			</div>
 		</div>
@@ -50,7 +50,7 @@ use App\Models\Inventory;
 						'id' => 'category',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->category)
+						'value' => $item_info->category
 					]) ?>
 				</div>
 			</div>

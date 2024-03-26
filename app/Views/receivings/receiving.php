@@ -40,7 +40,7 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?= form_open(esc("$controller_name/changeMode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -150,9 +150,9 @@ if (isset($success))
 				foreach(array_reverse($cart, true) as $line => $item)
 				{
 			?>
-					<?= form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
-							<td><?= anchor(esc("$controller_name/deleteItem/$line", 'url'), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+							<td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?= esc($item['item_number']) ?></td>
 							<td style="align:center;">
 								<?= esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
@@ -205,9 +205,9 @@ if (isset($success))
 											'data-toggle' => "toggle",
 											'data-size' => 'small',
 											'data-onstyle' => 'success',
-											'data-on' => '<b>' . esc($config['currency_symbol']) .'</b>',
+											'data-on' => '<b>' . $config['currency_symbol'] .'</b>',
 											'data-off' => '<b>%</b>',
-											'data-line' => esc($line),
+											'data-line' => $line,
 											'checked' => $item['discount_type'] == 1
 										]) ?>
 									</span>
@@ -243,7 +243,7 @@ if (isset($success))
 									echo form_input ([
 										'name' => 'description',
 										'class' => 'form-control input-sm',
-										'value' => esc($item['description'])
+										'value' => $item['description']
 									]);
 								}
 								else
@@ -251,7 +251,7 @@ if (isset($success))
 									if ($item['description'] != '')	//TODO: !==?
 									{
 										echo $item['description'];
-										echo form_hidden('description', esc($item['description']));
+										echo form_hidden('description', $item['description']);
 									}
 									else
 									{
@@ -333,7 +333,7 @@ if (isset($success))
 		else
 		{
 		?>
-			<?= form_open(esc("$controller_name/select_supplier"), ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+			<?= form_open("$controller_name/select_supplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?= lang(ucfirst($controller_name) .'.select_supplier') ?></label>
 					<?= form_input ([
@@ -384,7 +384,7 @@ if (isset($success))
 				if($mode == 'requisition')
 				{
 				?>
-					<?= form_open(esc("$controller_name/requisition_complete"), ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+					<?= form_open("$controller_name/requisition_complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
 							<?= form_textarea ([
@@ -412,7 +412,7 @@ if (isset($success))
 								'name' => 'comment',
 								'id' => 'comment',
 								'class' => 'form-control input-sm',
-								'value' => esc($comment),
+								'value' => $comment,
 								'rows' => '4'
 							]) ?>
 							<div id="payment_details" >
@@ -440,7 +440,7 @@ if (isset($success))
 													'name' => 'recv_reference',
 													'id' => 'recv_reference',
 													'class' => 'form-control input-sm',
-													'value' => esc($reference),
+													'value' => $reference,
 													'size' => 5
 												]) ?>
 											</td>

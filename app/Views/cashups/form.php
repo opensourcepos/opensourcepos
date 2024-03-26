@@ -10,7 +10,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open(esc('cashups/save/'.$cash_ups_info->cashup_id), ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']) //TODO: String Interpolation ?>
+<?= form_open('cashups/save/'.$cash_ups_info->cashup_id, ['id' => 'cashups_edit_form', 'class' => 'form-horizontal']) //TODO: String Interpolation ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Cashups.info'), 'cash_ups_info', ['class' => 'control-label col-xs-3']) ?>
@@ -223,7 +223,7 @@
 					'name' => 'description',
 					'id' => 'description',
 					'class' => 'form-control input-sm',
-					'value'=>esc($cash_ups_info->description)
+					'value'=>$cash_ups_info->description
 					]
 				) ?>
 			</div>

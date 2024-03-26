@@ -90,7 +90,7 @@
 					'name' => 'tax_names[]',
 					'id' => 'tax_name_1',
 					'class' => 'form-control input-sm',
-					'value' => esc($config['default_tax_1_name'])
+					'value' => $config['default_tax_1_name']
 				]) ?>
 			</div>
 			<div class="col-xs-4">
@@ -113,7 +113,7 @@
 					'name' => 'tax_names[]',
 					'id' => 'tax_name_2',
 					'class' => 'form-control input-sm',
-					'value' => esc($config['default_tax_2_name'])
+					'value' => $config['default_tax_2_name']
 				]) ?>
 			</div>
 			<div class="col-xs-4">

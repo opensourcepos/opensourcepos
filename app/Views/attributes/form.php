@@ -54,8 +54,8 @@
 			<div class="input-group">
 				<?= form_multiselect(
 					'definition_flags[]',
-					esc($definition_flags),
-					esc(array_keys($selected_definition_flags)),
+					$definition_flags,
+					array_keys($selected_definition_flags),
 					[
 						'id' => 'definition_flags',
 						'class' => 'selectpicker show-menu-arrow',

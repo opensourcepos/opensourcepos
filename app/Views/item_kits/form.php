@@ -22,7 +22,7 @@
 						'name' => 'item_kit_number',
 						'id' => 'item_kit_number',
 						'class' => 'form-control input-sm',
-						'value' => esc($item_kit_info->item_kit_number)
+						'value' => $item_kit_info->item_kit_number
 					]) ?>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					'name' => 'name',
 					'id' => 'name',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_kit_info->name)
+					'value' => $item_kit_info->name
 				]) ?>
 			</div>
 		</div>
@@ -165,7 +165,7 @@
 					'name' => 'description',
 					'id' => 'description',
 					'class' => 'form-control input-sm',
-					'value' => esc($item_kit_info->description)
+					'value' => $item_kit_info->description
 				]) ?>
 			</div>
 		</div>
