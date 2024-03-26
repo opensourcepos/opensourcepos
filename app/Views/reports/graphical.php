@@ -18,7 +18,7 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 
-<?= view(esc($chart_type)) ?>
+<?= view($chart_type) ?>
 
 <div id="chart_report_summary">
 	<?php

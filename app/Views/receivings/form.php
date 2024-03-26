@@ -17,7 +17,7 @@
 			<?= form_label(lang('Receivings.receipt_number'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<?= anchor('receivings/receipt/' . $receiving_info['receiving_id'], 'RECV ' . $receiving_info['receiving_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style" => "text-align:left"]) ?>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
@@ -30,11 +30,11 @@
 				]) ?>
 			</div>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'supplier_name', 'value' => esc($selected_supplier_name), 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_input (['name' => 'supplier_name', 'value' => $selected_supplier_name, 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
 				<?= form_hidden('supplier_id', $selected_supplier_id) ?>
 			</div>
 		</div>
@@ -42,26 +42,26 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.reference'), 'reference', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'reference', 'value' => esc($receiving_info['reference']), 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
+				<?= form_input (['name' => 'reference', 'value' => $receiving_info['reference'], 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?= form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"') ?>
 			</div>
 		</div>
-		
+
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.comments'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_textarea (['name' => 'comment','value' => esc($receiving_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?= form_textarea (['name' => 'comment','value' => $receiving_info['comment'], 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>
 <?= form_close() ?>
-		
+
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -78,7 +78,7 @@ $(document).ready(function()
 	$('#supplier_name').autocomplete({
 		source: "<?= 'suppliers/suggest' ?>",
 		minChars: 0,
-		delay: 15, 
+		delay: 15,
 		cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,

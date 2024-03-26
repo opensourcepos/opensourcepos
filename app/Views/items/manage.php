@@ -99,7 +99,7 @@ $(document).ready(function()
         <?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?= form_multiselect(
 			'filters[]',
-			esc($filters),
+			$filters,
 			[''],
 			[
 				'id' => 'filters',

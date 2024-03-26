@@ -23,7 +23,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 					'id' => "tax_code_$i",
 					'class' => 'valid_chars text-uppercase form-control input-sm',
 					'placeholder' => lang('Taxes.code'),
-					'value' => esc($tax_code)
+					'value' => $tax_code
 				];
 				echo form_input($form_data)
 			?>
@@ -33,7 +33,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 				'name' => 'tax_code_name[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.name'),
-				'value' => esc($tax_code_name)
+				'value' => $tax_code_name
 			];
 			echo form_input($form_data)
 			?>
@@ -43,7 +43,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 				'name' => 'city[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.city'),
-				'value' => esc($city)
+				'value' => $city
 			];
 			echo form_input($form_data)
 			?>
@@ -53,7 +53,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 				'name' => 'state[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder'=>lang('Taxes.state'),
-				'value' => esc($state)
+				'value' => $state
 			];
 			echo form_input($form_data)
 			?>

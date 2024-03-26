@@ -64,7 +64,7 @@ if(isset($success))
 <div id="register_wrapper">
 
 <!-- Top register controls -->
-	<?= form_open(esc("$controller_name/changeMode"), ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -111,7 +111,7 @@ if(isset($success))
 				{
 				?>
 					<li class="pull-right">
-						<?= anchor(esc("$controller_name/manage"), '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang(ucfirst($controller_name) .'.takings'),
+						<?= anchor("$controller_name/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . lang(ucfirst($controller_name) .'.takings'),
 									array('class' => 'btn btn-primary btn-sm', 'id' => 'sales_takings_button', 'title' => lang(ucfirst($controller_name) .'.takings'))) ?>
 					</li>
 				<?php
@@ -123,7 +123,7 @@ if(isset($success))
 
 	<?php $tabindex = 0; ?>
 
-	<?= form_open(esc("$controller_name/add"), ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
+	<?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -177,11 +177,11 @@ if(isset($success))
 				foreach(array_reverse($cart, true) as $line => $item)
 				{
 			?>
-					<?= form_open(esc("$controller_name/editItem/$line"), ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+					<?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
 						<tr>
 							<td>
 								<?php
-									echo anchor(esc("$controller_name/deleteItem/$line"), '<span class="glyphicon glyphicon-trash"></span>');
+									echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
 									echo form_hidden('location', $item['item_location']);
 									echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value'=>$item['item_id']]);
 								?>
@@ -241,7 +241,7 @@ if(isset($success))
 								<div class="input-group">
 									<?= form_input (['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
 									<span class="input-group-btn">
-										<?= form_checkbox (['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle",'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => esc($line), 'checked' => $item['discount_type']]) ?>
+										<?= form_checkbox (['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle",'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => $item['discount_type']]) ?>
 									</span>
 								</div>
 							</td>
@@ -268,7 +268,7 @@ if(isset($success))
 							?>
 								<td><?= form_input (['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
 								<td style="align: center;" colspan="6">
-									<?= form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'tabindex' => ++$tabindex]) ?>
+									<?= form_input (['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
 								</td>
 								<td> </td>
 							<?php
@@ -290,14 +290,14 @@ if(isset($success))
 									<?php
 									if($item['allow_alt_description'])
 									{
-										echo form_input (['name' => 'description', 'class' => 'form-control input-sm', 'value' => esc($item['description']), 'onClick' => 'this.select();']);
+										echo form_input(['name' => 'description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'onClick' => 'this.select();']);
 									}
 									else
 									{
 										if($item['description'] != '')
 										{
 											echo $item['description'];
-											echo form_hidden('description', esc($item['description']));
+											echo form_hidden('description', $item['description']);
 										}
 										else
 										{
@@ -320,7 +320,7 @@ if(isset($success))
 									<?php
 									if($item['is_serialized'])
 									{
-										echo form_input (['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => esc($item['serialnumber']), 'onClick' => 'this.select();']);
+										echo form_input(['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']);
 									}
 									else
 									{
@@ -345,7 +345,7 @@ if(isset($success))
 
 <div id="overall_sale" class="panel panel-default">
 	<div class="panel-body">
-		<?= form_open(esc("$controller_name/select_customer"), ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
+		<?= form_open("$controller_name/select_customer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
 			<?php
 			if(isset($customer))
 			{
@@ -353,7 +353,7 @@ if(isset($success))
 				<table class="sales_table_100">
 					<tr>
 						<th style="width: 55%;"><?= lang(ucfirst($controller_name) .'.customer') ?></th>
-						<th style="width: 45%; text-align: right;"><?= anchor(esc("customers/view/$customer_id"), esc($customer), ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Customers.update')]) ?></th>
+						<th style="width: 45%; text-align: right;"><?= anchor("customers/view/$customer_id", $customer, ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Customers.update')]) ?></th>
 					</tr>
 					<?php
 					if(!empty($customer_email))
@@ -506,7 +506,7 @@ if(isset($success))
 				if($payments_cover_total)
 				{
 				?>
-					<?= form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?= lang(ucfirst($controller_name) .'.payment') ?></td>
@@ -553,7 +553,7 @@ if(isset($success))
 				else
 				{
 				?>
-					<?= form_open(esc("$controller_name/addPayment"), ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+					<?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?= lang(ucfirst($controller_name) .'.payment') ?></td>
@@ -596,7 +596,7 @@ if(isset($success))
 							{
 							?>
 								<tr>
-									<td><?= anchor(esc("$controller_name/delete_payment/$payment_id"), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+									<td><?= anchor("$controller_name/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 									<td><?= esc($payment['payment_type']) ?></td>
 									<td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
 								</tr>
@@ -610,7 +610,7 @@ if(isset($success))
 				?>
 			</div>
 
-			<?= form_open(esc("$controller_name/cancel"), ['id' => 'buttons_form']) ?>
+			<?= form_open("$controller_name/cancel", ['id' => 'buttons_form']) ?>
 				<div class="form-group" id="buttons_sale">
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?= lang(ucfirst($controller_name) .'.suspend_sale') ?></div>
 					<?php
@@ -637,7 +637,7 @@ if(isset($success))
 						<div class="form-group form-group-sm">
 							<div class="col-xs-12">
 								<?= form_label(lang('Common.comments'), 'comments', ['class' => 'control-label', 'id' => 'comment_label', 'for' => 'comment']) ?>
-								<?= form_textarea (['name' => 'comment', 'id' => 'comment', 'class' => 'form-control input-sm', 'value' => esc($comment), 'rows' => '2']) ?>
+								<?= form_textarea (['name' => 'comment', 'id' => 'comment', 'class' => 'form-control input-sm', 'value' => $comment, 'rows' => '2']) ?>
 							</div>
 						</div>
 					</div>
@@ -693,7 +693,7 @@ if(isset($success))
 								<div class="col-xs-6">
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon input-sm">#</span>
-										<?= form_input (['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'form-control input-sm', 'value' => esc($invoice_number)]) ?>
+										<?= form_input (['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'form-control input-sm', 'value' => $invoice_number]) ?>
 									</div>
 								</div>
 							</div>
