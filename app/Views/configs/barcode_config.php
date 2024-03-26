@@ -133,7 +133,7 @@
 					echo form_dropdown ([
 						'name' => 'barcode_formats[]',
 						'id' => 'barcode_formats',
-						'options' => !empty($barcode_formats) ? esc(array_combine($barcode_formats, $barcode_formats), 'attr') : [],
+						'options' => !empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : [],
 						'multiple' => 'multiple',
 						'data-role' => 'tagsinput']) ?>
 				</div>

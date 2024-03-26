@@ -11,7 +11,7 @@
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="employee_login_info">
 			<fieldset>
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?= form_label(lang('Employees.username'), 'username', ['class' => 'required control-label col-xs-3']) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -20,7 +20,7 @@
 								'name' => 'username',
 								'id' => 'username',
 								'class' => 'form-control input-sm',
-								'value' => esc($person_info->username),
+								'value' => $person_info->username,
 								'readonly' => 'true'
 							]) ?>
 						</div>
@@ -29,7 +29,7 @@
 
 				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?= form_label(lang('Employees.current_password'), 'current_password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 					<?= form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 
-				<div class="form-group form-group-sm">	
+				<div class="form-group form-group-sm">
 				<?= form_label(lang('Employees.repeat_password'), 'repeat_password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
@@ -84,7 +84,7 @@ $(document).ready(function()
 	$.validator.addMethod("notEqualTo", function(value, element, param) {
 		return this.optional(element) || value != $(param).val();
 	}, '<?= lang('Employees.password_not_must_match') ?>');
-	
+
 	$('#employee_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -116,7 +116,7 @@ $(document).ready(function()
 			}
    		},
 
-		messages: 
+		messages:
 		{
 			password:
 			{

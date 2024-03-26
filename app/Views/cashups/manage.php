@@ -60,7 +60,7 @@ $(document).ready(function()
 		</button>
 
 		<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-		<?= form_multiselect('filters[]', esc($filters), [''], [
+		<?= form_multiselect('filters[]', $filters, [''], [
 			'id' => 'filters',
 			'data-none-selected-text'=>lang('Common.none_selected_text'),
 			'class' => 'selectpicker show-menu-arrow',

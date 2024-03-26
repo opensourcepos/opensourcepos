@@ -22,7 +22,7 @@
 						'id' => 'item_number',
 						'class' => 'form-control input-sm',
 						'disabled' => '',
-						'value' => esc($item_info->item_number)
+						'value' => $item_info->item_number
 					]) ?>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 					'id' => 'name',
 					'class' => 'form-control input-sm',
 					'disabled' => '',
-					'value' => esc($item_info->name)
+					'value' => $item_info->name
 				]) ?>
 			</div>
 		</div>
@@ -51,7 +51,7 @@
 							'id' => 'category',
 							'class' => 'form-control input-sm',
 							'disabled' => '',
-							'value' => esc($item_info->category)
+							'value' => $item_info->category
 					]) ?>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
-{		
+{
 	$('#item_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -119,7 +119,7 @@ $(document).ready(function()
 
 		errorLabelContainer: '#error_message_box',
 
-		rules: 
+		rules:
 		{
 			newquantity:
 			{
@@ -128,7 +128,7 @@ $(document).ready(function()
 			}
    		},
 
-		messages: 
+		messages:
 		{
 			newquantity:
 			{
@@ -139,8 +139,8 @@ $(document).ready(function()
 	}, form_support.error));
 });
 
-function fill_quantity(val) 
-{   
+function fill_quantity(val)
+{
 	var item_quantities = <?= json_encode(esc($item_quantities, 'raw')) ?>;
 	document.getElementById('quantity').value = parseFloat(item_quantities[val]).toFixed(<?= quantity_decimals() ?>);
 }

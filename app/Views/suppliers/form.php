@@ -9,7 +9,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open(esc("$controller_name/save/$person_info->person_id", 'url'), ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'supplier_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="supplier_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required control-label col-xs-3']) ?>
@@ -38,7 +38,7 @@
 					'name' => 'agency_name',
 					'id' => 'agency_name_input',
 					'class' => 'form-control input-sm',
-					'value' => esc(html_entity_decode($person_info->agency_name))
+					'value' => $person_info->agency_name
 					])
 				?>
 			</div>
@@ -53,7 +53,7 @@
 					'name' => 'account_number',
 					'id' => 'account_number',
 					'class' => 'form-control input-sm',
-					'value' => esc(html_entity_decode($person_info->account_number))
+					'value' => $person_info->account_number
 					])
 				?>
 			</div>
@@ -66,7 +66,7 @@
 						'name' => 'tax_id',
 						'id' => 'tax_id',
 						'class' => 'form-control input-sm',
-						'value' => esc(html_entity_decode($person_info->tax_id))
+						'value' => $person_info->tax_id
 					])
 				?>
 			</div>

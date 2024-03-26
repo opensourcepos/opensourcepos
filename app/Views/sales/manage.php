@@ -74,7 +74,7 @@ $(document).ready(function()
 		</button>
 
 		<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-		<?= form_multiselect('filters[]', esc($filters), [''], ['id' => 'filters', 'data-none-selected-text'=>lang('Common.none_selected_text'), 'class' => 'selectpicker show-menu-arrow', 'data-selected-text-format' => 'count > 1', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+		<?= form_multiselect('filters[]', $filters, [''], ['id' => 'filters', 'data-none-selected-text'=>lang('Common.none_selected_text'), 'class' => 'selectpicker show-menu-arrow', 'data-selected-text-format' => 'count > 1', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 	</div>
 </div>
 

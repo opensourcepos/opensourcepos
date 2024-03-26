@@ -44,7 +44,7 @@ if(isset($error_message))
 				<?php if($config['company_logo'] != '')
 				{
 				?>
-					<img id="image" src="data:<?= esc($mimetype) ?>;base64,<?= base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo" />
+					<img id="image" src="data:<?= esc($mimetype, 'attr') ?>;base64,<?= base64_encode(file_get_contents('uploads/' . esc($config['company_logo']))) ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -208,7 +208,7 @@ if(isset($error_message))
 			<?= nl2br($config['return_policy']) ?>
 		</div>
 		<div id='barcode'>
-			<img alt='<?= esc($barcode) ?>' src='data:image/png;base64,<?= esc($barcode) ?>' /><br>
+			<img alt='<?= esc($barcode, 'attr') ?>' src='data:image/png;base64,<?= esc($barcode, 'attr') ?>' /><br>
 			<?= $sale_id ?>
 		</div>
 	</div>

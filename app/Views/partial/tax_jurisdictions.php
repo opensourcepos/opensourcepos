@@ -26,7 +26,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 				'id' => "jurisdiction_name_$i",
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => lang('Taxes.jurisdiction_name'),
-				'value' => esc($jurisdiction_name)
+				'value' => $jurisdiction_name
 				];
 				echo form_input($form_data);
 			?>
@@ -37,7 +37,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 				'name' => 'tax_group[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => lang('Taxes.tax_group'),
-				'value' => esc($tax_group)
+				'value' => $tax_group
 			];
 			echo form_input($form_data);
 			?>
@@ -52,7 +52,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 				'name' => 'reporting_authority[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => lang('Taxes.reporting_authority'),
-				'value' => esc($reporting_authority)
+				'value' => $reporting_authority
 			];
 			echo form_input($form_data)
 			?>
