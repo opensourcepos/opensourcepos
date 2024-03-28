@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Person;
-use function \Tamtamchik\NameCase\str_name_case;
 
 abstract class Persons extends Secure_Controller
 {

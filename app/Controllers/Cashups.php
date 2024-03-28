@@ -95,7 +95,7 @@ class Cashups extends Secure_Controller
 		}
 
 		// open cashup
-		if($cash_ups_info->cashup_id < 0)
+		if($cash_ups_info->cashup_id == NEW_ENTRY)
 		{
 			$cash_ups_info->open_date = date('Y-m-d H:i:s');
 			$cash_ups_info->close_date = $cash_ups_info->open_date;
