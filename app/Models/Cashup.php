@@ -98,14 +98,7 @@ class Cashup extends Model
 		if($count_only)
 		{
 			$builder->select('COUNT(cash_up.cashup_id) as count');
-		}
-
-		if(!$count_only)
-		{
-			$builder->select('
-			cash_up.cashup_id,
-			');
-		}
+		}		
 		else
 		{
 			$builder->select('
