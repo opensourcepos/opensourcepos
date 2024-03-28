@@ -19,7 +19,7 @@ foreach($stock_locations as $location => $location_data)
 					'name' => "stock_location[$location_id]",
 					'id' => "stock_location[$location_id]",
 					'class' => 'stock_location valid_chars form-control input-sm required',
-					'value' => esc($location_name)
+					'value' => $location_name
 				];
 				$location_data['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);

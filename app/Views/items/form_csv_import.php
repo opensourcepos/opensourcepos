@@ -4,7 +4,7 @@
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
-				<a href="<?= esc('items/generateCsvFile') ?>"><?= lang('Common.download_import_template') ?></a>
+				<a href="<?= esc('items/generateCsvFile', 'attr') ?>"><?= lang('Common.download_import_template') ?></a>
 			</div>
 		</div>
 

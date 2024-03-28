@@ -64,7 +64,7 @@
 					'name' => 'supplier_tax_code',
 					'id' => 'supplier_tax_code',
 					'class' => 'form-control input-sm',
-					'value' => esc($expenses_info->supplier_tax_code)
+					'value' => $expenses_info->supplier_tax_code
 				]) ?>
 			</div>
 		</div>
@@ -137,7 +137,7 @@
 					'name' => 'description',
 					'id' => 'description',
 					'class' => 'form-control input-sm',
-					'value' => esc($expenses_info->description)
+					'value' => $expenses_info->description
 				]) ?>
 			</div>
 		</div>

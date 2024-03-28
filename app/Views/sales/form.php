@@ -24,7 +24,7 @@
 	<fieldset id="sale_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.receipt_number'), 'receipt_number', ['class' => 'control-label col-xs-3']) ?>
-			<?= anchor(esc('sales/receipt/' . $sale_info['sale_id'], 'url'), 'POS ' . $sale_info['sale_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style"=>"text-align:left"]) ?>
+			<?= anchor('sales/receipt/' . $sale_info['sale_id'], 'POS ' . $sale_info['sale_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style"=>"text-align:left"]) ?>
 		</div>
 
 		<div class="form-group form-group-sm">
@@ -42,10 +42,10 @@
 				<?= form_label(lang('Sales.invoice_number'), 'invoice_number', ['class' => 'control-label col-xs-3']) ?>
 				<div class='col-xs-8'>
 					<?php if(!empty($sale_info["invoice_number"]) && isset($sale_info['customer_id']) && !empty($sale_info['email'])): ?>
-						<?= form_input (['name' => 'invoice_number', 'size'=>10, 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<?= form_input (['name' => 'invoice_number', 'size'=>10, 'value' => $sale_info['invoice_number'], 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
 						<a id="send_invoice" href="javascript:void(0);"><?= lang('Sales.send_invoice') ?></a>
 					<?php else: ?>
-						<?= form_input (['name' => 'invoice_number', 'value' => esc($sale_info['invoice_number']), 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
+						<?= form_input (['name' => 'invoice_number', 'value' => $sale_info['invoice_number'], 'id' => 'invoice_number', 'class' => 'form-control input-sm']) ?>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -89,9 +89,9 @@
 					<?php // no editing of Gift Card payments as it's a complex change ?>
 					<?= form_hidden("payment_id_$i", $row->payment_id) ?>
 					<?php if( !empty(strstr($row->payment_type, lang('Sales.giftcard'))) ): ?>
-						<?= form_input (['name' => "payment_type_$i", 'value' => esc($row->payment_type), 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
+						<?= form_input (['name' => "payment_type_$i", 'value' => $row->payment_type, 'id' => "payment_type_$i", 'class' => 'form-control input-sm', 'readonly' => 'true']) ?>
 					<?php else: ?>
-						<?= form_dropdown("payment_type_$i", esc($payment_options), esc($row->payment_type), ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
+						<?= form_dropdown("payment_type_$i", $payment_options, $row->payment_type, ['id' => "payment_types_$i", 'class' => 'form-control']) ?>
 					<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
@@ -138,7 +138,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'customer_name', 'value' => esc($selected_customer_name), 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_input (['name' => 'customer_name', 'value' => $selected_customer_name, 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
 				<?= form_hidden('customer_id', $selected_customer_id) ?>
 			</div>
 		</div>
@@ -146,7 +146,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'employee_name', 'value' => esc($selected_employee_name), 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_input (['name' => 'employee_name', 'value' => $selected_employee_name, 'id' => 'employee_name', 'class' => 'form-control input-sm']) ?>
 				<?= form_hidden('employee_id', $selected_employee_id) ?>
 			</div>
 		</div>
@@ -154,7 +154,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Sales.comment'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_textarea (['name' => 'comment', 'value' => esc($sale_info['comment']), 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?= form_textarea (['name' => 'comment', 'value' => $sale_info['comment'], 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>

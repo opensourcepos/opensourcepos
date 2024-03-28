@@ -4,7 +4,6 @@ namespace App\Libraries;
 
 use Config\OSPOS;
 use Exception;
-use Picqer\Barcode\BarcodeGeneratorPNG;
 use Picqer\Barcode\BarcodeGeneratorSVG;
 
 /**
@@ -155,7 +154,7 @@ class Barcode_lib
 			$display_table = '<table>';
 			$display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
 			$barcode = $this->generate_barcode($item, $barcode_config);
-			$display_table .= '<tr><td style="text-align:center;"><div style=\'height:' . $barcode_config['barcode_height'] . 'px; width:'. $barcode_config['barcode_width'] . "px;overflow:visible;'>$barcode</div></td></tr>";
+			$display_table .= '<tr><td style="text-align:center;"><div style=\'height:' . $barcode_config['barcode_height'] . 'px; width:'. $barcode_config['barcode_width'] . "px'>$barcode</div></td></tr>";
 			$display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
 			$display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
 			$display_table .= '</table>';

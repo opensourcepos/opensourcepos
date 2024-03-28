@@ -21,7 +21,7 @@ foreach($tax_categories as $key => $category)
 				'id' => "tax_category_$i",
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => lang('Taxes.tax_category_name'),
-				'value' => esc($tax_category)
+				'value' => $tax_category
 			];
 			echo form_input($form_data);
 			?>
@@ -31,7 +31,7 @@ foreach($tax_categories as $key => $category)
 				'name' => 'tax_group_sequence[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => lang('Taxes.sequence'),
-				'value' => esc($tax_group_sequence)
+				'value' => $tax_group_sequence
 			];
 			echo form_input($form_data);
 			?>

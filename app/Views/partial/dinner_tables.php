@@ -18,10 +18,10 @@ foreach($dinner_tables as $table_key => $table)
 
 		<div class='col-xs-2'>
 			<?php $form_data = [
-					'name' => esc("dinner_table_$dinner_table_id"),
-					'id' => esc("dinner_table_$dinner_table_id"),
+					'name' => "dinner_table_$dinner_table_id",
+					'id' => "dinner_table_$dinner_table_id",
 					'class' => 'dinner_table valid_chars form-control input-sm required',
-					'value' => esc($dinner_table_name)
+					'value' => $dinner_table_name
 				];
 				$table['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);
