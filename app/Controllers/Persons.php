@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Person;
+use Tamtamchik\NameCase\Formatter;
 
 abstract class Persons extends Secure_Controller
 {
