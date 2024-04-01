@@ -93,12 +93,11 @@ class Giftcard extends Model
 		$empty_obj = new stdClass();
 
 		// Iterate through field definitions to determine how the fields should be initialized
-
-		foreach($this->db->getFieldData($table_name) as $field) {
-
+		foreach($this->db->getFieldData($table_name) as $field)
+		{
 			$field_name = $field->name;
 
-			if(in_array($field->type, array('int', 'tinyint', 'decimal')))
+			if(in_array($field->type, ['int', 'tinyint', 'decimal']))
 			{
 				$empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
 			}

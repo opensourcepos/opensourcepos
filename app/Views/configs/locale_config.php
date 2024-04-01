@@ -15,28 +15,27 @@
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
-				<div class='row'>
-					<div class='col-xs-1'>
-						<?= form_input([
-							'name' => 'number_locale',
-							'value' => $config['number_locale'],
-							'extra' => "class='form-control input-sm' id='number_locale'"
-						]) ?>
-						<?= form_hidden([
-							'name' => 'save_number_locale',
-							'value' => $config['number_locale']
-						]) ?>
-					</div>
-					<div class="col-xs-2">
-						<label class="control-label">
-							<a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
-								<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.number_locale_tooltip') ?>"></span>
-							</a>
-							<span id="number_locale_example">
-								&nbsp&nbsp<?= to_currency(1234567890.12300) ?>
-							</span>
-						</label>
-					</div>
+				<div class='col-xs-1'>
+					<?= form_input([
+						'name' => 'number_locale',
+						'id' => 'number_locale',
+						'class' => 'form-control input-sm',
+						'value' => $config['number_locale']
+					]) ?>
+					<?= form_hidden([
+						'name' => 'save_number_locale',
+						'value' => $config['number_locale']
+					]) ?>
+				</div>
+				<div class="col-xs-2">
+					<label class="control-label">
+						<a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
+							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.number_locale_tooltip') ?>"></span>
+						</a>
+						<span id="number_locale_example">
+							&nbsp&nbsp<?= to_currency(1234567890.12300) ?>
+						</span>
+					</label>
 				</div>
 			</div>
 
@@ -182,7 +181,11 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_input('country_codes', $config['country_codes'], ['class' => 'form-control input-sm']) ?>
+					<?= form_input([
+						'name' => 'country_codes',
+						'class' => 'form-control input-sm',
+						'value' => $config['country_codes']
+					]) ?>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
@@ -198,9 +201,8 @@
 							'language',
 							get_languages(),
 							current_language_code(true) . ':' . current_language(true),
-							array('class' => 'form-control input-sm')
-						)
-					?>
+							['class' => 'form-control input-sm']
+						) ?>
 				</div>
 			</div>
 
@@ -211,7 +213,7 @@
 					'timezone',
 					get_timezones(),
 					$config['timezone'] ? $config['timezone'] : date_default_timezone_get(),
-					"class='form-control input-sm'"
+					['class' => 'form-control input-sm']
 				) ?>
 				</div>
 			</div>
@@ -223,13 +225,15 @@
 					'dateformat',
 					get_dateformats(),
 					$config['dateformat'],
-					"class='form-control input-sm'"
+					['class' => 'form-control input-sm']
 				) ?>
 				</div>
 				<div class='col-sm-2'>
-				<?= form_dropdown('timeformat',
+				<?= form_dropdown(
+					'timeformat',
 					get_timeformats(),
-					$config['timeformat'], ['class' => 'form-control input-sm']
+					$config['timeformat'],
+					['class' => 'form-control input-sm']
 				) ?>
 				</div>
 			</div>
@@ -242,7 +246,7 @@
 						'id' => 'date_or_time_format',
 						'value' => 'date_or_time_format',
 						'checked' => $config['date_or_time_format'] == 1
-						]) ?>
+					]) ?>
 				</div>
 			</div>
 
@@ -265,7 +269,8 @@
 							'11' => lang('Config.financial_year_nov'),
 							'12' => lang('Config.financial_year_dec')
 						],
-						$config['financial_year'], ['class' => 'form-control input-sm']
+						$config['financial_year'],
+						['class' => 'form-control input-sm']
 					) ?>
 				</div>
 			</div>
@@ -279,7 +284,7 @@
 	</div>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 //validation and submit handling
 $(document).ready(function()
 {

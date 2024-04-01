@@ -13,7 +13,7 @@ use App\Models\Employee;
 ?>
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
     $('#generate_barcodes').click(function()

@@ -231,7 +231,7 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_printer'), 'config_receipt_printer', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
-					<?= form_dropdown('receipt_printer', array(), ' ', 'id="receipt_printer" class="form-control"') ?>
+					<?= form_dropdown('receipt_printer', [], ' ', 'id="receipt_printer" class="form-control"') ?>
 				</div>
 			</div>
 
@@ -331,7 +331,7 @@
 	</div>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 //validation and submit handling
 $(document).ready(function()
 {

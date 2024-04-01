@@ -6,7 +6,7 @@
 ?>
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 
@@ -47,7 +47,7 @@ if(isset($error))
 
 <?= view('partial/footer') ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	$("#generate_report").click(function()

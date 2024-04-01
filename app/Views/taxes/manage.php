@@ -5,7 +5,7 @@
 ?>
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
 

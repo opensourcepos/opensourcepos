@@ -8,7 +8,7 @@
 ?>
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	// when any filter is clicked and the dropdown window is closed
