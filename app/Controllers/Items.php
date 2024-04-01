@@ -655,12 +655,12 @@ class Items extends Secure_Controller
 			'unit_price' => parse_decimals($this->request->getPost('unit_price')),
 			'reorder_level' => parse_quantity($this->request->getPost('reorder_level')),
 			'receiving_quantity' => $receiving_quantity,
-			'allow_alt_description' => $this->request->getPost('allow_alt_description') !== null,
-			'is_serialized' => $this->request->getPost('is_serialized') !== null,
-			'qty_per_pack' => $this->request->getPost('qty_per_pack') === null ? 1 : parse_quantity($this->request->getPost('qty_per_pack')),
-			'pack_name' => $this->request->getPost('pack_name') === null ? $default_pack_name : $this->request->getPost('pack_name'),
+			'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
+			'is_serialized' => $this->request->getPost('is_serialized') != null,
+			'qty_per_pack' => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($this->request->getPost('qty_per_pack')),
+			'pack_name' => $this->request->getPost('pack_name') == null ? $default_pack_name : $this->request->getPost('pack_name'),
 			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === null ? $item_id : intval($this->request->getPost('low_sell_item_id')),
-			'deleted' => $this->request->getPost('is_deleted') !== null,
+			'deleted' => $this->request->getPost('is_deleted') != null,
 			'hsn_code' => $this->request->getPost('hsn_code') === null ? '' : $this->request->getPost('hsn_code')
 		];
 

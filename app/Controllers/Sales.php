@@ -340,7 +340,7 @@ class Sales extends Secure_Controller
 	 */
 	public function set_print_after_sale(): void
 	{
-		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
+		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != null);
 	}
 
 	/**
@@ -1639,7 +1639,7 @@ class Sales extends Secure_Controller
 	 * it as a new suspended sale.
 	 * @throws ReflectionException
 	 */
-	public function suspend(): void
+	public function postSuspend(): void
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		$dinner_table = $this->sale_lib->get_dinner_table();
@@ -1680,7 +1680,7 @@ class Sales extends Secure_Controller
 	/**
 	 * List suspended sales
 	 */
-	public function suspended(): void
+	public function getSuspended(): void
 	{
 		$data = [];
 		$customer_id = $this->sale_lib->get_customer();
@@ -1692,7 +1692,7 @@ class Sales extends Secure_Controller
 	 * Unsuspended sales are now left in the tables and are only removed
 	 * when they are intentionally cancelled.
 	 */
-	public function unsuspend(): void
+	public function postUnsuspend(): void
 	{
 		$sale_id = $this->request->getPost('suspended_sale_id', FILTER_SANITIZE_NUMBER_INT);
 		$this->sale_lib->clear_all();
