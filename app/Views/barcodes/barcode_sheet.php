@@ -17,6 +17,12 @@ $barcode_lib = new Barcode_lib();
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?= lang('Items.generate_barcodes') ?></title>
 	<link rel="stylesheet" rev="stylesheet" href="<?= base_url() ?>css/barcode_font.css" />
+	<style>
+		.barcode svg {
+			height: <?= $barcode_config['barcode_height'] ?>px;
+			width: <?= $barcode_config['barcode_width'] ?>px;
+		}
+	</style>
 </head>
 
 <body class=<?= "font_" . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
