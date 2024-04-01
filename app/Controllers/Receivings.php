@@ -129,7 +129,7 @@ class Receivings extends Secure_Controller
 	 */
 	public function set_print_after_sale(): void
 	{
-		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale', FILTER_SANITIZE_NUMBER_INT));
+		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale') != null);
 	}
 
 	/**

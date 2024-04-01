@@ -701,12 +701,9 @@ class Attribute extends Model
 
 		if(!empty($id))
 		{
-			$builder->where('definition_flags &=', $definition_flags);
+			$builder->where(new RawSql("definition_flags & $definition_flags"));
 		}
-
-		$result = $builder->get();
-
-		return $result;
+		return $builder->get();
 	}
 
 	/**
