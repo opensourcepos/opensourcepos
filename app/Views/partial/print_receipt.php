@@ -5,7 +5,7 @@
  * @var array $config
  */
 ?>
-<script type="text/javascript">
+<script type="application/javascript">
 function printdoc()
 {
 	// install firefox addon in order to use this plugin

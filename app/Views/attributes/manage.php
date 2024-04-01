@@ -8,7 +8,7 @@
  */
 ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 	$(document).ready(function()
 	{
 		<?= view('partial/bootstrap_tables_locale') ?>

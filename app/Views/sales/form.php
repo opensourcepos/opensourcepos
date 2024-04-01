@@ -160,7 +160,7 @@
 	</fieldset>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	<?php if(!empty($sale_info['email'])): ?>

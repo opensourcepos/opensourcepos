@@ -118,13 +118,12 @@ class Database extends Config
 				break;
 		}
 
-		foreach ([&$this->development, &$this->tests, &$this->default] as &$config) {
+		foreach ([&$this->development, &$this->tests, &$this->default] as &$config)
+		{
 			$config['hostname'] = !getenv('MYSQL_HOST_NAME') ? $config['hostname'] : getenv('MYSQL_HOST_NAME');
 			$config['username'] = !getenv('MYSQL_USERNAME') ? $config['username'] : getenv('MYSQL_USERNAME');
 			$config['password'] = !getenv('MYSQL_PASSWORD') ? $config['password'] : getenv('MYSQL_PASSWORD');
 			$config['database'] = !getenv('MYSQL_DB_NAME') ? $config['database'] : getenv('MYSQL_DB_NAME');
-
-
 		}
     }
 }

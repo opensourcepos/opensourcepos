@@ -82,7 +82,7 @@ foreach($definition_values as $definition_id => $definition_value)
 }
 ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 (function() {
 		<?= view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($config['dateformat'] . '"}')]) ?>
 

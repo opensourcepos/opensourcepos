@@ -3,7 +3,7 @@
  * @var array $config
  */
 ?>
-<script type="text/javascript">
+<script type="application/javascript">
 	// live clock
 	var clock_tick = function clock_tick() {
 		setInterval('update_clock();', 1000);

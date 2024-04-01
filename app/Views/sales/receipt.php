@@ -19,7 +19,7 @@ if (isset($error_message))
 ?>
 
 <?php if(!empty($customer_email)): ?>
-	<script type="text/javascript">
+	<script type="application/javascript">
 	$(document).ready(function()
 	{
 		var send_email = function()

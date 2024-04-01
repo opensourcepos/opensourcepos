@@ -108,7 +108,7 @@ use App\Models\Inventory;
 	</tbody>
 </table>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	display_stock(<?= json_encode(key(esc($stock_locations, 'raw'))) ?>);
