@@ -33,7 +33,7 @@
 							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.number_locale_tooltip') ?>"></span>
 						</a>
 						<span id="number_locale_example">
-							&nbsp&nbsp<?= to_currency(1234567890.12300) ?>
+							&nbsp;&nbsp;<?= to_currency(1234567890.12300) ?>
 						</span>
 					</label>
 				</div>

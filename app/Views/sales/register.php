@@ -884,14 +884,14 @@ $(document).ready(function()
 	});
 
 	$('#suspend_sale_button').click(function() {
-		$('#buttons_form').attr('action', "<?= esc(site_url("$controller_name/suspend"), 'url') ?>");
+		$('#buttons_form').attr('action', "<?= site_url("$controller_name/suspend") ?>");
 		$('#buttons_form').submit();
 	});
 
 	$('#cancel_sale_button').click(function() {
 		if(confirm("<?= lang(ucfirst($controller_name) .'.confirm_cancel_sale') ?>"))
 		{
-			$('#buttons_form').attr('action', "<?= esc(site_url("$controller_name/cancel"), 'url') ?>");
+			$('#buttons_form').attr('action', "<?= site_url("$controller_name/cancel") ?>");
 			$('#buttons_form').submit();
 		}
 	});
