@@ -62,7 +62,7 @@
 	</fieldset>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	<?= view('partial/datepicker_locale') ?>

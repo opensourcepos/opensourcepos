@@ -14,7 +14,7 @@
   visibility: hidden;
 }
 </style>
-</style><script type="text/javascript" src="js/clipboard.min.js"></script>
+</style><script type="application/javascript" src="js/clipboard.min.js"></script>
 <div id="config_wrapper" class="col-sm-12">
 	<?php
 
@@ -106,9 +106,12 @@
 							}
 
 							clearstatcache();
-							if(is_writable($uploads) && substr(decoct(fileperms($uploads)), -4) != 750  ) {
+							if(is_writable($uploads) && substr(decoct(fileperms($uploads)), -4) != 750  )
+							{
 								echo ' | <span style="color: red;">Vulnerable or Incorrect Permissions &#x2717</span>';
-							} else {
+							}
+							else
+							{
 								echo ' |  <span style="color: green;">Security Check Passed &#x2713 </span>';
 							}
 							clearstatcache();

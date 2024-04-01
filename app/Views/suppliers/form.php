@@ -74,7 +74,7 @@
 	</fieldset>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 //validation and submit handling
 $(document).ready(function()
 {

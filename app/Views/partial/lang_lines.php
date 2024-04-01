@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script type="application/javascript">
 (function(lang, $) {
 
     var lines = {

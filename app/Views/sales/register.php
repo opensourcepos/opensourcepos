@@ -711,7 +711,7 @@ if(isset($success))
 	</div>
 </div>
 
-<script type="text/javascript">
+<script type="application/javascript">
 $(document).ready(function()
 {
 	const redirect = function() {

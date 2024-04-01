@@ -44,9 +44,12 @@ class Summary_payments extends Summary_report
 		$where = '';    //TODO: Duplicated code
 
 		//TODO: this needs to be converted to ternary notation
-		if(empty($config['date_or_time_format'])) {
+		if(empty($config['date_or_time_format']))
+		{
 			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-		} else {
+		}
+		else
+		{
 			$where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
@@ -76,8 +79,10 @@ class Summary_payments extends Summary_report
 
 		// At this point in time refunds are assumed to be cash refunds.
 		$total_cash_refund = 0;
-		foreach($sales as $key => $sale_summary) {
-			if($sale_summary['trans_refunded'] <> 0) {
+		foreach($sales as $key => $sale_summary)
+		{
+			if($sale_summary['trans_refunded'] <> 0)
+			{
 				$total_cash_refund += $sale_summary['trans_refunded'];
 			}
 		}
@@ -103,8 +108,10 @@ class Summary_payments extends Summary_report
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
-		foreach($payments as $key => $payment) {
-			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== false) {
+		foreach($payments as $key => $payment)
+		{
+			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== false)
+			{
 				$gift_card_count += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
 
@@ -113,7 +120,8 @@ class Summary_payments extends Summary_report
 			}
 		}
 
-		if($gift_card_count > 0) {
+		if($gift_card_count > 0)
+		{
 			$payments[] = [
 				'trans_group' => lang('Reports.trans_payments'),
 				'trans_type' => lang('Sales.giftcard'),

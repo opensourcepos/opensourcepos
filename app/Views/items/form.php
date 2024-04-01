@@ -82,7 +82,7 @@
 		</div>
 
 		<div id="attributes">
-			<script type="text/javascript">
+			<script type="application/javascript">
 				$('#attributes').load('<?= "items/attributes/$item_info->item_id" ?>');
 			</script>
 		</div>
@@ -478,7 +478,7 @@
 	</fieldset>
 <?= form_close() ?>
 
-<script type="text/javascript">
+<script type="application/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
