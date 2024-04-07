@@ -1,0 +1,44 @@
+name: Build and publish Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image version"
+        required: true
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Run the Composer step
+        uses: addnab/docker-run-action@v3
+        with:
+          image: jekkos/composer
+          options: -v ${{ github.workspace }}:/app
+          run: |
+            composer install
+            php bin/install.php translations develop
+      - name: Run node setup
+        uses: addnab/docker-run-action@v3
+        with:
+          image: opensourcepos/node-grunt-bower
+          options: -v ${{ github.workspace }}:/app -w /app
+          run: |
+            npm install coffeescript --also=dev
+            npm install --verbose
+            bower install
+            grunt package --force
+
+      - name: docker build image
+        run: docker build . -t registry.digitalocean.com/dc-apps-registry/opensourcepos:latest-app
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log in to DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+      - name: Push app image to DO Container Registry
+        run: docker push registry.digitalocean.com/dc-apps-registry/opensourcepos:latest-app

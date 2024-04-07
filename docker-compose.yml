@@ -13,16 +13,16 @@ networks:
     db_net:
 
 services:
-    sqlscript:
-        image: jekkos/opensourcepos:sqlscript
-        command: /bin/sh -c 'exit 0'
+#    sqlscript:
+#        image: jekkos/opensourcepos:sqlscript
+#        command: /bin/sh -c 'exit 0'
     ospos:
-        image: jekkos/opensourcepos:3.3.9
+        image: dc/ospos:latest
         restart: always
         depends_on:
           - mysql
         ports:
-          - "127.0.0.1:80:80"
+          - "80:80"
         networks:
           - app_net
           - db_net
@@ -30,7 +30,7 @@ services:
           - uploads:/app/public/uploads
           - logs:/app/application/logs
         environment:
-          - CI_ENV=production
+          - CI_ENV=development
           - FORCE_HTTPS=false
           - PHP_TIMEZONE=UTC
           - MYSQL_USERNAME=admin
@@ -46,9 +46,8 @@ services:
           - "3306"
         networks:
           - db_net
-        volumes_from:
-          - sqlscript
         volumes:
+          - ./database/compiled_database.sql:/docker-entrypoint-initdb.d/database.sql
           - mysql:/var/lib/mysql:rw
         environment:
           - MYSQL_ROOT_PASSWORD=pointofsale
