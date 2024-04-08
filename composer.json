@@ -21,15 +21,23 @@
 		"point-of-sale",
 		"POS"
 	],
-	"homepage": "https://github.com/opensourcepos/opensourcepos",
+	"homepage": "https://opensourcepos.org",
+	"support": {
+		"issues": "https://github.com/opensourcepos/opensourcepos/issues",
+		"forum": "https://github.com/opensourcepos/opensourcepos/discussions",
+		"wiki": "https://github.com/opensourcepos/opensourcepos/wiki",
+		"source": "https://github.com/opensourcepos/opensourcepos",
+		"docs": "https://github.com/opensourcepos/opensourcepos/wiki#documentation",
+		"matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
+	},
 	"require": {
 		"php": "^7.4||^8.0",
-		"codeigniter4/framework": "4.4.5",
+		"codeigniter4/framework": "4.4.8",
 		"dompdf/dompdf": "^2.0.3",
-		"laminas/laminas-escaper": "2.12",
+		"laminas/laminas-escaper": "2.13.0",
 		"paragonie/random_compat": "^2.0.21",
 		"picqer/php-barcode-generator": "^2.4.0",
-		"psr/log": "^1.1",
+		"psr/log": "1.1.4",
 		"tamtamchik/namecase": "^3.0.0"
 	},
 	"require-dev": {
