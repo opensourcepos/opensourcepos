@@ -484,7 +484,7 @@ function parse_decimals(string $number, int $decimals = null)
 
 	$locale_safe_number = prepare_decimal($number);
 
-	if ($locale_safe_number > MAX_PRECISION)	//TODO: This breaks when the string passed does not use . as the decimal separator.
+	if ($locale_safe_number > MAX_PRECISION)
 	{
 		return false;
 	}

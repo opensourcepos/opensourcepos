@@ -370,10 +370,9 @@ class Sales extends Secure_Controller
 		$giftcard = model(Giftcard::class);
 		$payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		//TODO: See the code block below.  This too needs to be ternary notation.
 		if($payment_type !== lang('Sales.giftcard'))
 		{
-			$rules = ['amount_tendered' => 'trim|required|decimal',];
+			$rules = ['amount_tendered' => 'trim|required|decimal_locale',];
 			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
 		}
 		else
@@ -383,19 +382,10 @@ class Sales extends Secure_Controller
 		}
 
 		if(!$this->validate($rules, $messages))
-		{//TODO: the code below should be refactored to the following ternary notation since it's much more readable and concise:
-			//$data['error'] = $payment_type === lang('Sales.giftcard')
-			//	? $data['error'] = lang('Sales.must_enter_numeric_giftcard')
-			//	: $data['error'] = lang('Sales.must_enter_numeric');
-
-			if($payment_type === lang('Sales.giftcard'))
-			{
-				$data['error'] = lang('Sales.must_enter_numeric_giftcard');
-			}
-			else
-			{
-				$data['error'] = lang('Sales.must_enter_numeric');
-			}
+		{
+			$data['error'] = $payment_type === lang('Sales.giftcard')
+				? lang('Sales.must_enter_numeric_giftcard')
+				: lang('Sales.must_enter_numeric');
 		}
 		else
 		{
@@ -466,8 +456,8 @@ class Sales extends Secure_Controller
 			{
 				$amount_due = $this->sale_lib->get_total();
 				$sales_total = $this->sale_lib->get_total(false);
-
-				$amount_tendered = $this->request->getPost('amount_tendered', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+				$raw_amount_tendered = $this->request->getPost('amount_tendered');
+				$amount_tendered = filter_var(prepare_decimal($raw_amount_tendered), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				$cash_adjustment_amount = $amount_due - $sales_total;
 				if($cash_adjustment_amount <> 0)
@@ -1590,7 +1580,7 @@ class Sales extends Secure_Controller
 	 * Work orders can be canceled but are not physically removed from the sales history
 	 * @throws ReflectionException
 	 */
-	public function cancel(): void
+	public function postCancel(): void
 	{
 		$sale_id = $this->sale_lib->get_sale_id();
 		if($sale_id != NEW_ENTRY && $sale_id != '')
