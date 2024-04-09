@@ -14,6 +14,7 @@ class OSPOSRules
 {
 	private IncomingRequest $request;
 	private array $config;
+
 	/**
 	 * Validates the username and password sent to the login view. User is logged in on successful validation.
 	 *
@@ -127,5 +128,27 @@ class OSPOSRules
 		}
 
 		return $is_installed;
+	}
+
+	public function decimal_locale(string $candidate, ?string &$error = null): bool
+	{
+		$candidate = prepare_decimal($candidate);
+		$validation = Services::validation();
+
+		$validation->setRules([
+			'candidate' => 'decimal'
+		]);
+
+		$data = [
+			'candidate' => $candidate
+		];
+
+		if (!$validation->run($data))
+		{
+			$error = $validation->getErrors();
+			return false;
+		}
+
+		return true;
 	}
 }
