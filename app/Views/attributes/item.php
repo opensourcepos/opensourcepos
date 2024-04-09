@@ -9,7 +9,13 @@
 <div class="form-group form-group-sm">
 	<?= form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
 	<div class='col-xs-8'>
-		<?= form_dropdown('definition_name', $definition_names, -1, ['id' => 'definition_name', 'class' => 'form-control']) ?>
+		<?= form_dropdown([
+			'name' => 'definition_name',
+			'options' => $definition_names,
+			'selected' => -1,
+			'class' => 'form-control',
+			'id' => 'definition_name'
+		]) ?>
 	</div>
 
 </div>
@@ -41,15 +47,31 @@ foreach($definition_values as $definition_id => $definition_value)
 						break;
 					case DROPDOWN:
 						$selected_value = $definition_value['selected_value'];
-						echo form_dropdown("attribute_links[$definition_id]", $definition_value['values'], $selected_value, "class='form-control' data-definition-id='$definition_id'");
+						echo form_dropdown([
+							'name' => "attribute_links[$definition_id]",
+							'options' => $definition_value['values'],
+							'selected' => $selected_value,
+							'class' => 'form-control',
+							'data-definition-id' => $definition_id
+						]);
 						break;
 					case TEXT:
 						$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
-						echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
+						echo form_input([
+							'name' => "attribute_links[$definition_id]",
+							'value' => $value,
+							'class' => 'form-control valid_chars',
+							'data-definition-id' => $definition_id
+						]);
 						break;
 					case DECIMAL:
 						$value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
-						echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
+						echo form_input([
+							'name' => "attribute_links[$definition_id]",
+							'value' => to_decimals((float)$value),
+							'class' => 'form-control valid_chars',
+							'data-definition-id' => $definition_id
+						]);
 						break;
 					case CHECKBOX:
 						$value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
