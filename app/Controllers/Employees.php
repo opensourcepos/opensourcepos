@@ -145,7 +145,7 @@ class Employees extends Persons
 		}
 
 		//Password has been changed OR first time password set
-		if($this->request->getPost('password') != '' && ENVIRONMENT != 'testing')
+		if(!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing')
 		{
 			$exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 			$employee_data = [

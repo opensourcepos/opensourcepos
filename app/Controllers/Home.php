@@ -51,7 +51,7 @@ class Home extends Secure_Controller
 	 */
 	public function save(int $employee_id = -1): void	//TODO: Replace -1 with a constant
 	{
-		if($this->request->getPost('current_password') != '' && $employee_id != -1)
+		if(!empty($this->request->getPost('current_password')) && $employee_id != -1)
 		{
 			if($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password')))
 			{

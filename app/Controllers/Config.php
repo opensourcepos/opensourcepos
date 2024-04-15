@@ -401,13 +401,16 @@ class Config extends Secure_Controller
 	 */
 	public function postSaveGeneral(): void
 	{
+		$default_sales_discount = prepare_decimal($this->request->getPost('default_sales_discount'));
+		$default_receivings_discount = prepare_decimal($this->request->getPost('default_receivings_discount'));
+
 		$batch_save_data = [
 			'theme' => $this->request->getPost('theme'),
 			'login_form' => $this->request->getPost('login_form'),
 			'default_sales_discount_type' => $this->request->getPost('default_sales_discount_type') != null,
-			'default_sales_discount' => $this->request->getPost('default_sales_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'default_sales_discount' => filter_var($default_sales_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != null,
-			'default_receivings_discount' => $this->request->getPost('default_receivings_discount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'default_receivings_discount' => filter_var($default_receivings_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'enforce_privacy' => $this->request->getPost('enforce_privacy') != null,
 			'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
 			'lines_per_page' => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
@@ -529,13 +532,9 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if(check_encryption())
+		if(check_encryption() && !empty($this->request->getPost('smtp_pass')))
 		{
-			$smtp_pass = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
-			if(!empty($smtp_pass))
-			{
-				$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
-			}
+			$password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
 		}
 
 		$batch_save_data = [
@@ -561,7 +560,7 @@ class Config extends Secure_Controller
 	{
 		$password = '';
 
-		if(check_encryption())
+		if(check_encryption() && !empty($this->request->getPost('msg_pwd')))
 		{
 			$password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
 		}
@@ -628,20 +627,18 @@ class Config extends Secure_Controller
 		$api_key = '';
 		$list_id = '';
 
-		if(check_encryption())	//TODO: Hungarian notation
+		if(check_encryption())
 		{
 			$api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
 			if(!empty($api_key_unencrypted))
 			{
 				$api_key = $this->encrypter->encrypt($api_key_unencrypted);
-				$api_key_unencrypted = '';
 			}
 
 			$list_id_unencrypted = $this->request->getPost('mailchimp_list_id');
 			if(!empty($list_id_unencrypted))
 			{
 				$list_id = $this->encrypter->encrypt($list_id_unencrypted);
-				$list_id_unencrypted = '';
 			}
 		}
 
@@ -807,10 +804,13 @@ class Config extends Secure_Controller
 	{
 		$this->db->transStart();
 
+		$default_tax_1_rate = prepare_decimal($this->request->getPost('default_tax_1_rate'));
+		$default_tax_2_rate = prepare_decimal($this->request->getPost('default_tax_2_rate'));
+
 		$batch_save_data = [
-			'default_tax_1_rate' => parse_tax($this->request->getPost('default_tax_1_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'default_tax_1_rate' => parse_tax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'default_tax_1_name' => $this->request->getPost('default_tax_1_name'),
-			'default_tax_2_rate' => parse_tax($this->request->getPost('default_tax_2_rate', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'default_tax_2_rate' => parse_tax(filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'default_tax_2_name' => $this->request->getPost('default_tax_2_name'),
 			'tax_included' => $this->request->getPost('tax_included') != null,
 			'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,
