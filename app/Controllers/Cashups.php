@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\Cashup;
 use App\Models\Expense;
 use App\Models\Reports\Summary_payments;
-use CodeIgniter\Model;
 use Config\OSPOS;
 
 class Cashups extends Secure_Controller
