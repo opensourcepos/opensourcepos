@@ -7,7 +7,6 @@ use App\Libraries\Barcode_lib;
 use App\Models\Item;
 use App\Models\Item_kit;
 use App\Models\Item_kit_items;
-use CodeIgniter\Model;
 
 class Item_kits extends Secure_Controller
 {
