@@ -58,5 +58,4 @@ class Pager extends BaseConfig
 		'last_tag_open' => "<li>",
 		'last_tagl_close' => "</li>"
 	];
-
 }
