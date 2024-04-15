@@ -168,11 +168,13 @@ class Item_kits extends Secure_Controller
 	 */
 	public function postSave(int $item_kit_id = NEW_ENTRY): void
 	{
+		$kit_discount = prepare_decimal($this->request->getPost('kit_discount'));
+
 		$item_kit_data = [
 			'name' => $this->request->getPost('name'),
 			'item_kit_number' => $this->request->getPost('item_kit_number'),
 			'item_id' => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
-			'kit_discount' => parse_decimals($this->request->getPost('kit_discount')),
+			'kit_discount' => filter_var($kit_discount,FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
 			'price_option' => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
 			'print_option' => $this->request->getPost('print_option') === null ? PRINT_ALL : intval($this->request->getPost('print_option')),

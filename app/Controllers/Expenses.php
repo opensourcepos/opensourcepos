@@ -157,13 +157,15 @@ class Expenses extends Secure_Controller
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);
+		$amount = prepare_decimal($this->request->getPost('amount'));
+		$tax_amount = prepare_decimal($this->request->getPost('tax_amount'));
 
 		$expense_data = [
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
 			'supplier_id' => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
 			'supplier_tax_code' => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'amount' => parse_decimals($this->request->getPost('amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'tax_amount' => parse_decimals($this->request->getPost('tax_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'amount' => filter_var($amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+			'tax_amount' => filter_var($tax_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'payment_type' => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
 			'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
 			'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
@@ -194,8 +196,8 @@ class Expenses extends Secure_Controller
 	 */
 	public function ajax_check_amount(): void
 	{
-		$value = $this->request->getPost(null, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-		$parsed_value = parse_decimals(array_pop($value));
+		$value = $this->request->getPost();
+		$parsed_value = filter_var(prepare_decimal(array_pop($value)), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		echo json_encode (['success' => $parsed_value !== false]);
 	}
 

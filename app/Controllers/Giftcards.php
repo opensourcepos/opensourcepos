@@ -114,16 +114,17 @@ class Giftcards extends Secure_Controller
 	public function postSave(int $giftcard_id = NEW_ENTRY): void
 	{
 		$giftcard_number = $this->request->getPost('giftcard_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$giftcard_amount = prepare_decimal($this->request->getPost('giftcard_amount'));
 
 		if($giftcard_id == NEW_ENTRY && trim($giftcard_number) == '')
 		{
-			$giftcard_number = $this->giftcard->generate_unique_giftcard_name($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+			$giftcard_number = $this->giftcard->generate_unique_giftcard_name(filter_var($giftcard_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		}
 
 		$giftcard_data = [
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $giftcard_number,
-			'value' => parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'value' => filter_var($giftcard_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
 			'person_id' => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
 		];
 
@@ -164,7 +165,8 @@ class Giftcards extends Secure_Controller
 	 */
 	public function postCheckNumberGiftcard(): void
 	{
-		$parsed_value = parse_decimals($this->request->getPost('giftcard_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$giftcard_amount = prepare_decimal($this->request->getPost('giftcard_amount'));
+		$parsed_value = filter_var($giftcard_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		echo json_encode (['success' => $parsed_value !== false, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
 	}
 

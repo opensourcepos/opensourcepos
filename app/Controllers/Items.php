@@ -632,7 +632,9 @@ class Items extends Secure_Controller
 		$upload_data = $this->upload_image();
 		$upload_success = empty($upload_data['error']);
 
-		$receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
+		$raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
+
+		$receiving_quantity = parse_quantity(filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 		$item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
 
 		if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
@@ -641,6 +643,8 @@ class Items extends Secure_Controller
 		}
 
 		$default_pack_name = lang('Items.default_pack_name');
+
+		$cost_price = prepare_decimal($this->request->getPost('cost_price'));
 
 		//Save item data
 		$item_data = [
@@ -651,7 +655,7 @@ class Items extends Secure_Controller
 			'stock_type' => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
 			'supplier_id' => empty($this->request->getPost('supplier_id')) ? null : intval($this->request->getPost('supplier_id')),
 			'item_number' => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
-			'cost_price' => parse_decimals($this->request->getPost('cost_price')),
+			'cost_price' => parse_decimals(filter_var($cost_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
 			'unit_price' => parse_decimals($this->request->getPost('unit_price')),
 			'reorder_level' => parse_quantity($this->request->getPost('reorder_level')),
 			'receiving_quantity' => $receiving_quantity,
