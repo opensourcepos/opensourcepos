@@ -54,7 +54,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"CodeIgniter\\": "system/"
+			"App\\":  "app/",
+			"CodeIgniter\\": "vendor/codeigniter4/framework/system/"
 		},
 		"exclude-from-classmap": [
 			"**/Database/Migrations/**"
