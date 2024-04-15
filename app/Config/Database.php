@@ -10,14 +10,12 @@ use CodeIgniter\Database\Config;
 class Database extends Config
 {
     /**
-     * The directory that holds the Migrations
-     * and Seeds directories.
+     * The directory that holds the Migrations and Seeds directories.
      */
     public string $filesPath = APPPATH . 'Database' . DIRECTORY_SEPARATOR;
 
     /**
-     * Lets you choose which connection group to
-     * use if no other is specified.
+     * Lets you choose which connection group to use if no other is specified.
      */
     public string $defaultGroup = 'default';
 
@@ -36,15 +34,21 @@ class Database extends Config
 		'DBPrefix' => 'ospos_',
 		'pConnect' => false,
 		'DBDebug' => (ENVIRONMENT !== 'production'),
-		'charset' => 'utf8',
-		'DBCollat' => 'utf8_general_ci',
+		'charset' => 'utf8mb4',
+		'DBCollat' => 'utf8mb4_general_ci',
 		'swapPre' => '',
 		'encrypt' => false,
 		'compress' => false,
 		'strictOn' => false,
 		'failover' => [],
-		'port' => 3306
-	];
+		'port' => 3306,
+		'numberNative' => false,
+		'dateFormat'   => [
+			'date'     => 'Y-m-d',
+			'datetime' => 'Y-m-d H:i:s',
+			'time'     => 'H:i:s',
+			],
+		];
 
 	/**
 	 * This database connection is used when
@@ -62,8 +66,8 @@ class Database extends Config
 		'DBPrefix' => 'ospos_',
 		'pConnect' => false,
 		'DBDebug' => (ENVIRONMENT !== 'production'),
-		'charset' => 'utf8',
-		'DBCollat' => 'utf8_general_ci',
+		'charset' => 'utf8mb4',
+		'DBCollat' => 'utf8mb4_general_ci',
 		'swapPre' => '',
 		'encrypt' => false,
 		'compress' => false,
@@ -72,6 +76,12 @@ class Database extends Config
 		'port' => 3306,
 		'foreignKeys' => true,
 		'busyTimeout' => 1000,
+		'numberNative' => false,
+		'dateFormat'   => [
+			'date'     => 'Y-m-d',
+			'datetime' => 'Y-m-d H:i:s',
+			'time'     => 'H:i:s',
+		],
 	];
 
 	/**
@@ -80,9 +90,6 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
-
-
-
 	public $development = [
 		'DSN' => '',
 		'hostname' => 'localhost',
@@ -93,8 +100,8 @@ class Database extends Config
 		'DBPrefix' => 'ospos_',
 		'pConnect' => false,
 		'DBDebug' => (ENVIRONMENT !== 'production'),
-		'charset' => 'utf8',
-		'DBCollat' => 'utf8_general_ci',
+		'charset' => 'utf8mb4',
+		'DBCollat' => 'utf8mb4_general_ci',
 		'swapPre' => '',
 		'encrypt' => false,
 		'compress' => false,
@@ -103,6 +110,12 @@ class Database extends Config
 		'port' => 3306,
 		'foreignKeys' => true,
 		'busyTimeout' => 1000,
+		'numberNative' => false,
+		'dateFormat'   => [
+			'date'     => 'Y-m-d',
+			'datetime' => 'Y-m-d H:i:s',
+			'time'     => 'H:i:s',
+		],
 	];
 
     public function __construct()

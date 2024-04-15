@@ -7,7 +7,7 @@
  * @var string $line
  * @var array $trace
  */
-
+use CodeIgniter\HTTP\Header;
 use Config\Services;
 use CodeIgniter\CodeIgniter;
 
@@ -69,10 +69,10 @@ $errorId = uniqid('error', true);
 
     <pre>
     Caused by:
-    <?= esc(get_class($prevException)), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
+    <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
 
     <?= nl2br(esc($prevException->getMessage())) ?>
-    <a href="https://www.duckduckgo.com/?q=<?= urlencode(get_class($prevException) . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
+    <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
        rel="noreferrer" target="_blank">search &rarr;</a>
     <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
     </pre>
@@ -243,7 +243,7 @@ $errorId = uniqid('error', true);
                         </tr>
                         <tr>
                             <td>HTTP Method</td>
-                            <td><?= esc(strtoupper($request->getMethod())) ?></td>
+                            <td><?= esc($request->getMethod()) ?></td>
                         </tr>
                         <tr>
                             <td>IP Address</td>
