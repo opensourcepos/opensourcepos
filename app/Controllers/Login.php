@@ -41,7 +41,7 @@ class Login extends BaseController
 				'config' => $config
 			];
 
-			if(strtolower($this->request->getMethod()) !== 'post')
+			if(strtolower($this->request->getMethod()) !== 'POST')
 			{
 				return view('login', $data);
 			}
