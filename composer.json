@@ -31,24 +31,24 @@
 		"matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
 	},
 	"require": {
-		"php": "^7.4||^8.0",
-		"codeigniter4/framework": "4.4.8",
+		"php": "~8.1",
+		"codeigniter4/framework": "4.5.1",
 		"dompdf/dompdf": "^2.0.3",
 		"laminas/laminas-escaper": "2.13.0",
 		"paragonie/random_compat": "^2.0.21",
 		"picqer/php-barcode-generator": "^2.4.0",
-		"psr/log": "1.1.4",
+		"psr/log": "3.0.0",
 		"tamtamchik/namecase": "^3.0.0"
 	},
 	"require-dev": {
 		"codeigniter/coding-standard": "^1.7",
-		"codeigniter4/devkit": "v1.1.0",
+		"codeigniter4/devkit": "^1.2.2",
 		"fakerphp/faker": "^1.23.0",
 		"friendsofphp/php-cs-fixer": "3.47.1",
 		"kint-php/kint": "^5.0.4",
 		"mikey179/vfsstream": "^1.6",
 		"nexusphp/cs-config": "^3.6",
-		"phpunit/phpunit": "^9.1",
+		"phpunit/phpunit": "9.6.19",
 		"predis/predis": "^1.1||^2.0",
 		"roave/security-advisories": "dev-latest"
 	},
