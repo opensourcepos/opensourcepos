@@ -18,6 +18,8 @@ $routes->add('sales/index/(:any)', 'Sales::manage/$1');
 $routes->add('sales/index/(:any)/(:any)', 'Sales::manage/$1/$2');
 $routes->add('sales/index/(:any)/(:any)/(:any)', 'Sales::manage/$1/$2/$3');
 
+$routes->add('items/save_inventory/(:num)', 'Items::save_inventory/$1');
+
 $routes->add('reports/summary_(:any)/(:any)/(:any)', 'Reports::Summary_$1/$2/$3/$4');
 $routes->add('reports/summary_expenses_categories', 'Reports::date_input_only');
 $routes->add('reports/summary_payments', 'Reports::date_input_only');
