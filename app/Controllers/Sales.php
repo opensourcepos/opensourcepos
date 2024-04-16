@@ -609,7 +609,7 @@ class Sales extends Secure_Controller
 			$raw_price = prepare_decimal($this->request->getPost('price'));
 			$raw_quantity = prepare_decimal($this->request->getPost('quantity'));
 			$raw_discount = prepare_decimal($this->request->getPost('discount'));
-			$raw_discounted_total = prepare_decimal($this->request->getPost('discounted_total'));
+			$raw_discounted_total = prepare_decimal($this->request->getPost('discounted_total') ?? '');
 
 			$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
