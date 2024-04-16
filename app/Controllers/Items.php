@@ -647,7 +647,7 @@ class Items extends Secure_Controller
 		$cost_price = prepare_decimal($this->request->getPost('cost_price'));
 		$unit_price = prepare_decimal($this->request->getPost('unit_price'));
 		$reorder_level = prepare_decimal($this->request->getPost('reorder_level'));
-		$qty_per_pack = prepare_decimal($this->request->getPost('qty_per_pack'));
+		$qty_per_pack = prepare_decimal($this->request->getPost('qty_per_pack') ?? '');
 
 		//Save item data
 		$item_data = [
