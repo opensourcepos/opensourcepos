@@ -39,7 +39,7 @@ foreach($tax_categories as $key => $category)
 		<span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?= form_hidden('tax_category_id[]', $tax_category_id) ?>
+		<?= form_hidden('tax_category_id[]', (string)$tax_category_id) ?>
 	</div>
 <?php
 }

@@ -62,7 +62,7 @@ foreach($tax_codes as $tax_code => $tax_code_data)
 		<span class="add_tax_code glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_code glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?= form_hidden('tax_code_id[]', $tax_code_id) ?>
+		<?= form_hidden('tax_code_id[]', (string)$tax_code_id) ?>
 	</div>
 <?php
 }
