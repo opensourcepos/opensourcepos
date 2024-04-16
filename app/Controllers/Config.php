@@ -329,7 +329,7 @@ class Config extends Secure_Controller
 			'company' => $this->request->getPost('company'),
 			'address' => $this->request->getPost('address'),
 			'phone' => $this->request->getPost('phone'),
-			'email' => $this->request->getPost('email', FILTER_SANITIZE_EMAIL),
+			'email' => strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL)),
 			'fax' => $this->request->getPost('fax'),
 			'website' => $this->request->getPost('website', FILTER_SANITIZE_URL),
 			'return_policy' => $this->request->getPost('return_policy')
