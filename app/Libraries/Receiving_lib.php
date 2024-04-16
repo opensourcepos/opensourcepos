@@ -404,7 +404,7 @@ class Receiving_lib
 	 * @param float $receiving_quantity
 	 * @return bool
 	 */
-	public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, int $discount_type, float $price, float $receiving_quantity): bool
+	public function edit_item($line, string $description, string $serialnumber, float $quantity, float $discount, ?int $discount_type, float $price, float $receiving_quantity): bool
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
@@ -416,7 +416,7 @@ class Receiving_lib
 			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
 
-			if(!is_null($discount_type))	//TODO: $discount_type is an int which means it will never be null and this if statement will always evaluate to true.
+			if(!is_null($discount_type))	
 			{
 				$line['discount_type'] = $discount_type;
 			}
@@ -526,7 +526,7 @@ class Receiving_lib
 	 * @param float $receiving_quantity
 	 * @return string
 	 */
-	public function get_item_total(float $quantity, float $price, float $discount, int $discount_type, float $receiving_quantity): string
+	public function get_item_total(float $quantity, float $price, float $discount, ?int $discount_type, float $receiving_quantity): string
 	{
 		$extended_quantity = bcmul($quantity, $receiving_quantity);
 		$total = bcmul($extended_quantity, $price);
