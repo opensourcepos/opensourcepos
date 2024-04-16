@@ -16,7 +16,7 @@ $routes->add('sales/index/([^/]+)', 'Sales::manage/$1');
 $routes->add('sales/index/([^/]+)/([^/]+)', 'Sales::manage/$1/$2');
 $routes->add('sales/index/([^/]+)/([^/]+)/([^/]+)', 'Sales::manage/$1/$2/$3');
 
-$routes->add('reports/(summary_:any)/([^/]+)/([^/]+)', 'Reports::summary_(.+)/$1/$2/$3/$4'); //TODO - double check all TODOs
+$routes->add('reports/{summary_:any}/([^/]+)/([^/]+)', 'Reports::summary_{summary}/$1/$2/$3/$4'); //TODO - double check all TODOs
 $routes->add('reports/summary_expenses_categories', 'Reports::date_input_only');
 $routes->add('reports/summary_payments', 'Reports::date_input_only');
 $routes->add('reports/summary_discounts', 'Reports::summary_discounts_input');
