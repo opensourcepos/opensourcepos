@@ -182,7 +182,7 @@ if(isset($success))
 							<td>
 								<?php
 									echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
-									echo form_hidden('location', $item['item_location']);
+									echo form_hidden('location', (string)$item['item_location']);
 									echo form_input (['type' => 'hidden', 'name' => 'item_id', 'value'=>$item['item_id']]);
 								?>
 							</td>
