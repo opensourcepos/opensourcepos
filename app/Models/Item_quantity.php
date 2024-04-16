@@ -56,10 +56,10 @@ class Item_quantity extends Model
 	/**
 	 * @param int $item_id
 	 * @param int $location_id
-	 * @return array|object|stdClass|null
+	 * @return array|Item_quantity|null
 	 */
-	public function get_item_quantity(int $item_id, int $location_id)
-    {
+	public function get_item_quantity(int $item_id, int $location_id): array|Item_quantity|StdClass|null
+	{
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
         $builder->where('location_id', $location_id);
@@ -68,7 +68,7 @@ class Item_quantity extends Model
         if(empty($result))
         {
             //Get empty base parent object, as $item_id is NOT an item
-            $result = new stdClass();
+            $result = model(Item_quantity::class);
 
             //Get all the fields from items table (TODO: to be reviewed)
             foreach($this->db->getFieldNames('item_quantities') as $field)
