@@ -172,9 +172,9 @@ class Receiving_lib
 	/**
 	 * @return string|null
 	 */
-	public function get_reference(): ?string
+	public function get_reference(): string
 	{
-		return $this->session->get('recv_reference');
+		return $this->session->get('recv_reference') ?? '';
 	}
 
 	/**

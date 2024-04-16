@@ -138,7 +138,7 @@ class Receiving extends Model
 		foreach($items as $line => $item_data)
 		{
 			$config = config(OSPOS::class)->settings;
-			$cur_item_info = $item->get_info($item['item_id']);
+			$cur_item_info = $item->get_info($item_data['item_id']);
 
 			$receivings_items_data = [
 				'receiving_id' => $receiving_id,
@@ -166,9 +166,9 @@ class Receiving extends Model
 			}
 
 			//Update stock quantity
-			$item_quantity = $item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+			$item_quantity_value = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 			$item_quantity->save_value([
-				'quantity' => $item_quantity->quantity + $items_received,
+				'quantity' => $item_quantity_value->quantity + $items_received,
 				'item_id' => $item_data['item_id'],
 				'location_id' => $item_data['item_location']],
 				$item_data['item_id'],
@@ -180,7 +180,7 @@ class Receiving extends Model
 				'trans_date' => date('Y-m-d H:i:s'),
 				'trans_items' => $item_data['item_id'],
 				'trans_user' => $employee_id,
-				'trans_location' => $item['item_location'],
+				'trans_location' => $item_data['item_location'],
 				'trans_comment' => $recv_remarks,
 				'trans_inventory' => $items_received
 			];
