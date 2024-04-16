@@ -82,7 +82,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		<span class="add_tax_jurisdiction glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_jurisdiction glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?= form_hidden('jurisdiction_id[]', $jurisdiction_id) ?>
+		<?= form_hidden('jurisdiction_id[]', (string)$jurisdiction_id) ?>
 	</div>
 <?php
 }
