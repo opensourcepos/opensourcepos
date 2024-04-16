@@ -595,16 +595,19 @@ class Item extends Model
 	}
 
 	/**
-	 * @param $result_row
+	 * @param object $result_row
 	 * @return string
 	 */
-	public function get_search_suggestion_label($result_row): string
+	public function get_search_suggestion_label(object $result_row): string
 	{
 		$config = config(OSPOS::class)->settings;
+
 		$label = '';
 		$label1 = $config['suggestions_first_column'];
 		$label2 = $config['suggestions_second_column'];
 		$label3 = $config['suggestions_third_column'];
+
+		$this->format_result_numbers($result_row);
 
 		// If multi_pack enabled then if "name" is part of the search suggestions then append pack
 		if($config['multi_pack_enabled'])
@@ -629,6 +632,24 @@ class Item extends Model
 		}
 
 		return $label;
+	}
+
+	/**
+	 * Converts decimal money values to their correct locale format.
+	 *
+	 * @param object $result_row
+	 * @return void
+	 */
+	private function format_result_numbers(object &$result_row): void
+	{
+		if(isset($result_row->cost_price))
+		{
+			$result_row->cost_price = to_currency_no_money($result_row->cost_price);
+		}
+		if(isset($result_row->unit_price))
+		{
+			$result_row->unit_price = to_currency_no_money($result_row->unit_price);
+		}
 	}
 
 	/**

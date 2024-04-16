@@ -353,7 +353,10 @@ class Customers extends Persons
 	 */
 	public function postCheckEmail(): void
 	{
-		$exists = $this->customer->check_email_exists(strtolower($this->request->getPost('email')), $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT));
+		$email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
+		$person_id = $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT);
+
+		$exists = $this->customer->check_email_exists($email, $person_id);
 
 		echo !$exists ? 'true' : 'false';
 	}

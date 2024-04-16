@@ -154,9 +154,9 @@ if (isset($success))
 						<tr>
 							<td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?= esc($item['item_number']) ?></td>
-							<td style="align:center;">
+							<td style="text-align:center;">
 								<?= esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
-								<?= form_hidden('location', $item['item_location']) ?>
+								<?= form_hidden('location', (string)$item['item_location']) ?>
 							</td>
 
 							<?php
