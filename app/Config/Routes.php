@@ -5,12 +5,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+$routes->setDefaultController('Login');
+
 $routes->get('/', 'Login::index');
 $routes->get('login', 'Login::index');
 $routes->post('login', 'Login::index');
 
-$routes->add('no_access/(:any)', 'No_access::getIndex/$1');
-$routes->add('no_access/(:any)/(:any)', 'No_access::getIndex/$1/$2');
+$routes->add('no_access/(:any)', 'No_access::index/$1');
+$routes->add('no_access/(:any)/(:any)', 'No_access::index/$1/$2');
 
 $routes->add('sales/index/(:any)', 'Sales::manage/$1');
 $routes->add('sales/index/(:any)/(:any)', 'Sales::manage/$1/$2');
