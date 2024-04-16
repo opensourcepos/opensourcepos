@@ -193,7 +193,7 @@ class Receivings extends Secure_Controller
 		$raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
 
 		$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicated code
-		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 		$price = filter_var($raw_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$quantity = filter_var($raw_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
