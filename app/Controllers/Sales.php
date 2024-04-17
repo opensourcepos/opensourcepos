@@ -281,32 +281,31 @@ class Sales extends Secure_Controller
 	 * @return void
 	 */
 	public function change_register_mode(int $sale_type): void
-	{//TODO: This set of if statements should be refactored to a switch
-		if($sale_type == SALE_TYPE_POS)
-		{
-			$this->sale_lib->set_mode('sale');
+	{
+		switch ($sale_type) {
+			case SALE_TYPE_POS:
+				$mode = 'sale';
+				break;
+			case SALE_TYPE_QUOTE:
+				$mode = 'sale_quote';
+				break;
+			case SALE_TYPE_WORK_ORDER:
+				$mode = 'sale_work_order';
+				break;
+			case SALE_TYPE_INVOICE:
+				$mode = 'sale_invoice';
+				break;
+			case SALE_TYPE_RETURN:
+				$mode = 'return';
+				break;
+			default:
+				$mode = 'sale';
+				break;
 		}
-		elseif($sale_type == SALE_TYPE_QUOTE)
-		{
-			$this->sale_lib->set_mode('sale_quote');
-		}
-		elseif($sale_type == SALE_TYPE_WORK_ORDER)
-		{
-			$this->sale_lib->set_mode('sale_work_order');
-		}
-		elseif($sale_type == SALE_TYPE_INVOICE)
-		{
-			$this->sale_lib->set_mode('sale_invoice');
-		}
-		elseif($sale_type == SALE_TYPE_RETURN)
-		{
-			$this->sale_lib->set_mode('return');
-		}
-		else
-		{
-			$this->sale_lib->set_mode('sale');
-		}
+
+		$this->sale_lib->set_mode($mode);
 	}
+
 
 	/**
 	 * @return void
