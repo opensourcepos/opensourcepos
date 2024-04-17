@@ -17,6 +17,7 @@ $routes->add('no_access/(:any)/(:any)', 'No_access::index/$1/$2');
 $routes->add('sales/index/(:any)', 'Sales::manage/$1');
 $routes->add('sales/index/(:any)/(:any)', 'Sales::manage/$1/$2');
 $routes->add('sales/index/(:any)/(:any)/(:any)', 'Sales::manage/$1/$2/$3');
+$routes->add('sales/sales_keyboard_help', 'Sales::sales_keyboard_help');
 
 $routes->add('items/save_inventory/(:num)', 'Items::save_inventory/$1');
 
