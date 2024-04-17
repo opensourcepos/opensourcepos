@@ -445,11 +445,10 @@ if(isset($success))
 							title="<?= lang(ucfirst($controller_name) .".new_customer") ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang(ucfirst($controller_name) .".new_customer") ?>
 					</button>
-					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?= site_url("$controller_name/sales_keyboard_help") ?>"
-							title="<?= lang(ucfirst($controller_name) .'.key_title'); ?>">
-						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?= lang(ucfirst($controller_name) .'.key_help'); ?>
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?= esc("$controller_name/sales_keyboard_help") ?>"
+							title="<?= lang(ucfirst($controller_name) .'.key_title') ?>">
+						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?= lang(ucfirst($controller_name) .'.key_help') ?>
 					</button>
-
 				</div>
 			<?php
 			}

@@ -1712,9 +1712,9 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function sales_keyboard_help()
+	public function sales_keyboard_help() : void
 	{
-		$this->load->view('sales/help');
+		echo view('sales/help');
 	}
 
 	/**
