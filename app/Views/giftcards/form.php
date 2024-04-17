@@ -24,7 +24,7 @@
 					'class' => 'form-control input-sm',
 					'value' => $selected_person_name
 				]) ?>
-				<?= form_hidden('person_id', $selected_person_id) ?>
+				<?= form_hidden('person_id', (string)$selected_person_id) ?>
 			</div>
 		</div>
 
