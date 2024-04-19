@@ -29,16 +29,15 @@
 		</div>
 
 		<?php
-		$class = '';
-		if($config['giftcard_number'] == 'series')
-		{
-			$class = ' required';
-		}
+			$class = '';
+			if ($config['giftcard_number'] == 'series') {
+				$class = ' required';
+			}
 		?>
 		<div class="form-group form-group-sm">
-			<?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class'=>"control-label col-xs-3$class"]) ?>
-			<div class="col-xs-4'>
-				<?= form_input ([
+			<?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "control-label col-xs-3$class"]) ?>
+			<div class="col-xs-4">
+				<?= form_input([
 					'name' => 'giftcard_number',
 					'id' => 'giftcard_number',
 					'class' => 'form-control input-sm',
@@ -46,6 +45,7 @@
 				]) ?>
 			</div>
 		</div>
+
 
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
