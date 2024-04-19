@@ -281,9 +281,9 @@ class Sale_lib
 	/**
 	 * @return int
 	 */
-	public function get_sale_type(): int
+	public function get_sale_type(): ?int
 	{
-		return $this->session->get('sale_type');
+		return $this->session->get('sale_type', 0);
 	}
 
 	/**
@@ -306,7 +306,7 @@ class Sale_lib
 	 * @param bool $keep_custom
 	 * @return void
 	 */
-	public function set_quote_number(string $quote_number, bool $keep_custom = false): void
+	public function set_quote_number(?string $quote_number, bool $keep_custom = false): void
 	{
 		$current_quote_number = $this->session->get('sales_quote_number');
 
@@ -321,7 +321,7 @@ class Sale_lib
 	 * @param bool $keep_custom
 	 * @return void
 	 */
-	public function set_work_order_number(string $work_order_number, bool $keep_custom = false): void
+	public function set_work_order_number(?string $work_order_number, bool $keep_custom = false): void
 	{
 		$current_work_order_number = $this->session->get('sales_work_order_number');
 
@@ -901,7 +901,7 @@ class Sale_lib
 	 * @param int $dinner_table
 	 * @return void
 	 */
-	public function set_dinner_table(int $dinner_table): void
+	public function set_dinner_table(?int $dinner_table): void
 	{
 		$this->session->set('dinner_table', $dinner_table);
 	}
