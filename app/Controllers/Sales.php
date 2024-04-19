@@ -393,8 +393,8 @@ class Sales extends Secure_Controller
 			{
 				//In the case of giftcard payment the register input amount_tendered becomes the giftcard number
 				$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
+				$giftcard_num = preg_replace("/[^a-zA-Z0-9\-]/", "", $amount_tendered);
+				
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
 				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
@@ -406,7 +406,7 @@ class Sales extends Secure_Controller
 				{
 					$data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
 				}
-				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')	//TODO ===?
+				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() === 'sale')
 				{
 					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
 				}
