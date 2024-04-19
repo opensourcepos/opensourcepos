@@ -90,7 +90,7 @@ class Customer extends Person
 	/**
 	 * Gets information about a particular customer
 	 */
-	public function get_info(int $person_id): object
+	public function get_info(?int $person_id): object
 	{
 		$builder = $this->db->table('customers');
 		$builder->join('people', 'people.person_id = customers.person_id');
