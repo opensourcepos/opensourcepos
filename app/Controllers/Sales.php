@@ -1156,15 +1156,15 @@ class Sales extends Secure_Controller
 		$data['quote_number'] = $sale_info['quote_number'];
 		$data['sale_status'] = $sale_info['sale_status'];
 
-		$data['company_info'] = implode('\n', [$this->config['address'], $this->config['phone']]);	//TODO: Duplicated code.
+		$data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);	//TODO: Duplicated code.
 
 		if($this->config['account_number'])
 		{
-			$data['company_info'] .= '\n' . lang('Sales.account_number') . ": " . $this->config['account_number'];
+			$data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config['account_number'];
 		}
 		if($this->config['tax_id'] != '')
 		{
-			$data['company_info'] .= '\n' . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
+			$data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
 		}
 
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
