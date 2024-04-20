@@ -51,7 +51,7 @@
 					'size' => '50',
 					'value' => $selected_kit_item
 				]) ?>
-					<?= form_hidden('kit_item_id', $selected_kit_item_id) ?>
+					<?= form_hidden('kit_item_id', (string)$selected_kit_item_id) ?>
 
 				</div>
 			</div>
