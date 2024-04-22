@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Uitzondering toevoegen";
 $lang["taxes_cascade"] = "Trapsgewijs";
 $lang["taxes_cascade_sequence"] = "Trapsgewijze volgorde";
@@ -37,7 +36,7 @@ $lang["taxes_tax_category_duplicate"] = "Dubbele belastingcategorie";
 $lang["taxes_tax_category_invalid_chars"] = "Ongeldige karakters in belastingcategorie naam";
 $lang["taxes_tax_category_name"] = "Belastingcategorie naam";
 $lang["taxes_tax_category_new"] = "Nieuwe belastingcategorie";
-$lang["taxes_tax_category_required"] = "Belastingcategorie is vereist";
+$lang["taxes_tax_category_required"] = "Belastingcategorie is Vereist";
 $lang["taxes_tax_code"] = "Belastingcode";
 $lang["taxes_tax_code_cannot_be_deleted"] = "Belastingcode verwijderen mislukt";
 $lang["taxes_tax_code_duplicate"] = "Dubbele belastingcode";
