@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Beschikbare punten";
 $lang["rewards_package"] = "Beloningen";
 $lang["rewards_remaining_balance"] = "Resterende beloningspunten waarde is ";
@@ -40,7 +39,7 @@ $lang["sales_customer_address"] = "Adres";
 $lang["sales_customer_discount"] = "Korting";
 $lang["sales_customer_email"] = "E-mail";
 $lang["sales_customer_location"] = "Locatie";
-$lang["sales_customer_mailchimp_status"] = "MailChimp status";
+$lang["sales_customer_mailchimp_status"] = "MailChimp Status";
 $lang["sales_customer_optional"] = "(Vereist voor te betalen betalingen)";
 $lang["sales_customer_required"] = "(Vereist)";
 $lang["sales_customer_total"] = "Totaal";
@@ -102,21 +101,21 @@ $lang["sales_item_insufficient_of_stock"] = "Artikel heeft onvoldoende voorraad.
 $lang["sales_item_name"] = "Artikelnaam";
 $lang["sales_item_number"] = "Artikel #";
 $lang["sales_item_out_of_stock"] = "Artikel is niet voorradig.";
-$lang["sales_key_browser"] = "";
+$lang["sales_key_browser"] = "Handige snelkoppelingen";
 $lang["sales_key_cancel"] = "Cancels Current Quote/Invoice/Sale";
 $lang["sales_key_customer_search"] = "Customer Search";
-$lang["sales_key_finish_quote"] = "Finish Quote/Invoice witdout payment";
+$lang["sales_key_finish_quote"] = "Voltooi Offerte/Factuur zonder betaling";
 $lang["sales_key_finish_sale"] = "Add Payment and Complete Invoice/Sale";
-$lang["sales_key_full"] = "";
+$lang["sales_key_full"] = "Openen in volledig scherm";
 $lang["sales_key_function"] = "Function";
 $lang["sales_key_help"] = "Shortcuts";
 $lang["sales_key_help_modal"] = "Open Shortcuts Window";
-$lang["sales_key_in"] = "";
+$lang["sales_key_in"] = "Inzoomen";
 $lang["sales_key_item_search"] = "Item Search";
-$lang["sales_key_out"] = "";
+$lang["sales_key_out"] = "Uitzoomen";
 $lang["sales_key_payment"] = "Add Payment";
-$lang["sales_key_print"] = "";
-$lang["sales_key_restore"] = "";
+$lang["sales_key_print"] = "Huidige pagina afdrukken";
+$lang["sales_key_restore"] = "Originele weergave/grootte herstellen";
 $lang["sales_key_search"] = "";
 $lang["sales_key_suspend"] = "Suspend Current Sale";
 $lang["sales_key_suspended"] = "Show Suspended Sales";
