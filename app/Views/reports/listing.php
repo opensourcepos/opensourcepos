@@ -43,8 +43,8 @@ $detailed_reports = [
 						<?php
 					}
 				}
-?>
-			 </div>
+			?>
+			</div>
 		</div>
 	</div>
 
@@ -64,8 +64,8 @@ $detailed_reports = [
 						<?php
 					}
 				}
-?>
-			 </div>
+			?>
+			</div>
 		</div>
 	</div>
 
@@ -85,8 +85,8 @@ $detailed_reports = [
 						<?php
 					}
 				}
-?>
-			 </div>
+				?>
+			</div>
 		</div>
 
 		<?php
@@ -100,15 +100,15 @@ $detailed_reports = [
 				<div class="list-group">
 				<?php
 					$inventory_low_report = get_report_link('reports_inventory_low');
-				$inventory_summary_report     = get_report_link('reports_inventory_summary');
-			?>
+					$inventory_summary_report = get_report_link('reports_inventory_summary');
+				?>
 					<a class="list-group-item" href="<?= $inventory_low_report['path'] ?>"><?= $inventory_low_report['label'] ?></a>
 					<a class="list-group-item" href="<?= $inventory_summary_report['path'] ?>"><?= $inventory_summary_report['label'] ?></a>
 				</div>
 			</div>
 		<?php
 		}
-?>
+		?>
 	</div>
 </div>
 
