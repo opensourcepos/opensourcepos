@@ -43,7 +43,7 @@ $routes->add('reports/detailed_sales', 'Reports::date_input_sales');
 $routes->add('reports/detailed_receivings', 'Reports::date_input_recv');
 
 $routes->add('reports/specific_(:any)/(:any)/(:any)/(:any)', 'Reports::Specific_$1/$2/$3/$4');
-$routes->add('reports/specific_customer', 'Reports::specific_customer_input');
-$routes->add('reports/specific_employee', 'Reports::specific_employee_input');
-$routes->add('reports/specific_discount', 'Reports::specific_discount_input');
-$routes->add('reports/specific_supplier', 'Reports::specific_supplier_input');
+$routes->add('reports/specific_customers', 'Reports::specific_customer_input');
+$routes->add('reports/specific_employees', 'Reports::specific_employee_input');
+$routes->add('reports/specific_discounts', 'Reports::specific_discount_input');
+$routes->add('reports/specific_suppliers', 'Reports::specific_supplier_input');
