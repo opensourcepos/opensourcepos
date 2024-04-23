@@ -34,7 +34,6 @@ abstract class Summary_report extends Report
 
 		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-
 		if($config['tax_included'])
 		{
 			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
