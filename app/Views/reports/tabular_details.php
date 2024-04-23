@@ -35,12 +35,12 @@
 	{
 	 	<?= view('partial/bootstrap_tables_locale') ?>
 
-		var details_data = <?= json_encode(esc($details_data, 'js')) ?>;
+		var details_data = <?= json_encode(esc($details_data)) ?>;
 		<?php
 		if($config['customer_reward_enable'] && !empty($details_data_rewards))
 		{
 		?>
-			var details_data_rewards = <?= json_encode(esc($details_data_rewards, 'js')) ?>;
+			var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
 		<?php
 		}
 		?>
@@ -60,7 +60,7 @@
 			.addClass("table-striped")
 			.addClass("table-bordered")
 			.bootstrapTable({
-				columns: <?= transform_headers(esc($headers['summary'], 'js'), true) ?>,
+				columns: <?= transform_headers(esc($headers['summary']), true) ?>,
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
@@ -72,11 +72,11 @@
 				showExport: true,
 				exportDataType: 'all',
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
-				data: <?= json_encode(esc($summary_data, 'js')) ?>,
+				data: <?= json_encode($summary_data) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
 				detailView: true,
-				escape: false,
+				escape: true,
 				search: true,
 				onPageChange: init_dialog,
 				onPostBody: function() {
@@ -84,7 +84,7 @@
 				},
 				onExpandRow: function (index, row, $detail) {
 					$detail.html('<table></table>').find("table").bootstrapTable({
-						columns: <?= transform_headers_readonly(esc($headers['details'], 'js')) ?>,
+						columns: <?= transform_headers_readonly(esc($headers['details'])) ?>,
 						data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 					});
 
@@ -93,7 +93,7 @@
 					{
 					?>
 						$detail.append('<table></table>').find("table").bootstrapTable({
-							columns: <?= transform_headers_readonly(esc($headers['details_rewards'], 'js')) ?>,
+							columns: <?= transform_headers_readonly(esc($headers['details_rewards'])) ?>,
 							data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 						});
 					<?php
