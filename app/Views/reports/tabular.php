@@ -51,7 +51,7 @@
 			.addClass("table-striped")
 			.addClass("table-bordered")
 			.bootstrapTable({
-				columns: <?= transform_headers(esc($headers, 'js'), true, false) ?>,
+				columns: <?= transform_headers(esc($headers), true, false) ?>,
 				stickyHeader: true,
 				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
 				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
@@ -62,10 +62,10 @@
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 				pagination: true,
 				showColumns: true,
-				data: <?= json_encode(esc($data, 'js')) ?>,
+				data: <?= json_encode(esc($data)) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
-				escape: false,
+				escape: true,
 				search: true
 		});
 	});

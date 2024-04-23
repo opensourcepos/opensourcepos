@@ -117,7 +117,7 @@ class Specific_supplier extends Report
 			$builder->where('sale_type', SALE_TYPE_RETURN);
 		}
 
-		$builder->groupBy('item_id');
+		$builder->groupBy(['item_id', 'sale_id']);
 		$builder->orderBy('sale_id');
 
 		return $builder->get()->getResultArray();
