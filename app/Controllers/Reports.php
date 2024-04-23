@@ -1723,7 +1723,7 @@ class Reports extends Secure_Controller
 	 * @param string $location_id
 	 * @return void
 	 */
-	public function getDetailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
+	public function detailed_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
 		$this->clearCache();
 
@@ -1768,7 +1768,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = [
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_date' => to_date(strtotime($row['sale_date'])),
+				'sale_date' => isset($row['sale_date']) ? to_date(strtotime($row['sale_date'])) : null,
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
