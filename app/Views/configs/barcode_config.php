@@ -126,7 +126,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-2']) ?>
+				<?= form_label(lang('Config.barcode_formats'), 'barcode_formats', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-4'>
 					<?php
 					$barcode_formats = json_decode(config('OSPOS')->settings['barcode_formats']);
