@@ -35,6 +35,7 @@ $routes->add('reports/graphical_summary_discounts', 'Reports::summary_discounts_
 $routes->add('reports/graphical_(:any)', 'Reports::date_input');
 
 $routes->add('reports/inventory_(:any)/(:any)', 'Reports::Inventory_$1/$2');
+$routes->add('reports/inventory_low', 'Reports::inventory_low');
 $routes->add('reports/inventory_summary', 'Reports::inventory_summary_input');
 $routes->add('reports/inventory_summary/(:any)/(:any)/(:any)', 'Reports::inventory_summary/$1/$2/$3');
 
