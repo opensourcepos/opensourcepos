@@ -35,7 +35,7 @@
 			<?= form_label(lang('Receivings.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?= form_input (['name' => 'supplier_name', 'value' => $selected_supplier_name, 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
-				<?= form_hidden('supplier_id', $selected_supplier_id) ?>
+				<?= form_hidden('supplier_id', $selected_supplier_id ?? '') ?>
 			</div>
 		</div>
 
