@@ -132,7 +132,7 @@
 		<?php
 			++$i;
 		}
-		echo form_hidden('number_of_payments', $i);
+		echo form_hidden('number_of_payments', strval($i));
 		?>
 
 		<div class="form-group form-group-sm">
