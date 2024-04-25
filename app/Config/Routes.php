@@ -22,7 +22,9 @@ $routes->add('sales/invoice/(:num)', 'Sales::invoice/$1');
 $routes->add('sales/sales_keyboard_help', 'Sales::sales_keyboard_help');
 
 $routes->add('items/save_inventory/(:num)', 'Items::save_inventory/$1');
+
 $routes->add('receivings/edit/(:num)', 'Receivings::edit/$1');
+$routes->add('receivings/receipt/(:num)', 'Receivings::receipt/$1');
 
 $routes->add('reports/summary_(:any)/(:any)/(:any)', 'Reports::Summary_$1/$2/$3/$4');
 $routes->add('reports/summary_expenses_categories', 'Reports::date_input_only');
