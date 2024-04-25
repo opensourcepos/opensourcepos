@@ -393,7 +393,7 @@ class Sales extends Secure_Controller
 			{
 				//In the case of giftcard payment the register input amount_tendered becomes the giftcard number
 				$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$giftcard_num = preg_replace("/[^a-zA-Z0-9\-]/", "", $amount_tendered);
+				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
 				
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
