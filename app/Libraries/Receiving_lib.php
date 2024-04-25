@@ -502,7 +502,7 @@ class Receiving_lib
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, true);
 		}
 
-		$this->set_supplier($this->receiving->get_supplier($receiving_id)->person_id);
+		$this->set_supplier((int) $this->receiving->get_supplier($receiving_id)->person_id);
 		//$this->set_reference($this->receiving->get_info($receiving_id)->getRow()->reference);	//TODO: If this code won't be added back in, then let's delete it.
 	}
 

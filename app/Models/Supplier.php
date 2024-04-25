@@ -67,7 +67,7 @@ class Supplier extends Person
 	/**
 	 * Gets information about a particular supplier
 	 */
-	public function get_info(int $person_id): object
+	public function get_info(?int $person_id): object
 	{
 		$builder = $this->db->table('suppliers');
 		$builder->join('people', 'people.person_id = suppliers.person_id');
