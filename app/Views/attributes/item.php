@@ -30,7 +30,7 @@ foreach($definition_values as $definition_id => $definition_value)
 	<div class='col-xs-8'>
 		<div class="input-group">
 			<?php
-				echo form_hidden("attribute_ids[$definition_id]", $definition_value['attribute_id']);
+				echo form_hidden("attribute_ids[$definition_id]", strval($definition_value['attribute_id']));
 				$attribute_value = $definition_value['attribute_value'];
 
 				switch($definition_value['definition_type'])
