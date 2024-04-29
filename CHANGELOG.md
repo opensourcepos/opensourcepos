@@ -1,7 +1,8 @@
-[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...
-[3.3.8]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
-[3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
-[3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
+[unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...HEAD
+[3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
+[3.3.8]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
+[3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
+[3.3.6]: https://github.com/opensourcepos/opensourcepos/compare/3.3.5...3.3.6
 [3.3.5]: https://github.com/opensourcepos/opensourcepos/compare/3.3.4...3.3.5
 [3.3.4]: https://github.com/opensourcepos/opensourcepos/compare/3.3.3...3.3.4
 [3.3.3]: https://github.com/opensourcepos/opensourcepos/compare/3.3.2...3.3.3
@@ -21,36 +22,41 @@
 [2.3.4]: https://github.com/opensourcepos/opensourcepos/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/opensourcepos/opensourcepos/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/opensourcepos/opensourcepos/compare/2.3.1...2.3.2
-[2.3.1]: https://github.com/opensourcepos/opensourcepos/compare/2.3.0...2.3.1
-[2.3.0]: https://github.com/opensourcepos/opensourcepos/compare/2.2.2...2.3.0
+[2.3.1]: https://github.com/opensourcepos/opensourcepos/compare/2.3...2.3.1
+[2.3.0]: https://github.com/opensourcepos/opensourcepos/compare/2.2.2...2.3
 
 # Changelog
 
-All notable changes to this project will be documented here.
+All notable changes to this project will be documented in this file.
 
-## [3.4.0]
+## [Unreleased]
 
-List of changes in the `master` branch.
+- Bump framework to CodeIgniter `4.x.x`
+- Improve security performance against bots
 
-- Bump framework to CodeIgniter 4.1.3
-- Improve security performance against bots.
+## [3.3.9] - 2023-11-06
 
-## [3.3.8] - 2022-04-26
+- Translation updates (Arabic, Central Khmer, Croatian, Czech, Danish, English, French, Indonesian, Lao, Russian, Spanish, Thai)
+- Fix logout race condition issue ([#3578](https://github.com/opensourcepos/opensourcepos/issues/3578))
+- Fix docker compose file ([#3754](https://github.com/opensourcepos/opensourcepos/issues/3754))
+- Minor report fixes
 
-- Translation updates (Flemish, Vietnamese, Thai, Azerbaijani, Spanish, French)
-- Fix logo removal issue (CSRF regression)
-- Substract refunds from total rewards as payment method
+## [3.3.8] - 2022-08-03
 
-## [3.3.7] - 2022-04-26
+- Translation updates (Azerbaijani, Flemish, French, Spanish, Thai, Vietnamese)
+- Fix logo removal issue (CSRF regression) ([#3533](https://github.com/opensourcepos/opensourcepos/issues/3533))
+- Substract refunds from total rewards as payment method ([#3536](https://github.com/opensourcepos/opensourcepos/issues/3536))
 
-- Translation updates (Thai, Indonesian, Swedish, Italian)
+## [3.3.7] - 2022-03-29
+
+- Translation updates (Chinese, French, Indonesian, Italian, Polish, Swedish, Thai)
 - XSS fixes in bootstrap datatables
 - Invoice numbering fixes
 - Docker compose database scripts are now mounted from a container volume
 
-## [3.3.6] - 2022-01-08
+## [3.3.6] - 2021-10-31
 
-- Translation updates (Hungarian, Indonesian, Bosnian, Ukranian, Vietnamese, Spanish)
+- Translation updates (Bosnian, Dutch, Indonesian, Polish, Russian, Spanish)
 - Make footer revision clickable (ref to github)
 - Minor reporting adjustments
 - Introduced new global keyboard shortcuts (see overview below)
@@ -66,9 +72,9 @@ List of changes in the `master` branch.
 - Type juggling password fix for old logins
 
 
-## [3.3.5] - 2021-08-26
+## [3.3.5] - 2021-08-26 [YANKED]
 
-- Translation updates (Romanian, Ukrainian, Vietnamese, Thai, Polish, Swedish, Portuguese, Arabic, French, Chinese, Dutch, Tamil, Turkish, Spanish)
+- Translation updates (Arabic, Azerbaijani, Bulgarian, Chinese, Dutch, French, Indonesian, Polish, Portuguese, Romanian, Spanish, Swedish, Tamil, Thai, Turkish, Ukrainian, Vietnamese)
 - New responsive login page based on Bootstrap `5`
 - Translation fallback to English when a string is untranslated for the selected language
 - Database and performance optimizations
@@ -84,7 +90,7 @@ List of changes in the `master` branch.
 - Fixes for Docker to make it run on Windows
 - Blind SQL injection fix
 
-## [3.3.4] - 2021-04-18
+## [3.3.4] - 2021-04-20
 
 - Translation updates (Hungarian, Indonesian, Bosnian, Ukrainian, Vietnamese, Spanish)
 - Prevent data wipeout when calling GET directly on the save endpoint
@@ -99,7 +105,7 @@ List of changes in the `master` branch.
 - Add barcode field to item kits
 - Fix discount register parsing in some specific locales
 
-## [3.3.3] - 2020-12-31
+## [3.3.3] - 2021-01-01
 
 - PHP `7.4` support
 - Set PHP `7.2` to be the minimum level due to older version deprecations
@@ -109,13 +115,13 @@ List of changes in the `master` branch.
 - Improved security (CSRF protection)
 - Various small improvements and bug fixes
 
-## [3.3.2] - 2020-09-02
+## [3.3.2] - 2020-09-03
 
 - Fixed `only_full_group_by` issue with MySQL/MariaDB
 - Fixed POS transaction return failure if items were deleted
 - Various bug fixes
 
-## [3.3.1] - 2019-12-04
+## [3.3.1] - 2019-12-14
 
 - Various bug fixes (please disable `only_full_group_by` option from MySQL/MariaDB to avoid issues)
 
@@ -244,7 +250,7 @@ List of changes in the `master` branch.
 - Fixed `phppos to ospos` database migration script
 - Minor bug fixes and some general code clean up
 
-## [3.0.0] 2016-10-21
+## [3.0.0] 2016-10-22
 
 - Upgrade CodeIgniter to version `3.1.0`
 - Major UI overhaul based on Bootstrap `3.0` and Bootswatch Themes
@@ -263,7 +269,7 @@ List of changes in the `master` branch.
 - About 280 closed issues under `3.0.0` release label, too many to produce a meaningful list
 - Various code cleanup, refactoring, optimization and etc.
 
-## [2.4.0] - 2016-04-02
+## [2.4.0] - 2016-10-03
 
 - Upgrade CodeIgniter to version `3.0.5`
 - Fix for spurious logouts
@@ -292,7 +298,7 @@ List of changes in the `master` branch.
 - Minor code cleanup
 - Removal of annoying backup prompt on logout
 
-## [2.3.3] - 2016-01-05
+## [2.3.3] - 2016-01-06
 
 - Item kit fixes (search, list, ...)
 - Add date picker widgets in sale/receiving edit forms
@@ -314,7 +320,7 @@ List of changes in the `master` branch.
 - Add SQL script to clean zeroes in sales/receivings comments
 - Numerous other bug fixes
 
-## [2.3.2] - 2015-07-15
+## [2.3.2] - 2016-01-25
 
 - Nominatim (OpenStreetMap) customer address autocompletion
 - Sale invoice templating
@@ -345,7 +351,7 @@ List of changes in the `master` branch.
 - Fix item import through CSV
 - Bug fixes for reports
 
-## [2.3.0] - 2014-08-19
+## [2.3.0] - 2014-08-20
 
 - Support for multiple stock locations
 
