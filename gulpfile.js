@@ -57,8 +57,6 @@ gulp.task('copy-bootswatch5', function() {
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/flatly/*.min.css'),gulp.dest('public/resources/bootswatch5/flatly'));
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/journal/*.min.css'),gulp.dest('public/resources/bootswatch5/journal'));
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/lumen/*.min.css'),gulp.dest('public/resources/bootswatch5/lumen'));
-	pipeline(gulp.src('./node_modules/bootswatch5/dist/paper/*.min.css'),gulp.dest('public/resources/bootswatch5/paper'));
-	pipeline(gulp.src('./node_modules/bootswatch5/dist/readable/*.min.css'),gulp.dest('public/resources/bootswatch5/readable'));
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/sandstone/*.min.css'),gulp.dest('public/resources/bootswatch5/sandstone'));
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/simplex/*.min.css'),gulp.dest('public/resources/bootswatch5/simplex'));
 	pipeline(gulp.src('./node_modules/bootswatch5/dist/slate/*.min.css'),gulp.dest('public/resources/bootswatch5/slate'));
@@ -96,8 +94,8 @@ gulp.task('debug-js', function() {
 		'./node_modules/es6-promise/dist/es6-promise.js',
 		'./node_modules/file-saver/dist/FileSaver.js',
 		'./node_modules/html2canvas/dist/html2canvas.js',
-		'./node_modules/jspdf/dist/jspdf.debug.js',
-		'./node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.src.js',
+		'./node_modules/jspdf/dist/jspdf.umd.js',
+		'./node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
 		'./node_modules/tableexport.jquery.plugin/tableExport.min.js',
 		'./node_modules/chartist/dist/chartist.js',
 		'./node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
@@ -139,9 +137,7 @@ gulp.task('prod-js', function() {
 		'./node_modules/file-saver/dist/FileSaver.min.js',
 		'./node_modules/file-saver/dist/FileSaver.js',
 		'./node_modules/html2canvas/dist/html2canvas.min.js',
-		'./node_modules/jspdf/dist/jspdf.min.js',
-		'./node_modules/jspdf/dist/jspdf.min.js',
-		'./node_modules/chartist/dist/chartist.min.js',
+		'./node_modules/jspdf/dist/jspdf.umd.min.js',
 		'./node_modules/chartist/dist/chartist.min.js',
 		'./node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
 		'./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
