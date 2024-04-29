@@ -62,7 +62,7 @@
 				exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 				pagination: true,
 				showColumns: true,
-				data: <?= json_encode(esc($data)) ?>,
+				data: <?= json_encode($data) ?>,
 				iconSize: 'sm',
 				paginationVAlign: 'bottom',
 				escape: true,
