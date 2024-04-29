@@ -53,27 +53,24 @@ class Summary_sales_taxes extends Summary_report
 	 */
 	public function getData(array $inputs): array
 	{
-		$where = 'WHERE sale_status = ' . COMPLETED . ' ';
+		$builder = $this->db->table('sales_taxes');
 
 		if(empty($this->config['date_or_time_format']))
 		{
-			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date'])
-			. ' AND ' . $this->db->escape($inputs['end_date']);
+			$builder->where('DATE(sale_time) BETWEEN ' . $inputs['start_date'] . ' AND ' . $inputs['end_date']);
 		}
 		else
 		{
-			$where .= 'AND sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+			$builder->where('sale_time BETWEEN ' . rawurldecode($inputs['start_date']) . ' AND ' . rawurldecode($inputs['end_date']));
 		}
 
-		//TODO: Look into whether we can convert this to use QueryBuilder
-		$query = $this->db->query("SELECT reporting_authority, jurisdiction_name, tax_category, tax_rate,
-			SUM(sale_tax_amount) AS tax
-			FROM " . $this->db->prefixTable('sales_taxes') . " AS sales_taxes
-			JOIN " . $this->db->prefixTable('sales') . " AS sales ON sales_taxes.sale_id = sales.sale_id
-			JOIN " . $this->db->prefixTable('tax_categories') . " AS tax_categories ON sales_taxes.tax_category_id = tax_categories.tax_category_id
-			JOIN " . $this->db->prefixTable('tax_jurisdictions') . " AS tax_jurisdictions ON sales_taxes.jurisdiction_id = tax_jurisdictions.jurisdiction_id "
-			. $where .
-			"GROUP BY reporting_authority, jurisdiction_name, tax_category; ");
+		$builder->select('reporting_authority, jurisdiction_name, tax_category, tax_rate, SUM(sale_tax_amount) AS tax');
+		$builder->join('sales', 'sales_taxes.sale_id = sales.sale_id', 'left');
+		$builder->join('tax_categories', 'sales_taxes.tax_category_id = tax_categories.tax_category_id', 'left');
+		$builder->join('tax_jurisdictions', 'sales_taxes.jurisdiction_id = tax_jurisdictions.jurisdiction_id', 'left');
+		$builder->groupBy('reporting_authority, jurisdiction_name, tax_category, tax_rate');
+
+		$query = $builder->get();
 
 		return $query->getResultArray();
 	}
