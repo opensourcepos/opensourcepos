@@ -3,6 +3,7 @@
 namespace App\Models\Reports;
 
 use Config\OSPOS;
+use CodeIgniter\Database\BaseBuilder;
 
 abstract class Summary_report extends Report
 {
@@ -93,9 +94,8 @@ abstract class Summary_report extends Report
 	/**
 	 * @return void
 	 */
-	private function __common_from(): void	//TODO: hungarian notation
+	private function __common_from(BaseBuilder &$builder): void	//TODO: hungarian notation
 	{
-		$builder = $this->db->table('sales_items AS sales_items');
 		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$builder->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
@@ -175,26 +175,26 @@ abstract class Summary_report extends Report
 	 * @param object $builder
 	 * @return void
 	 */
-	protected function _select(array $inputs, object &$builder): void { $this->__common_select($inputs, $builder); }	//TODO: hungarian notation
+	protected function _select(array $inputs, BaseBuilder &$builder): void { $this->__common_select($inputs, $builder); }	//TODO: hungarian notation
 
 	/**
 	 * @param object $builder
 	 * @return void
 	 */
-	protected function _from(object &$builder): void { $this->__common_from(); }	//TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
+	protected function _from(BaseBuilder &$builder): void { $this->__common_from($builder); }	//TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
 
 	/**
 	 * @param array $inputs
 	 * @param object $builder
 	 * @return void
 	 */
-	protected function _where(array $inputs, object &$builder): void { $this->__common_where($inputs, $builder); }	//TODO: hungarian notation
+	protected function _where(array $inputs, BaseBuilder &$builder): void { $this->__common_where($inputs, $builder); }	//TODO: hungarian notation
 
 	/**
 	 * @param object $builder
 	 * @return void
 	 */
-	protected function _group_order(object &$builder): void {}	//TODO: hungarian notation
+	protected function _group_order(BaseBuilder &$builder): void {}	//TODO: hungarian notation
 
 	/**
 	 * Public interface implementing the base abstract class,
@@ -213,6 +213,8 @@ abstract class Summary_report extends Report
 	 */
 	public function getData(array $inputs): array
 	{
+		$builder = $this->db->table('sales_items AS sales_items');
+
 		$this->_select($inputs, $builder);
 		$this->_from($builder);
 		$this->_where($inputs, $builder);
@@ -227,9 +229,10 @@ abstract class Summary_report extends Report
 	 */
 	public function getSummaryData(array $inputs): array
 	{
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+		$builder = $this->db->table('sales_items AS sales_items');
+
 		$this->__common_select($inputs, $builder);
-		$this->__common_from();
+		$this->__common_from($builder);
 		$this->_where($inputs, $builder);
 
 		return $builder->get()->getRowArray();
