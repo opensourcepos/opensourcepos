@@ -208,6 +208,7 @@
 		options = _options;
 		enable_actions = enable_actions(options.enableActions);
 		load_success = load_success(options.onLoadSuccess);
+		const export_suffix = new Date().toISOString().slice(0, 16).replace(/(-|\s*|T|:)*/g,"");
 		$('#table')
 			.addClass("table-striped")
 			.addClass("table-bordered")
@@ -228,7 +229,7 @@
 			exportDataType: 'basic',
 			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 			exportOptions: {
-				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
+				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1') + "_" + export_suffix
 			},
 			onPageChange: function(response) {
 				load_success(response);
