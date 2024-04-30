@@ -17,7 +17,7 @@ script:
   - sed -i "s/commit_sha1 = 'dev'/commit_sha1 = '$rev'/g" app/Config/OSPOS.php
   - echo "$version-$branch-$rev" 
   - npm version "$version-$branch-$rev" --force || true
-  - npm ci && npm install -g gulp && npm run build
+  - npm ci && npm install -g gulp && npm run build 
   - docker build . --target ospos -t ospos
   - docker build app/Database/ -t "jekkos/opensourcepos:sql-$TAG"
 env:
@@ -28,7 +28,8 @@ env:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag "ospos:latest"
     "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:sql-$TAG"
-  - sudo mv dist/opensourcepos.tgz "dist/opensourcepos.$version.$rev.tgz"
+  - gulp compress
+  - sudo mv dist/opensourcepos.tar.gz "dist/opensourcepos.$version.$rev.tgz"
   - sudo mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 before_deploy:
   - npm set //npm.pkg.github.com/:_authToken "$NPM_TOKEN"

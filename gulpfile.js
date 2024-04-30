@@ -11,6 +11,9 @@ import inject from 'gulp-inject'
 import logStream from 'gulp-debug'
 import series from 'stream-series'
 import header from 'gulp-header'
+import tar from 'gulp-tar'
+import gzip from 'gulp-gzip'
+import zip from 'gulp-zip'
 
 import { Stream } from 'readable-stream'
 const {finished, pipeline} = Stream.promises
@@ -25,6 +28,12 @@ gulp.task('clean', function () {
 		gulp.src('./public/resources', {read: false, allowEmpty: true}),
 		clean()
 	);
+});
+
+gulp.task('compress', function() {
+    const sources = ['public/**', 'vendor/**', '*.md', 'LICENSE', 'docker*', 'docker/**', 'Dockerfile', '**/.htaccess', 'writable/*'] ;
+    gulp.src(sources).pipe(tar('opensourcepos.tar')).pipe(gzip()).pipe(gulp.dest('dist'));
+    return gulp.src(sources).pipe(zip('opensourcepos.zip')).pipe(gulp.dest('dist'));
 });
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
