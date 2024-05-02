@@ -595,7 +595,7 @@ if(isset($success))
 							{
 							?>
 								<tr>
-									<td><?= anchor("$controller_name/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+									<td><?= anchor("$controller_name/deletePayment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 									<td><?= esc($payment['payment_type']) ?></td>
 									<td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
 								</tr>
