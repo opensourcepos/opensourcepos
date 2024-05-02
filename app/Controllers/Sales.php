@@ -483,7 +483,7 @@ class Sales extends Secure_Controller
 	 * @param string $payment_id
 	 * @return void
 	 */
-	public function postDelete_payment(string $payment_id): void
+	public function getDeletePayment(string $payment_id): void
 	{
 		$this->sale_lib->delete_payment($payment_id);
 
