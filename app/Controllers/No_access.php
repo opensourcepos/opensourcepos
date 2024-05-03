@@ -10,7 +10,7 @@ use App\Models\Module;
  *
  * @property module module
  */
-class No_Access extends BaseController
+class No_access extends BaseController
 {
 	public function __construct()
 	{
