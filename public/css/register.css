@@ -16,11 +16,6 @@
 	margin: 0;
 }
 
-#mode_form
-{
-	background-color: #DDD;
-}
-
 #mode_form ul, #add_item_form ul
 {
 	list-style: none;
@@ -43,11 +38,6 @@
 	margin-left: -1em !important;
 }
 
-#add_item_form
-{
-	background-color: #BBB;
-}
-
 #register
 {
 	padding: 0;
@@ -56,15 +46,12 @@
 
 #register th
 {	
-	background-color: #999;
 	padding: 5px;
 	text-align: center;
-	color: #FFF;
 }
 
 #register td
 {
-	background-color: #EEE;
 	padding: 3px;
 	text-align: center;
 }
@@ -76,7 +63,6 @@
 	margin-left: 0.1em;
 	padding-bottom: 1em;
 	padding-top: 1em;
-	background-color: #BBB;
 	font-size: 13px;
 	text-align: center;
 }
@@ -122,7 +108,6 @@ input#amount_tendered:disabled
 {
 	float: left;
 	border-top: 1px solid #000;
-	background-color: #DDD;
 	margin-top: 0.2em;
 	padding: 0.5em;
 	text-align: left;
