@@ -26,6 +26,7 @@ class Stock_location extends Model
 	];
 
 	private Session $session;
+	private Employee $employee;
 
 	public function __construct()
 	{
@@ -252,7 +253,7 @@ class Stock_location extends Model
 
 		foreach($employees->getResultArray() as $employee)
 		{
-			$this->employee = model('Employee');
+			$this->employee = model(Employee::class);
 
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
 			$menu_group = $this->employee->get_menu_group($module, $employee['person_id']);

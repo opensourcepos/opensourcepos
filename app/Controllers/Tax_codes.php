@@ -9,11 +9,13 @@ use App\Models\Tax_code;
  */
 class Tax_codes extends Secure_Controller
 {
+	private Tax_code $tax_code;
+
 	public function __construct()
 	{
 		parent::__construct('tax_codes');
 
-		$this->tax_code = model('Tax_code');
+		$this->tax_code = model(Tax_code::class);
 		helper('tax_helper');
 	}
 

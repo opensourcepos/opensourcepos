@@ -191,7 +191,7 @@ class Tax extends Model
 	/**
 	 * Deletes a single tax rate entry
 	 */
-	public function delete($tax_rate_id = null, bool $purge = false)
+	public function delete($tax_rate_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('tax_rates');
 

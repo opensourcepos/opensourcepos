@@ -18,7 +18,7 @@ class IntToTinyint extends Migration
 	/**
 	 * Revert a migration step.
 	 */
-	public function down()
+	public function down(): void
 	{
 		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('customers') . ' MODIFY `consent` int NOT NULL DEFAULT 0');
 		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('cash_up') . ' MODIFY `note` int NOT NULL DEFAULT 0');

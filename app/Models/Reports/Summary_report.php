@@ -13,6 +13,7 @@ abstract class Summary_report extends Report
 	private function __common_select(array $inputs, &$builder): void	//TODO: Hungarian notation
 	{
 		$config = config(OSPOS::class)->settings;
+//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
 		$where = '';	//TODO: Duplicated code
 
 		if(empty($config['date_or_time_format']))
@@ -81,7 +82,6 @@ abstract class Summary_report extends Report
 			)'
 		);
 
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->select("
 				IFNULL($sale_subtotal, $sale_total) AS subtotal,
 				$sales_tax AS tax,
@@ -92,6 +92,7 @@ abstract class Summary_report extends Report
 	}
 
 	/**
+	 * @param BaseBuilder $builder
 	 * @return void
 	 */
 	private function __common_from(BaseBuilder &$builder): void	//TODO: hungarian notation
@@ -172,26 +173,26 @@ abstract class Summary_report extends Report
 
 	/**
 	 * @param array $inputs
-	 * @param object $builder
+	 * @param BaseBuilder $builder
 	 * @return void
 	 */
 	protected function _select(array $inputs, BaseBuilder &$builder): void { $this->__common_select($inputs, $builder); }	//TODO: hungarian notation
 
 	/**
-	 * @param object $builder
+	 * @param BaseBuilder $builder
 	 * @return void
 	 */
 	protected function _from(BaseBuilder &$builder): void { $this->__common_from($builder); }	//TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
 
 	/**
 	 * @param array $inputs
-	 * @param object $builder
+	 * @param BaseBuilder $builder
 	 * @return void
 	 */
 	protected function _where(array $inputs, BaseBuilder &$builder): void { $this->__common_where($inputs, $builder); }	//TODO: hungarian notation
 
 	/**
-	 * @param object $builder
+	 * @param BaseBuilder $builder
 	 * @return void
 	 */
 	protected function _group_order(BaseBuilder &$builder): void {}	//TODO: hungarian notation

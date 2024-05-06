@@ -21,12 +21,13 @@ class Migration_TaxAmount extends Migration
 	public const YES = '1';
 	public const VAT_TAX = '0';
 	public const SALES_TAX = '1';	//TODO: It appears that this constant is never used
+	private Appconfig $appconfig;
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->appconfig = model('Appconfig');
+		$this->appconfig = model(Appconfig::class);
 	}
 
 	/**

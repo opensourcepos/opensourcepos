@@ -12,9 +12,11 @@ use App\Models\Module;
  */
 class No_access extends BaseController
 {
+	private Module $module;
+
 	public function __construct()
 	{
-		$this->module = model('Module');
+		$this->module = model(Module::class);
 	}
 
 	/**

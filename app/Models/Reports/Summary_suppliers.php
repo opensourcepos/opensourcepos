@@ -29,7 +29,6 @@ class Summary_suppliers extends Summary_report
 	{
 		parent::_select($inputs, $builder);	//TODO: hungarian notation
 
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->select('
 				MAX(CONCAT(supplier_c.company_name, " (", supplier_p.first_name, " ", supplier_p.last_name, ")")) AS supplier,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
@@ -44,12 +43,10 @@ class Summary_suppliers extends Summary_report
 	{
 		parent::_from($builder);	//TODO: hungarian notation
 
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 		$builder->join('items AS items', 'sales_items.item_id = items.item_id');
 		$builder->join('suppliers AS supplier_c', 'items.supplier_id = supplier_c.person_id ');
 		$builder->join('people AS supplier_p', 'items.supplier_id = supplier_p.person_id');
 	}
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
 	/**
 	 * @param object $builder

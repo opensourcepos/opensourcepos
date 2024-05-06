@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Person;
-use function \Tamtamchik\NameCase\str_name_case;
+use function Tamtamchik\NameCase\str_name_case;
 
 abstract class Persons extends Secure_Controller
 {
@@ -32,7 +32,7 @@ abstract class Persons extends Secure_Controller
 	/**
 	 * Gives search suggestions based on what is being searched for
 	 */
-	public function suggest(): void
+	public function getSuggest(): void
 	{
 		$suggestions = $this->person->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 

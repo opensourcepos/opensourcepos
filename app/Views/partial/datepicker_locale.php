@@ -9,7 +9,7 @@ var pickerconfig = function(config) {
         <?php
         $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
-        if(strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false)
+        if(str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A'))
         {
             ?>
             showMeridian: true,
@@ -90,13 +90,13 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
 		],
     today: "<?= lang('Datepicker.today') ?>",
     <?php
-        if( strpos($config['timeformat'], 'a') !== false )
+        if(str_contains($config['timeformat'], 'a'))
         {
     ?>
     meridiem: ["am", "pm"],
     <?php
         }
-        elseif( strpos($config['timeformat'], 'A') !== false )
+        elseif(str_contains($config['timeformat'], 'A'))
         {
     ?>
     meridiem: ["AM", "PM"],

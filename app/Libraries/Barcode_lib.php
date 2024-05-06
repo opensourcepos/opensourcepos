@@ -220,7 +220,7 @@ class Barcode_lib
 		{
 			while(($file = readdir($handle)) !== false)
 			{
-				if(substr($file, -4, 4) === '.ttf')
+				if(str_ends_with($file, '.ttf'))
 				{
 					$array[$file] = $file;
 				}

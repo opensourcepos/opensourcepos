@@ -19,11 +19,12 @@ class Migration_Sales_Tax_Data extends Migration
 	public const YES = '1';
 	public const VAT_TAX = '0';
 	public const SALES_TAX = '1';
+	private Appconfig $appconfig;
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->appconfig = model('Appconfig');
+		$this->appconfig = model(Appconfig::class);
 	}
 //TODO: we need to figure out why we get a server error when uncommented portions of this migration run
 
@@ -361,9 +362,9 @@ class Migration_Sales_Tax_Data extends Migration
 		{
 			$sort = [];
 
-			foreach($sales_taxes as $k => $v)	//TODO: Refactor $k and $v to proper variable names
+			foreach($sales_taxes as $key => $value)
 			{
-				$sort['print_sequence'][$k] = $v['print_sequence'];
+				$sort['print_sequence'][$key] = $value['print_sequence'];
 			}
 
 			array_multisort($sort['print_sequence'], SORT_ASC, $sales_taxes);
@@ -401,7 +402,7 @@ class Migration_Sales_Tax_Data extends Migration
 			$rounding_code = $sales_tax['rounding_code'];
 			$rounded_sale_tax_amount = $sale_tax_amount;
 
-			if ($rounding_code == PHP_ROUND_HALF_UP	//TODO: This block of if/elseif statements should be replaced by a switch
+			if ($rounding_code == PHP_ROUND_HALF_UP
 				|| $rounding_code == PHP_ROUND_HALF_DOWN
 				|| $rounding_code == PHP_ROUND_HALF_EVEN
 				|| $rounding_code == PHP_ROUND_HALF_ODD)

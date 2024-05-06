@@ -241,7 +241,7 @@
 						'name' => 'tax_names[]',
 						'id' => 'tax_name_1',
 						'class' => 'form-control input-sm',
-						'value' => isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $config['default_tax_1_name']
+						'value' => $item_tax_info[0]['name'] ?? $config['default_tax_1_name']
 					]) ?>
 				</div>
 				<div class="col-xs-4">

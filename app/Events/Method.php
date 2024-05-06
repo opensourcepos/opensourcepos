@@ -7,7 +7,7 @@ class Method
 	/**
 	 * @return void
 	 */
-	public static function validate_method()
+	public static function validate_method(): void
 	{
 		$url = $_SERVER['REQUEST_URI'];
 

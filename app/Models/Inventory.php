@@ -64,7 +64,7 @@ class Inventory extends Model
 	 * @param int $item_id ID number for the item to have quantity reset.
 	 * @return bool|int|string The row id of the inventory table on insert or false on failure
 	 */
-	public function reset_quantity(int $item_id)
+	public function reset_quantity(int $item_id): bool|int|string
 	{
 		$inventory_sums = $this->get_inventory_sum($item_id);
 		foreach($inventory_sums as $inventory_sum)

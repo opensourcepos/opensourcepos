@@ -423,8 +423,7 @@ class Customer extends Person
 	 */
 	public function get_found_rows(string $search): int
 	{
-		$result = $this->search($search, 0, 0, 'last_name', 'asc', true);
-		return $result;
+		return $this->search($search, 0, 0, 'last_name', 'asc', true);
 	}
 
 	/**

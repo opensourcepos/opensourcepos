@@ -39,7 +39,7 @@ function get_report_link(string $report_name, string $report_prefix = '', string
  */
 function can_show_report(string $permission_id, array $restrict_views = []): bool
 {
-	if(strpos($permission_id, 'reports_') === false)
+	if(!str_contains($permission_id, 'reports_'))
 	{
 		return false;
 	}

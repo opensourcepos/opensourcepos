@@ -262,7 +262,7 @@ $(document).ready(function()
 		<?php
 		$t = $config['timeformat'];
 		$m = $t[strlen($t)-1];
-		if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
+		if(str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A'))
 		{
 		?>
 			showMeridian: true,
@@ -289,7 +289,7 @@ $(document).ready(function()
 		<?php
 		$t = $config['timeformat'];
 		$m = $t[strlen($t)-1];
-		if( strpos($config['timeformat'], 'a') !== false || strpos($config['timeformat'], 'A') !== false )
+		if(str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A'))
 		{
 		?>
 			showMeridian: true,

@@ -56,7 +56,7 @@ class Item_quantity extends Model
 	/**
 	 * @param int $item_id
 	 * @param int $location_id
-	 * @return array|Item_quantity|null
+	 * @return array|Item_quantity|stdClass|null
 	 */
 	public function get_item_quantity(int $item_id, int $location_id): array|Item_quantity|StdClass|null
 	{

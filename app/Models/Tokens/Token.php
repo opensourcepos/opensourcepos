@@ -59,7 +59,7 @@ abstract class Token extends Model
 	/**
 	 * @return mixed
 	 */
-	abstract public function get_value();
+	abstract public function get_value(): mixed;
 
 	/**
 	 * @param $token_id

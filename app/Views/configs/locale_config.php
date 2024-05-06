@@ -189,7 +189,7 @@
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.country_codes_tooltip'); //TODO: May need to change the URL at the beginning to HTTPS?>"></span></a>
+						<a href="https://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.country_codes_tooltip'); //TODO: May need to change the URL at the beginning to HTTPS?>"></span></a>
 					</label>
 				</div>
 			</div>

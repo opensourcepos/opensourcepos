@@ -171,18 +171,19 @@ class Detailed_receivings extends Report
 			$builder->where('item_location', $inputs['location_id']);
 		}
 
-		//TODO: These if statements should be replaced with a switch statement
-		if($inputs['receiving_type'] == 'receiving')
+		switch($inputs['receiving_type'])
 		{
-			$builder->where('quantity_purchased >', 0);
-		}
-		elseif($inputs['receiving_type'] == 'returns')
-		{
-			$builder->where('quantity_purchased <', 0);
-		}
-		elseif($inputs['receiving_type'] == 'requisitions')
-		{
-			$builder->where('quantity_purchased', 0);
+			case 'receiving':
+				$builder->where('quantity_purchased >', 0);
+				break;
+
+			case 'returns':
+				$builder->where('quantity_purchased <', 0);
+				break;
+
+			case 'requisitions':
+				$builder->where('quantity_purchased', 0);
+				break;
 		}
 
 		return $builder->get()->getRowArray();
