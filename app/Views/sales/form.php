@@ -139,7 +139,7 @@
 			<?= form_label(lang('Sales.customer'), 'customer', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<?= form_input (['name' => 'customer_name', 'value' => $selected_customer_name, 'id' => 'customer_name', 'class' => 'form-control input-sm']) ?>
-				<?= form_hidden('customer_id', $selected_customer_id) ?>
+				<?= form_hidden('customer_id', $selected_customer_id ?? '') ?>
 			</div>
 		</div>
 

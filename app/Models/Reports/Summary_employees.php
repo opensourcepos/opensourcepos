@@ -20,7 +20,6 @@ class Summary_employees extends Summary_report
 			['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
 		];
 	}
-//TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
 
 	/**
 	 * @param array $inputs

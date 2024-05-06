@@ -4,6 +4,8 @@ namespace app\Libraries;
 
 use App\Models\Tokens\Token;
 use Config\OSPOS;
+use IntlDateFormatter;
+use DateTime;
 
 /**
  * Token library
@@ -17,25 +19,26 @@ class Token_lib
 	 */
 	public function render(string $tokened_text, array $tokens = [], $save = true): string
 	{
-		// Apply the transformation for the "%" tokens if any are used
-		if(strpos($tokened_text, '%') !== false)
+		$config = config(OSPOS::class)->settings;
+		$formatter = new IntlDateFormatter(
+			$config['number_locale'], // Locale
+			IntlDateFormatter::FULL, // Date type
+			IntlDateFormatter::FULL // Time type
+		);
+
+		//Apply the transformation for the "%" tokens if any are used
+		if(str_contains($tokened_text, '%'))
 		{
-			$tokened_text = strftime($tokened_text);	//TODO: these need to be converted to IntlDateFormatter::format()
+
+			$tokened_text = $formatter->format(new DateTime());
 		}
 
-		// Call scan to build an array of all of the tokens used in the text to be transformed
+		//Call scan to build an array of all tokens used in the text to be transformed
 		$token_tree = $this->scan($tokened_text);
 
 		if(empty($token_tree))
 		{
-			if(strpos($tokened_text, '%') !== false)
-			{
-				return strftime($tokened_text);
-			}
-			else
-			{
-				return $tokened_text;
-			}
+			return str_contains($tokened_text, '%') ? $formatter->format(new DateTime()) : $tokened_text;
 		}
 
 		$token_values = [];
@@ -177,10 +180,10 @@ class Token_lib
 	/**
 	 * @param $token_code
 	 * @param array $tokens
-	 * @param $save
+	 * @param bool $save
 	 * @return string
 	 */
-	private function resolve_token($token_code, array $tokens = [], $save = true): string
+	private function resolve_token($token_code, array $tokens = [], bool $save = true): string
 	{
 		foreach(array_merge($tokens, Token::get_tokens()) as $token)
 		{

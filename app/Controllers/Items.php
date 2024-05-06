@@ -989,7 +989,6 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * @throws ReflectionException
 	 */
 	public function postDelete(): void
 	{
@@ -1008,8 +1007,7 @@ class Items extends Secure_Controller
 
 	/**
 	 * Generates a template CSV file for item import/update containing headers for current stock locations and attributes
-	 * @return void
-	 * @noinspection PhpUnused
+	 * @return DownloadResponse
 	 */
 	public function getGenerateCsvFile(): DownloadResponse
 	{

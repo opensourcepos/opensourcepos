@@ -494,11 +494,11 @@ class Sale extends Model
 	}
 
 	/**
-	 * @param $year
-	 * @param $start_from
+	 * @param string $year
+	 * @param int $start_from
 	 * @return int
 	 */
-	public function get_quote_number_for_year($year = '', $start_from = 0): int
+	public function get_quote_number_for_year(string $year = '', int $start_from = 0): int
 	{
 		return $this->get_number_for_year('quote_number', $year, $start_from);
 	}

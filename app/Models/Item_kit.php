@@ -77,7 +77,7 @@ class Item_kit extends Model
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_kit_id) && substr($item_kit_id, 0, 1) !== '0')
+		if(ctype_digit($item_kit_id) && !str_starts_with($item_kit_id, '0'))
 		{
 			$builder->where('item_kit_id !=', (int) $item_kit_id);
 		}
@@ -191,7 +191,7 @@ class Item_kit extends Model
 	/**
 	 * Deletes one item kit
 	 */
-	public function delete($item_kit_id = null, bool $purge = false)
+	public function delete($item_kit_id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('item_kits');
 

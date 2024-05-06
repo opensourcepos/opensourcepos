@@ -456,7 +456,7 @@ function to_decimals(?float $number, string $decimals = null, int $type = Number
  * @param string $number
  * @return false|float|int|mixed|string
  */
-function parse_quantity(string $number)
+function parse_quantity(string $number): mixed
 {
 	return parse_decimals($number, quantity_decimals());
 }
@@ -465,7 +465,7 @@ function parse_quantity(string $number)
  * @param string $number
  * @return false|float|int|mixed|string
  */
-function parse_tax(string $number)
+function parse_tax(string $number): mixed
 {
 	return parse_decimals($number, tax_decimals());
 }
@@ -475,7 +475,7 @@ function parse_tax(string $number)
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, int $decimals = null)
+function parse_decimals(string $number, int $decimals = null): mixed
 {
 	if(empty($number))
 	{
@@ -713,7 +713,7 @@ function prepare_decimal(string $decimal): string
 	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
 	$decimal_separator = $fmt->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
-	if($decimal_separator === ',' && strpos($decimal, ',') !== false)
+	if($decimal_separator === ',' && str_contains($decimal, ','))
 	{
 		$decimal = str_replace('.', '', $decimal); //Remove thousands separator
 		$decimal = str_replace(',', '.', $decimal); //Replace decimal separator

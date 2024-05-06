@@ -68,7 +68,7 @@ class Suppliers extends Persons
 	/**
 	 * Gives search suggestions based on what is being searched for
 	 **/
-	public function suggest(): void
+	public function getSuggest(): void
 	{
 		$suggestions = $this->supplier->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);
 

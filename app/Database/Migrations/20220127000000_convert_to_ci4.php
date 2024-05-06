@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\Exceptions\RedirectException;
 use Config\Encryption;
 use Config\Services;
+use ReflectionException;
 
 class Convert_to_ci4 extends Migration
 {
@@ -55,7 +56,7 @@ class Convert_to_ci4 extends Migration
 
 	/**
 	 * @return RedirectResponse|void
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	private function convert_ci3_encrypted_data()
 	{

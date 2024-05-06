@@ -71,7 +71,7 @@ class MailchimpConnector
 	 * @param array $args An array of arguments to pass to the method. Will be json-encoded for you.
 	 * @return array|bool Associative array of json decoded API response or false on error.
 	 */
-	public function call(string $method, string $httpVerb = 'POST', array $args = [])
+	public function call(string $method, string $httpVerb = 'POST', array $args = []): bool|array
 	{
 		if(!empty($this->_api_key))	//TODO: Hungarian notation
 		{
@@ -105,7 +105,7 @@ class MailchimpConnector
 	 * @param array $args Assoc array of parameters to be passed
 	 * @return bool|array Assoc array of decoded result or False
 	 */
-	private function _request(string $httpVerb, string $method, array $args = [])	//TODO: Hungarian notation
+	private function _request(string $httpVerb, string $method, array $args = []): bool|array    //TODO: Hungarian notation
 	{
 		$result = false;
 
@@ -163,7 +163,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists
 	 */
-	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'])
+	public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool|array
 	{
 		return $this->_connector->call('/lists', 'GET', $parameters);	//TODO: Hungarian notation
 	}
@@ -177,7 +177,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#read-get_lists_list_id
 	 */
-	public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count'])
+	public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count']): bool|array
 	{
 		return $this->_connector->call("/lists/$list_id", 'GET', $parameters);	//TODO: Hungarian notation
 	}
@@ -192,7 +192,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members
 	 */
-	public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'])
+	public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields']): bool|array
 	{
 		$parameters += [
 			'count' => $count,
@@ -214,7 +214,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	 */
-	public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields'])
+	public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields']): bool|array
 	{
 		return $this->_connector->call("/lists/$list_id/members/$md5id", 'GET', $parameters);	//TODO: Hungarian notation
 	}
@@ -231,7 +231,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#read-get_lists_list_id_members_subscriber_hash
 	 */
-	public function getMemberInfo(string $list_id, string $email, array $parameters = [])
+	public function getMemberInfo(string $list_id, string $email, array $parameters = []): bool|array
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'GET', $parameters);
 	}
@@ -245,7 +245,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool Associative array of results or false.
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/activity/#read-get_lists_list_id_members_subscriber_hash_activity
 	 */
-	public function getMemberActivity(string $list_id, string $email, array $parameters = [])
+	public function getMemberActivity(string $list_id, string $email, array $parameters = []): bool|array
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)) . '/activity', 'GET', $parameters);	//TODO: Hungarian notation
 	}
@@ -262,7 +262,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#create-post_lists_list_id_members
 	 */
-	public function addMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = [])
+	public function addMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool|array
 	{
 		$parameters += [
 			'email_address' => $email,
@@ -286,7 +286,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#delete-delete_lists_list_id_members_subscriber_hash
 	 */
-	public function removeMember(string $list_id, string $email)
+	public function removeMember(string $list_id, string $email): bool|array
 	{
 		return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'DELETE');	//TODO: Hungarian notation
 	}
@@ -303,7 +303,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-patch_lists_list_id_members_subscriber_hash
 	 */
-	public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = [])
+	public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool|array
 	{
 		$parameters += [
 			'status' => 'subscribed',
@@ -328,7 +328,7 @@ class Mailchimp_lib	//TODO: IMO We need to stick to the one class per file princ
 	 * @return array|bool
 	 * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/members/#edit-put_lists_list_id_members_subscriber_hash
 	 */
-	public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = [])
+	public function addOrUpdateMember(string $list_id, string $email, string $first_name, string $last_name, string $status, array $parameters = []): bool|array
 	{
 		$parameters += [
 			'email_address' => $email,

@@ -19,7 +19,7 @@ class Login extends BaseController
 	/**
 	 * @return RedirectResponse|string
 	 */
-	public function index()
+	public function index(): string|RedirectResponse
 	{
 		$this->employee = model(Employee::class);
 		if(!$this->employee->is_logged_in())

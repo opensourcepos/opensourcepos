@@ -110,7 +110,7 @@ class Summary_payments extends Summary_report
 		$gift_card_amount = 0;
 		foreach($payments as $key => $payment)
 		{
-			if(strstr($payment['trans_type'], lang('Sales.giftcard')) !== false)
+			if(str_contains($payment['trans_type'], lang('Sales.giftcard')))
 			{
 				$gift_card_count += $payment['trans_sales'];
 				$gift_card_amount += $payment['trans_amount'];
@@ -142,12 +142,13 @@ class Summary_payments extends Summary_report
 	 */
 	protected function create_summary_payments_temp_tables(string $where): void
 	{
+//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
 		$decimals = totals_decimals();
 
 		$trans_amount = 'SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END) AS trans_amount';
-//TODO: look into converting these to use QueryBuilder
+
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_taxes_temp') .
 			' (INDEX(sale_id)) ENGINE=MEMORY
 			(

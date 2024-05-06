@@ -119,7 +119,7 @@ class Appconfig extends Model
 	 * @param bool $purge A hard delete is conducted if true and soft delete on false.
 	 * @return bool Result of the delete operation.
 	 */
-	public function delete($id = null, bool $purge = false)
+	public function delete($id = null, bool $purge = false): bool
 	{
 		$builder = $this->db->table('app_config');
 		return $builder->delete(['key' => $id]);

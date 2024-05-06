@@ -92,11 +92,11 @@ class Attribute extends Model
 	/**
 	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 *
-	 * @param string|float $attribute_value The value to search for in the attribute values table.
+	 * @param float|string $attribute_value The value to search for in the attribute values table.
 	 * @param string $definition_type The definition type which will dictate which column is searched.
 	 * @return int|bool The attribute ID of the found row or false if no attribute value was found.
 	 */
-	public function value_exists($attribute_value, string $definition_type = TEXT)
+	public function value_exists(float|string $attribute_value, string $definition_type = TEXT): bool|int
 	{
 		$config = config(OSPOS::class)->settings;
 
@@ -822,8 +822,8 @@ class Attribute extends Model
 	/**
 	 * @param string $attribute_value
 	 * @param int $definition_id
-	 * @param bool $item_id
-	 * @param bool $attribute_id
+	 * @param $item_id
+	 * @param $attribute_id
 	 * @param string $definition_type
 	 * @return int
 	 */
@@ -908,8 +908,9 @@ class Attribute extends Model
 	 * @param int $definition_id
 	 * @return bool|BaseResult|Query
 	 */
-	public function delete_value(string $attribute_value, int $definition_id)
+	public function delete_value(string $attribute_value, int $definition_id): Query|bool|BaseResult
 	{
+		//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
 		$query = 'DELETE atrv, atrl ';
 		$query .= 'FROM ' . $this->db->prefixTable('attribute_values') . ' atrv, ' . $this->db->prefixTable('attribute_links') .  ' atrl ';
 		$query .= 'WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = ' . $this->db->escape($attribute_value);

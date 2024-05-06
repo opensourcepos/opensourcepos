@@ -490,11 +490,12 @@ class Mimes
      *
      * @return string|null The mime type found, or none if unable to determine.
      */
-    public static function guessTypeFromExtension(string $extension)
-    {
+    public static function guessTypeFromExtension(string $extension): array|string|null
+	{
         $extension = trim(strtolower($extension), '. ');
 
-        if (! array_key_exists($extension, static::$mimes)) {
+        if (!array_key_exists($extension, static::$mimes))
+		{
             return null;
         }
 
@@ -508,8 +509,8 @@ class Mimes
      *
      * @return string|null The extension determined, or null if unable to match.
      */
-    public static function guessExtensionFromType(string $type, ?string $proposedExtension = null)
-    {
+    public static function guessExtensionFromType(string $type, ?string $proposedExtension = null): ?string
+	{
         $type = trim(strtolower($type), '. ');
 
         $proposedExtension = trim(strtolower($proposedExtension ?? ''));
