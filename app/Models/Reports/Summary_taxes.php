@@ -3,7 +3,6 @@
 namespace App\Models\Reports;
 
 use Config\OSPOS;
-use CodeIgniter\Database\RawSql;
 
 class Summary_taxes extends Summary_report
 {
