@@ -27,7 +27,7 @@ class Summary_discounts extends Summary_report
 		$config = config(OSPOS::class)->settings;
 		$builder = $this->db->table('sales_items AS sales_items');
 
-		if($inputs['discount_type'] == FIXED)	//TODO: if there are only two options for this if/else statement then it needs to be refactored to use ternary operators. Also ===?
+		if($inputs['discount_type'] == FIXED)
 		{
 			$builder->select('SUM(sales_items.discount) AS total, MAX(CONCAT("' . $config['currency_symbol'] . '",sales_items.discount)) AS discount, count(*) AS count');
 			$builder->where('discount_type', FIXED);

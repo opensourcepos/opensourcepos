@@ -9,11 +9,13 @@ use App\Models\Tax_category;
  */
 class Tax_categories extends Secure_Controller
 {
+	private Tax_category $tax_category;
+
 	public function __construct()
 	{
 		parent::__construct('tax_categories');
 
-		$this->tax_category = model('Tax_category');
+		$this->tax_category = model(Tax_category::class);
 	}
 
 	/**

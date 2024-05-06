@@ -211,7 +211,6 @@ class Sale_lib
 
 	/**
 	 * @return void
-	 * @throws ReflectionException
 	 */
 	public function remove_temp_items(): void
 	{
@@ -279,7 +278,7 @@ class Sale_lib
 	}
 
 	/**
-	 * @return int
+	 * @return int|null
 	 */
 	public function get_sale_type(): ?int
 	{
@@ -302,7 +301,7 @@ class Sale_lib
 	}
 
 	/**
-	 * @param string $quote_number
+	 * @param string|null $quote_number
 	 * @param bool $keep_custom
 	 * @return void
 	 */
@@ -317,7 +316,7 @@ class Sale_lib
 	}
 
 	/**
-	 * @param string $work_order_number
+	 * @param string|null $work_order_number
 	 * @param bool $keep_custom
 	 * @return void
 	 */
@@ -898,7 +897,7 @@ class Sale_lib
 	}
 
 	/**
-	 * @param int $dinner_table
+	 * @param int|null $dinner_table
 	 * @return void
 	 */
 	public function set_dinner_table(?int $dinner_table): void
@@ -1327,7 +1326,6 @@ class Sale_lib
 	/**
 	 * @param int $line
 	 * @return void
-	 * @throws ReflectionException
 	 */
 	public function delete_item(int $line): void
 	{

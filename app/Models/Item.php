@@ -79,7 +79,7 @@ class Item extends Model
 
 //		// check if $item_id is a number and not a string starting with 0
 //		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')    //TODO: !==
+		if(ctype_digit($item_id) && !str_starts_with($item_id, '0'))
 		{
 			$builder->where('item_id !=', intval($item_id));
 		}
@@ -382,7 +382,7 @@ class Item extends Model
 
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit(strval($item_id)) && substr($item_id, 0, 1) != '0')
+		if(ctype_digit(strval($item_id)) && !str_starts_with($item_id, '0'))
 		{
 			$builder->orWhere('items.item_id', $item_id);
 		}
@@ -509,7 +509,7 @@ class Item extends Model
 	/**
 	 * Deletes one item
 	 */
-	public function delete($item_id = null, bool $purge = false)
+	public function delete($item_id = null, bool $purge = false): bool|int|string
 	{
 		$this->db->transStart();
 
@@ -1105,7 +1105,7 @@ class Item extends Model
 	/**
 	 * @return ResultInterface|false|string
 	 */
-	public function get_categories()    //TODO: This function is never called in the code.
+	public function get_categories(): ResultInterface|bool    //TODO: This function is never called in the code.
 	{
 		$builder = $this->db->table('items');
 		$builder->select('category');

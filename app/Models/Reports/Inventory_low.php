@@ -31,7 +31,7 @@ class Inventory_low extends Report
 	 * @return array
 	 */
 	public function getData(array $inputs): array
-	{//TODO: we need to see if this can be converted into using QueryBuilder
+	{//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
 		$item = model(Item::class);
 		$query = $this->db->query("SELECT " . $item->get_item_name('name') . ", 
 			items.item_number,

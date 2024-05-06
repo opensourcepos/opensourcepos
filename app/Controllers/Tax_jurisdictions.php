@@ -9,11 +9,13 @@ use App\Models\Tax_jurisdiction;
  */
 class Tax_jurisdictions extends Secure_Controller
 {
+	private Tax_jurisdiction $tax_jurisdiction;
+
 	public function __construct()
 	{
 		parent::__construct('tax_jurisdictions');
 
-		$this->tax_jurisdiction = model('Tax_jurisdiction');
+		$this->tax_jurisdiction = model(Tax_jurisdiction::class);
 
 		helper('tax_helper');
 	}

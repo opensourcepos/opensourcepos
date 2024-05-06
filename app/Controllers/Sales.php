@@ -23,6 +23,7 @@ use App\Models\Tokens\Token_invoice_sequence;
 use CodeIgniter\Config\Services;
 use Config\OSPOS;
 use ReflectionException;
+use stdClass;
 
 class Sales extends Secure_Controller
 {
@@ -282,26 +283,13 @@ class Sales extends Secure_Controller
 	 */
 	public function change_register_mode(int $sale_type): void
 	{
-		switch ($sale_type) {
-			case SALE_TYPE_POS:
-				$mode = 'sale';
-				break;
-			case SALE_TYPE_QUOTE:
-				$mode = 'sale_quote';
-				break;
-			case SALE_TYPE_WORK_ORDER:
-				$mode = 'sale_work_order';
-				break;
-			case SALE_TYPE_INVOICE:
-				$mode = 'sale_invoice';
-				break;
-			case SALE_TYPE_RETURN:
-				$mode = 'return';
-				break;
-			default:
-				$mode = 'sale';
-				break;
-		}
+		$mode = match($sale_type) {
+			SALE_TYPE_QUOTE => 'sale_quote',
+			SALE_TYPE_WORK_ORDER => 'sale_work_order',
+			SALE_TYPE_INVOICE => 'sale_invoice',
+			SALE_TYPE_RETURN => 'return',
+			default => 'sale' //SALE_TYPE_POS
+		};
 
 		$this->sale_lib->set_mode($mode);
 	}
@@ -394,7 +382,7 @@ class Sales extends Secure_Controller
 				//In the case of giftcard payment the register input amount_tendered becomes the giftcard number
 				$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
 				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
-				
+
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
 				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
@@ -1018,9 +1006,9 @@ class Sales extends Secure_Controller
 	 * @param int $customer_id
 	 * @param array $data
 	 * @param bool $stats
-	 * @return array|object|\stdClass|string|null
+	 * @return array|stdClass|string|null
 	 */
-	private function _load_customer_data(int $customer_id, array &$data, bool $stats = false)	//TODO: Hungarian notation
+	private function _load_customer_data(int $customer_id, array &$data, bool $stats = false): array|string|stdClass|null    //TODO: Hungarian notation
 	{
 		$customer_info = '';
 
@@ -1204,10 +1192,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * @param $data
+	 * @param array $data
 	 * @return void
 	 */
-	private function _reload($data = []): void	//TODO: Hungarian notation
+	private function _reload(array $data = []): void	//TODO: Hungarian notation
 	{
 		$sale_id = $this->session->get('sale_id');	//TODO: This variable is never used
 
@@ -1811,15 +1799,15 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * @param int $id
-	 * @param array $array
+	 * @param int $search_item_id
+	 * @param array $shopping_cart
 	 * @return int|string|null
 	 */
-	public function getSearch_cart_for_item_id(int $id, array $array)	//TODO: The second parameter should not be named array perhaps int $needle_item_id, array $shopping_cart
+	public function getSearch_cart_for_item_id(int $search_item_id, array $shopping_cart): int|string|null
 	{
-		foreach($array as $key => $val)	//TODO: key and val are not reflective of the contents of the array and should be replaced with descriptive variable names.  Perhaps $cart_haystack => $item_details
+		foreach($shopping_cart as $key => $val)
 		{
-			if($val['item_id'] === $id)	//TODO: Then this becomes more readable $item_details['item_id'] === $needle_item_id
+			if($val['item_id'] === $search_item_id)
 			{
 				return $key;
 			}

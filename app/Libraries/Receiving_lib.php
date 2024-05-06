@@ -170,7 +170,7 @@ class Receiving_lib
 	}
 
 	/**
-	 * @return string|null
+	 * @return string
 	 */
 	public function get_reference(): string
 	{
@@ -399,7 +399,7 @@ class Receiving_lib
 	 * @param string $serialnumber
 	 * @param float $quantity
 	 * @param float $discount
-	 * @param int $discount_type
+	 * @param int|null $discount_type
 	 * @param float $price
 	 * @param float $receiving_quantity
 	 * @return bool
@@ -416,7 +416,7 @@ class Receiving_lib
 			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
 
-			if(!is_null($discount_type))	
+			if(!is_null($discount_type))
 			{
 				$line['discount_type'] = $discount_type;
 			}
@@ -522,7 +522,7 @@ class Receiving_lib
 	 * @param float $quantity
 	 * @param float $price
 	 * @param float $discount
-	 * @param int $discount_type
+	 * @param int|null $discount_type
 	 * @param float $receiving_quantity
 	 * @return string
 	 */

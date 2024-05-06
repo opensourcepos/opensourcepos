@@ -26,7 +26,7 @@
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
+						<a href="https://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
 					</label>
 				</div>
 			</div>

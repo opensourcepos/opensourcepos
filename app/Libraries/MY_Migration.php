@@ -61,9 +61,9 @@ class MY_Migration extends MigrationRunner
 	/**
 	 * Checks to see if a ci3 version of the migrations table exists
 	 *
-	 * @return string|false The version number of the last CI3 migration to run or false if the table is CI4 or doesn't exist
+	 * @return bool|string The version number of the last CI3 migration to run or false if the table is CI4 or doesn't exist
 	 */
-	private function ci3_migrations_exists()
+	private function ci3_migrations_exists(): bool|string
 	{
 		if($this->db->tableExists('migrations') && !$this->db->fieldExists('id','migrations'))
 		{
@@ -79,7 +79,7 @@ class MY_Migration extends MigrationRunner
 	 * @param string $ci3_migrations_version
 	 * @return void
 	 */
-	private function migrate_table(string $ci3_migrations_version)
+	private function migrate_table(string $ci3_migrations_version): void
 	{
 		$this->convert_table();
 

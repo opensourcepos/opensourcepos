@@ -24,7 +24,7 @@ class Migration_remove_duplicate_links extends Migration
 	 *
 	 * @property attribute $attribute
 	 */
-	private function migrate_duplicate_attribute_links()
+	private function migrate_duplicate_attribute_links(): void
 	{
 		$attribute = model(Attribute::class);
 

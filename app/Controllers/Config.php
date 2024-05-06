@@ -714,7 +714,7 @@ class Config extends Secure_Controller
 		$not_to_delete = [];
 		foreach($this->request->getPost() as $key => $value)
 		{
-			if(strstr($key, 'stock_location'))
+			if(str_contains($key, 'stock_location'))
 			{
 				// save or update
 				foreach ($value as $location_id => $location_name)
@@ -854,7 +854,7 @@ class Config extends Secure_Controller
 					$not_to_delete[] = $customer_reward_id;
 					$array_save[$customer_reward_id]['package_name'] = $value;
 				}
-				elseif(strstr($key, 'reward_points'))
+				elseif(str_contains($key, 'reward_points'))
 				{
 					$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 					$array_save[$customer_reward_id]['points_percent'] = $value;

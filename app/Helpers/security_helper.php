@@ -74,7 +74,7 @@ function check_encryption(): bool
 /**
  * @return void
  */
-function abort_encryption_conversion()
+function abort_encryption_conversion(): void
 {
 	$config_path = ROOTPATH . '.env';
 	$backup_path = WRITEPATH . '/backup/.env.bak';
@@ -105,7 +105,7 @@ function abort_encryption_conversion()
 /**
  * @return void
  */
-function remove_backup()
+function remove_backup(): void
 {
 	$backup_path = WRITEPATH . '/backup/.env.bak';
 	if( ! file_exists($backup_path))

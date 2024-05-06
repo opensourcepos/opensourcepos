@@ -49,7 +49,7 @@ class Employees extends Persons
 	 *
 	 * @return void
 	 */
-	public function suggest(): void
+	public function getSuggest(): void
 	{
 		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 25, true);
 

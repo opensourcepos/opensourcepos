@@ -101,44 +101,46 @@ class Specific_customer extends Report
 		}
 		elseif($inputs['payment_type'] != 'all')
 		{
-			$builder->like('payment_type', lang('Sales.'.$inputs['payment_type']));
+			$builder->like('payment_type', lang('Sales.' . $inputs['payment_type']));
 		}
 
-		if($inputs['sale_type'] == 'complete')
+		switch($inputs['sale_type'])
 		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->groupStart();
-			$builder->where('sale_type', SALE_TYPE_POS);
-			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
-			$builder->groupEnd();
-		}
-		elseif($inputs['sale_type'] == 'sales')
-		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->groupStart();
-			$builder->where('sale_type', SALE_TYPE_POS);
-			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-			$builder->groupEnd();
-		}
-		elseif($inputs['sale_type'] == 'quotes')
-		{
-			$builder->where('sale_status', SUSPENDED);
-			$builder->where('sale_type', SALE_TYPE_QUOTE);
-		}
-		elseif($inputs['sale_type'] == 'work_orders')
-		{
-			$builder->where('sale_status', SUSPENDED);
-			$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
-		}
-		elseif($inputs['sale_type'] == 'canceled')
-		{
-			$builder->where('sale_status', CANCELED);
-		}
-		elseif($inputs['sale_type'] == 'returns')
-		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->where('sale_type', SALE_TYPE_RETURN);
+			case 'complete':
+				$builder->where('sale_status', COMPLETED);
+				$builder->groupStart();
+				$builder->where('sale_type', SALE_TYPE_POS);
+				$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+				$builder->orWhere('sale_type', SALE_TYPE_RETURN);
+				$builder->groupEnd();
+				break;
+
+			case 'sales':
+				$builder->where('sale_status', COMPLETED);
+				$builder->groupStart();
+				$builder->where('sale_type', SALE_TYPE_POS);
+				$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+				$builder->groupEnd();
+				break;
+
+			case 'quotes':
+				$builder->where('sale_status', SUSPENDED);
+				$builder->where('sale_type', SALE_TYPE_QUOTE);
+				break;
+
+			case 'work_orders':
+				$builder->where('sale_status', SUSPENDED);
+				$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
+				break;
+
+			case 'canceled':
+				$builder->where('sale_status', CANCELED);
+				break;
+
+			case 'returns':
+				$builder->where('sale_status', COMPLETED);
+				$builder->where('sale_type', SALE_TYPE_RETURN);
+				break;
 		}
 
 		$builder->groupBy('sale_id');	//TODO: Duplicated code
@@ -185,42 +187,43 @@ class Specific_customer extends Report
 			$builder->like('payment_type', lang('Sales.'.$inputs['payment_type']));
 		}
 
-		//TODO: This needs to be converted to a switch statement
-		if($inputs['sale_type'] == 'complete')
+		switch($inputs['sale_type'])
 		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->groupStart();
-			$builder->where('sale_type', SALE_TYPE_POS);
-			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-			$builder->orWhere('sale_type', SALE_TYPE_RETURN);
-			$builder->groupEnd();
-		}
-		elseif($inputs['sale_type'] == 'sales')
-		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->groupStart();
-			$builder->where('sale_type', SALE_TYPE_POS);
-			$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
-			$builder->groupEnd();
-		}
-		elseif($inputs['sale_type'] == 'quotes')
-		{
-			$builder->where('sale_status', SUSPENDED);
-			$builder->where('sale_type', SALE_TYPE_QUOTE);
-		}
-		elseif($inputs['sale_type'] == 'work_orders')
-		{
-			$builder->where('sale_status', SUSPENDED);
-			$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
-		}
-		elseif($inputs['sale_type'] == 'canceled')
-		{
-			$builder->where('sale_status', CANCELED);
-		}
-		elseif($inputs['sale_type'] == 'returns')
-		{
-			$builder->where('sale_status', COMPLETED);
-			$builder->where('sale_type', SALE_TYPE_RETURN);
+			case 'complete':
+				$builder->where('sale_status', COMPLETED);
+				$builder->groupStart();
+				$builder->where('sale_type', SALE_TYPE_POS);
+				$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+				$builder->orWhere('sale_type', SALE_TYPE_RETURN);
+				$builder->groupEnd();
+				break;
+
+			case 'sales':
+				$builder->where('sale_status', COMPLETED);
+				$builder->groupStart();
+				$builder->where('sale_type', SALE_TYPE_POS);
+				$builder->orWhere('sale_type', SALE_TYPE_INVOICE);
+				$builder->groupEnd();
+				break;
+
+			case 'quotes':
+				$builder->where('sale_status', SUSPENDED);
+				$builder->where('sale_type', SALE_TYPE_QUOTE);
+				break;
+
+			case 'work_orders':
+				$builder->where('sale_status', SUSPENDED);
+				$builder->where('sale_type', SALE_TYPE_WORK_ORDER);
+				break;
+
+			case 'canceled':
+				$builder->where('sale_status', CANCELED);
+				break;
+
+			case 'returns':
+				$builder->where('sale_status', COMPLETED);
+				$builder->where('sale_type', SALE_TYPE_RETURN);
+				break;
 		}
 
 		return $builder->get()->getRowArray();

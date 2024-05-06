@@ -80,7 +80,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function select_supplier(): void
+	public function postSelect_supplier(): void
 	{
 		$supplier_id = $this->request->getPost('supplier', FILTER_SANITIZE_NUMBER_INT);
 		if($this->supplier->exists($supplier_id))
@@ -427,10 +427,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * @param $data
+	 * @param array $data
 	 * @return void
 	 */
-	private function _reload($data = []): void	//TODO: Hungarian notation
+	private function _reload(array $data = []): void	//TODO: Hungarian notation
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];

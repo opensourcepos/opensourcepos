@@ -119,7 +119,7 @@ class Migration_database_optimizations extends Migration
 	 * @param ResultInterface $attribute_ids_to_fix All attribute_ids that need to parsed
 	 * @param array $attribute_value The attribute value in question.
 	 */
-	private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value)
+	private function reassign_duplicate_attribute_values(ResultInterface $attribute_ids_to_fix, array $attribute_value): void
 	{
 		foreach($attribute_ids_to_fix->getResultArray() as $attribute_id)
 		{

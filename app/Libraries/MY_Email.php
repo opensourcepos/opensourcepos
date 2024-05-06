@@ -5,11 +5,11 @@ use CodeIgniter\Email\Email;
 
 class MY_Email extends Email
 {
-	var $default_cc_address = "";
-	var $default_email_address = "";
-	var $default_sender_name = "";
-	var $default_sender_address = "";
-	var $default_bounce_address = "";
+	private string $default_cc_address = '';
+	private string $default_email_address = '';
+	private string $default_sender_name = '';
+	private string $default_sender_address = '';
+	private string $default_bounce_address = '';
 
 	/**
 	 * @param array $config
