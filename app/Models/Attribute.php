@@ -450,7 +450,7 @@ class Attribute extends Model
 				$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
 				$this->db->transStart();
-//TODO: We should see if we can convert these queries to use query builder from CI4.
+
 				$query = 'UPDATE '. $this->db->prefixTable('attribute_links') .' links ';
 				$query .= 'JOIN '. $this->db->prefixTable('attribute_values') .' vals ';
 				$query .= 'ON vals.attribute_id = links.attribute_id ';
@@ -458,20 +458,28 @@ class Attribute extends Model
 				$query .= 'WHERE definition_id = '. $this->db->escape($definition_id);
 				$success = $this->db->query($query);
 
+				//TODO: In order to convert this query to QueryBuilder, CI needs to fix their issue with JOINs being ignored in UPDATE queries and ideally fix their issue with backticks and dbprefix not being prepended when SQL functions are used.
+				//Replace the code above with the code below when it's fixed.
+//				$db_prefix = $this->db->getPrefix();
+//				$builder = $this->db->table('attribute_links');
+//				$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'inner');
+//				$builder->set('attribute_links.attribute_id', "IF((`$db_prefix" . "attribute_values`.`attribute_value` IN('false','0','') OR (`". $db_prefix ."attribute_values`.`attribute_value` IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1])", false);
+//				$builder->where('attribute_links.definition_id', $definition_id);
+//				$success = $builder->update();
+
 				$this->db->transComplete();
 			}
 		}
 		else if($from_type === DROPDOWN)
 		{
-			if(in_array($to_type, [TEXT, CHECKBOX], true))	//TODO: This if statement is possibly unnecessary... unless we have it there so that later we can do something with TEXT types also.
+			if(in_array($to_type, [TEXT, CHECKBOX], true))
 			{
 				if($to_type === CHECKBOX)	//TODO: Duplicated code.
 				{
 					$checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
 					$this->db->transStart();
-//TODO: We should see if we can convert these queries to use query builder from CI4.  Likely we need to do this using RawSql() https://codeigniter.com/user_guide/database/query_builder.html?highlight=rawsql#query-builder-where-rawsql
-//TODO: We should see if we can refactor a function out of this block and the identical block above it.
+
 					$query = 'UPDATE '. $this->db->prefixTable('attribute_links') .' links ';
 					$query .= 'JOIN '. $this->db->prefixTable('attribute_values') .' vals ';
 					$query .= 'ON vals.attribute_id = links.attribute_id ';
@@ -479,7 +487,14 @@ class Attribute extends Model
 					$query .= 'WHERE definition_id = '. $this->db->escape($definition_id);
 					$success = $this->db->query($query);
 
-					$this->db->transComplete();
+					//TODO: Same issue here. Replace the code above with the code below when it's fixed.
+//					$builder = $this->db->table('attribute_links');
+//					$builder->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'inner');
+//					$builder->set('attribute_links.attribute_id', "IF((attribute_value IN('false','0','') OR (attribute_value IS NULL)), $checkbox_attribute_values[0], $checkbox_attribute_values[1])", false);
+//					$builder->where('definition_id', $definition_id);
+//					$success = $builder->update();
+//
+//					$this->db->transComplete();
 				}
 			}
 		}
@@ -906,11 +921,11 @@ class Attribute extends Model
 	/**
 	 * @param string $attribute_value
 	 * @param int $definition_id
-	 * @return bool|BaseResult|Query
+	 * @return bool
 	 */
-	public function delete_value(string $attribute_value, int $definition_id): Query|bool|BaseResult
+	public function delete_value(string $attribute_value, int $definition_id): bool
 	{
-		//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
+		//QueryBuilder does not support multi-table delete.
 		$query = 'DELETE atrv, atrl ';
 		$query .= 'FROM ' . $this->db->prefixTable('attribute_values') . ' atrv, ' . $this->db->prefixTable('attribute_links') .  ' atrl ';
 		$query .= 'WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = ' . $this->db->escape($attribute_value);
