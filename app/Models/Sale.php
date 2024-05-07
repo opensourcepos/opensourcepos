@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Model;
 use App\Libraries\Sale_lib;
@@ -51,14 +52,9 @@ class Sale extends Model
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
 
-		if($config['tax_included'])	//TODO: This needs to be replaced with Ternary notation
-		{
-			$sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
-		}
-		else
-		{
-			$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
-		}
+		$sale_total = $config['tax_included']
+			? "ROUND(SUM($sale_price), $decimals) + $cash_adjustment"
+			: "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 
 		$sql = 'sales.sale_id AS sale_id,
 				MAX(DATE(sales.sale_time)) AS sale_date,
@@ -123,169 +119,75 @@ class Sale extends Model
 		if($count_only == null) $count_only = false;
 
 		$config = config(OSPOS::class)->settings;
-
-		// Pick up only non-suspended records
-		$where = 'sales.sale_status = 0 AND ';
-
-		if(empty($config['date_or_time_format']))
-		{
-			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']);
-		}
-		else
-		{
-			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
-		}
-
-		// NOTE: temporary tables are created to speed up searches due to the fact that they are orthogonal to the main query
-		// create a temporary table to contain all the payments per sale item
-		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
-			' (PRIMARY KEY(sale_id), INDEX(sale_id))
-			(
-				SELECT payments.sale_id,
-					SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
-					SUM(CASE WHEN payments.cash_adjustment = 1 THEN payments.payment_amount ELSE 0 END) AS sale_cash_adjustment,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", (payments.payment_amount - payments.cash_refund)) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->prefixTable('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
-					ON sales.sale_id = payments.sale_id
-				WHERE ' . $where . '
-				GROUP BY payments.sale_id)';
-
-		$this->db->query($sql);
-
+		$db_prefix = $this->db->getPrefix();
 		$decimals = totals_decimals();
 
-		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
-			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
-			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
+		//Only non-suspended records
+		$where = 'sales.sale_status = 0 AND ';
+		$where .= empty($config['date_or_time_format'])
+			? 'DATE(`' . $db_prefix . 'sales`.`sale_time`) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
+			: '`sales`.`sale_time` BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
 
-		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		$this->create_temp_table_sales_payments_data($where);
 
-		$tax = 'IFnull(SUM(sales_items_taxes.tax), 0)';
-		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
-		$internal_tax = 'IFnull(SUM(sales_items_taxes.internal_tax), 0)';
-		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
+		$sale_price = 'CASE WHEN `sales_items`.`discount_type` = ' . PERCENT
+			. " THEN `sales_items`.`quantity_purchased` * `sales_items`.`item_unit_price` - ROUND(`sales_items`.`quantity_purchased` * `sales_items`.`item_unit_price` * `sales_items`.`discount` / 100, $decimals) "
+			. 'ELSE `sales_items`.`quantity_purchased` * (`sales_items`.`item_unit_price` - `sales_items`.`discount`) END';
+
+		$sale_cost = 'SUM(`sales_items`.`item_cost_price` * `sales_items`.`quantity_purchased`)';
+
+		$tax = 'IFnull(SUM(`sales_items_taxes`.`tax`), 0)';
+		$sales_tax = 'IFnull(SUM(`sales_items_taxes`.`sales_tax`), 0)';
+		$internal_tax = 'IFnull(SUM(`sales_items_taxes`.`internal_tax`), 0)';
+		$cash_adjustment = 'IFnull(SUM(`payments`.`sale_cash_adjustment`), 0)';
 
 		$sale_subtotal = "ROUND(SUM($sale_price), $decimals) - $internal_tax";
 		$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
 
-		// create a temporary table to contain all the sum of taxes per sale item
-		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
-			' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
-			(
-				SELECT sales_items_taxes.sale_id AS sale_id,
-					sales_items_taxes.item_id AS item_id,
-					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) AS tax,
-					SUM(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS internal_tax,
-					SUM(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS sales_tax
-				FROM ' . $this->db->prefixTable('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->prefixTable('sales') . ' AS sales
-					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items
-					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE ' . $where . '
-				GROUP BY sale_id, item_id, line)';
-
-		$this->db->query($sql);
+		$this->create_temp_table_sales_items_taxes_data($where);
 
 		$builder = $this->db->table('sales_items AS sales_items');
 
 		// get_found_rows case
 		if($count_only)
 		{
-			$builder->select('COUNT(DISTINCT sales.sale_id) AS count');
+			$builder->select('COUNT(DISTINCT `' . $db_prefix . 'sales`.`sale_id`) AS count');
 		}
 		else
 		{
-			$builder->select('
-					sales.sale_id AS sale_id,
-					MAX(DATE(sales.sale_time)) AS sale_date,
-					MAX(sales.sale_time) AS sale_time,
-					MAX(sales.invoice_number) AS invoice_number,
-					MAX(sales.quote_number) AS quote_number,
-					SUM(sales_items.quantity_purchased) AS items_purchased,
-					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
-					MAX(customer.company_name) AS company_name,
-					' . "
-					$sale_subtotal AS subtotal,
-					$tax AS tax,
-					$sale_total AS total,
-					$sale_cost AS cost,
-					($sale_total - $sale_cost) AS profit,
-					$sale_total AS amount_due,
-					MAX(payments.sale_payment_amount) AS amount_tendered,
-					(MAX(payments.sale_payment_amount)) - ($sale_total) AS change_due,
-					" . '
-					MAX(payments.payment_type) AS payment_type
-			');
+			$builder->select([
+				'`' . $db_prefix . 'sales`.`sale_id` AS sale_id',
+				'MAX(DATE(`' . $db_prefix . 'sales`.`sale_time`)) AS sale_date',
+				'MAX(`' . $db_prefix . 'sales`.`sale_time`) AS sale_time',
+				'MAX(`' . $db_prefix . 'sales`.`invoice_number`) AS invoice_number',
+				'MAX(`' . $db_prefix . 'sales`.`quote_number`) AS quote_number',
+				'SUM(`sales_items`.`quantity_purchased`) AS items_purchased',
+				'MAX(CONCAT(`customer_p`.`first_name`, " ", `customer_p`.`last_name`)) AS customer_name',
+				'MAX(`customer`.`company_name`) AS company_name',
+				$sale_subtotal . ' AS subtotal',
+				$tax . ' AS tax',
+				$sale_total . ' AS total',
+				$sale_cost . ' AS cost',
+				'(' . $sale_total . ' - ' . $sale_cost . ') AS profit',
+				$sale_total . ' AS amount_due',
+				'MAX(`payments`.`sale_payment_amount`) AS amount_tendered',
+				'(MAX(`payments`.`sale_payment_amount`)) - (' . $sale_total . ') AS change_due',
+				'MAX(`payments`.`payment_type`) AS payment_type'
+			], false);
 		}
 
-		$builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
-		$builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
-		$builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
-		$builder->join('sales_items_taxes_temp AS sales_items_taxes',
+		$builder->join('sales', '`sales_items`.`sale_id` = `' . $db_prefix . 'sales`.`sale_id`', 'inner');
+		$builder->join('people AS customer_p', '`' . $db_prefix . 'sales`.`customer_id` = `customer_p`.`person_id`', 'LEFT');
+		$builder->join('customers AS customer', '`' . $db_prefix . 'sales`.`customer_id` = `customer`.`person_id`', 'LEFT');
+		$builder->join('sales_payments_temp AS payments', '`' . $db_prefix . 'sales`.`sale_id` = `payments`.`sale_id`', 'LEFT OUTER');
+		$builder->join(
+			'sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
 			'LEFT OUTER');
 
 		$builder->where($where);
 
-		if(!empty($search))	//TODO: this is duplicated code.  We should think about refactoring out a method
-		{
-			if($filters['is_valid_receipt'])
-			{
-				$pieces = explode(' ', $search);
-				$builder->where('sales.sale_id', $pieces[1]);
-			}
-			else
-			{
-				$builder->groupStart();
-					// customer last name
-					$builder->like('customer_p.last_name', $search);
-					// customer first name
-					$builder->orLike('customer_p.first_name', $search);
-					// customer first and last name
-					$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
-					// customer company name
-					$builder->orLike('customer.company_name', $search);
-				$builder->groupEnd();
-			}
-		}
-
-		if($filters['location_id'] != 'all')
-		{
-			$builder->where('sales_items.item_location', $filters['location_id']);
-		}
-
-		//TODO: Avoid double negatives.  This can be changed to `if($filters['only_invoices'])`... also below
-		if($filters['only_invoices'])
-		{
-			$builder->where('sales.invoice_number IS NOT NULL');
-		}
-
-		if($filters['only_cash'])
-		{
-			$builder->groupStart();
-				$builder->like('payments.payment_type', lang('Sales.cash'));
-				$builder->orWhere('payments.payment_type IS NULL');
-			$builder->groupEnd();
-		}
-
-		if($filters['only_creditcard'])
-		{
-			$builder->like('payments.payment_type', lang('Sales.credit'));
-		}
-
-		if($filters['only_due'])
-		{
-			$builder->like('payments.payment_type', lang('Sales.due'));
-		}
-
-		if($filters['only_check'])
-		{
-			$builder->like('payments.payment_type', lang('Sales.check'));
-		}
+		$this->add_filters_to_query($search, $filters, $builder);
 
 		//get_found_rows
 		if($count_only)
@@ -1564,6 +1466,125 @@ class Sale extends Model
 
 				$rewards->save_value($rewards_data);
 			}
+		}
+	}
+
+	/**
+	 * Creates a temporary table to store the sales_payments data
+	 *
+	 * @param string $where
+	 * @return array
+	 */
+	private function create_temp_table_sales_payments_data(string $where): void
+	{
+		$builder = $this->db->table('sales_payments AS payments');
+		$builder->select([
+			'payments.sale_id',
+			'SUM(CASE WHEN `payments`.`cash_adjustment` = 0 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_payment_amount',
+			'SUM(CASE WHEN `payments`.`cash_adjustment` = 1 THEN `payments`.`payment_amount` ELSE 0 END) AS sale_cash_adjustment',
+			'GROUP_CONCAT(CONCAT(`payments`.`payment_type`, " ", (`payments`.`payment_amount` - `payments`.`cash_refund`)) SEPARATOR ", ") AS payment_type'
+		]);
+		$builder->join('sales', 'sales.sale_id = payments.sale_id', 'inner');
+		$builder->where($where);
+		$builder->groupBy('payments.sale_id');
+
+		$sub_query = $builder->getCompiledSelect();
+
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
+			. $this->db->prefixTable('sales_payments_temp')
+			. ' (PRIMARY KEY(`sale_id`), INDEX(`sale_id`)) AS (' . $sub_query . ')');
+	}
+
+	/**
+	 * Temporary table to store the sales_items_taxes data
+	 *
+	 * @param string $where
+	 * @return \CodeIgniter\Database\BaseBuilder
+	 */
+	private function create_temp_table_sales_items_taxes_data(string $where): void
+	{
+
+		$builder = $this->db->table('sales_items_taxes AS sales_items_taxes');
+		$builder->select([
+			'sales_items_taxes.sale_id AS sale_id',
+			'sales_items_taxes.item_id AS item_id',
+			'sales_items_taxes.line AS line',
+			'SUM(sales_items_taxes.item_tax_amount) AS tax',
+			'SUM(CASE WHEN sales_items_taxes.tax_type = 0 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS internal_tax',
+			'SUM(CASE WHEN sales_items_taxes.tax_type = 1 THEN sales_items_taxes.item_tax_amount ELSE 0 END) AS sales_tax'
+		]);
+		$builder->join('sales', 'sales.sale_id = sales_items_taxes.sale_id', 'inner');
+		$builder->join('sales_items', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line', 'inner');
+		$builder->where($where);
+		$builder->groupBy(['sale_id', 'item_id', 'line']);
+		$sub_query = $builder->getCompiledSelect();
+
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
+			. $this->db->prefixTable('sales_items_taxes_temp')
+			. ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY AS (' . $sub_query . ')');
+	}
+
+	/**
+	 * @param string $search
+	 * @param array $filters
+	 * @param BaseBuilder $builder
+	 * @return void
+	 */
+	private function add_filters_to_query(string $search, array $filters, BaseBuilder $builder): void
+	{
+		if(!empty($search))    //TODO: this is duplicated code.  We should think about refactoring out a method
+		{
+			if($filters['is_valid_receipt'])
+			{
+				$pieces = explode(' ', $search);
+				$builder->where('sales.sale_id', $pieces[1]);
+			}
+			else
+			{
+				$builder->groupStart();
+				// customer last name
+				$builder->like('customer_p.last_name', $search);
+				// customer first name
+				$builder->orLike('customer_p.first_name', $search);
+				// customer first and last name
+				$builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
+				// customer company name
+				$builder->orLike('customer.company_name', $search);
+				$builder->groupEnd();
+			}
+		}
+
+		if($filters['location_id'] != 'all')
+		{
+			$builder->where('sales_items.item_location', $filters['location_id']);
+		}
+
+		if($filters['only_invoices'])
+		{
+			$builder->where('sales.invoice_number IS NOT NULL');
+		}
+
+		if($filters['only_cash'])
+		{
+			$builder->groupStart();
+			$builder->like('payments.payment_type', lang('Sales.cash'));
+			$builder->orWhere('payments.payment_type IS NULL');
+			$builder->groupEnd();
+		}
+
+		if($filters['only_creditcard'])
+		{
+			$builder->like('payments.payment_type', lang('Sales.credit'));
+		}
+
+		if($filters['only_due'])
+		{
+			$builder->like('payments.payment_type', lang('Sales.due'));
+		}
+
+		if($filters['only_check'])
+		{
+			$builder->like('payments.payment_type', lang('Sales.check'));
 		}
 	}
 }

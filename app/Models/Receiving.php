@@ -313,60 +313,54 @@ class Receiving extends Model
 	public function create_temp_table(array $inputs): void
 	{
 		$config = config(OSPOS::class)->settings;
+		$db_prefix = $this->db->getPrefix();
 
 		if(empty($inputs['receiving_id']))
 		{
-			if(empty($config['date_or_time_format']))
-			{
-				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-			}
-			else
-			{
-				$where = 'WHERE receiving_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
-			}
+			$where = empty($config['date_or_time_format'])
+				? 'DATE(`receiving_time`) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date'])
+				: 'receiving_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 		else
 		{
-			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
+			$where = 'receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
 		}
 
+		$builder = $this->db->table('receivings_items');
+		$builder->select([
+			'MAX(DATE(`receiving_time`)) AS receiving_date',
+			'MAX(`receiving_time`) AS receiving_time',
+			'receivings_items.receiving_id AS receiving_id',
+			'MAX(`comment`) AS comment',
+			'MAX(`item_location`) AS item_location',
+			'MAX(`reference`) AS reference',
+			'MAX(`payment_type`) AS payment_type',
+			'MAX(`employee_id`) AS employee_id',
+			'items.item_id AS item_id',
+			'MAX(`'. $db_prefix .'receivings`.`supplier_id`) AS supplier_id',
+			'MAX(`quantity_purchased`) AS quantity_purchased',
+			'MAX(`'. $db_prefix .'receivings_items`.`receiving_quantity`) AS item_receiving_quantity',
+			'MAX(`item_cost_price`) AS item_cost_price',
+			'MAX(`item_unit_price`) AS item_unit_price',
+			'MAX(`discount`) AS discount',
+			'MAX(`discount_type`) AS discount_type',
+			'receivings_items.line AS line',
+			'MAX(`serialnumber`) AS serialnumber',
+			'MAX(`'. $db_prefix .'receivings_items`.`description`) AS description',
+			'MAX(CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
+			'MAX(CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `discount` END) AS total',
+			'MAX((CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - discount END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
+			'MAX(`item_cost_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` ) AS cost'
+		]);
+		$builder->join('receivings', 'receivings_items.receiving_id = receivings.receiving_id', 'inner');
+		$builder->join('items', 'receivings_items.item_id = items.item_id', 'inner');
+		$builder->where($where);
+		$builder->groupBy(['receivings_items.receiving_id', 'items.item_id', 'receivings_items.line']);
+		$selectQuery = $builder->getCompiledSelect();
+
+		//QueryBuilder does not support creating temporary tables.
 		$sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('receivings_items_temp') .
-			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
-			(
-				SELECT 
-					MAX(DATE(receiving_time)) AS receiving_date,
-					MAX(receiving_time) AS receiving_time,
-					receivings_items.receiving_id AS receiving_id,
-					MAX(comment) AS comment,
-					MAX(item_location) AS item_location,
-					MAX(reference) AS reference,
-					MAX(payment_type) AS payment_type,
-					MAX(employee_id) AS employee_id, 
-					items.item_id AS item_id,
-					MAX(receivings.supplier_id) AS supplier_id,
-					MAX(quantity_purchased) AS quantity_purchased,
-					MAX(receivings_items.receiving_quantity) AS item_receiving_quantity,
-					MAX(item_cost_price) AS item_cost_price,
-					MAX(item_unit_price) AS item_unit_price,
-					MAX(discount) AS discount,
-					MAX(discount_type) AS discount_type,
-					receivings_items.line AS line,
-					MAX(serialnumber) AS serialnumber,
-					MAX(receivings_items.description) AS description,
-					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS subtotal,
-					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS total,
-					MAX((CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) - (item_cost_price * quantity_purchased)) AS profit,
-					MAX(item_cost_price * quantity_purchased * receivings_items.receiving_quantity ) AS cost
-				FROM ' . $this->db->prefixTable('receivings_items') . ' AS receivings_items
-				INNER JOIN ' . $this->db->prefixTable('receivings') . ' AS receivings
-					ON receivings_items.receiving_id = receivings.receiving_id
-				INNER JOIN ' . $this->db->prefixTable('items') . ' AS items
-					ON receivings_items.item_id = items.item_id
-				' . "
-				$where
-				" . '
-				GROUP BY receivings_items.receiving_id, items.item_id, receivings_items.line
-			)';
+			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id)) AS (' . $selectQuery . ')';
 
 		$this->db->query($sql);
 	}
