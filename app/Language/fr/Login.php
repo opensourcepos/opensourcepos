@@ -9,6 +9,7 @@ return [
 	"logout" => "Déconnexion",
 	"migration_needed" => "Une migration de base de données vers {0} débutera après l'ouverture de session.",
 	"password" => "Mot de passe",
+	"required_username" => "",
 	"username" => "Nom d'utilisateur",
 	"welcome" => "Bienvenue à {0} !",
 ];
