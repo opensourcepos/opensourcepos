@@ -9,6 +9,7 @@ return [
 	"logout" => "",
 	"migration_needed" => "",
 	"password" => "סיסמה",
+	"required_username" => "",
 	"username" => "שם משתמש",
 	"welcome" => "",
 ];

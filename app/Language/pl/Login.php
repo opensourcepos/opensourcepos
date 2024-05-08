@@ -9,6 +9,7 @@ return [
 	"logout" => "Wyloguj",
 	"migration_needed" => "Migracja bazy danych do {0} zacznie się po zalogowaniu.",
 	"password" => "Hasło",
+	"required_username" => "",
 	"username" => "Nazwa użytkownika",
 	"welcome" => "Witaj w {0}!",
 ];
