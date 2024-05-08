@@ -9,6 +9,7 @@ return [
 	"logout" => "退出",
 	"migration_needed" => "",
 	"password" => "密码",
+	"required_username" => "",
 	"username" => "用户名",
 	"welcome" => "欢迎来到 {0}!",
 ];

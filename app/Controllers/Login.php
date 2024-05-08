@@ -33,12 +33,15 @@ class Login extends BaseController
 
 			$migration->migrate_to_ci4();
 
+			$validation = Services::validation();
+
 			$data = [
 				'has_errors' => false,
 				'is_latest' => $migration->is_latest(),
 				'latest_version' => $migration->get_latest_migration(),
 				'gcaptcha_enabled' => $gcaptcha_enabled,
-				'config' => $config
+				'config' => $config,
+				'validation' => $validation
 			];
 
 			if($this->request->getMethod() !== 'POST')
@@ -47,11 +50,15 @@ class Login extends BaseController
 			}
 
 			$rules = ['username' => 'required|login_check[data]'];
-			$messages = ['username' => lang('Login.invalid_username_and_password')];
+			$messages = [
+				'username' => [
+					'required' => lang('Login.required_username'),
+					'login_check' => lang('Login.invalid_username_and_password'),
+				]
+			];
 
 			if(!$this->validate($rules, $messages))
 			{
-				$validation = Services::validation();
 				$data['has_errors'] = !empty($validation->getErrors());
 
 				return view('login', $data);
