@@ -9,6 +9,7 @@ return [
 	"logout" => "Odjava",
 	"migration_needed" => "Migracija baze podataka na {0} će početi nakon prijavljivanja.",
 	"password" => "Lozinka",
+	"required_username" => "",
 	"username" => "Korisničko ime",
 	"welcome" => "Dobrodošli u {0}!",
 ];

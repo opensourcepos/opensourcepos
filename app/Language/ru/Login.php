@@ -9,6 +9,7 @@ return [
 	"logout" => "Выход",
 	"migration_needed" => "Миграция базы данных в {0} начнется после входа в систему.",
 	"password" => "Пароль",
+	"required_username" => "",
 	"username" => "Имя пользователя",
 	"welcome" => "Панель управления",
 ];

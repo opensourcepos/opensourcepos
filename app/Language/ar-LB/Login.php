@@ -9,6 +9,7 @@ return [
 	"logout" => "تسجيل خروج",
 	"migration_needed" => "سيبدأ ترحيل قاعدة البيانات إلى{0} بعد تسجيل الدخول.",
 	"password" => "كلمة السر",
+	"required_username" => "",
 	"username" => "اسم المستخدم",
 	"welcome" => "مرحباً بك في{0}!",
 ];
