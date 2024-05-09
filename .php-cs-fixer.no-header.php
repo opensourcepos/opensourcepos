@@ -20,7 +20,6 @@ use PhpCsFixer\Finder;
 $finder = Finder::create()
     ->files()
     ->in([
-        __DIR__ . '/admin',
         __DIR__ . '/app',
         __DIR__ . '/public',
     ])
