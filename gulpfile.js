@@ -54,7 +54,7 @@ gulp.task('copy-bootswatch', function() {
 	pipeline(gulp.src('./node_modules/bootswatch/superhero/*.min.css'),gulp.dest('public/resources/bootswatch/superhero'));
 	pipeline(gulp.src('./node_modules/bootswatch/united/*.min.css'),gulp.dest('public/resources/bootswatch/united'));
 	pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti'));
-	return pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*'),gulp.dest('public/resources/bootswatch/fonts'));
+	return pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*', {encoding:false}),gulp.dest('public/resources/bootswatch/fonts'));
 });
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
@@ -146,12 +146,13 @@ gulp.task('prod-js', function() {
 		'./node_modules/file-saver/dist/FileSaver.min.js',
 		'./node_modules/file-saver/dist/FileSaver.js',
 		'./node_modules/html2canvas/dist/html2canvas.min.js',
+		'./node_modules/chartist/dist/chartist.min.js',
 		'./node_modules/jspdf/dist/jspdf.umd.min.js',
 		'./node_modules/chartist/dist/chartist.min.js',
 		'./node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
 		'./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
 		'./node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
-		'./node_modules/tableexport.jquery.plugin/tableExport.min.js']);
+		'./node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
 
 	var opensourcepos2js = gulp.src(['./node_modules/bootstrap-daterangepicker/daterangepicker.js',
 		'./node_modules/js-cookie/src/js.cookie.js',
@@ -234,7 +235,7 @@ gulp.task('prod-css', function() {
 
 
 gulp.task('copy-fonts', function() {
-	return pipeline(gulp.src('./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.*'),rev(),gulp.dest('public/resources'));
+	return pipeline(gulp.src('./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.*', {encoding: false}),rev(),gulp.dest('public/resources'));
 });
 
 
