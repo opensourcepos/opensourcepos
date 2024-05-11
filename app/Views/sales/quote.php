@@ -31,7 +31,7 @@ if (isset($error_message))
 		{
 			var send_email = function()
 			{
-				$.get('<?= site_url() . esc("/sales/send_pdf/$sale_id_num/quote") ?>',
+				$.get('<?= site_url() . esc("/sales/sendPdf/$sale_id_num/quote") ?>',
 					function(response)
 					{
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -57,7 +57,7 @@ if (isset($error_message))
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_quote') ?></div></a>
 	<?php endif; ?>
 	<?= anchor('sales', '<span class=\'glyphicon glyphicon-shopping-cart\'>&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
-	<?= anchor('sales/discard_suspended_sale', '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_quote_button']) ?>
+	<?= anchor('sales/getDiscardSuspendedSale', '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_quote_button']) ?>
 </div>
 
 <div id="page-wrap">

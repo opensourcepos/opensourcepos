@@ -897,7 +897,7 @@ class Items extends Secure_Controller
 	 * @throws ReflectionException
 	 * @noinspection PhpUnused
 	 */
-	public function save_inventory($item_id = NEW_ENTRY): void
+	public function postSaveInventory($item_id = NEW_ENTRY): void
 	{
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->item->get_info($item_id);
