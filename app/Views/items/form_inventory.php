@@ -10,7 +10,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("items/save_inventory/$item_info->item_id", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("items/saveInventory/$item_info->item_id", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="inv_item_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3']) ?>

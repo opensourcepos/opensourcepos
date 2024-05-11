@@ -24,7 +24,7 @@ if (isset($error_message))
 	{
 		var send_email = function()
 		{
-			$.get('<?= site_url() . esc("/sales/send_receipt/$sale_id_num", 'url') ?>',
+			$.get('<?= site_url() . esc("/sales/sendReceipt/$sale_id_num", 'url') ?>',
 				function(response)
 				{
 					$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
