@@ -118,7 +118,7 @@
 					{
 					?>
 						<li>
-							<?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class=\'module\'") ?>
+							<?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class='module'") ?>
 							<?= form_dropdown(
 								"menu_group_$module->module_id", [
 									'home' => lang('Module.home'),
@@ -126,7 +126,7 @@
 									'both' => lang('Module.both')
 								],
 								$module->menu_group,
-								"class=\'module\'"
+								"class='module'"
 							) ?>
 
 							<span class="medium"><?= lang("Module.$module->module_id") ?>:</span>
