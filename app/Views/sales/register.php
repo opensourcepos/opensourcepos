@@ -345,7 +345,7 @@ if(isset($success))
 
 <div id="overall_sale" class="panel panel-default">
 	<div class="panel-body">
-		<?= form_open("$controller_name/select_customer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
+		<?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
 			<?php
 			if(isset($customer))
 			{
@@ -445,7 +445,7 @@ if(isset($success))
 							title="<?= lang(ucfirst($controller_name) .".new_customer") ?>">
 						<span class="glyphicon glyphicon-user">&nbsp</span><?= lang(ucfirst($controller_name) .".new_customer") ?>
 					</button>
-					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?= esc("$controller_name/sales_keyboard_help") ?>"
+					<button class='btn btn-default btn-sm modal-dlg' id='show_keyboard_help' data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>"
 							title="<?= lang(ucfirst($controller_name) .'.key_title') ?>">
 						<span class="glyphicon glyphicon-share-alt">&nbsp</span><?= lang(ucfirst($controller_name) .'.key_help') ?>
 					</button>
@@ -737,7 +737,7 @@ $(document).ready(function()
 		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
 		var item_number = $(this).val();
 		$.ajax({
-			url: "<?= site_url('sales/change_item_number') ?>",
+			url: "<?= site_url('sales/changeItemNumber') ?>",
 			method: 'post',
 			data: {
 				'item_id': item_id,
@@ -751,7 +751,7 @@ $(document).ready(function()
 		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
 		var item_name = $(this).val();
 		$.ajax({
-			url: "<?= site_url('sales/change_item_name') ?>",
+			url: "<?= site_url('sales/changeItemName') ?>",
 			method: 'post',
 			data: {
 				'item_id': item_id,
@@ -765,7 +765,7 @@ $(document).ready(function()
 		var item_id = $(this).parents('tr').find("input[name='item_id']").val();
 		var item_description = $(this).val();
 		$.ajax({
-			url: "<?= site_url('sales/change_item_description') ?>",
+			url: "<?= site_url('sales/changeItemDescription') ?>",
 			method: 'post',
 			data: {
 				'item_id': item_id,
@@ -845,7 +845,7 @@ $(document).ready(function()
 	});
 
 	$('#comment').keyup(function() {
-		$.post("<?= esc(site_url("$controller_name/set_comment"), 'url') ?>", {comment: $('#comment').val()});
+		$.post("<?= esc(site_url("$controller_name/setComment")) ?>", {comment: $('#comment').val()});
 	});
 
 	<?php
@@ -853,7 +853,7 @@ $(document).ready(function()
 	{
 	?>
 		$('#sales_invoice_number').keyup(function() {
-			$.post("<?= esc(site_url("$controller_name/set_invoice_number"), 'url') ?>", {sales_invoice_number: $('#sales_invoice_number').val()});
+			$.post("<?= esc(site_url("$controller_name/setInvoiceNumber")) ?>", {sales_invoice_number: $('#sales_invoice_number').val()});
 		});
 
 	<?php
@@ -861,15 +861,15 @@ $(document).ready(function()
 	?>
 
 	$('#sales_print_after_sale').change(function() {
-		$.post("<?= esc(site_url("$controller_name/set_print_after_sale"), 'url') ?>", {sales_print_after_sale: $(this).is(':checked')});
+		$.post("<?= esc(site_url("$controller_name/setPrintAfterSale")) ?>", {sales_print_after_sale: $(this).is(':checked')});
 	});
 
 	$('#price_work_orders').change(function() {
-		$.post("<?= esc(site_url("$controller_name/set_price_work_orders"), 'url') ?>", {price_work_orders: $(this).is(':checked')});
+		$.post("<?= esc(site_url("$controller_name/setPriceWorkOrders")) ?>", {price_work_orders: $(this).is(':checked')});
 	});
 
 	$('#email_receipt').change(function() {
-		$.post("<?= esc(site_url("$controller_name/set_email_receipt"), 'url') ?>", {email_receipt: $(this).is(':checked')});
+		$.post("<?= esc(site_url("$controller_name/setEmailReceipt")) ?>", {email_receipt: $(this).is(':checked')});
 	});
 
 	$('#finish_sale_button').click(function() {

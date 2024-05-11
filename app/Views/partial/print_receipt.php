@@ -82,7 +82,7 @@ if($print_after_sale)
 		setTimeout(function () {
 				window.location.href = "<?= site_url('sales') ?>";
 			}, <?= $config['print_delay_autoreturn'] * 1000 ?>);
-	});
+	}));
 
 <?php
 }

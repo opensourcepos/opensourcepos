@@ -321,7 +321,7 @@ if (isset($success))
 			</table>
 
 			<?= anchor(
-					"$controller_name/remove_supplier",
+					"$controller_name/removeSupplier",
 					'<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Common.remove').' '.lang('Suppliers.supplier'),
 						[
 							'class' => 'btn btn-danger btn-sm',
@@ -333,7 +333,7 @@ if (isset($success))
 		else
 		{
 		?>
-			<?= form_open("$controller_name/select_supplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
+			<?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?= lang(ucfirst($controller_name) .'.select_supplier') ?></label>
 					<?= form_input ([
@@ -384,7 +384,7 @@ if (isset($success))
 				if($mode == 'requisition')
 				{
 				?>
-					<?= form_open("$controller_name/requisition_complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+					<?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
 							<?= form_textarea ([
@@ -524,17 +524,17 @@ $(document).ready(function()
 
 	$('#comment').keyup(function()
 	{
-		$.post('<?= esc("$controller_name/set_comment") ?>', {comment: $('#comment').val()});
+		$.post('<?= esc("$controller_name/setComment") ?>', {comment: $('#comment').val()});
 	});
 
 	$('#recv_reference').keyup(function()
 	{
-		$.post('<?= esc("$controller_name/set_reference") ?>', {recv_reference: $('#recv_reference').val()});
+		$.post('<?= esc("$controller_name/setReference") ?>', {recv_reference: $('#recv_reference').val()});
 	});
 
 	$("#recv_print_after_sale").change(function()
 	{
-		$.post('<?= esc("$controller_name/set_print_after_sale") ?>', {recv_print_after_sale: $(this).is(":checked")});
+		$.post('<?= esc("$controller_name/setPrintAfterSale") ?>', {recv_print_after_sale: $(this).is(":checked")});
 	});
 
 	$('#item,#supplier').click(function()
@@ -569,7 +569,7 @@ $(document).ready(function()
 	{
 		if (confirm('<?= lang(ucfirst($controller_name) .'.confirm_cancel_receiving') ?>'))
 		{
-			$('#finish_receiving_form').attr('action', '<?= esc("$controller_name/cancel_receiving") ?>');
+			$('#finish_receiving_form').attr('action', '<?= esc("$controller_name/cancelReceiving") ?>');
 			$('#finish_receiving_form').submit();
 		}
 	});

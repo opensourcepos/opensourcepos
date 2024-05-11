@@ -166,7 +166,7 @@ $(document).ready(function()
 	<?php if(!empty($sale_info['email'])): ?>
 		$('#send_invoice').click(function(event) {
 			if (confirm("<?= lang('Sales.invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get("<?= esc("$controller_name/send_pdf/" . $sale_info['sale_id']) ?>",
+				$.get("<?= esc("$controller_name/sendPdf/" . $sale_info['sale_id']) ?>",
 					function(response) {
 						BootstrapDialog.closeAll();
 						$.notify( { message: response.message }, { type: response.success ? 'success' : 'danger'} )
@@ -245,7 +245,7 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?= esc("$controller_name/check_invoice_number") ?>",
+					url: "<?= esc("$controller_name/checkInvoiceNumber") ?>",
 					type: 'POST',
 					data: {
 						'sale_id': <?= $sale_info['sale_id'] ?>,

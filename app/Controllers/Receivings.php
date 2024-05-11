@@ -80,7 +80,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function postSelect_supplier(): void
+	public function postSelectSupplier(): void
 	{
 		$supplier_id = $this->request->getPost('supplier', FILTER_SANITIZE_NUMBER_INT);
 		if($this->supplier->exists($supplier_id))
@@ -118,7 +118,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function set_comment(): void
+	public function postSetComment(): void
 	{
 		$this->receiving_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
@@ -127,7 +127,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function set_print_after_sale(): void
+	public function postSetPrintAfterSale(): void
 	{
 		$this->receiving_lib->set_print_after_sale($this->request->getPost('recv_print_after_sale') != null);
 	}
@@ -135,7 +135,7 @@ class Receivings extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function set_reference(): void
+	public function postSetReference(): void
 	{
 		$this->receiving_lib->set_reference($this->request->getPost('recv_reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
@@ -219,7 +219,7 @@ class Receivings extends Secure_Controller
 	 * @param $receiving_id
 	 * @return void
 	 */
-	public function edit($receiving_id): void
+	public function getEdit($receiving_id): void
 	{
 		$data = [];
 
@@ -281,7 +281,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function remove_supplier(): void
+	public function getRemoveSupplier(): void
 	{
 		$this->receiving_lib->clear_reference();
 		$this->receiving_lib->remove_supplier();
@@ -359,7 +359,7 @@ class Receivings extends Secure_Controller
 	 *
 	 * @throws ReflectionException
 	 */
-	public function requisition_complete(): void
+	public function postRequisitionComplete(): void
 	{
 		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination())
 		{
@@ -384,7 +384,7 @@ class Receivings extends Secure_Controller
 	 * @param $receiving_id
 	 * @return void
 	 */
-	public function receipt($receiving_id): void
+	public function getReceipt($receiving_id): void
 	{
 		$receiving_info = $this->receiving->get_info($receiving_id)->getRowArray();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
@@ -516,7 +516,7 @@ class Receivings extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function cancel_receiving(): void
+	public function postCancelReceiving(): void
 	{
 		$this->receiving_lib->clear_all();
 

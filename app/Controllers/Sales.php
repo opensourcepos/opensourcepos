@@ -194,7 +194,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function postSelect_customer(): void
+	public function postSelectCustomer(): void
 	{
 		$customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
 		if($this->customer->exists($customer_id))
@@ -298,7 +298,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function set_comment(): void
+	public function postSetComment(): void
 	{
 		$this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
@@ -307,7 +307,7 @@ class Sales extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function set_invoice_number(): void
+	public function postSetInvoiceNumber(): void
 	{
 		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
 	}
@@ -315,7 +315,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function set_payment_type(): void	//TODO: This function does not appear to be called anywhere in the code.
+	public function postSetPaymentType(): void	//TODO: This function does not appear to be called anywhere in the code.
 	{
 		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 		$this->_reload();	//TODO: Hungarian notation.
@@ -325,7 +325,7 @@ class Sales extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function set_print_after_sale(): void
+	public function postSetPrintAfterSale(): void
 	{
 		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != null);
 	}
@@ -333,7 +333,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function set_price_work_orders(): void
+	public function postSetPriceWorkOrders(): void
 	{
 		$price_work_orders = prepare_decimal($this->request->getPost('price_work_orders'));
 		$this->sale_lib->set_price_work_orders(filter_var($price_work_orders, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
@@ -343,7 +343,7 @@ class Sales extends Secure_Controller
 	 * Called in the view.
 	 * @return void
 	 */
-	public function set_email_receipt(): void
+	public function postSetEmailReceipt(): void
 	{
 		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 	}
@@ -925,7 +925,7 @@ class Sales extends Secure_Controller
 	 * @param string $type
 	 * @return bool
 	 */
-	public function send_pdf(int $sale_id, string $type = 'invoice'): bool
+	public function getSendPdf(int $sale_id, string $type = 'invoice'): bool
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
 
@@ -973,7 +973,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @return bool
 	 */
-	public function send_receipt(int $sale_id): bool
+	public function getSendReceipt(int $sale_id): bool
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
 
@@ -1325,7 +1325,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @return void
 	 */
-	public function receipt(int $sale_id): void
+	public function getReceipt(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
 		echo view('sales/receipt', $data);
@@ -1336,7 +1336,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @return void
 	 */
-	public function invoice(int $sale_id): void
+	public function getInvoice(int $sale_id): void
 	{
 		$data = $this->_load_sale_data($sale_id);
 
@@ -1348,7 +1348,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @return void
 	 */
-	public function edit(int $sale_id): void
+	public function getEdit(int $sale_id): void
 	{
 		$data = [];
 
@@ -1614,7 +1614,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function discard_suspended_sale(): void
+	public function discardSuspendedSale(): void
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
@@ -1700,7 +1700,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function sales_keyboard_help() : void
+	public function getSalesKeyboardHelp() : void
 	{
 		echo view('sales/help');
 	}
@@ -1708,7 +1708,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function check_invoice_number(): void
+	public function postCheckInvoiceNumber(): void
 	{
 		$sale_id = $this->request->getPost('sale_id', FILTER_SANITIZE_NUMBER_INT);
 		$invoice_number = $this->request->getPost('invoice_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1742,7 +1742,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function change_item_number(): void
+	public function postChangeItemNumber(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
 		$item_number = $this->request->getPost('item_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1759,7 +1759,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function change_item_name(): void
+	public function postChangeItemName(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
 		$name = $this->request->getPost('item_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -1780,7 +1780,7 @@ class Sales extends Secure_Controller
 	/**
 	 * @return void
 	 */
-	public function change_item_description(): void
+	public function postChangeItemDescription(): void
 	{
 		$item_id = $this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT);
 		$description = $this->request->getPost('item_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
