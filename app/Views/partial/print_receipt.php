@@ -73,7 +73,7 @@ function printdoc()
 if($print_after_sale)
 {
 ?>
-	$(window).load(function()
+	$(window).on('load', (function()
 	{
 		// executes when complete page is fully loaded, including all frames, objects and images
 		printdoc();
