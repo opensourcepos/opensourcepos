@@ -109,6 +109,7 @@ gulp.task('debug-js', function() {
 		'./node_modules/chartist/dist/chartist.js',
 		'./node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.js',
 		'./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.js',
+		'./node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.js',
 		'./node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.js',
 		'./node_modules/bootstrap-notify/bootstrap-notify.js',
 		'./node_modules/js-cookie/src/js.cookie.js',
@@ -150,6 +151,7 @@ gulp.task('prod-js', function() {
 		'./node_modules/jspdf/dist/jspdf.umd.min.js',
 		'./node_modules/chartist/dist/chartist.min.js',
 		'./node_modules/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js',
+		'./node_modules/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js',
 		'./node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
 		'./node_modules/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js',
 		'./node_modules/tableexport.jquery.plugin/tableExport.min.js'], { allowEmpty: true });
