@@ -23,10 +23,7 @@
 		height: '100%',
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-		chartPadding: {
-			top: 20,
-			bottom: 100
-		},
+		chartPadding: 20,
 
 		// This option can be set to 'inside', 'outside' or 'center'.
 		// show the labels on the border with the pie chart
@@ -67,10 +64,8 @@
 	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
 			height: '80%',
-			chartPadding: {
-				top: 20,
-				bottom: 20
-			},
+			chartPadding: 20
+
 		}] /*,
 		['screen and (min-width: 1024px)', {
 			labelOffset: 80,
