@@ -184,4 +184,4 @@ const COST_SUPPLIER = 1;
 const MAX_PRECISION = 1e14;
 const DEFAULT_PRECISION = 2;
 const DEFAULT_LANGUAGE = 'english';
-const DEFAULT_LANGUAGE_CODE = 'en-US';
+const DEFAULT_LANGUAGE_CODE = 'en';
