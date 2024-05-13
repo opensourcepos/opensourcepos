@@ -51,8 +51,8 @@ Development using docker has the advantage that all the application's dependenci
 The file permissions for the repository in the container should be the same as on the host. That's why we have to startthe PHP process in docker with the host current uid. 
 
 ```
-export UID=$(id -u)
-export GID=$(id -g)
+export USERID=$(id -u)
+export GROUPID=$(id -g)
 docker-compose -f docker-compose.dev.yml up
 ```
 
