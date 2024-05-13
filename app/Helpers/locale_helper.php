@@ -58,35 +58,35 @@ function current_language(bool $load_system_language = false): string
  */
 function get_languages(): array
 {
-	return [
+	$languages = [
 		'ar-EG:arabic' => 'Arabic (Egypt)',
 		'ar-LB:arabic' => 'Arabic (Lebanon)',
-		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
+		'az:azerbaijani' => 'Azerbaijani',
 		'bg:bulgarian' => 'Bulgarian',
-		'bs-BA:bosnian' => 'Bosnian',
+		'bs:bosnian' => 'Bosnian',
 		'cs:czech' => 'Czech',
 		'da:danish' => 'Danish',
-		'de:german' => 'German (Germany)',
-		'de-CH:german' => 'German (Swiss)',
+		'de-CH:german' => 'German (Switzerland)',
+		'de-DE:german' => 'German (Germany)',
 		'el:greek' => 'Greek',
-		'en-GB:english' => 'English (Great Britain)',
-		'en-US:english' => 'English (United States)',
-		'es:spanish' => 'Spanish',
+		'en:english' => 'English (United States)',
+		'en-GB:english' => 'English (United Kingdom)',
+		'es-ES:spanish' => 'Spanish (Spain)',
 		'es-MX:spanish' => 'Spanish (Mexico)',
+		'fa:persian' => 'Persian',
 		'fr:french' => 'French',
-		'fa-IR:persian' => 'Farsi (Iran)',
-		'he:english' => 'Hebrew',
+		'he:hebrew' => 'Hebrew',
 		'hr-HR:croatian' => 'Croatian (Croatia)',
-		'hu-HU:hungarian' => 'Hungarian (Hungary)',
+		'hu:hungarian' => 'Hungarian',
 		'hy:armenian' => 'Armenian',
 		'id:indonesian' => 'Indonesian',
 		'it:italian' => 'Italian',
-		'km:khmer' => 'Central Khmer (Cambodia)',
-		'lo:lao' => 'Lao (Laos)',
-		'ml:malay' => 'Malay',
+		'km:centralkhmer' => 'Central Khmer',
+		'lo:lao' => 'Lao',
+		'ml:malayalam' => 'Malayalam',
 		'nb:norwegian' => 'Norwegian',
-		'nl:dutch' => 'Dutch',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
+		'nl-NL:dutch' => 'Dutch (Netherlands)',
 		'pl:polish' => 'Polish',
 		'pt-BR:portuguese' => 'Portuguese (Brazil)',
 		'ro:romanian' => 'Romanian',
@@ -94,14 +94,16 @@ function get_languages(): array
 		'sv:swedish' => 'Swedish',
 		'ta:tamil' => 'Tamil',
 		'th:thai' => 'Thai',
-		'tl-PH:talong' => 'Tagalog (Philippines)',
+		'tl:tagalog' => 'Tagalog',
 		'tr:turkish' => 'Turkish',
-		'uk-UA:ukrainian' => 'Ukrainian',
-		'ur-PK:urdu' => 'Urdu (Islamic Republic of Pakistan)',
+		'uk:ukrainian' => 'Ukrainian',
+		'ur:urdu' => 'Urdu',
 		'vi:vietnamese' => 'Vietnamese',
-		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
-		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
+		'zh-Hans:simplified-chinese' => 'Chinese (Simplified)',
+		'zh-Hant:traditional-chinese' => 'Chinese (Traditional)'
 	];
+	asort($languages);
+	return $languages;
 }
 
 /**
