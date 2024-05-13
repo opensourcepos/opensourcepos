@@ -82,7 +82,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 	('theme', 'flatly'),
 	('statistics', '1'),
 	('language', 'english'),
-	('language_code', 'en-US');
+	('language_code', 'en');
 
 
 -- --------------------------------------------------------
