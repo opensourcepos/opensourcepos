@@ -2,10 +2,10 @@
 /**
  * @var string $title
  * @var string $subtitle
- * @var array $summary_data
- * @var array $headers
- * @var array $data
- * @var array $config
+ * @var array  $summary_data
+ * @var array  $headers
+ * @var array  $data
+ * @var array  $config
  */
 ?>
 <?= view('partial/header') ?>
@@ -24,22 +24,18 @@
 
 <div id="report_summary">
 	<?php
-	foreach($summary_data as $name => $value)
-	{
-		if($name == "total_quantity")
-		{
-	?>
-			<div class="summary_row"><?= lang("Reports.$name") . ": $value" ?></div>
+    foreach ($summary_data as $name => $value) {
+        if ($name === 'total_quantity') {
+            ?>
+			<div class="summary_row"><?= lang("Reports.{$name}") . ": {$value}" ?></div>
 	<?php
-		}
-		else
-		{
-	?>
-			<div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+        } else {
+            ?>
+			<div class="summary_row"><?= lang("Reports.{$name}") . ': ' . to_currency($value) ?></div>
 	<?php
-		}
-	}
-	?>
+        }
+    }
+?>
 </div>
 
 <script type="application/javascript">

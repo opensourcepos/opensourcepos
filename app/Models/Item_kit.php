@@ -12,96 +12,90 @@ use stdClass;
  */
 class Item_kit extends Model
 {
-	protected $table = 'item_kits';
-	protected $primaryKey = 'item_kit_id';
-	protected $useAutoIncrement = true;
-	protected $useSoftDeletes = false;
-	protected $allowedFields = [
-		'item_kit_number',
-		'name',
-		'description',
-		'item_id',
-		'kit_discount',
-		'kit_discount_type',
-		'price_option'
-	];
+    protected $table            = 'item_kits';
+    protected $primaryKey       = 'item_kit_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
+        'item_kit_number',
+        'name',
+        'description',
+        'item_id',
+        'kit_discount',
+        'kit_discount_type',
+        'price_option',
+    ];
 
-	/**
-	 * Determines if a given item_id is an item kit
-	 */
-	public function exists(int $item_kit_id): bool
-	{
-		$builder = $this->db->table('item_kits');
-		$builder->where('item_kit_id', $item_kit_id);
+    /**
+     * Determines if a given item_id is an item kit
+     */
+    public function exists(int $item_kit_id): bool
+    {
+        $builder = $this->db->table('item_kits');
+        $builder->where('item_kit_id', $item_kit_id);
 
-		return ($builder->get()->getNumRows() == 1);	//TODO: ===
-	}
+        return $builder->get()->getNumRows() === 1;	// TODO: ===
+    }
 
-	/**
-	 * Check if a given item_id is an item kit
-	 */
-	public function is_valid_item_kit(int $item_kit_id): bool
-	{
-		if(!empty($item_kit_id))
-		{
-			//KIT #
-			$pieces = explode(' ', $item_kit_id);
+    /**
+     * Check if a given item_id is an item kit
+     */
+    public function is_valid_item_kit(int $item_kit_id): bool
+    {
+        if (! empty($item_kit_id)) {
+            // KIT #
+            $pieces = explode(' ', $item_kit_id);
 
-			if((count($pieces) == 2) && preg_match('/(KIT)/i', $pieces[0]))	//TODO: === ... perhaps think about converting this to ternary notation
-			{
-				return $this->exists($pieces[1]);
-			}
-			else
-			{
-				return $this->item_number_exists($item_kit_id);
-			}
-		}
+            if ((count($pieces) === 2) && preg_match('/(KIT)/i', $pieces[0])) {	// TODO: === ... perhaps think about converting this to ternary notation
+                return $this->exists($pieces[1]);
+            }
 
-		return false;
-	}
+            return $this->item_number_exists($item_kit_id);
+        }
 
-	/**
-	 * Determines if a given item_number exists
-	 */
-	public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
-	{
-		$config = config(OSPOS::class)->settings;
+        return false;
+    }
 
-		if($config['allow_duplicate_barcodes'])
-		{
-			return false;
-		}
+    /**
+     * Determines if a given item_number exists
+     */
+    public function item_number_exists(string $item_kit_number, string $item_kit_id = ''): bool
+    {
+        $config = config(OSPOS::class)->settings;
 
-		$builder = $this->db->table('item_kits');
-		$builder->where('item_kit_number', $item_kit_number);
+        if ($config['allow_duplicate_barcodes']) {
+            return false;
+        }
 
-		// check if $item_id is a number and not a string starting with 0
-		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_kit_id) && !str_starts_with($item_kit_id, '0'))
-		{
-			$builder->where('item_kit_id !=', (int) $item_kit_id);
-		}
+        $builder = $this->db->table('item_kits');
+        $builder->where('item_kit_number', $item_kit_number);
 
-		return ($builder->get()->getNumRows() >= 1);
-	}
+        // check if $item_id is a number and not a string starting with 0
+        // because cases like 00012345 will be seen as a number where it is a barcode
+        if (ctype_digit($item_kit_id) && ! str_starts_with($item_kit_id, '0')) {
+            $builder->where('item_kit_id !=', (int) $item_kit_id);
+        }
 
-	/**
-	 * Gets total of rows
-	 */
-	public function get_total_rows(): int
-	{
-		$builder = $this->db->table('item_kits');
+        return $builder->get()->getNumRows() >= 1;
+    }
 
-		return $builder->countAllResults();
-	}
+    /**
+     * Gets total of rows
+     */
+    public function get_total_rows(): int
+    {
+        $builder = $this->db->table('item_kits');
 
-	/**
-	 * Gets information about a particular item kit
-	 */
-	public function get_info(int $item_kit_id): object
-	{
-		$builder = $this->db->table('item_kits');
-		$builder->select('
+        return $builder->countAllResults();
+    }
+
+    /**
+     * Gets information about a particular item kit
+     */
+    public function get_info(int $item_kit_id): object
+    {
+        $builder = $this->db->table('item_kits');
+        $builder->select('
 			item_kit_id,
 			item_kits.name as name,
 			item_kit_number,
@@ -128,181 +122,172 @@ class Item_kit extends Model
 			stock_type
 		');
 
-		$builder->join('items', 'item_kits.item_id = items.item_id', 'left');
-		$builder->where('item_kit_id', $item_kit_id);
-		$builder->orWhere('item_kit_number', $item_kit_id);
+        $builder->join('items', 'item_kits.item_id = items.item_id', 'left');
+        $builder->where('item_kit_id', $item_kit_id);
+        $builder->orWhere('item_kit_number', $item_kit_id);
 
-		$query = $builder->get();
+        $query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
-		{
-			return $query->getRow();
-		}
-		else
-		{
-			//Get empty base parent object, as $item_kit_id is NOT an item kit
-			$item_obj = new stdClass();
+        if ($query->getNumRows() === 1) {	// TODO: ===
+            return $query->getRow();
+        }
 
-			//Get all the fields from items table
-			foreach($this->db->getFieldNames('item_kits') as $field)
-			{
-				$item_obj->$field = '';
-			}
+        // Get empty base parent object, as $item_kit_id is NOT an item kit
+        $item_obj = new stdClass();
 
-			return $item_obj;
-		}
-	}
+        // Get all the fields from items table
+        foreach ($this->db->getFieldNames('item_kits') as $field) {
+            $item_obj->{$field} = '';
+        }
 
-	/**
-	 * Gets information about multiple item kits
-	 */
-	public function get_multiple_info(array $item_kit_ids): ResultInterface
-	{
-		$builder = $this->db->table('item_kits');
-		$builder->whereIn('item_kit_id', $item_kit_ids);
-		$builder->orderBy('name', 'asc');
+        return $item_obj;
+    }
 
-		return $builder->get();
-	}
+    /**
+     * Gets information about multiple item kits
+     */
+    public function get_multiple_info(array $item_kit_ids): ResultInterface
+    {
+        $builder = $this->db->table('item_kits');
+        $builder->whereIn('item_kit_id', $item_kit_ids);
+        $builder->orderBy('name', 'asc');
 
-	/**
-	 * Inserts or updates an item kit
-	 */
-	public function save_value(array &$item_kit_data, int $item_kit_id = NEW_ENTRY): bool
-	{
-		$builder = $this->db->table('item_kits');
-		if($item_kit_id == NEW_ENTRY || !$this->exists($item_kit_id))
-		{
-			if($builder->insert($item_kit_data))
-			{
-				$item_kit_data['item_kit_id'] = $this->db->insertID();
+        return $builder->get();
+    }
 
-				return true;
-			}
+    /**
+     * Inserts or updates an item kit
+     */
+    public function save_value(array &$item_kit_data, int $item_kit_id = NEW_ENTRY): bool
+    {
+        $builder = $this->db->table('item_kits');
+        if ($item_kit_id === NEW_ENTRY || ! $this->exists($item_kit_id)) {
+            if ($builder->insert($item_kit_data)) {
+                $item_kit_data['item_kit_id'] = $this->db->insertID();
 
-			return false;
-		}
+                return true;
+            }
 
-		$builder->where('item_kit_id', $item_kit_id);
+            return false;
+        }
 
-		return $builder->update($item_kit_data);
-	}
+        $builder->where('item_kit_id', $item_kit_id);
 
-	/**
-	 * Deletes one item kit
-	 */
-	public function delete($item_kit_id = null, bool $purge = false): bool
-	{
-		$builder = $this->db->table('item_kits');
+        return $builder->update($item_kit_data);
+    }
 
-		return $builder->delete(['item_kit_id' => $item_kit_id]);
-	}
+    /**
+     * Deletes one item kit
+     *
+     * @param mixed|null $item_kit_id
+     */
+    public function delete($item_kit_id = null, bool $purge = false): bool
+    {
+        $builder = $this->db->table('item_kits');
 
-	/**
-	 * Deletes a list of item kits
-	 */
-	public function delete_list(array $item_kit_ids): bool
-	{
-		$builder = $this->db->table('item_kits');
-		$builder->whereIn('item_kit_id', $item_kit_ids);
+        return $builder->delete(['item_kit_id' => $item_kit_id]);
+    }
 
-		return $builder->delete();
-	}
+    /**
+     * Deletes a list of item kits
+     */
+    public function delete_list(array $item_kit_ids): bool
+    {
+        $builder = $this->db->table('item_kits');
+        $builder->whereIn('item_kit_id', $item_kit_ids);
 
-	/**
-	 * @param string $search
-	 * @param int $limit
-	 * @return array
-	 */
-	public function get_search_suggestions(string $search, int $limit = 25): array
-	{
-		$suggestions = [];
+        return $builder->delete();
+    }
 
-		$builder = $this->db->table('item_kits');
+    public function get_search_suggestions(string $search, int $limit = 25): array
+    {
+        $suggestions = [];
 
-		//KIT #
-		if(stripos($search, 'KIT ') !== false)
-		{
-			$builder->like('item_kit_id', str_ireplace('KIT ', '', $search));
-			$builder->orderBy('item_kit_id', 'asc');
+        $builder = $this->db->table('item_kits');
 
-			foreach($builder->get()->getResult() as $row)
-			{
-				$suggestions[] = ['value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id];
-			}
-		}
-		else
-		{
-			$builder->like('name', $search);
-			$builder->orLike('item_kit_number', $search);
-			$builder->orderBy('name', 'asc');
+        // KIT #
+        if (stripos($search, 'KIT ') !== false) {
+            $builder->like('item_kit_id', str_ireplace('KIT ', '', $search));
+            $builder->orderBy('item_kit_id', 'asc');
 
-			foreach($builder->get()->getResult() as $row)
-			{
-				$suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name];
-			}
-		}
+            foreach ($builder->get()->getResult() as $row) {
+                $suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id];
+            }
+        } else {
+            $builder->like('name', $search);
+            $builder->orLike('item_kit_number', $search);
+            $builder->orderBy('name', 'asc');
 
-		//only return $limit suggestions
-		if(count($suggestions) > $limit)
-		{
-			$suggestions = array_slice($suggestions, 0, $limit);
-		}
+            foreach ($builder->get()->getResult() as $row) {
+                $suggestions[] = ['value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name];
+            }
+        }
 
-		return $suggestions;
-	}
+        // only return $limit suggestions
+        if (count($suggestions) > $limit) {
+            $suggestions = array_slice($suggestions, 0, $limit);
+        }
 
- 	/**
-	 * Gets rows
-	 */
-	public function get_found_rows(string $search): int
-	{
-		return $this->search($search, 0, 0, 'name', 'asc', true);
-	}
+        return $suggestions;
+    }
 
-	/**
-	 * Perform a search on items
-	 */
-	public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = false)
-	{
-		// Set default values
-		if($rows == null) $rows = 0;
-		if($limit_from == null) $limit_from = 0;
-		if($sort == null) $sort = 'name';
-		if($order == null) $order = 'asc';
-		if($count_only == null) $count_only = false;
+    /**
+     * Gets rows
+     */
+    public function get_found_rows(string $search): int
+    {
+        return $this->search($search, 0, 0, 'name', 'asc', true);
+    }
 
-		$builder = $this->db->table('item_kits');
+    /**
+     * Perform a search on items
+     */
+    public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = false)
+    {
+        // Set default values
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'name';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
-		// get_found_rows case
-		if($count_only)
-		{
-			$builder->select('COUNT(item_kit_id) as count');
-		}
+        $builder = $this->db->table('item_kits');
 
-		$builder->like('name', $search);
-		$builder->orLike('description', $search);
-		$builder->orLike('item_kit_number', $search);
+        // get_found_rows case
+        if ($count_only) {
+            $builder->select('COUNT(item_kit_id) as count');
+        }
 
-		//KIT #
-		if(stripos($search, 'KIT ') !== false)
-		{
-			$builder->orLike('item_kit_id', str_ireplace('KIT ', '', $search));
-		}
+        $builder->like('name', $search);
+        $builder->orLike('description', $search);
+        $builder->orLike('item_kit_number', $search);
 
-		// get_found_rows case
-		if($count_only)
-		{
-			return $builder->get()->getRow()->count;
-		}
+        // KIT #
+        if (stripos($search, 'KIT ') !== false) {
+            $builder->orLike('item_kit_id', str_ireplace('KIT ', '', $search));
+        }
 
-		$builder->orderBy($sort, $order);
+        // get_found_rows case
+        if ($count_only) {
+            return $builder->get()->getRow()->count;
+        }
 
-		if($rows > 0)
-		{
-			$builder->limit($rows, $limit_from);
-		}
+        $builder->orderBy($sort, $order);
 
-		return $builder->get();
-	}
+        if ($rows > 0) {
+            $builder->limit($rows, $limit_from);
+        }
+
+        return $builder->get();
+    }
 }

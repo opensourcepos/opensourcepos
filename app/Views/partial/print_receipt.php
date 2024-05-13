@@ -1,8 +1,8 @@
 <?php
 /**
  * @var string $selected_printer
- * @var bool $print_after_sale
- * @var array $config
+ * @var bool   $print_after_sale
+ * @var array  $config
  */
 ?>
 <script type="application/javascript">
@@ -17,25 +17,23 @@ function printdoc()
 		jsPrintSetup.setOption('marginBottom', '<?= $config['print_bottom_margin'] ?>');
 		jsPrintSetup.setOption('marginRight', '<?= $config['print_right_margin'] ?>');
 
-		<?php if (!$config['print_header'])
-		{
-		?>
+		<?php if (! $config['print_header']) {
+		    ?>
 			// set page header
 			jsPrintSetup.setOption('headerStrLeft', '');
 			jsPrintSetup.setOption('headerStrCenter', '');
 			jsPrintSetup.setOption('headerStrRight', '');
 		<?php
 		}
-		if (!$config['print_footer'])
-		{
-		?>
+if (! $config['print_footer']) {
+    ?>
 			// set empty page footer
 			jsPrintSetup.setOption('footerStrLeft', '');
 			jsPrintSetup.setOption('footerStrCenter', '');
 			jsPrintSetup.setOption('footerStrRight', '');
 		<?php
-		}
-		?>
+}
+?>
 
 		var printers = jsPrintSetup.getPrintersList().split(',');
 		// get right printer here..
@@ -48,14 +46,13 @@ function printdoc()
 				// clears user preferences always silent print value
 				// to enable using 'printSilent' option
 				jsPrintSetup.clearSilentPrint();
-				<?php if (!$config['print_silently'])
-				{
-				?>
+				<?php if (! $config['print_silently']) {
+				    ?>
 					// Suppress print dialog (for this context only)
 					jsPrintSetup.setOption('printSilent', 1);
 				<?php
 				}
-				?>
+?>
 				// Do Print
 				// When print is submitted it is executed asynchronous and
 				// script flow continues after print independently of completetion of print process!
@@ -70,9 +67,8 @@ function printdoc()
 }
 
 <?php
-if($print_after_sale)
-{
-?>
+if ($print_after_sale) {
+    ?>
 	$(window).on('load', (function()
 	{
 		// executes when complete page is fully loaded, including all frames, objects and images

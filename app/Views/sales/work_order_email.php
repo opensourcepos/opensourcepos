@@ -5,11 +5,11 @@
  * @var string $work_order_number
  * @var string $transaction_date
  * @var string $amount_due
- * @var float $total
- * @var array $cart
- * @var float $tax_exclusive_subtotal
- * @var array $taxes
- * @var array $config
+ * @var float  $total
+ * @var array  $cart
+ * @var float  $tax_exclusive_subtotal
+ * @var array  $taxes
+ * @var array  $config
  */
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -21,11 +21,11 @@
 
 <body>
 <?php
-	if(isset($error_message))
-	{
-		echo "<div class='alert alert-dismissible alert-danger'>$error_message</div>";
-		exit;
-	}
+    if (isset($error_message)) {
+        echo "<div class='alert alert-dismissible alert-danger'>{$error_message}</div>";
+
+        exit;
+    }
 ?>
 
 <div id="page-wrap">
@@ -34,16 +34,17 @@
 		<tr>
 			<td id="logo">
 				<?php
-				if($config['company_logo'] != '')
-				{
-				?>
+                if ($config['company_logo'] !== '') {
+                    ?>
 					<img id="image" src="<?= esc('uploads/' . $config['company_logo'], 'url') ?>" alt="company_logo" />
 				<?php
-				}
-				?>
+                }
+?>
 			</td>
 			<td id="customer-title">
-				<pre><?php if(isset($customer)) { echo esc($customer_info); } ?></pre>
+				<pre><?php if (isset($customer)) {
+				    echo esc($customer_info);
+				} ?></pre>
 			</td>
 		</tr>
 		<tr>
@@ -62,16 +63,15 @@
 						<td><?= esc($transaction_date) ?></td>
 					</tr>
 					<?php
-					if($amount_due > 0)
-					{
-					?>
+				    if ($amount_due > 0) {
+				        ?>
 						<tr>
 							<td class="meta-head"><?= lang('Sales.amount_due') ?></td>
 							<td class="due"><?= to_currency($total) ?></td>
 						</tr>
 					<?php
-					}
-					?>
+				    }
+?>
 				</table>
 			</td>
 		</tr>
@@ -88,23 +88,21 @@
 		</tr>
 
 		<?php
-		foreach($cart as $line => $item)
-		{
-			if($item['print_option'] == PRINT_YES)
-			{
-			?>
+        foreach ($cart as $line => $item) {
+            if ($item['print_option'] === PRINT_YES) {
+                ?>
 				<tr class="item-row">
 					<td><?= esc($item['item_number']) ?></td>
 					<td class="item-name"><?= esc($item['name']) ?></td>
 					<td><?= to_quantity_decimals($item['quantity']) ?></td>
 					<td><?= to_currency($item['price']) ?></td>
-					<td><?= ($item['discount_type'] == FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
+					<td><?= ($item['discount_type'] === FIXED) ? to_currency($item['discount']) : to_decimals($item['discount']) . '%' ?></td>
 					<td class="total-line"><?= to_currency($item['discounted_total']) ?></td>
 				</tr>
 			<?php
-			}
-		}
-		?>
+            }
+        }
+?>
 
 		<tr>
 			<td colspan="6" align="center"><?= '&nbsp;' ?></td>
@@ -117,17 +115,16 @@
 		</tr>
 
 		<?php
-		foreach($taxes as $name => $value)
-		{
-		?>
+foreach ($taxes as $name => $value) {
+    ?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
 				<td colspan="2" class="total-line"><?= esc($name) ?></td>
 				<td id="taxes" class="total-value"><?= to_currency_tax($value) ?></td>
 			</tr>
 		<?php
-		}
-		?>
+}
+?>
 
 		<tr>
 			<td colspan="3" class="blank"> </td>
@@ -139,7 +136,7 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<span style='padding:4%;'><?= empty($comments) ? '' : lang('Sales.comments') . esc(": $comments") ?></span>
+				<span style='padding:4%;'><?= empty($comments) ? '' : lang('Sales.comments') . esc(": {$comments}") ?></span>
 			</h5>
 		</div>
 	</div>

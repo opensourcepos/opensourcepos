@@ -1,6 +1,6 @@
 <?php
 /**
- * @var int $tax_rate_id
+ * @var int   $tax_rate_id
  * @var array $tax_code_options
  * @var array $rate_tax_code_id
  * @var array $tax_category_options
@@ -14,12 +14,12 @@
 ?>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("taxes/save/$tax_rate_id", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("taxes/save/{$tax_rate_id}", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="tax_rate_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5'>
-				<?= form_dropdown('rate_tax_code_id',$tax_code_options, $rate_tax_code_id, ['class' => 'form-control input-sm']) ?>
+				<?= form_dropdown('rate_tax_code_id', $tax_code_options, $rate_tax_code_id, ['class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
@@ -40,13 +40,13 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-5 input-group' style='padding-left:15px;' >
-				<?= form_input ([
-						'name' => 'tax_rate',
-						'id' => 'tax_rate',
-						'class' => 'form-control input-sm text-uppercase',
-						'value' => $tax_rate
-					])
-				?>
+				<?= form_input([
+				    'name'  => 'tax_rate',
+				    'id'    => 'tax_rate',
+				    'class' => 'form-control input-sm text-uppercase',
+				    'value' => $tax_rate,
+				])
+?>
 				<span class="input-group-addon input-sm">%</span>
 			</div>
 
@@ -71,7 +71,7 @@
                 $(form).ajaxSubmit({
                     success: function (response) {
                         dialog_support.hide();
-                        table_support.handle_submit('<?='taxes' ?>', response);
+                        table_support.handle_submit('<?= 'taxes' ?>', response);
                     },
                     dataType: 'json'
                 });

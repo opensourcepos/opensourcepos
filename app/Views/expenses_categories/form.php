@@ -8,16 +8,16 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("expenses_categories/save/{$category_info->expense_category_id}", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="expenses_categories">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Expenses_categories.name'), 'category_name', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input ([
-					'name' => 'category_name',
-					'id' => 'category_name',
-					'class' => 'form-control input-sm',
-					'value' => $category_info->category_name
+				<?= form_input([
+				    'name'  => 'category_name',
+				    'id'    => 'category_name',
+				    'class' => 'form-control input-sm',
+				    'value' => $category_info->category_name,
 				]) ?>
 			</div>
 		</div>
@@ -25,11 +25,11 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Expenses_categories.description'), 'category_description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_textarea ([
-					'name' => 'category_description',
-					'id' => 'category_description',
-					'class' => 'form-control input-sm',
-					'value' => $category_info->category_description
+				<?= form_textarea([
+				    'name'  => 'category_description',
+				    'id'    => 'category_description',
+				    'class' => 'form-control input-sm',
+				    'value' => $category_info->category_description,
 				]) ?>
 			</div>
 		</div>

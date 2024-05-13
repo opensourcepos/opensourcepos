@@ -8,20 +8,17 @@ var pickerconfig = function(config) {
         format: "<?= dateformat_bootstrap($config['dateformat']) ?>",
         <?php
         $t = $config['timeformat'];
-        $m = $t[strlen($t)-1];
-        if(str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A'))
-        {
-            ?>
+$m         = $t[strlen($t) - 1];
+if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
+    ?>
             showMeridian: true,
             <?php
-        }
-        else
-        {
-            ?>
+} else {
+    ?>
             showMeridian: false,
             <?php
-        }
-        ?>
+}
+?>
         minView: 2,
         minuteStep: 1,
         autoclose: true,
@@ -29,7 +26,7 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-	}, <?php echo isset($config) ?>);
+	}, <?= isset($config) ?>);
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
@@ -90,25 +87,20 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
 		],
     today: "<?= lang('Datepicker.today') ?>",
     <?php
-        if(str_contains($config['timeformat'], 'a'))
-        {
+if (str_contains($config['timeformat'], 'a')) {
     ?>
     meridiem: ["am", "pm"],
     <?php
-        }
-        elseif(str_contains($config['timeformat'], 'A'))
-        {
+} elseif (str_contains($config['timeformat'], 'A')) {
     ?>
     meridiem: ["AM", "PM"],
     <?php
-        }
-        else
-        {
+} else {
     ?>
     meridiem: [],
     <?php
-        }
-    ?>
+}
+?>
     weekStart: <?= lang('Datepicker.weekstart') ?>
 };
 

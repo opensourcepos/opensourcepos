@@ -1,11 +1,11 @@
 <?php
 /**
- * @var array $labels_1
+ * @var array  $labels_1
  * @var string $yaxis_title
- * @var array $series_data_1
- * @var bool $show_currency
+ * @var array  $series_data_1
+ * @var bool   $show_currency
  * @var string $xaxis_title
- * @var array $config
+ * @var array  $config
  */
 ?>
 <script>
@@ -48,28 +48,22 @@
 			// used for the labels on each axis.
 			labelInterpolationFnc: function(value) {
 				<?php
-				if($show_currency)
-				{
-					if( is_right_side_currency_symbol() )
-					{
-				?>
+                if ($show_currency) {
+                    if (is_right_side_currency_symbol()) {
+                        ?>
 						return value + '<?= esc($config['currency_symbol'], 'js') ?>';
 					<?php
-					}
-					else
-					{
-					?>
+                    } else {
+                        ?>
 						return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
 				<?php
-					}
-				}
-				else
-				{
-				?>
+                    }
+                } else {
+                    ?>
 					return value;
 				<?php
-				}
-				?>
+                }
+?>
 			}
 		},
 

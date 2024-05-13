@@ -2,8 +2,8 @@
 /**
  * @var object $item_kit_info
  * @var string $selected_kit_item
- * @var int $selected_kit_item_id
- * @var array $item_kit_items
+ * @var int    $selected_kit_item_id
+ * @var array  $item_kit_items
  * @var string $controller_name
  */
 ?>
@@ -11,18 +11,18 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("item_kits/save/$item_kit_info->item_kit_id", ['id' => 'item_kit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("item_kits/save/{$item_kit_info->item_kit_id}", ['id' => 'item_kit_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="item_kit_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-					<?= form_input ([
-						'name' => 'item_kit_number',
-						'id' => 'item_kit_number',
-						'class' => 'form-control input-sm',
-						'value' => $item_kit_info->item_kit_number
+					<?= form_input([
+					    'name'  => 'item_kit_number',
+					    'id'    => 'item_kit_number',
+					    'class' => 'form-control input-sm',
+					    'value' => $item_kit_info->item_kit_number,
 					]) ?>
 				</div>
 			</div>
@@ -31,11 +31,11 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input ([
-					'name' => 'name',
-					'id' => 'name',
-					'class' => 'form-control input-sm',
-					'value' => $item_kit_info->name
+				<?= form_input([
+				    'name'  => 'name',
+				    'id'    => 'name',
+				    'class' => 'form-control input-sm',
+				    'value' => $item_kit_info->name,
 				]) ?>
 			</div>
 		</div>
@@ -44,14 +44,14 @@
 			<?= form_label(lang('Item_kits.find_kit_item'), 'item_name', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
 				<div class="input-group input-group-sm">
-				<?= form_input ([
-					'name' => 'item_name',
-					'id' => 'item_name',
-					'class' => 'form-control input-sm',
-					'size' => '50',
-					'value' => $selected_kit_item
+				<?= form_input([
+				    'name'  => 'item_name',
+				    'id'    => 'item_name',
+				    'class' => 'form-control input-sm',
+				    'size'  => '50',
+				    'value' => $selected_kit_item,
 				]) ?>
-					<?= form_hidden('kit_item_id', (string)$selected_kit_item_id) ?>
+					<?= form_hidden('kit_item_id', (string) $selected_kit_item_id) ?>
 
 				</div>
 			</div>
@@ -61,19 +61,19 @@
 			<?= form_label(lang('Item_kits.discount_type'), 'kit_discount_type', ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'kit_discount_type',
-						'type' => 'radio',
-						'value' => 0,
-						'checked' => $item_kit_info->kit_discount_type == PERCENT
+					<?= form_radio([
+					    'name'    => 'kit_discount_type',
+					    'type'    => 'radio',
+					    'value'   => 0,
+					    'checked' => $item_kit_info->kit_discount_type === PERCENT,
 					]) ?> <?= lang('Item_kits.discount_percent') ?>
 				</label>
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'kit_discount_type',
-						'type' => 'radio',
-						'value' => 1,
-						'checked' => $item_kit_info->kit_discount_type == FIXED
+					<?= form_radio([
+					    'name'    => 'kit_discount_type',
+					    'type'    => 'radio',
+					    'value'   => 1,
+					    'checked' => $item_kit_info->kit_discount_type === FIXED,
 					]) ?> <?= lang('Item_kits.discount_fixed') ?>
 				</label>
 			</div>
@@ -83,43 +83,43 @@
 			<?= form_label(lang('Item_kits.discount'), 'kit_discount', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-3'>
 				<div class="input-group input-group-sm">
-					<?= form_input ([
-						'name' => 'kit_discount',
-						'size' => '5',
-						'maxlength' => '5',
-						'id' => 'kit_discount',
-						'class' => 'form-control input-sm',
-						'value' => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
+					<?= form_input([
+					    'name'      => 'kit_discount',
+					    'size'      => '5',
+					    'maxlength' => '5',
+					    'id'        => 'kit_discount',
+					    'class'     => 'form-control input-sm',
+					    'value'     => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount),
 					]) ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Item_kits.price_option'), 'price_option', ! empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'price_option',
-						'type' => 'radio',
-						'value' => 0,
-						'checked' => $item_kit_info->price_option == PRICE_ALL
+					<?= form_radio([
+					    'name'    => 'price_option',
+					    'type'    => 'radio',
+					    'value'   => 0,
+					    'checked' => $item_kit_info->price_option === PRICE_ALL,
 					]) ?> <?= lang('Item_kits.kit_and_components') ?>
 				</label>
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'price_option',
-						'type' => 'radio',
-						'value' => 1,
-						'checked' => $item_kit_info->price_option == PRICE_KIT
+					<?= form_radio([
+					    'name'    => 'price_option',
+					    'type'    => 'radio',
+					    'value'   => 1,
+					    'checked' => $item_kit_info->price_option === PRICE_KIT,
 					]) ?> <?= lang('Item_kits.kit_only') ?>
 				</label>
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'price_option',
-						'type' => 'radio',
-						'value' => 2,
-						'checked' => $item_kit_info->price_option == PRICE_KIT_ITEMS	//TODO: === for all of these?
+					<?= form_radio([
+					    'name'    => 'price_option',
+					    'type'    => 'radio',
+					    'value'   => 2,
+					    'checked' => $item_kit_info->price_option === PRICE_KIT_ITEMS,	// TODO: === for all of these?
 					]) ?> <?= lang('Item_kits.kit_and_stock') ?>
 				</label>
 
@@ -127,30 +127,30 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
+			<?= form_label(lang('Item_kits.print_option'), 'print_option', ! empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
 			<div class="col-xs-8">
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'print_option',
-						'type' => 'radio',
-						'value' => 0,
-						'checked' => $item_kit_info->print_option == PRINT_ALL
+					<?= form_radio([
+					    'name'    => 'print_option',
+					    'type'    => 'radio',
+					    'value'   => 0,
+					    'checked' => $item_kit_info->print_option === PRINT_ALL,
 					]) ?> <?= lang('Item_kits.all') ?>
 				</label>
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'print_option',
-						'type' => 'radio',
-						'value' => 1,
-						'checked' => $item_kit_info->print_option == PRINT_PRICED
+					<?= form_radio([
+					    'name'    => 'print_option',
+					    'type'    => 'radio',
+					    'value'   => 1,
+					    'checked' => $item_kit_info->print_option === PRINT_PRICED,
 					]) ?> <?= lang('Item_kits.priced_only') ?>
 				</label>
 				<label class="radio-inline">
-					<?= form_radio ([
-						'name' => 'print_option',
-						'type' => 'radio',
-						'value' => 2,
-						'checked' => $item_kit_info->print_option == PRINT_KIT
+					<?= form_radio([
+					    'name'    => 'print_option',
+					    'type'    => 'radio',
+					    'value'   => 2,
+					    'checked' => $item_kit_info->print_option === PRINT_KIT,
 					]) ?> <?= lang('Item_kits.kit_only') ?>
 				</label>
 
@@ -161,11 +161,11 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Item_kits.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_textarea ([
-					'name' => 'description',
-					'id' => 'description',
-					'class' => 'form-control input-sm',
-					'value' => $item_kit_info->description
+				<?= form_textarea([
+				    'name'  => 'description',
+				    'id'    => 'description',
+				    'class' => 'form-control input-sm',
+				    'value' => $item_kit_info->description,
 				]) ?>
 			</div>
 		</div>
@@ -173,10 +173,10 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Item_kits.add_item'), 'item', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input ([
-					'name' => 'item',
-					'id' => 'item',
-					'class' => 'form-control input-sm'
+				<?= form_input([
+				    'name'  => 'item',
+				    'id'    => 'item',
+				    'class' => 'form-control input-sm',
 				]) ?>
 			</div>
 		</div>
@@ -192,9 +192,8 @@
 			</thead>
 			<tbody>
 				<?php
-				foreach($item_kit_items as $item_kit_item)
-				{
-				?>
+                foreach ($item_kit_items as $item_kit_item) {
+                    ?>
 					<tr>
 						<td><a href='#' onclick='return delete_item_kit_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
 						<td><input class='quantity form-control input-sm' id='item_seq_<?= $item_kit_item['item_id'] ?>' name=item_kit_seq[<?= $item_kit_item['item_id'] ?>] value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"/></td>
@@ -202,8 +201,8 @@
 						<td><input class='quantity form-control input-sm' id='item_qty_<?= $item_kit_item['item_id'] ?>' name=item_kit_qty[<?= $item_kit_item['item_id'] ?>] value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"/></td>
 					</tr>
 				<?php
-				}
-				?>
+                }
+?>
 			</tbody>
 		</table>
 	</fieldset>
@@ -215,7 +214,7 @@
 $(document).ready(function()
 {
 	$('#item').autocomplete({
-		source: '<?= "items/suggest" ?>',
+		source: '<?= 'items/suggest' ?>',
 		minChars: 0,
 		autoFocus: false,
 		delay: 10,
@@ -285,7 +284,7 @@ $(document).ready(function()
 				required: false,
 				remote:
 				{
-					url: '<?= esc("$controller_name/checkItemNumber") ?>',
+					url: '<?= esc("{$controller_name}/checkItemNumber") ?>',
 					type: 'POST',
 					data:
 					{

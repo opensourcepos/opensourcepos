@@ -2,7 +2,7 @@
 /**
  * @var string $controller_name
  * @var string $table_headers
- * @var array $config
+ * @var array  $config
  */
 ?>
 <?= view('partial/header') ?>
@@ -31,7 +31,7 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar">
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= esc("$controller_name/view") ?>'
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= esc("{$controller_name}/view") ?>'
 			title='<?= lang(ucfirst($controller_name) . '.new') ?>'>
 		<span class="glyphicon glyphicon-tags">&nbsp</span><?= lang(ucfirst($controller_name) . '.new') ?>
 	</button>
@@ -43,7 +43,7 @@ $(document).ready(function()
 			<span class="glyphicon glyphicon-trash">&nbsp</span><?= lang('Common.delete') ?>
 		</button>
 
-		<button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?= esc("$controller_name/generateBarcodes") ?>'>
+		<button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?= esc("{$controller_name}/generateBarcodes") ?>'>
 			<span class="glyphicon glyphicon-barcode">&nbsp</span><?= lang('Items.generate_barcodes') ?>
 		</button>
 	</div>

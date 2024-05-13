@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $mailchimp
+ * @var array  $mailchimp
  * @var string $controller_name
  */
 ?>
@@ -16,17 +16,17 @@
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-cloud"></span></span>
-						<?= form_input ([
-							'name' => 'mailchimp_api_key',
-							'id' => 'mailchimp_api_key',
-							'class' => 'form-control input-sm',
-							'value' => $mailchimp['api_key']
+						<?= form_input([
+						    'name'  => 'mailchimp_api_key',
+						    'id'    => 'mailchimp_api_key',
+						    'class' => 'form-control input-sm',
+						    'value' => $mailchimp['api_key'],
 						]) ?>
 					</div>
 				</div>
 				<div class="col-xs-1">
 					<label class="control-label">
-						<a href="https://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') //TODO: Possibly need to change the URL here to HTTPS? ?>"></span></a>
+						<a href="https://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') // TODO: Possibly need to change the URL here to HTTPS??>"></span></a>
 					</label>
 				</div>
 			</div>
@@ -37,20 +37,20 @@
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 						<?= form_dropdown(
-							'mailchimp_list_id',
-							$mailchimp['lists'],
-							$mailchimp['list_id'],
-							"id='mailchimp_list_id' class='form-control input-sm'"
+						    'mailchimp_list_id',
+						    $mailchimp['lists'],
+						    $mailchimp['list_id'],
+						    "id='mailchimp_list_id' class='form-control input-sm'"
 						) ?>
 					</div>
 				</div>
 			</div>
 
-			<?= form_submit ([
-				'name' => 'submit_mailchimp',
-				'id' => 'submit_mailchimp',
-				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right'
+			<?= form_submit([
+			    'name'  => 'submit_mailchimp',
+			    'id'    => 'submit_mailchimp',
+			    'value' => lang('Common.submit'),
+			    'class' => 'btn btn-primary btn-sm pull-right',
 			]) ?>
 		</fieldset>
 	</div>
@@ -61,7 +61,7 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?= "$controller_name/checkMailchimpApiKey" ?>", {
+		$.post("<?= "{$controller_name}/checkMailchimpApiKey" ?>", {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
 			},
 			function(response) {

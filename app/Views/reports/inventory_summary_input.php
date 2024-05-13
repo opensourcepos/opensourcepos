@@ -14,9 +14,8 @@
 <div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
-if(isset($error))
-{
-	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
+if (isset($error)) {
+    echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 ?>
 
@@ -36,12 +35,11 @@ if(isset($error))
 		</div>
 	</div>
 
-	<?php
-		echo form_button ([
-			'name' => 'generate_report',
-			'id' => 'generate_report',
-			'content' => lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm'
+	<?= form_button([
+	    'name'    => 'generate_report',
+	    'id'      => 'generate_report',
+	    'content' => lang('Common.submit'),
+	    'class'   => 'btn btn-primary btn-sm',
 	]) ?>
 <?= form_close() ?>
 

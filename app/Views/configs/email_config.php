@@ -13,14 +13,14 @@
 				<?= form_label(lang('Config.email_protocol'), 'protocol', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?= form_dropdown(
-						'protocol',
-						[
-							'mail' => 'mail',
-							'sendmail' => 'sendmail',
-							'smtp' => 'smtp'
-						],
-						$config['protocol'],
-						"class='form-control input-sm' id='protocol'"
+					    'protocol',
+					    [
+					        'mail'     => 'mail',
+					        'sendmail' => 'sendmail',
+					        'smtp'     => 'smtp',
+					    ],
+					    $config['protocol'],
+					    "class='form-control input-sm' id='protocol'"
 					) ?>
 				</div>
 			</div>
@@ -28,36 +28,36 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.email_mailpath'), 'mailpath', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-4">
-					<?= form_input ([
-						'name' => 'mailpath',
-						'id' => 'mailpath',
-						'class' => 'form-control input-sm',
-						'value' => $config['mailpath']
-					]) ?>
+					<?= form_input([
+										    'name'  => 'mailpath',
+										    'id'    => 'mailpath',
+										    'class' => 'form-control input-sm',
+										    'value' => $config['mailpath'],
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.email_smtp_host'), 'smtp_host', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?= form_input ([
-						'name' => 'smtp_host',
-						'id' => 'smtp_host',
-						'class' => 'form-control input-sm',
-						'value' => $config['smtp_host']
-					]) ?>
+					<?= form_input([
+										    'name'  => 'smtp_host',
+										    'id'    => 'smtp_host',
+										    'class' => 'form-control input-sm',
+										    'value' => $config['smtp_host'],
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.email_smtp_port'), 'smtp_port', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?= form_input ([
-						'name' => 'smtp_port',
-						'id' => 'smtp_port',
-						'class' => 'form-control input-sm',
-						'value' => $config['smtp_port']
-					]) ?>
+					<?= form_input([
+										    'name'  => 'smtp_port',
+										    'id'    => 'smtp_port',
+										    'class' => 'form-control input-sm',
+										    'value' => $config['smtp_port'],
+										]) ?>
 				</div>
 			</div>
 
@@ -65,14 +65,14 @@
 				<?= form_label(lang('Config.email_smtp_crypto'), 'smtp_crypto', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?= form_dropdown(
-						'smtp_crypto',
-						[
-							'' => 'None',
-							'tls' => 'TLS',
-							'ssl' => 'SSL'
-						],
-						$config['smtp_crypto'],
-						"class='form-control input-sm' id='smtp_crypto'"
+					    'smtp_crypto',
+					    [
+					        ''    => 'None',
+					        'tls' => 'TLS',
+					        'ssl' => 'SSL',
+					    ],
+					    $config['smtp_crypto'],
+					    "class='form-control input-sm' id='smtp_crypto'"
 					) ?>
 				</div>
 			</div>
@@ -80,11 +80,11 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', ['class' => 'control-label col-xs-2']) ?>
 				<div class="col-xs-2">
-					<?= form_input ([
-						'name' => 'smtp_timeout',
-						'id' => 'smtp_timeout',
-						'class' => 'form-control input-sm',
-						'value' => $config['smtp_timeout']
+					<?= form_input([
+					    'name'  => 'smtp_timeout',
+					    'id'    => 'smtp_timeout',
+					    'class' => 'form-control input-sm',
+					    'value' => $config['smtp_timeout'],
 					]) ?>
 				</div>
 			</div>
@@ -94,11 +94,11 @@
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-						<?= form_input ([
-							'name' => 'smtp_user',
-							'id' => 'smtp_user',
-							'class' => 'form-control input-sm',
-							'value' => $config['smtp_user']
+						<?= form_input([
+						    'name'  => 'smtp_user',
+						    'id'    => 'smtp_user',
+						    'class' => 'form-control input-sm',
+						    'value' => $config['smtp_user'],
 						]) ?>
 					</div>
 				</div>
@@ -109,21 +109,21 @@
 				<div class="col-xs-4">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
-						<?= form_password ([
-							'name' => 'smtp_pass',
-							'id' => 'smtp_pass',
-							'class' => 'form-control input-sm',
-							'value' => $config['smtp_pass']
+						<?= form_password([
+						    'name'  => 'smtp_pass',
+						    'id'    => 'smtp_pass',
+						    'class' => 'form-control input-sm',
+						    'value' => $config['smtp_pass'],
 						]) ?>
 					</div>
 				</div>
 			</div>
 
-			<?= form_submit ([
-				'name' => 'submit_email',
-				'id' => 'submit_email',
-				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right']) ?>
+			<?= form_submit([
+			    'name'  => 'submit_email',
+			    'id'    => 'submit_email',
+			    'value' => lang('Common.submit'),
+			    'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	</div>
 <?= form_close() ?>

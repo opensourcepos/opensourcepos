@@ -13,11 +13,11 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'dinner_table_enable',
-						'value' => 'dinner_table_enable',
-						'id' => 'dinner_table_enable',
-						'checked' => $config['dinner_table_enable'] == 1
+					<?= form_checkbox([
+					    'name'    => 'dinner_table_enable',
+					    'value'   => 'dinner_table_enable',
+					    'id'      => 'dinner_table_enable',
+					    'checked' => $config['dinner_table_enable'] === 1,
 					]) ?>
 				</div>
 			</div>
@@ -26,12 +26,12 @@
 				<?= view('partial/dinner_tables', ['dinner_tables' => $dinner_tables]) ?>
 			</div>
 
-            <?= form_submit ([
-                'name' => 'submit_table',
-                'id' => 'submit_table',
+            <?= form_submit([
+                'name'  => 'submit_table',
+                'id'    => 'submit_table',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-			]) ?>
+                'class' => 'btn btn-primary btn-sm pull-right',
+            ]) ?>
         </fieldset>
     </div>
 <?= form_close() ?>
@@ -57,7 +57,7 @@ $(document).ready(function()
 
 	$("#dinner_table_enable").change(enable_disable_dinner_table_enable);
 
-	var table_count = <?= sizeof($dinner_tables) ?>;
+	var table_count = <?= count($dinner_tables) ?>;
 
 	var hide_show_remove = function() {
 		if ($("input[name*='dinner_tables']:enabled").length > 1)
@@ -118,7 +118,7 @@ $(document).ready(function()
 				},
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#dinner_tables").load('<?= "config/dinnerTables" ?>', init_add_remove_tables);
+					$("#dinner_tables").load('<?= 'config/dinnerTables' ?>', init_add_remove_tables);
 				},
 				dataType: 'json'
 			});
@@ -129,11 +129,10 @@ $(document).ready(function()
 		rules:
 		{
 			<?php
-			$i = 0;
+            $i = 0;
 
-			foreach($dinner_tables as $dinner_table=>$table)
-			{
-			?>
+foreach ($dinner_tables as $dinner_table => $table) {
+    ?>
 				<?= 'dinner_table_' . ++$i ?>:
 				{
 					required: true,
@@ -141,22 +140,21 @@ $(document).ready(function()
 					valid_chars: true
 				},
 			<?php
-			}
-			?>
+}
+?>
    		},
 
 		messages:
 		{
 			<?php
-			$i = 0;
+$i = 0;
 
-			foreach($dinner_tables as $dinner_table=>$table)
-			{
-			?>
+foreach ($dinner_tables as $dinner_table => $table) {
+    ?>
 				<?= 'dinner_table_' . ++$i ?>: "<?= lang('Config.dinner_table_required') ?>",
 			<?php
-			}
-			?>
+}
+?>
 		}
 	}));
 });

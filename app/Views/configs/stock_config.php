@@ -12,13 +12,13 @@
             <div id="stock_locations">
 				<?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
 			</div>
-            
-            <?= form_submit ([
-                'name' => 'submit_stock',
-                'id' => 'submit_stock',
+
+            <?= form_submit([
+                'name'  => 'submit_stock',
+                'id'    => 'submit_stock',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-			]) ?>
+                'class' => 'btn btn-primary btn-sm pull-right',
+            ]) ?>
         </fieldset>
     </div>
 <?= form_close() ?>
@@ -27,13 +27,13 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	var location_count = <?= sizeof($stock_locations) ?>;
+	var location_count = <?= count($stock_locations) ?>;
 
 	var hide_show_remove = function() {
 		if ($("input[name*='stock_location']:enabled").length > 1)
 		{
 			$(".remove_stock_location").show();
-		} 
+		}
 		else
 		{
 			$(".remove_stock_location").hide();
@@ -66,7 +66,7 @@ $(document).ready(function()
 	$.validator.addMethod('stock_location' , function(value, element) {
 		var value_count = 0;
 		$("input[name*='stock_location']").each(function() {
-			value_count = $(this).val() == value ? value_count + 1 : value_count; 
+			value_count = $(this).val() == value ? value_count + 1 : value_count;
 		});
 		return value_count < 2;
     }, "<?= lang('Config.stock_location_duplicate') ?>");
@@ -74,13 +74,13 @@ $(document).ready(function()
     $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
     }, "<?= lang('Config.stock_location_invalid_chars') ?>");
-	
+
 	$('#location_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)	{
 					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-					$("#stock_locations").load('<?= "config/stockLocations" ?>', init_add_remove_locations);
+					$("#stock_locations").load('<?= 'config/stockLocations' ?>', init_add_remove_locations);
 				},
 				dataType: 'json'
 			});
@@ -91,11 +91,10 @@ $(document).ready(function()
 		rules:
 		{
 			<?php
-			$i = 0;
+            $i = 0;
 
-			foreach($stock_locations as $location => $location_data)
-			{
-			?>
+foreach ($stock_locations as $location => $location_data) {
+    ?>
 				<?= 'stock_location_' . ++$i ?>:
 				{
 					required: true,
@@ -103,22 +102,21 @@ $(document).ready(function()
 					valid_chars: true
 				},
 			<?php
-			}
-			?>
+}
+?>
    		},
 
-		messages: 
+		messages:
 		{
 			<?php
-			$i = 0;
+$i = 0;
 
-			foreach($stock_locations as $location => $location_data)
-			{
-			?>
+foreach ($stock_locations as $location => $location_data) {
+    ?>
 				<?= 'stock_location_' . ++$i ?>: "<?= lang('Config.stock_location_required') ?>",
 			<?php
-			}
-			?>
+}
+?>
 		}
 	}));
 });

@@ -21,9 +21,9 @@
 		},
 		formatNoMatches: function () {
 			return "<?= lang(preg_match('(customers|suppliers|employees)', $controller_name)
-				? 'Common.no_persons_to_display'
-				: ucfirst($controller_name) . '.no_' . $controller_name . '_to_display')
-			?>";
+                ? 'Common.no_persons_to_display'
+                : ucfirst($controller_name) . '.no_' . $controller_name . '_to_display')
+?>";
 		},
 		formatPaginationSwitch: function () {
 			return "<?= lang('Bootstrap_tables.hide_show_pagination') ?>";
@@ -43,11 +43,11 @@
 		formatConfirmAction: function(action) {
 			if (action == "delete")
 			{
-				return "<?= lang(ucfirst($editable ?? $controller_name). '.confirm_delete') ?>";
+				return "<?= lang(ucfirst($editable ?? $controller_name) . '.confirm_delete') ?>";
 			}
 			else
 			{
-				return "<?= lang(ucfirst($editable ?? $controller_name). '.confirm_restore') ?>";
+				return "<?= lang(ucfirst($editable ?? $controller_name) . '.confirm_restore') ?>";
 			}
         }
 	};

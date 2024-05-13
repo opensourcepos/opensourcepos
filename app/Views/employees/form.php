@@ -2,16 +2,16 @@
 /**
  * @var string $controller_name
  * @var object $person_info
- * @var array $all_modules
- * @var array $all_subpermissions
- * @var int $employee_id
+ * @var array  $all_modules
+ * @var array  $all_subpermissions
+ * @var int    $employee_id
  */
 ?>
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("{$controller_name}/save/{$person_info->person_id}", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
 			<a data-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
@@ -38,28 +38,28 @@
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-							<?= form_input ([
-								'name' => 'username',
-								'id' => 'username',
-								'class' => 'form-control input-sm',
-								'value' => $person_info->username
+							<?= form_input([
+							    'name'  => 'username',
+							    'id'    => 'username',
+							    'class' => 'form-control input-sm',
+							    'value' => $person_info->username,
 							]) ?>
 						</div>
 					</div>
 				</div>
 
-				<?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
+				<?php $password_label_attributes = $person_info->person_id === '' ? ['class' => 'required'] : []; ?>
 
 				<div class="form-group form-group-sm">
 					<?= form_label(lang('Employees.password'), 'password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3']))?>
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
-							<?= form_password ([
-									'name' => 'password',
-									'id' => 'password',
-									'class' => 'form-control input-sm'
-								]) ?>
+							<?= form_password([
+							    'name'  => 'password',
+							    'id'    => 'password',
+							    'class' => 'form-control input-sm',
+							]) ?>
 						</div>
 					</div>
 				</div>
@@ -69,11 +69,11 @@
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
-							<?= form_password ([
-									'name' => 'repeat_password',
-									'id' => 'repeat_password',
-									'class' => 'form-control input-sm'
-								]) ?>
+							<?= form_password([
+							    'name'  => 'repeat_password',
+							    'id'    => 'repeat_password',
+							    'class' => 'form-control input-sm',
+							]) ?>
 						</div>
 					</div>
 				</div>
@@ -83,25 +83,24 @@
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<?php
-								$languages = get_languages();
-								$languages[':'] = lang('Employees.system_language');
-								$language_code = current_language_code();
-								$language = current_language();
+                                $languages = get_languages();
+$languages[':']                            = lang('Employees.system_language');
+$language_code                             = current_language_code();
+$language                                  = current_language();
 
-								// If No language is set then it will display "System Language"
-								if($language_code === current_language_code(true))
-								{
-									$language_code = '';
-									$language = '';
-								}
+// If No language is set then it will display "System Language"
+if ($language_code === current_language_code(true)) {
+    $language_code = '';
+    $language      = '';
+}
 
-								echo form_dropdown(
-									'language',
-									$languages,
-									"$language_code:$language",
-									['class' => 'form-control input-sm']
-								);
-							?>
+echo form_dropdown(
+    'language',
+    $languages,
+    "{$language_code}:{$language}",
+    ['class' => 'form-control input-sm']
+);
+?>
 						</div>
 					</div>
 				</div>
@@ -114,51 +113,48 @@
 
 				<ul id="permission_list">
 					<?php
-					foreach($all_modules as $module)
-					{
-					?>
+                    foreach ($all_modules as $module) {
+                        ?>
 						<li>
-							<?= form_checkbox("grant_$module->module_id", $module->module_id, $module->grant == 1, "class='module'") ?>
+							<?= form_checkbox("grant_{$module->module_id}", $module->module_id, $module->grant === 1, "class='module'") ?>
 							<?= form_dropdown(
-								"menu_group_$module->module_id", [
-									'home' => lang('Module.home'),
-									'office' => lang('Module.office'),
-									'both' => lang('Module.both')
-								],
-								$module->menu_group,
-								"class='module'"
+							    "menu_group_{$module->module_id}",
+							    [
+							        'home'   => lang('Module.home'),
+							        'office' => lang('Module.office'),
+							        'both'   => lang('Module.both'),
+							    ],
+							    $module->menu_group,
+							    "class='module'"
 							) ?>
 
-							<span class="medium"><?= lang("Module.$module->module_id") ?>:</span>
-							<span class="small"><?= lang("Module.$module->module_id" . '_desc') ?></span>
+							<span class="medium"><?= lang("Module.{$module->module_id}") ?>:</span>
+							<span class="small"><?= lang("Module.{$module->module_id_desc}") ?></span>
 							<?php
-								foreach($all_subpermissions as $permission)
-								{
-									$exploded_permission = explode('_', $permission->permission_id, 2);
-									if($permission->module_id == $module->module_id)
-									{
-										$lang_key = $module->module_id . '.' . $exploded_permission[1];
-										$lang_line = lang(ucfirst($lang_key));
-										$lang_line = (lang(ucfirst($lang_key)) == $lang_line) ? ucwords(str_replace("_", " ",$exploded_permission[1])) : $lang_line;
-										if(!empty($lang_line))
-										{
-							?>
+							                            foreach ($all_subpermissions as $permission) {
+							                                $exploded_permission = explode('_', $permission->permission_id, 2);
+							                                if ($permission->module_id === $module->module_id) {
+							                                    $lang_key  = $module->module_id . '.' . $exploded_permission[1];
+							                                    $lang_line = lang(ucfirst($lang_key));
+							                                    $lang_line = (lang(ucfirst($lang_key)) === $lang_line) ? ucwords(str_replace('_', ' ', $exploded_permission[1])) : $lang_line;
+							                                    if (! empty($lang_line)) {
+							                                        ?>
 											<ul>
 												<li>
-													<?= form_checkbox("grant_$permission->permission_id", $permission->permission_id, $permission->grant == 1) ?>
-													<?= form_hidden("menu_group_$permission->permission_id", "--") ?>
+													<?= form_checkbox("grant_{$permission->permission_id}", $permission->permission_id, $permission->grant === 1) ?>
+													<?= form_hidden("menu_group_{$permission->permission_id}", '--') ?>
 													<span class="medium"><?= $lang_line ?></span>
 												</li>
 											</ul>
 							<?php
-										}
-									}
-								}
-							?>
+							                                    }
+							                                }
+							                            }
+                        ?>
 						</li>
 					<?php
-					}
-					?>
+                    }
+?>
 				</ul>
 			</fieldset>
 		</div>
@@ -226,18 +222,17 @@ $(document).ready(function()
 
 				required: true,
 				minlength: 5,
-				remote: '<?= esc("$controller_name/checkUsername/$employee_id") ?>'
+				remote: '<?= esc("{$controller_name}/checkUsername/{$employee_id}") ?>'
 			},
 			password:
 			{
 				<?php
-				if($person_info->person_id == '')
-				{
-				?>
+                if ($person_info->person_id === '') {
+                    ?>
 					required: true,
 				<?php
-				}
-				?>
+                }
+?>
 				minlength: 8
 			},
 			repeat_password:
@@ -260,13 +255,12 @@ $(document).ready(function()
 			password:
 			{
 				<?php
-				if($person_info->person_id == "")
-				{
-				?>
+if ($person_info->person_id === '') {
+    ?>
 				required: "<?= lang('Employees.password_required') ?>",
 				<?php
-				}
-				?>
+}
+?>
 				minlength: "<?= lang('Employees.password_minlength') ?>"
 			},
 			repeat_password:

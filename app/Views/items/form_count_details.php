@@ -1,8 +1,8 @@
 <?php
 /**
  * @var object $item_info
- * @var array $stock_locations
- * @var array $item_quantities
+ * @var array  $stock_locations
+ * @var array  $item_quantities
  */
 
 use App\Models\Employee;
@@ -16,12 +16,12 @@ use App\Models\Inventory;
 			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-					<?= form_input ([
-						'name' => 'item_number',
-						'id' => 'item_number',
-						'class' => 'form-control input-sm',
-						'disabled' => '',
-						'value' => $item_info->item_number
+					<?= form_input([
+					    'name'     => 'item_number',
+					    'id'       => 'item_number',
+					    'class'    => 'form-control input-sm',
+					    'disabled' => '',
+					    'value'    => $item_info->item_number,
 					]) ?>
 				</div>
 			</div>
@@ -30,12 +30,12 @@ use App\Models\Inventory;
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input ([
-					'name' => 'name',
-					'id' => 'name',
-					'class' => 'form-control input-sm',
-					'disabled' => '',
-					'value' => $item_info->name
+				<?= form_input([
+				    'name'     => 'name',
+				    'id'       => 'name',
+				    'class'    => 'form-control input-sm',
+				    'disabled' => '',
+				    'value'    => $item_info->name,
 				]) ?>
 			</div>
 		</div>
@@ -45,12 +45,12 @@ use App\Models\Inventory;
 			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-					<?= form_input ([
-						'name' => 'category',
-						'id' => 'category',
-						'class' => 'form-control input-sm',
-						'disabled' => '',
-						'value' => $item_info->category
+					<?= form_input([
+					    'name'     => 'category',
+					    'id'       => 'category',
+					    'class'    => 'form-control input-sm',
+					    'disabled' => '',
+					    'value'    => $item_info->category,
 					]) ?>
 				</div>
 			</div>
@@ -66,12 +66,12 @@ use App\Models\Inventory;
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-4'>
-				<?= form_input ([
-					'name' => 'quantity',
-					'id' => 'quantity',
-					'class' => 'form-control input-sm',
-					'disabled' => '',
-					'value' => to_quantity_decimals(current($item_quantities))
+				<?= form_input([
+				    'name'     => 'quantity',
+				    'id'       => 'quantity',
+				    'class'    => 'form-control input-sm',
+				    'disabled' => '',
+				    'value'    => to_quantity_decimals(current($item_quantities)),
 				]) ?>
 			</div>
 		</div>
@@ -92,19 +92,18 @@ use App\Models\Inventory;
 	</thead>
 	<tbody id="inventory_result">
 		<?php
-			 //the tbody content of the table will be filled in by the javascript (see bottom of page)
-			$employee = model(Employee::class);
-			$inventory = model(Inventory::class);
+             // the tbody content of the table will be filled in by the javascript (see bottom of page)
+            $employee = model(Employee::class);
+$inventory            = model(Inventory::class);
 
-			$inventory_array = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
-			$employee_name = [];
+$inventory_array = $inventory->get_inventory_data_for_item($item_info->item_id)->getResultArray();
+$employee_name   = [];
 
-			foreach($inventory_array as $row)
-			{
-				$employee_data = $employee->get_info($row['trans_user']);
-				$employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
-			}
-		?>
+foreach ($inventory_array as $row) {
+    $employee_data   = $employee->get_info($row['trans_user']);
+    $employee_name[] = $employee_data->first_name . ' ' . $employee_data->last_name;
+}
+?>
 	</tbody>
 </table>
 

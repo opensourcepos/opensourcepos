@@ -14,10 +14,10 @@
 		</div>
 
 		<?= form_submit([
-			'name' => 'submit_tax_categories',
-			'id' => 'submit_tax_categories',
-			'value' => lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm pull-right'
+		    'name'  => 'submit_tax_categories',
+		    'id'    => 'submit_tax_categories',
+		    'value' => lang('Common.submit'),
+		    'class' => 'btn btn-primary btn-sm pull-right',
 		]) ?>
 	</fieldset>
 </div>
@@ -27,7 +27,7 @@
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		var tax_categories_count = <?= sizeof($tax_categories) ?>;
+		var tax_categories_count = <?= count($tax_categories) ?>;
 		if (tax_categories_count == 0) {
 			tax_categories_count = 1;
 		}
@@ -105,7 +105,7 @@
 				$(form).ajaxSubmit({
 					success: function(response)	{
 						$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
-						$("#tax_categories").load('<?= esc("taxes/ajax_tax_categories") ?>', init_add_remove_tax_categories);
+						$("#tax_categories").load('<?= esc('taxes/ajax_tax_categories') ?>', init_add_remove_tax_categories);
 					},
 					dataType: 'json'
 				});
@@ -117,18 +117,18 @@
 		}));
 
 		<?php
-		$i = 0;
-		foreach($tax_categories as $tax_category=>$tax_category_data)
-		{
-		?>
+        $i = 0;
+
+foreach ($tax_categories as $tax_category => $tax_category_data) {
+    ?>
 		$('<?= '#tax_category_' . ++$i ?>').rules( "add", {
 			requireTaxCategory: true,
 			check4TaxCategoryDups: true,
 			validateTaxCategoryCharacters: true
 		});
 		<?php
-		}
-		?>
+}
+?>
 
 	});
 </script>

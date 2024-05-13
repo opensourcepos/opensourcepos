@@ -1,9 +1,9 @@
 <?php
 /**
  * @var string $specific_input_name
- * @var array $specific_input_data
- * @var array $sale_type_options
- * @var array $payment_type
+ * @var array  $specific_input_data
+ * @var array  $sale_type_options
+ * @var array  $payment_type
  */
 ?>
 <?= view('partial/header') ?>
@@ -16,9 +16,8 @@
 <div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
-if(isset($error))
-{
-	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
+if (isset($error)) {
+    echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 ?>
 
@@ -26,7 +25,7 @@ if(isset($error))
 	<div class="form-group form-group-sm">
 		<?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
 		<div class="col-xs-3">
-				<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+				<?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		</div>
 	</div>
 
@@ -51,13 +50,12 @@ if(isset($error))
 		</div>
 	</div>
 
-	<?php
-		echo form_button ([
-			'name' => 'generate_report',
-			'id' => 'generate_report',
-			'content' => lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm'
-	]);	?>
+	<?= form_button([
+	    'name'    => 'generate_report',
+	    'id'      => 'generate_report',
+	    'content' => lang('Common.submit'),
+	    'class'   => 'btn btn-primary btn-sm',
+	]); ?>
 <?= form_close() ?>
 
 <?= view('partial/footer') ?>

@@ -2,8 +2,8 @@
 /**
  * @var string $controller_name
  * @var string $table_headers
- * @var array $filters
- * @var array $config
+ * @var array  $filters
+ * @var array  $config
  */
 ?>
 <?= view('partial/header') ?>
@@ -41,15 +41,15 @@ $(document).ready(function()
 });
 </script>
 
-<?= view('partial/print_receipt', ['print_after_sale'=>false, 'selected_printer' => 'takings_printer']) ?>
+<?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 
 <div id="title_bar" class="print_hide btn-toolbar">
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
 		<span class="glyphicon glyphicon-print">&nbsp;</span><?= lang('Common.print') ?>
 	</button>
-	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/view" ?>'
-			title='<?= lang(ucfirst($controller_name). ".new") ?>'>
-		<span class="glyphicon glyphicon-tags">&nbsp</span><?= lang(esc(ucfirst($controller_name)) . '.new') //TODO: String Interpolation ?>
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "{$controller_name}/view" ?>'
+			title='<?= lang(ucfirst($controller_name) . '.new') ?>'>
+		<span class="glyphicon glyphicon-tags">&nbsp</span><?= lang(esc(ucfirst($controller_name)) . '.new') // TODO: String Interpolation?>
 	</button>
 </div>
 
@@ -59,14 +59,14 @@ $(document).ready(function()
 			<span class="glyphicon glyphicon-trash">&nbsp</span><?= lang('Common.delete') ?>
 		</button>
 
-		<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+		<?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		<?= form_multiselect('filters[]', $filters, [''], [
-			'id' => 'filters',
-			'data-none-selected-text'=>lang('Common.none_selected_text'),
-			'class' => 'selectpicker show-menu-arrow',
-			'data-selected-text-format' => 'count > 1',
-			'data-style' => 'btn-default btn-sm',
-			'data-width' => 'fit'
+		    'id'                        => 'filters',
+		    'data-none-selected-text'   => lang('Common.none_selected_text'),
+		    'class'                     => 'selectpicker show-menu-arrow',
+		    'data-selected-text-format' => 'count > 1',
+		    'data-style'                => 'btn-default btn-sm',
+		    'data-width'                => 'fit',
 		]) ?>
 	</div>
 </div>

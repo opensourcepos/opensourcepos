@@ -24,22 +24,21 @@ $barcode_lib = new Barcode_lib();
 		</style>
 	</head>
 
-	<body class=<?= "font_" . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
+	<body class=<?= 'font_' . $barcode_lib->get_font_name($barcode_config['barcode_font']) ?>
 		style="font-size:<?= $barcode_config['barcode_font_size'] ?>px">
-		<table cellspacing=<?= $barcode_config['barcode_page_cellspacing'] ?> width='<?= $barcode_config['barcode_page_width']."%" ?>' >
+		<table cellspacing=<?= $barcode_config['barcode_page_cellspacing'] ?> width='<?= $barcode_config['barcode_page_width'] . '%' ?>' >
 			<tr>
 				<?php
-				$count = 0;
-				foreach($items as $item)
-				{
-					if ($count % $barcode_config['barcode_num_in_row'] == 0 && $count != 0)
-					{
-						echo '</tr><tr>';
-					}
-					echo '<td>' . $barcode_lib->display_barcode($item, $barcode_config) . '</td>';
-					$count++;
-				}
-				?>
+                $count = 0;
+
+foreach ($items as $item) {
+    if ($count % $barcode_config['barcode_num_in_row'] === 0 && $count !== 0) {
+        echo '</tr><tr>';
+    }
+    echo '<td>' . $barcode_lib->display_barcode($item, $barcode_config) . '</td>';
+    $count++;
+}
+?>
 			</tr>
 		</table>
 	</body>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @var array $receiving_info
+ * @var array  $receiving_info
  * @var string $selected_supplier_name
- * @var int $selected_supplier_id
- * @var array $employees
+ * @var int    $selected_supplier_id
+ * @var array  $employees
  * @var string $controller_name
  */
 ?>
@@ -11,22 +11,22 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("receivings/save/".$receiving_info['receiving_id'], ['id' => 'receivings_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('receivings/save/' . $receiving_info['receiving_id'], ['id' => 'receivings_edit_form', 'class' => 'form-horizontal']) ?>
 	<fieldset id="receiving_basic_info">
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.receipt_number'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-			<?= anchor('receivings/receipt/' . $receiving_info['receiving_id'], 'RECV ' . $receiving_info['receiving_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style" => "text-align:left"]) ?>
+			<?= anchor('receivings/receipt/' . $receiving_info['receiving_id'], 'RECV ' . $receiving_info['receiving_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', 'style' => 'text-align:left']) ?>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input ([
-					'name'	=> 'date',
-					'value'	=> to_datetime(strtotime($receiving_info['receiving_time'])),
-					'id'	=> 'datetime',
-					'class'	=> 'datetime form-control input-sm',
-					'readonly' => 'readonly'
+				<?= form_input([
+				    'name'     => 'date',
+				    'value'    => to_datetime(strtotime($receiving_info['receiving_time'])),
+				    'id'       => 'datetime',
+				    'class'    => 'datetime form-control input-sm',
+				    'readonly' => 'readonly',
 				]) ?>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'supplier_name', 'value' => $selected_supplier_name, 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
+				<?= form_input(['name' => 'supplier_name', 'value' => $selected_supplier_name, 'id' => 'supplier_name', 'class' => 'form-control input-sm']) ?>
 				<?= form_hidden('supplier_id', $selected_supplier_id ?? '') ?>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.reference'), 'reference', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_input (['name' => 'reference', 'value' => $receiving_info['reference'], 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
+				<?= form_input(['name' => 'reference', 'value' => $receiving_info['reference'], 'id' => 'reference', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 
@@ -56,7 +56,7 @@
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Receivings.comments'), 'comment', ['class' => 'control-label col-xs-3']) ?>
 			<div class='col-xs-8'>
-				<?= form_textarea (['name' => 'comment','value' => $receiving_info['comment'], 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
+				<?= form_textarea(['name' => 'comment', 'value' => $receiving_info['comment'], 'id' => 'comment', 'class' => 'form-control input-sm']) ?>
 			</div>
 		</div>
 	</fieldset>

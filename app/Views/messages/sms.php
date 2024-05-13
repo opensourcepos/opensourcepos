@@ -3,9 +3,9 @@
 <script type="application/javascript">
 	dialog_support.init("a.modal-dlg");
 </script>
-	      
+
 <div class="jumbotron" style="max-width: 60%; margin:auto">
-	<?= form_open("messages/send/", ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
+	<?= form_open('messages/send/', ['id' => 'send_sms_form', 'enctype' => 'multipart/form-data', 'method' => 'post', 'class' => 'form-horizontal']) ?>
 		<fieldset>
 			<legend style="text-align: center;"><?= lang('Messages.sms_send') ?></legend>
 			<div class="form-group form-group-sm">
@@ -23,11 +23,11 @@
 				</div>
 			</div>
 
-			<?= form_submit ([
-				'name' => 'submit_form',
-				'id' => 'submit_form',
-				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right']) ?>
+			<?= form_submit([
+			    'name'  => 'submit_form',
+			    'id'    => 'submit_form',
+			    'value' => lang('Common.submit'),
+			    'class' => 'btn btn-primary btn-sm pull-right']) ?>
 		</fieldset>
 	<?= form_close() ?>
 </div>

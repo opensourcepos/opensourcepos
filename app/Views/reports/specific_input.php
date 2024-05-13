@@ -1,9 +1,9 @@
 <?php
 /**
  * @var string $specific_input_name
- * @var array $specific_input_data
- * @var array $sale_type_options
- * @var array $config
+ * @var array  $specific_input_data
+ * @var array  $sale_type_options
+ * @var array  $config
  */
 ?>
 <?= view('partial/header') ?>
@@ -16,9 +16,8 @@
 <div id="page_title"><?= lang('Reports.report_input') ?></div>
 
 <?php
-if(isset($error))
-{
-	echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
+if (isset($error)) {
+    echo '<div class=\'alert alert-dismissible alert-danger\'>' . esc($error) . '</div>';
 }
 ?>
 
@@ -26,14 +25,13 @@ if(isset($error))
 	<div class="form-group form-group-sm">
 		<?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
 		<div class="col-xs-3">
-				<?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+				<?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
 		</div>
 	</div>
 
 	<?php
-	if (isset($discount_type_options))
-	{
-	?>
+    if (isset($discount_type_options)) {
+        ?>
 		<div class="form-group form-group-sm">
 			<?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
 			<div id='report_discount_type' class="col-xs-3">
@@ -41,8 +39,8 @@ if(isset($error))
 			</div>
 		</div>
 	<?php
-	}
-	?>
+    }
+?>
 
 	<div class="form-group form-group-sm" id="report_specific_input_data">
 		<?= form_label($specific_input_name, 'specific_input_name_label', ['class' => 'required control-label col-xs-2']) ?>
@@ -51,21 +49,20 @@ if(isset($error))
 		</div>
 
 		<?php
-		if (isset($discount_type_options))
-		{
-		?>
+    if (isset($discount_type_options)) {
+        ?>
 		<div class="col-xs-3 discount_fixed">
-			<?= form_input ([
-				'name' => 'discount_fixed',
-				'id' => 'discount_fixed',
-				'class' => 'form-control input-sm required',
-				'type' => 'number',
-				'min' => 0,
-				'value' => $config['default_sales_discount']]) ?>
+			<?= form_input([
+			    'name'  => 'discount_fixed',
+			    'id'    => 'discount_fixed',
+			    'class' => 'form-control input-sm required',
+			    'type'  => 'number',
+			    'min'   => 0,
+			    'value' => $config['default_sales_discount']]) ?>
 		</div>
 		<?php
-		}
-		?>
+    }
+?>
 	</div>
 
 	<div class="form-group form-group-sm">
@@ -75,12 +72,11 @@ if(isset($error))
 		</div>
 	</div>
 
-	<?php
-		echo form_button ([
-			'name' => 'generate_report',
-			'id' => 'generate_report',
-			'content'=>lang('Common.submit'),
-			'class' => 'btn btn-primary btn-sm'
+	<?= form_button([
+	    'name'    => 'generate_report',
+	    'id'      => 'generate_report',
+	    'content' => lang('Common.submit'),
+	    'class'   => 'btn btn-primary btn-sm',
 	]) ?>
 <?= form_close() ?>
 
@@ -90,13 +86,12 @@ if(isset($error))
 $(document).ready(function()
 {
 	<?php
-	if (isset($discount_type_options))
-	{
-	?>
+    if (isset($discount_type_options)) {
+        ?>
 		$("#discount_type_id").change(check_discount_type).ready(check_discount_type);
 	<?php
-	}
-	?>
+    }
+?>
 
 	<?= view('partial/daterangepicker') ?>
 

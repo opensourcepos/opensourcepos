@@ -13,13 +13,13 @@
 				<?= form_label(lang('Config.receipt_template'), 'receipt_template', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-2'>
 					<?= form_dropdown(
-						'receipt_template',
-						[
-							'receipt_default' => lang('Config.receipt_default'),
-							'receipt_short' => lang('Config.receipt_short')
-						],
-						$config['receipt_template'],
-						"class='form-control input-sm'"
+					    'receipt_template',
+					    [
+					        'receipt_default' => lang('Config.receipt_default'),
+					        'receipt_short'   => lang('Config.receipt_short'),
+					    ],
+					    $config['receipt_template'],
+					    "class='form-control input-sm'"
 					) ?>
 				</div>
 			</div>
@@ -28,15 +28,15 @@
 				<?= form_label(lang('Config.receipt_font_size'), 'receipt_font_size', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '20',
-							'name' => 'receipt_font_size',
-							'id' => 'receipt_font_size',
-							'class' => 'form-control input-sm required',
-							'value' => $config['receipt_font_size']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '20',
+											    'name'  => 'receipt_font_size',
+											    'id'    => 'receipt_font_size',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['receipt_font_size'],
+											]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
@@ -46,15 +46,15 @@
 				<?= form_label(lang('Config.print_delay_autoreturn'), 'print_delay_autoreturn', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '30',
-							'name' => 'print_delay_autoreturn',
-							'id' => 'print_delay_autoreturn',
-							'class' => 'form-control input-sm required',
-							'value' => $config['print_delay_autoreturn']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '30',
+											    'name'  => 'print_delay_autoreturn',
+											    'id'    => 'print_delay_autoreturn',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['print_delay_autoreturn'],
+											]) ?>
 						<span class="input-group-addon input-sm">s</span>
 					</div>
 				</div>
@@ -64,27 +64,27 @@
 				<?= form_label(lang('Config.email_receipt_check_behaviour'), 'email_receipt_check_behaviour', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'email_receipt_check_behaviour',
-							'value' => 'always',
-							'checked' => $config['email_receipt_check_behaviour'] == 'always'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'email_receipt_check_behaviour',
+											    'value'   => 'always',
+											    'checked' => $config['email_receipt_check_behaviour'] === 'always',
+											]) ?>
 						<?= lang('Config.email_receipt_check_behaviour_always') ?>
 					</label>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'email_receipt_check_behaviour',
-							'value' => 'never',
-							'checked' => $config['email_receipt_check_behaviour'] == 'never'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'email_receipt_check_behaviour',
+											    'value'   => 'never',
+											    'checked' => $config['email_receipt_check_behaviour'] === 'never',
+											]) ?>
 						<?= lang('Config.email_receipt_check_behaviour_never') ?>
 					</label>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'email_receipt_check_behaviour',
-							'value' => 'last',
-							'checked' => $config['email_receipt_check_behaviour'] == 'last'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'email_receipt_check_behaviour',
+											    'value'   => 'last',
+											    'checked' => $config['email_receipt_check_behaviour'] === 'last',
+											]) ?>
 						<?= lang('Config.email_receipt_check_behaviour_last') ?>
 					</label>
 				</div>
@@ -94,27 +94,27 @@
 				<?= form_label(lang('Config.print_receipt_check_behaviour'), 'print_receipt_check_behaviour', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'print_receipt_check_behaviour',
-							'value' => 'always',
-							'checked' => $config['print_receipt_check_behaviour'] == 'always'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'print_receipt_check_behaviour',
+											    'value'   => 'always',
+											    'checked' => $config['print_receipt_check_behaviour'] === 'always',
+											]) ?>
 						<?= lang('Config.print_receipt_check_behaviour_always') ?>
 					</label>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'print_receipt_check_behaviour',
-							'value' => 'never',
-							'checked' => $config['print_receipt_check_behaviour'] == 'never'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'print_receipt_check_behaviour',
+											    'value'   => 'never',
+											    'checked' => $config['print_receipt_check_behaviour'] === 'never',
+											]) ?>
 						<?= lang('Config.print_receipt_check_behaviour_never') ?>
 					</label>
 					<label class="radio-inline">
-						<?= form_radio ([
-							'name' => 'print_receipt_check_behaviour',
-							'value' => 'last',
-							'checked' => $config['print_receipt_check_behaviour'] == 'last'
-						]) ?>
+						<?= form_radio([
+											    'name'    => 'print_receipt_check_behaviour',
+											    'value'   => 'last',
+											    'checked' => $config['print_receipt_check_behaviour'] === 'last',
+											]) ?>
 						<?= lang('Config.print_receipt_check_behaviour_last') ?>
 					</label>
 				</div>
@@ -123,108 +123,108 @@
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_company_name'), 'receipt_show_company_name', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_company_name',
-						'value' => 'receipt_show_company_name',
-						'id' => 'receipt_show_company_name',
-						'checked' => $config['receipt_show_company_name'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_company_name',
+										    'value'   => 'receipt_show_company_name',
+										    'id'      => 'receipt_show_company_name',
+										    'checked' => $config['receipt_show_company_name'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_taxes'), 'receipt_show_taxes', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_taxes',
-						'value' => 'receipt_show_taxes',
-						'id' => 'receipt_show_taxes',
-						'checked' => $config['receipt_show_taxes'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_taxes',
+										    'value'   => 'receipt_show_taxes',
+										    'id'      => 'receipt_show_taxes',
+										    'checked' => $config['receipt_show_taxes'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_tax_ind'), 'receipt_show_tax_ind', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_tax_ind',
-						'value' => 'receipt_show_tax_ind',
-						'id' => 'receipt_show_tax_ind',
-						'checked' => $config['receipt_show_tax_ind'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_tax_ind',
+										    'value'   => 'receipt_show_tax_ind',
+										    'id'      => 'receipt_show_tax_ind',
+										    'checked' => $config['receipt_show_tax_ind'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_total_discount'), 'receipt_show_total_discount', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_total_discount',
-						'value' => 'receipt_show_total_discount',
-						'id' => 'receipt_show_total_discount',
-						'checked' => $config['receipt_show_total_discount'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_total_discount',
+										    'value'   => 'receipt_show_total_discount',
+										    'id'      => 'receipt_show_total_discount',
+										    'checked' => $config['receipt_show_total_discount'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_description'), 'receipt_show_description', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_description',
-						'value' => 'receipt_show_description',
-						'id' => 'receipt_show_description',
-						'checked' => $config['receipt_show_description'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_description',
+										    'value'   => 'receipt_show_description',
+										    'id'      => 'receipt_show_description',
+										    'checked' => $config['receipt_show_description'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.receipt_show_serialnumber'), 'receipt_show_serialnumber', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'receipt_show_serialnumber',
-						'value' => 'receipt_show_serialnumber',
-						'id' => 'receipt_show_serialnumber',
-						'checked' => $config['receipt_show_serialnumber'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'receipt_show_serialnumber',
+										    'value'   => 'receipt_show_serialnumber',
+										    'id'      => 'receipt_show_serialnumber',
+										    'checked' => $config['receipt_show_serialnumber'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.print_silently'), 'print_silently', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'print_silently',
-						'id' => 'print_silently',
-						'value' => 'print_silently',
-						'checked' => $config['print_silently'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'print_silently',
+										    'id'      => 'print_silently',
+										    'value'   => 'print_silently',
+										    'checked' => $config['print_silently'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.print_header'), 'print_header', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'print_header',
-						'id' => 'print_header',
-						'value' => 'print_header',
-						'checked' => $config['print_header'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'print_header',
+										    'id'      => 'print_header',
+										    'value'   => 'print_header',
+										    'checked' => $config['print_header'] === 1,
+										]) ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
 				<?= form_label(lang('Config.print_footer'), 'print_footer', ['class' => 'control-label col-xs-2']) ?>
 				<div class='col-xs-1'>
-					<?= form_checkbox ([
-						'name' => 'print_footer',
-						'id' => 'print_footer',
-						'value' => 'print_footer',
-						'checked' => $config['print_footer'] == 1
-					]) ?>
+					<?= form_checkbox([
+										    'name'    => 'print_footer',
+										    'id'      => 'print_footer',
+										    'value'   => 'print_footer',
+										    'checked' => $config['print_footer'] === 1,
+										]) ?>
 				</div>
 			</div>
 
@@ -253,15 +253,15 @@
 				<?= form_label(lang('Config.print_top_margin'), 'print_top_margin', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '20',
-							'name' => 'print_top_margin',
-							'id' => 'print_top_margin',
-							'class' => 'form-control input-sm required',
-							'value' => $config['print_top_margin']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '20',
+											    'name'  => 'print_top_margin',
+											    'id'    => 'print_top_margin',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['print_top_margin'],
+											]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
@@ -271,15 +271,15 @@
 				<?= form_label(lang('Config.print_left_margin'), 'print_left_margin', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '20',
-							'name' => 'print_left_margin',
-							'id' => 'print_left_margin',
-							'class' => 'form-control input-sm required',
-							'value' => $config['print_left_margin']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '20',
+											    'name'  => 'print_left_margin',
+											    'id'    => 'print_left_margin',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['print_left_margin'],
+											]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
@@ -289,15 +289,15 @@
 				<?= form_label(lang('Config.print_bottom_margin'), 'print_bottom_margin', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '20',
-							'name' => 'print_bottom_margin',
-							'id' => 'print_bottom_margin',
-							'class' => 'form-control input-sm required',
-							'value' => $config['print_bottom_margin']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '20',
+											    'name'  => 'print_bottom_margin',
+											    'id'    => 'print_bottom_margin',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['print_bottom_margin'],
+											]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
@@ -307,26 +307,26 @@
 				<?= form_label(lang('Config.print_right_margin'), 'print_right_margin', ['class' => 'control-label col-xs-2 required']) ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
-						<?= form_input ([
-							'type' => 'number',
-							'min' => '0',
-							'max' => '20',
-							'name' => 'print_right_margin',
-							'id' => 'print_right_margin',
-							'class' => 'form-control input-sm required',
-							'value' => $config['print_right_margin']
-						]) ?>
+						<?= form_input([
+											    'type'  => 'number',
+											    'min'   => '0',
+											    'max'   => '20',
+											    'name'  => 'print_right_margin',
+											    'id'    => 'print_right_margin',
+											    'class' => 'form-control input-sm required',
+											    'value' => $config['print_right_margin'],
+											]) ?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
 			</div>
 
-			<?= form_submit ([
-				'name' => 'submit_receipt',
-				'id' => 'submit_receipt',
-				'value' => lang('Common.submit'),
-				'class' => 'btn btn-primary btn-sm pull-right'
-			]) ?>
+			<?= form_submit([
+								    'name'  => 'submit_receipt',
+								    'id'    => 'submit_receipt',
+								    'value' => lang('Common.submit'),
+								    'class' => 'btn btn-primary btn-sm pull-right',
+								]) ?>
 		</fieldset>
 	</div>
 <?= form_close() ?>
