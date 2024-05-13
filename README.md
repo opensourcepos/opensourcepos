@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-<a href="https://travis-ci.org/opensourcepos/opensourcepos" target="_blank"><img src="https://travis-ci.com/opensourcepos/opensourcepos.svg?branch=master" alt="Build Status"></a>
+<a href="https://app.travis-ci.com/opensourcepos/opensourcepos" target="_blank"><img src="https://api.travis-ci.com/opensourcepos/opensourcepos.svg?branch=master" alt="Build Status"></a>
 <a href="https://app.gitter.im/#/room/#opensourcepos_Lobby:gitter.im?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank"><img src="https://badges.gitter.im/jekkos/opensourcepos.svg" alt="Join the chat at https://app.gitter.im"></a>
 <a href="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos" target="_blank"><img src="https://badge.fury.io/gh/opensourcepos%2Fopensourcepos.svg" alt="Project Version"></a>
 <a href="https://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank"><img src="https://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
