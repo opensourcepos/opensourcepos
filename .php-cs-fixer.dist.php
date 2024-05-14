@@ -9,6 +9,7 @@ return $config->setRules([
 	'indentation_type' => true,
 	'braces' => [
 		'position_after_functions_and_oop_constructs' => 'next',
+		'position_after_control_structures' => 'next',
 		'indent_with_space' => false
 	],
 ])
