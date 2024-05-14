@@ -46,8 +46,8 @@ class Sale extends Model
 		$this->create_temp_table (['sale_id' => $sale_id]);
 
 		$decimals = totals_decimals();
-		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
-		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
+		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT
 			. " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
 			. 'ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END';
@@ -136,10 +136,10 @@ class Sale extends Model
 
 		$sale_cost = 'SUM(`sales_items`.`item_cost_price` * `sales_items`.`quantity_purchased`)';
 
-		$tax = 'IFnull(SUM(`sales_items_taxes`.`tax`), 0)';
-		$sales_tax = 'IFnull(SUM(`sales_items_taxes`.`sales_tax`), 0)';
-		$internal_tax = 'IFnull(SUM(`sales_items_taxes`.`internal_tax`), 0)';
-		$cash_adjustment = 'IFnull(SUM(`payments`.`sale_cash_adjustment`), 0)';
+		$tax = 'IFNULL(SUM(`sales_items_taxes`.`tax`), 0)';
+		$sales_tax = 'IFNULL(SUM(`sales_items_taxes`.`sales_tax`), 0)';
+		$internal_tax = 'IFNULL(SUM(`sales_items_taxes`.`internal_tax`), 0)';
+		$cash_adjustment = 'IFNULL(SUM(`payments`.`sale_cash_adjustment`), 0)';
 
 		$sale_subtotal = "ROUND(SUM($sale_price), $decimals) - $internal_tax";
 		$sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
@@ -1489,6 +1489,7 @@ class Sale extends Model
 		$builder->groupBy('payments.sale_id');
 
 		$sub_query = $builder->getCompiledSelect();
+		log_message('error', $sub_query);
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS '
 			. $this->db->prefixTable('sales_payments_temp')
