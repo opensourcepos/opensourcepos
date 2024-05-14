@@ -7,7 +7,10 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
 	'@PSR12' => true,
 	'indentation_type' => true,
-	'braces' => ['indent_with_space' => false],
+	'braces' => [
+		'position_after_functions_and_oop_constructs' => 'next',
+		'indent_with_space' => false
+	],
 ])
 	->setFinder($finder)
 	->setIndent("\t")
