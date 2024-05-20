@@ -1103,11 +1103,10 @@ class Sale extends Model
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		$tax = 'IFnull(SUM(sales_items_taxes.tax), 0)';
-		$sales_tax = 'IFnull(SUM(sales_items_taxes.sales_tax), 0)';
-		$internal_tax = 'IFnull(SUM(sales_items_taxes.internal_tax), 0)';
-
-		$cash_adjustment = 'IFnull(SUM(payments.sale_cash_adjustment), 0)';
+		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
+		$sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
+		$internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
+		$cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
 		if($config['tax_included'])
 		{
