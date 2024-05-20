@@ -44,7 +44,7 @@ class Load_config
 		if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
 		{
 			$config->settings['language'] = 'english';
-			$config->settings['language_code'] = 'en-US';
+			$config->settings['language_code'] = 'en';
 		}
 
 		$language = Services::language();
