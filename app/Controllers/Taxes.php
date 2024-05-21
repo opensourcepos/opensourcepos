@@ -9,6 +9,7 @@ use App\Models\Tax_category;
 use App\Models\Tax_code;
 use App\Models\Tax_jurisdiction;
 use Config\OSPOS;
+use Config\Services;
 
 class Taxes extends Secure_Controller
 {
@@ -82,7 +83,7 @@ class Taxes extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -106,7 +107,8 @@ class Taxes extends Secure_Controller
 	 */
 	public function suggest_search(): void
 	{
-		$suggestions = $this->tax->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));	//TODO: There is no get_search_suggestions function in the tax model
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->tax->get_search_suggestions($search);	//TODO: There is no get_search_suggestions function in the tax model
 
 		echo json_encode($suggestions);
 	}
@@ -118,7 +120,8 @@ class Taxes extends Secure_Controller
 	 */
 	public function suggest_tax_categories(): void
 	{
-		$suggestions = $this->tax_category->get_tax_category_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->tax_category->get_tax_category_suggestions($search);
 
 		echo json_encode($suggestions);
 	}
@@ -456,7 +459,8 @@ class Taxes extends Secure_Controller
 	 */
 	public function getSuggestTaxCodes(): void
 	{
-		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($this->request->getPostGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+		$search = Services::htmlPurifier()->purify($this->request->getPostGet('term'));
+		$suggestions = $this->tax_code->get_tax_codes_search_suggestions($search);
 
 		echo json_encode($suggestions);
 	}

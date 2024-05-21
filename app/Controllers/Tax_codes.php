@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Tax_code;
+use Config\Services;
 
 /**
  * @property tax_code tax_code
@@ -45,7 +46,7 @@ class Tax_codes extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

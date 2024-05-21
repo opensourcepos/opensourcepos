@@ -94,11 +94,11 @@ class Items extends Secure_Controller
 	 **/
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search');
-		$limit = $this->request->getGet('limit');
-		$offset = $this->request->getGet('offset');
-		$sort = $this->request->getGet('sort');
-		$order = $this->request->getGet('order');
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$this->item_lib->set_item_location($this->request->getGet('stock_location'));
 
@@ -182,7 +182,8 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== null
 		];
 
-		$suggestions = $this->item->get_search_suggestions($this->request->getPostGet('term'), $options);
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->item->get_search_suggestions($search, $options);
 
 		echo json_encode($suggestions);
 	}
@@ -194,7 +195,8 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term'), ['search_custom' => false, 'is_deleted' => false], true);
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 
 		echo json_encode($suggestions);
 	}
