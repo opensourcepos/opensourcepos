@@ -6,13 +6,14 @@ use App\Models\Cashup;
 use App\Models\Expense;
 use App\Models\Reports\Summary_payments;
 use Config\OSPOS;
+use Config\Services;
 
 class Cashups extends Secure_Controller
 {
-	 private Cashup $cashup;
-	 private Expense $expense;
-	 private Summary_payments $summary_payments;
-	 private array $config;
+	private Cashup $cashup;
+	private Expense $expense;
+	private Summary_payments $summary_payments;
+	private array $config;
 
 	public function __construct()
 	{
@@ -42,7 +43,7 @@ class Cashups extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

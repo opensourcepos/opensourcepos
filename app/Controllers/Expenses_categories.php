@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Expense_category;
+use Config\Services;
 
 class Expenses_categories extends Secure_Controller	//TODO: Is this class ever used?
 {
@@ -30,7 +31,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 	 **/
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
