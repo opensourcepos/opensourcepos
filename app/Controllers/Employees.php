@@ -220,8 +220,11 @@ class Employees extends Persons
 	}
 
 	/**
+	 * Checks an employee username against the database. Used in app\Views\employees\form.php
+	 *
 	 * @param $employee_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getCheckUsername($employee_id): void
 	{

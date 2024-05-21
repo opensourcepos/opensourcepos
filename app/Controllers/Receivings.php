@@ -54,8 +54,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Returns search suggestions for an item. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getItemSearch(): void
 	{
@@ -67,8 +69,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Gets search suggestions for a stock item. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getStockItemSearch(): void
 	{
@@ -80,8 +84,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Set supplier if it exists in the database. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSelectSupplier(): void
 	{
@@ -95,7 +101,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Change receiving mode for current receiving. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postChangeMode(): void
 	{
@@ -119,7 +128,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Sets receiving comment. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetComment(): void
 	{
@@ -127,8 +139,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Sets the print after sale flag for the receiving. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetPrintAfterSale(): void
 	{
@@ -136,7 +150,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Sets the reference number for the receiving.  Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetReference(): void
 	{
@@ -144,7 +161,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Add an item to the receiving. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postAdd(): void
 	{
@@ -175,10 +195,11 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Edit line item in current receiving. Used in app/Views/receivings/receiving.php
 	 *
 	 * @param $item_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postEditItem($item_id): void
 	{
@@ -219,8 +240,11 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Edit a receiving. Used in app/Controllers/Receivings.php
+	 *
 	 * @param $receiving_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getEdit($receiving_id): void
 	{
@@ -247,10 +271,11 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Deletes an item from the current receiving. Used in app/Views/receivings/receiving.php
 	 *
 	 * @param $item_number
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getDeleteItem($item_number): void
 	{
@@ -281,8 +306,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Removes a supplier from a receiving. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getRemoveSupplier(): void
 	{
@@ -293,7 +320,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Complete and finalize receiving.  Used in app/Views/receivings/receiving.php
+	 *
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postComplete(): void
 	{
@@ -358,9 +388,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Complete a receiving requisition. Used in app/Views/receivings/receiving.php.
 	 *
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postRequisitionComplete(): void
 	{
@@ -384,8 +415,11 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Gets the receipt for a receiving. Used in app/Views/receivings/form.php
+	 *
 	 * @param $receiving_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getReceipt($receiving_id): void
 	{
@@ -516,8 +550,10 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Cancel an in-process receiving. Used in app/Views/receivings/receiving.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCancelReceiving(): void
 	{

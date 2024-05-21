@@ -598,9 +598,12 @@ class Items extends Secure_Controller
 	}
 
 	/**
+	 * Edit multiple items. Used in app/Views/items/manage.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function getBulkEdit(): void	//TODO: This function may not be called in the code. Need to confirm
+	public function getBulkEdit(): void
 	{
 		$suppliers = ['' => lang('Items.none')];
 
@@ -867,7 +870,9 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * If adding a new item check to see if an item kit with the same name as the item already exists.
+	 * Checks to see if an item kit with the same name as the item already exists.
+	 *
+	 * @return void
 	 */
 	public function check_kit_exists(): void	//TODO: This function appears to be never called in the code.  Need to confirm.
 	{
@@ -1008,8 +1013,10 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * Generates a template CSV file for item import/update containing headers for current stock locations and attributes
+	 * Generates a template CSV file for item import/update containing headers for current stock locations and attributes. Used in app/Views/items/form_csv_import.php
+	 *
 	 * @return DownloadResponse
+	 * @noinspection PhpUnused
 	 */
 	public function getGenerateCsvFile(): DownloadResponse
 	{

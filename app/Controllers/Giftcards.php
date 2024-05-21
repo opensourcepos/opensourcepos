@@ -51,7 +51,10 @@ class Giftcards extends Secure_Controller
 	}
 
 	/**
-	 * Gives search suggestions based on what is being searched for
+	 * Gets search suggestions for giftcards. Used in app\Views\sales\register.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getSuggest(): void
 	{
@@ -162,9 +165,10 @@ class Giftcards extends Secure_Controller
 	}
 
 	/**
-	 * Function called in the view to check the giftcard.
+	 * Checks the giftcard number validity. Used in app\Views\giftcards\form.php
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckNumberGiftcard(): void
 	{

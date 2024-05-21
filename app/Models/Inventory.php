@@ -40,7 +40,8 @@ class Inventory extends Model
 	}
 
 	/**
-	 * Retrieves inventory data given an item_id.  Called in the view.
+	 * Retrieves inventory data given an item_id.
+	 *
 	 * @param int $item_id
 	 * @param bool $location_id
 	 * @return ResultInterface
