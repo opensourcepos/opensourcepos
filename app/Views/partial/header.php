@@ -21,66 +21,11 @@ $request = Services::request();
 
 	<?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
 		<!-- inject:debug:css -->
-		<link rel="stylesheet" href="resources/css/jquery-ui-fe010342cb.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-dialog-1716ef6e7c.css">
-		<link rel="stylesheet" href="resources/css/jasny-bootstrap-40bf85f3ed.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-datetimepicker-66374fba71.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-select-66d5473b84.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-table-b8cfc92b6f.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-table-sticky-header-07d65e7533.css">
-		<link rel="stylesheet" href="resources/css/daterangepicker-85523b7dfe.css">
-		<link rel="stylesheet" href="resources/css/chartist-c19aedb81a.css">
-		<link rel="stylesheet" href="resources/css/chartist-plugin-tooltip-2e0ec92e60.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-tagsinput-5a6d46a06c.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-toggle-e12db6c1f3.css">
-		<link rel="stylesheet" href="resources/css/bootstrap-21011437af.autocomplete.css">
-		<link rel="stylesheet" href="resources/css/invoice-2ec9a31990.css">
-		<link rel="stylesheet" href="resources/css/ospos_print-ec2690e6fc.css">
-		<link rel="stylesheet" href="resources/css/ospos-5822271440.css">
-		<link rel="stylesheet" href="resources/css/popupbox-0db8527aa9.css">
-		<link rel="stylesheet" href="resources/css/receipt-ad2a5392c5.css">
-		<link rel="stylesheet" href="resources/css/register-517832340a.css">
-		<link rel="stylesheet" href="resources/css/reports-872a457221.css">
 		<!-- endinject -->
 		<!-- inject:debug:js -->
-		<script src="resources/js/jquery-12e87d2f3a.js"></script>
-		<script src="resources/js/jquery-4fa896f615.form.js"></script>
-		<script src="resources/js/jquery-a0350e8820.validate.js"></script>
-		<script src="resources/js/jquery-ui-cbc65ff85e.js"></script>
-		<script src="resources/js/bootstrap-894d79839f.js"></script>
-		<script src="resources/js/bootstrap-dialog-27123abb65.js"></script>
-		<script src="resources/js/jasny-bootstrap-7c6d7b8adf.js"></script>
-		<script src="resources/js/bootstrap-datetimepicker-25e39b7ef8.js"></script>
-		<script src="resources/js/bootstrap-select-b01896a67b.js"></script>
-		<script src="resources/js/bootstrap-table-94d3527d23.js"></script>
-		<script src="resources/js/bootstrap-table-export-00a4faa2f1.js"></script>
-		<script src="resources/js/bootstrap-table-mobile-5df5626d47.js"></script>
-		<script src="resources/js/bootstrap-table-sticky-header-e68e9836b4.js"></script>
-		<script src="resources/js/moment-d65dc6d2e6.min.js"></script>
-		<script src="resources/js/daterangepicker-048c56a690.js"></script>
-		<script src="resources/js/es6-promise-855125e6f5.js"></script>
-		<script src="resources/js/FileSaver-e73b1946e8.js"></script>
-		<script src="resources/js/html2canvas-e1d3a8d7cd.js"></script>
-		<script src="resources/js/jspdf-ff4663431d.umd.js"></script>
-		<script src="resources/js/jspdf-8ce85cc4b6.plugin.autotable.js"></script>
-		<script src="resources/js/tableExport-0df60917ca.min.js"></script>
-		<script src="resources/js/chartist-8a7ecb4445.js"></script>
-		<script src="resources/js/chartist-plugin-pointlabels-0a1ab6aa4e.js"></script>
-		<script src="resources/js/chartist-plugin-tooltip-116cb48831.js"></script>
-		<script src="resources/js/chartist-plugin-axistitle-80a1198058.js"></script>
-		<script src="resources/js/chartist-plugin-barlabels-4165273742.js"></script>
-		<script src="resources/js/bootstrap-notify-376bc6eb87.js"></script>
-		<script src="resources/js/js-fa93e8894e.cookie.js"></script>
-		<script src="resources/js/bootstrap-tagsinput-855a7c7670.js"></script>
-		<script src="resources/js/bootstrap-toggle-1c7a19a049.js"></script>
-		<script src="resources/js/clipboard-908af414ab.js"></script>
-		<script src="resources/js/imgpreview-140c57d0ea.full.jquery.js"></script>
-		<script src="resources/js/manage_tables-a3b0622cb7.js"></script>
-		<script src="resources/js/nominatim-60392bf22a.autocomplete.js"></script>
 		<!-- endinject -->
 	<?php else : ?>
 		<!--inject:prod:css -->
-		<link rel="stylesheet" href="resources/opensourcepos-da76bf05c6.min.css">
 		<!-- endinject -->
 
 		<!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -88,8 +33,6 @@ $request = Services::request();
 		<link rel="stylesheet" type="text/css" href="<?= 'css/' . esc($config['theme']) . '.css' ?>"/>
 	<?php } ?>
 		<!-- inject:prod:js -->
-		<script src="resources/jquery-2c872dbe60.min.js"></script>
-		<script src="resources/opensourcepos-43589af889.min.js"></script>
 		<!-- endinject -->
 	<?php endif; ?>
 
