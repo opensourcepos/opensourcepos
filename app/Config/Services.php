@@ -3,6 +3,8 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 /**
  * Services Configuration file.
@@ -29,4 +31,22 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+	private static $htmlPurifier;
+
+	public static function htmlPurifier($getShared = true)
+	{
+		if ($getShared)
+		{
+			return static::getSharedInstance('htmlPurifier');
+		}
+
+		if (!isset(static::$htmlPurifier))
+		{
+			$config = HTMLPurifier_Config::createDefault();
+			static::$htmlPurifier = new HTMLPurifier($config);
+		}
+
+		return static::$htmlPurifier;
+	}
 }
