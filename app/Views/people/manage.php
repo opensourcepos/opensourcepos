@@ -37,7 +37,7 @@ $(document).ready(function()
 
 <div id="title_bar" class="btn-toolbar">
 	<?php
-	if ($controller_name == 'customers')	//TODO: === ?
+	if ($controller_name === 'customers')
 	{
 	?>
 		<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "$controller_name/csvImport" ?>'

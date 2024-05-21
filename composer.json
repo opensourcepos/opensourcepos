@@ -34,6 +34,7 @@
 		"php": "~8.1",
 		"codeigniter4/framework": "4.5.1",
 		"dompdf/dompdf": "^2.0.3",
+		"ezyang/htmlpurifier": "^4.17",
 		"laminas/laminas-escaper": "2.13.0",
 		"paragonie/random_compat": "^2.0.21",
 		"picqer/php-barcode-generator": "^2.4.0",
