@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Module;
+use Config\Services;
 
 /**
  *
@@ -26,7 +27,7 @@ class Employees extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -51,7 +52,8 @@ class Employees extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 25, true);
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->employee->get_search_suggestions($search, 25, true);
 
 		echo json_encode($suggestions);
 	}
@@ -61,7 +63,8 @@ class Employees extends Persons
 	 */
 	public function suggest_search(): void
 	{
-		$suggestions = $this->employee->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$suggestions = $this->employee->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
 	}

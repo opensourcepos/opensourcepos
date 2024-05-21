@@ -20,7 +20,7 @@ use App\Models\Stock_location;
 use App\Models\Tokens\Token_invoice_count;
 use App\Models\Tokens\Token_customer;
 use App\Models\Tokens\Token_invoice_sequence;
-use CodeIgniter\Config\Services;
+use Config\Services;
 use Config\OSPOS;
 use ReflectionException;
 use stdClass;
@@ -166,7 +166,9 @@ class Sales extends Secure_Controller
 	public function getItemSearch(): void
 	{
 		$suggestions = [];
-		$receipt = $search = $this->request->getGet('term') != '' ? $this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
+		$receipt = $search = $this->request->getGet('term') != ''
+			? Services::htmlPurifier()->purify($this->request->getGet('term'))
+			: null;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
 		{
@@ -184,7 +186,9 @@ class Sales extends Secure_Controller
 	 */
 	public function suggest_search(): void
 	{
-		$search = $this->request->getPost('term') != '' ? $this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
+		$search = $this->request->getPost('term') != ''
+			? Services::htmlPurifier()->purify($this->request->getPost('term'))
+			: null;
 
 		$suggestions = $this->sale->get_search_suggestions($search);
 
