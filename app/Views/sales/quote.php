@@ -57,7 +57,7 @@ if (isset($error_message))
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm" id="show_email_button"><?= '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . lang('Sales.send_quote') ?></div></a>
 	<?php endif; ?>
 	<?= anchor('sales', '<span class=\'glyphicon glyphicon-shopping-cart\'>&nbsp</span>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
-	<?= anchor('sales/getDiscardSuspendedSale', '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_quote_button']) ?>
+	<?= anchor('sales/discardsuspendedsale', '<span class="glyphicon glyphicon-remove">&nbsp</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_quote_button']) ?>
 </div>
 
 <div id="page-wrap">

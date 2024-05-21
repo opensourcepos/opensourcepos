@@ -82,7 +82,7 @@ class Expenses_categories extends Secure_Controller	//TODO: Is this class ever u
 			'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
 		];
 
-		if($this->expense_category->save_value($expense_category_data, $expense_category_id))	//TODO: Reflection exception
+		if($this->expense_category->save_value($expense_category_data, $expense_category_id))
 		{
 			// New expense_category
 			if($expense_category_id == NEW_ENTRY)
