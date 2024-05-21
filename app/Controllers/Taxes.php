@@ -454,8 +454,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Get search suggestions for tax codes. Used in app/Views/customers/form.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getSuggestTaxCodes(): void
 	{
@@ -466,8 +468,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Saves Tax Codes. Used in app/Views/taxes/tax_codes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function save_tax_codes(): void
 	{
@@ -498,7 +502,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
+	 * Saves given tax jurisdiction. Used in app/Views/taxes/tax_jurisdictions.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function save_tax_jurisdictions(): void
 	{
@@ -548,7 +555,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
+	 * Saves tax categories. Used in app/Views/taxes/tax_categories.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function save_tax_categories(): void
 	{
@@ -576,8 +586,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Gets tax codes partial view. Used in app/Views/taxes/tax_codes.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function ajax_tax_codes(): void
 	{
@@ -587,8 +599,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Gets current tax categories. Used in app/Views/taxes/tax_categories.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function ajax_tax_categories(): void
 	{
@@ -598,8 +612,10 @@ class Taxes extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Gets the tax jurisdiction partial view.  Used in app/Views/taxes/tax_jurisdictions.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function ajax_tax_jurisdictions(): void
 	{

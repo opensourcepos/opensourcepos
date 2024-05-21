@@ -120,7 +120,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Sales Report.  Called in the view.
+	 * Summary Sales Report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -168,7 +168,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Categories report. Called in the view.
+	 * Summary Categories report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -215,7 +215,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Expenses by Categories report.  Called in the view.
+	 * Summary Expenses by Categories report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -253,7 +253,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Customers report. Called in the view
+	 * Summary Customers report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -302,7 +302,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Suppliers report. Called in the view.
+	 * Summary Suppliers report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -349,7 +349,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Items report. Called in the view.
+	 * Summary Items report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -400,7 +400,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Employees report. Called in the view.
+	 * Summary Employees report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -449,7 +449,7 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Summary Taxes report. Called in the view.
+	 * Summary Taxes report.
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $sale_type
@@ -536,7 +536,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Summary Discounts report input. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function summary_discounts_input(): void
 	{
@@ -655,7 +658,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
+	 * Input for reports that require only a date range. Used in app/Config/Routes.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function date_input(): void
 	{//TODO: Duplicated Code
@@ -671,7 +677,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
+	 * Input for reports that require only a date range. Used in app/Config/Routes.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function date_input_only(): void
 	{
@@ -682,7 +691,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
+	 * Input for reports that require only a date range. Used in app/Config/Routes.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function date_input_sales(): void
 	{//TODO: Duplicated Code
@@ -698,7 +710,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Receivings date input. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function date_input_recv(): void
 	{
@@ -711,7 +726,13 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Graphical Expenses by Categories report
+	 * Graphical Expenses by Categories report. Used in app/Config/Routes.php
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function graphical_summary_expenses_categories(string $start_date, string $end_date, string $sale_type): void
 	{
@@ -752,6 +773,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary sales report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
@@ -793,6 +820,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary items report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_items(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
@@ -834,7 +867,13 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Graphical summary customers report
+	 * Graphical summary customers report.
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
@@ -873,6 +912,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary suppliers report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
@@ -913,6 +958,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary employees report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_employees(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
@@ -952,6 +1003,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary taxes report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
@@ -991,6 +1048,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary sales taxes report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
@@ -1029,7 +1092,13 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Graphical summary customers report
+	 * Graphical summary customers report.
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{//TODO: Duplicated Code
@@ -1070,13 +1139,14 @@ class Reports extends Secure_Controller
 	}
 
 	/**
-	 * Graphical summary discounts report
+	 * Graphical summary discounts report. Used in app/Config/Routes.php
 	 *
 	 * @param string $start_date Start date of the report
 	 * @param string $end_date End date of the report
 	 * @param string $sale_type
 	 * @param string $location_id ID of the location to be reported or 'all' if none is specified
 	 * @param int $discount_type
+	 * @noinspection PhpUnused
 	 */
 	public function graphical_summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
 	{//TODO: Duplicated Code
@@ -1119,6 +1189,12 @@ class Reports extends Secure_Controller
 
 	/**
 	 * Graphical summary payments report
+	 *
+	 * @param string $start_date
+	 * @param string $end_date
+	 * @param string $sale_type
+	 * @param string $location_id
+	 * @return void
 	 */
 	public function graphical_summary_payments(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
 	{
@@ -1160,7 +1236,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Gets the specific customer input view. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_customer_input(): void
 	{
@@ -1204,12 +1283,15 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed customer report. Used in app/Config/Routes.php
+	 *
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $customer_id
 	 * @param string $sale_type
 	 * @param string $payment_type
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_customers(string $start_date, string $end_date, string $customer_id, string $sale_type, string $payment_type): void
 	{
@@ -1312,7 +1394,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed employee report input form. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_employee_input(): void
 	{
@@ -1333,11 +1418,14 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed employee report. Used in app/Config/Routes.php
+	 *
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $employee_id
 	 * @param string $sale_type
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_employees(string $start_date, string $end_date, string $employee_id, string $sale_type): void
 	{
@@ -1436,7 +1524,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed discount report. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_discount_input(): void
 	{
@@ -1458,12 +1549,15 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed discount report. Used in app/Config/Routes.php
+	 *
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $discount
 	 * @param string $sale_type
 	 * @param string $discount_type
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_discounts(string $start_date, string $end_date, string $discount, string $sale_type, string $discount_type): void
 	{
@@ -1568,8 +1662,11 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Gets the detailed sales data row for given sale_id. Used in app/Views/reports/tabular_details.php
+	 *
 	 * @param string $sale_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function get_detailed_sales_row(string $sale_id): void
 	{
@@ -1620,7 +1717,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed Supplier report input form. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function specific_supplier_input(): void
 	{
@@ -1641,6 +1741,8 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Detailed suppliers report.
+	 *
 	 * @param string $start_date
 	 * @param string $end_date
 	 * @param string $supplier_id
@@ -1840,8 +1942,11 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Returns detailed receivings row for given receiving_id. Used in app/Views/reports/tabular_details.php
+	 *
 	 * @param string $receiving_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function get_detailed_receivings_row(string $receiving_id): void
 	{
@@ -1997,7 +2102,10 @@ class Reports extends Secure_Controller
 	}
 
 	/**
+	 * Gets the inventory summary input view. Used in app/Config/Routes.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function inventory_summary_input(): void
 	{

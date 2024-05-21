@@ -21,7 +21,10 @@ class Home extends Secure_Controller
 	}
 
 	/**
+	 * Logs the currently logged in employee out of the system.  Used in app/Views/partial/header.php
+	 *
 	 * @return RedirectResponse
+	 * @noinspection PhpUnused
 	 */
 	public function getLogout(): RedirectResponse
 	{

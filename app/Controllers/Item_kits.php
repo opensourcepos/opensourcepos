@@ -265,7 +265,10 @@ class Item_kits extends Secure_Controller
 	}
 
 	/**
+	 * Checks the validity of the item kit number. Used in app/Views/item_kits/form.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckItemNumber(): void
 	{

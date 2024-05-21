@@ -351,7 +351,10 @@ class Customers extends Persons
 	}
 
 	/**
-	 * AJAX call to verify if an email address already exists
+	 * Verifies if an email address already exists. Used in app/Views/customers/form.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckEmail(): void
 	{
@@ -364,7 +367,10 @@ class Customers extends Persons
 	}
 
 	/**
-	 * AJAX call to verify if an account number already exists
+	 * Verifies if an account number already exists. Used in app/Views/customers/form.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckAccountNumber(): void
 	{
@@ -419,7 +425,10 @@ class Customers extends Persons
 	}
 
 	/**
+	 * Displays the customer CSV import modal. Used in app/Views/people/manage.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getCsvImport(): void
 	{
@@ -427,7 +436,10 @@ class Customers extends Persons
 	}
 
 	/**
+	 * Imports a CSV file containing customers. Used in app/Views/customers/form_csv_import.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postImportCsvFile(): void
 	{

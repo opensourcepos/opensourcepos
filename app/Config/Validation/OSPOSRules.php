@@ -130,6 +130,14 @@ class OSPOSRules
 		return $is_installed;
 	}
 
+	/**
+	 * Validates the candidate as a decimal number. Takes the locale into account. Used in validation rule calls.
+	 *
+	 * @param string $candidate
+	 * @param string|null $error
+	 * @return bool
+	 * @noinspection PhpUnused
+	 */
 	public function decimal_locale(string $candidate, ?string &$error = null): bool
 	{
 		$candidate = prepare_decimal($candidate);

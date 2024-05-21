@@ -289,7 +289,10 @@ class Cashups extends Secure_Controller
 	}
 
 	/**
-	 * AJAX call from cashup input form to calculate the total. Called in the view.
+	 * Calculate the total for cashups. Used in app\Views\cashups\form.php
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function ajax_cashup_total(): void
 	{

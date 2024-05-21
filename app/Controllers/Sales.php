@@ -27,7 +27,7 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
-	protected $helpers = ['form', 'file'];
+	protected $helpers = ['file'];
 	private Barcode_lib $barcode_lib;
 	private Email_lib $email_lib;
 	private Sale_lib $sale_lib;
@@ -75,7 +75,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Load the sale edit modal. Used in app/Views/sales/register.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getManage(): void
 	{
@@ -160,8 +163,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Gets search suggestions for an item or item kit. Used in app/Views/sales/register.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getItemSearch(): void
 	{
@@ -196,7 +201,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Set a given customer. Used in app/Views/sales/register.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSelectCustomer(): void
 	{
@@ -300,7 +308,10 @@ class Sales extends Secure_Controller
 
 
 	/**
+	 * Sets the sales comment. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetComment(): void
 	{
@@ -308,8 +319,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Sets the invoice number. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetInvoiceNumber(): void
 	{
@@ -326,8 +339,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Sets PrintAfterSale flag. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetPrintAfterSale(): void
 	{
@@ -335,7 +350,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Sets the flag to include prices in the work order. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetPriceWorkOrders(): void
 	{
@@ -344,8 +362,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Sets the flag to email receipt to the customer. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSetEmailReceipt(): void
 	{
@@ -353,8 +373,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Multiple Payments. Called in the view.
+	 * Add a payment to the sale. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postAddPayment(): void
 	{
@@ -471,9 +493,11 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Multiple Payments. Called in the view.
+	 * Multiple Payments. Used in app/Views/sales/register.php
+	 *
 	 * @param string $payment_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getDeletePayment(string $payment_id): void
 	{
@@ -483,7 +507,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Add an item to the sale. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postAdd(): void
 	{
@@ -581,9 +608,11 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Edit an item in the sale. Used in app/Views/sales/register.php
+	 *
 	 * @param string $line
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postEditItem(string $line): void
 	{
@@ -633,10 +662,12 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Deletes an item specified in the parameter from the shopping cart. Called in the view.
+	 * Deletes an item specified in the parameter from the shopping cart. Used in app/Views/sales/register.php
+	 *
 	 * @param int $item_id
 	 * @return void
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function getDeleteItem(int $item_id): void
 	{
@@ -648,8 +679,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Remove the current customer from the sale. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getRemoveCustomer(): void
 	{
@@ -664,8 +697,11 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Complete and finalize a sale. Used in app/Views/sales/register.php
+	 *
 	 * @return void
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postComplete(): void	//TODO: this function is huge.  Probably should be refactored.
 	{
@@ -924,10 +960,12 @@ class Sales extends Secure_Controller
 	}
 
 	/**
-	 * Called in the view.
+	 * Email PDF invoice to customer. Used in app/Views/sales/form.php, invoice.php, quote.php, tax_invoice.php and work_order.php
+	 *
 	 * @param int $sale_id
 	 * @param string $type
 	 * @return bool
+	 * @noinspection PhpUnused
 	 */
 	public function getSendPdf(int $sale_id, string $type = 'invoice'): bool
 	{
@@ -974,8 +1012,11 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Emails sales receipt to customer. Used in app/Views/sales/receipt.php
+	 *
 	 * @param int $sale_id
 	 * @return bool
+	 * @noinspection PhpUnused
 	 */
 	public function getSendReceipt(int $sale_id): bool
 	{
@@ -1326,8 +1367,11 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Load the sales receipt for a sale. Used in app/Views/sales/form.php
+	 *
 	 * @param int $sale_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getReceipt(int $sale_id): void
 	{
@@ -1580,8 +1624,11 @@ class Sales extends Secure_Controller
 	/**
 	 * This is used to cancel a suspended pos sale, quote.
 	 * Completed sales (POS Sales or Invoiced Sales) can not be removed from the system
-	 * Work orders can be canceled but are not physically removed from the sales history
+	 * Work orders can be canceled but are not physically removed from the sales history.
+	 * Used in app/Views/sales/register.php
+	 *
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postCancel(): void
 	{
@@ -1616,9 +1663,12 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Discards the suspended sale. Used in app/Views/sales/quote.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
-	public function discardSuspendedSale(): void
+	public function getDiscardSuspendedSale(): void
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
@@ -1629,8 +1679,10 @@ class Sales extends Secure_Controller
 	/**
 	 * Suspend the current sale.
 	 * If the current sale is already suspended then update the existing suspended sale otherwise create
-	 * it as a new suspended sale.
+	 * it as a new suspended sale. Used in app/Views/sales/register.php.
+	 *
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postSuspend(): void
 	{
@@ -1683,7 +1735,10 @@ class Sales extends Secure_Controller
 
 	/**
 	 * Unsuspended sales are now left in the tables and are only removed
-	 * when they are intentionally cancelled.
+	 * when they are intentionally cancelled. Used in app/Views/sales/suspended.php.
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postUnsuspend(): void
 	{
@@ -1702,7 +1757,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Show Keyboard shortcut modal. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getSalesKeyboardHelp() : void
 	{
@@ -1710,7 +1768,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Check the validity of an invoice number. Used in app/Views/sales/form.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckInvoiceNumber(): void
 	{
@@ -1744,7 +1805,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Update the item number in the register. Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postChangeItemNumber(): void
 	{
@@ -1761,7 +1825,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Change a given item name. Used in app/Views/sales/register.php.
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postChangeItemName(): void
 	{
@@ -1782,7 +1849,10 @@ class Sales extends Secure_Controller
 	}
 
 	/**
+	 * Update the given item description.  Used in app/Views/sales/register.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postChangeItemDescription(): void
 	{
@@ -1807,7 +1877,7 @@ class Sales extends Secure_Controller
 	 * @param array $shopping_cart
 	 * @return int|string|null
 	 */
-	public function getSearch_cart_for_item_id(int $search_item_id, array $shopping_cart): int|string|null
+	public function search_cart_for_item_id(int $search_item_id, array $shopping_cart): int|string|null
 	{
 		foreach($shopping_cart as $key => $val)
 		{

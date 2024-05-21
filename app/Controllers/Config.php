@@ -318,7 +318,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves company information. Used in app/Views/configs/info_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveInfo(): void
 	{
@@ -396,6 +400,8 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves general configuration. Used in app/Views/configs/general_config.php
+	 *
 	 * @throws ReflectionException
 	 * @noinspection PhpUnused
 	 */
@@ -456,7 +462,10 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Checks a number against the currently selected locale. Used in app/Views/configs/locale_config.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckNumberLocale(): void
 	{
@@ -494,7 +503,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves locale configuration. Used in app/Views/configs/locale_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveLocale(): void
 	{
@@ -526,7 +539,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves email configuration. Used in app/Views/configs/email_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveEmail(): void
 	{
@@ -554,7 +571,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves SMS message configuration. Used in app/Views/configs/message_config.php.
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveMessage(): void
 	{
@@ -602,13 +623,13 @@ class Config extends Secure_Controller
 	}
 
 	/**
-	 * AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
+	 * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
 	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postCheckMailchimpApiKey(): void
 	{
-		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$lists = $this->_mailchimp($this->request->getPost('mailchimp_api_key'));
 		$success = count($lists) > 0;
 
@@ -620,7 +641,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves Mailchimp configuration. Used in app/Views/configs/integrations_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveMailchimp(): void
 	{
@@ -650,7 +675,10 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Gets all stock locations. Used in app/Views/configs/stock_config.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getStockLocations(): void
 	{
@@ -671,9 +699,11 @@ class Config extends Secure_Controller
 
 
 	/**
+	 * Gets all tax categories.
+	 *
 	 * @return void
 	 */
-	public function ajax_tax_categories(): void
+	public function ajax_tax_categories(): void	//TODO: Is this function called anywhere in the code?
 	{
 		$tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
@@ -681,7 +711,10 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Gets all customer rewards. Used in app/Views/configs/reward_config.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function getCustomerRewards(): void
 	{
@@ -705,7 +738,10 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves stock locations. Used in app/Views/configs/stock_config.php
+	 *
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveLocations(): void
 	{
@@ -749,7 +785,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves all dinner tables. Used in app/Views/configs/table_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveTables(): void
 	{
@@ -798,12 +838,14 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves tax configuration. Used in app/Views/configs/tax_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveTax(): void
 	{
-		$this->db->transStart();
-
 		$default_tax_1_rate = prepare_decimal($this->request->getPost('default_tax_1_rate'));
 		$default_tax_2_rate = prepare_decimal($this->request->getPost('default_tax_2_rate'));
 
@@ -822,17 +864,17 @@ class Config extends Secure_Controller
 
 		$success = $this->appconfig->batch_save($batch_save_data);
 
-		$this->db->transComplete();
-
-		$success &= $this->db->transStatus();
-
 		$message = lang('Config.saved_' . ($success ? '' : 'un') . 'successfully');
 
 		echo json_encode (['success' => $success, 'message' => $message]);
 	}
 
 	/**
+	 * Saves customer rewards configuration. Used in app/Views/configs/reward_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveRewards(): void
 	{
@@ -891,7 +933,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves barcode configuration. Used in app/Views/configs/barcode_config.php
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveBarcode(): void
 	{
@@ -919,7 +965,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves receipt configuration. Used in app/Views/configs/receipt_config.php.
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveReceipt(): void
 	{
@@ -950,7 +1000,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
+	 * Saves invoice configuration. Used in app/Views/configs/invoice_config.php.
+	 *
 	 * @throws ReflectionException
+	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function postSaveInvoice(): void
 	{
@@ -991,9 +1045,11 @@ class Config extends Secure_Controller
 	}
 
 	/**
-	 * Called via AJAX. Removes the company logo from the database.
+	 * Removes the company logo from the database. Used in app/Views/configs/info_config.php.
+	 *
 	 * @return void
 	 * @throws ReflectionException
+	 * @noinspection PhpUnused
 	 */
 	public function postRemoveLogo(): void
 	{

@@ -64,10 +64,11 @@ class Messages extends Secure_Controller
 	}
 
 	/**
-	 * Sends an SMS message to a user. Called in the view.
+	 * Sends an SMS message to a user. Used in app/Views/messages/form_sms.php.
 	 *
 	 * @param int $person_id
 	 * @return void
+	 * @noinspection PhpUnused
 	 */
 	public function send_form(int $person_id = NEW_ENTRY): void
 	{
