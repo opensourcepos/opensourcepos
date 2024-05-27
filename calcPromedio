@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Promedio</title>
+    <link rel="icon" type="image/ico.xls" href="image/calculadora.ico">
+    <style>
+        label{
+         font-size: 50px;
+         color: blue;
+         height: bold;
+
+
+        }
+        input[type="number"]
+        {
+          font-size: 30px;
+          width: 200px;   
+          height: 100px;
+        }
+        input[type='reset']
+        {
+            width: 90px;
+            height: 100px;
+        }
+       button {
+         width: 90px;
+         height: 100px;
+
+       }
+
+    </style>
+    <script>
+        // función para calcular los valores
+        function calcular(){
+            const precioProducto = parseFloat(document.getElementById("precio_producto").value);
+            const precioTransporte = parseFloat(document.getElementById("precio_transporte").value);
+            const precioAccesorios = parseFloat(document.getElementById("precio_accesorios").value);
+            const precioCompetencia = parseFloat(document.getElementById("precio_competencia").value);
+            const porcentaje = parseFloat(document.getElementById("porcentaje").value);
+            
+            if(isNaN(precioProducto)|| isNaN(precioTransporte) || isNaN(precioAccesorios)|| isNaN(precioCompetencia) || isNaN(precioCompetencia) || isNaN(porcentaje)){
+
+
+
+
+            }
+            // Calcular los valores ingresados del formulario
+            const totalReal = precioProducto + precioTransporte + precioAccesorios;
+            const margen = totalReal + (totalReal * (porcentaje / 100));
+            const ganancia = totalReal * (1 + porcentaje / 100);
+
+            // Actualizar el formulario
+            document.getElementById("total_Real").value = totalReal.toFixed(2);
+            document.getElementById("total_Porcentaje").value = margen.toFixed(2);
+            document.getElementById("total_Ganancia").value = ganancia.toFixed(2);
+
+           
+            // Comprobar si el precio de la competencia es mayor o igual al total real
+            if(totalReal > precioCompetencia){
+                document.getElementById('result').innerText='Desfasado'
+
+            }else{
+                document.getElementById('result').innerText=' No desfasado'
+            }
+        }
+
+        // Para validar el ingreso del teclado 
+        function setActiveInput(input){
+            activeInput = input;
+
+
+        }
+        function insertNumber(number){
+           if(activeInput){
+             activeInput.value += number;
+             calcular();
+           }
+
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculadora Promedio </h1>
+    <form>
+        <label for="precio_competencia">Precio de la competencia:</label>
+        <input type="number" name="precio_competencia" id="precio_competencia" onfocus="setActiveInput(this)" oninput="calcular()"><br>
+
+        <label for="precio_producto">Precio del producto:</label>
+        <input type="number" name="precio_producto" id="precio_producto"   onfocus="setActiveInput(this)"  oninput="calcular()"><br>
+
+        <label for="precio_accesorios">Precio de los accesorios:</label>
+        <input type="number" name="precio_accesorios" id="precio_accesorios" onfocus="setActiveInput(this)"    oninput="calcular()"><br>
+
+        <label for="precio_transporte">Precio del transporte:</label>
+        <input type="number" name="precio_transporte" id="precio_transporte"  onfocus="setActiveInput(this)" oninput="calcular()"><br>
+
+        <label for="porcentaje">Porcentaje:</label>
+        <input type="number" name="porcentaje" id="porcentaje" onfocus="setActiveInput(this)"       oninput="calcular()"><br>
+
+        <label for="total_Real">Total Real:</label>
+        <input type="number" id="total_Real" name="total_Real" readonly><br>
+
+        <label for="total_Porcentaje">Total Porcentaje:</label>
+        <input type="number" id="total_Porcentaje" name="margen" readonly><br>
+
+        <label for="total_Ganancia">Total Ganancia:</label>
+        <input type="number" id="total_Ganancia" name="ganancia" readonly><br>
+        <!-- #region -->
+        <label for="result">Precio:</label>
+        <p id='result'></p>
+
+        <input type="reset" value="Borrar">
+        <table id="container">
+         <tr>
+            <td><button type="button"id="number" onclick="insertNumber(0)">0</button>
+                <button type="button"id="number" onclick="insertNumber(1)">1</button>
+                <button type="button" id="number" onclick="insertNumber(2)">2</button>
+                <button type="button" id="number" onclick="insertNumber(3)">3</button>
+                <button type="button" id="number" onclick="insertNumber(4)">4</button>
+            </td>
+            
+         </tr>
+            <tr>
+                <td>
+                    <button type="button"id="number" onclick="insertNumber(5)">5</button>
+                    <button type="button"id="number" onclick="insertNumber(6)">6</button>
+                    <button type="button" id="number" onclick="insertNumber(7)">7</button>
+                    <button type="button" id="number" onclick="insertNumber(8)">8</button>
+                    <button type="button" id="number" onclick="insertNumber(9)">9</button>
+                 </td>
+            </tr>
+        </table>
+        
+    </form>
+</body>
+</html>
+<?php
+
+include "footer.html";
+
+
+?>
