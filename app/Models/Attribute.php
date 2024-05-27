@@ -597,6 +597,7 @@ class Attribute extends Model
 	{
 		$builder = $this->db->table('attribute_definitions');
 		$builder->where('definition_name', $definition_name);
+		$builder->where('deleted', 0);
 
 		if($definition_type)
 		{
