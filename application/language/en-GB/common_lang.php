@@ -8,9 +8,11 @@ $lang["common_close"] = "Close";
 $lang["common_color"] = "";
 $lang["common_comments"] = "Comments";
 $lang["common_common"] = "common";
-$lang["common_confirm_search"] = "You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?";
+$lang["common_confirm_search"] =
+    "You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?";
 $lang["common_copyrights"] = "© 2010 - %1";
-$lang["common_correct_errors"] = "Please correct identified errors before saving";
+$lang["common_correct_errors"] =
+    "Please correct identified errors before saving";
 $lang["common_country"] = "Country";
 $lang["common_dashboard"] = "";
 $lang["common_date"] = "Date";
@@ -19,7 +21,8 @@ $lang["common_det"] = "details";
 $lang["common_download_import_template"] = "Download Import CSV Template (CSV)";
 $lang["common_edit"] = "edit";
 $lang["common_email"] = "Email";
-$lang["common_email_invalid_format"] = "The email address is not in the correct format.";
+$lang["common_email_invalid_format"] =
+    "The email address is not in the correct format.";
 $lang["common_export_csv"] = "CSV Export";
 $lang["common_export_csv_no"] = "No";
 $lang["common_export_csv_yes"] = "Yes";
@@ -44,13 +47,15 @@ $lang["common_inv"] = "inv";
 $lang["common_last_name"] = "Last Name";
 $lang["common_last_name_required"] = "Last Name is a required field.";
 $lang["common_last_page"] = "Last";
-$lang["common_learn_about_project"] = "to learn the latest information about the project.";
+$lang["common_learn_about_project"] =
+    "to learn the latest information about the project.";
 $lang["common_list_of"] = "List of";
 $lang["common_logo"] = "Logo";
 $lang["common_logo_mark"] = "Mark";
 $lang["common_logout"] = "Log Out";
 $lang["common_manager"] = "";
-$lang["common_migration_needed"] = "A database migration to %1 will start after login";
+$lang["common_migration_needed"] =
+    "A database migration to %1 will start after login";
 $lang["common_new"] = "New";
 $lang["common_no"] = "No";
 $lang["common_no_persons_to_display"] = "There are no people to display.";
@@ -71,7 +76,7 @@ $lang["common_return_policy"] = "Return Policy";
 $lang["common_search"] = "Search";
 $lang["common_search_options"] = "Search options";
 $lang["common_searched_for"] = "Searched for";
-$lang["common_software_short"] = "OSPOS";
+$lang["common_software_short"] = "DC POS System";
 $lang["common_software_title"] = "Open Source Point of Sale";
 $lang["common_state"] = "County";
 $lang["common_submit"] = "Submit";
@@ -80,7 +85,8 @@ $lang["common_unknown"] = "Unknown";
 $lang["common_view_recent_sales"] = "View Recent Sales";
 $lang["common_website"] = "opensourcepos.org";
 $lang["common_welcome"] = "Welcome";
-$lang["common_welcome_message"] = "Welcome to OSPOS, click on a module to get started.";
+$lang["common_welcome_message"] =
+    "Welcome to Dream Centre POS System, click on a module to get started.";
 $lang["common_yes"] = "Yes";
 $lang["common_you_are_using_ospos"] = "";
 $lang["common_zip"] = "Post Code";
