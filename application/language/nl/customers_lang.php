@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Account #";
 $lang["customers_account_number_duplicate"] = "Accountnummer is al aanwezig in de database.";
 $lang["customers_available_points"] = "Beschikbare punten";
