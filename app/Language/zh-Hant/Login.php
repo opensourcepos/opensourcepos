@@ -9,7 +9,6 @@ return [
 	"logout" => "登出",
 	"migration_needed" => "登錄後將開始向 {0} 的數據庫遷移。",
 	"password" => "密碼",
-	"required_username" => "",
 	"username" => "帳號",
 	"welcome" => "歡迎來到 {0}！",
 ];

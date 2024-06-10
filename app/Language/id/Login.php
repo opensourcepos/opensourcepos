@@ -9,7 +9,6 @@ return [
 	"logout" => "Keluar",
 	"migration_needed" => "Migrasi basis data untuk {0} akan mulai setelah masuk.",
 	"password" => "Kata kunci",
-	"required_username" => "",
 	"username" => "Nama Anda",
 	"welcome" => "Selamat Datang di {0}!",
 ];

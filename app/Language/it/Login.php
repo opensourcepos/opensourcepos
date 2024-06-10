@@ -9,7 +9,6 @@ return [
 	"logout" => "Uscita",
 	"migration_needed" => "Dopo l'accesso verrà avviata una migrazione del database a {0}.",
 	"password" => "Password",
-	"required_username" => "",
 	"username" => "Username",
 	"welcome" => "Benvenuto in {0}!",
 ];

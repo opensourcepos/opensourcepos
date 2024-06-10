@@ -9,7 +9,6 @@ return [
 	"logout" => "Afmelden",
 	"migration_needed" => "Een databasemigratie naar {0} zal starten na aanmelding.",
 	"password" => "Wachtwoord",
-	"required_username" => "Het gebruikersnaam veld is verplicht.",
 	"username" => "Gebruikersnaam",
 	"welcome" => "Welkom bij {0}!",
 ];

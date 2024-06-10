@@ -9,7 +9,6 @@ return [
 	"logout" => "",
 	"migration_needed" => "",
 	"password" => "Passwort",
-	"required_username" => "",
 	"username" => "Benutzername",
 	"welcome" => "",
 ];

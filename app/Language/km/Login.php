@@ -9,7 +9,6 @@ return [
 	"logout" => "",
 	"migration_needed" => "",
 	"password" => "ពាក្យសំងាត់",
-	"required_username" => "",
 	"username" => "ឈ្មោះ",
 	"welcome" => "",
 ];
