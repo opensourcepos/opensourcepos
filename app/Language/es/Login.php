@@ -9,7 +9,6 @@ return [
 	"logout" => "Cerrar sesión",
 	"migration_needed" => "La migración de la base de datos a {0} se iniciará después del inicio de sesión.",
 	"password" => "Contraseña",
-	"required_username" => "",
 	"username" => "Usuario",
 	"welcome" => "Bienvenido a {0}!",
 ];

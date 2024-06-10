@@ -9,7 +9,6 @@ return [
 	"logout" => "Logout",
 	"migration_needed" => "A database migration to {0} will start after login.",
 	"password" => "Password",
-	"required_username" => "",
 	"username" => "Username",
 	"welcome" => "Welcome to {0}!",
 ];

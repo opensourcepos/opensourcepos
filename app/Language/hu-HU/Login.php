@@ -9,7 +9,6 @@ return [
 	"logout" => "",
 	"migration_needed" => "",
 	"password" => "Jelszó",
-	"required_username" => "",
 	"username" => "Felhasználó név",
 	"welcome" => "",
 ];

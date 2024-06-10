@@ -9,7 +9,6 @@ return [
 	"logout" => "Log-uit",
 	"migration_needed" => "Een database migratie naar {0} zal starten na het inloggen.",
 	"password" => "Paswoord",
-	"required_username" => "",
 	"username" => "Gebruiker",
 	"welcome" => "Welkom op {0}!",
 ];

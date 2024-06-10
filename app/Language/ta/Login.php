@@ -9,7 +9,6 @@ return [
 	"logout" => "விடுபதிகை",
 	"migration_needed" => "{0} க்கு தரவுத்தள இடம்பெயர்வு உள்நுழைந்த பிறகு தொடங்கும்.",
 	"password" => "கடவுச்சொல்",
-	"required_username" => "",
 	"username" => "பயனர்பெயர்",
 	"welcome" => "{0} க்கு வருக!",
 ];

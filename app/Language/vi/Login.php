@@ -9,7 +9,6 @@ return [
 	"logout" => "Đăng xuất",
 	"migration_needed" => "Di chuyển cơ sở dữ liệu sang {0} sẽ được bắt đầu sau khi đăng nhập.",
 	"password" => "Mật khẩu",
-	"required_username" => "",
 	"username" => "Tài khoản",
 	"welcome" => "Chào mừng đến với {0}!",
 ];
