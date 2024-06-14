@@ -56,7 +56,23 @@ class Sale_lib
 		$invoice_types['custom_tax_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_tax_invoice');
 		return $invoice_types;
 	}
-
+	
+	public function get_key_shortcuts_options()
+	{
+		$key_shortcuts = array();
+		$key_shortcuts['27 | ESC'] = $this->CI->lang->line('sales_key_1');
+		$key_shortcuts['49 | ALT + 1'] = $this->CI->lang->line('sales_key_2');
+		$key_shortcuts['50 | ALT + 2'] = $this->CI->lang->line('sales_key_3');
+		$key_shortcuts['51 | ALT + 3'] = $this->CI->lang->line('sales_key_4');
+		$key_shortcuts['52 | ALT + 4'] = $this->CI->lang->line('sales_key_5');
+		$key_shortcuts['53 | ALT + 5'] = $this->CI->lang->line('sales_key_6');
+		$key_shortcuts['54 | ALT + 6'] = $this->CI->lang->line('sales_key_7');
+		$key_shortcuts['55 | ALT + 7'] = $this->CI->lang->line('sales_key_8');
+		$key_shortcuts['56 | ALT + 8'] = $this->CI->lang->line('sales_key_9');
+		$key_shortcuts['57 | ALT + 9'] = $this->CI->lang->line('sales_key_10');
+		return $key_shortcuts;
+	}
+	
 	public function get_cart()
 	{
 		if(!$this->CI->session->userdata('sales_cart'))

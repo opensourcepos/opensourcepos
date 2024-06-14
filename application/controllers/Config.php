@@ -203,6 +203,7 @@ class Config extends Secure_Controller
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
+		$data['key_shortcuts_options'] = $this->sale_lib->get_key_shortcuts_options();
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
 		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
@@ -855,7 +856,31 @@ class Config extends Secure_Controller
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
+	
+	public function save_shortcuts()
+	{
+		$batch_save_data = array (
+			'key_cancel' => $this->input->post('key_cancel'),
+			'key_items' => $this->input->post('key_items'),
+			'key_customers' => $this->input->post('key_customers'),
+			'key_suspend' => $this->input->post('key_suspend'),
+			'key_suspended' => $this->input->post('key_suspended'),
+			'key_amount' => $this->input->post('key_amount'),
+			'key_payment' => $this->input->post('key_payment'),
+			'key_complete' => $this->input->post('key_complete'),
+			'key_finish' => $this->input->post('key_finish'),
+			'key_help' => $this->input->post('key_help')
+		);
 
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+	}
+	
 	public function remove_logo()
 	{
 		$result = $this->Appconfig->batch_save(array('company_logo' => ''));
