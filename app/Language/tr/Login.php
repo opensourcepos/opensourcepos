@@ -9,6 +9,7 @@ return [
 	"logout" => "Çıkış",
 	"migration_needed" => "Girişten sonra {0} veri tabanına göç başlayacak.",
 	"password" => "Parola",
+	"required_username" => "",
 	"username" => "Kullanıcı Adı",
 	"welcome" => "{0}'e Hoş Geldiniz!",
 ];
