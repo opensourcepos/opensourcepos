@@ -119,7 +119,7 @@ CREATE TABLE `ospos_employees` (
 	`person_id` int(10) NOT NULL,
 	`deleted` int(1) NOT NULL DEFAULT '0',
 	`hash_version` int(1) NOT NULL DEFAULT '2',
-	PRIMARY KEY `person_id` (`person_id`)
+	PRIMARY KEY `person_id` (`person_id`),
 	UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
