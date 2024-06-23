@@ -98,8 +98,8 @@ CREATE TABLE `ospos_customers` (
 	`taxable` int(1) NOT NULL DEFAULT '1',
 	`discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
 	`deleted` int(1) NOT NULL DEFAULT '0',
-	UNIQUE KEY `account_number` (`account_number`),
-	KEY `person_id` (`person_id`)
+	PRIMARY KEY `person_id` (`person_id`),
+	UNIQUE KEY `account_number` (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -119,8 +119,8 @@ CREATE TABLE `ospos_employees` (
 	`person_id` int(10) NOT NULL,
 	`deleted` int(1) NOT NULL DEFAULT '0',
 	`hash_version` int(1) NOT NULL DEFAULT '2',
-	UNIQUE KEY `username` (`username`),
-	KEY `person_id` (`person_id`)
+	PRIMARY KEY `person_id` (`person_id`)
+	UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -723,8 +723,8 @@ CREATE TABLE `ospos_suppliers` (
 	`agency_name` varchar(255) NOT NULL,
 	`account_number` varchar(255) DEFAULT NULL,
 	`deleted` int(1) NOT NULL DEFAULT '0',
-	UNIQUE KEY `account_number` (`account_number`),
-	KEY `person_id` (`person_id`)
+	PRIMARY KEY `person_id` (`person_id`),
+	UNIQUE KEY `account_number` (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

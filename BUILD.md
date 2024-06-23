@@ -12,8 +12,6 @@ The goal here is to set up and configure the build process so that the actual bu
 
 The build process uses the build tools "npm" and "gulp" to piece everything together.
 
-This applies only to the upcoming 3.4.0 release of OSPOS which is being worked on in the CI4 branch, where we are upgrading OSPOS to version 4 of the CodeIgniter framework.
-
 ## Prerequisites
 
 - Install the latest version of NPM (tested using version 9.4.2)
@@ -21,7 +19,7 @@ This applies only to the upcoming 3.4.0 release of OSPOS which is being worked o
 
 ## The Workflow
 
-1. Download the code from the CI4 branch found at https://github.com/opensourcepos/opensourcepos/tree/ci4-upgrade.
+1. Download the code from the master branch found at https://github.com/opensourcepos/opensourcepos/tree/master.
 2. Unzip it and copy the contents into the working folder.
 3. Start a terminal session from the root of your working folder. For example, I normally open up the working folder in PHPStorm and run the commands from the Terminal provided by the IDE.
 4. Enter the following three commands in sequence:
