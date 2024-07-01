@@ -327,6 +327,7 @@ class Items extends Secure_Controller
 				$item_info->tax_category_id = $this->config['default_tax_category'];
 			}
 		}
+
 		$data['standard_item_locked'] = (
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
