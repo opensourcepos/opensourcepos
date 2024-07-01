@@ -269,8 +269,7 @@ class Items extends Secure_Controller
 	 */
 	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Long function. Perhaps we need to refactor out some methods.
 	{
-		// Set default values
-		if($item_id == null) $item_id = NEW_ENTRY;
+		$item_id ??= NEW_ENTRY;
 
 		if($item_id === NEW_ENTRY)
 		{
@@ -397,7 +396,6 @@ class Items extends Secure_Controller
 		{
 			$data['image_path']	= '';
 		}
-
 
 		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
@@ -1455,6 +1453,7 @@ class Items extends Secure_Controller
 	 */
 	private function sanitizeItemData(array $data): array
 	{
+		$data['item_info']->name = Services::htmlPurifier()->purify($data['item_info']->name);
 		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
 		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
 		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
@@ -1464,6 +1463,7 @@ class Items extends Secure_Controller
 
 	/**
 	 * Sanitizes TEXT type attribute values to remove unsafe HTML tags and javascript.
+	 * Table data is not sanitized here.
 	 * This is not meant to replace CI4 sanitization.
 	 *
 	 * @param array $data Attribute data to sanitize.
