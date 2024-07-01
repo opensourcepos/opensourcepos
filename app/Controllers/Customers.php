@@ -87,7 +87,7 @@ class Customers extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -125,7 +125,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->customer->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
@@ -136,7 +136,7 @@ class Customers extends Persons
 	 */
 	public function suggest_search(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->customer->get_search_suggestions($search, 25, false);
 
 		echo json_encode($suggestions);
