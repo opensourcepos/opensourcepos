@@ -7,6 +7,7 @@ use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
+use Config\Services;
 
 /**
  * Tabular views helper
@@ -281,7 +282,7 @@ function get_customer_data_row(object $person, object $stats): array
 	return [
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
-		'first_name' => $person->first_name,
+		'first_name' => Services::htmlPurifier()->purify($person->first_name),
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
 		'total' => to_currency($stats->total),
