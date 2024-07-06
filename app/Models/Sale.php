@@ -1559,6 +1559,13 @@ class Sale extends Model
 			$builder->where('sales_items.item_location', $filters['location_id']);
 		}
 
+		if($filters['selected_customer'] != false)
+		{
+			$sale_lib = new Sale_lib();
+			$builder->where('sales.customer_id', $sale_lib->get_customer());
+		}
+
+
 		if($filters['only_invoices'])
 		{
 			$builder->where('sales.invoice_number IS NOT NULL');

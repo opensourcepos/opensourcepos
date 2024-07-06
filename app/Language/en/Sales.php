@@ -173,6 +173,7 @@ return [
 	"sales_tax" => "Sales Tax",
 	"sales_total" => "",
 	"select_customer" => "Select Customer",
+	"selected_customer" => "Selected Customer",
 	"send_invoice" => "Send Invoice",
 	"send_quote" => "Send Quote",
 	"send_receipt" => "Send Receipt",
