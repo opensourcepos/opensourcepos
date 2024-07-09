@@ -96,8 +96,21 @@ class Sales extends Secure_Controller
 				'only_due' => lang('Sales.due_filter'),
 				'only_check' => lang('Sales.check_filter'),
 				'only_creditcard' => lang('Sales.credit_filter'),
-				'only_invoices' => lang('Sales.invoice_filter')
+				'only_invoices' => lang('Sales.invoice_filter'),
+				'selected_customer' => lang('Sales.selected_customer')
 			];
+
+			if($this->sale_lib->get_customer() != -1)
+			{
+				$selected_filters = ['selected_customer'];
+				$data['customer_selected'] = true;
+			}
+			else
+			{
+				$data['customer_selected'] = false;
+				$selected_filters = [];
+			}
+			$data['selected_filters'] = $selected_filters;
 
 			echo view('sales/manage', $data);
 		}
@@ -134,6 +147,7 @@ class Sales extends Secure_Controller
 			'only_cash' => false,
 			'only_due' => false,
 			'only_check' => false,
+			'selected_customer' => false,
 			'only_creditcard' => false,
 			'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
 			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
