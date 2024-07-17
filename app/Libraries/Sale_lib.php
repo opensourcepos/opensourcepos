@@ -1309,7 +1309,7 @@ class Sale_lib
 			$line['quantity'] = $quantity;
 			$line['discount'] = $discount;
 
-			if(!empty($discount_type))
+			if($discount_type != null)
 			{
 				$line['discount_type'] = $discount_type;
 			}
