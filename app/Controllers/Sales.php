@@ -635,7 +635,7 @@ class Sales extends Secure_Controller
 		$rules = [
 			'price' => 'trim|required|numeric',
 			'quantity' => 'trim|required|numeric',
-			'discount' => 'trim|required|numeric',
+			'discount' => 'trim|permit_empty|numeric',
 		];
 
 		if($this->validate($rules))

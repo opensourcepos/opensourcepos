@@ -362,28 +362,28 @@ function to_datetime(int $datetime = DEFAULT_DATETIME): string
 }
 
 /**
- * @param float|null $number
+ * @param string|null $number
  * @return string
  */
-function to_currency(?float $number): string
+function to_currency(?string $number): string
 {
 	return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
 /**
- * @param float|null $number
+ * @param string|null $number
  * @return string
  */
-function to_currency_no_money(?float $number): string
+function to_currency_no_money(?string $number): string
 {
 	return to_decimals($number, 'currency_decimals');
 }
 
 /**
- * @param float|null $number
+ * @param string|null $number
  * @return string
  */
-function to_currency_tax(?float $number): string
+function to_currency_tax(?string $number): string
 {
 	$config = config(OSPOS::class)->settings;
 
@@ -419,21 +419,21 @@ function to_tax_decimals($number): string
 }
 
 /**
- * @param float|null $number
+ * @param string|null $number
  * @return string
  */
-function to_quantity_decimals(?float $number): string
+function to_quantity_decimals(?string $number): string
 {
 	return to_decimals($number, 'quantity_decimals');
 }
 
 /**
- * @param float|null $number
+ * @param string|null $number
  * @param string|null $decimals
  * @param int $type
  * @return string
  */
-function to_decimals(?float $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
+function to_decimals(?string $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
 	if(!isset($number))
 	{
@@ -451,7 +451,7 @@ function to_decimals(?float $number, string $decimals = null, int $type = Number
 	}
 	$fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
 
-	return $fmt->format($number);
+	return $fmt->format((float) $number);
 }
 
 /**
