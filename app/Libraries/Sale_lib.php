@@ -1373,7 +1373,7 @@ class Sale_lib
 	 * @param string $stock_warning
 	 * @return bool
 	 */
-	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, bool $kit_price_option, bool $kit_print_option, string &$stock_warning): bool
+	public function add_item_kit(string $external_item_kit_id, int $item_location, float $discount, string $discount_type, bool $kit_price_option, bool $kit_print_option, ?string &$stock_warning): bool
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);

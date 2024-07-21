@@ -40,7 +40,7 @@ class Item_kit extends Model
 	/**
 	 * Check if a given item_id is an item kit
 	 */
-	public function is_valid_item_kit(int $item_kit_id): bool
+	public function is_valid_item_kit(string $item_kit_id): bool
 	{
 		if(!empty($item_kit_id))
 		{
@@ -98,7 +98,7 @@ class Item_kit extends Model
 	/**
 	 * Gets information about a particular item kit
 	 */
-	public function get_info(int $item_kit_id): object
+	public function get_info(string $item_kit_id): object
 	{
 		$builder = $this->db->table('item_kits');
 		$builder->select('
