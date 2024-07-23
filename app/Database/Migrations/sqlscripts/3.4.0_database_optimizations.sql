@@ -75,6 +75,7 @@ ALTER TABLE `ospos_expense_categories` ADD INDEX(`category_description`);
 ALTER TABLE `ospos_giftcards` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 
 #ospos_items table
+ALTER TABLE `ospos_items` DROP FOREIGN KEY `ospos_items_ibfk_1`;
 ALTER TABLE `ospos_items` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_items` MODIFY `stock_type` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_items` MODIFY `item_type` tinyint(1) DEFAULT 0 NOT NULL;
@@ -139,9 +140,6 @@ ALTER TABLE `ospos_suppliers` ADD CONSTRAINT `ospos_suppliers_ibfk_1` FOREIGN KE
 #ospos_tax_categories table
 ALTER TABLE `ospos_tax_categories` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_tax_categories` MODIFY `tax_group_sequence` tinyint(1) NOT NULL;
-
-#ospos_tax_codes table
-ALTER TABLE `ospos_tax_codes` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 
 #ospos_tax_jurisdictions table
 ALTER TABLE `ospos_tax_jurisdictions` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;

@@ -779,6 +779,11 @@ class Items extends Secure_Controller
 			{
 				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
 
+				if($definition_type = DECIMAL)
+				{
+					$attribute_value = prepare_decimal($attribute_value);
+				}
+
 				$attribute_id = $definition_type === DROPDOWN
 					? $attribute_value
 					: $this->attribute->save_value($attribute_value, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
