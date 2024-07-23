@@ -1454,6 +1454,8 @@ class Items extends Secure_Controller
 		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
 		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
 		$data['item_info']->name = Services::htmlPurifier()->purify($data['item_info']->name);
+		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
+		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
 		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
 
 		return $data;

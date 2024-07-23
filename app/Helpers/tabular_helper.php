@@ -448,7 +448,8 @@ function get_item_data_row(object $item): array
 		{
 			$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
 		}
-		// remove ', ' from last item	//TODO: if this won't be added back into the code then it should be deleted.
+
+		// remove ', ' from last item
 		$tax_percents = substr($tax_percents, 0, -2);
 		$tax_percents = !$tax_percents ? '-' : $tax_percents;
 	}
