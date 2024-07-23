@@ -5,6 +5,7 @@ namespace Config;
 use App\Events\Db_log;
 use App\Events\Load_config;
 use App\Events\Method;
+use App\Events\PurifyOutput;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
