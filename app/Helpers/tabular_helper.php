@@ -480,9 +480,9 @@ function get_item_data_row(object $item): array
 	$columns = [
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
-		'name' => $item->name,
+		'name' => Services::htmlPurifier()->purify($item->name),
 		'category' => $item->category,
-		'company_name' => $item->company_name,
+		'company_name' => Services::htmlPurifier()->purify($item->company_name),
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
@@ -650,6 +650,11 @@ function expand_attribute_values(array $definition_names, array $row): array
 		if(isset($indexed_values[$definition_id]))
 		{
 			$attribute_value = $indexed_values[$definition_id];
+			if(is_string($attribute_value))
+			{
+				$attribute_value = Services::htmlPurifier()->purify($attribute_value);
+			}
+
 			$attribute_values["$definition_id"] = $attribute_value;
 		}
 	}
