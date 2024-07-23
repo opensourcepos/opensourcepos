@@ -1443,8 +1443,8 @@ class Items extends Secure_Controller
 	}
 
 	/**
-	 * Sanitizes unsafe data prior to sending it to the view.
-	 * This is not meant to replace CI4 sanitization.
+	 * Sanitizes unsafe item data prior to sending it to the view.
+	 * Table data is not sanitized here. This is not meant to replace CI4 sanitization.
 	 *
 	 * @param array $data
 	 * @return array
@@ -1453,6 +1453,7 @@ class Items extends Secure_Controller
 	{
 		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
 		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
+		$data['item_info']->name = Services::htmlPurifier()->purify($data['item_info']->name);
 		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
 
 		return $data;
@@ -1460,6 +1461,7 @@ class Items extends Secure_Controller
 
 	/**
 	 * Sanitizes TEXT type attribute values to remove unsafe HTML tags and javascript.
+	 * Table data is not sanitized here.
 	 * This is not meant to replace CI4 sanitization.
 	 *
 	 * @param array $data Attribute data to sanitize.
