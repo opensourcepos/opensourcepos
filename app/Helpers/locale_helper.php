@@ -428,6 +428,8 @@ function to_quantity_decimals(?float $number): string
 }
 
 /**
+ * Converts a float to locale-specific number format for display.
+ *
  * @param float|null $number
  * @param string|null $decimals
  * @param int $type
