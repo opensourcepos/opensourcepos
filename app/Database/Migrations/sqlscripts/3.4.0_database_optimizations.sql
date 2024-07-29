@@ -22,8 +22,6 @@ DROP INDEX `person_id` ON `ospos_customers`;
 ALTER TABLE `ospos_customers` MODIFY `taxable` tinyint(1) DEFAULT 1 NOT NULL;
 ALTER TABLE `ospos_customers` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_customers` MODIFY `discount_type` tinyint(1) DEFAULT 0 NOT NULL;
-ALTER TABLE `ospos_customers` ADD PRIMARY KEY(`person_id`);
-ALTER TABLE `ospos_customers` ADD INDEX(`company_name`);
 
 ALTER TABLE `ospos_customers` ADD CONSTRAINT `ospos_customers_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people`(`person_id`);
 ALTER TABLE `ospos_customers_points` ADD CONSTRAINT `ospos_customers_points_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_customers` (`person_id`);
@@ -50,7 +48,6 @@ ALTER TABLE `ospos_cash_up` DROP FOREIGN KEY `ospos_cash_up_ibfk_2`;
 DROP INDEX `person_id` ON `ospos_employees`;
 ALTER TABLE `ospos_employees` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_employees` MODIFY `hash_version` tinyint(1) DEFAULT 2 NOT NULL;
-ALTER TABLE `ospos_employees` ADD PRIMARY KEY(`person_id`);
 
 ALTER TABLE `ospos_sales_payments` ADD CONSTRAINT `ospos_sales_payments_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`);
 ALTER TABLE `ospos_sales` ADD CONSTRAINT `ospos_sales_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`);
@@ -128,7 +125,6 @@ ALTER TABLE `ospos_suppliers` DROP FOREIGN KEY `ospos_suppliers_ibfk_1`;
 DROP INDEX `person_id` ON `ospos_suppliers`;
 ALTER TABLE `ospos_suppliers` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 ALTER TABLE `ospos_suppliers` MODIFY `category` tinyint(1) NOT NULL;
-ALTER TABLE `ospos_suppliers` ADD PRIMARY KEY(`person_id`);
 ALTER TABLE `ospos_suppliers` ADD INDEX(`category`);
 ALTER TABLE `ospos_suppliers` ADD INDEX(`company_name`, `deleted`);
 
