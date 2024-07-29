@@ -153,7 +153,14 @@ class Migration_Sales_Tax_Data extends Migration
 			. $this->db->prefixTable('sales_taxes')
 			. ' as ST ON SIT.sale_id = ST.sale_id WHERE ST.sale_id is null GROUP BY SIT.sale_id, ST.sale_id'
 			. ' ORDER BY SIT.sale_id) as US')->getResultArray();
-		return $result[0]['COUNT(*)'];
+
+		if(!$result)
+		{
+			error_log('Database error in 20170502221506_sales_tax_data.php related to sales_taxes or sales_items_taxes.');
+			return 0;
+		}
+
+		return $result[0]['COUNT(*)'] ?: 0;
 	}
 
 	/**
