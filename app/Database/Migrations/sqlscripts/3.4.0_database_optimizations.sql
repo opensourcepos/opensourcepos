@@ -1,10 +1,10 @@
 #ospos_attribute_values table
 ALTER TABLE `ospos_attribute_values` ADD UNIQUE(`attribute_date`);
-ALTER TABLE `ospos_attribute_values` ADD UNIQUE(`attribute_decimal`); 
+ALTER TABLE `ospos_attribute_values` ADD UNIQUE(`attribute_decimal`);
 
 #opsos_attribute_definitions table
 ALTER TABLE `ospos_attribute_definitions` MODIFY `definition_flags` tinyint(1) NOT NULL;
-ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_name`); 
+ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_name`);
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_type`);
 
 #ospos_cash_up table
@@ -81,7 +81,7 @@ ALTER TABLE `ospos_item_kits` MODIFY `print_option` tinyint(1) DEFAULT 0 NOT NUL
 ALTER TABLE `ospos_item_kits` ADD INDEX(`name`,`description`);
 
 #ospos_people table
-ALTER TABLE `ospos_people` ADD INDEX(`first_name`, `last_name`, `email`, `phone_number`); 
+ALTER TABLE `ospos_people` ADD INDEX(`first_name`, `last_name`, `email`, `phone_number`);
 
 #ospos_receivings_items
 ALTER TABLE `ospos_receivings_items` MODIFY `discount_type` tinyint(1) DEFAULT 0 NOT NULL;
@@ -104,7 +104,7 @@ ALTER TABLE `ospos_sales_taxes` MODIFY `print_sequence` tinyint(1) DEFAULT 0 NOT
 ALTER TABLE `ospos_sales_taxes` MODIFY `rounding_code` tinyint(1) DEFAULT 0 NOT NULL;
 
 #ospos_sessions table
-ALTER TABLE `ospos_sessions` ADD INDEX(`id`); 
+ALTER TABLE `ospos_sessions` ADD INDEX(`id`);
 ALTER TABLE `ospos_sessions` ADD INDEX(`ip_address`);
 
 #ospos_stock_locations table
