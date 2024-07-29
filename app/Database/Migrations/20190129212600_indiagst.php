@@ -154,6 +154,12 @@ class Migration_IndiaGST extends Migration
 
 		$jurisdiction_id = $this->db->query('SELECT jurisdiction_id FROM ' . $this->db->prefixTable('tax_jurisdictions') . " WHERE jurisdiction_name = 'Jurisdiction1'")->getRow()->jurisdiction_id;
 
+		if(!$jurisdiction_id)
+		{
+			error_log('Tax rate migration failed due to severe errors.  Tax jurisdictions will need to be cleaned up manually');
+			$jurisdiction_id = 1;
+		}
+
 		// Insert old tax_code rates data into the new tax rates table
 		$this->db->query('INSERT INTO ' . $this->db->prefixTable('tax_rates')
 			. ' (rate_tax_category_id, rate_jurisdiction_id, rate_tax_code_id, tax_rate, tax_rounding_code) '
