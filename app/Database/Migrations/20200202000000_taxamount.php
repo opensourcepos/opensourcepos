@@ -133,7 +133,7 @@ class Migration_TaxAmount extends Migration
 			. ' as ST ON SIT.sale_id = ST.sale_id GROUP BY SIT.sale_id, ST.sale_id'
 			. ' ORDER BY SIT.sale_id) as US')->getResultArray();
 
-		return $result[0]['COUNT(*)'];
+		return $result[0]['COUNT(*)'] ?: 0;
 	}
 
 	/**

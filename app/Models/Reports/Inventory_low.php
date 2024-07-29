@@ -47,7 +47,7 @@ class Inventory_low extends Report
 			AND stock_locations.deleted = 0
 			ORDER BY items.name");
 
-		return $query->getResultArray();
+		return $query->getResultArray() ?: [];
 	}
 
 	/**
