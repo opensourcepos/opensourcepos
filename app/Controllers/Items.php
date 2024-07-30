@@ -269,8 +269,7 @@ class Items extends Secure_Controller
 	 */
 	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Long function. Perhaps we need to refactor out some methods.
 	{
-		// Set default values
-		if($item_id == null) $item_id = NEW_ENTRY;
+		$item_id ??= NEW_ENTRY;
 
 		if($item_id === NEW_ENTRY)
 		{
@@ -398,7 +397,6 @@ class Items extends Secure_Controller
 		{
 			$data['image_path']	= '';
 		}
-
 
 		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
