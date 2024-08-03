@@ -125,7 +125,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
 		$suggestions = $this->customer->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
