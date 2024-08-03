@@ -55,6 +55,7 @@ class Migration_database_optimizations extends Migration
 			if($attribute_links)
 			{
 				$builder = $this->db->table('attribute_links');
+				$attribute_links = $attribute_links->getResultArray() ?: [];
 
 				foreach($attribute_links->getResultArray() as $attribute_link)
 				{
@@ -83,25 +84,9 @@ class Migration_database_optimizations extends Migration
 		}
 		$this->db->transComplete();
 
-		$this->delete_index('customers', 'person_id');
-		$this->delete_index('employees', 'person_id');
-		$this->delete_index('suppliers', 'person_id');
-
 		helper('migration');
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_database_optimizations.sql');
 		error_log('Migrating database_optimizations completed');
-	}
-
-	private function delete_index(string $table, string $index): void
-	{
-		$result = $this->db->query('SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = \'' . $this->db->getPrefix() . "$table' AND index_name = '$index'");
-		$index_exists = $result->getRowArray()['COUNT(*)'] > 0;
-
-		if($index_exists)
-		{
-			$forge = Database::forge();
-			$forge->dropKey($table, $index, false);
-		}
 	}
 
 	/**
