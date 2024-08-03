@@ -65,7 +65,7 @@ abstract class Persons extends Secure_Controller
 	{
 		$adjusted_name = str_name_case($input);
 
-		// Use preg_replace to match HTML entities and convert them to lowercase.
+		//TODO:Use preg_replace to match HTML entities and convert them to lowercase. This is a workaround for https://github.com/tamtamchik/namecase/issues/20
 		return preg_replace_callback('/&[a-zA-Z0-9#]+;/', function($matches) { return strtolower($matches[0]); }, $adjusted_name);
 	}
 }

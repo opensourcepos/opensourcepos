@@ -1242,7 +1242,7 @@ class Sale extends Model
 				. $this->db->prefixTable('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
-		return $query->getResultArray();
+		return $query->getResultArray() ?: [];
 	}
 
 	/**
