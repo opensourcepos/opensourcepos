@@ -3,7 +3,7 @@ include:
 
 services:
     sqlscript:
-        image: jekkos/opensourcepos:sqlscript
+        image: jekkos/opensourcepos:sql-master
         command: /bin/sh -c 'exit 0'
     ospos:
         image: jekkos/opensourcepos:master
