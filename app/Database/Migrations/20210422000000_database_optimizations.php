@@ -55,6 +55,7 @@ class Migration_database_optimizations extends Migration
 			if($attribute_links)
 			{
 				$builder = $this->db->table('attribute_links');
+				$attribute_links = $attribute_links->getResultArray() ?: [];
 
 				foreach($attribute_links->getResultArray() as $attribute_link)
 				{
