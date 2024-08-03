@@ -12,7 +12,6 @@ use App\Models\Receiving;
 use App\Models\Stock_location;
 use App\Models\Supplier;
 use Config\OSPOS;
-use Config\Services;
 use ReflectionException;
 
 class Receivings extends Secure_Controller
@@ -61,9 +60,8 @@ class Receivings extends Secure_Controller
 	 */
 	public function getItemSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
-		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
-		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
+		$suggestions = $this->item->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ['search_custom' => false, 'is_deleted' => false], true);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS)));
 
 		echo json_encode($suggestions);
 	}
@@ -76,9 +74,8 @@ class Receivings extends Secure_Controller
 	 */
 	public function getStockItemSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
-		$suggestions = $this->item->get_stock_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
-		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
+		$suggestions = $this->item->get_stock_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), ['search_custom' => false, 'is_deleted' => false], true);
+		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS)));
 
 		echo json_encode($suggestions);
 	}

@@ -125,8 +125,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
-		$suggestions = $this->customer->get_search_suggestions($search);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getGet('term'), 25,true);
 
 		echo json_encode($suggestions);
 	}
@@ -136,8 +135,7 @@ class Customers extends Persons
 	 */
 	public function suggest_search(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
-		$suggestions = $this->customer->get_search_suggestions($search, 25, false);
+		$suggestions = $this->customer->get_search_suggestions($this->request->getPost('term'), 25, false);
 
 		echo json_encode($suggestions);
 	}

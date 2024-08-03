@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Attribute;
-use Config\Services;
 
 require_once('Secure_Controller.php');
 
@@ -38,7 +37,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

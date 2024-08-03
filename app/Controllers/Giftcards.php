@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Giftcard;
 use Config\OSPOS;
-use Config\Services;
 
 class Giftcards extends Secure_Controller
 {
@@ -32,7 +31,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -58,8 +57,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
-		$suggestions = $this->giftcard->get_search_suggestions($search, true);
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getGet('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS), true);
 
 		echo json_encode($suggestions);
 	}
@@ -69,8 +67,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function suggest_search(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
-		$suggestions = $this->giftcard->get_search_suggestions($search);
+		$suggestions = $this->giftcard->get_search_suggestions($this->request->getPost('term', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 		echo json_encode($suggestions);
 	}
