@@ -61,7 +61,7 @@ class Receivings extends Secure_Controller
 	 */
 	public function getItemSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
+		$search = $this->request->getGet('term');
 		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
@@ -76,7 +76,7 @@ class Receivings extends Secure_Controller
 	 */
 	public function getStockItemSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
+		$search = $this->request->getGet('term');
 		$suggestions = $this->item->get_stock_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 

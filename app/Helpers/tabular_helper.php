@@ -7,6 +7,7 @@ use App\Models\Tax_category;
 use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
+use Config\Services;
 
 /**
  * Tabular views helper
@@ -281,7 +282,7 @@ function get_customer_data_row(object $person, object $stats): array
 	return [
 		'people.person_id' => $person->person_id,
 		'last_name' => $person->last_name,
-		'first_name' => $person->first_name,
+		'first_name' => Services::htmlPurifier()->purify($person->first_name),
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
 		'total' => to_currency($stats->total),
@@ -447,7 +448,8 @@ function get_item_data_row(object $item): array
 		{
 			$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
 		}
-		// remove ', ' from last item	//TODO: if this won't be added back into the code then it should be deleted.
+
+		// remove ', ' from last item
 		$tax_percents = substr($tax_percents, 0, -2);
 		$tax_percents = !$tax_percents ? '-' : $tax_percents;
 	}
@@ -455,7 +457,7 @@ function get_item_data_row(object $item): array
 	$controller = get_controller();
 
 	$image = null;
-	if($item->pic_filename != '')	//TODO: !== ?
+	if(!empty($item->pic_filename))
 	{
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 
@@ -478,10 +480,10 @@ function get_item_data_row(object $item): array
 
 	$columns = [
 		'items.item_id' => $item->item_id,
-		'item_number' => $item->item_number,
-		'name' => $item->name,
-		'category' => $item->category,
-		'company_name' => $item->company_name,
+		'item_number' => Services::htmlPurifier()->purify($item->item_number),
+		'name' => Services::htmlPurifier()->purify($item->name),
+		'category' => Services::htmlPurifier()->purify($item->category),
+		'company_name' => Services::htmlPurifier()->purify($item->company_name),	//TODO: This isn't in the items table. Should this be here?
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
@@ -649,6 +651,11 @@ function expand_attribute_values(array $definition_names, array $row): array
 		if(isset($indexed_values[$definition_id]))
 		{
 			$attribute_value = $indexed_values[$definition_id];
+			if(is_string($attribute_value))
+			{
+				$attribute_value = Services::htmlPurifier()->purify($attribute_value);
+			}
+
 			$attribute_values["$definition_id"] = $attribute_value;
 		}
 	}

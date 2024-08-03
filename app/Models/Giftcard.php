@@ -360,11 +360,14 @@ class Giftcard extends Model
 	}
 
 	/**
-	 * Gets gift card customer
+	 * Gets gift card customer_id by gift card number
+	 *
+	 * @param string $giftcard_number Gift card number
+	 * @return int The customer_id of the gift card if it exists, 0 otherwise.
 	 */
 	public function get_giftcard_customer(string $giftcard_number): int
 	{
-		if( !$this->exists($this->get_giftcard_id($giftcard_number)) )
+		if(!$this->exists($this->get_giftcard_id($giftcard_number)))
 		{
 			return 0;
 		}

@@ -32,7 +32,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function getSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -58,7 +58,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->giftcard->get_search_suggestions($search, true);
 
 		echo json_encode($suggestions);
@@ -69,7 +69,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function suggest_search(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->giftcard->get_search_suggestions($search);
 
 		echo json_encode($suggestions);

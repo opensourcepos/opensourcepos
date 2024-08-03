@@ -1,6 +1,7 @@
 <?php
 
 use CodeIgniter\Encryption\Encryption;
+use Config\Services;
 
 /**
  * @return bool
@@ -118,4 +119,18 @@ function remove_backup(): void
 		return;
 	}
 	log_message('info', "File $backup_path has been removed");
+}
+
+function purifyHtml($data)
+{
+	if(is_array($data))
+	{
+		return array_map('purifyHtml', $data);
+	}
+	elseif(is_string($data))
+	{
+		return Services::HtmlPurifier()->purify($data);
+	}
+
+	return $data;
 }
