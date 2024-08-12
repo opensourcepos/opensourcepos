@@ -133,6 +133,13 @@ class Migration_TaxAmount extends Migration
 			. ' as ST ON SIT.sale_id = ST.sale_id GROUP BY SIT.sale_id, ST.sale_id'
 			. ' ORDER BY SIT.sale_id) as US')->getResultArray();
 
+		if(!$result)
+		{
+			error_log('Database error in 20200202000000_taxamount.php related to sales_taxes or sales_items_taxes.');
+			return 0;
+		}
+
+
 		return $result[0]['COUNT(*)'] ?: 0;
 	}
 
