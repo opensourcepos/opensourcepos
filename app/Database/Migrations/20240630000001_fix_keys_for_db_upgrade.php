@@ -5,8 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use Config\Database;
 
-class Migration_fix_keys_for_db_upgrade extends Migration
-{
+class Migration_fix_keys_for_db_upgrade extends Migration {
 	/**
 	 * Perform a migration step.
 	 */
@@ -15,7 +14,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
 		$checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
 		$foreignKeyExists = $this->db->query($checkSql)->getRow();
 
-		if($foreignKeyExists)
+		if ($foreignKeyExists)
 		{
 			$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP FOREIGN KEY ospos_sales_items_taxes_ibfk_1');
 		}
@@ -27,6 +26,10 @@ class Migration_fix_keys_for_db_upgrade extends Migration
 		$this->delete_index('customers', 'person_id');
 		$this->delete_index('employees', 'person_id');
 		$this->delete_index('suppliers', 'person_id');
+
+		$this->create_primary_key('customers', 'person_id');
+		$this->create_primary_key('employees', 'person_id');
+		$this->create_primary_key('suppliers', 'person_id');
 	}
 
 	/**
@@ -37,7 +40,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
 		$checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
 		$foreignKeyExists = $this->db->query($checkSql)->getRow();
 
-		if($foreignKeyExists)
+		if ($foreignKeyExists)
 		{
 			$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP CONSTRAINT ospos_sales_items_taxes_ibfk_1');
 		}
@@ -45,6 +48,18 @@ class Migration_fix_keys_for_db_upgrade extends Migration
 		$this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes')
 			. ' ADD CONSTRAINT ospos_sales_items_taxes_ibfk_1 FOREIGN KEY (sale_id) '
 			. ' REFERENCES ' . $this->db->prefixTable('sales_items') . ' (sale_id)');
+	}
+
+	private function create_primary_key(string $table, string $index): void
+	{
+		$key_exists = $this->db->query("SELECT EXISTS(SELECT 1 FROM information_schema.columns WHERE table_name='$table' AND column_key = '$index') As HasPrimaryKey;");
+
+		if (!$key_exists)
+		{
+			$forge = Database::forge();
+			$forge->addPrimaryKey($table, $index);
+
+		}
 	}
 
 	private function delete_index(string $table, string $index): void
