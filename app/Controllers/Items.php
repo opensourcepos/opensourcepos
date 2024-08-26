@@ -94,7 +94,7 @@ class Items extends Secure_Controller
 	 **/
 	public function getSearch(): void
 	{
-		$search = $this->request->getGet('search');
+		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -182,7 +182,7 @@ class Items extends Secure_Controller
 			'is_deleted' => $this->request->getPost('is_deleted') !== null
 		];
 
-		$search = $this->request->getPost('term');
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
 		$suggestions = $this->item->get_search_suggestions($search, $options);
 
 		echo json_encode($suggestions);
@@ -195,7 +195,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
 		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 
 		echo json_encode($suggestions);
@@ -267,16 +267,18 @@ class Items extends Secure_Controller
 	 * @param int $item_id
 	 * @return void
 	 */
-	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Long function. Perhaps we need to refactor out some methods.
+	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Super long function.  Perhaps we need to refactor out some methods.
 	{
-		$item_id ??= NEW_ENTRY;
+		// Set default values
+		if($item_id == null) $item_id = NEW_ENTRY;
 
 		if($item_id === NEW_ENTRY)
 		{
 			$data = [];
 		}
 
-		$data['allow_temp_item'] = $this->session->get('allow_temp_items'); //allow_temp_items is set in the index function of items.php or sales.php
+		//allow_temp_items is set in the index function of items.php or sales.php
+		$data['allow_temp_item'] = $this->session->get('allow_temp_items');
 		$data['item_tax_info'] = $this->item_taxes->get_info($item_id);
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
@@ -314,7 +316,7 @@ class Items extends Secure_Controller
 
 			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 1;
-			$item_info->item_type = ITEM;    //Standard
+			$item_info->item_type = ITEM;	//Standard
 			$item_info->item_id = $item_id;
 			$item_info->stock_type = HAS_STOCK;
 			$item_info->tax_category_id = null;
@@ -346,9 +348,14 @@ class Items extends Secure_Controller
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
 
-		$data['hsn_code'] = $data['include_hsn']
-			? $item_info->hsn_code
-			: '';
+		if($data['include_hsn'])	//TODO: Transform this to ternary notation
+		{
+			$data['hsn_code'] = $item_info->hsn_code;
+		}
+		else
+		{
+			$data['hsn_code'] = '';
+		}
 
 		if($use_destination_based_tax)
 		{
@@ -398,6 +405,7 @@ class Items extends Secure_Controller
 			$data['image_path']	= '';
 		}
 
+
 		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
@@ -420,9 +428,7 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		$sanitized_data = $this->sanitizeItemData($data);
-
-		echo view('items/form', $sanitized_data);
+		echo view('items/form', $data);
 	}
 
 	/**
@@ -549,9 +555,7 @@ class Items extends Secure_Controller
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$sanitized_data = $this->sanitizeAttributeData($data);
-
-		echo view('attributes/item', $sanitized_data);
+		echo view('attributes/item', $data);
 	}
 
 	/**
@@ -1438,45 +1442,5 @@ class Items extends Secure_Controller
 				}
 			}
 		}
-	}
-
-	/**
-	 * Sanitizes unsafe item data prior to sending it to the view.
-	 * Table data is not sanitized here. This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data
-	 * @return array
-	 */
-	private function sanitizeItemData(array $data): array
-	{
-		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
-		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
-		$data['item_info']->name = Services::htmlPurifier()->purify($data['item_info']->name);
-		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
-		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
-		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
-
-		return $data;
-	}
-
-	/**
-	 * Sanitizes TEXT type attribute values to remove unsafe HTML tags and javascript.
-	 * Table data is not sanitized here.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data Attribute data to sanitize.
-	 * @return array Sanitized Attribute data.
-	 */
-	private function sanitizeAttributeData(array $data): array
-	{
-		foreach($data['definition_values'] as $definition_id => &$definition_values)
-		{
-			if($definition_values['definition_type'] === 'TEXT')
-			{
-				$definition_values['attribute_value']->attribute_value = Services::htmlPurifier()->purify($definition_values['attribute_value']->attribute_value);
-			}
-		}
-
-		return $data;
 	}
 }
