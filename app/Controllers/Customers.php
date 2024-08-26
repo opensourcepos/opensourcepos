@@ -87,7 +87,7 @@ class Customers extends Persons
 	 */
 	public function getSearch(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('search'));
+		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
 		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -114,7 +114,7 @@ class Customers extends Persons
 				$stats->quantity = 0;
 			}
 
-			$data_rows[] = get_customer_data_row($person, $stats);
+			$data_rows[] = get_customer_data_row($person, $stats);	//TODO: We either need to create a function to sanitize $person here (and for line 77) or we need to sanitize inside of get_customer_data_row().
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -125,7 +125,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getGet('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->customer->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
@@ -136,7 +136,7 @@ class Customers extends Persons
 	 */
 	public function suggest_search(): void
 	{
-		$search = Services::htmlPurifier()->purify($this->request->getPost('term'));
+		$search = $this->request->getPost('term');
 		$suggestions = $this->customer->get_search_suggestions($search, 25, false);
 
 		echo json_encode($suggestions);
@@ -185,14 +185,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($this->config['use_destination_based_tax'])	//TODO: This can be shortened for ternary notation
-		{
-			$data['use_destination_based_tax'] = true;
-		}
-		else
-		{
-			$data['use_destination_based_tax'] = false;
-		}
+		$data['use_destination_based_tax'] = $this->config['use_destination_based_tax'];
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
 		$stats = $this->customer->get_stats($customer_id);
@@ -260,7 +253,9 @@ class Customers extends Persons
 			}
 		}
 
-		echo view("customers/form", $data);
+		$sanitized_data = $this->sanitizeCustomerData($data);
+
+		echo view("customers/form", $sanitized_data);
 	}
 
 	/**
@@ -538,5 +533,29 @@ class Customers extends Persons
 				echo json_encode (['success' => false, 'message' => lang('Customers.csv_import_nodata_wrongformat')]);
 			}
 		}
+	}
+
+	/**
+	 * Sanitizes customer values to remove unsafe HTML tags and javascript.
+	 * This is not meant to replace CI4 sanitization.
+	 *
+	 * @param array $data Attribute data to sanitize.
+	 * @return array Sanitized Attribute data.
+	 */
+	private function sanitizeCustomerData(array $data): array
+	{
+		$data['person_info']->first_name = Services::htmlPurifier()->purify($data['person_info']->first_name);
+		$data['person_info']->last_name = Services::htmlPurifier()->purify($data['person_info']->last_name);
+		$data['person_info']->address_1 = Services::htmlPurifier()->purify($data['person_info']->address_1);
+		$data['person_info']->address_2 = Services::htmlPurifier()->purify($data['person_info']->address_2);
+		$data['person_info']->city = Services::htmlPurifier()->purify($data['person_info']->city);
+		$data['person_info']->state = Services::htmlPurifier()->purify($data['person_info']->state);
+		$data['person_info']->zip = Services::htmlPurifier()->purify($data['person_info']->zip);
+		$data['person_info']->country = Services::htmlPurifier()->purify($data['person_info']->country);
+		$data['person_info']->comments = Services::htmlPurifier()->purify($data['person_info']->comments);
+
+		$data['person_info']->company_name = Services::htmlPurifier()->purify($data['person_info']->company_name);
+
+		return $data;
 	}
 }

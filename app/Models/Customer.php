@@ -97,14 +97,9 @@ class Customer extends Person
 		$builder->where('customers.person_id', $person_id);
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
-		{
-			return $query->getRow();
-		}
-		else
-		{
-			return $this->getEmptyObject('customers');
-		}
+		return $query->getNumRows() === 1
+			? $query->getRow()
+			: $this->getEmptyObject('customers');
 	}
 
 	/**

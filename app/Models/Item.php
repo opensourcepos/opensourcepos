@@ -202,14 +202,10 @@ class Item extends Model
 			$builder->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($config['date_or_time_format']))    //TODO: This needs to be replaced with Ternary notation
-		{
-			$builder->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		}
-		else
-		{
-			$builder->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
-		}
+		$where = empty($config['date_or_time_format'])
+			? 'DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
+			: 'trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
+		$builder->where($where);
 
 		$attributes_enabled = count($filters['definition_ids']) > 0;
 
