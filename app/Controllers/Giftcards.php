@@ -58,7 +58,7 @@ class Giftcards extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = $this->request->getGet('term');
 		$suggestions = $this->giftcard->get_search_suggestions($search, true);
 
 		echo json_encode($suggestions);

@@ -3,10 +3,10 @@ include:
 
 services:
     sqlscript:
-        image: jekkos/opensourcepos:sql-ci4-branch
+        image: jekkos/opensourcepos:sqlscript
         command: /bin/sh -c 'exit 0'
     ospos:
-        image: jekkos/opensourcepos:ci4-branch
+        image: jekkos/opensourcepos:master
         restart: always
         depends_on:
           - mysql
