@@ -13,12 +13,10 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
 	{
 		$this->db->query("ALTER TABLE `ospos_tax_codes` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;");
 
-		if (!$this->index_exists("ospos_customers', 'company_name"))
+		if (!$this->index_exists('ospos_customers', 'company_name'))
 		{
 			$this->db->query("ALTER TABLE `ospos_customers` ADD INDEX(`company_name`)");
 		}
-
-		$this->delete_index("items", 'ospos_items_ibfk_1');
 
 		$checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
 		$foreignKeyExists = $this->db->query($checkSql)->getRow();
@@ -60,7 +58,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
 	{
 		$result = $this->db->query('SELECT 1 FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name= \'' . $this->db->getPrefix() . "$table' AND column_key = '$index'");
 
-		if (!$result->getRowArray())
+		if ( ! $result->getRowArray())
 		{
 			$this->delete_index($table, $index);
 			$forge = Database::forge();
@@ -79,10 +77,10 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
 	private function delete_index(string $table, string $index): void
 	{
 
-		if($this->index_exists($table, $index))
+		if ($this->index_exists($table, $index))
 		{
 			$forge = Database::forge();
-			$forge->dropKey($table, $index, false);
+			$forge->dropKey($table, $index, FALSE);
 		}
 	}
 }
