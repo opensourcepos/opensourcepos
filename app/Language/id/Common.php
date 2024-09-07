@@ -1,5 +1,5 @@
 <?php
- = [
+ return [
     'address_1' => "Alamat 1",
     'address_2' => "Alamat 2",
     'admin' => "",

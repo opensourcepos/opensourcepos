@@ -1,5 +1,5 @@
 <?php
- = [
+ return [
     'add_minus' => "Menambah atau mengurangi Inventori.",
     'allow_alt_description' => "Deskripsi Alternatif dimungkinkan",
     'amount_entry' => "Jumlah entri",

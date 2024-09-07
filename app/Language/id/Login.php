@@ -1,5 +1,5 @@
 <?php
- = [
+ return [
     'gcaptcha' => "Saya bukan robot.",
     'go' => "Lanjutkan",
     'invalid_gcaptcha' => "Tolong buktikan bahwa anda bukan robot.",

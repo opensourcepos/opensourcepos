@@ -1,5 +1,5 @@
 <?php
- = [
+ return [
     'customers_available_points' => "Poin tersedia",
     'rewards_package' => "Hadiah",
     'rewards_remaining_balance' => "Poin hadiah yang tersisa adalah ",
