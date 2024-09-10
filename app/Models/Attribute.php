@@ -646,10 +646,10 @@ class Attribute extends Model
 
 	/**
 	 * @param int $item_id
-	 * @param bool $definition_id
+	 * @param int|bool $definition_id
 	 * @return bool
 	 */
-	public function delete_link(int $item_id, bool $definition_id = false): bool
+	public function delete_link(int $item_id, int|bool $definition_id = false): bool
 	{
 		$delete_data = ['item_id' => $item_id];
 
