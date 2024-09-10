@@ -32,17 +32,14 @@ class Migration_remove_duplicate_links extends Migration
 		$this->db->transStart();
 
 		$builder = $this->db->table('attribute_links');
+		$builder->select('item_id, definition_id, attribute_id, COUNT(*) as count');
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
 		$builder->groupBy('item_id');
 		$builder->groupBy('definition_id');
 		$builder->groupBy('attribute_id');
-		$builder->having('COUNT(item_id) > 1');
-		$builder->having('COUNT(definition_id) > 1');
-		$builder->having('COUNT(attribute_id) > 1');
+		$builder->having('count > 1');
 		$duplicated_links = $builder->get();
-
-
 
 		$builder = $this->db->table('attribute_links');
 
