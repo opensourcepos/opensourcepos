@@ -42,6 +42,8 @@ class Migration_remove_duplicate_links extends Migration
 		$builder->having('COUNT(attribute_id) > 1');
 		$duplicated_links = $builder->get();
 
+
+
 		$builder = $this->db->table('attribute_links');
 
 		foreach($duplicated_links->getResultArray() as $duplicated_link)
