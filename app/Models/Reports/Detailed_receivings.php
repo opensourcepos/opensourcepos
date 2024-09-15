@@ -116,7 +116,7 @@ class Detailed_receivings extends Report
 		}
 
 		$builder->groupBy('receiving_id', 'receiving_time');
-		$builder->orderBy('receiving_id');
+		$builder->orderBy('MAX(receiving_id)');
 
 		$data = [];
 		$data['summary'] = $builder->get()->getResultArray();
