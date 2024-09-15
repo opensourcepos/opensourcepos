@@ -119,7 +119,7 @@ class Specific_supplier extends Report
 		}
 
 		$builder->groupBy(['item_id', 'sale_id']);
-		$builder->orderBy('sale_id');
+		$builder->orderBy('MAX(sale_time)');
 
 		return $builder->get()->getResultArray();
 	}
