@@ -7,9 +7,6 @@ ALTER TABLE `ospos_attribute_definitions` MODIFY `definition_flags` tinyint(1) N
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_name`); 
 ALTER TABLE `ospos_attribute_definitions` ADD INDEX(`definition_type`);
 
-#opsos_attribute_links table
-ALTER TABLE `ospos_attribute_links` ADD UNIQUE INDEX `attribute_links_uq2` (`item_id`,`sale_id`,`receiving_id`,`definition_id`,`attribute_id`);
-
 #ospos_cash_up table
 ALTER TABLE `ospos_cash_up` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;
 
