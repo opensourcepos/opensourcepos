@@ -125,8 +125,8 @@ class Sale extends Model
 		//Only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
 		$where .= empty($config['date_or_time_format'])
-			? 'DATE(`' . $db_prefix . 'sales`.`sale_time`) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
-			: '`sales`.`sale_time` BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
+			? 'DATE(' . $db_prefix . 'sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
+			: 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
 
 		$this->create_temp_table_sales_payments_data($where);
 
