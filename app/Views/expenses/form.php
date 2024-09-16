@@ -169,23 +169,12 @@ $(document).ready(function()
 {
 	<?= view('partial/datepicker_locale') ?>
 
-	var amount_validator = function(field) {
-		return {
-			url: "<?= esc("$controller_name/ajax_check_amount") ?>",
-			type: 'POST',
-			dataFilter: function(data) {
-				var response = JSON.parse(data);
-				return response.success;
-			}
-		}
-	}
-
 	$('#supplier_name').click(function() {
 		$(this).attr('value', '');
 	});
 
 	$('#supplier_name').autocomplete({
-		source: '<?= esc(site_url("suppliers/suggest"), 'url') ?>',
+		source: '<?= "suppliers/suggest" ?>',
 		minChars:0,
 		delay:10,
 		select: function (event, ui) {
@@ -240,6 +229,7 @@ $(document).ready(function()
 
 		rules:
 		{
+			supplier_name: 'required',
 			category: 'required',
 			date:
 			{
@@ -248,11 +238,11 @@ $(document).ready(function()
 			amount:
 			{
 				required: true,
-				remote: amount_validator('#amount')
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			},
 			tax_amount:
 			{
-				remote: amount_validator('#tax_amount')
+				remote: "<?= "$controller_name/checkNumeric" ?>"
 			}
 		},
 

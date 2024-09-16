@@ -193,19 +193,6 @@ class Expenses extends Secure_Controller
 	}
 
 	/**
-	 * Checks the expense amount for validity. Used in app\Views\expenses\form.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function ajax_check_amount(): void
-	{
-		$value = $this->request->getPost();
-		$parsed_value = filter_var(prepare_decimal(array_pop($value)), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-		echo json_encode (['success' => $parsed_value !== false]);
-	}
-
-	/**
 	 * @return void
 	 */
 	public function postDelete(): void
