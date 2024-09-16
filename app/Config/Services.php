@@ -3,6 +3,8 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
+use CodeIgniter\HTTP\IncomingRequest;
+use Config\Services as AppServices;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 
@@ -31,6 +33,29 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+	/**
+	 * Responsible for loading the language string translations.
+	 *
+	 * @return MY_Language
+	 */
+	public static function language(?string $locale = null, bool $getShared = true)
+	{
+		if ($getShared) {
+			return static::getSharedInstance('language', $locale)->setLocale($locale);
+		}
+
+		if (AppServices::get('request') instanceof IncomingRequest) {
+			$requestLocale = AppServices::get('request')->getLocale();
+		} else {
+			$requestLocale = Locale::getDefault();
+		}
+
+		// Use '?:' for empty string check
+		$locale = $locale ?: $requestLocale;
+
+		return new \App\Libraries\MY_Language($locale);
+	}
 
 	private static $htmlPurifier;
 
