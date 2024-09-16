@@ -125,7 +125,7 @@ class Customers extends Persons
 	 */
 	public function getSuggest(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = $this->request->getGet('term');
 		$suggestions = $this->customer->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
@@ -136,7 +136,7 @@ class Customers extends Persons
 	 */
 	public function suggest_search(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = $this->request->getGet('term');
 		$suggestions = $this->customer->get_search_suggestions($search, 25, false);
 
 		echo json_encode($suggestions);
