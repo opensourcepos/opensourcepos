@@ -231,6 +231,7 @@ $(document).ready(function()
 				},
 				dataType: 'json'
 			});
+			table_support.refresh();
 		},
 
 		errorLabelContainer: '#error_message_box',
