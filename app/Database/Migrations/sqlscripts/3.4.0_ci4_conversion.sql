@@ -14,3 +14,7 @@ ALTER TABLE ospos_sessions ADD PRIMARY KEY (id, ip_address);
 UPDATE `ospos_app_config`
 SET `value` = REPLACE(value, '|', ',')
 WHERE `key` = 'image_allowed_types';
+
+-- due to language rename, reset to english
+UPDATE `ospos_app_config` SET `value` = 'en' WHERE `key` = 'language_code' ;
+UPDATE `ospos_app_config` SET `value` = 'english' WHERE `key` = 'language' ;
