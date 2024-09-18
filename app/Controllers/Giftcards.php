@@ -35,7 +35,7 @@ class Giftcards extends Secure_Controller
 		$search = $this->request->getGet('search');
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$sort   = $this->sanitizeSortColumn(GIFTCARD_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'giftcard_id');
 		$order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$giftcards = $this->giftcard->search($search, $limit, $offset, $sort, $order);

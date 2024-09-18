@@ -82,6 +82,11 @@ class Secure_Controller extends BaseController
 		view('viewData', $this->global_view_data);
 	}
 
+	public function sanitizeSortColumn($headers, $field, $default): string
+	{
+		return $field != null && in_array($field, array_keys(array_merge(...$headers))) ? $field : $default;
+	}
+
 	/**
 	 * AJAX function used to confirm whether values sent in the request are numeric
 	 * @return void
