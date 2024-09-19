@@ -658,6 +658,10 @@ function expand_attribute_values(array $definition_names, array $row): array
 
 			$attribute_values["$definition_id"] = $attribute_value;
 		}
+		else
+		{
+			$attribute_values["$definition_id"] = "";
+		}
 	}
 
 	return $attribute_values;
