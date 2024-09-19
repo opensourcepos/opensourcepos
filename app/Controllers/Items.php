@@ -779,7 +779,7 @@ class Items extends Secure_Controller
 			{
 				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
 
-				if($definition_type = DECIMAL)
+				if($definition_type == DECIMAL)
 				{
 					$attribute_value = prepare_decimal($attribute_value);
 				}
