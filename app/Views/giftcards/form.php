@@ -87,6 +87,9 @@ $(document).ready(function()
 		source: "<?= esc("customers/suggest") ?>",
 		minChars: 0,
 		delay: 15,
+		change: function(event,ui) {
+			$(this).val((ui.item ? ui.item.id : ""));
+		},
 	   	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
@@ -117,6 +120,10 @@ $(document).ready(function()
 			if($config['giftcard_number'] == 'series')
 			{
 			?>
+			person_name:
+			{
+				required: true
+			},
 			giftcard_number:
  			{
  				required: true,
@@ -137,7 +144,9 @@ $(document).ready(function()
 					},
 					dataFilter: function(data) {
 						var response = JSON.parse(data);
-						$('#giftcard_amount').val(response.giftcard_amount);
+						if (response.success) {
+							$('#giftcard_amount').val(response.giftcard_amount);
+						}
 						return response.success;
 					}
 				}
