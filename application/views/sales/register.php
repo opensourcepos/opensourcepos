@@ -42,7 +42,7 @@ if(isset($success))
 					</li>
 				<?php
 				}
-				if(count($stock_locations) > 1)
+				if(count($stock_locations) >= 1)
 				{
 				?>
 					<li class="pull-left">
@@ -737,7 +737,23 @@ $(document).ready(function()
 	});
 
 	$('#item').autocomplete( {
-		source: "<?php echo site_url($controller_name . '/item_search'); ?>",
+		source: function(request, response) {
+			var stock_location = $("select[name='stock_location']").val();
+			$.ajax({
+				url: "<?php echo site_url($controller_name . '/item_search'); ?>",
+				data: {
+					term: request.term,
+					location: stock_location,
+				},
+				dataType: 'json',
+				success: function(data) {
+					response(data);
+				},
+				error: function(xhr, status, error) {
+					console.error('AJAX Error:', error);
+				}
+			});
+		},
 		minChars: 0,
 		autoFocus: false,
 		delay: 500,

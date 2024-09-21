@@ -97,13 +97,14 @@ class Sales extends Secure_Controller
 	{
 		$suggestions = array();
 		$receipt = $search = $this->input->get('term') != '' ? $this->input->get('term') : NULL;
+		$stock_location  = $this->input->get('location') ?? null;
 
 		if($this->sale_lib->get_mode() == 'return' && $this->Sale->is_valid_receipt($receipt))
 		{
 			// if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
 			$suggestions[] = $receipt;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('search_custom' => FALSE, 'is_deleted' => FALSE, 'location' => $stock_location), TRUE));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		$suggestions = $this->xss_clean($suggestions);

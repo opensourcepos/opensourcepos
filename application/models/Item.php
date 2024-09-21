@@ -544,17 +544,32 @@ class Item extends CI_Model
 		}
 	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE, 'location' => NULL), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = [];
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
-		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
-		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
+		//Subquery to filter item suggestions by the stock location
+		$subquery = $this->db->select('item_quantities.item_id')
+		->from('item_quantities AS item_quantities')
+		->where('item_quantities.location_id', $filters['location'])
+		->where('item_quantities.quantity >', 0) // Add condition for quantity greater than 0
+		->get_compiled_select();
+
+		$this->db->select($this->get_search_suggestion_format('items.item_id, items.name, items.pack_name'));
+		$this->db->from('items AS items');
+		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
+		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+		$this->db->where('items.deleted', $filters['is_deleted']);
+		
+		if (isset($filters['location'])) {
+			$this->db->where("items.item_id IN ($subquery)", null, false);
+		}
+
+		$this->db->where_in('items.item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
+		$this->db->like('items.name', $search);
+		$this->db->order_by('items.name', 'asc');
+
 		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
