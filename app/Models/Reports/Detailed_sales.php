@@ -72,7 +72,7 @@ class Detailed_sales extends Report
 	{
 		$builder = $this->db->table('sales_items_temp');
 		$builder->select('sale_id,
-			sale_time as sale_time,
+			MAX(sale_time) as sale_time,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
