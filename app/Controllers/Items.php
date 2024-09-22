@@ -419,9 +419,7 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		$sanitized_data = $this->sanitizeItemData($data);
-
-		echo view('items/form', $sanitized_data);
+		echo view('items/form', $data);
 	}
 
 	/**
@@ -548,9 +546,7 @@ class Items extends Secure_Controller
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$sanitized_data = $this->sanitizeAttributeData($data);
-
-		echo view('attributes/item', $sanitized_data);
+		echo view('attributes/item', $data);
 	}
 
 	/**
@@ -1442,43 +1438,5 @@ class Items extends Secure_Controller
 				}
 			}
 		}
-	}
-
-	/**
-	 * Sanitizes unsafe data prior to sending it to the view.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data
-	 * @return array
-	 */
-	private function sanitizeItemData(array $data): array
-	{
-		$data['item_info']->name = Services::htmlPurifier()->purify($data['item_info']->name);
-		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
-		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
-		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
-
-		return $data;
-	}
-
-	/**
-	 * Sanitizes TEXT type attribute values to remove unsafe HTML tags and javascript.
-	 * Table data is not sanitized here.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data Attribute data to sanitize.
-	 * @return array Sanitized Attribute data.
-	 */
-	private function sanitizeAttributeData(array $data): array
-	{
-		foreach($data['definition_values'] as $definition_id => &$definition_values)
-		{
-			if($definition_values['definition_type'] === 'TEXT')
-			{
-				$definition_values['attribute_value']->attribute_value = Services::htmlPurifier()->purify($definition_values['attribute_value']->attribute_value);
-			}
-		}
-
-		return $data;
 	}
 }

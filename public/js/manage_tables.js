@@ -258,7 +258,7 @@
 			iconSize: 'sm',
 			silentSort: true,
 			paginationVAlign: 'bottom',
-			escape: false
+			escape: true
 		}));
 		enable_actions();
 		init_delete();
@@ -287,7 +287,7 @@
 		return function (resource, response) {
 			var id = response.id !== undefined ? response.id.toString() : "";
 			if (!response.success) {
-				$.notify(response.message, { type: 'danger' });
+				$.notify($.text(response.message).html(), { type: 'danger' });
 			} else {
 				var message = response.message;
 				var selector = rows_selector(response.id);
