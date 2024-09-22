@@ -79,6 +79,7 @@ $(document).ready(function()
 
 	var fill_value = function(event, ui) {
 		event.preventDefault();
+		$(this).val((ui.item ? ui.item.label : ""));
 		$("input[name='person_id']").val(ui.item.value);
 		$("input[name='person_name']").val(ui.item.label);
 	};
@@ -87,9 +88,7 @@ $(document).ready(function()
 		source: "<?= esc("customers/suggest") ?>",
 		minChars: 0,
 		delay: 15,
-		change: function(event,ui) {
-			$(this).val((ui.item ? ui.item.id : ""));
-		},
+		change: fill_value,
 	   	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
@@ -126,9 +125,8 @@ $(document).ready(function()
 			},
 			giftcard_number:
  			{
- 				required: true,
- 				number: true
- 			},
+ 				required: true
+			},
  			<?php
 			}
 			?>
