@@ -471,7 +471,9 @@ class Sale extends Model
 	{
 		$builder = $this->db->table('sales');
 		$builder->where('sale_id', $sale_id);
-		$success = $builder->update($sale_data);
+		$update_data = $sale_data;
+		unset($update_data['payments']);
+		$success = $builder->update($update_data);
 
 		//touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
 		if($success && !empty($sale_data['payments']))

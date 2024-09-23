@@ -1532,7 +1532,7 @@ class Sales extends Secure_Controller
 	 * @param int $sale_id
 	 * @throws ReflectionException
 	 */
-	public function save(int $sale_id = NEW_ENTRY): void
+	public function postSave(int $sale_id = NEW_ENTRY): void
 	{
 		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -1549,7 +1549,6 @@ class Sales extends Secure_Controller
 		];
 
 		// In order to maintain tradition the only element that can change on prior payments is the payment type
-		$payments = [];
 		$amount_tendered = 0;
 		$number_of_payments = $this->request->getPost('number_of_payments', FILTER_SANITIZE_NUMBER_INT);
 		for($i = 0; $i < $number_of_payments; ++$i)
@@ -1579,7 +1578,7 @@ class Sales extends Secure_Controller
 				$cash_refund = 0.00;
 			}
 
-			$sale_data['payments'] = [
+			$sale_data['payments'][] = [
 				'payment_id' => $payment_id,
 				'payment_type' => $payment_type,
 				'payment_amount' => $payment_amount,
@@ -1590,13 +1589,12 @@ class Sales extends Secure_Controller
 		}
 
 		$payment_id = NEW_ENTRY;
-		$payment_amount_new = prepare_decimal($this->request->getPost('payment_amount_new'));
-
-		$payment_amount = filter_var($payment_amount_new, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+		$payment_amount_new = $this->request->getPost('payment_amount_new');
 		$payment_type = $this->request->getPost('payment_type_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		if($payment_type != PAYMENT_TYPE_UNASSIGNED && $payment_amount <> 0)
+		if($payment_type != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new))
 		{
+			$payment_amount = filter_var(prepare_decimal($payment_amount_new), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 			$cash_refund = 0;
 			if($payment_type == lang('Sales.cash_adjustment'))
 			{
@@ -1614,7 +1612,7 @@ class Sales extends Secure_Controller
 				}
 			}
 
-			$sale_data['payments'] = [
+			$sale_data['payments'][] = [
 				'payment_id' => $payment_id,
 				'payment_type' => $payment_type,
 				'payment_amount' => $payment_amount,
