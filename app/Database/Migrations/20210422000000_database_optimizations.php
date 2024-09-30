@@ -5,6 +5,7 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 use App\Models\Attribute;
+use Config\Database;
 use Config\OSPOS;
 use DateTime;
 
