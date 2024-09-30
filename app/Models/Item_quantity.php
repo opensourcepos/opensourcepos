@@ -18,6 +18,10 @@ class Item_quantity extends Model
 		'quantity'
 	];
 
+	protected $item_id;
+	protected $location_id;
+	protected $quantity;
+
 	/**
 	 * @param int $item_id
 	 * @param int $location_id
