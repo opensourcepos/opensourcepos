@@ -57,6 +57,12 @@ class fix_duplicate_attributes extends Migration
 		}
 	}
 
+	/**
+	 * Drops the foreign key constraints from the attribute_links table.
+	 * This is required to successfully create the generated unique constraint.
+	 *
+	 * @return void
+	 */
 	private function drop_foreign_key_constraints(): void
 	{
 		$foreignKeys = [
@@ -83,7 +89,6 @@ class fix_duplicate_attributes extends Migration
 
 			if($query->getNumRows() > 0)
 			{
-				log_message('error', 'Dropping foreign key constraint: ' . $fk);
 				$this->db->query("ALTER TABLE `ospos_attribute_links` DROP FOREIGN KEY `$fk`");
 			}
 		}
