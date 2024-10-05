@@ -708,7 +708,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
 	}
 	else
 	{
-		$definition_flags = implode(', ', $attribute->get_definition_flags());
+		$definition_flags = implode(', ', $attribute_row->definition_flags);
 	}
 
 	return [
