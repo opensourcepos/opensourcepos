@@ -96,7 +96,7 @@ class Secure_Controller extends BaseController
 	{
 		foreach($this->request->getGet(null, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $value)
 		{
-			if (!parse_decimals($value))
+			if (parse_decimals($value) === false)
 			{
 				echo 'false';
 				return;
