@@ -51,7 +51,8 @@
 		"nexusphp/cs-config": "^3.6",
 		"phpunit/phpunit": "9.6.19",
 		"predis/predis": "^1.1||^2.0",
-		"roave/security-advisories": "dev-latest"
+		"roave/security-advisories": "dev-latest",
+		"squizlabs/php_codesniffer": "^3.10"
 	},
 	"autoload": {
 		"psr-4": {
