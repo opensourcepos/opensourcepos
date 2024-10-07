@@ -90,7 +90,7 @@ class Customers extends Persons
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$sort = $this->sanitizeSortColumn(CUSTOMER_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'people.person_id');
 		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$customers = $this->customer->search($search, $limit, $offset, $sort, $order);
@@ -114,7 +114,7 @@ class Customers extends Persons
 				$stats->quantity = 0;
 			}
 
-			$data_rows[] = get_customer_data_row($person, $stats);	//TODO: We either need to create a function to sanitize $person here (and for line 77) or we need to sanitize inside of get_customer_data_row().
+			$data_rows[] = get_customer_data_row($person, $stats);
 		}
 
 		echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
@@ -253,9 +253,7 @@ class Customers extends Persons
 			}
 		}
 
-		$sanitized_data = $this->sanitizeCustomerData($data);
-
-		echo view("customers/form", $sanitized_data);
+		echo view("customers/form", $data);
 	}
 
 	/**
@@ -535,27 +533,4 @@ class Customers extends Persons
 		}
 	}
 
-	/**
-	 * Sanitizes customer values to remove unsafe HTML tags and javascript.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data Attribute data to sanitize.
-	 * @return array Sanitized Attribute data.
-	 */
-	private function sanitizeCustomerData(array $data): array
-	{
-		$data['person_info']->first_name = Services::htmlPurifier()->purify($data['person_info']->first_name);
-		$data['person_info']->last_name = Services::htmlPurifier()->purify($data['person_info']->last_name);
-		$data['person_info']->address_1 = Services::htmlPurifier()->purify($data['person_info']->address_1);
-		$data['person_info']->address_2 = Services::htmlPurifier()->purify($data['person_info']->address_2);
-		$data['person_info']->city = Services::htmlPurifier()->purify($data['person_info']->city);
-		$data['person_info']->state = Services::htmlPurifier()->purify($data['person_info']->state);
-		$data['person_info']->zip = Services::htmlPurifier()->purify($data['person_info']->zip);
-		$data['person_info']->country = Services::htmlPurifier()->purify($data['person_info']->country);
-		$data['person_info']->comments = Services::htmlPurifier()->purify($data['person_info']->comments);
-
-		$data['person_info']->company_name = Services::htmlPurifier()->purify($data['person_info']->company_name);
-
-		return $data;
-	}
 }

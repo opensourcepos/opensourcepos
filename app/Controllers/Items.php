@@ -97,7 +97,7 @@ class Items extends Secure_Controller
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$sort = $this->sanitizeSortColumn(ITEM_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
 		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$this->item_lib->set_item_location($this->request->getGet('stock_location'));
@@ -269,8 +269,7 @@ class Items extends Secure_Controller
 	 */
 	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Long function. Perhaps we need to refactor out some methods.
 	{
-		// Set default values
-		if($item_id == null) $item_id = NEW_ENTRY;
+		$item_id ??= NEW_ENTRY;
 
 		if($item_id === NEW_ENTRY)
 		{
@@ -399,7 +398,6 @@ class Items extends Secure_Controller
 			$data['image_path']	= '';
 		}
 
-
 		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 
 		foreach($stock_locations as $location)
@@ -422,9 +420,7 @@ class Items extends Secure_Controller
 			$data['selected_low_sell_item'] = '';
 		}
 
-		$sanitized_data = $this->sanitizeItemData($data);
-
-		echo view('items/form', $sanitized_data);
+		echo view('items/form', $data);
 	}
 
 	/**
@@ -551,9 +547,7 @@ class Items extends Secure_Controller
 			unset($data['definition_names'][$definition_id]);
 		}
 
-		$sanitized_data = $this->sanitizeAttributeData($data);
-
-		echo view('attributes/item', $sanitized_data);
+		echo view('attributes/item', $data);
 	}
 
 	/**
@@ -1445,41 +1439,5 @@ class Items extends Secure_Controller
 				}
 			}
 		}
-	}
-
-	/**
-	 * Sanitizes unsafe data prior to sending it to the view.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data
-	 * @return array
-	 */
-	private function sanitizeItemData(array $data): array
-	{
-		$data['item_info']->category = Services::htmlPurifier()->purify($data['item_info']->category);
-		$data['item_info']->item_number = Services::htmlPurifier()->purify($data['item_info']->item_number);
-		$data['item_info']->description = Services::htmlPurifier()->purify($data['item_info']->description);
-
-		return $data;
-	}
-
-	/**
-	 * Sanitizes TEXT type attribute values to remove unsafe HTML tags and javascript.
-	 * This is not meant to replace CI4 sanitization.
-	 *
-	 * @param array $data Attribute data to sanitize.
-	 * @return array Sanitized Attribute data.
-	 */
-	private function sanitizeAttributeData(array $data): array
-	{
-		foreach($data['definition_values'] as $definition_id => &$definition_values)
-		{
-			if($definition_values['definition_type'] === 'TEXT')
-			{
-				$definition_values['attribute_value']->attribute_value = Services::htmlPurifier()->purify($definition_values['attribute_value']->attribute_value);
-			}
-		}
-
-		return $data;
 	}
 }

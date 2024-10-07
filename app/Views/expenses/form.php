@@ -200,7 +200,7 @@ $(document).ready(function()
 	});
 
 	<?php
-	if(!empty($expenses_info->expense_id))
+	if($expenses_info->expense_id != -1)
 	{
 	?>
 		$('#supplier_id').val('<?= $expenses_info->supplier_id ?>');
@@ -230,6 +230,7 @@ $(document).ready(function()
 		{
 			supplier_name: 'required',
 			category: 'required',
+			expense_category_id: 'required',
 			date:
 			{
 				required: true
@@ -248,6 +249,7 @@ $(document).ready(function()
 		messages:
 		{
 			category: "<?= lang('Expenses.category_required') ?>",
+			expense_category_id: "<?= lang('Expenses_categories.category_name_required') ?>",
 			date:
 			{
 				required: "<?= lang('Expenses.date_required') ?>"
