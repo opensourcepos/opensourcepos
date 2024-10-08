@@ -1303,7 +1303,7 @@ class Items extends Secure_Controller
 	 */
 	private function store_attribute_value(string $value, array $attribute_data, int $item_id)
 	{
-		$attribute_id = $this->attribute->value_exists($value, $attribute_data['definition_type']);
+		$attribute_id = $this->attribute->attributeValueExists($value, $attribute_data['definition_type']);
 
 		$this->attribute->deleteAttributeLinks($item_id, $attribute_data['definition_id']);
 

@@ -93,40 +93,37 @@ class Attribute extends Model
 	/**
 	 * Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 *
-	 * @param float|string $attribute_value The value to search for in the attribute values table.
-	 * @param string $definition_type The definition type which will dictate which column is searched.
+	 * @param float|string $attributeValue The value to search for in the attribute values table.
+	 * @param string $definitionType The definition type which will dictate which column is searched.
 	 * @return int|bool The attribute ID of the found row or false if no attribute value was found.
 	 */
-	public function value_exists(float|string $attribute_value, string $definition_type = TEXT): bool|int
+	public function attributeValueExists(float|string $attributeValue, string $definitionType = TEXT): bool|int
 	{
 		$config = config(OSPOS::class)->settings;
 
-		switch($definition_type)
+		switch($definitionType)
 		{
 			case DATE:
-				$data_type = 'date';
-				$attribute_date_value = DateTime::createFromFormat($config['dateformat'], $attribute_value);
-				$attribute_value = $attribute_date_value->format('Y-m-d');
+				$dataType = 'date';
+				$attributeDateValue = DateTime::createFromFormat($config['dateformat'], $attributeValue);
+				$attributeValue = $attributeDateValue->format('Y-m-d');
 				break;
 			case DECIMAL:
-				$data_type = 'decimal';
+				$dataType = 'decimal';
 				break;
 			default:
-				$data_type = 'value';
+				$dataType = 'value';
 				break;
 		}
 
 		$builder = $this->db->table('attribute_values');
 		$builder->select('attribute_id');
-		$builder->where("attribute_$data_type", $attribute_value);
+		$builder->where("attribute_$dataType", $attributeValue);
 		$query = $builder->get();
 
-		if($query->getNumRows() > 0)
-		{
-			return $query->getRow()->attribute_id;
-		}
-
-		return false;
+		return $query->getNumRows() > 0
+			? $query->getRow()->attribute_id
+			: false;
 	}
 
 	/**
@@ -515,8 +512,8 @@ class Attribute extends Model
 	 */
 	private function checkbox_attribute_values(int $definition_id): array
 	{
-		$zero_attribute_id = $this->value_exists('0');
-		$one_attribute_id = $this->value_exists('1');
+		$zero_attribute_id = $this->attributeValueExists('0');
+		$one_attribute_id = $this->attributeValueExists('1');
 
 		if(!$zero_attribute_id)
 		{
@@ -870,8 +867,7 @@ class Attribute extends Model
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
 		{
-		//Update attribute_value
-			$attribute_id = $this->value_exists($attribute_value, $definition_type);
+			$attribute_id = $this->attributeValueExists($attribute_value, $definition_type);
 
 			if(!$attribute_id)
 			{
