@@ -65,28 +65,29 @@ class Attribute extends Model
 
 	/**
 	 * Returns whether an attribute_link row exists given an item_id and optionally a definition_id
+	 *
 	 * @param int $item_id ID of the item to check for an associated attribute.
-	 * @param bool $definition_id Attribute definition ID to check.
+	 * @param int|bool $definition_id Attribute definition ID to check.
 	 * @return bool returns true if at least one attribute_link exists or false if no attributes exist for that item and attribute.
 	 */
-	public function link_exists(int $item_id, bool $definition_id = false): bool
+	public function attributeLinkExists(int $item_id, int|bool $definition_id = false): bool
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
 		$builder->where('sale_id', null);
 		$builder->where('receiving_id', null);
 
-		if(empty($definition_id))
+		if($definition_id)
+		{
+			$builder->where('definition_id', $definition_id);
+		}
+		else
 		{
 			$builder->where('definition_id IS NOT NULL');
 			$builder->where('attribute_id', null);
 		}
-		else
-		{
-			$builder->where('definition_id', $definition_id);
-		}
-
-		return ($builder->get()->getNumRows() > 0);	//TODO: This is returning a result of 1 on dropdown
+		$results = $builder->countAllResults();
+		return $results > 0;
 	}
 
 	/**
@@ -131,7 +132,7 @@ class Attribute extends Model
 	/**
 	 * Gets information about a particular attribute definition
 	 */
-	public function get_info(int $definition_id): object
+	public function getAttributeInfo(int $definition_id): object
 	{
 		$builder = $this->db->table('attribute_definitions AS definition');
 		$builder->select('parent_definition.definition_name AS definition_group, definition.*');
@@ -140,7 +141,7 @@ class Attribute extends Model
 
 		$query = $builder->get();
 
-		if($query->getNumRows() == 1)	//TODO: ===
+		if($query->getNumRows() === 1)
 		{
 			return $query->getRow();
 		}
@@ -519,13 +520,13 @@ class Attribute extends Model
 
 		if(!$zero_attribute_id)
 		{
-			$zero_attribute_id = $this->save_value('0', $definition_id, false, false, CHECKBOX);
+			$zero_attribute_id = $this->saveAttributeValue('0', $definition_id, false, false, CHECKBOX);
 		}
 
 		if(!$one_attribute_id)
 		{
-			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
-			$one_attribute_id = $this->save_value('1', $definition_id, false, false, CHECKBOX);
+			$one_attribute_id = $this->saveAttributeValue('1', $definition_id, false, false, CHECKBOX);
+			$one_attribute_id = $this->saveAttributeValue('1', $definition_id, false, false, CHECKBOX);
 		}
 
 		return [$zero_attribute_id, $one_attribute_id];
@@ -610,31 +611,32 @@ class Attribute extends Model
 	/**
 	 * Inserts or updates an attribute link
 	 *
-	 * @param int $item_id
-	 * @param int $definition_id
-	 * @param int $attribute_id
-	 * @return bool
+	 * @param int $itemId
+	 * @param int $definitionId
+	 * @param int $attributeId
+	 * @return bool True if the attribute link was saved successfully, false otherwise.
 	 */
-	public function save_link(int $item_id, int $definition_id, int $attribute_id): bool
+	public function saveAttributeLink(int $itemId, int $definitionId, int $attributeId): bool
 	{
 		$this->db->transStart();
 
 		$builder = $this->db->table('attribute_links');
 
-		if($this->link_exists($item_id, $definition_id))
+		if($this->attributeLinkExists($itemId, $definitionId))
 		{
-			$builder->set(['attribute_id' => $attribute_id]);
-			$builder->where('definition_id', $definition_id);
-			$builder->where('item_id', $item_id);
+			$builder->set(['attribute_id' => $attributeId]);
+			$builder->where('definition_id', $definitionId);
+			$builder->where('item_id', $itemId);
 			$builder->where('sale_id', null);
 			$builder->where('receiving_id', null);
 			$builder->update();
 		}
 		else
 		{
-			$data = ['attribute_id' => $attribute_id,
-				'item_id' => $item_id,
-				'definition_id' => $definition_id
+			$data = [
+				'attribute_id' => $attributeId,
+				'item_id' => $itemId,
+				'definition_id' => $definitionId
 			];
 			$builder->insert($data);
 		}
@@ -649,7 +651,7 @@ class Attribute extends Model
 	 * @param int|bool $definition_id
 	 * @return bool
 	 */
-	public function delete_link(int $item_id, int|bool $definition_id = false): bool
+	public function deleteAttributeLinks(int $item_id, int|bool $definition_id = false): bool
 	{
 		$delete_data = ['item_id' => $item_id];
 
@@ -843,12 +845,27 @@ class Attribute extends Model
 	 * @param string $definition_type
 	 * @return int
 	 */
-	public function save_value(string $attribute_value, int $definition_id, $item_id = false, $attribute_id = false, string $definition_type = DROPDOWN): int
+	public function saveAttributeValue(string $attribute_value, int $definition_id, int|bool $item_id = false, int|bool $attribute_id = false, string $definition_type = DROPDOWN): int
 	{
 		$config = config(OSPOS::class)->settings;
 		$locale_date_format = $config['dateformat'];
 
 		$this->db->transStart();
+
+		switch($definition_type)
+		{
+			case DATE:
+				$data_type				= 'date';
+				$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
+				$attribute_value		= $attribute_date_value->format('Y-m-d');
+				break;
+			case DECIMAL:
+				$data_type	= 'decimal';
+				break;
+			default:
+				$data_type	= 'value';
+				break;
+		}
 
 		//New Attribute
 		if(empty($attribute_id) || empty($item_id))
@@ -858,20 +875,6 @@ class Attribute extends Model
 
 			if(!$attribute_id)
 			{
-				switch($definition_type)	//TODO: Duplicated code
-				{
-					case DATE:
-						$data_type				= 'date';
-						$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
-						$attribute_value		= $attribute_date_value->format('Y-m-d');
-						break;
-					case DECIMAL:
-						$data_type	= 'decimal';
-						break;
-					default:
-						$data_type	= 'value';
-						break;
-				}
 
 				$builder = $this->db->table('attribute_values');
 				$builder->set(["attribute_$data_type" => $attribute_value]);
@@ -892,22 +895,7 @@ class Attribute extends Model
 		}
 		//Existing Attribute
 		else
-		{//TODO: TAKE A LOOK AT THIS DUPLICATE CODE FRAGMENT FROM ABOVE AND SEE ABOUT REFACTORING OUT A FUNCTION
-			switch($definition_type)
-			{
-				case DATE:
-					$data_type				= 'date';
-					$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
-					$attribute_value		= $attribute_date_value->format('Y-m-d');
-					break;
-				case DECIMAL:
-					$data_type	= 'decimal';
-					break;
-				default:
-					$data_type	= 'value';
-					break;
-			}
-
+		{
 			$builder = $this->db->table('attribute_values');
 			$builder->set(["attribute_$data_type" => $attribute_value]);
 			$builder->where('attribute_id', $attribute_id);
@@ -1037,9 +1025,9 @@ class Attribute extends Model
 
 		foreach($attributes as $attribute)
 		{
-			$new_attribute_id = $this->save_value($attribute['attribute_value'], $definition_id, false, $attribute['attribute_id'], $definition_type);
+			$new_attribute_id = $this->saveAttributeValue($attribute['attribute_value'], $definition_id, false, $attribute['attribute_id'], $definition_type);
 
-			if(!$this->save_link($attribute['item_id'], $definition_id, $new_attribute_id))
+			if(!$this->saveAttributeLink($attribute['item_id'], $definition_id, $new_attribute_id))
 			{
 				log_message('error', 'Transaction failed');
 				$this->db->transRollback();

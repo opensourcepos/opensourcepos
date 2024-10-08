@@ -78,7 +78,7 @@ class Migration_database_optimizations extends Migration
 							break;
 					}
 
-					$attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
+					$attribute->saveAttributeValue($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
 				}
 			}
 		}

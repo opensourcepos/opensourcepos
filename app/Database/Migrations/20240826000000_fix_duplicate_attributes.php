@@ -52,8 +52,8 @@ class fix_duplicate_attributes extends Migration
 		$attribute = model(Attribute::class);
 		foreach($rows_to_keep->getResult() as $row)
 		{
-			$attribute->delete_link($row->item_id, $row->definition_id);	//Deletes all attribute links for the item_id/definition_id combination
-			$attribute->save_link($row->item_id, $row->definition_id, $row->attribute_id);
+			$attribute->deleteAttributeLinks($row->item_id, $row->definition_id);	//Deletes all attribute links for the item_id/definition_id combination
+			$attribute->saveAttributeLink($row->item_id, $row->definition_id, $row->attribute_id);
 		}
 	}
 
