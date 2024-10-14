@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="OSPOSStandard">
+	<description>Custom Coding Standard based on PSR-12 for OpenSourcePOS</description>
+	<arg name="tab-width" value="4"/>
+	<rule ref="PSR12"/>
+</ruleset>
