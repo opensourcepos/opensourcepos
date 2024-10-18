@@ -360,7 +360,7 @@ class Sales extends Secure_Controller
 	 */
 	public function postSetPrintAfterSale(): void
 	{
-		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != null);
+		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != 'false');
 	}
 
 	/**
@@ -750,7 +750,7 @@ class Sales extends Secure_Controller
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
 		$data['cur_rewards_value'] = $this->sale_lib->get_rewards_remainder();
-		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['print_after_sale'] = $this->session->get('sales_print_after_sale');
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
