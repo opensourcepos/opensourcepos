@@ -18,6 +18,12 @@ a.none
 	padding: 0.2em;
 }
 
+@media (min-width:1300px) {
+	.container {
+		width: 1400px;
+	}
+}
+
 .navbar
 {
 	border-radius: 0;
