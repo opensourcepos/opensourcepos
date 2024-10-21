@@ -513,6 +513,8 @@ class Items extends Secure_Controller
 	}
 
 	/**
+	 * Gathers attribute value information for an item and returns it in a view.
+	 *
 	 * @param int $item_id
 	 * @return void
 	 */

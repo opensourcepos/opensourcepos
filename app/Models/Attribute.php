@@ -106,7 +106,7 @@ class Attribute extends Model
 			case DATE:
 				$dataType = 'date';
 				$attributeDateValue = DateTime::createFromFormat($config['dateformat'], $attributeValue);
-				$attributeValue = $attributeDateValue->format('Y-m-d');
+				$attributeValue = $attributeDateValue ? $attributeDateValue->format('Y-m-d') : $attributeValue;
 				break;
 			case DECIMAL:
 				$dataType = 'decimal';
@@ -845,7 +845,6 @@ class Attribute extends Model
 	public function saveAttributeValue(string $attribute_value, int $definition_id, int|bool $item_id = false, int|bool $attribute_id = false, string $definition_type = DROPDOWN): int
 	{
 		$config = config(OSPOS::class)->settings;
-		$locale_date_format = $config['dateformat'];
 
 		$this->db->transStart();
 
@@ -853,7 +852,7 @@ class Attribute extends Model
 		{
 			case DATE:
 				$data_type				= 'date';
-				$attribute_date_value	= DateTime::createFromFormat($locale_date_format, $attribute_value);
+				$attribute_date_value	= DateTime::createFromFormat($config['dateformat'], $attribute_value);
 				$attribute_value		= $attribute_date_value->format('Y-m-d');
 				break;
 			case DECIMAL:
