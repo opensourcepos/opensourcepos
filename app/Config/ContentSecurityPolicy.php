@@ -47,28 +47,45 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $defaultSrc;
+    public $defaultSrc = [
+		'self',
+		'www.google.com',
+	];
 
     /**
      * Lists allowed scripts' URLs.
      *
      * @var list<string>|string
      */
-    public $scriptSrc = 'self';
+    public $scriptSrc = [
+		'self',
+		'unsafe-inline',
+		'unsafe-eval',
+		'www.google.com www.gstatic.com'
+	];
 
     /**
      * Lists allowed stylesheets' URLs.
      *
      * @var list<string>|string
      */
-    public $styleSrc = 'self';
+	public $styleSrc = [
+		'self',
+		'unsafe-inline',
+		'nonce-{csp-style-nonce}',
+		'https://fonts.googleapis.com',
+	];
 
-    /**
+	/**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
      */
-    public $imageSrc = 'self';
+    public $imageSrc = [
+		'self',
+		'data:',
+		'blob:',
+	];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -92,14 +109,21 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $connectSrc = 'self';
+    public $connectSrc = [
+		'self',
+		'nominatim.openstreetmap.org',
+	];
 
     /**
      * Specifies the origins that can serve web fonts.
      *
      * @var list<string>|string
      */
-    public $fontSrc;
+    public $fontSrc = [
+		'self',
+		'fonts.googleapis.com',
+		'fonts.gstatic.com',
+	];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.
@@ -138,14 +162,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $objectSrc = 'self';
+    public $objectSrc = 'none';
 
     /**
      * @var list<string>|string|null
      */
     public $manifestSrc;
 
-    /**
+     /**
      * Limits the kinds of plugins a page may invoke.
      *
      * @var list<string>|string|null
