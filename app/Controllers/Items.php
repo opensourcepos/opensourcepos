@@ -1120,7 +1120,9 @@ class Items extends Secure_Controller
 					}
 
 					//Remove false, null, '' and empty strings but keep 0
-					$item_data = array_filter($item_data, 'strlen');
+					$item_data = array_filter($item_data, function($value) {
+						return $value !== null && strlen($value);
+					});
 
 					if(!$is_failed_row && $this->item->save_value($item_data, $item_id))
 					{
