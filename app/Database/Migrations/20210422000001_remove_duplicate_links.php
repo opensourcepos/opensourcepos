@@ -51,7 +51,7 @@ class Migration_remove_duplicate_links extends Migration
 			$builder->where('definition_id', $duplicated_link['definition_id']);
 			$builder->delete();
 
-			$attribute->save_link($duplicated_link['item_id'], $duplicated_link['definition_id'], $duplicated_link['attribute_id']);
+			$attribute->saveAttributeLink($duplicated_link['item_id'], $duplicated_link['definition_id'], $duplicated_link['attribute_id']);
 		}
 
 		$this->db->transComplete();

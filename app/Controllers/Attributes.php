@@ -64,7 +64,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function postSaveAttributeValue(): void
 	{
-		$success = $this->attribute->save_value(
+		$success = $this->attribute->saveAttributeValue(
 			html_entity_decode($this->request->getPost('attribute_value')),
 			$this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
 			$this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT),
@@ -131,7 +131,7 @@ class Attributes extends Secure_Controller
 
 				foreach($definition_values as $definition_value)
 				{
-					$this->attribute->save_value($definition_value, $definition_data['definition_id']);
+					$this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
 				}
 
 				echo json_encode([
@@ -180,7 +180,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function getRow(int $row_id): void
 	{
-		$attribute_definition_info = $this->attribute->get_info($row_id);
+		$attribute_definition_info = $this->attribute->getAttributeInfo($row_id);
 		$attribute_definition_info->definition_flags = $this->get_attributes($attribute_definition_info->definition_flags);
 		$data_row = get_attribute_definition_data_row($attribute_definition_info);
 
@@ -210,7 +210,7 @@ class Attributes extends Secure_Controller
 	 */
 	public function getView(int $definition_id = NO_DEFINITION_ID): void
 	{
-		$info = $this->attribute->get_info($definition_id);
+		$info = $this->attribute->getAttributeInfo($definition_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $value;
