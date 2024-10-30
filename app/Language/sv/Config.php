@@ -108,7 +108,7 @@ return [
     'dinner_table_invalid_chars' => "Bordsnamn får inte innehålla '_'.",
     'dinner_table_required' => "Bord är ett obligatoriskt fält.",
     'dot' => "punkt",
-    'email' => "E-mail",
+    'email' => "E-post",
     'email_configuration' => "E-mail Konfiguration",
     'email_mailpath' => "Sökväg till Sendmail",
     'email_protocol' => "Protokol",
