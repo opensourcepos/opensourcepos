@@ -412,7 +412,7 @@ class Customers extends Persons
 	 */
 	public function getCsv(): DownloadResponse
 	{
-		$name = 'import_customers.csv';
+		$name = 'importCustomers.csv';
 		$data = file_get_contents(WRITEPATH . "uploads/$name");
 		return $this->response->download($name, $data);
 	}
