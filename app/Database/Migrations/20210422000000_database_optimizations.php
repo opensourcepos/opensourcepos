@@ -29,12 +29,12 @@ class Migration_database_optimizations extends Migration
 		$builder = $this->db->table('attribute_values');
 		$builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
 		$builder->groupStart();
-			$builder->where('attribute_value IS NOT NULL');
-			$builder->where('attribute_date IS NOT NULL');
+		$builder->where('attribute_value IS NOT NULL');
+		$builder->where('attribute_date IS NOT NULL');
 		$builder->groupEnd();
 		$builder->orGroupStart();
-			$builder->where('attribute_value IS NOT NULL');
-			$builder->where('attribute_decimal IS NOT NULL');
+		$builder->where('attribute_value IS NOT NULL');
+		$builder->where('attribute_decimal IS NOT NULL');
 		$builder->groupEnd();
 		$attribute_values = $builder->get();
 
@@ -78,7 +78,7 @@ class Migration_database_optimizations extends Migration
 							break;
 					}
 
-					$attribute->save_value($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
+					$attribute->saveAttributeValue($value, $attribute_link['definition_id'], $attribute_link['item_id'], false, $attribute_link['definition_type']);
 				}
 			}
 		}

@@ -326,6 +326,7 @@ class Items extends Secure_Controller
 				$item_info->tax_category_id = $this->config['default_tax_category'];
 			}
 		}
+
 		$data['standard_item_locked'] = (
 			$data['item_kit_disabled']
 			&& $item_info->item_type == ITEM_KIT
@@ -512,6 +513,8 @@ class Items extends Secure_Controller
 	}
 
 	/**
+	 * Gathers attribute value information for an item and returns it in a view.
+	 *
 	 * @param int $item_id
 	 * @return void
 	 */
@@ -762,28 +765,7 @@ class Items extends Secure_Controller
 					$success &= $this->inventory->insert($inv_data, false);
 				}
 			}
-
-			// Save item attributes
-			$attribute_links = $this->request->getPost('attribute_links') ?? [];
-			$attribute_ids = $this->request->getPost('attribute_ids');
-
-			$this->attribute->delete_link($item_id);
-
-			foreach($attribute_links as $definition_id => $attribute_value)
-			{
-				$definition_type = $this->attribute->get_info($definition_id)->definition_type;
-
-				if($definition_type == DECIMAL)
-				{
-					$attribute_value = prepare_decimal($attribute_value);
-				}
-
-				$attribute_id = $definition_type === DROPDOWN
-					? $attribute_value
-					: $this->attribute->save_value($attribute_value, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
-
-				$this->attribute->save_link($item_id, $definition_id, $attribute_id);
-			}
+			$this->saveItemAttributes($item_id);
 
 			if($success && $upload_success)
 			{
@@ -1325,15 +1307,15 @@ class Items extends Secure_Controller
 	 */
 	private function store_attribute_value(string $value, array $attribute_data, int $item_id)
 	{
-		$attribute_id = $this->attribute->value_exists($value, $attribute_data['definition_type']);
+		$attribute_id = $this->attribute->attributeValueExists($value, $attribute_data['definition_type']);
 
-		$this->attribute->delete_link($item_id, $attribute_data['definition_id']);
+		$this->attribute->deleteAttributeLinks($item_id, $attribute_data['definition_id']);
 
 		if(!$attribute_id)
 		{
-			$attribute_id = $this->attribute->save_value($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
+			$attribute_id = $this->attribute->saveAttributeValue($value, $attribute_data['definition_id'], $item_id, false, $attribute_data['definition_type']);
 		}
-		else if(!$this->attribute->save_link($item_id, $attribute_data['definition_id'], $attribute_id))
+		else if(!$this->attribute->saveAttributeLink($item_id, $attribute_data['definition_id'], $attribute_id))
 		{
 			return false;
 		}
@@ -1439,6 +1421,40 @@ class Items extends Secure_Controller
 					$this->item->save_value($item_data, $item->item_id);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Saves item attributes for a given item.
+	 *
+	 * @param int $itemId The item for which attributes need to be saved to.
+	 * @return void
+	 */
+	public function saveItemAttributes(int $itemId): void
+	{
+		$attributeLinks = $this->request->getPost('attribute_links') ?? [];
+		$attributeIds = $this->request->getPost('attribute_ids');
+
+		$this->attribute->deleteAttributeLinks($itemId);
+
+		foreach($attributeLinks as $definitionId => $attributeValue)
+		{
+			$definitionType = $this->attribute->getAttributeInfo($definitionId)->definition_type;
+
+			switch($definitionType)
+			{
+				case DROPDOWN:
+					$attributeId = $attributeValue;
+					break;
+				case DECIMAL:
+					$attributeValue = prepare_decimal($attributeValue);
+				//Fall through to save the attribute value
+				default:
+					$attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);
+					break;
+			}
+
+			$this->attribute->saveAttributeLink($itemId, $definitionId, $attributeId);
 		}
 	}
 }
