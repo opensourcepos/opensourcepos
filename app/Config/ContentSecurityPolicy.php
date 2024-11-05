@@ -76,7 +76,7 @@ class ContentSecurityPolicy extends BaseConfig
 		'https://fonts.googleapis.com',
 	];
 
-	/**
+    /**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
@@ -169,7 +169,7 @@ class ContentSecurityPolicy extends BaseConfig
      */
     public $manifestSrc;
 
-     /**
+    /**
      * Limits the kinds of plugins a page may invoke.
      *
      * @var list<string>|string|null
