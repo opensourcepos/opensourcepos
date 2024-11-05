@@ -27,568 +27,568 @@ use stdClass;
 
 class Sales extends Secure_Controller
 {
-	protected $helpers = ['file'];
-	private Barcode_lib $barcode_lib;
-	private Email_lib $email_lib;
-	private Sale_lib $sale_lib;
-	private Tax_lib $tax_lib;
-	private Token_lib $token_lib;
-	private Customer $customer;
-	private Customer_rewards $customer_rewards;
-	private Dinner_table $dinner_table;
-	protected Employee $employee;
-	private Item $item;
-	private Item_kit $item_kit;
-	private Sale $sale;
-	private Stock_location $stock_location;
-	private array $config;
+    protected $helpers = ['file'];
+    private Barcode_lib $barcode_lib;
+    private Email_lib $email_lib;
+    private Sale_lib $sale_lib;
+    private Tax_lib $tax_lib;
+    private Token_lib $token_lib;
+    private Customer $customer;
+    private Customer_rewards $customer_rewards;
+    private Dinner_table $dinner_table;
+    protected Employee $employee;
+    private Item $item;
+    private Item_kit $item_kit;
+    private Sale $sale;
+    private Stock_location $stock_location;
+    private array $config;
 
-	public function __construct()
-	{
-		parent::__construct('sales');
+    public function __construct()
+    {
+        parent::__construct('sales');
 
-		$this->session = session();
-		$this->barcode_lib = new Barcode_lib();
-		$this->email_lib = new Email_lib();
-		$this->sale_lib = new Sale_lib();
-		$this->tax_lib = new Tax_lib();
-		$this->token_lib = new Token_lib();
-		$this->config = config(OSPOS::class)->settings;
+        $this->session = session();
+        $this->barcode_lib = new Barcode_lib();
+        $this->email_lib = new Email_lib();
+        $this->sale_lib = new Sale_lib();
+        $this->tax_lib = new Tax_lib();
+        $this->token_lib = new Token_lib();
+        $this->config = config(OSPOS::class)->settings;
 
-		$this->customer = model(Customer::class);
-		$this->sale = model(Sale::class);
-		$this->item = model(Item::class);
-		$this->item_kit = model(Item_kit::class);
-		$this->stock_location = model(Stock_location::class);
-		$this->customer_rewards = model(Customer_rewards::class);
-		$this->dinner_table = model(Dinner_table::class);
-		$this->employee = model(Employee::class);
-	}
+        $this->customer = model(Customer::class);
+        $this->sale = model(Sale::class);
+        $this->item = model(Item::class);
+        $this->item_kit = model(Item_kit::class);
+        $this->stock_location = model(Stock_location::class);
+        $this->customer_rewards = model(Customer_rewards::class);
+        $this->dinner_table = model(Dinner_table::class);
+        $this->employee = model(Employee::class);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function getIndex(): void
-	{
-		$this->session->set('allow_temp_items', 1);
-		$this->_reload();	//TODO: Hungarian Notation
-	}
+    /**
+     * @return void
+     */
+    public function getIndex(): void
+    {
+        $this->session->set('allow_temp_items', 1);
+        $this->_reload();    //TODO: Hungarian Notation
+    }
 
-	/**
-	 * Load the sale edit modal. Used in app/Views/sales/register.php.
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getManage(): void
-	{
-		$person_id = $this->session->get('person_id');
+    /**
+     * Load the sale edit modal. Used in app/Views/sales/register.php.
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getManage(): void
+    {
+        $person_id = $this->session->get('person_id');
 
-		if(!$this->employee->has_grant('reports_sales', $person_id))
-		{
-			redirect('no_access/sales/reports_sales');
-		}
-		else
-		{
-			$data['table_headers'] = get_sales_manage_table_headers();
+        if(!$this->employee->has_grant('reports_sales', $person_id))
+        {
+            redirect('no_access/sales/reports_sales');
+        }
+        else
+        {
+            $data['table_headers'] = get_sales_manage_table_headers();
 
-			$data['filters'] = ['only_cash' => lang('Sales.cash_filter'),
-				'only_due' => lang('Sales.due_filter'),
-				'only_check' => lang('Sales.check_filter'),
-				'only_creditcard' => lang('Sales.credit_filter'),
-				'only_invoices' => lang('Sales.invoice_filter'),
-				'selected_customer' => lang('Sales.selected_customer')
-			];
+            $data['filters'] = ['only_cash' => lang('Sales.cash_filter'),
+                'only_due' => lang('Sales.due_filter'),
+                'only_check' => lang('Sales.check_filter'),
+                'only_creditcard' => lang('Sales.credit_filter'),
+                'only_invoices' => lang('Sales.invoice_filter'),
+                'selected_customer' => lang('Sales.selected_customer')
+            ];
 
-			if($this->sale_lib->get_customer() != -1)
-			{
-				$selected_filters = ['selected_customer'];
-				$data['customer_selected'] = true;
-			}
-			else
-			{
-				$data['customer_selected'] = false;
-				$selected_filters = [];
-			}
-			$data['selected_filters'] = $selected_filters;
+            if($this->sale_lib->get_customer() != -1)
+            {
+                $selected_filters = ['selected_customer'];
+                $data['customer_selected'] = true;
+            }
+            else
+            {
+                $data['customer_selected'] = false;
+                $selected_filters = [];
+            }
+            $data['selected_filters'] = $selected_filters;
 
-			echo view('sales/manage', $data);
-		}
-	}
+            echo view('sales/manage', $data);
+        }
+    }
 
-	/**
-	 * @param int $row_id
-	 * @return void
-	 */
-	public function getRow(int $row_id): void
-	{
-		$sale_info = $this->sale->get_info($row_id)->getRow();
-		$data_row = get_sale_data_row($sale_info);
+    /**
+     * @param int $row_id
+     * @return void
+     */
+    public function getRow(int $row_id): void
+    {
+        $sale_info = $this->sale->get_info($row_id)->getRow();
+        $data_row = get_sale_data_row($sale_info);
 
-		echo json_encode($data_row);
-	}
+        echo json_encode($data_row);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function getSearch(): void
-	{
-		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->sanitizeSortColumn(SALES_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
-		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    /**
+     * @return void
+     */
+    public function getSearch(): void
+    {
+        $search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(SALES_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		$filters = [
-			'sale_type' => 'all',
-			'location_id' => 'all',
-			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-			'only_cash' => false,
-			'only_due' => false,
-			'only_check' => false,
-			'selected_customer' => false,
-			'only_creditcard' => false,
-			'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
-			'is_valid_receipt' => $this->sale->is_valid_receipt($search)
-		];
+        $filters = [
+            'sale_type' => 'all',
+            'location_id' => 'all',
+            'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash' => false,
+            'only_due' => false,
+            'only_check' => false,
+            'selected_customer' => false,
+            'only_creditcard' => false,
+            'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+            'is_valid_receipt' => $this->sale->is_valid_receipt($search)
+        ];
 
-		// check if any filter is set in the multiselect dropdown
-		$request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-		$filters = array_merge($filters, $request_filters);
+        // check if any filter is set in the multiselect dropdown
+        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $request_filters);
 
-		$sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
-		$total_rows = $this->sale->get_found_rows($search, $filters);
-		$payments = $this->sale->get_payments_summary($search, $filters);
-		$payment_summary = get_sales_manage_payments_summary($payments);
+        $sales = $this->sale->search($search, $filters, $limit, $offset, $sort, $order);
+        $total_rows = $this->sale->get_found_rows($search, $filters);
+        $payments = $this->sale->get_payments_summary($search, $filters);
+        $payment_summary = get_sales_manage_payments_summary($payments);
 
-		$data_rows = [];
-		foreach($sales->getResult() as $sale)
-		{
-			$data_rows[] = get_sale_data_row($sale);
-		}
+        $data_rows = [];
+        foreach($sales->getResult() as $sale)
+        {
+            $data_rows[] = get_sale_data_row($sale);
+        }
 
-		if($total_rows > 0)
-		{
-			$data_rows[] = get_sale_data_last_row($sales);
-		}
+        if($total_rows > 0)
+        {
+            $data_rows[] = get_sale_data_last_row($sales);
+        }
 
-		echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
-	}
+        echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+    }
 
-	/**
-	 * Gets search suggestions for an item or item kit. Used in app/Views/sales/register.php.
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getItemSearch(): void
-	{
-		$suggestions = [];
-		$receipt = $search = $this->request->getGet('term') != ''
-			? $this->request->getGet('term')
-			: null;
+    /**
+     * Gets search suggestions for an item or item kit. Used in app/Views/sales/register.php.
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getItemSearch(): void
+    {
+        $suggestions = [];
+        $receipt = $search = $this->request->getGet('term') != ''
+            ? $this->request->getGet('term')
+            : null;
 
-		if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
-		{
-			// if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
-			$suggestions[] = $receipt;
-		}
-		$suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true));
-		$suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
+        if($this->sale_lib->get_mode() == 'return' && $this->sale->is_valid_receipt($receipt))
+        {
+            // if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
+            $suggestions[] = $receipt;
+        }
+        $suggestions = array_merge($suggestions, $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true));
+        $suggestions = array_merge($suggestions, $this->item_kit->get_search_suggestions($search));
 
-		echo json_encode($suggestions);
-	}
+        echo json_encode($suggestions);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function suggest_search(): void
-	{
-		$search = $this->request->getPost('term') != ''
-			? $this->request->getPost('term')
-			: null;
+    /**
+     * @return void
+     */
+    public function suggest_search(): void
+    {
+        $search = $this->request->getPost('term') != ''
+            ? $this->request->getPost('term')
+            : null;
 
-		$suggestions = $this->sale->get_search_suggestions($search);
+        $suggestions = $this->sale->get_search_suggestions($search);
 
-		echo json_encode($suggestions);
-	}
+        echo json_encode($suggestions);
+    }
 
-	/**
-	 * Set a given customer. Used in app/Views/sales/register.php.
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSelectCustomer(): void
-	{
-		$customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
-		if($this->customer->exists($customer_id))
-		{
-			$this->sale_lib->set_customer($customer_id);
-			$discount = $this->customer->get_info($customer_id)->discount;
-			$discount_type = $this->customer->get_info($customer_id)->discount_type;
+    /**
+     * Set a given customer. Used in app/Views/sales/register.php.
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSelectCustomer(): void
+    {
+        $customer_id = (int)$this->request->getPost('customer', FILTER_SANITIZE_NUMBER_INT);
+        if($this->customer->exists($customer_id))
+        {
+            $this->sale_lib->set_customer($customer_id);
+            $discount = $this->customer->get_info($customer_id)->discount;
+            $discount_type = $this->customer->get_info($customer_id)->discount_type;
 
-			// apply customer default discount to items that have 0 discount
-			if($discount != '')
-			{
-				$this->sale_lib->apply_customer_discount($discount, $discount_type);
-			}
-		}
+            // apply customer default discount to items that have 0 discount
+            if($discount != '')
+            {
+                $this->sale_lib->apply_customer_discount($discount, $discount_type);
+            }
+        }
 
-		$this->_reload();
-	}
+        $this->_reload();
+    }
 
-	/**
-	 * Changes the sale mode in the register to carry out different types of sales
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postChangeMode(): void
-	{
-		$mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$this->sale_lib->set_mode($mode);
+    /**
+     * Changes the sale mode in the register to carry out different types of sales
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postChangeMode(): void
+    {
+        $mode = $this->request->getPost('mode', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->sale_lib->set_mode($mode);
 
-		if($mode == 'sale')
-		{
-			$this->sale_lib->set_sale_type(SALE_TYPE_POS);
-		}
-		else if($mode == 'sale_quote')
-		{
-			$this->sale_lib->set_sale_type(SALE_TYPE_QUOTE);
-		}
-		else if($mode == 'sale_work_order')
-		{
-			$this->sale_lib->set_sale_type(SALE_TYPE_WORK_ORDER);
-		}
-		else if($mode == 'sale_invoice')
-		{
-			$this->sale_lib->set_sale_type(SALE_TYPE_INVOICE);
-		}
-		else
-		{
-			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
-		}
+        if($mode == 'sale')
+        {
+            $this->sale_lib->set_sale_type(SALE_TYPE_POS);
+        }
+        else if($mode == 'sale_quote')
+        {
+            $this->sale_lib->set_sale_type(SALE_TYPE_QUOTE);
+        }
+        else if($mode == 'sale_work_order')
+        {
+            $this->sale_lib->set_sale_type(SALE_TYPE_WORK_ORDER);
+        }
+        else if($mode == 'sale_invoice')
+        {
+            $this->sale_lib->set_sale_type(SALE_TYPE_INVOICE);
+        }
+        else
+        {
+            $this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
+        }
 
-		if($this->config['dinner_table_enable'])
-		{
-			$occupied_dinner_table = $this->request->getPost('dinner_table', FILTER_SANITIZE_NUMBER_INT);
-			$released_dinner_table = $this->sale_lib->get_dinner_table();
-			$occupied = $this->dinner_table->is_occupied($released_dinner_table);
+        if($this->config['dinner_table_enable'])
+        {
+            $occupied_dinner_table = $this->request->getPost('dinner_table', FILTER_SANITIZE_NUMBER_INT);
+            $released_dinner_table = $this->sale_lib->get_dinner_table();
+            $occupied = $this->dinner_table->is_occupied($released_dinner_table);
 
-			if($occupied && ($occupied_dinner_table != $released_dinner_table))
-			{
-				$this->dinner_table->swap_tables($released_dinner_table, $occupied_dinner_table);
-			}
+            if($occupied && ($occupied_dinner_table != $released_dinner_table))
+            {
+                $this->dinner_table->swap_tables($released_dinner_table, $occupied_dinner_table);
+            }
 
-			$this->sale_lib->set_dinner_table($occupied_dinner_table);
-		}
+            $this->sale_lib->set_dinner_table($occupied_dinner_table);
+        }
 
-		$stock_location = $this->request->getPost('stock_location', FILTER_SANITIZE_NUMBER_INT);
+        $stock_location = $this->request->getPost('stock_location', FILTER_SANITIZE_NUMBER_INT);
 
-		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
-		{
+        if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
+        {
 //TODO: The code below was removed in 2017 by @steveireland. We either need to reinstate some of it or remove this entire if block but we can't leave an empty if block
-//			$dinner_table = $this->request->getPost('dinner_table');
-//			$this->sale_lib->set_dinner_table($dinner_table);
-		}
-		elseif($this->stock_location->is_allowed_location($stock_location, 'sales'))
-		{
-			$this->sale_lib->set_sale_location($stock_location);
-		}
+//            $dinner_table = $this->request->getPost('dinner_table');
+//            $this->sale_lib->set_dinner_table($dinner_table);
+        }
+        elseif($this->stock_location->is_allowed_location($stock_location, 'sales'))
+        {
+            $this->sale_lib->set_sale_location($stock_location);
+        }
 
-		$this->sale_lib->empty_payments();
+        $this->sale_lib->empty_payments();
 
-		$this->_reload();
-	}
+        $this->_reload();
+    }
 
-	/**
-	 * @param int $sale_type
-	 * @return void
-	 */
-	public function change_register_mode(int $sale_type): void
-	{
-		$mode = match($sale_type) {
-			SALE_TYPE_QUOTE => 'sale_quote',
-			SALE_TYPE_WORK_ORDER => 'sale_work_order',
-			SALE_TYPE_INVOICE => 'sale_invoice',
-			SALE_TYPE_RETURN => 'return',
-			default => 'sale' //SALE_TYPE_POS
-		};
+    /**
+     * @param int $sale_type
+     * @return void
+     */
+    public function change_register_mode(int $sale_type): void
+    {
+        $mode = match($sale_type) {
+            SALE_TYPE_QUOTE => 'sale_quote',
+            SALE_TYPE_WORK_ORDER => 'sale_work_order',
+            SALE_TYPE_INVOICE => 'sale_invoice',
+            SALE_TYPE_RETURN => 'return',
+            default => 'sale' //SALE_TYPE_POS
+        };
 
-		$this->sale_lib->set_mode($mode);
-	}
+        $this->sale_lib->set_mode($mode);
+    }
 
 
-	/**
-	 * Sets the sales comment. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSetComment(): void
-	{
-		$this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-	}
+    /**
+     * Sets the sales comment. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSetComment(): void
+    {
+        $this->sale_lib->set_comment($this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+    }
 
-	/**
-	 * Sets the invoice number. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSetInvoiceNumber(): void
-	{
-		$this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
-	}
+    /**
+     * Sets the invoice number. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSetInvoiceNumber(): void
+    {
+        $this->sale_lib->set_invoice_number($this->request->getPost('sales_invoice_number', FILTER_SANITIZE_NUMBER_INT));
+    }
 
-	/**
-	 * @return void
-	 */
-	public function postSetPaymentType(): void	//TODO: This function does not appear to be called anywhere in the code.
-	{
-		$this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-		$this->_reload();	//TODO: Hungarian notation.
-	}
+    /**
+     * @return void
+     */
+    public function postSetPaymentType(): void    //TODO: This function does not appear to be called anywhere in the code.
+    {
+        $this->sale_lib->set_payment_type($this->request->getPost('selected_payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $this->_reload();    //TODO: Hungarian notation.
+    }
 
-	/**
-	 * Sets PrintAfterSale flag. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSetPrintAfterSale(): void
-	{
-		$this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != 'false');
-	}
+    /**
+     * Sets PrintAfterSale flag. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSetPrintAfterSale(): void
+    {
+        $this->sale_lib->set_print_after_sale($this->request->getPost('sales_print_after_sale') != 'false');
+    }
 
-	/**
-	 * Sets the flag to include prices in the work order. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSetPriceWorkOrders(): void
-	{
-		$price_work_orders = prepare_decimal($this->request->getPost('price_work_orders'));
-		$this->sale_lib->set_price_work_orders(filter_var($price_work_orders, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-	}
+    /**
+     * Sets the flag to include prices in the work order. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSetPriceWorkOrders(): void
+    {
+        $price_work_orders = prepare_decimal($this->request->getPost('price_work_orders'));
+        $this->sale_lib->set_price_work_orders(filter_var($price_work_orders, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+    }
 
-	/**
-	 * Sets the flag to email receipt to the customer. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postSetEmailReceipt(): void
-	{
-		$this->sale_lib->set_email_receipt($this->request->getPost('email_receipt', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-	}
+    /**
+     * Sets the flag to email receipt to the customer. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postSetEmailReceipt(): void
+    {
+        $this->sale_lib->set_email_receipt($this->request->getPost('email_receipt', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+    }
 
-	/**
-	 * Add a payment to the sale. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postAddPayment(): void
-	{
-		$data = [];
-		$giftcard = model(Giftcard::class);
-		$payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    /**
+     * Add a payment to the sale. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postAddPayment(): void
+    {
+        $data = [];
+        $giftcard = model(Giftcard::class);
+        $payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		if($payment_type !== lang('Sales.giftcard'))
-		{
-			$rules = ['amount_tendered' => 'trim|required|decimal_locale',];
-			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
-		}
-		else
-		{
-			$rules = ['amount_tendered' => 'trim|required',];
-			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
-		}
+        if($payment_type !== lang('Sales.giftcard'))
+        {
+            $rules = ['amount_tendered' => 'trim|required|decimal_locale',];
+            $messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
+        }
+        else
+        {
+            $rules = ['amount_tendered' => 'trim|required',];
+            $messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
+        }
 
-		if(!$this->validate($rules, $messages))
-		{
-			$data['error'] = $payment_type === lang('Sales.giftcard')
-				? lang('Sales.must_enter_numeric_giftcard')
-				: lang('Sales.must_enter_numeric');
-		}
-		else
-		{
-			if($payment_type === lang('Sales.giftcard'))
-			{
-				//In the case of giftcard payment the register input amount_tendered becomes the giftcard number
-				$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
+        if(!$this->validate($rules, $messages))
+        {
+            $data['error'] = $payment_type === lang('Sales.giftcard')
+                ? lang('Sales.must_enter_numeric_giftcard')
+                : lang('Sales.must_enter_numeric');
+        }
+        else
+        {
+            if($payment_type === lang('Sales.giftcard'))
+            {
+                //In the case of giftcard payment the register input amount_tendered becomes the giftcard number
+                $amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
+                $giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
 
-				$payments = $this->sale_lib->get_payments();
-				$payment_type = $payment_type . ':' . $giftcard_num;
-				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-				$cur_giftcard_value = $giftcard->get_giftcard_value($giftcard_num);
-				$cur_giftcard_customer = $giftcard->get_giftcard_customer($giftcard_num);
-				$customer_id = $this->sale_lib->get_customer();
+                $payments = $this->sale_lib->get_payments();
+                $payment_type = $payment_type . ':' . $giftcard_num;
+                $current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
+                $cur_giftcard_value = $giftcard->get_giftcard_value($giftcard_num);
+                $cur_giftcard_customer = $giftcard->get_giftcard_customer($giftcard_num);
+                $customer_id = $this->sale_lib->get_customer();
 
-				if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id)
-				{
-					$data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
-				}
-				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() === 'sale')
-				{
-					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
-				}
-				else
-				{
-					$new_giftcard_value = $giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
-					$new_giftcard_value = max($new_giftcard_value, 0);
-					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
-					$data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
-					$amount_tendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcard_num));
+                if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id)
+                {
+                    $data['error'] = lang('Giftcards.cannot_use', [$giftcard_num]);
+                }
+                elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() === 'sale')
+                {
+                    $data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
+                }
+                else
+                {
+                    $new_giftcard_value = $giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
+                    $new_giftcard_value = max($new_giftcard_value, 0);
+                    $this->sale_lib->set_giftcard_remainder($new_giftcard_value);
+                    $new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
+                    $data['warning'] = lang('Giftcards.remaining_balance', [$giftcard_num, $new_giftcard_value]);
+                    $amount_tendered = min($this->sale_lib->get_amount_due(), $giftcard->get_giftcard_value($giftcard_num));
 
-					$this->sale_lib->add_payment($payment_type, $amount_tendered);
-				}
-			}
-			elseif($payment_type === lang('Sales.rewards'))
-			{
-				$customer_id = $this->sale_lib->get_customer();
-				$package_id = $this->customer->get_info($customer_id)->package_id;
-				if(!empty($package_id))
-				{
-					$package_name = $this->customer_rewards->get_name($package_id);	//TODO: this variable is never used.
-					$points = $this->customer->get_info($customer_id)->points;
-					$points = ($points == null ? 0 : $points);
+                    $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                }
+            }
+            elseif($payment_type === lang('Sales.rewards'))
+            {
+                $customer_id = $this->sale_lib->get_customer();
+                $package_id = $this->customer->get_info($customer_id)->package_id;
+                if(!empty($package_id))
+                {
+                    $package_name = $this->customer_rewards->get_name($package_id);    //TODO: this variable is never used.
+                    $points = $this->customer->get_info($customer_id)->points;
+                    $points = ($points == null ? 0 : $points);
 
-					$payments = $this->sale_lib->get_payments();
-					$current_payments_with_rewards = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-					$cur_rewards_value = $points;
+                    $payments = $this->sale_lib->get_payments();
+                    $current_payments_with_rewards = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
+                    $cur_rewards_value = $points;
 
-					if(($cur_rewards_value - $current_payments_with_rewards) <= 0)
-					{
-						$data['error'] = lang('Sales.rewards_remaining_balance') . to_currency($cur_rewards_value);
-					}
-					else
-					{
-						$new_reward_value = $points - $this->sale_lib->get_amount_due();
-						$new_reward_value = max($new_reward_value, 0);
-						$this->sale_lib->set_rewards_remainder($new_reward_value);
-						$new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
-						$data['warning'] = lang('Sales.rewards_remaining_balance'). $new_reward_value;
-						$amount_tendered = min($this->sale_lib->get_amount_due(), $points);
+                    if(($cur_rewards_value - $current_payments_with_rewards) <= 0)
+                    {
+                        $data['error'] = lang('Sales.rewards_remaining_balance') . to_currency($cur_rewards_value);
+                    }
+                    else
+                    {
+                        $new_reward_value = $points - $this->sale_lib->get_amount_due();
+                        $new_reward_value = max($new_reward_value, 0);
+                        $this->sale_lib->set_rewards_remainder($new_reward_value);
+                        $new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
+                        $data['warning'] = lang('Sales.rewards_remaining_balance'). $new_reward_value;
+                        $amount_tendered = min($this->sale_lib->get_amount_due(), $points);
 
-						$this->sale_lib->add_payment($payment_type, $amount_tendered);
-					}
-				}
-			}
-			elseif($payment_type === lang('Sales.cash'))
-			{
-				$amount_due = $this->sale_lib->get_total();
-				$sales_total = $this->sale_lib->get_total(false);
-				$raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-				$this->sale_lib->add_payment($payment_type, $amount_tendered);
-				$cash_adjustment_amount = $amount_due - $sales_total;
-				if($cash_adjustment_amount <> 0)
-				{
-					$this->session->set('cash_mode', CASH_MODE_TRUE);
-					$this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cash_adjustment_amount, CASH_ADJUSTMENT_TRUE);
-				}
-			}
-			else
-			{
-				$raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-				$this->sale_lib->add_payment($payment_type, $amount_tendered);
-			}
-		}
+                        $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                    }
+                }
+            }
+            elseif($payment_type === lang('Sales.cash'))
+            {
+                $amount_due = $this->sale_lib->get_total();
+                $sales_total = $this->sale_lib->get_total(false);
+                $raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
+                $amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $this->sale_lib->add_payment($payment_type, $amount_tendered);
+                $cash_adjustment_amount = $amount_due - $sales_total;
+                if($cash_adjustment_amount <> 0)
+                {
+                    $this->session->set('cash_mode', CASH_MODE_TRUE);
+                    $this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cash_adjustment_amount, CASH_ADJUSTMENT_TRUE);
+                }
+            }
+            else
+            {
+                $raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
+                $amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $this->sale_lib->add_payment($payment_type, $amount_tendered);
+            }
+        }
 
-		$this->_reload($data);
-	}
+        $this->_reload($data);
+    }
 
-	/**
-	 * Multiple Payments. Used in app/Views/sales/register.php
-	 *
-	 * @param string $payment_id
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getDeletePayment(string $payment_id): void
-	{
-		$this->sale_lib->delete_payment($payment_id);
+    /**
+     * Multiple Payments. Used in app/Views/sales/register.php
+     *
+     * @param string $payment_id
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getDeletePayment(string $payment_id): void
+    {
+        $this->sale_lib->delete_payment($payment_id);
 
-		$this->_reload();	//TODO: Hungarian notation
-	}
+        $this->_reload();    //TODO: Hungarian notation
+    }
 
-	/**
-	 * Add an item to the sale. Used in app/Views/sales/register.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postAdd(): void
-	{
-		$data = [];
+    /**
+     * Add an item to the sale. Used in app/Views/sales/register.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postAdd(): void
+    {
+        $data = [];
 
-		$discount = $this->config['default_sales_discount'];
-		$discount_type = $this->config['default_sales_discount_type'];
+        $discount = $this->config['default_sales_discount'];
+        $discount_type = $this->config['default_sales_discount_type'];
 
-		// check if any discount is assigned to the selected customer
-		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != NEW_ENTRY)
-		{
-			// load the customer discount if any
-			$customer_discount = $this->customer->get_info($customer_id)->discount;
-			$customer_discount_type = $this->customer->get_info($customer_id)->discount_type;
-			if($customer_discount != '')
-			{
-				$discount = $customer_discount;
-				$discount_type = $customer_discount_type;
-			}
-		}
+        // check if any discount is assigned to the selected customer
+        $customer_id = $this->sale_lib->get_customer();
+        if($customer_id != NEW_ENTRY)
+        {
+            // load the customer discount if any
+            $customer_discount = $this->customer->get_info($customer_id)->discount;
+            $customer_discount_type = $this->customer->get_info($customer_id)->discount_type;
+            if($customer_discount != '')
+            {
+                $discount = $customer_discount;
+                $discount_type = $customer_discount_type;
+            }
+        }
 
-		$item_id_or_number_or_item_kit_or_receipt = $this->request->getPost('item', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-		$this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
-		$mode = $this->sale_lib->get_mode();
-		$quantity = ($mode == 'return') ? -$quantity : $quantity;
-		$item_location = $this->sale_lib->get_sale_location();
+        $item_id_or_number_or_item_kit_or_receipt = $this->request->getPost('item', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->token_lib->parse_barcode($quantity, $price, $item_id_or_number_or_item_kit_or_receipt);
+        $mode = $this->sale_lib->get_mode();
+        $quantity = ($mode == 'return') ? -$quantity : $quantity;
+        $item_location = $this->sale_lib->get_sale_location();
 
-		if($mode == 'return' && $this->sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
-		{
-			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
-		}
-		elseif($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
-		{
-			// Add kit item to order if one is assigned
-			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
+        if($mode == 'return' && $this->sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
+        {
+            $this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
+        }
+        elseif($this->item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+        {
+            // Add kit item to order if one is assigned
+            $pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
 
-			$item_kit_id = (count($pieces) > 1) ? $pieces[1] : $item_id_or_number_or_item_kit_or_receipt;
-			$item_kit_info = $this->item_kit->get_info($item_kit_id);
-			$kit_item_id = $item_kit_info->kit_item_id;
-			$kit_price_option = $item_kit_info->price_option;
-			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
+            $item_kit_id = (count($pieces) > 1) ? $pieces[1] : $item_id_or_number_or_item_kit_or_receipt;
+            $item_kit_info = $this->item_kit->get_info($item_kit_id);
+            $kit_item_id = $item_kit_info->kit_item_id;
+            $kit_price_option = $item_kit_info->price_option;
+            $kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
-			if($discount_type == $item_kit_info->kit_discount_type)
-			{
-				if($item_kit_info->kit_discount > $discount)
-				{
-					$discount = $item_kit_info->kit_discount;
-				}
-			}
-			else
-			{
-				$discount = $item_kit_info->kit_discount;
-				$discount_type = $item_kit_info->kit_discount_type;
-			}
+            if($discount_type == $item_kit_info->kit_discount_type)
+            {
+                if($item_kit_info->kit_discount > $discount)
+                {
+                    $discount = $item_kit_info->kit_discount;
+                }
+            }
+            else
+            {
+                $discount = $item_kit_info->kit_discount;
+                $discount_type = $item_kit_info->kit_discount_type;
+            }
 
-			$print_option = PRINT_ALL; // Always include in list of items on invoice //TODO: This variable is never used in the code
+            $print_option = PRINT_ALL; // Always include in list of items on invoice //TODO: This variable is never used in the code
 
-			if(!empty($kit_item_id))
-			{
-				if(!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
-				{
-					$data['error'] = lang('Sales.unable_to_add_item');
-				}
+            if(!empty($kit_item_id))
+            {
+                if(!$this->sale_lib->add_item($kit_item_id, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, $price))
+                {
+                    $data['error'] = lang('Sales.unable_to_add_item');
+                }
 				else
 				{
 					$data['warning'] = $this->sale_lib->out_of_stock($item_kit_id, $item_location);

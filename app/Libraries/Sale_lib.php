@@ -23,791 +23,791 @@ use ReflectionException;
  */
 class Sale_lib
 {
-	private Attribute $attribute;
-	private Customer $customer;
-	private Dinner_table $dinner_table;
-	private Item $item;
-	private Item_kit_items $item_kit_items;
-	private Item_quantity $item_quantity;
-	private Item_taxes $item_taxes;
-	private Sale $sale;
-	private Stock_location $stock_location;
-	private Session $session;
-	private array $config;
-
-	public function __construct()
-	{
-		$this->session = session();
-
-		$this->attribute = model(Attribute::class);
-		$this->customer = model(Customer::class);
-		$this->dinner_table = model(Dinner_table::class);
-		$this->item = model(Item::class);
-		$this->item_kit_items = model(Item_kit_items::class);
-		$this->item_quantity = model(Item_quantity::class);
-		$this->item_taxes = model(Item_taxes::class);
-		$this->sale = model(Sale::class);
-		$this->stock_location = model(Stock_location::class);
-		$this->config = config(OSPOS::class)->settings;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function get_line_sequence_options(): array
-	{
-		return [
-			'0' => lang('Sales.entry'),
-			'1' => lang('Sales.group_by_type'),
-			'2' => lang('Sales.group_by_category')
-		];
-	}
-
-	/**
-	 * @return array
-	 */
-	public function get_register_mode_options(): array
-	{
-		$register_modes = [];
-
-		if(!$this->config['invoice_enable'])
-		{
-			$register_modes['sale'] = lang('Sales.sale');
-		}
-		else
-		{
-			$register_modes['sale'] = lang('Sales.receipt');
-			$register_modes['sale_quote'] = lang('Sales.quote');
-
-			if($this->config['work_order_enable'])
-			{
-				$register_modes['sale_work_order'] = lang('Sales.work_order');
-			}
-
-			$register_modes['sale_invoice'] = lang('Sales.invoice');
-		}
-
-		$register_modes['return'] = lang('Sales.return');
-
-		return $register_modes;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function get_invoice_type_options(): array
-	{
-		$invoice_types = [];
-		$invoice_types['invoice'] = lang('Sales.invoice_type_invoice');
-		$invoice_types['tax_invoice'] = lang('Sales.invoice_type_tax_invoice');
-		$invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
-		$invoice_types['custom_tax_invoice'] = lang('Sales.invoice_type_custom_tax_invoice');
-		return $invoice_types;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function get_cart(): array
-	{
-		if(!$this->session->get('sales_cart'))
-		{
-			$this->set_cart ([]);
-		}
-
-		return $this->session->get('sales_cart');
-	}
-
-	/**
-	 * @param array $cart
-	 * @return array
-	 */
-	public function sort_and_filter_cart(array $cart): array
-	{
-		if(empty($cart))
-		{
-			return $cart;
-		}
-
-		$filtered_cart = [];
-
-		foreach($cart as $k => $v)	//TODO: We should not be using single-letter variable names for readability.  Several of these foreach loops should be refactored.
-		{
-			if($v['print_option'] == PRINT_YES)
-			{
-				if($v['price'] == 0.0)
-				{
-					$v['discount'] = 0.0;
-				}
-				$filtered_cart[] = $v;
-			}
-		}
-
-		//TODO: This set of if/elseif/else needs to be converted to a switch statement
-		// Entry sequence (this will render kits in the expected sequence)
-		if($this->config['line_sequence'] == '0')
-		{
-			$sort = [];
-			foreach($filtered_cart as $k => $v)
-			{
-				$sort['line'][$k] = $v['line'];
-			}
-			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
-		}
-		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->config['line_sequence'] == '1')	//TODO: Need to change these to constants
-		{
-			$sort = [];
-			foreach($filtered_cart as $k => $v)
-			{
-				$sort['stock_type'][$k] = $v['stock_type'];
-				$sort['description'][$k] = $v['description'];
-				$sort['name'][$k] = $v['name'];
-			}
-			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
-		}
-		// Group by Item Category
-		elseif($this->config['line_sequence'] == '2')	//TODO: Need to change these to constants
-		{
-			$sort = [];
-			foreach($filtered_cart as $k => $v)
-			{
-				$sort['category'][$k] = $v['stock_type'];
-				$sort['description'][$k] = $v['description'];
-				$sort['name'][$k] = $v['name'];
-			}
-			array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
-		}
-		// Group by entry sequence in descending sequence (the Standard)
-		else
-		{
-			$sort = [];
-			foreach($filtered_cart as $k => $v)
-			{
-				$sort['line'][$k] = $v['line'];
-			}
-			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
-		}
-
-		return $filtered_cart;
-	}
-
-	/**
-	 * @param array $cart_data
-	 * @return void
-	 */
-	public function set_cart(array $cart_data): void
-	{
-		$this->session->set('sales_cart', $cart_data);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function empty_cart(): void
-	{
-		$this->session->remove('sales_cart');
-	}
-
-	/**
-	 * @return void
-	 */
-	public function remove_temp_items(): void
-	{
-		// Loop through the cart items and delete temporary items specific to this sale
-		$cart = $this->get_cart();
-		foreach($cart as $line=>$item)
-		{
-			if($item['item_type'] == ITEM_TEMP)	//TODO: === ?
-			{
-				$this->item->delete($item['item_id']);
-			}
-		}
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_comment(): string
-	{
-		// avoid returning a null that results in a 0 in the comment if nothing is set/available
-		$comment = $this->session->get('sales_comment');
-
-		return empty($comment) ? '' : $comment;
-	}
-
-	/**
-	 * @param string $comment
-	 * @return void
-	 */
-	public function set_comment(string $comment): void
-	{
-		$this->session->set('sales_comment', $comment);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_comment(): void
-	{
-		$this->session->remove('sales_comment');
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function get_invoice_number(): ?string
-	{
-		return $this->session->get('sales_invoice_number');
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function get_quote_number(): ?string
-	{
-		return $this->session->get('sales_quote_number');
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function get_work_order_number(): ?string
-	{
-		return $this->session->get('sales_work_order_number');
-	}
-
-	/**
-	 * @return int|null
-	 */
-	public function get_sale_type(): ?int
-	{
-		return $this->session->get('sale_type', 0);
-	}
-
-	/**
-	 * @param int $invoice_number
-	 * @param bool $keep_custom
-	 * @return void
-	 */
-	public function set_invoice_number(int $invoice_number, bool $keep_custom = false): void
-	{
-		$current_invoice_number = $this->session->get('sales_invoice_number');
-
-		if(!$keep_custom || empty($current_invoice_number))
-		{
-			$this->session->set('sales_invoice_number', $invoice_number);
-		}
-	}
-
-	/**
-	 * @param string|null $quote_number
-	 * @param bool $keep_custom
-	 * @return void
-	 */
-	public function set_quote_number(?string $quote_number, bool $keep_custom = false): void
-	{
-		$current_quote_number = $this->session->get('sales_quote_number');
-
-		if(!$keep_custom || empty($current_quote_number))
-		{
-			$this->session->set('sales_quote_number', $quote_number);
-		}
-	}
-
-	/**
-	 * @param string|null $work_order_number
-	 * @param bool $keep_custom
-	 * @return void
-	 */
-	public function set_work_order_number(?string $work_order_number, bool $keep_custom = false): void
-	{
-		$current_work_order_number = $this->session->get('sales_work_order_number');
-
-		if(!$keep_custom || empty($current_work_order_number))
-		{
-			$this->session->set('sales_work_order_number', $work_order_number);
-		}
-	}
-
-	/**
-	 * @param int $sale_type
-	 * @param bool $keep_custom
-	 * @return void
-	 */
-	public function set_sale_type(int $sale_type, bool $keep_custom = false): void
-	{
-		$current_sale_type = $this->session->get('sale_type');
-
-		if(!$keep_custom || empty($current_sale_type))
-		{
-			$this->session->set('sale_type', $sale_type);
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_invoice_number(): void
-	{
-		$this->session->remove('sales_invoice_number');
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_quote_number(): void
-	{
-		$this->session->remove('sales_quote_number');
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_work_order_number(): void
-	{
-		$this->session->remove('sales_work_order_number');
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_sale_type(): void
-	{
-		$this->session->remove('sale_type');
-	}
-
-	/**
-	 * @param int $suspended_id
-	 * @return void
-	 */
-	public function set_suspended_id(int $suspended_id): void
-	{
-		$this->session->set('suspended_id', $suspended_id);
-	}
-
-	/**
-	 * @return int
-	 */
-	public function get_suspended_id(): int
-	{
-		return $this->session->get('suspended_id');
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_invoice_mode(): bool
-	{
-		return ($this->session->get('sales_mode') == 'sale_invoice'	&& $this->config['invoice_enable']);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_sale_by_receipt_mode(): bool	//TODO: This function is not called anywhere in the code.
-	{
-		return ($this->session->get('sales_mode') == 'sale');	//TODO: === ?
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_quote_mode(): bool
-	{
-		return ($this->session->get('sales_mode') == 'sale_quote');	//TODO: === ?
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_return_mode(): bool
-	{
-		return ($this->session->get('sales_mode') == 'return');	//TODO: === ?
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_work_order_mode(): bool
-	{
-		return ($this->session->get('sales_mode') == 'sale_work_order');	//TODO: === ?
-	}
-
-	/**
-	 * @param string $price_work_orders
-	 * @return void
-	 */
-	public function set_price_work_orders(string $price_work_orders): void
-	{
-		$this->session->set('sales_price_work_orders', $price_work_orders);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_price_work_orders(): bool
-	{
-		return ($this->session->get('sales_price_work_orders') == 'true'	//TODO: === ?
-			|| $this->session->get('sales_price_work_orders') == '1');	//TODO: === ?
-	}
-
-	/**
-	 * @param bool $print_after_sale
-	 * @return void
-	 */
-	public function set_print_after_sale(bool $print_after_sale): void
-	{
-		$this->session->set('sales_print_after_sale', $print_after_sale);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_print_after_sale(): bool
-	{//TODO: this needs to be converted to a switch statement
-		if($this->config['print_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
-		{
-			return true;
-		}
-		elseif($this->config['print_receipt_check_behaviour'] == 'never')	//TODO: === ?
-		{
-			return false;
-		}
-		else // remember last setting, session based though
-		{
-			return ($this->session->get('sales_print_after_sale') == 'true'	//TODO: === ?
-				|| $this->session->get('sales_print_after_sale') == '1');	//TODO: === ?
-		}
-	}
-
-	/**
-	 * @param string $email_receipt
-	 * @return void
-	 */
-	public function set_email_receipt(string $email_receipt): void
-	{
-		$this->session->set('sales_email_receipt', $email_receipt);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clear_email_receipt(): void
-	{
-		$this->session->remove('sales_email_receipt');
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_email_receipt(): bool
-	{//TODO: this needs to be converted to a switch statement
-		if($this->config['email_receipt_check_behaviour'] == 'always')	//TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
-		{
-			return true;
-		}
-		elseif($this->config['email_receipt_check_behaviour'] == 'never')	//TODO: === ?
-		{
-			return false;
-		}
-		else // remember last setting, session based though
-		{
-			return ($this->session->get('sales_email_receipt') == 'true'	//TODO: === ?
-				|| $this->session->get('sales_email_receipt') == '1');	//TODO: === ?
-		}
-	}
-
-	/**
-	 * Multiple Payments
-	 */
-	public function get_payments(): array
-	{
-		if(!$this->session->get('sales_payments'))
-		{
-			$this->set_payments ([]);
-		}
-
-		return $this->session->get('sales_payments');
-	}
-
-	/**
-	 * Multiple Payments
-	 */
-	public function set_payments(array $payments_data): void
-	{
-		$this->session->set('sales_payments', $payments_data);
-	}
-
-	/**
-	 * Adds a new payment to the payments array or updates an existing one.
-	 * It will also disable cash_mode if a non-qualifying payment type is added.
-	 * @param string $payment_id
-	 * @param string $payment_amount
-	 * @param int $cash_adjustment
-	 */
-	public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
-	{
-		$payments = $this->get_payments();
-		if(isset($payments[$payment_id]))
-		{
-			//payment_method already exists, add to payment_amount
-			$payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
-		}
-		else
-		{
-			//add to existing array
-			$payment = [
-				$payment_id => [
-				'payment_type' => $payment_id,
-				'payment_amount' => $payment_amount,
-				'cash_refund' => 0,
-				'cash_adjustment' => $cash_adjustment
-				]
-			];
-
-			$payments += $payment;
-		}
-
-		if($this->session->get('cash_mode'))
-		{
-			if($this->session->get('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
-			{
-				$this->session->set('cash_mode', CASH_MODE_FALSE);
-			}
-		}
-
-		$this->set_payments($payments);
-	}
-
-	/**
-	 * Multiple Payments
-	 */
-	public function edit_payment(string $payment_id, float $payment_amount): bool
-	{
-		$payments = $this->get_payments();
-		if(isset($payments[$payment_id]))
-		{
-			$payments[$payment_id]['payment_type'] = $payment_id;
-			$payments[$payment_id]['payment_amount'] = $payment_amount;
-			$this->set_payments($payments);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Delete the selected payment from the payment array and if cash rounding is enabled
-	 * and the payment type is one of the cash types then automatically delete the other
-	 * @param string $payment_id
-	 */
-	public function delete_payment(string $payment_id): void
-	{
-		$payments = $this->get_payments();
-		$decoded_payment_id = urldecode($payment_id);
-
-		unset($payments[$decoded_payment_id]);
-
-		$cash_rounding = $this->reset_cash_rounding();
-
-		if($cash_rounding)
-		{
-			if($decoded_payment_id == lang('Sales.cash'))	//TODO: === ?
-			{
-				unset($payments[lang('Sales.cash_adjustment')]);
-			}
-
-			if($decoded_payment_id == lang('Sales.cash_adjustment'))	//TODO: === ?
-			{
-				unset($payments[lang('Sales.cash')]);
-			}
-		}
-		$this->set_payments($payments);
-	}
-
-	/**
-	 * Multiple Payments
-	 */
-	public function empty_payments(): void	//TODO: function verbs are very inconsistent in these libraries.
-	{
-		$this->session->remove('sales_payments');
-	}
-
-	/**
-	 * Retrieve the total payments made, excluding any cash adjustments
-	 * and establish if cash_mode is in play
-	 */
-	public function get_payments_total(): string
-	{
-		$subtotal = '0.0';
-		$cash_mode_eligible = CASH_MODE_TRUE;
-
-		foreach($this->get_payments() as $payments)
-		{
-			if(!$payments['cash_adjustment'])
-			{
-				$subtotal = bcadd($payments['payment_amount'], $subtotal);
-			}
-			if(lang('Sales.cash') != $payments['payment_type'] && lang('Sales.cash_adjustment') != $payments['payment_type'])
-			{
-				$cash_mode_eligible = CASH_MODE_FALSE;
-			}
-		}
-
-		if($cash_mode_eligible && $this->session->get('cash_rounding'))	//TODO: $cache_mode_eligible will always evaluate to true
-		{
-			$this->session->set('cash_mode', CASH_MODE_TRUE);
-		}
-
-		return $subtotal;
-	}
-
-	/**
-	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
-	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units', 'cash_adjustment_amount'
-	 */
-	public function get_totals(array $taxes): array
-	{
-		$totals = [];
-
-		$prediscount_subtotal = '0.0';
-		$subtotal = '0.0';
-		$total = '0.0';
-		$total_discount = '0.0';
-		$item_count = 0;
-		$total_units = 0.0;
-
-		foreach($this->get_cart() as $item)
-		{
-			if($item['stock_type'] == HAS_STOCK)
-			{
-				$item_count++;
-				$total_units += $item['quantity'];
-			}
-			$discount_amount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
-			$total_discount = bcadd($total_discount, $discount_amount);
-
-			$extended_amount = $this->get_extended_amount($item['quantity'], $item['price']);
-			$extended_discounted_amount = $this->get_extended_amount($item['quantity'], $item['price'], $discount_amount);
-			$prediscount_subtotal = bcadd($prediscount_subtotal, $extended_amount);
-			$total = bcadd($total, $extended_discounted_amount);
-
-			$subtotal = bcadd($subtotal, $extended_discounted_amount);
-		}
-
-		$totals['prediscount_subtotal'] = $prediscount_subtotal;
-		$totals['total_discount'] = $total_discount;
-		$sales_tax = '0';
-
-		foreach($taxes as $tax)
-		{
-			if($tax['tax_type'] === Tax_lib::TAX_TYPE_EXCLUDED)
-			{
-				$total = bcadd($total, $tax['sale_tax_amount']);
-				$sales_tax = bcadd($sales_tax, $tax['sale_tax_amount']);
-			}
-			else
-			{
-				$subtotal = bcsub($subtotal, $tax['sale_tax_amount']);
-			}
-		}
-
-		$totals['subtotal'] = $subtotal;
-		$totals['total'] = $total;
-		$totals['tax_total'] = $sales_tax;
-
-		$payment_total = $this->get_payments_total();
-		$totals['payment_total'] = $payment_total;
-		$cash_rounding = $this->session->get('cash_rounding');
-		$cash_mode = $this->session->get('cash_mode');
-
-		if($cash_rounding)
-		{
-			$cash_total = $this->check_for_cash_rounding($total);
-			$totals['cash_total'] = $cash_total;
-		}
-		else
-		{
-			$cash_total = $total;
-			$totals['cash_total'] = $cash_total;
-		}
-
-		$amount_due = bcsub($total, $payment_total);
-		$totals['amount_due'] = $amount_due;
-
-		$cash_amount_due = bcsub($cash_total, $payment_total);
-		$totals['cash_amount_due'] = $cash_amount_due;
-
-		if($cash_mode)	//TODO: Convert to ternary notation
-		{
-			$current_due = $cash_amount_due;
-		}
-		else
-		{
-			$current_due = $amount_due;
-		}
-
-		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
-		$threshold = bcpow('10', (string)-totals_decimals()) / 2;
-
-		if($this->get_mode() == 'return')	//TODO: Convert to ternary notation.
-		{
-			$totals['payments_cover_total'] = $current_due > -$threshold;
-		}
-		else
-		{
-			$totals['payments_cover_total'] = $current_due < $threshold;
-		}
-
-		$totals['item_count'] = $item_count;
-		$totals['total_units'] = $total_units;
-		$totals['cash_adjustment_amount'] = 0.0;
-
-		if($totals['payments_cover_total'])
-		{
-			$totals['cash_adjustment_amount'] = round($cash_total - $totals['total'], totals_decimals(), PHP_ROUND_HALF_UP);
-		}
-
-		$cash_mode = $this->session->get('cash_mode');	//TODO: This variable is never used.
-
-		return $totals;
-	}
-
-	/**
-	 * Multiple Payments
-	 */
-	public function get_amount_due(): string
-	{
-		// Payment totals need to be identified first so that we know whether or not there is a non-cash payment involved
-		$payment_total = $this->get_payments_total();
-		$sales_total = $this->get_total();
-		$amount_due = bcsub($sales_total, $payment_total);
-		$precision = totals_decimals();
-		$rounded_due = bccomp((string)round((float)$amount_due, $precision, PHP_ROUND_HALF_UP), '0', $precision);	//TODO: Is round() currency safe?
-
-		// take care of rounding error introduced by round tripping payment amount to the browser
-		return $rounded_due == 0 ? '0' : $amount_due;	//TODO: ===
-	}
-
-	/**
-	 * @return int
-	 */
-	public function get_customer(): int
-	{
-		if(!$this->session->get('sales_customer'))
-		{
-			$this->set_customer(-1);	//TODO: Replace -1 with a constant
-		}
-
-		return $this->session->get('sales_customer');
-	}
-
-	/**
-	 * @param int $customer_id
-	 * @return void
-	 */
+    private Attribute $attribute;
+    private Customer $customer;
+    private Dinner_table $dinner_table;
+    private Item $item;
+    private Item_kit_items $item_kit_items;
+    private Item_quantity $item_quantity;
+    private Item_taxes $item_taxes;
+    private Sale $sale;
+    private Stock_location $stock_location;
+    private Session $session;
+    private array $config;
+
+    public function __construct()
+    {
+        $this->session = session();
+
+        $this->attribute = model(Attribute::class);
+        $this->customer = model(Customer::class);
+        $this->dinner_table = model(Dinner_table::class);
+        $this->item = model(Item::class);
+        $this->item_kit_items = model(Item_kit_items::class);
+        $this->item_quantity = model(Item_quantity::class);
+        $this->item_taxes = model(Item_taxes::class);
+        $this->sale = model(Sale::class);
+        $this->stock_location = model(Stock_location::class);
+        $this->config = config(OSPOS::class)->settings;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_line_sequence_options(): array
+    {
+        return [
+            '0' => lang('Sales.entry'),
+            '1' => lang('Sales.group_by_type'),
+            '2' => lang('Sales.group_by_category')
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function get_register_mode_options(): array
+    {
+        $register_modes = [];
+
+        if(!$this->config['invoice_enable'])
+        {
+            $register_modes['sale'] = lang('Sales.sale');
+        }
+        else
+        {
+            $register_modes['sale'] = lang('Sales.receipt');
+            $register_modes['sale_quote'] = lang('Sales.quote');
+
+            if($this->config['work_order_enable'])
+            {
+                $register_modes['sale_work_order'] = lang('Sales.work_order');
+            }
+
+            $register_modes['sale_invoice'] = lang('Sales.invoice');
+        }
+
+        $register_modes['return'] = lang('Sales.return');
+
+        return $register_modes;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_invoice_type_options(): array
+    {
+        $invoice_types = [];
+        $invoice_types['invoice'] = lang('Sales.invoice_type_invoice');
+        $invoice_types['tax_invoice'] = lang('Sales.invoice_type_tax_invoice');
+        $invoice_types['custom_invoice'] = lang('Sales.invoice_type_custom_invoice');
+        $invoice_types['custom_tax_invoice'] = lang('Sales.invoice_type_custom_tax_invoice');
+        return $invoice_types;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_cart(): array
+    {
+        if(!$this->session->get('sales_cart'))
+        {
+            $this->set_cart ([]);
+        }
+
+        return $this->session->get('sales_cart');
+    }
+
+    /**
+     * @param array $cart
+     * @return array
+     */
+    public function sort_and_filter_cart(array $cart): array
+    {
+        if(empty($cart))
+        {
+            return $cart;
+        }
+
+        $filtered_cart = [];
+
+        foreach($cart as $k => $v)    //TODO: We should not be using single-letter variable names for readability.  Several of these foreach loops should be refactored.
+        {
+            if($v['print_option'] == PRINT_YES)
+            {
+                if($v['price'] == 0.0)
+                {
+                    $v['discount'] = 0.0;
+                }
+                $filtered_cart[] = $v;
+            }
+        }
+
+        //TODO: This set of if/elseif/else needs to be converted to a switch statement
+        // Entry sequence (this will render kits in the expected sequence)
+        if($this->config['line_sequence'] == '0')
+        {
+            $sort = [];
+            foreach($filtered_cart as $k => $v)
+            {
+                $sort['line'][$k] = $v['line'];
+            }
+            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+        }
+        // Group by Stock Type (nonstock first - type 1, stock next - type 0)
+        elseif($this->config['line_sequence'] == '1')    //TODO: Need to change these to constants
+        {
+            $sort = [];
+            foreach($filtered_cart as $k => $v)
+            {
+                $sort['stock_type'][$k] = $v['stock_type'];
+                $sort['description'][$k] = $v['description'];
+                $sort['name'][$k] = $v['name'];
+            }
+            array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+        }
+        // Group by Item Category
+        elseif($this->config['line_sequence'] == '2')    //TODO: Need to change these to constants
+        {
+            $sort = [];
+            foreach($filtered_cart as $k => $v)
+            {
+                $sort['category'][$k] = $v['stock_type'];
+                $sort['description'][$k] = $v['description'];
+                $sort['name'][$k] = $v['name'];
+            }
+            array_multisort($sort['category'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC, $filtered_cart);
+        }
+        // Group by entry sequence in descending sequence (the Standard)
+        else
+        {
+            $sort = [];
+            foreach($filtered_cart as $k => $v)
+            {
+                $sort['line'][$k] = $v['line'];
+            }
+            array_multisort($sort['line'], SORT_ASC, $filtered_cart);
+        }
+
+        return $filtered_cart;
+    }
+
+    /**
+     * @param array $cart_data
+     * @return void
+     */
+    public function set_cart(array $cart_data): void
+    {
+        $this->session->set('sales_cart', $cart_data);
+    }
+
+    /**
+     * @return void
+     */
+    public function empty_cart(): void
+    {
+        $this->session->remove('sales_cart');
+    }
+
+    /**
+     * @return void
+     */
+    public function remove_temp_items(): void
+    {
+        // Loop through the cart items and delete temporary items specific to this sale
+        $cart = $this->get_cart();
+        foreach($cart as $line=>$item)
+        {
+            if($item['item_type'] == ITEM_TEMP)    //TODO: === ?
+            {
+                $this->item->delete($item['item_id']);
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function get_comment(): string
+    {
+        // avoid returning a null that results in a 0 in the comment if nothing is set/available
+        $comment = $this->session->get('sales_comment');
+
+        return empty($comment) ? '' : $comment;
+    }
+
+    /**
+     * @param string $comment
+     * @return void
+     */
+    public function set_comment(string $comment): void
+    {
+        $this->session->set('sales_comment', $comment);
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_comment(): void
+    {
+        $this->session->remove('sales_comment');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function get_invoice_number(): ?string
+    {
+        return $this->session->get('sales_invoice_number');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function get_quote_number(): ?string
+    {
+        return $this->session->get('sales_quote_number');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function get_work_order_number(): ?string
+    {
+        return $this->session->get('sales_work_order_number');
+    }
+
+    /**
+     * @return int|null
+     */
+    public function get_sale_type(): ?int
+    {
+        return $this->session->get('sale_type', 0);
+    }
+
+    /**
+     * @param int $invoice_number
+     * @param bool $keep_custom
+     * @return void
+     */
+    public function set_invoice_number(int $invoice_number, bool $keep_custom = false): void
+    {
+        $current_invoice_number = $this->session->get('sales_invoice_number');
+
+        if(!$keep_custom || empty($current_invoice_number))
+        {
+            $this->session->set('sales_invoice_number', $invoice_number);
+        }
+    }
+
+    /**
+     * @param string|null $quote_number
+     * @param bool $keep_custom
+     * @return void
+     */
+    public function set_quote_number(?string $quote_number, bool $keep_custom = false): void
+    {
+        $current_quote_number = $this->session->get('sales_quote_number');
+
+        if(!$keep_custom || empty($current_quote_number))
+        {
+            $this->session->set('sales_quote_number', $quote_number);
+        }
+    }
+
+    /**
+     * @param string|null $work_order_number
+     * @param bool $keep_custom
+     * @return void
+     */
+    public function set_work_order_number(?string $work_order_number, bool $keep_custom = false): void
+    {
+        $current_work_order_number = $this->session->get('sales_work_order_number');
+
+        if(!$keep_custom || empty($current_work_order_number))
+        {
+            $this->session->set('sales_work_order_number', $work_order_number);
+        }
+    }
+
+    /**
+     * @param int $sale_type
+     * @param bool $keep_custom
+     * @return void
+     */
+    public function set_sale_type(int $sale_type, bool $keep_custom = false): void
+    {
+        $current_sale_type = $this->session->get('sale_type');
+
+        if(!$keep_custom || empty($current_sale_type))
+        {
+            $this->session->set('sale_type', $sale_type);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_invoice_number(): void
+    {
+        $this->session->remove('sales_invoice_number');
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_quote_number(): void
+    {
+        $this->session->remove('sales_quote_number');
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_work_order_number(): void
+    {
+        $this->session->remove('sales_work_order_number');
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_sale_type(): void
+    {
+        $this->session->remove('sale_type');
+    }
+
+    /**
+     * @param int $suspended_id
+     * @return void
+     */
+    public function set_suspended_id(int $suspended_id): void
+    {
+        $this->session->set('suspended_id', $suspended_id);
+    }
+
+    /**
+     * @return int
+     */
+    public function get_suspended_id(): int
+    {
+        return $this->session->get('suspended_id');
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_invoice_mode(): bool
+    {
+        return ($this->session->get('sales_mode') == 'sale_invoice'    && $this->config['invoice_enable']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_sale_by_receipt_mode(): bool    //TODO: This function is not called anywhere in the code.
+    {
+        return ($this->session->get('sales_mode') == 'sale');    //TODO: === ?
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_quote_mode(): bool
+    {
+        return ($this->session->get('sales_mode') == 'sale_quote');    //TODO: === ?
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_return_mode(): bool
+    {
+        return ($this->session->get('sales_mode') == 'return');    //TODO: === ?
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_work_order_mode(): bool
+    {
+        return ($this->session->get('sales_mode') == 'sale_work_order');    //TODO: === ?
+    }
+
+    /**
+     * @param string $price_work_orders
+     * @return void
+     */
+    public function set_price_work_orders(string $price_work_orders): void
+    {
+        $this->session->set('sales_price_work_orders', $price_work_orders);
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_price_work_orders(): bool
+    {
+        return ($this->session->get('sales_price_work_orders') == 'true'    //TODO: === ?
+            || $this->session->get('sales_price_work_orders') == '1');    //TODO: === ?
+    }
+
+    /**
+     * @param bool $print_after_sale
+     * @return void
+     */
+    public function set_print_after_sale(bool $print_after_sale): void
+    {
+        $this->session->set('sales_print_after_sale', $print_after_sale);
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_print_after_sale(): bool
+    {//TODO: this needs to be converted to a switch statement
+        if($this->config['print_receipt_check_behaviour'] == 'always')    //TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
+        {
+            return true;
+        }
+        elseif($this->config['print_receipt_check_behaviour'] == 'never')    //TODO: === ?
+        {
+            return false;
+        }
+        else // remember last setting, session based though
+        {
+            return ($this->session->get('sales_print_after_sale') == 'true'    //TODO: === ?
+                || $this->session->get('sales_print_after_sale') == '1');    //TODO: === ?
+        }
+    }
+
+    /**
+     * @param string $email_receipt
+     * @return void
+     */
+    public function set_email_receipt(string $email_receipt): void
+    {
+        $this->session->set('sales_email_receipt', $email_receipt);
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_email_receipt(): void
+    {
+        $this->session->remove('sales_email_receipt');
+    }
+
+    /**
+     * @return bool
+     */
+    public function is_email_receipt(): bool
+    {//TODO: this needs to be converted to a switch statement
+        if($this->config['email_receipt_check_behaviour'] == 'always')    //TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
+        {
+            return true;
+        }
+        elseif($this->config['email_receipt_check_behaviour'] == 'never')    //TODO: === ?
+        {
+            return false;
+        }
+        else // remember last setting, session based though
+        {
+            return ($this->session->get('sales_email_receipt') == 'true'    //TODO: === ?
+                || $this->session->get('sales_email_receipt') == '1');    //TODO: === ?
+        }
+    }
+
+    /**
+     * Multiple Payments
+     */
+    public function get_payments(): array
+    {
+        if(!$this->session->get('sales_payments'))
+        {
+            $this->set_payments ([]);
+        }
+
+        return $this->session->get('sales_payments');
+    }
+
+    /**
+     * Multiple Payments
+     */
+    public function set_payments(array $payments_data): void
+    {
+        $this->session->set('sales_payments', $payments_data);
+    }
+
+    /**
+     * Adds a new payment to the payments array or updates an existing one.
+     * It will also disable cash_mode if a non-qualifying payment type is added.
+     * @param string $payment_id
+     * @param string $payment_amount
+     * @param int $cash_adjustment
+     */
+    public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
+    {
+        $payments = $this->get_payments();
+        if(isset($payments[$payment_id]))
+        {
+            //payment_method already exists, add to payment_amount
+            $payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
+        }
+        else
+        {
+            //add to existing array
+            $payment = [
+                $payment_id => [
+                'payment_type' => $payment_id,
+                'payment_amount' => $payment_amount,
+                'cash_refund' => 0,
+                'cash_adjustment' => $cash_adjustment
+                ]
+            ];
+
+            $payments += $payment;
+        }
+
+        if($this->session->get('cash_mode'))
+        {
+            if($this->session->get('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
+            {
+                $this->session->set('cash_mode', CASH_MODE_FALSE);
+            }
+        }
+
+        $this->set_payments($payments);
+    }
+
+    /**
+     * Multiple Payments
+     */
+    public function edit_payment(string $payment_id, float $payment_amount): bool
+    {
+        $payments = $this->get_payments();
+        if(isset($payments[$payment_id]))
+        {
+            $payments[$payment_id]['payment_type'] = $payment_id;
+            $payments[$payment_id]['payment_amount'] = $payment_amount;
+            $this->set_payments($payments);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete the selected payment from the payment array and if cash rounding is enabled
+     * and the payment type is one of the cash types then automatically delete the other
+     * @param string $payment_id
+     */
+    public function delete_payment(string $payment_id): void
+    {
+        $payments = $this->get_payments();
+        $decoded_payment_id = urldecode($payment_id);
+
+        unset($payments[$decoded_payment_id]);
+
+        $cash_rounding = $this->reset_cash_rounding();
+
+        if($cash_rounding)
+        {
+            if($decoded_payment_id == lang('Sales.cash'))    //TODO: === ?
+            {
+                unset($payments[lang('Sales.cash_adjustment')]);
+            }
+
+            if($decoded_payment_id == lang('Sales.cash_adjustment'))    //TODO: === ?
+            {
+                unset($payments[lang('Sales.cash')]);
+            }
+        }
+        $this->set_payments($payments);
+    }
+
+    /**
+     * Multiple Payments
+     */
+    public function empty_payments(): void    //TODO: function verbs are very inconsistent in these libraries.
+    {
+        $this->session->remove('sales_payments');
+    }
+
+    /**
+     * Retrieve the total payments made, excluding any cash adjustments
+     * and establish if cash_mode is in play
+     */
+    public function get_payments_total(): string
+    {
+        $subtotal = '0.0';
+        $cash_mode_eligible = CASH_MODE_TRUE;
+
+        foreach($this->get_payments() as $payments)
+        {
+            if(!$payments['cash_adjustment'])
+            {
+                $subtotal = bcadd($payments['payment_amount'], $subtotal);
+            }
+            if(lang('Sales.cash') != $payments['payment_type'] && lang('Sales.cash_adjustment') != $payments['payment_type'])
+            {
+                $cash_mode_eligible = CASH_MODE_FALSE;
+            }
+        }
+
+        if($cash_mode_eligible && $this->session->get('cash_rounding'))    //TODO: $cache_mode_eligible will always evaluate to true
+        {
+            $this->session->set('cash_mode', CASH_MODE_TRUE);
+        }
+
+        return $subtotal;
+    }
+
+    /**
+     * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
+     * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units', 'cash_adjustment_amount'
+     */
+    public function get_totals(array $taxes): array
+    {
+        $totals = [];
+
+        $prediscount_subtotal = '0.0';
+        $subtotal = '0.0';
+        $total = '0.0';
+        $total_discount = '0.0';
+        $item_count = 0;
+        $total_units = 0.0;
+
+        foreach($this->get_cart() as $item)
+        {
+            if($item['stock_type'] == HAS_STOCK)
+            {
+                $item_count++;
+                $total_units += $item['quantity'];
+            }
+            $discount_amount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
+            $total_discount = bcadd($total_discount, $discount_amount);
+
+            $extended_amount = $this->get_extended_amount($item['quantity'], $item['price']);
+            $extended_discounted_amount = $this->get_extended_amount($item['quantity'], $item['price'], $discount_amount);
+            $prediscount_subtotal = bcadd($prediscount_subtotal, $extended_amount);
+            $total = bcadd($total, $extended_discounted_amount);
+
+            $subtotal = bcadd($subtotal, $extended_discounted_amount);
+        }
+
+        $totals['prediscount_subtotal'] = $prediscount_subtotal;
+        $totals['total_discount'] = $total_discount;
+        $sales_tax = '0';
+
+        foreach($taxes as $tax)
+        {
+            if($tax['tax_type'] === Tax_lib::TAX_TYPE_EXCLUDED)
+            {
+                $total = bcadd($total, $tax['sale_tax_amount']);
+                $sales_tax = bcadd($sales_tax, $tax['sale_tax_amount']);
+            }
+            else
+            {
+                $subtotal = bcsub($subtotal, $tax['sale_tax_amount']);
+            }
+        }
+
+        $totals['subtotal'] = $subtotal;
+        $totals['total'] = $total;
+        $totals['tax_total'] = $sales_tax;
+
+        $payment_total = $this->get_payments_total();
+        $totals['payment_total'] = $payment_total;
+        $cash_rounding = $this->session->get('cash_rounding');
+        $cash_mode = $this->session->get('cash_mode');
+
+        if($cash_rounding)
+        {
+            $cash_total = $this->check_for_cash_rounding($total);
+            $totals['cash_total'] = $cash_total;
+        }
+        else
+        {
+            $cash_total = $total;
+            $totals['cash_total'] = $cash_total;
+        }
+
+        $amount_due = bcsub($total, $payment_total);
+        $totals['amount_due'] = $amount_due;
+
+        $cash_amount_due = bcsub($cash_total, $payment_total);
+        $totals['cash_amount_due'] = $cash_amount_due;
+
+        if($cash_mode)    //TODO: Convert to ternary notation
+        {
+            $current_due = $cash_amount_due;
+        }
+        else
+        {
+            $current_due = $amount_due;
+        }
+
+        // 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
+        $threshold = bcpow('10', (string)-totals_decimals()) / 2;
+
+        if($this->get_mode() == 'return')    //TODO: Convert to ternary notation.
+        {
+            $totals['payments_cover_total'] = $current_due > -$threshold;
+        }
+        else
+        {
+            $totals['payments_cover_total'] = $current_due < $threshold;
+        }
+
+        $totals['item_count'] = $item_count;
+        $totals['total_units'] = $total_units;
+        $totals['cash_adjustment_amount'] = 0.0;
+
+        if($totals['payments_cover_total'])
+        {
+            $totals['cash_adjustment_amount'] = round($cash_total - $totals['total'], totals_decimals(), PHP_ROUND_HALF_UP);
+        }
+
+        $cash_mode = $this->session->get('cash_mode');    //TODO: This variable is never used.
+
+        return $totals;
+    }
+
+    /**
+     * Multiple Payments
+     */
+    public function get_amount_due(): string
+    {
+        // Payment totals need to be identified first so that we know whether or not there is a non-cash payment involved
+        $payment_total = $this->get_payments_total();
+        $sales_total = $this->get_total();
+        $amount_due = bcsub($sales_total, $payment_total);
+        $precision = totals_decimals();
+        $rounded_due = bccomp((string)round((float)$amount_due, $precision, PHP_ROUND_HALF_UP), '0', $precision);    //TODO: Is round() currency safe?
+
+        // take care of rounding error introduced by round tripping payment amount to the browser
+        return $rounded_due == 0 ? '0' : $amount_due;    //TODO: ===
+    }
+
+    /**
+     * @return int
+     */
+    public function get_customer(): int
+    {
+        if(!$this->session->get('sales_customer'))
+        {
+            $this->set_customer(-1);    //TODO: Replace -1 with a constant
+        }
+
+        return $this->session->get('sales_customer');
+    }
+
+    /**
+     * @param int $customer_id
+     * @return void
+     */
 	public function set_customer(int $customer_id): void
 	{
 		$this->session->set('sales_customer', $customer_id);

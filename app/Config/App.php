@@ -7,52 +7,52 @@ use CodeIgniter\Session\Handlers\DatabaseHandler;
 
 class App extends BaseConfig
 {
-	/**
-	 * This is the code version of the Open Source Point of Sale you're running.
-	 *
-	 * @var string
-	 */
-	public string $application_version = '3.4.0-dev';
+    /**
+     * This is the code version of the Open Source Point of Sale you're running.
+     *
+     * @var string
+     */
+    public string $application_version = '3.4.0-dev';
 
-	/**
-	 * This is the commit hash for the version you are currently using.
-	 *
-	 * @var string
-	 */
-	public string $commit_sha1 = 'dev';
+    /**
+     * This is the commit hash for the version you are currently using.
+     *
+     * @var string
+     */
+    public string $commit_sha1 = 'dev';
 
-	/**
-	 * Logs are stored in writable/logs
-	 *
-	 * @var bool
-	 */
-	public bool $db_log_enabled = false;
+    /**
+     * Logs are stored in writable/logs
+     *
+     * @var bool
+     */
+    public bool $db_log_enabled = false;
 
-	/**
-	 * DB Query Log only long-running queries
-	 *
-	 * @var bool
-	 */
-	public bool $db_log_only_long = false;
+    /**
+     * DB Query Log only long-running queries
+     *
+     * @var bool
+     */
+    public bool $db_log_only_long = false;
 
-	/**
-	 * Defines whether to require/reroute to HTTPS
-	 *
-	 * @var bool
-	 */
-	public bool $https_on;	//Set in the constructor
+    /**
+     * Defines whether to require/reroute to HTTPS
+     *
+     * @var bool
+     */
+    public bool $https_on;    //Set in the constructor
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Base Site URL
-	 * --------------------------------------------------------------------------
-	 *
-	 * URL to your CodeIgniter root. Typically, this will be your base URL,
-	 * WITH a trailing slash:
-	 *
-	 * E.g., http://example.com/
-	 */
-	public string $baseURL;	//Defined in the constructor
+    /**
+     * --------------------------------------------------------------------------
+     * Base Site URL
+     * --------------------------------------------------------------------------
+     *
+     * URL to your CodeIgniter root. Typically, this will be your base URL,
+     * WITH a trailing slash:
+     *
+     * E.g., http://example.com/
+     */
+    public string $baseURL;    //Defined in the constructor
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -143,63 +143,63 @@ class App extends BaseConfig
      */
     public bool $negotiateLocale = true;
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Supported Locales
-	 * --------------------------------------------------------------------------
-	 *
-	 * If $negotiateLocale is true, this array lists the locales supported
-	 * by the application in descending order of priority. If no match is
-	 * found, the first locale will be used.
-	 *
-	 * IncomingRequest::setLocale() also uses this list.
-	 *
-	 * @var list<string>
-	 */
-	public array $supportedLocales = [
-		'ar-EG',
-		'ar-LB',
-		'az',
-		'bg',
-		'bs',
-		'cs',
-		'da',
-		'de-CH',
-		'de-DE',
-		'el',
+    /**
+     * --------------------------------------------------------------------------
+     * Supported Locales
+     * --------------------------------------------------------------------------
+     *
+     * If $negotiateLocale is true, this array lists the locales supported
+     * by the application in descending order of priority. If no match is
+     * found, the first locale will be used.
+     *
+     * IncomingRequest::setLocale() also uses this list.
+     *
+     * @var list<string>
+     */
+    public array $supportedLocales = [
+        'ar-EG',
+        'ar-LB',
+        'az',
+        'bg',
+        'bs',
+        'cs',
+        'da',
+        'de-CH',
+        'de-DE',
+        'el',
         'en',
-		'en-GB',
-		'es-ES',
-		'es-MX',
-		'fa',
-		'fr',
-		'he',
-		'hr-HR',
-		'hu',
-		'hy',
-		'id',
-		'it',
-		'km',
-		'lo',
-		'ml',
-		'nb',
-		'nl-BE',
+        'en-GB',
+        'es-ES',
+        'es-MX',
+        'fa',
+        'fr',
+        'he',
+        'hr-HR',
+        'hu',
+        'hy',
+        'id',
+        'it',
+        'km',
+        'lo',
+        'ml',
+        'nb',
+        'nl-BE',
         'nl-NL',
-		'pl',
-		'pt-BR',
-		'ro',
-		'ru',
-		'sv',
-		'ta',
-		'th',
-		'tl',
-		'tr',
-		'uk',
-		'ur',
-		'vi',
-		'zh-Hans',
-		'zh-Hant',
-	];
+        'pl',
+        'pt-BR',
+        'ro',
+        'ru',
+        'sv',
+        'ta',
+        'th',
+        'tl',
+        'tr',
+        'uk',
+        'ur',
+        'vi',
+        'zh-Hans',
+        'zh-Hant',
+    ];
 
     /**
      * --------------------------------------------------------------------------
@@ -261,30 +261,30 @@ class App extends BaseConfig
      */
     public array $proxyIPs = [];
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Content Security Policy
-	 * --------------------------------------------------------------------------
-	 *
-	 * Enables the Response's Content Secure Policy to restrict the sources that
-	 * can be used for images, scripts, CSS files, audio, video, etc. If enabled,
-	 * the Response object will populate default values for the policy from the
-	 * `ContentSecurityPolicy.php` file. Controllers can always add to those
-	 * restrictions at run time.
-	 *
-	 * For a better understanding of CSP, see these documents:
-	 *
-	 * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
-	 * @see http://www.w3.org/TR/CSP/
-	 */
-	public bool $CSPEnabled = false;	//TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
+    /**
+     * --------------------------------------------------------------------------
+     * Content Security Policy
+     * --------------------------------------------------------------------------
+     *
+     * Enables the Response's Content Secure Policy to restrict the sources that
+     * can be used for images, scripts, CSS files, audio, video, etc. If enabled,
+     * the Response object will populate default values for the policy from the
+     * `ContentSecurityPolicy.php` file. Controllers can always add to those
+     * restrictions at run time.
+     *
+     * For a better understanding of CSP, see these documents:
+     *
+     * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
+     * @see http://www.w3.org/TR/CSP/
+     */
+    public bool $CSPEnabled = false;    //TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
-		$this->baseURL = $this->https_on ? 'https' : 'http';
-		$this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
-		$this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
+        $this->baseURL = $this->https_on ? 'https' : 'http';
+        $this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
+        $this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+    }
 }

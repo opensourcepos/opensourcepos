@@ -1,78 +1,78 @@
 {
-	"name": "opensourcepos/opensourcepos",
-	"description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "jekkos"
-		},
-		{
-			"name": "FrancescoUK"
-		},
-		{
-			"name": "objecttothis"
-		},
-		{
-			"name": "steveireland"
-		}
-	],
-	"type": "project",
-	"keywords": [
-		"point-of-sale",
-		"POS"
-	],
-	"homepage": "https://opensourcepos.org",
-	"support": {
-		"issues": "https://github.com/opensourcepos/opensourcepos/issues",
-		"forum": "https://github.com/opensourcepos/opensourcepos/discussions",
-		"wiki": "https://github.com/opensourcepos/opensourcepos/wiki",
-		"source": "https://github.com/opensourcepos/opensourcepos",
-		"docs": "https://github.com/opensourcepos/opensourcepos/wiki#documentation",
-		"matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
-	},
-	"require": {
-		"php": "~8.1",
-		"codeigniter4/framework": "4.5.1",
-		"dompdf/dompdf": "^2.0.3",
-		"ezyang/htmlpurifier": "^4.17",
-		"laminas/laminas-escaper": "2.13.0",
-		"paragonie/random_compat": "^2.0.21",
-		"picqer/php-barcode-generator": "^2.4.0",
-		"tamtamchik/namecase": "^3.0.0"
-	},
-	"require-dev": {
-		"codeigniter/coding-standard": "^1.7",
-		"codeigniter4/devkit": "^1.2.2",
-		"fakerphp/faker": "^1.23.0",
-		"friendsofphp/php-cs-fixer": "3.47.1",
-		"kint-php/kint": "^5.0.4",
-		"mikey179/vfsstream": "^1.6",
-		"nexusphp/cs-config": "^3.6",
-		"phpunit/phpunit": "9.6.19",
-		"predis/predis": "^1.1||^2.0",
-		"roave/security-advisories": "dev-latest"
-	},
-	"replace": {
-		"psr/log": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"App\\":  "app/",
-			"CodeIgniter\\": "vendor/codeigniter4/framework/system/"
-		},
-		"exclude-from-classmap": [
-			"**/Database/Migrations/**"
-		]
-	},
-	"config": {
-		"allow-plugins": {
-			"phpstan/extension-installer": true
-		},
-		"optimize-autoloader": true,
-		"preferred-install": "dist",
-		"sort-packages": true
-	},
-	"scripts": {
-		"test": "phpunit"
-	}
+    "name": "opensourcepos/opensourcepos",
+    "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jekkos"
+        },
+        {
+            "name": "FrancescoUK"
+        },
+        {
+            "name": "objecttothis"
+        },
+        {
+            "name": "steveireland"
+        }
+    ],
+    "type": "project",
+    "keywords": [
+        "point-of-sale",
+        "POS"
+    ],
+    "homepage": "https://opensourcepos.org",
+    "support": {
+        "issues": "https://github.com/opensourcepos/opensourcepos/issues",
+        "forum": "https://github.com/opensourcepos/opensourcepos/discussions",
+        "wiki": "https://github.com/opensourcepos/opensourcepos/wiki",
+        "source": "https://github.com/opensourcepos/opensourcepos",
+        "docs": "https://github.com/opensourcepos/opensourcepos/wiki#documentation",
+        "matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
+    },
+    "require": {
+        "php": "~8.1",
+        "codeigniter4/framework": "4.5.1",
+        "dompdf/dompdf": "^2.0.3",
+        "ezyang/htmlpurifier": "^4.17",
+        "laminas/laminas-escaper": "2.13.0",
+        "paragonie/random_compat": "^2.0.21",
+        "picqer/php-barcode-generator": "^2.4.0",
+        "tamtamchik/namecase": "^3.0.0"
+    },
+    "require-dev": {
+        "codeigniter/coding-standard": "^1.7",
+        "codeigniter4/devkit": "^1.2.2",
+        "fakerphp/faker": "^1.23.0",
+        "friendsofphp/php-cs-fixer": "3.47.1",
+        "kint-php/kint": "^5.0.4",
+        "mikey179/vfsstream": "^1.6",
+        "nexusphp/cs-config": "^3.6",
+        "phpunit/phpunit": "9.6.19",
+        "predis/predis": "^1.1||^2.0",
+        "roave/security-advisories": "dev-latest"
+    },
+    "replace": {
+        "psr/log": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\":  "app/",
+            "CodeIgniter\\": "vendor/codeigniter4/framework/system/"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
 }

@@ -48,9 +48,9 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string|null
      */
     public $defaultSrc = [
-		'self',
-		'www.google.com',
-	];
+        'self',
+        'www.google.com',
+    ];
 
     /**
      * Lists allowed scripts' URLs.
@@ -58,34 +58,34 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $scriptSrc = [
-		'self',
-		'unsafe-inline',
-		'unsafe-eval',
-		'www.google.com www.gstatic.com'
-	];
+        'self',
+        'unsafe-inline',
+        'unsafe-eval',
+        'www.google.com www.gstatic.com'
+    ];
 
     /**
      * Lists allowed stylesheets' URLs.
      *
      * @var list<string>|string
      */
-	public $styleSrc = [
-		'self',
-		'unsafe-inline',
-		'nonce-{csp-style-nonce}',
-		'https://fonts.googleapis.com',
-	];
+    public $styleSrc = [
+        'self',
+        'unsafe-inline',
+        'nonce-{csp-style-nonce}',
+        'https://fonts.googleapis.com',
+    ];
 
-	/**
+    /**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
      */
     public $imageSrc = [
-		'self',
-		'data:',
-		'blob:',
-	];
+        'self',
+        'data:',
+        'blob:',
+    ];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -110,9 +110,9 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $connectSrc = [
-		'self',
-		'nominatim.openstreetmap.org',
-	];
+        'self',
+        'nominatim.openstreetmap.org',
+    ];
 
     /**
      * Specifies the origins that can serve web fonts.
@@ -120,10 +120,10 @@ class ContentSecurityPolicy extends BaseConfig
      * @var list<string>|string
      */
     public $fontSrc = [
-		'self',
-		'fonts.googleapis.com',
-		'fonts.gstatic.com',
-	];
+        'self',
+        'fonts.googleapis.com',
+        'fonts.gstatic.com',
+    ];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.

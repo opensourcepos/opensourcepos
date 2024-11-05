@@ -91,7 +91,7 @@ use Config\OSPOS;
                     <?php $logs = WRITEPATH . 'logs/';
                         $uploads = FCPATH . 'uploads/';
                         $images = FCPATH . 'uploads/item_pics/';
-                        $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';	//TODO: This variable does not follow naming conventions for the project.
+                        $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';    //TODO: This variable does not follow naming conventions for the project.
 
                         if (is_writable($logs))
                         {
@@ -99,7 +99,7 @@ use Config\OSPOS;
                         }
                         else
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($logs)), -4) . ' |  ' . '<span style="color: red;">	Not Writable &#x2717 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($logs)), -4) . ' |  ' . '<span style="color: red;">    Not Writable &#x2717 </span>';
                         }
 
                         clearstatcache();
@@ -118,7 +118,7 @@ use Config\OSPOS;
                     <?php
                         if (is_writable($uploads))
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($uploads)), -4) . ' |  ' . '<span style="color: green;">	 Writable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($uploads)), -4) . ' |  ' . '<span style="color: green;">     Writable &#x2713 </span>';
                         }
                         else
                         {
@@ -143,11 +143,11 @@ use Config\OSPOS;
                     <?php
                         if (is_writable($images))
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |	 ' . '<span style="color: green;"> Writable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |     ' . '<span style="color: green;"> Writable &#x2713 </span>';
                         }
                         else
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |	 ' . '<span style="color: red;"> Not Writable &#x2717 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |     ' . '<span style="color: red;"> Not Writable &#x2717 </span>';
                         }
 
                         clearstatcache();
@@ -167,7 +167,7 @@ use Config\OSPOS;
                     &#187; [importCustomers.csv:]
                     <?php
                         if (is_readable($importCustomers)) {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: green;">	 Readable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: green;">     Readable &#x2713 </span>';
                         } else {
                             echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: red;"> Not Readable &#x2717 </span>';
                         }

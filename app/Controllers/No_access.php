@@ -12,23 +12,23 @@ use App\Models\Module;
  */
 class No_access extends BaseController
 {
-	private Module $module;
+    private Module $module;
 
-	public function __construct()
-	{
-		$this->module = model(Module::class);
-	}
+    public function __construct()
+    {
+        $this->module = model(Module::class);
+    }
 
-	/**
-	 * @param string $module_id
-	 * @param string $permission_id
-	 * @return void
-	 */
-	public function getIndex(string $module_id = '', string $permission_id = ''): void
-	{
-		$data['module_name']   = $this->module->get_module_name($module_id);
-		$data['permission_id'] = $permission_id;
+    /**
+     * @param string $module_id
+     * @param string $permission_id
+     * @return void
+     */
+    public function getIndex(string $module_id = '', string $permission_id = ''): void
+    {
+        $data['module_name']   = $this->module->get_module_name($module_id);
+        $data['permission_id'] = $permission_id;
 
-		echo view('no_access', $data);
-	}
+        echo view('no_access', $data);
+    }
 }

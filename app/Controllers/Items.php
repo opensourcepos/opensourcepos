@@ -25,662 +25,662 @@ require_once('Secure_Controller.php');
 
 class Items extends Secure_Controller
 {
-	private BaseHandler $image;
-	private Barcode_lib $barcode_lib;
-	private Item_lib $item_lib;
-	private Attribute $attribute;
-	private Inventory $inventory;
-	private Item $item;
-	private Item_kit $item_kit;
-	private Item_quantity $item_quantity;
-	private Item_taxes $item_taxes;
-	private Stock_location $stock_location;
-	private Supplier $supplier;
-	private Tax_category $tax_category;
-	private array $config;
-
-
-	public function __construct()
-	{
-		parent::__construct('items');
-
-		$this->session = Services::session();
-
-		$this->image = Services::image();
-
-		$this->barcode_lib = new Barcode_lib();
-		$this->item_lib = new Item_lib();
-
-		$this->attribute = model(Attribute::class);
-		$this->inventory = model(Inventory::class);
-		$this->item = model(Item::class);
-		$this->item_kit = model(Item_kit::class);
-		$this->item_quantity = model(Item_quantity::class);
-		$this->item_taxes = model(Item_taxes::class);
-		$this->stock_location = model(Stock_location::class);
-		$this->supplier = model(Supplier::class);
-		$this->tax_category = model(Tax_category::class);
-		$this->config = config(OSPOS::class)->settings;
-	}
-
-	/**
-	 * @return void
-	 */
-	public function getIndex(): void
-	{
-		$this->session->set('allow_temp_items', 0);
-
-		$data['table_headers'] = get_items_manage_table_headers();
-		$data['stock_location'] = $this->item_lib->get_item_location();
-		$data['stock_locations'] = $this->stock_location->get_allowed_locations();
-
-		//Filters that will be loaded in the multiselect dropdown
-		$data['filters'] = [
-			'empty_upc' => lang('Items.empty_upc_items'),
-			'low_inventory' => lang('Items.low_inventory_items'),
-			'is_serialized' => lang('Items.serialized_items'),
-			'no_description' => lang('Items.no_description_items'),
-			'search_custom' => lang('Items.search_attributes'),
-			'is_deleted' => lang('Items.is_deleted'),
-			'temporary' => lang('Items.temp')
-		];
-
-		echo view('items/manage', $data);
-	}
-
-	/**
-	 * Returns Items table data rows. This will be called with AJAX.
-	 * @noinspection PhpUnused
-	 **/
-	public function getSearch(): void
-	{
-		$search = $this->request->getGet('search');
-		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
-		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->sanitizeSortColumn(ITEM_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
-		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-		$this->item_lib->set_item_location($this->request->getGet('stock_location'));
-
-		$definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
-
-		$filters = [
-			'start_date' => $this->request->getGet('start_date'),
-			'end_date' => $this->request->getGet('end_date'),
-			'stock_location_id' => $this->item_lib->get_item_location(),
-			'empty_upc' => false,
-			'low_inventory' => false,
-			'is_serialized' => false,
-			'no_description' => false,
-			'search_custom' => false,
-			'is_deleted' => false,
-			'temporary' => false,
-			'definition_ids' => array_keys($definition_names)
-		];
-
-		//Check if any filter is set in the multiselect dropdown
-		$request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
-		$filters = array_merge($filters, $request_filters);
-		$items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
-		$total_rows = $this->item->get_found_rows($search, $filters);
-		$data_rows = [];
-
-		foreach($items->getResult() as $item)
-		{
-			$data_rows[] = get_item_data_row($item);
-
-			if($item->pic_filename !== null)
-			{
-				$this->update_pic_filename($item);
-			}
-		}
-
-		echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
-	}
-
-	/**
-	 * AJAX function. Processes thumbnail of image. Called via tabular_helper
-	 * @param string $pic_filename
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getPicThumb(string $pic_filename): void
-	{
-		helper('file');
-
-		$file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
-		$images = glob("./uploads/item_pics/$pic_filename");
-		$base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
-
-		if(sizeof($images) > 0)
-		{
-			$image_path = $images[0];
-			$thumb_path = $base_path . "_thumb.$file_extension";
-
-			if(sizeof($images) < 2 && !file_exists($thumb_path))
-			{
-				$image = Services::image('gd2');
-				$image->withFile($image_path)
-					->resize(52, 32, true, 'height')
-					->save($thumb_path);
-			}
-
-			$this->response->setContentType(mime_content_type($thumb_path));
-			$this->response->setBody(file_get_contents($thumb_path));
-			$this->response->send();
-		}
-	}
-
-	/**
-	 * Gives search suggestions based on what is being searched for
-	 * @noinspection PhpUnused
-	 */
-	public function suggest_search(): void
-	{
-		$options = [
-			'search_custom' => $this->request->getPost('search_custom'),
-			'is_deleted' => $this->request->getPost('is_deleted') !== null
-		];
-
-		$search = $this->request->getPost('term');
-		$suggestions = $this->item->get_search_suggestions($search, $options);
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * AJAX Function used to get search suggestions from the model and return them in JSON format
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getSuggest(): void
-	{
-		$search = $this->request->getPost('term');
-		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function suggest_low_sell(): void
-	{
-		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getSuggestKits(): void
-	{
-		$suggestions = $this->item->get_kit_search_suggestions($this->request->getGet('term'), ['search_custom' => false, 'is_deleted' => false], true);
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * Gives search suggestions based on what is being searched for. Called from the view.
-	 * @noinspection PhpUnused
-	 */
-	public function getSuggestCategory(): void
-	{
-		$suggestions = $this->item->get_category_suggestions($this->request->getGet('term'));
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * Gives search suggestions based on what is being searched for.
-	 * @noinspection PhpUnused
-	 */
-	public function getSuggestLocation(): void
-	{
-		$suggestions = $this->item->get_location_suggestions($this->request->getGet('term'));
-
-		echo json_encode($suggestions);
-	}
-
-	/**
-	 * @param string $item_ids
-	 * @return void
-	 */
-	public function getRow(string $item_ids): void	//TODO: An array would be better for parameter.
-	{
-		$item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
-
-		$result = [];
-
-		foreach($item_infos->getResult() as $item_info)
-		{
-			$result[$item_info->item_id] = get_item_data_row($item_info);
-		}
-
-		echo json_encode($result);
-	}
-
-	/**
-	 * @param int $item_id
-	 * @return void
-	 */
-	public function getView(int $item_id = NEW_ENTRY): void	//TODO: Long function. Perhaps we need to refactor out some methods.
-	{
-		$item_id ??= NEW_ENTRY;
-
-		if($item_id === NEW_ENTRY)
-		{
-			$data = [];
-		}
-
-		$data['allow_temp_item'] = $this->session->get('allow_temp_items'); //allow_temp_items is set in the index function of items.php or sales.php
-		$data['item_tax_info'] = $this->item_taxes->get_info($item_id);
-		$data['default_tax_1_rate'] = '';
-		$data['default_tax_2_rate'] = '';
-		$data['item_kit_disabled'] = !$this->employee->has_grant('item_kits', $this->employee->get_logged_in_employee_info()->person_id);
-		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id);
-		$data['definition_names'] = $this->attribute->get_definition_names();
-
-		foreach($data['definition_values'] as $definition_id => $definition)
-		{
-			unset($data['definition_names'][$definition_id]);
-		}
-
-		$item_info = $this->item->get_info($item_id);
-
-		$data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
-
-		$use_destination_based_tax = (boolean)$this->config['use_destination_based_tax'];
-		$data['include_hsn'] = $this->config['include_hsn'] === '1';
-		$data['category_dropdown'] = $this->config['category_dropdown'];
-
-		if($data['category_dropdown'] === '1')
-		{
-			$categories = ['' => lang('Items.none')];
-			$category_options = $this->attribute->get_definition_values(CATEGORY_DEFINITION_ID);
-			$category_options = array_combine($category_options,$category_options);	//Overwrite indexes with values for saving in items table instead of attributes
-			$data['categories'] = array_merge($categories,$category_options);
-
-			$data['selected_category'] = $item_info->category;
-		}
-
-		if($item_id === NEW_ENTRY)
-		{
-			$data['default_tax_1_rate'] = $this->config['default_tax_1_rate'];
-			$data['default_tax_2_rate'] = $this->config['default_tax_2_rate'];
-
-			$item_info->receiving_quantity = 1;
-			$item_info->reorder_level = 1;
-			$item_info->item_type = ITEM;    //Standard
-			$item_info->item_id = $item_id;
-			$item_info->stock_type = HAS_STOCK;
-			$item_info->tax_category_id = null;
-			$item_info->qty_per_pack = 1;
-			$item_info->pack_name = lang('Items.default_pack_name');
-
-			if($use_destination_based_tax)
-			{
-				$item_info->tax_category_id = $this->config['default_tax_category'];
-			}
-		}
-		$data['standard_item_locked'] = (
-			$data['item_kit_disabled']
-			&& $item_info->item_type == ITEM_KIT
-			&& !$data['allow_temp_item']
-			&& !($this->config['derive_sale_quantity'] === '1')
-		);
-
-		$data['item_info'] = $item_info;
-
-		$suppliers = ['' => lang('Items.none')];
-
-		foreach($this->supplier->get_all()->getResultArray() as $row)
-		{
-			$suppliers[$row['person_id']] = $row['company_name'];
-		}
-
-		$data['suppliers'] = $suppliers;
-		$data['selected_supplier'] = $item_info->supplier_id;
-
-		$data['hsn_code'] = $data['include_hsn']
-			? $item_info->hsn_code
-			: '';
-
-		if($use_destination_based_tax)
-		{
-			$data['use_destination_based_tax'] = true;
-			$tax_categories = [];
-
-			foreach($this->tax_category->get_all()->getResultArray() as $row)
-			{
-				$tax_categories[$row['tax_category_id']] = $row['tax_category'];
-			}
-
-			$tax_category = '';
-
-			if ($item_info->tax_category_id !== null)
-			{
-				$tax_category_info=$this->tax_category->get_info($item_info->tax_category_id);
-				$tax_category= $tax_category_info->tax_category;
-			}
-
-			$data['tax_categories'] = $tax_categories;
-			$data['tax_category'] = $tax_category;
-			$data['tax_category_id'] = $item_info->tax_category_id;
-		}
-		else
-		{
-			$data['use_destination_based_tax'] = false;
-			$data['tax_categories'] = [];
-			$data['tax_category'] = '';
-		}
-
-		$data['logo_exists'] = $item_info->pic_filename !== null;
-		if($item_info->pic_filename != null)
-		{
-			$file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
-			if(empty($file_extension))
-			{
-				$images = glob("./uploads/item_pics/$item_info->pic_filename.*");
-			}
-			else
-			{
-				$images = glob("./uploads/item_pics/$item_info->pic_filename");
-			}
-			$data['image_path']	= sizeof($images) > 0 ? base_url($images[0]) : '';
-		}
-		else
-		{
-			$data['image_path']	= '';
-		}
-
-		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
-
-		foreach($stock_locations as $location)
-		{
-			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
-			$quantity = ($item_id === NEW_ENTRY) ? 0 : $quantity;
-			$location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
-			$data['stock_locations'] = $location_array;
-		}
-
-		$data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
-
-		if($item_id !== NEW_ENTRY && $item_info->item_id !== $item_info->low_sell_item_id)
-		{
-			$low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
-			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
-		}
-		else
-		{
-			$data['selected_low_sell_item'] = '';
-		}
-
-		echo view('items/form', $data);
-	}
-
-	/**
-	 * AJAX called function which returns the update inventory form view for an item
-	 *
-	 * @param int $item_id
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getInventory(int $item_id = NEW_ENTRY): void
-	{
-		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
-
-		foreach(get_object_vars($item_info) as $property => $value)
-		{
-			$item_info->$property = $value;
-		}
-
-		$data['item_info'] = $item_info;
-		$data['stock_locations'] = [];
-		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
-
-		foreach($stock_locations as $location)
-		{
-			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
-
-			$data['stock_locations'][$location['location_id']] = $location['location_name'];
-			$data['item_quantities'][$location['location_id']] = $quantity;
-		}
-
-		echo view('items/form_inventory', $data);
-	}
-
-	/**
-	 * @param int $item_id
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getCountDetails(int $item_id = NEW_ENTRY): void
-	{
-		$item_info = $this->item->get_info($item_id);	//TODO: Duplicate code
-
-		foreach(get_object_vars($item_info) as $property => $value)
-		{
-			$item_info->$property = $value;
-		}
-
-		$data['item_info'] = $item_info;
-		$data['stock_locations'] = [];
-		$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
-
-		foreach($stock_locations as $location)
-		{
-			$quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
-
-			$data['stock_locations'][$location['location_id']] = $location['location_name'];
-			$data['item_quantities'][$location['location_id']] = $quantity;
-		}
-
-		echo view('items/form_count_details', $data);
-	}
-
-	/**
-	 *  AJAX called function that generates barcodes for selected items.
-	 *
-	 * @param string $item_ids Colon separated list of item_id values to generate barcodes for.
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getGenerateBarcodes(string $item_ids): void	//TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
-	{
-		$item_ids = explode(':', $item_ids);
-		$result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
-		$data['barcode_config'] = $this->barcode_lib->get_barcode_config();
-
-		foreach($result as &$item)
-		{
-			if(isset($item['item_number']) && empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
-			{
-				if(isset($item['item_id']))
-				{
-					$save_item = ['item_number' => $item['item_number']];
-					$this->item->save_value($save_item, $item['item_id']);
-				}
-			}
-		}
-		$data['items'] = $result;
-
-		echo view('barcodes/barcode_sheet', $data);
-	}
-
-	/**
-	 * @param int $item_id
-	 * @return void
-	 */
-	public function getAttributes(int $item_id = NEW_ENTRY): void
-	{
-		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->request->getGet('definition_ids') ?? '', true);
-		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-		$data['definition_names'] = $this->attribute->get_definition_names();
-
-		foreach($data['definition_values'] as $definition_id => $definition_value)
-		{
-			$attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
-			$attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
-			$values = &$data['definition_values'][$definition_id];
-			$values['attribute_id'] = $attribute_id;
-			$values['attribute_value'] = $attribute_value;
-			$values['selected_value'] = '';
-
-			if ($definition_value['definition_type'] === DROPDOWN)
-			{
-				$values['values'] = $this->attribute->get_definition_values($definition_id);
-				$link_value = $this->attribute->get_link_value($item_id, $definition_id);
-				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
-			}
-
-			if (!empty($definition_ids[$definition_id]))
-			{
-				$values['selected_value'] = $definition_ids[$definition_id];
-			}
-
-			unset($data['definition_names'][$definition_id]);
-		}
-
-		echo view('attributes/item', $data);
-	}
-
-	/**
-	 * @param int $item_id
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function postAttributes(int $item_id = NEW_ENTRY): void
-	{
-		$data['item_id'] = $item_id;
-		$definition_ids = json_decode($this->request->getPost('definition_ids'), true);
-		$data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
-		$data['definition_names'] = $this->attribute->get_definition_names();
-
-		foreach($data['definition_values'] as $definition_id => $definition_value)
-		{
-			$attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
-			$attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
-			$values = &$data['definition_values'][$definition_id];
-			$values['attribute_id'] = $attribute_id;
-			$values['attribute_value'] = $attribute_value;
-			$values['selected_value'] = '';
-
-			if ($definition_value['definition_type'] === DROPDOWN)
-			{
-				$values['values'] = $this->attribute->get_definition_values($definition_id);
-				$link_value = $this->attribute->get_link_value($item_id, $definition_id);
-				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
-			}
-
-			if (!empty($definition_ids[$definition_id]))
-			{
-				$values['selected_value'] = $definition_ids[$definition_id];
-			}
-
-			unset($data['definition_names'][$definition_id]);
-		}
-
-		echo view('attributes/item', $data);
-	}
-
-	/**
-	 * Edit multiple items. Used in app/Views/items/manage.php
-	 *
-	 * @return void
-	 * @noinspection PhpUnused
-	 */
-	public function getBulkEdit(): void
-	{
-		$suppliers = ['' => lang('Items.none')];
-
-		foreach($this->supplier->get_all()->getResultArray() as $row)
-		{
-			$suppliers[$row['person_id']] = $row['company_name'];
-		}
-
-		$data['suppliers'] = $suppliers;
-		$data['allow_alt_description_choices'] = [
-			'' => lang('Items.do_nothing'),
-			1  => lang('Items.change_all_to_allow_alt_desc'),
-			0  => lang('Items.change_all_to_not_allow_allow_desc')
-		];
-
-		$data['serialization_choices'] = [
-			'' => lang('Items.do_nothing'),
-			1  => lang('Items.change_all_to_serialized'),
-			0  => lang('Items.change_all_to_unserialized')
-		];
-
-		echo view('items/form_bulk', $data);
-	}
-
-	/**
-	 * @param int $item_id
-	 * @throws ReflectionException
-	 */
-	public function postSave(int $item_id = NEW_ENTRY): void
-	{
-		$upload_data = $this->upload_image();
-		$upload_success = empty($upload_data['error']);
-
-		$raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
-
-		$receiving_quantity = parse_quantity(filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-		$item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
-
-		if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
-		{
-			$receiving_quantity = 1;
-		}
-
-		$default_pack_name = lang('Items.default_pack_name');
-
-		$cost_price = prepare_decimal($this->request->getPost('cost_price'));
-		$unit_price = prepare_decimal($this->request->getPost('unit_price'));
-		$reorder_level = prepare_decimal($this->request->getPost('reorder_level'));
-		$qty_per_pack = prepare_decimal($this->request->getPost('qty_per_pack') ?? '');
-
-		//Save item data
-		$item_data = [
-			'name' => $this->request->getPost('name'),
-			'description' => $this->request->getPost('description'),
-			'category' => $this->request->getPost('category'),
-			'item_type' => $item_type,
-			'stock_type' => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
-			'supplier_id' => empty($this->request->getPost('supplier_id')) ? null : intval($this->request->getPost('supplier_id')),
-			'item_number' => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
-			'cost_price' => parse_decimals(filter_var($cost_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'unit_price' => parse_decimals(filter_var($unit_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'reorder_level' => parse_quantity(filter_var($reorder_level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'receiving_quantity' => $receiving_quantity,
-			'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
-			'is_serialized' => $this->request->getPost('is_serialized') != null,
-			'qty_per_pack' => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity(filter_var($qty_per_pack, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'pack_name' => $this->request->getPost('pack_name') == null ? $default_pack_name : $this->request->getPost('pack_name'),
-			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === null ? $item_id : intval($this->request->getPost('low_sell_item_id')),
-			'deleted' => $this->request->getPost('is_deleted') != null,
-			'hsn_code' => $this->request->getPost('hsn_code') === null ? '' : $this->request->getPost('hsn_code')
-		];
-
-		if($item_data['item_type'] == ITEM_TEMP)
-		{
-			$item_data['stock_type'] = HAS_NO_STOCK;
-			$item_data['receiving_quantity'] = 0;
-			$item_data['reorder_level'] = 0;
-		}
-
-		$tax_category_id = intval($this->request->getPost('tax_category_id'));
-
-		if(!isset($tax_category_id))
-		{
-			$item_data['tax_category_id'] = '';
-		}
-		else
+    private BaseHandler $image;
+    private Barcode_lib $barcode_lib;
+    private Item_lib $item_lib;
+    private Attribute $attribute;
+    private Inventory $inventory;
+    private Item $item;
+    private Item_kit $item_kit;
+    private Item_quantity $item_quantity;
+    private Item_taxes $item_taxes;
+    private Stock_location $stock_location;
+    private Supplier $supplier;
+    private Tax_category $tax_category;
+    private array $config;
+
+
+    public function __construct()
+    {
+        parent::__construct('items');
+
+        $this->session = Services::session();
+
+        $this->image = Services::image();
+
+        $this->barcode_lib = new Barcode_lib();
+        $this->item_lib = new Item_lib();
+
+        $this->attribute = model(Attribute::class);
+        $this->inventory = model(Inventory::class);
+        $this->item = model(Item::class);
+        $this->item_kit = model(Item_kit::class);
+        $this->item_quantity = model(Item_quantity::class);
+        $this->item_taxes = model(Item_taxes::class);
+        $this->stock_location = model(Stock_location::class);
+        $this->supplier = model(Supplier::class);
+        $this->tax_category = model(Tax_category::class);
+        $this->config = config(OSPOS::class)->settings;
+    }
+
+    /**
+     * @return void
+     */
+    public function getIndex(): void
+    {
+        $this->session->set('allow_temp_items', 0);
+
+        $data['table_headers'] = get_items_manage_table_headers();
+        $data['stock_location'] = $this->item_lib->get_item_location();
+        $data['stock_locations'] = $this->stock_location->get_allowed_locations();
+
+        //Filters that will be loaded in the multiselect dropdown
+        $data['filters'] = [
+            'empty_upc' => lang('Items.empty_upc_items'),
+            'low_inventory' => lang('Items.low_inventory_items'),
+            'is_serialized' => lang('Items.serialized_items'),
+            'no_description' => lang('Items.no_description_items'),
+            'search_custom' => lang('Items.search_attributes'),
+            'is_deleted' => lang('Items.is_deleted'),
+            'temporary' => lang('Items.temp')
+        ];
+
+        echo view('items/manage', $data);
+    }
+
+    /**
+     * Returns Items table data rows. This will be called with AJAX.
+     * @noinspection PhpUnused
+     **/
+    public function getSearch(): void
+    {
+        $search = $this->request->getGet('search');
+        $limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
+        $offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
+        $sort = $this->sanitizeSortColumn(ITEM_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
+        $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $this->item_lib->set_item_location($this->request->getGet('stock_location'));
+
+        $definition_names = $this->attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
+        $filters = [
+            'start_date' => $this->request->getGet('start_date'),
+            'end_date' => $this->request->getGet('end_date'),
+            'stock_location_id' => $this->item_lib->get_item_location(),
+            'empty_upc' => false,
+            'low_inventory' => false,
+            'is_serialized' => false,
+            'no_description' => false,
+            'search_custom' => false,
+            'is_deleted' => false,
+            'temporary' => false,
+            'definition_ids' => array_keys($definition_names)
+        ];
+
+        //Check if any filter is set in the multiselect dropdown
+        $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
+        $filters = array_merge($filters, $request_filters);
+        $items = $this->item->search($search, $filters, $limit, $offset, $sort, $order);
+        $total_rows = $this->item->get_found_rows($search, $filters);
+        $data_rows = [];
+
+        foreach($items->getResult() as $item)
+        {
+            $data_rows[] = get_item_data_row($item);
+
+            if($item->pic_filename !== null)
+            {
+                $this->update_pic_filename($item);
+            }
+        }
+
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
+    }
+
+    /**
+     * AJAX function. Processes thumbnail of image. Called via tabular_helper
+     * @param string $pic_filename
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getPicThumb(string $pic_filename): void
+    {
+        helper('file');
+
+        $file_extension = pathinfo($pic_filename, PATHINFO_EXTENSION);
+        $images = glob("./uploads/item_pics/$pic_filename");
+        $base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
+
+        if(sizeof($images) > 0)
+        {
+            $image_path = $images[0];
+            $thumb_path = $base_path . "_thumb.$file_extension";
+
+            if(sizeof($images) < 2 && !file_exists($thumb_path))
+            {
+                $image = Services::image('gd2');
+                $image->withFile($image_path)
+                    ->resize(52, 32, true, 'height')
+                    ->save($thumb_path);
+            }
+
+            $this->response->setContentType(mime_content_type($thumb_path));
+            $this->response->setBody(file_get_contents($thumb_path));
+            $this->response->send();
+        }
+    }
+
+    /**
+     * Gives search suggestions based on what is being searched for
+     * @noinspection PhpUnused
+     */
+    public function suggest_search(): void
+    {
+        $options = [
+            'search_custom' => $this->request->getPost('search_custom'),
+            'is_deleted' => $this->request->getPost('is_deleted') !== null
+        ];
+
+        $search = $this->request->getPost('term');
+        $suggestions = $this->item->get_search_suggestions($search, $options);
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * AJAX Function used to get search suggestions from the model and return them in JSON format
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getSuggest(): void
+    {
+        $search = $this->request->getPost('term');
+        $suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function suggest_low_sell(): void
+    {
+        $suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getSuggestKits(): void
+    {
+        $suggestions = $this->item->get_kit_search_suggestions($this->request->getGet('term'), ['search_custom' => false, 'is_deleted' => false], true);
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * Gives search suggestions based on what is being searched for. Called from the view.
+     * @noinspection PhpUnused
+     */
+    public function getSuggestCategory(): void
+    {
+        $suggestions = $this->item->get_category_suggestions($this->request->getGet('term'));
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * Gives search suggestions based on what is being searched for.
+     * @noinspection PhpUnused
+     */
+    public function getSuggestLocation(): void
+    {
+        $suggestions = $this->item->get_location_suggestions($this->request->getGet('term'));
+
+        echo json_encode($suggestions);
+    }
+
+    /**
+     * @param string $item_ids
+     * @return void
+     */
+    public function getRow(string $item_ids): void    //TODO: An array would be better for parameter.
+    {
+        $item_infos = $this->item->get_multiple_info(explode(':', $item_ids), $this->item_lib->get_item_location());
+
+        $result = [];
+
+        foreach($item_infos->getResult() as $item_info)
+        {
+            $result[$item_info->item_id] = get_item_data_row($item_info);
+        }
+
+        echo json_encode($result);
+    }
+
+    /**
+     * @param int $item_id
+     * @return void
+     */
+    public function getView(int $item_id = NEW_ENTRY): void    //TODO: Long function. Perhaps we need to refactor out some methods.
+    {
+        $item_id ??= NEW_ENTRY;
+
+        if($item_id === NEW_ENTRY)
+        {
+            $data = [];
+        }
+
+        $data['allow_temp_item'] = $this->session->get('allow_temp_items'); //allow_temp_items is set in the index function of items.php or sales.php
+        $data['item_tax_info'] = $this->item_taxes->get_info($item_id);
+        $data['default_tax_1_rate'] = '';
+        $data['default_tax_2_rate'] = '';
+        $data['item_kit_disabled'] = !$this->employee->has_grant('item_kits', $this->employee->get_logged_in_employee_info()->person_id);
+        $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id);
+        $data['definition_names'] = $this->attribute->get_definition_names();
+
+        foreach($data['definition_values'] as $definition_id => $definition)
+        {
+            unset($data['definition_names'][$definition_id]);
+        }
+
+        $item_info = $this->item->get_info($item_id);
+
+        $data['allow_temp_item'] = ($data['allow_temp_item'] === 1 && $item_id !== NEW_ENTRY && $item_info->item_type != ITEM_TEMP) ? 0 : 1;
+
+        $use_destination_based_tax = (boolean)$this->config['use_destination_based_tax'];
+        $data['include_hsn'] = $this->config['include_hsn'] === '1';
+        $data['category_dropdown'] = $this->config['category_dropdown'];
+
+        if($data['category_dropdown'] === '1')
+        {
+            $categories = ['' => lang('Items.none')];
+            $category_options = $this->attribute->get_definition_values(CATEGORY_DEFINITION_ID);
+            $category_options = array_combine($category_options,$category_options);    //Overwrite indexes with values for saving in items table instead of attributes
+            $data['categories'] = array_merge($categories,$category_options);
+
+            $data['selected_category'] = $item_info->category;
+        }
+
+        if($item_id === NEW_ENTRY)
+        {
+            $data['default_tax_1_rate'] = $this->config['default_tax_1_rate'];
+            $data['default_tax_2_rate'] = $this->config['default_tax_2_rate'];
+
+            $item_info->receiving_quantity = 1;
+            $item_info->reorder_level = 1;
+            $item_info->item_type = ITEM;    //Standard
+            $item_info->item_id = $item_id;
+            $item_info->stock_type = HAS_STOCK;
+            $item_info->tax_category_id = null;
+            $item_info->qty_per_pack = 1;
+            $item_info->pack_name = lang('Items.default_pack_name');
+
+            if($use_destination_based_tax)
+            {
+                $item_info->tax_category_id = $this->config['default_tax_category'];
+            }
+        }
+        $data['standard_item_locked'] = (
+            $data['item_kit_disabled']
+            && $item_info->item_type == ITEM_KIT
+            && !$data['allow_temp_item']
+            && !($this->config['derive_sale_quantity'] === '1')
+        );
+
+        $data['item_info'] = $item_info;
+
+        $suppliers = ['' => lang('Items.none')];
+
+        foreach($this->supplier->get_all()->getResultArray() as $row)
+        {
+            $suppliers[$row['person_id']] = $row['company_name'];
+        }
+
+        $data['suppliers'] = $suppliers;
+        $data['selected_supplier'] = $item_info->supplier_id;
+
+        $data['hsn_code'] = $data['include_hsn']
+            ? $item_info->hsn_code
+            : '';
+
+        if($use_destination_based_tax)
+        {
+            $data['use_destination_based_tax'] = true;
+            $tax_categories = [];
+
+            foreach($this->tax_category->get_all()->getResultArray() as $row)
+            {
+                $tax_categories[$row['tax_category_id']] = $row['tax_category'];
+            }
+
+            $tax_category = '';
+
+            if ($item_info->tax_category_id !== null)
+            {
+                $tax_category_info=$this->tax_category->get_info($item_info->tax_category_id);
+                $tax_category= $tax_category_info->tax_category;
+            }
+
+            $data['tax_categories'] = $tax_categories;
+            $data['tax_category'] = $tax_category;
+            $data['tax_category_id'] = $item_info->tax_category_id;
+        }
+        else
+        {
+            $data['use_destination_based_tax'] = false;
+            $data['tax_categories'] = [];
+            $data['tax_category'] = '';
+        }
+
+        $data['logo_exists'] = $item_info->pic_filename !== null;
+        if($item_info->pic_filename != null)
+        {
+            $file_extension = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
+            if(empty($file_extension))
+            {
+                $images = glob("./uploads/item_pics/$item_info->pic_filename.*");
+            }
+            else
+            {
+                $images = glob("./uploads/item_pics/$item_info->pic_filename");
+            }
+            $data['image_path']    = sizeof($images) > 0 ? base_url($images[0]) : '';
+        }
+        else
+        {
+            $data['image_path']    = '';
+        }
+
+        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+
+        foreach($stock_locations as $location)
+        {
+            $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
+            $quantity = ($item_id === NEW_ENTRY) ? 0 : $quantity;
+            $location_array[$location['location_id']] = ['location_name' => $location['location_name'], 'quantity' => $quantity];
+            $data['stock_locations'] = $location_array;
+        }
+
+        $data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
+
+        if($item_id !== NEW_ENTRY && $item_info->item_id !== $item_info->low_sell_item_id)
+        {
+            $low_sell_item_info = $this->item->get_info($item_info->low_sell_item_id);
+            $data['selected_low_sell_item'] = implode(NAME_SEPARATOR, [$low_sell_item_info->name, $low_sell_item_info->pack_name]);
+        }
+        else
+        {
+            $data['selected_low_sell_item'] = '';
+        }
+
+        echo view('items/form', $data);
+    }
+
+    /**
+     * AJAX called function which returns the update inventory form view for an item
+     *
+     * @param int $item_id
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getInventory(int $item_id = NEW_ENTRY): void
+    {
+        $item_info = $this->item->get_info($item_id);    //TODO: Duplicate code
+
+        foreach(get_object_vars($item_info) as $property => $value)
+        {
+            $item_info->$property = $value;
+        }
+
+        $data['item_info'] = $item_info;
+        $data['stock_locations'] = [];
+        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+
+        foreach($stock_locations as $location)
+        {
+            $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
+
+            $data['stock_locations'][$location['location_id']] = $location['location_name'];
+            $data['item_quantities'][$location['location_id']] = $quantity;
+        }
+
+        echo view('items/form_inventory', $data);
+    }
+
+    /**
+     * @param int $item_id
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getCountDetails(int $item_id = NEW_ENTRY): void
+    {
+        $item_info = $this->item->get_info($item_id);    //TODO: Duplicate code
+
+        foreach(get_object_vars($item_info) as $property => $value)
+        {
+            $item_info->$property = $value;
+        }
+
+        $data['item_info'] = $item_info;
+        $data['stock_locations'] = [];
+        $stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
+
+        foreach($stock_locations as $location)
+        {
+            $quantity = $this->item_quantity->get_item_quantity($item_id, $location['location_id'])->quantity;
+
+            $data['stock_locations'][$location['location_id']] = $location['location_name'];
+            $data['item_quantities'][$location['location_id']] = $quantity;
+        }
+
+        echo view('items/form_count_details', $data);
+    }
+
+    /**
+     *  AJAX called function that generates barcodes for selected items.
+     *
+     * @param string $item_ids Colon separated list of item_id values to generate barcodes for.
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getGenerateBarcodes(string $item_ids): void    //TODO: Passing these through as a string instead of an array limits the contents of the item_ids. Perhaps a better approach would to serialize as JSON in an array and pass through post variables?
+    {
+        $item_ids = explode(':', $item_ids);
+        $result = $this->item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->getResultArray();
+        $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
+
+        foreach($result as &$item)
+        {
+            if(isset($item['item_number']) && empty($item['item_number']) && $this->config['barcode_generate_if_empty'])
+            {
+                if(isset($item['item_id']))
+                {
+                    $save_item = ['item_number' => $item['item_number']];
+                    $this->item->save_value($save_item, $item['item_id']);
+                }
+            }
+        }
+        $data['items'] = $result;
+
+        echo view('barcodes/barcode_sheet', $data);
+    }
+
+    /**
+     * @param int $item_id
+     * @return void
+     */
+    public function getAttributes(int $item_id = NEW_ENTRY): void
+    {
+        $data['item_id'] = $item_id;
+        $definition_ids = json_decode($this->request->getGet('definition_ids') ?? '', true);
+        $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+        $data['definition_names'] = $this->attribute->get_definition_names();
+
+        foreach($data['definition_values'] as $definition_id => $definition_value)
+        {
+            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
+            $values = &$data['definition_values'][$definition_id];
+            $values['attribute_id'] = $attribute_id;
+            $values['attribute_value'] = $attribute_value;
+            $values['selected_value'] = '';
+
+            if ($definition_value['definition_type'] === DROPDOWN)
+            {
+                $values['values'] = $this->attribute->get_definition_values($definition_id);
+                $link_value = $this->attribute->get_link_value($item_id, $definition_id);
+                $values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
+            }
+
+            if (!empty($definition_ids[$definition_id]))
+            {
+                $values['selected_value'] = $definition_ids[$definition_id];
+            }
+
+            unset($data['definition_names'][$definition_id]);
+        }
+
+        echo view('attributes/item', $data);
+    }
+
+    /**
+     * @param int $item_id
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function postAttributes(int $item_id = NEW_ENTRY): void
+    {
+        $data['item_id'] = $item_id;
+        $definition_ids = json_decode($this->request->getPost('definition_ids'), true);
+        $data['definition_values'] = $this->attribute->get_attributes_by_item($item_id) + $this->attribute->get_values_by_definitions($definition_ids);
+        $data['definition_names'] = $this->attribute->get_definition_names();
+
+        foreach($data['definition_values'] as $definition_id => $definition_value)
+        {
+            $attribute_value = $this->attribute->get_attribute_value($item_id, $definition_id);
+            $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? null : $attribute_value->attribute_id;
+            $values = &$data['definition_values'][$definition_id];
+            $values['attribute_id'] = $attribute_id;
+            $values['attribute_value'] = $attribute_value;
+            $values['selected_value'] = '';
+
+            if ($definition_value['definition_type'] === DROPDOWN)
+            {
+                $values['values'] = $this->attribute->get_definition_values($definition_id);
+                $link_value = $this->attribute->get_link_value($item_id, $definition_id);
+                $values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
+            }
+
+            if (!empty($definition_ids[$definition_id]))
+            {
+                $values['selected_value'] = $definition_ids[$definition_id];
+            }
+
+            unset($data['definition_names'][$definition_id]);
+        }
+
+        echo view('attributes/item', $data);
+    }
+
+    /**
+     * Edit multiple items. Used in app/Views/items/manage.php
+     *
+     * @return void
+     * @noinspection PhpUnused
+     */
+    public function getBulkEdit(): void
+    {
+        $suppliers = ['' => lang('Items.none')];
+
+        foreach($this->supplier->get_all()->getResultArray() as $row)
+        {
+            $suppliers[$row['person_id']] = $row['company_name'];
+        }
+
+        $data['suppliers'] = $suppliers;
+        $data['allow_alt_description_choices'] = [
+            '' => lang('Items.do_nothing'),
+            1  => lang('Items.change_all_to_allow_alt_desc'),
+            0  => lang('Items.change_all_to_not_allow_allow_desc')
+        ];
+
+        $data['serialization_choices'] = [
+            '' => lang('Items.do_nothing'),
+            1  => lang('Items.change_all_to_serialized'),
+            0  => lang('Items.change_all_to_unserialized')
+        ];
+
+        echo view('items/form_bulk', $data);
+    }
+
+    /**
+     * @param int $item_id
+     * @throws ReflectionException
+     */
+    public function postSave(int $item_id = NEW_ENTRY): void
+    {
+        $upload_data = $this->upload_image();
+        $upload_success = empty($upload_data['error']);
+
+        $raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
+
+        $receiving_quantity = parse_quantity(filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        $item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
+
+        if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
+        {
+            $receiving_quantity = 1;
+        }
+
+        $default_pack_name = lang('Items.default_pack_name');
+
+        $cost_price = prepare_decimal($this->request->getPost('cost_price'));
+        $unit_price = prepare_decimal($this->request->getPost('unit_price'));
+        $reorder_level = prepare_decimal($this->request->getPost('reorder_level'));
+        $qty_per_pack = prepare_decimal($this->request->getPost('qty_per_pack') ?? '');
+
+        //Save item data
+        $item_data = [
+            'name' => $this->request->getPost('name'),
+            'description' => $this->request->getPost('description'),
+            'category' => $this->request->getPost('category'),
+            'item_type' => $item_type,
+            'stock_type' => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
+            'supplier_id' => empty($this->request->getPost('supplier_id')) ? null : intval($this->request->getPost('supplier_id')),
+            'item_number' => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
+            'cost_price' => parse_decimals(filter_var($cost_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'unit_price' => parse_decimals(filter_var($unit_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'reorder_level' => parse_quantity(filter_var($reorder_level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'receiving_quantity' => $receiving_quantity,
+            'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
+            'is_serialized' => $this->request->getPost('is_serialized') != null,
+            'qty_per_pack' => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity(filter_var($qty_per_pack, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'pack_name' => $this->request->getPost('pack_name') == null ? $default_pack_name : $this->request->getPost('pack_name'),
+            'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === null ? $item_id : intval($this->request->getPost('low_sell_item_id')),
+            'deleted' => $this->request->getPost('is_deleted') != null,
+            'hsn_code' => $this->request->getPost('hsn_code') === null ? '' : $this->request->getPost('hsn_code')
+        ];
+
+        if($item_data['item_type'] == ITEM_TEMP)
+        {
+            $item_data['stock_type'] = HAS_NO_STOCK;
+            $item_data['receiving_quantity'] = 0;
+            $item_data['reorder_level'] = 0;
+        }
+
+        $tax_category_id = intval($this->request->getPost('tax_category_id'));
+
+        if(!isset($tax_category_id))
+        {
+            $item_data['tax_category_id'] = '';
+        }
+        else
 		{
 			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
 		}
