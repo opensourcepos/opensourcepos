@@ -27,7 +27,7 @@ locale: en
 # Custom variables
 bs-container: container-lg
 url-github: https://github.com/opensourcepos/opensourcepos
-url-gitter: https://gitter.im/opensourcepos
+url-gitter: https://app.gitter.im/#/room/#opensourcepos_Lobby:gitter.im
 url-weblate: https://translate.opensourcepos.org
 
 # Build settings
