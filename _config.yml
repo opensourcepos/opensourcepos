@@ -1,8 +1,56 @@
-title: Opensourcepos
-description: Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.
-google_analytics: 
-show_downloads: true
-theme: jekyll-theme-minimal
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+#
+# If you need help with YAML syntax, here are some quick references for you:
+# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
+# https://learnxinyminutes.com/docs/yaml/
+#
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: Open Source Point of Sale
+description: >- # this means to ignore newlines until "baseurl:"
+  Open Source Point of Sale is a web based point of sale system written in the PHP language.
+  It uses MySQL as the data storage back-end and has a simple user interface.
+url: "https://opensourcepos.org" # the base hostname & protocol for your site, e.g. http://example.com
+locale: en
 
-gems:
-  - jekyll-mentions
+# Custom variables
+bs-container: container-lg
+url-github: https://github.com/opensourcepos/opensourcepos
+url-gitter: https://app.gitter.im/#/room/#opensourcepos_Lobby:gitter.im
+url-weblate: https://translate.opensourcepos.org
+
+# Build settings
+# theme: minima
+# plugins:
+#   - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
