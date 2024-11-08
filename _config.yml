@@ -21,6 +21,7 @@ title: Open Source Point of Sale
 description: >- # this means to ignore newlines until "baseurl:"
   Open Source Point of Sale is a web based point of sale system written in the PHP language.
   It uses MySQL as the data storage back-end and has a simple user interface.
+baseurl: ""
 url: "https://opensourcepos.org" # the base hostname & protocol for your site, e.g. http://example.com
 locale: en
 

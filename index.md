@@ -19,6 +19,7 @@ title: Home
 <a href="https://translate.opensourcepos.org/engage/opensourcepos/?utm_source=widget" target="_blank" rel="noopener"><img src="https://translate.opensourcepos.org/widgets/opensourcepos/-/svg-badge.svg" alt="Translation Status"></a>
 </p>
 
+<br>
 ## 👋 Introduction
 ---
 
@@ -187,3 +188,4 @@ Any person or company found breaching the license agreement might find a bunch o
         </tr>
     </tbody>
 </table>
+<br>
