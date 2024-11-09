@@ -33,21 +33,21 @@ after_success:
   - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 deploy:
   - provider: npm
-    file: dist/opensourcepos.$version.$rev.tgz
-    registry: npm.pkg.github.com
+    edge: true
+    src: dist/opensourcepos.$version.$rev.tgz
+    registry: https://npm.pkg.github.com
     email: jeroen@steganos.dev
-    skip_cleanup: true
     api_key:
       secure: "DNPJOrT51wdO0BAbkX2hKowdXYh7x8d43xvAw7eVfOslyBPiv6Bb/1QdC2Bpnlqe0WiJVS5hvBTMrJ+vSDK5i/l8jA+ZoI6ms1+P1DQ6sBBMBQI2fuvRCrJj+Fp3WnaduZb/N7R+FqdKQwD/ZORyhzJ4whtHkrO8uC7cY/wlacU="
 
     on:
       all_branches: true
   - provider: releases
+    edge: true
     file: dist/opensourcepos.$version.$rev.zip
     name: "OpensourcePos $version"
     release_notes_file: CHANGELOG.md
     prerelease: true
-    skip_cleanup: true
 
     user: jekkos
     overwrite: true
