@@ -206,9 +206,9 @@ class Receivings extends Secure_Controller
 		$data = [];
 
 		$validation_rule = [
-			'price' => 'trim|required|numeric',
-			'quantity' => 'trim|required|numeric',
-			'discount' => 'trim|required|numeric',
+			'price' => 'trim|required|decimal_locale',
+			'quantity' => 'trim|required|decimal_locale',
+			'discount' => 'trim|permit_empty|decimal_locale',
 		];
 
 		$raw_price = prepare_decimal($this->request->getPost('price'));
