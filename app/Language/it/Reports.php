@@ -52,7 +52,7 @@ return [
 	"expenses_tax_amount" => "Imposte",
 	"expenses_total_amount" => "Totale Importo",
 	"expenses_total_tax_amount" => "Totale Imposte",
-	"graphical_reports" => "Resoconto Geografico",
+	"graphical_reports" => "Resoconto Grafico",
 	"inventory" => "Inventario",
 	"inventory_low" => "Inventario Basso",
 	"inventory_low_report" => "Resoconto Inventario Basso",
