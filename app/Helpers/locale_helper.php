@@ -485,17 +485,6 @@ function parse_decimals(string $number, int $decimals = null): mixed
 		return $number;
 	}
 
-	$locale_safe_number = prepare_decimal($number);
-
-	if ($locale_safe_number > MAX_PRECISION)
-	{
-		return false;
-	}
-
-	if($locale_safe_number > 1.e14)
-	{
-		return false;
-	}
 
 	$config = config(OSPOS::class)->settings;
 
@@ -503,10 +492,9 @@ function parse_decimals(string $number, int $decimals = null): mixed
 
 	if(!$decimals)
 	{
-		$decimals = $config['currency_decimals'];
+		$decimals = int($config['currency_decimals']);
+		$fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 	}
-
-	$fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 
 	if(empty($config['thousands_separator']))
 	{
@@ -515,7 +503,19 @@ function parse_decimals(string $number, int $decimals = null): mixed
 
 	try
 	{
-		return $fmt->parse($number);
+		$locale_safe_number = $fmt->parse($number);
+
+		if ($locale_safe_number > MAX_PRECISION)
+		{
+			return false;
+		}
+
+		if($locale_safe_number > 1.e14)
+		{
+			return false;
+		}
+
+		return (float) $locale_safe_number;
 	}
 	catch(Exception $e)
 	{
@@ -712,15 +712,5 @@ function decode_array(array $data): array
  */
 function prepare_decimal(string $decimal): string
 {
-	$config = config(OSPOS::class)->settings;
-	$fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
-	$decimal_separator = $fmt->getSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-
-	if($decimal_separator === ',' && str_contains($decimal, ','))
-	{
-		$decimal = str_replace('.', '', $decimal); //Remove thousands separator
-		$decimal = str_replace(',', '.', $decimal); //Replace decimal separator
-	}
-
 	return $decimal;
 }

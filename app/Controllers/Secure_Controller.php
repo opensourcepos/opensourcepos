@@ -94,7 +94,7 @@ class Secure_Controller extends BaseController
 	 */
 	public function getCheckNumeric(): void
 	{
-		foreach($this->request->getGet(null, FILTER_SANITIZE_FULL_SPECIAL_CHARS) as $value)
+		foreach($this->request->getGet() as $value)
 		{
 			if (parse_decimals($value) === false)
 			{
