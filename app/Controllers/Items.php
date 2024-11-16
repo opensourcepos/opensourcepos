@@ -631,9 +631,9 @@ class Items extends Secure_Controller
 		$upload_data = $this->upload_image();
 		$upload_success = empty($upload_data['error']);
 
-		$raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
+		$raw_receiving_quantity = $this->request->getPost('receiving_quantity');
 
-		$receiving_quantity = parse_quantity(filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$receiving_quantity = parse_quantity($raw_receiving_quantity);
 		$item_type = $this->request->getPost('item_type') === null ? ITEM : intval($this->request->getPost('item_type'));
 
 		if($receiving_quantity === 0.0 && $item_type !== ITEM_TEMP)
@@ -643,10 +643,10 @@ class Items extends Secure_Controller
 
 		$default_pack_name = lang('Items.default_pack_name');
 
-		$cost_price = prepare_decimal($this->request->getPost('cost_price'));
-		$unit_price = prepare_decimal($this->request->getPost('unit_price'));
-		$reorder_level = prepare_decimal($this->request->getPost('reorder_level'));
-		$qty_per_pack = prepare_decimal($this->request->getPost('qty_per_pack') ?? '');
+		$cost_price = parse_decimals($this->request->getPost('cost_price'));
+		$unit_price = parse_decimals($this->request->getPost('unit_price'));
+		$reorder_level = parse_quantity($this->request->getPost('reorder_level'));
+		$qty_per_pack = parse_quantity($this->request->getPost('qty_per_pack') ?? '');
 
 		//Save item data
 		$item_data = [
@@ -657,13 +657,13 @@ class Items extends Secure_Controller
 			'stock_type' => $this->request->getPost('stock_type') === null ? HAS_STOCK : intval($this->request->getPost('stock_type')),
 			'supplier_id' => empty($this->request->getPost('supplier_id')) ? null : intval($this->request->getPost('supplier_id')),
 			'item_number' => empty($this->request->getPost('item_number')) ? null : $this->request->getPost('item_number'),
-			'cost_price' => parse_decimals(filter_var($cost_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'unit_price' => parse_decimals(filter_var($unit_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
-			'reorder_level' => parse_quantity(filter_var($reorder_level, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'cost_price' => $cost_price,
+			'unit_price' => $unit_price,
+			'reorder_level' => $reorder_level,
 			'receiving_quantity' => $receiving_quantity,
 			'allow_alt_description' => $this->request->getPost('allow_alt_description') != null,
 			'is_serialized' => $this->request->getPost('is_serialized') != null,
-			'qty_per_pack' => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity(filter_var($qty_per_pack, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+			'qty_per_pack' => $this->request->getPost('qty_per_pack') == null ? 1 : parse_quantity($qty_per_pack),
 			'pack_name' => $this->request->getPost('pack_name') == null ? $default_pack_name : $this->request->getPost('pack_name'),
 			'low_sell_item_id' => $this->request->getPost('low_sell_item_id') === null ? $item_id : intval($this->request->getPost('low_sell_item_id')),
 			'deleted' => $this->request->getPost('is_deleted') != null,
@@ -733,8 +733,7 @@ class Items extends Secure_Controller
 			$stock_locations = $this->stock_location->get_undeleted_all()->getResultArray();
 			foreach($stock_locations as $location)
 			{
-				$stock_quantity = prepare_decimal($this->request->getPost('quantity_' . $location['location_id']));
-				$updated_quantity = parse_quantity(filter_var($stock_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+				$updated_quantity = parse_quantity($this->request->getPost('quantity_' . $location['location_id']));
 
 				if($item_data['item_type'] == ITEM_TEMP)
 				{
@@ -887,14 +886,14 @@ class Items extends Secure_Controller
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->item->get_info($item_id);
 		$location_id = $this->request->getPost('stock_location');
-		$new_quantity = prepare_decimal($this->request->getPost('newquantity'));
+		$new_quantity = $this->request->getPost('newquantity');
 		$inv_data = [
 			'trans_date' => date('Y-m-d H:i:s'),
 			'trans_items' => $item_id,
 			'trans_user' => $employee_id,
 			'trans_location' => $location_id,
 			'trans_comment' => $this->request->getPost('trans_comment'),
-			'trans_inventory' => parse_quantity(filter_var($new_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
+			'trans_inventory' => parse_quantity($new_quantity)
 		];
 
 		$this->inventory->insert($inv_data, false);

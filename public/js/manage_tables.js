@@ -21,8 +21,7 @@
 
 			if (button_id == 'submit' && (!submitted && btn_id != "btnNew")) {
 				form.submit();
-
-				validator.valid() && $('#submit').prop('disabled', true).css('opacity', 0.5);
+				$('#submit').prop('disabled', true).css('opacity', 0.5);
 			}
 			return false;
 		}
