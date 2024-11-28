@@ -84,10 +84,10 @@ function get_sales_manage_table_headers(): string
 	if($config['invoice_enable'])
 	{
 		$headers[] = ['invoice_number' => lang('Sales.invoice_number')];
-		$headers[] = ['invoice' => '&nbsp', 'sortable' => false, 'escape' => false];
+		$headers[] = ['invoice' => '', 'sortable' => false, 'escape' => false];
 	}
 
-	$headers[] = ['receipt' => '&nbsp', 'sortable' => false, 'escape' => false];
+	$headers[] = ['receipt' => '', 'sortable' => false, 'escape' => false];
 
 	return transform_headers($headers);
 }
@@ -116,7 +116,7 @@ function get_sale_data_row(object $sale): array
 	{
 		$row['invoice_number'] = $sale->invoice_number;
 		$row['invoice'] = empty($sale->invoice_number)
-			? ''
+			? '-'
 			: anchor(
 				"$controller/invoice/$sale->sale_id",
 				'<span class="glyphicon glyphicon-list-alt"></span>',
