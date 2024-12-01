@@ -688,9 +688,9 @@ class Items extends Secure_Controller
 			$item_data['tax_category_id'] = empty($this->request->getPost('tax_category_id')) ? null : intval($this->request->getPost('tax_category_id'));
 		}
 
-		$item_data['pic_filename'] = !empty($upload_data['orig_name']) && $upload_data['raw_name']
-			? $upload_data['raw_name'] . '.' . $upload_data['file_ext']
-			: null;
+		if (!empty($upload_data['orig_name']) && $upload_data['raw_name']) {
+			$item_data['pic_filename'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
+		}
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
 
