@@ -165,12 +165,18 @@ Any person or company found breaching the license agreement might find a bunch o
 <table>
     <thead class="text-center">
         <tr>
+            <th> DigitalOcean</th>
             <th>JetBrains</th>
             <th>Travis CI</th>
         </tr>
     </thead>
     <tbody>
         <tr class="text-center">
+            <td>
+                <a href="https://www.digitalocean.com?utm_medium=opensource&utm_source=opensourcepos" target="_blank" rel="noopener">
+                    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" alt="DigitalOcean Logo" height="50">
+                </a>
+            </td>
             <td>
                 <a href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener">
                     <img src="https://github.com/opensourcepos/opensourcepos/assets/12870258/187f9bbe-4484-475c-9b58-5e5d5f931f09" alt="IntelliJ IDEA Logo" height="50">
@@ -183,6 +189,7 @@ Any person or company found breaching the license agreement might find a bunch o
             </td>
         </tr>
         <tr>
+            <td>Many thanks to <a href="https://www.digitalocean.com?utm_medium=opensource&utm_source=opensourcepos" target="_blank" rel="noopener">DigitalOcean</a> for providing free credits for hosting our infrastructure</td>
             <td>Many thanks to <a href="https://www.jetbrains.com/" target="_blank" rel="noopener">JetBrains</a> for providing a free license of <a href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener">IntelliJ IDEA</a> to kindly support the development of OSPOS.</td>
             <td>Many thanks to <a href="https://www.travis-ci.com/" target="_blank" rel="noopener">Travis CI</a> for providing a free continuous integration service for open source projects.</td>
         </tr>
