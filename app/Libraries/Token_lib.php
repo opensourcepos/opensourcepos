@@ -19,26 +19,25 @@ class Token_lib
 	 */
 	public function render(string $tokened_text, array $tokens = [], $save = true): string
 	{
-		$config = config(OSPOS::class)->settings;
-		$formatter = new IntlDateFormatter(
-			$config['number_locale'], // Locale
-			IntlDateFormatter::FULL, // Date type
-			IntlDateFormatter::FULL // Time type
-		);
-
-		//Apply the transformation for the "%" tokens if any are used
-		if(str_contains($tokened_text, '%'))
+		// Apply the transformation for the "%" tokens if any are used
+		if(strpos($tokened_text, '%') !== false)
 		{
-
-			$tokened_text = $formatter->format(new DateTime());
+			$tokened_text = strftime($tokened_text);	//TODO: these need to be converted to IntlDateFormatter::format()
 		}
 
-		//Call scan to build an array of all tokens used in the text to be transformed
+		// Call scan to build an array of all of the tokens used in the text to be transformed
 		$token_tree = $this->scan($tokened_text);
 
 		if(empty($token_tree))
 		{
-			return str_contains($tokened_text, '%') ? $formatter->format(new DateTime()) : $tokened_text;
+			if(strpos($tokened_text, '%') !== false)
+			{
+				return strftime($tokened_text);
+			}
+			else
+			{
+				return $tokened_text;
+			}
 		}
 
 		$token_values = [];
