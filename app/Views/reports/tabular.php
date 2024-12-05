@@ -53,8 +53,6 @@
 			.bootstrapTable({
 				columns: <?= transform_headers(esc($headers), true, false) ?>,
 				stickyHeader: true,
-				stickyHeaderOffsetLeft: $('#table').offset().left + 'px',
-				stickyHeaderOffsetRight: $('#table').offset().right + 'px',
 				pageSize: <?= $config['lines_per_page'] ?>,
 				sortable: true,
 				showExport: true,
