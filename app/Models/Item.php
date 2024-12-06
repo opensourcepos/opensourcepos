@@ -695,11 +695,21 @@ class Item extends Model
 		$suggestions = [];
 		$non_kit = [ITEM, ITEM_AMOUNT_ENTRY];
 
+		// Dividir la búsqueda en palabras clave
+	    $keywords = explode(' ', trim($search));
+
+	    // Función para construir condiciones "LIKE" para cada palabra clave
+	    $build_like_query = function($builder, $field, $keywords) {
+	        foreach ($keywords as $word) {
+	            $builder->like($field, $word);
+	        }
+	    };
+
 		$builder = $this->db->table('items');
 		$builder->select($this->get_search_suggestion_format('item_id, name, pack_name'));
 		$builder->where('deleted', $filters['is_deleted']);
 		$builder->whereIn('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$builder->like('name', $search);//TODO: this and the next 11 lines are duplicated directly below.  We should extract a method here.
+		$build_like_query($builder, 'name', $keywords);//TODO: this and the next 11 lines are duplicated directly below.  We should extract a method here.
 		$builder->orderBy('name', 'asc');
 
 		foreach($builder->get()->getResult() as $row)
