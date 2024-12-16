@@ -1,5 +1,6 @@
 <?php
- return [
+
+return [
     'customers_available_points' => "Poin tersedia",
     'rewards_package' => "Hadiah",
     'rewards_remaining_balance' => "Poin hadiah yang tersisa adalah ",
@@ -73,11 +74,11 @@
     'entry' => "Entri",
     'error_editing_item' => "mengubah item salah",
     'find_or_scan_item' => "Cari/Scan Item",
-    'find_or_scan_item_or_receipt' => "Cari atau Scan Item atau Faktur",
-    'giftcard' => "Kupon Bonus",
+    'find_or_scan_item_or_receipt' => "Temukan atau pindai Item atau Faktur",
+    'giftcard' => "Kartu Hadiah",
     'giftcard_balance' => "Nilai Kupon Bonus",
     'giftcard_filter' => "",
-    'giftcard_number' => "Nomor Kartu Bonus",
+    'giftcard_number' => "Nomor Kartu Hadiah",
     'group_by_category' => "Dikelompokkan berdasarkan Kategori",
     'group_by_type' => "Dikelompokkan berdasarkan Jenis",
     'hsn' => "HSN",
@@ -85,7 +86,7 @@
     'include_prices' => "Termasuk Harga?",
     'invoice' => "Faktur",
     'invoice_confirm' => "Faktur ini akan dikirim ke",
-    'invoice_enable' => "Buat Faktur",
+    'invoice_enable' => "Nomor Faktur",
     'invoice_filter' => "Faktur",
     'invoice_no_email' => "Pelanggan ini tidak memiliki alamat email yang valid.",
     'invoice_number' => "Nomor Nota",
