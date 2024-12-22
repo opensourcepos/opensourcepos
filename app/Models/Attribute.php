@@ -547,7 +547,7 @@ class Attribute extends Model
 			{
 				$builder = $this->db->table('attribute_definitions');
 				$success = $builder->insert($definition_data);
-				$definition_data['definition_id'] = $this->db->insertID();
+				$definition_data['definition_id'] = $this->getInsertID();
 			}
 		}
 
@@ -875,7 +875,7 @@ class Attribute extends Model
 				$builder->set(["attribute_$data_type" => $attribute_value]);
 				$builder->insert();
 
-				$attribute_id = $this->db->insertID();
+				$attribute_id = $this->getInsertID();
 			}
 
 			$data = [
