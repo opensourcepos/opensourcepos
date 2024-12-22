@@ -33,15 +33,21 @@ after_success:
   - mv dist/opensourcepos.tar.gz "dist/opensourcepos.$version.$rev.tgz"
   - mv dist/opensourcepos.zip "dist/opensourcepos.$version.$rev.zip"
 deploy:
-  - provider: npm
+  - provider: releases
     edge: true
-    registry: https://npm.pkg.github.com
-    email: jeroen@steganos.dev
-    api_token:
-      secure: "DNPJOrT51wdO0BAbkX2hKowdXYh7x8d43xvAw7eVfOslyBPiv6Bb/1QdC2Bpnlqe0WiJVS5hvBTMrJ+vSDK5i/l8jA+ZoI6ms1+P1DQ6sBBMBQI2fuvRCrJj+Fp3WnaduZb/N7R+FqdKQwD/ZORyhzJ4whtHkrO8uC7cY/wlacU="
+    file: dist/opensourcepos.$version.$rev.zip
+    name: "Unstable OpensourcePos"
+    overwrite: true
+    release_notes: "This is a build of the latest master which might contain bugs. Use at your own risk. Check releases section for the latest official release"
+    prerelease: true
+    tag_name: unstable
+    user: jekkos
+
+    api_key:
+      secure: "KOukL8IFf/uL/BjMyCSKjf2vylydjcWqgEx0eMqFCg3nZ4ybMaOwPORRthIfyT72/FvGX/aoxxEn0uR/AEtb+hYQXHmNS+kZdX72JCe8LpGuZ7FJ5X+Eo9mhJcsmS+smd1sC95DySSc/GolKPo+0WtJYONY/xGCLxm+9Ay4HREg="
 
     on:
-      all_branches: true
+      branch: master
   - provider: releases
     edge: true
     file: dist/opensourcepos.$version.$rev.zip
@@ -52,8 +58,11 @@ deploy:
     user: jekkos
     overwrite: true
     api_key:
-      secure: "DNPJOrT51wdO0BAbkX2hKowdXYh7x8d43xvAw7eVfOslyBPiv6Bb/1QdC2Bpnlqe0WiJVS5hvBTMrJ+vSDK5i/l8jA+ZoI6ms1+P1DQ6sBBMBQI2fuvRCrJj+Fp3WnaduZb/N7R+FqdKQwD/ZORyhzJ4whtHkrO8uC7cY/wlacU="
+      secure: "KOukL8IFf/uL/BjMyCSKjf2vylydjcWqgEx0eMqFCg3nZ4ybMaOwPORRthIfyT72/FvGX/aoxxEn0uR/AEtb+hYQXHmNS+kZdX72JCe8LpGuZ7FJ5X+Eo9mhJcsmS+smd1sC95DySSc/GolKPo+0WtJYONY/xGCLxm+9Ay4HREg="
 
+    branches:
+      except: 
+       - unstable
     on:
       tags: true
       branch: master
