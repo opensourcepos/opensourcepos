@@ -31,7 +31,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('compress', function() {
-    const sources = ['public/**', 'vendor/**', '*.md', 'LICENSE', 'docker*', 'docker/**', 'Dockerfile', '**/.htaccess', 'writable/*'] ;
+    const sources = ['app*/**/*', 'public*/**/*', 'vendor*/**/*', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '**/.htaccess', 'writable*/**/*'] ;
     gulp.src(sources).pipe(tar('opensourcepos.tar')).pipe(gzip()).pipe(gulp.dest('dist'));
     return gulp.src(sources).pipe(zip('opensourcepos.zip')).pipe(gulp.dest('dist'));
 });
