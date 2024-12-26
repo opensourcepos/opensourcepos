@@ -2,6 +2,7 @@ sudo: required
 
 branches:
   except:
+    - unstable
     - weblate
 services:
   - docker
@@ -40,7 +41,7 @@ deploy:
     overwrite: true
     release_notes: "This is a build of the latest master which might contain bugs. Use at your own risk. Check releases section for the latest official release"
     prerelease: true
-    tag_name: unstable.$TAG
+    tag_name: unstable
     user: jekkos
 
     api_key:

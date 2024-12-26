@@ -1,0 +1,22 @@
+name: "Delete Unstable Release"
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  delete_unstable_release:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: "Delete last unstable release"
+        uses: sgpublic/delete-release-action@v1.2
+        env: 
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          release-drop: false
+          release-drop-tag: false
+          pre-release-drop: true
+          pre-release-keep-count: -1
+          pre-release-drop-tag: true
+
