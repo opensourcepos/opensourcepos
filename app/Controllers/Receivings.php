@@ -415,6 +415,52 @@ class Receivings extends Secure_Controller
 	}
 
 	/**
+	 * Complete a receiving requisition and save to the database.
+	 *
+	 * @throws ReflectionException
+	 * @noinspection PhpUnused
+	 */
+	public function complete(): void
+	{
+		$data = [];
+
+		$data['cart'] = $this->receiving_lib->get_cart();
+		$data['total'] = $this->receiving_lib->get_total();
+		$data['transaction_time'] = to_datetime(time());
+		$data['mode'] = $this->receiving_lib->get_mode();
+		$data['comment'] = $this->receiving_lib->get_comment();
+		$data['reference'] = $this->receiving_lib->get_reference();
+		$data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+		$data['stock_location_source'] = $this->receiving_lib->get_stock_source();
+		$data['stock_location_destination'] = $this->receiving_lib->get_stock_destination();
+
+		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+		$employee_info = $this->employee->get_info($employee_id);
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+
+
+		if ($data['stock_location_source'] != $data['stock_location_destination']) {
+			// Save receiving to database
+			$data['receiving_id'] = 'REQ ' . $this->receiving->save_requisition($data['cart'], $employee_id, $data['comment'], $data['reference'], $data['stock_location_source'], $data['stock_location_destination']);
+
+			if ($data['receiving_id'] == 'REQ -1') {
+				$data['error_message'] = lang('Receivings.transaction_failed');
+			} else {
+				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+			}
+
+			$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
+
+			echo view("receivings/receipt", $data);
+
+			$this->receiving_lib->clear_all();
+		} else {
+			$data['error'] = lang('Receivings.error_requisition');
+			$this->_reload($data);
+		}
+	}
+
+	/**
 	 * Gets the receipt for a receiving. Used in app/Views/receivings/form.php
 	 *
 	 * @param $receiving_id

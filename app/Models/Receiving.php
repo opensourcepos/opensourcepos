@@ -187,7 +187,7 @@ class Receiving extends Model
 
 			$inventory->insert($inv_data, false);
 			$attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
-			$supplier = $supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
+		//	$supplier = $supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
 		$this->db->transComplete();
@@ -195,6 +195,153 @@ class Receiving extends Model
 		return $this->db->transStatus() ? $receiving_id : -1;
 	}
 
+	/**
+	 * Save a requisition to the `ospos_receivings` and `ospos_receivings_items` tables
+	 * and update stock quantities in the respective locations.
+	 *
+	 * @throws ReflectionException
+	 */
+	public function save_requisition(array $items, int $employee_id, string $comment, string $reference, int $stock_source, int $stock_destination): int
+	{
+		$inventory = model('Inventory');
+		$item_quantity_model = model(Item_quantity::class);
+
+		if (count($items) == 0) {
+			return -1; // No items to save
+		}
+
+		// Prepare the receiving data
+		$receivings_data = [
+			'receiving_time' => date('Y-m-d H:i:s'),
+			'employee_id' => $employee_id,
+			'comment' => $comment,
+			'reference' => $reference,
+			'total' => 0, // This will be updated later
+			'amount_change' => 0,
+			'amount_tendered' => 0,
+			'operation_type' => 'Requisition',
+		];
+
+		// Run these queries as a transaction
+		$this->db->transStart();
+
+		// Insert into `ospos_receivings`
+		$builder = $this->db->table('ospos_receivings');
+		$builder->insert($receivings_data);
+		$receiving_id = $this->db->insertID();
+
+		if (!$receiving_id) {
+			log_message('error', 'Failed to insert requisition header: ' . print_r($receivings_data, true));
+			$this->db->transRollback();
+			return -1;
+		}
+
+		// Insert items into `ospos_receivings_items`
+		$builder = $this->db->table('ospos_receivings_items');
+		$total_cost = 0;
+
+		foreach ($items as $item_data) {
+			$receivings_items_data = [
+				'receiving_id' => $receiving_id,
+				'item_id' => $item_data['item_id'],
+				'line' => $item_data['line'],
+				'description' => $item_data['description'] ?? '',
+				'serialnumber' => $item_data['serialnumber'] ?? '',
+				'quantity_purchased' => $item_data['quantity'],
+				'item_cost_price' => $item_data['price'],
+				'item_unit_price' => $item_data['price'],
+				'discount' => $item_data['discount'] ?? 0,
+				'discount_type' => $item_data['discount_type'] ?? 0,
+				'item_location' => $item_data['item_location'] ?? 1,
+				'receiving_quantity' => $item_data['receiving_quantity'] ?? 1,
+			];
+		
+			$builder->insert($receivings_items_data);
+		
+			if (!$this->db->affectedRows()) {
+				log_message('error', 'Failed to insert requisition item: ' . print_r($receivings_items_data, true));
+				$this->db->transRollback();
+				return -1;
+			}
+		
+			// Calculate the total cost
+			$total_cost += ($item_data['price'] * $item_data['quantity']) - ($item_data['discount'] ?? 0);
+		
+			// Update stock quantities
+			$item_id = $item_data['item_id'] > 0 ? $item_data['item_id'] : 0;
+			$quantity = $item_data['quantity'] > 0 ? $item_data['quantity'] : 0;
+
+			if ($item_id === 0 || $quantity === 0) {
+				continue; // Skip if item or quantity is invalid
+			}		
+		
+			// Subtract from stock at the source
+			$source_quantity = $item_quantity_model->get_item_quantity($item_id, $stock_source);
+			$item_quantity_model->save_value([
+				'quantity' => $source_quantity->quantity - $quantity,
+				'item_id' => $item_id,
+				'location_id' => $stock_source,
+			], $item_id, $stock_source);
+		
+			// Add to stock at the destination
+			$destination_quantity = $item_quantity_model->get_item_quantity($item_id, $stock_destination);
+			$item_quantity_model->save_value([
+				'quantity' => $destination_quantity->quantity + $quantity,
+				'item_id' => $item_id,
+				'location_id' => $stock_destination,
+			], $item_id, $stock_destination);
+		
+			// Register inventory for the outgoing location (only if not already registered)
+			$recv_remarks = 'REQ ' . $receiving_id;
+		
+			$inv_data_source = [
+				'trans_date' => date('Y-m-d H:i:s'),
+				'trans_items' => $item_id,
+				'trans_user' => $employee_id,
+				'trans_location' => $stock_source,
+				'trans_comment' => $recv_remarks . ' OUT',
+				'trans_inventory' => -$quantity,
+			];
+			$existing_source = $inventory->where([
+				'trans_items' => $item_id,
+				'trans_location' => $stock_source,
+				'trans_comment' => $recv_remarks . ' OUT'
+			])->countAllResults();
+			if ($existing_source === 0) {
+				$inventory->insert($inv_data_source, false);
+			}
+		
+			// Register inventory for the incoming location (only if not already registered)
+			$inv_data_destination = [
+				'trans_date' => date('Y-m-d H:i:s'),
+				'trans_items' => $item_id,
+				'trans_user' => $employee_id,
+				'trans_location' => $stock_destination,
+				'trans_comment' => $recv_remarks . ' IN',
+				'trans_inventory' => $quantity,
+			];
+			$existing_destination = $inventory->where([
+				'trans_items' => $item_id,
+				'trans_location' => $stock_destination,
+				'trans_comment' => $recv_remarks . ' IN'
+			])->countAllResults();
+			if ($existing_destination === 0) {
+				$inventory->insert($inv_data_destination, false);
+			}
+		}
+
+		// Update the total cost in ospos_receivings
+		$this->db->table('ospos_receivings')
+			->where('receiving_id', $receiving_id)
+			->update(['total' => $total_cost]);
+
+		if (!$this->db->transComplete()) {
+			log_message('error', 'Transaction failed for requisition: ' . print_r($receivings_data, true));
+			return -1;
+		}
+
+		return $receiving_id;
+	}
 
 	/**
 	 * @throws ReflectionException
