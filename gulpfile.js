@@ -32,8 +32,8 @@ gulp.task('clean', function () {
 
 gulp.task('compress', function() {
     const sources = ['app*/**/*', 'public*/**/*', 'vendor*/**/*', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '**/.htaccess', 'writable*/**/*'] ;
-    gulp.src(sources).pipe(tar('opensourcepos.tar')).pipe(gzip()).pipe(gulp.dest('dist'));
-    return gulp.src(sources).pipe(zip('opensourcepos.zip')).pipe(gulp.dest('dist'));
+    gulp.src(sources, {encoding: false}).pipe(tar('opensourcepos.tar')).pipe(gulp.dest('dist'));
+    return gulp.src(sources, {encoding: false}).pipe(zip('opensourcepos.zip')).pipe(gulp.dest('dist'));
 });
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
