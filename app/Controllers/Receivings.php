@@ -404,7 +404,7 @@ class Receivings extends Secure_Controller
 				$this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
 			}
 
-			$this->complete();
+			$this->postComplete();
 		}
 		else
 		{
