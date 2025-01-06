@@ -35,7 +35,7 @@ abstract class Persons extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = $this->request->getGet('term');
 		$suggestions = $this->person->get_search_suggestions($search);
 
 		echo json_encode($suggestions);
