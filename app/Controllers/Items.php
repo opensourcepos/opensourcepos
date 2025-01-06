@@ -195,7 +195,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggest(): void
 	{
-		$search = $this->request->getPost('term');
+		$search = $this->request->getGet('term');
 		$suggestions = $this->item->get_search_suggestions($search, ['search_custom' => false, 'is_deleted' => false], true);
 
 		echo json_encode($suggestions);
@@ -205,7 +205,7 @@ class Items extends Secure_Controller
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function suggest_low_sell(): void
+	public function getSuggestLowSell(): void
 	{
 		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
 
