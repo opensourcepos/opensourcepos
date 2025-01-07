@@ -492,7 +492,7 @@ function parse_decimals(string $number, int $decimals = null): mixed
 
 	if(!$decimals)
 	{
-		$decimals = int($config['currency_decimals']);
+		$decimals = intVal($config['currency_decimals']);
 		$fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
 	}
 
@@ -505,12 +505,11 @@ function parse_decimals(string $number, int $decimals = null): mixed
 	{
 		$locale_safe_number = $fmt->parse($number);
 
-		if ($locale_safe_number > MAX_PRECISION)
-		{
-			return false;
-		}
-
-		if($locale_safe_number > 1.e14)
+		if (
+			!$locale_safe_number
+				|| $locale_safe_number > MAX_PRECISION
+				|| $locale_safe_number > 1.e14	
+		)
 		{
 			return false;
 		}
