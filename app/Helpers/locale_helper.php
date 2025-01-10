@@ -506,7 +506,7 @@ function parse_decimals(string $number, int $decimals = null): mixed
 		$locale_safe_number = $fmt->parse($number);
 
 		if (
-			!$locale_safe_number
+			$locale_safe_number === false
 				|| $locale_safe_number > MAX_PRECISION
 				|| $locale_safe_number > 1.e14	
 		)
