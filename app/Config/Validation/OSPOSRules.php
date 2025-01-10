@@ -140,7 +140,6 @@ class OSPOSRules
 	 */
 	public function decimal_locale(string $candidate, ?string &$error = null): bool
 	{
-		$candidate = prepare_decimal($candidate);
 		$validation = Services::validation();
 
 		$validation->setRules([

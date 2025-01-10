@@ -360,16 +360,13 @@ class Config extends Secure_Controller
      */
     public function postSaveGeneral(): void
     {
-        $default_sales_discount = prepare_decimal($this->request->getPost('default_sales_discount'));
-        $default_receivings_discount = prepare_decimal($this->request->getPost('default_receivings_discount'));
-
         $batch_save_data = [
             'theme' => $this->request->getPost('theme'),
             'login_form' => $this->request->getPost('login_form'),
             'default_sales_discount_type' => $this->request->getPost('default_sales_discount_type') != null,
-            'default_sales_discount' => filter_var($default_sales_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'default_sales_discount' => parse_decimals($this->request->getPost('default_sales_discount')),
             'default_receivings_discount_type' => $this->request->getPost('default_receivings_discount_type') != null,
-            'default_receivings_discount' => filter_var($default_receivings_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'default_receivings_discount' => parse_decimals($this->request->getPost('default_receivings_discount')),
             'enforce_privacy' => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page' => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
@@ -772,8 +769,8 @@ class Config extends Secure_Controller
      */
     public function postSaveTax(): void
     {
-        $default_tax_1_rate = prepare_decimal($this->request->getPost('default_tax_1_rate'));
-        $default_tax_2_rate = prepare_decimal($this->request->getPost('default_tax_2_rate'));
+        $default_tax_1_rate = $this->request->getPost('default_tax_1_rate');
+        $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
 
         $batch_save_data = [
             'default_tax_1_rate' => parse_tax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),

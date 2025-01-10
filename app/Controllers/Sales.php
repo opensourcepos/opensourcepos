@@ -371,8 +371,8 @@ class Sales extends Secure_Controller
 	 */
 	public function postSetPriceWorkOrders(): void
 	{
-		$price_work_orders = prepare_decimal($this->request->getPost('price_work_orders'));
-		$this->sale_lib->set_price_work_orders(filter_var($price_work_orders, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$price_work_orders = parse_decimals($this->request->getPost('price_work_orders'));
+		$this->sale_lib->set_price_work_orders($price_work_orders);
 	}
 
 	/**
@@ -420,8 +420,8 @@ class Sales extends Secure_Controller
 			if($payment_type === lang('Sales.giftcard'))
 			{
 				//In the case of giftcard payment the register input amount_tendered becomes the giftcard number
-				$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
+				$amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+				$giftcard_num = $amount_tendered;
 
 				$payments = $this->sale_lib->get_payments();
 				$payment_type = $payment_type . ':' . $giftcard_num;
@@ -485,8 +485,7 @@ class Sales extends Secure_Controller
 			{
 				$amount_due = $this->sale_lib->get_total();
 				$sales_total = $this->sale_lib->get_total(false);
-				$raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+				$amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				$cash_adjustment_amount = $amount_due - $sales_total;
 				if($cash_adjustment_amount <> 0)
@@ -497,8 +496,7 @@ class Sales extends Secure_Controller
 			}
 			else
 			{
-				$raw_amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
-				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+				$amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 			}
 		}
@@ -640,23 +638,18 @@ class Sales extends Secure_Controller
 
 		if($this->validate($rules))
 		{
-			$raw_price = prepare_decimal($this->request->getPost('price'));
-			$raw_quantity = prepare_decimal($this->request->getPost('quantity'));
-			$raw_discount = prepare_decimal($this->request->getPost('discount'));
-			$raw_discounted_total = prepare_decimal($this->request->getPost('discounted_total') ?? '');
-
 			$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-			$price = filter_var($raw_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-			$quantity = filter_var($raw_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$price = parse_decimals($this->request->getPost('price'));
+			$quantity = parse_decimals($this->request->getPost('quantity'));
 			$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			$discount = $discount_type
-				? parse_quantity(filter_var($raw_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
-				: parse_decimals(filter_var($raw_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+				? parse_quantity($this->request->getPost('discount'))
+				: parse_decimals($this->request->getPost('discount'));
 
 			$item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
 			$discounted_total = $this->request->getPost('discounted_total') != ''
-				? filter_var($raw_discounted_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)
+				? parse_decimals($this->request->getPost('discounted_total') ?? '')
 				: null;
 
 
@@ -1553,14 +1546,11 @@ class Sales extends Secure_Controller
 		$number_of_payments = $this->request->getPost('number_of_payments', FILTER_SANITIZE_NUMBER_INT);
 		for($i = 0; $i < $number_of_payments; ++$i)
 		{
-			$raw_payment_amount = prepare_decimal($this->request->getPost("payment_amount_$i"));
-			$raw_refund_amount = prepare_decimal($this->request->getPost("refund_amount_$i"));
-
 			$payment_id = $this->request->getPost("payment_id_$i", FILTER_SANITIZE_NUMBER_INT);
 			$payment_type = $this->request->getPost("payment_type_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-			$payment_amount = filter_var($raw_payment_amount , FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$payment_amount = parse_decimals($this->request->getPost("payment_amount_$i"));
 			$refund_type = $this->request->getPost("refund_type_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-			$cash_refund = filter_var($raw_refund_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$cash_refund = parse_decimals($this->request->getPost("refund_amount_$i"));
 
 			$cash_adjustment = $payment_type == lang('Sales.cash_adjustment') ? CASH_ADJUSTMENT_TRUE : CASH_ADJUSTMENT_FALSE;
 
@@ -1594,7 +1584,7 @@ class Sales extends Secure_Controller
 
 		if($payment_type != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new))
 		{
-			$payment_amount = filter_var(prepare_decimal($payment_amount_new), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$payment_amount = parse_decimals($payment_amount_new);
 			$cash_refund = 0;
 			if($payment_type == lang('Sales.cash_adjustment'))
 			{

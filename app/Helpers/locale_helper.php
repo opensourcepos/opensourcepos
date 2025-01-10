@@ -703,13 +703,3 @@ function decode_array(array $data): array
 	return $data;
 }
 
-/**
- * Determines if the current locale uses a comma for decimal separator and reformats the decimal to use a period.
- *
- * @param string $decimal The decimal to reformat.
- * @return string The reformatted decimal.
- */
-function prepare_decimal(string $decimal): string
-{
-	return $decimal;
-}
