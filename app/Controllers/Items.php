@@ -207,7 +207,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggestLowSell(): void
 	{
-		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
+		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPo1stGet('name'));
 
 		echo json_encode($suggestions);
 	}
@@ -1446,7 +1446,7 @@ class Items extends Secure_Controller
 					$attributeId = $attributeValue;
 					break;
 				case DECIMAL:
-					$attributeValue = prepare_decimal($attributeValue);
+					$attributeValue = parse_decimals($attributeValue);
 				//Fall through to save the attribute value
 				default:
 					$attributeId = $this->attribute->saveAttributeValue($attributeValue, $definitionId, $itemId, $attributeIds[$definitionId], $definitionType);

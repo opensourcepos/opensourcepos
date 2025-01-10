@@ -402,10 +402,8 @@ class Taxes extends Secure_Controller
 	 */
 	public function postSave(int $tax_rate_id = NEW_ENTRY): void
 	{
-		$raw_tax_rate = prepare_decimal($this->request->getPost('tax_rate'));
-
 		$tax_category_id = $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT);
-		$tax_rate = parse_tax(filter_var($raw_tax_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+		$tax_rate = parse_tax($this->request->getPost('tax_rate'));
 
 		if ($tax_rate == 0)	//TODO: Replace 0 with constant?
 		{
@@ -414,7 +412,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_data = [
 			'rate_tax_code_id' => $this->request->getPost('rate_tax_code_id', FILTER_SANITIZE_NUMBER_INT),
-			'rate_tax_category_id' => $this->request->getPost('rate_tax_category_id', FILTER_SANITIZE_NUMBER_INT),
+			'rate_tax_category_id' => $tax_category_id,
 			'rate_jurisdiction_id' => $this->request->getPost('rate_jurisdiction_id', FILTER_SANITIZE_NUMBER_INT),
 			'tax_rate' => $tax_rate,
 			'tax_rounding_code' => $this->request->getPost('tax_rounding_code', FILTER_SANITIZE_NUMBER_INT)
