@@ -211,19 +211,16 @@ class Receivings extends Secure_Controller
 			'discount' => 'trim|permit_empty|decimal_locale',
 		];
 
-		$raw_price = prepare_decimal($this->request->getPost('price'));
-		$raw_quantity = prepare_decimal($this->request->getPost('quantity'));
-		$raw_discount = prepare_decimal($this->request->getPost('discount'));
-		$raw_receiving_quantity = prepare_decimal($this->request->getPost('receiving_quantity'));
+		$price = parse_decimals($this->request->getPost('price'));
+		$quantity = parse_quantity($this->request->getPost('quantity'));
+		$raw_receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
 
 		$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
-		$price = filter_var($raw_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-		$quantity = filter_var($raw_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
 		$discount = $discount_type
-			? parse_quantity(filter_var($raw_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
-			: parse_decimals(filter_var($raw_discount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+			? parse_quantity(filter_var($this->request->getPost('discount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
+			: parse_decimals(filter_var($this->request->getPost('discount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
 
 		$receiving_quantity = filter_var($raw_receiving_quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
@@ -327,7 +324,7 @@ class Receivings extends Secure_Controller
 	 */
 	public function postComplete(): void
 	{
-		$amount_tendered = prepare_decimal($this->request->getPost('amount_tendered'));
+
 		$data = [];
 
 		$data['cart'] = $this->receiving_lib->get_cart();
@@ -341,7 +338,7 @@ class Receivings extends Secure_Controller
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
 		if($this->request->getPost('amount_tendered') != null)
 		{
-			$data['amount_tendered'] = filter_var($amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$data['amount_tendered'] = parse_decimals($this->request->getPost('amount_tendered'));
 			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
 		}
 
