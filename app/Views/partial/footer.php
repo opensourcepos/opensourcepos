@@ -2,6 +2,9 @@
 
 use Config\OSPOS;
 
+// Set the correct timezone
+date_default_timezone_set('UTC'); // Replace 'UTC' with your desired timezone, e.g., 'America/New_York'
+
 ?>
 </div>
 		</div>
