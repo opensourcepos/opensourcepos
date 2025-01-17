@@ -26,27 +26,26 @@ class Email_lib
 		$this->config = config(OSPOS::class)->settings;
 
 		$encrypter = Services::encrypter();
-
+		
 		$smtp_pass = $this->config['smtp_pass'];
 		if(!empty($smtp_pass))
 		{
-			$smtp_pass = $encrypter->decrypt($smtp_pass);
+		    $smtp_pass = $encrypter->decrypt($smtp_pass);
 		}
-
+		
 		$email_config = [
-			'mailtype' => 'html',
-			'useragent' => 'OSPOS',
-			'validate' => true,
-			'protocol' => $this->config['protocol'],
-			'mailpath' => $this->config['mailpath'],
-			'smtp_host' => $this->config['smtp_host'],
-			'smtp_user' => $this->config['smtp_user'],
-			'smtp_pass' => $smtp_pass,
-			'smtp_port' => $this->config['smtp_port'],
-			'smtp_timeout' => $this->config['smtp_timeout'],
-			'smtp_crypto' => $this->config['smtp_crypto']
+		    'mailType' => 'html',
+		    'userAgent' => 'OSPOS',
+		    'validate' => true,
+		    'protocol' => $this->config['protocol'],
+		    'mailPath' => $this->config['mailpath'],
+		    'SMTPHost' => $this->config['smtp_host'],
+		    'SMTPUser' => $this->config['smtp_user'],
+		    'SMTPPass' => $smtp_pass,
+		    'SMTPPort' => (int)$this->config['smtp_port'],
+		    'SMTPTimeout' => (int)$this->config['smtp_timeout'],
+		    'SMTPCrypto' => $this->config['smtp_crypto']
 		];
-
 		$this->email->initialize($email_config);
 	}
 

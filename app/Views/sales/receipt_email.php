@@ -21,7 +21,7 @@
 		{
 		?>
 			<div id="company_name">
-				<img id="image" src="data:image/png;base64,<?= base64_encode(file_get_contents('uploads/' . $config['company_logo'])) ?>" alt="company_logo" />
+				<img id="image" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo" />
 			</div>
 		<?php
 		}

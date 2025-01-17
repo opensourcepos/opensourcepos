@@ -1040,7 +1040,7 @@ class Sales extends Secure_Controller
 			$subject = lang('Sales.receipt');
 
 			$view = Services::renderer();
-			$text = $view->render('sales/receipt_email', $sale_data);
+			$text = $view->setData($sale_data)->render('sales/receipt_email');
 
 			$result = $this->email_lib->sendEmail($to, $subject, $text);
 
