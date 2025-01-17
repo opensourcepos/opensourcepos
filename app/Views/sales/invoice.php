@@ -255,8 +255,7 @@ $(document).ready(function()
 		<div id="sale_return_policy">
 			<h5>
 				<span><?= nl2br(esc($config['payment_message'])) ?></span>
-				<span style='padding:4%;'><?= empty($comments) ? '' : lang('Sales.comments') . ': ' . esc($comments) ?></span>
-				<span style='padding:4%;'><?= esc($config['invoice_default_comments']) ?></span>
+				<span style='padding:4%;'><?= empty($comments) ? esc($config['invoice_default_comments']) : lang('Sales.comments') . ': ' . esc($comments) ?></span>
 			</h5>
 			<div style='padding:2%;'><?= nl2br(esc($config['return_policy'])) ?></div>
 		</div>
