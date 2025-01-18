@@ -374,6 +374,53 @@ if (isset($success))
 			</tr>
 		</table>
 
+		<?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+            <section class="mainContent">
+              <div class="formContainer">
+                <form action="">
+                  <fieldset class="fieldInput">
+                    <div class="dropdown">
+                      <?= form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'dropdown-toggle', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    </div>
+                    <?= form_input (['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                    <?= form_input (['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                    <button type="submit" class="form-submit" id='add_payment_button' tabindex="<?= ++$tabindex ?>"><i class="bi bi-credit-card-fill"></i> Pagar</button>
+                  </fieldset>
+                </form>
+              </div>
+            </section>
+          <?= form_close() ?>
+
+			<table class="sales_table_100" id="registersss">
+				<thead>
+					<tr>
+						<th style="width: 10%;"><?= lang('Common.delete') ?></th>
+						<th style="width: 60%;"><?= lang(ucfirst($controller_name) .'.payment_type') ?></th>
+						<th style="width: 20%;"><?= lang(ucfirst($controller_name) .'.payment_amount') ?></th>
+					</tr>
+				</thead>
+
+				<tbody id="payment_contents">
+	              <?php
+	              $payment_types = [];
+
+	              foreach($payments as $payment_id => $payment)
+	              {
+	                  $payment_types[] = $payment['payment_type'];
+	              ?>
+	                  <tr>
+	                      <td><?= anchor("$controller_name/deletePayment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+	                      <td><?= esc($payment['payment_type']) ?></td>
+	                      <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
+	                  </tr>
+	              <?php
+	              }
+
+	              $payment_types_string = implode(', ', $payment_types);
+	              ?>
+				</tbody>
+			</table>
+
 		<?php
 		if(count($cart) > 0)
 		{

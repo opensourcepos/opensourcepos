@@ -104,7 +104,7 @@ class Receiving extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, int $receiving_id = NEW_ENTRY): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
+	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $term_days, string $payment_type, int $receiving_id = NEW_ENTRY): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
 		$attribute = model(Attribute::class);
 		$inventory = model('Inventory');
@@ -123,7 +123,8 @@ class Receiving extends Model
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
-			'reference' => $reference
+			'reference' => $reference,
+			'term_days' => $term_days
 		];
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -510,5 +511,10 @@ class Receiving extends Model
 			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id)) AS (' . $selectQuery . ')';
 
 		$this->db->query($sql);
+	}
+
+	public function save_payment(array $payment_data): bool
+	{
+		return $this->db->table('ospos_receivings_payments')->insert($payment_data);
 	}
 }

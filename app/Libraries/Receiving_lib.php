@@ -6,11 +6,13 @@ use App\Models\Attribute;
 use App\Models\Item;
 use App\Models\Item_kit_items;
 use App\Models\Item_quantity;
+use App\Models\Enums\Rounding_mode;
 use App\Models\Receiving;
 use App\Models\Stock_location;
 
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
+use ReflectionException;
 
 /**
  * Receiving library
@@ -26,6 +28,7 @@ class Receiving_lib
 	private Receiving $receiving;
 	private Stock_location $stock_location;
 	private Session $session;
+	private array $config;
 
 	public function __construct()
 	{
@@ -35,6 +38,7 @@ class Receiving_lib
 		$this->item_quantity = model(Item_quantity::class);
 		$this->receiving = model(Receiving::class);
 		$this->stock_location = model(Stock_location::class);
+		$this->config = config(OSPOS::class)->settings;
 
 		$this->session = session();
 	}
@@ -192,6 +196,31 @@ class Receiving_lib
 	public function clear_reference(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_reference()
 	{
 		$this->session->remove('recv_reference');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_term_days(): string
+	{
+		return $this->session->get('recv_term_days') ?? '';
+	}
+
+	/**
+	 * @param string $term_days
+	 * @return void
+	 */
+	public function set_term_days(string $term_days): void
+	{
+		$this->session->set('recv_term_days', $term_days);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function clear_term_days(): void	//TODO: This function verb is inconsistent from the others.  Consider refactoring to remove_reference()
+	{
+		$this->session->remove('recv_term_days');
 	}
 
 	/**
@@ -516,6 +545,7 @@ class Receiving_lib
 		$this->remove_supplier();
 		$this->clear_comment();
 		$this->clear_reference();
+		$this->clear_term_days();
 	}
 
 	/**
@@ -553,5 +583,201 @@ class Receiving_lib
 		}
 
 		return $total;
+	}
+
+	/**
+	 * @param string $payment_type
+	 * @return void
+	 */
+	public function set_payment_type(string $payment_type): void
+	{
+		$this->session->set('payment_type', $payment_type);
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function get_payment_type(): ?string
+	{
+		return $this->session->get('payment_type');
+	}
+
+	public function get_total_due(): float
+	{
+		return $this->get_total() - $this->get_payments_total();
+	}
+
+	public function get_payments_total(): string
+	{
+		$subtotal = '0.0';
+		$cash_mode_eligible = CASH_MODE_TRUE;
+
+		foreach($this->get_payments() as $payments)
+		{
+			if(!$payments['cash_adjustment'])
+			{
+				$subtotal = bcadd($payments['payment_amount'], $subtotal);
+			}
+			if(lang('Sales.cash') != $payments['payment_type'] && lang('Sales.cash_adjustment') != $payments['payment_type'])
+			{
+				$cash_mode_eligible = CASH_MODE_FALSE;
+			}
+		}
+
+		if($cash_mode_eligible && $this->session->get('cash_rounding'))
+		{
+			$this->session->set('cash_mode', CASH_MODE_TRUE);
+		}
+
+		return $subtotal;
+	}
+
+	/**
+	 * Multiple Payments
+	 */
+	public function get_payments(): array
+	{
+		if(!$this->session->get('sales_payments'))
+		{
+			$this->set_payments ([]);
+		}
+
+		return $this->session->get('sales_payments');
+	}
+
+	/**
+	 * Multiple Payments
+	 */
+	public function set_payments(array $payments_data): void
+	{
+		$this->session->set('sales_payments', $payments_data);
+	}
+
+	/**
+	 * Adds a new payment to the payments array or updates an existing one.
+	 * It will also disable cash_mode if a non-qualifying payment type is added.
+	 * @param string $payment_id
+	 * @param string $payment_amount
+	 * @param int $cash_adjustment
+	 */
+	public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
+	{
+		$payments = $this->get_payments();
+		if(isset($payments[$payment_id]))
+		{
+			//payment_method already exists, add to payment_amount
+			$payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
+		}
+		else
+		{
+			//add to existing array
+			$payment = [
+				$payment_id => [
+				'payment_type' => $payment_id,
+				'payment_amount' => $payment_amount,
+				'cash_refund' => 0,
+				'cash_adjustment' => $cash_adjustment
+				]
+			];
+
+			$payments += $payment;
+		}
+
+		if($this->session->get('cash_mode'))
+		{
+			if($this->session->get('cash_rounding') && $payment_id != lang('Sales.cash') && $payment_id != lang('Sales.cash_adjustment'))
+			{
+				$this->session->set('cash_mode', CASH_MODE_FALSE);
+			}
+		}
+
+		$this->set_payments($payments);
+	}
+
+	/**
+	 * Multiple Payments
+	 */
+	public function edit_payment(string $payment_id, float $payment_amount): bool
+	{
+		$payments = $this->get_payments();
+		if(isset($payments[$payment_id]))
+		{
+			$payments[$payment_id]['payment_type'] = $payment_id;
+			$payments[$payment_id]['payment_amount'] = $payment_amount;
+			$this->set_payments($payments);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete the selected payment from the payment array and if cash rounding is enabled
+	 * and the payment type is one of the cash types then automatically delete the other
+	 * @param string $payment_id
+	 */
+	public function delete_payment(string $payment_id): void
+	{
+		$payments = $this->get_payments();
+		$decoded_payment_id = urldecode($payment_id);
+
+		unset($payments[$decoded_payment_id]);
+
+		$cash_rounding = $this->reset_cash_rounding();
+
+		if($cash_rounding)
+		{
+			if($decoded_payment_id == lang('Sales.cash'))
+			{
+				unset($payments[lang('Sales.cash_adjustment')]);
+			}
+
+			if($decoded_payment_id == lang('Sales.cash_adjustment'))
+			{
+				unset($payments[lang('Sales.cash')]);
+			}
+		}
+		$this->set_payments($payments);
+	}
+
+	/**
+	 * Determines if cash rounding should be a consideration for this site
+	 * It also set resets the cash mode to disabled which will then be re-evaluated when
+	 * retrieving payments.
+	 */
+	public function reset_cash_rounding(): int
+	{
+		$cash_rounding_code = $this->config['cash_rounding_code'];
+
+		if(cash_decimals() < totals_decimals() || $cash_rounding_code == Rounding_mode::HALF_FIVE)
+		{
+			$cash_rounding = 1;
+		}
+		else
+		{
+			$cash_rounding = 0;
+		}
+		$this->session->set('cash_rounding', $cash_rounding);
+		$this->session->set('cash_mode', CASH_MODE_FALSE);
+
+		return $cash_rounding;
+	}
+
+	/**
+	 * @param string $total
+	 * @return string
+	 */
+	public function check_for_cash_rounding(string $total): string
+	{
+		$cash_decimals = cash_decimals();
+		$cash_rounding_code = $this->config['cash_rounding_code'];
+
+		return Rounding_mode::round_number($cash_rounding_code, (float)$total, $cash_decimals);
+	}
+
+	public function clear_payments(): void
+	{
+		$this->set_payments([]);
 	}
 }
