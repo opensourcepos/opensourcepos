@@ -11,13 +11,13 @@ use App\Models\Customer;
  **/
 class Token_customer extends Token
 {
-	private string $customer_info;
+    private array $customer_info;
 	private Sale_lib $sale_lib;
 
 	/**
 	 * @param string $customer_info
 	 */
-	public function __construct(string $customer_info = '')
+	public function __construct(array $customer_info = [])
 	{
 		parent::__construct();
 		$this->customer_info = $customer_info;

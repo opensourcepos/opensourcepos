@@ -19,7 +19,6 @@
  */
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="<?= $this->request->getLocale() ?>">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url('css/invoice_email.css') ?>"/>
@@ -208,7 +207,7 @@ if(isset($error_message))
 			<?= nl2br($config['return_policy']) ?>
 		</div>
 		<div id='barcode'>
-			<img alt='<?= esc($barcode, 'attr') ?>' src='data:image/png;base64,<?= esc($barcode, 'attr') ?>' /><br>
+			<img alt=<?='Barcode - '.$sale_id ?> src='data:image/svg+xml;base64,<?= base64_encode($barcode) ?>' /><br>
 			<?= $sale_id ?>
 		</div>
 	</div>

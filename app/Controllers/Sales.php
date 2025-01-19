@@ -989,16 +989,16 @@ class Sales extends Secure_Controller
 
 			$text = $this->config['invoice_email_message'];
 			$tokens = [
-				new Token_invoice_sequence($sale_data['invoice_number']),
+			    new Token_invoice_sequence($sale_data['invoice_number']),
 				new Token_invoice_count('POS ' . $sale_data['sale_id']),
-				new Token_customer((object)$sale_data)
+			    new Token_customer((array)$sale_data)
 			];
 			$text = $this->token_lib->render($text, $tokens);
 			$sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
 			// generate email attachment: invoice in pdf format
 			$view = Services::renderer();
-			$html = $view->render("sales/$type" . '_email', $sale_data);
+			$html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
 
 			// load pdf helper
 			helper (['dompdf', 'file']);
