@@ -140,22 +140,6 @@ class OSPOSRules
 	 */
 	public function decimal_locale(string $candidate, ?string &$error = null): bool
 	{
-		$validation = Services::validation();
-
-		$validation->setRules([
-			'candidate' => 'decimal'
-		]);
-
-		$data = [
-			'candidate' => $candidate
-		];
-
-		if (!$validation->run($data))
-		{
-			$error = $validation->getErrors();
-			return false;
-		}
-
-		return true;
+		return parse_decimals($candidate) !== false;
 	}
 }
