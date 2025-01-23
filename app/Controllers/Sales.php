@@ -606,7 +606,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_STANDARD, null, null, $price))
+			if($item_id_or_number_or_item_kit_or_receipt == '' || !$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $item_location, $quantity, $discount, $discount_type, PRICE_MODE_STANDARD, null, null, $price))
 			{
 				$data['error'] = lang('Sales.unable_to_add_item');
 			}
