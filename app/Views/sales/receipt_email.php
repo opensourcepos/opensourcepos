@@ -116,7 +116,7 @@
 						<?php
 						}
 						?>
-						<td class="total-value"><?= to_currency($item['discounted_total']) ?></td>
+						<td class="total-value" style="text-align:right;"><?= to_currency($item['discounted_total']) ?></td>
 					</tr>
 				<?php
 				}
@@ -170,10 +170,6 @@
 			<td style="<?= $border ? 'border-top: 2px solid black;' : '' ?>text-align:right"><?= to_currency($total) ?></td>
 		</tr>
 
-		<tr>
-			<td colspan="4">&nbsp;</td>
-		</tr>
-
 		<?php
 		$only_sale_check = false;
 		$show_giftcard_remainder = false;
@@ -190,11 +186,7 @@
 		<?php
 		}
 		?>
-
-		<tr>
-			<td colspan="4">&nbsp;</td>
-		</tr>
-
+		
 		<?php
 		if(isset($cur_giftcard_value) && $show_giftcard_remainder)
 		{
@@ -216,14 +208,14 @@
 		</tr>
 	</table>
 
-	<div id="sale_return_policy" style="text-align:center">
-		<?= nl2br(esc($config['return_policy'])) ?>
-	</div>
-
-	<br>
-
-	<div id="barcode" style="text-align:center">
-		<?= $barcode ?><br>
-		<?= $sale_id ?>
+	<div id="terms">
+    	<div id="sale_return_policy" style="text-align:center">
+    		<?= nl2br(esc($config['return_policy'])) ?>
+    	</div>
+    
+    	<div id='barcode'  style="text-align:center">
+    		<img alt=<?='$sale_id'?> src='data:image/svg+xml;base64,<?= base64_encode($barcode) ?>' /><br>
+    		<?= $sale_id ?>
+    	</div>
 	</div>
 </div>
