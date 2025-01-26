@@ -984,7 +984,7 @@ class Sales extends Secure_Controller
 		if(!empty($sale_data['customer_email']))
 		{
 			$to = $sale_data['customer_email'];
-			$number = $sale_data[$type."_number"];
+			$number = array_key_exists($type."_number", $sale_data) ?  $sale_data[$type."_number"] : "";
 			$subject = lang('Sales.' . $type) . ' ' . $number;
 
 			$text = $this->config['invoice_email_message'];
