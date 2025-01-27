@@ -213,10 +213,13 @@ class Receivings extends Secure_Controller
 
 		$price = parse_decimals($this->request->getPost('price'));
 		$quantity = parse_quantity($this->request->getPost('quantity'));
+		$discount = parse_decimals($this->request->getPost('discount'));
 		$raw_receiving_quantity = parse_quantity($this->request->getPost('receiving_quantity'));
 
 		$description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: Duplicated code
 		$serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
+		$price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+		$quantity = filter_var($quantity, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		$discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT);
 		$discount = $discount_type
 			? parse_quantity(filter_var($this->request->getPost('discount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION))
@@ -263,6 +266,7 @@ class Receivings extends Secure_Controller
 		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $receiving_info['company_name'] : '';
 		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
+		$balance_due = round($receiving_info['amount_due'] - $receiving_info['amount_tendered'] + $receiving_info['cash_refund'], totals_decimals(), PHP_ROUND_HALF_UP);
 
 		echo view('receivings/form', $data);
 	}
@@ -324,22 +328,26 @@ class Receivings extends Secure_Controller
 	 */
 	public function postComplete(): void
 	{
-
+		$amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
 		$data = [];
 
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
-		$data['transaction_time'] = to_datetime(time());
+		$data['transaction_time'] = date('Y-m-d H:i:s'); // Fecha y hora actuales
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['comment'] = $this->receiving_lib->get_comment();
 		$data['reference'] = $this->receiving_lib->get_reference();
+		$data['term_days'] = $this->receiving_lib->get_term_days();
 		$data['payment_type'] = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$data['payments'] = $this->receiving_lib->get_payments(); // Obtener pagos del carrito
 		$data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
-		if($this->request->getPost('amount_tendered') != null)
-		{
-			$data['amount_tendered'] = parse_decimals($this->request->getPost('amount_tendered'));
-			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
+
+		if ($this->request->getPost('amount_tendered') != null) {
+			$data['amount_tendered'] = filter_var($amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+			$data['amount_change'] = $data['amount_tendered'] - $data['total'];
+		} else {
+			$data['amount_change'] = 0;
 		}
 
 		$employee_id = $this->employee->get_logged_in_employee_info()->person_id;
@@ -347,40 +355,62 @@ class Receivings extends Secure_Controller
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
 		$supplier_id = $this->receiving_lib->get_supplier();
-		if($supplier_id != -1)
-		{
+		if ($supplier_id != -1) {
 			$supplier_info = $this->supplier->get_info($supplier_id);
-			$data['supplier'] = $supplier_info->company_name;	//TODO: duplicated code
+			$data['supplier'] = $supplier_info->company_name;
 			$data['first_name'] = $supplier_info->first_name;
 			$data['last_name'] = $supplier_info->last_name;
 			$data['supplier_email'] = $supplier_info->email;
 			$data['supplier_address'] = $supplier_info->address_1;
-			if(!empty($supplier_info->zip) or !empty($supplier_info->city))
-			{
+
+			if (!empty($supplier_info->zip) || !empty($supplier_info->city)) {
 				$data['supplier_location'] = $supplier_info->zip . ' ' . $supplier_info->city;
-			}
-			else
-			{
+			} else {
 				$data['supplier_location'] = '';
 			}
 		}
 
-		//SAVE receiving to database
-		$data['receiving_id'] = 'RECV ' . $this->receiving->save_value($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);
+		// Guardar el registro de compra en la base de datos
+		$receiving_id = $this->receiving->save_value(
+			$data['cart'],
+			$supplier_id,
+			$employee_id,
+			$data['comment'],
+			$data['reference'],
+			$data['term_days'],
+			$data['payment_type']
+		);
 
-		if($data['receiving_id'] == 'RECV -1')
-		{
+		if ($receiving_id == -1) {
 			$data['error_message'] = lang('Receivings.transaction_failed');
-		}
-		else
-		{
-			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+		} else {
+			$data['receiving_id'] = $receiving_id;
+
+			// Calcular el cambio (cash_refund)
+			$total_payments = array_sum(array_column($data['payments'], 'payment_amount'));
+			$cash_refund = max(0, $total_payments - $data['total']);
+
+			// Guardar los pagos en la base de datos
+			foreach ($data['payments'] as $payment) {
+				$this->receiving->save_payment([
+					'receiving_id' => $receiving_id, // Utiliza el ID generado
+					'payment_type' => $payment['payment_type'],
+					'payment_amount' => $payment['payment_amount'],
+					'cash_refund' => ($payment['payment_type'] === lang('Sales.cash')) ? $cash_refund : 0,
+					'employee_id' => $employee_id,
+					'payment_time' => $data['transaction_time'], // Fecha y hora actuales
+				]);
+			}
+
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($receiving_id);
 		}
 
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-		echo view("receivings/receipt",$data);
+		echo view("receivings/receipt", $data);
 
+		// Limpiar pagos y otros datos
+		$this->receiving_lib->clear_payments(); // Limpia los pagos
 		$this->receiving_lib->clear_all();
 	}
 
@@ -392,23 +422,58 @@ class Receivings extends Secure_Controller
 	 */
 	public function postRequisitionComplete(): void
 	{
-		if($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination())
-		{
-			foreach($this->receiving_lib->get_cart() as $item)
-			{
-				$this->receiving_lib->delete_item($item['line']);
-				$this->receiving_lib->add_item($item['item_id'], $item['quantity'], $this->receiving_lib->get_stock_destination(), $item['discount_type']);
-				$this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
-			}
+	    $data = [];
 
-			$this->postComplete();
-		}
-		else
-		{
-			$data['error'] = lang('Receivings.error_requisition');
+	    // Check if stock locations are different
+	    if ($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) {
+	        // Process items in the cart
+	        foreach ($this->receiving_lib->get_cart() as $item) {
+	            $this->receiving_lib->delete_item($item['line']);
+	            $this->receiving_lib->add_item($item['item_id'], $item['quantity'], $this->receiving_lib->get_stock_destination(), $item['discount_type']);
+	            $this->receiving_lib->add_item($item['item_id'], -$item['quantity'], $this->receiving_lib->get_stock_source(), $item['discount_type']);
+	        }
 
-			$this->_reload($data);	//TODO: Hungarian notation
-		}
+	        // Prepare data to complete the requisition
+	        $data['cart'] = $this->receiving_lib->get_cart();
+	        $data['total'] = $this->receiving_lib->get_total();
+	        $data['transaction_time'] = to_datetime(time());
+	        $data['mode'] = $this->receiving_lib->get_mode();
+	        $data['comment'] = $this->receiving_lib->get_comment();
+	        $data['term_days'] = $this->receiving_lib->get_term_days();
+	        $data['reference'] = $this->receiving_lib->get_reference();
+	        $data['show_stock_locations'] = $this->stock_location->show_locations('receivings');
+	        $data['stock_location_source'] = $this->receiving_lib->get_stock_source();
+	        $data['stock_location_destination'] = $this->receiving_lib->get_stock_destination();
+
+	        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+	        $employee_info = $this->employee->get_info($employee_id);
+	        $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+
+	        // Save the requisition in the database
+	        $data['receiving_id'] = 'REQ ' . $this->receiving->save_requisition(
+	            $data['cart'],
+	            $employee_id,
+	            $data['comment'],
+	            $data['reference'],
+	            $data['stock_location_source'],
+	            $data['stock_location_destination']
+	        );
+
+	        if ($data['receiving_id'] == 'REQ -1') {
+	            $data['error_message'] = lang('Receivings.transaction_failed');
+	        } else {
+	            $data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
+	        }
+
+	        $data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
+
+	        echo view("receivings/receipt", $data);
+
+	        $this->receiving_lib->clear_all();
+	    } else {
+	        $data['error'] = lang('Receivings.error_requisition');
+	        $this->_reload($data);
+	    }
 	}
 
 	/**
@@ -464,7 +529,7 @@ class Receivings extends Secure_Controller
 	 * @param array $data
 	 * @return void
 	 */
-	private function _reload(array $data = []): void	//TODO: Hungarian notation
+	private function _reload(array $data = []): void
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['modes'] = ['receive' => lang('Receivings.receiving'), 'return' => lang('Receivings.return')];
@@ -481,15 +546,26 @@ class Receivings extends Secure_Controller
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
 		$data['comment'] = $this->receiving_lib->get_comment();
+		$data['term_days'] = $this->receiving_lib->get_term_days();
 		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_options'] = $this->receiving->get_payment_options();
+		$data['selected_payment_type'] = $this->receiving_lib->get_payment_type();
+		$data['amount_due'] = $this->receiving_lib->get_total() - $this->receiving_lib->get_payments_total();
+
+		// Agregar pagos al arreglo de datos
+		$data['payments'] = $this->receiving_lib->get_payments();
+
+		// Inicializar tabindex
+		$data['tabindex'] = 0;
 
 		$supplier_id = $this->receiving_lib->get_supplier();
 
-		if($supplier_id != -1)	//TODO: Duplicated Code... replace -1 with a constant
+		if($supplier_id != -1)
 		{
 			$supplier_info = $this->supplier->get_info($supplier_id);
 			$data['supplier'] = $supplier_info->company_name;
+			$data['avatar'] = $supplier_info->avatar;
+			$data['gender'] = $supplier_info->gender;
 			$data['first_name'] = $supplier_info->first_name;
 			$data['last_name'] = $supplier_info->last_name;
 			$data['supplier_email'] = $supplier_info->email;
@@ -512,9 +588,9 @@ class Receivings extends Secure_Controller
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save(int $receiving_id = -1): void	//TODO: Replace -1 with a constant
+	public function save(int $receiving_id = -1): void
 	{
-		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);	//TODO: newdate does not follow naming conventions
+		$newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
 		$receiving_time = $date_formatter->format('Y-m-d H:i:s');
@@ -554,8 +630,77 @@ class Receivings extends Secure_Controller
 	 */
 	public function postCancelReceiving(): void
 	{
+		// Limpiar los pagos
+		$this->receiving_lib->clear_payments();
+
+		// Limpiar todos los datos relacionados con la transacción
 		$this->receiving_lib->clear_all();
 
-		$this->_reload();	//TODO: Hungarian Notation
+		// Recargar la vista
+		$this->_reload();
+	}
+
+	public function postAddPayment(): void
+	{
+		$data = [];
+		$payment_type = $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+	
+		// Validar el tipo de pago
+		if ($payment_type !== lang('Sales.giftcard')) {
+			$rules = ['amount_tendered' => 'trim|required|decimal_locale'];
+			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric')];
+		} else {
+			$rules = ['amount_tendered' => 'trim|required'];
+			$messages = ['amount_tendered' => lang('Sales.must_enter_numeric_giftcard')];
+		}
+	
+		if (!$this->validate($rules, $messages)) {
+			$data['error'] = $payment_type === lang('Sales.giftcard')
+				? lang('Sales.must_enter_numeric_giftcard')
+				: lang('Sales.must_enter_numeric');
+		} else {
+			if ($payment_type === lang('Sales.giftcard')) {
+				$amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+				$giftcard_num = filter_var($amount_tendered, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_ALLOW_FRACTION);
+	
+				$payments = $this->receiving_lib->get_payments();
+				$payment_type = $payment_type . ':' . $giftcard_num;
+				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
+	
+				$giftcard = model(Giftcard::class);
+				$cur_giftcard_value = $giftcard->get_giftcard_value($giftcard_num);
+	
+				if (($cur_giftcard_value - $current_payments_with_giftcard) <= 0) {
+					$data['error'] = lang('Giftcards.remaining_balance', [$giftcard_num, $cur_giftcard_value]);
+				} else {
+					$amount_tendered = min($this->receiving_lib->get_amount_due(), $cur_giftcard_value);
+					$this->receiving_lib->add_payment($payment_type, $amount_tendered);
+				}
+			} elseif ($payment_type === lang('Sales.cash')) {
+				$raw_amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+				$this->receiving_lib->add_payment($payment_type, $amount_tendered);
+			} else {
+				$raw_amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+				$amount_tendered = filter_var($raw_amount_tendered, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+				$this->receiving_lib->add_payment($payment_type, $amount_tendered);
+			}
+		}
+	
+		$this->_reload($data);
+	}
+
+	/**
+	 * Multiple Payments. Used in app/Views/sales/register.php
+	 *
+	 * @param string $payment_id
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function getDeletePayment(string $payment_id): void
+	{
+		$this->receiving_lib->delete_payment($payment_id);
+
+		$this->_reload();
 	}
 }

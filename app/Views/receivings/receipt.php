@@ -143,7 +143,7 @@
 			?>
 				<tr>
 					<td colspan="3" style='text-align:right;'><?= lang('Sales.amount_tendered') ?></td>
-					<td><div class="total-value"><?= to_currency($amount_tendered) ?></div></td>
+					<td><div class="total-value">0.00</div></td>
 				</tr>
 
 				<tr>

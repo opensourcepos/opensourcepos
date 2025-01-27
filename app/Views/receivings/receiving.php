@@ -155,77 +155,76 @@ if (isset($success))
 							<td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
 							<td><?= esc($item['item_number']) ?></td>
 							<td style="text-align:center;">
-								<?= esc($item['name'] . ' '. implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br /> <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
+								<?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br />
+								<?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']' ?>
 								<?= form_hidden('location', (string)$item['item_location']) ?>
 							</td>
 
-							<?php
-							if ($items_module_allowed && $mode != 'requisition')
-							{
-							?>
-								<td><?= form_input ([
+							<?php if ($items_module_allowed && $mode != 'requisition') { ?>
+								<td><?= form_input([
 									'name' => 'price',
 									'class' => 'form-control input-sm',
-									'value' => to_currency_no_money($item['price']),
+									'value' => (string)to_currency_no_money($item['price']),
 									'onClick' => 'this.select();'
 								]) ?></td>
-							<?php
-							}
-							else
-							{
-							?>
+							<?php } else { ?>
 								<td>
-									<?= $item['price'] ?>
-									<?= form_hidden('price', to_currency_no_money($item['price'])) ?>
+									<?= (string)$item['price'] ?>
+									<?= form_hidden('price', (string)to_currency_no_money($item['price'])) ?>
 								</td>
-							<?php
-							}
-							?>
+							<?php } ?>
 
-							<td><?= form_input (['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']),'onClick' => 'this.select();']) ?></td>
+							<td><?= form_input([
+								'name' => 'quantity',
+								'class' => 'form-control input-sm',
+								'value' => (string)to_quantity_decimals($item['quantity']),
+								'onClick' => 'this.select();'
+							]) ?></td>
 							<td><?= form_dropdown(
-									'receiving_quantity',
-									$item['receiving_quantity_choices'],
-									$item['receiving_quantity'],
-									['class' => 'form-control input-sm']
-								) ?></td>
+								'receiving_quantity',
+								$item['receiving_quantity_choices'],
+								(string)$item['receiving_quantity'],
+								['class' => 'form-control input-sm']
+							) ?></td>
 
-							<?php
-							if ($items_module_allowed && $mode != 'requisition')
-							{
-							?>
+							<?php if ($items_module_allowed && $mode != 'requisition') { ?>
 								<td>
-								<div class="input-group">
-									<?= form_input (['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
-									<span class="input-group-btn">
-										<?= form_checkbox ([
-											'id' => 'discount_toggle',
-											'name' => 'discount_toggle',
-											'value' => 1,
-											'data-toggle' => "toggle",
-											'data-size' => 'small',
-											'data-onstyle' => 'success',
-											'data-on' => '<b>' . $config['currency_symbol'] .'</b>',
-											'data-off' => '<b>%</b>',
-											'data-line' => $line,
-											'checked' => $item['discount_type'] == 1
+									<div class="input-group">
+										<?= form_input([
+											'name' => 'discount',
+											'class' => 'form-control input-sm',
+											'value' => (string)($item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount'])),
+											'onClick' => 'this.select();'
 										]) ?>
-									</span>
-								</div>
-							</td>
-							<?php
-							}
-							else
-							{
-							?>
-								<td><?= $item['discount'] ?></td>
-								<?= form_hidden('discount', $item['discount']) ?>
-							<?php
-							}
-							?>
+										<span class="input-group-btn">
+											<?= form_checkbox([
+												'id' => 'discount_toggle',
+												'name' => 'discount_toggle',
+												'value' => 1,
+												'data-toggle' => "toggle",
+												'data-size' => 'small',
+												'data-onstyle' => 'success',
+												'data-on' => '<b>' . $config['currency_symbol'] . '</b>',
+												'data-off' => '<b>%</b>',
+												'data-line' => $line,
+												'checked' => $item['discount_type'] == 1
+											]) ?>
+										</span>
+									</div>
+								</td>
+							<?php } else { ?>
+								<td><?= (string)$item['discount'] ?></td>
+								<?= form_hidden('discount', (string)$item['discount']) ?>
+							<?php } ?>
+
 							<td>
-							<?= to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']) ?></td>
-							<td><a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) .'.update') ?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+								<?= to_currency(
+									($item['discount_type'] == PERCENT)
+										? $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100
+										: $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['discount']
+								) ?>
+							</td>
+							<td><a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) . '.update') ?>><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php
@@ -374,6 +373,53 @@ if (isset($success))
 				?>
 			</tr>
 		</table>
+
+		<?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
+            <section class="mainContent">
+              <div class="formContainer">
+                <form action="">
+                  <fieldset class="fieldInput">
+                    <div class="dropdown">
+                      <?= form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'dropdown-toggle', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    </div>
+                    <?= form_input (['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                    <?= form_input (['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'form-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                    <button type="submit" class="form-submit" id='add_payment_button' tabindex="<?= ++$tabindex ?>"><i class="bi bi-credit-card-fill"></i> Pagar</button>
+                  </fieldset>
+                </form>
+              </div>
+            </section>
+          <?= form_close() ?>
+
+			<table class="sales_table_100" id="registersss">
+				<thead>
+					<tr>
+						<th style="width: 10%;"><?= lang('Common.delete') ?></th>
+						<th style="width: 60%;"><?= lang(ucfirst($controller_name) .'.payment_type') ?></th>
+						<th style="width: 20%;"><?= lang(ucfirst($controller_name) .'.payment_amount') ?></th>
+					</tr>
+				</thead>
+
+				<tbody id="payment_contents">
+	              <?php
+	              $payment_types = [];
+
+	              foreach($payments as $payment_id => $payment)
+	              {
+	                  $payment_types[] = $payment['payment_type'];
+	              ?>
+	                  <tr>
+	                      <td><?= anchor("$controller_name/deletePayment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+	                      <td><?= esc($payment['payment_type']) ?></td>
+	                      <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
+	                  </tr>
+	              <?php
+	              }
+
+	              $payment_types_string = implode(', ', $payment_types);
+	              ?>
+				</tbody>
+			</table>
 
 		<?php
 		if(count($cart) > 0)
