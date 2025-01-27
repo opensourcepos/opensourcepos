@@ -219,7 +219,7 @@ if (isset($success))
 							{
 							?>
 								<td><?= $item['discount'] ?></td>
-								<?= form_hidden('discount', $item['discount']) ?>
+								<?= form_hidden('discount', (string)$item['discount']) ?>
 							<?php
 							}
 							?>

@@ -37,7 +37,9 @@
 		if ($config['company_logo'] != '')
 		{
 		?>
-			<div id="company_name"><img id="image" src="<?= esc(base_url('uploads/' . $config['company_logo']), 'url') ?>" alt="company_logo" /></div>
+			<div id="company_name">
+				<img id="image" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="company_logo" />
+			</div>
 		<?php
 		}
 		?>

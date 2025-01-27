@@ -246,7 +246,7 @@ class Receiving_lib
 	 * @param string $stock_destination
 	 * @return void
 	 */
-	public function set_stock_destination(string $stock_destination): void
+	public function set_stock_destination(?string $stock_destination): void
 	{
 		$this->session->set('recv_stock_destination', $stock_destination);
 	}
