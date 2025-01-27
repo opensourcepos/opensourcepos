@@ -104,7 +104,7 @@ class Receiving extends Model
 	/**
 	 * @throws ReflectionException
 	 */
-	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, string $payment_type, int $receiving_id = NEW_ENTRY): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
+	public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, ?string $payment_type, int $receiving_id = NEW_ENTRY): int	//TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
 	{
 		$attribute = model(Attribute::class);
 		$inventory = model('Inventory');
@@ -187,7 +187,6 @@ class Receiving extends Model
 
 			$inventory->insert($inv_data, false);
 			$attribute->copy_attribute_links($item_data['item_id'], 'receiving_id', $receiving_id);
-			$supplier = $supplier->get_info($supplier_id);	//TODO: supplier is never used after this.
 		}
 
 		$this->db->transComplete();
