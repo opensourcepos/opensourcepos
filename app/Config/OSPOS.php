@@ -22,6 +22,8 @@ class OSPOS extends BaseConfig
 		parent::__construct();
 		$this->cache = Services::cache();
 		$this->set_settings();
+
+		date_default_timezone_set('America/New_York');
 	}
 
 	/**
