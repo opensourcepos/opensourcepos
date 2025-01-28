@@ -82,7 +82,7 @@ class Config extends Secure_Controller
         $license[$i]['title'] = 'Open Source Point Of Sale ' . config('App')->application_version;
 
         if (file_exists('license/LICENSE')) {
-            $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 2000);
+            $license[$i]['text'] = file_get_contents('license/LICENSE', false, null, 0, 3000);
         } else {
             $license[$i]['text'] = 'LICENSE file must be in OSPOS license directory. You are not allowed to use OSPOS application until the distribution copy of LICENSE file is present.';
         }
@@ -139,13 +139,13 @@ class Config extends Secure_Controller
                                         $license[$i]['text'] .= "$val3 ";
                                     }
 
-                                    $license[$i]['text'] .= '\n';
+                                    $license[$i]['text'] .= "\n";
                                 } else {
                                     $license[$i]['text'] .= "$key2: $val2\n";
                                 }
                             }
 
-                            $license[$i]['text'] .= '\n';
+                            $license[$i]['text'] .= "\n";
                         } else {
                             $license[$i]['text'] .= "$key1: $val1\n";
                         }
