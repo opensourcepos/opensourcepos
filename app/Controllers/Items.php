@@ -207,7 +207,7 @@ class Items extends Secure_Controller
 	 */
 	public function getSuggestLowSell(): void
 	{
-		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPo1stGet('name'));
+		$suggestions = $this->item->get_low_sell_suggestions($this->request->getPostGet('name'));
 
 		echo json_encode($suggestions);
 	}
