@@ -6,6 +6,7 @@
  * @var array $headers
  * @var array $data
  * @var array $config
+ *  @var array $total_row
  */
 ?>
 <?= view('partial/header') ?>
@@ -66,6 +67,11 @@
 				escape: true,
 				search: true
 		});
+		<?php
+		  if(isset($total_row) && $total_row) {
+		      echo "$('#table tbody tr:last').css('font-weight', 'bold');";
+		  }
+		?>
 	});
 </script>
 

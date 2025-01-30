@@ -469,6 +469,11 @@ class Reports extends Secure_Controller
 
 		$report_data = $this->summary_taxes->getData($inputs);
 		$summary = $this->summary_taxes->getSummaryData($inputs);
+		
+		$sum_transactions = 0;
+		$sum_sub_total = 0;
+		$sum_tax = 0;
+		$sum_total = 0;
 
 		$tabular_data = [];
 
@@ -482,14 +487,28 @@ class Reports extends Secure_Controller
 				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total'])
 			];
+			
+			$sum_transactions += $row['count'];
+			$sum_sub_total += $row['subtotal'];
+			$sum_tax += $row['tax'];
+			$sum_total +=$row['total'];
 		}
+		
+		$tabular_data[] = [
+		    'tax_percent' => lang('Sales.total'),
+		    'report_count' => $sum_transactions,
+		    'subtotal' => to_currency($sum_sub_total),
+		    'tax' => to_currency_tax($sum_tax),
+		    'total' => to_currency($sum_total)
+		];
 
 		$data = [
 			'title' => lang('Reports.taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
 			'headers' => $this->summary_taxes->getDataColumns(),
 			'data' => $tabular_data,
-			'summary_data' => $summary
+			'summary_data' => $summary,
+		    'total_row' => true
 		];
 
 		echo view('reports/tabular', $data);
