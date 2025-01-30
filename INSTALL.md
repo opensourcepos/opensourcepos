@@ -1,16 +1,16 @@
 ## Server Requirements
 
-- PHP version `7.4` is supported, PHP version `≤7.3` is NOT supported. Please note that PHP needs to have the extensions `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` , `php-curl` and `php-xml` installed and enabled. PHP version `8.x` is only supported by the code that is still under development in master branch. An unstable build can be downloaded in the releases section.
-- MySQL `5.6` and `5.7` are supported, also MariaDB replacement `10.x` is supported and might offer better performance.
+- PHP version `8.1` to `8.3` are supported, PHP version `≤7.4` is NOT supported. Please note that PHP needs to have the extensions `php-json`, `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` , `php-curl` and `php-xml` installed and enabled. An unstable master build can be downloaded in the releases section.
+- MySQL `5.7` is supported, also MariaDB replacement `10.x` is supported and might offer better performance.
 - Apache `2.4` is supported. Nginx should work fine too, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP).
 - Raspberry PI based installations proved to work, see [wiki page here](<https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS)>).
 - For Windows based installations please read [the wiki](https://github.com/opensourcepos/opensourcepos/wiki). There are closed issues about this subject, as this topic has been covered a lot.
 
 ## Local install
 
-First of all, if you're seeing the message `system folder missing` after launching your browser, or cannot find `database.php`, that most likely means you have cloned the repository and have not built the project.  To build the project from a source commit point instead of from an official release check out [Building OSPOS](BUILD.md). Otherwise, continue with the following steps.
+First of all, if you're seeing the message `system folder missing` after launching your browser, or cannot find `database.sql`, that most likely means you have cloned the repository and have not built the project.  To build the project from a source commit point instead of from an official release check out [Building OSPOS](BUILD.md). Otherwise, continue with the following steps.
 
-1. Download the a [pre-release for a specific branch](https://github.com/opensourcepos/opensourcepos/packages/1047637) or the latest stable [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
+1. Download the a [pre-release for a specific branch](https://github.com/opensourcepos/opensourcepos/releases) or the latest stable [from GitHub here](https://github.com/opensourcepos/opensourcepos/releases). A repository clone will not work unless know how to build the project.
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
 3. Execute the file `database/database.sql` to create the tables needed.
 4. Unzip and upload Open Source Point of Sale files to the web-server.

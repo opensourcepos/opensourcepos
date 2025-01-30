@@ -94,11 +94,11 @@ NOTE: If you're running non-release code, please make sure you always run the la
 
 - Apache server configurations are SysAdmin issues and not strictly related to OSPOS. Please make sure you can show a "Hello world" HTML page before pointing to OSPOS public directory. Make sure `.htaccess` is correctly configured.
 
-- If the avatar pictures are not shown in items or at item save you get an error, please make sure your `public` and subdirs are assigned to the correct owner and the access permission is set to `750`.
+- If the avatar pictures are not shown in items or at item save you get an error, please make sure your `writable` and subdirs are assigned to the correct owner and the access permission is set to `750`.
 
 - If you install OSPOS in Docker behind a proxy that performs `ssloffloading`, you can enable the URL generated to be HTTPS instead of HTTP, by activating the environment variable `FORCE_HTTPS = 1`.
 
-- If you install OSPOS behind a proxy and OSPOS constantly drops your session, consider whitelisting the proxy IP address by setting `$config['proxy_ips'] = '<proxy ip>';` in the [main PHP config file](https://github.com/opensourcepos/opensourcepos/blob/master/application/config/config.php). In extreme instances, changing `$config['sess_match_ip'] = true;` to `FALSE` may also help.
+- If you install OSPOS behind a proxy and OSPOS constantly drops your session, consider whitelisting the proxy IP address by setting `public array $proxyIPs = [];` in the [main PHP config file](https://github.com/opensourcepos/opensourcepos/blob/master/app/Config/App.php).
 
 - If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 

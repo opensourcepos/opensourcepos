@@ -114,7 +114,7 @@ use Config\OSPOS;
                         clearstatcache();
                     ?>
                     <br>
-                &#187; [public/uploads:]
+                &#187; [writable/uploads:]
                     <?php
                         if (is_writable($uploads))
                         {
