@@ -109,7 +109,7 @@ class OSPOSRules
 	private function installation_check(): bool
 	{
 		$installed_extensions = implode(', ', get_loaded_extensions());
-		$required_extensions = ['bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl'];
+		$required_extensions = ['bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl', 'xml', 'json'];
 		$pattern = '/';
 
 		foreach($required_extensions as $extension)

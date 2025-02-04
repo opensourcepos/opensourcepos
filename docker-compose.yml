@@ -11,7 +11,7 @@ services:
         depends_on:
           - mysql
         ports:
-          - "127.0.0.1:80:80"
+          - "80:80"
         networks:
           - app_net
         volumes:
