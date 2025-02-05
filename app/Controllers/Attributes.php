@@ -67,8 +67,8 @@ class Attributes extends Secure_Controller
 		$success = $this->attribute->saveAttributeValue(
 			html_entity_decode($this->request->getPost('attribute_value')),
 			$this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT),
-			$this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT),
-			$this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT)
+			$this->request->getPost('item_id', FILTER_SANITIZE_NUMBER_INT) ?? false,
+			$this->request->getPost('attribute_id', FILTER_SANITIZE_NUMBER_INT) ?? false
 		);
 
 		echo json_encode(['success' => $success != 0]);

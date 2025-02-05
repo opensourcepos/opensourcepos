@@ -70,7 +70,7 @@ class Attribute extends Model
 	 * @param int|bool $definition_id Attribute definition ID to check.
 	 * @return bool returns true if at least one attribute_link exists or false if no attributes exist for that item and attribute.
 	 */
-	public function attributeLinkExists(int $item_id, int|bool $definition_id = false): bool
+	public function attributeLinkExists(?int $item_id, int|bool $definition_id = false): bool
 	{
 		$builder = $this->db->table('attribute_links');
 		$builder->where('item_id', $item_id);
@@ -547,7 +547,7 @@ class Attribute extends Model
 			{
 				$builder = $this->db->table('attribute_definitions');
 				$success = $builder->insert($definition_data);
-				$definition_data['definition_id'] = $this->getInsertID();
+				$definition_data['definition_id'] = $this->db->insertID();
 			}
 		}
 
@@ -875,7 +875,7 @@ class Attribute extends Model
 				$builder->set(["attribute_$data_type" => $attribute_value]);
 				$builder->insert();
 
-				$attribute_id = $this->getInsertID();
+				$attribute_id = $this->db->insertID();
 			}
 
 			$data = [
