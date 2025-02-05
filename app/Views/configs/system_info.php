@@ -77,13 +77,11 @@ use Config\OSPOS;
                         }
                         echo esc(getBrowserNameAndVersion($_SERVER['HTTP_USER_AGENT']));
                     ?><br>
-                .Server Software: <?= esc($_SERVER['SERVER_SOFTWARE']) ?><br>
-                .PHP Version: <?= PHP_VERSION ?><br>
-                .DB Version: <?= esc($dbVersion) ?><br>
-                .Server Port: <?= esc($_SERVER['SERVER_PORT']) ?><br>
-                .OS: <?= php_uname('s') .' '. php_uname('r') ?><br><br>
-                .OS Time Zone: <span id="timezone" style="font-weight:600"></span><br>
-                .OSPOS Time Zone: <span id="ostimezone" style="font-weight:600;" ><?= esc($config['timezone']) ?></span>
+                Server Software: <?= esc($_SERVER['SERVER_SOFTWARE']) ?><br>
+                PHP Version: <?= PHP_VERSION ?><br>
+                DB Version: <?= esc($dbVersion) ?><br>
+                Server Port: <?= esc($_SERVER['SERVER_PORT']) ?><br>
+                OS: <?= php_uname('s') .' '. php_uname('r') ?><br><br>
                 <br><br>
 
                 File Permissions:<br>
@@ -229,13 +227,14 @@ use Config\OSPOS;
                 document.getSelection().removeAllRanges();
             });
 
-            document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
             $(function() {
                 $('#timezone').clone().appendTo('#timezoneE');
             });
 
-            if($('#timezone').html() !== $('#ostimezone').html())
-            document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?= lang('Config.timezone_error') ?></span><br><br><?= lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?= lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?= esc($config['timezone']) ?></div><br>';
+            if($('#timezone').html() !== $('#ostimezone').html()) {
+				document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
+				document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?= lang('Config.timezone_error') ?></span><br><br><?= lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?= lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?= esc($config['timezone']) ?></div><br>';
+			}
+
         </script>
 </div>

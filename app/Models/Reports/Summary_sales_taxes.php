@@ -61,7 +61,7 @@ class Summary_sales_taxes extends Summary_report
 		}
 		else
 		{
-			$builder->where('sale_time BETWEEN ' . rawurldecode($inputs['start_date']) . ' AND ' . rawurldecode($inputs['end_date']));
+			$builder->where('sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
 		}
 
 		$builder->select('reporting_authority, jurisdiction_name, tax_category, tax_rate, SUM(sale_tax_amount) AS tax');
