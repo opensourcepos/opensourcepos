@@ -1,4 +1,5 @@
 [unreleased]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...HEAD
+[3.4]: https://github.com/opensourcepos/opensourcepos/compare/3.3.9...3.4
 [3.3.9]: https://github.com/opensourcepos/opensourcepos/compare/3.3.8...3.3.9
 [3.3.8]: https://github.com/opensourcepos/opensourcepos/compare/3.3.7...3.3.8
 [3.3.7]: https://github.com/opensourcepos/opensourcepos/compare/3.3.6...3.3.7
@@ -29,8 +30,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [3.4] - 2025-02-06
 
+- Translation updates (Spanish, Indonesian, Swedish, Urdu, Chinese, Thai, French, Dutch)
+- PHP 8.x support
+- Security fixes (XSS, SQLi)
+- Migration to Gulp as buildsystem
+- Decimal validation fix
+- Sticky header fix
+- Receipt sent as attachment
+- Barcode generation library upgrade
 - Bump framework to CodeIgniter `4.x.x`
 - Improve security performance against bots
 
