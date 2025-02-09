@@ -1,30 +1,54 @@
 <?php
 use App\Models\Employee;
 use Config\OSPOS;
-	use Config\Services;
 
 /**
  * Returns the currently configured language code.
  *
+ * @param bool $load_system_language When true, the system language is returned.
  * @return string Returns the default language code if a language code is not configured.
  */
-function current_language_code(): string
+function current_language_code(bool $load_system_language = false): string
 {
-	$config = config(OSPOS::class);
+	$employee = model(Employee::class);
+	$config = config(OSPOS::class)->settings;
 
-	$language_code = $config->settings['language_code'];
+	if($employee->is_logged_in() && !$load_system_language)
+	{
+		$employee_info = $employee->get_logged_in_employee_info();
+
+		if(property_exists($employee_info, 'language_code') && !empty($employee_info->language_code))
+		{
+			return $employee_info->language_code;
+		}
+	}
+
+	$language_code = $config['language_code'];
 
 	return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
 /**
+ * @param bool $load_system_language
  * @return string
  */
-function current_language(): string
+function current_language(bool $load_system_language = false): string
 {
-	$config = config(OSPOS::class);
+	$employee = model(Employee::class);
+	$config = config(OSPOS::class)->settings;
 
-	$language = $config->settings['language'];
+	// Returns the language of the employee if set or system language if not
+	if($employee->is_logged_in() && !$load_system_language)
+	{
+		$employee_info = $employee->get_logged_in_employee_info();
+
+		if(property_exists($employee_info, 'language') && !empty($employee_info->language))
+		{
+			return $employee_info->language;
+		}
+	}
+
+	$language = $config['language'];
 
 	return empty($language) ? DEFAULT_LANGUAGE : $language;
 }
