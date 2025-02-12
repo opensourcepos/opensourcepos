@@ -18,7 +18,15 @@ class fix_duplicate_attributes extends Migration
 
 		helper('migration');
 
-		$this->drop_foreign_key_constraints();
+		$foreignKeys = [
+			'ospos_attribute_links_ibfk_1',
+			'ospos_attribute_links_ibfk_2',
+			'ospos_attribute_links_ibfk_3',
+			'ospos_attribute_links_ibfk_4',
+			'ospos_attribute_links_ibfk_5'
+		];
+
+		drop_foreign_key_constraints($foreignKeys, 'ospos_attribute_links');
 
 		execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_attribute_links_unique_constraint.sql');
 	}
@@ -57,44 +65,6 @@ class fix_duplicate_attributes extends Migration
 		}
 	}
 
-	/**
-	 * Drops the foreign key constraints from the attribute_links table.
-	 * This is required to successfully create the generated unique constraint.
-	 *
-	 * @return void
-	 */
-	private function drop_foreign_key_constraints(): void
-	{
-		$foreignKeys = [
-			'ospos_attribute_links_ibfk_1',
-			'ospos_attribute_links_ibfk_2',
-			'ospos_attribute_links_ibfk_3',
-			'ospos_attribute_links_ibfk_4',
-			'ospos_attribute_links_ibfk_5'
-		];
-
-		$current_prefix = $this->db->getPrefix();
-		$this->db->setPrefix('');
-		$database_name = $this->db->database;
-
-		foreach ($foreignKeys as $fk)
-		{
-			$builder = $this->db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
-			$builder->select('CONSTRAINT_NAME');
-			$builder->where('TABLE_SCHEMA', $database_name);
-			$builder->where('TABLE_NAME', 'ospos_attribute_links');
-			$builder->where('CONSTRAINT_TYPE', 'FOREIGN KEY');
-			$builder->where('CONSTRAINT_NAME', $fk);
-			$query = $builder->get();
-
-			if($query->getNumRows() > 0)
-			{
-				$this->db->query("ALTER TABLE `ospos_attribute_links` DROP FOREIGN KEY `$fk`");
-			}
-		}
-
-		$this->db->setPrefix($current_prefix);
-	}
 
 	/**
 	 * Revert a migration step.

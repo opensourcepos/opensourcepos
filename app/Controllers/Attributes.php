@@ -231,14 +231,15 @@ class Attributes extends Secure_Controller
 	}
 
 	/**
-	 * AJAX called function to delete an attribute value. This is never called in the code. Perhaps it was boiler plate code that just isn't needed?
-	 * @param int $attribute_id
+	 * AJAX called function to delete an attribute value. This is called when a dropdown item is removed.
+	 *
+	 * @param string $attribute_value
 	 * @return bool
 	 * @noinspection PhpUnused
 	 */
-	public function delete_value(int $attribute_id): bool	//TODO: This function appears to never be used in the codebase.  Is it needed?
+	public function delete_value(string $attribute_value): bool
 	{
-		return $this->attribute->delete_value($attribute_id, NO_DEFINITION_ID);
+		return $this->attribute->delete_value($attribute_value, NO_DEFINITION_ID);
 	}
 
 	/**
