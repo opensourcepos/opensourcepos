@@ -97,7 +97,7 @@ class Items extends Secure_Controller
 		$search = $this->request->getGet('search');
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->sanitizeSortColumn(ITEM_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
+		$sort = $this->sanitizeSortColumn(item_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_id');
 		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$this->item_lib->set_item_location($this->request->getGet('stock_location'));

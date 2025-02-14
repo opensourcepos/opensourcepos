@@ -48,7 +48,7 @@ class Expenses extends Secure_Controller
 		$search   = $this->request->getGet('search');
 		$limit    = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset   = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort     = $this->sanitizeSortColumn(EXPENSE_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_id');
+		$sort     = $this->sanitizeSortColumn(expense_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_id');
 		$order    = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$filters  = [
 			'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),

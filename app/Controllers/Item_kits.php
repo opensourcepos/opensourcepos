@@ -79,7 +79,7 @@ class Item_kits extends Secure_Controller
 		$search = $this->request->getGet('search') ?? '';
 		$limit  = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort   = $this->sanitizeSortColumn(ITEM_KIT_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_kit_id');
+		$sort   = $this->sanitizeSortColumn(item_kit_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'item_kit_id');
 		$order  = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$item_kits = $this->item_kit->search($search, $limit, $offset, $sort, $order);

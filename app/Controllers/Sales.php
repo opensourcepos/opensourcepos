@@ -136,7 +136,7 @@ class Sales extends Secure_Controller
 		$search = $this->request->getGet('search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$limit = $this->request->getGet('limit', FILTER_SANITIZE_NUMBER_INT);
 		$offset = $this->request->getGet('offset', FILTER_SANITIZE_NUMBER_INT);
-		$sort = $this->sanitizeSortColumn(SALES_HEADERS, $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
+		$sort = $this->sanitizeSortColumn(sales_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'sale_id');
 		$order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 		$filters = [

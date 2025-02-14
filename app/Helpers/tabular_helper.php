@@ -63,22 +63,26 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 	return json_encode($result);
 }
 
-define("SALES_HEADERS", [
-	['sale_id' => lang('Common.id')],
-	['sale_time' => lang('Sales.sale_time')],
-	['customer_name' => lang('Customers.customer')],
-	['amount_due' => lang('Sales.amount_due')],
-	['amount_tendered' => lang('Sales.amount_tendered')],
-	['change_due' => lang('Sales.change_due')],
-	['payment_type' => lang('Sales.payment_type')]
-]);
+
+function sales_headers(): array
+{
+	return [
+		['sale_id' => lang('Common.id')],
+		['sale_time' => lang('Sales.sale_time')],
+		['customer_name' => lang('Customers.customer')],
+		['amount_due' => lang('Sales.amount_due')],
+		['amount_tendered' => lang('Sales.amount_tendered')],
+		['change_due' => lang('Sales.change_due')],
+		['payment_type' => lang('Sales.payment_type')]
+	];
+ }
 
 /**
  * Get the header for the sales tabular view
  */
 function get_sales_manage_table_headers(): string
 {
-	$headers = SALES_HEADERS;
+	$headers = sales_headers();
 	$config = config(OSPOS::class)->settings;
 
 	if($config['invoice_enable'])
@@ -189,20 +193,24 @@ function get_sales_manage_payments_summary(array $payments): string
 	return $table;
 }
 
-define('PERSON_HEADERS', [
-	['people.person_id' => lang('Common.id')],
-	['last_name' => lang('Common.last_name')],
-	['first_name' => lang('Common.first_name')],
-	['email' => lang('Common.email')],
-	['phone_number' => lang('Common.phone_number')]
-]);
+function person_headers(): array
+{
+	return [
+		['people.person_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')]
+	];
+}
+
 
 /**
  * Get the header for the people tabular view
  */
 function get_people_manage_table_headers(): string
 {
-	$headers = PERSON_HEADERS;
+	$headers = person_headers();
 
 	$employee = model(Employee::class);
 	$session = session();
@@ -251,21 +259,25 @@ function get_person_data_row(object $person): array
 	];
 }
 
-define('CUSTOMER_HEADERS', [
-	['people.person_id' => lang('Common.id')],
-	['last_name' => lang('Common.last_name')],
-	['first_name' => lang('Common.first_name')],
-	['email' => lang('Common.email')],
-	['phone_number' => lang('Common.phone_number')],
-	['total' => lang('Common.total_spent'), 'sortable' => false]
-]);
+
+function customer_headers(): array
+{
+	return [
+		['people.person_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')],
+		['total' => lang('Common.total_spent'), 'sortable' => false]
+	];
+}
 
 /**
  * Get the header for the customer tabular view
  */
 function get_customer_manage_table_headers(): string
 {
-	$headers = CUSTOMER_HEADERS;
+	$headers = customer_headers();
 
 	$employee = model(Employee::class);
 	$session = session();
@@ -315,23 +327,26 @@ function get_customer_data_row(object $person, object $stats): array
 	];
 }
 
-define('SUPPLIER_HEADERS', [
-	['people.person_id' => lang('Common.id')],
-	['company_name' => lang('Suppliers.company_name')],
-	['agency_name' => lang('Suppliers.agency_name')],
-	['category' => lang('Suppliers.category')],
-	['last_name' => lang('Common.last_name')],
-	['first_name' => lang('Common.first_name')],
-	['email' => lang('Common.email')],
-	['phone_number' => lang('Common.phone_number')]
-]);
+function supplier_headers(): array
+{
+	return [
+		['people.person_id' => lang('Common.id')],
+		['company_name' => lang('Suppliers.company_name')],
+		['agency_name' => lang('Suppliers.agency_name')],
+		['category' => lang('Suppliers.category')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['email' => lang('Common.email')],
+		['phone_number' => lang('Common.phone_number')]
+	];
+}
 
 /**
  * Get the header for the suppliers tabular view
  */
 function get_suppliers_manage_table_headers(): string
 {
-	$headers = SUPPLIER_HEADERS;
+	$headers = supplier_headers();
 
 	$employee = model(Employee::class);
 	$session = session();
@@ -383,16 +398,19 @@ function get_supplier_data_row(object $supplier): array
 	];
 }
 
-define('ITEM_HEADERS', [
-	['items.item_id' => lang('Common.id')],
-	['item_number' => lang('Items.item_number')],
-	['name' => lang('Items.name')],
-	['category' => lang('Items.category')],
-	['company_name' => lang('Suppliers.company_name')],
-	['cost_price' => lang('Items.cost_price')],
-	['unit_price' => lang('Items.unit_price')],
-	['quantity' => lang('Items.quantity')]
-]);
+function item_headers(): array
+{
+	return [
+		['items.item_id' => lang('Common.id')],
+		['item_number' => lang('Items.item_number')],
+		['name' => lang('Items.name')],
+		['category' => lang('Items.category')],
+		['company_name' => lang('Suppliers.company_name')],
+		['cost_price' => lang('Items.cost_price')],
+		['unit_price' => lang('Items.unit_price')],
+		['quantity' => lang('Items.quantity')]
+	];
+}
 
 /**
  * Get the header for the items tabular view
@@ -403,7 +421,7 @@ function get_items_manage_table_headers(): string
 	$config = config(OSPOS::class)->settings;
 	$definition_names = $attribute->get_definitions_by_flags($attribute::SHOW_IN_ITEMS);	//TODO: this should be made into a constant in constants.php
 
-	$headers = ITEM_HEADERS;
+	$headers = item_headers();
 
 	if($config['use_destination_based_tax'])
 	{
@@ -533,20 +551,23 @@ function get_item_data_row(object $item): array
 	return $columns + expand_attribute_values($definition_names, (array) $item) + $icons;
 }
 
-define('GIFTCARD_HEADERS', [
-	['giftcard_id' => lang('Common.id')],
-	['last_name' => lang('Common.last_name')],
-	['first_name' => lang('Common.first_name')],
-	['giftcard_number' => lang('Giftcards.giftcard_number')],
-	['value' => lang('Giftcards.card_value')]
-]);
+function giftcard_headers(): array
+{
+	return [
+		['giftcard_id' => lang('Common.id')],
+		['last_name' => lang('Common.last_name')],
+		['first_name' => lang('Common.first_name')],
+		['giftcard_number' => lang('Giftcards.giftcard_number')],
+		['value' => lang('Giftcards.card_value')]
+	];
+}
 
 /**
  * Get the header for the giftcard tabular view
  */
 function get_giftcards_manage_table_headers(): string
 {
-	return transform_headers(GIFTCARD_HEADERS);
+	return transform_headers(giftcard_headers());
 }
 
 /**
@@ -574,21 +595,24 @@ function get_giftcard_data_row(object $giftcard): array
 	];
 }
 
-define('ITEM_KIT_HEADERS', [
-	['item_kit_id' => lang('Item_kits.kit')],
-	['item_kit_number' => lang('Item_kits.item_kit_number')],
-	['name' => lang('Item_kits.name')],
-	['description' => lang('Item_kits.description')],
-	['total_cost_price' => lang('Items.cost_price'), 'sortable' => false],
-	['total_unit_price' => lang('Items.unit_price'), 'sortable' => false]
-]);
+function item_kit_headers(): array
+{
+	return [
+		['item_kit_id' => lang('Item_kits.kit')],
+		['item_kit_number' => lang('Item_kits.item_kit_number')],
+		['name' => lang('Item_kits.name')],
+		['description' => lang('Item_kits.description')],
+		['total_cost_price' => lang('Items.cost_price'), 'sortable' => FALSE],
+		['total_unit_price' => lang('Items.unit_price'), 'sortable' => FALSE]
+	];
+}
 
 /**
  * Get the header for the item kits tabular view
  */
 function get_item_kits_manage_table_headers(): string
 {
-	return transform_headers(ITEM_KIT_HEADERS);
+	return transform_headers(item_kit_headers());
 }
 
 /**
@@ -672,20 +696,23 @@ function expand_attribute_values(array $definition_names, array $row): array
 	return $attribute_values;
 }
 
-define('ATTRIBUTE_DEFINITION_HEADERS', [
-	['definition_id' => lang('Attributes.definition_id')],
-	['definition_name' => lang('Attributes.definition_name')],
-	['definition_type' => lang('Attributes.definition_type')],
-	['definition_flags' => lang('Attributes.definition_flags')],
-	['definition_group' => lang('Attributes.definition_group')],
-]);
+function attribute_definition_headers(): array
+{
+	return [
+		['definition_id' => lang('Attributes.definition_id')],
+		['definition_name' => lang('Attributes.definition_name')],
+		['definition_type' => lang('Attributes.definition_type')],
+		['definition_flags' => lang('Attributes.definition_flags')],
+		['definition_group' => lang('Attributes.definition_group')],
+	];
+}
 
 /**
  * @return string
  */
 function get_attribute_definition_manage_table_headers(): string
 {
-	return transform_headers(ATTRIBUTE_DEFINITION_HEADERS);
+	return transform_headers(attribute_definition_headers());
 }
 
 /**
@@ -729,18 +756,21 @@ function get_attribute_definition_data_row(object $attribute_row): array
 	];
 }
 
-define('EXPENSE_CATEGORY_HEADERS', [
-	['expense_category_id' => lang('Expenses_categories.category_id')],
-	['category_name' => lang('Expenses_categories.name')],
-	['category_description' => lang('Expenses_categories.description')]
-]);
+function expense_category_headers(): array
+{
+	return [
+		['expense_category_id' => lang('Expenses_categories.category_id')],
+		['category_name' => lang('Expenses_categories.name')],
+		['category_description' => lang('Expenses_categories.description')]
+	];
+}
 
 /**
  * Get the header for the expense categories tabular view
  */
 function get_expense_category_manage_table_headers(): string
 {
-	return transform_headers(EXPENSE_CATEGORY_HEADERS);
+	return transform_headers(expense_category_headers());
 }
 
 /**
@@ -766,25 +796,28 @@ function get_expense_category_data_row(object $expense_category): array
 	];
 }
 
-define('EXPENSE_HEADERS', [
-	['expense_id' => lang('Expenses.expense_id')],
-	['date' => lang('Expenses.date')],
-	['supplier_name' => lang('Expenses.supplier_name')],
-	['supplier_tax_code' => lang('Expenses.supplier_tax_code')],
-	['amount' => lang('Expenses.amount')],
-	['tax_amount' => lang('Expenses.tax_amount')],
-	['payment_type' => lang('Expenses.payment')],
-	['category_name' => lang('Expenses_categories.name')],
-	['description' => lang('Expenses.description')],
-	['created_by' => lang('Expenses.employee')]
-]);
+function expense_headers(): array
+{
+	return [
+		['expense_id' => lang('Expenses.expense_id')],
+		['date' => lang('Expenses.date')],
+		['supplier_name' => lang('Expenses.supplier_name')],
+		['supplier_tax_code' => lang('Expenses.supplier_tax_code')],
+		['amount' => lang('Expenses.amount')],
+		['tax_amount' => lang('Expenses.tax_amount')],
+		['payment_type' => lang('Expenses.payment')],
+		['category_name' => lang('Expenses_categories.name')],
+		['description' => lang('Expenses.description')],
+		['created_by' => lang('Expenses.employee')]
+	];
+}
 
 /**
  * Get the header for the expenses tabular view
  */
 function get_expenses_manage_table_headers(): string
 {
-	return transform_headers(EXPENSE_HEADERS);
+	return transform_headers(expense_headers());
 }
 
 /**
@@ -858,7 +891,9 @@ function get_expenses_manage_payments_summary(array $payments, ResultInterface $
 	return $table;
 }
 
-define('CASHUPS_HEADERS', [
+function cashup_headers(): array
+{
+	return [
 		['cashup_id' => lang('Cashups.id')],
 		['open_date' => lang('Cashups.opened_date')],
 		['open_employee_id' => lang('Cashups.open_employee')],
@@ -872,8 +907,8 @@ define('CASHUPS_HEADERS', [
 		['closed_amount_card' => lang('Cashups.closed_amount_card')],
 		['closed_amount_check' => lang('Cashups.closed_amount_check')],
 		['closed_amount_total' => lang('Cashups.closed_amount_total')]
-	]
-);
+	];
+}
 
 
 /**
@@ -881,7 +916,7 @@ define('CASHUPS_HEADERS', [
  */
 function get_cashups_manage_table_headers(): string
 {
-	$headers = CASHUPS_HEADERS;
+	$headers = cashup_headers();
 
 	return transform_headers($headers);
 }
