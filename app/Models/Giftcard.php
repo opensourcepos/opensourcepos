@@ -42,7 +42,7 @@ class Giftcard extends Model
 	{
 		$builder = $this->db->table('giftcards');
 		$builder->select('CAST(giftcard_number AS UNSIGNED) AS giftcard_number');
-		$builder->where('giftcard_number REGEXP \'^[0-9]+$\' = 0');
+		$builder->where('giftcard_number REGEXP \'^[0-9]+$\'');
 		$builder->orderBy("giftcard_number","desc");
 		$builder->limit(1);
 
