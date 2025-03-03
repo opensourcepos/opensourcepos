@@ -296,7 +296,7 @@ $(document).ready(function()
 		data['currency_symbol'] = $('#currency_symbol').val();
 		data['currency_code'] = $('#currency_code').val();
 		data['thousands_separator'] = $('#thousands_separator').is(":checked")
-		$.post("<?= "$controller_name /checkNumberLocale" ?>",
+		$.post("<?= "$controller_name/checkNumberLocale" ?>",
 			data,
 			function(response) {
 				$("input[name='save_number_locale']").val(response.save_number_locale);
