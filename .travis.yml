@@ -49,22 +49,3 @@ deploy:
 
     on:
       branch: master
-  - provider: releases
-    edge: true
-    file: dist/opensourcepos.$version.$rev.zip
-    name: "OpensourcePos $version"
-    release_notes_file: CHANGELOG.md
-    prerelease: true
-
-    user: jekkos
-    overwrite: true
-    api_key:
-      secure: "KOukL8IFf/uL/BjMyCSKjf2vylydjcWqgEx0eMqFCg3nZ4ybMaOwPORRthIfyT72/FvGX/aoxxEn0uR/AEtb+hYQXHmNS+kZdX72JCe8LpGuZ7FJ5X+Eo9mhJcsmS+smd1sC95DySSc/GolKPo+0WtJYONY/xGCLxm+9Ay4HREg="
-
-    branches:
-      except: 
-       - unstable
-       - /unstable.*/
-    on:
-      tags: true
-      branch: master
