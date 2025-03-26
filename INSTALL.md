@@ -15,6 +15,7 @@ First of all, if you're seeing the message `system folder missing` after launchi
 3. Execute the file `database/database.sql` to create the tables needed.
 4. Unzip and upload Open Source Point of Sale files to the web-server.
 5. Open `app/Config/database.php` and modify credentials to connect to your database if needed.
+6. Execute `composer install` , `npm install` & `gulp` to download dependencies
 7. Go to your install `public` dir via the browser.
 8. Log in using
    - Username: admin
