@@ -26,8 +26,8 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-		OSPOSRules::class
-	];
+        OSPOSRules::class
+    ];
 
     /**
      * Specifies the views that are used to display the

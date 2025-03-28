@@ -1,5 +1,5 @@
 <?php
 return [
-	"no_permission_module" => "",
-	"unknown" => "",
+    "no_permission_module" => "",
+    "unknown" => "",
 ];

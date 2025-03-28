@@ -24,19 +24,19 @@ $(document).ready(function()
         );
     });
 
-	// when any filter is clicked and the dropdown window is closed
-	$('#filters').on('hidden.bs.select', function(e)
-	{
+    // when any filter is clicked and the dropdown window is closed
+    $('#filters').on('hidden.bs.select', function(e)
+    {
         table_support.refresh();
     });
 
-	// load the preset daterange picker
-	<?= view('partial/daterangepicker') ?>
+    // load the preset daterange picker
+    <?= view('partial/daterangepicker') ?>
     // set the beginning of time as starting date
     $('#daterangepicker').data('daterangepicker').setStartDate("<?= date($config['dateformat'], mktime(0,0,0,01,01,2010)) ?>");
-	// update the hidden inputs with the selected dates before submitting the search data
+    // update the hidden inputs with the selected dates before submitting the search data
     var start_date = "<?= date('Y-m-d', mktime(0,0,0,01,01,2010)) ?>";
-	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+    $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
         table_support.refresh();
     });
 
@@ -45,9 +45,9 @@ $(document).ready(function()
     });
 
     <?php
-		echo view('partial/bootstrap_tables_locale');
-		$employee = model(Employee::class);
-	?>
+        echo view('partial/bootstrap_tables_locale');
+        $employee = model(Employee::class);
+    ?>
 
     table_support.init({
         employee_id: <?= $employee->get_logged_in_employee_info()->person_id ?>,
@@ -65,9 +65,9 @@ $(document).ready(function()
         },
         onLoadSuccess: function(response) {
             $('a.rollover').imgPreview({
-				imgCSS: { width: 200 },
-				distanceFromCursor: { top:10, left:-210 }
-			})
+                imgCSS: { width: 200 },
+                distanceFromCursor: { top:10, left:-210 }
+            })
         }
     });
 });
@@ -90,7 +90,7 @@ $(document).ready(function()
             <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
         </button>
         <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit='<?= lang('Common.submit') ?>' data-href='<?= "items/bulkEdit" ?>'
-				title='<?= lang('Items.edit_multiple_items') ?>'>
+                title='<?= lang('Items.edit_multiple_items') ?>'>
             <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
         </button>
         <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href='<?= "$controller_name/generateBarcodes" ?>' title='<?= lang('Items.generate_barcodes') ?>'>
@@ -98,31 +98,31 @@ $(document).ready(function()
         </button>
         <?= form_input (['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?= form_multiselect(
-			'filters[]',
-			$filters,
-			[''],
-			[
-				'id' => 'filters',
-				'class' => 'selectpicker show-menu-arrow',
-				'data-none-selected-text' => lang('Common.none_selected_text'),
-				'data-selected-text-format' => 'count > 1',
-				'data-style' => 'btn-default btn-sm',
-				'data-width' => 'fit'
-			]) ?>
+            'filters[]',
+            $filters,
+            [''],
+            [
+                'id' => 'filters',
+                'class' => 'selectpicker show-menu-arrow',
+                'data-none-selected-text' => lang('Common.none_selected_text'),
+                'data-selected-text-format' => 'count > 1',
+                'data-style' => 'btn-default btn-sm',
+                'data-width' => 'fit'
+            ]) ?>
         <?php
         if (count($stock_locations) > 1)
         {
             echo form_dropdown(
-			'stock_location',
-				$stock_locations,
-				$stock_location,
-				[
-					'id' => 'stock_location',
-					'class' => 'selectpicker show-menu-arrow',
-					'data-style' => 'btn-default btn-sm',
-					'data-width' => 'fit'
-				]
-			);
+            'stock_location',
+                $stock_locations,
+                $stock_location,
+                [
+                    'id' => 'stock_location',
+                    'class' => 'selectpicker show-menu-arrow',
+                    'data-style' => 'btn-default btn-sm',
+                    'data-width' => 'fit'
+                ]
+            );
         }
         ?>
     </div>

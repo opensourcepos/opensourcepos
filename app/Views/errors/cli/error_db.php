@@ -4,7 +4,7 @@
  * @var string $message
  */
 echo "\nDatabase error: ",
-	esc($heading),
-	"\n\n",
-	esc($message),
-	"\n\n";
+    esc($heading),
+    "\n\n",
+    esc($message),
+    "\n\n";
