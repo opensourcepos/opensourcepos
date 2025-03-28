@@ -87,9 +87,9 @@ class Config extends Secure_Controller
             $license[$i]['text'] = 'LICENSE file must be in OSPOS license directory. You are not allowed to use OSPOS application until the distribution copy of LICENSE file is present.';
         }
 
-        $dir = new DirectoryIterator('license');	// read all the files in the dir license
+        $dir = new DirectoryIterator('license');    // read all the files in the dir license
 
-        foreach ($dir as $fileinfo) {	//TODO: $fileinfo doesn't match our variable naming convention
+        foreach ($dir as $fileinfo) {    //TODO: $fileinfo doesn't match our variable naming convention
             // license files must be in couples: .version (name & version) & .license (license text)
             if ($fileinfo->isFile()) {
                 if ($fileinfo->getExtension() == 'version') {
@@ -129,7 +129,7 @@ class Config extends Secure_Controller
                 if (is_array($val) && $key == 'dependencies') {
                     foreach ($val as $key1 => $val1) {
                         if (is_array($val1)) {
-                            $license[$i]['text'] .= "component: $key1\n";	//TODO: Duplicated Code
+                            $license[$i]['text'] .= "component: $key1\n";    //TODO: Duplicated Code
 
                             foreach ($val1 as $key2 => $val2) {
                                 if (is_array($val2)) {
@@ -165,7 +165,7 @@ class Config extends Secure_Controller
 
             foreach ($array as $key => $val) {
                 if (is_array($val)) {
-                    $license[$i]['text'] .= "component: $key\n";	//TODO: Duplicated Code.
+                    $license[$i]['text'] .= "component: $key\n";    //TODO: Duplicated Code.
 
                     foreach ($val as $key1 => $val1) {
                         if (is_array($val1)) {
@@ -193,14 +193,14 @@ class Config extends Secure_Controller
      * This function loads all the available themes in the dist/bootswatch directory
      * @return array
      */
-    private function _themes(): array	//TODO: Hungarian notation
+    private function _themes(): array    //TODO: Hungarian notation
     {
         $themes = [];
 
         // read all themes in the dist folder
         $dir = new DirectoryIterator('resources/bootswatch');
 
-        foreach ($dir as $dirinfo) {	//TODO: $dirinfo doesn't follow naming convention
+        foreach ($dir as $dirinfo) {    //TODO: $dirinfo doesn't follow naming convention
             if ($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts') {
                 $file = $dirinfo->getFileName();
                 $themes[$file] = ucfirst($file);
@@ -245,9 +245,9 @@ class Config extends Secure_Controller
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
         //Integrations Related fields
-        $data['mailchimp']	= [];
+        $data['mailchimp']    = [];
 
-        if (check_encryption()) {	//TODO: Hungarian notation
+        if (check_encryption()) {    //TODO: Hungarian notation
             if (!isset($this->encrypter)) {
                 helper('security');
                 $this->encrypter = Services::encrypter();
@@ -542,7 +542,7 @@ class Config extends Secure_Controller
     /**
      * This function fetches all the available lists from Mailchimp for the given API key
      */
-    private function _mailchimp(string $api_key = ''): array	//TODO: Hungarian notation
+    private function _mailchimp(string $api_key = ''): array    //TODO: Hungarian notation
     {
         $mailchimp_lib = new Mailchimp_lib(['api_key' => $api_key]);
 
@@ -638,7 +638,7 @@ class Config extends Secure_Controller
      *
      * @return void
      */
-    public function ajax_tax_categories(): void	//TODO: Is this function called anywhere in the code?
+    public function ajax_tax_categories(): void    //TODO: Is this function called anywhere in the code?
     {
         $tax_categories = $this->tax->get_all_tax_categories()->getResultArray();
 
@@ -661,7 +661,7 @@ class Config extends Secure_Controller
     /**
      * @return void
      */
-    private function _clear_session_state(): void	//TODO: Hungarian notation
+    private function _clear_session_state(): void    //TODO: Hungarian notation
     {
         $this->sale_lib->clear_sale_location();
         $this->sale_lib->clear_table();
@@ -730,7 +730,7 @@ class Config extends Secure_Controller
 
         if ($dinner_table_enable) {
             $not_to_delete = [];
-            foreach ($this->request->getPost() as $key => $value) {	//TODO: Not sure if this is the best way to filter the array
+            foreach ($this->request->getPost() as $key => $value) {    //TODO: Not sure if this is the best way to filter the array
                 if (strstr($key, 'dinner_table') && $key != 'dinner_table_enable') {
                     $dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
                     $not_to_delete[] = $dinner_table_id;
@@ -738,7 +738,7 @@ class Config extends Secure_Controller
                     // save or update
                     $table_data = ['name' => $value];
                     if ($this->dinner_table->save_value($table_data, $dinner_table_id)) {
-                        $this->_clear_session_state();	//TODO: Remove hungarian notation.
+                        $this->_clear_session_state();    //TODO: Remove hungarian notation.
                     }
                 }
             }
@@ -825,7 +825,7 @@ class Config extends Secure_Controller
                 foreach ($array_save as $key => $value) {
                     // save or update
                     $package_data = ['package_name' => $value['package_name'], 'points_percent' => $value['points_percent']];
-                    $this->customer_rewards->save_value($package_data, $key);	//TODO: reflection exception
+                    $this->customer_rewards->save_value($package_data, $key);    //TODO: reflection exception
                 }
             }
 

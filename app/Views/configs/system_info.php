@@ -90,7 +90,7 @@ use Config\OSPOS;
                     <?php $logs = WRITEPATH . 'logs/';
                         $uploads = FCPATH . 'uploads/';
                         $images = FCPATH . 'uploads/item_pics/';
-                        $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';	//TODO: This variable does not follow naming conventions for the project.
+                        $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';    //TODO: This variable does not follow naming conventions for the project.
 
                         if (is_writable($logs))
                         {
@@ -98,7 +98,7 @@ use Config\OSPOS;
                         }
                         else
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($logs)), -4) . ' |  ' . '<span style="color: red;">	Not Writable &#x2717 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($logs)), -4) . ' |  ' . '<span style="color: red;">    Not Writable &#x2717 </span>';
                         }
 
                         clearstatcache();
@@ -117,7 +117,7 @@ use Config\OSPOS;
                     <?php
                         if (is_writable($uploads))
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($uploads)), -4) . ' |  ' . '<span style="color: green;">	 Writable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($uploads)), -4) . ' |  ' . '<span style="color: green;">     Writable &#x2713 </span>';
                         }
                         else
                         {
@@ -142,11 +142,11 @@ use Config\OSPOS;
                     <?php
                         if (is_writable($images))
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |	 ' . '<span style="color: green;"> Writable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |     ' . '<span style="color: green;"> Writable &#x2713 </span>';
                         }
                         else
                         {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |	 ' . '<span style="color: red;"> Not Writable &#x2717 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($images)), -4) . ' |     ' . '<span style="color: red;"> Not Writable &#x2717 </span>';
                         }
 
                         clearstatcache();
@@ -166,7 +166,7 @@ use Config\OSPOS;
                     &#187; [importCustomers.csv:]
                     <?php
                         if (is_readable($importCustomers)) {
-                            echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: green;">	 Readable &#x2713 </span>';
+                            echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: green;">     Readable &#x2713 </span>';
                         } else {
                             echo ' -  ' . substr(sprintf("%o", fileperms($importCustomers)), -4) . ' |  ' . '<span style="color: red;"> Not Readable &#x2717 </span>';
                         }
@@ -233,9 +233,9 @@ use Config\OSPOS;
             });
 
             if($('#timezone').html() !== $('#ostimezone').html()) {
-				document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
-				document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?= lang('Config.timezone_error') ?></span><br><br><?= lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?= lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?= esc($config['timezone']) ?></div><br>';
-			}
+                document.getElementById("timezone").innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                document.getElementById("TimeError").innerHTML = '<span style="color: red;"><?= lang('Config.timezone_error') ?></span><br><br><?= lang('Config.user_timezone') ?><div id="timezoneE" style="font-weight:600;"></div><br><?= lang('Config.os_timezone') ?><div id="ostimezoneE" style="font-weight:600;"><?= esc($config['timezone']) ?></div><br>';
+            }
 
         </script>
 </div>

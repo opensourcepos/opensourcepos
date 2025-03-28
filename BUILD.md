@@ -23,9 +23,9 @@ The build process uses the build tools "npm" and "gulp" to piece everything toge
 2. Unzip it and copy the contents into the working folder.
 3. Start a terminal session from the root of your working folder. For example, I normally open up the working folder in PHPStorm and run the commands from the Terminal provided by the IDE.
 4. Enter the following three commands in sequence:
-	- `composer install`
-	- `npm install`
-	- `npm run build`
+    - `composer install`
+    - `npm install`
+    - `npm run build`
 
 That's all there is to it.
 

@@ -7,29 +7,29 @@ use Config\Database;
  */
 function execute_script(string $path): void
 {
-	$version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
-	error_log("Migrating to $version (file: $path)");
+    $version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
+    error_log("Migrating to $version (file: $path)");
 
-	$sql = file_get_contents($path);
-	$sqls = explode(';', $sql);
-	array_pop($sqls);
+    $sql = file_get_contents($path);
+    $sqls = explode(';', $sql);
+    array_pop($sqls);
 
-	$db = Database::connect();
+    $db = Database::connect();
 
-	foreach($sqls as $statement)
-	{
-		$statement = "$statement;";
+    foreach($sqls as $statement)
+    {
+        $statement = "$statement;";
 
-		if(!$db->simpleQuery($statement))
-		{
-			foreach($db->error() as $error)
-			{
-				error_log("error: $error");
-			}
-		}
-	}
+        if(!$db->simpleQuery($statement))
+        {
+            foreach($db->error() as $error)
+            {
+                error_log("error: $error");
+            }
+        }
+    }
 
-	error_log("Migrated to $version");
+    error_log("Migrated to $version");
 }
 
 /**
@@ -40,27 +40,27 @@ function execute_script(string $path): void
  */
 function drop_foreign_key_constraints(array $foreignKeys, string $table): void
 {
-	$db = Database::connect();
+    $db = Database::connect();
 
-	$current_prefix = $db->getPrefix();
-	$db->setPrefix('');
-	$database_name = $db->database;
+    $current_prefix = $db->getPrefix();
+    $db->setPrefix('');
+    $database_name = $db->database;
 
-	foreach ($foreignKeys as $fk)
-	{
-		$builder = $db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
-		$builder->select('CONSTRAINT_NAME');
-		$builder->where('TABLE_SCHEMA', $database_name);
-		$builder->where('TABLE_NAME', $table);
-		$builder->where('CONSTRAINT_TYPE', 'FOREIGN KEY');
-		$builder->where('CONSTRAINT_NAME', $fk);
-		$query = $builder->get();
+    foreach ($foreignKeys as $fk)
+    {
+        $builder = $db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
+        $builder->select('CONSTRAINT_NAME');
+        $builder->where('TABLE_SCHEMA', $database_name);
+        $builder->where('TABLE_NAME', $table);
+        $builder->where('CONSTRAINT_TYPE', 'FOREIGN KEY');
+        $builder->where('CONSTRAINT_NAME', $fk);
+        $query = $builder->get();
 
-		if($query->getNumRows() > 0)
-		{
-			$db->query("ALTER TABLE `$table` DROP FOREIGN KEY `$fk`");
-		}
-	}
+        if($query->getNumRows() > 0)
+        {
+            $db->query("ALTER TABLE `$table` DROP FOREIGN KEY `$fk`");
+        }
+    }
 
-	$db->setPrefix($current_prefix);
+    $db->setPrefix($current_prefix);
 }

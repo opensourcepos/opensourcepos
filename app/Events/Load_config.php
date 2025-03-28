@@ -17,42 +17,42 @@ use Config\Services;
  */
 class Load_config
 {
-	public Session $session;
+    public Session $session;
 
-	/**
-	 * Loads configuration from database into App CI config and then applies those settings
-	 */
-	public function load_config(): void
-	{
-		//Migrations
-		$migration_config = config('Migrations');
-		$migration = new MY_Migration($migration_config);
+    /**
+     * Loads configuration from database into App CI config and then applies those settings
+     */
+    public function load_config(): void
+    {
+        //Migrations
+        $migration_config = config('Migrations');
+        $migration = new MY_Migration($migration_config);
 
-		$this->session = session();
+        $this->session = session();
 
-		//Database Configuration
-		$config = config(OSPOS::class);
+        //Database Configuration
+        $config = config(OSPOS::class);
 
-		if (!$migration->is_latest())
-		{
-			$this->session->destroy();
-		}
+        if (!$migration->is_latest())
+        {
+            $this->session->destroy();
+        }
 
-		//Language
-		$language_exists = file_exists('../app/Language/' . current_language_code());
+        //Language
+        $language_exists = file_exists('../app/Language/' . current_language_code());
 
-		if(current_language_code() == null || current_language() == null || !$language_exists)	//TODO: current_language() is undefined
-		{
-			$config->settings['language'] = 'english';
-			$config->settings['language_code'] = 'en';
-		}
+        if(current_language_code() == null || current_language() == null || !$language_exists)    //TODO: current_language() is undefined
+        {
+            $config->settings['language'] = 'english';
+            $config->settings['language_code'] = 'en';
+        }
 
-		$language = Services::language();
-		$language->setLocale($config->settings['language_code']);
+        $language = Services::language();
+        $language->setLocale($config->settings['language_code']);
 
-		//Time Zone
-		date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
+        //Time Zone
+        date_default_timezone_set($config->settings['timezone'] ?? ini_get('date.timezone'));
 
-		bcscale(max(2, totals_decimals() + tax_decimals()));
-	}
+        bcscale(max(2, totals_decimals() + tax_decimals()));
+    }
 }
