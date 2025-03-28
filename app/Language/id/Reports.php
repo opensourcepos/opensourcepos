@@ -18,7 +18,7 @@ return [
     'commission' => "",
     'complete' => "Penjualan dan Retur yang sukses",
     'completed_sales' => "Penjualan yang Sukses",
-    'confirm_delete' => "Anda yakin ingin menghapus masukan terpilih?",
+    'confirm_delete' => "Anda yakin ingin menghapus yang dipilih?",
     'confirm_restore' => "Anda yakin ingin mengembalikan entri terpilih?",
     'cost' => "Grosir",
     'cost_price' => "Harga Beli",
