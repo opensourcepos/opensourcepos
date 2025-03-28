@@ -14,11 +14,12 @@ First of all, if you're seeing the message `system folder missing` after launchi
 2. Create/locate a new MySQL database to install Open Source Point of Sale into.
 3. Execute the file `app/Database/database.sql` to create the tables needed.
 4. Unzip and upload Open Source Point of Sale files to the web-server.
-5. Open `app/Config/database.php` and modify credentials to connect to your database if needed.
+5. Open `.env` file and modify credentials to connect to your database if needed.
 7. Go to your install `public` dir via the browser.
 8. Log in using
    - Username: admin
    - Password: pointofsale
+9. If everything works, then set the `CI_ENVIRONMENT` variable to `production` in the .env file
 9. Enjoy!
 10. Oops, an issue? Please make sure you read the FAQ, wiki page, and you checked open and closed issues on GitHub. PHP `display_errors` is disabled by default. Create an` app/Config/.env` file from the `.env.example` to enable it in a development environment.
 
