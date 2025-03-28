@@ -43,7 +43,6 @@ class Item extends Model
 		'hsn_code'
 	];
 
-
 	/**
 	 * Determines if a given item_id is an item
 	 */

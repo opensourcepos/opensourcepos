@@ -6,6 +6,9 @@ use CodeIgniter\Database\Migration;
 use Config\Database;
 
 class Migration_fix_keys_for_db_upgrade extends Migration {
+
+	private array $constraints;
+
 	/**
 	 * Perform a migration step.
 	 */
@@ -60,10 +63,15 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
 
 		if ( ! $result->getRowArray())
 		{
-			$this->delete_index($table, $index);
+			$constraintsDropped = $this->delete_index($table, $index);
+
 			$forge = Database::forge();
 			$forge->addPrimaryKey($table, '');
 
+			if($constraintsDropped)
+			{
+				$this->recreateConstraints($table, $index);
+			}
 		}
 	}
 
@@ -74,13 +82,81 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
 		return $row_array && $row_array['COUNT(*)'] > 0;
 	}
 
-	private function delete_index(string $table, string $index): void
+	private function delete_index(string $table, string $index): bool
 	{
-
+		$constraintsDropped = false;
 		if ($this->index_exists($table, $index))
 		{
+			$constraintsDropped = $this->dropConstraints($table, $index);
 			$forge = Database::forge();
 			$forge->dropKey($table, $index, FALSE);
+		}
+
+		return $constraintsDropped;
+	}
+
+	/**
+	 * Checks to see if a foreign key constraint exists and drops it if it does.
+	 * @param string $table The table name to check for the constraint
+	 * @param string $index The index name to check for the constraint
+	 * @return void
+	 */
+	private function dropConstraints(string $table, string $index): bool
+	{
+		$sql = "SELECT 
+			kcu.CONSTRAINT_NAME, 
+			kcu.COLUMN_NAME, 
+			kcu.TABLE_NAME, 
+			kcu.REFERENCED_COLUMN_NAME, 
+			kcu.REFERENCED_TABLE_NAME, 
+			rc.UPDATE_RULE, 
+			rc.DELETE_RULE
+			FROM information_schema.KEY_COLUMN_USAGE kcu
+			JOIN information_schema.REFERENTIAL_CONSTRAINTS rc 
+			ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME 
+			WHERE kcu.TABLE_SCHEMA = DATABASE() 
+			AND (kcu.REFERENCED_TABLE_NAME = '" . $this->db->getPrefix() . "$table' 
+			AND kcu.REFERENCED_COLUMN_NAME = '$index' 
+			OR kcu.TABLE_NAME = '" . $this->db->getPrefix() . "$table' 
+			AND kcu.COLUMN_NAME = '$index')
+		";
+		$query = $this->db->query($sql);
+		$this->constraints = $query->getResult();
+
+		$constraintsDropped = false;
+		foreach($this->constraints as $constraint)
+		{
+			$constraintName = $constraint->CONSTRAINT_NAME;
+			$referencingTable = str_replace($this->db->getPrefix(), '', $constraint->TABLE_NAME);
+
+			$forge = Database::forge();
+			if($forge->dropForeignKey($referencingTable, $constraintName))
+			{
+				$constraintsDropped = true;
+			}
+		}
+
+		return $constraintsDropped;
+	}
+
+	/**
+	 * Re-creates the missing foreign key constraint which needed to be dropped in order to add the Primary Key
+	 * @return void
+	 */
+	private function recreateConstraints(): void
+	{
+		$forge = Database::forge();
+		foreach($this->constraints as $constraint)
+		{
+			$index = $constraint->COLUMN_NAME;
+			$table = str_replace($this->db->getPrefix(), '', $constraint->TABLE_NAME);
+			$referencedTable = $constraint->REFERENCED_TABLE_NAME;
+			$constraintName = $constraint->CONSTRAINT_NAME;
+			$onUpdate = $constraint->UPDATE_RULE;
+			$onDelete = $constraint->DELETE_RULE;
+
+			$forge->addForeignKey($index, $referencedTable, $index, $onUpdate, $onDelete, $constraintName);
+			$forge->processIndexes($table);
 		}
 	}
 }
