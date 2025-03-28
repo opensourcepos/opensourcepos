@@ -29,39 +29,39 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-	}, <?php echo isset($config) ?>);
+    }, <?php echo isset($config) ?>);
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
     days: [
-		"<?= lang('Calendar.sunday') ?>",
+        "<?= lang('Calendar.sunday') ?>",
         "<?= lang('Calendar.monday') ?>",
         "<?= lang('Calendar.tuesday') ?>",
         "<?= lang('Calendar.wednesday') ?>",
         "<?= lang('Calendar.thursday') ?>",
         "<?= lang('Calendar.friday') ?>",
         "<?= lang('Calendar.saturday') ?>"
-		],
+        ],
         daysShort: [
-		"<?= lang('Calendar.sun') ?>",
+        "<?= lang('Calendar.sun') ?>",
         "<?= lang('Calendar.mon') ?>",
         "<?= lang('Calendar.tue') ?>",
         "<?= lang('Calendar.wed') ?>",
         "<?= lang('Calendar.thu') ?>",
         "<?= lang('Calendar.fri') ?>",
         "<?= lang('Calendar.sat') ?>"
-		],
+        ],
         daysMin: [
-		"<?= lang('Calendar.su') ?>",
+        "<?= lang('Calendar.su') ?>",
         "<?= lang('Calendar.mo') ?>",
         "<?= lang('Calendar.tu') ?>",
         "<?= lang('Calendar.we') ?>",
         "<?= lang('Calendar.th') ?>",
         "<?= lang('Calendar.fr') ?>",
         "<?= lang('Calendar.sa') ?>"
-		],
+        ],
         months: [
-		"<?= lang('Calendar.january') ?>",
+        "<?= lang('Calendar.january') ?>",
         "<?= lang('Calendar.february') ?>",
         "<?= lang('Calendar.march') ?>",
         "<?= lang('Calendar.april') ?>",
@@ -73,9 +73,9 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.october') ?>",
         "<?= lang('Calendar.november') ?>",
         "<?= lang('Calendar.december') ?>"
-		],
+        ],
         monthsShort: [
-		"<?= lang('Calendar.jan') ?>",
+        "<?= lang('Calendar.jan') ?>",
         "<?= lang('Calendar.feb') ?>",
         "<?= lang('Calendar.mar') ?>",
         "<?= lang('Calendar.apr') ?>",
@@ -87,7 +87,7 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.oct') ?>",
         "<?= lang('Calendar.nov') ?>",
         "<?= lang('Calendar.dec') ?>"
-		],
+        ],
     today: "<?= lang('Datepicker.today') ?>",
     <?php
         if(str_contains($config['timeformat'], 'a'))

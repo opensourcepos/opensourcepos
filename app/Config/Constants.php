@@ -83,21 +83,6 @@ defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9);      // lowest au
 defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest automatically-assigned error code
 
 /**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_LOW instead.
- */
-define('EVENT_PRIORITY_LOW', 200);
-
-/**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_NORMAL instead.
- */
-define('EVENT_PRIORITY_NORMAL', 100);
-
-/**
- * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_HIGH instead.
- */
-define('EVENT_PRIORITY_HIGH', 10);
-
-/**
  * Global Constants.
  */
 const NEW_ENTRY = -1;

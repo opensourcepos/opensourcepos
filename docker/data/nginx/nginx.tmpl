@@ -6,64 +6,64 @@ events {
 
 http {
 
-	error_log /etc/nginx/error_log.log warn;
+    error_log /etc/nginx/error_log.log warn;
 
-	server {
-		listen               80;
-		server_name          ${WEB_DOMAIN};
-		server_tokens        off;
+    server {
+        listen               80;
+        server_name          ${WEB_DOMAIN};
+        server_tokens        off;
 
-		location /.well-known/acme-challenge/ {
-			root /var/www/certbot;
-		}
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
 
-		location / {
-			return 301 https://${ESC}host${ESC}request_uri;
-		}
-	}
+        location / {
+            return 301 https://${ESC}host${ESC}request_uri;
+        }
+    }
 
-	server {
-		listen               443 ssl;
-		server_name          ${WEB_DOMAIN};
-		server_tokens        off;
-		
-		client_max_body_size 10M;
+    server {
+        listen               443 ssl;
+        server_name          ${WEB_DOMAIN};
+        server_tokens        off;
 
-		ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
-		include /etc/letsencrypt/options-ssl-nginx.conf;
-		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+        client_max_body_size 10M;
 
-		location / {
-			proxy_pass          http://ospos:80;
-			proxy_redirect      off;
-			proxy_set_header    Host                ${ESC}host;
-			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
-			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
-			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
-			proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
-		}
-	}
+        ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-	server {
-		listen               8000 ssl;
-		server_name          ${WEB_DOMAIN};
-		server_tokens        off;
+        location / {
+            proxy_pass          http://ospos:80;
+            proxy_redirect      off;
+            proxy_set_header    Host                ${ESC}host;
+            proxy_set_header    X-Real-IP           ${ESC}remote_addr;
+            proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
+            proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
+            proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
+        }
+    }
 
-		ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
-		include /etc/letsencrypt/options-ssl-nginx.conf;
-		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    server {
+        listen               8000 ssl;
+        server_name          ${WEB_DOMAIN};
+        server_tokens        off;
 
-		location / {
-			proxy_pass          http://phpmyadmin:80;
-			proxy_redirect      off;
-			proxy_set_header    Host                ${ESC}host;
-			proxy_set_header    X-Real-IP           ${ESC}remote_addr;
-			proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
-			proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
-			proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
-		}
-	}
+        ssl_certificate /etc/letsencrypt/live/${WEB_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${WEB_DOMAIN}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        location / {
+            proxy_pass          http://phpmyadmin:80;
+            proxy_redirect      off;
+            proxy_set_header    Host                ${ESC}host;
+            proxy_set_header    X-Real-IP           ${ESC}remote_addr;
+            proxy_set_header    X-Forwarded-For     ${ESC}proxy_add_x_forwarded_for;
+            proxy_set_header    X-Forwarded-Host    ${ESC}server_name;
+            proxy_set_header    X-Forwarded-Proto   ${ESC}scheme;
+        }
+    }
 
 }

@@ -9,7 +9,7 @@
 <?= view('partial/header') ?>
 
 <script type="application/javascript">
-	dialog_support.init("a.modal-dlg");
+    dialog_support.init("a.modal-dlg");
 </script>
 
 <div id="page_title"><?= esc($title) ?></div>
@@ -21,14 +21,14 @@
 <?= view($chart_type) ?>
 
 <div id="chart_report_summary">
-	<?php
-	foreach($summary_data_1 as $name => $value)
-	{
-	?>
-		<div class="summary_row"><?= lang("Reports.$name"). ': ' . to_currency($value) ?></div>
-	<?php
-	}
-	?>
+    <?php
+    foreach($summary_data_1 as $name => $value)
+    {
+    ?>
+        <div class="summary_row"><?= lang("Reports.$name"). ': ' . to_currency($value) ?></div>
+    <?php
+    }
+    ?>
 </div>
 
 <?= view('partial/footer') ?>

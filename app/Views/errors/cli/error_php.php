@@ -16,12 +16,12 @@ Line Number: <?= $line ?>
 <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE): ?>
 
 Backtrace:
-<?php	foreach (debug_backtrace() as $error): ?>
-<?php		if (isset($error['file']) && strpos($error['file'], realpath(ROOTPATH)) !== 0): ?>
-	File: <?= esc($error['file']), "\n" ?>
-	Line: <?= $error['line'], "\n" ?>
-	Function: <?= esc($error['function']), "\n\n" ?>
-<?php		endif ?>
-<?php	endforeach ?>
+<?php    foreach (debug_backtrace() as $error): ?>
+<?php        if (isset($error['file']) && strpos($error['file'], realpath(ROOTPATH)) !== 0): ?>
+    File: <?= esc($error['file']), "\n" ?>
+    Line: <?= $error['line'], "\n" ?>
+    Function: <?= esc($error['function']), "\n\n" ?>
+<?php        endif ?>
+<?php    endforeach ?>
 
 <?php endif ?>

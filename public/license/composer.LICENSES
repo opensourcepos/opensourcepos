@@ -6,7 +6,7 @@
     ],
     "dependencies": {
         "codeigniter4/framework": {
-            "version": "v4.5.5",
+            "version": "v4.6.0",
             "license": [
                 "MIT"
             ]
@@ -24,7 +24,7 @@
             ]
         },
         "laminas/laminas-escaper": {
-            "version": "2.13.0",
+            "version": "2.16.0",
             "license": [
                 "BSD-3-Clause"
             ]

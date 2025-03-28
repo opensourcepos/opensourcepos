@@ -53,9 +53,9 @@ if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) {
             $function .= $padClass . $error['function'];
         }
 
-        $args = implode(', ', array_map(static fn ($value) => match (true) {
+        $args = implode(', ', array_map(static fn ($value): string => match (true) {
             is_object($value) => 'Object(' . $value::class . ')',
-            is_array($value)  => count($value) ? '[...]' : '[]',
+            is_array($value)  => $value !== [] ? '[...]' : '[]',
             $value === null   => 'null', // return the lowercased version
             default           => var_export($value, true),
         }, array_values($error['args'] ?? [])));
