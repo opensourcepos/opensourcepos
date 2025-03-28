@@ -28,3 +28,7 @@ jobs:
         uses: dbfx/github-phplint/8.3@master
         with:
           folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
+      - name: PHP Lint 8.4
+        uses: dbfx/github-phplint/8.4@master
+        with:
+          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./folder/excluded/*\""
