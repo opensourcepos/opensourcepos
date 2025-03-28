@@ -47,8 +47,8 @@ class Database extends Config
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
-            ],
-        ];
+        ],
+    ];
 
     /**
      * This database connection is used when
@@ -110,8 +110,7 @@ class Database extends Config
         'port' => 3306,
         'foreignKeys' => true,
         'busyTimeout' => 1000,
-        'numberNative' => false,
-        'dateFormat'   => [
+        'dateFormat'  => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',

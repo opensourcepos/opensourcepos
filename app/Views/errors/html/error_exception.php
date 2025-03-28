@@ -8,7 +8,6 @@
  * @var array $trace
  */
 use CodeIgniter\HTTP\Header;
-use Config\Services;
 use CodeIgniter\CodeIgniter;
 
 $errorId = uniqid('error', true);
@@ -129,7 +128,7 @@ $errorId = uniqid('error', true);
                                         <?php
                                         $params = null;
                                         // Reflection by name is not available for closure function
-                                        if (substr($row['function'], -1) !== '}') {
+                                        if (! str_ends_with($row['function'], '}')) {
                                             $mirror = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
                                             $params = $mirror->getParameters();
                                         }
@@ -233,7 +232,7 @@ $errorId = uniqid('error', true);
 
             <!-- Request -->
             <div class="content" id="request">
-                <?php $request = Services::request(); ?>
+                <?php $request = service('request'); ?>
 
                 <table>
                     <tbody>
@@ -327,10 +326,20 @@ $errorId = uniqid('error', true);
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($headers as $header) : ?>
+                        <?php foreach ($headers as $name => $value) : ?>
                             <tr>
-                                <td><?= esc($header->getName(), 'html') ?></td>
-                                <td><?= esc($header->getValueLine(), 'html') ?></td>
+                                <td><?= esc($name, 'html') ?></td>
+                                <td>
+                                <?php
+                                if ($value instanceof Header) {
+                                    echo esc($value->getValueLine(), 'html');
+                                } else {
+                                    foreach ($value as $i => $header) {
+                                        echo ' ('. $i+1 . ') ' . esc($header->getValueLine(), 'html');
+                                    }
+                                }
+                                ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -341,7 +350,7 @@ $errorId = uniqid('error', true);
 
             <!-- Response -->
             <?php
-                $response = Services::response();
+                $response = service('response');
                 $response->setStatusCode(http_response_code());
             ?>
             <div class="content" id="response">
@@ -354,8 +363,6 @@ $errorId = uniqid('error', true);
 
                 <?php $headers = $response->headers(); ?>
                 <?php if (! empty($headers)) : ?>
-                    <?php natsort($headers) ?>
-
                     <h3>Headers</h3>
 
                     <table>
@@ -366,10 +373,20 @@ $errorId = uniqid('error', true);
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach (array_keys($headers) as $name) : ?>
+                        <?php foreach ($headers as $name => $value) : ?>
                             <tr>
                                 <td><?= esc($name, 'html') ?></td>
-                                <td><?= esc($response->getHeaderLine($name), 'html') ?></td>
+                                <td>
+                                <?php
+                                if ($value instanceof Header) {
+                                    echo esc($response->getHeaderLine($name), 'html');
+                                } else {
+                                    foreach ($value as $i => $header) {
+                                        echo ' ('. $i+1 . ') ' . esc($header->getValueLine(), 'html');
+                                    }
+                                }
+                                ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
