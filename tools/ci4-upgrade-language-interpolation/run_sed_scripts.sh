@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 #This Linux bash script is part of OSPOS CI4 Upgrade
 #Developed and tested on Fedora 38
+
 echo -n "Counting ..."
 BASEURL="../../"
 DONE=`find ${BASEURL}app/Language -name "*.php" -exec grep -oP "{[0-9]}" {} \; |   wc -l`

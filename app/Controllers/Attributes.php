@@ -48,8 +48,7 @@ class Attributes extends Secure_Controller
         $total_rows = $this->attribute->get_found_rows($search);
 
         $data_rows = [];
-        foreach($attributes->getResult() as $attribute_row)
-        {
+        foreach ($attributes->getResult() as $attribute_row) {
             $attribute_row->definition_flags = $this->get_attributes($attribute_row->definition_flags);
             $data_rows[] = get_attribute_definition_data_row($attribute_row);
         }
@@ -102,8 +101,7 @@ class Attributes extends Secure_Controller
 
         $flags = (empty($this->request->getPost('definition_flags'))) ? [] : $this->request->getPost('definition_flags', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        foreach($flags as $flag)
-        {
+        foreach ($flags as $flag) {
             $definition_flags |= $flag;
         }
 
@@ -115,22 +113,18 @@ class Attributes extends Secure_Controller
             'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
         ];
 
-        if ($this->request->getPost('definition_type') != null)
-        {
+        if ($this->request->getPost('definition_type') != null) {
             $definition_data['definition_type'] = DEFINITION_TYPES[$this->request->getPost('definition_type')];
         }
 
         $definition_name = $definition_data['definition_name'];
 
-        if($this->attribute->save_definition($definition_data, $definition_id))
-        {
+        if ($this->attribute->save_definition($definition_data, $definition_id)) {
             //New definition
-            if($definition_id == NO_DEFINITION_ID)
-            {
+            if ($definition_id == NO_DEFINITION_ID) {
                 $definition_values = json_decode(html_entity_decode($this->request->getPost('definition_values')));
 
-                foreach($definition_values as $definition_value)
-                {
+                foreach ($definition_values as $definition_value) {
                     $this->attribute->saveAttributeValue($definition_value, $definition_data['definition_id']);
                 }
 
@@ -141,8 +135,7 @@ class Attributes extends Secure_Controller
                 ]);
             }
             //Existing definition
-            else
-            {
+            else {
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
@@ -151,8 +144,7 @@ class Attributes extends Secure_Controller
             }
         }
         //Failure
-        else
-        {
+        else {
             echo json_encode([
                 'success' => false,
                 'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
@@ -194,10 +186,8 @@ class Attributes extends Secure_Controller
     private function get_attributes(int $definition_flags = 0): array
     {
         $definition_flag_names = [];
-        foreach (Attribute::get_definition_flags() as $id => $term)
-        {
-            if ($id & $definition_flags)
-            {
+        foreach (Attribute::get_definition_flags() as $id => $term) {
+            if ($id & $definition_flags) {
                 $definition_flag_names[$id] = lang('Attributes.' . strtolower($term) . '_visibility');
             }
         }
@@ -211,8 +201,7 @@ class Attributes extends Secure_Controller
     public function getView(int $definition_id = NO_DEFINITION_ID): void
     {
         $info = $this->attribute->getAttributeInfo($definition_id);
-        foreach(get_object_vars($info) as $property => $value)
-        {
+        foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
 
@@ -250,13 +239,10 @@ class Attributes extends Secure_Controller
     {
         $attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if($this->attribute->delete_definition_list($attributes_to_delete))
-        {
+        if ($this->attribute->delete_definition_list($attributes_to_delete)) {
             $message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
             echo json_encode(['success' => true, 'message' => $message]);
-        }
-        else
-        {
+        } else {
             echo json_encode(['success' => false, 'message' => lang('Attributes.definition_cannot_be_deleted')]);
         }
     }

@@ -37,7 +37,7 @@ class Item_kit_items extends Model
     /**
      * Gets item kit items for a particular item kit
      */
-    public function get_info_for_sale(int $item_kit_id): array    //TODO: This function does not seem to be called anywhere in the code
+    public function get_info_for_sale(int $item_kit_id): array    // TODO: This function does not seem to be called anywhere in the code
     {
         $builder = $this->db->table('item_kit_items');
         $builder->where('item_kit_id', $item_kit_id);
@@ -59,12 +59,10 @@ class Item_kit_items extends Model
 
         $this->delete($item_kit_id);
 
-        if($item_kit_items_data != null)
-        {
+        if ($item_kit_items_data != null) {
             $builder = $this->db->table('item_kit_items');
 
-            foreach($item_kit_items_data as $row)
-            {
+            foreach ($item_kit_items_data as $row) {
                 $row['item_kit_id'] = $item_kit_id;
                 $success &= $builder->insert($row);
             }

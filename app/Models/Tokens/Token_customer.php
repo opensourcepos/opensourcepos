@@ -39,13 +39,11 @@ class Token_customer extends Token
     {
         //substitute customer info
         $customer_id = $this->sale_lib->get_customer();
-        if($customer_id != NEW_ITEM && empty($this->customer_info))
-        {
+        if ($customer_id != NEW_ITEM && empty($this->customer_info)) {
             $customer = model(Customer::class);
             $customer_info = $customer->get_info($customer_id);
 
-            if($customer_info != '')
-            {
+            if ($customer_info != '') {
                 return trim($customer_info->first_name . ' ' . $customer_info->last_name);
             }
         }

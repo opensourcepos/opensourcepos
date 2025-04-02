@@ -3,41 +3,41 @@
  * @var array $tax_codes
  */
 ?>
+
 <?= form_open('taxes/save_tax_codes/', ['id' => 'tax_codes_form', 'class' => 'form-horizontal']) ?>
-<div id="config_wrapper">
-    <fieldset id="config_info">
-        <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <ul id="tax_codes_error_message_box" class="error_message_box"></ul>
+    <div id="config_wrapper">
+        <fieldset id="config_info">
 
-        <div id="tax_codes">
-            <?= view('partial/tax_codes', ['tax_codes' => $tax_codes]) ?>
-        </div>
+            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
+            <ul id="tax_codes_error_message_box" class="error_message_box"></ul>
 
-        <?= form_submit ([
-            'name' => 'submit_tax_codes',
-            'id' => 'submit_tax_codes',
-            'value' => lang('Common.submit'),
-            'class' => 'btn btn-primary btn-sm pull-right']) ?>
-    </fieldset>
-</div>
+            <div id="tax_codes">
+                <?= view('partial/tax_codes', ['tax_codes' => $tax_codes]) ?>
+            </div>
+
+            <?= form_submit([
+                'name' => 'submit_tax_codes',
+                'id' => 'submit_tax_codes',
+                'value' => lang('Common.submit'),
+                'class' => 'btn btn-primary btn-sm pull-right'
+            ]) ?>
+
+        </fieldset>
+    </div>
 <?= form_close() ?>
 
-<script type="application/javascript">
-    //validation and submit handling
-    $(document).ready(function()
-    {
+<script type="text/javascript">
+    // Validation and submit handling
+    $(document).ready(function() {
         var tax_code_count = <?= sizeof($tax_codes) ?>;
         if (tax_code_count == 0) {
             tax_code_count = 1;
         }
 
         var hide_show_remove_tax_code = function() {
-            if ($("input[name*='tax_code']:enabled").length > 1)
-            {
+            if ($("input[name*='tax_code']:enabled").length > 1) {
                 $(".remove_tax_code").show();
-            }
-            else
-            {
+            } else {
                 $(".remove_tax_code").hide();
             }
         };
@@ -73,8 +73,8 @@
         };
         init_add_remove_tax_codes();
 
-        // run validator once for all fields
-        $.validator.addMethod('check4TaxCodeDups' , function(value, element) {
+        // Run validator once for all fields
+        $.validator.addMethod('check4TaxCodeDups', function(value, element) {
             var value_count = 0;
             $("input[name='tax_code[]']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
@@ -93,7 +93,7 @@
         }, "<?= lang('Taxes.tax_code_invalid_chars') ?>");
 
         $.validator.addMethod('requireTaxCode', function(value, element) {
-            if (value .trim() == '') {
+            if (value.trim() == '') {
                 return false;
             }
             return true;
@@ -102,8 +102,12 @@
         $('#tax_codes_form').validate($.extend(form_support.handler, {
             submitHandler: function(form, event) {
                 $(form).ajaxSubmit({
-                    success: function(response)    {
-                        $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
+                    success: function(response) {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: response.success ? 'success' : 'danger'
+                        });
                         $("#tax_codes").load('<?= "taxes/ajax_tax_codes" ?>', init_add_remove_tax_codes);
                     },
                     dataType: 'json'
@@ -117,17 +121,14 @@
 
         <?php
         $i = 0;
-        foreach($tax_codes as $tax_code => $tax_code_data)
-        {
+        foreach ($tax_codes as $tax_code => $tax_code_data) {
         ?>
-        $('<?= '#tax_code_' . ++$i ?>').rules( "add", {
-            requireTaxCode: true,
-            check4TaxCodeDups: true,
-            validateTaxCodeCharacters: true
-        });
-        <?php
-        }
-        ?>
+            $('<?= '#tax_code_' . ++$i ?>').rules("add", {
+                requireTaxCode: true,
+                check4TaxCodeDups: true,
+                validateTaxCodeCharacters: true
+            });
+        <?php } ?>
 
     });
 </script>

@@ -1,17 +1,16 @@
-<script type="application/javascript">
-(function(lang, $) {
+<script type="text/javascript">
+    (function(lang, $) {
 
-    var lines = {
-        'common_submit' : "<?= lang('Common.submit') ?>",
-        'common_close' : "<?= lang('Common.close') ?>"
-    };
+        var lines = {
+            'common_submit': "<?= lang('Common.submit') ?>",
+            'common_close': "<?= lang('Common.close') ?>"
+        };
 
-    $.extend(lang, {
-        line: function(key) {
-            return lines[key];
-        }
-    });
+        $.extend(lang, {
+            line: function(key) {
+                return lines[key];
+            }
+        });
 
-
-})(window.lang = window.lang || {}, jQuery);
+    })(window.lang = window.lang || {}, jQuery);
 </script>

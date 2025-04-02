@@ -44,8 +44,7 @@ class Item_taxes extends Model
 
         $builder = $this->db->table('items_taxes');
 
-        foreach($items_taxes_data as $row)
-        {
+        foreach ($items_taxes_data as $row) {
             $row['item_id'] = $item_id;
             $success &= $builder->insert($row);
         }
@@ -60,21 +59,19 @@ class Item_taxes extends Model
     /**
      * Saves taxes for multiple items
      */
-    public function save_multiple(array &$items_taxes_data, string $item_ids): bool    //TODO: investigate why this is sent as a : delimited string rather than an array.
+    public function save_multiple(array &$items_taxes_data, string $item_ids): bool    // TODO: investigate why this is sent as a : delimited string rather than an array.
     {
         $success = true;
 
         //Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        foreach(explode(':', $item_ids) as $item_id)
-        {
+        foreach (explode(':', $item_ids) as $item_id) {
             $this->delete($item_id);
 
             $builder = $this->db->table('items_taxes');
 
-            foreach($items_taxes_data as $row)
-            {
+            foreach ($items_taxes_data as $row) {
                 $row['item_id'] = $item_id;
                 $success &= $builder->insert($row);
             }

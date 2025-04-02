@@ -56,19 +56,15 @@ class Receiving extends Model
      * @param string $receipt_receiving_id
      * @return bool
      */
-    public function is_valid_receipt(string $receipt_receiving_id): bool    //TODO: maybe receipt_receiving_id should be an array rather than a space delimited string
+    public function is_valid_receipt(string $receipt_receiving_id): bool    // TODO: maybe receipt_receiving_id should be an array rather than a space delimited string
     {
-        if(!empty($receipt_receiving_id))
-        {
+        if (!empty($receipt_receiving_id)) {
             //RECV #
             $pieces = explode(' ', $receipt_receiving_id);
 
-            if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0]))
-            {
+            if (count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0])) {
                 return $this->exists($pieces[1]);
-            }
-            else
-            {
+            } else {
                 return $this->get_receiving_by_reference($receipt_receiving_id)->getNumRows() > 0;
             }
         }
@@ -104,7 +100,7 @@ class Receiving extends Model
     /**
      * @throws ReflectionException
      */
-    public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, ?string $payment_type, int $receiving_id = NEW_ENTRY): int    //TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
+    public function save_value(array $items, int $supplier_id, int $employee_id, string $comment, string $reference, ?string $payment_type, int $receiving_id = NEW_ENTRY): int    // TODO: $receiving_id gets overwritten before it's evaluated. It doesn't make sense to pass this here.
     {
         $attribute = model(Attribute::class);
         $inventory = model('Inventory');
@@ -112,9 +108,8 @@ class Receiving extends Model
         $item_quantity = model(Item_quantity::class);
         $supplier = model(Supplier::class);
 
-        if(count($items) == 0)
-        {
-            return -1;    //TODO: Replace -1 with a constant
+        if (count($items) == 0) {
+            return -1;    // TODO: Replace -1 with a constant
         }
 
         $receivings_data = [
@@ -135,8 +130,7 @@ class Receiving extends Model
 
         $builder = $this->db->table('receivings_items');
 
-        foreach($items as $line => $item_data)
-        {
+        foreach ($items as $line => $item_data) {
             $config = config(OSPOS::class)->settings;
             $cur_item_info = $item->get_info($item_data['item_id']);
 
@@ -160,17 +154,18 @@ class Receiving extends Model
             $items_received = $item_data['receiving_quantity'] != 0 ? $item_data['quantity'] * $item_data['receiving_quantity'] : $item_data['quantity'];
 
             // update cost price, if changed AND is set in config as wanted
-            if($cur_item_info->cost_price != $item_data['price'] && $config['receiving_calculate_average_price'])
-            {
+            if ($cur_item_info->cost_price != $item_data['price'] && $config['receiving_calculate_average_price']) {
                 $item->change_cost_price($item_data['item_id'], $items_received, $item_data['price'], $cur_item_info->cost_price);
             }
 
             //Update stock quantity
             $item_quantity_value = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
-            $item_quantity->save_value([
-                'quantity' => $item_quantity_value->quantity + $items_received,
-                'item_id' => $item_data['item_id'],
-                'location_id' => $item_data['item_location']],
+            $item_quantity->save_value(
+                [
+                    'quantity' => $item_quantity_value->quantity + $items_received,
+                    'item_id' => $item_data['item_id'],
+                    'location_id' => $item_data['item_location']
+                ],
                 $item_data['item_id'],
                 $item_data['item_location']
             );
@@ -205,8 +200,7 @@ class Receiving extends Model
         // start a transaction to assure data integrity
         $this->db->transStart();
 
-        foreach($receiving_ids as $receiving_id)
-        {
+        foreach ($receiving_ids as $receiving_id) {
             $success &= $this->delete_value($receiving_id, $employee_id, $update_inventory);
         }
 
@@ -226,16 +220,14 @@ class Receiving extends Model
         // start a transaction to assure data integrity
         $this->db->transStart();
 
-        if($update_inventory)
-        {
-            //TODO: defect, not all item deletions will be undone? get array with all the items involved in the sale to update the inventory tracking
+        if ($update_inventory) {
+            // TODO: defect, not all item deletions will be undone? get array with all the items involved in the sale to update the inventory tracking
             $items = $this->get_receiving_items($receiving_id)->getResultArray();
 
             $inventory = model('Inventory');
             $item_quantity = model(Item_quantity::class);
 
-            foreach($items as $item)
-            {
+            foreach ($items as $item) {
                 // create query to update inventory tracking
                 $inv_data = [
                     'trans_date' => date('Y-m-d H:i:s'),
@@ -314,14 +306,11 @@ class Receiving extends Model
         $config = config(OSPOS::class)->settings;
         $db_prefix = $this->db->getPrefix();
 
-        if(empty($inputs['receiving_id']))
-        {
+        if (empty($inputs['receiving_id'])) {
             $where = empty($config['date_or_time_format'])
                 ? 'DATE(`receiving_time`) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date'])
                 : 'receiving_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
-        }
-        else
-        {
+        } else {
             $where = 'receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
         }
 
@@ -336,20 +325,20 @@ class Receiving extends Model
             'MAX(`payment_type`) AS payment_type',
             'MAX(`employee_id`) AS employee_id',
             'items.item_id AS item_id',
-            'MAX(`'. $db_prefix .'receivings`.`supplier_id`) AS supplier_id',
+            'MAX(`' . $db_prefix . 'receivings`.`supplier_id`) AS supplier_id',
             'MAX(`quantity_purchased`) AS quantity_purchased',
-            'MAX(`'. $db_prefix .'receivings_items`.`receiving_quantity`) AS item_receiving_quantity',
+            'MAX(`' . $db_prefix . 'receivings_items`.`receiving_quantity`) AS item_receiving_quantity',
             'MAX(`item_cost_price`) AS item_cost_price',
             'MAX(`item_unit_price`) AS item_unit_price',
             'MAX(`discount`) AS discount',
             'MAX(`discount_type`) AS discount_type',
             'receivings_items.line AS line',
             'MAX(`serialnumber`) AS serialnumber',
-            'MAX(`'. $db_prefix .'receivings_items`.`description`) AS description',
-            'MAX(CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
-            'MAX(CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `discount` END) AS total',
-            'MAX((CASE WHEN `'. $db_prefix .'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` - discount END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
-            'MAX(`item_cost_price` * `quantity_purchased` * `'. $db_prefix .'receivings_items`.`receiving_quantity` ) AS cost'
+            'MAX(`' . $db_prefix . 'receivings_items`.`description`) AS description',
+            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS subtotal',
+            'MAX(CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `discount` END) AS total',
+            'MAX((CASE WHEN `' . $db_prefix . 'receivings_items`.`discount_type` = ' . PERCENT . ' THEN `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` * `discount` / 100 ELSE `item_unit_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` - discount END) - (`item_cost_price` * `quantity_purchased`)) AS profit',
+            'MAX(`item_cost_price` * `quantity_purchased` * `' . $db_prefix . 'receivings_items`.`receiving_quantity` ) AS cost'
         ]);
         $builder->join('receivings', 'receivings_items.receiving_id = receivings.receiving_id', 'inner');
         $builder->join('items', 'receivings_items.item_id = items.item_id', 'inner');

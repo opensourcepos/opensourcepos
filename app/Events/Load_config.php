@@ -33,15 +33,14 @@ class Load_config
         //Database Configuration
         $config = config(OSPOS::class);
 
-        if (!$migration->is_latest())
-        {
+        if (!$migration->is_latest()) {
             $this->session->destroy();
         }
 
         //Language
         $language_exists = file_exists('../app/Language/' . current_language_code());
 
-        if(current_language_code() == null || current_language() == null || !$language_exists)    //TODO: current_language() is undefined
+        if (current_language_code() == null || current_language() == null || !$language_exists)    // TODO: current_language() is undefined
         {
             $config->settings['language'] = 'english';
             $config->settings['language_code'] = 'en';

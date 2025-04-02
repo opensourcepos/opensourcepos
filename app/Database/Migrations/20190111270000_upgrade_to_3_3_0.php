@@ -18,8 +18,5 @@ class Migration_Upgrade_To_3_3_0 extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

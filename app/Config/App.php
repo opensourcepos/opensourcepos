@@ -277,7 +277,7 @@ class App extends BaseConfig
      * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
      * @see http://www.w3.org/TR/CSP/
      */
-    public bool $CSPEnabled = false;    //TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
+    public bool $CSPEnabled = false;    // TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
 
     public function __construct()
     {

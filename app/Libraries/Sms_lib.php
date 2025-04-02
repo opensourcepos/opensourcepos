@@ -27,8 +27,7 @@ class Sms_lib
         $encrypter = Services::encrypter();
 
         $password = $config['msg_pwd'];
-        if(!empty($password))
-        {
+        if (!empty($password)) {
             $password = $encrypter->decrypt($password);
         }
 
@@ -38,22 +37,19 @@ class Sms_lib
         $response = false;
 
         // if any of the parameters is empty return with a false
-        if(empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator))    //TODO: This if/else needs to be flipped. and shortened.  No else needed in the code example below.
+        if (empty($username) || empty($password) || empty($phone) || empty($message) || empty($originator)) {    // TODO: This if/else needs to be flipped. and shortened.  No else needed in the code example below.
             //$parameters = [$username, $password, $phone, $message, $originator];
             //if(count(array_filter($parameters)) === 5)
             //{
             //    $response = true;
             //    $message = rawurlencode($message);
             //}
-        {
             //echo $username . ' ' . $password . ' ' . $phone . ' ' . $message . ' ' . $originator;
-        }
-        else
-        {
+        } else {
             $response = true;
-//TODO: These comments should be moved to the documentation.  As is, they tend to get out of date.
+            // TODO: These comments should be moved to the documentation.  As is, they tend to get out of date.
             // make sure passed string is url encoded
-            $message = rawurlencode($message);    //TODO: $message needs to be passed by reference if you want this line to actually do anything
+            $message = rawurlencode($message);    // TODO: $message needs to be passed by reference if you want this line to actually do anything
 
             // add call to send a message via 3rd party API here
             // Some examples

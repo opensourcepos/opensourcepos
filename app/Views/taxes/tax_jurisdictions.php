@@ -4,29 +4,32 @@
  * @var string $tax_type_options
  */
 ?>
+
 <?= form_open('taxes/save_tax_jurisdictions/', ['id' => 'tax_jurisdictions_form', 'class' => 'form-horizontal']) ?>
-<div id="config_wrapper">
-    <fieldset id="config_info">
-        <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
+    <div id="config_wrapper">
+        <fieldset id="config_info">
 
-        <div id="tax_jurisdictions">
-            <?= view('partial/tax_jurisdictions') ?>
-        </div>
+            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
+            <ul id="tax_jurisdictions_error_message_box" class="error_message_box"></ul>
 
-        <?= form_submit ([
-            'name' => 'submit_tax_jurisdictions',
-            'id' => 'submit_tax_jurisdictions',
-            'value' => lang('Common.submit'),
-            'class' => 'btn btn-primary btn-sm pull-right']) ?>
-    </fieldset>
-</div>
+            <div id="tax_jurisdictions">
+                <?= view('partial/tax_jurisdictions') ?>
+            </div>
+
+            <?= form_submit([
+                'name' => 'submit_tax_jurisdictions',
+                'id' => 'submit_tax_jurisdictions',
+                'value' => lang('Common.submit'),
+                'class' => 'btn btn-primary btn-sm pull-right'
+            ]) ?>
+
+        </fieldset>
+    </div>
 <?= form_close() ?>
 
-<script type="application/javascript">
-    //validation and submit handling
-    $(document).ready(function()
-    {
+<script type="text/javascript">
+    // Validation and submit handling
+    $(document).ready(function() {
         var tax_jurisdictions_count = <?= sizeof($tax_jurisdictions) ?>;
         if (tax_jurisdictions_count == 0) {
             tax_jurisdictions_count = 1;
@@ -34,12 +37,9 @@
         var tax_type_options = '<?= esc($tax_type_options, 'js') ?>';
 
         var hide_show_remove_tax_jurisdiction = function() {
-            if ($("input[name*='tax_jurisdiction']:enabled").length > 1)
-            {
+            if ($("input[name*='tax_jurisdiction']:enabled").length > 1) {
                 $(".remove_tax_jurisdiction").show();
-            }
-            else
-            {
+            } else {
                 $(".remove_tax_jurisdictions").hide();
             }
         };
@@ -77,8 +77,8 @@
         };
         init_add_remove_tax_jurisdiction();
 
-        // run validator once for all fields
-        $.validator.addMethod('check4TaxJurisdictionDups' , function(value, element) {
+        // Run validator once for all fields
+        $.validator.addMethod('check4TaxJurisdictionDups', function(value, element) {
             var value_count = 0;
             $("input[name='jurisdiction_name[]']").each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
@@ -97,7 +97,7 @@
         }, "<?= lang('Taxes.tax_jurisdiction_invalid_chars') ?>");
 
         $.validator.addMethod('requireTaxJurisdiction', function(value, element) {
-            if (value .trim() == '') {
+            if (value.trim() == '') {
                 return false;
             }
             return true;
@@ -106,8 +106,12 @@
         $('#tax_jurisdictions_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
-                    success: function(response)    {
-                        $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
+                    success: function(response) {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: response.success ? 'success' : 'danger'
+                        });
                         $("#tax_jurisdictions").load('<?= esc("taxes/ajax_tax_jurisdictions") ?>', init_add_remove_tax_jurisdiction);
                     },
                     dataType: 'json'
@@ -121,16 +125,13 @@
 
         <?php
         $i = 0;
-        foreach($tax_jurisdictions as $tax_jurisdiction => $tax_jurisdiction_data)
-        {
+        foreach ($tax_jurisdictions as $tax_jurisdiction => $tax_jurisdiction_data) {
         ?>
-        $('<?= '#jurisdiction_name_' . ++$i ?>').rules( "add", {
-            requireTaxJurisdiction: true,
-            check4TaxJurisdictionDups: true,
-            validateTaxJurisdictionCharacters: true
-        });
-        <?php
-        }
-        ?>
+            $('<?= '#jurisdiction_name_' . ++$i ?>').rules("add", {
+                requireTaxJurisdiction: true,
+                check4TaxJurisdictionDups: true,
+                validateTaxJurisdictionCharacters: true
+            });
+        <?php } ?>
     });
 </script>

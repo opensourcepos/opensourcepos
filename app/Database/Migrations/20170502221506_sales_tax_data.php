@@ -13,7 +13,7 @@ use CodeIgniter\Database\ResultInterface;
  */
 class Migration_Sales_Tax_Data extends Migration
 {
-    public const ROUND_UP = 5;    //TODO: These need to be moved to constants.php
+    public const ROUND_UP = 5;    // TODO: These need to be moved to constants.php
     public const ROUND_DOWN = 6;
     public const HALF_FIVE = 7;
     public const YES = '1';
@@ -26,7 +26,7 @@ class Migration_Sales_Tax_Data extends Migration
         parent::__construct();
         $this->appconfig = model(Appconfig::class);
     }
-//TODO: we need to figure out why we get a server error when uncommented portions of this migration run
+    // TODO: we need to figure out why we get a server error when uncommented portions of this migration run
 
     /**
      * Perform a migration step.
@@ -36,12 +36,10 @@ class Migration_Sales_Tax_Data extends Migration
         $number_of_unmigrated = $this->get_count_of_unmigrated();
         error_log("Migrating sales tax history. The number of sales that will be migrated is $number_of_unmigrated");
 
-        if($number_of_unmigrated > 0)
-        {
+        if ($number_of_unmigrated > 0) {
             $unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->getResultArray();
 
-            foreach($unmigrated_invoices as $key => $unmigrated_invoice)
-            {
+            foreach ($unmigrated_invoices as $key => $unmigrated_invoice) {
                 $this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
             }
         }
@@ -52,9 +50,7 @@ class Migration_Sales_Tax_Data extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 
     /**
      * @param int $sale_id
@@ -66,12 +62,10 @@ class Migration_Sales_Tax_Data extends Migration
         $tax_included = $this->appconfig->get_value('tax_included', Migration_Sales_Tax_Data::YES) == Migration_Sales_Tax_Data::YES;
         $customer_sales_tax_support = false;
 
-        if($tax_included)    //TODO: Convert to ternary notation.
+        if ($tax_included)    // TODO: Convert to ternary notation.
         {
             $tax_type = Migration_Sales_Tax_Data::VAT_TAX;
-        }
-        else
-        {
+        } else {
             $tax_type = Migration_Sales_Tax_Data::SALES_TAX;
         }
 
@@ -79,8 +73,7 @@ class Migration_Sales_Tax_Data extends Migration
         $tax_group_sequence = 0;
         $items = $this->get_sale_items_for_migration($sale_id)->getResultArray();
 
-        foreach($items as $item)
-        {
+        foreach ($items as $item) {
             // This computes tax for each line item and adds it to the tax type total
             $tax_group = (float)$item['percent'] . '% ' . $item['name'];
             $tax_basis = $this->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], true);
@@ -94,7 +87,7 @@ class Migration_Sales_Tax_Data extends Migration
             $tax_group_sequence++;
         }
         //Not sure when this would ever kick in, but this is technically the correct logic.
-        if($customer_sales_tax_support)    //TODO: This will always evaluate to false
+        if ($customer_sales_tax_support)    // TODO: This will always evaluate to false
         {
             $this->apply_invoice_taxing($sales_taxes);
         }
@@ -112,7 +105,7 @@ class Migration_Sales_Tax_Data extends Migration
         $builder = $this->db->table('sales_items_taxes as SIT');
         $builder->select('SIT.sale_id');
         $builder->select('ST.sale_id as sales_taxes_sale_id');
-        $builder->join('sales_taxes as ST','SIT.sale_id = ST.sale_id', 'left');
+        $builder->join('sales_taxes as ST', 'SIT.sale_id = ST.sale_id', 'left');
         $builder->where('ST.sale_id', null);
         $builder->groupBy('SIT.sale_id');
         $builder->groupBy('ST.sale_id');
@@ -154,8 +147,7 @@ class Migration_Sales_Tax_Data extends Migration
             . ' as ST ON SIT.sale_id = ST.sale_id WHERE ST.sale_id is null GROUP BY SIT.sale_id, ST.sale_id'
             . ' ORDER BY SIT.sale_id) as US')->getResultArray();
 
-        if(!$result)
-        {
+        if (!$result) {
             error_log('Database error in 20170502221506_sales_tax_data.php related to sales_taxes or sales_items_taxes.');
             return 0;
         }
@@ -190,8 +182,7 @@ class Migration_Sales_Tax_Data extends Migration
     {
         $builder = $this->db->Table('sales_taxes');
 
-        foreach($sales_taxes as $line => $sales_tax)
-        {
+        foreach ($sales_taxes as $line => $sales_tax) {
             $builder->insert($sales_tax);
         }
     }
@@ -207,8 +198,7 @@ class Migration_Sales_Tax_Data extends Migration
     {
         $total = bcmul($quantity, $price);
 
-        if($include_discount)
-        {
+        if ($include_discount) {
             $discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
             return bcsub($total, $discount_amount);
         }
@@ -228,7 +218,7 @@ class Migration_Sales_Tax_Data extends Migration
         $discount_fraction = bcdiv($discount, 100);
         $discount = bcmul($total, $discount_fraction);
 
-        return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);    //TODO: I don't think this is currency safe.  Round will cast it's first parameter to a float. It also returns a float.
+        return round($discount, totals_decimals(), PHP_ROUND_HALF_UP);    // TODO: I don't think this is currency safe.  Round will cast it's first parameter to a float. It also returns a float.
     }
 
     /**
@@ -244,8 +234,7 @@ class Migration_Sales_Tax_Data extends Migration
 
         $price = $this->get_item_total($quantity, $price, $discount_percentage, true);
 
-        if($tax_included)
-        {
+        if ($tax_included) {
             $tax_fraction = bcadd('100', $tax_percentage);
             $tax_fraction = bcdiv($tax_fraction, '100');
             $price_tax_excl = bcdiv($price, $tax_fraction);
@@ -280,26 +269,19 @@ class Migration_Sales_Tax_Data extends Migration
      */
     public function round_number(int $rounding_mode, string $amount, int $decimals): float
     {
-        if($rounding_mode == Migration_Sales_Tax_Data::ROUND_UP)
-        {
-            $fig = pow(10,$decimals);
-            $rounded_total = (ceil($fig * $amount) + ceil($fig * $amount - ceil($fig * $amount)))/$fig;
-        }
-        elseif($rounding_mode == Migration_Sales_Tax_Data::ROUND_DOWN)
-        {
-            $fig = pow(10,$decimals);
-            $rounded_total = (floor($fig * $amount) + floor($fig * $amount - floor($fig * $amount)))/$fig;
-        }
-        elseif($rounding_mode == Migration_Sales_Tax_Data::HALF_FIVE)
-        {
+        if ($rounding_mode == Migration_Sales_Tax_Data::ROUND_UP) {
+            $fig = pow(10, $decimals);
+            $rounded_total = (ceil($fig * $amount) + ceil($fig * $amount - ceil($fig * $amount))) / $fig;
+        } elseif ($rounding_mode == Migration_Sales_Tax_Data::ROUND_DOWN) {
+            $fig = pow(10, $decimals);
+            $rounded_total = (floor($fig * $amount) + floor($fig * $amount - floor($fig * $amount))) / $fig;
+        } elseif ($rounding_mode == Migration_Sales_Tax_Data::HALF_FIVE) {
             $rounded_total = round($amount / 5) * 5;
-        }
-        else
-        {
+        } else {
             $rounded_total = round($amount, $decimals, $rounding_mode);
         }
 
-        return $rounded_total;    //TODO: I don't think this is currency safe.  I think we need to be using bcmath() functions like we are in the rest of the code.
+        return $rounded_total;    // TODO: I don't think this is currency safe.  I think we need to be using bcmath() functions like we are in the rest of the code.
     }
 
     /**
@@ -318,10 +300,9 @@ class Migration_Sales_Tax_Data extends Migration
      */
     public function update_sales_taxes(array &$sales_taxes, string $tax_type, string $tax_group, float $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', string $tax_code = ''): void
     {
-        $tax_group_index = $this->clean('X'.$tax_group);
-        if(!array_key_exists($tax_group_index, $sales_taxes))
-        {
-            $insertkey = $tax_group_index;    //TODO: $insertkey does not follow naming conventions.
+        $tax_group_index = $this->clean('X' . $tax_group);
+        if (!array_key_exists($tax_group_index, $sales_taxes)) {
+            $insertkey = $tax_group_index;    // TODO: $insertkey does not follow naming conventions.
             $sales_tax = [
                 $insertkey => [
                     'sale_id' => $sale_id,
@@ -338,9 +319,7 @@ class Migration_Sales_Tax_Data extends Migration
             ];
             //add to existing array
             $sales_taxes += $sales_tax;
-        }
-        else
-        {
+        } else {
             // Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
             // but the scale will in reality be the scale specified by the tax_decimal configuration value used for sales_items_taxes
             $sales_taxes[$tax_group_index]['sale_tax_basis'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
@@ -352,7 +331,7 @@ class Migration_Sales_Tax_Data extends Migration
      * @param string $string
      * @return string
      */
-    public function clean(string $string): string    //TODO: $string is not a good name for this variable
+    public function clean(string $string): string    // TODO: $string is not a good name for this variable
     {
         $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
@@ -365,12 +344,11 @@ class Migration_Sales_Tax_Data extends Migration
      */
     public function apply_invoice_taxing(array &$sales_taxes): void
     {
-        if(!empty($sales_taxes))    //TODO: Duplicated code
+        if (!empty($sales_taxes))    // TODO: Duplicated code
         {
             $sort = [];
 
-            foreach($sales_taxes as $key => $value)
-            {
+            foreach ($sales_taxes as $key => $value) {
                 $sort['print_sequence'][$key] = $value['print_sequence'];
             }
 
@@ -379,8 +357,7 @@ class Migration_Sales_Tax_Data extends Migration
 
         $decimals = totals_decimals();
 
-        foreach($sales_taxes as $row_number => $sales_tax)
-        {
+        foreach ($sales_taxes as $row_number => $sales_tax) {
             $sales_taxes[$row_number]['sale_tax_amount'] = $this->get_sales_tax_for_amount($sales_tax['sale_tax_basis'], $sales_tax['tax_rate'], $sales_tax['rounding_code'], $decimals);
         }
     }
@@ -391,11 +368,9 @@ class Migration_Sales_Tax_Data extends Migration
      */
     public function round_sales_taxes(array &$sales_taxes): void
     {
-        if(!empty($sales_taxes))
-        {
+        if (!empty($sales_taxes)) {
             $sort = [];
-            foreach($sales_taxes as $k=>$v)
-            {
+            foreach ($sales_taxes as $k => $v) {
                 $sort['print_sequence'][$k] = $v['print_sequence'];
             }
             array_multisort($sort['print_sequence'], SORT_ASC, $sales_taxes);
@@ -403,31 +378,25 @@ class Migration_Sales_Tax_Data extends Migration
 
         $decimals = totals_decimals();
 
-        foreach($sales_taxes as $row_number => $sales_tax)
-        {
+        foreach ($sales_taxes as $row_number => $sales_tax) {
             $sale_tax_amount = $sales_tax['sale_tax_amount'];
             $rounding_code = $sales_tax['rounding_code'];
             $rounded_sale_tax_amount = $sale_tax_amount;
 
-            if ($rounding_code == PHP_ROUND_HALF_UP
+            if (
+                $rounding_code == PHP_ROUND_HALF_UP
                 || $rounding_code == PHP_ROUND_HALF_DOWN
                 || $rounding_code == PHP_ROUND_HALF_EVEN
-                || $rounding_code == PHP_ROUND_HALF_ODD)
-            {
+                || $rounding_code == PHP_ROUND_HALF_ODD
+            ) {
                 $rounded_sale_tax_amount = round($sale_tax_amount, $decimals, $rounding_code);
-            }
-            elseif($rounding_code == Migration_Sales_Tax_Data::ROUND_UP)
-            {
+            } elseif ($rounding_code == Migration_Sales_Tax_Data::ROUND_UP) {
                 $fig = (int) str_pad('1', $decimals, '0');
                 $rounded_sale_tax_amount = (ceil($sale_tax_amount * $fig) / $fig);
-            }
-            elseif($rounding_code == Migration_Sales_Tax_Data::ROUND_DOWN)
-            {
+            } elseif ($rounding_code == Migration_Sales_Tax_Data::ROUND_DOWN) {
                 $fig = (int) str_pad('1', $decimals, '0');
                 $rounded_sale_tax_amount = (floor($sale_tax_amount * $fig) / $fig);
-            }
-            elseif($rounding_code == Migration_Sales_Tax_Data::HALF_FIVE)
-            {
+            } elseif ($rounding_code == Migration_Sales_Tax_Data::HALF_FIVE) {
                 $rounded_sale_tax_amount = round($sale_tax_amount / 5) * 5;
             }
 

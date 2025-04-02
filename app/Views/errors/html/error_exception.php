@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var string $title
  * @var object $exception
@@ -7,6 +6,7 @@
  * @var string $line
  * @var array $trace
  */
+
 use CodeIgniter\HTTP\Header;
 use Config\Services;
 use CodeIgniter\CodeIgniter;
@@ -65,21 +65,18 @@ $errorId = uniqid('error', true);
 
         while ($prevException = $last->getPrevious()) {
             $last = $prevException;
-            ?>
-
-    <pre>
-    Caused by:
-    <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
-
-    <?= nl2br(esc($prevException->getMessage())) ?>
-    <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
-       rel="noreferrer" target="_blank">search &rarr;</a>
-    <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
-    </pre>
-
-        <?php
-        }
         ?>
+
+            <pre>
+                Caused by:
+                <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
+
+                <?= nl2br(esc($prevException->getMessage())) ?>
+                <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>" rel="noreferrer" target="_blank">search &rarr;</a>
+                <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
+            </pre>
+
+        <?php } ?>
     </div>
 
     <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) : ?>

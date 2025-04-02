@@ -9,6 +9,7 @@
  * @var array $config
  */
 ?>
+
 <?= view('partial/header') ?>
 
 <div id="page_title"><?= esc($title) ?></div>
@@ -20,40 +21,24 @@
 </div>
 
 <div id="report_summary">
-    <?php
-        foreach($overall_summary_data as $name => $value)
-        {
-        ?>
-            <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
-        <?php
-        }
-    ?>
+    <?php foreach ($overall_summary_data as $name => $value) { ?>
+        <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+    <?php } ?>
 </div>
 
-<script type="application/javascript">
-    $(document).ready(function()
-    {
-         <?= view('partial/bootstrap_tables_locale') ?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        <?= view('partial/bootstrap_tables_locale') ?>
 
         var details_data = <?= json_encode(esc($details_data)) ?>;
-        <?php
-        if($config['customer_reward_enable'] && !empty($details_data_rewards))
-        {
-        ?>
+        <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
             var details_data_rewards = <?= json_encode(esc($details_data_rewards)) ?>;
-        <?php
-        }
-        ?>
+        <?php } ?>
         var init_dialog = function() {
-            <?php
-            if(isset($editable))
-            {
-            ?>
+            <?php if (isset($editable)) { ?>
                 table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row'), 'url') ?>');
                 dialog_support.init("a.modal-dlg");
-            <?php
-            }
-            ?>
+            <?php } ?>
         };
 
         $('#table')
@@ -80,25 +65,20 @@
                 onPostBody: function() {
                     dialog_support.init("a.modal-dlg");
                 },
-                onExpandRow: function (index, row, $detail) {
+                onExpandRow: function(index, row, $detail) {
                     $detail.html('<table></table>').find("table").bootstrapTable({
                         columns: <?= transform_headers_readonly(esc($headers['details'])) ?>,
                         data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
                     });
 
-                    <?php
-                    if($config['customer_reward_enable'] && !empty($details_data_rewards))
-                    {
-                    ?>
+                    <?php if ($config['customer_reward_enable'] && !empty($details_data_rewards)) { ?>
                         $detail.append('<table></table>').find("table").bootstrapTable({
                             columns: <?= transform_headers_readonly(esc($headers['details_rewards'])) ?>,
                             data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
                         });
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                 }
-        });
+            });
 
         init_dialog();
     });

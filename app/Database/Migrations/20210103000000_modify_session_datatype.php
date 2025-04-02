@@ -22,7 +22,5 @@ class Migration_modify_session_datatype extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 }

@@ -8,7 +8,7 @@ use CodeIgniter\Model;
  * Rewards class
  */
 
-class Rewards extends Model    //TODO: This class is named with plural while the general practice is to name models singular
+class Rewards extends Model    // TODO: This class is named with plural while the general practice is to name models singular
 {
     protected $table = 'sales_reward_points';
     protected $primaryKey = 'id';
@@ -26,10 +26,8 @@ class Rewards extends Model    //TODO: This class is named with plural while the
     public function save_value(array &$rewards_data, bool $rewards_id = false): bool
     {
         $builder = $this->db->table('sales_reward_points');
-        if(!$rewards_id || !$this->exists($rewards_id))        //TODO: looks like we are missing the exists function in this class
-        {
-            if($builder->insert($rewards_data))
-            {
+        if (!$rewards_id || !$this->exists($rewards_id)) {    // TODO: looks like we are missing the exists function in this class
+            if ($builder->insert($rewards_data)) {
                 $rewards_data['id'] = $this->db->insertID();
 
                 return true;
