@@ -32,17 +32,17 @@
     },
     "require": {
         "php": "^8.1",
-        "codeigniter4/framework": "4.5.5",
+        "codeigniter4/framework": "4.6.0",
         "dompdf/dompdf": "^2.0.3",
         "ezyang/htmlpurifier": "^4.17",
-        "laminas/laminas-escaper": "^2.13",
+        "laminas/laminas-escaper": "2.16.0",
         "paragonie/random_compat": "^2.0.21",
         "picqer/php-barcode-generator": "^2.4.0",
         "tamtamchik/namecase": "^3.0.0"
     },
     "require-dev": {
-        "codeigniter/coding-standard": "^1.7",
-        "codeigniter4/devkit": "^1.2.3",
+        "codeigniter/coding-standard": "^1.8",
+        "codeigniter4/devkit": "^1.3",
         "fakerphp/faker": "^1.23.0",
         "friendsofphp/php-cs-fixer": "^3.47.1",
         "kint-php/kint": "^5.0.4",
