@@ -14,7 +14,12 @@ class Migration_Attributes_fix_cascading_delete extends Migration
     public function up(): void
     {
         helper('migration');
+
+        $this->db->query("ALTER TABLE `ospos_attribute_links` DROP INDEX `attribute_links_uq3`");
+        $this->db->query("ALTER TABLE `ospos_attribute_links` DROP COLUMN `generated_unique_column`");
+
         drop_foreign_key_constraints(['ospos_attribute_links_ibfk_1', 'ospos_attribute_links_ibfk_2'], 'ospos_attribute_links');
+
         $this->db->query("ALTER TABLE `ospos_attribute_links` ADD CONSTRAINT `ospos_attribute_links_ibfk_1` FOREIGN KEY (`definition_id`) REFERENCES `ospos_attribute_definitions` (`definition_id`) ON DELETE CASCADE;");
         $this->db->query("ALTER TABLE `ospos_attribute_links` ADD CONSTRAINT `ospos_attribute_links_ibfk_2` FOREIGN KEY (`attribute_id`) REFERENCES `ospos_attribute_values` (`attribute_id`) ON DELETE CASCADE;");
     }
