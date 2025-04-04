@@ -34,8 +34,7 @@ class Messages extends Secure_Controller
         $person = model(Person::class);
         $info = $person->get_info($person_id);
 
-        foreach(get_object_vars($info) as $property => $value)
-        {
+        foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
         $data['person_info'] = $info;
@@ -53,13 +52,10 @@ class Messages extends Secure_Controller
 
         $response = $this->sms_lib->sendSMS($phone, $message);
 
-        if($response)
-        {
-            echo json_encode (['success' => true, 'message' => lang('Messages.successfully_sent') . ' ' . esc($phone)]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone)]);
+        if ($response) {
+            echo json_encode(['success' => true, 'message' => lang('Messages.successfully_sent') . ' ' . esc($phone)]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone)]);
         }
     }
 
@@ -77,17 +73,14 @@ class Messages extends Secure_Controller
 
         $response = $this->sms_lib->sendSMS($phone, $message);
 
-        if($response)
-        {
-            echo json_encode ([
+        if ($response) {
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Messages.successfully_sent') . ' ' . esc($phone),
                 'person_id' => $person_id
             ]);
-        }
-        else
-        {
-            echo json_encode ([
+        } else {
+            echo json_encode([
                 'success' => false,
                 'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone),
                 'person_id' => NEW_ENTRY

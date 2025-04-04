@@ -18,8 +18,5 @@ class Migration_decimal_attribute_type extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

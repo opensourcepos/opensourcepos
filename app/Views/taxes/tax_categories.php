@@ -3,42 +3,41 @@
  * @var array $tax_categories
  */
 ?>
+
 <?= form_open('taxes/save_tax_categories/', ['id' => 'tax_categories_form', 'class' => 'form-horizontal']) ?>
-<div id="config_wrapper">
-    <fieldset id="config_info">
-        <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-        <ul id="tax_categories_error_message_box" class="error_message_box"></ul>
+    <div id="config_wrapper">
+        <fieldset id="config_info">
 
-        <div id="tax_categories">
-            <?= view('partial/tax_categories') ?>
-        </div>
+            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
+            <ul id="tax_categories_error_message_box" class="error_message_box"></ul>
 
-        <?= form_submit([
-            'name' => 'submit_tax_categories',
-            'id' => 'submit_tax_categories',
-            'value' => lang('Common.submit'),
-            'class' => 'btn btn-primary btn-sm pull-right'
-        ]) ?>
-    </fieldset>
-</div>
+            <div id="tax_categories">
+                <?= view('partial/tax_categories') ?>
+            </div>
+
+            <?= form_submit([
+                'name' => 'submit_tax_categories',
+                'id' => 'submit_tax_categories',
+                'value' => lang('Common.submit'),
+                'class' => 'btn btn-primary btn-sm pull-right'
+            ]) ?>
+
+        </fieldset>
+    </div>
 <?= form_close() ?>
 
-<script type="application/javascript">
-    //validation and submit handling
-    $(document).ready(function()
-    {
+<script type="text/javascript">
+    // Validation and submit handling
+    $(document).ready(function() {
         var tax_categories_count = <?= sizeof($tax_categories) ?>;
         if (tax_categories_count == 0) {
             tax_categories_count = 1;
         }
 
         var hide_show_remove_tax_category = function() {
-            if ($("input[name*='tax_category']:enabled").length > 1)
-            {
+            if ($("input[name*='tax_category']:enabled").length > 1) {
                 $(".remove_tax_category").show();
-            }
-            else
-            {
+            } else {
                 $(".remove_tax_category").hide();
             }
         };
@@ -74,8 +73,8 @@
 
         var duplicate_found = false;
 
-        // run validator once for all fields
-        $.validator.addMethod("check4TaxCategoryDups" , function(value, element) {
+        // Run validator once for all fields
+        $.validator.addMethod("check4TaxCategoryDups", function(value, element) {
             var value_count = 0;
             $('input[name="tax_category[]"]').each(function() {
                 value_count = $(this).val() == value ? value_count + 1 : value_count;
@@ -94,7 +93,7 @@
         }, "<?= lang('Taxes.tax_category_invalid_chars') ?>");
 
         $.validator.addMethod('requireTaxCategory', function(value, element) {
-            if (value .trim() == '') {
+            if (value.trim() == '') {
                 return false;
             }
             return true;
@@ -103,8 +102,12 @@
         $('#tax_categories_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
-                    success: function(response)    {
-                        $.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
+                    success: function(response) {
+                        $.notify({
+                            message: response.message
+                        }, {
+                            type: response.success ? 'success' : 'danger'
+                        });
                         $("#tax_categories").load('<?= esc("taxes/ajax_tax_categories") ?>', init_add_remove_tax_categories);
                     },
                     dataType: 'json'
@@ -118,17 +121,14 @@
 
         <?php
         $i = 0;
-        foreach($tax_categories as $tax_category=>$tax_category_data)
-        {
+        foreach ($tax_categories as $tax_category => $tax_category_data) {
         ?>
-        $('<?= '#tax_category_' . ++$i ?>').rules( "add", {
-            requireTaxCategory: true,
-            check4TaxCategoryDups: true,
-            validateTaxCategoryCharacters: true
-        });
-        <?php
-        }
-        ?>
+            $('<?= '#tax_category_' . ++$i ?>').rules("add", {
+                requireTaxCategory: true,
+                check4TaxCategoryDups: true,
+                validateTaxCategoryCharacters: true
+            });
+        <?php } ?>
 
     });
 </script>

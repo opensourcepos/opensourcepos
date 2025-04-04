@@ -80,7 +80,7 @@ class Barcode_lib
         $data['barcode_page_width'] = $config['barcode_page_width'];
         $data['barcode_page_cellspacing'] = $config['barcode_page_cellspacing'];
         $data['barcode_generate_if_empty'] = $config['barcode_generate_if_empty'];
-        $data['barcode_formats'] = $config['barcode_formats'] !== 'null'? $config['barcode_formats'] : [];
+        $data['barcode_formats'] = $config['barcode_formats'] !== 'null' ? $config['barcode_formats'] : [];
 
         return $data;
     }
@@ -106,15 +106,12 @@ class Barcode_lib
      */
     private function generate_barcode(array $item, array $barcode_config): string
     {
-        try
-        {
+        try {
             $generator = new BarcodeGeneratorSVG();
             $barcode_value = $this->get_barcode_value($item, $barcode_config);
 
             return $generator->getBarcode($barcode_value, $barcode_config['barcode_type'], 2, $barcode_config['barcode_height']);
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
             echo 'Stack trace: ', $e->getTraceAsString();
 
@@ -128,13 +125,10 @@ class Barcode_lib
      */
     public function generate_receipt_barcode($barcode_content): string
     {
-        try
-        {
+        try {
             $generator = new BarcodeGeneratorSVG();
             return $generator->getBarcode($barcode_content, $generator::TYPE_CODE_128);
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
             return '';
         }
@@ -149,20 +143,19 @@ class Barcode_lib
      */
     public function display_barcode(array $item, array $barcode_config): string
     {
-        if((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id']))
-        {
+        if ((isset($item['item_number']) || isset($item['name'])) && isset($item['item_id'])) {
             $barcode = $this->generate_barcode($item, $barcode_config);
             $display_table = '<table>';
-            $display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
-            $display_table .= "<tr><td style='text-align:center;'><div class='barcode'>$barcode</div></td></tr>";
-            $display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
-            $display_table .= '<tr><td style="text-align:center;">' . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;"><div class="barcode">$barcode</div></td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . '</td></tr>';
+            $display_table .= '<tr><td style="text-align: center;">' . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . '</td></tr>';
             $display_table .= '</table>';
 
             return $display_table;
         }
 
-        return "Item number or Item ID not found in the item array.";    //TODO: this needs to be run through the translation engine.
+        return "Item number or Item ID not found in the item array.";    // TODO: this needs to be run through the translation engine.
     }
 
     /**
@@ -176,28 +169,17 @@ class Barcode_lib
         $result = '';
         helper('text');
 
-        if($layout_type == 'name')
-        {
+        if ($layout_type == 'name') {
             $result = $item['name'];
-        }
-        elseif($layout_type == 'category' && isset($item['category']))
-        {
+        } elseif ($layout_type == 'category' && isset($item['category'])) {
             $result = lang('Items.category') . " " . $item['category'];
-        }
-        elseif($layout_type == 'cost_price' && isset($item['cost_price']))
-        {
+        } elseif ($layout_type == 'cost_price' && isset($item['cost_price'])) {
             $result = lang('Items.cost_price') . " " . to_currency($item['cost_price']);
-        }
-        elseif($layout_type == 'unit_price' && isset($item['unit_price']))
-        {
+        } elseif ($layout_type == 'unit_price' && isset($item['unit_price'])) {
             $result = lang('Items.unit_price') . " " . to_currency($item['unit_price']);
-        }
-        elseif($layout_type == 'company_name')
-        {
+        } elseif ($layout_type == 'company_name') {
             $result = $barcode_config['company'];
-        }
-        elseif($layout_type == 'item_code')
-        {
+        } elseif ($layout_type == 'item_code') {
             $result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number'])
                 ? $item['item_number']
                 : $item['item_id'];
@@ -212,16 +194,13 @@ class Barcode_lib
      * @param string $folder
      * @return array
      */
-    public function listfonts(string $folder): array    //TODO: This function does not follow naming conventions.
+    public function listfonts(string $folder): array    // TODO: This function does not follow naming conventions.
     {
-        $array = [];    //TODO: Naming of this variable should be changed.  The variable should never be named the data type.  $fonts would be a better name.
+        $array = [];    // TODO: Naming of this variable should be changed.  The variable should never be named the data type.  $fonts would be a better name.
 
-        if(($handle = opendir($folder)) !== false)
-        {
-            while(($file = readdir($handle)) !== false)
-            {
-                if(str_ends_with($file, '.ttf'))
-                {
+        if (($handle = opendir($folder)) !== false) {
+            while (($file = readdir($handle)) !== false) {
+                if (str_ends_with($file, '.ttf')) {
                     $array[$file] = $file;
                 }
             }

@@ -26,7 +26,7 @@ class Tax_codes extends Secure_Controller
      */
     public function getIndex(): void
     {
-         echo view('taxes/tax_codes', $this->get_data());
+        echo view('taxes/tax_codes', $this->get_data());
     }
 
     /**
@@ -57,12 +57,11 @@ class Tax_codes extends Secure_Controller
 
         $data_rows = [];
 
-        foreach($tax_codes->getResult() as $tax_code)
-        {
+        foreach ($tax_codes->getResult() as $tax_code) {
             $data_rows[] = get_tax_code_data_row($tax_code);
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -101,28 +100,22 @@ class Tax_codes extends Secure_Controller
             'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if($this->tax_code->save($tax_code_data))
-        {
-            if($tax_code_id == NEW_ENTRY)
-            {
-                echo json_encode ([
+        if ($this->tax_code->save($tax_code_data)) {
+            if ($tax_code_id == NEW_ENTRY) {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
                     'id' => $tax_code_data['tax_code_id']
                 ]);
-            }
-            else
-            {
-                echo json_encode ([
+            } else {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
                     'id' => $tax_code_id
                 ]);
             }
-        }
-        else
-        {
-            echo json_encode ([
+        } else {
+            echo json_encode([
                 'success' => false,
                 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
                 'id' => NEW_ENTRY
@@ -137,16 +130,13 @@ class Tax_codes extends Secure_Controller
     {
         $tax_codes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-        if($this->tax_code->delete_list($tax_codes_to_delete))
-        {
-            echo json_encode ([
+        if ($this->tax_code->delete_list($tax_codes_to_delete)) {
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Tax_codes.successful_deleted') . ' ' . count($tax_codes_to_delete) . ' ' . lang('Tax_codes.one_or_multiple')
             ]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Tax_codes.cannot_be_deleted')]);
         }
     }
 }

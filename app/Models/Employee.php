@@ -42,7 +42,7 @@ class Employee extends Person
         $builder->join('people', 'people.person_id = employees.person_id');
         $builder->where('employees.person_id', $person_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -56,7 +56,7 @@ class Employee extends Person
         $builder->where('employees.username', $username);
         $builder->where('employees.person_id <>', $employee_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -95,18 +95,16 @@ class Employee extends Person
         $builder->where('employees.person_id', $person_id);
         $query = $builder->get();
 
-        if($query->getNumRows() == 1)    //TODO: ===
-        {
+        if ($query->getNumRows() == 1) {    // TODO: ===
             return $query->getRow();
         }
 
-        //Get empty base parent object, as $employee_id is NOT an employee
+        // Get empty base parent object, as $employee_id is NOT an employee
         $person_obj = parent::get_info(NEW_ITEM);
 
-        //Get all the fields from employee table
-        //append those fields to base parent object, we have a complete empty object
-        foreach($this->db->getFieldNames('employees') as $field)
-        {
+        // Get all the fields from employee table
+        // Append those fields to base parent object, we have a complete empty object
+        foreach ($this->db->getFieldNames('employees') as $field) {
             $person_obj->$field = null;
         }
 
@@ -133,35 +131,28 @@ class Employee extends Person
     {
         $success = false;
 
-        //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if(ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id))
-        {
+        if (ENVIRONMENT != 'testing' && parent::save_value($person_data, $employee_id)) {
             $builder = $this->db->table('employees');
-            if($employee_id == NEW_ENTRY || !$this->exists($employee_id))
-            {
+            if ($employee_id == NEW_ENTRY || !$this->exists($employee_id)) {
                 $employee_data['person_id'] = $employee_id = $person_data['person_id'];
                 $success = $builder->insert($employee_data);
-            }
-            else
-            {
+            } else {
                 $builder->where('person_id', $employee_id);
                 $success = $builder->update($employee_data);
             }
 
-            //We have either inserted or updated a new employee, now lets set permissions.
-            if($success)
-            {
-                //First lets clear out any grants the employee currently has.
+            // We have either inserted or updated a new employee, now lets set permissions.
+            if ($success) {
+                // First lets clear out any grants the employee currently has.
                 $builder = $this->db->table('grants');
                 $success = $builder->delete(['person_id' => $employee_id]);
 
-                //Now insert the new grants
-                if($success)
-                {
-                    foreach($grants_data as $grant)
-                    {
+                // Now insert the new grants
+                if ($success) {
+                    foreach ($grants_data as $grant) {
                         $data = [
                             'permission_id' => $grant['permission_id'],
                             'person_id' => $employee_id,
@@ -189,20 +180,18 @@ class Employee extends Person
     {
         $success = false;
 
-        //Don't let employees delete themselves
-        if($employee_id == $this->get_logged_in_employee_info()->person_id)
-        {
+        // Don't let employees delete themselves
+        if ($employee_id == $this->get_logged_in_employee_info()->person_id) {
             return false;
         }
 
-        //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        //Delete permissions
+        // Delete permissions
         $builder = $this->db->table('grants');
 
-        if($builder->delete(['person_id' => $employee_id]))
-        {
+        if ($builder->delete(['person_id' => $employee_id])) {
             $builder = $this->db->table('employees');
             $builder->where('person_id', $employee_id);
             $success = $builder->update(['deleted' => 1]);
@@ -220,21 +209,19 @@ class Employee extends Person
     {
         $success = false;
 
-        //Don't let employees delete themselves
-        if(in_array($this->get_logged_in_employee_info()->person_id, $person_ids))
-        {
+        // Don't let employees delete themselves
+        if (in_array($this->get_logged_in_employee_info()->person_id, $person_ids)) {
             return false;
         }
 
-        //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
         $builder = $this->db->table('grants');
         $builder->whereIn('person_id', $person_ids);
-        //Delete permissions
-        if($builder->delete())
-        {
-            //delete from employee table
+        // Delete permissions
+        if ($builder->delete()) {
+            // Delete from employee table
             $builder = $this->db->table('employees');
             $builder->whereIn('person_id', $person_ids);
             $success = $builder->update(['deleted' => 1]);
@@ -244,7 +231,7 @@ class Employee extends Person
         $success &= $this->db->transStatus();
 
         return $success;
-     }
+    }
 
     /**
      * Get search suggestions to find employees
@@ -256,81 +243,72 @@ class Employee extends Person
         $builder = $this->db->table('employees');
         $builder->join('people', 'employees.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
         $builder->groupEnd();
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder->where('deleted', 0);
         }
 
         $builder->orderBy('last_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
-            $suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name];
+        foreach ($builder->get()->getResult() as $row) {
+            $suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name];
         }
 
         $builder = $this->db->table('employees');
         $builder->join('people', 'employees.person_id = people.person_id');
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder->where('deleted', 0);
         }
 
         $builder->like('email', $search);
         $builder->orderBy('email', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->email];
         }
 
         $builder = $this->db->table('employees');
         $builder->join('people', 'employees.person_id = people.person_id');
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder->where('deleted', 0);
         }
 
         $builder->like('username', $search);
         $builder->orderBy('username', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->username];
         }
 
         $builder = $this->db->table('employees');
         $builder->join('people', 'employees.person_id = people.person_id');
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder->where('deleted', 0);
         }
 
         $builder->like('phone_number', $search);
         $builder->orderBy('phone_number', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number];
         }
 
-        //only return $limit suggestions
-        if(count($suggestions) > $limit)
-        {
+        // Only return $limit suggestions
+        if (count($suggestions) > $limit) {
             $suggestions = array_slice($suggestions, 0, $limit);
         }
 
         return $suggestions;
     }
 
-     /**
+    /**
      * Gets rows
      */
     public function get_found_rows(string $search): int
@@ -344,41 +322,38 @@ class Employee extends Person
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if($rows == null) $rows = 0;
-        if($limit_from == null) $limit_from = 0;
-        if($sort == null) $sort = 'last_name';
-        if($order == null) $order = 'asc';
-        if($count_only == null) $count_only = false;
+        if ($rows == null) $rows = 0;
+        if ($limit_from == null) $limit_from = 0;
+        if ($sort == null) $sort = 'last_name';
+        if ($order == null) $order = 'asc';
+        if ($count_only == null) $count_only = false;
 
         $builder = $this->db->table('employees AS employees');
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             $builder->select('COUNT(employees.person_id) as count');
         }
 
         $builder->join('people', 'employees.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('email', $search);
-            $builder->orLike('phone_number', $search);
-            $builder->orLike('username', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('email', $search);
+        $builder->orLike('phone_number', $search);
+        $builder->orLike('username', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
         $builder->groupEnd();
         $builder->where('deleted', 0);
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 
@@ -393,21 +368,17 @@ class Employee extends Person
         $builder = $this->db->table('employees');
         $query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-        if($query->getNumRows() === 1)
-        {
+        if ($query->getNumRows() === 1) {
             $row = $query->getRow();
 
-            // compare passwords depending on the hash version
-            if($row->hash_version === '1' && $row->password === md5($password))
-            {
+            // Compare passwords depending on the hash version
+            if ($row->hash_version === '1' && $row->password === md5($password)) {
                 $builder->where('person_id', $row->person_id);
                 $this->session->set('person_id', $row->person_id);
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
                 return $builder->update(['hash_version' => 2, 'password' => $password_hash]);
-            }
-            elseif($row->hash_version === '2' && password_verify($password, $row->password))
-            {
+            } elseif ($row->hash_version === '2' && password_verify($password, $row->password)) {
                 $this->session->set('person_id', $row->person_id);
 
                 return true;
@@ -438,8 +409,7 @@ class Employee extends Person
      */
     public function get_logged_in_employee_info()
     {
-        if($this->is_logged_in())
-        {
+        if ($this->is_logged_in()) {
             return $this->get_info($this->session->get('person_id'));
         }
 
@@ -456,23 +426,22 @@ class Employee extends Person
         $builder->where('person_id', $person_id);
         $result_count = $builder->get()->getNumRows();
 
-        if($result_count != 1)
-        {
+        if ($result_count != 1) {
             return ($result_count != 0);
         }
 
         return $this->has_subpermissions($permission_id);
     }
 
-     /**
+    /**
      * Checks permissions
      */
     public function has_subpermissions(string $permission_id): bool
     {
         $builder = $this->db->table('permissions');
-        $builder->like('permission_id', $permission_id.'_', 'after');
+        $builder->like('permission_id', $permission_id . '_', 'after');
 
-        return ($builder->get()->getNumRows() == 0);    //TODO: ===
+        return ($builder->get()->getNumRows() == 0);    // TODO: ===
     }
 
     /**
@@ -480,20 +449,18 @@ class Employee extends Person
      */
     public function has_grant(?string $permission_id, ?int $person_id): bool
     {
-        //if no module_id is null, allow access
-        if($permission_id == null)
-        {
+        // If no module_id is null, allow access
+        if ($permission_id == null) {
             return true;
         }
-        if($person_id == null)
-        {
+        if ($person_id == null) {
             return false;
         }
 
         $builder = $this->db->table('grants');
         $query = $builder->getWhere(['person_id' => $person_id, 'permission_id' => $permission_id], 1);
 
-        return ($query->getNumRows() == 1);    //TODO: ===
+        return ($query->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -509,12 +476,9 @@ class Employee extends Person
         $row = $builder->get()->getRow();
 
         // If no grants are assigned yet then set the default to 'home'
-        if($row == null)
-        {
+        if ($row == null) {
             return 'home';
-        }
-        else
-        {
+        } else {
             return $row->menu_group;
         }
     }
@@ -538,12 +502,10 @@ class Employee extends Person
         $builder = $this->db->table('employees');
         $query = $builder->getWhere(['username' => $username, 'deleted' => 0], 1);
 
-        if($query->getNumRows() == 1)    //TODO: ===
-        {
+        if ($query->getNumRows() == 1) {    // TODO: ===
             $row = $query->getRow();
 
-            if(password_verify($password, $row->password))
-            {
+            if (password_verify($password, $row->password)) {
                 return true;
             }
         }
@@ -558,8 +520,7 @@ class Employee extends Person
     {
         $success = false;
 
-        if(ENVIRONMENT != 'testing')
-        {
+        if (ENVIRONMENT != 'testing') {
             $this->db->transStart();
 
             $builder = $this->db->table('employees');

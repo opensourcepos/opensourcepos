@@ -5,7 +5,8 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use Config\Database;
 
-class Migration_fix_keys_for_db_upgrade extends Migration {
+class Migration_fix_keys_for_db_upgrade extends Migration
+{
     /**
      * Perform a migration step.
      */
@@ -13,16 +14,14 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
     {
         $this->db->query("ALTER TABLE `ospos_tax_codes` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;");
 
-        if (!$this->index_exists('ospos_customers', 'company_name'))
-        {
+        if (!$this->index_exists('ospos_customers', 'company_name')) {
             $this->db->query("ALTER TABLE `ospos_customers` ADD INDEX(`company_name`)");
         }
 
         $checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
-        if ($foreignKeyExists)
-        {
+        if ($foreignKeyExists) {
             $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP FOREIGN KEY ospos_sales_items_taxes_ibfk_1');
         }
 
@@ -44,8 +43,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
         $checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
-        if ($foreignKeyExists)
-        {
+        if ($foreignKeyExists) {
             $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP CONSTRAINT ospos_sales_items_taxes_ibfk_1');
         }
 
@@ -58,12 +56,10 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
     {
         $result = $this->db->query('SELECT 1 FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name= \'' . $this->db->getPrefix() . "$table' AND column_key = '$index'");
 
-        if ( ! $result->getRowArray())
-        {
+        if (! $result->getRowArray()) {
             $this->delete_index($table, $index);
             $forge = Database::forge();
             $forge->addPrimaryKey($table, '');
-
         }
     }
 
@@ -77,8 +73,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration {
     private function delete_index(string $table, string $index): void
     {
 
-        if ($this->index_exists($table, $index))
-        {
+        if ($this->index_exists($table, $index)) {
             $forge = Database::forge();
             $forge->dropKey($table, $index, FALSE);
         }

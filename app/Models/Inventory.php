@@ -51,8 +51,7 @@ class Inventory extends Model
         $builder = $this->db->table('inventory');
         $builder->where('trans_items', $item_id);
 
-        if($location_id)
-        {
+        if ($location_id) {
             $builder->where('trans_location', $location_id);
         }
 
@@ -68,10 +67,8 @@ class Inventory extends Model
     public function reset_quantity(int $item_id): bool|int|string
     {
         $inventory_sums = $this->get_inventory_sum($item_id);
-        foreach($inventory_sums as $inventory_sum)
-        {
-            if($inventory_sum['sum'] > 0)
-            {
+        foreach ($inventory_sums as $inventory_sum) {
+            if ($inventory_sum['sum'] > 0) {
                 $employee = model(Employee::class);
 
                 return $this->insert([

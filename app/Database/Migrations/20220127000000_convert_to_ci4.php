@@ -32,12 +32,9 @@ class Convert_to_ci4 extends Migration
         helper('migration');
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_ci4_conversion.sql');
 
-        if(!empty(config('Encryption')->key))
-        {
+        if (!empty(config('Encryption')->key)) {
             $this->convert_ci3_encrypted_data();
-        }
-        else
-        {
+        } else {
             check_encryption();
         }
 
@@ -49,10 +46,7 @@ class Convert_to_ci4 extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 
     /**
      * @return RedirectResponse|void
@@ -70,8 +64,7 @@ class Convert_to_ci4 extends Migration
             'smtp_pass' => ''
         ];
 
-        foreach($ci3_encrypted_data as $key => $value)
-        {
+        foreach ($ci3_encrypted_data as $key => $value) {
             $ci3_encrypted_data[$key] = $appconfig->get_value($key);
         }
 
@@ -79,22 +72,19 @@ class Convert_to_ci4 extends Migration
 
         check_encryption();
 
-        try
-        {
+        try {
             $ci4_encrypted_data = $this->encrypt_data($decrypted_data);
 
             $success = empty(array_diff_assoc($decrypted_data, $this->decrypt_data($ci4_encrypted_data)));
-            if(!$success)
-            {
+            if (!$success) {
                 abort_encryption_conversion();
                 remove_backup();
                 throw new RedirectException('login');
             }
 
             $appconfig->batch_save($ci4_encrypted_data);
-        } catch(RedirectException $e)
-        {
-            return redirect()->to('login'); //TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
+        } catch (RedirectException $e) {
+            return redirect()->to('login'); // TODO: Need to figure out how to pass the error to the Login controller so that it gets displayed.
         }
     }
 
@@ -117,9 +107,8 @@ class Convert_to_ci4 extends Migration
         $encrypter = Services::encrypter($config);
 
         $decrypted_data = [];
-        foreach($encrypted_data as $key => $value)
-        {
-            $decrypted_data[$key] = !empty($value) ? $encrypter->decrypt($value): '';
+        foreach ($encrypted_data as $key => $value) {
+            $decrypted_data[$key] = !empty($value) ? $encrypter->decrypt($value) : '';
         }
 
         return $decrypted_data;
@@ -136,8 +125,7 @@ class Convert_to_ci4 extends Migration
         $encrypter = Services::encrypter();
 
         $encrypted_data = [];
-        foreach($plain_data as $key => $value)
-        {
+        foreach ($plain_data as $key => $value) {
             $encrypted_data[$key] = !empty($value) ? $encrypter->encrypt($value) : '';
         }
 
@@ -155,8 +143,7 @@ class Convert_to_ci4 extends Migration
         $encrypter = Services::encrypter();
 
         $decrypted_data = [];
-        foreach($encrypted_data as $key => $value)
-        {
+        foreach ($encrypted_data as $key => $value) {
             $decrypted_data[$key] = !empty($value) ? $encrypter->decrypt($value) : '';
         }
 

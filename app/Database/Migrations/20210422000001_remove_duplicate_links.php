@@ -28,7 +28,7 @@ class Migration_remove_duplicate_links extends Migration
     {
         $attribute = model(Attribute::class);
 
-        //Remove duplicate attribute links
+        // Remove duplicate attribute links
         $this->db->transStart();
 
         $builder = $this->db->table('attribute_links');
@@ -43,8 +43,7 @@ class Migration_remove_duplicate_links extends Migration
 
         $builder = $this->db->table('attribute_links');
 
-        foreach($duplicated_links->getResultArray() as $duplicated_link)
-        {
+        foreach ($duplicated_links->getResultArray() as $duplicated_link) {
             $builder->where('sale_id', null);
             $builder->where('receiving_id', null);
             $builder->where('item_id', $duplicated_link['item_id']);
@@ -60,7 +59,5 @@ class Migration_remove_duplicate_links extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 }

@@ -70,7 +70,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 
 -- Add columns to save per-user language selection
 
-ALTER TABLE `ospos_employees` 
+ALTER TABLE `ospos_employees`
   ADD COLUMN `language` VARCHAR(48) DEFAULT NULL,
   ADD COLUMN `language_code` VARCHAR(8) DEFAULT NULL;
 
@@ -125,13 +125,13 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('expenses_categories', 'expenses_categories'),
 ('expenses', 'expenses'),
-('reports_expenses_categories', 'reports'); 
+('reports_expenses_categories', 'reports');
 
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES 
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('expenses', 1),
 ('expenses_categories', 1),
 ('reports_expenses_categories', 1);
- 
+
 
 -- Table structure for table `ospos_expense_categories`
 

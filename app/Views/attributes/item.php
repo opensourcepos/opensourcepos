@@ -6,9 +6,10 @@
  * @var array $config
  */
 ?>
+
 <div class="form-group form-group-sm">
     <?= form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
-    <div class='col-xs-8'>
+    <div class="col-xs-8">
         <?= form_dropdown([
             'name' => 'definition_name',
             'options' => $definition_names,
@@ -17,27 +18,22 @@
             'id' => 'definition_name'
         ]) ?>
     </div>
-
 </div>
 
-<?php
-foreach($definition_values as $definition_id => $definition_value)
-{
-?>
+<?php foreach ($definition_values as $definition_id => $definition_value) { ?>
 
-<div class="form-group form-group-sm">
-    <?= form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3']) ?>
-    <div class='col-xs-8'>
-        <div class="input-group">
-            <?php
+    <div class="form-group form-group-sm">
+        <?= form_label($definition_value['definition_name'], $definition_value['definition_name'], ['class' => 'control-label col-xs-3']) ?>
+        <div class="col-xs-8">
+            <div class="input-group">
+                <?php
                 echo form_hidden("attribute_ids[$definition_id]", strval($definition_value['attribute_id']));
                 $attribute_value = $definition_value['attribute_value'];
 
-                switch($definition_value['definition_type'])
-                {
+                switch ($definition_value['definition_type']) {
                     case DATE:
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
-                        echo form_input ([
+                        echo form_input([
                             'name' => "attribute_links[$definition_id]",
                             'value' => to_date($value),
                             'class' => 'form-control input-sm datetime',
@@ -76,15 +72,15 @@ foreach($definition_values as $definition_id => $definition_value)
                     case CHECKBOX:
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
 
-                        //Sends 0 if the box is unchecked instead of not sending anything.
-                        echo form_input ([
+                        // Sends 0 if the box is unchecked instead of not sending anything.
+                        echo form_input([
                             'type' => 'hidden',
                             'name' => "attribute_links[$definition_id]",
                             'id' => "attribute_links[$definition_id]",
                             'value' => 0,
                             'data-definition-id' => $definition_id
                         ]);
-                        echo form_checkbox ([
+                        echo form_checkbox([
                             'name' => "attribute_links[$definition_id]",
                             'id' => "attribute_links[$definition_id]",
                             'value' => 1,
@@ -94,19 +90,19 @@ foreach($definition_values as $definition_id => $definition_value)
                         ]);
                         break;
                 }
-            ?>
-            <span class="input-group-addon input-sm btn btn-default remove_attribute_btn"><span class="glyphicon glyphicon-trash"></span></span>
+                ?>
+                <span class="input-group-addon input-sm btn btn-default remove_attribute_btn">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </span>
+            </div>
         </div>
     </div>
-</div>
 
-<?php
-}
-?>
+<?php } ?>
 
-<script type="application/javascript">
-(function() {
-        <?= view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "'.dateformat_bootstrap($config['dateformat'] . '"}')]) ?>
+<script type="text/javascript">
+    (function() {
+        <?= view('partial/datepicker_locale', ['config' => '{ minView: 2, format: "' . dateformat_bootstrap($config['dateformat'] . '"}')]) ?>
 
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
@@ -126,7 +122,7 @@ foreach($definition_values as $definition_id => $definition_value)
                 }, 'json');
             },
             appendTo: '.modal-content',
-            select: function (event, ui) {
+            select: function(event, ui) {
                 event.preventDefault();
                 $(this).val(ui.item.label);
             },

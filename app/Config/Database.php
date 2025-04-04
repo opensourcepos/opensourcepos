@@ -108,7 +108,7 @@ class Database extends Config
         'port' => 3306,
         'foreignKeys' => true,
         'busyTimeout' => 1000,
-        'dateFormat'  => [
+        'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
@@ -122,8 +122,7 @@ class Database extends Config
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.
-        switch(ENVIRONMENT)
-        {
+        switch (ENVIRONMENT) {
             case 'testing':
                 $this->defaultGroup = 'tests';
                 break;
@@ -132,8 +131,7 @@ class Database extends Config
                 break;
         }
 
-        foreach ([&$this->development, &$this->tests, &$this->default] as &$config)
-        {
+        foreach ([&$this->development, &$this->tests, &$this->default] as &$config) {
             $config['hostname'] = !getenv('MYSQL_HOST_NAME') ? $config['hostname'] : getenv('MYSQL_HOST_NAME');
             $config['username'] = !getenv('MYSQL_USERNAME') ? $config['username'] : getenv('MYSQL_USERNAME');
             $config['password'] = !getenv('MYSQL_PASSWORD') ? $config['password'] : getenv('MYSQL_PASSWORD');

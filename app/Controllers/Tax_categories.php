@@ -24,9 +24,9 @@ class Tax_categories extends Secure_Controller
      */
     public function getIndex(): void
     {
-         $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
+        $data['tax_categories_table_headers'] = get_tax_categories_table_headers();
 
-         echo view('taxes/tax_categories', $data);
+        echo view('taxes/tax_categories', $data);
     }
 
     /**
@@ -46,12 +46,11 @@ class Tax_categories extends Secure_Controller
         $total_rows = $this->tax_category->get_found_rows($search);
 
         $data_rows = [];
-        foreach($tax_categories->getResult() as $tax_category)
-        {
+        foreach ($tax_categories->getResult() as $tax_category) {
             $data_rows[] = get_tax_categories_data_row($tax_category);
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -89,29 +88,23 @@ class Tax_categories extends Secure_Controller
             'tax_group_sequence' => $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if($this->tax_category->save_value($tax_category_data, $tax_category_id))
-        {
+        if ($this->tax_category->save_value($tax_category_data, $tax_category_id)) {
             // New tax_category_id
-            if($tax_category_id == NEW_ENTRY)
-            {
-                echo json_encode ([
+            if ($tax_category_id == NEW_ENTRY) {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_categories.successful_adding'),
                     'id' => $tax_category_data['tax_category_id']
                 ]);
-            }
-            else
-            {
-                echo json_encode ([
+            } else {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_categories.successful_updating'),
                     'id' => $tax_category_id
                 ]);
             }
-        }
-        else
-        {
-            echo json_encode ([
+        } else {
+            echo json_encode([
                 'success' => false,
                 'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'],
                 'id' => NEW_ENTRY
@@ -126,16 +119,13 @@ class Tax_categories extends Secure_Controller
     {
         $tax_categories_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-        if($this->tax_category->delete_list($tax_categories_to_delete))
-        {
-            echo json_encode ([
+        if ($this->tax_category->delete_list($tax_categories_to_delete)) {
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Tax_categories.successful_deleted') . ' ' . count($tax_categories_to_delete) . ' ' . lang('Tax_categories.one_or_multiple')
             ]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Tax_categories.cannot_be_deleted')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Tax_categories.cannot_be_deleted')]);
         }
     }
 }

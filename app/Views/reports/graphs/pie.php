@@ -6,7 +6,8 @@
  * @var array $config
  */
 ?>
-<script>
+
+<script type="text/javascript">
     // Labels and data series
     var data = {
         labels: <?= json_encode(esc($labels_1, 'js')) ?>,
@@ -26,7 +27,7 @@
         chartPadding: 20,
 
         // This option can be set to 'inside', 'outside' or 'center'.
-        // show the labels on the border with the pie chart
+        // Show the labels on the border with the pie chart
         labelPosition: 'outside',
         labelDirection: 'explode',
 
@@ -34,28 +35,18 @@
             Chartist.plugins.tooltip({
                 transformTooltipTextFnc: function(value) {
                     <?php
-                    if($show_currency)
-                    {
-                        if( is_right_side_currency_symbol() )
-                        {
+                    if ($show_currency) {
+                        if (is_right_side_currency_symbol()) {
                     ?>
                             return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                        <?php } else { ?>
+                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
                         <?php
                         }
-                        else
-                        {
+                    } else {
                         ?>
-                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                    <?php
-                        }
-                    }
-                    else
-                    {
-                    ?>
                         return value;
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                 }
             })
         ]
@@ -66,18 +57,20 @@
             height: '80%',
             chartPadding: 20
 
-        }] /*,
-        ['screen and (min-width: 1024px)', {
-            labelOffset: 80,
-            chartPadding: 20
-        }]*/
+        }]
+        /* ,
+         * ['screen and (min-width: 1024px)', {
+         *     labelOffset: 80,
+         *     chartPadding: 20
+         * }]
+         */
     ];
 
     chart = new Chartist.Pie('#chart1', data, options, responsiveOptions);
 
-    // generate random colours for the pie sliced because Chartist is currently limited to 15 colours
+    // Generate random colours for the pie sliced because Chartist is currently limited to 15 colours
     chart.on('draw', function(data) {
-        if(data.type === 'slice') {
+        if (data.type === 'slice') {
             var r = Math.floor(Math.random() * 256);
             var g = Math.floor(Math.random() * 256);
             var b = Math.floor(Math.random() * 256);

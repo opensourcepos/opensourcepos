@@ -43,7 +43,7 @@ class Sale extends Model
     public function get_info(int $sale_id): ResultInterface
     {
         $config = config(OSPOS::class)->settings;
-        $this->create_temp_table (['sale_id' => $sale_id]);
+        $this->create_temp_table(['sale_id' => $sale_id]);
 
         $decimals = totals_decimals();
         $sales_tax = 'IFNULL(SUM(sales_items_taxes.sales_tax), 0)';
@@ -86,9 +86,11 @@ class Sale extends Model
         $builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
         $builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
         $builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
-        $builder->join('sales_items_taxes_temp AS sales_items_taxes',
+        $builder->join(
+            'sales_items_taxes_temp AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-            'LEFT OUTER');
+            'LEFT OUTER'
+        );
 
         $builder->where('sales.sale_id', $sale_id);
 
@@ -112,17 +114,17 @@ class Sale extends Model
     public function search(string $search, array $filters, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'sales.sale_time', ?string $order = 'desc', ?bool $count_only = false)
     {
         // Set default values
-        if($rows == null) $rows = 0;
-        if($limit_from == null) $limit_from = 0;
-        if($sort == null) $sort = 'sales.sale_time';
-        if($order == null) $order = 'desc';
-        if($count_only == null) $count_only = false;
+        if ($rows == null) $rows = 0;
+        if ($limit_from == null) $limit_from = 0;
+        if ($sort == null) $sort = 'sales.sale_time';
+        if ($order == null) $order = 'desc';
+        if ($count_only == null) $count_only = false;
 
         $config = config(OSPOS::class)->settings;
         $db_prefix = $this->db->getPrefix();
         $decimals = totals_decimals();
 
-        //Only non-suspended records
+        // Only non-suspended records
         $where = 'sales.sale_status = 0 AND ';
         $where .= empty($config['date_or_time_format'])
             ? 'DATE(' . $db_prefix . 'sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date'])
@@ -149,12 +151,9 @@ class Sale extends Model
         $builder = $this->db->table('sales_items AS sales_items');
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             $builder->select('COUNT(DISTINCT `' . $db_prefix . 'sales`.`sale_id`) AS count');
-        }
-        else
-        {
+        } else {
             $builder->select([
                 '`' . $db_prefix . 'sales`.`sale_id` AS sale_id',
                 'MAX(DATE(`' . $db_prefix . 'sales`.`sale_time`)) AS sale_date',
@@ -183,25 +182,24 @@ class Sale extends Model
         $builder->join(
             'sales_items_taxes_temp AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-            'LEFT OUTER');
+            'LEFT OUTER'
+        );
 
         $builder->where($where);
 
         $this->add_filters_to_query($search, $filters, $builder);
 
-        //get_found_rows
-        if($count_only)
-        {
+        // get_found_rows
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->groupBy('sales.sale_id');
 
-        //order by sale time by default
+        // Order by sale time by default
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 
@@ -215,82 +213,63 @@ class Sale extends Model
     {
         $config = config(OSPOS::class)->settings;
 
-        // get payment summary
+        // Get payment summary
         $builder = $this->db->table('sales AS sales');
         $builder->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount - cash_refund) AS payment_amount');
         $builder->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
         $builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
         $builder->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
-        //TODO: This needs to be replaced with Ternary notation
-        if(empty($config['date_or_time_format']))    //TODO: duplicated code.  We should think about refactoring out a method.
-        {
+        // TODO: This needs to be replaced with Ternary notation
+        if (empty($config['date_or_time_format'])) {    // TODO: duplicated code.  We should think about refactoring out a method.
             $builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-        }
-        else
-        {
+        } else {
             $builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
         }
 
-        if(!empty($search))    //TODO: duplicated code.  We should think about refactoring out a method.
-        {
-            if($filters['is_valid_receipt'])
-            {
-                $pieces = explode(' ',$search);
+        if (!empty($search)) {    // TODO: duplicated code.  We should think about refactoring out a method.
+            if ($filters['is_valid_receipt']) {
+                $pieces = explode(' ', $search);
                 $builder->where('sales.sale_id', $pieces[1]);
-            }
-            else
-            {
+            } else {
                 $builder->groupStart();
-                    $builder->like('customer_p.last_name', $search);    // customer last name
-                    $builder->orLike('customer_p.first_name', $search);    // customer first name
-                    $builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);    // customer first and last name
-                    $builder->orLike('customer.company_name', $search);    // customer company name
+                $builder->like('customer_p.last_name', $search);    // Customer last name
+                $builder->orLike('customer_p.first_name', $search);    // Customer first name
+                $builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);    // Customer first and last name
+                $builder->orLike('customer.company_name', $search);    // Customer company name
                 $builder->groupEnd();
             }
         }
 
-        //TODO: This needs to be converted to a switch statement
-        if($filters['sale_type'] == 'sales')    //TODO: we need to think about refactoring this block to a switch statement.
-        {
+        // TODO: This needs to be converted to a switch statement
+        if ($filters['sale_type'] == 'sales') {    // TODO: we need to think about refactoring this block to a switch statement.
             $builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
-        }
-        elseif($filters['sale_type'] == 'quotes')
-        {
+        } elseif ($filters['sale_type'] == 'quotes') {
             $builder->where('sales.sale_status = ' . SUSPENDED . ' AND sales.quote_number IS NOT NULL');
-        }
-        elseif($filters['sale_type'] == 'returns')
-        {
+        } elseif ($filters['sale_type'] == 'returns') {
             $builder->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
-        }
-        elseif($filters['sale_type'] == 'all')
-        {
+        } elseif ($filters['sale_type'] == 'all') {
             $builder->where('sales.sale_status = ' . COMPLETED);
         }
 
-        //TODO: Avoid the double negatives
-        if($filters['only_invoices'])
-        {
+        // TODO: Avoid the double negatives
+        if ($filters['only_invoices']) {
             $builder->where('invoice_number IS NOT NULL');
         }
 
-        if($filters['only_cash'])
-        {
+        if ($filters['only_cash']) {
             $builder->like('payment_type', lang('Sales.cash'));
         }
 
-        if($filters['only_due'])
-        {
+        if ($filters['only_due']) {
             $builder->like('payment_type', lang('Sales.due'));
         }
 
-        if($filters['only_check'])
-        {
+        if ($filters['only_check']) {
             $builder->like('payment_type', lang('Sales.check'));
         }
 
-        if($filters['only_creditcard'])
-        {
+        if ($filters['only_creditcard']) {
             $builder->like('payment_type', lang('Sales.credit'));
         }
 
@@ -298,24 +277,21 @@ class Sale extends Model
 
         $payments = $builder->get()->getResultArray();
 
-        // consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
+        // Consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
         $gift_card_count = 0;
         $gift_card_amount = 0;
 
-        foreach($payments as $key => $payment)
-        {
-            if(strstr($payment['payment_type'], lang('Sales.giftcard')))
-            {
+        foreach ($payments as $key => $payment) {
+            if (strstr($payment['payment_type'], lang('Sales.giftcard'))) {
                 $gift_card_count  += $payment['count'];
                 $gift_card_amount += $payment['payment_amount'];
 
-                //remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
+                // Remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
                 unset($payments[$key]);
             }
         }
 
-        if($gift_card_count > 0)
-        {
+        if ($gift_card_count > 0) {
             $payments[] = ['payment_type' => lang('Sales.giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount];
         }
 
@@ -335,12 +311,11 @@ class Sale extends Model
     /**
      * Gets search suggestions
      */
-    public function get_search_suggestions(string $search, int $limit = 25): array    //TODO: $limit is never used.
+    public function get_search_suggestions(string $search, int $limit = 25): array    // TODO: $limit is never used.
     {
         $suggestions = [];
 
-        if(!$this->is_valid_receipt($search))
-        {
+        if (!$this->is_valid_receipt($search)) {
             $builder = $this->db->table('sales');
             $builder->distinct()->select('first_name, last_name');
             $builder->join('people', 'people.person_id = sales.customer_id');
@@ -350,13 +325,10 @@ class Sale extends Model
             $builder->orLike('company_name', $search);
             $builder->orderBy('last_name', 'asc');
 
-            foreach($builder->get()->getResultArray() as $result)
-            {
+            foreach ($builder->get()->getResultArray() as $result) {
                 $suggestions[] = ['label' => $result['first_name'] . ' ' . $result['last_name']];
             }
-        }
-        else
-        {
+        } else {
             $suggestions[] = ['label' => $search];
         }
 
@@ -424,25 +396,20 @@ class Sale extends Model
     /**
      * Checks if valid receipt
      */
-    public function is_valid_receipt(string &$receipt_sale_id): bool    //TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
+    public function is_valid_receipt(string &$receipt_sale_id): bool    // TODO: like the others, maybe this should be an array rather than a delimited string... either that or the parameter name needs to be changed. $receipt_sale_id implies that it's an int.
     {
         $config = config(OSPOS::class)->settings;
 
-        if(!empty($receipt_sale_id))
-        {
-            //POS #
+        if (!empty($receipt_sale_id)) {
+            // POS #
             $pieces = explode(' ', $receipt_sale_id);
 
-            if(count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0]))
-            {
+            if (count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0])) {
                 return $this->exists($pieces[1]);
-            }
-            elseif($config['invoice_enable'])
-            {
+            } elseif ($config['invoice_enable']) {
                 $sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
 
-                if($sale_info->getNumRows() > 0)
-                {
+                if ($sale_info->getNumRows() > 0) {
                     $receipt_sale_id = 'POS ' . $sale_info->getRow()->sale_id;
 
                     return true;
@@ -461,7 +428,7 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('sale_id', $sale_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -475,17 +442,15 @@ class Sale extends Model
         unset($update_data['payments']);
         $success = $builder->update($update_data);
 
-        //touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
-        if($success && !empty($sale_data['payments']))
-        {
-            //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
+        if ($success && !empty($sale_data['payments'])) {
+            // Run these queries as a transaction, we want to make sure we do all or nothing
             $this->db->transStart();
 
             $builder = $this->db->table('sales_payments');
 
-            // add new payments
-            foreach($sale_data['payments'] as $payment)
-            {
+            // Add new payments
+            foreach ($sale_data['payments'] as $payment) {
                 $payment_id = $payment['payment_id'];
                 $payment_type = $payment['payment_type'];
                 $payment_amount = $payment['payment_amount'];
@@ -493,8 +458,7 @@ class Sale extends Model
                 $cash_adjustment = $payment['cash_adjustment'];
                 $employee_id = $payment['employee_id'];
 
-                if($payment_id == NEW_ENTRY && $payment_amount != 0)
-                {
+                if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
                     // Add a new payment transaction
                     $sales_payments_data = [
                         'sale_id' => $sale_id,
@@ -505,11 +469,8 @@ class Sale extends Model
                         'employee_id'  => $employee_id
                     ];
                     $success = $builder->insert($sales_payments_data);
-                }
-                elseif($payment_id != NEW_ENTRY)
-                {
-                    if($payment_amount != 0)
-                    {
+                } elseif ($payment_id != NEW_ENTRY) {
+                    if ($payment_amount != 0) {
                         // Update existing payment transactions (payment_type only)
                         $sales_payments_data = [
                             'payment_type' => $payment_type,
@@ -520,9 +481,7 @@ class Sale extends Model
 
                         $builder->where('payment_id', $payment_id);
                         $success = $builder->update($sales_payments_data);
-                    }
-                    else
-                    {
+                    } else {
                         // Remove existing payment transactions with a payment amount of zero
                         $success = $builder->delete(['payment_id' => $payment_id]);
                     }
@@ -541,9 +500,21 @@ class Sale extends Model
      * The sales_taxes variable needs to be initialized to an empty array before calling
      * @throws ReflectionException
      */
-    public function save_value(int $sale_id, string &$sale_status, array &$items, int $customer_id, int $employee_id, string $comment, ?string $invoice_number,
-                            ?string $work_order_number, ?string $quote_number, int $sale_type, ?array $payments, ?int $dinner_table_id, ?array &$sales_taxes): int    //TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
-    {
+    public function save_value(
+        int $sale_id,
+        string &$sale_status,
+        array &$items,
+        int $customer_id,
+        int $employee_id,
+        string $comment,
+        ?string $invoice_number,
+        ?string $work_order_number,
+        ?string $quote_number,
+        int $sale_type,
+        ?array $payments,
+        ?int $dinner_table_id,
+        ?array &$sales_taxes
+    ): int {    // TODO: this method returns the sale_id but the override is expecting it to return a bool. The signature needs to be reworked.  Generally when there are more than 3 maybe 4 parameters, there's a good chance that an object needs to be passed rather than so many params.
         $config = config(OSPOS::class)->settings;
         $attribute = model(Attribute::class);
         $customer = model(Customer::class);
@@ -553,14 +524,12 @@ class Sale extends Model
 
         $item_quantity = model(Item_quantity::class);
 
-        if($sale_id != NEW_ENTRY)
-        {
+        if ($sale_id != NEW_ENTRY) {
             $this->clear_suspended_sale_detail($sale_id);
         }
 
-        if(count($items) == 0)    //TODO: ===
-        {
-            return -1;    //TODO: Replace -1 with a constant
+        if (count($items) == 0) {    // TODO: ===
+            return -1;    // TODO: Replace -1 with a constant
         }
 
         $sales_data = [
@@ -571,7 +540,7 @@ class Sale extends Model
             'sale_status' => $sale_status,
             'invoice_number' => $invoice_number,
             'quote_number' => $quote_number,
-            'work_order_number'=> $work_order_number,
+            'work_order_number' => $work_order_number,
             'dinner_table_id' => $dinner_table_id,
             'sale_type' => $sale_type
         ];
@@ -579,14 +548,11 @@ class Sale extends Model
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if($sale_id == NEW_ENTRY)
-        {
+        if ($sale_id == NEW_ENTRY) {
             $builder = $this->db->table('sales');
             $builder->insert($sales_data);
             $sale_id = $this->db->insertID();
-        }
-        else
-        {
+        } else {
             $builder = $this->db->table('sales');
             $builder->where('sale_id', $sale_id);
             $builder->update($sales_data);
@@ -595,19 +561,15 @@ class Sale extends Model
         $total_amount = 0;
         $total_amount_used = 0;
 
-        foreach($payments as $payment_id => $payment)
-        {
-            if(!empty(strstr($payment['payment_type'], lang('Sales.giftcard'))))
-            {
+        foreach ($payments as $payment_id => $payment) {
+            if (!empty(strstr($payment['payment_type'], lang('Sales.giftcard')))) {
                 // We have a gift card, and we have to deduct the used value from the total value of the card.
-                $splitpayment = explode( ':', $payment['payment_type'] );    //TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
-                $cur_giftcard_value = $giftcard->get_giftcard_value( $splitpayment[1] );    //TODO: this should be refactored to $current_giftcard_value
-                $giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
-            }
-            elseif(!empty(strstr($payment['payment_type'], lang('Sales.rewards'))))
-            {
+                $splitpayment = explode(':', $payment['payment_type']);    // TODO: this variable doesn't follow our naming conventions.  Probably should be refactored to split_payment.
+                $cur_giftcard_value = $giftcard->get_giftcard_value($splitpayment[1]);    // TODO: this should be refactored to $current_giftcard_value
+                $giftcard->update_giftcard_value($splitpayment[1], $cur_giftcard_value - $payment['payment_amount']);
+            } elseif (!empty(strstr($payment['payment_type'], lang('Sales.rewards')))) {
                 $cur_rewards_value = $customer->get_info($customer_id)->points;
-                $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
+                $customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount']);
                 $total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
             }
 
@@ -630,12 +592,10 @@ class Sale extends Model
 
         $customer = $customer->get_info($customer_id);
 
-        foreach($items as $line => $item_data)
-        {
+        foreach ($items as $line => $item_data) {
             $cur_item_info = $item->get_info($item_data['item_id']);
 
-            if($item_data['price'] == 0.00)
-            {
+            if ($item_data['price'] == 0.00) {
                 $item_data['discount'] = 0.00;
             }
 
@@ -657,27 +617,27 @@ class Sale extends Model
             $builder = $this->db->table('sales_items');
             $builder->insert($sales_items_data);
 
-            if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)    //TODO: === ?
-            {
+            if ($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
                 $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
 
-                $item_quantity->save_value([
-                    'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
-                    'item_id' => $item_data['item_id'],
-                    'location_id' => $item_data['item_location']],
+                $item_quantity->save_value(
+                    [
+                        'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
+                        'item_id' => $item_data['item_id'],
+                        'location_id' => $item_data['item_location']
+                    ],
                     $item_data['item_id'],
                     $item_data['item_location']
                 );
 
-                // if an items was deleted but later returned it's restored with this rule
-                if($item_data['quantity'] < 0)
-                {
+                // If an items was deleted but later returned it's restored with this rule
+                if ($item_data['quantity'] < 0) {
                     $item->undelete($item_data['item_id']);
                 }
 
                 // Inventory Count Details
-                $sale_remarks = 'POS ' . $sale_id;    //TODO: Use string interpolation here.
+                $sale_remarks = 'POS ' . $sale_id;    // TODO: Use string interpolation here.
                 $inv_data = [
                     'trans_date' => date('Y-m-d H:i:s'),
                     'trans_items' => $item_data['item_id'],
@@ -693,21 +653,16 @@ class Sale extends Model
             $attribute->copy_attribute_links($item_data['item_id'], 'sale_id', $sale_id);
         }
 
-        if($customer_id == NEW_ENTRY || $customer->taxable)
-        {
+        if ($customer_id == NEW_ENTRY || $customer->taxable) {
             $this->save_sales_tax($sale_id, $sales_taxes[0]);
             $this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
         }
 
-        if($config['dinner_table_enable'])
-        {
+        if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
-            if($sale_status == COMPLETED)    //TODO: === ?
-            {
+            if ($sale_status == COMPLETED) {    // TODO: === ?
                 $dinner_table->release($dinner_table_id);
-            }
-            else
-            {
+            } else {
                 $dinner_table->occupy($dinner_table_id);
             }
         }
@@ -720,12 +675,11 @@ class Sale extends Model
     /**
      * Saves sale tax
      */
-    public function save_sales_tax(int $sale_id, array $sales_taxes): void    //TODO: should we return the result of the insert here as a bool?
+    public function save_sales_tax(int $sale_id, array $sales_taxes): void    // TODO: should we return the result of the insert here as a bool?
     {
         $builder = $this->db->table('sales_taxes');
 
-        foreach($sales_taxes as $line => $sales_tax)
-        {
+        foreach ($sales_taxes as $line => $sales_tax) {
             $sales_tax['sale_id'] = $sale_id;
             $builder->insert($sales_tax);
         }
@@ -742,8 +696,7 @@ class Sale extends Model
     {
         $builder = $this->db->table('sales_items_taxes');
 
-        foreach($sales_item_taxes as $line => $tax_item)
-        {
+        foreach ($sales_item_taxes as $line => $tax_item) {
             $sales_items_taxes = [
                 'sale_id' => $sale_id,
                 'item_id' => $tax_item['item_id'],
@@ -784,10 +737,10 @@ class Sale extends Model
     {
         $builder = $this->db->table('sales_items_taxes');
         $builder->select('item_id, name, percent');
-        $builder->where('sale_id',$sale_id);
-        $builder->where('item_id',$item_id);
+        $builder->where('sale_id', $sale_id);
+        $builder->where('item_id', $item_id);
 
-        //return an array of taxes for an item
+        // Return an array of taxes for an item
         return $builder->get()->getResultArray();
     }
 
@@ -799,8 +752,7 @@ class Sale extends Model
     {
         $result = true;
 
-        foreach($sale_ids as $sale_id)
-        {
+        foreach ($sale_ids as $sale_id) {
             $result &= $this->delete($sale_id, false, $update_inventory, $employee_id);
         }
 
@@ -810,10 +762,9 @@ class Sale extends Model
     /**
      * Restores list of sales
      */
-    public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool    //TODO: $employee_id and $update_inventory are never used in the function.
+    public function restore_list(array $sale_ids, int $employee_id, bool $update_inventory = true): bool    // TODO: $employee_id and $update_inventory are never used in the function.
     {
-        foreach($sale_ids as $sale_id)
-        {
+        foreach ($sale_ids as $sale_id) {
             $this->update_sale_status($sale_id, SUSPENDED);
         }
 
@@ -828,28 +779,25 @@ class Sale extends Model
      */
     public function delete($sale_id = null, bool $purge = false, bool $update_inventory = true, $employee_id = null): bool
     {
-        // start a transaction to assure data integrity
+        // Start a transaction to assure data integrity
         $this->db->transStart();
 
         $sale_status = $this->get_sale_status($sale_id);
 
-        if($update_inventory && $sale_status == COMPLETED)
-        {
-            // defect, not all item deletions will be undone??
-            // get array with all the items involved in the sale to update the inventory tracking
+        if ($update_inventory && $sale_status == COMPLETED) {
+            // Defect, not all item deletions will be undone?
+            // Get array with all the items involved in the sale to update the inventory tracking
             $inventory = model('Inventory');
             $item = model(Item::class);
             $item_quantity = model(Item_quantity::class);
 
             $items = $this->get_sale_items($sale_id)->getResultArray();
 
-            foreach($items as $item_data)
-            {
+            foreach ($items as $item_data) {
                 $cur_item_info = $item->get_info($item_data['item_id']);
 
-                if($cur_item_info->stock_type == HAS_STOCK)
-                {
-                    // create query to update inventory tracking
+                if ($cur_item_info->stock_type == HAS_STOCK) {
+                    // Create query to update inventory tracking
                     $inv_data = [
                         'trans_date' => date('Y-m-d H:i:s'),
                         'trans_items' => $item_data['item_id'],
@@ -858,10 +806,10 @@ class Sale extends Model
                         'trans_location' => $item_data['item_location'],
                         'trans_inventory' => $item_data['quantity_purchased']
                     ];
-                    // update inventory
+                    // Update inventory
                     $inventory->insert($inv_data, false);
 
-                    // update quantities
+                    // Update quantities
                     $item_quantity->change_quantity($item_data['item_id'], $item_data['item_location'], $item_data['quantity_purchased']);
                 }
             }
@@ -869,7 +817,7 @@ class Sale extends Model
 
         $this->update_sale_status($sale_id, CANCELED);
 
-        // execute transaction
+        // Execute transaction
         $this->db->transComplete();
 
         return $this->db->transStatus();
@@ -899,7 +847,7 @@ class Sale extends Model
             sales_items.sale_id,
             sales_items.item_id,
             sales_items.description,
-            serialnumber,    
+            serialnumber,
             line,
             quantity_purchased,
             item_cost_price,
@@ -916,29 +864,25 @@ class Sale extends Model
         $builder->where('sales_items.sale_id', $sale_id);
 
         // Entry sequence (this will render kits in the expected sequence)
-        if($config['line_sequence'] == '0')    //TODO: Replace these with constants and this should be converted to a switch.
-        {
+        if ($config['line_sequence'] == '0') {    // TODO: Replace these with constants and this should be converted to a switch.
             $builder->orderBy('line', 'asc');
         }
         // Group by Stock Type (nonstock first - type 1, stock next - type 0)
-        elseif($config['line_sequence'] == '1')
-        {
+        elseif ($config['line_sequence'] == '1') {
             $builder->orderBy('stock_type', 'desc');
             $builder->orderBy('sales_items.description', 'asc');
             $builder->orderBy('items.name', 'asc');
             $builder->orderBy('items.qty_per_pack', 'asc');
         }
         // Group by Item Category
-        elseif($config['line_sequence'] == '2')
-        {
+        elseif ($config['line_sequence'] == '2') {
             $builder->orderBy('category', 'asc');
             $builder->orderBy('sales_items.description', 'asc');
             $builder->orderBy('items.name', 'asc');
             $builder->orderBy('items.qty_per_pack', 'asc');
         }
         // Group by entry sequence in descending sequence (the Standard)
-        else
-        {
+        else {
             $builder->orderBy('line', 'desc');
         }
 
@@ -963,18 +907,15 @@ class Sale extends Model
     {
         $payments = get_payment_options();
 
-        if($giftcard)
-        {
+        if ($giftcard) {
             $payments[lang('Sales.giftcard')] = lang('Sales.giftcard');
         }
 
-        if($reward_points)
-        {
+        if ($reward_points) {
             $payments[lang('Sales.rewards')] = lang('Sales.rewards');
         }
         $sale_lib = new Sale_lib();
-        if($sale_lib->get_mode() == 'sale_work_order')
-        {
+        if ($sale_lib->get_mode() == 'sale_work_order') {
             $payments[lang('Sales.cash_deposit')] = lang('Sales.cash_deposit');
             $payments[lang('Sales.credit_deposit')] = lang('Sales.credit_deposit');
         }
@@ -1016,12 +957,11 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('quote_number', $quote_number);
 
-        if(!empty($sale_id))
-        {
+        if (!empty($sale_id)) {
             $builder->where('sale_id !=', $sale_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -1032,12 +972,11 @@ class Sale extends Model
         $builder = $this->db->table('sales');
         $builder->where('invoice_number', $invoice_number);
 
-        if(!empty($sale_id))
-        {
+        if (!empty($sale_id)) {
             $builder->where('sale_id !=', $sale_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -1047,12 +986,11 @@ class Sale extends Model
     {
         $builder = $this->db->table('sales');
         $builder->where('invoice_number', $work_order_number);
-        if(!empty($sale_id))
-        {
+        if (!empty($sale_id)) {
             $builder->where('sale_id !=', $sale_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -1062,8 +1000,7 @@ class Sale extends Model
     {
         $giftcard = model(Giftcard::class);
 
-        if(!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber)))    //TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
-        {
+        if (!$giftcard->exists($giftcard->get_giftcard_id($giftcardNumber))) {    // TODO: camelCase is used here for the variable name but we are using _ everywhere else. CI4 moved to camelCase... we should pick one and do that.
             return 0;
         }
 
@@ -1081,19 +1018,13 @@ class Sale extends Model
     {
         $config = config(OSPOS::class)->settings;
 
-        if(empty($inputs['sale_id']))
-        {
-            if(empty($config['date_or_time_format']))    //TODO: This needs to be replaced with Ternary notation
-            {
+        if (empty($inputs['sale_id'])) {
+            if (empty($config['date_or_time_format'])) {    // TODO: This needs to be replaced with Ternary notation
                 $where = 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-            }
-            else
-            {
+            } else {
                 $where = 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
             }
-        }
-        else
-        {
+        } else {
             $where = 'sales.sale_id = ' . $this->db->escape($inputs['sale_id']);
         }
 
@@ -1110,18 +1041,15 @@ class Sale extends Model
         $internal_tax = 'IFNULL(SUM(sales_items_taxes.internal_tax), 0)';
         $cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-        if($config['tax_included'])
-        {
+        if ($config['tax_included']) {
             $sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
             $sale_subtotal = "$sale_total - $internal_tax";
-        }
-        else
-        {
+        } else {
             $sale_subtotal = "ROUND(SUM($sale_price), $decimals) - $internal_tax + $cash_adjustment";
             $sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
         }
 
-        // create a temporary table to contain all the sum of taxes per sale item
+        // Create a temporary table to contain all the sum of taxes per sale item
         $sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
             ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
             (
@@ -1142,7 +1070,7 @@ class Sale extends Model
 
         $this->db->query($sql);
 
-        // create a temporary table to contain all the payment types and amount
+        // Create a temporary table to contain all the payment types and amount
         $sql = 'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
             ' (PRIMARY KEY(sale_id), INDEX(sale_id))
             (
@@ -1233,15 +1161,12 @@ class Sale extends Model
      */
     public function get_all_suspended(int $customer_id = null): array
     {
-        if($customer_id == NEW_ENTRY)
-        {
-            $query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
+        if ($customer_id == NEW_ENTRY) {
+            $query = $this->db->query("SELECT sale_id, case when sale_type = '" . SALE_TYPE_QUOTE . "' THEN quote_number WHEN sale_type = '" . SALE_TYPE_WORK_ORDER . "' THEN work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
                 . $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED);
-        }
-        else
-        {
-            $query = $this->db->query("SELECT sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' THEN quote_number WHEN sale_type = '".SALE_TYPE_WORK_ORDER."' THEN work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
-                . $this->db->prefixTable('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
+        } else {
+            $query = $this->db->query("SELECT sale_id, case when sale_type = '" . SALE_TYPE_QUOTE . "' THEN quote_number WHEN sale_type = '" . SALE_TYPE_WORK_ORDER . "' THEN work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, employee_id, comment FROM "
+                . $this->db->prefixTable('sales') . ' where sale_status = ' . SUSPENDED . ' AND customer_id = ' . $customer_id);
         }
 
         return $query->getResultArray() ?: [];
@@ -1250,10 +1175,9 @@ class Sale extends Model
     /**
      * Gets the dinner table for the selected sale
      */
-    public function get_dinner_table(int $sale_id)    //TODO: this is returning null or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
+    public function get_dinner_table(int $sale_id)    // TODO: this is returning null or the table_id.  We can keep it this way but multiple return types can't be declared until PHP 8.x
     {
-        if($sale_id == NEW_ENTRY)
-        {
+        if ($sale_id == NEW_ENTRY) {
             return null;
         }
 
@@ -1308,8 +1232,7 @@ class Sale extends Model
 
         $row = $builder->get()->getRow();
 
-        if($row != null)
-        {
+        if ($row != null) {
             return $row->quote_number;
         }
 
@@ -1326,8 +1249,7 @@ class Sale extends Model
 
         $row = $builder->get()->getRow();
 
-        if($row != null)    //TODO: === ?
-        {
+        if ($row != null) {    // TODO: === ?
             return $row->work_order_number;
         }
 
@@ -1344,8 +1266,7 @@ class Sale extends Model
 
         $row = $builder->get()->getRow();
 
-        if($row != null)    //TODO: === ?
-        {
+        if ($row != null) {    // TODO: === ?
             return $row->comment;
         }
 
@@ -1370,12 +1291,11 @@ class Sale extends Model
      */
     public function delete_suspended_sale(int $sale_id): bool
     {
-        //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
-        if($config['dinner_table_enable'])
-        {
+        if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
             $dinner_table_id = $this->get_dinner_table($sale_id);
             $dinner_table->release($dinner_table_id);
@@ -1397,8 +1317,7 @@ class Sale extends Model
         $this->db->transStart();
         $config = config(OSPOS::class)->settings;
 
-        if($config['dinner_table_enable'])
-        {
+        if ($config['dinner_table_enable']) {
             $dinner_table = model(Dinner_table::class);
             $dinner_table_id = $this->get_dinner_table($sale_id);
             $dinner_table->release($dinner_table_id);
@@ -1444,16 +1363,14 @@ class Sale extends Model
     {
         $config = config(OSPOS::class)->settings;
 
-        if(!empty($customer_id) && $config['customer_reward_enable'])
-        {
+        if (!empty($customer_id) && $config['customer_reward_enable']) {
             $customer = model(Customer::class);
             $customer_rewards = model(Customer_rewards::class);
             $rewards = model(Rewards::class);
 
             $package_id = $customer->get_info($customer_id)->package_id;
 
-            if(!empty($package_id))
-            {
+            if (!empty($package_id)) {
                 $points_percent = $customer_rewards->get_points_percent($package_id);
                 $points = $customer->get_info($customer_id)->points;
                 $points = ($points == null ? 0 : $points);
@@ -1534,65 +1451,54 @@ class Sale extends Model
      */
     private function add_filters_to_query(string $search, array $filters, BaseBuilder $builder): void
     {
-        if(!empty($search))    //TODO: this is duplicated code.  We should think about refactoring out a method
-        {
-            if($filters['is_valid_receipt'])
-            {
+        if (!empty($search)) {    // TODO: this is duplicated code.  We should think about refactoring out a method
+            if ($filters['is_valid_receipt']) {
                 $pieces = explode(' ', $search);
                 $builder->where('sales.sale_id', $pieces[1]);
-            }
-            else
-            {
+            } else {
                 $builder->groupStart();
-                // customer last name
+                // Customer last name
                 $builder->like('customer_p.last_name', $search);
-                // customer first name
+                // Customer first name
                 $builder->orLike('customer_p.first_name', $search);
-                // customer first and last name
+                // Customer first and last name
                 $builder->orLike('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
-                // customer company name
+                // Customer company name
                 $builder->orLike('customer.company_name', $search);
                 $builder->groupEnd();
             }
         }
 
-        if($filters['location_id'] != 'all')
-        {
+        if ($filters['location_id'] != 'all') {
             $builder->where('sales_items.item_location', $filters['location_id']);
         }
 
-        if($filters['selected_customer'] != false)
-        {
+        if ($filters['selected_customer'] != false) {
             $sale_lib = new Sale_lib();
             $builder->where('sales.customer_id', $sale_lib->get_customer());
         }
 
 
-        if($filters['only_invoices'])
-        {
+        if ($filters['only_invoices']) {
             $builder->where('sales.invoice_number IS NOT NULL');
         }
 
-        if($filters['only_cash'])
-        {
+        if ($filters['only_cash']) {
             $builder->groupStart();
             $builder->like('payments.payment_type', lang('Sales.cash'));
             $builder->orWhere('payments.payment_type IS NULL');
             $builder->groupEnd();
         }
 
-        if($filters['only_creditcard'])
-        {
+        if ($filters['only_creditcard']) {
             $builder->like('payments.payment_type', lang('Sales.credit'));
         }
 
-        if($filters['only_due'])
-        {
+        if ($filters['only_due']) {
             $builder->like('payments.payment_type', lang('Sales.due'));
         }
 
-        if($filters['only_check'])
-        {
+        if ($filters['only_check']) {
             $builder->like('payments.payment_type', lang('Sales.check'));
         }
     }

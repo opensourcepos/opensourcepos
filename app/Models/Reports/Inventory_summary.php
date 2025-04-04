@@ -40,7 +40,8 @@ class Inventory_summary extends Report
         $item = model(Item::class);
 
         $builder = $this->db->table('items AS items');
-        $builder->select($item->get_item_name('name') . ',
+        $builder->select(
+            $item->get_item_name('name') . ',
             items.item_number,
             items.category,
             item_quantities.quantity,
@@ -57,18 +58,14 @@ class Inventory_summary extends Report
         $builder->where('items.stock_type', 0);
         $builder->where('stock_locations.deleted', 0);
 
-        // should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns...
-        if($inputs['item_count'] == 'zero_and_less')
-        {
+        // Should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns
+        if ($inputs['item_count'] == 'zero_and_less') {
             $builder->where('item_quantities.quantity <=', 0);
-        }
-        elseif($inputs['item_count'] == 'more_than_zero')
-        {
+        } elseif ($inputs['item_count'] == 'more_than_zero') {
             $builder->where('item_quantities.quantity >', 0);
         }
 
-        if($inputs['location_id'] != 'all')
-        {
+        if ($inputs['location_id'] != 'all') {
             $builder->where('stock_locations.location_id', $inputs['location_id']);
         }
 
@@ -87,15 +84,14 @@ class Inventory_summary extends Report
      */
     public function getSummaryData(array $inputs): array
     {
-        $return = [    //TODO: This variable name should be refactored to reflect what it is... perhaps summary_data
+        $return = [    // TODO: This variable name should be refactored to reflect what it is... perhaps summary_data
             'total_inventory_value' => 0,
             'total_quantity' => 0,
             'total_low_sell_quantity' => 0,
             'total_retail' => 0
         ];
 
-        foreach($inputs as $input)
-        {
+        foreach ($inputs as $input) {
             $return['total_inventory_value'] += $input['sub_total_value'];
             $return['total_quantity'] += $input['quantity'];
             $return['total_low_sell_quantity'] += $input['low_sell_quantity'];

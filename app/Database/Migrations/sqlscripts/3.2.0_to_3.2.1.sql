@@ -4,7 +4,7 @@
 
 -- Add columns to customer table for tracking purposes and explicit consent of data registration
 
-ALTER TABLE `ospos_customers` 
+ALTER TABLE `ospos_customers`
   ADD COLUMN `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   ADD COLUMN `employee_id` int(10) NOT NULL,
   ADD COLUMN `consent` int(1) NOT NULL DEFAULT '0';

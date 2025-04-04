@@ -28,7 +28,7 @@ class Migration_image_upload_defaults extends Migration
     public function down(): void
     {
         $builder = $this->db->table('app_config');
-        $builder->whereIn('key', ['image_allowed_types','image_max_height','image_max_size','image_max_width']);
+        $builder->whereIn('key', ['image_allowed_types', 'image_max_height', 'image_max_size', 'image_max_width']);
         $builder->delete();
     }
 }

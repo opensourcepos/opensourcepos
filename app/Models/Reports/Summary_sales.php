@@ -26,9 +26,9 @@ class Summary_sales extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _select(array $inputs, object &$builder): void    //TODO: hungarian notation
+    protected function _select(array $inputs, object &$builder): void    // TODO: hungarian notation
     {
-        parent::_select($inputs, $builder);    //TODO: hungarian notation
+        parent::_select($inputs, $builder);    // TODO: hungarian notation
 
         $builder->select('
                 DATE(sales.sale_time) AS sale_date,
@@ -41,7 +41,7 @@ class Summary_sales extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _group_order(object &$builder): void    //TODO: hungarian notation
+    protected function _group_order(object &$builder): void    // TODO: hungarian notation
     {
         $builder->groupBy('sale_date');
         $builder->orderBy('sale_date');

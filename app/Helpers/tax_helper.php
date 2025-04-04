@@ -40,7 +40,7 @@ function get_tax_code_data_row($tax_code_row): array
             [
                 'class' => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'=>lang(ucfirst($controller_name) . ".update_tax_codes")
+                'title' => lang(ucfirst($controller_name) . ".update_tax_codes")
             ]
         )
     ];
@@ -78,7 +78,7 @@ function get_tax_categories_data_row($tax_categories_row): array
             [
                 'class' => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'=>lang(ucfirst($controller_name) . ".update")
+                'title' => lang(ucfirst($controller_name) . ".update")
             ]
         )
     ];
@@ -103,7 +103,7 @@ function get_tax_jurisdictions_table_headers(): string
  */
 function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
 {
-    $controller_name='tax_jurisdictions';
+    $controller_name = 'tax_jurisdictions';
 
     return [
         'jurisdiction_id' => $tax_jurisdiction_row->jurisdiction_id,
@@ -115,7 +115,7 @@ function get_tax_jurisdictions_data_row($tax_jurisdiction_row): array
             [
                 'class' => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'=>lang(ucfirst($controller_name) . ".update")
+                'title' => lang(ucfirst($controller_name) . ".update")
             ]
         )
     ];
@@ -153,7 +153,7 @@ function get_tax_rates_data_row($tax_rates_row): array
         'tax_category' => $tax_rates_row->tax_category,
         'tax_rate' => $tax_rates_row->tax_rate,
         'jurisdiction_name' => $tax_rates_row->jurisdiction_name,
-        'tax_rounding_code' =>$tax_rates_row->tax_rounding_code,
+        'tax_rounding_code' => $tax_rates_row->tax_rounding_code,
         'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_rates_row->tax_rounding_code),
         'edit' => anchor(
             "$controller_name/view/$tax_rates_row->tax_rate_id",
@@ -161,7 +161,7 @@ function get_tax_rates_data_row($tax_rates_row): array
             [
                 'class' => 'modal-dlg',
                 'data-btn-submit' => lang('Common.submit'),
-                'title'=>lang(ucfirst($controller_name) . ".update")
+                'title' => lang(ucfirst($controller_name) . ".update")
             ]
         )
     ];
