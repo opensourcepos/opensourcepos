@@ -863,8 +863,10 @@ class Attribute extends Model
      * @param    int        $definition_id    Attribute definition ID to remove.
      * @return     boolean                    true if successful and false if there is a failure
      */
-    public function delete_definition(int $definition_id): bool
+    public function deleteDefinition(int $definition_id): bool
     {
+        $this->deleteAttributeLinksByDefinitionId($definition_id);
+
         $builder = $this->db->table('attribute_definitions');
         $builder->where('definition_id', $definition_id);
 
@@ -875,12 +877,31 @@ class Attribute extends Model
      * @param array $definition_ids
      * @return bool
      */
-    public function delete_definition_list(array $definition_ids): bool
+    public function deleteDefinitionList(array $definition_ids): bool
     {
+        $this->deleteAttributeLinksByDefinitionId($definition_ids);
+
         $builder = $this->db->table('attribute_definitions');
         $builder->whereIn('definition_id', $definition_ids);
 
         return $builder->update(['deleted' => DELETED]);
+    }
+
+	/**
+	 * Deletes attribute links by definition ID
+	 *
+	 * @param int|array $definition_id
+	 */
+    public function deleteAttributeLinksByDefinitionId(int|array $definition_id): void
+    {
+        if(!is_array($definition_id))
+        {
+            $definition_id = [$definition_id];
+        }
+
+        $builder = $this->db->table('attribute_links');
+        $builder->whereIn('definition_id', $definition_id);
+        $builder->delete();
     }
 
     /**

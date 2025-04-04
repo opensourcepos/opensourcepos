@@ -235,7 +235,7 @@ class Attributes extends Secure_Controller
     {
         $attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($this->attribute->delete_definition_list($attributes_to_delete)) {
+        if($this->attribute->deleteDefinitionList($attributes_to_delete)) {
             $message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
             echo json_encode(['success' => true, 'message' => $message]);
         } else {
