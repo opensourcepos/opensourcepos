@@ -466,7 +466,7 @@ class Tax_lib
 
         if ($selected_tax_type === Tax_lib::TAX_TYPE_EXCLUDED) {
             $s1 = $selected;
-        } else if ($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED) {
+        } elseif ($selected_tax_type === Tax_lib::TAX_TYPE_INCLUDED) {
             $s2 = $selected;
         }
 

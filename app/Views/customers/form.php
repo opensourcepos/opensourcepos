@@ -38,7 +38,7 @@
                 <div class="form-group form-group-sm">
                     <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
                     <div class="col-xs-1">
-                        <?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (boolean)$person_info->consent) ?>
+                        <?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (bool)$person_info->consent) ?>
                     </div>
                 </div>
 

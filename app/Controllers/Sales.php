@@ -242,11 +242,11 @@ class Sales extends Secure_Controller
 
         if ($mode == 'sale') {
             $this->sale_lib->set_sale_type(SALE_TYPE_POS);
-        } else if ($mode == 'sale_quote') {
+        } elseif ($mode == 'sale_quote') {
             $this->sale_lib->set_sale_type(SALE_TYPE_QUOTE);
-        } else if ($mode == 'sale_work_order') {
+        } elseif ($mode == 'sale_work_order') {
             $this->sale_lib->set_sale_type(SALE_TYPE_WORK_ORDER);
-        } else if ($mode == 'sale_invoice') {
+        } elseif ($mode == 'sale_invoice') {
             $this->sale_lib->set_sale_type(SALE_TYPE_INVOICE);
         } else {
             $this->sale_lib->set_sale_type(SALE_TYPE_RETURN);

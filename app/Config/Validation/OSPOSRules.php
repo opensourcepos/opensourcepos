@@ -1,8 +1,4 @@
 <?php
-/**
- * @property Employee employee
- * @property IncomingRequest request
- */
 
 namespace App\Config\Validation;
 
@@ -11,6 +7,10 @@ use CodeIgniter\HTTP\IncomingRequest;
 use Config\OSPOS;
 use Config\Services;
 
+/**
+ * @property Employee employee
+ * @property IncomingRequest request
+ */
 class OSPOSRules
 {
     private IncomingRequest $request;

@@ -417,9 +417,9 @@ class Attribute extends Model
                     $attributes_to_convert = $this->get_attributes_by_definition($definition_id);
                     $success = $this->attribute_cleanup($attributes_to_convert, $definition_id, $to_type);
                 }
-            } else if ($to_type === DROPDOWN) {
+            } elseif ($to_type === DROPDOWN) {
                 $success = true;
-            } else if ($to_type === CHECKBOX) {    // TODO: duplicated code.
+            } elseif ($to_type === CHECKBOX) {    // TODO: duplicated code.
                 $checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);
 
                 $this->db->transStart();
@@ -442,7 +442,7 @@ class Attribute extends Model
 
                 $this->db->transComplete();
             }
-        } else if ($from_type === DROPDOWN) {
+        } elseif ($from_type === DROPDOWN) {
             if (in_array($to_type, [TEXT, CHECKBOX], true)) {
                 if ($to_type === CHECKBOX) {    // TODO: Duplicated code.
                     $checkbox_attribute_values = $this->checkbox_attribute_values($definition_id);

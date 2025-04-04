@@ -693,7 +693,7 @@ function get_attribute_definition_data_row(object $attribute_row): array
 
     if (count($attribute->get_definition_flags()) == 0) {
         $definition_flags = lang('Common.none_selected_text');
-    } else if ($attribute->definition_type == GROUP) {
+    } elseif ($attribute->definition_type == GROUP) {
         $definition_flags = "-";
     } else {
         $definition_flags = implode(', ', $attribute_row->definition_flags);
