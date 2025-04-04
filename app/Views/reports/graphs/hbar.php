@@ -8,7 +8,8 @@
  * @var array $config
  */
 ?>
-<script>
+
+<script type="text/javascript">
     // Labels and data series
     var data = {
         labels: <?= json_encode(esc($labels_1, 'js')) ?>,
@@ -45,28 +46,18 @@
             // used for the labels on each axis.
             labelInterpolationFnc: function(value) {
                 <?php
-                if($show_currency)
-                {
-                    if(is_right_side_currency_symbol())
-                    {
+                if ($show_currency) {
+                    if (is_right_side_currency_symbol()) {
                 ?>
                         return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                    <?php } else { ?>
+                        return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
                     <?php
                     }
-                    else
-                    {
+                } else {
                     ?>
-                        return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                <?php
-                    }
-                }
-                else
-                {
-                ?>
                     return value;
-                <?php
-                }
-                ?>
+                <?php } ?>
             }
         },
 
@@ -76,7 +67,7 @@
             offset: 120
         },
 
-        // plugins configuration
+        // Plugins configuration
         plugins: [
             Chartist.plugins.ctAxisTitle({
                 axisX: {
@@ -115,11 +106,13 @@
                 top: 20,
                 bottom: 0
             },
-        }] /*,
-        ['screen and (min-width: 1024px)', {
-            labelOffset: 80,
-            chartPadding: 20
-        }]*/
+        }]
+        /* ,
+         * ['screen and (min-width: 1024px)', {
+         *     labelOffset: 80,
+         *     chartPadding: 20
+         * }]
+         */
     ];
 
     new Chartist.Bar('#chart1', data, options, responsiveOptions);

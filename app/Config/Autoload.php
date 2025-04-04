@@ -63,7 +63,7 @@ class Autoload extends AutoloadConfig
      * @var array<string, string>
      */
     public $classmap = [
-        //Controllers
+        // Controllers
         'Attributes' => '/App/Controllers/Attributes.php',
         'Cashups' => '/App/Controllers/Cashups.php',
         'Config' => '/App/Controllers/Config.php',
@@ -90,7 +90,7 @@ class Autoload extends AutoloadConfig
         'Tax_jurisdictions' => '/App/Controllers/Tax_jurisdictions.php',
         'Taxes' => '/App/Controllers/Taxes.php',
 
-        //Models
+        // Models
         'Appconfig' => '/App/Models/Appconfig.php',
         'Attribute' => '/App/Models/Attribute.php',
         'Cashup' => '/App/Models/Cashup.php',
@@ -118,7 +118,7 @@ class Autoload extends AutoloadConfig
         'Tax_code' => '/App/Models/Tax_code.php',
         'Tax_jurisdiction' => '/App/Models/Tax_jurisdiction.php',
 
-        //Reports
+        // Reports
         'Report' => '/App/Models/Reports/Report.php',
         'Detailed_receiving' => '/App/Models/Reports/Detailed_receiving.php',
         'Detailed_sales' => '/App/Models/Reports/Detailed_sales.php',
@@ -141,7 +141,7 @@ class Autoload extends AutoloadConfig
         'Summary_suppliers' => '/App/Models/Reports/Summary_suppliers.php',
         'Summary_taxes' => '/App/Models/Reports/Summary_taxes.php',
 
-        //Tokens
+        // Tokens
         'Token' => '/App/Models/Tokens/Token.php',
         'Token_barcode_ean' => '/App/Models/Tokens/Token_barcode_ean.php',
         'Token_barcode_price' => '/App/Models/Tokens/Token_barcode_price.php',
@@ -155,7 +155,7 @@ class Autoload extends AutoloadConfig
         'Token_year_invoice_count' => '/App/Models/Tokens/Token_year_invoice_count.php',
         'Token_year_quote_count' => '/App/Models/Tokens/Token_year_quote_count.php',
 
-        //Libraries
+        // Libraries
         'Barcode_lib' => '/App/Libraries/Barcode_lib.php',
         'Email_lib' => '/App/Libraries/Email_lib.php',
         'Item_lib' => '/App/Libraries/Item_lib.php',
@@ -168,7 +168,7 @@ class Autoload extends AutoloadConfig
         'Tax_lib' => '/App/Libraries/Tax_lib.php',
         'Token_lib' => '/App/Libraries/Token_lib.php',
 
-        //Miscellaneous
+        // Miscellaneous
         'Rounding_mode' => '/App/Models/Enums/Rounding_mode.php'
     ];
 

@@ -23,8 +23,9 @@ class Migration_RefundTracking extends Migration
 
         $cash_payment = lang('Sales.cash');
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_taxes') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_taxes') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
                 SELECT sales.sale_id, SUM(sales_taxes.sale_tax_amount) AS total_taxes
                 FROM ' . $this->db->prefixTable('sales') . ' AS sales
@@ -35,10 +36,11 @@ class Migration_RefundTracking extends Migration
             )'
         );
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_sales') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_sales') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
-                SELECT sales.sale_id, '. $trans_amount . ', sales.employee_id, sales.sale_time'
+                SELECT sales.sale_id, ' . $trans_amount . ', sales.employee_id, sales.sale_time'
                 . ' FROM ' . $this->db->prefixTable('sales') . ' AS sales '
                 . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items '
                 . 'ON sales.sale_id = sales_items.sale_id '
@@ -52,10 +54,11 @@ class Migration_RefundTracking extends Migration
             . 'SET trans_amount = trans_amount + IFNULL((SELECT total_taxes FROM ' . $this->db->prefixTable('migrate_taxes')
             . ' AS sumpay_taxes WHERE sumpay_items.sale_id = sumpay_taxes.sale_id),0)');
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_payments') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_payments') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
-                SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, 
+                SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments,
                     SUM(sales_payments.payment_amount - sales_payments.cash_refund) AS total_payments
                 FROM ' . $this->db->prefixTable('sales') . ' AS sales
                 LEFT OUTER JOIN ' . $this->db->prefixTable('sales_payments') . ' AS sales_payments
@@ -67,8 +70,9 @@ class Migration_RefundTracking extends Migration
         // You may be asking yourself why the following is not creating a temporary table.
         // It should be, it originallly was, but there is a bug in MySQL where temporary tables where some SQL statements fail.
         //  The update statement that follows this CREATE TABLE is one of those statements.
-        $this->db->query('CREATE TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_refund') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TABLE IF NOT EXISTS ' . $this->db->prefixTable('migrate_refund') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
                 SELECT a.sale_id, total_payments - trans_amount AS refund_amount
                 FROM ' . $this->db->prefixTable('migrate_sales') . ' AS a
@@ -78,21 +82,23 @@ class Migration_RefundTracking extends Migration
         );
 
         // Update existing cash transactions with refund amount
-        $this->db->query('UPDATE ' . $this->db->prefixTable('sales_payments') . ' AS a
+        $this->db->query(
+            'UPDATE ' . $this->db->prefixTable('sales_payments') . ' AS a
             SET a.cash_refund =
-            (SELECT b.refund_amount 
-                FROM ' . $this->db->prefixTable('migrate_refund') . ' AS b 
+            (SELECT b.refund_amount
+                FROM ' . $this->db->prefixTable('migrate_refund') . ' AS b
                 WHERE a.sale_id = b.sale_id AND a.payment_type = \'' . $cash_payment . '\')
             WHERE EXISTS
-                (SELECT b.refund_amount 
-                    FROM ' . $this->db->prefixTable('migrate_refund') . ' AS b 
+                (SELECT b.refund_amount
+                    FROM ' . $this->db->prefixTable('migrate_refund') . ' AS b
                     WHERE a.sale_id = b.sale_id AND a.payment_type = \'' . $cash_payment . ' \')'
         );
 
         // Insert new cash refund transactions for non-cash payments
-        $this->db->query('INSERT INTO ' . $this->db->prefixTable('sales_payments') .
-           ' (sale_id, payment_type, employee_id, payment_time, payment_amount, cash_refund) 
-            SELECT r.sale_id, \'' . $cash_payment . '\', s.employee_id, sale_time, 0, r.refund_amount 
+        $this->db->query(
+            'INSERT INTO ' . $this->db->prefixTable('sales_payments') .
+                ' (sale_id, payment_type, employee_id, payment_time, payment_amount, cash_refund)
+            SELECT r.sale_id, \'' . $cash_payment . '\', s.employee_id, sale_time, 0, r.refund_amount
             FROM ' . $this->db->prefixTable('migrate_refund') . ' AS r
             JOIN ' . $this->db->prefixTable('sales_payments') . ' AS p ON r.sale_id = p.sale_id
             JOIN ' . $this->db->prefixTable('migrate_sales') . ' AS s ON r.sale_id = s.sale_id
@@ -106,8 +112,5 @@ class Migration_RefundTracking extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

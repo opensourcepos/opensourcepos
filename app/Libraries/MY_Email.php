@@ -1,6 +1,7 @@
 <?php
 
 namespace app\Libraries;
+
 use CodeIgniter\Email\Email;
 
 class MY_Email extends Email
@@ -35,13 +36,11 @@ class MY_Email extends Email
         $this->setMailtype('html');
         $this->setSubject($subject);
         $this->setMessage($body);
-        if($to == null)
-        {
+        if ($to == null) {
             $to = $this->default_email_address;
             $this->setCc($this->default_cc_address);
         }
-        if($attachment)
-        {
+        if ($attachment) {
             $this->attach($attachment);
         }
         $this->setTo($to);

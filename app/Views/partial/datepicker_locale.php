@@ -8,20 +8,13 @@ var pickerconfig = function(config) {
         format: "<?= dateformat_bootstrap($config['dateformat']) ?>",
         <?php
         $t = $config['timeformat'];
-        $m = $t[strlen($t)-1];
-        if(str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A'))
-        {
-            ?>
-            showMeridian: true,
-            <?php
-        }
-        else
-        {
-            ?>
-            showMeridian: false,
-            <?php
-        }
+        $m = $t[strlen($t) - 1];
+        if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
         ?>
+            showMeridian: true,
+        <?php } else {  ?>
+            showMeridian: false,
+        <?php } ?>
         minView: 2,
         minuteStep: 1,
         autoclose: true,
@@ -41,8 +34,8 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.thursday') ?>",
         "<?= lang('Calendar.friday') ?>",
         "<?= lang('Calendar.saturday') ?>"
-        ],
-        daysShort: [
+    ],
+    daysShort: [
         "<?= lang('Calendar.sun') ?>",
         "<?= lang('Calendar.mon') ?>",
         "<?= lang('Calendar.tue') ?>",
@@ -50,8 +43,8 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.thu') ?>",
         "<?= lang('Calendar.fri') ?>",
         "<?= lang('Calendar.sat') ?>"
-        ],
-        daysMin: [
+    ],
+    daysMin: [
         "<?= lang('Calendar.su') ?>",
         "<?= lang('Calendar.mo') ?>",
         "<?= lang('Calendar.tu') ?>",
@@ -59,8 +52,8 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.th') ?>",
         "<?= lang('Calendar.fr') ?>",
         "<?= lang('Calendar.sa') ?>"
-        ],
-        months: [
+    ],
+    months: [
         "<?= lang('Calendar.january') ?>",
         "<?= lang('Calendar.february') ?>",
         "<?= lang('Calendar.march') ?>",
@@ -73,8 +66,8 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.october') ?>",
         "<?= lang('Calendar.november') ?>",
         "<?= lang('Calendar.december') ?>"
-        ],
-        monthsShort: [
+    ],
+    monthsShort: [
         "<?= lang('Calendar.jan') ?>",
         "<?= lang('Calendar.feb') ?>",
         "<?= lang('Calendar.mar') ?>",
@@ -87,28 +80,15 @@ $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {
         "<?= lang('Calendar.oct') ?>",
         "<?= lang('Calendar.nov') ?>",
         "<?= lang('Calendar.dec') ?>"
-        ],
+    ],
     today: "<?= lang('Datepicker.today') ?>",
-    <?php
-        if(str_contains($config['timeformat'], 'a'))
-        {
-    ?>
-    meridiem: ["am", "pm"],
-    <?php
-        }
-        elseif(str_contains($config['timeformat'], 'A'))
-        {
-    ?>
-    meridiem: ["AM", "PM"],
-    <?php
-        }
-        else
-        {
-    ?>
-    meridiem: [],
-    <?php
-        }
-    ?>
+    <?php if (str_contains($config['timeformat'], 'a')) { ?>
+        meridiem: ["am", "pm"],
+    <?php } elseif (str_contains($config['timeformat'], 'A')) { ?>
+        meridiem: ["AM", "PM"],
+    <?php } else { ?>
+        meridiem: [],
+    <?php } ?>
     weekStart: <?= lang('Datepicker.weekstart') ?>
 };
 

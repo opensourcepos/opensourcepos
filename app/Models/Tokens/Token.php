@@ -74,10 +74,9 @@ abstract class Token extends Model
      * @param string $text
      * @return string
      */
-    public function replace_token(string $text): string    //TODO: This function is never called in the code
+    public function replace_token(string $text): string    // TODO: This function is never called in the code
     {
-        if(strstr($text, $this->token_id()))
-        {
+        if (strstr($text, $this->token_id())) {
             return str_replace($this->token_id(), $this->get_value(), $text);
         }
 

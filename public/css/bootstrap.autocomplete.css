@@ -1,5 +1,4 @@
-.ui-autocomplete
-{
+.ui-autocomplete {
     position: absolute;
     top: 100%;
     left: 0;
@@ -30,8 +29,7 @@
     *border-bottom-width: 2px;
 }
 
-.ui-autocomplete .ui-menu-item > a.ui-corner-all
-{
+.ui-autocomplete .ui-menu-item>a.ui-corner-all {
     display: block;
     padding: 3px 15px;
     clear: both;
@@ -41,8 +39,8 @@
     white-space: nowrap;
 }
 
-.ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-hover, .ui-autocomplete .ui-menu-item > a.ui-corner-all.ui-state-active
-{
+.ui-autocomplete .ui-menu-item>a.ui-corner-all.ui-state-hover,
+.ui-autocomplete .ui-menu-item>a.ui-corner-all.ui-state-active {
     color: #ffffff;
     text-decoration: none;
     background-color: #f5f5f5;

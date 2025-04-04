@@ -50,12 +50,11 @@ class Customer extends Person
         $builder = $this->db->table('customers');
         $builder->where('account_number', $account_number);
 
-        if(!empty($person_id))
-        {
+        if (!empty($person_id)) {
             $builder->where('person_id !=', $person_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -79,8 +78,7 @@ class Customer extends Person
         $builder->where('deleted', 0);
         $builder->orderBy('last_name', 'asc');
 
-        if($limit > 0)
-        {
+        if ($limit > 0) {
             $builder->limit($limit, $offset);
         }
 
@@ -113,16 +111,12 @@ class Customer extends Person
         $empty_obj = parent::get_info(NEW_ENTRY);
 
         // Iterate through field definitions to determine how the fields should be initialized
-        foreach($this->db->getFieldData($table_name) as $field)
-        {
+        foreach ($this->db->getFieldData($table_name) as $field) {
             $field_name = $field->name;
 
-            if(in_array($field->type, ['int', 'tinyint', 'decimal']))
-            {
+            if (in_array($field->type, ['int', 'tinyint', 'decimal'])) {
                 $empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
-            }
-            else
-            {
+            } else {
                 $empty_obj->$field_name = null;
             }
         }
@@ -140,7 +134,7 @@ class Customer extends Person
         $totals_decimals = totals_decimals();
         $quantity_decimals = quantity_decimals();
 
-        //Temp Table
+        // Temp Table
         $builder = $this->db->table('sales');
         $builder->select('sales.sale_id AS sale_id, AVG(`' . $db_prefix . 'sales_items`.`discount`) AS avg_discount, SUM(`' . $db_prefix . 'sales_items`.`quantity_purchased`) AS quantity');
         $builder->join('sales_items', 'sales_items.sale_id = sales.sale_id');
@@ -152,7 +146,7 @@ class Customer extends Person
         $sql .= ' (INDEX(sale_id)) ENGINE=MEMORY (' . $selectQuery . ')';
         $this->db->query($sql);
 
-        //Get data
+        // Get data
         $builder = $this->db->table('sales');
         $builder->select([
             'SUM(sales_payments.payment_amount - sales_payments.cash_refund) AS total',
@@ -170,7 +164,7 @@ class Customer extends Person
 
         $stat = $builder->get()->getRow();
 
-        //Drop Temp Table
+        // Drop Temp Table
         $sql = 'DROP TEMPORARY TABLE IF EXISTS ' . $this->db->prefixTable('sales_items_temp');
         $this->db->query($sql);
 
@@ -195,9 +189,8 @@ class Customer extends Person
      */
     public function check_email_exists(string $email, string $customer_id = ''): bool
     {
-        // if the email is empty return like it is not existing
-        if(empty($email))
-        {
+        // If the email is empty return like it is not existing
+        if (empty($email)) {
             return false;
         }
 
@@ -206,12 +199,11 @@ class Customer extends Person
         $builder->where('people.email', $email);
         $builder->where('customers.deleted', 0);
 
-        if(!empty($customer_id))
-        {
+        if (!empty($customer_id)) {
             $builder->where('customers.person_id !=', $customer_id);
         }
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -222,16 +214,12 @@ class Customer extends Person
         $success = false;
         $this->db->transStart();
 
-        if(parent::save_value($person_data, $customer_id))
-        {
+        if (parent::save_value($person_data, $customer_id)) {
             $builder = $this->db->table('customers');
-            if($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id))
-            {
+            if ($customer_id == NEW_ENTRY || !$customer_id || !$this->exists($customer_id)) {
                 $customer_data['person_id'] = $person_data['person_id'];
                 $success = $builder->insert($customer_data);
-            }
-            else
-            {
+            } else {
                 $builder->where('person_id', $customer_id);
                 $success = $builder->update($customer_data);
             }
@@ -264,44 +252,41 @@ class Customer extends Person
         $result = true;
         $config = config(OSPOS::class)->settings;
 
-        // if privacy enforcement is selected scramble customer data
-        if($config['enforce_privacy'])
-        {
+        // If privacy enforcement is selected scramble customer data
+        if ($config['enforce_privacy']) {
             $builder = $this->db->table('people');
             $builder->where('person_id', $customer_id);
             $result &= $builder->update([
-                    'first_name' => $customer_id,
-                    'last_name' => $customer_id,
-                    'phone_number' => '',
-                    'email' => '',
-                    'gender' => null,
-                    'address_1' => '',
-                    'address_2' => '',
-                    'city' => '',
-                    'state' => '',
-                    'zip' => '',
-                    'country' => '',
-                    'comments' => ''
-                ]);
+                'first_name' => $customer_id,
+                'last_name' => $customer_id,
+                'phone_number' => '',
+                'email' => '',
+                'gender' => null,
+                'address_1' => '',
+                'address_2' => '',
+                'city' => '',
+                'state' => '',
+                'zip' => '',
+                'country' => '',
+                'comments' => ''
+            ]);
 
             $builder = $this->db->table('customers');
             $builder->where('person_id', $customer_id);
             $result &= $builder->update([
-                    'consent' => 0,
-                    'company_name' => null,
-                    'account_number' => null,
-                    'tax_id' => '',
-                    'taxable' => 0,
-                    'discount' => 0.00,
-                    'discount_type' => 0,
-                    'package_id' => null,
-                    'points' => null,
-                    'sales_tax_code_id' => null,
-                    'deleted' => 1
-                ]);
-        }
-        else
-        {
+                'consent' => 0,
+                'company_name' => null,
+                'account_number' => null,
+                'tax_id' => '',
+                'taxable' => 0,
+                'discount' => 0.00,
+                'discount_type' => 0,
+                'package_id' => null,
+                'points' => null,
+                'sales_tax_code_id' => null,
+                'deleted' => 1
+            ]);
+        } else {
             $builder = $this->db->table('customers');
             $builder->where('person_id', $customer_id);
 
@@ -320,9 +305,9 @@ class Customer extends Person
         $builder->whereIn('person_id', $person_ids);
 
         return $builder->update(['deleted' => 1]);
-     }
+    }
 
-     /**
+    /**
      * Get search suggestions to find customers
      */
     public function get_search_suggestions(string $search, int $limit = 25, bool $unique = true): array
@@ -332,38 +317,34 @@ class Customer extends Person
         $builder = $this->db->table('customers');
         $builder->join('people', 'customers.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
 
-            if($unique)
-            {
-                $builder->orLike('email', $search);
-                $builder->orLike('phone_number', $search);
-                $builder->orLike('company_name', $search);
-            }
+        if ($unique) {
+            $builder->orLike('email', $search);
+            $builder->orLike('phone_number', $search);
+            $builder->orLike('company_name', $search);
+        }
         $builder->groupEnd();
         $builder->where('deleted', 0);
         $builder->orderBy('last_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = [
                 'value' => $row->person_id,
-                'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->company_name) ? ' [' . $row->company_name . ']' : ''). (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : '')
+                'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->company_name) ? ' [' . $row->company_name . ']' : '') . (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : '')
             ];
         }
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder = $this->db->table('customers');
             $builder->join('people', 'customers.person_id = people.person_id');
             $builder->where('deleted', 0);
             $builder->like('email', $search);
             $builder->orderBy('email', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->email];
             }
 
@@ -373,8 +354,7 @@ class Customer extends Person
             $builder->like('phone_number', $search);
             $builder->orderBy('phone_number', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number];
             }
 
@@ -384,8 +364,7 @@ class Customer extends Person
             $builder->like('account_number', $search);
             $builder->orderBy('account_number', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->account_number];
             }
 
@@ -395,22 +374,20 @@ class Customer extends Person
             $builder->like('company_name', $search);
             $builder->orderBy('company_name', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->company_name];
             }
         }
 
-        //only return $limit suggestions
-        if(count($suggestions) > $limit)
-        {
+        // Only return $limit suggestions
+        if (count($suggestions) > $limit) {
             $suggestions = array_slice($suggestions, 0, $limit);
         }
 
         return $suggestions;
     }
 
-     /**
+    /**
      * Gets rows
      */
     public function get_found_rows(string $search): int
@@ -424,42 +401,39 @@ class Customer extends Person
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if($rows == null) $rows = 0;
-        if($limit_from == null) $limit_from = 0;
-        if($sort == null) $sort = 'last_name';
-        if($order == null) $order = 'asc';
-        if($count_only == null) $count_only = false;
+        if ($rows == null) $rows = 0;
+        if ($limit_from == null) $limit_from = 0;
+        if ($sort == null) $sort = 'last_name';
+        if ($order == null) $order = 'asc';
+        if ($count_only == null) $count_only = false;
 
         $builder = $this->db->table('customers AS customers');
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             $builder->select('COUNT(customers.person_id) as count');
         }
 
         $builder->join('people', 'customers.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('email', $search);
-            $builder->orLike('phone_number', $search);
-            $builder->orLike('account_number', $search);
-            $builder->orLike('company_name', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);    //TODO: Duplicated code.
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('email', $search);
+        $builder->orLike('phone_number', $search);
+        $builder->orLike('account_number', $search);
+        $builder->orLike('company_name', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);    // TODO: Duplicated code.
         $builder->groupEnd();
         $builder->where('deleted', 0);
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 

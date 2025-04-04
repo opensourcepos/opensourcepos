@@ -31,12 +31,12 @@ class Inventory_low extends Report
      * @return array
      */
     public function getData(array $inputs): array
-    {//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
+    {    // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
         $item = model(Item::class);
-        $query = $this->db->query("SELECT " . $item->get_item_name('name') . ", 
+        $query = $this->db->query("SELECT " . $item->get_item_name('name') . ",
             items.item_number,
-            item_quantities.quantity, 
-            items.reorder_level, 
+            item_quantities.quantity,
+            items.reorder_level,
             stock_locations.location_name
             FROM " . $this->db->prefixTable('items') . " AS items
             JOIN " . $this->db->prefixTable('item_quantities') . " AS item_quantities ON items.item_id = item_quantities.item_id

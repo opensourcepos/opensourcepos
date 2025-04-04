@@ -102,8 +102,7 @@ class Stock_location extends Model
         $stock = $this->get_undeleted_all($module_id)->getResultArray();
         $stock_locations = [];
 
-        foreach($stock as $location_data)
-        {
+        foreach ($stock as $location_data) {
             $stock_locations[$location_data['location_id']] = $location_data['location_name'];
         }
 
@@ -125,7 +124,7 @@ class Stock_location extends Model
         $builder->where('stock_locations.location_id', $location_id);
         $builder->where('deleted', 0);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -142,7 +141,7 @@ class Stock_location extends Model
         $builder->where('deleted', 0);
         $builder->limit(1);
 
-        return $builder->get()->getRow()->location_id;    //TODO: this is puking. Trying to get property 'location_id' of non-object
+        return $builder->get()->getRow()->location_id;    // TODO: this is puking. Trying to get property 'location_id' of non-object
     }
 
     /**
@@ -180,25 +179,23 @@ class Stock_location extends Model
 
         $location_data_to_save = ['location_name' => $location_name, 'deleted' => 0];
 
-        if(!$this->exists($location_id))
-        {
+        if (!$this->exists($location_id)) {
             $this->db->transStart();
 
             $builder = $this->db->table('stock_locations');
             $builder->insert($location_data_to_save);
-             $location_id = $this->db->insertID();
+            $location_id = $this->db->insertID();
 
-            $this->_insert_new_permission('items', $location_id, $location_name);    //TODO: need to refactor out the hungarian notation.
+            $this->_insert_new_permission('items', $location_id, $location_name);    // TODO: need to refactor out the hungarian notation.
             $this->_insert_new_permission('sales', $location_id, $location_name);
             $this->_insert_new_permission('receivings', $location_id, $location_name);
 
-            // insert quantities for existing items
+            // Insert quantities for existing items
             $item = model(Item::class);
             $builder = $this->db->table('item_quantities');
             $items = $item->get_all();
 
-            foreach($items->getResultArray() as $item)
-            {
+            foreach ($items->getResultArray() as $item) {
                 $quantity_data = [
                     'item_id' => $item['item_id'],
                     'location_id' => $location_id,
@@ -214,8 +211,7 @@ class Stock_location extends Model
 
         $original_location_name = $this->get_location_name($location_id);
 
-        if($original_location_name != $location_name)
-        {
+        if ($original_location_name != $location_name) {
             $builder = $this->db->table('permissions');
             $builder->delete(['location_id' => $location_id]);
 
@@ -236,23 +232,22 @@ class Stock_location extends Model
      * @param string $location_name
      * @return void
      */
-    private function _insert_new_permission(string $module, int $location_id, string $location_name): void    //TODO: refactor out hungarian notation
+    private function _insert_new_permission(string $module, int $location_id, string $location_name): void    // TODO: refactor out hungarian notation
     {
-        // insert new permission for stock location
-        $permission_id = $module . '_' . str_replace(' ', '_', $location_name);    //TODO: String interpolation
+        // Insert new permission for stock location
+        $permission_id = $module . '_' . str_replace(' ', '_', $location_name);    // TODO: String interpolation
         $permission_data = ['permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id];
 
         $builder = $this->db->table('permissions');
         $builder->insert($permission_data);
 
-        // insert grants for new permission
+        // Insert grants for new permission
         $employee = model(Employee::class);
         $employees = $employee->get_all();
 
         $builder = $this->db->table('grants');
 
-        foreach($employees->getResultArray() as $employee)
-        {
+        foreach ($employees->getResultArray() as $employee) {
             $this->employee = model(Employee::class);
 
             // Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations

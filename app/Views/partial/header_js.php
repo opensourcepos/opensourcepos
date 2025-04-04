@@ -3,23 +3,26 @@
  * @var array $config
  */
 ?>
-<script type="application/javascript">
-    // live clock
+
+<script type="text/javascript">
+    // Live clock
     var clock_tick = function clock_tick() {
         setInterval('update_clock();', 1000);
     }
 
-    // start the clock immediately
+    // Start the clock immediately
     clock_tick();
 
     var update_clock = function update_clock() {
         document.getElementById('liveclock').innerHTML = moment().format("<?= dateformat_momentjs($config['dateformat'] . ' ' . $config['timeformat']) ?>");
     }
 
-    $.notifyDefaults({ placement: {
-        align: "<?= esc($config['notify_horizontal_position'], 'js') ?>",
-        from: "<?= esc($config['notify_vertical_position'], 'js') ?>"
-    }});
+    $.notifyDefaults({
+        placement: {
+            align: "<?= esc($config['notify_horizontal_position'], 'js') ?>",
+            from: "<?= esc($config['notify_vertical_position'], 'js') ?>"
+        }
+    });
 
     var cookie_name = "<?= esc(config('Cookie')->prefix, 'js') . esc(config('Security')->cookieName, 'js') ?>";
 
@@ -28,7 +31,11 @@
     };
 
     var csrf_form_base = function() {
-        return { <?= esc(config('Security')->tokenName, 'js') ?> : function () { return csrf_token() } }
+        return {
+            <?= esc(config('Security')->tokenName, 'js') ?>: function() {
+                return csrf_token()
+            }
+        }
     };
 
     var setup_csrf_token = function() {
@@ -40,12 +47,9 @@
     $.ajax = function() {
         var args = arguments[0];
         if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
-            if (typeof args['data'] === 'string')
-            {
+            if (typeof args['data'] === 'string') {
                 args['data'] += '&' + $.param(csrf_form_base());
-            }
-            else
-            {
+            } else {
                 args['data'] = $.extend(args['data'], csrf_form_base());
             }
         }
@@ -54,7 +58,7 @@
     };
 
     $(document).ajaxComplete(setup_csrf_token);
-    $(document).ready(function(){
+    $(document).ready(function() {
         $("#logout").click(function(event) {
             event.preventDefault();
             $.ajax({

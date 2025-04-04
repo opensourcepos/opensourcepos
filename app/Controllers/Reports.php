@@ -77,15 +77,13 @@ class Reports extends Secure_Controller
         $this->detailed_receivings = model(Detailed_receivings::class);
         $this->inventory_summary = model(Inventory_summary::class);
 
-        if(sizeof($exploder) > 1)
-        {
+        if (sizeof($exploder) > 1) {
             preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
             preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
             $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
-            // check access to report submodule
-            if(!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id))
-            {
+            // Check access to report submodule
+            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
                 redirect('no_access/reports/reports_' . $submodule_id);
             }
         }
@@ -127,8 +125,8 @@ class Reports extends Secure_Controller
      * @param string $location_id
      * @return void
      */
-    public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void    //TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
-    {//TODO: Duplicated code
+    public function summary_sales(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void    // TODO: Perhaps these need to be passed as an array?  Too many parameters in the signature.
+    {   // TODO: Duplicated code
         $this->clearCache();
 
         $inputs = [
@@ -142,8 +140,7 @@ class Reports extends Secure_Controller
         $summary = $this->summary_sales->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'sale_date' => to_date(strtotime($row['sale_date'])),
                 'sales' => to_quantity_decimals($row['sales']),
@@ -176,7 +173,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated code
+    {   // TODO: Duplicated code
         $this->clearCache();
 
         $inputs = [
@@ -190,8 +187,7 @@ class Reports extends Secure_Controller
         $summary = $this->summary_categories->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'category' => $row['category'],
                 'quantity' => to_quantity_decimals($row['quantity_purchased']),
@@ -225,14 +221,13 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];    //TODO: Duplicated Code
+        $inputs = ['start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type];    // TODO: Duplicated Code
 
         $report_data = $this->summary_expenses_categories->getData($inputs);
         $summary = $this->summary_expenses_categories->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'category_name' => $row['category_name'],
                 'count' => $row['count'],
@@ -264,7 +259,7 @@ class Reports extends Secure_Controller
     {
         $this->clearCache();
 
-        $inputs = [    //TODO: Duplicated Code
+        $inputs = [    // TODO: Duplicated Code
             'start_date' => $start_date,
             'end_date' => $end_date,
             'sale_type' => $sale_type,
@@ -276,8 +271,7 @@ class Reports extends Secure_Controller
 
         $tabular_data = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'customer_name' => $row['customer'],
                 'sales' => to_quantity_decimals($row['sales']),
@@ -310,7 +304,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -324,8 +318,7 @@ class Reports extends Secure_Controller
         $summary = $this->summary_suppliers->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'supplier_name' => $row['supplier'],
                 'quantity' => to_quantity_decimals($row['quantity_purchased']),
@@ -372,8 +365,7 @@ class Reports extends Secure_Controller
 
         $tabular_data = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'item_name' => $row['name'],
                 'category' => $row['category'],
@@ -423,8 +415,7 @@ class Reports extends Secure_Controller
 
         $tabular_data = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'employee_name' => $row['employee'],
                 'sales' => to_quantity_decimals($row['sales']),
@@ -457,7 +448,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicate Code
+    {   // TODO: Duplicate Code
         $this->clearCache();
 
         $inputs = [
@@ -472,8 +463,7 @@ class Reports extends Secure_Controller
 
         $tabular_data = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'tax_name' => $row['name'],
                 'tax_percent' => $row['percent'],
@@ -499,7 +489,7 @@ class Reports extends Secure_Controller
      * Summary Sales Taxes report
      */
     public function summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated code
+    {   // TODO: Duplicated code
         $this->clearCache();
 
         $inputs = [
@@ -513,8 +503,7 @@ class Reports extends Secure_Controller
         $summary = $this->summary_sales_taxes->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'reporting_authority' => $row['reporting_authority'],
                 'jurisdiction_name' => $row['jurisdiction_name'],
@@ -549,7 +538,7 @@ class Reports extends Secure_Controller
         $stock_locations['all'] = lang('Reports.all');
         $data['stock_locations'] = array_reverse($stock_locations, true);
         $data['mode'] = 'sale';
-        $data['discount_type_options'] = ['0' => lang('Reports.discount_percent'), '1'=> lang('Reports.discount_fixed')];
+        $data['discount_type_options'] = ['0' => lang('Reports.discount_percent'), '1' => lang('Reports.discount_fixed')];
         $data['sale_type_options'] = $this->get_sale_type_options();
 
         echo view('reports/date_input', $data);
@@ -559,7 +548,7 @@ class Reports extends Secure_Controller
      * Summary Discounts report
      **/
     public function summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -574,8 +563,7 @@ class Reports extends Secure_Controller
         $summary = $this->summary_discounts->getSummaryData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'total' => to_currency($row['total']),
                 'discount' => $row['discount'],
@@ -613,10 +601,8 @@ class Reports extends Secure_Controller
 
         $tabular_data = [];
 
-        foreach($report_data as $row)
-        {
-            if($row['trans_group'] == '<HR>')
-            {
+        foreach ($report_data as $row) {
+            if ($row['trans_group'] == '<HR>') {
                 $tabular_data[] = [
                     'trans_group' => '--',
                     'trans_type' => '--',
@@ -626,11 +612,8 @@ class Reports extends Secure_Controller
                     'trans_refunded' => '--',
                     'trans_due' => '--'
                 ];
-            }
-            else
-            {
-                if(empty($row['trans_type']))
-                {
+            } else {
+                if (empty($row['trans_type'])) {
                     $row['trans_type'] = lang('Reports.trans_nopay_sales');
                 }
 
@@ -664,7 +647,7 @@ class Reports extends Secure_Controller
      * @noinspection PhpUnused
      */
     public function date_input(): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
@@ -697,7 +680,7 @@ class Reports extends Secure_Controller
      * @noinspection PhpUnused
      */
     public function date_input_sales(): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $stock_locations = $data = $this->stock_location->get_allowed_locations('sales');
@@ -749,8 +732,7 @@ class Reports extends Secure_Controller
 
         $labels = [];
         $series = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['category_name'];
             $series[] = [
                 'meta' => $row['category_name'] . ' ' . round($row['total_amount'] / $summary['expenses_total_amount'] * 100, 2) . '%',
@@ -796,8 +778,7 @@ class Reports extends Secure_Controller
 
         $labels = [];
         $series = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $date = to_date(strtotime($row['sale_date']));
             $labels[] = $date;
             $series[] = ['meta' => $date, 'value' => $row['total']];
@@ -845,8 +826,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['name'];
             $series[] = $row['total'];
         }
@@ -876,7 +856,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function graphical_summary_categories(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -891,8 +871,7 @@ class Reports extends Secure_Controller
 
         $labels = [];
         $series = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['category'];
             $series[] = ['meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
         }
@@ -920,7 +899,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function graphical_summary_suppliers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -937,8 +916,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['supplier'];
             $series[] = ['meta' => $row['supplier'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
         }
@@ -982,8 +960,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['employee'];
             $series[] = ['meta' => $row['employee'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
         }
@@ -1011,7 +988,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function graphical_summary_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -1027,8 +1004,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['percent'];
             $series[] = ['meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']];
         }
@@ -1056,7 +1032,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function graphical_summary_sales_taxes(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -1072,8 +1048,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['jurisdiction_name'];
             $series[] = ['meta' => $row['tax_rate'] . '%', 'value' => $row['tax']];
         }
@@ -1101,7 +1076,7 @@ class Reports extends Secure_Controller
      * @return void
      */
     public function graphical_summary_customers(string $start_date, string $end_date, string $sale_type, string $location_id = 'all'): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -1117,8 +1092,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['customer'];
             $series[] = $row['total'];
         }
@@ -1149,7 +1123,7 @@ class Reports extends Secure_Controller
      * @noinspection PhpUnused
      */
     public function graphical_summary_discounts(string $start_date, string $end_date, string $sale_type, string $location_id = 'all', int $discount_type = 0): void
-    {//TODO: Duplicated Code
+    {   // TODO: Duplicated Code
         $this->clearCache();
 
         $inputs = [
@@ -1157,7 +1131,7 @@ class Reports extends Secure_Controller
             'end_date' => $end_date,
             'sale_type' => $sale_type,
             'location_id' => $location_id,
-            'discount_type'=>$discount_type
+            'discount_type' => $discount_type
         ];
 
         $report_data = $this->summary_discounts->getData($inputs);
@@ -1166,8 +1140,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $labels[] = $row['discount'];
             $series[] = $row['count'];
         }
@@ -1213,10 +1186,8 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
 
-        foreach($report_data as $row)
-        {
-            if($row['trans_group'] == lang('Reports.trans_payments') && !empty($row['trans_amount']))
-            {
+        foreach ($report_data as $row) {
+            if ($row['trans_group'] == lang('Reports.trans_payments') && !empty($row['trans_amount'])) {
                 $labels[] = $row['trans_type'];
                 $series[] = ['meta' => $row['trans_type'] . ' ' . round($row['trans_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['trans_amount']];
             }
@@ -1248,14 +1219,10 @@ class Reports extends Secure_Controller
         $data = [];
         $data['specific_input_name'] = lang('Reports.customer');
         $customers = [];
-        foreach($this->customer->get_all()->getResult() as $customer)
-        {
-            if(isset($customer->company_name))
-            {
-                $customers[$customer->person_id] = $customer->first_name . ' ' . $customer->last_name. ' ' . ' [ '.$customer->company_name.' ] ';
-            }
-            else
-            {
+        foreach ($this->customer->get_all()->getResult() as $customer) {
+            if (isset($customer->company_name)) {
+                $customers[$customer->person_id] = $customer->first_name . ' ' . $customer->last_name . ' ' . ' [ ' . $customer->company_name . ' ] ';
+            } else {
                 $customers[$customer->person_id] = $customer->first_name . ' ' . $customer->last_name;
             }
         }
@@ -1310,15 +1277,11 @@ class Reports extends Secure_Controller
         $details_data = [];
         $details_data_rewards = [];
 
-        foreach($report_data['summary'] as $key => $row)
-        {
-            if($row['sale_status'] == CANCELED)
-            {
+        foreach ($report_data['summary'] as $key => $row) {
+            if ($row['sale_status'] == CANCELED) {
                 $button_key = 'data-btn-restore';
                 $button_label = lang('Common.restore');
-            }
-            else
-            {
+            } else {
                 $button_key = 'data-btn-delete';
                 $button_label = lang('Common.delete');
             }
@@ -1337,18 +1300,18 @@ class Reports extends Secure_Controller
                 'payment_type' => $row['payment_type'],
                 'comment' => $row['comment'],
                 'edit' => anchor(
-                    'sales/edit/'. $row['sale_id'],
+                    'sales/edit/' . $row['sale_id'],
                     '<span class="glyphicon glyphicon-edit"></span>',
                     [
                         'class' => 'modal-dlg print_hide',
                         $button_key => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title' => lang('Sales.update')
-                    ])
+                    ]
+                )
             ];
 
-            foreach($report_data['details'][$key] as $drow)    //TODO: Duplicated Code
-            {
+            foreach ($report_data['details'][$key] as $drow) {    // TODO: Duplicated Code
                 $details_data[$row['sale_id']][] = [
                     $drow['name'],
                     $drow['category'],
@@ -1360,25 +1323,23 @@ class Reports extends Secure_Controller
                     to_currency($drow['total']),
                     to_currency($drow['cost']),
                     to_currency($drow['profit']),
-                    ($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])
+                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
                 ];
             }
 
-            if(isset($report_data['rewards'][$key]))
-            {
-                foreach($report_data['rewards'][$key] as $drow)
-                {
+            if (isset($report_data['rewards'][$key])) {
+                foreach ($report_data['rewards'][$key] as $drow) {
                     $details_data_rewards[$row['sale_id']][] = [$drow['used'], $drow['earned']];
                 }
             }
         }
 
         $customer_info = $this->customer->get_info($customer_id);
-        $customer_name = !empty($customer_info->company_name)    //TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
+        $customer_name = !empty($customer_info->company_name)    // TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
             ? "[ $customer_info->company_name ]"
             : $customer_info->company_name;
 
-        //TODO: Duplicated Code
+        // TODO: Duplicated Code
         $data = [
             'title' => $customer_info->first_name . ' ' . $customer_info->last_name . ' ' . lang('Reports.report'),
             'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
@@ -1407,8 +1368,7 @@ class Reports extends Secure_Controller
         $data['specific_input_name'] = lang('Reports.employee');
 
         $employees = [];
-        foreach($this->employee->get_all()->getResult() as $employee)
-        {
+        foreach ($this->employee->get_all()->getResult() as $employee) {
             $employees[$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
         }
         $data['specific_input_data'] = $employees;
@@ -1444,15 +1404,11 @@ class Reports extends Secure_Controller
         $details_data = [];
         $details_data_rewards = [];
 
-        foreach($report_data['summary'] as $key => $row)
-        {
-            if($row['sale_status'] == CANCELED)
-            {
+        foreach ($report_data['summary'] as $key => $row) {
+            if ($row['sale_status'] == CANCELED) {
                 $button_key = 'data-btn-restore';
                 $button_label = lang('Common.restore');
-            }
-            else
-            {
+            } else {
                 $button_key = 'data-btn-delete';
                 $button_label = lang('Common.delete');
             }
@@ -1471,18 +1427,18 @@ class Reports extends Secure_Controller
                 'payment_type' => $row['payment_type'],
                 'comment' => $row['comment'],
                 'edit' => anchor(
-                    'sales/edit/'. $row['sale_id'],
+                    'sales/edit/' . $row['sale_id'],
                     '<span class="glyphicon glyphicon-edit"></span>',
                     [
                         'class' => 'modal-dlg print_hide',
                         $button_key => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title' => lang('Sales.update')
-                    ])
+                    ]
+                )
             ];
-            //TODO: Duplicated Code
-            foreach($report_data['details'][$key] as $drow)
-            {
+            // TODO: Duplicated Code
+            foreach ($report_data['details'][$key] as $drow) {
                 $details_data[$row['sale_id']][] = [
                     $drow['name'],
                     $drow['category'],
@@ -1494,21 +1450,19 @@ class Reports extends Secure_Controller
                     to_currency($drow['total']),
                     to_currency($drow['cost']),
                     to_currency($drow['profit']),
-                    ($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])
+                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
                 ];
             }
 
-            if(isset($report_data['rewards'][$key]))
-            {
-                foreach($report_data['rewards'][$key] as $drow)
-                {
+            if (isset($report_data['rewards'][$key])) {
+                foreach ($report_data['rewards'][$key] as $drow) {
                     $details_data_rewards[$row['sale_id']][] = [$drow['used'], $drow['earned']];
                 }
             }
         }
 
         $employee_info = $this->employee->get_info($employee_id);
-        //TODO: Duplicated Code
+        // TODO: Duplicated Code
         $data = [
             'title' => $employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('Reports.report'),
             'subtitle' => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
@@ -1537,12 +1491,11 @@ class Reports extends Secure_Controller
         $data['specific_input_name'] = lang('Reports.discount');
 
         $discounts = [];
-        for($i = 0; $i <= 100; $i += 10)
-        {
+        for ($i = 0; $i <= 100; $i += 10) {
             $discounts[$i] = $i . '%';
         }
         $data['specific_input_data'] = $discounts;
-        $data['discount_type_options'] = ['0' => lang('Reports.discount_percent'), '1'=> lang('Reports.discount_fixed')];
+        $data['discount_type_options'] = ['0' => lang('Reports.discount_percent'), '1' => lang('Reports.discount_fixed')];
         $data['sale_type_options'] = $this->get_sale_type_options();
 
         echo view('reports/specific_input', $data);
@@ -1582,15 +1535,11 @@ class Reports extends Secure_Controller
         $details_data = [];
         $details_data_rewards = [];
 
-        foreach($report_data['summary'] as $key => $row)
-        {    //TODO: Duplicated Code
-            if($row['sale_status'] == CANCELED)
-            {
+        foreach ($report_data['summary'] as $key => $row) {    // TODO: Duplicated Code
+            if ($row['sale_status'] == CANCELED) {
                 $button_key = 'data-btn-restore';
                 $button_label = lang('Common.restore');
-            }
-            else
-            {
+            } else {
                 $button_key = 'data-btn-delete';
                 $button_label = lang('Common.delete');
             }
@@ -1610,18 +1559,18 @@ class Reports extends Secure_Controller
                 'payment_type' => $row['payment_type'],
                 'comment' => $row['comment'],
                 'edit' => anchor(
-                    'sales/edit/'. $row['sale_id'],
+                    'sales/edit/' . $row['sale_id'],
                     '<span class="glyphicon glyphicon-edit"></span>',
                     [
                         'class' => 'modal-dlg print_hide',
                         $button_key => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title' => lang('Sales.update')
-                    ])
+                    ]
+                )
             ];
-            //TODO: Duplicated Code
-            foreach($report_data['details'][$key] as $drow)
-            {
+            // TODO: Duplicated Code
+            foreach ($report_data['details'][$key] as $drow) {
                 $details_data[$row['sale_id']][] = [
                     $drow['name'],
                     $drow['category'],
@@ -1634,15 +1583,13 @@ class Reports extends Secure_Controller
                     to_currency($drow['cost']),
                     to_currency($drow['profit']),
                     ($drow['discount_type'] == PERCENT)
-                        ? $drow['discount'].'%'
+                        ? $drow['discount'] . '%'
                         : to_currency($drow['discount'])
                 ];
             }
 
-            if(isset($report_data['rewards'][$key]))
-            {
-                foreach($report_data['rewards'][$key] as $drow)
-                {
+            if (isset($report_data['rewards'][$key])) {
+                foreach ($report_data['rewards'][$key] as $drow) {
                     $details_data_rewards[$row['sale_id']][] = [$drow['used'], $drow['earned']];
                 }
             }
@@ -1678,13 +1625,10 @@ class Reports extends Secure_Controller
 
         $report_data = $this->detailed_sales->getDataBySaleId($sale_id);
 
-        if($report_data['sale_status'] == CANCELED)
-        {
+        if ($report_data['sale_status'] == CANCELED) {
             $button_key = 'data-btn-restore';
             $button_label = lang('Common.restore');
-        }
-        else
-        {
+        } else {
             $button_key = 'data-btn-delete';
             $button_label = lang('Common.delete');
         }
@@ -1703,17 +1647,18 @@ class Reports extends Secure_Controller
             'payment_type' => $report_data['payment_type'],
             'comment' => $report_data['comment'],
             'edit' => anchor(
-                'sales/edit/'. $report_data['sale_id'],
+                'sales/edit/' . $report_data['sale_id'],
                 '<span class="glyphicon glyphicon-edit"></span>',
                 [
                     'class' => 'modal-dlg print_hide',
                     $button_key => $button_label,
                     'data-btn-submit' => lang('Common.submit'),
                     'title' => lang('Sales.update')
-                ])
+                ]
+            )
         ];
 
-        echo json_encode ([$sale_id => $summary_data]);
+        echo json_encode([$sale_id => $summary_data]);
     }
 
     /**
@@ -1730,8 +1675,7 @@ class Reports extends Secure_Controller
         $data['specific_input_name'] = lang('Reports.supplier');
 
         $suppliers = [];
-        foreach($this->supplier->get_all()->getResult() as $supplier)
-        {
+        foreach ($this->supplier->get_all()->getResult() as $supplier) {
             $suppliers[$supplier->person_id] = $supplier->company_name . ' (' . $supplier->first_name . ' ' . $supplier->last_name . ')';
         }
         $data['specific_input_data'] = $suppliers;
@@ -1765,8 +1709,7 @@ class Reports extends Secure_Controller
         $report_data = $specific_supplier->getData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'id' => $row['sale_id'],
                 'type_code' => $row['type_code'],
@@ -1780,7 +1723,7 @@ class Reports extends Secure_Controller
                 'total' => to_currency($row['total']),
                 'cost' => to_currency($row['cost']),
                 'profit' => to_currency($row['profit']),
-                'discount' => ($row['discount_type'] == PERCENT)? $row['discount'].'%':to_currency($row['discount'])
+                'discount' => ($row['discount_type'] == PERCENT) ? $row['discount'] . '%' : to_currency($row['discount'])
             ];
         }
 
@@ -1804,11 +1747,9 @@ class Reports extends Secure_Controller
         $sale_type_options = [];
         $sale_type_options['complete'] = lang('Reports.complete');
         $sale_type_options['sales'] = lang('Reports.completed_sales');
-        if($this->config['invoice_enable'])
-        {
+        if ($this->config['invoice_enable']) {
             $sale_type_options['quotes'] = lang('Reports.quotes');
-            if($this->config['work_order_enable'])
-            {
+            if ($this->config['work_order_enable']) {
                 $sale_type_options['work_orders'] = lang('Reports.work_orders');
             }
         }
@@ -1853,15 +1794,11 @@ class Reports extends Secure_Controller
 
         $show_locations = $this->stock_location->multiple_locations();
 
-        foreach($report_data['summary'] as $key => $row)
-        {    //TODO: Duplicated Code
-            if($row['sale_status'] == CANCELED)
-            {
+        foreach ($report_data['summary'] as $key => $row) {    // TODO: Duplicated Code
+            if ($row['sale_status'] == CANCELED) {
                 $button_key = 'data-btn-restore';
                 $button_label = lang('Common.restore');
-            }
-            else
-            {
+            } else {
                 $button_key = 'data-btn-delete';
                 $button_label = lang('Common.delete');
             }
@@ -1881,48 +1818,46 @@ class Reports extends Secure_Controller
                 'payment_type' => $row['payment_type'],
                 'comment' => $row['comment'],
                 'edit' => anchor(
-                    'sales/edit/'.$row['sale_id'],
+                    'sales/edit/' . $row['sale_id'],
                     '<span class="glyphicon glyphicon-edit"></span>',
                     [
                         'class' => 'modal-dlg print_hide',
                         $button_key => $button_label,
                         'data-btn-submit' => lang('Common.submit'),
                         'title' => lang('Sales.update')
-                    ])
+                    ]
+                )
             ];
 
-            foreach($report_data['details'][$key] as $drow)
-            {
+            foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = to_quantity_decimals($drow['quantity_purchased']);
-                if($show_locations)
-                {
+                if ($show_locations) {
                     $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
 
                 $details_data[$row['sale_id']][] =
-                    array_merge ([
-                        $drow['name'],
-                        $drow['category'],
-                        $drow['item_number'],
-                        $drow['description'],
-                        $quantity_purchased,
-                        to_currency($drow['subtotal']),
-                        to_currency_tax($drow['tax']),
-                        to_currency($drow['total']),
-                        to_currency($drow['cost']),
-                        to_currency($drow['profit']),
-                        ($drow['discount_type'] == PERCENT) ? $drow['discount'].'%' : to_currency($drow['discount'])
-                    ],
+                    array_merge(
+                        [
+                            $drow['name'],
+                            $drow['category'],
+                            $drow['item_number'],
+                            $drow['description'],
+                            $quantity_purchased,
+                            to_currency($drow['subtotal']),
+                            to_currency_tax($drow['tax']),
+                            to_currency($drow['total']),
+                            to_currency($drow['cost']),
+                            to_currency($drow['profit']),
+                            ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
+                        ],
                         $attribute_values
                     );
             }
 
-            if(isset($report_data['rewards'][$key]))
-            {
-                foreach($report_data['rewards'][$key] as $drow)
-                {
+            if (isset($report_data['rewards'][$key])) {
+                foreach ($report_data['rewards'][$key] as $drow) {
                     $details_data_rewards[$row['sale_id']][] = [$drow['used'], $drow['earned']];
                 }
             }
@@ -1967,17 +1902,18 @@ class Reports extends Secure_Controller
             'reference' => $report_data['reference'],
             'comment' => $report_data['comment'],
             'edit' => anchor(
-                'receivings/edit/'. $report_data['receiving_id'],
+                'receivings/edit/' . $report_data['receiving_id'],
                 '<span class="glyphicon glyphicon-edit"></span>',
                 [
                     'class' => 'modal-dlg print_hide',
                     'data-btn-submit' => lang('Common.submit'),
                     'data-btn-delete' => lang('Common.delete'),
                     'title' => lang('Receivings.update')
-                ])
+                ]
+            )
         ];
 
-        echo json_encode ([$receiving_id => $summary_data]);
+        echo json_encode([$receiving_id => $summary_data]);
     }
 
     /**
@@ -2008,8 +1944,7 @@ class Reports extends Secure_Controller
 
         $show_locations = $this->stock_location->multiple_locations();
 
-        foreach($report_data['summary'] as $key => $row)
-        {
+        foreach ($report_data['summary'] as $key => $row) {
             $summary_data[] = [
                 'id' => $row['receiving_id'],
                 'receiving_time' => to_datetime(strtotime($row['receiving_time'])),
@@ -2029,26 +1964,26 @@ class Reports extends Secure_Controller
                         'data-btn-delete' => lang('Common.delete'),
                         'data-btn-submit' => lang('Common.submit'),
                         'title' => lang('Receivings.update')
-                    ])
+                    ]
+                )
             ];
 
-            foreach($report_data['details'][$key] as $drow)
-            {
+            foreach ($report_data['details'][$key] as $drow) {
                 $quantity_purchased = $drow['receiving_quantity'] > 1 ? to_quantity_decimals($drow['quantity_purchased']) . ' x ' . to_quantity_decimals($drow['receiving_quantity']) : to_quantity_decimals($drow['quantity_purchased']);
-                if($show_locations)
-                {
+                if ($show_locations) {
                     $quantity_purchased .= ' [' . $this->stock_location->get_location_name($drow['item_location']) . ']';
                 }
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
 
-                $details_data[$row['receiving_id']][] = array_merge ([
+                $details_data[$row['receiving_id']][] = array_merge([
                     $drow['item_number'],
                     $drow['name'],
                     $drow['category'],
                     $quantity_purchased,
                     to_currency($drow['total']),
-                    ($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])], $attribute_values);
+                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
+                ], $attribute_values);
             }
         }
 
@@ -2079,8 +2014,7 @@ class Reports extends Secure_Controller
         $report_data = $inventory_low->getData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'item_name' => $row['name'],
                 'item_number' => $row['item_number'],
@@ -2135,8 +2069,7 @@ class Reports extends Secure_Controller
         $report_data = $this->inventory_summary->getData($inputs);
 
         $tabular_data = [];
-        foreach($report_data as $row)
-        {
+        foreach ($report_data as $row) {
             $tabular_data[] = [
                 'item_name' => $row['name'],
                 'item_number' => $row['item_number'],
@@ -2165,16 +2098,13 @@ class Reports extends Secure_Controller
     /**
      * Returns subtitle for the reports
      */
-    private function _get_subtitle_report(array $inputs): string    //TODO: Hungarian Notation
+    private function _get_subtitle_report(array $inputs): string    // TODO: Hungarian Notation
     {
         $subtitle = '';
 
-        if(empty($this->config['date_or_time_format']))
-        {
+        if (empty($this->config['date_or_time_format'])) {
             $subtitle .= date($this->config['dateformat'], strtotime($inputs['start_date'])) . ' - ' . date($this->config['dateformat'], strtotime($inputs['end_date']));
-        }
-        else
-        {
+        } else {
             $subtitle .= date($this->config['dateformat'] . ' ' . $this->config['timeformat'], strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->config['dateformat'] . ' ' . $this->config['timeformat'], strtotime(rawurldecode($inputs['end_date'])));
         }
 
@@ -2186,7 +2116,7 @@ class Reports extends Secure_Controller
      */
     private function clearCache(): void
     {
-        //Make sure the report is not cached by the browser
+        // Make sure the report is not cached by the browser
         $this->response->setHeader('Pragma', 'no-cache')
             ->appendHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
             ->appendHeader('Cache-Control', 'no-store, no-cache, must-revalidate')

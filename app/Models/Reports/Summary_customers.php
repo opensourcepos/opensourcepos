@@ -7,7 +7,7 @@ class Summary_customers extends Summary_report
     /**
      * @return array[]
      */
-    protected function _get_data_columns(): array    //TODO: Hungarian notation
+    protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
             ['customer_name' => lang('Reports.customer')],
@@ -26,9 +26,9 @@ class Summary_customers extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _select(array $inputs, object &$builder): void    //TODO: Hungarian notation
+    protected function _select(array $inputs, object &$builder): void    // TODO: Hungarian notation
     {
-        parent::_select($inputs, $builder);    //TODO: Hungarian notation
+        parent::_select($inputs, $builder);    // TODO: Hungarian notation
 
         $builder->select('
                 MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer,
@@ -41,9 +41,9 @@ class Summary_customers extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _from(object &$builder): void    //TODO: Hungarian notation
+    protected function _from(object &$builder): void    // TODO: Hungarian notation
     {
-        parent::_from($builder);    //TODO: Hungarian notation
+        parent::_from($builder);    // TODO: Hungarian notation
 
         $builder->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
     }
@@ -52,7 +52,7 @@ class Summary_customers extends Summary_report
      * @param object $builder
      * @return void
      */
-    protected function _group_order(object &$builder): void    //TODO: Hungarian notation
+    protected function _group_order(object &$builder): void    // TODO: Hungarian notation
     {
         $builder->groupBy('sales.customer_id');
         $builder->orderBy('customer_p.last_name');
