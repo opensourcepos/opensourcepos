@@ -26,18 +26,18 @@ UPDATE `ospos_inventory` SET trans_location = (SELECT MIN(`location_id`) FROM `o
 ALTER TABLE `ospos_inventory`
  MODIFY COLUMN trans_location int(11) NOT NULL,
  ADD KEY `trans_location` (`trans_location`),
- ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`); 
+ ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 ALTER TABLE `ospos_receivings_items`
  ADD COLUMN item_location int(11);
- 
+
 UPDATE `ospos_receivings_items` SET item_location = (SELECT MIN(`location_id`) FROM `ospos_stock_locations`);
 
 ALTER TABLE ospos_receivings_items
  MODIFY COLUMN `item_location` INT(11) NOT NULL,
  ADD KEY `item_location` (`item_location`),
  ADD CONSTRAINT `ospos_receivings_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
- 
+
 ALTER TABLE `ospos_sales_items`
  ADD COLUMN `item_location` int(11);
 

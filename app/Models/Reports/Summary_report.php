@@ -10,18 +10,15 @@ abstract class Summary_report extends Report
     /**
      * Private interface implementing the core basic functionality for all reports
      */
-    private function __common_select(array $inputs, &$builder): void    //TODO: Hungarian notation
+    private function __common_select(array $inputs, &$builder): void    // TODO: Hungarian notation
     {
         $config = config(OSPOS::class)->settings;
-//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
-        $where = '';    //TODO: Duplicated code
+        // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
+        $where = '';    // TODO: Duplicated code
 
-        if(empty($config['date_or_time_format']))
-        {
+        if (empty($config['date_or_time_format'])) {
             $where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-        }
-        else
-        {
+        } else {
             $where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
         }
 
@@ -36,21 +33,18 @@ abstract class Summary_report extends Report
 
         $cash_adjustment = 'IFNULL(SUM(payments.sale_cash_adjustment), 0)';
 
-        if($config['tax_included'])
-        {
+        if ($config['tax_included']) {
             $sale_total = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
             $sale_subtotal = "$sale_total - $sales_tax";
-
-        }
-        else
-        {
+        } else {
             $sale_subtotal = "ROUND(SUM($sale_price), $decimals) + $cash_adjustment";
             $sale_total = "ROUND(SUM($sale_price), $decimals) + $sales_tax + $cash_adjustment";
         }
 
-        // create a temporary table to contain all the sum of taxes per sale item
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
-            ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
+        // Create a temporary table to contain all the sum of taxes per sale item
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_items_taxes_temp') .
+                ' (INDEX(sale_id), INDEX(item_id)) ENGINE=MEMORY
             (
                 SELECT sales_items_taxes.sale_id AS sale_id,
                     sales_items_taxes.item_id AS item_id,
@@ -66,8 +60,9 @@ abstract class Summary_report extends Report
             )'
         );
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
-            ' (PRIMARY KEY(sale_id), INDEX(sale_id))
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sales_payments_temp') .
+                ' (PRIMARY KEY(sale_id), INDEX(sale_id))
             (
                 SELECT payments.sale_id AS sale_id,
                     SUM(CASE WHEN payments.cash_adjustment = 0 THEN payments.payment_amount ELSE 0 END) AS sale_payment_amount,
@@ -95,12 +90,14 @@ abstract class Summary_report extends Report
      * @param BaseBuilder $builder
      * @return void
      */
-    private function __common_from(BaseBuilder &$builder): void    //TODO: hungarian notation
+    private function __common_from(BaseBuilder &$builder): void    // TODO: hungarian notation
     {
         $builder->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-        $builder->join('sales_items_taxes_temp AS sales_items_taxes',
+        $builder->join(
+            'sales_items_taxes_temp AS sales_items_taxes',
             'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-            'left outer');
+            'left outer'
+        );
         $builder->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
     }
 
@@ -113,54 +110,39 @@ abstract class Summary_report extends Report
     {
         $config = config(OSPOS::class)->settings;
 
-        //TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
-        if(empty($config['date_or_time_format']))    //TODO: Duplicated code
-        {
+        // TODO: Probably going to need to rework these since you can't reference $builder without it's instantiation.
+        if (empty($config['date_or_time_format'])) {    // TODO: Duplicated code
             $builder->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
-        }
-        else
-        {
+        } else {
             $builder->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
         }
 
-        if($inputs['location_id'] != 'all')
-        {
+        if ($inputs['location_id'] != 'all') {
             $builder->where('sales_items.item_location', $inputs['location_id']);
         }
 
-        if($inputs['sale_type'] == 'complete')
-        {
+        if ($inputs['sale_type'] == 'complete') {
             $builder->where('sales.sale_status', COMPLETED);
             $builder->groupStart();
-                $builder->where('sales.sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
-                $builder->orWhere('sales.sale_type', SALE_TYPE_RETURN);
+            $builder->where('sales.sale_type', SALE_TYPE_POS);
+            $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
+            $builder->orWhere('sales.sale_type', SALE_TYPE_RETURN);
             $builder->groupEnd();
-        }
-        elseif($inputs['sale_type'] == 'sales')
-        {
+        } elseif ($inputs['sale_type'] == 'sales') {
             $builder->where('sales.sale_status', COMPLETED);
             $builder->groupStart();
-                $builder->where('sales.sale_type', SALE_TYPE_POS);
-                $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
+            $builder->where('sales.sale_type', SALE_TYPE_POS);
+            $builder->orWhere('sales.sale_type', SALE_TYPE_INVOICE);
             $builder->groupEnd();
-        }
-        elseif($inputs['sale_type'] == 'quotes')
-        {
+        } elseif ($inputs['sale_type'] == 'quotes') {
             $builder->where('sales.sale_status', SUSPENDED);
             $builder->where('sales.sale_type', SALE_TYPE_QUOTE);
-        }
-        elseif($inputs['sale_type'] == 'work_orders')
-        {
+        } elseif ($inputs['sale_type'] == 'work_orders') {
             $builder->where('sales.sale_status', SUSPENDED);
             $builder->where('sales.sale_type', SALE_TYPE_WORK_ORDER);
-        }
-        elseif($inputs['sale_type'] == 'canceled')
-        {
+        } elseif ($inputs['sale_type'] == 'canceled') {
             $builder->where('sales.sale_status', CANCELED);
-        }
-        elseif($inputs['sale_type'] == 'returns')
-        {
+        } elseif ($inputs['sale_type'] == 'returns') {
             $builder->where('sales.sale_status', COMPLETED);
             $builder->where('sales.sale_type', SALE_TYPE_RETURN);
         }
@@ -169,33 +151,42 @@ abstract class Summary_report extends Report
     /**
      * Protected class interface implemented by derived classes where required
      */
-    abstract protected function _get_data_columns(): array;    //TODO: hungarian notation
+    abstract protected function _get_data_columns(): array;    // TODO: hungarian notation
 
     /**
      * @param array $inputs
      * @param BaseBuilder $builder
      * @return void
      */
-    protected function _select(array $inputs, BaseBuilder &$builder): void { $this->__common_select($inputs, $builder); }    //TODO: hungarian notation
+    protected function _select(array $inputs, BaseBuilder &$builder): void
+    {
+        $this->__common_select($inputs, $builder);
+    }    // TODO: hungarian notation
 
     /**
      * @param BaseBuilder $builder
      * @return void
      */
-    protected function _from(BaseBuilder &$builder): void { $this->__common_from($builder); }    //TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
+    protected function _from(BaseBuilder &$builder): void
+    {
+        $this->__common_from($builder);
+    }    // TODO: hungarian notation TODO: Do we need to pass &$builder to the __common_from()?
 
     /**
      * @param array $inputs
      * @param BaseBuilder $builder
      * @return void
      */
-    protected function _where(array $inputs, BaseBuilder &$builder): void { $this->__common_where($inputs, $builder); }    //TODO: hungarian notation
+    protected function _where(array $inputs, BaseBuilder &$builder): void
+    {
+        $this->__common_where($inputs, $builder);
+    }    // TODO: hungarian notation
 
     /**
      * @param BaseBuilder $builder
      * @return void
      */
-    protected function _group_order(BaseBuilder &$builder): void {}    //TODO: hungarian notation
+    protected function _group_order(BaseBuilder &$builder): void {}    // TODO: hungarian notation
 
     /**
      * Public interface implementing the base abstract class,

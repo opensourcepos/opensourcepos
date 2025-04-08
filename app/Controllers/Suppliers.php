@@ -56,14 +56,13 @@ class Suppliers extends Persons
 
         $data_rows = [];
 
-        foreach($suppliers->getResult() as $supplier)
-        {
+        foreach ($suppliers->getResult() as $supplier) {
             $row = get_supplier_data_row($supplier);
             $row['category'] = $this->supplier->get_category_name($row['category']);
             $data_rows[] = $row;
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -97,8 +96,7 @@ class Suppliers extends Persons
     public function getView(int $supplier_id = NEW_ENTRY): void
     {
         $info = $this->supplier->get_info($supplier_id);
-        foreach(get_object_vars($info) as $property => $value)
-        {
+        foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
         $data['person_info'] = $info;
@@ -115,62 +113,58 @@ class Suppliers extends Persons
      */
     public function postSave(int $supplier_id = NEW_ENTRY): void
     {
-        $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    //TODO: Duplicate code
+        $first_name = $this->request->getPost('first_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    // TODO: Duplicate code
         $last_name = $this->request->getPost('last_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = strtolower($this->request->getPost('email', FILTER_SANITIZE_EMAIL));
 
-        // format first and last name properly
+        // Format first and last name properly
         $first_name = $this->nameize($first_name);
         $last_name = $this->nameize($last_name);
 
         $person_data = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'gender' => $this->request->getPost('gender'),
-            'email' => $email,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'gender'       => $this->request->getPost('gender'),
+            'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'zip' => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'country' => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'comments' => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+            'address_1'    => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'address_2'    => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'city'         => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'state'        => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'zip'          => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'country'      => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'comments'     => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
         $supplier_data = [
-            'company_name' => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'agency_name' => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'category' => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'company_name'   => $this->request->getPost('company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'agency_name'    => $this->request->getPost('agency_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'category'       => $this->request->getPost('category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'tax_id' => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
+            'tax_id'         => $this->request->getPost('tax_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
-        if($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id))
-        {
-            //New supplier
-            if($supplier_id == NEW_ENTRY)
-            {
-                echo json_encode ([
+        if ($this->supplier->save_supplier($person_data, $supplier_data, $supplier_id)) {
+            // New supplier
+            if ($supplier_id == NEW_ENTRY) {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Suppliers.successful_adding') . ' ' . $supplier_data['company_name'],
-                    'id' => $supplier_data['person_id']
+                    'id'      => $supplier_data['person_id']
                 ]);
-            }
-            else //Existing supplier
-            {
-                echo json_encode ([
+            } else { // Existing supplier
+
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Suppliers.successful_updating') . ' ' . $supplier_data['company_name'],
-                    'id' => $supplier_id]);
+                    'id'      => $supplier_id
+                ]);
             }
-        }
-        else//failure
-        {
-            echo json_encode ([
+        } else { // Failure
+            echo json_encode([
                 'success' => false,
                 'message' => lang('Suppliers.error_adding_updating') . ' ' .     $supplier_data['company_name'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }
@@ -184,16 +178,13 @@ class Suppliers extends Persons
     {
         $suppliers_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_NUMBER_INT);
 
-        if($this->supplier->delete_list($suppliers_to_delete))
-        {
-            echo json_encode ([
+        if ($this->supplier->delete_list($suppliers_to_delete)) {
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Suppliers.successful_deleted') . ' ' . count($suppliers_to_delete) . ' ' . lang('Suppliers.one_or_multiple')
             ]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Suppliers.cannot_be_deleted')]);
         }
     }
 }

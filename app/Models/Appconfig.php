@@ -60,8 +60,7 @@ class Appconfig extends Model
         $builder = $this->db->table('app_config');
         $query = $builder->getWhere(['key' => $key], 1);
 
-        if($query->getNumRows() === 1)
-        {
+        if ($query->getNumRows() === 1) {
             return $query->getRow()->value;
         }
 
@@ -83,8 +82,7 @@ class Appconfig extends Model
 
         $success = parent::save($save_data);
 
-        if($success)
-        {
+        if ($success) {
             config(OSPOS::class)->update_settings();
         }
 
@@ -100,8 +98,7 @@ class Appconfig extends Model
 
         $this->db->transStart();
 
-        foreach($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $success &= $this->save([$key => $value]);
         }
 
@@ -129,7 +126,7 @@ class Appconfig extends Model
     /**
      * @return bool
      */
-    public function delete_all(): bool    //TODO: This function is never used in the code. Consider removing it.
+    public function delete_all(): bool    // TODO: This function is never used in the code. Consider removing it.
     {
         $builder = $this->db->table('app_config');
         return $builder->emptyTable();
@@ -143,9 +140,8 @@ class Appconfig extends Model
         $config = config(OSPOS::class)->settings;
         $last_used = (int)$config['last_used_invoice_number'] + 1;
 
-        if($save)
-        {
-            $this->save(['last_used_invoice_number'=> $last_used]);
+        if ($save) {
+            $this->save(['last_used_invoice_number' => $last_used]);
         }
 
         return $last_used;
@@ -159,8 +155,7 @@ class Appconfig extends Model
         $config = config(OSPOS::class)->settings;
         $last_used = (int)$config['last_used_quote_number'] + 1;
 
-        if($save)
-        {
+        if ($save) {
             $this->save(['last_used_quote_number' => $last_used]);
         }
 
@@ -175,8 +170,7 @@ class Appconfig extends Model
         $config = config(OSPOS::class)->settings;
         $last_used = (int)$config['last_used_work_order_number'] + 1;
 
-        if($save)
-        {
+        if ($save) {
             $this->save(['last_used_work_order_number' => $last_used]);
         }
 
