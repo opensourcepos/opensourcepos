@@ -41,10 +41,9 @@ defined('WEEK')   || define('WEEK', 604800);
 defined('MONTH')  || define('MONTH', 2_592_000);
 defined('YEAR')   || define('YEAR', 31_536_000);
 defined('DECADE') || define('DECADE', 315_360_000);
-defined('DEFAULT_DATE') || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
+defined('DEFAULT_DATE')     || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 defined('DEFAULT_DATETIME') || define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
-defined('NOW') || define('NOW', time());
-
+defined('NOW')    || define('NOW', time());
 
 /*
  | --------------------------------------------------------------------------
@@ -71,16 +70,16 @@ defined('NOW') || define('NOW', time());
  |       http://tldp.org/LDP/abs/html/exitcodes.html
  |
  */
-defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0);        // No errors
-defined('EXIT_ERROR')          || define('EXIT_ERROR', 1);          // Generic error
-defined('EXIT_CONFIG')         || define('EXIT_CONFIG', 3);         // Configuration error
-defined('EXIT_UNKNOWN_FILE')   || define('EXIT_UNKNOWN_FILE', 4);   // File not found
-defined('EXIT_UNKNOWN_CLASS')  || define('EXIT_UNKNOWN_CLASS', 5);  // Unknown class
-defined('EXIT_UNKNOWN_METHOD') || define('EXIT_UNKNOWN_METHOD', 6); // Unknown class member
-defined('EXIT_USER_INPUT')     || define('EXIT_USER_INPUT', 7);     // Invalid user input
-defined('EXIT_DATABASE')       || define('EXIT_DATABASE', 8);       // Database error
-defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9);      // Lowest automatically-assigned error code
-defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // Highest automatically-assigned error code
+defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0);        // no errors
+defined('EXIT_ERROR')          || define('EXIT_ERROR', 1);          // generic error
+defined('EXIT_CONFIG')         || define('EXIT_CONFIG', 3);         // configuration error
+defined('EXIT_UNKNOWN_FILE')   || define('EXIT_UNKNOWN_FILE', 4);   // file not found
+defined('EXIT_UNKNOWN_CLASS')  || define('EXIT_UNKNOWN_CLASS', 5);  // unknown class
+defined('EXIT_UNKNOWN_METHOD') || define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
+defined('EXIT_USER_INPUT')     || define('EXIT_USER_INPUT', 7);     // invalid user input
+defined('EXIT_DATABASE')       || define('EXIT_DATABASE', 8);       // database error
+defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9);      // lowest automatically-assigned error code
+defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest automatically-assigned error code
 
 /**
  * Global Constants.

@@ -25,23 +25,23 @@ class Database extends Config
      * @var array<string, mixed>
      */
     public array $default = [
-        'DSN' => '',
-        'hostname' => 'localhost',
-        'username' => 'admin',
-        'password' => 'pointofsale',
-        'database' => 'ospos',
-        'DBDriver' => 'MySQLi',
-        'DBPrefix' => 'ospos_',
-        'pConnect' => false,
-        'DBDebug' => (ENVIRONMENT !== 'production'),
-        'charset' => 'utf8mb4',
-        'DBCollat' => 'utf8mb4_general_ci',
-        'swapPre' => '',
-        'encrypt' => false,
-        'compress' => false,
-        'strictOn' => false,
-        'failover' => [],
-        'port' => 3306,
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'admin',
+        'password'     => 'pointofsale',
+        'database'     => 'ospos',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => 'ospos_',
+        'pConnect'     => false,
+        'DBDebug'      => (ENVIRONMENT !== 'production'),
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
         'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
@@ -50,31 +50,30 @@ class Database extends Config
     ];
 
     /**
-     * This database connection is used when
-     * running PHPUnit database tests.
+     * This database connection is used when running PHPUnit database tests.
      *
      * @var array<string, mixed>
      */
     public array $tests = [
-        'DSN' => '',
-        'hostname' => 'localhost',
-        'username' => 'admin',
-        'password' => 'pointofsale',
-        'database' => 'ospos',
-        'DBDriver' => 'MySQLi',
-        'DBPrefix' => 'ospos_',
-        'pConnect' => false,
-        'DBDebug' => (ENVIRONMENT !== 'production'),
-        'charset' => 'utf8mb4',
-        'DBCollat' => 'utf8mb4_general_ci',
-        'swapPre' => '',
-        'encrypt' => false,
-        'compress' => false,
-        'strictOn' => false,
-        'failover' => [],
-        'port' => 3306,
-        'foreignKeys' => true,
-        'busyTimeout' => 1000,
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'admin',
+        'password'     => 'pointofsale',
+        'database'     => 'ospos',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => 'ospos_',
+        'pConnect'     => false,
+        'DBDebug'      => (ENVIRONMENT !== 'production'),
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'foreignKeys'  => true,
+        'busyTimeout'  => 1000,
         'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
@@ -83,31 +82,30 @@ class Database extends Config
     ];
 
     /**
-     * This database connection is used when
-     * developing against non-production data.
+     * This database connection is used when developing against non-production data.
      *
      * @var array
      */
     public $development = [
-        'DSN' => '',
-        'hostname' => 'localhost',
-        'username' => 'admin',
-        'password' => 'pointofsale',
-        'database' => 'ospos',
-        'DBDriver' => 'MySQLi',
-        'DBPrefix' => 'ospos_',
-        'pConnect' => false,
-        'DBDebug' => (ENVIRONMENT !== 'production'),
-        'charset' => 'utf8mb4',
-        'DBCollat' => 'utf8mb4_general_ci',
-        'swapPre' => '',
-        'encrypt' => false,
-        'compress' => false,
-        'strictOn' => false,
-        'failover' => [],
-        'port' => 3306,
-        'foreignKeys' => true,
-        'busyTimeout' => 1000,
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'admin',
+        'password'     => 'pointofsale',
+        'database'     => 'ospos',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => 'ospos_',
+        'pConnect'     => false,
+        'DBDebug'      => (ENVIRONMENT !== 'production'),
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'foreignKeys'  => true,
+        'busyTimeout'  => 1000,
         'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',

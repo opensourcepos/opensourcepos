@@ -26,7 +26,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        OSPOSRules::class
+        OSPOSRules::class,
     ];
 
     /**
