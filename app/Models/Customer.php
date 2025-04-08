@@ -257,34 +257,34 @@ class Customer extends Person
             $builder = $this->db->table('people');
             $builder->where('person_id', $customer_id);
             $result &= $builder->update([
-                'first_name' => $customer_id,
-                'last_name' => $customer_id,
+                'first_name'   => $customer_id,
+                'last_name'    => $customer_id,
                 'phone_number' => '',
-                'email' => '',
-                'gender' => null,
-                'address_1' => '',
-                'address_2' => '',
-                'city' => '',
-                'state' => '',
-                'zip' => '',
-                'country' => '',
-                'comments' => ''
+                'email'        => '',
+                'gender'       => null,
+                'address_1'    => '',
+                'address_2'    => '',
+                'city'         => '',
+                'state'        => '',
+                'zip'          => '',
+                'country'      => '',
+                'comments'     => ''
             ]);
 
             $builder = $this->db->table('customers');
             $builder->where('person_id', $customer_id);
             $result &= $builder->update([
-                'consent' => 0,
-                'company_name' => null,
-                'account_number' => null,
-                'tax_id' => '',
-                'taxable' => 0,
-                'discount' => 0.00,
-                'discount_type' => 0,
-                'package_id' => null,
-                'points' => null,
+                'consent'           => 0,
+                'company_name'      => null,
+                'account_number'    => null,
+                'tax_id'            => '',
+                'taxable'           => 0,
+                'discount'          => 0.00,
+                'discount_type'     => 0,
+                'package_id'        => null,
+                'points'            => null,
                 'sales_tax_code_id' => null,
-                'deleted' => 1
+                'deleted'           => 1
             ]);
         } else {
             $builder = $this->db->table('customers');

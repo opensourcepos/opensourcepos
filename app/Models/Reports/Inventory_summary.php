@@ -18,16 +18,16 @@ class Inventory_summary extends Report
     public function getDataColumns(): array
     {
         return [
-            ['item_name' => lang('Reports.item_name')],
-            ['item_number' => lang('Reports.item_number')],
-            ['category' => lang('Reports.category')],
-            ['quantity' => lang('Reports.quantity')],
+            ['item_name'         => lang('Reports.item_name')],
+            ['item_number'       => lang('Reports.item_number')],
+            ['category'          => lang('Reports.category')],
+            ['quantity'          => lang('Reports.quantity')],
             ['low_sell_quantity' => lang('Reports.low_sell_quantity')],
-            ['reorder_level' => lang('Reports.reorder_level')],
-            ['location_name' => lang('Reports.stock_location')],
-            ['cost_price' => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
-            ['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
-            ['subtotal' => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter']
+            ['reorder_level'     => lang('Reports.reorder_level')],
+            ['location_name'     => lang('Reports.stock_location')],
+            ['cost_price'        => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
+            ['unit_price'        => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
+            ['subtotal'          => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter']
         ];
     }
 
@@ -85,10 +85,10 @@ class Inventory_summary extends Report
     public function getSummaryData(array $inputs): array
     {
         $return = [    // TODO: This variable name should be refactored to reflect what it is... perhaps summary_data
-            'total_inventory_value' => 0,
-            'total_quantity' => 0,
+            'total_inventory_value'   => 0,
+            'total_quantity'          => 0,
             'total_low_sell_quantity' => 0,
-            'total_retail' => 0
+            'total_retail'            => 0
         ];
 
         foreach ($inputs as $input) {
@@ -109,8 +109,8 @@ class Inventory_summary extends Report
     public function getItemCountDropdownArray(): array
     {
         return [
-            'all' => lang('Reports.all'),
-            'zero_and_less' => lang('Reports.zero_and_less'),
+            'all'            => lang('Reports.all'),
+            'zero_and_less'  => lang('Reports.zero_and_less'),
             'more_than_zero' => lang('Reports.more_than_zero')
         ];
     }

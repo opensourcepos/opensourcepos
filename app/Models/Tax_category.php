@@ -135,9 +135,9 @@ class Tax_category extends Model
         foreach ($array_save as $key => $value) {
             // Save or update
             $tax_category_data = [
-                'tax_category' => $value['tax_category'],
+                'tax_category'       => $value['tax_category'],
                 'tax_group_sequence' => $value['tax_group_sequence'],
-                'deleted' => '0'
+                'deleted'            => '0'
             ];
 
             $this->save_value($tax_category_data, $value['tax_category_id']);
@@ -259,10 +259,10 @@ class Tax_category extends Model
     {
         return [
             '0' => [
-                'tax_category_id' => NEW_ENTRY,
-                'tax_category' => '',
+                'tax_category_id'    => NEW_ENTRY,
+                'tax_category'       => '',
                 'tax_group_sequence' => '',
-                'deleted' => ''
+                'deleted'            => ''
             ]
         ];
     }

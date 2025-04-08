@@ -30,15 +30,15 @@ class Detailed_receivings extends Report
     {
         return [
             'summary' => [
-                ['id' => lang('Reports.receiving_id')],
+                ['id'             => lang('Reports.receiving_id')],
                 ['receiving_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity' => lang('Reports.quantity')],
-                ['employee_name' => lang('Reports.received_by')],
-                ['supplier_name' => lang('Reports.supplied_by')],
-                ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['payment_type' => lang('Reports.payment_type')],
-                ['comment' => lang('Reports.comments')],
-                ['reference' => lang('Receivings.reference')]
+                ['quantity'       => lang('Reports.quantity')],
+                ['employee_name'  => lang('Reports.received_by')],
+                ['supplier_name'  => lang('Reports.supplied_by')],
+                ['total'          => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['payment_type'   => lang('Reports.payment_type')],
+                ['comment'        => lang('Reports.comments')],
+                ['reference'      => lang('Receivings.reference')]
             ],
             'details' => [
                 lang('Reports.item_number'),

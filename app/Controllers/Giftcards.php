@@ -122,10 +122,10 @@ class Giftcards extends Secure_Controller
         }
 
         $giftcard_data = [
-            'record_time' => date('Y-m-d H:i:s'),
+            'record_time'     => date('Y-m-d H:i:s'),
             'giftcard_number' => $giftcard_number,
-            'value' => parse_decimals($this->request->getPost('giftcard_amount')),
-            'person_id' => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
+            'value'           => parse_decimals($this->request->getPost('giftcard_amount')),
+            'person_id'       => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         if ($this->giftcard->save_value($giftcard_data, $giftcard_id)) {
@@ -134,20 +134,20 @@ class Giftcards extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Giftcards.successful_adding') . ' ' . $giftcard_data['giftcard_number'],
-                    'id' => $giftcard_data['giftcard_id']
+                    'id'      => $giftcard_data['giftcard_id']
                 ]);
             } else { // Existing giftcard
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Giftcards.successful_updating') . ' ' . $giftcard_data['giftcard_number'],
-                    'id' => $giftcard_id
+                    'id'      => $giftcard_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => false,
                 'message' => lang('Giftcards.error_adding_updating') . ' ' . $giftcard_data['giftcard_number'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

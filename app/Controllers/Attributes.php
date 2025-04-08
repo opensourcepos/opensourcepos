@@ -107,10 +107,10 @@ class Attributes extends Secure_Controller
 
         // Save definition data
         $definition_data = [
-            'definition_name' => $this->request->getPost('definition_name'),
-            'definition_unit' => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
+            'definition_name'  => $this->request->getPost('definition_name'),
+            'definition_unit'  => $this->request->getPost('definition_unit') != '' ? $this->request->getPost('definition_unit') : null,
             'definition_flags' => $definition_flags,
-            'definition_fk' => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
+            'definition_fk'    => $this->request->getPost('definition_group') != '' ? $this->request->getPost('definition_group') : null
         ];
 
         if ($this->request->getPost('definition_type') != null) {
@@ -131,20 +131,20 @@ class Attributes extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_adding') . ' ' . $definition_name,
-                    'id' => $definition_data['definition_id']
+                    'id'      => $definition_data['definition_id']
                 ]);
             } else { // Existing definition
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Attributes.definition_successful_updating') . ' ' . $definition_name,
-                    'id' => $definition_id
+                    'id'      => $definition_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => false,
                 'message' => lang('Attributes.definition_error_adding_updating', [$definition_name]),
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

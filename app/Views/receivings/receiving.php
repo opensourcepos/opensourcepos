@@ -144,9 +144,9 @@ if (isset($success)) {
                         <?php if ($items_module_allowed && $mode != 'requisition') { ?>
                             <td>
                                 <?= form_input([
-                                    'name' => 'price',
-                                    'class' => 'form-control input-sm',
-                                    'value' => to_currency_no_money($item['price']),
+                                    'name'    => 'price',
+                                    'class'   => 'form-control input-sm',
+                                    'value'   => to_currency_no_money($item['price']),
                                     'onClick' => 'this.select();'
                                 ]) ?>
                             </td>
@@ -175,16 +175,16 @@ if (isset($success)) {
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
                                     <span class="input-group-btn">
                                         <?= form_checkbox([
-                                            'id' => 'discount_toggle',
-                                            'name' => 'discount_toggle',
-                                            'value' => 1,
-                                            'data-toggle' => "toggle",
-                                            'data-size' => 'small',
+                                            'id'           => 'discount_toggle',
+                                            'name'         => 'discount_toggle',
+                                            'value'        => 1,
+                                            'data-toggle'  => "toggle",
+                                            'data-size'    => 'small',
                                             'data-onstyle' => 'success',
-                                            'data-on' => '<b>' . $config['currency_symbol'] . '</b>',
-                                            'data-off' => '<b>%</b>',
-                                            'data-line' => $line,
-                                            'checked' => $item['discount_type'] == 1
+                                            'data-on'      => '<b>' . $config['currency_symbol'] . '</b>',
+                                            'data-off'     => '<b>%</b>',
+                                            'data-line'    => $line,
+                                            'checked'      => $item['discount_type'] == 1
                                         ]) ?>
                                     </span>
                                 </div>
@@ -211,7 +211,7 @@ if (isset($success)) {
                             <?php
                             if ($item['allow_alt_description'] == 1) {    // TODO: ===?
                                 echo form_input([
-                                    'name' => 'description',
+                                    'name'  => 'description',
                                     'class' => 'form-control input-sm',
                                     'value' => $item['description']
                                 ]);
@@ -275,7 +275,7 @@ if (isset($success)) {
                 '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
                     'class' => 'btn btn-danger btn-sm',
-                    'id' => 'remove_supplier_button',
+                    'id'    => 'remove_supplier_button',
                     'title' => lang('Common.remove') . ' ' . lang('Suppliers.supplier')
                 ]
             ) ?>
@@ -289,8 +289,8 @@ if (isset($success)) {
                     <?= lang(ucfirst($controller_name) . '.select_supplier') ?>
                 </label>
                 <?= form_input([
-                    'name' => 'supplier',
-                    'id' => 'supplier',
+                    'name'  => 'supplier',
+                    'id'    => 'supplier',
                     'class' => 'form-control input-sm',
                     'value' => lang(ucfirst($controller_name) . '.start_typing_supplier_name')
                 ]) ?>
@@ -326,11 +326,11 @@ if (isset($success)) {
                     <div class="form-group form-group-sm">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
-                            'name' => 'comment',
-                            'id' => 'comment',
+                            'name'  => 'comment',
+                            'id'    => 'comment',
                             'class' => 'form-control input-sm',
                             'value' => $comment,
-                            'rows' => '4'
+                            'rows'  => '4'
                         ]) ?>
 
                         <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
@@ -350,11 +350,11 @@ if (isset($success)) {
                     <div class="form-group form-group-sm">
                         <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
                         <?= form_textarea([
-                            'name' => 'comment',
-                            'id' => 'comment',
+                            'name'  => 'comment',
+                            'id'    => 'comment',
                             'class' => 'form-control input-sm',
                             'value' => $comment,
-                            'rows' => '4'
+                            'rows'  => '4'
                         ]) ?>
                         <div id="payment_details">
                             <table class="sales_table_100">
@@ -362,10 +362,10 @@ if (isset($success)) {
                                     <td><?= lang(ucfirst($controller_name) . '.print_after_sale') ?></td>
                                     <td>
                                         <?= form_checkbox([
-                                            'name' => 'recv_print_after_sale',
-                                            'id' => 'recv_print_after_sale',
-                                            'class' => 'checkbox',
-                                            'value' => 1,
+                                            'name'    => 'recv_print_after_sale',
+                                            'id'      => 'recv_print_after_sale',
+                                            'class'   => 'checkbox',
+                                            'value'   => 1,
                                             'checked' => $print_after_sale == 1
                                         ]) ?>
                                     </td>
@@ -375,11 +375,11 @@ if (isset($success)) {
                                         <td><?= lang(ucfirst($controller_name) . '.reference') ?></td>
                                         <td>
                                             <?= form_input([
-                                                'name' => 'recv_reference',
-                                                'id' => 'recv_reference',
+                                                'name'  => 'recv_reference',
+                                                'id'    => 'recv_reference',
                                                 'class' => 'form-control input-sm',
                                                 'value' => $reference,
-                                                'size' => 5
+                                                'size'  => 5
                                             ]) ?>
                                         </td>
                                     </tr>
@@ -392,8 +392,8 @@ if (isset($success)) {
                                             $payment_options,
                                             [],
                                             [
-                                                'id' => 'payment_types',
-                                                'class' => 'selectpicker show-menu-arrow',
+                                                'id'         => 'payment_types',
+                                                'class'      => 'selectpicker show-menu-arrow',
                                                 'data-style' => 'btn-default btn-sm',
                                                 'data-width' => 'auto'
                                             ]
@@ -404,10 +404,10 @@ if (isset($success)) {
                                     <td><?= lang('Sales.amount_tendered') ?></td>
                                     <td>
                                         <?= form_input([
-                                            'name' => 'amount_tendered',
+                                            'name'  => 'amount_tendered',
                                             'value' => '',
                                             'class' => 'form-control input-sm',
-                                            'size' => '5'
+                                            'size'  => '5'
                                         ]) ?>
                                     </td>
                                 </tr>

@@ -29,19 +29,19 @@ class Specific_supplier extends Report
     public function getDataColumns(): array
     {
         return [
-            ['id' => lang('Reports.sale_id')],
-            ['type_code' => lang('Reports.code_type')],
-            ['sale_time' => lang('Reports.date'), 'sortable' => false],
-            ['name' => lang('Reports.name')],
-            ['category' => lang('Reports.category')],
+            ['id'          => lang('Reports.sale_id')],
+            ['type_code'   => lang('Reports.code_type')],
+            ['sale_time'   => lang('Reports.date'), 'sortable' => false],
+            ['name'        => lang('Reports.name')],
+            ['category'    => lang('Reports.category')],
             ['item_number' => lang('Reports.item_number')],
-            ['quantity' => lang('Reports.quantity')],
-            ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-            ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-            ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-            ['discount' => lang('Reports.discount')]
+            ['quantity'    => lang('Reports.quantity')],
+            ['subtotal'    => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'         => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'       => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'        => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'      => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+            ['discount'    => lang('Reports.discount')]
         ];
     }
 

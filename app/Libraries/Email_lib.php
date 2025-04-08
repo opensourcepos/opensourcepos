@@ -33,17 +33,17 @@ class Email_lib
         }
 
         $email_config = [
-            'mailType' => 'html',
-            'userAgent' => 'OSPOS',
-            'validate' => true,
-            'protocol' => $this->config['protocol'],
-            'mailPath' => $this->config['mailpath'],
-            'SMTPHost' => $this->config['smtp_host'],
-            'SMTPUser' => $this->config['smtp_user'],
-            'SMTPPass' => $smtp_pass,
-            'SMTPPort' => (int)$this->config['smtp_port'],
+            'mailType'    => 'html',
+            'userAgent'   => 'OSPOS',
+            'validate'    => true,
+            'protocol'    => $this->config['protocol'],
+            'mailPath'    => $this->config['mailpath'],
+            'SMTPHost'    => $this->config['smtp_host'],
+            'SMTPUser'    => $this->config['smtp_user'],
+            'SMTPPass'    => $smtp_pass,
+            'SMTPPort'    => (int)$this->config['smtp_port'],
             'SMTPTimeout' => (int)$this->config['smtp_timeout'],
-            'SMTPCrypto' => $this->config['smtp_crypto']
+            'SMTPCrypto'  => $this->config['smtp_crypto']
         ];
         $this->email->initialize($email_config);
     }

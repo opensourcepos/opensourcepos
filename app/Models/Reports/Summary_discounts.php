@@ -13,8 +13,8 @@ class Summary_discounts extends Summary_report
     {
         return [
             ['discount' => lang('Reports.discount'), 'sorter' => 'number_sorter'],
-            ['count' => lang('Reports.count')],
-            ['total' => lang('Reports.total')]
+            ['count'    => lang('Reports.count')],
+            ['total'    => lang('Reports.total')]
         ];
     }
 

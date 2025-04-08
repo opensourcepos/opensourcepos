@@ -90,11 +90,11 @@ class Sales extends Secure_Controller
             $data['table_headers'] = get_sales_manage_table_headers();
 
             $data['filters'] = [
-                'only_cash' => lang('Sales.cash_filter'),
-                'only_due' => lang('Sales.due_filter'),
-                'only_check' => lang('Sales.check_filter'),
-                'only_creditcard' => lang('Sales.credit_filter'),
-                'only_invoices' => lang('Sales.invoice_filter'),
+                'only_cash'         => lang('Sales.cash_filter'),
+                'only_due'          => lang('Sales.due_filter'),
+                'only_check'        => lang('Sales.check_filter'),
+                'only_creditcard'   => lang('Sales.credit_filter'),
+                'only_invoices'     => lang('Sales.invoice_filter'),
                 'selected_customer' => lang('Sales.selected_customer')
             ];
 
@@ -135,17 +135,17 @@ class Sales extends Secure_Controller
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $filters = [
-            'sale_type' => 'all',
-            'location_id' => 'all',
-            'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'only_cash' => false,
-            'only_due' => false,
-            'only_check' => false,
+            'sale_type'         => 'all',
+            'location_id'       => 'all',
+            'start_date'        => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'          => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash'         => false,
+            'only_due'          => false,
+            'only_check'        => false,
             'selected_customer' => false,
-            'only_creditcard' => false,
-            'only_invoices' => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
-            'is_valid_receipt' => $this->sale->is_valid_receipt($search)
+            'only_creditcard'   => false,
+            'only_invoices'     => $this->config['invoice_enable'] && $this->request->getGet('only_invoices', FILTER_SANITIZE_NUMBER_INT),
+            'is_valid_receipt'  => $this->sale->is_valid_receipt($search)
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -563,7 +563,7 @@ class Sales extends Secure_Controller
         $data = [];
 
         $rules = [
-            'price' => 'trim|required|decimal_locale',
+            'price'    => 'trim|required|decimal_locale',
             'quantity' => 'trim|required|decimal_locale',
             'discount' => 'trim|permit_empty|decimal_locale',
         ];
@@ -720,9 +720,9 @@ class Sales extends Secure_Controller
             } else {
                 $payment = [
                     lang('Sales.cash') => [
-                        'payment_type' => lang('Sales.cash'),
+                        'payment_type'   => lang('Sales.cash'),
                         'payment_amount' => 0,
-                        'cash_refund' => $data['amount_change']
+                        'cash_refund'    => $data['amount_change']
                     ]
                 ];
 
@@ -1312,7 +1312,7 @@ class Sales extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Sales.successfully_deleted') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
-                    'ids' => $sale_ids
+                    'ids'     => $sale_ids
                 ]);
             } else {
                 echo json_encode(['success' => false, 'message' => lang('Sales.unsuccessfully_deleted')]);
@@ -1339,7 +1339,7 @@ class Sales extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Sales.successfully_restored') . ' ' . count($sale_ids) . ' ' . lang('Sales.one_or_multiple'),
-                    'ids' => $sale_ids
+                    'ids'     => $sale_ids
                 ]);
             } else {
                 echo json_encode(['success' => false, 'message' => lang('Sales.unsuccessfully_restored')]);
@@ -1362,10 +1362,10 @@ class Sales extends Secure_Controller
         $sale_time = $date_formatter->format('Y-m-d H:i:s');
 
         $sale_data = [
-            'sale_time' => $sale_time,
-            'customer_id' => $this->request->getPost('customer_id') != '' ? $this->request->getPost('customer_id', FILTER_SANITIZE_NUMBER_INT) : null,
-            'employee_id' => $this->request->getPost('employee_id') != '' ? $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT) : null,
-            'comment' => $this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'sale_time'      => $sale_time,
+            'customer_id'    => $this->request->getPost('customer_id') != '' ? $this->request->getPost('customer_id', FILTER_SANITIZE_NUMBER_INT) : null,
+            'employee_id'    => $this->request->getPost('employee_id') != '' ? $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT) : null,
+            'comment'        => $this->request->getPost('comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'invoice_number' => $this->request->getPost('invoice_number') != '' ? $this->request->getPost('invoice_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null
         ];
 
@@ -1394,12 +1394,12 @@ class Sales extends Secure_Controller
             }
 
             $sale_data['payments'][] = [
-                'payment_id' => $payment_id,
-                'payment_type' => $payment_type,
-                'payment_amount' => $payment_amount,
-                'cash_refund' => $cash_refund,
+                'payment_id'      => $payment_id,
+                'payment_type'    => $payment_type,
+                'payment_amount'  => $payment_amount,
+                'cash_refund'     => $cash_refund,
                 'cash_adjustment' => $cash_adjustment,
-                'employee_id' => $employee_id
+                'employee_id'     => $employee_id
             ];
         }
 
@@ -1423,12 +1423,12 @@ class Sales extends Secure_Controller
             }
 
             $sale_data['payments'][] = [
-                'payment_id' => $payment_id,
-                'payment_type' => $payment_type,
-                'payment_amount' => $payment_amount,
-                'cash_refund' => $cash_refund,
+                'payment_id'      => $payment_id,
+                'payment_type'    => $payment_type,
+                'payment_amount'  => $payment_amount,
+                'cash_refund'     => $cash_refund,
                 'cash_adjustment' => $cash_adjustment,
-                'employee_id' => $employee_id
+                'employee_id'     => $employee_id
             ];
         }
 

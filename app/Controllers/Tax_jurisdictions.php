@@ -86,7 +86,7 @@ class Tax_jurisdictions extends Secure_Controller
     public function postSave(int $jurisdiction_id = NEW_ENTRY): void
     {
         $tax_jurisdiction_data = [
-            'jurisdiction_name' => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'jurisdiction_name'   => $this->request->getPost('jurisdiction_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'reporting_authority' => $this->request->getPost('reporting_authority', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
@@ -95,20 +95,20 @@ class Tax_jurisdictions extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_adding'),
-                    'id' => $tax_jurisdiction_data['jurisdiction_id']
+                    'id'      => $tax_jurisdiction_data['jurisdiction_id']
                 ]);
             } else {
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_jurisdictions.successful_updating'),
-                    'id' => $jurisdiction_id
+                    'id'      => $jurisdiction_id
                 ]);
             }
         } else {
             echo json_encode([
                 'success' => false,
                 'message' => lang('Tax_jurisdictions.error_adding_updating') . ' ' . $tax_jurisdiction_data['jurisdiction_name'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

@@ -12,13 +12,13 @@ class Summary_payments extends Summary_report
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['trans_group' => lang('Reports.trans_group')],
-            ['trans_type' => lang('Reports.trans_type')],
-            ['trans_sales' => lang('Reports.sales')],
-            ['trans_amount' => lang('Reports.trans_amount')],
+            ['trans_group'    => lang('Reports.trans_group')],
+            ['trans_type'     => lang('Reports.trans_type')],
+            ['trans_sales'    => lang('Reports.sales')],
+            ['trans_amount'   => lang('Reports.trans_amount')],
             ['trans_payments' => lang('Reports.trans_payments')],
             ['trans_refunded' => lang('Reports.trans_refunded')],
-            ['trans_due' => lang('Reports.trans_due')]
+            ['trans_due'      => lang('Reports.trans_due')]
         ];
     }
 
@@ -32,13 +32,13 @@ class Summary_payments extends Summary_report
         $config = config(OSPOS::class)->settings;
 
         $separator[] = [
-            'trans_group' => '<HR>',
-            'trans_type' => '',
-            'trans_sales' => '',
-            'trans_amount' => '',
+            'trans_group'    => '<HR>',
+            'trans_type'     => '',
+            'trans_sales'    => '',
+            'trans_amount'   => '',
             'trans_payments' => '',
             'trans_refunded' => '',
-            'trans_due' => ''
+            'trans_due'      => ''
         ];
 
         $where = '';    // TODO: Duplicated code
@@ -115,13 +115,13 @@ class Summary_payments extends Summary_report
 
         if ($gift_card_count > 0) {
             $payments[] = [
-                'trans_group' => lang('Reports.trans_payments'),
-                'trans_type' => lang('Sales.giftcard'),
-                'trans_sales' => $gift_card_count,
-                'trans_amount' => $gift_card_amount,
+                'trans_group'    => lang('Reports.trans_payments'),
+                'trans_type'     => lang('Sales.giftcard'),
+                'trans_sales'    => $gift_card_count,
+                'trans_amount'   => $gift_card_amount,
                 'trans_payments' => $gift_card_amount,
                 'trans_refunded' => 0,
-                'trans_due' => 0
+                'trans_due'      => 0
             ];
         }
 

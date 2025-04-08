@@ -16,8 +16,8 @@
             <?= form_label(lang('Suppliers.company_name'), 'company_name', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'company_name',
-                    'id' => 'company_name_input',
+                    'name'  => 'company_name',
+                    'id'    => 'company_name_input',
                     'class' => 'form-control input-sm',
                     'value' => html_entity_decode($person_info->company_name)
                 ]) ?>
@@ -35,8 +35,8 @@
             <?= form_label(lang('Suppliers.agency_name'), 'agency_name', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'agency_name',
-                    'id' => 'agency_name_input',
+                    'name'  => 'agency_name',
+                    'id'    => 'agency_name_input',
                     'class' => 'form-control input-sm',
                     'value' => $person_info->agency_name
                 ]) ?>
@@ -49,8 +49,8 @@
             <?= form_label(lang('Suppliers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'account_number',
-                    'id' => 'account_number',
+                    'name'  => 'account_number',
+                    'id'    => 'account_number',
                     'class' => 'form-control input-sm',
                     'value' => $person_info->account_number
                 ]) ?>
@@ -61,8 +61,8 @@
             <?= form_label(lang('Suppliers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'tax_id',
-                    'id' => 'tax_id',
+                    'name'  => 'tax_id',
+                    'id'    => 'tax_id',
                     'class' => 'form-control input-sm',
                     'value' => $person_info->tax_id
                 ]) ?>

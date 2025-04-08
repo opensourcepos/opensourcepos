@@ -26,9 +26,9 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
                     <?= form_input([
-                        'name' => 'date',
-                        'class' => 'form-control input-sm datetime',
-                        'value' => to_datetime(strtotime($expenses_info->date)),
+                        'name'     => 'date',
+                        'class'    => 'form-control input-sm datetime',
+                        'value'    => to_datetime(strtotime($expenses_info->date)),
                         'readonly' => 'readonly'
                     ]) ?>
                 </div>
@@ -39,15 +39,15 @@
             <?= form_label(lang('Expenses.supplier_name'), 'supplier_name', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <?= form_input([
-                    'name' => 'supplier_name',
-                    'id' => 'supplier_name',
+                    'name'  => 'supplier_name',
+                    'id'    => 'supplier_name',
                     'class' => 'form-control input-sm',
                     'value' => lang('Expenses.start_typing_supplier_name')
                 ]);
                 echo form_input([
                     'type' => 'hidden',
                     'name' => 'supplier_id',
-                    'id' => 'supplier_id'
+                    'id'   => 'supplier_id'
                 ]) ?>
             </div>
             <div class="col-xs-2">
@@ -61,8 +61,8 @@
             <?= form_label(lang('Expenses.supplier_tax_code'), 'supplier_tax_code', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <?= form_input([
-                    'name' => 'supplier_tax_code',
-                    'id' => 'supplier_tax_code',
+                    'name'  => 'supplier_tax_code',
+                    'id'    => 'supplier_tax_code',
                     'class' => 'form-control input-sm',
                     'value' => $expenses_info->supplier_tax_code
                 ]) ?>
@@ -77,8 +77,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'amount',
-                        'id' => 'amount',
+                        'name'  => 'amount',
+                        'id'    => 'amount',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($expenses_info->amount)
                     ]) ?>
@@ -97,8 +97,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'tax_amount',
-                        'id' => 'tax_amount',
+                        'name'  => 'tax_amount',
+                        'id'    => 'tax_amount',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($expenses_info->tax_amount)
                     ]) ?>
@@ -134,8 +134,8 @@
             <?= form_label(lang('Expenses.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <?= form_textarea([
-                    'name' => 'description',
-                    'id' => 'description',
+                    'name'  => 'description',
+                    'id'    => 'description',
                     'class' => 'form-control input-sm',
                     'value' => $expenses_info->description
                 ]) ?>
@@ -147,9 +147,9 @@
                 <?= form_label(lang('Expenses.is_deleted') . ':', 'deleted', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-5">
                     <?= form_checkbox([
-                        'name' => 'deleted',
-                        'id' => 'deleted',
-                        'value' => 1,
+                        'name'    => 'deleted',
+                        'id'      => 'deleted',
+                        'value'   => 1,
                         'checked' => $expenses_info->deleted == 1
                     ]) ?>
                 </div>

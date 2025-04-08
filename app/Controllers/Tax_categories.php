@@ -83,8 +83,8 @@ class Tax_categories extends Secure_Controller
     public function postSave(int $tax_category_id = NEW_ENTRY): void
     {
         $tax_category_data = [
-            'tax_category' => $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'tax_category_code' => $this->request->getPost('tax_category_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'tax_category'       => $this->request->getPost('tax_category', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'tax_category_code'  => $this->request->getPost('tax_category_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'tax_group_sequence' => $this->request->getPost('tax_group_sequence', FILTER_SANITIZE_NUMBER_INT)
         ];
 
@@ -94,20 +94,20 @@ class Tax_categories extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_categories.successful_adding'),
-                    'id' => $tax_category_data['tax_category_id']
+                    'id'      => $tax_category_data['tax_category_id']
                 ]);
             } else {
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_categories.successful_updating'),
-                    'id' => $tax_category_id
+                    'id'      => $tax_category_id
                 ]);
             }
         } else {
             echo json_encode([
                 'success' => false,
                 'message' => lang('Tax_categories.error_adding_updating') . ' ' . $tax_category_data['tax_category'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

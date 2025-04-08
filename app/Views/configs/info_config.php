@@ -21,8 +21,8 @@
                             <span class="glyphicon glyphicon-home"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'company',
-                            'id' => 'company',
+                            'name'  => 'company',
+                            'id'    => 'company',
                             'class' => 'form-control input-sm required',
                             'value' => $config['company']
                         ]) ?>
@@ -54,8 +54,8 @@
                 <?= form_label(lang('Config.address'), 'address', ['class' => 'control-label col-xs-2 required']) ?>
                 <div class="col-xs-6">
                     <?= form_textarea([
-                        'name' => 'address',
-                        'id' => 'address',
+                        'name'  => 'address',
+                        'id'    => 'address',
                         'class' => 'form-control input-sm required',
                         'value' => $config['address']
                     ]) ?>
@@ -70,8 +70,8 @@
                             <span class="glyphicon glyphicon-globe"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'website',
-                            'id' => 'website',
+                            'name'  => 'website',
+                            'id'    => 'website',
                             'class' => 'form-control input-sm',
                             'value' => $config['website']
                         ]) ?>
@@ -87,9 +87,9 @@
                             <span class="glyphicon glyphicon-envelope"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'email',
-                            'id' => 'email',
-                            'type' => 'email',
+                            'name'  => 'email',
+                            'id'    => 'email',
+                            'type'  => 'email',
                             'class' => 'form-control input-sm',
                             'value' => $config['email']
                         ]) ?>
@@ -105,8 +105,8 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'phone',
-                            'id' => 'phone',
+                            'name'  => 'phone',
+                            'id'    => 'phone',
                             'class' => 'form-control input-sm required',
                             'value' => $config['phone']
                         ]) ?>
@@ -122,8 +122,8 @@
                             <span class="glyphicon glyphicon-phone-alt"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'fax',
-                            'id' => 'fax',
+                            'name'  => 'fax',
+                            'id'    => 'fax',
                             'class' => 'form-control input-sm',
                             'value' => $config['fax']
                         ]) ?>
@@ -135,8 +135,8 @@
                 <?= form_label(lang('Common.return_policy'), 'return_policy', ['class' => 'control-label col-xs-2 required']) ?>
                 <div class="col-xs-6">
                     <?= form_textarea([
-                        'name' => 'return_policy',
-                        'id' => 'return_policy',
+                        'name'  => 'return_policy',
+                        'id'    => 'return_policy',
                         'class' => 'form-control input-sm required',
                         'value' => $config['return_policy']
                     ]) ?>
@@ -144,8 +144,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_info',
-                'id' => 'submit_info',
+                'name'  => 'submit_info',
+                'id'    => 'submit_info',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

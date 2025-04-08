@@ -16,8 +16,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_tax_categories',
-                'id' => 'submit_tax_categories',
+                'name'  => 'submit_tax_categories',
+                'id'    => 'submit_tax_categories',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

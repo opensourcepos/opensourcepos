@@ -19,8 +19,8 @@
                 <?= form_label(lang('Config.tax_id'), 'tax_id', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'tax_id',
-                        'id' => 'tax_id',
+                        'name'  => 'tax_id',
+                        'id'    => 'tax_id',
                         'class' => 'form-control input-sm',
                         'value' => $config['tax_id']
                     ]) ?>
@@ -31,9 +31,9 @@
                 <?= form_label(lang('Config.tax_included'), 'tax_included', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_checkbox([
-                        'name' => 'tax_included',
-                        'id' => 'tax_included',
-                        'value' => 'tax_included',
+                        'name'    => 'tax_included',
+                        'id'      => 'tax_included',
+                        'value'   => 'tax_included',
                         'checked' => $config['tax_included'] == 1
                     ]) ?>
                 </div>
@@ -43,16 +43,16 @@
                 <?= form_label(lang('Config.default_tax_rate_1'), 'default_tax_1_rate', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'default_tax_1_name',
-                        'id' => 'default_tax_1_name',
+                        'name'  => 'default_tax_1_name',
+                        'id'    => 'default_tax_1_name',
                         'class' => 'form-control input-sm',
                         'value' => $config['default_tax_1_name'] !== false ? $config['default_tax_1_name'] : lang('Items.sales_tax_1')
                     ]) ?>
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
-                        'name' => 'default_tax_1_rate',
-                        'id' => 'default_tax_1_rate',
+                        'name'  => 'default_tax_1_rate',
+                        'id'    => 'default_tax_1_rate',
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_1_rate'])
                     ]) ?>
@@ -64,16 +64,16 @@
                 <?= form_label(lang('Config.default_tax_rate_2'), 'default_tax_2_rate', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'default_tax_2_name',
-                        'id' => 'default_tax_2_name',
+                        'name'  => 'default_tax_2_name',
+                        'id'    => 'default_tax_2_name',
                         'class' => 'form-control input-sm',
                         'value' => $config['default_tax_2_name'] !== false ? $config['default_tax_2_name'] : lang('Items.sales_tax_2')
                     ]) ?>
                 </div>
                 <div class="col-xs-1 input-group">
                     <?= form_input([
-                        'name' => 'default_tax_2_rate',
-                        'id' => 'default_tax_2_rate',
+                        'name'  => 'default_tax_2_rate',
+                        'id'    => 'default_tax_2_rate',
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_2_rate'])
                     ]) ?>
@@ -85,9 +85,9 @@
                 <?= form_label(lang('Config.use_destination_based_tax'), 'use_destination_based_tax', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_checkbox([
-                        'name' => 'use_destination_based_tax',
-                        'id' => 'use_destination_based_tax',
-                        'value' => 'use_destination_based_tax',
+                        'name'    => 'use_destination_based_tax',
+                        'id'      => 'use_destination_based_tax',
+                        'value'   => 'use_destination_based_tax',
                         'checked' => $config['use_destination_based_tax'] == 1
                     ]) ?>
                 </div>
@@ -130,8 +130,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_tax',
-                'id' => 'submit_tax',
+                'name'  => 'submit_tax',
+                'id'    => 'submit_tax',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

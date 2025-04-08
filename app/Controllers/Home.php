@@ -56,8 +56,8 @@ class Home extends Secure_Controller
         if (!empty($this->request->getPost('current_password')) && $employee_id != -1) {
             if ($this->employee->check_password($this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS), $this->request->getPost('current_password'))) {
                 $employee_data = [
-                    'username' => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                    'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                    'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'password'     => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                     'hash_version' => 2
                 ];
 
@@ -65,27 +65,27 @@ class Home extends Secure_Controller
                     echo json_encode([
                         'success' => true,
                         'message' => lang('Employees.successful_change_password'),
-                        'id' => $employee_id
+                        'id'      => $employee_id
                     ]);
                 } else { // Failure    // TODO: Replace -1 with constant
                     echo json_encode([
                         'success' => false,
                         'message' => lang('Employees.unsuccessful_change_password'),
-                        'id' => -1
+                        'id'      => -1
                     ]);
                 }
             } else {    // TODO: Replace -1 with constant
                 echo json_encode([
                     'success' => false,
                     'message' => lang('Employees.current_password_invalid'),
-                    'id' => -1
+                    'id'      => -1
                 ]);
             }
         } else {    // TODO: Replace -1 with constant
             echo json_encode([
                 'success' => false,
                 'message' => lang('Employees.current_password_invalid'),
-                'id' => -1
+                'id'      => -1
             ]);
         }
     }

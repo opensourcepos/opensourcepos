@@ -35,12 +35,12 @@ class Login extends BaseController
             $validation = Services::validation();
 
             $data = [
-                'has_errors' => false,
-                'is_latest' => $migration->is_latest(),
-                'latest_version' => $migration->get_latest_migration(),
+                'has_errors'       => false,
+                'is_latest'        => $migration->is_latest(),
+                'latest_version'   => $migration->get_latest_migration(),
                 'gcaptcha_enabled' => $gcaptcha_enabled,
-                'config' => $config,
-                'validation' => $validation
+                'config'           => $config,
+                'validation'       => $validation
             ];
 
             if ($this->request->getMethod() !== 'POST') {
@@ -50,7 +50,7 @@ class Login extends BaseController
             $rules = ['username' => 'required|login_check[data]'];
             $messages = [
                 'username' => [
-                    'required' => lang('Login.required_username'),
+                    'required'    => lang('Login.required_username'),
                     'login_check' => lang('Login.invalid_username_and_password'),
                 ]
             ];

@@ -12,9 +12,9 @@ class Summary_expenses_categories extends Summary_report
     protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['category_name' => lang('Reports.expenses_category')],
-            ['count' => lang('Reports.count')],
-            ['total_amount' => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'],
+            ['category_name'    => lang('Reports.expenses_category')],
+            ['count'            => lang('Reports.count')],
+            ['total_amount'     => lang('Reports.expenses_amount'), 'sorter' => 'number_sorter'],
             ['total_tax_amount' => lang('Reports.expenses_tax_amount'), 'sorter' => 'number_sorter']
         ];
     }

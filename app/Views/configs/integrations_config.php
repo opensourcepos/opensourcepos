@@ -21,8 +21,8 @@
                             <span class="glyphicon glyphicon-cloud"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'mailchimp_api_key',
-                            'id' => 'mailchimp_api_key',
+                            'name'  => 'mailchimp_api_key',
+                            'id'    => 'mailchimp_api_key',
                             'class' => 'form-control input-sm',
                             'value' => $mailchimp['api_key']
                         ]) ?>
@@ -55,8 +55,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_mailchimp',
-                'id' => 'submit_mailchimp',
+                'name'  => 'submit_mailchimp',
+                'id'    => 'submit_mailchimp',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

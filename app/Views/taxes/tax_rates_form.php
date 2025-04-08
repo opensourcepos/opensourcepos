@@ -43,8 +43,8 @@
             <?= form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-5 input-group" style="padding-left: 15px;">
                 <?= form_input([
-                    'name' => 'tax_rate',
-                    'id' => 'tax_rate',
+                    'name'  => 'tax_rate',
+                    'id'    => 'tax_rate',
                     'class' => 'form-control input-sm text-uppercase',
                     'value' => $tax_rate
                 ]) ?>

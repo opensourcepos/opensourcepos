@@ -11,13 +11,13 @@ class Summary_sales extends Summary_report
     {
         return [
             ['sale_date' => lang('Reports.date'), 'sortable' => false],
-            ['sales' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
-            ['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
-            ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-            ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-            ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+            ['sales'     => lang('Reports.sales'), 'sorter' => 'number_sorter'],
+            ['quantity'  => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
+            ['subtotal'  => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'       => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'     => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'      => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'    => lang('Reports.profit'), 'sorter' => 'number_sorter']
         ];
     }
 

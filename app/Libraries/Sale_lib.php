@@ -522,9 +522,9 @@ class Sale_lib
             // Add to existing array
             $payment = [
                 $payment_id => [
-                    'payment_type' => $payment_id,
-                    'payment_amount' => $payment_amount,
-                    'cash_refund' => 0,
+                    'payment_type'    => $payment_id,
+                    'payment_amount'  => $payment_amount,
+                    'cash_refund'     => 0,
                     'cash_adjustment' => $cash_adjustment
                 ]
             ];
@@ -1073,31 +1073,31 @@ class Sale_lib
         if (!$itemalreadyinsale || $item_info->is_serialized) {
             $item = [
                 $insertkey => [
-                    'item_id' => $item_id,
-                    'item_location' => $item_location,
-                    'stock_name' => $this->stock_location->get_location_name($item_location),
-                    'line' => $insertkey,
-                    'name' => $item_info->name,
-                    'item_number' => $item_info->item_number,
-                    'attribute_values' => $attribute_links->attribute_values,
-                    'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
-                    'description' => $description != null ? $description : $item_info->description,
-                    'serialnumber' => $serialnumber != null ? $serialnumber : '',
+                    'item_id'               => $item_id,
+                    'item_location'         => $item_location,
+                    'stock_name'            => $this->stock_location->get_location_name($item_location),
+                    'line'                  => $insertkey,
+                    'name'                  => $item_info->name,
+                    'item_number'           => $item_info->item_number,
+                    'attribute_values'      => $attribute_links->attribute_values,
+                    'attribute_dtvalues'    => $attribute_links->attribute_dtvalues,
+                    'description'           => $description != null ? $description : $item_info->description,
+                    'serialnumber'          => $serialnumber != null ? $serialnumber : '',
                     'allow_alt_description' => $item_info->allow_alt_description,
-                    'is_serialized' => $item_info->is_serialized,
-                    'quantity' => $quantity,
-                    'discount' => $applied_discount,
-                    'discount_type' => $discount_type,
-                    'in_stock' => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
-                    'price' => $price,
-                    'cost_price' => $cost_price,
-                    'total' => $total,
-                    'discounted_total' => $discounted_total,
-                    'print_option' => $print_option_selected,
-                    'stock_type' => $stock_type,
-                    'item_type' => $item_type,
-                    'hsn_code' => $item_info->hsn_code,
-                    'tax_category_id' => $item_info->tax_category_id
+                    'is_serialized'         => $item_info->is_serialized,
+                    'quantity'              => $quantity,
+                    'discount'              => $applied_discount,
+                    'discount_type'         => $discount_type,
+                    'in_stock'              => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                    'price'                 => $price,
+                    'cost_price'            => $cost_price,
+                    'total'                 => $total,
+                    'discounted_total'      => $discounted_total,
+                    'print_option'          => $print_option_selected,
+                    'stock_type'            => $stock_type,
+                    'item_type'             => $item_type,
+                    'hsn_code'              => $item_info->hsn_code,
+                    'tax_category_id'       => $item_info->tax_category_id
                 ]
             ];
 

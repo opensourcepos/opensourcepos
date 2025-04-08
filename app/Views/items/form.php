@@ -37,8 +37,8 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
                     <?= form_input([
-                        'name' => 'item_number',
-                        'id' => 'item_number',
+                        'name'  => 'item_number',
+                        'id'    => 'item_number',
                         'class' => 'form-control input-sm',
                         'value' => $item_info->item_number
                     ]) ?>
@@ -50,8 +50,8 @@
             <?= form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'name',
-                    'id' => 'name',
+                    'name'  => 'name',
+                    'id'    => 'name',
                     'class' => 'form-control input-sm',
                     'value' => $item_info->name
                 ]) ?>
@@ -68,8 +68,8 @@
                         echo form_dropdown('category', $categories, $selected_category, ['class' => 'form-control']);
                     } else {
                         echo form_input([
-                            'name' => 'category',
-                            'id' => 'category',
+                            'name'  => 'category',
+                            'id'    => 'category',
                             'class' => 'form-control input-sm',
                             'value' => $item_info->category
                         ]);
@@ -90,19 +90,19 @@
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'stock_type',
-                        'type' => 'radio',
-                        'id' => 'stock_type',
-                        'value' => 0,
+                        'name'    => 'stock_type',
+                        'type'    => 'radio',
+                        'id'      => 'stock_type',
+                        'value'   => 0,
                         'checked' => $item_info->stock_type == HAS_STOCK
                     ]) ?> <?= lang('Items.stock') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'stock_type',
-                        'type' => 'radio',
-                        'id' => 'stock_type',
-                        'value' => 1,
+                        'name'    => 'stock_type',
+                        'type'    => 'radio',
+                        'id'      => 'stock_type',
+                        'value'   => 1,
                         'checked' => $item_info->stock_type == HAS_NO_STOCK
                     ]) ?><?= lang('Items.nonstock') ?>
                 </label>
@@ -115,10 +115,10 @@
                 <label class="radio-inline">
                     <?php
                     $radio_button = [
-                        'name' => 'item_type',
-                        'type' => 'radio',
-                        'id' => 'item_type',
-                        'value' => 0,
+                        'name'    => 'item_type',
+                        'type'    => 'radio',
+                        'id'      => 'item_type',
+                        'value'   => 0,
                         'checked' => $item_info->item_type == ITEM
                     ];
 
@@ -130,10 +130,10 @@
                 <label class="radio-inline">
                     <?php
                     $radio_button = [
-                        'name' => 'item_type',
-                        'type' => 'radio',
-                        'id' => 'item_type',
-                        'value' => 1,
+                        'name'    => 'item_type',
+                        'type'    => 'radio',
+                        'id'      => 'item_type',
+                        'value'   => 1,
                         'checked' => $item_info->item_type == ITEM_KIT
                     ];
 
@@ -145,10 +145,10 @@
                 <?php if ($config['derive_sale_quantity'] == '1') { ?>
                     <label class="radio-inline">
                         <?= form_radio([
-                            'name' => 'item_type',
-                            'type' => 'radio',
-                            'id' => 'item_type',
-                            'value' => 2,
+                            'name'    => 'item_type',
+                            'type'    => 'radio',
+                            'id'      => 'item_type',
+                            'value'   => 2,
                             'checked' => $item_info->item_type == ITEM_AMOUNT_ENTRY
                         ]) ?><?= lang('Items.amount_entry') ?>
                     </label>
@@ -156,10 +156,10 @@
                 <?php if ($allow_temp_item == 1) { ?>
                     <label class="radio-inline">
                         <?= form_radio([
-                            'name' => 'item_type',
-                            'type' => 'radio',
-                            'id' => 'item_type',
-                            'value' => 3,
+                            'name'    => 'item_type',
+                            'type'    => 'radio',
+                            'id'      => 'item_type',
+                            'value'   => 3,
                             'checked' => $item_info->item_type == ITEM_TEMP
                         ]) ?> <?= lang('Items.temp') ?>
                     </label>
@@ -182,11 +182,11 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'cost_price',
-                        'id' => 'cost_price',
-                        'class' => 'form-control input-sm',
+                        'name'    => 'cost_price',
+                        'id'      => 'cost_price',
+                        'class'   => 'form-control input-sm',
                         'onClick' => 'this.select();',
-                        'value' => to_currency_no_money($item_info->cost_price)
+                        'value'   => to_currency_no_money($item_info->cost_price)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -203,11 +203,11 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'unit_price',
-                        'id' => 'unit_price',
-                        'class' => 'form-control input-sm',
+                        'name'    => 'unit_price',
+                        'id'      => 'unit_price',
+                        'class'   => 'form-control input-sm',
                         'onClick' => 'this.select();',
-                        'value' => to_currency_no_money($item_info->unit_price)
+                        'value'   => to_currency_no_money($item_info->unit_price)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -221,8 +221,8 @@
                 <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
-                        'name' => 'tax_names[]',
-                        'id' => 'tax_name_1',
+                        'name'  => 'tax_names[]',
+                        'id'    => 'tax_name_1',
                         'class' => 'form-control input-sm',
                         'value' => $item_tax_info[0]['name'] ?? $config['default_tax_1_name']
                     ]) ?>
@@ -230,8 +230,8 @@
                 <div class="col-xs-4">
                     <div class="input-group input-group-sm">
                         <?= form_input([
-                            'name' => 'tax_percents[]',
-                            'id' => 'tax_percent_name_1',
+                            'name'  => 'tax_percents[]',
+                            'id'    => 'tax_percent_name_1',
                             'class' => 'form-control input-sm',
                             'value' => isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate)
                         ]) ?>
@@ -244,8 +244,8 @@
                 <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
-                        'name' => 'tax_names[]',
-                        'id' => 'tax_name_2',
+                        'name'  => 'tax_names[]',
+                        'id'    => 'tax_name_2',
                         'class' => 'form-control input-sm',
                         'value' => $item_tax_info[1]['name'] ?? $config['default_tax_2_name']
                     ]) ?>
@@ -253,9 +253,9 @@
                 <div class="col-xs-4">
                     <div class="input-group input-group-sm">
                         <?= form_input([
-                            'name' => 'tax_percents[]',
+                            'name'  => 'tax_percents[]',
                             'class' => 'form-control input-sm',
-                            'id' => 'tax_percent_name_2',
+                            'id'    => 'tax_percent_name_2',
                             'value' => isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate)
                         ]) ?>
                         <span class="input-group-addon input-sm"><b>%</b></span>
@@ -270,10 +270,10 @@
                 <div class="col-xs-8">
                     <div class="input-group input-group-sm">
                         <?= form_input([
-                            'name' => 'tax_category',
-                            'id' => 'tax_category',
+                            'name'  => 'tax_category',
+                            'id'    => 'tax_category',
                             'class' => 'form-control input-sm',
-                            'size' => '50',
+                            'size'  => '50',
                             'value' => $tax_category
                         ]) ?>
                         <?= form_hidden('tax_category_id', $tax_category_id) ?>
@@ -288,8 +288,8 @@
                 <div class="col-xs-8">
                     <div class="input-group">
                         <?= form_input([
-                            'name' => 'hsn_code',
-                            'id' => 'hsn_code',
+                            'name'  => 'hsn_code',
+                            'id'    => 'hsn_code',
                             'class' => 'form-control input-sm',
                             'value' => $hsn_code
                         ]) ?>
@@ -303,11 +303,11 @@
                 <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
-                        'name' => "quantity_$key",
-                        'id' => "quantity_$key",
-                        'class' => 'required quantity form-control',
+                        'name'    => "quantity_$key",
+                        'id'      => "quantity_$key",
+                        'class'   => 'required quantity form-control',
                         'onClick' => 'this.select();',
-                        'value' => isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0)
+                        'value'   => isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0)
                     ]) ?>
                 </div>
             </div>
@@ -317,11 +317,11 @@
             <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'receiving_quantity',
-                    'id' => 'receiving_quantity',
-                    'class' => 'required form-control input-sm',
+                    'name'    => 'receiving_quantity',
+                    'id'      => 'receiving_quantity',
+                    'class'   => 'required form-control input-sm',
                     'onClick' => 'this.select();',
-                    'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0)
+                    'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0)
                 ]) ?>
             </div>
         </div>
@@ -330,11 +330,11 @@
             <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'reorder_level',
-                    'id' => 'reorder_level',
-                    'class' => 'form-control input-sm',
+                    'name'    => 'reorder_level',
+                    'id'      => 'reorder_level',
+                    'class'   => 'form-control input-sm',
                     'onClick' => 'this.select();',
-                    'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0)
+                    'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0)
                 ]) ?>
             </div>
         </div>
@@ -343,8 +343,8 @@
             <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_textarea([
-                    'name' => 'description',
-                    'id' => 'description',
+                    'name'  => 'description',
+                    'id'    => 'description',
                     'class' => 'form-control input-sm',
                     'value' => $item_info->description
                 ]) ?>
@@ -377,9 +377,9 @@
             <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-1">
                 <?= form_checkbox([
-                    'name' => 'allow_alt_description',
-                    'id' => 'allow_alt_description',
-                    'value' => 1,
+                    'name'    => 'allow_alt_description',
+                    'id'      => 'allow_alt_description',
+                    'value'   => 1,
                     'checked' => $item_info->allow_alt_description == 1
                 ]) ?>
             </div>
@@ -389,9 +389,9 @@
             <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-1">
                 <?= form_checkbox([
-                    'name' => 'is_serialized',
-                    'id' => 'is_serialized',
-                    'value' => 1,
+                    'name'    => 'is_serialized',
+                    'id'      => 'is_serialized',
+                    'value'   => 1,
                     'checked' => $item_info->is_serialized == 1
                 ]) ?>
             </div>
@@ -402,8 +402,8 @@
                 <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
-                        'name' => 'qty_per_pack',
-                        'id' => 'qty_per_pack',
+                        'name'  => 'qty_per_pack',
+                        'id'    => 'qty_per_pack',
                         'class' => 'form-control input-sm',
                         'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0)
                     ]) ?>
@@ -413,8 +413,8 @@
                 <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-8">
                     <?= form_input([
-                        'name' => 'pack_name',
-                        'id' => 'pack_name',
+                        'name'  => 'pack_name',
+                        'id'    => 'pack_name',
                         'class' => 'form-control input-sm',
                         'value' => $item_info->pack_name
                     ]) ?>
@@ -425,8 +425,8 @@
                 <div class="col-xs-8">
                     <div class="input-group input-group-sm">
                         <?= form_input([
-                            'name' => 'low_sell_item_name',
-                            'id' => 'low_sell_item_name',
+                            'name'  => 'low_sell_item_name',
+                            'id'    => 'low_sell_item_name',
                             'class' => 'form-control input-sm',
                             'value' => $selected_low_sell_item
                         ]) ?>
@@ -440,9 +440,9 @@
             <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-1">
                 <?= form_checkbox([
-                    'name' => 'is_deleted',
-                    'id' => 'is_deleted',
-                    'value' => 1,
+                    'name'    => 'is_deleted',
+                    'id'      => 'is_deleted',
+                    'value'   => 1,
                     'checked' => $item_info->deleted == 1
                 ]) ?>
             </div>

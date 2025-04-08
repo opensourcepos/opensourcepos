@@ -71,9 +71,9 @@ class Secure_Controller extends BaseController
         }
 
         $this->global_view_data += [
-            'user_info' => $logged_in_employee_info,
+            'user_info'       => $logged_in_employee_info,
             'controller_name' => $module_id,
-            'config' => $config
+            'config'          => $config
         ];
         view('viewData', $this->global_view_data);
     }

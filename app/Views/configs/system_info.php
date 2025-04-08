@@ -57,23 +57,23 @@ use Config\OSPOS;
                 function getBrowserNameAndVersion(string $userAgent): string
                 {
                     $browser = match (true) {
-                        strpos($userAgent, 'Opera') !== false || strpos($userAgent, 'OPR/') !== false => 'Opera',
-                        strpos($userAgent, 'Edge') !== false => 'Edge',
-                        strpos($userAgent, 'Chrome') !== false => 'Chrome',
-                        strpos($userAgent, 'Safari') !== false => 'Safari',
+                        strpos($userAgent, 'Opera')   !== false || strpos($userAgent, 'OPR/') !== false => 'Opera',
+                        strpos($userAgent, 'Edge')    !== false => 'Edge',
+                        strpos($userAgent, 'Chrome')  !== false => 'Chrome',
+                        strpos($userAgent, 'Safari')  !== false => 'Safari',
                         strpos($userAgent, 'Firefox') !== false => 'Firefox',
-                        strpos($userAgent, 'MSIE') !== false || strpos($userAgent, 'Trident/7') !== false => 'Internet Explorer',
-                        default => 'Other',
+                        strpos($userAgent, 'MSIE')    !== false || strpos($userAgent, 'Trident/7') !== false => 'Internet Explorer',
+                        default                       => 'Other',
                     };
 
                     $version = match ($browser) {
-                        'Opera' => preg_match('/(Opera|OPR)\/([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
-                        'Edge' => preg_match('/Edge\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Chrome' => preg_match('/Chrome\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Safari' => preg_match('/Version\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
-                        'Firefox' => preg_match('/Firefox\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Opera'             => preg_match('/(Opera|OPR)\/([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
+                        'Edge'              => preg_match('/Edge\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Chrome'            => preg_match('/Chrome\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Safari'            => preg_match('/Version\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
+                        'Firefox'           => preg_match('/Firefox\/([0-9.]+)/', $userAgent, $matches) ? $matches[1] : '',
                         'Internet Explorer' => preg_match('/(MSIE|rv:)([0-9.]+)/', $userAgent, $matches) ? $matches[2] : '',
-                        default => '',
+                        default             => '',
                     };
 
                     return $browser . ($version ? ' ' . $version : '');

@@ -75,14 +75,14 @@ class Messages extends Secure_Controller
 
         if ($response) {
             echo json_encode([
-                'success' => true,
-                'message' => lang('Messages.successfully_sent') . ' ' . esc($phone),
+                'success'   => true,
+                'message'   => lang('Messages.successfully_sent') . ' ' . esc($phone),
                 'person_id' => $person_id
             ]);
         } else {
             echo json_encode([
-                'success' => false,
-                'message' => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone),
+                'success'   => false,
+                'message'   => lang('Messages.unsuccessfully_sent') . ' ' . esc($phone),
                 'person_id' => NEW_ENTRY
             ]);
         }

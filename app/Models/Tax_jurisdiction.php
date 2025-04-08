@@ -136,13 +136,13 @@ class Tax_jurisdiction extends Model
         foreach ($array_save as $key => $value) {
             // Save or update
             $tax_jurisdiction_data = [
-                'jurisdiction_name' => $value['jurisdiction_name'],
-                'tax_group' => $value['tax_group'],
-                'tax_type' => $value['tax_type'],
+                'jurisdiction_name'   => $value['jurisdiction_name'],
+                'tax_group'           => $value['tax_group'],
+                'tax_type'            => $value['tax_type'],
                 'reporting_authority' => $value['reporting_authority'],
-                'tax_group_sequence' => $value['tax_group_sequence'],
-                'cascade_sequence' => $value['cascade_sequence'],
-                'deleted' => '0'
+                'tax_group_sequence'  => $value['tax_group_sequence'],
+                'cascade_sequence'    => $value['cascade_sequence'],
+                'deleted'             => '0'
             ];
 
             $this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
@@ -243,14 +243,14 @@ class Tax_jurisdiction extends Model
     {
         return [
             '0' => [
-                'jurisdiction_id' => NEW_ENTRY,
-                'jurisdiction_name' => '',
-                'tax_group' => '',
-                'tax_type' => '1',
+                'jurisdiction_id'     => NEW_ENTRY,
+                'jurisdiction_name'   => '',
+                'tax_group'           => '',
+                'tax_type'            => '1',
                 'reporting_authority' => '',
-                'tax_group_sequence' => '',
-                'cascade_sequence' => '',
-                'deleted' => ''
+                'tax_group_sequence'  => '',
+                'cascade_sequence'    => '',
+                'deleted'             => ''
             ]
         ];
     }

@@ -197,9 +197,9 @@ class Stock_location extends Model
 
             foreach ($items->getResultArray() as $item) {
                 $quantity_data = [
-                    'item_id' => $item['item_id'],
+                    'item_id'     => $item['item_id'],
                     'location_id' => $location_id,
-                    'quantity' => 0
+                    'quantity'    => 0
                 ];
                 $builder->insert($quantity_data);
             }

@@ -42,9 +42,9 @@ if (isset($error)) {
                     <?= form_dropdown(
                         'receiving_type',
                         [
-                            'all' => lang('Reports.all'),
-                            'receiving' => lang('Reports.receivings'),
-                            'returns' => lang('Reports.returns'),
+                            'all'          => lang('Reports.all'),
+                            'receiving'    => lang('Reports.receivings'),
+                            'returns'      => lang('Reports.returns'),
                             'requisitions' => lang('Reports.requisitions')
                         ],
                         'all',
@@ -76,10 +76,10 @@ if (isset($error)) {
     <?php
     echo form_button(
         [
-            'name' => 'generate_report',
-            'id' => 'generate_report',
+            'name'    => 'generate_report',
+            'id'      => 'generate_report',
             'content' => lang('Common.submit'),
-            'class' => 'btn btn-primary btn-sm'
+            'class'   => 'btn btn-primary btn-sm'
         ]
     );
     ?>

@@ -40,8 +40,8 @@ class Customer_rewards extends Model
     public function save_value(array $package_data, int $package_id): bool
     {
         $package_data_to_save = [
-            'package_name' => $package_data['package_name'],
-            'deleted' => 0,
+            'package_name'   => $package_data['package_name'],
+            'deleted'        => 0,
             'points_percent' => $package_data['points_percent']
         ];
 

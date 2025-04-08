@@ -163,14 +163,14 @@ class Item_kits extends Secure_Controller
     public function postSave(int $item_kit_id = NEW_ENTRY): void
     {
         $item_kit_data = [
-            'name' => $this->request->getPost('name'),
-            'item_kit_number' => $this->request->getPost('item_kit_number'),
-            'item_id' => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
-            'kit_discount' => parse_decimals($this->request->getPost('kit_discount')),
+            'name'              => $this->request->getPost('name'),
+            'item_kit_number'   => $this->request->getPost('item_kit_number'),
+            'item_id'           => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
+            'kit_discount'      => parse_decimals($this->request->getPost('kit_discount')),
             'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
-            'price_option' => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
-            'print_option' => $this->request->getPost('print_option') === null ? PRINT_ALL : intval($this->request->getPost('print_option')),
-            'description' => $this->request->getPost('description')
+            'price_option'      => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
+            'print_option'      => $this->request->getPost('print_option') === null ? PRINT_ALL : intval($this->request->getPost('print_option')),
+            'description'       => $this->request->getPost('description')
         ];
 
         if ($this->item_kit->save_value($item_kit_data, $item_kit_id)) {
@@ -187,8 +187,8 @@ class Item_kits extends Secure_Controller
                 $item_kit_items = [];
                 foreach ($item_kit_items_array as $item_id => $item_kit_qty) {
                     $item_kit_items[] = [
-                        'item_id' => $item_id,
-                        'quantity' => $item_kit_qty === null ? 0 : parse_quantity($item_kit_qty),
+                        'item_id'      => $item_id,
+                        'quantity'     => $item_kit_qty === null ? 0 : parse_quantity($item_kit_qty),
                         'kit_sequence' => $this->request->getPost("item_kit_seq[$item_id]") === null ? 0 : intval($this->request->getPost("item_kit_seq[$item_id]"))
                     ];
                 }
@@ -204,20 +204,20 @@ class Item_kits extends Secure_Controller
                 echo json_encode([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_adding') . ' ' . $item_kit_data['name'],
-                    'id' => $item_kit_id
+                    'id'      => $item_kit_id
                 ]);
             } else {
                 echo json_encode([
                     'success' => $success,
                     'message' => lang('Item_kits.successful_updating') . ' ' . $item_kit_data['name'],
-                    'id' => $item_kit_id
+                    'id'      => $item_kit_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => false,
                 'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }
@@ -271,11 +271,11 @@ class Item_kits extends Secure_Controller
             $item_kid_id = 'KIT ' . urldecode($item_kid_id);
 
             $result[] = [
-                'name' => $item_kit->name,
-                'item_id' => $item_kid_id,
+                'name'        => $item_kit->name,
+                'item_id'     => $item_kid_id,
                 'item_number' => $item_kid_id,
-                'cost_price' => $item_kit->total_cost_price,
-                'unit_price' => $item_kit->total_unit_price
+                'cost_price'  => $item_kit->total_cost_price,
+                'unit_price'  => $item_kit->total_unit_price
             ];
         }
 

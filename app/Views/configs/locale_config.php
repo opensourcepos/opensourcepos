@@ -18,8 +18,8 @@
                 <?= form_label(lang('Config.number_locale'), 'number_locale', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_input([
-                        'name' => 'number_locale',
-                        'id' => 'number_locale',
+                        'name'  => 'number_locale',
+                        'id'    => 'number_locale',
                         'class' => 'form-control input-sm',
                         'value' => $config['number_locale']
                     ]) ?>
@@ -41,9 +41,9 @@
                 <?= form_label(lang('Config.thousands_separator'), 'thousands_separator', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_checkbox([
-                        'name' => 'thousands_separator',
-                        'id' => 'thousands_separator',
-                        'value' => 'thousands_separator',
+                        'name'    => 'thousands_separator',
+                        'id'      => 'thousands_separator',
+                        'value'   => 'thousands_separator',
                         'checked' => $config['thousands_separator'] == 1
                     ]) ?>
                 </div>
@@ -53,8 +53,8 @@
                 <?= form_label(lang('Config.currency_symbol'), 'currency_symbol', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_input([
-                        'name' => 'currency_symbol',
-                        'id' => 'currency_symbol',
+                        'name'  => 'currency_symbol',
+                        'id'    => 'currency_symbol',
                         'class' => 'form-control input-sm number_locale',
                         'value' => $config['currency_symbol']
                     ]) ?>
@@ -65,8 +65,8 @@
                 <?= form_label(lang('Config.currency_code'), 'currency_code', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_input([
-                        'name' => 'currency_code',
-                        'id' => 'currency_code',
+                        'name'  => 'currency_code',
+                        'id'    => 'currency_code',
                         'class' => 'form-control input-sm number_locale',
                         'value' => $currency_code
                     ]) ?>
@@ -131,9 +131,9 @@
                         'cash_decimals',
                         [
                             '-1' => '-1',
-                            '0' => '0',
-                            '1' => '1',
-                            '2' => '2'
+                            '0'  => '0',
+                            '1'  => '1',
+                            '2'  => '2'
                         ],
                         $config['cash_decimals'],
                         ['class' => 'form-control input-sm']
@@ -180,7 +180,7 @@
                 <?= form_label(lang('Config.country_codes'), 'country_codes', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_input([
-                        'name' => 'country_codes',
+                        'name'  => 'country_codes',
                         'class' => 'form-control input-sm',
                         'value' => $config['country_codes']
                     ]) ?>
@@ -242,9 +242,9 @@
                 <?= form_label(lang('Config.date_or_time_format'), 'date_or_time_format', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_checkbox([
-                        'name' => 'date_or_time_format',
-                        'id' => 'date_or_time_format',
-                        'value' => 'date_or_time_format',
+                        'name'    => 'date_or_time_format',
+                        'id'      => 'date_or_time_format',
+                        'value'   => 'date_or_time_format',
                         'checked' => $config['date_or_time_format'] == 1
                     ]) ?>
                 </div>
@@ -256,15 +256,15 @@
                     <?= form_dropdown(
                         'financial_year',
                         [
-                            '1' => lang('Config.financial_year_jan'),
-                            '2' => lang('Config.financial_year_feb'),
-                            '3' => lang('Config.financial_year_mar'),
-                            '4' => lang('Config.financial_year_apr'),
-                            '5' => lang('Config.financial_year_may'),
-                            '6' => lang('Config.financial_year_jun'),
-                            '7' => lang('Config.financial_year_jul'),
-                            '8' => lang('Config.financial_year_aug'),
-                            '9' => lang('Config.financial_year_sep'),
+                            '1'  => lang('Config.financial_year_jan'),
+                            '2'  => lang('Config.financial_year_feb'),
+                            '3'  => lang('Config.financial_year_mar'),
+                            '4'  => lang('Config.financial_year_apr'),
+                            '5'  => lang('Config.financial_year_may'),
+                            '6'  => lang('Config.financial_year_jun'),
+                            '7'  => lang('Config.financial_year_jul'),
+                            '8'  => lang('Config.financial_year_aug'),
+                            '9'  => lang('Config.financial_year_sep'),
                             '10' => lang('Config.financial_year_oct'),
                             '11' => lang('Config.financial_year_nov'),
                             '12' => lang('Config.financial_year_dec')
@@ -276,8 +276,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_locale',
-                'id' => 'submit_locale',
+                'name'  => 'submit_locale',
+                'id'    => 'submit_locale',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>
