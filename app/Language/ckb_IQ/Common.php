@@ -50,4 +50,5 @@ return [
     'list_of' => "لیستی",
     'import_full_path' => "ڕێڕەوی تەواو بۆ پەڕگەی CSV پێویستە",
     'inv' => "ئای ئێن ڤی",
+    'please_visit_my' => "تکایە سەردانی",
 ];
