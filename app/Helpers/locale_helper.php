@@ -64,6 +64,7 @@ function get_languages(): array
         'az:azerbaijani' => 'Azerbaijani',
         'bg:bulgarian' => 'Bulgarian',
         'bs:bosnian' => 'Bosnian',
+		'ckb_IQ:centralkurdish' => 'Central Kurdish (Iraq)',
         'cs:czech' => 'Czech',
         'da:danish' => 'Danish',
         'de-CH:german' => 'German (Switzerland)',

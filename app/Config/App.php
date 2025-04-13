@@ -162,6 +162,7 @@ class App extends BaseConfig
         'az',
         'bg',
         'bs',
+        'ckb_IQ',
         'cs',
         'da',
         'de-CH',
