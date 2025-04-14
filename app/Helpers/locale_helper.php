@@ -82,6 +82,7 @@ function get_languages(): array
         'id:indonesian' => 'Indonesian',
         'it:italian' => 'Italian',
         'km:centralkhmer' => 'Central Khmer',
+		'ku:kurdish' => 'Kurdish',
         'lo:lao' => 'Lao',
         'ml:malayalam' => 'Malayalam',
         'nb:norwegian' => 'Norwegian',

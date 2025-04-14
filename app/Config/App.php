@@ -180,6 +180,7 @@ class App extends BaseConfig
         'id',
         'it',
         'km',
+        'ku',
         'lo',
         'ml',
         'nb',
