@@ -25,7 +25,7 @@ return [
     'cost_price_number' => "",
     'cost_price_required' => "",
     'count' => "",
-    'csv_import_failed' => "",
+    'csv_import_failed' => "هاوردەکردنی CSV سەرکەوتوو نەبوو",
     'csv_import_nodata_wrongformat' => "",
     'csv_import_partially_failed' => "",
     'csv_import_success' => "",
