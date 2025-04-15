@@ -32,7 +32,7 @@ return [
     'price_option' => "",
     'priced_only' => "",
     'print_option' => "",
-    'quantity' => "",
+    'quantity' => "بڕ",
     'sequence' => "",
     'successful_adding' => "",
     'successful_deleted' => "بە سەرکەوتووی سڕیتەوە",
