@@ -79,7 +79,7 @@ return [
     'payments' => "",
     'payments_summary_report' => "",
     'profit' => "",
-    'quantity' => "",
+    'quantity' => "بڕ",
     'quantity_purchased' => "",
     'quotes' => "",
     'received_by' => "",
