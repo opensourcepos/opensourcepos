@@ -2,7 +2,7 @@
 
 return [
     'administrator' => "",
-    'basic_information' => "",
+    'basic_information' => "زانیاری",
     'cannot_be_deleted' => "",
     'change_employee' => "",
     'change_password' => "",
@@ -12,7 +12,7 @@ return [
     'confirm_restore' => "",
     'current_password' => "",
     'current_password_invalid' => "",
-    'employee' => "",
+    'employee' => "فەرمانبەر",
     'error_adding_updating' => "",
     'error_deleting_demo_admin' => "",
     'error_updating_demo_admin' => "",
