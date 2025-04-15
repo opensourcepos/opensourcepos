@@ -79,7 +79,7 @@ return [
     'one_or_multiple' => "",
     'pack_name' => "",
     'qty_per_pack' => "",
-    'quantity' => "",
+    'quantity' => "بڕ",
     'quantity_number' => "",
     'quantity_required' => "",
     'receiving_quantity' => "",
