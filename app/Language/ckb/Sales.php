@@ -146,7 +146,7 @@ return [
     'payments_total' => "",
     'price' => "",
     'print_after_sale' => "",
-    'quantity' => "",
+    'quantity' => "بڕ",
     'quantity_less_than_reorder_level' => "",
     'quantity_less_than_zero' => "",
     'quantity_of_items' => "",
