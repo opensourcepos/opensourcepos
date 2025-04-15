@@ -8,7 +8,8 @@
  * @var array $config
  */
 ?>
-<script>
+
+<script type="text/javascript">
     // Labels and data series
     var data = {
         labels: <?= json_encode(esc($labels_1, 'js')) ?>,
@@ -44,7 +45,7 @@
             // Lets offset the chart a bit from the labels
             offset: 120,
             position: 'end',
-            // offset the labels a bit from the axis to avoid overlaps
+            // Offset the labels a bit from the axis to avoid overlaps
             labelOffset: {
                 x: 0,
                 y: 20
@@ -55,7 +56,7 @@
         axisY: {
             // Lets offset the chart a bit from the labels
             offset: 80,
-            // offset the labels a bit from the axis to avoid overlaps
+            // Offset the labels a bit from the axis to avoid overlaps
             labelOffset: {
                 x: -20,
                 y: 0
@@ -64,32 +65,22 @@
             // used for the labels on each axis.
             labelInterpolationFnc: function(value) {
                 <?php
-                if($show_currency)
-                {
-                    if( is_right_side_currency_symbol() )
-                    {
+                if ($show_currency) {
+                    if (is_right_side_currency_symbol()) {
                 ?>
                         return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                    <?php } else { ?>
+                        return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
                     <?php
                     }
-                    else
-                    {
+                } else {
                     ?>
-                        return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                        <?php
-                    }
-                }
-                else
-                {
-                ?>
                     return value;
-                <?php
-                }
-                ?>
+                <?php } ?>
             }
         },
 
-        // plugins configuration
+        // Plugins configuration
         plugins: [
             Chartist.plugins.ctAxisTitle({
                 axisX: {
@@ -117,28 +108,18 @@
                 textAnchor: 'middle',
                 labelInterpolationFnc: function(value) {
                     <?php
-                    if( $show_currency )
-                    {
-                        if( is_right_side_currency_symbol() )
-                        {
+                    if ($show_currency) {
+                        if (is_right_side_currency_symbol()) {
                     ?>
                             return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                        <?php } else { ?>
+                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
                         <?php
                         }
-                        else
-                        {
+                    } else {
                         ?>
-                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                    <?php
-                        }
-                    }
-                    else
-                    {
-                    ?>
                         return value;
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                 }
             }),
 
@@ -146,28 +127,18 @@
                 pointClass: 'ct-tooltip-point',
                 transformTooltipTextFnc: function(value) {
                     <?php
-                    if( $show_currency )
-                    {
-                        if( is_right_side_currency_symbol() )
-                        {
+                    if ($show_currency) {
+                        if (is_right_side_currency_symbol()) {
                     ?>
                             return value + '<?= esc($config['currency_symbol'], 'js') ?>';
+                        <?php } else { ?>
+                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
                         <?php
                         }
-                        else
-                        {
+                    } else {
                         ?>
-                            return '<?= esc($config['currency_symbol'], 'js') ?>' + value;
-                    <?php
-                        }
-                    }
-                    else
-                    {
-                    ?>
                         return value;
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                 }
             })
         ]
@@ -180,18 +151,20 @@
                 top: 20,
                 bottom: 0
             },
-        }] /*,
-        ['screen and (min-width: 1024px)', {
-            labelOffset: 80,
-            chartPadding: 20
-        }]*/
+        }]
+        /* ,
+         * ['screen and (min-width: 1024px)', {
+         *     labelOffset: 80,
+         *     chartPadding: 20
+         * }]
+         */
     ];
 
     chart = new Chartist.Line('#chart1', data, options, responsiveOptions);
 
     chart.on('draw', function(data) {
         // If the draw event was triggered from drawing a point on the line chart
-        if(data.type === 'point') {
+        if (data.type === 'point') {
             // We are creating a new path SVG element that draws a triangle around the point coordinates
             var circle = new Chartist.Svg('circle', {
                 cx: [data.x],

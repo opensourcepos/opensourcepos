@@ -18,16 +18,16 @@ class Inventory_summary extends Report
     public function getDataColumns(): array
     {
         return [
-            ['item_name' => lang('Reports.item_name')],
-            ['item_number' => lang('Reports.item_number')],
-            ['category' => lang('Reports.category')],
-            ['quantity' => lang('Reports.quantity')],
+            ['item_name'         => lang('Reports.item_name')],
+            ['item_number'       => lang('Reports.item_number')],
+            ['category'          => lang('Reports.category')],
+            ['quantity'          => lang('Reports.quantity')],
             ['low_sell_quantity' => lang('Reports.low_sell_quantity')],
-            ['reorder_level' => lang('Reports.reorder_level')],
-            ['location_name' => lang('Reports.stock_location')],
-            ['cost_price' => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
-            ['unit_price' => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
-            ['subtotal' => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter']
+            ['reorder_level'     => lang('Reports.reorder_level')],
+            ['location_name'     => lang('Reports.stock_location')],
+            ['cost_price'        => lang('Reports.cost_price'), 'sorter' => 'number_sorter'],
+            ['unit_price'        => lang('Reports.unit_price'), 'sorter' => 'number_sorter'],
+            ['subtotal'          => lang('Reports.sub_total_value'), 'sorter' => 'number_sorter']
         ];
     }
 
@@ -40,7 +40,8 @@ class Inventory_summary extends Report
         $item = model(Item::class);
 
         $builder = $this->db->table('items AS items');
-        $builder->select($item->get_item_name('name') . ',
+        $builder->select(
+            $item->get_item_name('name') . ',
             items.item_number,
             items.category,
             item_quantities.quantity,
@@ -57,18 +58,14 @@ class Inventory_summary extends Report
         $builder->where('items.stock_type', 0);
         $builder->where('stock_locations.deleted', 0);
 
-        // should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns...
-        if($inputs['item_count'] == 'zero_and_less')
-        {
+        // Should be corresponding to the values Inventory_summary::getItemCountDropdownArray() returns
+        if ($inputs['item_count'] == 'zero_and_less') {
             $builder->where('item_quantities.quantity <=', 0);
-        }
-        elseif($inputs['item_count'] == 'more_than_zero')
-        {
+        } elseif ($inputs['item_count'] == 'more_than_zero') {
             $builder->where('item_quantities.quantity >', 0);
         }
 
-        if($inputs['location_id'] != 'all')
-        {
+        if ($inputs['location_id'] != 'all') {
             $builder->where('stock_locations.location_id', $inputs['location_id']);
         }
 
@@ -87,15 +84,14 @@ class Inventory_summary extends Report
      */
     public function getSummaryData(array $inputs): array
     {
-        $return = [    //TODO: This variable name should be refactored to reflect what it is... perhaps summary_data
-            'total_inventory_value' => 0,
-            'total_quantity' => 0,
+        $return = [    // TODO: This variable name should be refactored to reflect what it is... perhaps summary_data
+            'total_inventory_value'   => 0,
+            'total_quantity'          => 0,
             'total_low_sell_quantity' => 0,
-            'total_retail' => 0
+            'total_retail'            => 0
         ];
 
-        foreach($inputs as $input)
-        {
+        foreach ($inputs as $input) {
             $return['total_inventory_value'] += $input['sub_total_value'];
             $return['total_quantity'] += $input['quantity'];
             $return['total_low_sell_quantity'] += $input['low_sell_quantity'];
@@ -113,8 +109,8 @@ class Inventory_summary extends Report
     public function getItemCountDropdownArray(): array
     {
         return [
-            'all' => lang('Reports.all'),
-            'zero_and_less' => lang('Reports.zero_and_less'),
+            'all'            => lang('Reports.all'),
+            'zero_and_less'  => lang('Reports.zero_and_less'),
             'more_than_zero' => lang('Reports.more_than_zero')
         ];
     }

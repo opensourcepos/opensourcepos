@@ -9,16 +9,16 @@ class Summary_payments extends Summary_report
     /**
      * @return array[]
      */
-    protected function _get_data_columns(): array    //TODO: Hungarian notation
+    protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
-            ['trans_group' => lang('Reports.trans_group')],
-            ['trans_type' => lang('Reports.trans_type')],
-            ['trans_sales' => lang('Reports.sales')],
-            ['trans_amount' => lang('Reports.trans_amount')],
+            ['trans_group'    => lang('Reports.trans_group')],
+            ['trans_type'     => lang('Reports.trans_type')],
+            ['trans_sales'    => lang('Reports.sales')],
+            ['trans_amount'   => lang('Reports.trans_amount')],
             ['trans_payments' => lang('Reports.trans_payments')],
             ['trans_refunded' => lang('Reports.trans_refunded')],
-            ['trans_due' => lang('Reports.trans_due')]
+            ['trans_due'      => lang('Reports.trans_due')]
         ];
     }
 
@@ -28,28 +28,25 @@ class Summary_payments extends Summary_report
      */
     public function getData(array $inputs): array
     {
-        $cash_payment = lang('Sales.cash');    //TODO: This is never used.  Should it be?
+        $cash_payment = lang('Sales.cash');    // TODO: This is never used.  Should it be?
         $config = config(OSPOS::class)->settings;
 
         $separator[] = [
-            'trans_group' => '<HR>',
-            'trans_type' => '',
-            'trans_sales' => '',
-            'trans_amount' => '',
+            'trans_group'    => '<HR>',
+            'trans_type'     => '',
+            'trans_sales'    => '',
+            'trans_amount'   => '',
             'trans_payments' => '',
             'trans_refunded' => '',
-            'trans_due' => ''
+            'trans_due'      => ''
         ];
 
-        $where = '';    //TODO: Duplicated code
+        $where = '';    // TODO: Duplicated code
 
-        //TODO: this needs to be converted to ternary notation
-        if(empty($config['date_or_time_format']))
-        {
+        // TODO: this needs to be converted to ternary notation
+        if (empty($config['date_or_time_format'])) {
             $where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
-        }
-        else
-        {
+        } else {
             $where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
         }
 
@@ -79,10 +76,8 @@ class Summary_payments extends Summary_report
 
         // At this point in time refunds are assumed to be cash refunds.
         $total_cash_refund = 0;
-        foreach($sales as $key => $sale_summary)
-        {
-            if($sale_summary['trans_refunded'] <> 0)
-            {
+        foreach ($sales as $key => $sale_summary) {
+            if ($sale_summary['trans_refunded'] <> 0) {
                 $total_cash_refund += $sale_summary['trans_refunded'];
             }
         }
@@ -105,13 +100,11 @@ class Summary_payments extends Summary_report
 
         $payments = $builder->get()->getResultArray();
 
-        // consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
+        // Consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
         $gift_card_count = 0;
         $gift_card_amount = 0;
-        foreach($payments as $key => $payment)
-        {
-            if(str_contains($payment['trans_type'], lang('Sales.giftcard')))
-            {
+        foreach ($payments as $key => $payment) {
+            if (str_contains($payment['trans_type'], lang('Sales.giftcard'))) {
                 $gift_card_count += $payment['trans_sales'];
                 $gift_card_amount += $payment['trans_amount'];
 
@@ -120,16 +113,15 @@ class Summary_payments extends Summary_report
             }
         }
 
-        if($gift_card_count > 0)
-        {
+        if ($gift_card_count > 0) {
             $payments[] = [
-                'trans_group' => lang('Reports.trans_payments'),
-                'trans_type' => lang('Sales.giftcard'),
-                'trans_sales' => $gift_card_count,
-                'trans_amount' => $gift_card_amount,
+                'trans_group'    => lang('Reports.trans_payments'),
+                'trans_type'     => lang('Sales.giftcard'),
+                'trans_sales'    => $gift_card_count,
+                'trans_amount'   => $gift_card_amount,
                 'trans_payments' => $gift_card_amount,
                 'trans_refunded' => 0,
-                'trans_due' => 0
+                'trans_due'      => 0
             ];
         }
 
@@ -142,15 +134,16 @@ class Summary_payments extends Summary_report
      */
     protected function create_summary_payments_temp_tables(string $where): void
     {
-//TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
+        // TODO: convert to using QueryBuilder. Use App/Models/Reports/Summary_taxes.php getData() as a reference template
         $decimals = totals_decimals();
 
         $trans_amount = 'SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
             . " THEN sales_items.quantity_purchased * sales_items.item_unit_price - ROUND(sales_items.quantity_purchased * sales_items.item_unit_price * sales_items.discount / 100, $decimals) "
             . ' ELSE sales_items.quantity_purchased * (sales_items.item_unit_price - sales_items.discount) END) AS trans_amount';
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_taxes_temp') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_taxes_temp') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
                 SELECT sales.sale_id, SUM(sales_taxes.sale_tax_amount) AS total_taxes
                 FROM ' . $this->db->prefixTable('sales') . ' AS sales
@@ -161,16 +154,17 @@ class Summary_payments extends Summary_report
             )'
         );
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_items_temp') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_items_temp') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
                 SELECT sales.sale_id, ' . $trans_amount
-            . ' FROM ' . $this->db->prefixTable('sales') . ' AS sales '
-            . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items '
-            . 'ON sales.sale_id = sales_items.sale_id '
-            . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sumpay_taxes_temp') . ' AS sumpay_taxes '
-            . 'ON sales.sale_id = sumpay_taxes.sale_id '
-            . 'WHERE ' . $where . ' GROUP BY sale_id
+                . ' FROM ' . $this->db->prefixTable('sales') . ' AS sales '
+                . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sales_items') . ' AS sales_items '
+                . 'ON sales.sale_id = sales_items.sale_id '
+                . 'LEFT OUTER JOIN ' . $this->db->prefixTable('sumpay_taxes_temp') . ' AS sumpay_taxes '
+                . 'ON sales.sale_id = sumpay_taxes.sale_id '
+                . 'WHERE ' . $where . ' GROUP BY sale_id
             )'
         );
 
@@ -178,8 +172,9 @@ class Summary_payments extends Summary_report
             . 'SET trans_amount = trans_amount + IFNULL((SELECT total_taxes FROM ' . $this->db->prefixTable('sumpay_taxes_temp')
             . ' AS sumpay_taxes WHERE sumpay_items.sale_id = sumpay_taxes.sale_id),0)');
 
-        $this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_payments_temp') .
-            ' (INDEX(sale_id)) ENGINE=MEMORY
+        $this->db->query(
+            'CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->prefixTable('sumpay_payments_temp') .
+                ' (INDEX(sale_id)) ENGINE=MEMORY
             (
                 SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments,
                 SUM(CASE WHEN sales_payments.cash_adjustment = 0 THEN sales_payments.payment_amount ELSE 0 END) AS total_payments,

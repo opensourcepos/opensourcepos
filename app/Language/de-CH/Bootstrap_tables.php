@@ -1,11 +1,12 @@
 <?php
+
 return [
-    "all" => "All",
-    "columns" => "Spalten",
+    "all"                  => "All",
+    "columns"              => "Spalten",
     "hide_show_pagination" => "Hide/Show pagination",
-    "loading" => "Lade, bitte warten...",
-    "page_from_to" => "Zeige {0} bis {1} von {2} Zeile(n)",
-    "refresh" => "Refresh",
-    "rows_per_page" => "{0} Einträge pro Seite",
-    "toggle" => "Umschalten",
+    "loading"              => "Lade, bitte warten...",
+    "page_from_to"         => "Zeige {0} bis {1} von {2} Zeile(n)",
+    "refresh"              => "Refresh",
+    "rows_per_page"        => "{0} Einträge pro Seite",
+    "toggle"               => "Umschalten",
 ];

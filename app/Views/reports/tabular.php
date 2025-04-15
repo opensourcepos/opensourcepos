@@ -8,9 +8,10 @@
  * @var array $config
  */
 ?>
+
 <?= view('partial/header') ?>
 
-<script type="application/javascript">
+<script type="text/javascript">
     dialog_support.init("a.modal-dlg");
 </script>
 
@@ -24,17 +25,11 @@
 
 <div id="report_summary">
     <?php
-    foreach($summary_data as $name => $value)
-    {
-        if($name == "total_quantity")
-        {
+    foreach ($summary_data as $name => $value) {
+        if ($name == "total_quantity") {
     ?>
             <div class="summary_row"><?= lang("Reports.$name") . ": $value" ?></div>
-    <?php
-        }
-        else
-        {
-    ?>
+        <?php } else { ?>
             <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
     <?php
         }
@@ -42,9 +37,8 @@
     ?>
 </div>
 
-<script type="application/javascript">
-    $(document).ready(function()
-    {
+<script type="text/javascript">
+    $(document).ready(function() {
         <?= view('partial/bootstrap_tables_locale') ?>
 
         $('#table')
@@ -65,7 +59,7 @@
                 paginationVAlign: 'bottom',
                 escape: true,
                 search: true
-        });
+            });
     });
 </script>
 

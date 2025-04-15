@@ -21,4 +21,3 @@ node_modules/
 *.log
 app/writable/session/*
 !app/writable/session/index.html
-

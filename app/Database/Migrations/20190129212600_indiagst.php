@@ -11,8 +11,7 @@ class Migration_IndiaGST extends Migration
      */
     public function up(): void
     {
-        if(!$this->db->fieldExists('sales_tax_code', 'customers'))
-        {
+        if (!$this->db->fieldExists('sales_tax_code', 'customers')) {
             return;
         }
 
@@ -24,8 +23,7 @@ class Migration_IndiaGST extends Migration
 
         $count_of_tax_codes = $this->get_count_of_tax_code_entries();
 
-        if($count_of_tax_codes > 0)
-        {
+        if ($count_of_tax_codes > 0) {
             $this->migrate_tax_code_data();
         }
 
@@ -33,15 +31,13 @@ class Migration_IndiaGST extends Migration
 
         $count_of_rate_entries = $this->get_count_of_rate_entries();
 
-        if($count_of_rate_entries > 0)
-        {
+        if ($count_of_rate_entries > 0) {
             $this->migrate_tax_rates();
         }
 
         $count_of_sales_taxes_entries = $this->get_count_of_sales_taxes_entries();
 
-        if($count_of_sales_taxes_entries > 0)
-        {
+        if ($count_of_sales_taxes_entries > 0) {
             $this->migrate_sales_taxes_data();
         }
 
@@ -53,9 +49,7 @@ class Migration_IndiaGST extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 
     /**
      * @return int
@@ -147,10 +141,10 @@ class Migration_IndiaGST extends Migration
      */
     private function migrate_tax_rates(): void
     {
-        // create a dummy jurisdiction record and retrieve the jurisdiction rate id
+        // Create a dummy jurisdiction record and retrieve the jurisdiction rate id
 
         $this->db->query('INSERT INTO ' . $this->db->prefixTable('tax_jurisdictions') . ' (jurisdiction_name, tax_group, tax_type, reporting_authority, '
-        . "tax_group_sequence, cascade_sequence, deleted)  VALUES ('Jurisdiction1', 'TaxGroup1', '1', 'Authority1', 1, 0, '0')");
+            . "tax_group_sequence, cascade_sequence, deleted)  VALUES ('Jurisdiction1', 'TaxGroup1', '1', 'Authority1', 1, 0, '0')");
 
         $jurisdiction_id = $this->db->query('SELECT jurisdiction_id FROM ' . $this->db->prefixTable('tax_jurisdictions') . " WHERE jurisdiction_name = 'Jurisdiction1'")->getRow()->jurisdiction_id;
 

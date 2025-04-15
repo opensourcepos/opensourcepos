@@ -22,7 +22,5 @@ class Migration_add_item_kit_number extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 }

@@ -18,8 +18,5 @@ class Migration_fix_attribute_datetime extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

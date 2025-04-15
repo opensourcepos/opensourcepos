@@ -29,12 +29,12 @@ class Expenses extends Secure_Controller
 
         // filters that will be loaded in the multiselect dropdown
         $data['filters'] = [
-            'only_cash' => lang('Expenses.cash_filter'),
-            'only_due' => lang('Expenses.due_filter'),
-            'only_check' => lang('Expenses.check_filter'),
+            'only_cash'   => lang('Expenses.cash_filter'),
+            'only_due'    => lang('Expenses.due_filter'),
+            'only_check'  => lang('Expenses.check_filter'),
             'only_credit' => lang('Expenses.credit_filter'),
-            'only_debit' => lang('Expenses.debit_filter'),
-            'is_deleted' => lang('Expenses.is_deleted')
+            'only_debit'  => lang('Expenses.debit_filter'),
+            'is_deleted'  => lang('Expenses.is_deleted')
         ];
 
         echo view('expenses/manage', $data);
@@ -51,17 +51,17 @@ class Expenses extends Secure_Controller
         $sort     = $this->sanitizeSortColumn(expense_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_id');
         $order    = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $filters  = [
-            'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'only_cash' => false,
-            'only_due' => false,
-            'only_check' => false,
+            'start_date'  => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'    => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash'   => false,
+            'only_due'    => false,
+            'only_check'  => false,
             'only_credit' => false,
-            'only_debit' => false,
-            'is_deleted' => false
+            'only_debit'  => false,
+            'is_deleted'  => false
         ];
 
-        // check if any filter is set in the multiselect dropdown
+        // Check if any filter is set in the multiselect dropdown
         $request_filters = array_fill_keys($this->request->getGet('filters', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? [], true);
         $filters = array_merge($filters, $request_filters);
         $expenses = $this->expense->search($search, $filters, $limit, $offset, $sort, $order);
@@ -70,17 +70,15 @@ class Expenses extends Secure_Controller
         $payment_summary = get_expenses_manage_payments_summary($payments, $expenses);
         $data_rows = [];
 
-        foreach($expenses->getResult() as $expense)
-        {
+        foreach ($expenses->getResult() as $expense) {
             $data_rows[] = get_expenses_data_row($expense);
         }
 
-        if($total_rows > 0)
-        {
+        if ($total_rows > 0) {
             $data_rows[] = get_expenses_data_last_row($expenses);
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary]);
     }
 
     /**
@@ -89,13 +87,11 @@ class Expenses extends Secure_Controller
      */
     public function getView(int $expense_id = NEW_ENTRY): void
     {
-        $data = [];    //TODO: Duplicated code
+        $data = [];    // TODO: Duplicated code
 
         $data['employees'] = [];
-        foreach($this->employee->get_all()->getResult() as $employee)
-        {
-            foreach(get_object_vars($employee) as $property => $value)
-            {
+        foreach ($this->employee->get_all()->getResult() as $employee) {
+            foreach (get_object_vars($employee) as $property => $value) {
                 $employee->$property = $value;
             }
 
@@ -105,32 +101,28 @@ class Expenses extends Secure_Controller
         $data['expenses_info'] = $this->expense->get_info($expense_id);
 
         $expense_categories = [];
-        foreach($this->expense_category->get_all(0, 0, true)->getResultArray() as $row)
-        {
+        foreach ($this->expense_category->get_all(0, 0, true)->getResultArray() as $row) {
             $expense_categories[$row['expense_category_id']] = $row['category_name'];
         }
         $data['expense_categories'] = $expense_categories;
 
         $expense_id = $data['expenses_info']->expense_id;
 
-        if($expense_id == NEW_ENTRY)
-        {
+        if ($expense_id == NEW_ENTRY) {
             $data['expenses_info']->date = date('Y-m-d H:i:s');
             $data['expenses_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
         }
 
         $data['payments'] = [];
-        foreach($this->expense->get_expense_payment($expense_id)->getResult() as $payment)
-        {
-            foreach(get_object_vars($payment) as $property => $value)
-            {
+        foreach ($this->expense->get_expense_payment($expense_id)->getResult() as $payment) {
+            foreach (get_object_vars($payment) as $property => $value) {
                 $payment->$property = $value;
             }
 
             $data['payments'][] = $payment;
         }
 
-        // don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
+        // Don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
         $data['payment_options'] = $this->expense->get_payment_options();
 
         echo view("expenses/form", $data);
@@ -160,33 +152,27 @@ class Expenses extends Secure_Controller
         $date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);
 
         $expense_data = [
-            'date' => $date_formatter->format('Y-m-d H:i:s'),
-            'supplier_id' => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
-            'supplier_tax_code' => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'amount' => parse_decimals($this->request->getPost('amount')),
-            'tax_amount' => parse_decimals($this->request->getPost('tax_amount')),
-            'payment_type' => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'date'                => $date_formatter->format('Y-m-d H:i:s'),
+            'supplier_id'         => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
+            'supplier_tax_code'   => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'amount'              => parse_decimals($this->request->getPost('amount')),
+            'tax_amount'          => parse_decimals($this->request->getPost('tax_amount')),
+            'payment_type'        => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
-            'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
-            'deleted' => $this->request->getPost('deleted') != null
+            'description'         => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'employee_id'         => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'deleted'             => $this->request->getPost('deleted') != null
         ];
 
-        if($this->expense->save_value($expense_data, $expense_id))
-        {
-            //New Expense
-            if($expense_id == NEW_ENTRY)
-            {
-                echo json_encode (['success' => true, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
+        if ($this->expense->save_value($expense_data, $expense_id)) {
+            // New Expense
+            if ($expense_id == NEW_ENTRY) {
+                echo json_encode(['success' => true, 'message' => lang('Expenses.successful_adding'), 'id' => $expense_data['expense_id']]);
+            } else { // Existing Expense
+                echo json_encode(['success' => true, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
             }
-            else // Existing Expense
-            {
-                echo json_encode (['success' => true, 'message' => lang('Expenses.successful_updating'), 'id' => $expense_id]);
-            }
-        }
-        else//failure
-        {
-            echo json_encode (['success' => false, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
+        } else { // Failure
+            echo json_encode(['success' => false, 'message' => lang('Expenses.error_adding_updating'), 'id' => NEW_ENTRY]);
         }
     }
 
@@ -197,13 +183,10 @@ class Expenses extends Secure_Controller
     {
         $expenses_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if($this->expense->delete_list($expenses_to_delete))
-        {
-            echo json_encode (['success' => true, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Expenses.cannot_be_deleted'), 'ids' => $expenses_to_delete]);
+        if ($this->expense->delete_list($expenses_to_delete)) {
+            echo json_encode(['success' => true, 'message' => lang('Expenses.successful_deleted') . ' ' . count($expenses_to_delete) . ' ' . lang('Expenses.one_or_multiple'), 'ids' => $expenses_to_delete]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Expenses.cannot_be_deleted'), 'ids' => $expenses_to_delete]);
         }
     }
 }

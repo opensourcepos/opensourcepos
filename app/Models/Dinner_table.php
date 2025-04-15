@@ -42,8 +42,7 @@ class Dinner_table extends Model
         $table_data_to_save = ['name' => $table_data['name'], 'deleted' => 0];
 
         $builder = $this->db->table('dinner_tables');
-        if(!$this->exists($dinner_table_id))
-        {
+        if (!$this->exists($dinner_table_id)) {
             return $builder->insert($table_data_to_save);
         }
 
@@ -64,9 +63,8 @@ class Dinner_table extends Model
 
         $empty_tables = $builder->get()->getResultArray();
 
-        $empty_tables_array = [];    //TODO: Variable names should not contain the name of the datatype.
-        foreach($empty_tables as $empty_table)
-        {
+        $empty_tables_array = [];    // TODO: Variable names should not contain the name of the datatype.
+        foreach ($empty_tables as $empty_table) {
             $empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];
         }
 
@@ -79,12 +77,9 @@ class Dinner_table extends Model
      */
     public function get_name(int $dinner_table_id): string
     {
-        if(empty($dinner_table_id))
-        {
+        if (empty($dinner_table_id)) {
             return '';
-        }
-        else    //TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
-        {
+        } else {    // TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
             $builder = $this->db->table('dinner_tables');
             $builder->where('dinner_table_id', $dinner_table_id);
 
@@ -98,16 +93,13 @@ class Dinner_table extends Model
      */
     public function is_occupied(int $dinner_table_id): bool
     {
-        if(empty($dinner_table_id))
-        {
+        if (empty($dinner_table_id)) {
             return false;
-        }
-        else    //TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
-        {
+        } else {    // TODO: No need for this else statement.  Just put it's contents outside of the else since the if has a return in it.
             $builder = $this->db->table('dinner_tables');
             $builder->where('dinner_table_id', $dinner_table_id);
 
-            return ($builder->get()->getRow()->status == 1);    //TODO: === ?
+            return ($builder->get()->getRow()->status == 1);    // TODO: === ?
         }
     }
 
@@ -139,14 +131,11 @@ class Dinner_table extends Model
      */
     public function occupy(int $dinner_table_id): bool
     {
-        if($dinner_table_id > 2 )
-        {
+        if ($dinner_table_id > 2) {
             $builder = $this->db->table('dinner_tables');
             $builder->where('dinner_table_id', $dinner_table_id);
             return $builder->update(['status' => 1]);
-        }
-        else//TODO: THIS ELSE STATEMENT ISN'T NEEDED.  JUST DO THE IF AND THEN RETURN true AFTER IT.
-        {
+        } else {    // TODO: THIS ELSE STATEMENT ISN'T NEEDED.  JUST DO THE IF AND THEN RETURN true AFTER IT.
             return true;
         }
     }
@@ -156,14 +145,11 @@ class Dinner_table extends Model
      */
     public function release(int $dinner_table_id): bool
     {
-        if($dinner_table_id > 2 )
-        {
+        if ($dinner_table_id > 2) {
             $builder = $this->db->table('dinner_tables');
             $builder->where('dinner_table_id', $dinner_table_id);
             return $builder->update(['status' => 0]);
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
