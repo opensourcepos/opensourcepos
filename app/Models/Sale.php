@@ -1231,7 +1231,7 @@ class Sale extends Model
     /**
      * Retrieves all sales that are in a suspended state
      */
-    public function get_all_suspended(int $customer_id = null): array
+    public function get_all_suspended(?int $customer_id = null): array
     {
         if($customer_id == NEW_ENTRY)
         {

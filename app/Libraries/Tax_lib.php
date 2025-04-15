@@ -208,7 +208,7 @@ class Tax_lib
     /**
     * Updates the sales_tax array which is later saved to the `sales_taxes` table and used for printing taxes on receipts and invoices
     */
-    public function update_taxes(array &$taxes, string $tax_type, string $tax_group, string $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', int $tax_code_id = null, int $jurisdiction_id = null, int $tax_category_id = null): void
+    public function update_taxes(array &$taxes, string $tax_type, string $tax_group, string $tax_rate, string $tax_basis, string $item_tax_amount, int $tax_group_sequence, int $rounding_code, int $sale_id, string $name = '', ?int $tax_code_id = null, ?int $jurisdiction_id = null, ?int $tax_category_id = null): void
     {
         $tax_group_index = $this->clean('X' . (float)$tax_rate . '% ' . $tax_group);    //TODO: Not sure we should be casting to a float here.  The clean() function takes a string, so it just gets converted back to a string and there's risk of inaccuracies in the value displayed.
 

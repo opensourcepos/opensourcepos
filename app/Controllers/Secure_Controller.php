@@ -32,7 +32,7 @@ class Secure_Controller extends BaseController
      * @param string|null $submodule_id
      * @param string|null $menu_group
      */
-    public function __construct(string $module_id = '', string $submodule_id = null, string $menu_group = null)
+    public function __construct(string $module_id = '', ?string $submodule_id = null, ?string $menu_group = null)
     {
         $this->employee = model(Employee::class);
         $this->module = model(Module::class);

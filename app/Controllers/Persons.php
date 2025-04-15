@@ -13,7 +13,7 @@ abstract class Persons extends Secure_Controller
     /**
      * @param string|null $module_id
      */
-    public function __construct(string $module_id = null)
+    public function __construct(?string $module_id = null)
     {
         parent::__construct($module_id);
 
