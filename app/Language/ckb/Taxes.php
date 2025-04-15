@@ -39,7 +39,7 @@ return [
     'tax_category_name' => "",
     'tax_category_new' => "",
     'tax_category_required' => "",
-    'tax_code' => "",
+    'tax_code' => "کۆدی باج",
     'tax_code_cannot_be_deleted' => "",
     'tax_code_duplicate' => "",
     'tax_code_invalid_chars' => "",
