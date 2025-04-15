@@ -572,7 +572,7 @@ class Item extends Model
      * @param string|null $seed
      * @return string
      */
-    public function get_search_suggestion_format(string $seed = null): string
+    public function get_search_suggestion_format(?string $seed = null): string
     {
         $config = config(OSPOS::class)->settings;
         $seed .= ',' . $config['suggestions_first_column'];
@@ -1124,7 +1124,7 @@ class Item extends Model
      * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
      *
      */
-    public function change_cost_price(int $item_id, float $items_received, float $new_price, float $old_price = null): bool
+    public function change_cost_price(int $item_id, float $items_received, float $new_price, ?float $old_price = null): bool
     {
         if($old_price === null)
         {
@@ -1188,7 +1188,7 @@ class Item extends Model
      * for a multipack environment then the item name should have the
      * pack appended to it
      */
-    public function get_item_name(string $as_name = null): string
+    public function get_item_name(?string $as_name = null): string
     {
         $config = config(OSPOS::class)->settings;
 

@@ -435,7 +435,7 @@ function to_quantity_decimals(?string $number): string
  * @param int $type
  * @return string
  */
-function to_decimals(?string $number, string $decimals = null, int $type = NumberFormatter::DECIMAL): string
+function to_decimals(?string $number, ?string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
     if(!isset($number))
     {
@@ -479,7 +479,7 @@ function parse_tax(string $number): mixed
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, int $decimals = null): mixed
+function parse_decimals(string $number, ?int $decimals = null): mixed
 {
     if(empty($number))
     {

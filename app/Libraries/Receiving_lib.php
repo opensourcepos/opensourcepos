@@ -274,7 +274,7 @@ class Receiving_lib
      * @param bool $include_deleted
      * @return bool
      */
-    public function add_item(int $item_id, int $quantity = 1, int $item_location = null, float $discount = 0, int $discount_type = 0, float $price = null, string $description = null, string $serialnumber = null, float $receiving_quantity = null, int $receiving_id = null, bool $include_deleted = false): bool
+    public function add_item(int $item_id, int $quantity = 1, ?int $item_location = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialnumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $include_deleted = false): bool
     {
         $config = config(OSPOS::class)->settings;
 

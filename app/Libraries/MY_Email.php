@@ -28,7 +28,7 @@ class MY_Email extends Email
      * @param string|null $attachment
      * @return bool
      */
-    public function sendMail(string $subject, string $body, string $to = null, string $reply_name = null, string $reply_mail = null, string $attachment = null): bool
+    public function sendMail(string $subject, string $body, ?string $to = null, ?string $reply_name = null, ?string $reply_mail = null, ?string $attachment = null): bool
     {
         $this->setReplyTo($reply_mail, $reply_name);
         $this->setFrom($this->default_sender_address, $this->default_sender_name, $this->default_bounce_address);
