@@ -46,7 +46,7 @@ return [
     'number_required' => "",
     'one_or_multiple' => "",
     'person_id' => "",
-    'quantity' => "",
+    'quantity' => "بڕ",
     'quantity_required' => "",
     'remaining_balance' => "",
     'reorder_level' => "",
