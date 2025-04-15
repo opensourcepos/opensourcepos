@@ -118,7 +118,7 @@ return [
     'subtotal' => "",
     'summary_reports' => "",
     'supplied_by' => "",
-    'supplier' => "",
+    'supplier' => "دابینکار",
     'suppliers' => "",
     'suppliers_summary_report' => "",
     'tax' => "",
