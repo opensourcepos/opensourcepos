@@ -2,6 +2,8 @@
 node_modules
 vendor
 public/resources
+public/images/menubar/*
+!public/images/menubar/.gitkeep
 app/Config/email.php
 npm-debug.log*
 

@@ -49,6 +49,7 @@
         "chartist-plugin-tooltips": "^0.0.17",
         "clipboard": "^2.0.11",
         "coffeescript": "^2.7.0",
+        "elegant-circles": "github:BudsieBuds/elegant-circles#minified",
         "es6-promise": "^4.2.8",
         "file-saver": "^2.0.5",
         "html2canvas": "^1.4.1",
