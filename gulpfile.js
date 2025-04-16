@@ -76,6 +76,12 @@ gulp.task('copy-bootswatch5', function() {
     return pipeline(gulp.src('./node_modules/bootswatch5/dist/yeti/*.min.css'),gulp.dest('public/resources/bootswatch5/yeti'));
 });
 
+// Copy the bootstrap style into its own folder so OSPOS can select it from the collection
+gulp.task('copy-bootstrap', function() {
+    pipeline(gulp.src('./node_modules/bootstrap/dist/css/bootstrap.min.css*'),gulp.dest('public/resources/bootswatch/bootstrap'));
+    return pipeline(gulp.src('./node_modules/bootstrap5/dist/css/bootstrap.min.css*', {encoding:false}),gulp.dest('public/resources/bootswatch5/bootstrap'));
+});
+
 // /public/resources/ospos - contains the minimized files to be packed into opensourcepos.min.[css/js]
 // /public/resources/[css/js] - contains the unpacked versions to be used in development mode
 // /public/resources - contains the packed opensourcepos.min.[css/js] and the jquery.min.js
@@ -268,6 +274,7 @@ gulp.task('default',
     gulp.series('clean',
         'copy-bootswatch',
         'copy-bootswatch5',
+        'copy-bootstrap',
         'debug-js',
         'prod-js',
         'debug-css',
