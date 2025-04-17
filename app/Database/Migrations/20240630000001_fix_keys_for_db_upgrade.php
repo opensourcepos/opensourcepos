@@ -14,7 +14,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
     {
         $this->db->query("ALTER TABLE `ospos_tax_codes` MODIFY `deleted` tinyint(1) DEFAULT 0 NOT NULL;");
 
-        if (!$this->index_exists('ospos_customers', 'company_name')) {
+        if (!$this->indexExists('ospos_customers', 'company_name')) {
             $this->db->query("ALTER TABLE `ospos_customers` ADD INDEX(`company_name`)");
         }
 
@@ -30,9 +30,9 @@ class Migration_fix_keys_for_db_upgrade extends Migration
             . ' REFERENCES ' . $this->db->prefixTable('sales_items') . ' (sale_id, item_id, line)');
 
 
-        $this->create_primary_key('customers', 'person_id');
-        $this->create_primary_key('employees', 'person_id');
-        $this->create_primary_key('suppliers', 'person_id');
+        $this->createPrimaryKey('customers', 'person_id');
+        $this->createPrimaryKey('employees', 'person_id');
+        $this->createPrimaryKey('suppliers', 'person_id');
     }
 
     /**
@@ -52,30 +52,91 @@ class Migration_fix_keys_for_db_upgrade extends Migration
             . ' REFERENCES ' . $this->db->prefixTable('sales_items') . ' (sale_id)');
     }
 
-    private function create_primary_key(string $table, string $index): void
+    private function createPrimaryKey(string $table, string $index): void
     {
         $result = $this->db->query('SELECT 1 FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name= \'' . $this->db->getPrefix() . "$table' AND column_key = '$index'");
 
         if (! $result->getRowArray()) {
-            $this->delete_index($table, $index);
+            $constraints = $this->deleteForeignKeyConstraints($table, $index);
+            $this->deleteIndex($table, $index);
             $forge = Database::forge();
-            $forge->addPrimaryKey($table, '');
+            $forge->addPrimaryKey($index,'PRIMARY');
+            $forge->processIndexes($table);
+            $this->recreateForeignKeyConstraints($constraints);
         }
     }
 
-    private function index_exists(string $table, string $index): bool
+    private function deleteForeignKeyConstraints(string $table, string $column): array
+    {
+        $result = $this->db->query("
+            SELECT DISTINCT
+                kcu.CONSTRAINT_NAME,
+                kcu.TABLE_NAME,
+                kcu.COLUMN_NAME,
+                kcu.REFERENCED_TABLE_NAME,
+                kcu.REFERENCED_COLUMN_NAME,
+                rc.DELETE_RULE,
+                rc.UPDATE_RULE
+            FROM information_schema.KEY_COLUMN_USAGE kcu
+            LEFT JOIN information_schema.REFERENTIAL_CONSTRAINTS rc
+                ON kcu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+                AND kcu.TABLE_NAME = rc.TABLE_NAME
+            WHERE kcu.TABLE_SCHEMA = DATABASE()
+                AND ((kcu.REFERENCED_TABLE_NAME = '" . $this->db->getPrefix() . "$table' AND kcu.REFERENCED_COLUMN_NAME = '$column')
+                OR (kcu.TABLE_NAME = '" . $this->db->getPrefix() . "$table' AND kcu.COLUMN_NAME = '$column'))
+        ");
+
+        $deletedConstraints = [];
+
+        foreach ($result->getResultArray() as $constraint) {
+            $deletedConstraints[] = [
+                'constraintName' => $constraint['CONSTRAINT_NAME'],
+                'tableName' => str_starts_with($constraint['TABLE_NAME'], $this->db->DBPrefix)
+                    ? substr($constraint['TABLE_NAME'], strlen($this->db->DBPrefix))
+                    : $constraint['TABLE_NAME'],
+                'columnName' => $constraint['COLUMN_NAME'],
+                'referencedTable' => str_starts_with($constraint['REFERENCED_TABLE_NAME'], $this->db->DBPrefix)
+                    ? substr($constraint['REFERENCED_TABLE_NAME'], strlen($this->db->DBPrefix))
+                    : $constraint['REFERENCED_TABLE_NAME'],
+                'referencedColumn' => $constraint['REFERENCED_COLUMN_NAME'],
+                'onDelete' => $constraint['DELETE_RULE'],
+                'onUpdate' => $constraint['UPDATE_RULE'],
+            ];
+        }
+
+        if ($deletedConstraints) {
+            $forge = Database::forge();
+            foreach ($deletedConstraints as $foreignKey) {
+                $forge->dropForeignKey($foreignKey['tableName'], $foreignKey['constraintName']);
+            }
+        }
+
+        return $deletedConstraints;
+    }
+
+    private function deleteIndex(string $table, string $index): void
+    {
+        if ($this->indexExists($table, $index)) {
+            $forge = Database::forge();
+            $forge->dropKey($table, $index, FALSE);
+        }
+    }
+
+    private function indexExists(string $table, string $index): bool
     {
         $result = $this->db->query('SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = \'' . $this->db->getPrefix() . "$table' AND index_name = '$index'");
         $row_array = $result->getRowArray();
         return $row_array && $row_array['COUNT(*)'] > 0;
     }
 
-    private function delete_index(string $table, string $index): void
+    private function recreateForeignKeyConstraints(array $constraints): void
     {
-
-        if ($this->index_exists($table, $index)) {
+        if ($constraints) {
             $forge = Database::forge();
-            $forge->dropKey($table, $index, FALSE);
+            foreach ($constraints as $constraint) {
+                $forge->addForeignKey($constraint['columnName'], $constraint['referencedTable'], $constraint['referencedColumn'], $constraint['onUpdate'], $constraint['onDelete'], $constraint['constraintName']);
+                $forge->processIndexes($constraint['tableName']);
+            }
         }
     }
 }
