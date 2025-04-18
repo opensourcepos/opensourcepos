@@ -84,8 +84,7 @@ $request = Services::request();
                         <?php foreach($allowed_modules as $module): ?>
                             <li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
                                 <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
-
-                                    <img src="<?= base_url("images/menubar/$module->module_id.png") ?>" style="border: none;" alt="Module Icon"/><br/>
+                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="Module Icon"/><br/>
                                     <?= lang('Module.' . $module->module_id) ?>
                                 </a>
                             </li>
