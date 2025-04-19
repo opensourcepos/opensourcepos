@@ -17,7 +17,8 @@
                         <?= form_textarea ([
                             'name' => 'license',
                             'id' => 'license_' . $counter++,    //TODO: String Interpolation
-                            'class' => 'form-control',
+                            'class' => 'form-control font-monospace',
+                            'rows' => '14',
                             'readonly' => '',
                             'value' => $license['text']
                         ]) ?>

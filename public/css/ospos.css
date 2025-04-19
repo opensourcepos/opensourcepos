@@ -197,3 +197,8 @@ label.required
     padding-right:0;
     padding-left: 0;
 }
+
+/* Recreate font-monospace class from Bootstrap 5 */
+.font-monospace {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}

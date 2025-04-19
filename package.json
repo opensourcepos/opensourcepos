@@ -78,6 +78,7 @@
         "gulp-tar": "^4.0.0",
         "gulp-uglify": "^3.0.2",
         "gulp-zip": "^6.1.0",
+        "license-report": "^6.7.2",
         "npm-check-updates": "^17.1.14",
         "readable-stream": "^4.4.2",
         "stream-series": "^0.1.1"
