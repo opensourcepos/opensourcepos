@@ -52,7 +52,7 @@ class Home extends Secure_Controller
     /**
      * Change employee password
      */
-    public function save(int $employee_id = -1): void    //TODO: Replace -1 with a constant
+    public function postSave(int $employee_id = -1): void    //TODO: Replace -1 with a constant
     {
         if(!empty($this->request->getPost('current_password')) && $employee_id != -1)
         {
