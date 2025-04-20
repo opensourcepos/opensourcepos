@@ -27,9 +27,7 @@
         : $config['theme']);
     ?>
     <link rel="stylesheet" type="text/css" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
-    <!-- inject:login:css -->
-    <link rel="stylesheet" href="css/login.min.css">
-    <!-- endinject -->
+    <link rel="stylesheet" href="css/login.css">
     <meta name="theme-color" content="#2c3e50">
 </head>
 
