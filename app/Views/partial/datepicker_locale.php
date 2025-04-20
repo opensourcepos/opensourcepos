@@ -5,7 +5,7 @@ $config = config(OSPOS::class)->settings; ?>
 
 var pickerconfig = function(config) {
     return $.extend({
-        format: "<?= dateformat_bootstrap($config['dateformat']) ?>",
+        format: "<?= dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat'])?>",
         <?php
         $t = $config['timeformat'];
         $m = $t[strlen($t)-1];
