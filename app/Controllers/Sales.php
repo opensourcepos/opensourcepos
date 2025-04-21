@@ -989,7 +989,7 @@ class Sales extends Secure_Controller
 
             $text = $this->config['invoice_email_message'];
             $tokens = [
-                new Token_invoice_sequence($sale_data['invoice_number']),
+                new Token_invoice_sequence($number),
                 new Token_invoice_count('POS ' . $sale_data['sale_id']),
                 new Token_customer((array)$sale_data)
             ];
