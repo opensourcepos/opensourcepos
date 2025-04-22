@@ -1668,7 +1668,7 @@ class Reports extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function get_detailed_sales_row(string $sale_id): void
+    public function getGet_detailed_sales_row(string $sale_id): void
     {
         $this->clearCache();
 
@@ -1948,7 +1948,7 @@ class Reports extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function get_detailed_receivings_row(string $receiving_id): void
+    public function getGet_detailed_receivings_row(string $receiving_id): void
     {
         $inputs = ['receiving_id' => $receiving_id];
 
