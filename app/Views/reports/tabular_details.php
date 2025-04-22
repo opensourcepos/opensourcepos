@@ -49,7 +49,7 @@
             if(isset($editable))
             {
             ?>
-                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row'), 'url') ?>');
+                table_support.submit_handler('<?= esc(site_url("reports/get_detailed_$editable" . '_row')) ?>');
                 dialog_support.init("a.modal-dlg");
             <?php
             }

@@ -512,7 +512,7 @@ class Receivings extends Secure_Controller
     /**
      * @throws ReflectionException
      */
-    public function save(int $receiving_id = -1): void    //TODO: Replace -1 with a constant
+    public function postSave(int $receiving_id = -1): void    //TODO: Replace -1 with a constant
     {
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);    //TODO: newdate does not follow naming conventions
 
