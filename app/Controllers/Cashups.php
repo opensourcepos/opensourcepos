@@ -286,7 +286,7 @@ class Cashups extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function ajax_cashup_total(): void
+    public function postAjax_cashup_total(): void
     {
         $open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
         $transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));
