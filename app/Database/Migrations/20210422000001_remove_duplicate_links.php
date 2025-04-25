@@ -35,6 +35,7 @@ class Migration_remove_duplicate_links extends Migration
         $builder->select('item_id, definition_id, attribute_id, COUNT(*) as count');
         $builder->where('sale_id', null);
         $builder->where('receiving_id', null);
+        $builder->where('item_id IS NOT NULL');
         $builder->groupBy('item_id');
         $builder->groupBy('definition_id');
         $builder->groupBy('attribute_id');
