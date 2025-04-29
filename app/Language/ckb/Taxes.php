@@ -27,7 +27,7 @@ return [
     'sales_tax_by_invoice' => "",
     'sequence' => "",
     'state' => "",
-    'successful_deleted' => "بە سەرکەوتووی سڕیتەوە",
+    'successful_deleted' => "بەسەرکەوتووی سڕیتەوە",
     'tax_categories' => "",
     'tax_categories_configuration' => "",
     'tax_categories_saved_successfully' => "",
