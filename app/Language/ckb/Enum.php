@@ -1,10 +1,11 @@
 <?php
+
 return [
-    "half_down" => "",
-    "half_even" => "",
-    "half_five" => "",
-    "half_odd" => "",
-    "half_up" => "",
-    "round_down" => "",
-    "round_up" => "",
+    'half_down' => "نیوە خوارەوە",
+    'half_even' => "نیوە یەکسان",
+    'half_five' => "نیوەی پێنج",
+    'half_odd' => "نیوە تاک",
+    'half_up' => "نیوە سەرەوە",
+    'round_down' => "کەمکردنەوە بۆ ژمارەی تەواو",
+    'round_up' => "زیادکردن بۆ ژمارەی تەواو",
 ];
