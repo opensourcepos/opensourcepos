@@ -35,7 +35,7 @@ return [
     'quantity' => "بڕ",
     'sequence' => "",
     'successful_adding' => "",
-    'successful_deleted' => "بە سەرکەوتووی سڕیتەوە",
+    'successful_deleted' => "بەسەرکەوتووی سڕیتەوە",
     'successful_updating' => "",
     'unit_price' => "",
     'update' => "",
