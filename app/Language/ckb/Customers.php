@@ -46,7 +46,7 @@ return [
     'quantity' => "بڕ",
     'stats_info' => "ئامار",
     'successful_adding' => "بە سەرکەوتوویی کڕیارت زیاد کرد",
-    'successful_deleted' => "بە سەرکەوتووی سڕیتەوە",
+    'successful_deleted' => "بەسەرکەوتووی سڕیتەوە",
     'successful_updating' => "بە سەرکەوتوویی کڕیارت نوێ کردەوە",
     'tax_code' => "کۆدی باج",
     'tax_id' => "ناسنامەی باج",
