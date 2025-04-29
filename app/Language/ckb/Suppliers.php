@@ -16,7 +16,7 @@ return [
     'none_selected' => "هیچ دابینکارێکت دیاری نەکردووە بۆ سڕینەوە.",
     'one_or_multiple' => "دابینکار",
     'successful_adding' => "بە سەرکەوتویی دابینکارێکت زیاد کرد",
-    'successful_deleted' => "بە سەرکەوتووی سڕیتەوە",
+    'successful_deleted' => "بەسەرکەوتووی سڕیتەوە",
     'successful_updating' => "بە سەرکەوتووی دابینکارەکەت نوێ کردەوە",
     'supplier' => "دابینکار",
     'supplier_id' => "ناسنامە",
