@@ -128,7 +128,7 @@ return [
     'tax_rate' => "",
     'taxes' => "",
     'taxes_summary_report' => "",
-    'total' => "",
+    'total' => "گشتی",
     'total_inventory_value' => "",
     'total_low_sell_quantity' => "",
     'total_quantity' => "",
