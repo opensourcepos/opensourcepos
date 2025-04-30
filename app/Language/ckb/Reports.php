@@ -28,7 +28,7 @@ return [
     'customers_summary_report' => "",
     'date' => "ڕێکەوت",
     'date_range' => "",
-    'description' => "",
+    'description' => "دەربارە",
     'detailed_receivings_report' => "",
     'detailed_receivings_report_input' => "",
     'detailed_reports' => "",
