@@ -51,7 +51,7 @@ return [
     'supplier_address' => "",
     'supplier_email' => "",
     'supplier_location' => "",
-    'total' => "",
+    'total' => "گشتی",
     'transaction_failed' => "",
     'unable_to_add_item' => "",
     'unsuccessfully_updated' => "",
