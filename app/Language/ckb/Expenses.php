@@ -2,8 +2,8 @@
 
 return [
     'add_item' => "",
-    'amount' => "",
-    'amount_number' => "",
+    'amount' => "بڕ",
+    'amount_number' => "بڕ دەبێت ژمارەیەک بێت",
     'amount_required' => "",
     'by_category' => "",
     'cannot_be_deleted' => "",
@@ -22,7 +22,7 @@ return [
     'date_required' => "",
     'debit' => "",
     'debit_filter' => "",
-    'description' => "",
+    'description' => "دەربارە",
     'due' => "",
     'due_filter' => "",
     'employee' => "",
@@ -31,7 +31,7 @@ return [
     'expenses_employee' => "",
     'info' => "",
     'ip_address' => "",
-    'is_deleted' => "",
+    'is_deleted' => "سڕاوەتەوە",
     'name_required' => "",
     'new' => "",
     'new_supplier' => "",
