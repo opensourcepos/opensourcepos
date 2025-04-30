@@ -204,7 +204,7 @@ return [
     'tax_invoice' => "",
     'tax_percent' => "",
     'taxed_ind' => "",
-    'total' => "",
+    'total' => "گشتی",
     'total_tax_exclusive' => "",
     'transaction_failed' => "",
     'unable_to_add_item' => "",
