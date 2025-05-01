@@ -13,7 +13,7 @@ return [
     'closed_amount_card' => "کارتەکان",
     'closed_amount_cash' => "کاشی داخراو",
     'closed_amount_check' => "چەکی پارەکان",
-    'closed_amount_due' => "قەرزەکان",
+    'closed_amount_due' => "ئەو پارانەی دەبێت بدرێن.",
     'closed_amount_giftcard' => "",
     'closed_amount_total' => "گشتی",
     'closed_date' => "بەرواری داخستن",
