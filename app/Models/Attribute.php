@@ -41,6 +41,38 @@ class Attribute extends Model
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
 
+    // ==============
+    // Create Methods
+    // ==============
+
+    // ==============
+    // Read Methods
+    // ==============
+
+    // ==============
+    // Update Methods
+    // ==============
+
+    // ==============
+    // Delete Methods
+    // ==============
+
+    public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
+    {
+        $attribute_id = $this->getAttributeIdByValue($attribute_value);
+        $this->deleteAttributeLinksByDefinitionIdAndAttributeId($definition_id, $attribute_id);
+
+        //Delete attribute value if not linked other attributes
+        $subQuery = $this->db->table('attribute_links');
+        $subQuery->select('attribute_id');
+
+        $builder = $this->db->table('attribute_values');
+        $builder->where('attribute_value', $attribute_value);
+        $builder->whereNotIn('attribute_id', $subQuery);
+
+        return $builder->delete();
+    }
+
     /**
      * @return array
      */
@@ -60,7 +92,7 @@ class Attribute extends Model
         $builder->where('definition_id', $definition_id);
         $builder->where('deleted', $deleted);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return ($builder->get()->getNumRows() === 1);
     }
 
     /**
@@ -843,21 +875,6 @@ class Attribute extends Model
     }
 
     /**
-     * @param string $attribute_value
-     * @param int $definition_id
-     * @return bool
-     */
-    public function delete_value(string $attribute_value, int $definition_id): bool
-    {
-        // QueryBuilder does not support multi-table delete.
-        $query = 'DELETE atrv, atrl ';
-        $query .= 'FROM ' . $this->db->prefixTable('attribute_values') . ' atrv, ' . $this->db->prefixTable('attribute_links') .  ' atrl ';
-        $query .= 'WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = ' . $this->db->escape($attribute_value);
-        $query .= ' AND atrl.definition_id = ' . $this->db->escape($definition_id);
-        return $this->db->query($query);
-    }
-
-    /**
      * Deletes an Attribute definition from the database and associated column in the items_import.csv
      *
      * @param    int        $definition_id    Attribute definition ID to remove.
@@ -1007,5 +1024,39 @@ class Attribute extends Model
         $builder->where('definition_id', $definition_id);
 
         return $builder->get()->getResultArray();
+    }
+
+// ==============
+// Helper Methods
+// ==============
+
+    /**
+     * @param string $attribute_value
+     * @return int
+     */
+    private function getAttributeIdByValue(string $attribute_value): int
+    {
+        $builder = $this->db->table('attribute_values');
+        $builder->select('attribute_id');
+        $builder->where('attribute_value', $attribute_value);
+        return $builder->get()->getRow('attribute_id');
+    }
+
+    /**
+     * Deletes Attribute Links associated with a specific definition ID and attribute ID.
+     * Does not delete rows where sale_id or receiving_id has a value to retain records.
+     *
+     * @param int $definitionId
+     * @param int $attributeId
+     * @return \CodeIgniter\Database\BaseBuilder
+     */
+    private function deleteAttributeLinksByDefinitionIdAndAttributeId(int $definitionId, int $attributeId): void
+    {
+        $builder = $this->db->table('attribute_links');
+        $builder->where('sale_id', null);
+        $builder->where('receiving_id', null);
+        $builder->where('definition_id', $definitionId);
+        $builder->where('attribute_id', $attributeId);
+        $builder->delete();
     }
 }

@@ -78,9 +78,9 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postDelete_attribute_value(): void
+    public function postDeleteDropdownAttributeValue(): void
     {
-        $success = $this->attribute->delete_value(
+        $success = $this->attribute->deleteDropdownAttributeValue(
             html_entity_decode($this->request->getPost('attribute_value')),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
@@ -213,18 +213,6 @@ class Attributes extends Secure_Controller
         $data['selected_definition_flags'] = $this->get_attributes($selected_flags);
 
         echo view('attributes/form', $data);
-    }
-
-    /**
-     * AJAX called function to delete an attribute value. This is called when a dropdown item is removed.
-     *
-     * @param string $attribute_value
-     * @return bool
-     * @noinspection PhpUnused
-     */
-    public function delete_value(string $attribute_value): bool
-    {
-        return $this->attribute->delete_value($attribute_value, NO_DEFINITION_ID);
     }
 
     /**

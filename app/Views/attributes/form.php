@@ -160,7 +160,7 @@
             if (is_new) {
                 values.splice($.inArray(value, values), 1);
             } else {
-                $.post('<?= esc("$controller_name/delete_attribute_value/") ?>', {
+                $.post('<?= esc("$controller_name/DeleteDropdownAttributeValue/") ?>', {
                     definition_id: definition_id,
                     attribute_value: value
                 });
