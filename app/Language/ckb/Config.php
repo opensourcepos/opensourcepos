@@ -305,7 +305,7 @@ return [
     'system_info' => "زانیاری سیستەم",
     'table' => "مێز",
     'table_configuration' => "ڕێکخستنی جەدۆل",
-    'takings_printer' => "",
+    'takings_printer' => "چاپکەری پسوڵە",
     'tax' => "باج",
     'tax_category' => "پۆلێنی باج",
     'tax_category_duplicate' => "",
