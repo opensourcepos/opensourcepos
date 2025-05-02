@@ -10,7 +10,7 @@ return [
     "cashups_desc"               => "",
     "config"                     => "",
     "config_desc"                => "",
-    "customers"                  => "",
+    "customers"                  => "کڕیاران",
     "customers_desc"             => "",
     "employees"                  => "",
     "employees_desc"             => "",

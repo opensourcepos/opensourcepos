@@ -2,14 +2,14 @@
 
 return [
     'add_item' => "",
-    'all' => "",
+    'all' => "هەموو",
     'cannot_be_deleted' => "",
     'confirm_delete' => "",
     'confirm_restore' => "",
     'description' => "",
     'discount' => "داشکاندن",
     'discount_fixed' => "داشکاندنی جێگیر",
-    'discount_percent' => "",
+    'discount_percent' => "لەسەدا داشکاندن",
     'discount_type' => "جۆری داشکاندن",
     'error_adding_updating' => "",
     'find_kit_item' => "",

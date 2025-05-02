@@ -16,7 +16,7 @@ return [
     'confirm_bulk_edit' => "",
     'confirm_delete' => "",
     'confirm_restore' => "",
-    'cost_price' => "",
+    'cost_price' => "نرخی جوملە",
     'count' => "",
     'csv_import_failed' => "",
     'current_quantity' => "",
