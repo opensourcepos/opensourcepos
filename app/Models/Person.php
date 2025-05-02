@@ -42,7 +42,7 @@ class Person extends Model
         $builder = $this->db->table('people');
         $builder->where('people.person_id', $person_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -86,12 +86,9 @@ class Person extends Model
         $builder = $this->db->table('people');
         $query = $builder->getWhere(['person_id' => $person_id], 1);
 
-        if($query->getNumRows() == 1)
-        {
+        if ($query->getNumRows() == 1) {
             return $query->getRow();
-        }
-        else
-        {
+        } else {
             return $this->getEmptyObject('people');
         }
     }
@@ -108,16 +105,12 @@ class Person extends Model
         $empty_obj = new stdClass();
 
         // Iterate through field definitions to determine how the fields should be initialized
-        foreach($this->db->getFieldData($table_name) as $field)
-        {
+        foreach ($this->db->getFieldData($table_name) as $field) {
             $field_name = $field->name;
 
-            if(in_array($field->type, ['int', 'tinyint', 'decimal']))
-            {
+            if (in_array($field->type, ['int', 'tinyint', 'decimal'])) {
                 $empty_obj->$field_name = ($field->primary_key == 1) ? NEW_ENTRY : 0;
-            }
-            else
-            {
+            } else {
                 $empty_obj->$field_name = null;
             }
         }
@@ -151,10 +144,8 @@ class Person extends Model
     {
         $builder = $this->db->table('people');
 
-        if($person_id == NEW_ENTRY || !$this->exists($person_id))
-        {
-            if($builder->insert($person_data))
-            {
+        if ($person_id == NEW_ENTRY || !$this->exists($person_id)) {
+            if ($builder->insert($person_data)) {
                 $person_data['person_id'] = $this->db->insertID();
 
                 return true;
@@ -181,27 +172,25 @@ class Person extends Model
 
         $builder = $this->db->table('people');
 
-//TODO: If this won't be added back into the code later, we should delete this commented section of code
-//        $builder->select('person_id');
-//        $builder->where('deleted', 0);
-//        $builder->where('person_id', $search);
-//        $builder->groupStart();
-//            $builder->like('first_name', $search);
-//            $builder->orLike('last_name', $search);
-//            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
-//            $builder->orLike('email', $search);
-//            $builder->orLike('phone_number', $search);
-//            $builder->groupEnd();
-//        $builder->orderBy('last_name', 'asc');
+        // TODO: If this won't be added back into the code later, we should delete this commented section of code
+        // $builder->select('person_id');
+        // $builder->where('deleted', 0);
+        // $builder->where('person_id', $search);
+        // $builder->groupStart();
+        // $builder->like('first_name', $search);
+        // $builder->orLike('last_name', $search);
+        // $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+        // $builder->orLike('email', $search);
+        // $builder->orLike('phone_number', $search);
+        // $builder->groupEnd();
+        // $builder->orderBy('last_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['label' => $row->person_id];
         }
 
-        //only return $limit suggestions
-        if(count($suggestions) > $limit)
-        {
+        // Only return $limit suggestions
+        if (count($suggestions) > $limit) {
             $suggestions = array_slice($suggestions, 0, $limit);
         }
 
@@ -228,5 +217,5 @@ class Person extends Model
     public function delete_list(array $person_ids): bool
     {
         return true;
-     }
+    }
 }

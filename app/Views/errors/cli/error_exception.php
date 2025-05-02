@@ -3,6 +3,7 @@
  * @var object $exception
  * @var string $message
  */
+
 use CodeIgniter\CLI\CLI;
 
 // The main Exception
@@ -56,7 +57,7 @@ if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE) {
         $args = implode(', ', array_map(static fn ($value): string => match (true) {
             is_object($value) => 'Object(' . $value::class . ')',
             is_array($value)  => $value !== [] ? '[...]' : '[]',
-            $value === null   => 'null', // return the lowercased version
+            $value === null   => 'null', // Return the lowercased version
             default           => var_export($value, true),
         }, array_values($error['args'] ?? [])));
 

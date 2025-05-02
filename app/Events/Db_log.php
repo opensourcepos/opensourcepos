@@ -16,14 +16,12 @@ class Db_log
     {
         $this->config = config('App');
 
-        if($this->config->db_log_enabled)
-        {
+        if ($this->config->db_log_enabled) {
             $filepath = WRITEPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
             $handle = fopen($filepath, "a+");
             $message = $this->generate_message();
 
-            if(strlen($message) > 0)
-            {
+            if (strlen($message) > 0) {
                 fwrite($handle, $message . "\n\n");
             }
 
@@ -48,8 +46,7 @@ class Db_log
             . "\n Execution Time: " . $execution_time['time'] . ' ' . $execution_time['unit'];
 
         $long_query = ($execution_time['unit'] === 's') && ($execution_time['time'] > 0.5);
-        if($long_query)
-        {
+        if ($long_query) {
             $message .= ' [LONG RUNNING QUERY]';
         }
 
@@ -64,13 +61,10 @@ class Db_log
     {
         $unit = 's';
 
-        if($time <= 0.1 && $time > 0.0001)
-        {
+        if ($time <= 0.1 && $time > 0.0001) {
             $time = $time * 1000;
             $unit = 'ms';
-        }
-        elseif($time <= 0.0001)
-        {
+        } elseif ($time <= 0.0001) {
             $time = $time * 1000000;
             $unit = 'µs';
         }

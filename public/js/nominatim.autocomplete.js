@@ -11,7 +11,7 @@
         return function(event, ui) {
             var results = ui.item.results;
             if (results != null && results.length > 0) {
-                // handle auto completion
+                // Handle auto completion
                 for(var i in fields) {
                     $("#" + fields[i]).val(results[i]);
                 }

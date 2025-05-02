@@ -16,7 +16,6 @@ class Token_quote_sequence extends Token
     {
         parent::__construct();
         $this->appconfig = model(AppConfig::class);
-
     }
 
     /**

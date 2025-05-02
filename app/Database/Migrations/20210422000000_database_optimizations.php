@@ -25,7 +25,7 @@ class Migration_database_optimizations extends Migration
         $this->migrate_duplicate_attribute_values(DECIMAL);
         $this->migrate_duplicate_attribute_values(DATE);
 
-        //Select all attributes that have data in more than one column
+        // Select all attributes that have data in more than one column
         $builder = $this->db->table('attribute_values');
         $builder->select('attribute_id, attribute_value, attribute_decimal, attribute_date');
         $builder->groupStart();
@@ -40,9 +40,8 @@ class Migration_database_optimizations extends Migration
 
         $this->db->transStart();
 
-        //Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
-        foreach($attribute_values->getResultArray() as $attribute_value)
-        {
+        // Clean up Attribute values table where there is an attribute value and an attribute_date/attribute_decimal
+        foreach ($attribute_values->getResultArray() as $attribute_value) {
             $builder = $this->db->table('attribute_values');
             $builder->delete(['attribute_id' => $attribute_value['attribute_id']]);
 
@@ -52,19 +51,16 @@ class Migration_database_optimizations extends Migration
             $builder->where('attribute_id', $attribute_value['attribute_id']);
             $attribute_links = $builder->get();
 
-            if($attribute_links)
-            {
+            if ($attribute_links) {
                 $builder = $this->db->table('attribute_links');
                 $attribute_links = $attribute_links->getResultArray() ?: [];
 
-                foreach($attribute_links->getResultArray() as $attribute_link)
-                {
+                foreach ($attribute_links->getResultArray() as $attribute_link) {
                     $builder->where('attribute_id', $attribute_link['attribute_id']);
                     $builder->where('item_id', $attribute_link['item_id']);
                     $builder->delete();
 
-                    switch($attribute_link['definition_type'])
-                    {
+                    switch ($attribute_link['definition_type']) {
                         case DECIMAL:
                             $value = $attribute_value['attribute_decimal'];
                             break;
@@ -94,7 +90,7 @@ class Migration_database_optimizations extends Migration
      */
     private function migrate_duplicate_attribute_values($attribute_type): void
     {
-        //Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
+        // Remove duplicate attribute values needed to make attribute_decimals and attribute_dates unique
         $this->db->transStart();
 
         $column = 'attribute_' . strtolower($attribute_type);
@@ -105,8 +101,7 @@ class Migration_database_optimizations extends Migration
         $builder->having("COUNT($column) > 1");
         $duplicated_values = $builder->get();
 
-        foreach($duplicated_values->getResultArray() as $duplicated_value)
-        {
+        foreach ($duplicated_values->getResultArray() as $duplicated_value) {
             $subquery_builder = $this->db->table('attribute_values');
             $subquery_builder->select('attribute_id');
             $subquery_builder->where($column, $duplicated_value[$column]);
@@ -135,16 +130,14 @@ class Migration_database_optimizations extends Migration
         $attribute_ids = $attribute_ids_to_fix->getResultArray();
         $retain_attribute_id = $attribute_ids[0]['attribute_id'];
 
-        foreach($attribute_ids as $attribute_id)
-        {
-            //Update attribute_link with the attribute_id we are keeping
+        foreach ($attribute_ids as $attribute_id) {
+            // Update attribute_link with the attribute_id we are keeping
             $builder = $this->db->table('attribute_links');
             $builder->where('attribute_id', $attribute_id['attribute_id']);
             $builder->update(['attribute_id' => $retain_attribute_id]);
 
-            //Delete the row from attribute_values if it isn't our keeper
-            if($attribute_id['attribute_id'] !== $retain_attribute_id)
-            {
+            // Delete the row from attribute_values if it isn't our keeper
+            if ($attribute_id['attribute_id'] !== $retain_attribute_id) {
                 $builder = $this->db->table('attribute_values');
                 $builder->delete(['attribute_id' => $attribute_id['attribute_id']]);
             }
@@ -154,7 +147,5 @@ class Migration_database_optimizations extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 }

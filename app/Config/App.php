@@ -40,7 +40,7 @@ class App extends BaseConfig
      *
      * @var bool
      */
-    public bool $https_on;    //Set in the constructor
+    public bool $https_on;    // Set in the constructor
 
     /**
      * --------------------------------------------------------------------------
@@ -52,7 +52,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL;    //Defined in the constructor
+    public string $baseURL;    // Defined in the constructor
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -278,7 +278,7 @@ class App extends BaseConfig
      * @see http://www.html5rocks.com/en/tutorials/security/content-security-policy/
      * @see http://www.w3.org/TR/CSP/
      */
-    public bool $CSPEnabled = false;    //TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
+    public bool $CSPEnabled = false;    // TODO: Currently CSP3 tags are not supported so enabling this causes problems with script-src-elem, style-src-attr and style-src-elem
 
     public function __construct()
     {

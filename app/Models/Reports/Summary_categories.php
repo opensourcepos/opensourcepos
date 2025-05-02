@@ -7,16 +7,16 @@ class Summary_categories extends Summary_report
     /**
      * @return array[]
      */
-    protected function _get_data_columns(): array    //TODO: Hungarian notation
+    protected function _get_data_columns(): array    // TODO: Hungarian notation
     {
         return [
             ['category' => lang('Reports.category')],
             ['quantity' => lang('Reports.quantity'), 'sorter' => 'number_sorter'],
             ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-            ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-            ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+            ['tax'      => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'    => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'     => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'   => lang('Reports.profit'), 'sorter' => 'number_sorter']
         ];
     }
 
@@ -25,9 +25,9 @@ class Summary_categories extends Summary_report
      * @param $builder
      * @return void
      */
-    protected function _select(array $inputs, &$builder): void    //TODO: Hungarian notation
+    protected function _select(array $inputs, &$builder): void    // TODO: Hungarian notation
     {
-        parent::_select($inputs, $builder);    //TODO: hungarian notation
+        parent::_select($inputs, $builder);    // TODO: hungarian notation
 
         $builder->select('
             items.category AS category,
@@ -39,7 +39,7 @@ class Summary_categories extends Summary_report
      * @param $builder
      * @return void
      */
-    protected function _from(&$builder): void    //TODO: hungarian notation
+    protected function _from(&$builder): void    // TODO: hungarian notation
     {
         parent::_from($builder);
 
@@ -50,7 +50,7 @@ class Summary_categories extends Summary_report
      * @param $builder
      * @return void
      */
-    protected function _group_order(&$builder): void    //TODO: hungarian notation
+    protected function _group_order(&$builder): void    // TODO: hungarian notation
     {
         $builder->groupBy('category');
         $builder->orderBy('category');

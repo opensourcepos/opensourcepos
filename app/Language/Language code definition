@@ -1,7 +1,7 @@
 ISO Language Code Table
 -----------------------
 
-Code    Name
+Code     Name
 af-ZA    Afrikaans (South Africa)
 ar-AE    Arabic (U.A.E.)
 ar-BH    Arabic (Bahrain)
@@ -96,7 +96,7 @@ ka-GE    Georgian (Georgia)
 kk-KZ    Kazakh (Kazakhstan)
 kn-IN    Kannada (India)
 ko-KR    Korean (Korea)
-kok-IN    Konkani (India)
+kok-IN   Konkani (India)
 ky-KG    Kyrgyz (Kyrgyzstan)
 lt-LT    Lithuanian (Lithuania)
 lv-LV    Latvian (Latvia)
@@ -142,7 +142,7 @@ sr-SP    Serbian (Cyrillic) (Serbia and Montenegro)
 sv-FI    Swedish (Finland)
 sv-SE    Swedish (Sweden)
 sw-KE    Swahili (Kenya)
-syr-SY    Syriac (Syria)
+syr-SY   Syriac (Syria)
 ta-IN    Tamil (India)
 te-IN    Telugu (India)
 th-TH    Thai (Thailand)
@@ -157,8 +157,8 @@ uz-UZ    Uzbek (Cyrillic) (Uzbekistan)
 vi-VN    Vietnamese (Viet Nam)
 xh-ZA    Xhosa (South Africa)
 zh-CN    Chinese (S)
-zh-Hans    Chinese in the simplified scrip
-zh-Hant    Chinese in the traditional script
+zh-Hans  Chinese in the simplified scrip
+zh-Hant  Chinese in the traditional script
 zh-HK    Chinese (Hong Kong)
 zh-MO    Chinese (Macau)
 zh-SG    Chinese (Singapore)

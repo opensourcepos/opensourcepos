@@ -2,7 +2,7 @@ FROM php:8.2-apache AS ospos
 LABEL maintainer="jekkos"
 
 RUN apt update && apt-get install -y libicu-dev libgd-dev
-RUN a2enmod rewrite 
+RUN a2enmod rewrite
 RUN docker-php-ext-install mysqli bcmath intl gd
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 
@@ -18,7 +18,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y libzip-dev wget git
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /bin/wait-for-it.sh && chmod +x /bin/wait-for-it.sh
 RUN docker-php-ext-install zip
-RUN composer install -d/app 
+RUN composer install -d/app
 #RUN sed -i 's/backupGlobals="true"/backupGlobals="false"/g' /app/tests/phpunit.xml
 WORKDIR /app/tests
 
