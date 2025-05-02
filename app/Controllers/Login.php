@@ -22,8 +22,7 @@ class Login extends BaseController
     public function index(): string|RedirectResponse
     {
         $this->employee = model(Employee::class);
-        if(!$this->employee->is_logged_in())
-        {
+        if (!$this->employee->is_logged_in()) {
             $migration = new MY_Migration(config('Migrations'));
             $config = config(OSPOS::class)->settings;
 
@@ -44,8 +43,7 @@ class Login extends BaseController
                 'validation' => $validation
             ];
 
-            if($this->request->getMethod() !== 'POST')
-            {
+            if ($this->request->getMethod() !== 'POST') {
                 return view('login', $data);
             }
 
@@ -57,15 +55,13 @@ class Login extends BaseController
                 ]
             ];
 
-            if(!$this->validate($rules, $messages))
-            {
+            if (!$this->validate($rules, $messages)) {
                 $data['has_errors'] = !empty($validation->getErrors());
 
                 return view('login', $data);
             }
 
-            if(!$data['is_latest'])
-            {
+            if (!$data['is_latest']) {
                 set_time_limit(3600);
 
                 $migration->setNamespace('App')->latest();

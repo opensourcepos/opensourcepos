@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Employee;
 use Config\OSPOS;
 
@@ -13,12 +14,10 @@ function current_language_code(bool $load_system_language = false): string
     $employee = model(Employee::class);
     $config = config(OSPOS::class)->settings;
 
-    if($employee->is_logged_in() && !$load_system_language)
-    {
+    if ($employee->is_logged_in() && !$load_system_language) {
         $employee_info = $employee->get_logged_in_employee_info();
 
-        if(property_exists($employee_info, 'language_code') && !empty($employee_info->language_code))
-        {
+        if (property_exists($employee_info, 'language_code') && !empty($employee_info->language_code)) {
             return $employee_info->language_code;
         }
     }
@@ -38,12 +37,10 @@ function current_language(bool $load_system_language = false): string
     $config = config(OSPOS::class)->settings;
 
     // Returns the language of the employee if set or system language if not
-    if($employee->is_logged_in() && !$load_system_language)
-    {
+    if ($employee->is_logged_in() && !$load_system_language) {
         $employee_info = $employee->get_logged_in_employee_info();
 
-        if(property_exists($employee_info, 'language') && !empty($employee_info->language))
-        {
+        if (property_exists($employee_info, 'language') && !empty($employee_info->language)) {
             return $employee_info->language;
         }
     }
@@ -246,33 +243,24 @@ function get_payment_options(): array
     $payments = [];
     $config = config(OSPOS::class)->settings;
 
-//TODO: This needs to be switched to a switch statement
-    if($config['payment_options_order'] == 'debitcreditcash')    //TODO: ===
-    {
+    // TODO: This needs to be switched to a switch statement
+    if ($config['payment_options_order'] == 'debitcreditcash') {    // TODO: ===
         $payments[lang('Sales.debit')] = lang('Sales.debit');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
         $payments[lang('Sales.cash')] = lang('Sales.cash');
-    }
-    elseif($config['payment_options_order'] == 'debitcashcredit')    //TODO: ===
-    {
+    } elseif ($config['payment_options_order'] == 'debitcashcredit') {    // TODO: ===
         $payments[lang('Sales.debit')] = lang('Sales.debit');
         $payments[lang('Sales.cash')] = lang('Sales.cash');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
-    }
-    elseif($config['payment_options_order'] == 'creditdebitcash')    //TODO: ===
-    {
+    } elseif ($config['payment_options_order'] == 'creditdebitcash') {    // TODO: ===
         $payments[lang('Sales.credit')] = lang('Sales.credit');
         $payments[lang('Sales.debit')] = lang('Sales.debit');
         $payments[lang('Sales.cash')] = lang('Sales.cash');
-    }
-    elseif($config['payment_options_order'] == 'creditcashdebit')    //TODO: ===
-    {
+    } elseif ($config['payment_options_order'] == 'creditcashdebit') {    // TODO: ===
         $payments[lang('Sales.credit')] = lang('Sales.credit');
         $payments[lang('Sales.cash')] = lang('Sales.cash');
         $payments[lang('Sales.debit')] = lang('Sales.debit');
-    }
-    else // default: if($config['payment_options_order == 'cashdebitcredit')
-    {
+    } else { // Default: if ($config['payment_options_order == 'cashdebitcredit')
         $payments[lang('Sales.cash')] = lang('Sales.cash');
         $payments[lang('Sales.debit')] = lang('Sales.debit');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
@@ -282,8 +270,7 @@ function get_payment_options(): array
     $payments[lang('Sales.check')] = lang('Sales.check');
 
     // If India (list of country codes include India) then include Unified Payment Interface
-    if (stripos($config['country_codes'], 'IN') !== false)
-    {
+    if (stripos($config['country_codes'], 'IN') !== false) {
         $payments[lang('Sales.upi')] = lang('Sales.upi');
     }
 
@@ -388,12 +375,9 @@ function to_currency_tax(?string $number): string
 {
     $config = config(OSPOS::class)->settings;
 
-    if($config['tax_included'])    //TODO: ternary notation
-    {
+    if ($config['tax_included']) {    // TODO: ternary notation
         return to_decimals($number, 'tax_decimals', NumberFormatter::CURRENCY);
-    }
-    else
-    {
+    } else {
         return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
     }
 }
@@ -409,10 +393,9 @@ function to_tax_decimals($number): string
     // It looks like it must be creating a String value on the fly because the form is referring to the index 0 when
     // there IS no index[0] row in the table
 
-    // taxes that are null, '' or 0 don't need to be displayed
+    // Taxes that are null, '' or 0 don't need to be displayed
     // NOTE: do not remove this line otherwise the items edit form will show a tax with 0, and it will save it
-    if(empty($number))
-    {
+    if (empty($number)) {
         return $number;
     }
 
@@ -437,8 +420,7 @@ function to_quantity_decimals(?string $number): string
  */
 function to_decimals(?string $number, ?string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
-    if(!isset($number))
-    {
+    if (!isset($number)) {
         return '';
     }
 
@@ -447,8 +429,7 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
     $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
     $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
 
-    if(empty($config['thousands_separator']))
-    {
+    if (empty($config['thousands_separator'])) {
         $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
     $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
@@ -481,8 +462,7 @@ function parse_tax(string $number): mixed
  */
 function parse_decimals(string $number, ?int $decimals = null): mixed
 {
-    if(empty($number))
-    {
+    if (empty($number)) {
         return $number;
     }
 
@@ -491,34 +471,28 @@ function parse_decimals(string $number, ?int $decimals = null): mixed
 
     $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
 
-    if(!$decimals)
-    {
+    if (!$decimals) {
         $decimals = intVal($config['currency_decimals']);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
     }
 
-    if(empty($config['thousands_separator']))
-    {
+    if (empty($config['thousands_separator'])) {
         $fmt->setTextAttribute(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
 
-    try
-    {
+    try {
         $locale_safe_number = $fmt->parse($number);
 
         if (
             $locale_safe_number === false
-                || $locale_safe_number > MAX_PRECISION
-                || $locale_safe_number > 1.e14
-        )
-        {
+            || $locale_safe_number > MAX_PRECISION
+            || $locale_safe_number > 1.e14
+        ) {
             return false;
         }
 
         return (float) $locale_safe_number;
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
         return false;
     }
 }
@@ -542,14 +516,14 @@ function dateformat_momentjs(string $php_format): string
         'm' => 'MM',
         'M' => 'MMM',
         'n' => 'M',
-        't' => '', // no equivalent
-        'L' => '', // no equivalent
+        't' => '', // No equivalent
+        'L' => '', // No equivalent
         'o' => 'YYYY',
         'Y' => 'YYYY',
         'y' => 'YY',
         'a' => 'a',
         'A' => 'A',
-        'B' => '', // no equivalent
+        'B' => '', // No equivalent
         'g' => 'h',
         'G' => 'H',
         'h' => 'hh',
@@ -557,14 +531,14 @@ function dateformat_momentjs(string $php_format): string
         'i' => 'mm',
         's' => 'ss',
         'u' => 'SSS',
-        'e' => 'zz', // deprecated since version $1.6.0 of moment.js
-        'I' => '', // no equivalent
-        'O' => '', // no equivalent
-        'P' => '', // no equivalent
-        'T' => '', // no equivalent
-        'Z' => '', // no equivalent
-        'c' => '', // no equivalent
-        'r' => '', // no equivalent
+        'e' => 'zz', // Deprecated since version $1.6.0 of moment.js
+        'I' => '', // No equivalent
+        'O' => '', // No equivalent
+        'P' => '', // No equivalent
+        'T' => '', // No equivalent
+        'Z' => '', // No equivalent
+        'c' => '', // No equivalent
+        'r' => '', // No equivalent
         'U' => 'X'
     ];
 
@@ -667,7 +641,7 @@ function dateformat_bootstrap(string $php_format): string
  * @param string $date
  * @return bool
  */
-function valid_date(string $date): bool    //TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
+function valid_date(string $date): bool    // TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
     $config = config(OSPOS::class)->settings;
     return (DateTime::createFromFormat($config['dateformat'], $date));
@@ -677,7 +651,7 @@ function valid_date(string $date): bool    //TODO: need a better name for $date.
  * @param string $decimal
  * @return bool
  */
-function valid_decimal(string $decimal): bool    //TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
+function valid_decimal(string $decimal): bool    // TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
 {
     return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
 }
@@ -688,7 +662,9 @@ function valid_decimal(string $decimal): bool    //TODO: need a better name for 
  */
 function encode_array(array $data): array
 {
-    array_walk($data, function(&$value, $key) { $value = rawurlencode($value);});
+    array_walk($data, function (&$value, $key) {
+        $value = rawurlencode($value);
+    });
 
     return $data;
 }
@@ -699,7 +675,9 @@ function encode_array(array $data): array
  */
 function decode_array(array $data): array
 {
-    array_walk($data, function(&$value, $key) { $value = rawurldecode($value);});
+    array_walk($data, function (&$value, $key) {
+        $value = rawurldecode($value);
+    });
 
     return $data;
 }

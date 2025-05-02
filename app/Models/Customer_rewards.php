@@ -45,8 +45,7 @@ class Customer_rewards extends Model
             'points_percent' => $package_data['points_percent']
         ];
 
-        if(!$this->exists($package_id))
-        {
+        if (!$this->exists($package_id)) {
             $builder = $this->db->table('customers_packages');
             return $builder->insert($package_data_to_save);
         }
@@ -93,8 +92,8 @@ class Customer_rewards extends Model
     }
 
     /**
-    * Deletes one reward package
-    */
+     * Deletes one reward package
+     */
     public function delete($package_id = null, bool $purge = false): bool
     {
         $builder = $this->db->table('customers_packages');

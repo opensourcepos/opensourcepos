@@ -30,6 +30,6 @@ class Migration_add_missing_config extends Migration
      */
     public function down(): void
     {
-        // no need to remove necessary config values.
+        // No need to remove necessary config values.
     }
 }

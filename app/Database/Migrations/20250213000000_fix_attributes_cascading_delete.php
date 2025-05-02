@@ -22,8 +22,5 @@ class Migration_Attributes_fix_cascading_delete extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

@@ -39,28 +39,25 @@ class Secure_Controller extends BaseController
         $config = config(OSPOS::class)->settings;
         $validation = Services::validation();
 
-        if(!$this->employee->is_logged_in())
-        {
-            header("Location:".base_url('login'));
+        if (!$this->employee->is_logged_in()) {
+            header("Location:" . base_url('login'));
             exit();
         }
 
         $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
-        if(!$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
-            || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
-        {
-            header("Location:".base_url("no_access/$module_id/$submodule_id"));
+        if (
+            !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
+            || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
+        ) {
+            header("Location:" . base_url("no_access/$module_id/$submodule_id"));
             exit();
         }
 
-        // load up global global_view_data visible to all the loaded views
+        // Load up global global_view_data visible to all the loaded views
         $this->session = session();
-        if($menu_group == null)
-        {
+        if ($menu_group == null) {
             $menu_group = $this->session->get('menu_group');
-        }
-        else
-        {
+        } else {
             $this->session->set('menu_group', $menu_group);
         }
 
@@ -69,8 +66,7 @@ class Secure_Controller extends BaseController
             : $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
         $this->global_view_data = [];
-        foreach($allowed_modules->getResult() as $module)
-        {
+        foreach ($allowed_modules->getResult() as $module) {
             $this->global_view_data['allowed_modules'][] = $module;
         }
 
@@ -94,10 +90,8 @@ class Secure_Controller extends BaseController
      */
     public function getCheckNumeric(): void
     {
-        foreach($this->request->getGet() as $value)
-        {
-            if (parse_decimals($value) === false)
-            {
+        foreach ($this->request->getGet() as $value) {
+            if (parse_decimals($value) === false) {
                 echo 'false';
                 return;
             }
@@ -111,8 +105,7 @@ class Secure_Controller extends BaseController
      */
     public function getConfig($key)
     {
-        if (isset($config[$key]))
-        {
+        if (isset($config[$key])) {
             return $config[$key];
         }
     }
@@ -120,32 +113,50 @@ class Secure_Controller extends BaseController
     /**
      * @return false
      */
-    public function getIndex() { return false; }
+    public function getIndex()
+    {
+        return false;
+    }
 
     /**
      * @return false
      */
-    public function getSearch() { return false; }
+    public function getSearch()
+    {
+        return false;
+    }
 
     /**
      * @return false
      */
-    public function suggest_search() { return false; }
+    public function suggest_search()
+    {
+        return false;
+    }
 
     /**
      * @param int $data_item_id
      * @return false
      */
-    public function getView(int $data_item_id = -1) { return false; }
+    public function getView(int $data_item_id = -1)
+    {
+        return false;
+    }
 
     /**
      * @param int $data_item_id
      * @return false
      */
-    public function postSave(int $data_item_id = -1) { return false; }
+    public function postSave(int $data_item_id = -1)
+    {
+        return false;
+    }
 
     /**
      * @return false
      */
-    public function postDelete() { return false; }
+    public function postDelete()
+    {
+        return false;
+    }
 }

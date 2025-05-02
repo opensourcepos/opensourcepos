@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Expense_category;
 use Config\Services;
 
-class Expenses_categories extends Secure_Controller    //TODO: Is this class ever used?
+class Expenses_categories extends Secure_Controller    // TODO: Is this class ever used?
 {
     private Expense_category $expense_category;
 
@@ -23,7 +23,7 @@ class Expenses_categories extends Secure_Controller    //TODO: Is this class eve
     {
         $data['table_headers'] = get_expense_category_manage_table_headers();
 
-         echo view('expenses_categories/manage', $data);
+        echo view('expenses_categories/manage', $data);
     }
 
     /**
@@ -41,12 +41,11 @@ class Expenses_categories extends Secure_Controller    //TODO: Is this class eve
         $total_rows = $this->expense_category->get_found_rows($search);
 
         $data_rows = [];
-        foreach($expense_categories->getResult() as $expense_category)
-        {
+        foreach ($expense_categories->getResult() as $expense_category) {
             $data_rows[] = get_expense_category_data_row($expense_category);
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -82,29 +81,23 @@ class Expenses_categories extends Secure_Controller    //TODO: Is this class eve
             'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
-        if($this->expense_category->save_value($expense_category_data, $expense_category_id))
-        {
+        if ($this->expense_category->save_value($expense_category_data, $expense_category_id)) {
             // New expense_category
-            if($expense_category_id == NEW_ENTRY)
-            {
-                echo json_encode ([
+            if ($expense_category_id == NEW_ENTRY) {
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_adding'),
                     'id' => $expense_category_data['expense_category_id']
                 ]);
-            }
-            else // Existing Expense Category
-            {
-                echo json_encode ([
+            } else { // Existing Expense Category
+                echo json_encode([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_updating'),
                     'id' => $expense_category_id
                 ]);
             }
-        }
-        else//failure
-        {
-            echo json_encode ([
+        } else { // Failure
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
                 'id' => NEW_ENTRY
@@ -119,16 +112,13 @@ class Expenses_categories extends Secure_Controller    //TODO: Is this class eve
     {
         $expense_category_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if($this->expense_category->delete_list($expense_category_to_delete))    //TODO: Convert to ternary notation.
-        {
+        if ($this->expense_category->delete_list($expense_category_to_delete)) {    // TODO: Convert to ternary notation.
             echo json_encode([
                 'success' => true,
                 'message' => lang('Expenses_categories.successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . lang('Expenses_categories.one_or_multiple')
             ]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Expenses_categories.cannot_be_deleted')]);
         }
     }
 }

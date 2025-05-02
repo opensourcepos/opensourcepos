@@ -1,4 +1,4 @@
-var assert = require("assert"); // node.js core module
+var assert = require("assert"); // Node.js core module
 var wd = require('wd');
 
 describe('A Mocha test run by grunt-mocha-webdriver', function () {

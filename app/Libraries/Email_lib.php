@@ -20,19 +20,18 @@ class Email_lib
     private Email $email;
     private array $config;
 
-      public function __construct()
+    public function __construct()
     {
         $this->email = new Email();
         $this->config = config(OSPOS::class)->settings;
 
         $encrypter = Services::encrypter();
-        
+
         $smtp_pass = $this->config['smtp_pass'];
-        if(!empty($smtp_pass))
-        {
+        if (!empty($smtp_pass)) {
             $smtp_pass = $encrypter->decrypt($smtp_pass);
         }
-        
+
         $email_config = [
             'mailType' => 'html',
             'userAgent' => 'OSPOS',
@@ -62,15 +61,13 @@ class Email_lib
         $email->setSubject($subject);
         $email->setMessage($message);
 
-        if(!empty($attachment))
-        {
+        if (!empty($attachment)) {
             $email->attach($attachment);
         }
 
         $result = $email->send();
 
-        if(!$result)
-        {
+        if (!$result) {
             error_log($email->printDebugger());
         }
 

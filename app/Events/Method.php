@@ -13,8 +13,7 @@ class Method
 
         $post_required = preg_match('/\/(save|delete*|remove*)\/?\d*?/', $url);
 
-        if($post_required && $_SERVER["REQUEST_METHOD"] != "POST" && empty($_POST))
-        {
+        if ($post_required && $_SERVER["REQUEST_METHOD"] != "POST" && empty($_POST)) {
             echo "Method not allowed";
             die;
         }

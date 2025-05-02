@@ -34,7 +34,7 @@ class Tax_jurisdiction extends Model
         $builder = $this->db->table('tax_jurisdictions');
         $builder->where('jurisdiction_id', $jurisdiction_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -58,18 +58,14 @@ class Tax_jurisdiction extends Model
         $builder->where('deleted', 0);
         $query = $builder->get();
 
-        if($query->getNumRows() == 1)    //TODO: ===
-        {
+        if ($query->getNumRows() == 1) {    // TODO: ===
             return $query->getRow();
-        }
-        else    //TODO: this else is not needed.  Just put everything below it without an else.
-        {
-            //Get empty base parent object
+        } else {    // TODO: this else is not needed.  Just put everything below it without an else.
+            // Get empty base parent object
             $tax_jurisdiction_obj = new stdClass();
 
-            //Get all the fields from the table
-            foreach($this->db->getFieldNames('tax_jurisdictions') as $field)
-            {
+            // Get all the fields from the table
+            foreach ($this->db->getFieldNames('tax_jurisdictions') as $field) {
                 $tax_jurisdiction_obj->$field = '';
             }
             return $tax_jurisdiction_obj;
@@ -83,15 +79,13 @@ class Tax_jurisdiction extends Model
     {
         $builder = $this->db->table('tax_jurisdictions');
 
-        if($no_deleted)
-        {
+        if ($no_deleted) {
             $builder->where('deleted', 0);
         }
 
         $builder->orderBy('jurisdiction_name', 'asc');
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 
@@ -116,10 +110,8 @@ class Tax_jurisdiction extends Model
     public function save_value(array &$jurisdiction_data, int $jurisdiction_id = NEW_ENTRY): bool
     {
         $builder = $this->db->table('tax_jurisdictions');
-        if($jurisdiction_id == NEW_ENTRY || !$this->exists($jurisdiction_id))
-        {
-            if($builder->insert($jurisdiction_data))    //TODO: Replace this with simply a return of the result of insert()... see update() below.
-            {
+        if ($jurisdiction_id == NEW_ENTRY || !$this->exists($jurisdiction_id)) {
+            if ($builder->insert($jurisdiction_data)) {    // TODO: Replace this with simply a return of the result of insert()... see update() below.
                 $jurisdiction_data['jurisdiction_id'] = $this->db->insertID();
                 return true;
             }
@@ -141,9 +133,8 @@ class Tax_jurisdiction extends Model
 
         $not_to_delete = [];
 
-        foreach($array_save as $key => $value)
-        {
-            // save or update
+        foreach ($array_save as $key => $value) {
+            // Save or update
             $tax_jurisdiction_data = [
                 'jurisdiction_name' => $value['jurisdiction_name'],
                 'tax_group' => $value['tax_group'],
@@ -151,27 +142,23 @@ class Tax_jurisdiction extends Model
                 'reporting_authority' => $value['reporting_authority'],
                 'tax_group_sequence' => $value['tax_group_sequence'],
                 'cascade_sequence' => $value['cascade_sequence'],
-                'deleted' => '0'];
+                'deleted' => '0'
+            ];
 
             $this->save_value($tax_jurisdiction_data, $value['jurisdiction_id']);
 
-            if($value['jurisdiction_id'] == NEW_ENTRY)
-            {
+            if ($value['jurisdiction_id'] == NEW_ENTRY) {
                 $not_to_delete[] = $tax_jurisdiction_data['jurisdiction_id'];
-            }
-            else
-            {
+            } else {
                 $not_to_delete[] = $value['jurisdiction_id'];
             }
         }
 
-        // all entries not available in post will be deleted now
+        // All entries not available in post will be deleted now
         $deleted_tax_jurisdictions = $this->get_all()->getResultArray();
 
-        foreach($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data)
-        {
-            if(!in_array($tax_jurisdiction_data['jurisdiction_id'], $not_to_delete))
-            {
+        foreach ($deleted_tax_jurisdictions as $key => $tax_jurisdiction_data) {
+            if (!in_array($tax_jurisdiction_data['jurisdiction_id'], $not_to_delete)) {
                 $this->delete($tax_jurisdiction_data['jurisdiction_id']);
             }
         }
@@ -200,7 +187,7 @@ class Tax_jurisdiction extends Model
         $builder->whereIn('jurisdiction_id', $jurisdiction_ids);
 
         return $builder->update(['deleted' => 1]);
-     }
+    }
 
     /**
      * Gets rows
@@ -216,36 +203,33 @@ class Tax_jurisdiction extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'jurisdiction_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if($rows == null) $rows = 0;
-        if($limit_from == null) $limit_from = 0;
-        if($sort == null) $sort = 'jurisdiction_name';
-        if($order == null) $order = 'asc';
-        if($count_only == null) $count_only = false;
+        if ($rows == null) $rows = 0;
+        if ($limit_from == null) $limit_from = 0;
+        if ($sort == null) $sort = 'jurisdiction_name';
+        if ($order == null) $order = 'asc';
+        if ($count_only == null) $count_only = false;
 
         $builder = $this->db->table('tax_jurisdictions AS tax_jurisdictions');
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             $builder->select('COUNT(tax_jurisdictions.jurisdiction_id) as count');
         }
 
         $builder->groupStart();
-            $builder->like('jurisdiction_name', $search);
-            $builder->orLike('reporting_authority', $search);
+        $builder->like('jurisdiction_name', $search);
+        $builder->orLike('reporting_authority', $search);
         $builder->groupEnd();
         $builder->where('deleted', 0);
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 

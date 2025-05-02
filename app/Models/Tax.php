@@ -31,7 +31,7 @@ class Tax extends Model
         $builder = $this->db->table('tax_rates');
         $builder->where('tax_rate_id', $tax_rate_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -72,23 +72,29 @@ class Tax extends Model
         $builder->select('tax_rate');
         $builder->select('tax_rounding_code');
 
-        $builder->join('tax_codes',
-            'rate_tax_code_id = tax_code_id', 'LEFT');
-        $builder->join('tax_categories',
-            'rate_tax_category_id = tax_category_id', 'LEFT');
-        $builder->join('tax_jurisdictions',
-            'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
+        $builder->join(
+            'tax_codes',
+            'rate_tax_code_id = tax_code_id',
+            'LEFT'
+        );
+        $builder->join(
+            'tax_categories',
+            'rate_tax_category_id = tax_category_id',
+            'LEFT'
+        );
+        $builder->join(
+            'tax_jurisdictions',
+            'rate_jurisdiction_id = jurisdiction_id',
+            'LEFT'
+        );
         $builder->where('tax_rate_id', $tax_rate_id);
 
         $query = $builder->get();
 
-        if($query->getNumRows() == 1)    //TODO: probably should use === here since getNumRows() returns an int.
-        {
+        if ($query->getNumRows() == 1) {    // TODO: probably should use === here since getNumRows() returns an int.
             return $query->getRow();
-        }
-        else
-        {
-            //Get empty base parent object
+        } else {
+            // Get empty base parent object
             $tax_rate_obj = new stdClass();
             $tax_rate_obj->tax_rate_id = null;
             $tax_rate_obj->rate_tax_code_id = null;
@@ -108,14 +114,14 @@ class Tax extends Model
     /**
      * Get taxes to be collected for a given tax code
      */
-     public function get_taxes(int $tax_code_id, int $tax_category_id): array
-     {
-         $sql = 'select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
-            rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence 
-            from ' . $this->db->prefixTable('tax_rates') . ' 
-            left outer join ' . $this->db->prefixTable('tax_codes') . ' on rate_tax_code_id = tax_code_id 
-            left outer join ' . $this->db->prefixTable('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id 
-            left outer join ' . $this->db->prefixTable('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
+    public function get_taxes(int $tax_code_id, int $tax_category_id): array
+    {
+        $sql = 'select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category,
+            rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence
+            from ' . $this->db->prefixTable('tax_rates') . '
+            left outer join ' . $this->db->prefixTable('tax_codes') . ' on rate_tax_code_id = tax_code_id
+            left outer join ' . $this->db->prefixTable('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id
+            left outer join ' . $this->db->prefixTable('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id
             where rate_tax_code_id = ' . $this->db->escape($tax_code_id) . ' and rate_tax_category_id = ' . $this->db->escape($tax_category_id) . '
             order by cascade_sequence, tax_group, jurisdiction_name, tax_jurisdictions.tax_group_sequence + tax_categories.tax_group_sequence';
 
@@ -136,23 +142,18 @@ class Tax extends Model
 
         $query = $builder->get();
 
-        if($query->getNumRows() == 1)    //TODO: this should probably be ===
-        {
+        if ($query->getNumRows() == 1) {    // TODO: this should probably be ===
             return $query->getRow();
-        }
-        else
-        {
-            //Get empty base parent object
+        } else {
+            // Get empty base parent object
             $tax_rate_obj = new stdClass();
 
-            //Get all the fields from tax_codes table
-            foreach($this->db->getFieldNames('tax_rates') as $field)
-            {
+            // Get all the fields from tax_codes table
+            foreach ($this->db->getFieldNames('tax_rates') as $field) {
                 $tax_rate_obj->$field = '';
             }
-            //Get all the fields from tax_rates table
-            foreach($this->db->getFieldNames('tax_categories') as $field)
-            {
+            // Get all the fields from tax_rates table
+            foreach ($this->db->getFieldNames('tax_categories') as $field) {
                 $tax_rate_obj->$field = '';
             }
 
@@ -161,26 +162,21 @@ class Tax extends Model
     }
 
     /**
-    Inserts or updates a tax_rates entry
-    */
+     * Inserts or updates a tax_rates entry
+     */
     public function save_value(array &$tax_rate_data, int $tax_rate_id = NEW_ENTRY): bool
     {
         $builder = $this->db->table('tax_rates');
-        if($tax_rate_id == NEW_ENTRY || !$this->exists($tax_rate_id))
-        {
-            if($builder->insert($tax_rate_data))
-            {
+        if ($tax_rate_id == NEW_ENTRY || !$this->exists($tax_rate_id)) {
+            if ($builder->insert($tax_rate_data)) {
                 $tax_rate_data['tax_rate_id'] = $this->db->insertID();
 
                 return true;
             }
-        }
-        else
-        {
+        } else {
             $builder->where('tax_rate_id', $tax_rate_id);
 
-            if($builder->update($tax_rate_data))
-            {
+            if ($builder->update($tax_rate_data)) {
                 return true;
             }
         }
@@ -223,20 +219,18 @@ class Tax extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'tax_code_name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if($rows == null) $rows = 0;
-        if($limit_from == null) $limit_from = 0;
-        if($sort == null) $sort = 'tax_code_name';
-        if($order == null) $order = 'asc';
-        if($count_only == null) $count_only = false;
+        if ($rows == null) $rows = 0;
+        if ($limit_from == null) $limit_from = 0;
+        if ($sort == null) $sort = 'tax_code_name';
+        if ($order == null) $order = 'asc';
+        if ($count_only == null) $count_only = false;
 
         $builder = $this->db->table('tax_rates');
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             $builder->select('COUNT(tax_rate_id) as count');
-        } else
-        {
+        } else {
             $builder->select('tax_rate_id');
             $builder->select('tax_code');
             $builder->select('rate_tax_code_id');
@@ -253,22 +247,19 @@ class Tax extends Model
         $builder->join('tax_categories', 'rate_tax_category_id = tax_category_id', 'LEFT');
         $builder->join('tax_jurisdictions', 'rate_jurisdiction_id = jurisdiction_id', 'LEFT');
 
-        if(!empty($search))
-        {
+        if (!empty($search)) {
             $builder->like('rate_tax_code', $search);
             $builder->orLike('tax_code_name', $search);
         }
 
         // get_found_rows case
-        if($count_only)
-        {
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 
@@ -279,14 +270,11 @@ class Tax extends Model
      * @param string $tax_code_type
      * @return string
      */
-    public function get_tax_code_type_name(string $tax_code_type): string    //TODO: if this is being called from the view and passed through GET params then it will come through as a string... better if we can get it as an int though.
+    public function get_tax_code_type_name(string $tax_code_type): string    // TODO: if this is being called from the view and passed through GET params then it will come through as a string... better if we can get it as an int though.
     {
-        if($tax_code_type == '0')    //TODO: ===.  Also, replace this with ternary notation. The whole function becomes a nice one-liner.
-        {
+        if ($tax_code_type == '0') {    // TODO: ===.  Also, replace this with ternary notation. The whole function becomes a nice one-liner.
             return lang('Taxes.tax_included');
-        }
-        else
-        {
+        } else {
             return lang('Taxes.tax_excluded');
         }
     }
@@ -319,7 +307,7 @@ class Tax extends Model
      * @param string $tax_category
      * @return int
      */
-    public function get_tax_category_id(string $tax_category): int    //TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
+    public function get_tax_category_id(string $tax_category): int    // TODO: $tax_category is not used in this function and get_tax_category_id() is not called in the code.  It may be that this needs to be deprecated and removed.
     {
         $builder = $this->db->table('tax_categories');
         $builder->select('tax_category_id');

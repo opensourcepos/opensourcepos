@@ -24,14 +24,14 @@ class MailchimpConnector
      *
      * @var    string[]
      */
-    private $_api_key = '';    //TODO: Hungarian notation
+    private $_api_key = '';    // TODO: Hungarian notation
 
     /**
      * API Endpoint
      *
      * @var    string[]
      */
-    private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';    //TODO: Hungarian notation
+    private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';    // TODO: Hungarian notation
 
     /**
      * Constructor
@@ -46,20 +46,17 @@ class MailchimpConnector
             ? $this->config['mailchimp_api_key']
             : '';
 
-        if(!empty($mailchimp_api_key))
-        {
+        if (!empty($mailchimp_api_key)) {
             $this->_api_key = empty($api_key)
-                ? $encrypter->decrypt($mailchimp_api_key)    //TODO: Hungarian notation
-                : $api_key;    //TODO: Hungarian notation
+                ? $encrypter->decrypt($mailchimp_api_key)    // TODO: Hungarian notation
+                : $api_key;    // TODO: Hungarian notation
         }
 
-        if(!empty($this->_api_key))    //TODO: Hungarian notation
-        {
+        if (!empty($this->_api_key)) {    // TODO: Hungarian notation
             // Replace <dc> with correct datacenter obtained from the last part of the api key
-            $strings = explode('-', $this->_api_key);    //TODO: Hungarian notation
-            if(is_array($strings) && !empty($strings[1]))
-            {
-                $this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);    //TODO: Hungarian notation
+            $strings = explode('-', $this->_api_key);    // TODO: Hungarian notation
+            if (is_array($strings) && !empty($strings[1])) {
+                $this->_api_endpoint = str_replace('<dc>', $strings[1], $this->_api_endpoint);    // TODO: Hungarian notation
             }
         }
     }
@@ -73,9 +70,8 @@ class MailchimpConnector
      */
     public function call(string $method, string $httpVerb = 'POST', array $args = []): bool|array
     {
-        if(!empty($this->_api_key))    //TODO: Hungarian notation
-        {
-            return $this->_request($httpVerb, $method, $args);    //TODO: Hungarian notation
+        if (!empty($this->_api_key)) {    // TODO: Hungarian notation
+            return $this->_request($httpVerb, $method, $args);    // TODO: Hungarian notation
         }
 
         return false;
@@ -88,14 +84,13 @@ class MailchimpConnector
      * @param  array  $args     Assoc array of parameters to be passed
      * @return string           Request URL
      */
-    private function _build_request_url(string $method, string $httpVerb = 'POST', array $args = []): string    //TODO: Hungarian notation.
+    private function _build_request_url(string $method, string $httpVerb = 'POST', array $args = []): string    // TODO: Hungarian notation.
     {
-        if($httpVerb == 'GET')
-        {
-            return $this->_api_endpoint . $method . '?' . http_build_query($args);    //TODO: Hungarian notation
+        if ($httpVerb == 'GET') {
+            return $this->_api_endpoint . $method . '?' . http_build_query($args);    // TODO: Hungarian notation
         }
 
-        return $this->_api_endpoint . $method;    //TODO: Hungarian notation
+        return $this->_api_endpoint . $method;    // TODO: Hungarian notation
     }
 
     /**
@@ -105,12 +100,11 @@ class MailchimpConnector
      * @param array $args Assoc array of parameters to be passed
      * @return bool|array Assoc array of decoded result or False
      */
-    private function _request(string $httpVerb, string $method, array $args = []): bool|array    //TODO: Hungarian notation
+    private function _request(string $httpVerb, string $method, array $args = []): bool|array    // TODO: Hungarian notation
     {
         $result = false;
 
-        if(($ch = curl_init()) !== false)
-        {
+        if (($ch = curl_init()) !== false) {
             curl_setopt($ch, CURLOPT_URL, $this->_build_request_url($method, $httpVerb, $args));
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             curl_setopt($ch, CURLOPT_USERPWD, "user:" . $this->_api_key);
@@ -140,9 +134,9 @@ class MailchimpConnector
  * Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php
  */
 
-class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file principle.
+class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file principle.
 {
-    private $_connector;    //TODO: Hungarian notation
+    private $_connector;    // TODO: Hungarian notation
 
     /**
      * @param array $params
@@ -165,7 +159,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
      */
     public function getLists(array $parameters = ['fields' => 'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count']): bool|array
     {
-        return $this->_connector->call('/lists', 'GET', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call('/lists', 'GET', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -179,7 +173,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
      */
     public function getList(string $list_id, array $parameters = ['fields' => 'id,name,stats.member_count,stats.merge_field_count']): bool|array
     {
-        return $this->_connector->call("/lists/$list_id", 'GET', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id", 'GET', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -199,7 +193,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
             'offset' => $offset
         ];
 
-        return $this->_connector->call("/lists/$list_id/members", 'GET', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members", 'GET', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -216,7 +210,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
      */
     public function getMemberInfoById(string $list_id, string $md5id, array $parameters = ['fields' => 'email_address,status,merge_fields']): bool|array
     {
-        return $this->_connector->call("/lists/$list_id/members/$md5id", 'GET', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/$md5id", 'GET', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -247,7 +241,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
      */
     public function getMemberActivity(string $list_id, string $email, array $parameters = []): bool|array
     {
-        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)) . '/activity', 'GET', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)) . '/activity', 'GET', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -273,7 +267,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
             ]
         ];
 
-        return $this->_connector->call("/lists/$list_id/members/", 'POST', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/", 'POST', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -288,7 +282,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
      */
     public function removeMember(string $list_id, string $email): bool|array
     {
-        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'DELETE');    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'DELETE');    // TODO: Hungarian notation
     }
 
     /**
@@ -313,7 +307,7 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
             ]
         ];
 
-        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PATCH', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PATCH', $parameters);    // TODO: Hungarian notation
     }
 
     /**
@@ -340,6 +334,6 @@ class Mailchimp_lib    //TODO: IMO We need to stick to the one class per file pr
             ]
         ];
 
-        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PUT', $parameters);    //TODO: Hungarian notation
+        return $this->_connector->call("/lists/$list_id/members/" . md5(strtolower($email)), 'PUT', $parameters);    // TODO: Hungarian notation
     }
 }

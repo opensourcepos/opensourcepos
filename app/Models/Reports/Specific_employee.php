@@ -18,7 +18,7 @@ class Specific_employee extends Report
      */
     public function create(array $inputs): void
     {
-        //Create our temp tables to work with the data in our report
+        // Create our temp tables to work with the data in our report
         $sale = model(Sale::class);
         $sale->create_temp_table($inputs);
     }
@@ -93,10 +93,9 @@ class Specific_employee extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('employee_id', $inputs['employee_id']);    //TODO: Duplicated code
+        $builder->where('employee_id', $inputs['employee_id']);    // TODO: Duplicated code
 
-        switch($inputs['sale_type'])
-        {
+        switch ($inputs['sale_type']) {
             case 'complete':
                 $builder->where('sale_status', COMPLETED);
                 $builder->groupStart();
@@ -142,8 +141,7 @@ class Specific_employee extends Report
         $data['details'] = [];
         $data['rewards'] = [];
 
-        foreach($data['summary'] as $key => $value)
-        {
+        foreach ($data['summary'] as $key => $value) {
             $builder = $this->db->table('sales_items_temp');
             $builder->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
             $builder->where('sale_id', $value['sale_id']);
@@ -166,42 +164,31 @@ class Specific_employee extends Report
     {
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-        $builder->where('employee_id', $inputs['employee_id']);    //TODO: Duplicated code
+        $builder->where('employee_id', $inputs['employee_id']);    // TODO: Duplicated code
 
-        //TODO: this needs to be converted to a switch statement
-        if($inputs['sale_type'] == 'complete')
-        {
+        // TODO: this needs to be converted to a switch statement
+        if ($inputs['sale_type'] == 'complete') {
             $builder->where('sale_status', COMPLETED);
             $builder->groupStart();
             $builder->where('sale_type', SALE_TYPE_POS);
             $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
             $builder->orWhere('sale_type', SALE_TYPE_RETURN);
             $builder->groupEnd();
-        }
-        elseif($inputs['sale_type'] == 'sales')
-        {
+        } elseif ($inputs['sale_type'] == 'sales') {
             $builder->where('sale_status', COMPLETED);
             $builder->groupStart();
             $builder->where('sale_type', SALE_TYPE_POS);
             $builder->orWhere('sale_type', SALE_TYPE_INVOICE);
             $builder->groupEnd();
-        }
-        elseif($inputs['sale_type'] == 'quotes')
-        {
+        } elseif ($inputs['sale_type'] == 'quotes') {
             $builder->where('sale_status', SUSPENDED);
             $builder->where('sale_type', SALE_TYPE_QUOTE);
-        }
-        elseif($inputs['sale_type'] == 'work_orders')
-        {
+        } elseif ($inputs['sale_type'] == 'work_orders') {
             $builder->where('sale_status', SUSPENDED);
             $builder->where('sale_type', SALE_TYPE_WORK_ORDER);
-        }
-        elseif($inputs['sale_type'] == 'canceled')
-        {
+        } elseif ($inputs['sale_type'] == 'canceled') {
             $builder->where('sale_status', CANCELED);
-        }
-        elseif($inputs['sale_type'] == 'returns')
-        {
+        } elseif ($inputs['sale_type'] == 'returns') {
             $builder->where('sale_status', COMPLETED);
             $builder->where('sale_type', SALE_TYPE_RETURN);
         }

@@ -16,14 +16,11 @@ function execute_script(string $path): void
 
     $db = Database::connect();
 
-    foreach($sqls as $statement)
-    {
+    foreach ($sqls as $statement) {
         $statement = "$statement;";
 
-        if(!$db->simpleQuery($statement))
-        {
-            foreach($db->error() as $error)
-            {
+        if (!$db->simpleQuery($statement)) {
+            foreach ($db->error() as $error) {
                 error_log("error: $error");
             }
         }
@@ -46,8 +43,7 @@ function drop_foreign_key_constraints(array $foreignKeys, string $table): void
     $db->setPrefix('');
     $database_name = $db->database;
 
-    foreach ($foreignKeys as $fk)
-    {
+    foreach ($foreignKeys as $fk) {
         $builder = $db->table('INFORMATION_SCHEMA.TABLE_CONSTRAINTS');
         $builder->select('CONSTRAINT_NAME');
         $builder->where('TABLE_SCHEMA', $database_name);
@@ -56,8 +52,7 @@ function drop_foreign_key_constraints(array $foreignKeys, string $table): void
         $builder->where('CONSTRAINT_NAME', $fk);
         $query = $builder->get();
 
-        if($query->getNumRows() > 0)
-        {
+        if ($query->getNumRows() > 0) {
             $db->query("ALTER TABLE `$table` DROP FOREIGN KEY `$fk`");
         }
     }

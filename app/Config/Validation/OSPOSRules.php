@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Config\Validation;
 
 use App\Models\Employee;
@@ -25,35 +26,31 @@ class OSPOSRules
      * @return bool True if validation passes or false if there are errors.
      * @noinspection PhpUnused
      */
-    public function login_check(string $username, string $fields , array $data, ?string &$error = null): bool
+    public function login_check(string $username, string $fields, array $data, ?string &$error = null): bool
     {
         $employee = model(Employee::class);
         $this->request = Services::request();
         $this->config = config(OSPOS::class)->settings;
 
-        //Installation Check
-        if(!$this->installation_check())
-        {
+        // Installation Check
+        if (!$this->installation_check()) {
             $error = lang('Login.invalid_installation');
 
             return false;
         }
 
         $password = $data['password'];
-        if(!$employee->login($username, $password))
-        {
+        if (!$employee->login($username, $password)) {
             $error = lang('Login.invalid_username_and_password');
 
             return false;
         }
 
         $gcaptcha_enabled = array_key_exists('gcaptcha_enable', $this->config) && $this->config['gcaptcha_enable'];
-        if($gcaptcha_enabled)
-        {
+        if ($gcaptcha_enabled) {
             $g_recaptcha_response = $this->request->getPost('g-recaptcha-response');
 
-            if(!$this->gcaptcha_check($g_recaptcha_response))
-            {
+            if (!$this->gcaptcha_check($g_recaptcha_response)) {
                 $error = lang('Login.invalid_gcaptcha');
 
                 return false;
@@ -71,8 +68,7 @@ class OSPOSRules
      */
     private function gcaptcha_check($response): bool
     {
-        if(!empty($response))
-        {
+        if (!empty($response)) {
             $check = [
                 'secret'   => $this->config['gcaptcha_secret_key'],
                 'response' => $response,
@@ -92,8 +88,7 @@ class OSPOSRules
 
             $status = json_decode($result, true);
 
-            if(!empty($status['success']))
-            {
+            if (!empty($status['success'])) {
                 return true;
             }
         }
@@ -112,19 +107,17 @@ class OSPOSRules
         $required_extensions = ['bcmath', 'intl', 'gd', 'openssl', 'mbstring', 'curl', 'xml', 'json'];
         $pattern = '/';
 
-        foreach($required_extensions as $extension)
-        {
+        foreach ($required_extensions as $extension) {
             $pattern .= '(?=.*\b' . preg_quote($extension, '/') . '\b)';
         }
 
         $pattern .= '/i';
         $is_installed = preg_match($pattern, $installed_extensions);
 
-        if(!$is_installed)
-        {
+        if (!$is_installed) {
             log_message('error', '[ERROR] Check your php.ini.');
-            log_message('error',"PHP installed extensions: $installed_extensions");
-            log_message('error','PHP required extensions: ' . implode(', ', $required_extensions));
+            log_message('error', "PHP installed extensions: $installed_extensions");
+            log_message('error', 'PHP required extensions: ' . implode(', ', $required_extensions));
         }
 
         return $is_installed;

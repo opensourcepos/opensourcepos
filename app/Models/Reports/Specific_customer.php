@@ -18,7 +18,7 @@ class Specific_customer extends Report
      */
     public function create(array $inputs): void
     {
-        //Create our temp tables to work with the data in our report
+        // Create our temp tables to work with the data in our report
         $sale = model(Sale::class);
         $sale->create_temp_table($inputs);
     }
@@ -93,19 +93,15 @@ class Specific_customer extends Report
             MAX(payment_type) AS payment_type,
             MAX(comment) AS comment');
 
-        $builder->where('customer_id', $inputs['customer_id']);    //TODO: Duplicated code
+        $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicated code
 
-        if($inputs['payment_type'] == 'invoices')
-        {
+        if ($inputs['payment_type'] == 'invoices') {
             $builder->where('sale_type', SALE_TYPE_INVOICE);
-        }
-        elseif($inputs['payment_type'] != 'all')
-        {
+        } elseif ($inputs['payment_type'] != 'all') {
             $builder->like('payment_type', lang('Sales.' . $inputs['payment_type']));
         }
 
-        switch($inputs['sale_type'])
-        {
+        switch ($inputs['sale_type']) {
             case 'complete':
                 $builder->where('sale_status', COMPLETED);
                 $builder->groupStart();
@@ -143,7 +139,7 @@ class Specific_customer extends Report
                 break;
         }
 
-        $builder->groupBy('sale_id');    //TODO: Duplicated code
+        $builder->groupBy('sale_id');    // TODO: Duplicated code
         $builder->orderBy('MAX(sale_time)');
 
         $data = [];
@@ -151,8 +147,7 @@ class Specific_customer extends Report
         $data['details'] = [];
         $data['rewards'] = [];
 
-        foreach($data['summary'] as $key => $value)
-        {
+        foreach ($data['summary'] as $key => $value) {
             $builder = $this->db->table('sales_items_temp');
             $builder->select('name, category, item_number, description, quantity_purchased, subtotal, tax, total, cost, profit, discount, discount_type');
             $builder->where('sale_id', $value['sale_id']);
@@ -176,19 +171,15 @@ class Specific_customer extends Report
         $builder = $this->db->table('sales_items_temp');
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 
-        $builder->where('customer_id', $inputs['customer_id']);    //TODO: Duplicate code
+        $builder->where('customer_id', $inputs['customer_id']);    // TODO: Duplicate code
 
-        if($inputs['payment_type'] == 'invoices')
-        {
+        if ($inputs['payment_type'] == 'invoices') {
             $builder->where('sale_type', SALE_TYPE_INVOICE);
-        }
-        elseif ($inputs['payment_type'] != 'all')
-        {
-            $builder->like('payment_type', lang('Sales.'.$inputs['payment_type']));
+        } elseif ($inputs['payment_type'] != 'all') {
+            $builder->like('payment_type', lang('Sales.' . $inputs['payment_type']));
         }
 
-        switch($inputs['sale_type'])
-        {
+        switch ($inputs['sale_type']) {
             case 'complete':
                 $builder->where('sale_status', COMPLETED);
                 $builder->groupStart();

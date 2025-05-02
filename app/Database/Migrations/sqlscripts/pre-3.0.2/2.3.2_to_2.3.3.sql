@@ -9,7 +9,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ALTER TABLE `ospos_sales_suspended`
     DROP KEY `invoice_number`;
 
-ALTER TABLE `ospos_items` 
+ALTER TABLE `ospos_items`
   CHANGE COLUMN `item_pic` `pic_id` int(10) DEFAULT NULL;
 
 -- Clear out emptied comments (0 inserted in comment if empty #192)

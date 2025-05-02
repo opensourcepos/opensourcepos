@@ -27,7 +27,7 @@ class Item_kits extends Secure_Controller
     /**
      * Add the total cost and retail price to a passed item_kit retrieving the data from each singular item part of the kit
      */
-    private function _add_totals_to_item_kit(object $item_kit): object    //TODO: Hungarian notation
+    private function _add_totals_to_item_kit(object $item_kit): object    // TODO: Hungarian notation
     {
         $kit_item_info = $this->item->get_info($item_kit->kit_item_id ?? $item_kit->item_id);
 
@@ -35,18 +35,15 @@ class Item_kits extends Secure_Controller
         $item_kit->total_unit_price = $kit_item_info->unit_price;
         $total_quantity = 0;
 
-        foreach($this->item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
-        {
+        foreach ($this->item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item) {
             $item_info = $this->item->get_info($item_kit_item['item_id']);
-            foreach(get_object_vars($item_info) as $property => $value)
-            {
+            foreach (get_object_vars($item_info) as $property => $value) {
                 $item_info->$property = $value;
             }
 
             $item_kit->total_cost_price += $item_info->cost_price * $item_kit_item['quantity'];
 
-            if($item_kit->price_option == PRICE_OPTION_ALL || ($item_kit->price_option == PRICE_OPTION_KIT_STOCK && $item_info->stock_type == HAS_STOCK ))
-            {
+            if ($item_kit->price_option == PRICE_OPTION_ALL || ($item_kit->price_option == PRICE_OPTION_KIT_STOCK && $item_info->stock_type == HAS_STOCK)) {
                 $item_kit->total_unit_price += $item_info->unit_price * $item_kit_item['quantity'];
                 $total_quantity += $item_kit_item['quantity'];
             }
@@ -55,8 +52,8 @@ class Item_kits extends Secure_Controller
         $discount_fraction = bcdiv($item_kit->kit_discount, '100');
 
         $item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)
-                ? bcmul($item_kit->total_unit_price, $discount_fraction)
-                : $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
+            ? bcmul($item_kit->total_unit_price, $discount_fraction)
+            : $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
 
         return $item_kit;
     }
@@ -86,14 +83,13 @@ class Item_kits extends Secure_Controller
         $total_rows = $this->item_kit->get_found_rows($search);
 
         $data_rows = [];
-        foreach($item_kits->getResult() as $item_kit)
-        {
-            // calculate the total cost and retail price of the Kit, so it can be printed out in the manage table
+        foreach ($item_kits->getResult() as $item_kit) {
+            // Calculate the total cost and retail price of the Kit, so it can be printed out in the manage table
             $item_kit = $this->_add_totals_to_item_kit($item_kit);
             $data_rows[] = get_item_kit_data_row($item_kit);
         }
 
-        echo json_encode (['total' => $total_rows, 'rows' => $data_rows]);
+        echo json_encode(['total' => $total_rows, 'rows' => $data_rows]);
     }
 
     /**
@@ -113,7 +109,7 @@ class Item_kits extends Secure_Controller
      */
     public function getRow(int $row_id): void
     {
-        // calculate the total cost and retail price of the Kit, so it can be added to the table refresh
+        // Calculate the total cost and retail price of the Kit, so it can be added to the table refresh
         $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($row_id));
 
         echo json_encode(get_item_kit_data_row($item_kit));
@@ -127,8 +123,7 @@ class Item_kits extends Secure_Controller
     {
         $info = $this->item_kit->get_info($item_kit_id);
 
-        if($item_kit_id == NEW_ENTRY)
-        {
+        if ($item_kit_id == NEW_ENTRY) {
             $info->price_option = '0';
             $info->print_option = PRINT_ALL;
             $info->kit_item_id = 0;
@@ -136,8 +131,7 @@ class Item_kits extends Secure_Controller
             $info->kit_discount = 0;
         }
 
-        foreach(get_object_vars($info) as $property => $value)
-        {
+        foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
 
@@ -145,8 +139,7 @@ class Item_kits extends Secure_Controller
 
         $items = [];
 
-        foreach($this->item_kit_items->get_info($item_kit_id) as $item_kit_item)
-        {
+        foreach ($this->item_kit_items->get_info($item_kit_id) as $item_kit_item) {
             $item['kit_sequence'] = $item_kit_item['kit_sequence'];
             $item['name'] = $this->item->get_info($item_kit_item['item_id'])->name;
             $item['item_id'] = $item_kit_item['item_id'];
@@ -180,23 +173,19 @@ class Item_kits extends Secure_Controller
             'description' => $this->request->getPost('description')
         ];
 
-        if($this->item_kit->save_value($item_kit_data, $item_kit_id))
-        {
+        if ($this->item_kit->save_value($item_kit_data, $item_kit_id)) {
             $new_item = false;
-            //New item kit
-            if($item_kit_id == NEW_ENTRY)
-            {
+            // New item kit
+            if ($item_kit_id == NEW_ENTRY) {
                 $item_kit_id = $item_kit_data['item_kit_id'];
                 $new_item = true;
             }
 
             $item_kit_items_array = $this->request->getPost('item_kit_qty') === null ? null : $this->request->getPost('item_kit_qty');
 
-            if($item_kit_items_array != null)
-            {
+            if ($item_kit_items_array != null) {
                 $item_kit_items = [];
-                foreach($item_kit_items_array as $item_id => $item_kit_qty)
-                {
+                foreach ($item_kit_items_array as $item_id => $item_kit_qty) {
                     $item_kit_items[] = [
                         'item_id' => $item_id,
                         'quantity' => $item_kit_qty === null ? 0 : parse_quantity($item_kit_qty),
@@ -205,36 +194,27 @@ class Item_kits extends Secure_Controller
                 }
             }
 
-            if (!empty($item_kit_items))
-            {
+            if (!empty($item_kit_items)) {
                 $success = $this->item_kit_items->save_value($item_kit_items, $item_kit_id);
-            }
-            else
-            {
+            } else {
                 $success = true;
             }
 
-            if($new_item)
-            {
-                echo json_encode ([
+            if ($new_item) {
+                echo json_encode([
                     'success' => $success,
-                    'message' => lang('Item_kits.successful_adding').' '.$item_kit_data['name'],
+                    'message' => lang('Item_kits.successful_adding') . ' ' . $item_kit_data['name'],
                     'id' => $item_kit_id
                 ]);
-
-            }
-            else
-            {
-                echo json_encode ([
+            } else {
+                echo json_encode([
                     'success' => $success,
-                    'message' => lang('Item_kits.successful_updating').' '.$item_kit_data['name'],
+                    'message' => lang('Item_kits.successful_updating') . ' ' . $item_kit_data['name'],
                     'id' => $item_kit_id
                 ]);
             }
-        }
-        else//failure
-        {
-            echo json_encode ([
+        } else { // Failure
+            echo json_encode([
                 'success' => false,
                 'message' => lang('Item_kits.error_adding_updating') . ' ' . $item_kit_data['name'],
                 'id' => NEW_ENTRY
@@ -249,16 +229,13 @@ class Item_kits extends Secure_Controller
     {
         $item_kits_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if($this->item_kit->delete_list($item_kits_to_delete))
-        {
-            echo json_encode ([
+        if ($this->item_kit->delete_list($item_kits_to_delete)) {
+            echo json_encode([
                 'success' => true,
                 'message' => lang('Item_kits.successful_deleted') . ' ' . count($item_kits_to_delete) . ' ' . lang('Item_kits.one_or_multiple')
             ]);
-        }
-        else
-        {
-            echo json_encode (['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
+        } else {
+            echo json_encode(['success' => false, 'message' => lang('Item_kits.cannot_be_deleted')]);
         }
     }
 
@@ -287,12 +264,11 @@ class Item_kits extends Secure_Controller
         $result = [];
 
         $item_kit_ids = explode(':', $item_kit_ids);
-        foreach($item_kit_ids as $item_kid_id)
-        {
-            // calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
+        foreach ($item_kit_ids as $item_kid_id) {
+            // Calculate the total cost and retail price of the Kit, so it can be added to the barcode text at the bottom
             $item_kit = $this->_add_totals_to_item_kit($this->item_kit->get_info($item_kid_id));
 
-            $item_kid_id = 'KIT '. urldecode($item_kid_id);
+            $item_kid_id = 'KIT ' . urldecode($item_kid_id);
 
             $result[] = [
                 'name' => $item_kit->name,
@@ -305,15 +281,14 @@ class Item_kits extends Secure_Controller
 
         $data['items'] = $result;
         $barcode_config = $barcode_lib->get_barcode_config();
-        // in case the selected barcode type is not Code39 or Code128 we set by default Code128
-        // the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
-        if($barcode_config['barcode_type'] != 'C39' && $barcode_config['barcode_type'] != 'C128')
-        {
+        // In case the selected barcode type is not Code39 or Code128 we set by default Code128
+        // The rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
+        if ($barcode_config['barcode_type'] != 'C39' && $barcode_config['barcode_type'] != 'C128') {
             $barcode_config['barcode_type'] = 'C128';
         }
         $data['barcode_config'] = $barcode_config;
 
-        // display barcodes
+        // Display barcodes
         echo view("barcodes/barcode_sheet", $data);
     }
 }
