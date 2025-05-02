@@ -402,7 +402,7 @@ class Config extends Secure_Controller
 
             $this->attribute->save_definition($definition_data, CATEGORY_DEFINITION_ID);
         } elseif ($batch_save_data['category_dropdown'] == NO_DEFINITION_ID) {
-            $this->attribute->delete_definition(CATEGORY_DEFINITION_ID);
+            $this->attribute->deleteDefinition(CATEGORY_DEFINITION_ID);
         }
 
         $success = $this->appconfig->batch_save($batch_save_data);

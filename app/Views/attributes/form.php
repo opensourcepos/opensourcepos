@@ -181,7 +181,7 @@ $(document).ready(function()
         }
         else
         {
-            $.post('<?= esc("$controller_name/delete_attribute_value/") ?>', {definition_id: definition_id, attribute_value: value});
+            $.post('<?= esc("$controller_name/DeleteDropdownAttributeValue/") ?>', {definition_id: definition_id, attribute_value: value});
         }
         $(this).parents("li").remove();
     };
