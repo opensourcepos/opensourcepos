@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'all' => "",
-    'authority' => "",
-    'canceled' => "",
-    'categories' => "",
-    'categories_summary_report' => "",
+    'all' => "هەموو",
+    'authority' => "دەسەڵات",
+    'canceled' => "هەڵوەشایەوە",
+    'categories' => "پۆلێنەکان",
+    'categories_summary_report' => "ڕاپۆرتی پوختەی پۆلێنەکان",
     'category' => "هاوپۆل",
-    'code_canceled' => "",
-    'code_invoice' => "",
+    'code_canceled' => "هەڵوەشاندنەوە",
+    'code_invoice' => "فاکتورە",
     'code_pos' => "",
     'code_quote' => "",
     'code_return' => "",
