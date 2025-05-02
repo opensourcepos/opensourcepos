@@ -884,11 +884,11 @@ class Sales extends Secure_Controller
             $text = $this->token_lib->render($text, $tokens);
             $sale_data['mimetype'] = mime_content_type(FCPATH . 'uploads/' . $this->config['company_logo']);
 
-            // Generate email attachment: invoice in pdf format
+            // Generate email attachment: invoice in PDF format
             $view = Services::renderer();
             $html = $view->setData($sale_data)->render("sales/$type" . '_email', $sale_data);
 
-            // Load pdf helper
+            // Load PDF helper
             helper(['dompdf', 'file']);
             $filename = sys_get_temp_dir() . '/' . lang('Sales.' . $type) . '-' . str_replace('/', '-', $number) . '.pdf';
             if (file_put_contents($filename, create_pdf($html)) !== false) {

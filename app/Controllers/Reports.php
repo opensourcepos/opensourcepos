@@ -1837,23 +1837,19 @@ class Reports extends Secure_Controller
 
                 $attribute_values = expand_attribute_values($definition_names, $drow);
 
-                $details_data[$row['sale_id']][] =
-                    array_merge(
-                        [
-                            $drow['name'],
-                            $drow['category'],
-                            $drow['item_number'],
-                            $drow['description'],
-                            $quantity_purchased,
-                            to_currency($drow['subtotal']),
-                            to_currency_tax($drow['tax']),
-                            to_currency($drow['total']),
-                            to_currency($drow['cost']),
-                            to_currency($drow['profit']),
-                            ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
-                        ],
-                        $attribute_values
-                    );
+                $details_data[$row['sale_id']][] = array_merge([
+                    $drow['name'],
+                    $drow['category'],
+                    $drow['item_number'],
+                    $drow['description'],
+                    $quantity_purchased,
+                    to_currency($drow['subtotal']),
+                    to_currency_tax($drow['tax']),
+                    to_currency($drow['total']),
+                    to_currency($drow['cost']),
+                    to_currency($drow['profit']),
+                    ($drow['discount_type'] == PERCENT) ? $drow['discount'] . '%' : to_currency($drow['discount'])
+                ], $attribute_values);
             }
 
             if (isset($report_data['rewards'][$key])) {
