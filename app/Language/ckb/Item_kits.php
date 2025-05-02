@@ -2,7 +2,7 @@
 
 return [
     'add_item' => "",
-    'all' => "",
+    'all' => "هەموو",
     'cannot_be_deleted' => "",
     'confirm_delete' => "",
     'confirm_restore' => "",
