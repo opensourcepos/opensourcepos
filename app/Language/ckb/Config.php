@@ -289,7 +289,7 @@ return [
     'service_charge' => "",
     'show_due_enable' => "",
     'show_office_group' => "ئایکۆنی ئۆفیس پیشان بدە",
-    'statistics' => "",
+    'statistics' => "ناردنی ئامار",
     'statistics_tooltip' => "",
     'stock_location' => "",
     'stock_location_duplicate' => "",
