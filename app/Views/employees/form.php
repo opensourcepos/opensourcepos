@@ -40,8 +40,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
                             <?= form_input([
-                                'name' => 'username',
-                                'id' => 'username',
+                                'name'  => 'username',
+                                'id'    => 'username',
                                 'class' => 'form-control input-sm',
                                 'value' => $person_info->username
                             ]) ?>
@@ -57,8 +57,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                             <?= form_password([
-                                'name' => 'password',
-                                'id' => 'password',
+                                'name'  => 'password',
+                                'id'    => 'password',
                                 'class' => 'form-control input-sm'
                             ]) ?>
                         </div>
@@ -71,8 +71,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                             <?= form_password([
-                                'name' => 'repeat_password',
-                                'id' => 'repeat_password',
+                                'name'  => 'repeat_password',
+                                'id'    => 'repeat_password',
                                 'class' => 'form-control input-sm'
                             ]) ?>
                         </div>
@@ -119,9 +119,9 @@
                             <?= form_dropdown(
                                 "menu_group_$module->module_id",
                                 [
-                                    'home' => lang('Module.home'),
+                                    'home'   => lang('Module.home'),
                                     'office' => lang('Module.office'),
-                                    'both' => lang('Module.both')
+                                    'both'   => lang('Module.both')
                                 ],
                                 $module->menu_group,
                                 'class="module"'

@@ -338,26 +338,26 @@ class Receiving_lib
 
         $item = [
             $insertkey => [
-                'item_id' => $item_id,
-                'item_location' => $item_location,
-                'item_number' => $item_info->item_number,
-                'stock_name' => $this->stock_location->get_location_name($item_location),
-                'line' => $insertkey,
-                'name' => $item_info->name,
-                'description' => $description != null ? $description : $item_info->description,
-                'serialnumber' => $serialnumber != null ? $serialnumber : '',
-                'attribute_values' => $attribute_links->attribute_values,
-                'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
-                'allow_alt_description' => $item_info->allow_alt_description,
-                'is_serialized' => $item_info->is_serialized,
-                'quantity' => $quantity,
-                'discount' => $discount,
-                'discount_type' => $discount_type,
-                'in_stock' => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
-                'price' => $price,
-                'receiving_quantity' => $receiving_quantity,
+                'item_id'                    => $item_id,
+                'item_location'              => $item_location,
+                'item_number'                => $item_info->item_number,
+                'stock_name'                 => $this->stock_location->get_location_name($item_location),
+                'line'                       => $insertkey,
+                'name'                       => $item_info->name,
+                'description'                => $description != null ? $description : $item_info->description,
+                'serialnumber'               => $serialnumber != null ? $serialnumber : '',
+                'attribute_values'           => $attribute_links->attribute_values,
+                'attribute_dtvalues'         => $attribute_links->attribute_dtvalues,
+                'allow_alt_description'      => $item_info->allow_alt_description,
+                'is_serialized'              => $item_info->is_serialized,
+                'quantity'                   => $quantity,
+                'discount'                   => $discount,
+                'discount_type'              => $discount_type,
+                'in_stock'                   => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                'price'                      => $price,
+                'receiving_quantity'         => $receiving_quantity,
                 'receiving_quantity_choices' => $receiving_quantity_choices,
-                'total' => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
+                'total'                      => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
             ]
         ];
 

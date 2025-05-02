@@ -244,33 +244,33 @@ class Customers extends Persons
         $last_name = $this->nameize($last_name);
 
         $person_data = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
-            'email' => $email,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
+            'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number'),
-            'address_1' => $this->request->getPost('address_1'),
-            'address_2' => $this->request->getPost('address_2'),
-            'city' => $this->request->getPost('city'),
-            'state' => $this->request->getPost('state'),
-            'zip' => $this->request->getPost('zip'),
-            'country' => $this->request->getPost('country'),
-            'comments' => $this->request->getPost('comments')
+            'address_1'    => $this->request->getPost('address_1'),
+            'address_2'    => $this->request->getPost('address_2'),
+            'city'         => $this->request->getPost('city'),
+            'state'        => $this->request->getPost('state'),
+            'zip'          => $this->request->getPost('zip'),
+            'country'      => $this->request->getPost('country'),
+            'comments'     => $this->request->getPost('comments')
         ];
 
         $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $this->request->getPost('date'));
 
         $customer_data = [
-            'consent' => $this->request->getPost('consent') != null,
-            'account_number' => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
-            'tax_id' => $this->request->getPost('tax_id'),
-            'company_name' => $this->request->getPost('company_name') == '' ? null : $this->request->getPost('company_name'),
-            'discount' => $this->request->getPost('discount') == '' ? 0.00 : parse_decimals($this->request->getPost('discount')),
-            'discount_type' => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
-            'package_id' => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
-            'taxable' => $this->request->getPost('taxable') != null,
-            'date' => $date_formatter->format('Y-m-d H:i:s'),
-            'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'consent'           => $this->request->getPost('consent') != null,
+            'account_number'    => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
+            'tax_id'            => $this->request->getPost('tax_id'),
+            'company_name'      => $this->request->getPost('company_name') == '' ? null : $this->request->getPost('company_name'),
+            'discount'          => $this->request->getPost('discount') == '' ? 0.00 : parse_decimals($this->request->getPost('discount')),
+            'discount_type'     => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
+            'package_id'        => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
+            'taxable'           => $this->request->getPost('taxable') != null,
+            'date'              => $date_formatter->format('Y-m-d H:i:s'),
+            'employee_id'       => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
             'sales_tax_code_id' => $this->request->getPost('sales_tax_code_id') == '' ? null : $this->request->getPost('sales_tax_code_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
@@ -291,20 +291,20 @@ class Customers extends Persons
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Customers.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id' => $customer_data['person_id']
+                    'id'      => $customer_data['person_id']
                 ]);
             } else { // Existing customer
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Customers.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id' => $customer_id
+                    'id'      => $customer_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => false,
                 'message' => lang('Customers.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }
@@ -415,28 +415,28 @@ class Customers extends Persons
                     if (sizeof($data) >= 16 && $consent) {
                         $email = strtolower($data[4]);
                         $person_data = [
-                            'first_name' => $data[0],
-                            'last_name' => $data[1],
-                            'gender' => $data[2],
-                            'email' => $email,
+                            'first_name'   => $data[0],
+                            'last_name'    => $data[1],
+                            'gender'       => $data[2],
+                            'email'        => $email,
                             'phone_number' => $data[5],
-                            'address_1' => $data[6],
-                            'address_2' => $data[7],
-                            'city' => $data[8],
-                            'state' => $data[9],
-                            'zip' => $data[10],
-                            'country' => $data[11],
-                            'comments' => $data[12]
+                            'address_1'    => $data[6],
+                            'address_2'    => $data[7],
+                            'city'         => $data[8],
+                            'state'        => $data[9],
+                            'zip'          => $data[10],
+                            'country'      => $data[11],
+                            'comments'     => $data[12]
                         ];
 
                         $customer_data = [
-                            'consent' => $consent,
-                            'company_name' => $data[13],
-                            'discount' => $data[15],
+                            'consent'       => $consent,
+                            'company_name'  => $data[13],
+                            'discount'      => $data[15],
                             'discount_type' => $data[16],
-                            'taxable' => $data[17] == '' ? 0 : 1,
-                            'date' => date('Y-m-d H:i:s'),
-                            'employee_id' => $this->employee->get_logged_in_employee_info()->person_id
+                            'taxable'       => $data[17] == '' ? 0 : 1,
+                            'date'          => date('Y-m-d H:i:s'),
+                            'employee_id'   => $this->employee->get_logged_in_employee_info()->person_id
                         ];
                         $account_number = $data[14];
 

@@ -77,7 +77,7 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
     public function postSave(int $expense_category_id = NEW_ENTRY): void
     {
         $expense_category_data = [
-            'category_name' => $this->request->getPost('category_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'category_name'        => $this->request->getPost('category_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'category_description' => $this->request->getPost('category_description', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
@@ -87,20 +87,20 @@ class Expenses_categories extends Secure_Controller    // TODO: Is this class ev
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_adding'),
-                    'id' => $expense_category_data['expense_category_id']
+                    'id'      => $expense_category_data['expense_category_id']
                 ]);
             } else { // Existing Expense Category
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Expenses_categories.successful_updating'),
-                    'id' => $expense_category_id
+                    'id'      => $expense_category_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => true,
                 'message' => lang('Expenses_categories.error_adding_updating') . ' ' . $expense_category_data['category_name'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

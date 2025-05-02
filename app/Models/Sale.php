@@ -461,21 +461,21 @@ class Sale extends Model
                 if ($payment_id == NEW_ENTRY && $payment_amount != 0) {
                     // Add a new payment transaction
                     $sales_payments_data = [
-                        'sale_id' => $sale_id,
-                        'payment_type' => $payment_type,
-                        'payment_amount' => $payment_amount,
-                        'cash_refund' => $cash_refund,
+                        'sale_id'         => $sale_id,
+                        'payment_type'    => $payment_type,
+                        'payment_amount'  => $payment_amount,
+                        'cash_refund'     => $cash_refund,
                         'cash_adjustment' => $cash_adjustment,
-                        'employee_id'  => $employee_id
+                        'employee_id'     => $employee_id
                     ];
                     $success = $builder->insert($sales_payments_data);
                 } elseif ($payment_id != NEW_ENTRY) {
                     if ($payment_amount != 0) {
                         // Update existing payment transactions (payment_type only)
                         $sales_payments_data = [
-                            'payment_type' => $payment_type,
-                            'payment_amount' => $payment_amount,
-                            'cash_refund' => $cash_refund,
+                            'payment_type'    => $payment_type,
+                            'payment_amount'  => $payment_amount,
+                            'cash_refund'     => $cash_refund,
                             'cash_adjustment' => $cash_adjustment
                         ];
 
@@ -533,16 +533,16 @@ class Sale extends Model
         }
 
         $sales_data = [
-            'sale_time' => date('Y-m-d H:i:s'),
-            'customer_id' => $customer->exists($customer_id) ? $customer_id : null,
-            'employee_id' => $employee_id,
-            'comment' => $comment,
-            'sale_status' => $sale_status,
-            'invoice_number' => $invoice_number,
-            'quote_number' => $quote_number,
+            'sale_time'         => date('Y-m-d H:i:s'),
+            'customer_id'       => $customer->exists($customer_id) ? $customer_id : null,
+            'employee_id'       => $employee_id,
+            'comment'           => $comment,
+            'sale_status'       => $sale_status,
+            'invoice_number'    => $invoice_number,
+            'quote_number'      => $quote_number,
             'work_order_number' => $work_order_number,
-            'dinner_table_id' => $dinner_table_id,
-            'sale_type' => $sale_type
+            'dinner_table_id'   => $dinner_table_id,
+            'sale_type'         => $sale_type
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -574,12 +574,12 @@ class Sale extends Model
             }
 
             $sales_payments_data = [
-                'sale_id' => $sale_id,
-                'payment_type' => $payment['payment_type'],
-                'payment_amount' => $payment['payment_amount'],
-                'cash_refund' => $payment['cash_refund'],
+                'sale_id'         => $sale_id,
+                'payment_type'    => $payment['payment_type'],
+                'payment_amount'  => $payment['payment_amount'],
+                'cash_refund'     => $payment['cash_refund'],
                 'cash_adjustment' => $payment['cash_adjustment'],
-                'employee_id' => $employee_id
+                'employee_id'     => $employee_id
             ];
 
             $builder = $this->db->table('sales_payments');
@@ -600,18 +600,18 @@ class Sale extends Model
             }
 
             $sales_items_data = [
-                'sale_id' => $sale_id,
-                'item_id' => $item_data['item_id'],
-                'line' => $item_data['line'],
-                'description' => character_limiter($item_data['description'], 255),
-                'serialnumber' => character_limiter($item_data['serialnumber'], 30),
+                'sale_id'            => $sale_id,
+                'item_id'            => $item_data['item_id'],
+                'line'               => $item_data['line'],
+                'description'        => character_limiter($item_data['description'], 255),
+                'serialnumber'       => character_limiter($item_data['serialnumber'], 30),
                 'quantity_purchased' => $item_data['quantity'],
-                'discount' => $item_data['discount'],
-                'discount_type' => $item_data['discount_type'],
-                'item_cost_price' => $item_data['cost_price'],
-                'item_unit_price' => $item_data['price'],
-                'item_location' => $item_data['item_location'],
-                'print_option' => $item_data['print_option']
+                'discount'           => $item_data['discount'],
+                'discount_type'      => $item_data['discount_type'],
+                'item_cost_price'    => $item_data['cost_price'],
+                'item_unit_price'    => $item_data['price'],
+                'item_location'      => $item_data['item_location'],
+                'print_option'       => $item_data['print_option']
             ];
 
             $builder = $this->db->table('sales_items');
@@ -624,7 +624,7 @@ class Sale extends Model
                 $item_quantity->save_value(
                     [
                         'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
-                        'item_id' => $item_data['item_id'],
+                        'item_id'     => $item_data['item_id'],
                         'location_id' => $item_data['item_location']
                     ],
                     $item_data['item_id'],
@@ -639,11 +639,11 @@ class Sale extends Model
                 // Inventory Count Details
                 $sale_remarks = 'POS ' . $sale_id;    // TODO: Use string interpolation here.
                 $inv_data = [
-                    'trans_date' => date('Y-m-d H:i:s'),
-                    'trans_items' => $item_data['item_id'],
-                    'trans_user' => $employee_id,
-                    'trans_location' => $item_data['item_location'],
-                    'trans_comment' => $sale_remarks,
+                    'trans_date'      => date('Y-m-d H:i:s'),
+                    'trans_items'     => $item_data['item_id'],
+                    'trans_user'      => $employee_id,
+                    'trans_location'  => $item_data['item_location'],
+                    'trans_comment'   => $sale_remarks,
                     'trans_inventory' => -$item_data['quantity']
                 ];
 
@@ -698,18 +698,18 @@ class Sale extends Model
 
         foreach ($sales_item_taxes as $line => $tax_item) {
             $sales_items_taxes = [
-                'sale_id' => $sale_id,
-                'item_id' => $tax_item['item_id'],
-                'line' => $tax_item['line'],
-                'name' => $tax_item['name'],
-                'percent' => $tax_item['percent'],
-                'tax_type' => $tax_item['tax_type'],
-                'rounding_code' => $tax_item['rounding_code'],
-                'cascade_sequence' => $tax_item['cascade_sequence'],
-                'item_tax_amount' => $tax_item['item_tax_amount'],
+                'sale_id'           => $sale_id,
+                'item_id'           => $tax_item['item_id'],
+                'line'              => $tax_item['line'],
+                'name'              => $tax_item['name'],
+                'percent'           => $tax_item['percent'],
+                'tax_type'          => $tax_item['tax_type'],
+                'rounding_code'     => $tax_item['rounding_code'],
+                'cascade_sequence'  => $tax_item['cascade_sequence'],
+                'item_tax_amount'   => $tax_item['item_tax_amount'],
                 'sales_tax_code_id' => $tax_item['sales_tax_code_id'],
-                'tax_category_id' => $tax_item['tax_category_id'],
-                'jurisdiction_id' => $tax_item['jurisdiction_id']
+                'tax_category_id'   => $tax_item['tax_category_id'],
+                'jurisdiction_id'   => $tax_item['jurisdiction_id']
             ];
 
             $builder->insert($sales_items_taxes);
@@ -799,11 +799,11 @@ class Sale extends Model
                 if ($cur_item_info->stock_type == HAS_STOCK) {
                     // Create query to update inventory tracking
                     $inv_data = [
-                        'trans_date' => date('Y-m-d H:i:s'),
-                        'trans_items' => $item_data['item_id'],
-                        'trans_user' => $employee_id,
-                        'trans_comment' => 'Deleting sale ' . $sale_id,
-                        'trans_location' => $item_data['item_location'],
+                        'trans_date'      => date('Y-m-d H:i:s'),
+                        'trans_items'     => $item_data['item_id'],
+                        'trans_user'      => $employee_id,
+                        'trans_comment'   => 'Deleting sale ' . $sale_id,
+                        'trans_location'  => $item_data['item_location'],
                         'trans_inventory' => $item_data['quantity_purchased']
                     ];
                     // Update inventory

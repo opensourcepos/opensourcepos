@@ -18,8 +18,8 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
         <?= form_label(lang('Config.customer_reward') . " $i", "customer_reward_$i", ['class' => 'required control-label col-xs-2']) ?>
         <div class="col-xs-2">
             <?php $form_data = [
-                'name' => 'customer_reward_' . $customer_reward_id,
-                'id' => 'customer_reward_' . $customer_reward_id,
+                'name'  => 'customer_reward_' . $customer_reward_id,
+                'id'    => 'customer_reward_' . $customer_reward_id,
                 'class' => 'customer_reward valid_chars form-control input-sm required',
                 'value' => $customer_reward_name
             ];
@@ -29,8 +29,8 @@ foreach ($customer_rewards as $reward_key => $reward_category) {
         </div>
         <div class="col-xs-2">
             <?php $form_data = [
-                'name' => 'reward_points_' . $customer_reward_id,
-                'id' => 'reward_points_' . $customer_reward_id,
+                'name'  => 'reward_points_' . $customer_reward_id,
+                'id'    => 'reward_points_' . $customer_reward_id,
                 'class' => 'customer_reward valid_chars form-control input-sm required',
                 'value' => $customer_points_percent
             ];

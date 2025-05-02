@@ -18,10 +18,10 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
                             <?= form_input([
-                                'name' => 'username',
-                                'id' => 'username',
-                                'class' => 'form-control input-sm',
-                                'value' => $person_info->username,
+                                'name'     => 'username',
+                                'id'       => 'username',
+                                'class'    => 'form-control input-sm',
+                                'value'    => $person_info->username,
                                 'readonly' => 'true'
                             ]) ?>
                         </div>
@@ -36,8 +36,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                             <?= form_password([
-                                'name' => 'current_password',
-                                'id' => 'current_password',
+                                'name'  => 'current_password',
+                                'id'    => 'current_password',
                                 'class' => 'form-control input-sm'
                             ]) ?>
                         </div>
@@ -50,8 +50,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                             <?= form_password([
-                                'name' => 'password',
-                                'id' => 'password',
+                                'name'  => 'password',
+                                'id'    => 'password',
                                 'class' => 'form-control input-sm'
                             ]) ?>
                         </div>
@@ -64,8 +64,8 @@
                         <div class="input-group">
                             <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
                             <?= form_password([
-                                'name' => 'repeat_password',
-                                'id' => 'repeat_password',
+                                'name'  => 'repeat_password',
+                                'id'    => 'repeat_password',
                                 'class' => 'form-control input-sm'
                             ]) ?>
                         </div>

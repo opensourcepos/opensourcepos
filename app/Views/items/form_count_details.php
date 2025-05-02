@@ -18,11 +18,11 @@ use App\Models\Inventory;
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
                     <?= form_input([
-                        'name' => 'item_number',
-                        'id' => 'item_number',
-                        'class' => 'form-control input-sm',
+                        'name'     => 'item_number',
+                        'id'       => 'item_number',
+                        'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value' => $item_info->item_number
+                        'value'    => $item_info->item_number
                     ]) ?>
                 </div>
             </div>
@@ -32,11 +32,11 @@ use App\Models\Inventory;
             <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'name',
-                    'id' => 'name',
-                    'class' => 'form-control input-sm',
+                    'name'     => 'name',
+                    'id'       => 'name',
+                    'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value' => $item_info->name
+                    'value'    => $item_info->name
                 ]) ?>
             </div>
         </div>
@@ -47,11 +47,11 @@ use App\Models\Inventory;
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
                     <?= form_input([
-                        'name' => 'category',
-                        'id' => 'category',
-                        'class' => 'form-control input-sm',
+                        'name'     => 'category',
+                        'id'       => 'category',
+                        'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value' => $item_info->category
+                        'value'    => $item_info->category
                     ]) ?>
                 </div>
             </div>
@@ -68,11 +68,11 @@ use App\Models\Inventory;
             <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'quantity',
-                    'id' => 'quantity',
-                    'class' => 'form-control input-sm',
+                    'name'     => 'quantity',
+                    'id'       => 'quantity',
+                    'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value' => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals(current($item_quantities))
                 ]) ?>
             </div>
         </div>

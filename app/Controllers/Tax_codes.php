@@ -94,10 +94,10 @@ class Tax_codes extends Secure_Controller
     public function postSave(int $tax_code_id = NEW_ENTRY): void
     {
         $tax_code_data = [
-            'tax_code' => $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'tax_code'      => $this->request->getPost('tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'tax_code_name' => $this->request->getPost('tax_code_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+            'city'          => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'state'         => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
         if ($this->tax_code->save($tax_code_data)) {
@@ -105,20 +105,20 @@ class Tax_codes extends Secure_Controller
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_adding'),
-                    'id' => $tax_code_data['tax_code_id']
+                    'id'      => $tax_code_data['tax_code_id']
                 ]);
             } else {
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Tax_codes.successful_updating'),
-                    'id' => $tax_code_id
+                    'id'      => $tax_code_id
                 ]);
             }
         } else {
             echo json_encode([
                 'success' => false,
                 'message' => lang('Tax_codes.error_adding_updating') . ' ' . $tax_code_data['tax_code_id'],
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

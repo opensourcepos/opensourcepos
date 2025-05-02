@@ -57,11 +57,11 @@ class Convert_to_ci4 extends Migration
         $appconfig = model(Appconfig::class);
 
         $ci3_encrypted_data = [
-            'clcdesq_api_key' => '',
-            'clcdesq_api_url' => '',
+            'clcdesq_api_key'   => '',
+            'clcdesq_api_url'   => '',
             'mailchimp_api_key' => '',
             'mailchimp_list_id' => '',
-            'smtp_pass' => ''
+            'smtp_pass'         => ''
         ];
 
         foreach ($ci3_encrypted_data as $key => $value) {

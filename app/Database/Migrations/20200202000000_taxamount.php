@@ -280,16 +280,16 @@ class Migration_TaxAmount extends Migration
             $insertkey = $tax_group_index;
             $sales_tax = [
                 $insertkey => [
-                    'sale_id' => $sale_id,
-                    'tax_type' => $tax_type,
-                    'tax_group' => $tax_group,
-                    'sale_tax_basis' => $tax_basis,
-                    'sale_tax_amount' => $item_tax_amount,
-                    'print_sequence' => $tax_group_sequence,
-                    'name' => $name,
-                    'tax_rate' => $tax_rate,
+                    'sale_id'           => $sale_id,
+                    'tax_type'          => $tax_type,
+                    'tax_group'         => $tax_group,
+                    'sale_tax_basis'    => $tax_basis,
+                    'sale_tax_amount'   => $item_tax_amount,
+                    'print_sequence'    => $tax_group_sequence,
+                    'name'              => $name,
+                    'tax_rate'          => $tax_rate,
                     'sales_tax_code_id' => $tax_code,
-                    'rounding_code' => $rounding_code
+                    'rounding_code'     => $rounding_code
                 ]
             ];
 

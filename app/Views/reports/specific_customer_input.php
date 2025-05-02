@@ -53,10 +53,10 @@ if (isset($error)) {
 
     <?php
     echo form_button([
-        'name' => 'generate_report',
-        'id' => 'generate_report',
+        'name'    => 'generate_report',
+        'id'      => 'generate_report',
         'content' => lang('Common.submit'),
-        'class' => 'btn btn-primary btn-sm'
+        'class'   => 'btn btn-primary btn-sm'
     ]);    ?>
 
 <?= form_close() ?>

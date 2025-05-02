@@ -23,11 +23,11 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
         <?= form_label(lang('Taxes.tax_jurisdiction') . " $i", "jurisdiction_name_$i", ['class' => 'control-label col-xs-2']) ?>
         <div class="col-xs-2">
             <?php $form_data = [
-                'name' => 'jurisdiction_name[]',
-                'id' => "jurisdiction_name_$i",
-                'class' => 'valid_chars form-control input-sm',
+                'name'        => 'jurisdiction_name[]',
+                'id'          => "jurisdiction_name_$i",
+                'class'       => 'valid_chars form-control input-sm',
                 'placeholder' => lang('Taxes.jurisdiction_name'),
-                'value' => $jurisdiction_name
+                'value'       => $jurisdiction_name
             ];
             echo form_input($form_data);
             ?>
@@ -35,10 +35,10 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
 
         <div class="col-xs-1">
             <?php $form_data = [
-                'name' => 'tax_group[]',
-                'class' => 'valid_chars form-control input-sm',
+                'name'        => 'tax_group[]',
+                'class'       => 'valid_chars form-control input-sm',
                 'placeholder' => lang('Taxes.tax_group'),
-                'value' => $tax_group
+                'value'       => $tax_group
             ];
             echo form_input($form_data);
             ?>
@@ -50,10 +50,10 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
 
         <div class="col-xs-2">
             <?php $form_data = [
-                'name' => 'reporting_authority[]',
-                'class' => 'valid_chars form-control input-sm',
+                'name'        => 'reporting_authority[]',
+                'class'       => 'valid_chars form-control input-sm',
                 'placeholder' => lang('Taxes.reporting_authority'),
-                'value' => $reporting_authority
+                'value'       => $reporting_authority
             ];
             echo form_input($form_data)
             ?>
@@ -61,10 +61,10 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
 
         <div class="col-xs-1">
             <?php $form_data = [
-                'name' => 'tax_group_sequence[]',
-                'class' => 'valid_chars form-control input-sm',
+                'name'        => 'tax_group_sequence[]',
+                'class'       => 'valid_chars form-control input-sm',
                 'placeholder' => lang('Taxes.sequence'),
-                'value' => $tax_group_sequence
+                'value'       => $tax_group_sequence
             ];
             echo form_input($form_data)
             ?>
@@ -72,10 +72,10 @@ foreach ($tax_jurisdictions as $tax_jurisdiction => $jurisdiction) {
 
         <div class="col-xs-1">
             <?php $form_data = [
-                'name' => 'cascade_sequence[]',
-                'class' => 'valid_chars form-control input-sm',
+                'name'        => 'cascade_sequence[]',
+                'class'       => 'valid_chars form-control input-sm',
                 'placeholder' => lang('Taxes.cascade_sequence'),
-                'value' => $cascade_sequence
+                'value'       => $cascade_sequence
             ];
             echo form_input($form_data)
             ?>

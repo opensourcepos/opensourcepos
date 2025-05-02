@@ -48,11 +48,11 @@ if (isset($error)) {
         <?php if (isset($discount_type_options)) { ?>
             <div class="col-xs-3 discount_fixed">
                 <?= form_input([
-                    'name' => 'discount_fixed',
-                    'id' => 'discount_fixed',
+                    'name'  => 'discount_fixed',
+                    'id'    => 'discount_fixed',
                     'class' => 'form-control input-sm required',
-                    'type' => 'number',
-                    'min' => 0,
+                    'type'  => 'number',
+                    'min'   => 0,
                     'value' => $config['default_sales_discount']
                 ]) ?>
             </div>
@@ -68,10 +68,10 @@ if (isset($error)) {
 
     <?php
     echo form_button([
-        'name' => 'generate_report',
-        'id' => 'generate_report',
+        'name'    => 'generate_report',
+        'id'      => 'generate_report',
         'content' => lang('Common.submit'),
-        'class' => 'btn btn-primary btn-sm'
+        'class'   => 'btn btn-primary btn-sm'
     ]) ?>
 
 <?= form_close() ?>

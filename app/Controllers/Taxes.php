@@ -379,11 +379,11 @@ class Taxes extends Secure_Controller
         }
 
         $tax_rate_data = [
-            'rate_tax_code_id' => $this->request->getPost('rate_tax_code_id', FILTER_SANITIZE_NUMBER_INT),
+            'rate_tax_code_id'     => $this->request->getPost('rate_tax_code_id', FILTER_SANITIZE_NUMBER_INT),
             'rate_tax_category_id' => $tax_category_id,
             'rate_jurisdiction_id' => $this->request->getPost('rate_jurisdiction_id', FILTER_SANITIZE_NUMBER_INT),
-            'tax_rate' => $tax_rate,
-            'tax_rounding_code' => $this->request->getPost('tax_rounding_code', FILTER_SANITIZE_NUMBER_INT)
+            'tax_rate'             => $tax_rate,
+            'tax_rounding_code'    => $this->request->getPost('tax_rounding_code', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         if ($this->tax->save_value($tax_rate_data, $tax_rate_id)) {
@@ -442,11 +442,11 @@ class Taxes extends Secure_Controller
         $array_save = [];    // TODO: the naming of this variable is not good.
         foreach ($tax_code_id as $key => $val) {
             $array_save[] = [
-                'tax_code_id' => $val,
-                'tax_code' => $tax_code[$key],
+                'tax_code_id'   => $val,
+                'tax_code'      => $tax_code[$key],
                 'tax_code_name' => $tax_code_name[$key],
-                'city' => $city[$key],
-                'state' => $state[$key]
+                'city'          => $city[$key],
+                'state'         => $state[$key]
             ];
         }
 
@@ -479,13 +479,13 @@ class Taxes extends Secure_Controller
 
         foreach ($jurisdiction_id as $key => $val) {
             $array_save[] = [
-                'jurisdiction_id' => $val,
-                'jurisdiction_name' => $jurisdiction_name[$key],
-                'tax_group' => $tax_group[$key],
-                'tax_type' => $tax_type[$key],
+                'jurisdiction_id'     => $val,
+                'jurisdiction_name'   => $jurisdiction_name[$key],
+                'tax_group'           => $tax_group[$key],
+                'tax_type'            => $tax_type[$key],
                 'reporting_authority' => $reporting_authority[$key],
-                'tax_group_sequence' => $tax_group_sequence[$key],
-                'cascade_sequence' => $cascade_sequence[$key]
+                'tax_group_sequence'  => $tax_group_sequence[$key],
+                'cascade_sequence'    => $cascade_sequence[$key]
             ];
 
             if (in_array($tax_group[$key], $unique_tax_groups)) {    // TODO: This can be replaced with `in_array($tax_group[$key], $unique_tax_groups)`
@@ -523,8 +523,8 @@ class Taxes extends Secure_Controller
 
         foreach ($tax_category_id as $key => $val) {
             $array_save[] = [
-                'tax_category_id' => $val,
-                'tax_category' => $tax_category[$key],
+                'tax_category_id'    => $val,
+                'tax_category'       => $tax_category[$key],
                 'tax_group_sequence' => $tax_group_sequence[$key]
             ];
         }
@@ -583,8 +583,8 @@ class Taxes extends Secure_Controller
 
         echo view('partial/tax_jurisdictions', [
             'tax_jurisdictions' => $tax_jurisdictions,
-            'tax_types' => $tax_types,
-            'default_tax_type' => $default_tax_type
+            'tax_types'         => $tax_types,
+            'default_tax_type'  => $default_tax_type
         ]);
     }
 }

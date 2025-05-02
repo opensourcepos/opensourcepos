@@ -26,8 +26,8 @@
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                     <?= form_input([
-                        'name' => 'open_date',
-                        'id' => 'open_date',
+                        'name'  => 'open_date',
+                        'id'    => 'open_date',
                         'class' => 'form-control input-sm datepicker',
                         'value' => to_datetime(strtotime($cash_ups_info->open_date))
                     ]) ?>
@@ -50,8 +50,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'open_amount_cash',
-                        'id' => 'open_amount_cash',
+                        'name'  => 'open_amount_cash',
+                        'id'    => 'open_amount_cash',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->open_amount_cash)
                     ]) ?>
@@ -70,8 +70,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'transfer_amount_cash',
-                        'id' => 'transfer_amount_cash',
+                        'name'  => 'transfer_amount_cash',
+                        'id'    => 'transfer_amount_cash',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->transfer_amount_cash)
                     ]) ?>
@@ -90,8 +90,8 @@
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                     <?= form_input([
-                        'name' => 'close_date',
-                        'id' => 'close_date',
+                        'name'  => 'close_date',
+                        'id'    => 'close_date',
                         'class' => 'form-control input-sm datepicker',
                         'value' => to_datetime(strtotime($cash_ups_info->close_date))
                     ]) ?>
@@ -114,8 +114,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'closed_amount_cash',
-                        'id' => 'closed_amount_cash',
+                        'name'  => 'closed_amount_cash',
+                        'id'    => 'closed_amount_cash',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->closed_amount_cash)
                     ]) ?>
@@ -130,9 +130,9 @@
             <?= form_label(lang('Cashups.note'), 'note', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <?= form_checkbox([
-                    'name' => 'note',
-                    'id' => 'note',
-                    'value' => 0,
+                    'name'    => 'note',
+                    'id'      => 'note',
+                    'value'   => 0,
                     'checked' => $cash_ups_info->note == 1
                 ]) ?>
             </div>
@@ -146,8 +146,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'closed_amount_due',
-                        'id' => 'closed_amount_due',
+                        'name'  => 'closed_amount_due',
+                        'id'    => 'closed_amount_due',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->closed_amount_due)
                     ]) ?>
@@ -166,8 +166,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'closed_amount_card',
-                        'id' => 'closed_amount_card',
+                        'name'  => 'closed_amount_card',
+                        'id'    => 'closed_amount_card',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->closed_amount_card)
                     ]) ?>
@@ -186,8 +186,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'closed_amount_check',
-                        'id' => 'closed_amount_check',
+                        'name'  => 'closed_amount_check',
+                        'id'    => 'closed_amount_check',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($cash_ups_info->closed_amount_check)
                     ]) ?>
@@ -206,11 +206,11 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'closed_amount_total',
-                        'id' => 'closed_amount_total',
+                        'name'     => 'closed_amount_total',
+                        'id'       => 'closed_amount_total',
                         'readonly' => 'true',
-                        'class' => 'form-control input-sm',
-                        'value' => to_currency_no_money($cash_ups_info->closed_amount_total)
+                        'class'    => 'form-control input-sm',
+                        'value'    => to_currency_no_money($cash_ups_info->closed_amount_total)
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
@@ -223,8 +223,8 @@
             <?= form_label(lang('Cashups.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <?= form_textarea([
-                    'name' => 'description',
-                    'id' => 'description',
+                    'name'  => 'description',
+                    'id'    => 'description',
                     'class' => 'form-control input-sm',
                     'value' => $cash_ups_info->description
                 ]) ?>
@@ -236,9 +236,9 @@
                 <?= form_label(lang('Cashups.is_deleted') . ':', 'deleted', ['class' => 'control-label col-xs-3']) ?>
                 <div class="col-xs-5">
                     <?= form_checkbox([
-                        'name' => 'deleted',
-                        'id' => 'deleted',
-                        'value' => 1,
+                        'name'    => 'deleted',
+                        'id'      => 'deleted',
+                        'value'   => 1,
                         'checked' => $cash_ups_info->deleted == 1
                     ]) ?>
                 </div>

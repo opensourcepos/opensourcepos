@@ -50,7 +50,7 @@ class Cashups extends Secure_Controller
         $order = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $filters = [
             'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),    // TODO: Is this the best way to filter dates
-            'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'   => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'is_deleted' => false
         ];
 
@@ -124,17 +124,17 @@ class Cashups extends Secure_Controller
                 }
                 // Search for all the payments given the time range
                 $inputs = [
-                    'start_date' => $start_date,
-                    'end_date' => $end_date,
-                    'sale_type' => 'complete',
+                    'start_date'  => $start_date,
+                    'end_date'    => $end_date,
+                    'sale_type'   => 'complete',
                     'location_id' => 'all'
                 ];
             } else {
                 // Search for all the payments given the time range
                 $inputs = [
-                    'start_date' => $cash_ups_info->open_date,
-                    'end_date' => $cash_ups_info->close_date,
-                    'sale_type' => 'complete',
+                    'start_date'  => $cash_ups_info->open_date,
+                    'end_date'    => $cash_ups_info->close_date,
+                    'sale_type'   => 'complete',
                     'location_id' => 'all'
                 ];
             }
@@ -161,12 +161,12 @@ class Cashups extends Secure_Controller
 
             // Lookup expenses paid in cash
             $filters = [
-                'only_cash' => true,
-                'only_due' => false,
-                'only_check' => false,
+                'only_cash'   => true,
+                'only_due'    => false,
+                'only_check'  => false,
                 'only_credit' => false,
-                'only_debit' => false,
-                'is_deleted' => false
+                'only_debit'  => false,
+                'is_deleted'  => false
             ];
 
             $payments = $this->expense->get_payments_summary('', array_merge($inputs, $filters));
@@ -208,20 +208,20 @@ class Cashups extends Secure_Controller
         $close_date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $close_date);
 
         $cash_up_data = [
-            'open_date' => $open_date_formatter->format('Y-m-d H:i:s'),
-            'close_date' => $close_date_formatter->format('Y-m-d H:i:s'),
-            'open_amount_cash' => parse_decimals($this->request->getPost('open_amount_cash')),
+            'open_date'            => $open_date_formatter->format('Y-m-d H:i:s'),
+            'close_date'           => $close_date_formatter->format('Y-m-d H:i:s'),
+            'open_amount_cash'     => parse_decimals($this->request->getPost('open_amount_cash')),
             'transfer_amount_cash' => parse_decimals($this->request->getPost('transfer_amount_cash')),
-            'closed_amount_cash' => parse_decimals($this->request->getPost('closed_amount_cash')),
-            'closed_amount_due' => parse_decimals($this->request->getPost('closed_amount_due')),
-            'closed_amount_card' => parse_decimals($this->request->getPost('closed_amount_card')),
-            'closed_amount_check' => parse_decimals($this->request->getPost('closed_amount_check')),
-            'closed_amount_total' => parse_decimals($this->request->getPost('closed_amount_total')),
-            'note' => $this->request->getPost('note') != null,
-            'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'open_employee_id' => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
-            'close_employee_id' => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
-            'deleted' => $this->request->getPost('deleted') != null
+            'closed_amount_cash'   => parse_decimals($this->request->getPost('closed_amount_cash')),
+            'closed_amount_due'    => parse_decimals($this->request->getPost('closed_amount_due')),
+            'closed_amount_card'   => parse_decimals($this->request->getPost('closed_amount_card')),
+            'closed_amount_check'  => parse_decimals($this->request->getPost('closed_amount_check')),
+            'closed_amount_total'  => parse_decimals($this->request->getPost('closed_amount_total')),
+            'note'                 => $this->request->getPost('note') != null,
+            'description'          => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'open_employee_id'     => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'close_employee_id'    => $this->request->getPost('close_employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'deleted'              => $this->request->getPost('deleted') != null
         ];
 
         if ($this->cashup->save_value($cash_up_data, $cashup_id)) {

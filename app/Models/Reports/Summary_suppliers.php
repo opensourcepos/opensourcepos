@@ -11,12 +11,12 @@ class Summary_suppliers extends Summary_report
     {
         return [
             ['supplier_name' => lang('Reports.supplier')],
-            ['quantity' => lang('Reports.quantity')],
-            ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-            ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-            ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter']
+            ['quantity'      => lang('Reports.quantity')],
+            ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter']
         ];
     }
 

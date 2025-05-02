@@ -20,8 +20,8 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
                     <?= form_input([
-                        'name' => 'item_kit_number',
-                        'id' => 'item_kit_number',
+                        'name'  => 'item_kit_number',
+                        'id'    => 'item_kit_number',
                         'class' => 'form-control input-sm',
                         'value' => $item_kit_info->item_kit_number
                     ]) ?>
@@ -33,8 +33,8 @@
             <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'name',
-                    'id' => 'name',
+                    'name'  => 'name',
+                    'id'    => 'name',
                     'class' => 'form-control input-sm',
                     'value' => $item_kit_info->name
                 ]) ?>
@@ -46,10 +46,10 @@
             <div class="col-xs-8">
                 <div class="input-group input-group-sm">
                     <?= form_input([
-                        'name' => 'item_name',
-                        'id' => 'item_name',
+                        'name'  => 'item_name',
+                        'id'    => 'item_name',
                         'class' => 'form-control input-sm',
-                        'size' => '50',
+                        'size'  => '50',
                         'value' => $selected_kit_item
                     ]) ?>
                     <?= form_hidden('kit_item_id', (string)$selected_kit_item_id) ?>
@@ -63,17 +63,17 @@
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'kit_discount_type',
-                        'type' => 'radio',
-                        'value' => 0,
+                        'name'    => 'kit_discount_type',
+                        'type'    => 'radio',
+                        'value'   => 0,
                         'checked' => $item_kit_info->kit_discount_type == PERCENT
                     ]) ?> <?= lang('Item_kits.discount_percent') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'kit_discount_type',
-                        'type' => 'radio',
-                        'value' => 1,
+                        'name'    => 'kit_discount_type',
+                        'type'    => 'radio',
+                        'value'   => 1,
                         'checked' => $item_kit_info->kit_discount_type == FIXED
                     ]) ?> <?= lang('Item_kits.discount_fixed') ?>
                 </label>
@@ -85,12 +85,12 @@
             <div class="col-xs-3">
                 <div class="input-group input-group-sm">
                     <?= form_input([
-                        'name' => 'kit_discount',
-                        'size' => '5',
+                        'name'      => 'kit_discount',
+                        'size'      => '5',
                         'maxlength' => '5',
-                        'id' => 'kit_discount',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
+                        'id'        => 'kit_discount',
+                        'class'     => 'form-control input-sm',
+                        'value'     => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
                     ]) ?>
                 </div>
             </div>
@@ -101,25 +101,25 @@
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'price_option',
-                        'type' => 'radio',
-                        'value' => 0,
+                        'name'    => 'price_option',
+                        'type'    => 'radio',
+                        'value'   => 0,
                         'checked' => $item_kit_info->price_option == PRICE_ALL
                     ]) ?> <?= lang('Item_kits.kit_and_components') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'price_option',
-                        'type' => 'radio',
-                        'value' => 1,
+                        'name'    => 'price_option',
+                        'type'    => 'radio',
+                        'value'   => 1,
                         'checked' => $item_kit_info->price_option == PRICE_KIT
                     ]) ?> <?= lang('Item_kits.kit_only') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'price_option',
-                        'type' => 'radio',
-                        'value' => 2,
+                        'name'    => 'price_option',
+                        'type'    => 'radio',
+                        'value'   => 2,
                         'checked' => $item_kit_info->price_option == PRICE_KIT_ITEMS    // TODO: === for all of these?
                     ]) ?> <?= lang('Item_kits.kit_and_stock') ?>
                 </label>
@@ -131,25 +131,25 @@
             <div class="col-xs-8">
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'print_option',
-                        'type' => 'radio',
-                        'value' => 0,
+                        'name'    => 'print_option',
+                        'type'    => 'radio',
+                        'value'   => 0,
                         'checked' => $item_kit_info->print_option == PRINT_ALL
                     ]) ?> <?= lang('Item_kits.all') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'print_option',
-                        'type' => 'radio',
-                        'value' => 1,
+                        'name'    => 'print_option',
+                        'type'    => 'radio',
+                        'value'   => 1,
                         'checked' => $item_kit_info->print_option == PRINT_PRICED
                     ]) ?> <?= lang('Item_kits.priced_only') ?>
                 </label>
                 <label class="radio-inline">
                     <?= form_radio([
-                        'name' => 'print_option',
-                        'type' => 'radio',
-                        'value' => 2,
+                        'name'    => 'print_option',
+                        'type'    => 'radio',
+                        'value'   => 2,
                         'checked' => $item_kit_info->print_option == PRINT_KIT
                     ]) ?> <?= lang('Item_kits.kit_only') ?>
                 </label>
@@ -161,8 +161,8 @@
             <?= form_label(lang('Item_kits.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_textarea([
-                    'name' => 'description',
-                    'id' => 'description',
+                    'name'  => 'description',
+                    'id'    => 'description',
                     'class' => 'form-control input-sm',
                     'value' => $item_kit_info->description
                 ]) ?>
@@ -173,8 +173,8 @@
             <?= form_label(lang('Item_kits.add_item'), 'item', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'item',
-                    'id' => 'item',
+                    'name'  => 'item',
+                    'id'    => 'item',
                     'class' => 'form-control input-sm'
                 ]) ?>
             </div>

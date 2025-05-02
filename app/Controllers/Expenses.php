@@ -29,12 +29,12 @@ class Expenses extends Secure_Controller
 
         // filters that will be loaded in the multiselect dropdown
         $data['filters'] = [
-            'only_cash' => lang('Expenses.cash_filter'),
-            'only_due' => lang('Expenses.due_filter'),
-            'only_check' => lang('Expenses.check_filter'),
+            'only_cash'   => lang('Expenses.cash_filter'),
+            'only_due'    => lang('Expenses.due_filter'),
+            'only_check'  => lang('Expenses.check_filter'),
             'only_credit' => lang('Expenses.credit_filter'),
-            'only_debit' => lang('Expenses.debit_filter'),
-            'is_deleted' => lang('Expenses.is_deleted')
+            'only_debit'  => lang('Expenses.debit_filter'),
+            'is_deleted'  => lang('Expenses.is_deleted')
         ];
 
         echo view('expenses/manage', $data);
@@ -51,14 +51,14 @@ class Expenses extends Secure_Controller
         $sort     = $this->sanitizeSortColumn(expense_headers(), $this->request->getGet('sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 'expense_id');
         $order    = $this->request->getGet('order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $filters  = [
-            'start_date' => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'end_date' => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'only_cash' => false,
-            'only_due' => false,
-            'only_check' => false,
+            'start_date'  => $this->request->getGet('start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'end_date'    => $this->request->getGet('end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'only_cash'   => false,
+            'only_due'    => false,
+            'only_check'  => false,
             'only_credit' => false,
-            'only_debit' => false,
-            'is_deleted' => false
+            'only_debit'  => false,
+            'is_deleted'  => false
         ];
 
         // Check if any filter is set in the multiselect dropdown
@@ -152,16 +152,16 @@ class Expenses extends Secure_Controller
         $date_formatter = date_create_from_format($config['dateformat'] . ' ' . $config['timeformat'], $newdate);
 
         $expense_data = [
-            'date' => $date_formatter->format('Y-m-d H:i:s'),
-            'supplier_id' => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
-            'supplier_tax_code' => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'amount' => parse_decimals($this->request->getPost('amount')),
-            'tax_amount' => parse_decimals($this->request->getPost('tax_amount')),
-            'payment_type' => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'date'                => $date_formatter->format('Y-m-d H:i:s'),
+            'supplier_id'         => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
+            'supplier_tax_code'   => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'amount'              => parse_decimals($this->request->getPost('amount')),
+            'tax_amount'          => parse_decimals($this->request->getPost('tax_amount')),
+            'payment_type'        => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
-            'description' => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'employee_id' => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
-            'deleted' => $this->request->getPost('deleted') != null
+            'description'         => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'employee_id'         => $this->request->getPost('employee_id', FILTER_SANITIZE_NUMBER_INT),
+            'deleted'             => $this->request->getPost('deleted') != null
         ];
 
         if ($this->expense->save_value($expense_data, $expense_id)) {

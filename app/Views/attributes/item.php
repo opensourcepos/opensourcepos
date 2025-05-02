@@ -11,11 +11,11 @@
     <?= form_label(lang('Attributes.definition_name'), 'definition_name_label', ['class' => 'control-label col-xs-3']) ?>
     <div class="col-xs-8">
         <?= form_dropdown([
-            'name' => 'definition_name',
-            'options' => $definition_names,
+            'name'     => 'definition_name',
+            'options'  => $definition_names,
             'selected' => -1,
-            'class' => 'form-control',
-            'id' => 'definition_name'
+            'class'    => 'form-control',
+            'id'       => 'definition_name'
         ]) ?>
     </div>
 </div>
@@ -34,38 +34,38 @@
                     case DATE:
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
                         echo form_input([
-                            'name' => "attribute_links[$definition_id]",
-                            'value' => to_date($value),
-                            'class' => 'form-control input-sm datetime',
+                            'name'               => "attribute_links[$definition_id]",
+                            'value'              => to_date($value),
+                            'class'              => 'form-control input-sm datetime',
                             'data-definition-id' => $definition_id,
-                            'readonly' => 'true'
+                            'readonly'           => 'true'
                         ]);
                         break;
                     case DROPDOWN:
                         $selected_value = $definition_value['selected_value'];
                         echo form_dropdown([
-                            'name' => "attribute_links[$definition_id]",
-                            'options' => $definition_value['values'],
-                            'selected' => $selected_value,
-                            'class' => 'form-control',
+                            'name'               => "attribute_links[$definition_id]",
+                            'options'            => $definition_value['values'],
+                            'selected'           => $selected_value,
+                            'class'              => 'form-control',
                             'data-definition-id' => $definition_id
                         ]);
                         break;
                     case TEXT:
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
                         echo form_input([
-                            'name' => "attribute_links[$definition_id]",
-                            'value' => $value,
-                            'class' => 'form-control valid_chars',
+                            'name'               => "attribute_links[$definition_id]",
+                            'value'              => $value,
+                            'class'              => 'form-control valid_chars',
                             'data-definition-id' => $definition_id
                         ]);
                         break;
                     case DECIMAL:
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
                         echo form_input([
-                            'name' => "attribute_links[$definition_id]",
-                            'value' => to_decimals((float)$value),
-                            'class' => 'form-control valid_chars',
+                            'name'               => "attribute_links[$definition_id]",
+                            'value'              => to_decimals((float)$value),
+                            'class'              => 'form-control valid_chars',
                             'data-definition-id' => $definition_id
                         ]);
                         break;
@@ -74,18 +74,18 @@
 
                         // Sends 0 if the box is unchecked instead of not sending anything.
                         echo form_input([
-                            'type' => 'hidden',
-                            'name' => "attribute_links[$definition_id]",
-                            'id' => "attribute_links[$definition_id]",
-                            'value' => 0,
+                            'type'               => 'hidden',
+                            'name'               => "attribute_links[$definition_id]",
+                            'id'                 => "attribute_links[$definition_id]",
+                            'value'              => 0,
                             'data-definition-id' => $definition_id
                         ]);
                         echo form_checkbox([
-                            'name' => "attribute_links[$definition_id]",
-                            'id' => "attribute_links[$definition_id]",
-                            'value' => 1,
-                            'checked' => $value == 1,
-                            'class' => 'checkbox-inline',
+                            'name'               => "attribute_links[$definition_id]",
+                            'id'                 => "attribute_links[$definition_id]",
+                            'value'              => 1,
+                            'checked'            => $value == 1,
+                            'class'              => 'checkbox-inline',
                             'data-definition-id' => $definition_id
                         ]);
                         break;

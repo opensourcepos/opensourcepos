@@ -20,8 +20,8 @@
             <?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'definition_name',
-                    'id' => 'definition_name',
+                    'name'  => 'definition_name',
+                    'id'    => 'definition_name',
                     'class' => 'form-control input-sm',
                     'value' => $definition_info->definition_name
                 ]) ?>
@@ -52,12 +52,12 @@
             <div class="col-xs-8">
                 <div class="input-group">
                     <?= form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), [
-                        'id' => 'definition_flags',
-                        'class' => 'selectpicker show-menu-arrow',
-                        'data-none-selected-text' => lang('Common.none_selected_text'),
+                        'id'                        => 'definition_flags',
+                        'class'                     => 'selectpicker show-menu-arrow',
+                        'data-none-selected-text'   => lang('Common.none_selected_text'),
                         'data-selected-text-format' => 'count > 1',
-                        'data-style' => 'btn-default btn-sm',
-                        'data-width' => 'fit'
+                        'data-style'                => 'btn-default btn-sm',
+                        'data-width'                => 'fit'
                     ]) ?>
                 </div>
             </div>
@@ -68,10 +68,10 @@
             <div class="col-xs-8">
                 <div class="input-group">
                     <?= form_input([
-                        'name' => 'definition_unit',
+                        'name'  => 'definition_unit',
                         'value' => $definition_info->definition_unit,
                         'class' => 'form-control input-sm',
-                        'id' => 'definition_unit'
+                        'id'    => 'definition_unit'
                     ]) ?>
                 </div>
             </div>

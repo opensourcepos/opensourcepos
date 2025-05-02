@@ -98,12 +98,12 @@ use App\Models\Employee;
         </button>
         <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?= form_multiselect('filters[]', $filters, [''], [
-            'id' => 'filters',
-            'class' => 'selectpicker show-menu-arrow',
-            'data-none-selected-text' => lang('Common.none_selected_text'),
+            'id'                        => 'filters',
+            'class'                     => 'selectpicker show-menu-arrow',
+            'data-none-selected-text'   => lang('Common.none_selected_text'),
             'data-selected-text-format' => 'count > 1',
-            'data-style' => 'btn-default btn-sm',
-            'data-width' => 'fit'
+            'data-style'                => 'btn-default btn-sm',
+            'data-width'                => 'fit'
         ]) ?>
         <?php
         if (count($stock_locations) > 1) {
@@ -112,8 +112,8 @@ use App\Models\Employee;
                 $stock_locations,
                 $stock_location,
                 [
-                    'id' => 'stock_location',
-                    'class' => 'selectpicker show-menu-arrow',
+                    'id'         => 'stock_location',
+                    'class'      => 'selectpicker show-menu-arrow',
                     'data-style' => 'btn-default btn-sm',
                     'data-width' => 'fit'
                 ]

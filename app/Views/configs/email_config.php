@@ -17,9 +17,9 @@
                     <?= form_dropdown(
                         'protocol',
                         [
-                            'mail' => 'mail',
+                            'mail'     => 'mail',
                             'sendmail' => 'sendmail',
-                            'smtp' => 'smtp'
+                            'smtp'     => 'smtp'
                         ],
                         $config['protocol'],
                         'class="form-control input-sm" id="protocol"'
@@ -31,8 +31,8 @@
                 <?= form_label(lang('Config.email_mailpath'), 'mailpath', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-4">
                     <?= form_input([
-                        'name' => 'mailpath',
-                        'id' => 'mailpath',
+                        'name'  => 'mailpath',
+                        'id'    => 'mailpath',
                         'class' => 'form-control input-sm',
                         'value' => $config['mailpath']
                     ]) ?>
@@ -43,8 +43,8 @@
                 <?= form_label(lang('Config.email_smtp_host'), 'smtp_host', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'smtp_host',
-                        'id' => 'smtp_host',
+                        'name'  => 'smtp_host',
+                        'id'    => 'smtp_host',
                         'class' => 'form-control input-sm',
                         'value' => $config['smtp_host']
                     ]) ?>
@@ -55,8 +55,8 @@
                 <?= form_label(lang('Config.email_smtp_port'), 'smtp_port', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'smtp_port',
-                        'id' => 'smtp_port',
+                        'name'  => 'smtp_port',
+                        'id'    => 'smtp_port',
                         'class' => 'form-control input-sm',
                         'value' => $config['smtp_port']
                     ]) ?>
@@ -69,7 +69,7 @@
                     <?= form_dropdown(
                         'smtp_crypto',
                         [
-                            '' => 'None',
+                            ''    => 'None',
                             'tls' => 'TLS',
                             'ssl' => 'SSL'
                         ],
@@ -83,8 +83,8 @@
                 <?= form_label(lang('Config.email_smtp_timeout'), 'smtp_timeout', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-2">
                     <?= form_input([
-                        'name' => 'smtp_timeout',
-                        'id' => 'smtp_timeout',
+                        'name'  => 'smtp_timeout',
+                        'id'    => 'smtp_timeout',
                         'class' => 'form-control input-sm',
                         'value' => $config['smtp_timeout']
                     ]) ?>
@@ -99,8 +99,8 @@
                             <span class="glyphicon glyphicon-user"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'smtp_user',
-                            'id' => 'smtp_user',
+                            'name'  => 'smtp_user',
+                            'id'    => 'smtp_user',
                             'class' => 'form-control input-sm',
                             'value' => $config['smtp_user']
                         ]) ?>
@@ -116,8 +116,8 @@
                             <span class="glyphicon glyphicon-asterisk"></span>
                         </span>
                         <?= form_password([
-                            'name' => 'smtp_pass',
-                            'id' => 'smtp_pass',
+                            'name'  => 'smtp_pass',
+                            'id'    => 'smtp_pass',
                             'class' => 'form-control input-sm',
                             'value' => $config['smtp_pass']
                         ]) ?>
@@ -126,8 +126,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_email',
-                'id' => 'submit_email',
+                'name'  => 'submit_email',
+                'id'    => 'submit_email',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

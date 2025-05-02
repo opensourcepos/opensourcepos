@@ -21,10 +21,10 @@ class Summary_sales_taxes extends Summary_report
     {
         return [
             ['reporting_authority' => lang('Reports.authority')],
-            ['jurisdiction_name' => lang('Reports.jurisdiction')],
-            ['tax_category' => lang('Reports.tax_category')],
-            ['tax_rate' => lang('Reports.tax_rate'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter']
+            ['jurisdiction_name'   => lang('Reports.jurisdiction')],
+            ['tax_category'        => lang('Reports.tax_category')],
+            ['tax_rate'            => lang('Reports.tax_rate'), 'sorter' => 'number_sorter'],
+            ['tax'                 => lang('Reports.tax'), 'sorter' => 'number_sorter']
         ];
     }
 

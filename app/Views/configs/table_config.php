@@ -16,9 +16,9 @@
                 <?= form_label(lang('Config.dinner_table_enable'), 'dinner_table_enable', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-1">
                     <?= form_checkbox([
-                        'name' => 'dinner_table_enable',
-                        'value' => 'dinner_table_enable',
-                        'id' => 'dinner_table_enable',
+                        'name'    => 'dinner_table_enable',
+                        'value'   => 'dinner_table_enable',
+                        'id'      => 'dinner_table_enable',
                         'checked' => $config['dinner_table_enable'] == 1
                     ]) ?>
                 </div>
@@ -29,8 +29,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_table',
-                'id' => 'submit_table',
+                'name'  => 'submit_table',
+                'id'    => 'submit_table',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

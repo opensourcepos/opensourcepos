@@ -114,11 +114,11 @@ class Receiving extends Model
 
         $receivings_data = [
             'receiving_time' => date('Y-m-d H:i:s'),
-            'supplier_id' => $supplier->exists($supplier_id) ? $supplier_id : null,
-            'employee_id' => $employee_id,
-            'payment_type' => $payment_type,
-            'comment' => $comment,
-            'reference' => $reference
+            'supplier_id'    => $supplier->exists($supplier_id) ? $supplier_id : null,
+            'employee_id'    => $employee_id,
+            'payment_type'   => $payment_type,
+            'comment'        => $comment,
+            'reference'      => $reference
         ];
 
         // Run these queries as a transaction, we want to make sure we do all or nothing
@@ -135,18 +135,18 @@ class Receiving extends Model
             $cur_item_info = $item->get_info($item_data['item_id']);
 
             $receivings_items_data = [
-                'receiving_id' => $receiving_id,
-                'item_id' => $item_data['item_id'],
-                'line' => $item_data['line'],
-                'description' => $item_data['description'],
-                'serialnumber' => $item_data['serialnumber'],
+                'receiving_id'       => $receiving_id,
+                'item_id'            => $item_data['item_id'],
+                'line'               => $item_data['line'],
+                'description'        => $item_data['description'],
+                'serialnumber'       => $item_data['serialnumber'],
                 'quantity_purchased' => $item_data['quantity'],
                 'receiving_quantity' => $item_data['receiving_quantity'],
-                'discount' => $item_data['discount'],
-                'discount_type' => $item_data['discount_type'],
-                'item_cost_price' => $cur_item_info->cost_price,
-                'item_unit_price' => $item_data['price'],
-                'item_location' => $item_data['item_location']
+                'discount'           => $item_data['discount'],
+                'discount_type'      => $item_data['discount_type'],
+                'item_cost_price'    => $cur_item_info->cost_price,
+                'item_unit_price'    => $item_data['price'],
+                'item_location'      => $item_data['item_location']
             ];
 
             $builder->insert($receivings_items_data);
@@ -162,8 +162,8 @@ class Receiving extends Model
             $item_quantity_value = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
             $item_quantity->save_value(
                 [
-                    'quantity' => $item_quantity_value->quantity + $items_received,
-                    'item_id' => $item_data['item_id'],
+                    'quantity'    => $item_quantity_value->quantity + $items_received,
+                    'item_id'     => $item_data['item_id'],
                     'location_id' => $item_data['item_location']
                 ],
                 $item_data['item_id'],
@@ -172,11 +172,11 @@ class Receiving extends Model
 
             $recv_remarks = 'RECV ' . $receiving_id;
             $inv_data = [
-                'trans_date' => date('Y-m-d H:i:s'),
-                'trans_items' => $item_data['item_id'],
-                'trans_user' => $employee_id,
-                'trans_location' => $item_data['item_location'],
-                'trans_comment' => $recv_remarks,
+                'trans_date'      => date('Y-m-d H:i:s'),
+                'trans_items'     => $item_data['item_id'],
+                'trans_user'      => $employee_id,
+                'trans_location'  => $item_data['item_location'],
+                'trans_comment'   => $recv_remarks,
                 'trans_inventory' => $items_received
             ];
 
@@ -230,11 +230,11 @@ class Receiving extends Model
             foreach ($items as $item) {
                 // Create query to update inventory tracking
                 $inv_data = [
-                    'trans_date' => date('Y-m-d H:i:s'),
-                    'trans_items' => $item['item_id'],
-                    'trans_user' => $employee_id,
-                    'trans_comment' => 'Deleting receiving ' . $receiving_id,
-                    'trans_location' => $item['item_location'],
+                    'trans_date'      => date('Y-m-d H:i:s'),
+                    'trans_items'     => $item['item_id'],
+                    'trans_user'      => $employee_id,
+                    'trans_comment'   => 'Deleting receiving ' . $receiving_id,
+                    'trans_location'  => $item['item_location'],
                     'trans_inventory' => $item['quantity_purchased'] * (-$item['receiving_quantity'])
                 ];
                 // Update inventory

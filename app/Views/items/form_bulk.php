@@ -18,8 +18,8 @@
             <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'name',
-                    'id' => 'name',
+                    'name'  => 'name',
+                    'id'    => 'name',
                     'class' => 'form-control input-sm'
                 ]) ?>
             </div>
@@ -31,8 +31,8 @@
                 <div class="input-group">
                     <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
                     <?= form_input([
-                        'name' => 'category',
-                        'id' => 'category',
+                        'name'  => 'category',
+                        'id'    => 'category',
                         'class' => 'form-control input-sm'
                     ]) ?>
                 </div>
@@ -54,8 +54,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'cost_price',
-                        'id' => 'cost_price',
+                        'name'  => 'cost_price',
+                        'id'    => 'cost_price',
                         'class' => 'form-control input-sm'
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
@@ -73,8 +73,8 @@
                         <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'unit_price',
-                        'id' => 'unit_price',
+                        'name'  => 'unit_price',
+                        'id'    => 'unit_price',
                         'class' => 'form-control input-sm'
                     ]) ?>
                     <?php if (is_right_side_currency_symbol()): ?>
@@ -88,8 +88,8 @@
             <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'tax_names[]',
-                    'id' => 'tax_name_1',
+                    'name'  => 'tax_names[]',
+                    'id'    => 'tax_name_1',
                     'class' => 'form-control input-sm',
                     'value' => $config['default_tax_1_name']
                 ]) ?>
@@ -97,8 +97,8 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?= form_input([
-                        'name' => 'tax_percents[]',
-                        'id' => 'tax_percent_name_1',
+                        'name'  => 'tax_percents[]',
+                        'id'    => 'tax_percent_name_1',
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_1_rate'])
                     ]) ?>
@@ -111,8 +111,8 @@
             <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'tax_names[]',
-                    'id' => 'tax_name_2',
+                    'name'  => 'tax_names[]',
+                    'id'    => 'tax_name_2',
                     'class' => 'form-control input-sm',
                     'value' => $config['default_tax_2_name']
                 ]) ?>
@@ -120,8 +120,8 @@
             <div class="col-xs-4">
                 <div class="input-group input-group-sm">
                     <?= form_input([
-                        'name' => 'tax_percents[]',
-                        'id' => 'tax_percent_name_2',
+                        'name'  => 'tax_percents[]',
+                        'id'    => 'tax_percent_name_2',
                         'class' => 'form-control input-sm',
                         'value' => to_tax_decimals($config['default_tax_2_rate'])
                     ]) ?>
@@ -134,8 +134,8 @@
             <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'reorder_level',
-                    'id' => 'reorder_level',
+                    'name'  => 'reorder_level',
+                    'id'    => 'reorder_level',
                     'class' => 'form-control input-sm'
                 ]) ?>
             </div>
@@ -145,8 +145,8 @@
             <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_textarea([
-                    'name' => 'description',
-                    'id' => 'description',
+                    'name'  => 'description',
+                    'id'    => 'description',
                     'class' => 'form-control input-sm'
                 ]) ?>
             </div>

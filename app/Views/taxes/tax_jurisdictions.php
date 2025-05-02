@@ -17,8 +17,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_tax_jurisdictions',
-                'id' => 'submit_tax_jurisdictions',
+                'name'  => 'submit_tax_jurisdictions',
+                'id'    => 'submit_tax_jurisdictions',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

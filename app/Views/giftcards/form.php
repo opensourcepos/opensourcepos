@@ -20,8 +20,8 @@
             <?= form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name' => 'person_name',
-                    'id' => 'person_name',
+                    'name'  => 'person_name',
+                    'id'    => 'person_name',
                     'class' => 'form-control input-sm',
                     'value' => $selected_person_name
                 ]) ?>
@@ -39,8 +39,8 @@
             <?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "control-label col-xs-3$class"]) ?>
             <div class="col-xs-4">
                 <?= form_input([
-                    'name' => 'giftcard_number',
-                    'id' => 'giftcard_number',
+                    'name'  => 'giftcard_number',
+                    'id'    => 'giftcard_number',
                     'class' => 'form-control input-sm',
                     'value' => $giftcard_number
                 ]) ?>
@@ -56,8 +56,8 @@
                         <span class="input-group-addon input-sm"><?= esc($config['currency_symbol']) ?></span>
                     <?php endif; ?>
                     <?= form_input([
-                        'name' => 'giftcard_amount',
-                        'id' => 'giftcard_amount',
+                        'name'  => 'giftcard_amount',
+                        'id'    => 'giftcard_amount',
                         'class' => 'form-control input-sm',
                         'value' => to_currency_no_money($giftcard_value)
                     ]) ?>

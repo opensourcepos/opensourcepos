@@ -16,8 +16,8 @@
             </div>
 
             <?= form_submit([
-                'name' => 'submit_stock',
-                'id' => 'submit_stock',
+                'name'  => 'submit_stock',
+                'id'    => 'submit_stock',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

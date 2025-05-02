@@ -30,18 +30,18 @@ class Specific_employee extends Report
     {
         return [
             'summary' => [
-                ['id' => lang('Reports.sale_id')],
-                ['type_code' => lang('Reports.code_type')],
-                ['sale_time' => lang('Reports.date'), 'sortable' => false],
-                ['quantity' => lang('Reports.quantity')],
+                ['id'            => lang('Reports.sale_id')],
+                ['type_code'     => lang('Reports.code_type')],
+                ['sale_time'     => lang('Reports.date'), 'sortable' => false],
+                ['quantity'      => lang('Reports.quantity')],
                 ['customer_name' => lang('Reports.sold_to')],
-                ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-                ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-                ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-                ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-                ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-                ['payment_type' => lang('Reports.payment_type'), 'sortable' => false],
-                ['comment' => lang('Reports.comments')]
+                ['subtotal'      => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+                ['tax'           => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+                ['total'         => lang('Reports.total'), 'sorter' => 'number_sorter'],
+                ['cost'          => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+                ['profit'        => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+                ['payment_type'  => lang('Reports.payment_type'), 'sortable' => false],
+                ['comment'       => lang('Reports.comments')]
             ],
             'details' => [
                 lang('Reports.name'),

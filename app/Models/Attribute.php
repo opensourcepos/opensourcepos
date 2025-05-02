@@ -587,8 +587,8 @@ class Attribute extends Model
             $builder->update();
         } else {
             $data = [
-                'attribute_id' => $attributeId,
-                'item_id' => $itemId,
+                'attribute_id'  => $attributeId,
+                'item_id'       => $itemId,
                 'definition_id' => $definitionId
             ];
             $builder->insert($data);
@@ -820,8 +820,8 @@ class Attribute extends Model
             }
 
             $data = [
-                'attribute_id' => empty($attribute_id) ? null : $attribute_id,
-                'item_id' => empty($item_id) ? null : $item_id,
+                'attribute_id'  => empty($attribute_id) ? null : $attribute_id,
+                'item_id'       => empty($item_id) ? null : $item_id,
                 'definition_id' => $definition_id
             ];
 

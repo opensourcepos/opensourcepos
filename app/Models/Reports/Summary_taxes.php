@@ -20,12 +20,12 @@ class Summary_taxes extends Summary_report
     protected function _get_data_columns(): array    // TODO: hungarian notation
     {
         return [
-            ['tax_name' => lang('Reports.tax_name'), 'sortable' => false],
-            ['tax_percent' => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'],
+            ['tax_name'     => lang('Reports.tax_name'), 'sortable' => false],
+            ['tax_percent'  => lang('Reports.tax_percent'), 'sorter' => 'number_sorter'],
             ['report_count' => lang('Reports.sales'), 'sorter' => 'number_sorter'],
-            ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter']
+            ['subtotal'     => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'          => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'        => lang('Reports.total'), 'sorter' => 'number_sorter']
         ];
     }
 

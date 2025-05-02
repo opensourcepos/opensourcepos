@@ -135,11 +135,11 @@ class Tax_code extends Model
         foreach ($array_save as $key => $value) {
             // Save or update
             $tax_code_data = [
-                'tax_code' => $value['tax_code'],
+                'tax_code'      => $value['tax_code'],
                 'tax_code_name' => $value['tax_code_name'],
-                'city' => $value['city'],
-                'state' => $value['state'],
-                'deleted' => '0'
+                'city'          => $value['city'],
+                'state'         => $value['state'],
+                'deleted'       => '0'
             ];
             $this->save($tax_code_data);
             $not_to_delete[] = $tax_code_data['tax_code'];
@@ -300,12 +300,12 @@ class Tax_code extends Model
     {
         return [
             '0' => [
-                'tax_code_id' => NEW_ENTRY,
-                'tax_code' => '',
+                'tax_code_id'   => NEW_ENTRY,
+                'tax_code'      => '',
                 'tax_code_name' => '',
-                'city' => '',
-                'state' => '',
-                'deleted' => 0
+                'city'          => '',
+                'state'         => '',
+                'deleted'       => 0
             ]
         ];
     }

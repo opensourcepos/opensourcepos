@@ -13,9 +13,9 @@ class Migration_image_upload_defaults extends Migration
     {
         $image_values = [
             ['key' => 'image_allowed_types', 'value' => 'gif|jpg|png'],
-            ['key' => 'image_max_height', 'value' => '480'],
-            ['key' => 'image_max_size', 'value' => '128'],
-            ['key' => 'image_max_width', 'value' => '640']
+            ['key' => 'image_max_height',    'value' => '480'],
+            ['key' => 'image_max_size',      'value' => '128'],
+            ['key' => 'image_max_width',     'value' => '640']
         ];
 
         $builder = $this->db->table('app_config');

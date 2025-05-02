@@ -155,8 +155,8 @@ class Employee extends Person
                     foreach ($grants_data as $grant) {
                         $data = [
                             'permission_id' => $grant['permission_id'],
-                            'person_id' => $employee_id,
-                            'menu_group' => $grant['menu_group']
+                            'person_id'     => $employee_id,
+                            'menu_group'    => $grant['menu_group']
                         ];
 
                         $builder = $this->db->table('grants');

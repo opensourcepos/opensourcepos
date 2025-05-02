@@ -115,18 +115,18 @@ class Employees extends Persons
         $last_name = $this->nameize($last_name);
 
         $person_data = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'gender' => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
-            'email' => $email,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'gender'       => $this->request->getPost('gender', FILTER_SANITIZE_NUMBER_INT),
+            'email'        => $email,
             'phone_number' => $this->request->getPost('phone_number', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'address_1' => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'address_2' => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'city' => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'state' => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'zip' => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'country' => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'comments' => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+            'address_1'    => $this->request->getPost('address_1', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'address_2'    => $this->request->getPost('address_2', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'city'         => $this->request->getPost('city', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'state'        => $this->request->getPost('state', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'zip'          => $this->request->getPost('zip', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'country'      => $this->request->getPost('country', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+            'comments'     => $this->request->getPost('comments', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
         ];
 
         $grants_array = [];
@@ -145,18 +145,18 @@ class Employees extends Persons
         if (!empty($this->request->getPost('password')) && ENVIRONMENT != 'testing') {
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
             $employee_data = [
-                'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'password'     => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                'hash_version'     => 2,
+                'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password'      => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'hash_version'  => 2,
                 'language_code' => $exploded[0],
-                'language'     => $exploded[1]
+                'language'      => $exploded[1]
             ];
         } else { // Password not changed
             $exploded = explode(":", $this->request->getPost('language', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
             $employee_data = [
-                'username'     => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-                'language_code'    => $exploded[0],
-                'language'     => $exploded[1]
+                'username'      => $this->request->getPost('username', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'language_code' => $exploded[0],
+                'language'      => $exploded[1]
             ];
         }
 
@@ -166,20 +166,20 @@ class Employees extends Persons
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Employees.successful_adding') . ' ' . $first_name . ' ' . $last_name,
-                    'id' => $employee_data['person_id']
+                    'id'      => $employee_data['person_id']
                 ]);
             } else { // Existing employee
                 echo json_encode([
                     'success' => true,
                     'message' => lang('Employees.successful_updating') . ' ' . $first_name . ' ' . $last_name,
-                    'id' => $employee_id
+                    'id'      => $employee_id
                 ]);
             }
         } else { // Failure
             echo json_encode([
                 'success' => false,
                 'message' => lang('Employees.error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
-                'id' => NEW_ENTRY
+                'id'      => NEW_ENTRY
             ]);
         }
     }

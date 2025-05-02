@@ -19,8 +19,8 @@
                             <span class="glyphicon glyphicon-user"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'msg_uid',
-                            'id' => 'msg_uid',
+                            'name'  => 'msg_uid',
+                            'id'    => 'msg_uid',
                             'class' => 'form-control input-sm required',
                             'value' => $config['msg_uid']
                         ]) ?>
@@ -36,8 +36,8 @@
                             <span class="glyphicon glyphicon-lock"></span>
                         </span>
                         <?= form_password([
-                            'name' => 'msg_pwd',
-                            'id' => 'msg_pwd',
+                            'name'  => 'msg_pwd',
+                            'id'    => 'msg_pwd',
                             'class' => 'form-control input-sm required',
                             'value' => $config['msg_pwd']
                         ]) ?>
@@ -53,8 +53,8 @@
                             <span class="glyphicon glyphicon-bullhorn"></span>
                         </span>
                         <?= form_input([
-                            'name' => 'msg_src',
-                            'id' => 'msg_src',
+                            'name'  => 'msg_src',
+                            'id'    => 'msg_src',
                             'class' => 'form-control input-sm required',
                             'value' => $config['msg_src'] == null ? $config['company'] : $config['msg_src']
                         ]) ?>
@@ -66,18 +66,18 @@
                 <?= form_label(lang('Config.msg_msg'), 'msg_msg', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-4">
                     <?= form_textarea([
-                        'name' => 'msg_msg',
-                        'id' => 'msg_msg',
-                        'class' => 'form-control input-sm',
-                        'value' => $config['msg_msg'],
+                        'name'        => 'msg_msg',
+                        'id'          => 'msg_msg',
+                        'class'       => 'form-control input-sm',
+                        'value'       => $config['msg_msg'],
                         'placeholder' => lang('Config.msg_msg_placeholder')
                     ]) ?>
                 </div>
             </div>
 
             <?= form_submit([
-                'name' => 'submit_message',
-                'id' => 'submit_message',
+                'name'  => 'submit_message',
+                'id'    => 'submit_message',
                 'value' => lang('Common.submit'),
                 'class' => 'btn btn-primary btn-sm pull-right'
             ]) ?>

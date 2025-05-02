@@ -23,9 +23,9 @@
             <?= form_label(lang('Receivings.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
                 <?= form_input([
-                    'name'    => 'date',
+                    'name'     => 'date',
                     'value'    => to_datetime(strtotime($receiving_info['receiving_time'])),
-                    'id'    => 'datetime',
+                    'id'       => 'datetime',
                     'class'    => 'datetime form-control input-sm',
                     'readonly' => 'readonly'
                 ]) ?>

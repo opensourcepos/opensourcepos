@@ -189,7 +189,7 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
     public function getMembers(string $list_id, int $count, int $offset, array $parameters = ['fields' => 'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields']): bool|array
     {
         $parameters += [
-            'count' => $count,
+            'count'  => $count,
             'offset' => $offset
         ];
 
@@ -260,8 +260,8 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
     {
         $parameters += [
             'email_address' => $email,
-            'status' => 'subscribed',
-            'merge_fields' => [
+            'status'        => 'subscribed',
+            'merge_fields'  => [
                 'FNAME' => $first_name,
                 'LNAME' => $last_name
             ]
@@ -300,7 +300,7 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
     public function updateMember(string $list_id, string $email, string $first_name, string $last_name, array $parameters = []): bool|array
     {
         $parameters += [
-            'status' => 'subscribed',
+            'status'       => 'subscribed',
             'merge_fields' => [
                 'FNAME' => $first_name,
                 'LNAME' => $last_name
@@ -326,9 +326,9 @@ class Mailchimp_lib    // TODO: IMO We need to stick to the one class per file p
     {
         $parameters += [
             'email_address' => $email,
-            'status' => $status,
+            'status'        => $status,
             'status_if_new' => 'subscribed',
-            'merge_fields' => [
+            'merge_fields'  => [
                 'FNAME' => $first_name,
                 'LNAME' => $last_name
             ]
