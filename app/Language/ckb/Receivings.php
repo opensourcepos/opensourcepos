@@ -40,7 +40,7 @@ return [
     'return' => "گەڕانەوە",
     'select_supplier' => "",
     'ship_pack' => "",
-    'start_typing_supplier_name' => "",
+    'start_typing_supplier_name' => "دەست بکە بە نووسینی ناوی دابینکەر...",
     'stock' => "کۆگا",
     'stock_destination' => "",
     'stock_locaiton' => "",
