@@ -8,7 +8,7 @@ return [
     'cannot_find_giftcard' => "",
     'cannot_use' => "",
     'card_value' => "",
-    'category' => "هاوپۆل",
+    'category' => "پۆلێن",
     'change_all_to_allow_alt_desc' => "",
     'change_all_to_not_allow_allow_desc' => "",
     'change_all_to_serialized' => "",
