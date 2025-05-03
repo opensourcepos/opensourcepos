@@ -6,7 +6,7 @@ return [
     'canceled' => "هەڵوەشایەوە",
     'categories' => "پۆلێنەکان",
     'categories_summary_report' => "ڕاپۆرتی پوختەی پۆلێنەکان",
-    'category' => "هاوپۆل",
+    'category' => "پۆلێن",
     'code_canceled' => "هەڵوەشاندنەوە",
     'code_invoice' => "فاکتورە",
     'code_pos' => "خاڵی فرۆشتن",
