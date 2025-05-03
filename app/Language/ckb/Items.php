@@ -9,7 +9,7 @@ return [
     'cannot_be_deleted' => "",
     'cannot_find_item' => "",
     'categories' => "",
-    'category' => "هاوپۆل",
+    'category' => "پۆلێن",
     'category_new' => "",
     'category_required' => "",
     'change_all_to_allow_alt_desc' => "",
