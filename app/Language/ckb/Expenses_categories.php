@@ -18,6 +18,6 @@ return [
     'quantity' => "بڕ",
     'successful_adding' => "زیادکردنی پۆلێنی خەرجی سەرکەوتوو بوو",
     'successful_deleted' => "سڕینەوەی پۆلێنی خەرجی سەرکەوتوو بوو",
-    'successful_updating' => "",
-    'update' => "",
+    'successful_updating' => "نوێکردنەوەی پۆلێنی خەرجی سەرکەوتوو بوو",
+    'update' => "نوێکردنەوەی پۆلێن",
 ];
