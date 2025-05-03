@@ -3,9 +3,9 @@
 return [
     'administrator' => "",
     'basic_information' => "زانیاری",
-    'cannot_be_deleted' => "",
+    'cannot_be_deleted' => "ناتوانیت کارمەند(ەکان)ی هەڵبژێردراو بسڕیتەوە، یەکێک یان زیاتر لەوانە فرۆشتنی پرۆسێس کردووە یان تۆ هەوڵی سڕینەوەی هەژمارەکەت دەدەیت.",
     'change_employee' => "",
-    'change_password' => "",
+    'change_password' => "وشەی نهێنی بگۆڕە",
     'clerk' => "",
     'commission' => "",
     'confirm_delete' => "‌ئایا دڵنیای کە دەتەوێت کارمەند(ەکان)ی هەڵبژێردراو بسڕیتەوە؟",
