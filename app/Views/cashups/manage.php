@@ -45,17 +45,17 @@
 
 <div id="title_bar" class="print_hide btn-toolbar">
     <button onclick="javascript:printdoc()" class="btn btn-info btn-sm pull-right">
-        <span class="glyphicon glyphicon-print">&nbsp;</span><?= lang('Common.print') ?>
+        <i class="bi bi-printer icon-spacing"></i><?= lang('Common.print') ?>
     </button>
     <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new") ?>">
-        <span class="glyphicon glyphicon-tags">&nbsp;</span><?= lang(esc(ucfirst($controller_name)) . '.new')    // TODO: String Interpolation ?>
+        <i class="bi bi-journal-plus icon-spacing"></i><?= lang(esc(ucfirst($controller_name)) . '.new')    // TODO: String Interpolation ?>
     </button>
 </div>
 
 <div id="toolbar">
     <div class="pull-left form-inline" role="toolbar">
         <button id="delete" class="btn btn-default btn-sm print_hide">
-            <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
+            <i class="bi bi-trash icon-spacing"></i><?= lang('Common.delete') ?>
         </button>
         <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
         <?= form_multiselect('filters[]', $filters, [''], [

@@ -24,7 +24,7 @@
             <?= form_label(lang('Expenses.date'), 'date', ['class' => 'required control-label col-xs-3']) ?>
             <div class="col-xs-6">
                 <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <span class="input-group-addon input-sm"><i class="bi bi-calendar"></i></span>
                     <?= form_input([
                         'name'     => 'date',
                         'class'    => 'form-control input-sm datetime',
@@ -52,7 +52,7 @@
             </div>
             <div class="col-xs-2">
                 <a id="remove_supplier_button" class="btn btn-danger btn-sm" title="Remove Supplier">
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <i class="bi bi-x-circle"></i>
                 </a>
             </div>
         </div>

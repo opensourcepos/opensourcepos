@@ -172,6 +172,10 @@ label.required {
     padding-left: 0;
 }
 
+.icon-spacing {
+    margin-right: .5em;
+}
+
 /* Recreate font-monospace class from Bootstrap 5 */
 .font-monospace {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;

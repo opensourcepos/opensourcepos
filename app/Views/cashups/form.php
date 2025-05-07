@@ -23,7 +23,7 @@
             <div class="col-xs-6">
                 <div class="input-group">
                     <span class="input-group-addon input-sm">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                        <i class="bi bi-calendar"></i>
                     </span>
                     <?= form_input([
                         'name'  => 'open_date',
@@ -87,7 +87,7 @@
             <div class="col-xs-6">
                 <div class="input-group">
                     <span class="input-group-addon input-sm">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                        <i class="bi bi-calendar"></i>
                     </span>
                     <?= form_input([
                         'name'  => 'close_date',
