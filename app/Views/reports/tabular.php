@@ -55,10 +55,13 @@
                 pagination: true,
                 showColumns: true,
                 data: <?= json_encode($data) ?>,
-                iconSize: 'sm',
                 paginationVAlign: 'bottom',
                 escape: true,
-                search: true
+                search: true,
+                loadingTemplate: function (loadingMessage) {
+                    return '<div class="w-100 h-100 bg-body text-center pt-2"><div class="spinner-grow spinner-grow-sm"></div><span class="ps-1" role="status">' + loadingMessage + '</span></div>'
+                },
+                loadingFontSize: '1em'
             });
     });
 </script>

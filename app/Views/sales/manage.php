@@ -10,6 +10,11 @@
 
 <?= view('partial/header') ?>
 
+<?php
+$title_info['config_title'] = 'Sales';
+echo view('configs/config_header', $title_info);
+?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         // When any filter is clicked and the dropdown window is closed
@@ -60,28 +65,26 @@
 
 <?= view('partial/print_receipt', ['print_after_sale' => false, 'selected_printer' => 'takings_printer']) ?>
 
-<div id="title_bar" class="print_hide btn-toolbar">
-    <button onclick="javascript:printdoc()" class="btn btn-info btn-sm pull-right">
-        <i class="bi bi-printer icon-spacing"></i><?= lang('Common.print') ?>
+<div class="d-flex gap-2 justify-content-end d-print-none">
+    <a type="button" class="btn btn-primary" href="sales" title="<?= lang('Sales.register') ?>">
+        <i class="bi bi-arrow-left-circle me-2"></i><?= lang('Sales.register') ?>
+    </a>
+    <button type="button" class="btn btn-primary" onclick="window.print()" title="<?= lang('Common.print') ?>">
+        <i class="bi bi-printer me-2"></i><?= lang('Common.print') ?>
     </button>
-    <?= anchor("sales", '<i class="bi bi-cart2 icon-spacing"></i>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm pull-right', 'id' => 'show_sales_button']) ?>
 </div>
 
 <div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <button id="delete" class="btn btn-default btn-sm print_hide">
-            <i class="bi bi-trash icon-spacing"></i><?= lang('Common.delete') ?>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary d-print-none">
+            <i class="bi bi-trash"></i><span class="d-none d-sm-inline ms-2"><?= lang('Common.delete') ?></span>
         </button>
-
-        <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        <?= form_multiselect('filters[]', $filters, $selected_filters, [
-            'id'                        => 'filters',
-            'data-none-selected-text'   => lang('Common.none_selected_text'),
-            'class'                     => 'selectpicker show-menu-arrow',
-            'data-selected-text-format' => 'count > 1',
-            'data-style'                => 'btn-default btn-sm',
-            'data-width'                => 'fit'
-        ]) ?>
+        <input type="text" class="form-control" name="daterangepicker" id="daterangepicker">
+        <select id="filters" name="filters[]" class="selectpicker show-menu-arrow" data-none-selected-text="<?= lang('Common.none_selected_text') ?>" data-selected-text-format="count > 1" data-style="btn-secondary" data-width="fit" multiple>
+            <?php foreach ($filters as $key => $value): ?>
+                <option value="<?= esc($key) ?>"><?= esc($value) ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
 </div>
 
