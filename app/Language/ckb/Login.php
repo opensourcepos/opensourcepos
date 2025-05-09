@@ -1,16 +1,16 @@
 <?php
 
 return [
-    "gcaptcha"                      => "",
-    "go"                            => "",
-    "invalid_gcaptcha"              => "",
-    "invalid_installation"          => "",
-    "invalid_username_and_password" => "",
-    "login"                         => "",
-    "logout"                        => "",
-    "migration_needed"              => "",
-    "password"                      => "وشەی نهێنی",
-    "required_username"             => "",
-    "username"                      => "ناوی بەکارهێنەر",
-    "welcome"                       => "",
+    'gcaptcha' => "من ڕۆبۆت نیم.",
+    'go' => "بەردەوامبە",
+    'invalid_gcaptcha' => "تکایە دڵنیابکەرەوە لەوەی کە تۆ ڕۆبۆت نیت.",
+    'invalid_installation' => "دابەزاندن دروست نییە، فایلیphp.ini ـەکەت بپشکنە.",
+    'invalid_username_and_password' => "ناوی بەکارهێنەر و/یان وشەی نهێنی نادروست.",
+    'login' => "چوونەژوورەوە",
+    'logout' => "چوونەدەرەوە",
+    'migration_needed' => "گواستنەوەی داتابەیس بۆ {0} دوای چوونەژوورەوە دەست پێدەکات.",
+    'password' => "وشەی نهێنی",
+    'required_username' => "خانەی ناوی بەکارهێنەر پێویستە.",
+    'username' => "ناوی بەکارهێنەر",
+    'welcome' => "بەخێربێن بۆ {0}!",
 ];
