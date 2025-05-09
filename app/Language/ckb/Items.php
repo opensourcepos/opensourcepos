@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'add_minus' => "",
-    'allow_alt_description' => "",
+    'add_minus' => "زیادکردن یان کەمکردنی جەرد.",
+    'allow_alt_description' => "ڕێگە بدە بە دەربارەی جێگرەوە",
     'amount_entry' => "",
-    'bulk_edit' => "",
+    'bulk_edit' => "دەستکاریکردنی بە کۆمەڵ",
     'buy_price_required' => "",
     'cannot_be_deleted' => "",
     'cannot_find_item' => "",
