@@ -49,7 +49,7 @@ return [
     'quantity' => "بڕ",
     'quantity_required' => "چەندێتی خانەیەکی پێویستە. تکایە دابخە (X) بۆ هەڵوەشاندنەوە.",
     'remaining_balance' => "کارتی دیاری {0} بەهای ماوە {1}!",
-    'reorder_level' => "ئاستی ڕێکخستنەوە",
+    'reorder_level' => "ئاست ڕێکخستنەوە",
     'retrive_giftcard_info' => "وەرگرتنەوەی زانیاری کارتی دیاری",
     'sales_tax_1' => "باجی فرۆشتن",
     'sales_tax_2' => "باجی فرۆشتن ٢",
