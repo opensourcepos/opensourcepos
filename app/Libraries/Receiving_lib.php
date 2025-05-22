@@ -256,7 +256,7 @@ class Receiving_lib
     // TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
 
     /**
-     * @param int $item_id
+     * @param string $item_id
      * @param int $quantity
      * @param int|null $item_location
      * @param float $discount
@@ -269,7 +269,7 @@ class Receiving_lib
      * @param bool $include_deleted
      * @return bool
      */
-    public function add_item(int $item_id, int $quantity = 1, ?int $item_location = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialnumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $include_deleted = false): bool
+    public function add_item(string $item_id, int $quantity = 1, ?int $item_location = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialnumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $include_deleted = false): string
     {
         $config = config(OSPOS::class)->settings;
 
@@ -312,7 +312,7 @@ class Receiving_lib
         }
 
         $insertkey = $maxkey + 1;
-        $item_info = $this->item->get_info($item_id);
+        $item_info = $this->item->get_info((int) $item_id);
 
         // Array records are identified by $insertkey and item_id is just another field.
         $price = $price != null ? $price : $item_info->cost_price;
@@ -334,7 +334,7 @@ class Receiving_lib
             $receiving_quantity = $item_info->receiving_quantity;
         }
 
-        $attribute_links = $this->attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
+        $attribute_links = $this->attribute->get_link_values((int) $item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
         $item = [
             $insertkey => [
@@ -353,7 +353,7 @@ class Receiving_lib
                 'quantity'                   => $quantity,
                 'discount'                   => $discount,
                 'discount_type'              => $discount_type,
-                'in_stock'                   => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                'in_stock'                   => $this->item_quantity->get_item_quantity((int) $item_id, $item_location)->quantity,
                 'price'                      => $price,
                 'receiving_quantity'         => $receiving_quantity,
                 'receiving_quantity_choices' => $receiving_quantity_choices,

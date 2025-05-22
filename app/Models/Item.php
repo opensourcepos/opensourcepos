@@ -47,10 +47,11 @@ class Item extends Model
     /**
      * Determines if a given item_id is an item
      */
-    public function exists(int $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
+    public function exists(string $item_id, bool $ignore_deleted = false, bool $deleted = false): bool
     {
         $builder = $this->db->table('items');
         $builder->where('item_id', $item_id);
+        $builder->orWhere('item_number', $item_id);
 
         if (!$ignore_deleted) {
             $builder->where('deleted', $deleted);
@@ -336,7 +337,7 @@ class Item extends Model
     /**
      * Gets information about a particular item by item id or number
      */
-    public function get_info_by_id_or_number(int $item_id, bool $include_deleted = true)
+    public function get_info_by_id_or_number(string $item_id, bool $include_deleted = true)
     {
         $builder = $this->db->table('items');
         $builder->groupStart();
@@ -370,11 +371,12 @@ class Item extends Model
     /**
      * Get an item id given an item number
      */
-    public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool
+    public function get_item_id(string $item_number, bool $ignore_deleted = false, bool $deleted = false): bool|int
     {
         $builder = $this->db->table('items');
         $builder->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
         $builder->where('item_number', $item_number);
+        $builder->orWhere('item_id', $item_number);
 
         if (!$ignore_deleted) {
             $builder->where('items.deleted', $deleted);

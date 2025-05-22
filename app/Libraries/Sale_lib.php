@@ -944,7 +944,7 @@ class Sale_lib
     // TODO: this function needs to be reworked... way too many parameters.  Also, optional parameters must go after mandatory parameters.
 
     /**
-     * @param int $item_id
+     * @param string $item_id
      * @param int $item_location
      * @param string $quantity
      * @param string $discount
@@ -961,7 +961,7 @@ class Sale_lib
      * @param bool|null $line
      * @return bool
      */
-    public function add_item(int &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null): bool
+    public function add_item(string &$item_id, int $item_location, string $quantity = '1', string &$discount = '0.0', int $discount_type = 0, int $price_mode = PRICE_MODE_STANDARD, ?int $kit_price_option = null, ?int $kit_print_option = null, ?string $price_override = null, ?string $description = null, ?string $serialnumber = null, ?int $sale_id = null, bool $include_deleted = false, ?bool $print_option = null, ?bool $line = null): bool
     {
         $item_info = $this->item->get_info_by_id_or_number($item_id, $include_deleted);
 
