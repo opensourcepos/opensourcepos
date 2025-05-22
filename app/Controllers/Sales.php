@@ -466,7 +466,7 @@ class Sales extends Secure_Controller
      */
     public function getDeletePayment(string $payment_id): void
     {
-        $this->sale_lib->delete_payment($payment_id);
+        $this->sale_lib->delete_payment(base64_decode($payment_id));
 
         $this->_reload();    // TODO: Hungarian notation
     }
