@@ -33,7 +33,7 @@ class Migration_fix_keys_for_db_upgrade extends Migration
         $checkSql = "SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '" . $this->db->prefixTable('sales_items_taxes') . "' AND CONSTRAINT_NAME = 'ospos_sales_items_taxes_ibfk_1'";
         $foreignKeyExists = $this->db->query($checkSql)->getRow();
 
-        if($foreignKeyExists) {
+        if ($foreignKeyExists) {
             $this->db->query('ALTER TABLE ' . $this->db->prefixTable('sales_items_taxes') . ' DROP FOREIGN KEY ospos_sales_items_taxes_ibfk_1');
         }
 
