@@ -26,7 +26,7 @@ class fix_duplicate_attributes extends Migration
             'ospos_attribute_links_ibfk_5'
         ];
 
-        drop_foreign_key_constraints($foreignKeys, 'ospos_attribute_links');
+        dropForeignKeyConstraints($foreignKeys, 'attribute_links');
 
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_attribute_links_unique_constraint.sql');
     }
