@@ -26,11 +26,11 @@ if (isset($error)) {
 }
 
 if (!empty($warning)) {
-    echo esc('<div class="alert alert-dismissible alert-warning">$warning</div>');
+    echo '<div class="alert alert-dismissible alert-warning">' . esc($warning) . '</div>';
 }
 
 if (isset($success)) {
-    echo esc('<div class="alert alert-dismissible alert-success">$success</div>');
+    echo '<div class="alert alert-dismissible alert-success">' .esc($success) . '</div>';
 }
 ?>
 
