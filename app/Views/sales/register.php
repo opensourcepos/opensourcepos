@@ -47,15 +47,15 @@ use App\Models\Employee;
 
 <?php
 if (isset($error)) {
-    echo '<div class="alert alert-dismissible alert-danger">$error</div>';
+    echo '<div class="alert alert-dismissible alert-danger">' . esc($error) . '</div>';
 }
 
 if (!empty($warning)) {
-    echo '<div class="alert alert-dismissible alert-warning">$warning</div>';
+    echo '<div class="alert alert-dismissible alert-warning">' . esc($warning) . '</div>';
 }
 
 if (isset($success)) {
-    echo '<div class="alert alert-dismissible alert-success">$success</div>';
+    echo '<div class="alert alert-dismissible alert-success">' . esc($success) . '</div>';
 }
 ?>
 
