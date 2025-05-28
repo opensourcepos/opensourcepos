@@ -4,6 +4,10 @@
  */
 ?>
 
+<span class="d-flex justify-content-start add_dinner_table">
+    <button class="btn btn-outline-success mb-3" type="button"><i class="bi bi-plus-lg"></i>&nbsp;Add table</button> <!-- TODO-BS5 translate -->
+</span>
+
 <?php
 $i = 0;
 
@@ -13,24 +17,13 @@ foreach ($dinner_tables as $table_key => $table) {
     ++$i;
 ?>
 
-    <div class="form-group form-group-sm" style="<?= $table['deleted'] ? 'display: none;' : 'display: block;' ?>">
-        <?= form_label(lang('Config.dinner_table') . " $i", "dinner_table_$i", ['class' => 'required control-label col-xs-2']) ?>
-
-
-        <div class="col-xs-2">
-            <?php $form_data = [
-                'name'  => "dinner_table_$dinner_table_id",
-                'id'    => "dinner_table_$dinner_table_id",
-                'class' => 'dinner_table valid_chars form-control input-sm required',
-                'value' => $dinner_table_name
-            ];
-            $table['deleted'] && $form_data['disabled'] = 'disabled';
-            echo form_input($form_data);
-            ?>
+    <div class="col-12 col-lg-6 <?= $table['deleted'] ? 'd-none' : '' ?>">
+        <label for="dinner_table_<?= $dinner_table_id ?>" class="form-label"><?= lang('Config.dinner_table') . " $i"; ?></label>
+        <div class="input-group mb-3">
+            <span class="input-group-text"><?= $dinner_table_id ?>.</span>
+            <input type="text" class="form-control dinner_table valid_chars" name="dinner_table_<?= $dinner_table_id ?>" id="dinner_table_<?= $dinner_table_id ?>" value="<?= $dinner_table_name ?>" required <?= $table['deleted'] && $form_data['disabled'] = 'disabled' ?>>
+            <button class="btn btn-outline-danger remove_dinner_table" type="button"><i class="bi bi-x-lg"></i></button>
         </div>
-        <span class="add_dinner_table bi bi-plus-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
-        <span>&nbsp;&nbsp;</span>
-        <span class="remove_dinner_table bi bi-dash-circle" style="padding-top: 0.5em; display: inline-block; cursor: pointer;"></span>
     </div>
 
 <?php } ?>

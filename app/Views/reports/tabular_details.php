@@ -12,7 +12,10 @@
 
 <?= view('partial/header') ?>
 
-<div id="page_title"><?= esc($title) ?></div>
+<?php
+$title_info['config_title'] = esc($title);
+echo view('configs/config_header', $title_info);
+?>
 
 <div id="page_subtitle"><?= esc($subtitle) ?></div>
 
@@ -56,7 +59,10 @@
                 exportDataType: 'all',
                 exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
                 data: <?= json_encode($summary_data) ?>,
-                iconSize: 'sm',
+                loadingTemplate: function (loadingMessage) {
+                    return '<div class="w-100 h-100 bg-body text-center pt-2"><div class="spinner-grow spinner-grow-sm"></div><span class="ps-1" role="status">' + loadingMessage + '</span></div>'
+                },
+                loadingFontSize: '1em',
                 paginationVAlign: 'bottom',
                 detailView: true,
                 escape: true,

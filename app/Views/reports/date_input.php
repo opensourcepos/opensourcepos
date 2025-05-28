@@ -7,12 +7,10 @@
 
 <?= view('partial/header') ?>
 
-<script type="text/javascript">
-    dialog_support.init("a.modal-dlg");
-</script>
-
-
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php
+$title_info['config_title'] = lang('Reports.report_input');
+echo view('configs/config_header', $title_info);
+?>
 
 <?php
 if (isset($error)) {
@@ -20,12 +18,15 @@ if (isset($error)) {
 }
 ?>
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
-        <div class="col-xs-3">
-            <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+            <label for="daterangepicker" class="form-label"><?= lang('Reports.date_range'); ?></label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="bi bi-calendar2-range"></i></span>
+                <input type="text" class="form-control" name="daterangepicker" id="daterangepicker">
+            </div>
         </div>
     </div>
 
@@ -79,7 +80,7 @@ if (isset($error)) {
             'name'    => 'generate_report',
             'id'      => 'generate_report',
             'content' => lang('Common.submit'),
-            'class'   => 'btn btn-primary btn-sm'
+            'class'   => 'btn btn-primary'
         ]
     );
     ?>
