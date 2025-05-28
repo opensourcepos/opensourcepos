@@ -256,117 +256,99 @@ class Receiving_lib
     // TODO: This array signature needs to be reworked.  It's way too long. Perhaps an object needs to be passed rather than these?
 
     /**
-     * @param string $item_id
+     * @param string $itemId
      * @param int $quantity
-     * @param int|null $item_location
+     * @param int|null $itemLocation
      * @param float $discount
-     * @param int $discount_type
+     * @param int $discountType
      * @param float|null $price
      * @param string|null $description
-     * @param string|null $serialnumber
-     * @param float|null $receiving_quantity
-     * @param int|null $receiving_id
-     * @param bool $include_deleted
+     * @param string|null $serialNumber
+     * @param float|null $receivingQuantity
+     * @param int|null $receivingId
+     * @param bool $includeDeleted
      * @return bool
      */
-    public function add_item(string $item_id, int $quantity = 1, ?int $item_location = null, float $discount = 0, int $discount_type = 0, ?float $price = null, ?string $description = null, ?string $serialnumber = null, ?float $receiving_quantity = null, ?int $receiving_id = null, bool $include_deleted = false): string
+    public function add_item(string $itemId, int $quantity = 1, ?int $itemLocation = null, float $discount = 0, int $discountType = 0, ?float $price = null, ?string $description = null, ?string $serialNumber = null, ?float $receivingQuantity = null, ?int $receivingId = null, bool $includeDeleted = false): bool
     {
         $config = config(OSPOS::class)->settings;
+        $itemInfo = $this->item->get_info_by_id_or_number($itemId, $includeDeleted);
 
-        // Make sure item exists in database.
-        if (!$this->item->exists($item_id, $include_deleted)) {
-            // Try to get item id given an item_number
-            $item_id = $this->item->get_item_id($item_id, $include_deleted);
-
-            if (!$item_id) {
-                return false;
-            }
+        if (empty($itemInfo)) {
+            return false;
         }
 
-        // Get items in the receiving so far.
+        $itemId = $itemInfo->item_id;
         $items = $this->get_cart();
 
-        // We need to loop through all items in the cart.
-        // If the item is already there, get it's key($updatekey).
-        // We also need to get the next key that we are going to use in case we need to add the
-        // item to the list. Since items can be deleted, we can't use a count. we use the highest key + 1.
-
-        $maxkey = 0;                   // Highest key so far
-        $itemalreadyinsale = false;    // We did not find the item yet.
-        $updatekey = 0;                // Key to use to update(quantity)
+        $maxKey = 0;
+        $itemAlreadyInSale = false;
+        $updateKey = 0;
 
         foreach ($items as $item) {
-            // We primed the loop so maxkey is 0 the first time.
-            // Also, we have stored the key in the element itself, so we can compare.
-            // There is an array public function to get the associated key for an element, but I like it better
-            // like that!
-
-            if ($maxkey <= $item['line']) {
-                $maxkey = $item['line'];
+            if ($maxKey <= $item['line']) {
+                $maxKey = $item['line'];
             }
 
-            if ($item['item_id'] == $item_id && $item['item_location'] == $item_location) {
-                $itemalreadyinsale = true;
-                $updatekey = $item['line'];
+            if ($item['item_id'] == $itemId && $item['item_location'] == $itemLocation) {
+                $itemAlreadyInSale = true;
+                $updateKey = $item['line'];
             }
         }
 
-        $insertkey = $maxkey + 1;
-        $item_info = $this->item->get_info((int) $item_id);
+        $insertKey = $maxKey + 1;
+        $itemInfo = $this->item->get_info((int) $itemId);
 
-        // Array records are identified by $insertkey and item_id is just another field.
-        $price = $price != null ? $price : $item_info->cost_price;
+        $price = $price != null ? $price : $itemInfo->cost_price;
 
         if ($config['multi_pack_enabled']) {
-            $item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
+            $itemInfo->name .= NAME_SEPARATOR . $itemInfo->pack_name;
         }
 
-        if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1) {
-            $receiving_quantity_choices = [1  => 'x1'];
+        if ($itemInfo->receiving_quantity == 0 || $itemInfo->receiving_quantity == 1) {
+            $receivingQuantityChoices = [1 => 'x1'];
         } else {
-            $receiving_quantity_choices = [
-                to_quantity_decimals($item_info->receiving_quantity) => 'x' . to_quantity_decimals($item_info->receiving_quantity),
-                1  => 'x1'
+            $receivingQuantityChoices = [
+                to_quantity_decimals($itemInfo->receiving_quantity) => 'x' . to_quantity_decimals($itemInfo->receiving_quantity),
+                1 => 'x1'
             ];
         }
 
-        if (is_null($receiving_quantity)) {
-            $receiving_quantity = $item_info->receiving_quantity;
+        if (is_null($receivingQuantity)) {
+            $receivingQuantity = $itemInfo->receiving_quantity;
         }
 
-        $attribute_links = $this->attribute->get_link_values((int) $item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
+        $attributeLinks = $this->attribute->get_link_values((int) $itemId, 'receiving_id', $receivingId, Attribute::SHOW_IN_RECEIVINGS)->getRowObject();
 
         $item = [
-            $insertkey => [
-                'item_id'                    => $item_id,
-                'item_location'              => $item_location,
-                'item_number'                => $item_info->item_number,
-                'stock_name'                 => $this->stock_location->get_location_name($item_location),
-                'line'                       => $insertkey,
-                'name'                       => $item_info->name,
-                'description'                => $description != null ? $description : $item_info->description,
-                'serialnumber'               => $serialnumber != null ? $serialnumber : '',
-                'attribute_values'           => $attribute_links->attribute_values,
-                'attribute_dtvalues'         => $attribute_links->attribute_dtvalues,
-                'allow_alt_description'      => $item_info->allow_alt_description,
-                'is_serialized'              => $item_info->is_serialized,
+            $insertKey => [
+                'item_id'                    => $itemId,
+                'item_location'              => $itemLocation,
+                'item_number'                => $itemInfo->item_number,
+                'stock_name'                 => $this->stock_location->get_location_name($itemLocation),
+                'line'                       => $insertKey,
+                'name'                       => $itemInfo->name,
+                'description'                => $description != null ? $description : $itemInfo->description,
+                'serialnumber'               => $serialNumber != null ? $serialNumber : '',
+                'attribute_values'           => $attributeLinks->attribute_values,
+                'attribute_dtvalues'         => $attributeLinks->attribute_dtvalues,
+                'allow_alt_description'      => $itemInfo->allow_alt_description,
+                'is_serialized'              => $itemInfo->is_serialized,
                 'quantity'                   => $quantity,
                 'discount'                   => $discount,
-                'discount_type'              => $discount_type,
-                'in_stock'                   => $this->item_quantity->get_item_quantity((int) $item_id, $item_location)->quantity,
+                'discount_type'              => $discountType,
+                'in_stock'                   => $this->item_quantity->get_item_quantity((int) $itemId, $itemLocation)->quantity,
                 'price'                      => $price,
-                'receiving_quantity'         => $receiving_quantity,
-                'receiving_quantity_choices' => $receiving_quantity_choices,
-                'total'                      => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
+                'receiving_quantity'         => $receivingQuantity,
+                'receiving_quantity_choices' => $receivingQuantityChoices,
+                'total'                      => $this->get_item_total($quantity, $price, $discount, $discountType, $receivingQuantity)
             ]
         ];
 
-        // Item already exists
-        if ($itemalreadyinsale) {    // TODO: This variable does not adhere to naming conventions.
-            $items[$updatekey]['quantity'] += $quantity;
-            $items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount, $discount_type, $items[$updatekey]['receiving_quantity']);
+        if ($itemAlreadyInSale) {
+            $items[$updateKey]['quantity'] += $quantity;
+            $items[$updateKey]['total'] = $this->get_item_total($items[$updateKey]['quantity'], $price, $discount, $discountType, $items[$updateKey]['receiving_quantity']);
         } else {
-            // Add to existing array
             $items += $item;
         }
 
