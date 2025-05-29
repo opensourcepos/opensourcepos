@@ -281,7 +281,7 @@ class Receiving extends Model
         $builder->where('receiving_id', $receiving_id);
 
         $supplier = model(Supplier::class);
-        return $supplier->get_info($builder->get()->getRow()->supplier_id);
+        return $supplier->getInfo($builder->get()->getRow()->supplier_id);
     }
 
     /**

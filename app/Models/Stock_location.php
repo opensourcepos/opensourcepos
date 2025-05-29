@@ -78,7 +78,7 @@ class Stock_location extends Model
      * @param string $module_id
      * @return bool
      */
-    public function show_locations(string $module_id = 'items'): bool
+    public function showLocations(string $module_id = 'items'): bool
     {
         $stock_locations = $this->get_allowed_locations($module_id);
 

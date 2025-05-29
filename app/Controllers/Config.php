@@ -667,7 +667,7 @@ class Config extends Secure_Controller
     {
         $this->sale_lib->clear_sale_location();
         $this->sale_lib->clear_table();
-        $this->sale_lib->clear_all();
+        $this->sale_lib->clearAll();
         $this->receiving_lib = new Receiving_lib();
         $this->receiving_lib->clear_stock_source();
         $this->receiving_lib->clear_stock_destination();

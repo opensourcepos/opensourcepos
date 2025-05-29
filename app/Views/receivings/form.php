@@ -24,7 +24,7 @@
             <div class="col-xs-8">
                 <?= form_input([
                     'name'     => 'date',
-                    'value'    => to_datetime(strtotime($receiving_info['receiving_time'])),
+                    'value'    => toDatetime(strtotime($receiving_info['receiving_time'])),
                     'id'       => 'datetime',
                     'class'    => 'datetime form-control input-sm',
                     'readonly' => 'readonly'

@@ -33,7 +33,7 @@ class Suppliers extends Persons
      */
     public function getRow($row_id): void
     {
-        $data_row = get_supplier_data_row($this->supplier->get_info($row_id));
+        $data_row = get_supplier_data_row($this->supplier->getInfo($row_id));
         $data_row['category'] = $this->supplier->get_category_name($data_row['category']);
 
         echo json_encode($data_row);
@@ -95,7 +95,7 @@ class Suppliers extends Persons
      */
     public function getView(int $supplier_id = NEW_ENTRY): void
     {
-        $info = $this->supplier->get_info($supplier_id);
+        $info = $this->supplier->getInfo($supplier_id);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }

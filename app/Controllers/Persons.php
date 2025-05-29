@@ -46,7 +46,7 @@ abstract class Persons extends Secure_Controller
      */
     public function getRow(int $row_id): void
     {
-        $data_row = get_person_data_row($this->person->get_info($row_id));
+        $data_row = get_person_data_row($this->person->getInfo($row_id));
 
         echo json_encode($data_row);
     }

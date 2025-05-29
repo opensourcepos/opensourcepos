@@ -333,7 +333,7 @@ function tax_decimals(): int
  * @param int $date
  * @return string
  */
-function to_date(int $date = DEFAULT_DATE): string
+function toDate(int $date = DEFAULT_DATE): string
 {
     $config = config(OSPOS::class)->settings;
     return date($config['dateformat'], $date);
@@ -343,7 +343,7 @@ function to_date(int $date = DEFAULT_DATE): string
  * @param int $datetime
  * @return string
  */
-function to_datetime(int $datetime = DEFAULT_DATETIME): string
+function toDatetime(int $datetime = DEFAULT_DATETIME): string
 {
     $config = config(OSPOS::class)->settings;
     return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);

@@ -123,7 +123,7 @@ class Barcode_lib
      * @param $barcode_content
      * @return string
      */
-    public function generate_receipt_barcode($barcode_content): string
+    public function generateReceiptBarcode($barcode_content): string
     {
         try {
             $generator = new BarcodeGeneratorSVG();

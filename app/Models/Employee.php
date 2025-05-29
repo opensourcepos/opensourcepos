@@ -88,7 +88,7 @@ class Employee extends Person
     /**
      * Gets information about a particular employee
      */
-    public function get_info(int $person_id): object
+    public function getInfo(int $person_id): object
     {
         $builder = $this->db->table('employees');
         $builder->join('people', 'people.person_id = employees.person_id');
@@ -100,7 +100,7 @@ class Employee extends Person
         }
 
         // Get empty base parent object, as $employee_id is NOT an employee
-        $person_obj = parent::get_info(NEW_ITEM);
+        $person_obj = parent::getInfo(NEW_ITEM);
 
         // Get all the fields from employee table
         // Append those fields to base parent object, we have a complete empty object
@@ -410,7 +410,7 @@ class Employee extends Person
     public function getLoggedInEmployeeInfo()
     {
         if ($this->is_logged_in()) {
-            return $this->get_info($this->session->get('person_id'));
+            return $this->getInfo($this->session->get('person_id'));
         }
 
         return false;

@@ -73,7 +73,7 @@ class Employees extends Persons
      */
     public function getView(int $employee_id = NEW_ENTRY): void
     {
-        $person_info = $this->employee->get_info($employee_id);
+        $person_info = $this->employee->getInfo($employee_id);
         foreach (get_object_vars($person_info) as $property => $value) {
             $person_info->$property = $value;
         }

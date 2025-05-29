@@ -104,7 +104,7 @@ class Sale_lib
     /**
      * @return array
      */
-    public function get_cart(): array
+    public function getCart(): array
     {
         if (!$this->session->get('sales_cart')) {
             $this->set_cart([]);
@@ -117,7 +117,7 @@ class Sale_lib
      * @param array $cart
      * @return array
      */
-    public function sort_and_filter_cart(array $cart): array
+    public function sortAndFilterCard(array $cart): array
     {
         if (empty($cart)) {
             return $cart;
@@ -198,7 +198,7 @@ class Sale_lib
     public function remove_temp_items(): void
     {
         // Loop through the cart items and delete temporary items specific to this sale
-        $cart = $this->get_cart();
+        $cart = $this->getCart();
         foreach ($cart as $line => $item) {
             if ($item['item_type'] == ITEM_TEMP) {    // TODO: === ?
                 $this->item->delete($item['item_id']);
@@ -209,7 +209,7 @@ class Sale_lib
     /**
      * @return string
      */
-    public function get_comment(): string
+    public function getComment(): string
     {
         // Avoid returning a null that results in a 0 in the comment if nothing is set/available
         $comment = $this->session->get('sales_comment');
@@ -237,7 +237,7 @@ class Sale_lib
     /**
      * @return string|null
      */
-    public function get_invoice_number(): ?string
+    public function getInvoiceNumber(): ?string
     {
         return $this->session->get('sales_invoice_number');
     }
@@ -245,7 +245,7 @@ class Sale_lib
     /**
      * @return string|null
      */
-    public function get_quote_number(): ?string
+    public function getQuoteNumber(): ?string
     {
         return $this->session->get('sales_quote_number');
     }
@@ -253,7 +253,7 @@ class Sale_lib
     /**
      * @return string|null
      */
-    public function get_work_order_number(): ?string
+    public function getWorkOrderNumber(): ?string
     {
         return $this->session->get('sales_work_order_number');
     }
@@ -374,7 +374,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_invoice_mode(): bool
+    public function isInvoiceMode(): bool
     {
         return ($this->session->get('sales_mode') == 'sale_invoice'    && $this->config['invoice_enable']);
     }
@@ -423,7 +423,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_price_work_orders(): bool
+    public function isPriceWorkOrders(): bool
     {
         return ($this->session->get('sales_price_work_orders') == 'true'    // TODO: === ?
             || $this->session->get('sales_price_work_orders') == '1');    // TODO: === ?
@@ -473,7 +473,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_email_receipt(): bool
+    public function isEmailReceipt(): bool
     {   // TODO: this needs to be converted to a switch statement
         if ($this->config['email_receipt_check_behaviour'] == 'always') {    // TODO: 'behaviour' is the british spelling, but the rest of the code is in American English.  Not a big deal, but noticed. Also ===
             return true;
@@ -488,7 +488,7 @@ class Sale_lib
     /**
      * Multiple Payments
      */
-    public function get_payments(): array
+    public function getPayments(): array
     {
         if (!$this->session->get('sales_payments')) {
             $this->set_payments([]);
@@ -514,7 +514,7 @@ class Sale_lib
      */
     public function add_payment(string $payment_id, string $payment_amount, int $cash_adjustment = CASH_ADJUSTMENT_FALSE): void
     {
-        $payments = $this->get_payments();
+        $payments = $this->getPayments();
         if (isset($payments[$payment_id])) {
             // payment_method already exists, add to payment_amount
             $payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
@@ -546,7 +546,7 @@ class Sale_lib
      */
     public function edit_payment(string $payment_id, float $payment_amount): bool
     {
-        $payments = $this->get_payments();
+        $payments = $this->getPayments();
         if (isset($payments[$payment_id])) {
             $payments[$payment_id]['payment_type'] = $payment_id;
             $payments[$payment_id]['payment_amount'] = $payment_amount;
@@ -565,7 +565,7 @@ class Sale_lib
      */
     public function delete_payment(string $payment_id): void
     {
-        $payments = $this->get_payments();
+        $payments = $this->getPayments();
         $decoded_payment_id = urldecode($payment_id);
 
         unset($payments[$decoded_payment_id]);
@@ -601,7 +601,7 @@ class Sale_lib
         $subtotal = '0.0';
         $cash_mode_eligible = CASH_MODE_TRUE;
 
-        foreach ($this->get_payments() as $payments) {
+        foreach ($this->getPayments() as $payments) {
             if (!$payments['cash_adjustment']) {
                 $subtotal = bcadd($payments['payment_amount'], $subtotal);
             }
@@ -621,7 +621,7 @@ class Sale_lib
      * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
      * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units', 'cash_adjustment_amount'
      */
-    public function get_totals(array $taxes): array
+    public function getTotals(array $taxes): array
     {
         $totals = [];
 
@@ -632,7 +632,7 @@ class Sale_lib
         $item_count = 0;
         $total_units = 0.0;
 
-        foreach ($this->get_cart() as $item) {
+        foreach ($this->getCart() as $item) {
             if ($item['stock_type'] == HAS_STOCK) {
                 $item_count++;
                 $total_units += $item['quantity'];
@@ -731,7 +731,7 @@ class Sale_lib
     /**
      * @return int
      */
-    public function get_customer(): int
+    public function getCustomer(): int
     {
         if (!$this->session->get('sales_customer')) {
             $this->set_customer(-1);    // TODO: Replace -1 with a constant
@@ -817,7 +817,7 @@ class Sale_lib
     /**
      * @return int|null
      */
-    public function get_dinner_table(): ?int
+    public function getDinnerTable(): ?int
     {
         if (!$this->session->get('dinner_table')) {
             if ($this->config['dinner_table_enable']) {
@@ -903,7 +903,7 @@ class Sale_lib
     /**
      * @return string|null
      */
-    public function get_giftcard_remainder(): ?string
+    public function getGiftcardRemainder(): ?string
     {
         return $this->session->get('sales_giftcard_remainder');
     }
@@ -928,7 +928,7 @@ class Sale_lib
     /**
      * @return string|null
      */
-    public function get_rewards_remainder(): ?string
+    public function getRewardsRemainder(): ?string
     {
         return $this->session->get('sales_rewards_remainder');
     }
@@ -1010,7 +1010,7 @@ class Sale_lib
         // Serialization and Description
 
         // Get all items in the cart so far...
-        $items = $this->get_cart();
+        $items = $this->getCart();
 
         // We need to loop through all items in the cart.
         // If the item is already there, get it's key($updatekey).
@@ -1148,7 +1148,7 @@ class Sale_lib
      */
     public function get_quantity_already_added(int $item_id, int $item_location): string
     {
-        $items = $this->get_cart();
+        $items = $this->getCart();
         $quantity_already_added = '0.0';
         foreach ($items as $item) {
             if ($item['item_id'] == $item_id && $item['item_location'] == $item_location) {    // TODO: === ?
@@ -1165,7 +1165,7 @@ class Sale_lib
      */
     public function get_item_id(string $line_to_get): int
     {
-        $items = $this->get_cart();
+        $items = $this->getCart();
 
         foreach ($items as $line => $item) {
             if ($line == $line_to_get) {
@@ -1188,7 +1188,7 @@ class Sale_lib
      */
     public function edit_item(string $line, string $description, string $serialnumber, string $quantity, string $discount, ?string $discount_type, ?string $price, ?string $discounted_total = null): bool
     {
-        $items = $this->get_cart();
+        $items = $this->getCart();
         if (isset($items[$line])) {
             $line = &$items[$line];
             if ($discounted_total != null && $discounted_total != $line['discounted_total']) {
@@ -1219,7 +1219,7 @@ class Sale_lib
      */
     public function delete_item(int $line): void
     {
-        $items = $this->get_cart();
+        $items = $this->getCart();
         $item_type = $items[$line]['item_type'];
 
         if ($item_type == ITEM_TEMP) {
@@ -1332,7 +1332,7 @@ class Sale_lib
     /**
      * @return int
      */
-    public function get_sale_id(): int
+    public function getSaleId(): int
     {
         return $this->session->get('sale_id');
     }
@@ -1340,7 +1340,7 @@ class Sale_lib
     /**
      * @return void
      */
-    public function clear_all(): void
+    public function clearAll(): void
     {
         $this->session->set('sale_id', -1);    // TODO: Replace -1 with constant
         $this->clear_mode();
@@ -1393,8 +1393,8 @@ class Sale_lib
      */
     public function is_customer_taxable(): bool    // TODO: This function is never called in the code
     {
-        $customer_id = $this->get_customer();
-        $customer = $this->customer->get_info($customer_id);
+        $customer_id = $this->getCustomer();
+        $customer = $this->customer->getInfo($customer_id);
 
         // Do not charge sales tax if we have a customer that is not taxable
         return $customer->taxable or $customer_id == -1;    // TODO: Replace with constant.  Also, I'm not sure we should be using the or operator instead of || here. $a || $b guarantees that the result of those two get returned.  It's possible that return $a or $b could return just the result of $a since `or` has a lower precedence.
@@ -1408,7 +1408,7 @@ class Sale_lib
     public function apply_customer_discount(string $discount, int $discount_type): void
     {
         // Get all items in the cart so far...
-        $items = $this->get_cart();
+        $items = $this->getCart();
 
         foreach ($items as &$item) {
             $quantity = $item['quantity'];
@@ -1428,10 +1428,10 @@ class Sale_lib
     /**
      * @return string
      */
-    public function get_discount(): string
+    public function getDiscount(): string
     {
         $discount = '0.0';
-        foreach ($this->get_cart() as $item) {
+        foreach ($this->getCart() as $item) {
             if ($item['discount'] > '0.0') {
                 $item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
                 $discount = bcadd($discount, $item_discount);
@@ -1594,7 +1594,7 @@ class Sale_lib
     public function calculate_subtotal(bool $include_discount = false, bool $exclude_tax = false): string
     {
         $subtotal = '0.0';
-        foreach ($this->get_cart() as $item) {
+        foreach ($this->getCart() as $item) {
             if ($exclude_tax && $this->config['tax_included']) {
                 $subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $include_discount));
             } else {
@@ -1617,10 +1617,10 @@ class Sale_lib
         $cash_mode = $this->session->get('cash_mode');
 
         if (!$this->config['tax_included']) {
-            $cart = $this->get_cart();
+            $cart = $this->getCart();
             $tax_lib = new Tax_lib();
 
-            foreach ($tax_lib->get_taxes($cart)[0] as $tax) {
+            foreach ($tax_lib->getTaxes($cart)[0] as $tax) {
                 $total = bcadd($total, $tax['sale_tax_amount']);
             }
         }

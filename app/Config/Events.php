@@ -70,8 +70,9 @@ Events::on('pre_controller', [$method, 'validate_method']);
  * This event triggered when an item sale occurs.
  * Plugin functionality is triggered here.
  */
-Events::on('item_sale', static function (): void {
+Events::on('item_sale', static function (array $saleData): void {
     // Call plugin controller methods to handle the item sale data sent in the static function.
+    log_message('debug', "Item sale event triggered on sale ID: {$saleData['sale_id_num']}");
 });
 
 /**

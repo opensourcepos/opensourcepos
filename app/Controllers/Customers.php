@@ -54,7 +54,7 @@ class Customers extends Persons
      */
     public function getRow(int $row_id): void
     {
-        $person = $this->customer->get_info($row_id);
+        $person = $this->customer->getInfo($row_id);
 
         // Retrieve the total amount the customer spent so far together with min, max and average values
         $stats = $this->customer->get_stats($person->person_id);    // TODO: This and the next 11 lines are duplicated in search().  Extract a method.
@@ -144,7 +144,7 @@ class Customers extends Persons
         // Set default values
         if ($customer_id == null) $customer_id = NEW_ENTRY;
 
-        $info = $this->customer->get_info($customer_id);
+        $info = $this->customer->getInfo($customer_id);
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;
         }
@@ -155,7 +155,7 @@ class Customers extends Persons
             $data['person_info']->employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         }
 
-        $employee_info = $this->employee->get_info($info->employee_id);
+        $employee_info = $this->employee->getInfo($info->employee_id);
         $data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
         $tax_code_info = $this->tax_code->get_info($info->sales_tax_code_id);
