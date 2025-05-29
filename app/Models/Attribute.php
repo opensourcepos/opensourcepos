@@ -40,23 +40,6 @@ class Attribute extends Model
     public const SHOW_IN_ITEMS = 1;    // TODO: These need to be moved to constants.php
     public const SHOW_IN_SALES = 2;
     public const SHOW_IN_RECEIVINGS = 4;
-
-    // ==============
-    // Create Methods
-    // ==============
-
-    // ==============
-    // Read Methods
-    // ==============
-
-    // ==============
-    // Update Methods
-    // ==============
-
-    // ==============
-    // Delete Methods
-    // ==============
-
     public function deleteDropdownAttributeValue(string $attribute_value, int $definition_id): bool
     {
         $attribute_id = $this->getAttributeIdByValue($attribute_value);
@@ -1025,10 +1008,6 @@ class Attribute extends Model
 
         return $builder->get()->getResultArray();
     }
-
-// ==============
-// Helper Methods
-// ==============
 
     /**
      * @param string $attribute_value

@@ -12,11 +12,9 @@ class AttributeLinksUniqueConstraint extends Migration
      */
     public function up(): void
     {
-        error_log('Migrating Attribute Links Unique Constraint');
+        error_log('Migrating attribute_links unique constraint started');
 
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_attribute_links_unique_constraint.sql');
-
-        error_log('Migrating Attribute Links Unique Constraint');
     }
 
     /**
