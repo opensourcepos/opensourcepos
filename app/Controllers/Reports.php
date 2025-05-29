@@ -83,7 +83,7 @@ class Reports extends Secure_Controller
             $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
             // Check access to report submodule
-            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
+            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->getLoggedInEmployeeInfo()->person_id)) {
                 redirect('no_access/reports/reports_' . $submodule_id);
             }
         }

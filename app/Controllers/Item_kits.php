@@ -166,7 +166,7 @@ class Item_kits extends Secure_Controller
             'name'              => $this->request->getPost('name'),
             'item_kit_number'   => $this->request->getPost('item_kit_number'),
             'item_id'           => $this->request->getPost('kit_item_id') ? null : intval($this->request->getPost('kit_item_id')),
-            'kit_discount'      => parse_decimals($this->request->getPost('kit_discount')),
+            'kit_discount'      => parseDecimals($this->request->getPost('kit_discount')),
             'kit_discount_type' => $this->request->getPost('kit_discount_type') === null ? PERCENT : intval($this->request->getPost('kit_discount_type')),
             'price_option'      => $this->request->getPost('price_option') === null ? PRICE_ALL : intval($this->request->getPost('price_option')),
             'print_option'      => $this->request->getPost('print_option') === null ? PRINT_ALL : intval($this->request->getPost('print_option')),
@@ -188,7 +188,7 @@ class Item_kits extends Secure_Controller
                 foreach ($item_kit_items_array as $item_id => $item_kit_qty) {
                     $item_kit_items[] = [
                         'item_id'      => $item_id,
-                        'quantity'     => $item_kit_qty === null ? 0 : parse_quantity($item_kit_qty),
+                        'quantity'     => $item_kit_qty === null ? 0 : parseQuantity($item_kit_qty),
                         'kit_sequence' => $this->request->getPost("item_kit_seq[$item_id]") === null ? 0 : intval($this->request->getPost("item_kit_seq[$item_id]"))
                     ];
                 }

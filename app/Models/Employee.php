@@ -181,7 +181,7 @@ class Employee extends Person
         $success = false;
 
         // Don't let employees delete themselves
-        if ($employee_id == $this->get_logged_in_employee_info()->person_id) {
+        if ($employee_id == $this->getLoggedInEmployeeInfo()->person_id) {
             return false;
         }
 
@@ -210,7 +210,7 @@ class Employee extends Person
         $success = false;
 
         // Don't let employees delete themselves
-        if (in_array($this->get_logged_in_employee_info()->person_id, $person_ids)) {
+        if (in_array($this->getLoggedInEmployeeInfo()->person_id, $person_ids)) {
             return false;
         }
 
@@ -407,7 +407,7 @@ class Employee extends Person
     /**
      * Gets information about the currently logged in employee.
      */
-    public function get_logged_in_employee_info()
+    public function getLoggedInEmployeeInfo()
     {
         if ($this->is_logged_in()) {
             return $this->get_info($this->session->get('person_id'));

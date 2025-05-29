@@ -347,7 +347,7 @@ class Sales extends Secure_Controller
      */
     public function postSetPriceWorkOrders(): void
     {
-        $price_work_orders = parse_decimals($this->request->getPost('price_work_orders'));
+        $price_work_orders = parseDecimals($this->request->getPost('price_work_orders'));
         $this->sale_lib->set_price_work_orders($price_work_orders);
     }
 
@@ -389,7 +389,7 @@ class Sales extends Secure_Controller
         } else {
             if ($payment_type === lang('Sales.giftcard')) {
                 // In the case of giftcard payment the register input amount_tendered becomes the giftcard number
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $amount_tendered = parseDecimals($this->request->getPost('amount_tendered'));
                 $giftcard_num = $amount_tendered;
 
                 $payments = $this->sale_lib->get_payments();
@@ -441,7 +441,7 @@ class Sales extends Secure_Controller
             } elseif ($payment_type === lang('Sales.cash')) {
                 $amount_due = $this->sale_lib->get_total();
                 $sales_total = $this->sale_lib->get_total(false);
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $amount_tendered = parseDecimals($this->request->getPost('amount_tendered'));
                 $this->sale_lib->add_payment($payment_type, $amount_tendered);
                 $cash_adjustment_amount = $amount_due - $sales_total;
                 if ($cash_adjustment_amount <> 0) {
@@ -449,7 +449,7 @@ class Sales extends Secure_Controller
                     $this->sale_lib->add_payment(lang('Sales.cash_adjustment'), $cash_adjustment_amount, CASH_ADJUSTMENT_TRUE);
                 }
             } else {
-                $amount_tendered = parse_decimals($this->request->getPost('amount_tendered'));
+                $amount_tendered = parseDecimals($this->request->getPost('amount_tendered'));
                 $this->sale_lib->add_payment($payment_type, $amount_tendered);
             }
         }
@@ -571,16 +571,16 @@ class Sales extends Secure_Controller
         if ($this->validate($rules)) {
             $description = $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $serialnumber = $this->request->getPost('serialnumber', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $price = parse_decimals($this->request->getPost('price'));
-            $quantity = parse_decimals($this->request->getPost('quantity'));
+            $price = parseDecimals($this->request->getPost('price'));
+            $quantity = parseDecimals($this->request->getPost('quantity'));
             $discount_type = $this->request->getPost('discount_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $discount = $discount_type
-                ? parse_quantity($this->request->getPost('discount'))
-                : parse_decimals($this->request->getPost('discount'));
+                ? parseQuantity($this->request->getPost('discount'))
+                : parseDecimals($this->request->getPost('discount'));
 
             $item_location = $this->request->getPost('location', FILTER_SANITIZE_NUMBER_INT);
             $discounted_total = $this->request->getPost('discounted_total') != ''
-                ? parse_decimals($this->request->getPost('discounted_total') ?? '')
+                ? parseDecimals($this->request->getPost('discounted_total') ?? '')
                 : null;
 
 
@@ -652,7 +652,7 @@ class Sales extends Secure_Controller
         $data['transaction_date'] = to_date($__time);
         $data['show_stock_locations'] = $this->stock_location->show_locations('sales');
         $data['comments'] = $this->sale_lib->get_comment();
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         $employee_info = $this->employee->get_info($employee_id);
         $data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
@@ -1176,8 +1176,8 @@ class Sales extends Secure_Controller
             $data['payment_options'] = $this->sale->get_payment_options();
         }
 
-        $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->get_logged_in_employee_info()->person_id);
-        $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->get_logged_in_employee_info()->person_id);
+        $data['items_module_allowed'] = $this->employee->has_grant('items', $this->employee->getLoggedInEmployeeInfo()->person_id);
+        $data['change_price'] = $this->employee->has_grant('sales_change_price', $this->employee->getLoggedInEmployeeInfo()->person_id);
 
         $temp_invoice_number = $this->sale_lib->get_invoice_number();
         $invoice_format = $this->config['sales_invoice_format'];
@@ -1300,7 +1300,7 @@ class Sales extends Secure_Controller
      */
     public function postDelete(int $sale_id = NEW_ENTRY, bool $update_inventory = true): void
     {
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
@@ -1327,7 +1327,7 @@ class Sales extends Secure_Controller
      */
     public function restore(int $sale_id = NEW_ENTRY, bool $update_inventory = true): void
     {
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         $has_grant = $this->employee->has_grant('sales_delete', $employee_id);
 
         if (!$has_grant) {
@@ -1356,7 +1356,7 @@ class Sales extends Secure_Controller
     public function postSave(int $sale_id = NEW_ENTRY): void
     {
         $newdate = $this->request->getPost('date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         $inventory = model(Inventory::class);
         $date_formatter = date_create_from_format($this->config['dateformat'] . ' ' . $this->config['timeformat'], $newdate);
         $sale_time = $date_formatter->format('Y-m-d H:i:s');
@@ -1375,9 +1375,9 @@ class Sales extends Secure_Controller
         for ($i = 0; $i < $number_of_payments; ++$i) {
             $payment_id = $this->request->getPost("payment_id_$i", FILTER_SANITIZE_NUMBER_INT);
             $payment_type = $this->request->getPost("payment_type_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $payment_amount = parse_decimals($this->request->getPost("payment_amount_$i"));
+            $payment_amount = parseDecimals($this->request->getPost("payment_amount_$i"));
             $refund_type = $this->request->getPost("refund_type_$i", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $cash_refund = parse_decimals($this->request->getPost("refund_amount_$i"));
+            $cash_refund = parseDecimals($this->request->getPost("refund_amount_$i"));
 
             $cash_adjustment = $payment_type == lang('Sales.cash_adjustment') ? CASH_ADJUSTMENT_TRUE : CASH_ADJUSTMENT_FALSE;
 
@@ -1408,7 +1408,7 @@ class Sales extends Secure_Controller
         $payment_type = $this->request->getPost('payment_type_new', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($payment_type != PAYMENT_TYPE_UNASSIGNED && !empty($payment_amount_new)) {
-            $payment_amount = parse_decimals($payment_amount_new);
+            $payment_amount = parseDecimals($payment_amount_new);
             $cash_refund = 0;
             if ($payment_type == lang('Sales.cash_adjustment')) {
                 $cash_adjustment = CASH_ADJUSTMENT_TRUE;
@@ -1502,7 +1502,7 @@ class Sales extends Secure_Controller
         $dinner_table = $this->sale_lib->get_dinner_table();
         $cart = $this->sale_lib->get_cart();
         $payments = $this->sale_lib->get_payments();
-        $employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+        $employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         $customer_id = $this->sale_lib->get_customer();
         $invoice_number = $this->sale_lib->get_invoice_number();
         $work_order_number = $this->sale_lib->get_work_order_number();

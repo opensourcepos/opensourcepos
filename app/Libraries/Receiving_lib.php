@@ -353,7 +353,7 @@ class Receiving_lib
                 'quantity'                   => $quantity,
                 'discount'                   => $discount,
                 'discount_type'              => $discount_type,
-                'in_stock'                   => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                'in_stock'                   => $this->item_quantity->getItemQuantity($item_id, $item_location)->quantity,
                 'price'                      => $price,
                 'receiving_quantity'         => $receiving_quantity,
                 'receiving_quantity_choices' => $receiving_quantity_choices,

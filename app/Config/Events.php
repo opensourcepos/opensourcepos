@@ -86,8 +86,9 @@ Events::on('item_return', static function (): void {
  * This event triggered when an item is changed. This can be an item create, update or delete.
  * Plugin functionality is triggered here.
  */
-Events::on('item_change', static function (): void {
+Events::on('item_change', static function (int $itemId): void {
     // Call plugin controller methods to handle the item change data sent in the static function.
+    log_message('debug', "Item change event triggered on item ID: $itemId");
 });
 
 /**

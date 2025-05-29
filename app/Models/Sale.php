@@ -619,9 +619,9 @@ class Sale extends Model
 
             if ($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED) {    // TODO: === ?
                 // Update stock quantity if item type is a standard stock item and the sale is a standard sale
-                $item_quantity_data = $item_quantity->get_item_quantity($item_data['item_id'], $item_data['item_location']);
+                $item_quantity_data = $item_quantity->getItemQuantity($item_data['item_id'], $item_data['item_location']);
 
-                $item_quantity->save_value(
+                $item_quantity->saveValue(
                     [
                         'quantity'    => $item_quantity_data->quantity - $item_data['quantity'],
                         'item_id'     => $item_data['item_id'],

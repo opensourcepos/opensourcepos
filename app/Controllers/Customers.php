@@ -152,7 +152,7 @@ class Customers extends Persons
 
         if (empty($info->person_id) || empty($info->date) || empty($info->employee_id)) {
             $data['person_info']->date = date('Y-m-d H:i:s');
-            $data['person_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            $data['person_info']->employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         }
 
         $employee_info = $this->employee->get_info($info->employee_id);
@@ -265,7 +265,7 @@ class Customers extends Persons
             'account_number'    => $this->request->getPost('account_number') == '' ? null : $this->request->getPost('account_number'),
             'tax_id'            => $this->request->getPost('tax_id'),
             'company_name'      => $this->request->getPost('company_name') == '' ? null : $this->request->getPost('company_name'),
-            'discount'          => $this->request->getPost('discount') == '' ? 0.00 : parse_decimals($this->request->getPost('discount')),
+            'discount'          => $this->request->getPost('discount') == '' ? 0.00 : parseDecimals($this->request->getPost('discount')),
             'discount_type'     => $this->request->getPost('discount_type') == null ? PERCENT : $this->request->getPost('discount_type', FILTER_SANITIZE_NUMBER_INT),
             'package_id'        => $this->request->getPost('package_id') == '' ? null : $this->request->getPost('package_id'),
             'taxable'           => $this->request->getPost('taxable') != null,
@@ -436,7 +436,7 @@ class Customers extends Persons
                             'discount_type' => $data[16],
                             'taxable'       => $data[17] == '' ? 0 : 1,
                             'date'          => date('Y-m-d H:i:s'),
-                            'employee_id'   => $this->employee->get_logged_in_employee_info()->person_id
+                            'employee_id'   => $this->employee->getLoggedInEmployeeInfo()->person_id
                         ];
                         $account_number = $data[14];
 

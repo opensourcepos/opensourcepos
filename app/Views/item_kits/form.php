@@ -193,7 +193,7 @@
                 <?php foreach ($item_kit_items as $item_kit_item) { ?>
                     <tr>
                         <td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>
-                        <td><input class="quantity form-control input-sm" id="item_seq_<?= $item_kit_item['item_id'] ?>" name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]" value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"></td>
+                        <td><input class="quantity form-control input-sm" id="item_seq_<?= $item_kit_item['item_id'] ?>" name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]" value="<?= parseDecimals($item_kit_item['kit_sequence'], 0) ?>"></td>
                         <td><?= esc($item_kit_item['name']) ?></td>
                         <td><input class="quantity form-control input-sm" id="item_qty_<?= $item_kit_item['item_id'] ?>" name="item_kit_qty[<?= $item_kit_item['item_id'] ?>]" value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"></td>
                     </tr>

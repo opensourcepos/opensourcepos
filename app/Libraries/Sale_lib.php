@@ -1088,7 +1088,7 @@ class Sale_lib
                     'quantity'              => $quantity,
                     'discount'              => $applied_discount,
                     'discount_type'         => $discount_type,
-                    'in_stock'              => $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                    'in_stock'              => $this->item_quantity->getItemQuantity($item_id, $item_location)->quantity,
                     'price'                 => $price,
                     'cost_price'            => $cost_price,
                     'total'                 => $total,
@@ -1127,7 +1127,7 @@ class Sale_lib
             $item_info = $this->item->get_info_by_id_or_number($item_id);
 
             if ($item_info->stock_type == HAS_STOCK) {    // TODO: === ?
-                $item_quantity = $this->item_quantity->get_item_quantity($item_id, $item_location)->quantity;
+                $item_quantity = $this->item_quantity->getItemQuantity($item_id, $item_location)->quantity;
                 $quantity_added = $this->get_quantity_already_added($item_id, $item_location);
 
                 if ($item_quantity - $quantity_added < 0) {
