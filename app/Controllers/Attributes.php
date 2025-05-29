@@ -78,9 +78,9 @@ class Attributes extends Secure_Controller
      * @return void
      * @noinspection PhpUnused
      */
-    public function postDelete_attribute_value(): void
+    public function postDeleteDropdownAttributeValue(): void
     {
-        $success = $this->attribute->delete_value(
+        $success = $this->attribute->deleteDropdownAttributeValue(
             html_entity_decode($this->request->getPost('attribute_value')),
             $this->request->getPost('definition_id', FILTER_SANITIZE_NUMBER_INT)
         );
@@ -216,18 +216,6 @@ class Attributes extends Secure_Controller
     }
 
     /**
-     * AJAX called function to delete an attribute value. This is called when a dropdown item is removed.
-     *
-     * @param string $attribute_value
-     * @return bool
-     * @noinspection PhpUnused
-     */
-    public function delete_value(string $attribute_value): bool
-    {
-        return $this->attribute->delete_value($attribute_value, NO_DEFINITION_ID);
-    }
-
-    /**
      * Deletes an attribute definition
      * @return void
      */
@@ -235,7 +223,7 @@ class Attributes extends Secure_Controller
     {
         $attributes_to_delete = $this->request->getPost('ids', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($this->attribute->delete_definition_list($attributes_to_delete)) {
+        if($this->attribute->deleteDefinitionList($attributes_to_delete)) {
             $message = lang('Attributes.definition_successful_deleted') . ' ' . count($attributes_to_delete) . ' ' . lang('Attributes.definition_one_or_multiple');
             echo json_encode(['success' => true, 'message' => $message]);
         } else {
