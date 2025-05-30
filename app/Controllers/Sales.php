@@ -658,11 +658,11 @@ class Sales extends Secure_Controller
 
         $data['company_info'] = implode("\n", [$this->config['address'], $this->config['phone']]);
 
-        if ($this->config['account_number']) {
+        if (isset($this->config['account_number'])) {
             $data['company_info'] .= "\n" . lang('Sales.account_number') . ": " . $this->config['account_number'];
         }
 
-        if ($this->config['tax_id'] != '') {
+        if (isset($this->config['tax_id'])) {
             $data['company_info'] .= "\n" . lang('Sales.tax_id') . ": " . $this->config['tax_id'];
         }
 
