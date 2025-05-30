@@ -686,6 +686,7 @@ class Sales extends Secure_Controller
             $data["customer_comments"] = $customerInfo->comments;
             $data['tax_id'] = $customerInfo->tax_id;
         }
+
         $taxDetails = $this->tax_lib->getTaxes($data['cart']);    // TODO: Duplicated code
         $data['taxes'] = $taxDetails[0];
         $data['discount'] = $this->sale_lib->getDiscount();
@@ -767,7 +768,7 @@ class Sales extends Secure_Controller
                     $this->sale_lib->clearAll();
                 }
             }
-        } elseif ($this->sale_lib->is_work_order_mode()) {
+        } elseif ($this->sale_lib->isWorkOrderMode()) {
 
             if (!($data['price_work_orders'] == 1)) {
                 $data['print_price_info'] = false;
@@ -782,7 +783,7 @@ class Sales extends Secure_Controller
                 $workOrderNumber = $this->token_lib->render($workOrderFormat);
             }
 
-            if ($saleId == NEW_ENTRY && $this->sale->check_work_order_number_exists($workOrderNumber)) {
+            if ($saleId == NEW_ENTRY && $this->sale->workOrderNumberExists($workOrderNumber)) {
                 $data['error'] = lang('Sales.work_order_number_duplicate');
                 $this->reload($data);
             } else {
@@ -791,17 +792,17 @@ class Sales extends Secure_Controller
                 $saleType = SALE_TYPE_WORK_ORDER;
 
                 $data['sale_id_num'] = $this->sale->saveValue($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
-                $this->sale_lib->set_suspended_id($data['sale_id_num']);
+                $this->sale_lib->setSuspendedId($data['sale_id_num']);
 
                 $data['cart'] = $this->sale_lib->sortAndFilterCard($data['cart']);
 
                 $data['barcode'] = null;
 
                 echo view('sales/work_order', $data);
-                $this->sale_lib->clear_mode();
+                $this->sale_lib->clearMode();
                 $this->sale_lib->clearAll();
             }
-        } elseif ($this->sale_lib->is_quote_mode()) {
+        } elseif ($this->sale_lib->isQuoteMode()) {
             $data['sales_quote'] = lang('Sales.quote');
             $data['quote_number_label'] = lang('Sales.quote_number');
 
@@ -811,7 +812,7 @@ class Sales extends Secure_Controller
                 $quoteNumber = $this->token_lib->render($quoteFormat);
             }
 
-            if ($saleId == NEW_ENTRY && $this->sale->check_quote_number_exists($quoteNumber)) {
+            if ($saleId == NEW_ENTRY && $this->sale->quoteNumberExists($quoteNumber)) {
                 $data['error'] = lang('Sales.quote_number_duplicate');
                 $this->reload($data);
             } else {
@@ -820,19 +821,19 @@ class Sales extends Secure_Controller
                 $saleType = SALE_TYPE_QUOTE;
 
                 $data['sale_id_num'] = $this->sale->saveValue($saleId, $data['sale_status'], $data['cart'], $customerId, $employeeId, $data['comments'], $invoiceNumber, $workOrderNumber, $quoteNumber, $saleType, $data['payments'], $data['dinner_table'], $taxDetails);
-                $this->sale_lib->set_suspended_id($data['sale_id_num']);
+                $this->sale_lib->setSuspendedId($data['sale_id_num']);
 
                 $data['cart'] = $this->sale_lib->sortAndFilterCard($data['cart']);
                 $data['barcode'] = null;
 
                 echo view('sales/quote', $data);
-                $this->sale_lib->clear_mode();
+                $this->sale_lib->clearMode();
                 $this->sale_lib->clearAll();
             }
         } else {
             // Save the data to the sales table
             $data['sale_status'] = COMPLETED;
-            if ($this->sale_lib->is_return_mode()) {
+            if ($this->sale_lib->isReturnMode()) {
                 $saleType = SALE_TYPE_RETURN;
             } else {
                 $saleType = SALE_TYPE_POS;

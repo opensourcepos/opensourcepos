@@ -358,7 +358,7 @@ class Sale_lib
      * @param int $suspended_id
      * @return void
      */
-    public function set_suspended_id(int $suspended_id): void
+    public function setSuspendedId(int $suspended_id): void
     {
         $this->session->set('suspended_id', $suspended_id);
     }
@@ -390,7 +390,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_quote_mode(): bool
+    public function isQuoteMode(): bool
     {
         return ($this->session->get('sales_mode') == 'sale_quote');    // TODO: === ?
     }
@@ -398,7 +398,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_return_mode(): bool
+    public function isReturnMode(): bool
     {
         return ($this->session->get('sales_mode') == 'return');    // TODO: === ?
     }
@@ -406,7 +406,7 @@ class Sale_lib
     /**
      * @return bool
      */
-    public function is_work_order_mode(): bool
+    public function isWorkOrderMode(): bool
     {
         return ($this->session->get('sales_mode') == 'sale_work_order');    // TODO: === ?
     }
@@ -809,7 +809,7 @@ class Sale_lib
     /**
      * @return void
      */
-    public function clear_mode(): void
+    public function clearMode(): void
     {
         $this->session->remove('sales_mode');
     }
@@ -1343,7 +1343,7 @@ class Sale_lib
     public function clearAll(): void
     {
         $this->session->set('sale_id', -1);    // TODO: Replace -1 with constant
-        $this->clear_mode();
+        $this->clearMode();
         $this->clear_table();
         $this->empty_cart();
         $this->clear_comment();

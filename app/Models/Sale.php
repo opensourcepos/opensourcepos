@@ -952,7 +952,7 @@ class Sale extends Model
     /**
      * Checks if quote number exists
      */
-    public function check_quote_number_exists(string $quote_number, string $sale_id = ''): bool
+    public function quoteNumberExists(string $quote_number, string $sale_id = ''): bool
     {
         $builder = $this->db->table('sales');
         $builder->where('quote_number', $quote_number);
@@ -982,7 +982,7 @@ class Sale extends Model
     /**
      * Checks if work order number exists
      */
-    public function check_work_order_number_exists(string $work_order_number, string $sale_id = ''): bool
+    public function workOrderNumberExists(string $work_order_number, string $sale_id = ''): bool
     {
         $builder = $this->db->table('sales');
         $builder->where('invoice_number', $work_order_number);
