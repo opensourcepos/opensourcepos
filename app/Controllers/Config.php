@@ -562,6 +562,7 @@ class Config extends Secure_Controller
         return $result;
     }
 
+    ///TODO: Refactor this to app\Controllers\Plugins\Mailchimp.php controller
     /**
      * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
      *
@@ -575,7 +576,7 @@ class Config extends Secure_Controller
 
         echo json_encode([
             'success'         => $success,
-            'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
+            'message'         => lang('Plugins.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
             'mailchimp_lists' => $lists
         ]);
     }
