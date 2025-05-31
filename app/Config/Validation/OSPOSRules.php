@@ -133,6 +133,6 @@ class OSPOSRules
      */
     public function decimal_locale(string $candidate, ?string &$error = null): bool
     {
-        return parse_decimals($candidate) !== false;
+        return parseDecimals($candidate) !== false;
     }
 }

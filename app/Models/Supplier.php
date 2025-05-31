@@ -66,7 +66,7 @@ class Supplier extends Person
     /**
      * Gets information about a particular supplier
      */
-    public function get_info(?int $person_id): object
+    public function getInfo(?int $person_id): object
     {
         $builder = $this->db->table('suppliers');
         $builder->join('people', 'people.person_id = suppliers.person_id');
@@ -77,7 +77,7 @@ class Supplier extends Person
             return $query->getRow();
         } else {
             // Get empty base parent object, as $supplier_id is NOT a supplier
-            $person_obj = parent::get_info(NEW_ENTRY);
+            $person_obj = parent::getInfo(NEW_ENTRY);
 
             // Get all the fields from supplier table
             // Append those fields to base parent object, we have a complete empty object

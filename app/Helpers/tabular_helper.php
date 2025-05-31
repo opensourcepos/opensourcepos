@@ -101,7 +101,7 @@ function get_sale_data_row(object $sale): array
 
     $row = [
         'sale_id'         => $sale->sale_id,
-        'sale_time'       => to_datetime(strtotime($sale->sale_time)),
+        'sale_time'       => toDatetime(strtotime($sale->sale_time)),
         'customer_name'   => $sale->customer_name,
         'amount_due'      => to_currency($sale->amount_due),
         'amount_tendered' => to_currency($sale->amount_tendered),
@@ -790,7 +790,7 @@ function get_expenses_data_row(object $expense): array
 
     return [
         'expense_id'        => $expense->expense_id,
-        'date'              => to_datetime(strtotime($expense->date)),
+        'date'              => toDatetime(strtotime($expense->date)),
         'supplier_name'     => $expense->supplier_name,
         'supplier_tax_code' => $expense->supplier_tax_code,
         'amount'            => to_currency($expense->amount),
@@ -889,11 +889,11 @@ function get_cash_up_data_row(object $cash_up): array
 
     return [
         'cashup_id'            => $cash_up->cashup_id,
-        'open_date'            => to_datetime(strtotime($cash_up->open_date)),
+        'open_date'            => toDatetime(strtotime($cash_up->open_date)),
         'open_employee_id'     => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
         'open_amount_cash'     => to_currency($cash_up->open_amount_cash),
         'transfer_amount_cash' => to_currency($cash_up->transfer_amount_cash),
-        'close_date'           => to_datetime(strtotime($cash_up->close_date)),
+        'close_date'           => toDatetime(strtotime($cash_up->close_date)),
         'close_employee_id'    => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
         'closed_amount_cash'   => to_currency($cash_up->closed_amount_cash),
         'note'                 => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',

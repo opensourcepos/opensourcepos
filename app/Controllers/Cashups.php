@@ -94,8 +94,8 @@ class Cashups extends Secure_Controller
         if ($cash_ups_info->cashup_id == NEW_ENTRY) {
             $cash_ups_info->open_date = date('Y-m-d H:i:s');
             $cash_ups_info->close_date = $cash_ups_info->open_date;
-            $cash_ups_info->open_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
-            $cash_ups_info->close_employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            $cash_ups_info->open_employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
+            $cash_ups_info->close_employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         }
         // If all the amounts are null or 0 that means it's a close cashup
         elseif (
@@ -210,13 +210,13 @@ class Cashups extends Secure_Controller
         $cash_up_data = [
             'open_date'            => $open_date_formatter->format('Y-m-d H:i:s'),
             'close_date'           => $close_date_formatter->format('Y-m-d H:i:s'),
-            'open_amount_cash'     => parse_decimals($this->request->getPost('open_amount_cash')),
-            'transfer_amount_cash' => parse_decimals($this->request->getPost('transfer_amount_cash')),
-            'closed_amount_cash'   => parse_decimals($this->request->getPost('closed_amount_cash')),
-            'closed_amount_due'    => parse_decimals($this->request->getPost('closed_amount_due')),
-            'closed_amount_card'   => parse_decimals($this->request->getPost('closed_amount_card')),
-            'closed_amount_check'  => parse_decimals($this->request->getPost('closed_amount_check')),
-            'closed_amount_total'  => parse_decimals($this->request->getPost('closed_amount_total')),
+            'open_amount_cash'     => parseDecimals($this->request->getPost('open_amount_cash')),
+            'transfer_amount_cash' => parseDecimals($this->request->getPost('transfer_amount_cash')),
+            'closed_amount_cash'   => parseDecimals($this->request->getPost('closed_amount_cash')),
+            'closed_amount_due'    => parseDecimals($this->request->getPost('closed_amount_due')),
+            'closed_amount_card'   => parseDecimals($this->request->getPost('closed_amount_card')),
+            'closed_amount_check'  => parseDecimals($this->request->getPost('closed_amount_check')),
+            'closed_amount_total'  => parseDecimals($this->request->getPost('closed_amount_total')),
             'note'                 => $this->request->getPost('note') != null,
             'description'          => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'open_employee_id'     => $this->request->getPost('open_employee_id', FILTER_SANITIZE_NUMBER_INT),
@@ -258,12 +258,12 @@ class Cashups extends Secure_Controller
      */
     public function postAjax_cashup_total(): void
     {
-        $open_amount_cash = parse_decimals($this->request->getPost('open_amount_cash'));
-        $transfer_amount_cash = parse_decimals($this->request->getPost('transfer_amount_cash'));
-        $closed_amount_cash = parse_decimals($this->request->getPost('closed_amount_cash'));
-        $closed_amount_due = parse_decimals($this->request->getPost('closed_amount_due'));
-        $closed_amount_card = parse_decimals($this->request->getPost('closed_amount_card'));
-        $closed_amount_check = parse_decimals($this->request->getPost('closed_amount_check'));
+        $open_amount_cash = parseDecimals($this->request->getPost('open_amount_cash'));
+        $transfer_amount_cash = parseDecimals($this->request->getPost('transfer_amount_cash'));
+        $closed_amount_cash = parseDecimals($this->request->getPost('closed_amount_cash'));
+        $closed_amount_due = parseDecimals($this->request->getPost('closed_amount_due'));
+        $closed_amount_card = parseDecimals($this->request->getPost('closed_amount_card'));
+        $closed_amount_check = parseDecimals($this->request->getPost('closed_amount_check'));
 
         $total = $this->_calculate_total($open_amount_cash, $transfer_amount_cash, $closed_amount_due, $closed_amount_cash, $closed_amount_card, $closed_amount_check);    // TODO: hungarian notation
 

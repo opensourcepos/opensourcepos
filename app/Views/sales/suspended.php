@@ -43,7 +43,7 @@ use App\Models\Customer;
                     <?php
                     if (isset($suspended_sale['customer_id'])) {
                         $customer = model(Customer::class);    // TODO: Should we be accessing a model in a view rather than passing this data to the view via the controller?
-                        $customer_data = $customer->get_info($suspended_sale['customer_id']);
+                        $customer_data = $customer->getInfo($suspended_sale['customer_id']);
                         echo esc("$customer_data->first_name $customer_data->last_name");
                     } else {
                     ?>
@@ -54,7 +54,7 @@ use App\Models\Customer;
                     <?php
                     if (isset($suspended_sale['employee_id'])) {
                         $employee = model(Employee::class);
-                        $employee_data = $employee->get_info($suspended_sale['employee_id']);
+                        $employee_data = $employee->getInfo($suspended_sale['employee_id']);
                         echo esc("$employee_data->first_name $employee_data->last_name");
                     } else {
                     ?>

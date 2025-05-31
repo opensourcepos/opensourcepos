@@ -76,7 +76,13 @@ function createPrimaryKey(string $table, string $index): void {
         $constraints = dropAllForeignKeyConstraints($table, $index);
         deleteIndex($table, $index);
         $forge = Database::forge();
-        $forge->addPrimaryKey($index,'PRIMARY');
+
+        if (isMariaDb()) {
+            $forge->addPrimaryKey($index);
+        } else {
+            $forge->addPrimaryKey($index, 'PRIMARY');
+        }
+
         $forge->processIndexes($table);
         recreateForeignKeyConstraints($constraints);
     }
@@ -204,4 +210,17 @@ function foreignKeyExists(string $constraintName, string $tableName): bool {
     overridePrefix($prefix);
 
     return $query->getNumRows() > 0;
+}
+
+/**
+ * Checks if the current database is MariaDB.
+ *
+ * @return bool true if the database is MariaDB, false otherwise.
+ */
+function isMariaDb(): bool
+{
+    $db = Database::connect();
+    $version = $db->getVersion();
+
+    return stripos($version, 'mariadb') !== false;
 }

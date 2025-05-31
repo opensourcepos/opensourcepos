@@ -88,7 +88,7 @@ class Customer extends Person
     /**
      * Gets information about a particular customer
      */
-    public function get_info(?int $person_id): object
+    public function getInfo(?int $person_id): object
     {
         $builder = $this->db->table('customers');
         $builder->join('people', 'people.person_id = customers.person_id');
@@ -108,7 +108,7 @@ class Customer extends Person
     private function getEmptyObject(string $table_name): object
     {
         // Return an empty base parent object, as $item_id is NOT an item
-        $empty_obj = parent::get_info(NEW_ENTRY);
+        $empty_obj = parent::getInfo(NEW_ENTRY);
 
         // Iterate through field definitions to determine how the fields should be initialized
         foreach ($this->db->getFieldData($table_name) as $field) {
