@@ -5,13 +5,13 @@
  */
 ?>
 
-<?= form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('config/saveplugins/', ['id' => 'plugin_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
 
             <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <div id="integrations_header"><?= lang('Plugins.mailchimp_configuration') ?></div>
-            <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
+            <div id="plugins_header"><?= lang('Plugins.mailchimp_configuration') ?></div>
+            <ul id="plugin_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
                 <?= form_label(lang('Plugins.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
@@ -88,7 +88,7 @@
             );
         });
 
-        $('#mailchimp_config_form').validate($.extend(form_support.handler, {
+        $('#plugin_config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     success: function(response) {
@@ -102,7 +102,7 @@
                 });
             },
 
-            errorLabelContainer: '#mailchimp_error_message_box'
+            errorLabelContainer: '#plugin_error_message_box'
         }));
     });
 </script>

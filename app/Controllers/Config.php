@@ -62,7 +62,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -246,15 +246,15 @@ class Config extends Secure_Controller
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
-        // Integrations Related fields
+        // Plugins Related fields
         $data['mailchimp']    = [];
 
-        if (check_encryption()) {    // TODO: Hungarian notation
+        if (checkEncryption()) {
             if (!isset($this->encrypter)) {
                 helper('security');
                 $this->encrypter = Services::encrypter();
             }
-
+///TODO: Mailchimp related code should be moved to a separate controller. Perhaps the plugins controller and gets called here to add it into the $data array?
             $data['mailchimp']['api_key'] = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
                 ? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
                 : '';
@@ -494,7 +494,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
@@ -525,7 +525,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 
@@ -580,20 +580,20 @@ class Config extends Secure_Controller
             'mailchimp_lists' => $lists
         ]);
     }
-
+///TODO: Refactor this to app\Controllers\Plugins\Mailchimp.php controller?
     /**
-     * Saves Mailchimp configuration. Used in app/Views/configs/integrations_config.php
+     * Saves Mailchimp configuration. Used in app/Views/configs/plugins_config.php
      *
      * @throws ReflectionException
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveMailchimp(): void
+    public function postSavePlugins(): void
     {
         $api_key = '';
         $list_id = '';
 
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
             if (!empty($api_key_unencrypted)) {
                 $api_key = $this->encrypter->encrypt($api_key_unencrypted);
