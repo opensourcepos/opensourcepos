@@ -4,16 +4,16 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AttributeLinksUniqueConstraint extends Migration
+class PluginConfigTableCreate extends Migration
 {
     /**
      * Perform a migration step.
      */
     public function up(): void
     {
-        error_log('Migrating attribute_links unique constraint started');
+        error_log('Migrating plugin_config table started');
 
-        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_attribute_links_unique_constraint.sql');
+        execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.1_PluginConfigTableCreate.sql');
     }
 
     /**
