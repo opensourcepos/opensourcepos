@@ -35,7 +35,7 @@ class Convert_to_ci4 extends Migration
         if (!empty(config('Encryption')->key)) {
             $this->convert_ci3_encrypted_data();
         } else {
-            check_encryption();
+            checkEncryption();
         }
 
         remove_backup();
@@ -70,7 +70,7 @@ class Convert_to_ci4 extends Migration
 
         $decrypted_data = $this->decrypt_ci3_data($ci3_encrypted_data);
 
-        check_encryption();
+        checkEncryption();
 
         try {
             $ci4_encrypted_data = $this->encrypt_data($decrypted_data);

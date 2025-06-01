@@ -62,7 +62,7 @@ class Config extends Secure_Controller
         $this->db = Database::connect();
 
         helper('security');
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $this->encrypter = Services::encrypter();
         } else {
             log_message('alert', 'Error preparing encryption key');
@@ -246,15 +246,15 @@ class Config extends Secure_Controller
         $data['image_allowed_types'] = array_combine($image_allowed_types, $image_allowed_types);
         $data['selected_image_allowed_types'] = explode(',', $this->config['image_allowed_types']);
 
-        // Integrations Related fields
+        // Plugins Related fields
         $data['mailchimp']    = [];
 
-        if (check_encryption()) {    // TODO: Hungarian notation
+        if (checkEncryption()) {
             if (!isset($this->encrypter)) {
                 helper('security');
                 $this->encrypter = Services::encrypter();
             }
-
+///TODO: Mailchimp related code should be moved to a separate controller. Perhaps the plugins controller and gets called here to add it into the $data array?
             $data['mailchimp']['api_key'] = (isset($this->config['mailchimp_api_key']) && !empty($this->config['mailchimp_api_key']))
                 ? $this->encrypter->decrypt($this->config['mailchimp_api_key'])
                 : '';
@@ -366,9 +366,9 @@ class Config extends Secure_Controller
             'theme'                             => $this->request->getPost('theme'),
             'login_form'                        => $this->request->getPost('login_form'),
             'default_sales_discount_type'       => $this->request->getPost('default_sales_discount_type') != null,
-            'default_sales_discount'            => parse_decimals($this->request->getPost('default_sales_discount')),
+            'default_sales_discount'            => parseDecimals($this->request->getPost('default_sales_discount')),
             'default_receivings_discount_type'  => $this->request->getPost('default_receivings_discount_type') != null,
-            'default_receivings_discount'       => parse_decimals($this->request->getPost('default_receivings_discount')),
+            'default_receivings_discount'       => parseDecimals($this->request->getPost('default_receivings_discount')),
             'enforce_privacy'                   => $this->request->getPost('enforce_privacy') != null,
             'receiving_calculate_average_price' => $this->request->getPost('receiving_calculate_average_price') != null,
             'lines_per_page'                    => $this->request->getPost('lines_per_page', FILTER_SANITIZE_NUMBER_INT),
@@ -494,7 +494,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('smtp_pass'))) {
+        if (checkEncryption() && !empty($this->request->getPost('smtp_pass'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('smtp_pass'));
         }
 
@@ -525,7 +525,7 @@ class Config extends Secure_Controller
     {
         $password = '';
 
-        if (check_encryption() && !empty($this->request->getPost('msg_pwd'))) {
+        if (checkEncryption() && !empty($this->request->getPost('msg_pwd'))) {
             $password = $this->encrypter->encrypt($this->request->getPost('msg_pwd'));
         }
 
@@ -562,6 +562,7 @@ class Config extends Secure_Controller
         return $result;
     }
 
+    ///TODO: Refactor this to app\Controllers\Plugins\Mailchimp.php controller
     /**
      * Gets Mailchimp lists when a valid API key is inserted. Used in app/Views/configs/integrations_config.php
      *
@@ -575,24 +576,24 @@ class Config extends Secure_Controller
 
         echo json_encode([
             'success'         => $success,
-            'message'         => lang('Config.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
+            'message'         => lang('Plugins.mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
             'mailchimp_lists' => $lists
         ]);
     }
-
+///TODO: Refactor this to app\Controllers\Plugins\Mailchimp.php controller?
     /**
-     * Saves Mailchimp configuration. Used in app/Views/configs/integrations_config.php
+     * Saves Mailchimp configuration. Used in app/Views/configs/plugins_config.php
      *
      * @throws ReflectionException
      * @return void
      * @noinspection PhpUnused
      */
-    public function postSaveMailchimp(): void
+    public function postSavePlugins(): void
     {
         $api_key = '';
         $list_id = '';
 
-        if (check_encryption()) {
+        if (checkEncryption()) {
             $api_key_unencrypted = $this->request->getPost('mailchimp_api_key');
             if (!empty($api_key_unencrypted)) {
                 $api_key = $this->encrypter->encrypt($api_key_unencrypted);
@@ -667,7 +668,7 @@ class Config extends Secure_Controller
     {
         $this->sale_lib->clear_sale_location();
         $this->sale_lib->clear_table();
-        $this->sale_lib->clear_all();
+        $this->sale_lib->clearAll();
         $this->receiving_lib = new Receiving_lib();
         $this->receiving_lib->clear_stock_source();
         $this->receiving_lib->clear_stock_destination();
@@ -775,9 +776,9 @@ class Config extends Secure_Controller
         $default_tax_2_rate = $this->request->getPost('default_tax_2_rate');
 
         $batch_save_data = [
-            'default_tax_1_rate'        => parse_tax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'default_tax_1_rate'        => parseTax(filter_var($default_tax_1_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
             'default_tax_1_name'        => $this->request->getPost('default_tax_1_name'),
-            'default_tax_2_rate'        => parse_tax(filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
+            'default_tax_2_rate'        => parseTax(filter_var($default_tax_2_rate, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)),
             'default_tax_2_name'        => $this->request->getPost('default_tax_2_name'),
             'tax_included'              => $this->request->getPost('tax_included') != null,
             'use_destination_based_tax' => $this->request->getPost('use_destination_based_tax') != null,

@@ -110,7 +110,7 @@ class Expenses extends Secure_Controller
 
         if ($expense_id == NEW_ENTRY) {
             $data['expenses_info']->date = date('Y-m-d H:i:s');
-            $data['expenses_info']->employee_id = $this->employee->get_logged_in_employee_info()->person_id;
+            $data['expenses_info']->employee_id = $this->employee->getLoggedInEmployeeInfo()->person_id;
         }
 
         $data['payments'] = [];
@@ -155,8 +155,8 @@ class Expenses extends Secure_Controller
             'date'                => $date_formatter->format('Y-m-d H:i:s'),
             'supplier_id'         => $this->request->getPost('supplier_id') == '' ? null : $this->request->getPost('supplier_id', FILTER_SANITIZE_NUMBER_INT),
             'supplier_tax_code'   => $this->request->getPost('supplier_tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
-            'amount'              => parse_decimals($this->request->getPost('amount')),
-            'tax_amount'          => parse_decimals($this->request->getPost('tax_amount')),
+            'amount'              => parseDecimals($this->request->getPost('amount')),
+            'tax_amount'          => parseDecimals($this->request->getPost('tax_amount')),
             'payment_type'        => $this->request->getPost('payment_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'expense_category_id' => $this->request->getPost('expense_category_id', FILTER_SANITIZE_NUMBER_INT),
             'description'         => $this->request->getPost('description', FILTER_SANITIZE_FULL_SPECIAL_CHARS),

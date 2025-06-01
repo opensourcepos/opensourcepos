@@ -28,7 +28,7 @@
                     <?= form_input([
                         'name'     => 'date',
                         'class'    => 'form-control input-sm datetime',
-                        'value'    => to_datetime(strtotime($expenses_info->date)),
+                        'value'    => toDatetime(strtotime($expenses_info->date)),
                         'readonly' => 'readonly'
                     ]) ?>
                 </div>

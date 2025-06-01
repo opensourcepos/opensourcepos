@@ -5,16 +5,16 @@
  */
 ?>
 
-<?= form_open('config/saveMailchimp/', ['id' => 'mailchimp_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+<?= form_open('config/saveplugins/', ['id' => 'plugin_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
 
             <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <div id="integrations_header"><?= lang('Config.mailchimp_configuration') ?></div>
-            <ul id="mailchimp_error_message_box" class="error_message_box"></ul>
+            <div id="plugins_header"><?= lang('Plugins.mailchimp_configuration') ?></div>
+            <ul id="plugin_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
+                <?= form_label(lang('Plugins.mailchimp_api_key'), 'mailchimp_api_key', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -31,14 +31,14 @@
                 <div class="col-xs-1">
                     <label class="control-label">
                         <a href="https://eepurl.com/b9a05b" target="_blank">
-                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
+                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Plugins.mailchimp_tooltip') ?>"></span>
                         </a>
                     </label>
                 </div>
             </div>
 
             <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
+                <?= form_label(lang('Plugins.mailchimp_lists'), 'mailchimp_list_id', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
@@ -88,7 +88,7 @@
             );
         });
 
-        $('#mailchimp_config_form').validate($.extend(form_support.handler, {
+        $('#plugin_config_form').validate($.extend(form_support.handler, {
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     success: function(response) {
@@ -102,7 +102,7 @@
                 });
             },
 
-            errorLabelContainer: '#mailchimp_error_message_box'
+            errorLabelContainer: '#plugin_error_message_box'
         }));
     });
 </script>

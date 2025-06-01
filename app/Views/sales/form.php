@@ -31,7 +31,7 @@
         <div class="form-group form-group-sm">
             <?= form_label(lang('Sales.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
             <div class="col-xs-8">
-                <?= form_input(['name' => 'date', 'value' => to_datetime(strtotime($sale_info['sale_time'])), 'class' => 'datetime form-control input-sm']) ?>
+                <?= form_input(['name' => 'date', 'value' => toDatetime(strtotime($sale_info['sale_time'])), 'class' => 'datetime form-control input-sm']) ?>
             </div>
         </div>
 

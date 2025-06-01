@@ -33,7 +33,7 @@ class Item_taxes extends Model
     /**
      * Inserts or updates an item's taxes
      */
-    public function save_value(array &$items_taxes_data, int $item_id): bool
+    public function saveValue(array &$items_taxes_data, int $item_id): bool
     {
         $success = true;
 

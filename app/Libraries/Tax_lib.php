@@ -83,12 +83,12 @@ class Tax_lib
     /**
      * Compute taxes for all items in the cart
      */
-    public function get_taxes(array &$cart, int $sale_id = -1): array    // TODO: Replace -1 with constant.
+    public function getTaxes(array &$cart, int $sale_id = -1): array    // TODO: Replace -1 with constant.
     {
         $register_mode = $this->sale_lib->get_mode();
         $tax_decimals = tax_decimals();
-        $customer_id = $this->sale_lib->get_customer();
-        $customer_info = $this->customer->get_info($customer_id);
+        $customer_id = $this->sale_lib->getCustomer();
+        $customer_info = $this->customer->getInfo($customer_id);
         $taxes = [];
         $item_taxes = [];
 
