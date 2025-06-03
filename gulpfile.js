@@ -63,8 +63,7 @@ gulp.task('copy-bootswatch', function() {
     pipeline(gulp.src('./node_modules/bootswatch/spacelab/*.min.css'),gulp.dest('public/resources/bootswatch/spacelab'));
     pipeline(gulp.src('./node_modules/bootswatch/superhero/*.min.css'),gulp.dest('public/resources/bootswatch/superhero'));
     pipeline(gulp.src('./node_modules/bootswatch/united/*.min.css'),gulp.dest('public/resources/bootswatch/united'));
-    pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti'));
-    return pipeline(gulp.src('./node_modules/bootswatch/fonts/*.*', {encoding:false}),gulp.dest('public/resources/bootswatch/fonts'));
+    return pipeline(gulp.src('./node_modules/bootswatch/yeti/*.min.css'),gulp.dest('public/resources/bootswatch/yeti'));
 });
 
 // Copy the bootswatch styles into their own folder so OSPOS can select one from the collection
@@ -253,8 +252,8 @@ gulp.task('prod-css', function() {
 });
 
 
-gulp.task('copy-fonts', function() {
-    return pipeline(gulp.src('./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.*', {encoding: false}),rev(),gulp.dest('public/resources'));
+gulp.task('copy-icons', function() {
+    return pipeline(gulp.src('./node_modules/bootstrap-icons/font/**/*', {encoding: false}),gulp.dest('public/resources/bootstrap-icons'));
 });
 
 
@@ -299,7 +298,7 @@ gulp.task('default',
         'prod-js',
         'debug-css',
         'prod-css',
-        'copy-fonts',
+        'copy-icons',
         'copy-menubar',
         'build-database'
     ));

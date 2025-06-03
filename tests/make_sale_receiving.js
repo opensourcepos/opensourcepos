@@ -16,7 +16,7 @@ describe("create item and make sale", function () {
     it("should be able to make sale", function (done) {
         return this.browser.get(ospos.url("/index.php/sales"))
             .elementById("item", def_timeout).clear().type("1\uE007")
-            .elementByName("quantity", def_timeout).clear().type("2").elementByName("discount", def_timeout).type(item.cost_price).elementByCssSelector(".glyphicon.glyphicon-refresh").click()
+            .elementByName("quantity", def_timeout).clear().type("2").elementByName("discount", def_timeout).type(item.cost_price).elementByCssSelector(".bi.bi-arrow-repeat").click()
             .elementById("add_payment_button", def_timeout).click().elementByCssSelector("tbody#payment_contents tr td:last-child", def_timeout).text().then(function (value) {
                 assert.equal(value, "$43.56", "price " + value + " in sale register is not correct!!");
             }).elementById("finish_sale_button", def_timeout).click().elementByCssSelector("#receipt_items tbody tr:nth-child(8) td:last-child", def_timeout).text().then(function (value) {
