@@ -18,7 +18,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-cloud"></span>
+                            <i class="bi bi-key"></i>
                         </span>
                         <?= form_input([
                             'name'  => 'mailchimp_api_key',
@@ -31,7 +31,7 @@
                 <div class="col-xs-1">
                     <label class="control-label">
                         <a href="https://eepurl.com/b9a05b" target="_blank">
-                            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
+                            <span class="bi bi-info-circle" data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>"></span>
                         </a>
                     </label>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="col-xs-4">
                     <div class="input-group">
                         <span class="input-group-addon input-sm">
-                            <span class="glyphicon glyphicon-user"></span>
+                            <i class="bi bi-list-stars"></i>
                         </span>
                         <?= form_dropdown(
                             'mailchimp_list_id',
