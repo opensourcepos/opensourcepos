@@ -18,16 +18,16 @@
     });
 </script>
 
-<div id="title_bar" class="btn-toolbar">
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name) . ".new") ?>">
-        <i class="bi bi-piggy-bank icon-spacing"></i><?= lang(ucfirst($controller_name) . ".new") ?>
+<div class="d-flex gap-2 justify-content-end">
+    <button type="button" class="btn btn-primary" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name). '.new') ?>">
+        <i class="bi bi-piggy-bank me-2"></i><?= lang(ucfirst($controller_name) .'.new') ?>
     </button>
 </div>
 
 <div id="toolbar">
-    <div class="pull-left btn-toolbar">
-        <button id="delete" class="btn btn-default btn-sm">
-            <i class="bi bi-trash icon-spacing"></i><?= lang('Common.delete') ?>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary">
+            <i class="bi bi-trash"></i><span class="d-none d-sm-inline ms-2"><?= lang('Common.delete') ?></span>
         </button>
     </div>
 </div>
