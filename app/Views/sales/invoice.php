@@ -36,6 +36,7 @@ if (isset($error_message)) {
                 $.get('<?= site_url() . "sales/sendPdf/$sale_id_num" ?>',
                     function(response) {
                         $.notify({
+                            icon: 'bi bi-bell-fill',
                             message: response.message
                         }, {
                             type: response.success ? 'success' : 'danger'
@@ -57,20 +58,20 @@ if (isset($error_message)) {
 
 <div class="print_hide" id="control_buttons" style="text-align: right;">
     <a href="javascript:printdoc();">
-        <div class="btn btn-info btn-sm" id="show_print_button"><?= '<i class="bi bi-printer icon-spacing"></i>' . lang('Common.print') ?></div>
+        <div class="btn btn-info btn-sm" id="show_print_button"><?= '<i class="bi bi-printer me-2"></i>' . lang('Common.print') ?></div>
     </a>
     <?php
     /* This line will allow to print and go back to sales automatically.
-     * echo anchor('sales', '<i class="bi bi-printer icon-spacing"></i>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();'));
+     * echo anchor('sales', '<i class="bi bi-printer me-2"></i>' . lang('Common.print'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_print_button', 'onclick' => 'window.print();'));
      */
     ?>
     <?php if (isset($customer_email) && !empty($customer_email)): ?>
         <a href="javascript:void(0);">
-            <div class="btn btn-info btn-sm" id="show_email_button"><?= '<i class="bi bi-envelope icon-spacing"></i>' . lang('Sales.send_invoice') ?></div>
+            <div class="btn btn-info btn-sm" id="show_email_button"><?= '<i class="bi bi-envelope me-2"></i>' . lang('Sales.send_invoice') ?></div>
         </a>
     <?php endif; ?>
-    <?= anchor("sales", '<i class="bi bi-cart2 icon-spacing"></i>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
-    <?= anchor("sales/manage", '<i class="bi bi-receipt-cutoff icon-spacing"></i>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
+    <?= anchor("sales", '<i class="bi bi-cart2 me-2"></i>' . lang('Sales.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+    <?= anchor("sales/manage", '<i class="bi bi-receipt-cutoff me-2"></i>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 </div>
 
 <div id="page-wrap">
