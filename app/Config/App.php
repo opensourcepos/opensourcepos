@@ -12,7 +12,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public string $application_version = '3.4.0';
+    public string $application_version = '3.4.1';
 
     /**
      * This is the commit hash for the version you are currently using.

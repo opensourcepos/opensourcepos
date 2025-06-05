@@ -15,7 +15,7 @@ networks:
 
 services:
     ospos:
-        image: jekkos/opensourcepos:3.4.0
+        image: jekkos/opensourcepos:3.4.1
         restart: always
         depends_on:
             - mysql
