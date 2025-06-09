@@ -422,7 +422,7 @@ class Item extends Model
     /**
      * Inserts or updates an item
      */
-    public function save_value(array &$item_data, int $item_id = NEW_ENTRY): bool    // TODO: need to bring this in line with parent or change the name
+    public function saveValue(array &$item_data, int $item_id = NEW_ENTRY): bool    // TODO: need to bring this in line with parent or change the name
     {
         $builder = $this->db->table('items');
 
@@ -499,7 +499,7 @@ class Item extends Model
     /**
      * Deletes a list of items
      */
-    public function delete_list(array $item_ids): bool
+    public function deleteList(array $item_ids): bool
     {
         // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
@@ -1045,7 +1045,7 @@ class Item extends Model
 
         $data = ['cost_price' => $average_price];
 
-        return $this->save_value($data, $item_id);
+        return $this->saveValue($data, $item_id);
     }
 
     /**

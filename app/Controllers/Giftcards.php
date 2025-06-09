@@ -124,7 +124,7 @@ class Giftcards extends Secure_Controller
         $giftcard_data = [
             'record_time'     => date('Y-m-d H:i:s'),
             'giftcard_number' => $giftcard_number,
-            'value'           => parse_decimals($this->request->getPost('giftcard_amount')),
+            'value'           => parseDecimals($this->request->getPost('giftcard_amount')),
             'person_id'       => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
@@ -160,7 +160,7 @@ class Giftcards extends Secure_Controller
      */
     public function postCheckNumberGiftcard(): void
     {
-        $giftcard_amount = parse_decimals($this->request->getPost('giftcard_amount'));
+        $giftcard_amount = parseDecimals($this->request->getPost('giftcard_amount'));
         $parsed_value = filter_var($giftcard_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         echo json_encode(['success' => $parsed_value !== false && $parsed_value > 0 && $giftcard_amount !== false, 'giftcard_amount' => to_currency_no_money($parsed_value)]);
     }

@@ -35,7 +35,7 @@
                         $value = (empty($attribute_value) || empty($attribute_value->attribute_date)) ? NOW : strtotime($attribute_value->attribute_date);
                         echo form_input([
                             'name'               => "attribute_links[$definition_id]",
-                            'value'              => to_date($value),
+                            'value'              => toDate($value),
                             'class'              => 'form-control input-sm datetime',
                             'data-definition-id' => $definition_id,
                             'readonly'           => 'true'

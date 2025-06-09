@@ -62,7 +62,7 @@ class Stock_location extends Model
      * @param string $module_id
      * @return ResultInterface
      */
-    public function get_undeleted_all(string $module_id = 'items'): ResultInterface
+    public function getUndeletedAll(string $module_id = 'items'): ResultInterface
     {
         $builder = $this->db->table('stock_locations');
         $builder->join('permissions AS permissions', 'permissions.location_id = stock_locations.location_id');
@@ -78,7 +78,7 @@ class Stock_location extends Model
      * @param string $module_id
      * @return bool
      */
-    public function show_locations(string $module_id = 'items'): bool
+    public function showLocations(string $module_id = 'items'): bool
     {
         $stock_locations = $this->get_allowed_locations($module_id);
 
@@ -99,7 +99,7 @@ class Stock_location extends Model
      */
     public function get_allowed_locations(string $module_id = 'items'): array
     {
-        $stock = $this->get_undeleted_all($module_id)->getResultArray();
+        $stock = $this->getUndeletedAll($module_id)->getResultArray();
         $stock_locations = [];
 
         foreach ($stock as $location_data) {

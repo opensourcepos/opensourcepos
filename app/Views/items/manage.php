@@ -47,7 +47,7 @@ use App\Models\Employee;
         ?>
 
         table_support.init({
-            employee_id: <?= $employee->get_logged_in_employee_info()->person_id ?>,
+            employee_id: <?= $employee->getLoggedInEmployeeInfo()->person_id ?>,
             resource: '<?= esc($controller_name) ?>',
             headers: <?= $table_headers ?>,
             pageSize: <?= $config['lines_per_page'] ?>,

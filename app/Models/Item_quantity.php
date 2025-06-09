@@ -42,7 +42,7 @@ class Item_quantity extends Model
      * @param int $location_id
      * @return bool
      */
-    public function save_value(array $location_detail, int $item_id, int $location_id): bool
+    public function saveValue(array $location_detail, int $item_id, int $location_id): bool
     {
         if (!$this->exists($item_id, $location_id)) {
             $builder = $this->db->table('item_quantities');
@@ -61,7 +61,7 @@ class Item_quantity extends Model
      * @param int $location_id
      * @return array|Item_quantity|stdClass|null
      */
-    public function get_item_quantity(int $item_id, int $location_id): array|Item_quantity|StdClass|null
+    public function getItemQuantity(int $item_id, int $location_id): array|Item_quantity|StdClass|null
     {
         $builder = $this->db->table('item_quantities');
         $builder->where('item_id', $item_id);
@@ -90,11 +90,11 @@ class Item_quantity extends Model
      */
     public function change_quantity(int $item_id, int $location_id, int $quantity_change): bool
     {
-        $quantity_old = $this->get_item_quantity($item_id, $location_id);
+        $quantity_old = $this->getItemQuantity($item_id, $location_id);
         $quantity_new = $quantity_old->quantity + $quantity_change;
         $location_detail = ['item_id' => $item_id, 'location_id' => $location_id, 'quantity' => $quantity_new];
 
-        return $this->save_value($location_detail, $item_id, $location_id);
+        return $this->saveValue($location_detail, $item_id, $location_id);
     }
 
     /**

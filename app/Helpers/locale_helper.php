@@ -15,7 +15,7 @@ function current_language_code(bool $load_system_language = false): string
     $config = config(OSPOS::class)->settings;
 
     if ($employee->is_logged_in() && !$load_system_language) {
-        $employee_info = $employee->get_logged_in_employee_info();
+        $employee_info = $employee->getLoggedInEmployeeInfo();
 
         if (property_exists($employee_info, 'language_code') && !empty($employee_info->language_code)) {
             return $employee_info->language_code;
@@ -38,7 +38,7 @@ function current_language(bool $load_system_language = false): string
 
     // Returns the language of the employee if set or system language if not
     if ($employee->is_logged_in() && !$load_system_language) {
-        $employee_info = $employee->get_logged_in_employee_info();
+        $employee_info = $employee->getLoggedInEmployeeInfo();
 
         if (property_exists($employee_info, 'language') && !empty($employee_info->language)) {
             return $employee_info->language;
@@ -333,7 +333,7 @@ function tax_decimals(): int
  * @param int $date
  * @return string
  */
-function to_date(int $date = DEFAULT_DATE): string
+function toDate(int $date = DEFAULT_DATE): string
 {
     $config = config(OSPOS::class)->settings;
     return date($config['dateformat'], $date);
@@ -343,7 +343,7 @@ function to_date(int $date = DEFAULT_DATE): string
  * @param int $datetime
  * @return string
  */
-function to_datetime(int $datetime = DEFAULT_DATETIME): string
+function toDatetime(int $datetime = DEFAULT_DATETIME): string
 {
     $config = config(OSPOS::class)->settings;
     return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);
@@ -441,18 +441,18 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
  * @param string $number
  * @return false|float|int|mixed|string
  */
-function parse_quantity(string $number): mixed
+function parseQuantity(string $number): mixed
 {
-    return parse_decimals($number, quantity_decimals());
+    return parseDecimals($number, quantity_decimals());
 }
 
 /**
  * @param string $number
  * @return false|float|int|mixed|string
  */
-function parse_tax(string $number): mixed
+function parseTax(string $number): mixed
 {
-    return parse_decimals($number, tax_decimals());
+    return parseDecimals($number, tax_decimals());
 }
 
 /**
@@ -460,7 +460,7 @@ function parse_tax(string $number): mixed
  * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
-function parse_decimals(string $number, ?int $decimals = null): mixed
+function parseDecimals(string $number, ?int $decimals = null): mixed
 {
     if (empty($number)) {
         return $number;

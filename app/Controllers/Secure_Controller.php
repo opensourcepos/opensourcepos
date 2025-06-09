@@ -44,7 +44,7 @@ class Secure_Controller extends BaseController
             exit();
         }
 
-        $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
+        $logged_in_employee_info = $this->employee->getLoggedInEmployeeInfo();
         if (
             !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
             || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
@@ -91,7 +91,7 @@ class Secure_Controller extends BaseController
     public function getCheckNumeric(): void
     {
         foreach ($this->request->getGet() as $value) {
-            if (parse_decimals($value) === false) {
+            if (parseDecimals($value) === false) {
                 echo 'false';
                 return;
             }

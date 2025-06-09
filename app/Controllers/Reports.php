@@ -83,7 +83,7 @@ class Reports extends Secure_Controller
             $submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
             // Check access to report submodule
-            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->get_logged_in_employee_info()->person_id)) {
+            if (!$this->employee->has_grant('reports_' . $submodule_id, $this->employee->getLoggedInEmployeeInfo()->person_id)) {
                 redirect('no_access/reports/reports_' . $submodule_id);
             }
         }
@@ -142,7 +142,7 @@ class Reports extends Secure_Controller
         $tabular_data = [];
         foreach ($report_data as $row) {
             $tabular_data[] = [
-                'sale_date' => to_date(strtotime($row['sale_date'])),
+                'sale_date' => toDate(strtotime($row['sale_date'])),
                 'sales'     => to_quantity_decimals($row['sales']),
                 'quantity'  => to_quantity_decimals($row['quantity_purchased']),
                 'subtotal'  => to_currency($row['subtotal']),
@@ -779,7 +779,7 @@ class Reports extends Secure_Controller
         $labels = [];
         $series = [];
         foreach ($report_data as $row) {
-            $date = to_date(strtotime($row['sale_date']));
+            $date = toDate(strtotime($row['sale_date']));
             $labels[] = $date;
             $series[] = ['meta' => $date, 'value' => $row['total']];
         }
@@ -1289,7 +1289,7 @@ class Reports extends Secure_Controller
             $summary_data[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
-                'sale_time'     => to_datetime(strtotime($row['sale_time'])),
+                'sale_time'     => toDatetime(strtotime($row['sale_time'])),
                 'quantity'      => to_quantity_decimals($row['items_purchased']),
                 'employee_name' => $row['employee_name'],
                 'subtotal'      => to_currency($row['subtotal']),
@@ -1334,7 +1334,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $customer_info = $this->customer->get_info($customer_id);
+        $customer_info = $this->customer->getInfo($customer_id);
         $customer_name = !empty($customer_info->company_name)    // TODO: This variable is not used anywhere in the code. Should it be or can it be deleted?
             ? "[ $customer_info->company_name ]"
             : $customer_info->company_name;
@@ -1416,7 +1416,7 @@ class Reports extends Secure_Controller
             $summary_data[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
-                'sale_time'     => to_datetime(strtotime($row['sale_time'])),
+                'sale_time'     => toDatetime(strtotime($row['sale_time'])),
                 'quantity'      => to_quantity_decimals($row['items_purchased']),
                 'customer_name' => $row['customer_name'],
                 'subtotal'      => to_currency($row['subtotal']),
@@ -1461,7 +1461,7 @@ class Reports extends Secure_Controller
             }
         }
 
-        $employee_info = $this->employee->get_info($employee_id);
+        $employee_info = $this->employee->getInfo($employee_id);
         // TODO: Duplicated Code
         $data = [
             'title'                => $employee_info->first_name . ' ' . $employee_info->last_name . ' ' . lang('Reports.report'),
@@ -1547,7 +1547,7 @@ class Reports extends Secure_Controller
             $summary_data[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
-                'sale_time'     => to_datetime(strtotime($row['sale_time'])),
+                'sale_time'     => toDatetime(strtotime($row['sale_time'])),
                 'quantity'      => to_quantity_decimals($row['items_purchased']),
                 'employee_name' => $row['employee_name'],
                 'customer_name' => $row['customer_name'],
@@ -1635,7 +1635,7 @@ class Reports extends Secure_Controller
 
         $summary_data = [
             'sale_id'       => $report_data['sale_id'],
-            'sale_time'     => to_datetime(strtotime($report_data['sale_time'])),
+            'sale_time'     => toDatetime(strtotime($report_data['sale_time'])),
             'quantity'      => to_quantity_decimals($report_data['items_purchased']),
             'employee_name' => $report_data['employee_name'],
             'customer_name' => $report_data['customer_name'],
@@ -1713,7 +1713,7 @@ class Reports extends Secure_Controller
             $tabular_data[] = [
                 'id'          => $row['sale_id'],
                 'type_code'   => $row['type_code'],
-                'sale_time'   => to_datetime(strtotime($row['sale_time'])),
+                'sale_time'   => toDatetime(strtotime($row['sale_time'])),
                 'name'        => $row['name'],
                 'category'    => $row['category'],
                 'item_number' => $row['item_number'],
@@ -1727,7 +1727,7 @@ class Reports extends Secure_Controller
             ];
         }
 
-        $supplier_info = $this->supplier->get_info($supplier_id);
+        $supplier_info = $this->supplier->getInfo($supplier_id);
         $data = [
             'title'        => $supplier_info->company_name . ' (' . $supplier_info->first_name . ' ' . $supplier_info->last_name . ') ' . lang('Reports.report'),
             'subtitle'     => $this->_get_subtitle_report(['start_date' => $start_date, 'end_date' => $end_date]),
@@ -1806,7 +1806,7 @@ class Reports extends Secure_Controller
             $summary_data[] = [
                 'id'            => $row['sale_id'],
                 'type_code'     => $row['type_code'],
-                'sale_time'     => to_datetime(strtotime($row['sale_time'])),
+                'sale_time'     => toDatetime(strtotime($row['sale_time'])),
                 'quantity'      => to_quantity_decimals($row['items_purchased']),
                 'employee_name' => $row['employee_name'],
                 'customer_name' => $row['customer_name'],
@@ -1889,7 +1889,7 @@ class Reports extends Secure_Controller
 
         $summary_data = [
             'receiving_id'   => $report_data['receiving_id'],
-            'receiving_time' => to_datetime(strtotime($report_data['receiving_time'])),
+            'receiving_time' => toDatetime(strtotime($report_data['receiving_time'])),
             'quantity'       => to_quantity_decimals($report_data['items_purchased']),
             'employee_name'  => $report_data['employee_name'],
             'supplier_name'  => $report_data['supplier_name'],
@@ -1943,7 +1943,7 @@ class Reports extends Secure_Controller
         foreach ($report_data['summary'] as $key => $row) {
             $summary_data[] = [
                 'id'             => $row['receiving_id'],
-                'receiving_time' => to_datetime(strtotime($row['receiving_time'])),
+                'receiving_time' => toDatetime(strtotime($row['receiving_time'])),
                 'quantity'       => to_quantity_decimals($row['items_purchased']),
                 'employee_name'  => $row['employee_name'],
                 'supplier_name'  => $row['supplier_name'],

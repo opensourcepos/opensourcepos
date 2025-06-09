@@ -32,7 +32,7 @@ class Messages extends Secure_Controller
     public function getView(int $person_id = NEW_ENTRY): void
     {
         $person = model(Person::class);
-        $info = $person->get_info($person_id);
+        $info = $person->getInfo($person_id);
 
         foreach (get_object_vars($info) as $property => $value) {
             $info->$property = $value;

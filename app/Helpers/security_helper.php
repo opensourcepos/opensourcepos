@@ -6,7 +6,7 @@ use Config\Services;
 /**
  * @return bool
  */
-function check_encryption(): bool
+function checkEncryption(): bool
 {
     $old_key = config('Encryption')->key;
 
