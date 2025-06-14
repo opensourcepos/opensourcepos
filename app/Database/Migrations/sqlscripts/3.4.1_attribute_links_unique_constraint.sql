@@ -1,8 +1,10 @@
-ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT `ospos_attribute_links_ibfk_1`;
-ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT `ospos_attribute_links_ibfk_2`;
+ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT IF EXISTS `ospos_attribute_links_ibfk_1`;
+ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT IF EXISTS `ospos_attribute_links_ibfk_2`;
 
 # Prevents duplicate attribute links with the same definition_id and item_id.
 # This accounts for dropdown rows (null item_id) and rows associated with sales or receivings.
+ALTER TABLE `ospos_attribute_links` DROP COLUMN IF EXISTS `generated_unique_column`;
+
 ALTER TABLE `ospos_attribute_links`
     ADD COLUMN `generated_unique_column` VARCHAR(255) GENERATED ALWAYS AS (
         CASE
