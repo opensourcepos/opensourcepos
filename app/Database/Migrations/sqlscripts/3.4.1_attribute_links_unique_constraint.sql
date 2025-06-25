@@ -1,5 +1,37 @@
-ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT IF EXISTS `ospos_attribute_links_ibfk_1`;
-ALTER TABLE `ospos_attribute_links` DROP CONSTRAINT IF EXISTS `ospos_attribute_links_ibfk_2`;
+-- Drop FK ospos_attribute_links_ibfk_1 if it exists
+SET @fk := (
+  SELECT CONSTRAINT_NAME
+  FROM information_schema.REFERENTIAL_CONSTRAINTS
+  WHERE CONSTRAINT_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'ospos_attribute_links'
+    AND CONSTRAINT_NAME = 'ospos_attribute_links_ibfk_1'
+);
+
+SET @sql := IF(@fk IS NOT NULL,
+  'ALTER TABLE `ospos_attribute_links` DROP FOREIGN KEY `ospos_attribute_links_ibfk_1`',
+  'DO 0'
+);
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+
+-- Drop FK ospos_attribute_links_ibfk_2 if it exists
+SET @fk := (
+  SELECT CONSTRAINT_NAME
+  FROM information_schema.REFERENTIAL_CONSTRAINTS
+  WHERE CONSTRAINT_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'ospos_attribute_links'
+    AND CONSTRAINT_NAME = 'ospos_attribute_links_ibfk_2'
+);
+
+SET @sql := IF(@fk IS NOT NULL,
+  'ALTER TABLE `ospos_attribute_links` DROP FOREIGN KEY `ospos_attribute_links_ibfk_2`',
+  'DO 0'
+);
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 # Prevents duplicate attribute links with the same definition_id and item_id.
 # This accounts for dropdown rows (null item_id) and rows associated with sales or receivings.
