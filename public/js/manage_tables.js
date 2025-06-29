@@ -56,7 +56,7 @@
                         id: btn_name,
                         label: value,
                         cssClass: button_class[btn_name],
-                        hotkey: is_enter ? 13 : undefined, // Enter.
+                        hotkey: is_enter ? 13 : undefined, // Enter
                         action: submit(btn_name)
                     });
                 }
@@ -155,7 +155,7 @@
         return function (url, ids) {
             if (confirm($.fn.bootstrapTable.defaults.formatConfirmAction(action))) {
                 $.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
-                    //delete was successful, remove checkbox rows
+                    // Delete was successful, remove checkbox rows
                     if (response.success) {
                         var selector = ids ? row_selector(ids) : selected_rows();
                         table().collapseAllRows();
@@ -300,7 +300,7 @@
                         highlight_row(ids);
                     }, 'json');
                 } else {
-                    // call hightlight function once after refresh
+                    // Call hightlight function once after refresh
                     options.load_callback = function () {
                         enable_actions();
                         highlight_row(id);

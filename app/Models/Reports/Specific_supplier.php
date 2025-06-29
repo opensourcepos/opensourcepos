@@ -18,7 +18,7 @@ class Specific_supplier extends Report
      */
     public function create(array $inputs): void
     {
-        //Create our temp tables to work with the data in our report
+        // Create our temp tables to work with the data in our report
         $sale = model(Sale::class);
         $sale->create_temp_table($inputs);
     }
@@ -29,19 +29,19 @@ class Specific_supplier extends Report
     public function getDataColumns(): array
     {
         return [
-            ['id' => lang('Reports.sale_id')],
-            ['type_code' => lang('Reports.code_type')],
-            ['sale_time' => lang('Reports.date'), 'sortable' => false],
-            ['name' => lang('Reports.name')],
-            ['category' => lang('Reports.category')],
+            ['id'          => lang('Reports.sale_id')],
+            ['type_code'   => lang('Reports.code_type')],
+            ['sale_time'   => lang('Reports.date'), 'sortable' => false],
+            ['name'        => lang('Reports.name')],
+            ['category'    => lang('Reports.category')],
             ['item_number' => lang('Reports.item_number')],
-            ['quantity' => lang('Reports.quantity')],
-            ['subtotal' => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
-            ['tax' => lang('Reports.tax'), 'sorter' => 'number_sorter'],
-            ['total' => lang('Reports.total'), 'sorter' => 'number_sorter'],
-            ['cost' => lang('Reports.cost'), 'sorter' => 'number_sorter'],
-            ['profit' => lang('Reports.profit'), 'sorter' => 'number_sorter'],
-            ['discount' => lang('Reports.discount')]
+            ['quantity'    => lang('Reports.quantity')],
+            ['subtotal'    => lang('Reports.subtotal'), 'sorter' => 'number_sorter'],
+            ['tax'         => lang('Reports.tax'), 'sorter' => 'number_sorter'],
+            ['total'       => lang('Reports.total'), 'sorter' => 'number_sorter'],
+            ['cost'        => lang('Reports.cost'), 'sorter' => 'number_sorter'],
+            ['profit'      => lang('Reports.profit'), 'sorter' => 'number_sorter'],
+            ['discount'    => lang('Reports.discount')]
         ];
     }
 
@@ -77,10 +77,9 @@ class Specific_supplier extends Report
             MAX(discount_type) AS discount_type,
             MAX(discount) AS discount');
 
-        $builder->where('supplier_id', $inputs['supplier_id']);    //TODO: Duplicated code
+        $builder->where('supplier_id', $inputs['supplier_id']);    // TODO: Duplicated code
 
-        switch($inputs['sale_type'])
-        {
+        switch ($inputs['sale_type']) {
             case 'complete':
                 $builder->where('sale_status', COMPLETED);
                 $builder->groupStart();
@@ -134,8 +133,7 @@ class Specific_supplier extends Report
         $builder->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
         $builder->where('supplier_id', $inputs['supplier_id']);
 
-        switch($inputs['sale_type'])
-        {
+        switch ($inputs['sale_type']) {
             case 'complete':
                 $builder->where('sale_status', COMPLETED);
                 $builder->groupStart();

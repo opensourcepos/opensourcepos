@@ -1,11 +1,12 @@
 <?php
+
 return [
-    "all" => "",
-    "columns" => "",
-    "hide_show_pagination" => "",
-    "loading" => "",
-    "page_from_to" => "",
-    "refresh" => "",
-    "rows_per_page" => "",
-    "toggle" => "",
+    "all"                  => "هەموو",
+    "columns"              => "ستنوونەکان",
+    "hide_show_pagination" => "شاردنەوە/پێشاندانی لاپەڕەسازی",
+    "loading"              => "بارکردن، تکایە چاوەڕوان بن...",
+    "page_from_to"         => "پیشاندانی {0} بۆ {1} لە {2} ڕیزەکان",
+    "refresh"              => "ڕفرێش",
+    "rows_per_page"        => "{0} ڕیز بۆ هەر لاپەڕەیەک",
+    "toggle"               => "دوگمە",
 ];

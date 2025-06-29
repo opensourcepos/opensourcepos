@@ -61,13 +61,11 @@ class Services extends BaseService
 
     public static function htmlPurifier($getShared = true)
     {
-        if ($getShared)
-        {
+        if ($getShared) {
             return static::getSharedInstance('htmlPurifier');
         }
 
-        if (!isset(static::$htmlPurifier))
-        {
+        if (!isset(static::$htmlPurifier)) {
             $config = HTMLPurifier_Config::createDefault();
             static::$htmlPurifier = new HTMLPurifier($config);
         }

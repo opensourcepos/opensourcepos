@@ -80,7 +80,7 @@ class Exceptions extends BaseConfig
      */
     public string $deprecationLogLevel = LogLevel::WARNING;
 
-    /**
+    /*
      * DEFINE THE HANDLERS USED
      * --------------------------------------------------------------------------
      * Given the HTTP status code, returns exception handler that

@@ -28,8 +28,7 @@ class Migration_Convert_Barcode_Types extends Migration
 
         $old_barcode_type = $this->config['barcode_type'];
 
-        switch($old_barcode_type)
-        {
+        switch ($old_barcode_type) {
             case 'Code39':
                 $new_barcode_type = 'C39';
                 break;
@@ -55,8 +54,7 @@ class Migration_Convert_Barcode_Types extends Migration
     {
         $new_barcode_type = $this->config['barcode_type'];
 
-        switch($new_barcode_type)
-        {
+        switch ($new_barcode_type) {
             case 'C39':
                 $old_barcode_type = 'Code39';
                 break;

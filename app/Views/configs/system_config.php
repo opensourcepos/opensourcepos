@@ -7,7 +7,7 @@
         <li><a href="#integrations_tabs" data-toggle="tab" title="<?= lang('Config.integrations_configuration') ?>"><?= lang('Config.integrations') ?></a></li>
         <li><a href="#license_tabs" data-toggle="tab" title="<?= lang('Config.license_configuration') ?>"><?= lang('Config.license') ?></a></li>
     </ul>
-        <div class="tab-content">
+    <div class="tab-content">
         <div class="tab-pane active" id="system_tabs"><?= view('configs/system_info') ?></div>
         <div class="tab-pane" id="email_tabs"><?= view('configs/email_config') ?></div>
         <div class="tab-pane" id="message_tabs"><?= view('configs/message_config') ?></div>

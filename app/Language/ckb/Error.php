@@ -1,5 +1,6 @@
 <?php
+
 return [
-    "no_permission_module" => "",
-    "unknown" => "",
+    "no_permission_module" => "تۆ ڕێگەپێدانت نییە بۆ دەستگەیشتن بەو مۆدیولەی کە ناوی لێنراوە",
+    "unknown"              => "هەڵەیەکی چاوەڕواننەکراو",
 ];

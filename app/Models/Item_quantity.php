@@ -33,7 +33,7 @@ class Item_quantity extends Model
         $builder->where('item_id', $item_id);
         $builder->where('location_id', $location_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -44,8 +44,7 @@ class Item_quantity extends Model
      */
     public function save_value(array $location_detail, int $item_id, int $location_id): bool
     {
-        if(!$this->exists($item_id, $location_id))
-        {
+        if (!$this->exists($item_id, $location_id)) {
             $builder = $this->db->table('item_quantities');
             return $builder->insert($location_detail);
         }
@@ -69,14 +68,12 @@ class Item_quantity extends Model
         $builder->where('location_id', $location_id);
         $result = $builder->get()->getRow();
 
-        if(empty($result))
-        {
-            //Get empty base parent object, as $item_id is NOT an item
+        if (empty($result)) {
+            // Get empty base parent object, as $item_id is NOT an item
             $result = model(Item_quantity::class);
 
-            //Get all the fields from items table (TODO: to be reviewed)
-            foreach($this->db->getFieldNames('item_quantities') as $field)
-            {
+            // Get all the fields from items table (TODO: to be reviewed)
+            foreach ($this->db->getFieldNames('item_quantities') as $field) {
                 $result->$field = '';
             }
 

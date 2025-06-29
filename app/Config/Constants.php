@@ -41,10 +41,9 @@ defined('WEEK')   || define('WEEK', 604800);
 defined('MONTH')  || define('MONTH', 2_592_000);
 defined('YEAR')   || define('YEAR', 31_536_000);
 defined('DECADE') || define('DECADE', 315_360_000);
-defined('DEFAULT_DATE') || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
+defined('DEFAULT_DATE')     || define('DEFAULT_DATE', mktime(0, 0, 0, 1, 1, 2010));
 defined('DEFAULT_DATETIME') || define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
-defined('NOW') || define('NOW', time());
-
+defined('NOW')    || define('NOW', time());
 
 /*
  | --------------------------------------------------------------------------

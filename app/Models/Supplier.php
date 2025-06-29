@@ -23,15 +23,15 @@ class Supplier extends Person
     ];
 
     /**
-    * Determines if a given person_id is a customer
-    */
+     * Determines if a given person_id is a customer
+     */
     public function exists(int $person_id): bool
     {
         $builder = $this->db->table('suppliers');
         $builder->join('people', 'people.person_id = suppliers.person_id');
         $builder->where('suppliers.person_id', $person_id);
 
-        return ($builder->get()->getNumRows() == 1);    //TODO: ===
+        return ($builder->get()->getNumRows() == 1);    // TODO: ===
     }
 
     /**
@@ -56,8 +56,7 @@ class Supplier extends Person
         $builder->where('deleted', 0);
         $builder->orderBy('company_name', 'asc');
 
-        if($limit > 0)
-        {
+        if ($limit > 0) {
             $builder->limit($limit, $offset);
         }
 
@@ -74,19 +73,15 @@ class Supplier extends Person
         $builder->where('suppliers.person_id', $person_id);
         $query = $builder->get();
 
-        if($query->getNumRows() == 1)    //TODO: ===
-        {
+        if ($query->getNumRows() == 1) {    // TODO: ===
             return $query->getRow();
-        }
-        else
-        {
-            //Get empty base parent object, as $supplier_id is NOT a supplier
+        } else {
+            // Get empty base parent object, as $supplier_id is NOT a supplier
             $person_obj = parent::get_info(NEW_ENTRY);
 
-            //Get all the fields from supplier table
-            //append those fields to base parent object, we have a complete empty object
-            foreach($this->db->getFieldNames('suppliers') as $field)
-            {
+            // Get all the fields from supplier table
+            // Append those fields to base parent object, we have a complete empty object
+            foreach ($this->db->getFieldNames('suppliers') as $field) {
                 $person_obj->$field = '';
             }
 
@@ -114,19 +109,15 @@ class Supplier extends Person
     {
         $success = false;
 
-        //Run these queries as a transaction, we want to make sure we do all or nothing
+        // Run these queries as a transaction, we want to make sure we do all or nothing
         $this->db->transStart();
 
-        if(parent::save_value($person_data,$supplier_id))
-        {
+        if (parent::save_value($person_data, $supplier_id)) {
             $builder = $this->db->table('suppliers');
-            if($supplier_id == NEW_ENTRY || !$this->exists($supplier_id))
-            {
+            if ($supplier_id == NEW_ENTRY || !$this->exists($supplier_id)) {
                 $supplier_data['person_id'] = $person_data['person_id'];
                 $success = $builder->insert($supplier_data);
-            }
-            else
-            {
+            } else {
                 $builder->where('person_id', $supplier_id);
                 $success = $builder->update($supplier_data);
             }
@@ -159,12 +150,12 @@ class Supplier extends Person
         $builder->whereIn('person_id', $person_ids);
 
         return $builder->update(['deleted' => 1]);
-     }
+    }
 
-     /**
+    /**
      * Get search suggestions to find suppliers
      */
-    public function get_search_suggestions(string $search, int $limit = 25, bool $unique = false): array    //TODO: Parent is looking for the 2nd parameter to be an int
+    public function get_search_suggestions(string $search, int $limit = 25, bool $unique = false): array    // TODO: Parent is looking for the 2nd parameter to be an int
     {
         $suggestions = [];
 
@@ -174,8 +165,7 @@ class Supplier extends Person
         $builder->like('company_name', $search);
         $builder->orderBy('company_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->company_name];
         }
 
@@ -187,36 +177,32 @@ class Supplier extends Person
         $builder->where('agency_name IS NOT NULL');
         $builder->orderBy('agency_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->agency_name];
         }
 
         $builder = $this->db->table('suppliers');
         $builder->join('people', 'suppliers.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);
         $builder->groupEnd();
         $builder->where('deleted', 0);
         $builder->orderBy('last_name', 'asc');
 
-        foreach($builder->get()->getResult() as $row)
-        {
+        foreach ($builder->get()->getResult() as $row) {
             $suggestions[] = ['value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name];
         }
 
-        if(!$unique)
-        {
+        if (!$unique) {
             $builder = $this->db->table('suppliers');
             $builder->join('people', 'suppliers.person_id = people.person_id');
             $builder->where('deleted', 0);
             $builder->like('email', $search);
             $builder->orderBy('email', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->email];
             }
 
@@ -226,8 +212,7 @@ class Supplier extends Person
             $builder->like('phone_number', $search);
             $builder->orderBy('phone_number', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->phone_number];
             }
 
@@ -237,22 +222,20 @@ class Supplier extends Person
             $builder->like('account_number', $search);
             $builder->orderBy('account_number', 'asc');
 
-            foreach($builder->get()->getResult() as $row)
-            {
+            foreach ($builder->get()->getResult() as $row) {
                 $suggestions[] = ['value' => $row->person_id, 'label' => $row->account_number];
             }
         }
 
-        //only return $limit suggestions
-        if(count($suggestions) > $limit)    //TODO: this can be replaced with return count($suggestions) > $limit ? array_slice($suggestions, 0, $limit) : $suggestions
-        {
+        // Only return $limit suggestions
+        if (count($suggestions) > $limit) {    // TODO: this can be replaced with return count($suggestions) > $limit ? array_slice($suggestions, 0, $limit) : $suggestions
             $suggestions = array_slice($suggestions, 0, $limit);
         }
 
         return $suggestions;
     }
 
-     /**
+    /**
      * Gets rows
      */
     public function get_found_rows(string $search): int
@@ -265,7 +248,7 @@ class Supplier extends Person
      */
     public function search(string $search, ?int $rows = 25, ?int $limit_from = 0, ?string $sort = 'last_name', ?string $order = 'asc', ?bool $count_only = false)
     {
-        //Set default values on null
+        // Set default values on null
         $rows = $rows ?? 25;
         $limit_from = $limit_from ?? 0;
         $sort = $sort ?? 'last_name';
@@ -274,34 +257,31 @@ class Supplier extends Person
 
         $builder = $this->db->table('suppliers AS suppliers');
 
-        //get_found_rows case
-        if($count_only)
-        {
+        // get_found_rows case
+        if ($count_only) {
             $builder->select('COUNT(suppliers.person_id) as count');
         }
 
         $builder->join('people', 'suppliers.person_id = people.person_id');
         $builder->groupStart();
-            $builder->like('first_name', $search);
-            $builder->orLike('last_name', $search);
-            $builder->orLike('company_name', $search);
-            $builder->orLike('agency_name', $search);
-            $builder->orLike('email', $search);
-            $builder->orLike('phone_number', $search);
-            $builder->orLike('account_number', $search);
-            $builder->orLike('CONCAT(first_name, " ", last_name)', $search);    //TODO: According to PHPStorm, this line down to the return is repeated in Customer.php and Employee.php... perhaps refactoring a method in a library could be helpful?
+        $builder->like('first_name', $search);
+        $builder->orLike('last_name', $search);
+        $builder->orLike('company_name', $search);
+        $builder->orLike('agency_name', $search);
+        $builder->orLike('email', $search);
+        $builder->orLike('phone_number', $search);
+        $builder->orLike('account_number', $search);
+        $builder->orLike('CONCAT(first_name, " ", last_name)', $search);    // TODO: According to PHPStorm, this line down to the return is repeated in Customer.php and Employee.php... perhaps refactoring a method in a library could be helpful?
         $builder->groupEnd();
         $builder->where('deleted', 0);
 
-        if($count_only)
-        {
+        if ($count_only) {
             return $builder->get()->getRow()->count;
         }
 
         $builder->orderBy($sort, $order);
 
-        if($rows > 0)
-        {
+        if ($rows > 0) {
             $builder->limit($rows, $limit_from);
         }
 
@@ -326,12 +306,9 @@ class Supplier extends Person
      */
     public function get_category_name(int $supplier_type): string
     {
-        if($supplier_type == 0)
-        {
+        if ($supplier_type == 0) {
             return lang('Suppliers.goods');
-        }
-        else
-        {
+        } else {
             return  lang('Suppliers.cost');
         }
     }

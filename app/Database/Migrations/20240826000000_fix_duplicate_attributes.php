@@ -26,7 +26,7 @@ class fix_duplicate_attributes extends Migration
             'ospos_attribute_links_ibfk_5'
         ];
 
-        drop_foreign_key_constraints($foreignKeys, 'ospos_attribute_links');
+        dropForeignKeyConstraints($foreignKeys, 'attribute_links');
 
         execute_script(APPPATH . 'Database/Migrations/sqlscripts/3.4.0_attribute_links_unique_constraint.sql');
     }
@@ -58,9 +58,8 @@ class fix_duplicate_attributes extends Migration
     private function remove_duplicate_attributes(ResultInterface $rows_to_keep): void
     {
         $attribute = model(Attribute::class);
-        foreach($rows_to_keep->getResult() as $row)
-        {
-            $attribute->deleteAttributeLinks($row->item_id, $row->definition_id);    //Deletes all attribute links for the item_id/definition_id combination
+        foreach ($rows_to_keep->getResult() as $row) {
+            $attribute->deleteAttributeLinks($row->item_id, $row->definition_id);    // Deletes all attribute links for the item_id/definition_id combination
             $attribute->saveAttributeLink($row->item_id, $row->definition_id, $row->attribute_id);
         }
     }
@@ -69,8 +68,5 @@ class fix_duplicate_attributes extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void
-    {
-
-    }
+    public function down(): void {}
 }

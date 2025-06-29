@@ -22,6 +22,5 @@ class IntToTinyint extends Migration
     {
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('customers') . ' MODIFY `consent` int NOT NULL DEFAULT 0');
         $this->db->query('ALTER TABLE ' . $this->db->prefixTable('cash_up') . ' MODIFY `note` int NOT NULL DEFAULT 0');
-
     }
 }

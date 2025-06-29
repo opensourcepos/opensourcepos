@@ -38,10 +38,10 @@ Options All -Indexes
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
-    # if in web root
+    # If in web root
     RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
 
-    # if in subdir comment above line, uncomment the line below and replace <PATH> with your path
+    # If in subdir comment above line, uncomment the line below and replace <PATH> with your path
     #RewriteRule ^(.*)$ /<PATH>/public/index.php?/$1 [L]
 
     # Ensure Authorization header is passed along
@@ -56,7 +56,7 @@ Options All -Indexes
 </IfModule>
 
 # Disable server signature start
-    ServerSignature Off
+ServerSignature Off
 # Disable server signature end
 
 <IfModule mod_expires.c>

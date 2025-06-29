@@ -36,8 +36,7 @@ class MY_Migration extends MigrationRunner
     public static function get_current_version(): int
     {
         $db = Database::connect();
-        if($db->tableExists('migrations'))
-        {
+        if ($db->tableExists('migrations')) {
             $builder = $db->table('migrations');
             $builder->select('version')->orderBy('version', 'DESC')->limit(1);
             return $builder->get()->getRow()->version;
@@ -52,8 +51,7 @@ class MY_Migration extends MigrationRunner
     public function migrate_to_ci4(): void
     {
         $ci3_migrations_version = $this->ci3_migrations_exists();
-        if($ci3_migrations_version)
-        {
+        if ($ci3_migrations_version) {
             $this->migrate_table($ci3_migrations_version);
         }
     }
@@ -65,8 +63,7 @@ class MY_Migration extends MigrationRunner
      */
     private function ci3_migrations_exists(): bool|string
     {
-        if($this->db->tableExists('migrations') && !$this->db->fieldExists('id','migrations'))
-        {
+        if ($this->db->tableExists('migrations') && !$this->db->fieldExists('id', 'migrations')) {
             $builder = $this->db->table('migrations');
             $builder->select('version');
             return $builder->get()->getRow()->version;
@@ -85,10 +82,8 @@ class MY_Migration extends MigrationRunner
 
         $available_migrations = $this->get_available_migrations();
 
-        foreach($available_migrations as $version => $path)
-        {
-            if($version > (int)$ci3_migrations_version)
-            {
+        foreach ($available_migrations as $version => $path) {
+            if ($version > (int)$ci3_migrations_version) {
                 break;
             }
 
@@ -125,9 +120,8 @@ class MY_Migration extends MigrationRunner
         $migrations = $this->findMigrations();
         $exploded_migrations = [];
 
-        foreach($migrations as $migration)
-        {
-            $version = substr($migration->uid,0,14);
+        foreach ($migrations as $migration) {
+            $version = substr($migration->uid, 0, 14);
             $path = substr($migration->uid, 14);
 
             $exploded_migrations[$version] = $path;
