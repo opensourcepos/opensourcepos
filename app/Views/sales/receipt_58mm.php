@@ -29,6 +29,7 @@
             ?>
             <strong><?= esc($config['company']) ?></strong><br>
             <?= nl2br(esc($config['address'])) ?><br>
+            <?= esc($config['phone']) ?><br>
             <?= lang('Sales.receipt') ?><br>
             <?= esc($transaction_time) ?><br>
         </div>
