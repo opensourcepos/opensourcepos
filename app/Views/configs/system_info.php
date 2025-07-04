@@ -90,8 +90,8 @@ use Config\OSPOS;
                 File Permissions:<br>
                 &#187; [writeable/logs:]
                 <?php $logs = WRITEPATH . 'logs/';
-                $uploads = FCPATH . 'uploads/';
-                $images = FCPATH . 'uploads/item_pics/';
+                $uploads = WRITEPATH . 'uploads/';
+                $images = WRITEPATH . 'uploads/item_pics/';
                 $importCustomers = WRITEPATH . '/uploads/importCustomers.csv';    // TODO: This variable does not follow naming conventions for the project.
 
                 if (is_writable($logs)) {
