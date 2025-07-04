@@ -58,7 +58,7 @@ if (isset($success)) {
     echo '<div class="alert alert-dismissible alert-success">' . esc($success) . '</div>';
 }
 
-helper('web');
+helper('url');
 ?>
 
 <div id="register_wrapper">

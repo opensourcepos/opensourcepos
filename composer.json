@@ -31,6 +31,7 @@
         "matrix": "https://matrix.to/#/#opensourcepos_Lobby:gitter.im"
     },
     "require": {
+        "ext-intl": "*",
         "php": "^8.1",
         "codeigniter4/framework": "4.6.0",
         "dompdf/dompdf": "^2.0.3",
