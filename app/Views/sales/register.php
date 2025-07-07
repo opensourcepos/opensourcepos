@@ -57,6 +57,8 @@ if (!empty($warning)) {
 if (isset($success)) {
     echo '<div class="alert alert-dismissible alert-success">' . esc($success) . '</div>';
 }
+
+helper('url');
 ?>
 
 <div id="register_wrapper">
@@ -478,7 +480,7 @@ if (isset($success)) {
                         <tbody id="payment_contents">
                             <?php foreach ($payments as $payment_id => $payment) { ?>
                                 <tr>
-                                    <td><?= anchor("$controller_name/deletePayment/". base64_encode($payment_id), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                                    <td><?= anchor("$controller_name/deletePayment/". base64url_encode($payment_id), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
                                     <td><?= $payment['payment_type'] ?></td>
                                     <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
                                 </tr>

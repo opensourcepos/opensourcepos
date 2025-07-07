@@ -22,7 +22,7 @@ RUN composer install -d/app
 #RUN sed -i 's/backupGlobals="true"/backupGlobals="false"/g' /app/tests/phpunit.xml
 WORKDIR /app/tests
 
-CMD ["/app/vendor/phpunit/phpunit/phpunit"]
+CMD ["/app/vendor/phpunit/phpunit/phpunit", "/app/test/helpers"]
 
 FROM ospos AS ospos_dev
 
