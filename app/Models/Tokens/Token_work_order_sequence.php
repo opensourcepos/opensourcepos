@@ -34,6 +34,9 @@ class Token_work_order_sequence extends Token
      */
     public function get_value(bool $save = true): string
     {
+        if ($this->value !== '') {
+            return $this->value;
+        }
         return $this->appconfig->acquire_next_work_order_sequence($save);
     }
 }

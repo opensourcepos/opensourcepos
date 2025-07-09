@@ -116,9 +116,6 @@
 
             rules: {
                 <?php if ($config['giftcard_number'] == 'series') { ?>
-                    person_name: {
-                        required: true
-                    },
                     giftcard_number: {
                         required: true
                     },

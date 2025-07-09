@@ -125,7 +125,7 @@ class Giftcards extends Secure_Controller
             'record_time'     => date('Y-m-d H:i:s'),
             'giftcard_number' => $giftcard_number,
             'value'           => parse_decimals($this->request->getPost('giftcard_amount')),
-            'person_id'       => $this->request->getPost('person_id') == '' ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
+            'person_id'       => empty($this->request->getPost('person_id')) ? null : $this->request->getPost('person_id', FILTER_SANITIZE_NUMBER_INT)
         ];
 
         if ($this->giftcard->save_value($giftcard_data, $giftcard_id)) {
