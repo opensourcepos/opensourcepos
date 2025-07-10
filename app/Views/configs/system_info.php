@@ -88,7 +88,7 @@ use Config\OSPOS;
                 <br><br>
 
                 File Permissions:<br>
-                &#187; [writeable/logs:]
+                &#187; [writable/logs:]
                 <?php $logs = WRITEPATH . 'logs/';
                 $uploads = WRITEPATH . 'uploads/';
                 $images = WRITEPATH . 'uploads/item_pics/';
@@ -176,7 +176,7 @@ use Config\OSPOS;
                 }
 
                 if (substr(decoct(fileperms($logs)), -4) != 750) {
-                    echo '<br><span style="color: red;"> &#187; [writeable/logs:] ' . lang('Config.is_writable') . '</span>';
+                    echo '<br><span style="color: red;"> &#187; [writable/logs:] ' . lang('Config.is_writable') . '</span>';
                 }
 
                 if (substr(decoct(fileperms($uploads)), -4) != 750) {
