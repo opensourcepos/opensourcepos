@@ -1,9 +1,9 @@
 <?php
 /**
- * @var array $receiving_info
+ * @var array  $receiving_info
  * @var string $selected_supplier_name
- * @var int $selected_supplier_id
- * @var array $employees
+ * @var int    $selected_supplier_id
+ * @var array  $employees
  * @var string $controller_name
  */
 ?>
@@ -11,12 +11,12 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("receivings/save/" . $receiving_info['receiving_id'], ['id' => 'receivings_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open('receivings/save/' . $receiving_info['receiving_id'], ['id' => 'receivings_edit_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="receiving_basic_info">
 
         <div class="form-group form-group-sm">
             <?= form_label(lang('Receivings.receipt_number'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <?= anchor('receivings/receipt/' . $receiving_info['receiving_id'], 'RECV ' . $receiving_info['receiving_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', "style" => "text-align: left"]) ?>
+            <?= anchor('receivings/receipt/' . $receiving_info['receiving_id'], 'RECV ' . $receiving_info['receiving_id'], ['target' => '_blank', 'class' => 'control-label col-xs-8', 'style' => 'text-align: left']) ?>
         </div>
 
         <div class="form-group form-group-sm">
@@ -27,7 +27,7 @@
                     'value'    => to_datetime(strtotime($receiving_info['receiving_time'])),
                     'id'       => 'datetime',
                     'class'    => 'datetime form-control input-sm',
-                    'readonly' => 'readonly'
+                    'readonly' => 'readonly',
                 ]) ?>
             </div>
         </div>

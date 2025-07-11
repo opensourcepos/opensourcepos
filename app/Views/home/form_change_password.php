@@ -7,7 +7,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("home/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("home/save/{$person_info->person_id}", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
     <div class="tab-content">
         <div class="tab-pane fade in active" id="employee_login_info">
             <fieldset>
@@ -22,13 +22,13 @@
                                 'id'       => 'username',
                                 'class'    => 'form-control input-sm',
                                 'value'    => $person_info->username,
-                                'readonly' => 'true'
+                                'readonly' => 'true',
                             ]) ?>
                         </div>
                     </div>
                 </div>
 
-                <?php $password_label_attributes = $person_info->person_id == "" ? ['class' => 'required'] : []; ?>
+                <?php $password_label_attributes = $person_info->person_id === '' ? ['class' => 'required'] : []; ?>
 
                 <div class="form-group form-group-sm">
                     <?= form_label(lang('Employees.current_password'), 'current_password', array_merge($password_label_attributes, ['class' => 'control-label col-xs-3'])) ?>
@@ -38,7 +38,7 @@
                             <?= form_password([
                                 'name'  => 'current_password',
                                 'id'    => 'current_password',
-                                'class' => 'form-control input-sm'
+                                'class' => 'form-control input-sm',
                             ]) ?>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                             <?= form_password([
                                 'name'  => 'password',
                                 'id'    => 'password',
-                                'class' => 'form-control input-sm'
+                                'class' => 'form-control input-sm',
                             ]) ?>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             <?= form_password([
                                 'name'  => 'repeat_password',
                                 'id'    => 'repeat_password',
-                                'class' => 'form-control input-sm'
+                                'class' => 'form-control input-sm',
                             ]) ?>
                         </div>
                     </div>

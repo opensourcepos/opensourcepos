@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Employee;
 use App\Models\Module;
-
-use CodeIgniter\Model;
 use CodeIgniter\Session\Session;
 use Config\OSPOS;
 use Config\Services;
@@ -14,11 +12,10 @@ use Config\Services;
  * Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
  * be set to also check if a user can access a particular module in the system.
  *
- * @property employee employee
- * @property module module
  * @property array global_view_data
- * @property session session
- *
+ * @property Employee employee
+ * @property Module module
+ * @property Session session
  */
 class Secure_Controller extends BaseController
 {
@@ -27,45 +24,43 @@ class Secure_Controller extends BaseController
     protected Module $module;
     protected Session $session;
 
-    /**
-     * @param string $module_id
-     * @param string|null $submodule_id
-     * @param string|null $menu_group
-     */
     public function __construct(string $module_id = '', ?string $submodule_id = null, ?string $menu_group = null)
     {
         $this->employee = model(Employee::class);
-        $this->module = model(Module::class);
-        $config = config(OSPOS::class)->settings;
-        $validation = Services::validation();
+        $this->module   = model(Module::class);
+        $config         = config(OSPOS::class)->settings;
+        $validation     = Services::validation();
 
-        if (!$this->employee->is_logged_in()) {
-            header("Location:" . base_url('login'));
+        if (! $this->employee->is_logged_in()) {
+            header('Location:' . base_url('login'));
+
             exit();
         }
 
         $logged_in_employee_info = $this->employee->get_logged_in_employee_info();
         if (
-            !$this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
-            || (isset($submodule_id) && !$this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
+            ! $this->employee->has_module_grant($module_id, $logged_in_employee_info->person_id)
+            || (isset($submodule_id) && ! $this->employee->has_module_grant($submodule_id, $logged_in_employee_info->person_id))
         ) {
-            header("Location:" . base_url("no_access/$module_id/$submodule_id"));
+            header('Location:' . base_url("no_access/{$module_id}/{$submodule_id}"));
+
             exit();
         }
 
         // Load up global global_view_data visible to all the loaded views
         $this->session = session();
-        if ($menu_group == null) {
+        if ($menu_group === null) {
             $menu_group = $this->session->get('menu_group');
         } else {
             $this->session->set('menu_group', $menu_group);
         }
 
-        $allowed_modules = $menu_group == 'home'
+        $allowed_modules = $menu_group === 'home'
             ? $this->module->get_allowed_home_modules($logged_in_employee_info->person_id)
             : $this->module->get_allowed_office_modules($logged_in_employee_info->person_id);
 
         $this->global_view_data = [];
+
         foreach ($allowed_modules->getResult() as $module) {
             $this->global_view_data['allowed_modules'][] = $module;
         }
@@ -73,19 +68,19 @@ class Secure_Controller extends BaseController
         $this->global_view_data += [
             'user_info'       => $logged_in_employee_info,
             'controller_name' => $module_id,
-            'config'          => $config
+            'config'          => $config,
         ];
         view('viewData', $this->global_view_data);
     }
 
     public function sanitizeSortColumn($headers, $field, $default): string
     {
-        return $field != null && in_array($field, array_keys(array_merge(...$headers))) ? $field : $default;
+        return $field !== null && in_array($field, array_keys(array_merge(...$headers)), true) ? $field : $default;
     }
 
     /**
      * AJAX function used to confirm whether values sent in the request are numeric
-     * @return void
+     *
      * @noinspection PhpUnused
      */
     public function getCheckNumeric(): void
@@ -93,6 +88,7 @@ class Secure_Controller extends BaseController
         foreach ($this->request->getGet() as $value) {
             if (parse_decimals($value) === false) {
                 echo 'false';
+
                 return;
             }
         }
@@ -100,7 +96,8 @@ class Secure_Controller extends BaseController
     }
 
     /**
-     * @param $key
+     * @param mixed $key
+     *
      * @return mixed|void
      */
     public function getConfig($key)
@@ -135,7 +132,6 @@ class Secure_Controller extends BaseController
     }
 
     /**
-     * @param int $data_item_id
      * @return false
      */
     public function getView(int $data_item_id = -1)
@@ -144,7 +140,6 @@ class Secure_Controller extends BaseController
     }
 
     /**
-     * @param int $data_item_id
      * @return false
      */
     public function postSave(int $data_item_id = -1)

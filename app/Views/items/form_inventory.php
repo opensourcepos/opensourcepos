@@ -1,8 +1,8 @@
 <?php
 /**
  * @var object $item_info
- * @var array $stock_locations
- * @var array $item_quantities
+ * @var array  $stock_locations
+ * @var array  $item_quantities
  * @var string $controller_name
  */
 ?>
@@ -10,7 +10,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("items/saveInventory/$item_info->item_id", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("items/saveInventory/{$item_info->item_id}", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="inv_item_basic_info">
 
         <div class="form-group form-group-sm">
@@ -23,7 +23,7 @@
                         'id'       => 'item_number',
                         'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value'    => $item_info->item_number
+                        'value'    => $item_info->item_number,
                     ]) ?>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     'id'       => 'name',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => $item_info->name
+                    'value'    => $item_info->name,
                 ]) ?>
             </div>
         </div>
@@ -52,7 +52,7 @@
                         'id'       => 'category',
                         'class'    => 'form-control input-sm',
                         'disabled' => '',
-                        'value'    => $item_info->category
+                        'value'    => $item_info->category,
                     ]) ?>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     'id'       => 'quantity',
                     'class'    => 'form-control input-sm',
                     'disabled' => '',
-                    'value'    => to_quantity_decimals(current($item_quantities))
+                    'value'    => to_quantity_decimals(current($item_quantities)),
                 ]) ?>
             </div>
         </div>
@@ -84,7 +84,7 @@
                 <?= form_input([
                     'name'  => 'newquantity',
                     'id'    => 'newquantity',
-                    'class' => 'form-control input-sm'
+                    'class' => 'form-control input-sm',
                 ]) ?>
             </div>
         </div>
@@ -95,7 +95,7 @@
                 <?= form_textarea([
                     'name'  => 'trans_comment',
                     'id'    => 'trans_comment',
-                    'class' => 'form-control input-sm'
+                    'class' => 'form-control input-sm',
                 ]) ?>
             </div>
         </div>

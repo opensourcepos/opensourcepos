@@ -7,17 +7,18 @@ use Config\OSPOS;
  * Returns the currently configured language code.
  *
  * @param bool $load_system_language When true, the system language is returned.
+ *
  * @return string Returns the default language code if a language code is not configured.
  */
 function current_language_code(bool $load_system_language = false): string
 {
     $employee = model(Employee::class);
-    $config = config(OSPOS::class)->settings;
+    $config   = config(OSPOS::class)->settings;
 
-    if ($employee->is_logged_in() && !$load_system_language) {
+    if ($employee->is_logged_in() && ! $load_system_language) {
         $employee_info = $employee->get_logged_in_employee_info();
 
-        if (property_exists($employee_info, 'language_code') && !empty($employee_info->language_code)) {
+        if (property_exists($employee_info, 'language_code') && ! empty($employee_info->language_code)) {
             return $employee_info->language_code;
         }
     }
@@ -27,20 +28,16 @@ function current_language_code(bool $load_system_language = false): string
     return empty($language_code) ? DEFAULT_LANGUAGE_CODE : $language_code;
 }
 
-/**
- * @param bool $load_system_language
- * @return string
- */
 function current_language(bool $load_system_language = false): string
 {
     $employee = model(Employee::class);
-    $config = config(OSPOS::class)->settings;
+    $config   = config(OSPOS::class)->settings;
 
     // Returns the language of the employee if set or system language if not
-    if ($employee->is_logged_in() && !$load_system_language) {
+    if ($employee->is_logged_in() && ! $load_system_language) {
         $employee_info = $employee->get_logged_in_employee_info();
 
-        if (property_exists($employee_info, 'language') && !empty($employee_info->language)) {
+        if (property_exists($employee_info, 'language') && ! empty($employee_info->language)) {
             return $employee_info->language;
         }
     }
@@ -51,7 +48,7 @@ function current_language(bool $load_system_language = false): string
 }
 
 /**
- * @return string[]
+ * @return list<string>
  */
 function get_languages(): array
 {
@@ -98,14 +95,15 @@ function get_languages(): array
         'ur:urdu'                     => 'Urdu',
         'vi:vietnamese'               => 'Vietnamese',
         'zh-Hans:simplified-chinese'  => 'Chinese (Simplified)',
-        'zh-Hant:traditional-chinese' => 'Chinese (Traditional)'
+        'zh-Hant:traditional-chinese' => 'Chinese (Traditional)',
     ];
     asort($languages);
+
     return $languages;
 }
 
 /**
- * @return string[]
+ * @return list<string>
  */
 function get_timezones(): array
 {
@@ -202,12 +200,12 @@ function get_timezones(): array
         'Etc/GMT-12'                     => '(GMT+12:00) Fiji, Kamchatka, Marshall Is.',
         'Pacific/Chatham'                => '(GMT+12:45) Chatham Islands',
         'Pacific/Tongatapu'              => '(GMT+13:00) Nuku\'alofa',
-        'Pacific/Kiritimati'             => '(GMT+14:00) Kiritimati'
+        'Pacific/Kiritimati'             => '(GMT+14:00) Kiritimati',
     ];
 }
 
 /**
- * @return string[]
+ * @return list<string>
  */
 function get_dateformats(): array
 {
@@ -218,22 +216,21 @@ function get_dateformats(): array
         'Y/m/d' => 'yyyy/mm/dd',
         'd/m/y' => 'dd/mm/yy',
         'm/d/y' => 'mm/dd/yy',
-        'y/m/d' => 'yy/mm/dd'
+        'y/m/d' => 'yy/mm/dd',
     ];
 }
 
 /**
- * @return string[]
+ * @return list<string>
  */
 function get_timeformats(): array
 {
     return [
         'H:i:s'   => 'hh:mm:ss (24h)',
         'h:i:s a' => 'hh:mm:ss am/pm',
-        'h:i:s A' => 'hh:mm:ss AM/PM'
+        'h:i:s A' => 'hh:mm:ss AM/PM',
     ];
 }
-
 
 /**
  * Gets the payment options
@@ -241,32 +238,32 @@ function get_timeformats(): array
 function get_payment_options(): array
 {
     $payments = [];
-    $config = config(OSPOS::class)->settings;
+    $config   = config(OSPOS::class)->settings;
 
     // TODO: This needs to be switched to a switch statement
-    if ($config['payment_options_order'] == 'debitcreditcash') {    // TODO: ===
-        $payments[lang('Sales.debit')] = lang('Sales.debit');
+    if ($config['payment_options_order'] === 'debitcreditcash') {    // TODO: ===
+        $payments[lang('Sales.debit')]  = lang('Sales.debit');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
-        $payments[lang('Sales.cash')] = lang('Sales.cash');
-    } elseif ($config['payment_options_order'] == 'debitcashcredit') {    // TODO: ===
-        $payments[lang('Sales.debit')] = lang('Sales.debit');
-        $payments[lang('Sales.cash')] = lang('Sales.cash');
+        $payments[lang('Sales.cash')]   = lang('Sales.cash');
+    } elseif ($config['payment_options_order'] === 'debitcashcredit') {    // TODO: ===
+        $payments[lang('Sales.debit')]  = lang('Sales.debit');
+        $payments[lang('Sales.cash')]   = lang('Sales.cash');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
-    } elseif ($config['payment_options_order'] == 'creditdebitcash') {    // TODO: ===
+    } elseif ($config['payment_options_order'] === 'creditdebitcash') {    // TODO: ===
         $payments[lang('Sales.credit')] = lang('Sales.credit');
-        $payments[lang('Sales.debit')] = lang('Sales.debit');
-        $payments[lang('Sales.cash')] = lang('Sales.cash');
-    } elseif ($config['payment_options_order'] == 'creditcashdebit') {    // TODO: ===
+        $payments[lang('Sales.debit')]  = lang('Sales.debit');
+        $payments[lang('Sales.cash')]   = lang('Sales.cash');
+    } elseif ($config['payment_options_order'] === 'creditcashdebit') {    // TODO: ===
         $payments[lang('Sales.credit')] = lang('Sales.credit');
-        $payments[lang('Sales.cash')] = lang('Sales.cash');
-        $payments[lang('Sales.debit')] = lang('Sales.debit');
+        $payments[lang('Sales.cash')]   = lang('Sales.cash');
+        $payments[lang('Sales.debit')]  = lang('Sales.debit');
     } else { // Default: if ($config['payment_options_order == 'cashdebitcredit')
-        $payments[lang('Sales.cash')] = lang('Sales.cash');
-        $payments[lang('Sales.debit')] = lang('Sales.debit');
+        $payments[lang('Sales.cash')]   = lang('Sales.cash');
+        $payments[lang('Sales.debit')]  = lang('Sales.debit');
         $payments[lang('Sales.credit')] = lang('Sales.credit');
     }
 
-    $payments[lang('Sales.due')] = lang('Sales.due');
+    $payments[lang('Sales.due')]   = lang('Sales.due');
     $payments[lang('Sales.check')] = lang('Sales.check');
 
     // If India (list of country codes include India) then include Unified Payment Interface
@@ -285,10 +282,10 @@ function get_payment_options(): array
 function is_right_side_currency_symbol(): bool
 {
     $config = config(OSPOS::class)->settings;
-    $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::CURRENCY);
+    $fmt    = new NumberFormatter($config['number_locale'], NumberFormatter::CURRENCY);
     $fmt->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $config['currency_symbol']);
 
-    return !preg_match('/^¤/', $fmt->getPattern());
+    return ! preg_match('/^¤/', $fmt->getPattern());
 }
 
 /**
@@ -299,93 +296,66 @@ function is_right_side_currency_symbol(): bool
 function quantity_decimals(): int
 {
     $config = config(OSPOS::class)->settings;
+
     return $config['quantity_decimals'] ?? 0;
 }
 
-/**
- * @return int
- */
 function totals_decimals(): int
 {
     $config = config(OSPOS::class)->settings;
+
     return $config['currency_decimals'] ?? 0;
 }
 
-/**
- * @return int
- */
 function cash_decimals(): int
 {
     $config = config(OSPOS::class)->settings;
+
     return $config['cash_decimals'] ?? 0;
 }
 
-/**
- * @return int
- */
 function tax_decimals(): int
 {
     $config = config(OSPOS::class)->settings;
+
     return $config['tax_decimals'] ?? 0;
 }
 
-/**
- * @param int $date
- * @return string
- */
 function to_date(int $date = DEFAULT_DATE): string
 {
     $config = config(OSPOS::class)->settings;
+
     return date($config['dateformat'], $date);
 }
 
-/**
- * @param int $datetime
- * @return string
- */
 function to_datetime(int $datetime = DEFAULT_DATETIME): string
 {
     $config = config(OSPOS::class)->settings;
+
     return date($config['dateformat'] . ' ' . $config['timeformat'], $datetime);
 }
 
-/**
- * @param string|null $number
- * @return string
- */
 function to_currency(?string $number): string
 {
     return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
-/**
- * @param string|null $number
- * @return string
- */
 function to_currency_no_money(?string $number): string
 {
     return to_decimals($number, 'currency_decimals');
 }
 
-/**
- * @param string|null $number
- * @return string
- */
 function to_currency_tax(?string $number): string
 {
     $config = config(OSPOS::class)->settings;
 
     if ($config['tax_included']) {    // TODO: ternary notation
         return to_decimals($number, 'tax_decimals', NumberFormatter::CURRENCY);
-    } else {
-        return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
     }
+
+    return to_decimals($number, 'currency_decimals', NumberFormatter::CURRENCY);
 }
 
-/**
- * @param $number
- * @return string
- */
 function to_tax_decimals($number): string
 {
     // TODO: When the tax array is empty the value passed in is an empty string,  For now I "untyped" it to get past
@@ -402,10 +372,6 @@ function to_tax_decimals($number): string
     return to_decimals($number, 'tax_decimals');
 }
 
-/**
- * @param string|null $number
- * @return string
- */
 function to_quantity_decimals(?string $number): string
 {
     return to_decimals($number, 'quantity_decimals');
@@ -413,19 +379,15 @@ function to_quantity_decimals(?string $number): string
 
 /**
  * Converts a string to locale-specific number format for display.
- *
- * @param string|null $decimals
- * @param int $type
- * @return string
  */
 function to_decimals(?string $number, ?string $decimals = null, int $type = NumberFormatter::DECIMAL): string
 {
-    if (!isset($number)) {
+    if (! isset($number)) {
         return '';
     }
 
     $config = config(OSPOS::class)->settings;
-    $fmt = new NumberFormatter($config['number_locale'], $type);
+    $fmt    = new NumberFormatter($config['number_locale'], $type);
     $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
     $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, empty($decimals) ? DEFAULT_PRECISION : $config[$decimals]);
 
@@ -438,7 +400,6 @@ function to_decimals(?string $number, ?string $decimals = null, int $type = Numb
 }
 
 /**
- * @param string $number
  * @return false|float|int|mixed|string
  */
 function parse_quantity(string $number): mixed
@@ -447,7 +408,6 @@ function parse_quantity(string $number): mixed
 }
 
 /**
- * @param string $number
  * @return false|float|int|mixed|string
  */
 function parse_tax(string $number): mixed
@@ -456,8 +416,6 @@ function parse_tax(string $number): mixed
 }
 
 /**
- * @param string $number
- * @param int|null $decimals
  * @return false|float|int|mixed|string
  */
 function parse_decimals(string $number, ?int $decimals = null): mixed
@@ -466,13 +424,12 @@ function parse_decimals(string $number, ?int $decimals = null): mixed
         return $number;
     }
 
-
     $config = config(OSPOS::class)->settings;
 
     $fmt = new NumberFormatter($config['number_locale'], NumberFormatter::DECIMAL);
 
-    if (!$decimals) {
-        $decimals = intVal($config['currency_decimals']);
+    if (! $decimals) {
+        $decimals = (int) ($config['currency_decimals']);
         $fmt->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);
     }
 
@@ -539,18 +496,15 @@ function dateformat_momentjs(string $php_format): string
         'Z' => '', // No equivalent
         'c' => '', // No equivalent
         'r' => '', // No equivalent
-        'U' => 'X'
+        'U' => 'X',
     ];
 
     return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-/**
- * @return string
- */
 function dateformat_mysql(): string
 {
-    $config = config(OSPOS::class)->settings;
+    $config     = config(OSPOS::class)->settings;
     $php_format = $config['dateformat'];
 
     $SYMBOLS_MATCHING = [
@@ -586,16 +540,12 @@ function dateformat_mysql(): string
         'H' => '%k',
         'i' => '%i',
         's' => '%S',
-        'u' => '%f'
+        'u' => '%f',
     ];
 
     return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-/**
- * @param string $php_format
- * @return string
- */
 function dateformat_bootstrap(string $php_format): string
 {
     $SYMBOLS_MATCHING = [
@@ -631,51 +581,36 @@ function dateformat_bootstrap(string $php_format): string
         'H' => 'hh',
         'i' => 'ii',
         's' => 'ss',
-        'u' => ''
+        'u' => '',
     ];
 
     return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
-/**
- * @param string $date
- * @return bool
- */
 function valid_date(string $date): bool    // TODO: need a better name for $date.  Perhaps $candidate. Also the function name would be better as is_valid_date()
 {
     $config = config(OSPOS::class)->settings;
-    return (DateTime::createFromFormat($config['dateformat'], $date));
+
+    return DateTime::createFromFormat($config['dateformat'], $date);
 }
 
-/**
- * @param string $decimal
- * @return bool
- */
 function valid_decimal(string $decimal): bool    // TODO: need a better name for $decimal.  Perhaps $candidate. Also the function name would be better as is_valid_decimal()
 {
-    return (preg_match('/^(\d*\.)?\d+$/', $decimal) === 1);
+    return preg_match('/^(\d*\.)?\d+$/', $decimal) === 1;
 }
 
-/**
- * @param array $data
- * @return array
- */
 function encode_array(array $data): array
 {
-    array_walk($data, function (&$value, $key) {
+    array_walk($data, static function (&$value, $key) {
         $value = rawurlencode($value);
     });
 
     return $data;
 }
 
-/**
- * @param array $data
- * @return array
- */
 function decode_array(array $data): array
 {
-    array_walk($data, function (&$value, $key) {
+    array_walk($data, static function (&$value, $key) {
         $value = rawurldecode($value);
     });
 

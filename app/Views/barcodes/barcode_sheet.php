@@ -29,14 +29,15 @@ $barcode_lib = new Barcode_lib();
         <tr>
             <?php
             $count = 0;
-            foreach ($items as $item) {
-                if ($count % $barcode_config['barcode_num_in_row'] == 0 && $count != 0) {
-                    echo '</tr><tr>';
-                }
-                echo '<td>' . $barcode_lib->display_barcode($item, $barcode_config) . '</td>';
-                $count++;
-            }
-            ?>
+
+foreach ($items as $item) {
+    if ($count % $barcode_config['barcode_num_in_row'] === 0 && $count !== 0) {
+        echo '</tr><tr>';
+    }
+    echo '<td>' . $barcode_lib->display_barcode($item, $barcode_config) . '</td>';
+    $count++;
+}
+?>
         </tr>
     </table>
 </body>

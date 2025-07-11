@@ -2,8 +2,8 @@
 
 namespace App\Database\Migrations;
 
-use CodeIgniter\Database\Migration;
 use App\Models\Attribute;
+use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\ResultInterface;
 
 class fix_duplicate_attributes extends Migration
@@ -23,7 +23,7 @@ class fix_duplicate_attributes extends Migration
             'ospos_attribute_links_ibfk_2',
             'ospos_attribute_links_ibfk_3',
             'ospos_attribute_links_ibfk_4',
-            'ospos_attribute_links_ibfk_5'
+            'ospos_attribute_links_ibfk_5',
         ];
 
         dropForeignKeyConstraints($foreignKeys, 'attribute_links');
@@ -46,6 +46,7 @@ class fix_duplicate_attributes extends Migration
         $builder->where('item_id IS NOT NULL');
         $builder->groupBy('item_id, definition_id');
         $builder->having('COUNT(attribute_id) > 1');
+
         return $builder->get();
     }
 
@@ -53,20 +54,21 @@ class fix_duplicate_attributes extends Migration
      * Removes the duplicate attributes from the database.
      *
      * @param ResultInterface $rows_to_keep A multidimensional associative array containing item_id, definition_id and attribute_id in each row which should be kept in the database.
-     * @return void
      */
     private function remove_duplicate_attributes(ResultInterface $rows_to_keep): void
     {
         $attribute = model(Attribute::class);
+
         foreach ($rows_to_keep->getResult() as $row) {
             $attribute->deleteAttributeLinks($row->item_id, $row->definition_id);    // Deletes all attribute links for the item_id/definition_id combination
             $attribute->saveAttributeLink($row->item_id, $row->definition_id, $row->attribute_id);
         }
     }
 
-
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

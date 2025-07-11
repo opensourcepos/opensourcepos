@@ -1,6 +1,6 @@
 <?php
 /**
- * @var int $tax_rate_id
+ * @var int   $tax_rate_id
  * @var array $tax_code_options
  * @var array $rate_tax_code_id
  * @var array $tax_category_options
@@ -15,7 +15,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("taxes/save/$tax_rate_id", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("taxes/save/{$tax_rate_id}", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="tax_rate_info">
 
         <div class="form-group form-group-sm">
@@ -46,7 +46,7 @@
                     'name'  => 'tax_rate',
                     'id'    => 'tax_rate',
                     'class' => 'form-control input-sm text-uppercase',
-                    'value' => $tax_rate
+                    'value' => $tax_rate,
                 ]) ?>
                 <span class="input-group-addon input-sm">%</span>
             </div>

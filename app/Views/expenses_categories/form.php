@@ -8,7 +8,7 @@
 <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?= form_open("expenses_categories/save/$category_info->expense_category_id", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
+<?= form_open("expenses_categories/save/{$category_info->expense_category_id}", ['id' => 'expense_category_edit_form', 'class' => 'form-horizontal']) ?>
     <fieldset id="expenses_categories">
 
         <div class="form-group form-group-sm">
@@ -18,7 +18,7 @@
                     'name'  => 'category_name',
                     'id'    => 'category_name',
                     'class' => 'form-control input-sm',
-                    'value' => $category_info->category_name
+                    'value' => $category_info->category_name,
                 ]) ?>
             </div>
         </div>
@@ -30,7 +30,7 @@
                     'name'  => 'category_description',
                     'id'    => 'category_description',
                     'class' => 'form-control input-sm',
-                    'value' => $category_info->category_description
+                    'value' => $category_info->category_description,
                 ]) ?>
             </div>
         </div>

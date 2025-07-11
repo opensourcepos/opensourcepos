@@ -8,9 +8,9 @@ var pickerconfig = function(config) {
         format: "<?= dateformat_bootstrap($config['dateformat']) . ' ' . dateformat_bootstrap($config['timeformat'])?>",
         <?php
         $t = $config['timeformat'];
-        $m = $t[strlen($t) - 1];
-        if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
-        ?>
+$m         = $t[strlen($t) - 1];
+if (str_contains($config['timeformat'], 'a') || str_contains($config['timeformat'], 'A')) {
+    ?>
             showMeridian: true,
         <?php } else {  ?>
             showMeridian: false,
@@ -22,7 +22,7 @@ var pickerconfig = function(config) {
         todayHighlight: true,
         bootcssVer: 3,
         language: "<?= current_language_code() ?>"
-    }, <?php echo isset($config) ?>);
+    }, <?= isset($config) ?>);
 };
 
 $.fn.datetimepicker.dates['<?= $config['language'] ?>'] = {

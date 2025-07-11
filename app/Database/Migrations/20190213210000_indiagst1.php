@@ -22,5 +22,7 @@ class Migration_IndiaGST1 extends Migration
     /**
      * Revert a migration step.
      */
-    public function down(): void {}
+    public function down(): void
+    {
+    }
 }

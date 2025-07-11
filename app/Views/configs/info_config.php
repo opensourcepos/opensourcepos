@@ -1,8 +1,8 @@
 <?php
 /**
- * @var bool $logo_exists
+ * @var bool   $logo_exists
  * @var string $controller_name
- * @var array $config
+ * @var array  $config
  */
 ?>
 
@@ -24,7 +24,7 @@
                             'name'  => 'company',
                             'id'    => 'company',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['company']
+                            'value' => $config['company'],
                         ]) ?>
                     </div>
                 </div>
@@ -36,7 +36,11 @@
                     <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
                         <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
-                            <img data-src="holder.js/100%x100%" alt="<?= lang('Config.company_logo') ?>" src="<?php if ($logo_exists) echo base_url('uploads/' . $config['company_logo']); else echo '' ?>" style="max-height: 100%; max-width: 100%;">
+                            <img data-src="holder.js/100%x100%" alt="<?= lang('Config.company_logo') ?>" src="<?php if ($logo_exists) {
+                                echo base_url('uploads/' . $config['company_logo']);
+                            } else {
+                                echo '';
+                            } ?>" style="max-height: 100%; max-width: 100%;">
                         </div>
                         <div>
                             <span class="btn btn-default btn-sm btn-file">
@@ -57,7 +61,7 @@
                         'name'  => 'address',
                         'id'    => 'address',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['address']
+                        'value' => $config['address'],
                     ]) ?>
                 </div>
             </div>
@@ -73,7 +77,7 @@
                             'name'  => 'website',
                             'id'    => 'website',
                             'class' => 'form-control input-sm',
-                            'value' => $config['website']
+                            'value' => $config['website'],
                         ]) ?>
                     </div>
                 </div>
@@ -91,7 +95,7 @@
                             'id'    => 'email',
                             'type'  => 'email',
                             'class' => 'form-control input-sm',
-                            'value' => $config['email']
+                            'value' => $config['email'],
                         ]) ?>
                     </div>
                 </div>
@@ -108,7 +112,7 @@
                             'name'  => 'phone',
                             'id'    => 'phone',
                             'class' => 'form-control input-sm required',
-                            'value' => $config['phone']
+                            'value' => $config['phone'],
                         ]) ?>
                     </div>
                 </div>
@@ -125,7 +129,7 @@
                             'name'  => 'fax',
                             'id'    => 'fax',
                             'class' => 'form-control input-sm',
-                            'value' => $config['fax']
+                            'value' => $config['fax'],
                         ]) ?>
                     </div>
                 </div>
@@ -138,7 +142,7 @@
                         'name'  => 'return_policy',
                         'id'    => 'return_policy',
                         'class' => 'form-control input-sm required',
-                        'value' => $config['return_policy']
+                        'value' => $config['return_policy'],
                     ]) ?>
                 </div>
             </div>
@@ -147,7 +151,7 @@
                 'name'  => 'submit_info',
                 'id'    => 'submit_info',
                 'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
+                'class' => 'btn btn-primary btn-sm pull-right',
             ]) ?>
 
         </fieldset>
@@ -160,7 +164,7 @@
         $("a.fileinput-exists").click(function() {
             $.ajax({
                 type: 'POST',
-                url: '<?= "$controller_name/removeLogo"; ?>',
+                url: '<?= "{$controller_name}/removeLogo"; ?>',
                 dataType: 'json'
             })
         });

@@ -12,18 +12,18 @@ use stdClass;
  */
 class Item_kit extends Model
 {
-    protected $table = 'item_kits';
-    protected $primaryKey = 'item_kit_id';
+    protected $table            = 'item_kits';
+    protected $primaryKey       = 'item_kit_id';
     protected $useAutoIncrement = true;
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
+    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
         'item_kit_number',
         'name',
         'description',
         'item_id',
         'kit_discount',
         'kit_discount_type',
-        'price_option'
+        'price_option',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Item_kit extends Model
         $builder = $this->db->table('item_kits');
         $builder->where('item_kit_id', $item_kit_id);
 
-        return ($builder->get()->getNumRows() == 1);    // TODO: ===
+        return $builder->get()->getNumRows() === 1;    // TODO: ===
     }
 
     /**
@@ -42,15 +42,15 @@ class Item_kit extends Model
      */
     public function is_valid_item_kit(string $item_kit_id): bool
     {
-        if (!empty($item_kit_id)) {
+        if (! empty($item_kit_id)) {
             // KIT #
             $pieces = explode(' ', $item_kit_id);
 
-            if ((count($pieces) == 2) && preg_match('/(KIT)/i', $pieces[0])) {    // TODO: === ... perhaps think about converting this to ternary notation
+            if ((count($pieces) === 2) && preg_match('/(KIT)/i', $pieces[0])) {    // TODO: === ... perhaps think about converting this to ternary notation
                 return $this->exists($pieces[1]);
-            } else {
-                return $this->item_number_exists($item_kit_id);
             }
+
+            return $this->item_number_exists($item_kit_id);
         }
 
         return false;
@@ -72,11 +72,11 @@ class Item_kit extends Model
 
         // Check if $item_id is a number and not a string starting with 0
         // because cases like 00012345 will be seen as a number where it is a barcode
-        if (ctype_digit($item_kit_id) && !str_starts_with($item_kit_id, '0')) {
+        if (ctype_digit($item_kit_id) && ! str_starts_with($item_kit_id, '0')) {
             $builder->where('item_kit_id !=', (int) $item_kit_id);
         }
 
-        return ($builder->get()->getNumRows() >= 1);
+        return $builder->get()->getNumRows() >= 1;
     }
 
     /**
@@ -128,19 +128,18 @@ class Item_kit extends Model
 
         $query = $builder->get();
 
-        if ($query->getNumRows() == 1) {    // TODO: ===
+        if ($query->getNumRows() === 1) {    // TODO: ===
             return $query->getRow();
-        } else {
-            // Get empty base parent object, as $item_kit_id is NOT an item kit
-            $item_obj = new stdClass();
-
-            // Get all the fields from items table
-            foreach ($this->db->getFieldNames('item_kits') as $field) {
-                $item_obj->$field = '';
-            }
-
-            return $item_obj;
         }
+        // Get empty base parent object, as $item_kit_id is NOT an item kit
+        $item_obj = new stdClass();
+
+        // Get all the fields from items table
+        foreach ($this->db->getFieldNames('item_kits') as $field) {
+            $item_obj->{$field} = '';
+        }
+
+        return $item_obj;
     }
 
     /**
@@ -161,7 +160,7 @@ class Item_kit extends Model
     public function save_value(array &$item_kit_data, int $item_kit_id = NEW_ENTRY): bool
     {
         $builder = $this->db->table('item_kits');
-        if ($item_kit_id == NEW_ENTRY || !$this->exists($item_kit_id)) {
+        if ($item_kit_id === NEW_ENTRY || ! $this->exists($item_kit_id)) {
             if ($builder->insert($item_kit_data)) {
                 $item_kit_data['item_kit_id'] = $this->db->insertID();
 
@@ -178,6 +177,8 @@ class Item_kit extends Model
 
     /**
      * Deletes one item kit
+     *
+     * @param mixed|null $item_kit_id
      */
     public function delete($item_kit_id = null, bool $purge = false): bool
     {
@@ -197,11 +198,6 @@ class Item_kit extends Model
         return $builder->delete();
     }
 
-    /**
-     * @param string $search
-     * @param int $limit
-     * @return array
-     */
     public function get_search_suggestions(string $search, int $limit = 25): array
     {
         $suggestions = [];
@@ -248,11 +244,21 @@ class Item_kit extends Model
     public function search(string $search, ?int $rows = 0, ?int $limit_from = 0, ?string $sort = 'name', ?string $order = 'asc', ?bool $count_only = false)
     {
         // Set default values
-        if ($rows == null) $rows = 0;
-        if ($limit_from == null) $limit_from = 0;
-        if ($sort == null) $sort = 'name';
-        if ($order == null) $order = 'asc';
-        if ($count_only == null) $count_only = false;
+        if ($rows === null) {
+            $rows = 0;
+        }
+        if ($limit_from === null) {
+            $limit_from = 0;
+        }
+        if ($sort === null) {
+            $sort = 'name';
+        }
+        if ($order === null) {
+            $order = 'asc';
+        }
+        if ($count_only === null) {
+            $count_only = false;
+        }
 
         $builder = $this->db->table('item_kits');
 

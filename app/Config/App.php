@@ -3,42 +3,31 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
-use CodeIgniter\Session\Handlers\DatabaseHandler;
 
 class App extends BaseConfig
 {
     /**
      * This is the code version of the Open Source Point of Sale you're running.
-     *
-     * @var string
      */
     public string $application_version = '3.4.1';
 
     /**
      * This is the commit hash for the version you are currently using.
-     *
-     * @var string
      */
     public string $commit_sha1 = 'dev';
 
     /**
      * Logs are stored in writable/logs
-     *
-     * @var bool
      */
     public bool $db_log_enabled = false;
 
     /**
      * DB Query Log only long-running queries
-     *
-     * @var bool
      */
     public bool $db_log_only_long = false;
 
     /**
      * Defines whether to require/reroute to HTTPS
-     *
-     * @var bool
      */
     public bool $https_on;    // Set in the constructor
 
@@ -283,8 +272,8 @@ class App extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-        $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true');
-        $this->baseURL = $this->https_on ? 'https' : 'http';
+        $this->https_on = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] === 'true');
+        $this->baseURL  = $this->https_on ? 'https' : 'http';
         $this->baseURL .= '://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : 'localhost') . '/';
         $this->baseURL .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
     }
